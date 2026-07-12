@@ -27,6 +27,9 @@ targets:
     platform: iOS
     sources:
       - path: Atlas
+    configFiles:
+      Debug: Atlas/Config.xcconfig
+      Release: Atlas/Config.xcconfig
     dependencies:
       - package: AtlasCore
         product: AtlasCore
@@ -40,8 +43,3 @@ targets:
         ENABLE_PREVIEWS: YES
         TARGETED_DEVICE_FAMILY: "1,2"
         CODE_SIGN_STYLE: Automatic
-      configs:
-        Debug:
-          xcconfig: Atlas/Config.xcconfig
-        Release:
-          xcconfig: Atlas/Config.xcconfig
