@@ -63,6 +63,7 @@ final class ConversationModel {
     var isSending = false
     var loadError: String?
     var toast: String?
+    var workspaceName: String?   // pro seletor de workspace no composer
 
     private let client: AtlasClient
     private(set) var threadId: String?
@@ -78,6 +79,9 @@ final class ConversationModel {
         guard let threadId else { return }
         do {
             let response = try await client.getAiThread(threadId)
+            if let w = response.thread.workspace, !w.isEmpty {
+                workspaceName = (w as NSString).lastPathComponent
+            }
             bubbles = (response.thread.messages ?? [])
                 .sorted { $0.position < $1.position }
                 .map { ChatBubble(id: $0.id, role: $0.role, text: $0.content,

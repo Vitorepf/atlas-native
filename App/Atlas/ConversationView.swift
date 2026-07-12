@@ -87,7 +87,28 @@ struct ConversationView: View {
     // CARD do app base (papel pousando): placeholder serif grande + linha de
     // controles (anexo · geral · auto · voz · mic), borda dourada.
     private var composer: some View {
-        VStack(alignment: .leading, spacing: focused ? 14 : 0) {
+        VStack(alignment: .leading, spacing: focused ? 12 : 0) {
+            if focused {
+                // Grabber (folha arrastável) + seletor de workspace/ambiente — como o Cursor
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(AtlasTheme.textTertiary.opacity(0.55))
+                    .frame(width: 36, height: 5)
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, 2)
+                Button {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                } label: {
+                    HStack(spacing: 6) {
+                        Text(model.workspaceName ?? "Atlas")
+                            .font(.system(size: 14, weight: .medium)).foregroundStyle(AtlasTheme.textSecondary)
+                        Text("main").font(.system(size: 14)).foregroundStyle(AtlasTheme.textTertiary)
+                        Image(systemName: "chevron.down").font(.system(size: 10, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
+                        Image(systemName: "cloud").font(.system(size: 14)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 8)
+                        Image(systemName: "chevron.down").font(.system(size: 10, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
+                    }
+                }
+                .buttonStyle(PressableScale())
+            }
             HStack(spacing: 10) {
                 if !focused {
                     Image(systemName: "paperclip")

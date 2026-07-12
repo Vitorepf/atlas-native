@@ -42,7 +42,7 @@
 			<key>uniqueIdentifier</key>
 			<string>387C3338-D71A-42E9-AF66-C132DAC27847</string>
 		</dict>
-		<key>3DE859F3-4A70-49D5-B6C5-82EF50BA80B4</key>
+		<key>E8C430E1-3B9C-4756-973A-10030E8A2F27</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -51,7 +51,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>3DE859F3-4A70-49D5-B6C5-82EF50BA80B4.xcactivitylog</string>
+			<string>E8C430E1-3B9C-4756-973A-10030E8A2F27.xcactivitylog</string>
 			<key>hasPrimaryLog</key>
 			<true/>
 			<key>primaryObservable</key>
@@ -70,49 +70,13 @@
 			<key>signature</key>
 			<string>Resolve Packages</string>
 			<key>timeStartedRecording</key>
-			<real>805589394.71076596</real>
+			<real>805590288.51862097</real>
 			<key>timeStoppedRecording</key>
-			<real>805589394.73952198</real>
+			<real>805590288.54546905</real>
 			<key>title</key>
 			<string>Resolve Packages</string>
 			<key>uniqueIdentifier</key>
-			<string>3DE859F3-4A70-49D5-B6C5-82EF50BA80B4</string>
-		</dict>
-		<key>A5ABDD19-8F70-4D4B-B12E-B9A4020F4809</key>
-		<dict>
-			<key>className</key>
-			<string>IDECommandLineBuildLog</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
-			<key>fileName</key>
-			<string>A5ABDD19-8F70-4D4B-B12E-B9A4020F4809.xcactivitylog</string>
-			<key>hasPrimaryLog</key>
-			<true/>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>S</string>
-				<key>totalNumberOfAnalyzerIssues</key>
-				<integer>0</integer>
-				<key>totalNumberOfErrors</key>
-				<integer>0</integer>
-				<key>totalNumberOfTestFailures</key>
-				<integer>0</integer>
-				<key>totalNumberOfWarnings</key>
-				<integer>0</integer>
-			</dict>
-			<key>signature</key>
-			<string>Resolve Packages</string>
-			<key>timeStartedRecording</key>
-			<real>805589441.05797803</real>
-			<key>timeStoppedRecording</key>
-			<real>805589441.08534396</real>
-			<key>title</key>
-			<string>Resolve Packages</string>
-			<key>uniqueIdentifier</key>
-			<string>A5ABDD19-8F70-4D4B-B12E-B9A4020F4809</string>
+			<string>E8C430E1-3B9C-4756-973A-10030E8A2F27</string>
 		</dict>
 	</dict>
 </dict>
