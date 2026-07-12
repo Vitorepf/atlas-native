@@ -44,7 +44,9 @@
 	<!-- Dev: permite HTTP pro atlas-server local (127.0.0.1 no simulador, IP da LAN no device) -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsLocalNetworking</key>
+		<key>NSAllowsArbitraryLoads</key>
+			<true/>
+			<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
