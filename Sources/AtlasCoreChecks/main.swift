@@ -102,7 +102,7 @@ do {
      "captured_at":"2026-01-01T00:00:00Z","content_text":"hi",
      "metadata":{"lat":1.5,"tag":"note","ok":true}}
     """.data(using: .utf8)!
-    let dec = JSONDecoder(); dec.keyDecodingStrategy = .convertFromSnakeCase
+    let dec = JSONDecoder(); dec.keyDecodingStrategy = atlasSnakeKeyDecoding
     if let capture = try? dec.decode(AtlasCapture.self, from: json) {
         check("decode snake_case → camelCase", capture.clientId == "a" && capture.contentText == "hi")
         check("metadata JSONValue: número", capture.metadata?["lat"]?.doubleValue == 1.5)
@@ -170,7 +170,7 @@ do {
       "active_session":null,
       "created_at":"2026-07-12T09:00:00Z","updated_at":"2026-07-12T10:00:00Z"}]}
     """.data(using: .utf8)!
-    let dec = JSONDecoder(); dec.keyDecodingStrategy = .convertFromSnakeCase
+    let dec = JSONDecoder(); dec.keyDecodingStrategy = atlasSnakeKeyDecoding
     if let resp = try? dec.decode(AiThreadsResponse.self, from: json), let th = resp.threads.first {
         check("thread snake→camel (last_trace_id, message_count)", th.lastTraceId == "tr-9" && th.messageCount == 2)
         check("metadata JSONValue bool", th.metadata?["pinned"]?.boolValue == true)
@@ -200,6 +200,16 @@ do {
     print("  ⚠ servidor não alcançável — check de rede pulado (não conta como falha): \(error)")
 }
 
+print("\nAtlas AI · superfície completa (golden decode por cluster):")
+runJobsChecks(check)
+runProvidersChecks(check)
+runDecisionsChecks(check)
+runTelemetryChecks(check)
+runPoliciesChecks(check)
+runQualityChecks(check)
+runAttachmentsChecks(check)
+runThreadsExtraChecks(check)
+
 print("\nAtlas AI · loop de conversa AO VIVO (só roda com ATLAS_TOKEN no env — sem segredo no arquivo):")
 if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpty {
     do {
@@ -210,8 +220,21 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
         for t in threads.threads.prefix(2) {
             print("      · \(t.title.prefix(44)) — \(t.messageCount) msgs · \(t.surface)")
         }
+
+        // Prova real dos clusters admin (payloads pesados — o Providers é o que
+        // pegou o bug 24H; decodar o real fecha o loop).
+        let status = try await client.getAiProvidersStatus()
+        check("GET /ai/providers/status decodou (payload admin real)", true)
+        print("    fila: \(status.queue.queued) queued · \(status.queue.processing) processing · providers: \(status.providers.count)")
+        for p in status.providers.prefix(3) {
+            print("      · \(p.provider): \(p.status) — \(p.totalJobs24h) jobs/24h, \(p.failedJobs24h) falhas")
+        }
+
+        let jobs = try await client.listAiJobs(limit: 3)
+        check("GET /ai/jobs decodou (fila real)", true)
+        print("    \(jobs.jobs.count) job(s) recentes")
     } catch {
-        check("GET /ai/threads AO VIVO", false)
+        check("GET AI surface AO VIVO", false)
         print("    erro: \(error)")
     }
 } else {

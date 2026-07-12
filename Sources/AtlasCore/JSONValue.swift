@@ -45,3 +45,32 @@ public enum JSONValue: Codable, Equatable, Sendable {
         if case .object(let o) = self { return o[key] } else { return nil }
     }
 }
+
+/// Um bag `Record<string, unknown>` que TOLERA o quirk do Laravel: um associative
+/// array vazio serializa como `[]` (array), não `{}`. Um `[String: JSONValue]`
+/// puro quebra o decode nesse `[]` (typeMismatch). `JSONObject` decoda `{...}`
+/// normalmente e trata `[]`/qualquer não-objeto como bag vazio — então todo campo
+/// metadata/payload/signals/result_json da superfície sobrevive a payload real.
+/// Acesso idêntico a um dict: `bag?["chave"]?.stringValue`, `.isEmpty`, `.count`.
+public struct JSONObject: Codable, Equatable, Sendable {
+    public var values: [String: JSONValue]
+    public init(_ values: [String: JSONValue] = [:]) { self.values = values }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.singleValueContainer()
+        if let dict = try? c.decode([String: JSONValue].self) {
+            values = dict
+        } else {
+            values = [:]   // `[]` (Laravel empty) ou qualquer não-objeto → vazio
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.singleValueContainer()
+        try c.encode(values)
+    }
+
+    public subscript(_ key: String) -> JSONValue? { values[key] }
+    public var isEmpty: Bool { values.isEmpty }
+    public var count: Int { values.count }
+}

@@ -14,10 +14,10 @@ public struct AtlasCapture: Codable, Equatable, ClientMergeable, Sendable {
     public var deletedAt: String?
     public var capturedAt: String
     public var contentText: String?
-    public var metadata: [String: JSONValue]?
+    public var metadata: JSONObject?
 
     public init(id: String? = nil, clientId: String, updatedAt: String, deletedAt: String? = nil,
-                capturedAt: String, contentText: String? = nil, metadata: [String: JSONValue]? = nil) {
+                capturedAt: String, contentText: String? = nil, metadata: JSONObject? = nil) {
         self.id = id; self.clientId = clientId; self.updatedAt = updatedAt; self.deletedAt = deletedAt
         self.capturedAt = capturedAt; self.contentText = contentText; self.metadata = metadata
     }

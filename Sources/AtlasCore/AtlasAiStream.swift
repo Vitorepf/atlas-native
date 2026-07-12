@@ -14,7 +14,7 @@ public struct AtlasAiStreamEvent: Sendable, Equatable {
     public var type: String
     public var channel: String?
     public var content: String
-    public var metadata: [String: JSONValue]
+    public var metadata: JSONObject
     public var occurredAt: String?
 }
 
@@ -94,8 +94,8 @@ public func dispatchAtlasAiStreamFrame(_ frame: String) -> AtlasAiStreamFrame {
         return .ignored
     }
 
-    let metadata: [String: JSONValue]
-    if case .object(let obj)? = payload["metadata"] { metadata = obj } else { metadata = [:] }
+    let metadata: JSONObject
+    if case .object(let obj)? = payload["metadata"] { metadata = JSONObject(obj) } else { metadata = JSONObject() }
 
     return .event(AtlasAiStreamEvent(
         id: payload["id"]?.stringValue,

@@ -41,7 +41,7 @@ public actor AtlasClient {
         self.config = config
         self.session = session
         let d = JSONDecoder()
-        d.keyDecodingStrategy = .convertFromSnakeCase   // kills CodingKeys on the DTOs
+        d.keyDecodingStrategy = atlasSnakeKeyDecoding   // kills CodingKeys on the DTOs
         self.decoder = d
         let e = JSONEncoder()
         e.keyEncodingStrategy = .convertToSnakeCase     // inputText → input_text, etc.

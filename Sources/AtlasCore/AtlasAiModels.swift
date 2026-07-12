@@ -30,7 +30,7 @@ public struct AtlasAiSession: Codable, Sendable, Identifiable, Equatable {
     public let status: String
     public let startedAt: String?
     public let endedAt: String?
-    public let metadata: [String: JSONValue]?
+    public let metadata: JSONObject?
     public let createdAt: String
     public let updatedAt: String
 }
@@ -48,7 +48,7 @@ public struct AtlasAiMessage: Codable, Sendable, Identifiable, Equatable {
     public let agentSlug: String?
     public let tokenEstimate: Int?
     public let occurredAt: String?
-    public let metadata: [String: JSONValue]?
+    public let metadata: JSONObject?
     public let createdAt: String
     public let updatedAt: String
 }
@@ -66,7 +66,7 @@ public struct AtlasAiThread: Codable, Sendable, Identifiable, Equatable {
     public let lastProvider: String?
     public let messageCount: Int
     public let lastMessageAt: String?
-    public let metadata: [String: JSONValue]?
+    public let metadata: JSONObject?
     // Relations pesadas (light=true as omite). Porta o resto do grafo depois.
     public let messages: [AtlasAiMessage]?
     public let activeSession: AtlasAiSession?
@@ -91,7 +91,7 @@ public struct AtlasAiTrace: Codable, Sendable, Identifiable, Equatable {
     public let responseText: String?
     public let latencyMs: Int?
     public let completedAt: String?
-    public let metadata: [String: JSONValue]?
+    public let metadata: JSONObject?
     public let createdAt: String
     public let updatedAt: String
 }
@@ -120,7 +120,7 @@ public struct CreateAiInteractionInput: Encodable, Sendable {
     public var priority: Int?
     public var includeSemanticContext: Bool?
     public var contextNoteLimit: Int?
-    public var payload: [String: JSONValue]?
+    public var payload: JSONObject?
 
     public init(
         inputText: String,
@@ -136,7 +136,7 @@ public struct CreateAiInteractionInput: Encodable, Sendable {
         priority: Int? = nil,
         includeSemanticContext: Bool? = nil,
         contextNoteLimit: Int? = nil,
-        payload: [String: JSONValue]? = nil
+        payload: JSONObject? = nil
     ) {
         self.inputText = inputText
         self.clientId = clientId
