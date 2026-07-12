@@ -1,0 +1,4 @@
+module AtlasCore {
+header "AtlasCore-Swift.h"
+export *
+}

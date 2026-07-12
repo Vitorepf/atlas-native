@@ -1,0 +1,71 @@
+{
+  "buildCommand" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildOnly"
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "d4bf69f74ed09d33d21b477c2a7d04a27e552eae702b67531f5a92d3319588cd"
+    }
+  ],
+  "containerPath" : "/Users/vitorepf/develop/Atlas/atlas-native/App/Atlas.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "hostTargetedPlatform" : null,
+      "platform" : "iphonesimulator",
+      "sdk" : "iphonesimulator26.5",
+      "sdkVariant" : "iphonesimulator",
+      "supportedArchitectures" : [
+        "arm64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Products",
+      "derivedDataPath" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim",
+      "indexDataStoreFolderPath" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Index.noindex/PrecompiledHeaders",
+      "pchPath" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "commandLine" : {
+        "table" : {
+          "CODE_SIGNING_ALLOWED" : "NO"
+        }
+      },
+      "synthesized" : {
+        "table" : {
+          "ACTION" : "build",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPhone18,3",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "26.5",
+          "ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION" : "iPhone18,3",
+          "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "YES",
+          "ONLY_ACTIVE_ARCH" : "YES",
+          "TARGET_DEVICE_IDENTIFIER" : "1A46B6D3-71A6-49C0-BB2C-D73FCD43CABF",
+          "TARGET_DEVICE_MODEL" : "iPhone18,3",
+          "TARGET_DEVICE_OS_VERSION" : "26.5",
+          "TARGET_DEVICE_PLATFORM_NAME" : "iphonesimulator"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

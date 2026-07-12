@@ -1,80 +1,201 @@
 import SwiftUI
 import AtlasCore
 
-// Primeira tela Swift pura: a lista de threads do Atlas AI, lida do servidor real
-// via AtlasCore. Prova o fio ponta-a-ponta (rede → decode → SwiftUI). O polimento
-// editorial (masthead/dateline/pixel-fiel) é a tarefa seguinte; aqui a barra é
-// "renderiza dado real, com estados de loading/erro/vazio honestos".
+// Home do Atlas no espírito do Cursor mobile: top bar com botões circulares,
+// título grande, lista de conversas limpa (divisor fino, contagem, chevron) e a
+// pílula de input flutuante embaixo — a assinatura. Dado real do AtlasCore.
 struct RootView: View {
     @Environment(AtlasSession.self) private var session
+    @State private var draft = ""
+    @FocusState private var inputFocused: Bool
 
     var body: some View {
-        NavigationStack {
-            content
-                .navigationTitle("Atlas")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            Task { await session.loadThreads() }
-                        } label: {
-                            Image(systemName: "arrow.clockwise")
-                        }
-                    }
-                }
+        ZStack(alignment: .bottom) {
+            AtlasTheme.bg.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+                topBar
+                    .padding(.horizontal, AtlasTheme.Space.screen)
+                    .padding(.top, 4)
+
+                Text("Atlas")
+                    .font(.system(size: 34, weight: .bold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .padding(.horizontal, AtlasTheme.Space.screen)
+                    .padding(.top, 18)
+                    .padding(.bottom, 8)
+
+                content
+            }
+
+            inputBar
         }
-        .task {
-            if session.phase == .idle { await session.loadThreads() }
+        .tint(AtlasTheme.accent)
+        .task { if session.phase == .idle { await session.loadThreads() } }
+    }
+
+    // MARK: - Top bar
+
+    private var topBar: some View {
+        HStack(spacing: 12) {
+            Circle()
+                .fill(AtlasTheme.surface)
+                .frame(width: 44, height: 44)
+                .overlay(
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                )
+                .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
+
+            Spacer()
+
+            CircleButton(icon: "magnifyingglass") {}
+            CircleButton(icon: "plus") { session.threads.removeAll(); Task { await session.loadThreads() } }
         }
     }
+
+    // MARK: - Content states
 
     @ViewBuilder
     private var content: some View {
         switch session.phase {
         case .idle, .loading:
-            ProgressView("Conectando a \(session.host)…")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            centered { ProgressView().tint(AtlasTheme.textSecondary) }
 
         case .failed(let message):
-            ContentUnavailableView {
-                Label("Sem conexão", systemImage: "bolt.horizontal.circle")
-            } description: {
-                Text(session.hasToken ? message : "Falta o ATLAS_TOKEN — configure em Config.xcconfig / Secrets.xcconfig.")
-                    .font(.footnote.monospaced())
-            } actions: {
-                Button("Tentar de novo") { Task { await session.loadThreads() } }
+            centered {
+                VStack(spacing: 10) {
+                    Image(systemName: "bolt.horizontal.circle")
+                        .font(.system(size: 30))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                    Text(session.hasToken ? "Servidor desconectado" : "Falta o ATLAS_TOKEN")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                    Text(session.hasToken ? "em \(session.host)" : "configure em Secrets.xcconfig")
+                        .font(.system(size: 13))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                    Button("Tentar de novo") { Task { await session.loadThreads() } }
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(AtlasTheme.accent)
+                        .padding(.top, 4)
+                }
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+                let _ = message
             }
 
         case .loaded where session.threads.isEmpty:
-            ContentUnavailableView("Nenhuma thread", systemImage: "tray")
+            centered {
+                Text("Nenhuma conversa ainda")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
 
         case .loaded:
-            List(session.threads) { thread in
-                ThreadRow(thread: thread)
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(session.threads) { thread in
+                        ThreadRow(thread: thread)
+                        if thread.id != session.threads.last?.id {
+                            Divider().overlay(AtlasTheme.separator)
+                                .padding(.leading, AtlasTheme.Space.screen)
+                        }
+                    }
+                }
+                .padding(.bottom, 96) // respiro pra pílula não cobrir a última linha
             }
-            .listStyle(.plain)
+            .scrollIndicators(.hidden)
             .refreshable { await session.loadThreads() }
+        }
+    }
+
+    private func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
+        VStack { Spacer(); v(); Spacer() }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - Input pill (a assinatura do Cursor)
+
+    private var inputBar: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "plus")
+                .font(.system(size: 17, weight: .medium))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .frame(width: 30, height: 30)
+                .background(Circle().fill(AtlasTheme.surfaceHi))
+
+            TextField("", text: $draft, prompt: Text("Escreva ao Atlas").foregroundColor(AtlasTheme.textTertiary))
+                .font(.system(size: 16))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .focused($inputFocused)
+
+            Image(systemName: draft.isEmpty ? "mic.fill" : "arrow.up.circle.fill")
+                .font(.system(size: draft.isEmpty ? 17 : 26))
+                .foregroundStyle(draft.isEmpty ? AtlasTheme.textSecondary : AtlasTheme.accent)
+                .frame(width: 30, height: 30)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(
+            Capsule().fill(AtlasTheme.surface)
+                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+        )
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.top, 28)
+        .padding(.bottom, 6)
+        .background(
+            LinearGradient(
+                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg],
+                startPoint: .top, endPoint: .bottom
+            )
+            .ignoresSafeArea()
+        )
+    }
+}
+
+// MARK: - Componentes
+
+private struct CircleButton: View {
+    let icon: String
+    let action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 17, weight: .medium))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .frame(width: 44, height: 44)
+                .background(Circle().fill(AtlasTheme.surface))
         }
     }
 }
 
 private struct ThreadRow: View {
     let thread: AtlasAiThread
-
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        HStack(spacing: 14) {
+            Image(systemName: "bubble.left")
+                .font(.system(size: 17))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .frame(width: 22)
+
             Text(thread.title)
-                .font(.headline)
-                .lineLimit(2)
-            HStack(spacing: 8) {
-                Label("\(thread.messageCount)", systemImage: "text.bubble")
-                Text(thread.surface)
-                if let provider = thread.lastProvider {
-                    Text(provider)
-                }
-            }
-            .font(.caption)
-            .foregroundStyle(.secondary)
+                .font(.system(size: 16))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(1)
+                .truncationMode(.tail)
+
+            Spacer(minLength: 8)
+
+            Text("\(thread.messageCount)")
+                .font(.system(size: 16))
+                .foregroundStyle(AtlasTheme.textTertiary)
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(AtlasTheme.textTertiary)
         }
-        .padding(.vertical, 4)
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.vertical, AtlasTheme.Space.row)
+        .contentShape(Rectangle())
     }
 }
