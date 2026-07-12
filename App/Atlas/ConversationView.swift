@@ -1,4 +1,5 @@
 import SwiftUI
+import PhotosUI
 import AtlasCore
 
 // A conversa — a base da comunicação. Metáfora de PÁGINA EDITORIAL, não bolhas
@@ -10,10 +11,18 @@ struct ConversationView: View {
     let title: String
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(AtlasSession.self) private var session
     @State private var model: ConversationModel
     @State private var draft = ""
     @State private var effort: AtlasComputeEffort = .auto
+    @State private var mode = "geral"
+    @State private var showModeSheet = false
+    @State private var showWorkspaceSheet = false
+    @State private var pickedPhoto: PhotosPickerItem?
     @FocusState private var focused: Bool
+
+    // Contador de tokens (estimativa live do rascunho ≈ chars/4), como o desktop.
+    private var draftTokens: Int { Int(ceil(Double(draft.count) / 4.0)) }
 
     init(client: AtlasClient, threadId: String?, title: String) {
         self.title = title
@@ -89,30 +98,42 @@ struct ConversationView: View {
     private var composer: some View {
         VStack(alignment: .leading, spacing: focused ? 12 : 0) {
             if focused {
-                // Grabber (folha arrastável) + seletor de workspace/ambiente — como o Cursor
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(AtlasTheme.textTertiary.opacity(0.55))
-                    .frame(width: 36, height: 5)
-                    .frame(maxWidth: .infinity)
-                    .padding(.bottom, 2)
+                // Grabber → FECHA (esconde o teclado)
                 Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused = false }
                 } label: {
-                    HStack(spacing: 6) {
-                        Text(model.workspaceName ?? "Atlas")
-                            .font(.system(size: 14, weight: .medium)).foregroundStyle(AtlasTheme.textSecondary)
-                        Text("main").font(.system(size: 14)).foregroundStyle(AtlasTheme.textTertiary)
-                        Image(systemName: "chevron.down").font(.system(size: 10, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
-                        Image(systemName: "cloud").font(.system(size: 14)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 8)
-                        Image(systemName: "chevron.down").font(.system(size: 10, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
-                    }
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(AtlasTheme.textTertiary.opacity(0.55))
+                        .frame(width: 42, height: 5).frame(maxWidth: .infinity)
+                        .contentShape(Rectangle()).padding(.vertical, 3)
                 }
-                .buttonStyle(PressableScale())
+                .buttonStyle(.plain)
+
+                // Header: seletor de workspace (real) + contador de tokens (como o desktop)
+                HStack(spacing: 6) {
+                    Button {
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                        showWorkspaceSheet = true
+                    } label: {
+                        HStack(spacing: 6) {
+                            Text(model.workspaceName ?? "Atlas")
+                                .font(.system(size: 14, weight: .medium)).foregroundStyle(AtlasTheme.textSecondary)
+                            Text("main").font(.system(size: 14)).foregroundStyle(AtlasTheme.textTertiary)
+                            Image(systemName: "chevron.down").font(.system(size: 10, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
+                        }
+                    }
+                    .buttonStyle(PressableScale())
+                    Spacer()
+                    Text("\(draftTokens) tokens")
+                        .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
+                }
             }
+
             HStack(spacing: 10) {
                 if !focused {
-                    Image(systemName: "paperclip")
-                        .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+                    PhotosPicker(selection: $pickedPhoto, matching: .images) {
+                        Image(systemName: "paperclip").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+                    }
                 }
                 ZStack(alignment: .topLeading) {
                     Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
@@ -124,22 +145,27 @@ struct ConversationView: View {
                         .tint(AtlasTheme.accent).lineLimit(1...6).focused($focused)
                 }
                 if !focused {
-                    Image(systemName: "mic.fill")
-                        .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+                    Button { model.toast = "ditado por voz — em breve" } label: {
+                        Image(systemName: "mic.fill").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+                    }.buttonStyle(.plain)
                 }
             }
 
             if focused {
                 HStack(spacing: 8) {
-                    controlIcon("paperclip") { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
-                    pill(label: "geral") { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    PhotosPicker(selection: $pickedPhoto, matching: .images) {
+                        Image(systemName: "paperclip").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+                    }
+                    pill(label: mode) {
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred(); showModeSheet = true
+                    }
                     pill(label: effort.shortLabel) {
                         effort = effort.next
                         UserDefaults.standard.set(effort.rawValue, forKey: "atlas.composer.effort")
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     }
                     if draft.isEmpty {
-                        controlIcon("headphones") { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        controlIcon("headphones") { model.toast = "voz em tempo real — em breve" }
                     }
                     Spacer()
                     sendOrMic
@@ -147,7 +173,7 @@ struct ConversationView: View {
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
         }
-        .padding(focused ? EdgeInsets(top: 16, leading: 18, bottom: 14, trailing: 18)
+        .padding(focused ? EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18)
                          : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
         .background(composerSurface)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
@@ -156,6 +182,13 @@ struct ConversationView: View {
                 .ignoresSafeArea()
         )
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: focused)
+        .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
+        .sheet(isPresented: $showWorkspaceSheet) {
+            WorkspaceSheet(workspaces: session.workspaces, current: model.workspaceName) { model.workspaceName = $0 }
+        }
+        .onChange(of: pickedPhoto) {
+            if pickedPhoto != nil { model.toast = "anexo selecionado — envio em breve"; pickedPhoto = nil }
+        }
     }
 
     @ViewBuilder private var composerSurface: some View {
@@ -471,5 +504,88 @@ private struct EmptyConversation: View {
         .padding(.horizontal, 32).padding(.top, 140)
         .frame(maxWidth: .infinity)
         .onAppear { if !reduceMotion { withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) { breathe = true } } }
+    }
+}
+
+// MARK: - Sheets (seletores funcionais, tema Atlas)
+
+private struct SheetShell<Content: View>: View {
+    let title: String
+    @ViewBuilder var content: Content
+    var body: some View {
+        VStack(spacing: 0) {
+            RoundedRectangle(cornerRadius: 3).fill(AtlasTheme.textTertiary.opacity(0.5))
+                .frame(width: 40, height: 5).padding(.top, 10).padding(.bottom, 16)
+            Text(title).font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary).padding(.bottom, 14)
+            ScrollView { VStack(spacing: 0) { content } }
+            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity)
+        .background(AtlasTheme.bg.ignoresSafeArea())
+        .presentationDetents([.medium, .large])
+        .presentationBackground(AtlasTheme.bg)
+        .presentationDragIndicator(.hidden)
+    }
+}
+
+private struct SheetRow: View {
+    let label: String
+    var sub: String? = nil
+    let selected: Bool
+    let action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(label).font(.system(size: 17)).foregroundStyle(AtlasTheme.textPrimary)
+                    if let sub { Text(sub).font(.system(size: 13)).foregroundStyle(AtlasTheme.textTertiary) }
+                }
+                Spacer()
+                if selected { Image(systemName: "checkmark").font(.system(size: 15, weight: .semibold)).foregroundStyle(AtlasTheme.accent) }
+            }
+            .padding(.horizontal, 24).padding(.vertical, 15).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .overlay(alignment: .bottom) { Divider().overlay(AtlasTheme.separator).padding(.leading, 24) }
+    }
+}
+
+private struct ModeSheet: View {
+    @Binding var selected: String
+    @Environment(\.dismiss) private var dismiss
+    private let modes = [
+        ("geral", "Geral", "conversa e raciocínio amplos"),
+        ("operacional", "Operacional", "tarefas do dia, decisões, execução"),
+        ("autônomos", "Autônomos", "obras longas, agentes em background"),
+        ("programação", "Programação", "código em um ou vários repos"),
+    ]
+    var body: some View {
+        SheetShell(title: "Modo") {
+            ForEach(modes, id: \.0) { key, label, sub in
+                SheetRow(label: label, sub: sub, selected: key == selected) {
+                    selected = key; UIImpactFeedbackGenerator(style: .soft).impactOccurred(); dismiss()
+                }
+            }
+        }
+    }
+}
+
+private struct WorkspaceSheet: View {
+    let workspaces: [Workspace]
+    let current: String?
+    let onPick: (String) -> Void
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        SheetShell(title: "Workspace") {
+            if workspaces.isEmpty {
+                Text("Nenhum workspace ainda").font(.system(size: 15)).foregroundStyle(AtlasTheme.textTertiary).padding(.top, 40)
+            } else {
+                ForEach(workspaces) { ws in
+                    SheetRow(label: ws.name, sub: "\(ws.count) conversas · main", selected: ws.name == current) {
+                        onPick(ws.name); UIImpactFeedbackGenerator(style: .soft).impactOccurred(); dismiss()
+                    }
+                }
+            }
+        }
     }
 }
