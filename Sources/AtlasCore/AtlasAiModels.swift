@@ -77,7 +77,7 @@ public struct AtlasAiThread: Codable, Sendable, Identifiable, Equatable {
 /// O que `createAiInteraction`/`getAiInteraction` retornam. Campos escalares do
 /// centro; o grafo pesado (router_decision, atlas_decision, decision_receipt,
 /// quality_evaluation, attempt_history) fica em `metadata`/porta depois.
-public struct AtlasAiTrace: Codable, Sendable, Identifiable, Equatable {
+public struct AtlasAiTrace: Codable, Sendable, Identifiable {
     public let id: String
     public let traceKey: String
     public let threadId: String?
@@ -92,6 +92,10 @@ public struct AtlasAiTrace: Codable, Sendable, Identifiable, Equatable {
     public let latencyMs: Int?
     public let completedAt: String?
     public let metadata: JSONObject?
+    // Execução — a "orquestra" (jobs = agentes/providers/modelos) + o estágio do
+    // Atlas Decide. Ligados para a Ribbon de Execução (transparência agêntica).
+    public let jobs: [AtlasAiJob]?
+    public let atlasDecideExecution: AtlasAiExecutionState?
     public let createdAt: String
     public let updatedAt: String
 }

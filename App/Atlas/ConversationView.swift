@@ -64,7 +64,8 @@ struct ConversationView: View {
                         ForEach(model.bubbles) { bubble in
                             EditorialTurn(bubble: bubble, reduceMotion: reduceMotion,
                                           onFeedback: { kind in Task { await model.feedback(bubble.id, kind) } },
-                                          onCopy: { copy(bubble.text, label: bubble.role == "user" ? "mensagem" : "resposta") })
+                                          onCopy: { copy(bubble.text, label: bubble.role == "user" ? "mensagem" : "resposta") },
+                                          onStop: { model.cancel() })
                             .id(bubble.id)
                         }
                         Color.clear.frame(height: 96).id("bottom")
@@ -193,6 +194,7 @@ private struct EditorialTurn: View {
     let reduceMotion: Bool
     let onFeedback: (FeedbackKind) -> Void
     let onCopy: () -> Void
+    let onStop: () -> Void
     @State private var placed = false
 
     var body: some View {
@@ -207,16 +209,15 @@ private struct EditorialTurn: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(alignment: .leading, spacing: 12) {
-                    if bubble.text.isEmpty && bubble.streaming {
-                        ThinkingIndicator(provider: bubble.provider, reduceMotion: reduceMotion)
-                    } else {
+                    if bubble.streaming {
+                        ExecutionRibbon(bubble: bubble, reduceMotion: reduceMotion, onStop: onStop)
+                    }
+                    if !bubble.text.isEmpty {
                         AtlasMarkdownView(text: bubble.text)
-                        if bubble.streaming {
-                            BreathingDiamond(size: 13, reduceMotion: reduceMotion)
-                        } else {
-                            SignatureLine(provider: bubble.provider)
-                            FeedbackRow(active: bubble.feedbackAction, onFeedback: onFeedback)
-                        }
+                    }
+                    if !bubble.streaming {
+                        SignatureLine(provider: bubble.provider, model: bubble.model, elapsedMs: bubble.elapsedMs)
+                        FeedbackRow(active: bubble.feedbackAction, onFeedback: onFeedback)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -233,12 +234,15 @@ private struct EditorialTurn: View {
     }
 }
 
-// A assinatura sussurrada: "— claude", Fraunces italic, atrasada 220ms.
+// A assinatura sussurrada: "— claude-sonnet-4-6, em 6,6 s" — o MODELO exato +
+// duração (Cursor esconde o modelo). Fraunces italic, atrasada 220ms.
 private struct SignatureLine: View {
     let provider: String?
+    let model: String?
+    let elapsedMs: Int?
     @State private var shown = false
     var body: some View {
-        Text("— \(providerWord(provider))")
+        Text(signature)
             .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.textPrimary.opacity(0.4))
             .frame(maxWidth: .infinity, alignment: .trailing)
             .opacity(shown ? 1 : 0)
@@ -247,6 +251,17 @@ private struct SignatureLine: View {
                 withAnimation(.easeIn(duration: 0.28)) { shown = true }
             }
     }
+    private var signature: String {
+        let who = (model?.isEmpty == false && !(model ?? "").hasSuffix("_default")) ? model! : providerWord(provider)
+        if let ms = elapsedMs, ms > 0 { return "— \(who), em \(humanDuration(ms))" }
+        return "— \(who)"
+    }
+}
+
+func humanDuration(_ ms: Int) -> String {
+    if ms < 1000 { return "um instante" }
+    if ms < 60000 { return String(format: "%.1f s", Double(ms) / 1000).replacingOccurrences(of: ".", with: ",") }
+    return "\(ms / 60000) min"
 }
 
 // Feedback dirigido — treina o roteamento (o que Cursor/Codex não têm).
@@ -272,26 +287,83 @@ private struct FeedbackRow: View {
     }
 }
 
-// Estado de espera narrado: diamante respirando + frase que evolui.
-private struct ThinkingIndicator: View {
-    let provider: String?
+// A RIBBON DE EXECUÇÃO — o diferencial vs Cursor. Mostra AO VIVO: quanto tempo,
+// a ORQUESTRA (cada agente/provider/modelo + status), o estágio do Atlas Decide,
+// e um botão Stop. Cursor mostra 1 agente; o Atlas mostra a máquina inteira.
+private struct ExecutionRibbon: View {
+    let bubble: ChatBubble
     let reduceMotion: Bool
+    let onStop: () -> Void
     var body: some View {
-        HStack(spacing: 12) {
-            BreathingDiamond(size: 18, reduceMotion: reduceMotion)
-            TimelineView(.periodic(from: .now, by: 1)) { ctx in
-                Text(phrase(at: ctx.date))
-                    .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
-                    .transition(.opacity)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                BreathingDiamond(size: 14, reduceMotion: reduceMotion)
+                TimelineView(.periodic(from: .now, by: 1)) { ctx in
+                    Text(statusLabel(now: ctx.date))
+                        .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textSecondary)
+                }
+                Spacer()
+                Button(action: onStop) {
+                    Image(systemName: "stop.fill").font(.system(size: 10))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .frame(width: 26, height: 26).background(Circle().fill(AtlasTheme.surfaceHi))
+                }.buttonStyle(.plain)
+            }
+            if !bubble.agents.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(bubble.agents) { AgentRow(agent: $0) }
+                }.padding(.leading, 24)
+            }
+            if let strat = bubble.decideStrategy {
+                Text("atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
+                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
             }
         }
+        .padding(.vertical, 10).padding(.horizontal, 14)
+        .background(
+            RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface.opacity(0.5))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        )
     }
-    private func phrase(at date: Date) -> String {
-        let who = providerWord(provider)
-        let s = Int(date.timeIntervalSince1970) % 12
-        if s < 4 { return "\(who) está pensando…" }
-        if s < 8 { return "consultando o contexto…" }
-        return "compondo a resposta…"
+    private func statusLabel(now: Date) -> String {
+        let secs = bubble.startedAt.map { max(0, Int(now.timeIntervalSince($0))) } ?? 0
+        let working = bubble.agents.contains { $0.status == "processing" } || !bubble.text.isEmpty
+        return "\(working ? "Trabalhando" : "Pensando") \(secs)s"
+    }
+}
+
+private struct AgentRow: View {
+    let agent: ExecAgent
+    var body: some View {
+        HStack(spacing: 8) {
+            Circle().fill(statusColor).frame(width: 6, height: 6)
+            Text(agent.agent ?? providerWord(agent.provider))
+                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
+            if let m = agent.model, !m.isEmpty, !m.hasSuffix("_default") {
+                Text(m).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+            }
+            Spacer()
+            Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
+        }
+    }
+    private var statusColor: Color {
+        switch agent.status {
+        case "processing": return AtlasTheme.accent
+        case "succeeded": return AtlasTheme.domAutonomos
+        case "failed", "cancelled": return AtlasTheme.domOperacional
+        default: return AtlasTheme.textTertiary
+        }
+    }
+    private var statusWord: String {
+        switch agent.status {
+        case "queued": return "na fila"
+        case "processing": return "processando"
+        case "succeeded": return "pronto"
+        case "failed": return "falhou"
+        case "cancelled": return "cancelado"
+        case "awaiting_user_choice": return "aguardando"
+        default: return agent.status
+        }
     }
 }
 
