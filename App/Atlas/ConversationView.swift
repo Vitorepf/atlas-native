@@ -83,49 +83,77 @@ struct ConversationView: View {
 
     // MARK: - Composer elevado
 
+    // Composer: colapsado = pill minimalista (ultra-premium). Ao focar, expande no
+    // CARD do app base (papel pousando): placeholder serif grande + linha de
+    // controles (anexo · geral · auto · voz · mic), borda dourada.
     private var composer: some View {
-        VStack(spacing: 10) {
-            // Pills geral · auto (roteamento + esforço)
-            HStack(spacing: 8) {
-                pill(label: "geral") { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
-                pill(label: effort.shortLabel) {
-                    effort = effort.next
-                    UserDefaults.standard.set(effort.rawValue, forKey: "atlas.composer.effort")
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                }
-                Spacer()
-            }
-
+        VStack(alignment: .leading, spacing: focused ? 14 : 0) {
             HStack(spacing: 10) {
-                Image(systemName: "paperclip")
-                    .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 30, height: 30)
-
+                if !focused {
+                    Image(systemName: "paperclip")
+                        .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+                }
                 ZStack(alignment: .topLeading) {
                     Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
-                        .font(AtlasFont.serifItalic(19)).foregroundStyle(AtlasTheme.textTertiary)
-                        .allowsHitTesting(false).opacity(draft.isEmpty ? 1 : 0)
-                        .offset(y: -1)
+                        .font(AtlasFont.serifItalic(focused ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
+                        .allowsHitTesting(false).opacity(draft.isEmpty ? 1 : 0).offset(y: focused ? 0 : -1)
                         .animation(.easeOut(duration: 0.28), value: draft.isEmpty)
                     TextField("", text: $draft, axis: .vertical)
                         .font(.system(size: 16)).foregroundStyle(AtlasTheme.textPrimary)
                         .tint(AtlasTheme.accent).lineLimit(1...6).focused($focused)
                 }
-
-                sendOrMic
+                if !focused {
+                    Image(systemName: "mic.fill")
+                        .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+                }
             }
-            .padding(.horizontal, 12).padding(.vertical, 10)
-            .background(
-                Capsule(style: .continuous).fill(AtlasTheme.surface)
-                    .overlay(Capsule(style: .continuous).stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
-            )
-            .animation(.easeOut(duration: 0.32), value: focused)
+
+            if focused {
+                HStack(spacing: 8) {
+                    controlIcon("paperclip") { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    pill(label: "geral") { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    pill(label: effort.shortLabel) {
+                        effort = effort.next
+                        UserDefaults.standard.set(effort.rawValue, forKey: "atlas.composer.effort")
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    }
+                    if draft.isEmpty {
+                        controlIcon("headphones") { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    }
+                    Spacer()
+                    sendOrMic
+                }
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
         }
+        .padding(focused ? EdgeInsets(top: 16, leading: 18, bottom: 14, trailing: 18)
+                         : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+        .background(composerSurface)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
             LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
         )
+        .animation(.spring(response: 0.4, dampingFraction: 0.86), value: focused)
+    }
+
+    @ViewBuilder private var composerSurface: some View {
+        if focused {
+            RoundedRectangle(cornerRadius: 26, style: .continuous).fill(AtlasTheme.surface)
+                .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+                .shadow(color: .black.opacity(0.18), radius: 12, y: 4)
+        } else {
+            Capsule(style: .continuous).fill(AtlasTheme.surface)
+                .overlay(Capsule(style: .continuous).stroke(AtlasTheme.separator, lineWidth: 1))
+        }
+    }
+
+    private func controlIcon(_ icon: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
+        }
+        .buttonStyle(PressableScale())
     }
 
     private var sendOrMic: some View {
