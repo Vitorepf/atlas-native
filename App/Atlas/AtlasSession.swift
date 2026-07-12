@@ -18,7 +18,7 @@ final class AtlasSession {
 
     let host: String
     let hasToken: Bool
-    private let client: AtlasClient
+    let client: AtlasClient   // compartilhado com a ConversationModel
 
     init() {
         let info = Bundle.main.infoDictionary ?? [:]

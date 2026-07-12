@@ -1,34 +1,50 @@
 import SwiftUI
 import AtlasCore
 
+// Rota de navegação: abrir uma thread existente ou começar uma nova.
+enum Route: Hashable {
+    case thread(id: String, title: String)
+    case new
+}
+
 // Home do Atlas no espírito do Cursor mobile: top bar com botões circulares,
-// título grande, lista de conversas limpa (divisor fino, contagem, chevron) e a
-// pílula de input flutuante embaixo — a assinatura. Dado real do AtlasCore.
+// título grande, lista de conversas limpa e a pílula de input flutuante que
+// abre uma conversa nova. Dado real do AtlasCore.
 struct RootView: View {
     @Environment(AtlasSession.self) private var session
-    @State private var draft = ""
-    @FocusState private var inputFocused: Bool
+    @State private var path = NavigationPath()
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            AtlasTheme.bg.ignoresSafeArea()
+        NavigationStack(path: $path) {
+            ZStack(alignment: .bottom) {
+                AtlasTheme.bg.ignoresSafeArea()
 
-            VStack(alignment: .leading, spacing: 0) {
-                topBar
-                    .padding(.horizontal, AtlasTheme.Space.screen)
-                    .padding(.top, 4)
+                VStack(alignment: .leading, spacing: 0) {
+                    topBar
+                        .padding(.horizontal, AtlasTheme.Space.screen)
+                        .padding(.top, 4)
 
-                Text("Atlas")
-                    .font(.system(size: 34, weight: .bold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .padding(.horizontal, AtlasTheme.Space.screen)
-                    .padding(.top, 18)
-                    .padding(.bottom, 8)
+                    Text("Atlas")
+                        .font(.system(size: 34, weight: .bold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .padding(.horizontal, AtlasTheme.Space.screen)
+                        .padding(.top, 18)
+                        .padding(.bottom, 8)
 
-                content
+                    content
+                }
+
+                inputBar
             }
-
-            inputBar
+            .navigationBarHidden(true)
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .thread(let id, let title):
+                    ConversationView(client: session.client, threadId: id, title: title)
+                case .new:
+                    ConversationView(client: session.client, threadId: nil, title: "Nova conversa")
+                }
+            }
         }
         .tint(AtlasTheme.accent)
         .task { if session.phase == .idle { await session.loadThreads() } }
@@ -51,7 +67,7 @@ struct RootView: View {
             Spacer()
 
             CircleButton(icon: "magnifyingglass") {}
-            CircleButton(icon: "plus") { session.threads.removeAll(); Task { await session.loadThreads() } }
+            CircleButton(icon: "plus") { path.append(Route.new) }
         }
     }
 
@@ -96,14 +112,20 @@ struct RootView: View {
             ScrollView {
                 LazyVStack(spacing: 0) {
                     ForEach(session.threads) { thread in
-                        ThreadRow(thread: thread)
+                        Button {
+                            path.append(Route.thread(id: thread.id, title: thread.title))
+                        } label: {
+                            ThreadRow(thread: thread)
+                        }
+                        .buttonStyle(.plain)
+
                         if thread.id != session.threads.last?.id {
                             Divider().overlay(AtlasTheme.separator)
                                 .padding(.leading, AtlasTheme.Space.screen)
                         }
                     }
                 }
-                .padding(.bottom, 96) // respiro pra pílula não cobrir a última linha
+                .padding(.bottom, 96)
             }
             .scrollIndicators(.hidden)
             .refreshable { await session.loadThreads() }
@@ -115,32 +137,33 @@ struct RootView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    // MARK: - Input pill (a assinatura do Cursor)
+    // MARK: - Input pill → abre conversa nova
 
     private var inputBar: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "plus")
-                .font(.system(size: 17, weight: .medium))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 30, height: 30)
-                .background(Circle().fill(AtlasTheme.surfaceHi))
-
-            TextField("", text: $draft, prompt: Text("Escreva ao Atlas").foregroundColor(AtlasTheme.textTertiary))
-                .font(.system(size: 16))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .focused($inputFocused)
-
-            Image(systemName: draft.isEmpty ? "mic.fill" : "arrow.up.circle.fill")
-                .font(.system(size: draft.isEmpty ? 17 : 26))
-                .foregroundStyle(draft.isEmpty ? AtlasTheme.textSecondary : AtlasTheme.accent)
-                .frame(width: 30, height: 30)
+        Button { path.append(Route.new) } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "plus")
+                    .font(.system(size: 17, weight: .medium))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .frame(width: 30, height: 30)
+                    .background(Circle().fill(AtlasTheme.surfaceHi))
+                Text("Escreva ao Atlas")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                Spacer()
+                Image(systemName: "mic.fill")
+                    .font(.system(size: 17))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .frame(width: 30, height: 30)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                Capsule().fill(AtlasTheme.surface)
+                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+            )
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(
-            Capsule().fill(AtlasTheme.surface)
-                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
-        )
+        .buttonStyle(.plain)
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 28)
         .padding(.bottom, 6)
@@ -156,7 +179,7 @@ struct RootView: View {
 
 // MARK: - Componentes
 
-private struct CircleButton: View {
+struct CircleButton: View {
     let icon: String
     let action: () -> Void
     var body: some View {
