@@ -3,3 +3,8 @@
 *.xcodeproj
 DerivedData/
 .DS_Store
+
+# App (XcodeGen) — generated project + local secrets
+App/Atlas/Secrets.xcconfig
+App/build/
+*.xcodeproj/

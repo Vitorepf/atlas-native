@@ -1,0 +1,11 @@
+// Config de build do app Atlas (commitado). Defaults de dev apontam pro
+// atlas-server local. O token real NÃO fica aqui — vem do Secrets.xcconfig
+// (gitignored), incluído por último pra sobrescrever os defaults. No device
+// real, o Secrets também troca ATLAS_HOST pelo IP da LAN do Mac.
+
+ATLAS_HOST = 127.0.0.1
+ATLAS_PORT = 3737
+ATLAS_TOKEN =
+
+// Secrets por último = vence os defaults acima. `#include?` não falha se ausente.
+#include? "Secrets.xcconfig"
