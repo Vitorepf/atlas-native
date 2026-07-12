@@ -24,13 +24,7 @@ struct RootView: View {
                     topBar
                         .padding(.horizontal, AtlasTheme.Space.screen)
                         .padding(.top, 4)
-
-                    Text("Atlas")
-                        .font(AtlasFont.serif(38, .bold))
-                        .foregroundStyle(AtlasTheme.textPrimary)
-                        .padding(.horizontal, AtlasTheme.Space.screen)
-                        .padding(.top, 16)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 14)
 
                     content
                 }
@@ -65,6 +59,12 @@ struct RootView: View {
             Spacer()
             CircleButton(icon: "magnifyingglass") {}
             CircleButton(icon: "plus") { path.append(Route.new) }
+        }
+        // Nameplate "Atlas" centralizado no header (entre avatar e busca/+)
+        .overlay {
+            Text("Atlas")
+                .font(AtlasFont.serif(24, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
         }
     }
 
