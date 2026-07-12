@@ -1,15 +1,16 @@
 import SwiftUI
 import AtlasCore
 
-// Rota de navegação: abrir uma thread existente ou começar uma nova.
+// Rotas: um workspace (repo), uma thread existente, ou conversa nova.
 enum Route: Hashable {
+    case workspace(key: String?, title: String)
     case thread(id: String, title: String)
     case new
 }
 
-// Home do Atlas no espírito do Cursor mobile: top bar com botões circulares,
-// título grande, lista de conversas limpa e a pílula de input flutuante que
-// abre uma conversa nova. Dado real do AtlasCore.
+// Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
+// de repos reais (campo `workspace` das threads) + "Todas" + "Adicionar". Entrar
+// num workspace abre suas conversas com filtro de área.
 struct RootView: View {
     @Environment(AtlasSession.self) private var session
     @State private var path = NavigationPath()
@@ -25,11 +26,11 @@ struct RootView: View {
                         .padding(.top, 4)
 
                     Text("Atlas")
-                        .font(.system(size: 34, weight: .bold))
+                        .font(AtlasFont.serif(38, .bold))
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .padding(.horizontal, AtlasTheme.Space.screen)
-                        .padding(.top, 18)
-                        .padding(.bottom, 8)
+                        .padding(.top, 16)
+                        .padding(.bottom, 10)
 
                     content
                 }
@@ -39,6 +40,8 @@ struct RootView: View {
             .navigationBarHidden(true)
             .navigationDestination(for: Route.self) { route in
                 switch route {
+                case .workspace(let key, let title):
+                    WorkspaceView(workspaceKey: key, title: title)
                 case .thread(let id, let title):
                     ConversationView(client: session.client, threadId: id, title: title)
                 case .new:
@@ -57,72 +60,53 @@ struct RootView: View {
             Circle()
                 .fill(AtlasTheme.surface)
                 .frame(width: 44, height: 44)
-                .overlay(
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 18))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                )
+                .overlay(Image(systemName: "person.fill").font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary))
                 .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
-
             Spacer()
-
             CircleButton(icon: "magnifyingglass") {}
             CircleButton(icon: "plus") { path.append(Route.new) }
         }
     }
 
-    // MARK: - Content states
+    // MARK: - Content (workspaces)
 
     @ViewBuilder
     private var content: some View {
         switch session.phase {
-        case .idle, .loading:
+        case .idle, .loading where session.threads.isEmpty:
             centered { ProgressView().tint(AtlasTheme.textSecondary) }
 
-        case .failed(let message):
+        case .failed where session.threads.isEmpty:
             centered {
                 VStack(spacing: 10) {
-                    Image(systemName: "bolt.horizontal.circle")
-                        .font(.system(size: 30))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                    Image(systemName: "bolt.horizontal.circle").font(.system(size: 30)).foregroundStyle(AtlasTheme.textTertiary)
                     Text(session.hasToken ? "Servidor desconectado" : "Falta o ATLAS_TOKEN")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .font(.system(size: 16, weight: .medium)).foregroundStyle(AtlasTheme.textSecondary)
                     Text(session.hasToken ? "em \(session.host)" : "configure em Secrets.xcconfig")
-                        .font(.system(size: 13))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .font(.system(size: 13)).foregroundStyle(AtlasTheme.textTertiary)
                     Button("Tentar de novo") { Task { await session.loadThreads() } }
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(AtlasTheme.accent)
-                        .padding(.top, 4)
+                        .font(.system(size: 15, weight: .medium)).foregroundStyle(AtlasTheme.accent).padding(.top, 4)
                 }
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-                let _ = message
+                .multilineTextAlignment(.center).padding(.horizontal, 40)
             }
 
-        case .loaded where session.threads.isEmpty:
-            centered {
-                Text("Nenhuma conversa ainda")
-                    .font(.system(size: 16))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-            }
-
-        case .loaded:
+        default:   // .loaded, ou refresh/erro com conteúdo já em tela
             ScrollView {
                 LazyVStack(spacing: 0) {
-                    ForEach(session.threads) { thread in
-                        Button {
-                            path.append(Route.thread(id: thread.id, title: thread.title))
-                        } label: {
-                            ThreadRow(thread: thread)
-                        }
-                        .buttonStyle(.plain)
+                    sectionLabel("WORKSPACES")
 
-                        if thread.id != session.threads.last?.id {
-                            Divider().overlay(AtlasTheme.separator)
-                                .padding(.leading, AtlasTheme.Space.screen)
+                    WorkspaceRow(icon: "tray.full", name: "Todas as conversas", count: session.threads.count) {
+                        path.append(Route.workspace(key: nil, title: "Todas"))
+                    }
+                    ForEach(session.workspaces) { ws in
+                        rowDivider
+                        WorkspaceRow(icon: "folder", name: ws.name, count: ws.count) {
+                            path.append(Route.workspace(key: ws.id, title: ws.name))
                         }
+                    }
+                    rowDivider
+                    WorkspaceRow(icon: "folder.badge.plus", name: "Adicionar workspace", count: nil) {
+                        // ponytail: placeholder — abrir picker de repo entra numa próxima rodada
                     }
                 }
                 .padding(.bottom, 96)
@@ -132,52 +116,50 @@ struct RootView: View {
         }
     }
 
-    private func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
-        VStack { Spacer(); v(); Spacer() }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    private func sectionLabel(_ t: String) -> some View {
+        Text(t)
+            .font(.system(size: 12, weight: .semibold))
+            .tracking(1.4)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.top, 6)
+            .padding(.bottom, 12)
     }
 
-    // MARK: - Input pill → abre conversa nova
+    private var rowDivider: some View {
+        Divider().overlay(AtlasTheme.separator).padding(.leading, AtlasTheme.Space.screen + 36)
+    }
+
+    private func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
+        VStack { Spacer(); v(); Spacer() }.frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - Input pill → conversa nova
 
     private var inputBar: some View {
         Button { path.append(Route.new) } label: {
             HStack(spacing: 10) {
-                Image(systemName: "plus")
-                    .font(.system(size: 17, weight: .medium))
+                Image(systemName: "plus").font(.system(size: 17, weight: .medium))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 30, height: 30)
-                    .background(Circle().fill(AtlasTheme.surfaceHi))
-                Text("Escreva ao Atlas")
-                    .font(.system(size: 16))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .frame(width: 30, height: 30).background(Circle().fill(AtlasTheme.surfaceHi))
+                Text("Escreva ao Atlas").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
                 Spacer()
-                Image(systemName: "mic.fill")
-                    .font(.system(size: 17))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                Image(systemName: "mic.fill").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 30, height: 30)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(
-                Capsule().fill(AtlasTheme.surface)
-                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
-            )
+            .padding(.horizontal, 12).padding(.vertical, 8)
+            .background(Capsule().fill(AtlasTheme.surface).overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, AtlasTheme.Space.screen)
-        .padding(.top, 28)
-        .padding(.bottom, 6)
+        .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
-            LinearGradient(
-                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg],
-                startPoint: .top, endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
         )
     }
 }
 
-// MARK: - Componentes
+// MARK: - Componentes compartilhados
 
 struct CircleButton: View {
     let icon: String
@@ -185,40 +167,45 @@ struct CircleButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: icon)
-                .font(.system(size: 17, weight: .medium))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 44, height: 44)
-                .background(Circle().fill(AtlasTheme.surface))
+                .font(.system(size: 17, weight: .medium)).foregroundStyle(AtlasTheme.textPrimary)
+                .frame(width: 44, height: 44).background(Circle().fill(AtlasTheme.surface))
         }
     }
 }
 
-private struct ThreadRow: View {
+private struct WorkspaceRow: View {
+    let icon: String
+    let name: String
+    let count: Int?
+    let action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Image(systemName: icon).font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+                Text(name).font(.system(size: 17)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                Spacer(minLength: 8)
+                if let count { Text("\(count)").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary) }
+                Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// Linha de conversa — compartilhada com a WorkspaceView.
+struct ThreadRow: View {
     let thread: AtlasAiThread
     var body: some View {
         HStack(spacing: 14) {
-            Image(systemName: "bubble.left")
-                .font(.system(size: 17))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 22)
-
-            Text(thread.title)
-                .font(.system(size: 16))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .lineLimit(1)
-                .truncationMode(.tail)
-
+            Image(systemName: "bubble.left").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+            Text(thread.title).font(.system(size: 16)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1).truncationMode(.tail)
             Spacer(minLength: 8)
-
-            Text("\(thread.messageCount)")
-                .font(.system(size: 16))
-                .foregroundStyle(AtlasTheme.textTertiary)
-            Image(systemName: "chevron.right")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
+            Text("\(thread.messageCount)").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
+            Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
         }
-        .padding(.horizontal, AtlasTheme.Space.screen)
-        .padding(.vertical, AtlasTheme.Space.row)
+        .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
         .contentShape(Rectangle())
     }
 }

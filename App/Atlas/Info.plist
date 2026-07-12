@@ -20,6 +20,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>UILaunchScreen</key>
 	<dict/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fraunces_400Regular.ttf</string>
+		<string>Fraunces_400Regular_Italic.ttf</string>
+		<string>Fraunces_500Medium.ttf</string>
+		<string>Fraunces_600SemiBold.ttf</string>
+		<string>Fraunces_700Bold.ttf</string>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

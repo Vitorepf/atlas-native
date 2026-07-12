@@ -33,11 +33,75 @@ final class AtlasSession {
     func loadThreads() async {
         phase = .loading
         do {
-            let response = try await client.listAiThreads(light: true, limit: 30)
+            let response = try await client.listAiThreads(light: true, limit: 100)
             threads = response.threads
             phase = .loaded
         } catch {
             phase = .failed(String(describing: error))
         }
+    }
+
+    // MARK: - Workspaces (agrupa as threads pelo repo real — campo `workspace`)
+
+    /// Workspaces derivados do campo `workspace` das threads (o caminho do repo),
+    /// agrupados por nome de pasta. Espelha o "repos" do Cursor, com dado real.
+    var workspaces: [Workspace] {
+        var groups: [String: (name: String, count: Int)] = [:]
+        for t in threads {
+            guard let w = t.workspace, !w.isEmpty else { continue }
+            let base = (w as NSString).lastPathComponent
+            let key = base.lowercased()
+            var g = groups[key] ?? (name: base, count: 0)
+            g.count += 1
+            groups[key] = g
+        }
+        return groups
+            .map { Workspace(id: $0.key, name: $0.value.name, count: $0.value.count) }
+            .sorted { $0.count > $1.count }
+    }
+
+    /// Threads de um workspace (por chave = nome de pasta minúsculo). `nil` = todas.
+    func threads(inWorkspace key: String?) -> [AtlasAiThread] {
+        guard let key else { return threads }
+        return threads.filter {
+            guard let w = $0.workspace, !w.isEmpty else { return false }
+            return (w as NSString).lastPathComponent.lowercased() == key
+        }
+    }
+}
+
+struct Workspace: Identifiable, Hashable {
+    let id: String     // chave = nome de pasta minúsculo
+    let name: String   // exibição
+    let count: Int
+}
+
+// Área/modo de uma conversa. Heurística por surface + metadata (o dado de modo é
+// esparso hoje; conforme o servidor popular current_mode/routing_domain, afina).
+enum AtlasArea: String, CaseIterable, Identifiable {
+    case tudo, operacional, autonomos, programacao
+    var id: String { rawValue }
+    var label: String {
+        switch self {
+        case .tudo: return "Tudo"
+        case .operacional: return "Operacional"
+        case .autonomos: return "Autônomos"
+        case .programacao: return "Programação"
+        }
+    }
+
+    static func of(_ t: AtlasAiThread) -> AtlasArea {
+        let surface = t.surface.lowercased()
+        let mode = (t.metadata?["current_mode"]?.stringValue
+            ?? t.metadata?["atlas_mode"]?.stringValue
+            ?? t.metadata?["workflow_mode"]?.stringValue ?? "").lowercased()
+        let domain = (t.metadata?["routing_domain"]?.stringValue ?? "").lowercased()
+        if surface.contains("code") || domain.contains("eng") || domain.contains("prog") || mode.contains("program") {
+            return .programacao
+        }
+        if mode.contains("auto") || mode.contains("loop") || (t.metadata?["awis_automation"]?.boolValue ?? false) {
+            return .autonomos
+        }
+        return .operacional
     }
 }

@@ -44,7 +44,7 @@ struct ConversationView: View {
             }
             Spacer()
             Text(title)
-                .font(.system(size: 16, weight: .semibold))
+                .font(AtlasFont.serif(17, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)
             Spacer()
@@ -83,7 +83,7 @@ struct ConversationView: View {
                 .font(.system(size: 26))
                 .foregroundStyle(AtlasTheme.accent)
             Text("O que você quer pensar agora?")
-                .font(.system(size: 19, weight: .medium))
+                .font(AtlasFont.serifItalic(21))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
         }
