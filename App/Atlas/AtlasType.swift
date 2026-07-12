@@ -18,4 +18,9 @@ enum AtlasFont {
     static func serifItalic(_ size: CGFloat) -> Font {
         .custom("Fraunces-Italic", size: size)
     }
+
+    /// JetBrains Mono (código) — o mono do Atlas.
+    static func mono(_ size: CGFloat, _ weight: Font.Weight = .regular) -> Font {
+        .custom(weight == .medium ? "JetBrainsMono-Medium" : "JetBrainsMono-Regular", size: size)
+    }
 }

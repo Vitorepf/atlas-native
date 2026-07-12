@@ -170,10 +170,7 @@ private struct BubbleView: View {
                         .font(.system(size: 16))
                         .foregroundStyle(AtlasTheme.textTertiary)
                 } else {
-                    Text(bubble.text + (bubble.streaming ? " ▍" : ""))
-                        .font(.system(size: 16))
-                        .foregroundStyle(AtlasTheme.textPrimary)
-                        .textSelection(.enabled)
+                    AtlasMarkdownView(text: bubble.text)
                 }
                 Spacer(minLength: 0)
             }

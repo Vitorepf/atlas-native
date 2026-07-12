@@ -126,6 +126,16 @@
     "swift-dependencies" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasJSON.swiftdeps",
     "swiftmodule" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasJSON~partial.swiftmodule"
   },
+  "/Users/vitorepf/develop/Atlas/atlas-native/Sources/AtlasCore/AtlasMarkdown.swift" : {
+    "const-values" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown.swiftconstvalues",
+    "dependencies" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown.d",
+    "diagnostics" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown.dia",
+    "index-unit-output-path" : "/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown.o",
+    "llvm-bc" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown.bc",
+    "object" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown.o",
+    "swift-dependencies" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown.swiftdeps",
+    "swiftmodule" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasMarkdown~partial.swiftmodule"
+  },
   "/Users/vitorepf/develop/Atlas/atlas-native/Sources/AtlasCore/AtlasTime.swift" : {
     "const-values" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasTime.swiftconstvalues",
     "dependencies" : "/Users/vitorepf/develop/Atlas/atlas-native/App/build-sim/Build/Intermediates.noindex/AtlasCore.build/Debug-iphonesimulator/AtlasCore.build/Objects-normal/arm64/AtlasTime.d",

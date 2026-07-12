@@ -210,6 +210,33 @@ runQualityChecks(check)
 runAttachmentsChecks(check)
 runThreadsExtraChecks(check)
 
+print("\nAtlasMarkdown (parser editorial, verbatim de markdown/parse.ts):")
+do {
+    let spans = AtlasMarkdown.parseInline("olá **mundo** e `code` e *ital*")
+    check("inline: text+bold+code+italic", spans == [
+        .text("olá "), .bold("mundo"), .text(" e "), .code("code"), .text(" e "), .italic("ital")
+    ])
+}
+check("inline: link", AtlasMarkdown.parseInline("[Atlas](https://x.y)") == [.link(text: "Atlas", url: "https://x.y")])
+check("inline: ***bold-italic*** vira italic", AtlasMarkdown.parseInline("***x***") == [.italic("x")])
+check("inline: escape \\* fica literal", AtlasMarkdown.parseInline("a \\* b") == [.text("a * b")])
+do {
+    let blocks = AtlasMarkdown.parse("# Título\n\ntexto **forte**\n\n- um\n- dois\n\n```swift\nlet x = 1\n```")
+    check("blocos: heading H1", blocks.first == .heading(level: 1, spans: [.text("Título")]))
+    if case .list(let ordered, let items)? = blocks.first(where: { if case .list = $0 { return true }; return false }) {
+        check("blocos: lista não-ordenada 2 itens", !ordered && items.count == 2)
+    } else { check("blocos: lista", false) }
+    if case .code(let t, let lang)? = blocks.first(where: { if case .code = $0 { return true }; return false }) {
+        check("blocos: code fence com lang", t == "let x = 1" && lang == "swift")
+    } else { check("blocos: code fence", false) }
+    check("blocos: parágrafo com bold", blocks.contains(.paragraph([.text("texto "), .bold("forte")])))
+}
+check("blocos: divider ---", AtlasMarkdown.parse("---") == [.divider])
+do {
+    let h3 = AtlasMarkdown.parse("### Estado Atual")
+    check("blocos: heading H3", h3 == [.heading(level: 3, spans: [.text("Estado Atual")])])
+}
+
 print("\nAtlas AI · loop de conversa AO VIVO (só roda com ATLAS_TOKEN no env — sem segredo no arquivo):")
 if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpty {
     do {

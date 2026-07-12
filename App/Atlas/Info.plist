@@ -27,6 +27,8 @@
 		<string>Fraunces_500Medium.ttf</string>
 		<string>Fraunces_600SemiBold.ttf</string>
 		<string>Fraunces_700Bold.ttf</string>
+		<string>JetBrainsMono_400Regular.ttf</string>
+		<string>JetBrainsMono_500Medium.ttf</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
