@@ -237,6 +237,13 @@ do {
     check("blocos: heading H3", h3 == [.heading(level: 3, spans: [.text("Estado Atual")])])
 }
 
+print("\nAtlasComputeEffort (dial de esforço · canon computeEffort.ts):")
+check("ciclo auto→fast→balanced→deep→max→auto",
+      AtlasComputeEffort.auto.next == .fast && AtlasComputeEffort.max.next == .auto)
+check("auto não vai no payload (Atlas Decide escolhe)", AtlasComputeEffort.auto.payloadValue == nil)
+check("deep vai como 'deep' no payload", AtlasComputeEffort.deep.payloadValue == "deep")
+check("label PT-BR", AtlasComputeEffort.balanced.shortLabel == "normal" && AtlasComputeEffort.deep.shortLabel == "profundo")
+
 print("\nAtlas AI · loop de conversa AO VIVO (só roda com ATLAS_TOKEN no env — sem segredo no arquivo):")
 if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpty {
     do {

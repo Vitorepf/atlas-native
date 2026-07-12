@@ -57,17 +57,8 @@ struct AtlasMarkdownView: View {
             }
             .fixedSize(horizontal: false, vertical: true)
 
-        case .code(let codeText, _):
-            Text(codeText)
-                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textPrimary)
-                .lineSpacing(5)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 14).padding(.horizontal, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface)
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separator, lineWidth: 1))
-                )
-                .textSelection(.enabled)
+        case .code(let codeText, let lang):
+            CodeBlockView(code: codeText, lang: lang)
 
         case .divider:
             Rectangle().fill(AtlasTheme.separator).frame(height: 1).padding(.vertical, 2)
@@ -165,5 +156,47 @@ struct AtlasMarkdownView: View {
             case .link(let t, _): return t
             }
         }.joined()
+    }
+}
+
+// Code block "carved in slate" com label de linguagem + botão copiar (gap do RN).
+// Scroll horizontal pra linhas longas; JetBrains Mono; copia SÓ este bloco.
+private struct CodeBlockView: View {
+    let code: String
+    let lang: String?
+    @State private var copied = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text((lang?.isEmpty == false ? lang! : "código").lowercased())
+                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                Spacer()
+                Button {
+                    UIPasteboard.general.string = code
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    withAnimation(AtlasMotion.editorial) { copied = true }
+                    Task { try? await Task.sleep(nanoseconds: 1_200_000_000); withAnimation(AtlasMotion.editorial) { copied = false } }
+                } label: {
+                    Text(copied ? "copiado" : "copiar")
+                        .font(AtlasFont.mono(11))
+                        .foregroundStyle(copied ? AtlasTheme.accent : AtlasTheme.textSecondary)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 8)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                Text(code)
+                    .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textPrimary)
+                    .lineSpacing(5).textSelection(.enabled)
+                    .padding(.horizontal, 16).padding(.bottom, 14)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface)
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separator, lineWidth: 1))
+        )
     }
 }
