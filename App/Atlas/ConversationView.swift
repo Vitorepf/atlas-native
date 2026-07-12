@@ -84,6 +84,7 @@ struct ConversationView: View {
                 }
             }
             .scrollIndicators(.hidden)
+            .scrollDismissesKeyboard(.interactively)
             .onChange(of: model.bubbles) {
                 withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { proxy.scrollTo("bottom", anchor: .bottom) }
             }
@@ -98,16 +99,19 @@ struct ConversationView: View {
     private var composer: some View {
         VStack(alignment: .leading, spacing: focused ? 12 : 0) {
             if focused {
-                // Grabber → FECHA (esconde o teclado)
-                Button {
-                    withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused = false }
-                } label: {
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(AtlasTheme.textTertiary.opacity(0.55))
-                        .frame(width: 42, height: 5).frame(maxWidth: .infinity)
-                        .contentShape(Rectangle()).padding(.vertical, 3)
-                }
-                .buttonStyle(.plain)
+                // Grabber → PUXE pra baixo (ou toque) para fechar o teclado.
+                // Área de toque generosa (padding antes do contentShape) + drag.
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(AtlasTheme.textTertiary.opacity(0.55))
+                    .frame(width: 42, height: 5)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 9)
+                    .contentShape(Rectangle())
+                    .onTapGesture { dismissKeyboard() }
+                    .gesture(
+                        DragGesture(minimumDistance: 6)
+                            .onEnded { if $0.translation.height > 8 { dismissKeyboard() } }
+                    )
 
                 // Header: seletor de workspace (real) + contador de tokens (como o desktop)
                 HStack(spacing: 6) {
@@ -254,6 +258,11 @@ struct ConversationView: View {
                     withAnimation(AtlasMotion.editorial) { model.toast = nil }
                 }
         }
+    }
+
+    private func dismissKeyboard() {
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused = false }
     }
 
     private func send() {

@@ -54,8 +54,8 @@ public actor AtlasClient {
         try await request(path, method: "GET", body: nil, auth: auth)
     }
 
-    public func post<T: Decodable, B: Encodable>(_ path: String, body: B, auth: Bool = true) async throws -> T {
-        try await request(path, method: "POST", body: try encoder.encode(body), auth: auth)
+    public func post<T: Decodable, B: Encodable>(_ path: String, body: B, auth: Bool = true, timeout: TimeInterval = 15) async throws -> T {
+        try await request(path, method: "POST", body: try encoder.encode(body), auth: auth, timeout: timeout)
     }
 
     /// POST com corpo `{}` — os endpoints retry/cancel/feedback/run do .ts.
@@ -71,13 +71,13 @@ public actor AtlasClient {
         try await request(path, method: "DELETE", body: nil, auth: auth)
     }
 
-    private func request<T: Decodable>(_ path: String, method: String, body: Data?, auth: Bool) async throws -> T {
+    private func request<T: Decodable>(_ path: String, method: String, body: Data?, auth: Bool, timeout: TimeInterval = 15) async throws -> T {
         guard let url = URL(string: config.base + path) else {
             throw AtlasApiError(status: 0, path: path, message: "URL inválida")
         }
         var req = URLRequest(url: url)
         req.httpMethod = method
-        req.timeoutInterval = 15
+        req.timeoutInterval = timeout
         req.setValue("application/json", forHTTPHeaderField: "Accept")
         if auth { req.setValue(config.token, forHTTPHeaderField: "X-Atlas-Token") }
         if let body {
@@ -215,7 +215,10 @@ public actor AtlasClient {
     /// Caminho JSON de `createAiInteraction` (sem anexos). Upload em chunks
     /// precisa do FileSystem do device — porta com a camada de anexos.
     public func createAiInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {
-        try await post("/ai/interactions", body: input)
+        // O create é síncrono e pesado (monta contexto semântico do lado do
+        // servidor): pode levar dezenas de segundos. 15s (default) estoura o
+        // -1001. 90s dá folga sem pendurar pra sempre.
+        try await post("/ai/interactions", body: input, timeout: 90)
     }
 
     private func pathEncode(_ s: String) -> String {

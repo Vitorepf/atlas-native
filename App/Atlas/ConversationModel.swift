@@ -101,8 +101,13 @@ final class ConversationModel {
         bubbles.append(ChatBubble(id: aid, role: "assistant", text: "", streaming: true, startedAt: Date()))
 
         do {
+            // Conversa = modo READ (menor privilégio): responde sem exigir
+            // workspace-cert. O servidor tem default `danger` (execução autônoma),
+            // que trava o chat com permission_denied. Escalar p/ write/danger é o
+            // fluxo de certificação de workspace — feature futura do seletor de modo.
             let input = CreateAiInteractionInput(inputText: trimmed, threadId: threadId,
-                                                 newThread: threadId == nil ? true : nil)
+                                                 newThread: threadId == nil ? true : nil,
+                                                 payload: JSONObject(["tool_permissions": .object(["mode": .string("read")])]))
             let created = try await client.createAiInteraction(input)
             if threadId == nil { threadId = created.trace.threadId }
             let traceId = created.trace.id
