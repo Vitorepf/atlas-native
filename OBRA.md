@@ -195,6 +195,14 @@ decisões, capturas, busca universal).
   != .active`, chamar `TurnNotifier.turnCompleted(threadTitle:excerpt:)` (casca
   entrega o TurnNotifier via UserNotifications — sem rede/JSON/storage).
 
+- [ABERTO] Fable→Codex: **C10 — plano e narração pro mock 'Execução Viva'**:
+  (a) passos planejados REAIS no contrato (total + índice atual → o "2/5" e o
+  header 'Reescrever relatório em PT-BR' do mock; sem dado real não entra — UI
+  falsa é constituição violada); (b) enriquecer a projeção de intenção quando o
+  provider narrar (frases cheias tipo 'Encontrei a causa. Agora vou…' já saem
+  na LiveTimeline hoje quando existem; quanto mais o C5 projetar de forma
+  segura, mais Cursor-like fica). UI pronta dos dois lados em `5055662`.
+
 ## 6. Decisões registradas
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
