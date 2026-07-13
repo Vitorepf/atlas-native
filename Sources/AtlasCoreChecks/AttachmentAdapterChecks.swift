@@ -4,11 +4,19 @@ import AtlasCore
 public func runAttachmentAdapterChecks(_ check: (String, Bool) -> Void) {
     print("\nRich Input · adapters nativos (C3):")
     do {
-        let pdf = AtlasAttachmentAdapter.data(
-            Data("%PDF".utf8), fileName: "prova.pdf", mimeType: "application/pdf",
-            source: "files", identity: "file-1"
+        let fileURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("atlas-file-source-\(UUID().uuidString).pdf")
+        let fileBytes = Data("%PDF-1.7 atlas file source".utf8)
+        try fileBytes.write(to: fileURL, options: .atomic)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let pdf = try AtlasAttachmentAdapter.file(
+            url: fileURL, mimeType: "application/pdf", identity: "file-1"
         )
-        check("fileImporter → AttachmentInput pdf", pdf.kind == .pdf && pdf.source == "files")
+        let suffix = try pdf.bytes.read(offset: 9, length: 5)
+        check("fileImporter → FileByteSource pdf com leitura por offset",
+              pdf.kind == .pdf && pdf.source == "files" &&
+              pdf.bytes.totalBytes == fileBytes.count &&
+              String(data: suffix, encoding: .utf8) == "atlas")
 
         let camera = AtlasAttachmentAdapter.data(
             Data([1, 2, 3]), fileName: "camera.jpg", mimeType: "image/jpeg",

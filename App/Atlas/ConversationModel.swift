@@ -81,6 +81,11 @@ enum FeedbackKind: String, CaseIterable, Identifiable {
 final class ConversationModel {
     private static let effortPreferenceKey = "atlas.composer.effort"
 
+    private struct PendingAttachmentPreparation {
+        let kind: AtlasAttachmentKind
+        let task: Task<Void, Never>
+    }
+
     var bubbles: [ChatBubble] = []
     var isSending = false
     var loadError: String?
@@ -100,7 +105,7 @@ final class ConversationModel {
     private(set) var threadId: String?
     private var activeRun: InteractionRun?
     private var attachmentInputs: [String: AttachmentInput] = [:]
-    @ObservationIgnored private var pendingImagePreparations: [String: Task<Void, Never>] = [:]
+    @ObservationIgnored private var pendingAttachmentPreparations: [String: PendingAttachmentPreparation] = [:]
     @ObservationIgnored private let engine: AtlasRichInputEngine
     @ObservationIgnored private let outbox: InteractionOutbox
 
@@ -138,9 +143,11 @@ final class ConversationModel {
         identity: String,
         source: String = "photos"
     ) {
-        let imageCount = drafts.filter { $0.kind == .image }.count + pendingImagePreparations.count
-        guard imageCount < AtlasAttachmentLimits.canonical.maxImages else {
-            toast = "máximo de 8 imagens"; return
+        do {
+            try ensureCapacity(for: .image)
+        } catch {
+            toast = String(describing: error)
+            return
         }
         let id = "att-\(UUID().uuidString.prefix(8))"
         let task = Task { @MainActor [weak self] in
@@ -151,7 +158,7 @@ final class ConversationModel {
                     data, mimeType: mimeType
                 )
                 guard let self else { return }
-                self.pendingImagePreparations[id] = nil
+                self.pendingAttachmentPreparations[id] = nil
                 guard !Task.isCancelled else { return }
                 let n = prepared.upload
                 let ext = n.mimeType == "image/png" ? "png" : n.mimeType == "image/gif" ? "gif" : "jpg"
@@ -162,31 +169,55 @@ final class ConversationModel {
                 )
                 self.append(input, id: id, preview: prepared.preview.data)
             } catch is CancellationError {
-                self?.pendingImagePreparations[id] = nil
+                self?.pendingAttachmentPreparations[id] = nil
             } catch {
-                self?.pendingImagePreparations[id] = nil
+                self?.pendingAttachmentPreparations[id] = nil
                 self?.toast = "imagem inválida: \(error)"
             }
         }
-        pendingImagePreparations[id] = task
+        pendingAttachmentPreparations[id] = .init(kind: .image, task: task)
     }
 
     func addFile(url: URL) {
-        let scoped = url.startAccessingSecurityScopedResource()
-        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        let fileName = url.lastPathComponent
+        let mime = UTType(filenameExtension: url.pathExtension)?.preferredMIMEType
+            ?? "application/octet-stream"
+        let kind = AtlasAttachmentClassifier.detect(mimeType: mime, fileName: fileName).kind
         do {
-            let data = try Data(contentsOf: url, options: .mappedIfSafe)
-            let mime = UTType(filenameExtension: url.pathExtension)?.preferredMIMEType
-                ?? "application/octet-stream"
-            let input = AtlasAttachmentAdapter.data(
-                data, fileName: url.lastPathComponent, mimeType: mime,
-                source: "files", identity: url.standardizedFileURL.path
-            )
-            try ensureCapacity(for: input)
-            append(input, id: "att-\(UUID().uuidString.prefix(8))", preview: nil)
+            try ensureCapacity(for: kind)
         } catch {
-            toast = "não consegui anexar o arquivo: \(error)"
+            toast = String(describing: error)
+            return
         }
+
+        let id = "att-\(UUID().uuidString.prefix(8))"
+        let task = Task { @MainActor [weak self] in
+            let preparation = Task.detached(priority: .userInitiated) {
+                try Task.checkCancellation()
+                return try AtlasAttachmentAdapter.file(
+                    url: url,
+                    mimeType: mime,
+                    identity: url.standardizedFileURL.path
+                )
+            }
+            do {
+                let input = try await withTaskCancellationHandler {
+                    try await preparation.value
+                } onCancel: {
+                    preparation.cancel()
+                }
+                guard let self else { return }
+                self.pendingAttachmentPreparations[id] = nil
+                guard !Task.isCancelled else { return }
+                self.append(input, id: id, preview: nil)
+            } catch is CancellationError {
+                self?.pendingAttachmentPreparations[id] = nil
+            } catch {
+                self?.pendingAttachmentPreparations[id] = nil
+                self?.toast = "não consegui anexar o arquivo: \(error)"
+            }
+        }
+        pendingAttachmentPreparations[id] = .init(kind: kind, task: task)
     }
 
     func addClipboard(text: String) {
@@ -210,20 +241,31 @@ final class ConversationModel {
     }
 
     private func ensureCapacity(for input: AttachmentInput) throws {
-        let count = drafts.filter { draft in
-            if input.kind == .image { return draft.kind == .image }
-            if input.kind == .pdf { return draft.kind == .pdf }
-            return draft.kind == .text || draft.kind == .code
+        try ensureCapacity(for: input.kind)
+    }
+
+    private func ensureCapacity(for kind: AtlasAttachmentKind) throws {
+        let completed = drafts.filter { sharesCapacityGroup($0.kind, kind) }.count
+        let pending = pendingAttachmentPreparations.values.filter {
+            sharesCapacityGroup($0.kind, kind)
         }.count
         let maximum: Int
-        switch input.kind {
+        switch kind {
         case .image: maximum = AtlasAttachmentLimits.canonical.maxImages
         case .pdf: maximum = AtlasAttachmentLimits.canonical.maxPdfs
         case .text, .code: maximum = AtlasAttachmentLimits.canonical.maxTextFiles
         case .url: maximum = AtlasAttachmentLimits.canonical.maxUrls
         }
-        guard count < maximum else {
+        guard completed + pending < maximum else {
             throw AttachmentAdapterError.limitReached(maximum)
+        }
+    }
+
+    private func sharesCapacityGroup(_ lhs: AtlasAttachmentKind, _ rhs: AtlasAttachmentKind) -> Bool {
+        switch (lhs, rhs) {
+        case (.image, .image), (.pdf, .pdf), (.url, .url): return true
+        case (.text, .text), (.text, .code), (.code, .text), (.code, .code): return true
+        default: return false
         }
     }
 
@@ -260,7 +302,7 @@ final class ConversationModel {
     }
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
-        await finishPendingImagePreparations()
+        await finishPendingAttachmentPreparations()
         var trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let sendingDrafts = drafts
         // Só anexos, sem texto → prompt sintético (paridade com o RN)
@@ -365,9 +407,9 @@ final class ConversationModel {
         isSending = false
     }
 
-    private func finishPendingImagePreparations() async {
-        while !pendingImagePreparations.isEmpty {
-            let tasks = Array(pendingImagePreparations.values)
+    private func finishPendingAttachmentPreparations() async {
+        while !pendingAttachmentPreparations.isEmpty {
+            let tasks = pendingAttachmentPreparations.values.map(\.task)
             for task in tasks { await task.value }
         }
     }

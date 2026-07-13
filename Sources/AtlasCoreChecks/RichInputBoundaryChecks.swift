@@ -65,8 +65,11 @@ func runRichInputBoundaryChecks(_ check: (String, Bool) -> Void) {
     check("model prepara imagens fora da MainActor",
           conversationModel?.contains("AtlasImaging.normalize(") == false
           && conversationModel?.contains("AtlasImaging.prepareForComposer(") == true)
-    check("envio aguarda imagens ainda em preparação",
-          conversationModel?.contains("await finishPendingImagePreparations()") == true)
+    check("envio aguarda todos os anexos ainda em preparação",
+          conversationModel?.contains("await finishPendingAttachmentPreparations()") == true)
+    check("fileImporter usa FileByteSource fora da MainActor",
+          conversationModel?.contains("Data(contentsOf: url") == false
+          && conversationModel?.contains("AtlasAttachmentAdapter.file(") == true)
 }
 
 // Live-probe (opt-in: ATLAS_LIVE=1 + ATLAS_TOKEN) — sobe 3.2MB REAIS pro
@@ -93,6 +96,19 @@ func runRichInputLiveProbe(_ check: (String, Bool) -> Void, client: AtlasClient)
         check("adapter câmera produz payload real do create",
               fields.uploadedImages == [asset.uploadedId] &&
               fields.richInputPayload?.sourceManifest.first?.source == "camera")
+
+        // Prova o caminho real do fileImporter: FileByteSource lê por offset,
+        // calcula hash streaming e sobe sem materializar o arquivo no model.
+        let fileURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("atlas-liveprobe-\(UUID().uuidString).txt")
+        try payload.write(to: fileURL, options: .atomic)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let fileInput = try AtlasAttachmentAdapter.file(
+            url: fileURL, mimeType: "text/plain", identity: "liveprobe-file"
+        )
+        let fileAsset = try await engine.upload(fileInput)
+        check("fileImporter real: upload chunked preserva sha256",
+              fileAsset.sha256 == localSha && fileAsset.input.source == "files")
 
         // Resume real: re-start com a MESMA chave → received_chunks completo
         let key = atlasStableUploadKey(identity: "liveprobe", fileName: "liveprobe.png",

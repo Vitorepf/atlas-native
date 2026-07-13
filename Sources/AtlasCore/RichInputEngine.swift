@@ -45,10 +45,14 @@ public struct FileByteSource: AttachmentByteSource {
     public let totalBytes: Int
     public init(url: URL) throws {
         self.url = url
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
         let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
         self.totalBytes = (attrs[.size] as? Int) ?? 0
     }
     public func read(offset: Int, length: Int) throws -> Data {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
         let handle = try FileHandle(forReadingFrom: url)
         defer { try? handle.close() }
         try handle.seek(toOffset: UInt64(offset))
