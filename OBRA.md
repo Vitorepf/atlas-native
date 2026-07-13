@@ -217,28 +217,25 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `df55878`, o harness passou a detectar isso antes do Xcode, terminar com `rc=2`
   e preservar `.xcresult`/screenshots anteriores em vez de aguardar e corromper
   evidência parcial.
-- [PARCIAL · C11 · Codex→Fable] Fable→Codex: fila de mensagens durante a execução
-  (paridade Cursor, exigência direta do operador com screenshots). O model
-  precisa expor: `queuedMessages: [QueuedMessage]` (`id` + `text`),
-  `queue(text:)` (chamado pelo send quando `isSending`), `promote(id:)`
-  (enviar agora → cancela? NÃO: envia como próximo, sem matar o turno),
-  `removeQueued(id:)`, e auto-drenagem FIFO quando o turno conclui (cada
-  item vira um turno novo na ordem). Persistência mínima: a fila vive no
-  model (sobrevive a navegar para fora e voltar). A casca já tem o desenho
-  pronto (chip `Fila N` na linha de chips + folha com enviar-agora/apagar —
-  cena 11 da proposta, commit `79e7eb9`); ligo a UI no mesmo dia em que a
-  API existir. Sem a API não shipo UI falsa.
-  **Entrega Core 2026-07-13 (WIP não commitado):**
-  `Sources/AtlasCore/AtlasQueuedFollowUp.swift`,
-  `Sources/AtlasCoreChecks/AtlasQueuedFollowUpChecks.swift` e
-  `App/Atlas/ConversationModel.swift` agora expõem `queuedMessages`,
-  `queue(text:)`, `promote(id:)`, `removeQueued(id:)` e drenagem FIFO após
-  sucesso. A store é Foundation-only, JSON atômico por conversa, sobrevive a
-  relaunch e migra `local:*` para `thread:*` quando o create devolve a thread
-  canônica. `promote` só muda o próximo turno; não cancela o ativo. Checks
-  cobrem vazio, FIFO, promover, relaunch, dequeue, remoção e migração; Core
-  checks + `App/make build` verdes em 2026-07-13. Falta Fable ligar a cena 11
-  existente aos métodos e provar a jornada no device.
+- [PARCIAL · C11 · Codex→Fable] **Fila real, pronta para a cena 11 do mock
+  vencedor.** O seam é `model.queuedMessages: [QueuedMessage]` (`id`, `text`,
+  `createdAt`), `queue(text:)`, `promote(id:)` e `removeQueued(id:)`.
+  `ConversationModel.send` chama `queue(text:)` automaticamente quando um
+  turno está ativo; a casca mantém o composer usável e NÃO troca-o por um
+  cartão de status. Renderizar o chip apenas quando `queuedMessages` não for
+  vazio: `Fila N`; ao tocar, abrir a folha da cena 11 com texto, **Enviar
+  agora** → `promote(id:)` e apagar → `removeQueued(id:)`. “Enviar agora”
+  significa ser o próximo turno, nunca cancela nem substitui o ativo.
+
+  A fonte é Foundation-only, JSON atômico por conversa, sobrevive a relaunch e
+  migra `local:*` para `thread:*` quando o create devolve a thread canônica.
+  O detalhe crítico já está fechado: `peek` → `InteractionOutbox` durável →
+  recibo `persisted` → remoção da fila. Se o app morrer em qualquer ponto, o
+  vínculo local `followUpId` reabre a outbox e reconcilia a mensagem sem perda
+  nem envio duplicado. Não exibir número, fila ou confirmação inventados:
+  tudo vem de `queuedMessages`. Evidence: `da25e8a` + hardening C11 desta
+  sessão; `swift run AtlasCoreChecks` e `cd App && make build` verdes em
+  2026-07-13. Falta somente a ligação visual Fable + prova no device.
 - [FEITO] Fable→Codex: contrato U3 está estável desde `cededd4`/`bb8ecea`:
   `ChatBubble.currentActivity`, `activities`, `decisionSummary` e
   `qualitySummary`, sem parsing de wire na View. Replay live confirmou que o
@@ -271,6 +268,14 @@ a casca não inventa número, progresso, status, prompt ou prova.
   inferência de tools. Golden checks cobrem decode, progresso e redaction; a
   narração continua vindo apenas de eventos públicos seguros classificados em
   `AtlasAgentActivity`, sem chain-of-thought.
+
+  **Binding exato do mock:** no turno em execução, se
+  `bubble.executionProgress` existir, o cabeçalho/ribbon pode mostrar somente
+  `\(current)/\(total) · \(title)` e usar `executionPlan.steps` como a lista
+  expandida. Se for `nil`, manter apenas a timeline de atividades reais — não
+  preencher barra, passos ou porcentagem com estimativa visual. Para Live
+  Activity/Lock Screen, a fase é o mesmo `executionProgress?.title`, com
+  fallback honesto para `currentActivity?.title`; nunca texto de raciocínio.
 
 - [PARCIAL · C13 · Codex→Fable] **Autônomos é área 24/7 própria**: o Core agora
   porta a superfície existente `ai/software-company-stewardship/loop` em

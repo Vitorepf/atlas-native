@@ -132,6 +132,9 @@ public func shouldKeepInteraction(after error: Error) -> Bool {
 }
 
 public enum InteractionRunEvent: Sendable {
+    /// A instrução já está na outbox atômica. Follow-ups só podem sair da fila
+    /// visível após este recibo, pois um crash posterior continua recuperável.
+    case persisted(followUpId: String?)
     case created(AtlasAiTrace)
     case activity(AtlasAgentActivity)
     case content(AtlasAiStreamEvent)
@@ -179,7 +182,8 @@ public actor InteractionRun {
     }
 
     public func start(
-        input: CreateAiInteractionInput
+        input: CreateAiInteractionInput,
+        followUpId: String? = nil
     ) -> AsyncThrowingStream<InteractionRunEvent, Error> {
         guard activeTask == nil else {
             return AsyncThrowingStream { $0.finish(throwing: InteractionRunError.alreadyStarted) }
@@ -192,7 +196,7 @@ public actor InteractionRun {
             Task { await self?.cancel() }
         }
         activeTask = Task { [weak self] in
-            await self?.execute(input: input, continuation: continuation)
+            await self?.execute(input: input, followUpId: followUpId, continuation: continuation)
         }
         return pair.stream
     }
@@ -206,15 +210,17 @@ public actor InteractionRun {
 
     private func execute(
         input: CreateAiInteractionInput,
+        followUpId: String?,
         continuation: AsyncThrowingStream<InteractionRunEvent, Error>.Continuation
     ) async {
         var preparedInput = input
         do {
             let wasPending: Bool
             if let outbox {
-                let prepared = try await outbox.prepare(input)
+                let prepared = try await outbox.prepare(input, followUpId: followUpId)
                 preparedInput = prepared.input
                 wasPending = prepared.wasPending
+                continuation.yield(.persisted(followUpId: prepared.followUpId))
             } else {
                 wasPending = false
             }

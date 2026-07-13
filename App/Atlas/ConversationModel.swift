@@ -355,7 +355,8 @@ final class ConversationModel {
     private func sendTurn(
         _ text: String,
         effort: AtlasComputeEffort,
-        drainQueueOnSuccess: Bool
+        drainQueueOnSuccess: Bool,
+        queuedMessageId: QueuedMessage.ID? = nil
     ) async -> Bool {
         var trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         // Follow-up de texto durante execução: entra na fila imediatamente e
@@ -462,7 +463,11 @@ final class ConversationModel {
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,
                                                  uploadedDocuments: fields?.uploadedDocuments.isEmpty == false ? fields?.uploadedDocuments : nil,
                                                  richInputPayload: fields?.richInputPayload)
-            completedSuccessfully = try await execute(input, assistantId: aid)
+            completedSuccessfully = try await execute(
+                input,
+                assistantId: aid,
+                queuedMessageId: queuedMessageId
+            )
         } catch {
             apply(error, to: aid)
         }
@@ -574,13 +579,21 @@ final class ConversationModel {
         }
     }
 
-    private func execute(_ input: CreateAiInteractionInput, assistantId: String) async throws -> Bool {
+    private func execute(
+        _ input: CreateAiInteractionInput,
+        assistantId: String,
+        queuedMessageId: QueuedMessage.ID? = nil
+    ) async throws -> Bool {
         let run = InteractionRun(transport: client, outbox: outbox)
         activeRun = run
         var live = ""
         var completedSuccessfully = false
-        for try await event in await run.start(input: input) {
+        for try await event in await run.start(input: input, followUpId: queuedMessageId) {
             switch event {
+            case .persisted(let followUpId):
+                if let followUpId {
+                    await consumeQueuedMessageAfterPersistence(id: followUpId)
+                }
             case .created(let trace):
                 if let canonicalThreadId = trace.threadId, threadId != canonicalThreadId {
                     threadId = canonicalThreadId
@@ -639,7 +652,17 @@ final class ConversationModel {
         bubbles.append(ChatBubble(id: aid, role: "assistant", text: "", streaming: true, startedAt: Date()))
         isSending = true
         do {
-            let completedSuccessfully = try await execute(input, assistantId: aid)
+            let queuedMessageId: String?
+            if let clientId = input.clientId {
+                queuedMessageId = await outbox.followUpId(clientId: clientId)
+            } else {
+                queuedMessageId = nil
+            }
+            let completedSuccessfully = try await execute(
+                input,
+                assistantId: aid,
+                queuedMessageId: queuedMessageId
+            )
             activeRun = nil
             isSending = false
             if completedSuccessfully { await drainQueuedMessages() }
@@ -670,23 +693,31 @@ final class ConversationModel {
 
     private func drainQueuedMessages() async {
         while !isSending && activeRun == nil {
-            let next: QueuedMessage?
-            do {
-                next = try await queueStore.dequeue(scope: queueScope)
-            } catch {
-                toast = "Não foi possível preparar a próxima instrução da fila."
-                return
-            }
+            let next = await queueStore.peek(scope: queueScope)
             guard let next else { return }
-            queuedMessages = await queueStore.messages(scope: queueScope)
             let completedSuccessfully = await sendTurn(
                 next.text,
                 effort: effort,
-                drainQueueOnSuccess: false
+                drainQueueOnSuccess: false,
+                queuedMessageId: next.id
             )
             // Uma falha/atenção pede decisão do operador; a fila restante fica
             // intacta e visível, nunca dispara trabalho em cascata às cegas.
             guard completedSuccessfully else { return }
+        }
+    }
+
+    /// Uma instrução só sai da fila após o `InteractionRun` persistir o mesmo
+    /// turno na outbox. Se o processo morrer entre estas operações, o vínculo
+    /// followUpId salvo na outbox faz a recuperação repetir esta reconciliação.
+    private func consumeQueuedMessageAfterPersistence(id: QueuedMessage.ID) async {
+        do {
+            try await queueStore.remove(id: id, scope: queueScope)
+            queuedMessages = await queueStore.messages(scope: queueScope)
+        } catch {
+            // Erro na limpeza é conservador: a instrução segue visível e
+            // recuperável, em vez de sumir sem um turno durável correspondente.
+            toast = "A próxima instrução continua guardada e será reconciliada."
         }
     }
 

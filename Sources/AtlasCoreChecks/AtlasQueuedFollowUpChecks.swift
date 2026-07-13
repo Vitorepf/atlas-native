@@ -28,6 +28,10 @@ public func runAtlasQueuedFollowUpChecks(_ check: (String, Bool) -> Void) async 
         let restored = await relaunched.messages(scope: "thread-a")
         check("fila sobrevive ao relaunch", restored.map(\.text) == ["Rode os gates", "Revise o diff"])
 
+        let peeked = await relaunched.peek(scope: "thread-a")
+        let countAfterPeek = await relaunched.messages(scope: "thread-a").count
+        check("cabeça pode ser preparada sem sair da fila", peeked?.text == "Rode os gates" && countAfterPeek == 2)
+
         let next = try await relaunched.dequeue(scope: "thread-a")
         let afterDequeue = await relaunched.messages(scope: "thread-a")
         check("dequeue drena somente a cabeça FIFO", next?.text == "Rode os gates" && afterDequeue.map(\.text) == ["Revise o diff"])

@@ -264,10 +264,12 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
             pollIntervalNanoseconds: 60_000_000_000
         )
         var sawCreated = false
+        var persistedFollowUpId: String?
         var content = ""
         var sawCompleted = false
         for try await event in await run.start(input: CreateAiInteractionInput(inputText: "oi")) {
             switch event {
+            case .persisted(let followUpId): persistedFollowUpId = followUpId
             case .created: sawCreated = true
             case .content(let frame): content += frame.content
             case .completed: sawCompleted = true
@@ -275,6 +277,7 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
             }
         }
         check("InteractionRun possui create → stream → done", sawCreated && content == "Olá" && sawCompleted)
+        check("InteractionRun sem outbox não finge persistência", persistedFollowUpId == nil)
         check("InteractionRun usa janela SSE longa para agentes reais",
               await transport.streamTimeouts() == [120])
     } catch {
@@ -321,15 +324,21 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
         )
         let clientId = "f1bdc4b4-daa2-4f27-91bc-a4702307b553"
         var completed = false
+        var persistedFollowUpId: String?
         for try await event in await run.start(input: CreateAiInteractionInput(
             inputText: "boa noite",
             clientId: clientId
-        )) {
-            if case .completed = event { completed = true }
+        ), followUpId: "queued-recovery") {
+            switch event {
+            case .persisted(let followUpId): persistedFollowUpId = followUpId
+            case .completed: completed = true
+            default: break
+            }
         }
         check("-1005 recupera create aceito via clientId", completed)
         check("recovery consulta exatamente o clientId estável", await transport.requestedRecoveryClientIds() == [clientId])
         check("done remove turno da outbox", await outbox.pending().isEmpty)
+        check("recibo de persistência carrega vínculo da fila", persistedFollowUpId == "queued-recovery")
     } catch {
         check("-1005 recupera create aceito via clientId", false)
     }
@@ -690,7 +699,7 @@ public func runInteractionRunLiveProbe(
                 leakedReasoning = leakedReasoning || frame.content.lowercased().contains("┌─ reasoning")
             case .completed:
                 completed = true
-            case .activity, .execution, .remoteError:
+            case .persisted, .activity, .execution, .remoteError:
                 break
             }
         }
@@ -761,7 +770,7 @@ public func runProviderToolActivityLiveProbe(
                     liveToolFinishedAt = Date()
                 }
             case .completed: completed = true
-            case .content, .execution, .remoteError: break
+            case .persisted, .content, .execution, .remoteError: break
             }
         }
         check("live \(providerLabel) tool run concluiu", completed)

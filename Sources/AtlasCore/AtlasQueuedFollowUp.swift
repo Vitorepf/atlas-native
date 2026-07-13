@@ -53,6 +53,12 @@ public actor QueuedFollowUpStore {
         scopes[scope] ?? []
     }
 
+    /// Lê a cabeça FIFO sem consumi-la. O model primeiro persiste o turno na
+    /// outbox e só remove a mensagem após receber esse recibo.
+    public func peek(scope: String) -> QueuedMessage? {
+        scopes[scope]?.first
+    }
+
     @discardableResult
     public func enqueue(text: String, scope: String, createdAt: Date = Date()) throws -> QueuedMessage? {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -82,8 +88,9 @@ public actor QueuedFollowUpStore {
         try persist()
     }
 
-    /// Retira apenas a cabeça FIFO. O model só chama isto quando começa o
-    /// próximo turno, portanto um crash antes do envio não apaga a mensagem.
+    /// Retira apenas a cabeça FIFO. Mantido para consumidores administrativos;
+    /// a conversa usa `peek` + recibo de persistência para não abrir uma janela
+    /// de perda entre a fila e a outbox.
     public func dequeue(scope: String) throws -> QueuedMessage? {
         guard var messages = scopes[scope], !messages.isEmpty else { return nil }
         let message = messages.removeFirst()
