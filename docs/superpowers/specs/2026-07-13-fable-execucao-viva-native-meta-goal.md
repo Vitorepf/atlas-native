@@ -180,10 +180,18 @@ Implemente a mesma conversa em dois estados sincronizados:
    - contador compartilhado `× N`;
    - estado de plano concluído, resposta pronta, atenção e sessão encerrada;
    - notificação de conclusão com título, thread e trecho útil;
-   - push/APNs para turnos longos em background deve ser uma fase contratada e
-     honesta; a limitação local atual nunca pode ser mascarada;
+   - push/APNs para turnos longos em background deve registrar tanto o token
+     rotativo de update de cada Activity quanto o token de push-to-start por
+     instalação (iOS 17.2+), para uma missão criada no Terminal/CLI poder
+     nascer na Lock Screen; payloads só carregam título editorial, fase,
+     duração e contagem — nunca prompt, stdout, comando, resposta ou CoT;
+   - a atualização/encerramento remoto deve nascer exclusivamente do ledger
+     `AiStreamEvent` após commit, com debounce, invalidação de token e
+     notificação editorial de conclusão; a limitação local atual nunca pode
+     ser mascarada;
    - quando o sistema permitir, tap abre a sessão correta, não uma conversa
-     genérica.
+     genérica, por `atlas://execution/<trace>` resolvido no runtime, não por
+     título ou índice visual.
 
 ### Ato II — as 13 situações, todas funcionais
 
