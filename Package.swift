@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 import PackageDescription
 
 // AtlasCore — o substrato agnóstico de plataforma do app SwiftUI puro (Fase 0).
@@ -16,17 +16,13 @@ let package = Package(
         .library(name: "AtlasImaging", targets: ["AtlasImaging"]),
     ],
     targets: [
-        // StrictConcurrency cedo (5.4k linhas) — cada mês de espera encarece a
-        // migração pro modo Swift 6. Warnings hoje; zerar antes do bump de tools.
-        .target(name: "AtlasCore",
-                swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
+        .target(name: "AtlasCore"),
         // Normalização de mídia via ImageIO/CoreGraphics — frameworks presentes
         // em iOS E macOS (zero UIKit/AppKit): UM código de HEIC→JPEG/resize
         // para as duas plataformas. Target separado para o AtlasCore continuar
         // Foundation-only.
-        .target(name: "AtlasImaging", dependencies: ["AtlasCore"],
-                swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
-        .executableTarget(name: "AtlasCoreChecks", dependencies: ["AtlasCore", "AtlasImaging"],
-                          swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
-    ]
+        .target(name: "AtlasImaging", dependencies: ["AtlasCore"]),
+        .executableTarget(name: "AtlasCoreChecks", dependencies: ["AtlasCore", "AtlasImaging"]),
+    ],
+    swiftLanguageModes: [.v6]
 )

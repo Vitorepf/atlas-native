@@ -9,17 +9,10 @@ import Foundation
 /// as "absent" and silently pick the wrong winner. So: try fractional first,
 /// then plain, and mirror JS's `NaN` for anything unparseable.
 public enum AtlasTime {
-    private static let withFractional: ISO8601DateFormatter = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f
-    }()
-
-    private static let plain: ISO8601DateFormatter = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime]
-        return f
-    }()
+    // Value-type strategies are Sendable and immutable. This keeps parsing
+    // synchronous/cheap without sharing mutable ISO8601DateFormatter instances.
+    private static let withFractional = Date.ISO8601FormatStyle(includingFractionalSeconds: true)
+    private static let plain = Date.ISO8601FormatStyle(includingFractionalSeconds: false)
 
     /// Milliseconds since epoch, or `.nan` when the string is nil/empty/unparseable —
     /// exactly like `new Date(str).getTime()` returning `NaN` for an Invalid Date.
@@ -27,7 +20,7 @@ public enum AtlasTime {
     /// never wins the LWW compare (matching the JS behaviour verbatim).
     public static func ms(_ value: String?) -> Double {
         guard let value, !value.isEmpty else { return .nan }
-        if let date = withFractional.date(from: value) ?? plain.date(from: value) {
+        if let date = (try? withFractional.parse(value)) ?? (try? plain.parse(value)) {
             return date.timeIntervalSince1970 * 1000
         }
         return .nan

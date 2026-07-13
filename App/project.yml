@@ -18,7 +18,7 @@ settings:
   base:
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
-    SWIFT_VERSION: "5.0"
+    SWIFT_VERSION: "6.0"
     DEVELOPMENT_TEAM: "W28WF9A5A2"   # Vitor Freire (conta PAGA) — perfil wildcard já inclui o iPhone
 
 targets:
