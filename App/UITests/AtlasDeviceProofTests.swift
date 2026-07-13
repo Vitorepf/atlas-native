@@ -42,6 +42,18 @@ final class AtlasDeviceProofTests: XCTestCase {
             NSPredicate(format: "label BEGINSWITH 'prova da execução'")
         ).firstMatch
         XCTAssertTrue(proof.waitForExistence(timeout: 600), "prova persistente não apareceu após conclusão")
+
+        let finalAnswer = app.staticTexts.matching(
+            NSPredicate(format: "label BEGINSWITH '/'")
+        ).firstMatch
+        XCTAssertTrue(finalAnswer.waitForExistence(timeout: 15),
+                      "resposta final utilizável não apareceu separada da atividade")
+        let rawReasoning = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS[c] 'Reasoning'")
+        )
+        XCTAssertEqual(rawReasoning.count, 0,
+                       "resposta final vazou o frame bruto de Reasoning")
+
         proof.tap()
         let persistedCommand = app.staticTexts["Comando concluído"]
         XCTAssertTrue(persistedCommand.waitForExistence(timeout: 15),
