@@ -304,6 +304,27 @@ a casca não inventa número, progresso, status, prompt ou prova.
   linguagem visual do Fable por uma cópia Cursor.** Evidência local desta
   sessão: `/tmp/atlas-native-live.png` e `/tmp/atlas-native-complete.png`.
 
+- [EM ANDAMENTO · C8 APNs real 2026-07-13 · Codex] A Live Activity deixa de
+  ser uma janela local: `AtlasLiveActivityRegistrationInput` registra o token
+  **rotativo por atividade** contra o `traceId` real; o bridge nativo usa
+  `Activity.request(..., pushType: .token)` e espera o trace confirmado antes
+  de enviá-lo. O servidor possui agora `POST /ai/live-activities` e
+  `POST /ai/live-activities/{activityId}/invalidate`, tabela cifrada por token
+  e `AtlasLiveActivityPushService`: cada `AiStreamRecorder` publicado projeta
+  só checkpoint público para APNs (sem prompt/stdout/reasoning), com debounce
+  e contador por instalação. **Fable não deve desenhar selo “remoto” nem
+  mudar a régua visual:** o mesmo card/Lock Screen segue a verdade do estado;
+  esta entrega só troca o transporte.
+
+  Para fechar C8 em iPhone físico faltam duas credenciais externas que não
+  podem entrar no Git: habilitar Push Notifications para
+  `com.vitor.atlas.native` no Apple Developer e instalar no cofre
+  `ATLAS_LIVE_ACTIVITIES_APNS_KEY_ID`, `..._TEAM_ID`,
+  `..._PRIVATE_KEY`, além de `ATLAS_LIVE_ACTIVITIES_ENABLED=true`. O app já
+  declara `aps-environment` e `NSSupportsLiveActivitiesFrequentUpdates`; sem
+  essas credenciais o servidor é no-op honesto e a experiência permanece
+  local, nunca “24/7” de mentira.
+
 ## 6. Decisões registradas
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
@@ -312,6 +333,10 @@ a casca não inventa número, progresso, status, prompt ou prova.
   (update de Live Activity além da janela de execução) + hardening do target.
 - 2026-07-13 · Fable corrigiu 2 erros Swift 6 no próprio TurnPresence
   (Activity<T> não-Sendable → enumeração estática dentro da Task).
+- 2026-07-13 · C8 APNs usa token por `Activity.id` + `trace_id` e
+  `installation_id`, jamais `expo_push_token` ou o token de autenticação do
+  Atlas. O payload remoto é a projeção mínima de `AtlasTurnAttributes`: fase
+  pública, início, conclusão e sessões da mesma instalação.
 
 - 2026-07-12 · Engine única contract-first no AtlasCore (painel 2 juízes);
   dossiê completo em `docs/rich-input-shared-core.md`.

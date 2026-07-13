@@ -235,6 +235,29 @@ public actor AtlasClient: AtlasAiStreamSource {
         return try await post("/ai/interactions", body: input, timeout: hasDocuments ? 120 : 90)
     }
 
+    // MARK: - Live Activities remotas (APNs)
+
+    /// Registra o token ROTATIVO de uma ActivityKit Live Activity para o trace
+    /// já criado. O servidor recebe somente o token necessário para APNs e
+    /// devolve um receipt sem material sensível.
+    public func registerLiveActivity(
+        _ input: AtlasLiveActivityRegistrationInput
+    ) async throws -> AtlasLiveActivityRegistrationReceipt {
+        try await post("/ai/live-activities", body: input)
+    }
+
+    /// Invalida um token quando a Live Activity acaba localmente. A chamada é
+    /// idempotente: falha de rede não muda a verdade local nem reativa o token.
+    public func invalidateLiveActivity(
+        activityId: String,
+        input: AtlasLiveActivityInvalidationInput
+    ) async throws -> AtlasLiveActivityRegistrationReceipt {
+        try await post(
+            "/ai/live-activities/\(pathEncode(activityId))/invalidate",
+            body: input
+        )
+    }
+
     private func pathEncode(_ s: String) -> String {
         s.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? s
     }

@@ -120,6 +120,12 @@ final class ConversationModel {
     @ObservationIgnored private let queueStore: QueuedFollowUpStore
     @ObservationIgnored private var queueScope: String
 
+    /// Identidade da execução atual exposta à ponte ActivityKit, nunca à View.
+    /// `nil` até o servidor confirmar o trace continua sendo um estado normal.
+    var currentStreamingTraceId: String? {
+        bubbles.last(where: { $0.streaming && $0.traceId != nil })?.traceId
+    }
+
     /// Salt por instalação — escopa o client_upload_id no staging do servidor
     /// (que NÃO separa por device): iPhone e Mac futuro nunca colidem.
     private static let installSalt: String = {
@@ -317,6 +323,46 @@ final class ConversationModel {
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
         _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
+    }
+
+    /// Ponte não visual para ActivityKit. A casca observa o `traceId` real da
+    /// bolha e chama isto apenas quando receber um token de push do sistema.
+    /// Não há fallback falso: sem trace ou sem token, a Live Activity permanece
+    /// local e o servidor não anuncia cobertura remota.
+    func registerLiveActivityPushToken(
+        traceId: String,
+        activityId: String,
+        pushToken: String,
+        environment: AtlasLiveActivityRegistrationInput.Environment,
+        startedAt: Date,
+        frequentUpdatesEnabled: Bool
+    ) async -> AtlasLiveActivityRegistrationReceipt? {
+        do {
+            return try await client.registerLiveActivity(.init(
+                traceId: traceId,
+                activityId: activityId,
+                installationId: Self.installSalt,
+                pushToken: pushToken,
+                environment: environment,
+                startedAt: startedAt,
+                frequentUpdatesEnabled: frequentUpdatesEnabled
+            ))
+        } catch {
+            // A execução e a UI não podem cair porque APNs está indisponível.
+            // A cobertura será explicitamente local até o próximo token válido.
+            return nil
+        }
+    }
+
+    func invalidateLiveActivityPushToken(
+        traceId: String,
+        activityId: String,
+        reason: String
+    ) async {
+        _ = try? await client.invalidateLiveActivity(
+            activityId: activityId,
+            input: .init(traceId: traceId, reason: reason)
+        ) as AtlasLiveActivityRegistrationReceipt
     }
 
     /// Enfileira uma instrução como próximo turno. É deliberadamente assíncrono:

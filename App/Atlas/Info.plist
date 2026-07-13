@@ -53,6 +53,8 @@
 	</dict>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
+	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
+	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Atlas usa a câmera para anexar fotos à conversa.</string>
 	<key>NSLocalNetworkUsageDescription</key>
