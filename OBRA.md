@@ -92,7 +92,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 |---|---|---|---|---|---|---|---|
 | C1 | **DONE** | — | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | `ec3ffe6`; 220 checks; live create→SSE content→done; app build verde |
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
-| C3 | **DONE** | — | `Sources/AtlasImaging/**`; `Sources/AtlasCoreChecks/AtlasImagingChecks.swift`; `App/Atlas/ConversationModel.swift` | F5 | fileImporter, câmera e clipboard → engine único; hardening: normalização fora da MainActor + preview pequeno | Cada fonte usa o mesmo engine e prova payload real; foto grande não bloqueia a UI nem mantém preview 2048px | `da9399a` + `3b80c72`; TDD red→green; preview ≤256px, prepare cancelável fora da MainActor, send aguarda pendências; Core/App verdes |
+| C3 | **DONE** | — | `Sources/AtlasCore/{RichInputEngine,AttachmentAdapters}.swift`; boundary checks; `App/Atlas/ConversationModel.swift` | F5 | engine único para imagens/arquivos/câmera/clipboard; hardening: fileImporter off-main e FileByteSource security-scoped | Arquivo grande não é materializado na MainActor; leitura continua chunked e válida depois do picker; send aguarda preparações | `da9399a` + `3b80c72` + `ec369f1`; TDD red→green; arquivo real lê por offset; live upload 3,2MB preserva SHA-256; Core + App verdes |
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
@@ -291,6 +291,13 @@ decisões, capturas, busca universal).
   imagens pendentes e `send()` aguarda toda preparação, sem perder anexo · prova:
   dois ciclos TDD red→green, boundary anti-regressão, Core checks + App build
   Swift 6 verdes e zero warning próprio.
+- 2026-07-13 · Codex · `ec369f1` · C3 fileImporter: remove `Data(contentsOf:)`
+  da MainActor, prepara `AtlasAttachmentAdapter.file` fora da UI, mantém acesso
+  security-scoped em cada leitura chunked e reserva limites para anexos ainda
+  pendentes; `send()` aguarda imagens e arquivos · prova: TDD red→green; arquivo
+  temporário lido por offset; Core checks + App build verdes; live upload real
+  de arquivo 3,2MB com SHA-256 íntegro. A primeira bateria live teve flutuação
+  isolada no provider de C4; repetição integral terminou toda verde.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
