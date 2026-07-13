@@ -240,18 +240,35 @@ final class ConversationModel {
             trimmed = "analise \(sendingDrafts.count == 1 ? "o anexo enviado" : "os \(sendingDrafts.count) anexos enviados")"
         }
         guard !trimmed.isEmpty, !isSending, activeRun == nil else { return }
+
+        // C4: input_text do servidor tem teto e não é o lugar de transportar
+        // uma obra inteira. O Core externaliza >40k como UM Markdown canônico;
+        // a bolha local continua mostrando exatamente o que o operador escreveu.
+        let originalText = trimmed
+        let existingTextFiles = sendingDrafts.filter { $0.kind == .text || $0.kind == .code }.count
+        let longMessage: AtlasPreparedLongMessage
+        do {
+            longMessage = try AtlasLongMessage.prepare(
+                originalText, existingTextFileCount: existingTextFiles
+            )
+        } catch {
+            toast = String(describing: error)
+            return
+        }
+        trimmed = longMessage.inputText
         isSending = true
 
-        bubbles.append(ChatBubble(id: "local-user-\(bubbles.count)", role: "user", text: trimmed))
+        bubbles.append(ChatBubble(id: "local-user-\(bubbles.count)", role: "user", text: originalText))
         let aid = "local-assistant-\(bubbles.count)"
         bubbles.append(ChatBubble(id: aid, role: "assistant", text: "", streaming: true, startedAt: Date()))
 
         // 1. Upload dos anexos ANTES do create (chunked + resume + sha via engine).
         var fields: RichInputInteractionFields? = nil
-        if !sendingDrafts.isEmpty {
+        if !sendingDrafts.isEmpty || longMessage.attachment != nil {
             for i in drafts.indices { drafts[i].state = .subindo }
             do {
-                let inputs = sendingDrafts.compactMap { attachmentInputs[$0.id] }
+                var inputs = sendingDrafts.compactMap { attachmentInputs[$0.id] }
+                if let attachment = longMessage.attachment { inputs.append(attachment) }
                 let images = inputs.filter { $0.kind == .image }
                 let documents = inputs.filter { $0.kind != .image }
                 let uploaded = try await engine.uploadAll(
@@ -288,6 +305,9 @@ final class ConversationModel {
                 "tool_permissions": .object(["mode": .string("read")]),
             ]
             if let e = effort.payloadValue { payload["compute_effort"] = .string(e) }
+            if let metadata = longMessage.metadata {
+                payload["long_message"] = .object(metadata.values)
+            }
             if let slug = workspaceSlug {
                 payload["workspace_slug"] = .string(slug)
                 payload["workspace_name"] = .string(workspaceName ?? slug)
@@ -297,6 +317,7 @@ final class ConversationModel {
                                                  clientId: UUID().uuidString.lowercased(),
                                                  threadId: threadId,
                                                  newThread: threadId == nil ? true : nil,
+                                                 sourceType: "app",
                                                  payload: atlasMobileInteractionPayload(base: JSONObject(payload)),
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,
                                                  uploadedDocuments: fields?.uploadedDocuments.isEmpty == false ? fields?.uploadedDocuments : nil,

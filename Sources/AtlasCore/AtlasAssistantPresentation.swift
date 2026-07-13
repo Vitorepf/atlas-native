@@ -31,6 +31,11 @@ public func atlasVisibleAssistantText(_ text: String) -> String? {
 /// resposta final. O servidor seleciona esse caminho através desta flag.
 public func atlasMobileInteractionPayload(base: JSONObject = JSONObject()) -> JSONObject {
     var payload = base.values
+    // O servidor usa surface + source_type para reconhecer chat interativo e
+    // deferir planners pesados para o worker. Sem isto, um send do iPhone pode
+    // executar runtimes de engenharia síncronos antes mesmo do 202.
+    payload["app_surface"] = .string("atlas_app")
+    payload["mobile_surface_id"] = .string("atlas_native_conversation")
     var hermes: [String: JSONValue]
     if case .object(let existing)? = payload["hermes"] { hermes = existing }
     else { hermes = [:] }

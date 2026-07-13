@@ -435,6 +435,7 @@ public func runInteractionRunLiveProbe(
         inputText: "Responda somente com a palavra ATLAS.",
         clientId: UUID().uuidString.lowercased(),
         newThread: true,
+        sourceType: "app",
         payload: payload
     )
     let outboxURL = FileManager.default.temporaryDirectory

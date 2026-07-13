@@ -5,11 +5,26 @@ import AtlasCore
 // `scripts/*.test.ts`: exits non-zero if any check fails. Runnable with plain
 // Command Line Tools via `swift run AtlasCoreChecks` (no XCTest/swift-testing).
 
-var failures = 0
-func check(_ name: String, _ condition: Bool) {
-    if condition { print("  ✓ \(name)") }
-    else { print("  ✗ \(name)"); failures += 1 }
+private final class CheckRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var failures = 0
+
+    func record(_ name: String, _ condition: Bool) {
+        lock.lock(); defer { lock.unlock() }
+        if condition { print("  ✓ \(name)") }
+        else { print("  ✗ \(name)"); failures += 1 }
+    }
+
+    var failureCount: Int {
+        lock.lock(); defer { lock.unlock() }
+        return failures
+    }
 }
+private let recorder = CheckRecorder()
+let check: (String, Bool) -> Void = { recorder.record($0, $1) }
+
+@inline(never)
+func isGreaterThanOrEqual(_ lhs: Double, _ rhs: Double) -> Bool { lhs >= rhs }
 
 func cap(_ client: String, updated: String, captured: String = "2026-01-01T00:00:00Z",
          content: String? = nil, deleted: String? = nil) -> AtlasCapture {
@@ -31,9 +46,9 @@ check("garbage → NaN", AtlasTime.ms("not-a-date").isNaN)
 check("mês inválido → NaN", AtlasTime.ms("2026-13-99").isNaN)
 do {
     let nan = AtlasTime.ms("garbage"), nan2 = AtlasTime.ms("also-bad"), real = AtlasTime.ms("2026-01-01T00:00:00Z")
-    check("NaN >= real é false (semântica JS)", !(nan >= real))
-    check("real >= NaN é false", !(real >= nan))
-    check("NaN >= NaN é false", !(nan >= nan2))
+    check("NaN >= real é false (semântica JS)", !isGreaterThanOrEqual(nan, real))
+    check("real >= NaN é false", !isGreaterThanOrEqual(real, nan))
+    check("NaN >= NaN é false", !isGreaterThanOrEqual(nan, nan2))
 }
 
 print("\nMerge core (LWW + tombstone, verbatim de storeConverters.ts):")
@@ -281,6 +296,7 @@ runRichInputBoundaryChecks(check)
 await runInteractionRunChecks(check)
 await runInteractionOutboxChecks(check)
 runAttachmentAdapterChecks(check)
+await runLongMessageChecks(check)
 runAssistantPresentationChecks(check)
 runAtlasImagingChecks(check)
 
@@ -292,10 +308,11 @@ if ProcessInfo.processInfo.environment["ATLAS_LIVE"] == "1",
     let liveClient = AtlasClient(config: AtlasConfig(host: liveHost, port: 3737, token: liveToken))
     await runInteractionRunLiveProbe(check, client: liveClient)
     await runRichInputLiveProbe(check, client: liveClient)
+    await runLongMessageLiveProbe(check, client: liveClient)
 } else {
     print("\n  ⚠ ATLAS_LIVE≠1 — live-probe de upload pulado (rode ATLAS_LIVE=1 ATLAS_TOKEN=… antes do make device)")
 }
 
 print("")
-if failures == 0 { print("AtlasCore: todos os checks passaram ✓") }
-else { print("AtlasCore: \(failures) check(s) FALHARAM ✗"); exit(1) }
+if recorder.failureCount == 0 { print("AtlasCore: todos os checks passaram ✓") }
+else { print("AtlasCore: \(recorder.failureCount) check(s) FALHARAM ✗"); exit(1) }

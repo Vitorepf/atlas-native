@@ -35,6 +35,7 @@ public func runAssistantPresentationChecks(_ check: (String, Bool) -> Void) {
     else { hermes = nil }
     check("mobile força Hermes one-shot sem raciocínio", hermes?["cli_oneshot"]?.boolValue == true)
     check("política preserva payload existente", payload["compute_effort"]?.stringValue == "high")
+    check("mobile se identifica como superfície interativa", payload["app_surface"]?.stringValue == "atlas_app")
 
     let ledgerJSON = """
     {"trace_id":"trace-1","sequence":1,"event_type":"lifecycle","channel":"system",
