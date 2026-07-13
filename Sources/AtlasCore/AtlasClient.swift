@@ -247,6 +247,17 @@ public actor AtlasClient: AtlasAiStreamSource {
         return response.registration
     }
 
+    /// Registra/rotaciona o token que permite iniciar uma ActivityKit remota
+    /// para esta instalação quando uma missão começa pelo Terminal/CLI.
+    public func registerLiveActivityStartToken(
+        _ input: AtlasLiveActivityStartTokenInput
+    ) async throws -> AtlasLiveActivityStartTokenReceipt {
+        let response: AtlasLiveActivityStartTokenResponse = try await post(
+            "/ai/live-activities/start-tokens", body: input
+        )
+        return response.registration
+    }
+
     /// Invalida um token quando a Live Activity acaba localmente. A chamada é
     /// idempotente: falha de rede não muda a verdade local nem reativa o token.
     public func invalidateLiveActivity(

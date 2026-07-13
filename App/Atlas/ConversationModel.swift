@@ -126,20 +126,10 @@ final class ConversationModel {
         bubbles.last(where: { $0.streaming && $0.traceId != nil })?.traceId
     }
 
-    /// Salt por instalação — escopa o client_upload_id no staging do servidor
-    /// (que NÃO separa por device): iPhone e Mac futuro nunca colidem.
-    private static let installSalt: String = {
-        let key = "atlas.install.salt"
-        if let s = UserDefaults.standard.string(forKey: key) { return s }
-        let s = UUID().uuidString
-        UserDefaults.standard.set(s, forKey: key)
-        return s
-    }()
-
     init(client: AtlasClient, threadId: String?) {
         self.client = client
         self.threadId = threadId
-        self.engine = AtlasRichInputEngine(transport: client, installSalt: Self.installSalt)
+        self.engine = AtlasRichInputEngine(transport: client, installSalt: AtlasInstallationIdentity.id)
         self.outbox = InteractionOutbox(fileURL: InteractionOutbox.applicationSupportFileURL())
         self.queueStore = QueuedFollowUpStore(fileURL: QueuedFollowUpStore.applicationSupportFileURL())
         self.queueScope = threadId.map { "thread:\($0)" } ?? "local:\(UUID().uuidString.lowercased())"
@@ -341,7 +331,7 @@ final class ConversationModel {
             return try await client.registerLiveActivity(.init(
                 traceId: traceId,
                 activityId: activityId,
-                installationId: Self.installSalt,
+                installationId: AtlasInstallationIdentity.id,
                 pushToken: pushToken,
                 environment: environment,
                 startedAt: startedAt,

@@ -29,4 +29,10 @@ public func runAtlasLiveActivityChecks(_ check: (String, Bool) -> Void) {
     decoder.keyDecodingStrategy = atlasSnakeKeyDecoding
     let receipt = try? decoder.decode(AtlasLiveActivityRegistrationResponse.self, from: receiptJSON)
     check("receipt nunca devolve o push token", receipt?.registration.registrationId == "reg-1" && receipt?.registration.status == "active")
+
+    let startTokenJSON = """
+    {"registration":{"id":"start-1","installation_id":"install-1","status":"active"}}
+    """.data(using: .utf8)!
+    let startReceipt = try? decoder.decode(AtlasLiveActivityStartTokenResponse.self, from: startTokenJSON)
+    check("token de início remoto não devolve segredo", startReceipt?.registration.registrationId == "start-1" && startReceipt?.registration.installationId == "install-1")
 }

@@ -479,6 +479,13 @@ a casca não inventa número, progresso, status, prompt ou prova.
   protegidas confirmadas, `swift run AtlasCoreChecks` + `make build` verdes.
   A prova final em iPhone/Lock Screen remoto aguarda somente credencial APNs
   externa no cofre; não é marcada como entregue antes disso.
+- 2026-07-13 · Codex · C8 continuação (push-to-start): uma instalação iOS
+  registra o token ActivityKit de início; uma missão cuja origem não é `app`
+  pode abrir a presença remota a partir do ledger do Terminal/CLI, e o iOS
+  registra de volta o token de update associado ao trace. Não há prompt,
+  stdout, comando ou raciocínio no payload. Prova local: Feature test APNs
+  start redigido + checks Core + build do app; a prova física ainda depende da
+  chave APNs/capability assinada, portanto não confundir com entrega remota.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 

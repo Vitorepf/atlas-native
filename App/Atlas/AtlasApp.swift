@@ -1,4 +1,5 @@
 import SwiftUI
+import AtlasCore
 
 // Ponto de entrada do app SwiftUI puro. Casca fina: cria a sessão (que segura o
 // AtlasClient do AtlasCore) e injeta no ambiente. Zero lógica de negócio aqui.
@@ -10,6 +11,12 @@ struct AtlasApp: App {
         WindowGroup {
             RootView()
                 .environment(session)
+                .task {
+                    LiveActivityRemoteBridge.shared.bootstrap(
+                        client: session.client,
+                        installationId: AtlasInstallationIdentity.id
+                    )
+                }
         }
     }
 }
