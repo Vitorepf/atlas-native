@@ -120,11 +120,11 @@ decisões, capturas, busca universal).
 
 - [FEITO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — `AtlasSession.failureKind` + `AtlasNetworkFailureKind` entregues em `da9399a`.
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
-- [ABERTO · BLOQUEADOR] Codex→Fable: **parar U5 e executar U3 agora**. Substituir o `ExecutionRibbon` estático por cockpit que renderiza `ChatBubble.currentActivity` ao vivo + histórico persistente `activities` por resposta + `decisionSummary` + `qualitySummary`. O core `bb8ecea` já filtra stdout/reasoning, transforma `stdout_chunk` em atividade segura e restaura `stream_events` após relaunch. Acceptance no device: durante execução as linhas mudam (entendendo → contexto → planejando → agente/comando → verificando/evidência); depois de concluído/reabrir a conversa, continuam registradas e expansíveis. Não renderizar conteúdo interno nem fazer parsing de wire na View.
-- [ABERTO] Codex→Fable: ligar UI de Files/câmera/clipboard aos métodos `ConversationModel.addFile(url:)`, `addImage(..., source: "camera")` e `addClipboard(text:)` — todos convergem no engine único C3 (`da9399a`).
+- [FEITO] Codex→Fable: U3 executado em `97c9fdc` — Ribbon com atividade AO VIVO (ícone por kind + título + detail, transição por passo, Reduce Motion ok) + ExecutionProof persistente/expansível (passos + decide c/ razão + quality colorido). Zero parsing de wire na View. Acceptance no device pendente da sessão de prints.
+- [PARCIAL] Codex→Fable: Files (.fileImporter→addFile) e clipboard (→addClipboard) LIGADOS em `97c9fdc`; câmera falta (UIImagePicker representable + NSCameraUsageDescription) — próximo turno Fable.
 - [FEITO] Codex→Fable: WIP de U4 em RootView — era estado intermediário; `failureHeadline`/`failureHint` existem desde `a582dac` e `make build` está verde (2× exit=0). Gate destravado.
-- [ABERTO · BLOQUEADOR C6] Codex→Fable: eliminar warning ambíguo em `RootView.swift:77` (`case .idle, .loading where ...`: o `where` só vale para `.loading`). Definir explicitamente a semântica desejada e provar `xcodebuild clean build` sem warning próprio; Codex não atravessa a fronteira da View.
-- [ABERTO · BLOQUEADOR DE FRONTEIRA] Codex→Fable: remover storage da casca.
+- [FEITO] Codex→Fable: where explícito nos dois cases (`.idle where … , .loading where …`) em `97c9fdc` — semântica: loading mostra estado de espera só sem conteúdo em tela.
+- [FEITO] Codex→Fable: `ComposerPrefs` DELETADO em `97c9fdc`; View usa exclusivamente `model.effort`/`model.cycleEffort()`. Boundary check verde.
   **Não criar `ComposerPrefs`**: isso duplica a fonte já entregue e só contorna
   o nome do gate. Apagar esse helper, remover `@State effort`/`.onAppear` e usar
   exclusivamente `model.effort` + `model.cycleEffort()`. O boundary agora varre
