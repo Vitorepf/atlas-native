@@ -21,6 +21,57 @@
   .option .content h3{margin:1px 0 5px;color:#e1e5e8;font-size:13px}.option .content p{margin:0;color:#838a90;font-size:10px;line-height:1.45}
   @media(max-width:820px){.proposal-bar{align-items:flex-start;padding:11px 14px}.proposal-meta{display:none}.proposal-links{flex-wrap:wrap;justify-content:flex-end}.options{grid-template-columns:1fr}}
 </style>
+
+<style>
+  .atlas-all .execution-phone{min-height:716px}
+  .atlas-all .execution-phone .body{padding-bottom:156px}
+  .atlas-all .execution-dock{position:absolute;z-index:14;left:12px;right:12px;bottom:12px;padding:10px;background:linear-gradient(180deg,rgba(39,59,71,.98),rgba(32,49,59,.99));border:1px solid #455d6b;border-radius:22px;box-shadow:0 -16px 44px rgba(18,29,36,.82),0 9px 28px rgba(0,0,0,.2)}
+  .atlas-all .execution-strip{display:flex;align-items:center;gap:8px;min-height:31px;padding:0 2px 8px}
+  .atlas-all .execution-presence{min-width:0;flex:1;display:flex;align-items:center;gap:8px}
+  .atlas-all .execution-copy{min-width:0}
+  .atlas-all .execution-copy strong{display:block;color:#dbe3e7;font-size:10px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .atlas-all .execution-copy span{display:block;margin-top:2px;color:#72848f;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .atlas-all .queue-chip,.atlas-all .stop-control,.atlas-all .icon-button,.atlas-all .send-button,.atlas-all .sheet-done,.atlas-all .queue-action{appearance:none;border:0;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .atlas-all .queue-chip{display:flex;align-items:center;gap:4px;flex:none;padding:6px 9px;border:1px solid rgba(212,168,90,.26);border-radius:999px;background:rgba(212,168,90,.08);color:#c7d0d5;font-size:8px;transition:border-color .18s ease,background .18s ease,transform .18s ease}
+  .atlas-all .queue-chip:hover{border-color:rgba(212,168,90,.55);background:rgba(212,168,90,.13);transform:translateY(-1px)}
+  .atlas-all .queue-chip strong{color:var(--brass);font-size:9px}
+  .atlas-all .stop-control{flex:none;display:flex;align-items:center;gap:5px;padding:6px 8px;border-radius:999px;background:#304754;color:#bdc8cd;font-size:8px;transition:background .18s ease,color .18s ease}
+  .atlas-all .stop-control:hover{background:#3a5260;color:#e2e8eb}
+  .atlas-all .stop-control:disabled{opacity:.5;cursor:default}
+  .atlas-all .stop-square{width:7px;height:7px;border-radius:2px;background:currentColor}
+  .atlas-all .followup-composer{height:45px;display:grid;grid-template-columns:34px minmax(0,1fr) 34px 34px;align-items:center;gap:3px;padding:4px;background:#1b2a33;border:1px solid #3b515f;border-radius:16px;transition:border-color .18s ease,box-shadow .18s ease}
+  .atlas-all .followup-composer:focus-within{border-color:rgba(212,168,90,.58);box-shadow:0 0 0 3px rgba(212,168,90,.07)}
+  .atlas-all .followup-input{width:100%;min-width:0;height:100%;padding:0 7px;border:0;outline:0;background:transparent;color:#e0e6e9;font:italic 11px/1.3 Georgia,"Times New Roman",serif}
+  .atlas-all .followup-input::placeholder{color:#70818b;opacity:1}
+  .atlas-all .icon-button,.atlas-all .send-button{width:32px;height:32px;display:grid;place-items:center;border-radius:11px;background:transparent;color:#7f909a;transition:background .18s ease,color .18s ease,transform .18s ease}
+  .atlas-all .icon-button:hover{background:#283d49;color:#c8d2d7}
+  .atlas-all .send-button{background:var(--brass);color:#1d2b34}
+  .atlas-all .send-button:hover{background:#dfb76f;transform:translateY(-1px)}
+  .atlas-all .icon-button svg,.atlas-all .send-button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .atlas-all .queue-hint{min-height:14px;padding:5px 5px 0;color:#657985;font-size:7.5px;line-height:1.25;letter-spacing:.01em}
+  .atlas-all .queue-backdrop{position:absolute;z-index:30;inset:0;display:flex;align-items:flex-end;padding:12px;background:rgba(8,14,18,.65);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);animation:queueFade .18s ease-out}
+  .atlas-all .queue-backdrop[hidden]{display:none}
+  .atlas-all .queue-sheet{width:100%;max-height:73%;overflow:hidden;padding:8px 12px 13px;background:linear-gradient(180deg,#243743,#1f303a);border:1px solid #425967;border-radius:24px;box-shadow:0 -24px 70px rgba(0,0,0,.52);animation:queueRise .28s cubic-bezier(.2,.9,.28,1)}
+  .atlas-all .sheet-grabber{width:34px;height:3px;margin:1px auto 8px;border-radius:999px;background:#526873}
+  .atlas-all .sheet-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px 10px;border-bottom:1px solid rgba(149,163,172,.12)}
+  .atlas-all .sheet-title{color:#e3e9eb;font:700 14px Georgia,"Times New Roman",serif}
+  .atlas-all .sheet-subtitle{margin-top:3px;color:#748690;font-size:8px}
+  .atlas-all .sheet-done{padding:6px 9px;border-radius:999px;background:#304753;color:#c8d2d7;font-size:8px}
+  .atlas-all .queue-list{display:grid;gap:8px;max-height:320px;overflow:auto;padding-top:10px}
+  .atlas-all .queue-item{padding:10px;background:#1c2c35;border:1px solid #354b58;border-radius:14px}
+  .atlas-all .queue-position{color:var(--brass);font-size:7px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+  .atlas-all .queue-message{margin-top:5px;color:#d5dde1;font-size:10px;line-height:1.4}
+  .atlas-all .queue-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:9px}
+  .atlas-all .queue-action{padding:6px 8px;border-radius:9px;background:#2b414d;color:#aebbc1;font-size:7.5px}
+  .atlas-all .queue-action.promote{border:1px solid rgba(212,168,90,.28);background:rgba(212,168,90,.09);color:#d8b770}
+  .atlas-all .queue-action.remove{background:transparent;color:#7f919a}
+  .atlas-all .priority-instruction{position:absolute;z-index:13;left:20px;right:20px;bottom:145px;padding:9px 11px;border-left:2px solid var(--brass);border-radius:0 10px 10px 0;background:rgba(29,43,52,.95);box-shadow:0 10px 24px rgba(0,0,0,.22);color:#cbd5da;font-size:9px;line-height:1.35;animation:arrive .3s ease-out}
+  .atlas-all .priority-instruction[hidden]{display:none}
+  .atlas-all button:focus-visible,.atlas-all input:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+  @keyframes queueFade{from{opacity:0}to{opacity:1}}
+  @keyframes queueRise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:520px){.atlas-all .execution-copy span{display:none}.atlas-all .queue-chip{padding:6px 7px}.atlas-all .stop-control .stop-label{display:none}}
+</style>
 </head>
 <body>
 <header class="proposal-bar">
@@ -46,11 +97,39 @@
   <section class="section">
     <div class="section-head"><div class="section-title">1. Dentro do app</div><div class="section-note">A execução nasce, progride e permanece registrada na conversa.</div></div>
     <div class="screen-grid">
-      <div><div class="label">Durante a execução</div><div class="phone">
+      <div><div class="label">Durante a execução</div><div class="phone execution-phone">
         <div class="status"><span>10:42</span><span>Rede estável · 68%</span></div><div class="nav"><span>Voltar</span><strong>Nova conversa</strong><span class="right">AO VIVO</span></div>
         <div class="body"><div class="quote">“O relatório está ilegível. Corrija tudo em português.”</div><div class="work-pill"><span class="work-spinner"></span><span>Passo 3/5</span><span class="work-separator">·</span><span>2 arquivos</span><span class="work-diff plus">+48</span><span class="work-diff minus">−12</span></div><div class="mission"><div class="mission-top"><span class="mission-title">Reescrever relatório em PT-BR</span><span class="counter">3/5</span></div><div class="track"><div class="fill"></div></div><div class="stage-meta"><span>Implementando</span><span>depois: verificar</span></div></div>
           <div class="timeline"><div class="event voice"><div class="voice-text">Entendi. Vou localizar o gerador, corrigir o idioma e remover métricas enganosas.</div></div><div class="event"><div class="group"><div class="row"><strong>Investigação concluída</strong><span>7 ações · Abrir</span></div><div class="sub">4 arquivos · 3 buscas · Context Pack consultado</div></div></div><div class="event voice"><div class="decision"><div class="decision-label">Decisão</div><div class="voice-text">A causa está no builder. Vou separar ausência de custo de performance antes de refazer a apresentação.</div></div></div><div class="event active"><div class="active-card"><div class="row"><span>Editando EnterpriseReportDashboardHtml.php</span><span class="counter">agora</span></div><div class="sub">Reorganizando métricas, rótulos e hierarquia visual</div></div></div><div class="event"><div class="next"><span>Próximo passo</span><span>Validar idioma e números</span></div></div></div>
-        </div><div class="livebar"><div><div class="live-title"><span class="live-dot"></span><span>Seguindo a execução</span></div><div class="live-sub">9 eventos preservados · 54s</div></div><div class="action">Parar</div></div>
+        </div>
+        <div class="priority-instruction" id="priority-instruction" hidden aria-live="polite"></div>
+        <div class="execution-dock" aria-label="Comandos da execução em andamento">
+          <div class="execution-strip">
+            <div class="execution-presence"><span class="live-dot"></span><div class="execution-copy"><strong id="execution-title">Executando · passo 3 de 5</strong><span id="execution-subtitle">9 eventos preservados · 54s</span></div></div>
+            <button class="queue-chip" id="queue-chip" type="button" aria-haspopup="dialog" aria-controls="queue-sheet"><span>Na fila</span><strong id="queue-count">0</strong></button>
+            <button class="stop-control" id="stop-execution" type="button" aria-label="Parar execução"><span class="stop-square" aria-hidden="true"></span><span class="stop-label">Parar</span></button>
+          </div>
+          <form class="followup-composer" id="followup-form">
+            <button class="icon-button" type="button" aria-label="Anexar arquivo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17.5 17.2 9.3a3 3 0 0 0-4.2-4.2L4.8 13.3a5 5 0 0 0 7.1 7.1l7.5-7.5"/></svg>
+            </button>
+            <input class="followup-input" id="followup-input" type="text" autocomplete="off" placeholder="Continue instruindo o Atlas…" aria-label="Próxima instrução">
+            <button class="icon-button" type="button" aria-label="Ditado por voz">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="8" height="12" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
+            </button>
+            <button class="send-button" type="submit" aria-label="Adicionar instrução à fila">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7M12 5v14"/></svg>
+            </button>
+          </form>
+          <div class="queue-hint" id="queue-hint" aria-live="polite">Enquanto o Atlas trabalha, enviar adiciona à fila sem interromper a execução.</div>
+        </div>
+        <div class="queue-backdrop" id="queue-backdrop" hidden>
+          <section class="queue-sheet" id="queue-sheet" role="dialog" aria-modal="true" aria-labelledby="queue-sheet-title">
+            <div class="sheet-grabber" aria-hidden="true"></div>
+            <div class="sheet-header"><div><div class="sheet-title" id="queue-sheet-title">Próximas instruções</div><div class="sheet-subtitle" id="queue-sheet-subtitle">Serão executadas em ordem, sem perder o trabalho atual.</div></div><button class="sheet-done" id="queue-done" type="button">Concluir</button></div>
+            <div class="queue-list" id="queue-list"></div>
+          </section>
+        </div>
       </div></div>
 
       <div><div class="label">Depois de concluir</div><div class="phone">
@@ -197,6 +276,147 @@
 </div>
 
 <script>
+  /* QUEUE_STATE_START */
+  function createQueueModel(){
+    let nextId=1;
+    const queued=[];
+    return {
+      enqueue(text){
+        const normalized=String(text??'').trim();
+        if(!normalized)return null;
+        const item={id:`queued-${nextId++}`,text:normalized};
+        queued.push(item);
+        return {...item};
+      },
+      items(){return queued.map(item=>({...item}))},
+      count(){return queued.length},
+      promote(id){
+        const index=queued.findIndex(item=>item.id===id);
+        if(index<0)return null;
+        return {...queued.splice(index,1)[0]};
+      },
+      remove(id){
+        const index=queued.findIndex(item=>item.id===id);
+        if(index<0)return false;
+        queued.splice(index,1);
+        return true;
+      }
+    };
+  }
+  /* QUEUE_STATE_END */
+
+  const executionQueue=createQueueModel();
+  let executionRunning=true;
+  const queueChip=document.getElementById('queue-chip');
+  const queueCount=document.getElementById('queue-count');
+  const queueBackdrop=document.getElementById('queue-backdrop');
+  const queueSheet=document.getElementById('queue-sheet');
+  const queueList=document.getElementById('queue-list');
+  const queueDone=document.getElementById('queue-done');
+  const queueHint=document.getElementById('queue-hint');
+  const followupForm=document.getElementById('followup-form');
+  const followupInput=document.getElementById('followup-input');
+  const stopExecution=document.getElementById('stop-execution');
+  const executionTitle=document.getElementById('execution-title');
+  const executionSubtitle=document.getElementById('execution-subtitle');
+  const priorityInstruction=document.getElementById('priority-instruction');
+
+  function queueAction(label,className,onClick){
+    const button=document.createElement('button');
+    button.type='button';
+    button.className=`queue-action ${className}`;
+    button.textContent=label;
+    button.addEventListener('click',onClick);
+    return button;
+  }
+
+  function renderExecutionDock(){
+    if(!queueChip)return;
+    const items=executionQueue.items();
+    queueCount.textContent=String(items.length);
+    queueChip.hidden=items.length===0;
+    queueChip.setAttribute('aria-label',`${items.length} ${items.length===1?'mensagem na fila':'mensagens na fila'}`);
+    queueList.replaceChildren();
+    items.forEach((item,index)=>{
+      const row=document.createElement('article');
+      row.className='queue-item';
+      const position=document.createElement('div');
+      position.className='queue-position';
+      position.textContent=`${String(index+1).padStart(2,'0')} · na fila`;
+      const message=document.createElement('div');
+      message.className='queue-message';
+      message.textContent=item.text;
+      const actions=document.createElement('div');
+      actions.className='queue-actions';
+      actions.append(
+        queueAction('Remover','remove',()=>removeQueuedMessage(item.id)),
+        queueAction('Enviar agora','promote',()=>promoteQueuedMessage(item.id))
+      );
+      row.append(position,message,actions);
+      queueList.append(row);
+    });
+    if(items.length===0&&!queueBackdrop.hidden)closeQueueSheet();
+  }
+
+  function openQueueSheet(){
+    if(executionQueue.count()===0)return;
+    queueBackdrop.hidden=false;
+    queueDone.focus();
+  }
+
+  function closeQueueSheet(){
+    queueBackdrop.hidden=true;
+    (queueChip.hidden?followupInput:queueChip)?.focus();
+  }
+
+  function queueCurrentDraft(){
+    const item=executionQueue.enqueue(followupInput.value);
+    if(!item){followupInput.focus();return}
+    followupInput.value='';
+    queueHint.textContent=executionRunning?'Adicionada à fila. A execução atual continua sem interrupção.':'Guardada para iniciar a próxima execução.';
+    renderExecutionDock();
+    followupInput.focus();
+  }
+
+  function promoteQueuedMessage(id){
+    const item=executionQueue.promote(id);
+    if(!item)return;
+    executionRunning=true;
+    executionTitle.textContent='Redirecionando a execução';
+    executionSubtitle.textContent='A instrução escolhida assumiu prioridade · histórico preservado';
+    priorityInstruction.textContent=`Agora: ${item.text}`;
+    priorityInstruction.hidden=false;
+    stopExecution.disabled=false;
+    queueHint.textContent='O Atlas está concluindo o passo seguro atual antes de seguir esta instrução.';
+    renderExecutionDock();
+    closeQueueSheet();
+  }
+
+  function removeQueuedMessage(id){
+    if(!executionQueue.remove(id))return;
+    queueHint.textContent='Instrução removida. As demais mantiveram a mesma ordem.';
+    renderExecutionDock();
+  }
+
+  function stopCurrentExecution(){
+    executionRunning=false;
+    executionTitle.textContent='Execução interrompida';
+    executionSubtitle.textContent='Histórico e mensagens na fila foram preservados';
+    queueHint.textContent='Você pode continuar escrevendo; a próxima instrução permanece na fila.';
+    stopExecution.disabled=true;
+  }
+
+  if(followupForm){
+    executionQueue.enqueue('Faça uma revisão final e garanta que não existem gaps.');
+    renderExecutionDock();
+    followupForm.addEventListener('submit',event=>{event.preventDefault();queueCurrentDraft()});
+    queueChip.addEventListener('click',openQueueSheet);
+    queueDone.addEventListener('click',closeQueueSheet);
+    stopExecution.addEventListener('click',stopCurrentExecution);
+    queueBackdrop.addEventListener('click',event=>{if(event.target===queueBackdrop)closeQueueSheet()});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!queueBackdrop.hidden)closeQueueSheet()});
+  }
+
   function toggleSelect(element){
     const group=element.closest('.options');
     if(!group)return;
