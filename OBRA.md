@@ -96,7 +96,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `9af0b72` + `9b92a8a`; Simulator Hermes/Kimi exige tool live/persistida, resposta final utilizável e zero frame bruto de Reasoning; 1 teste/0 falhas; físico segue bloqueado (`passcodeRequired=true`) |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/{InteractionRun,DeviceProofHarness}Checks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `9af0b72` + `9b92a8a` + `df55878`; Simulator Hermes/Kimi: 1 teste/0 falhas; físico chega ao destino correto, mas preflight confirma `Unlock iPhone de Vitor to Continue`; harness agora falha rápido e preserva evidência |
 | C8 | **DONE** | — | `../atlas-server/app/Services/Ai/{AtlasFinalResponseSanitizer,HermesCliProvider}.php`; `../atlas-server/app/Services/Ai/Hermes/Acp/{HermesAcpProtocol,AtlasHermesAcpRuntime}.php`; testes correspondentes; `Sources/AtlasCore/AtlasAssistantPresentation.swift`; checks | C5 | Hermes/Kimi provider-neutral: ACP projeta thought/tool start/tool completion; Reasoning-only nunca vira sucesso/apresentação; mobile solicita transporte estruturado | Ferramenta real chega live, persiste no ledger e reaparece no replay; reasoning fica somente como atividade sanitizada; resposta final utilizável ou falha honesta | `f356bd4a1` + `d77cf5a`; migration aplicada; 129 testes/733 asserts no server; Core checks + App build; live Hermes ACP com `shell.started` >5s, persistência e replay |
 
 ### Fable (casca)
@@ -163,7 +163,10 @@ decisões, capturas, busca universal).
   sem injeção de toque. O alvo XCUITest C7 foi entregue em `9af0b72`/`9b92a8a` e está
   verde no Simulator com Hermes/Kimi; no iPhone físico, o preflight continua
   impedido porque o aparelho reporta `passcodeRequired=true`. Desbloquear o
-  device é a única mudança externa necessária para repetir a mesma prova.
+  device é a única mudança externa necessária para repetir a mesma prova. Em
+  `df55878`, o harness passou a detectar isso antes do Xcode, terminar com `rc=2`
+  e preservar `.xcresult`/screenshots anteriores em vez de aguardar e corromper
+  evidência parcial.
 - [FEITO] Fable→Codex: contrato U3 está estável desde `cededd4`/`bb8ecea`:
   `ChatBubble.currentActivity`, `activities`, `decisionSummary` e
   `qualitySummary`, sem parsing de wire na View. Replay live confirmou que o
@@ -189,6 +192,9 @@ decisões, capturas, busca universal).
   visível da resposta. Hermes mobile solicita ACP estruturado; one-shot existe
   apenas como fallback do servidor. Qualquer frame explícito de Reasoning é
   ocultado por defesa em profundidade.
+- 2026-07-13 · A vertical atual declara device family iPhone (`1`). Suporte a
+  iPad só entra com layouts, rotações, multitarefa e prova próprios; anunciar
+  iPad agora gerava warning físico e uma promessa de experiência não validada.
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
@@ -298,6 +304,12 @@ decisões, capturas, busca universal).
   temporário lido por offset; Core checks + App build verdes; live upload real
   de arquivo 3,2MB com SHA-256 íntegro. A primeira bateria live teve flutuação
   isolada no provider de C4; repetição integral terminou toda verde.
+- 2026-07-13 · Codex · `df55878` · C7 preflight físico honesto: resolve o UDID
+  pareado, consulta CoreDevice antes do cleanup/Xcode, falha rápido quando há
+  passcode e preserva evidências; target alinhado à vertical iPhone elimina o
+  warning falso de orientação iPad · prova: dois checks TDD red→green; Core +
+  App verdes; build genérico iPhone `warning_count=0`; execução real bloqueada
+  terminou `rc=2` em ~2s e manteve sentinelas do result/evidence.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
