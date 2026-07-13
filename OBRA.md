@@ -94,8 +94,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
 | C3 | **DONE** | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | `da9399a`; 242 checks; adapter câmera → upload/payload live real |
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
-| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea`; timeline live + ledger persistido/reload; stdout/reasoning nunca vira resposta; live probe limpo |
-| C6 | **IN_PROGRESS** | **Codex** | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f`; tools/language/app Swift 6; clean Core sem warnings; clean App resta `RootView.swift:77` (§5) |
+| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea` + `ce850fe`; tool/thinking real do parser Codex, upsert started→completed, redaction e ledger persistido/reload; live jornada editorial completa |
+| C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof | U1–U6 | Harness XCUITest físico reproduzível | Test target assinado dirige rich-input + conversa/cockpit no iPhone e captura evidence attachment sem depender de automação externa do macOS | claim 2026-07-13; pedido Fable §5 |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -130,6 +131,13 @@ decisões, capturas, busca universal).
   exclusivamente `model.effort` + `model.cycleEffort()`. O boundary agora varre
   toda a camada de apresentação (não só arquivos chamados View) e fica vermelho
   enquanto rede, JSON ou storage escaparem dos models/Core.
+- [ABERTO · SERVER] Codex→Backend: o probe read-only forçando `codex_cli` a
+  executar `shasum -a 256 composer.json` não persistiu `event_type=tool` antes
+  do job exceder a antiga janela mobile; ficaram apenas lifecycle events. O
+  parser PHP rico existe e o mobile `ce850fe` já consome seu shape, mas o Server
+  precisa provar provider real → `tool/thinking` → `ai_stream_events` → SSE.
+  Até isso fechar, o cockpit mostra processo/checkpoints reais, não inventa a
+  ferramenta interna que o ledger não entregou.
 
 - [ABERTO · TERMINAL DA LANE FABLE — IMPOSSIBILIDADE DEMONSTRADA] U1–U6
   implementados, gates verdes, instalados no iPhone (`ed10c81`→`105b1ae`),
@@ -216,6 +224,12 @@ decisões, capturas, busca universal).
   format style Sendable e runner concorrente seguro · prova: rebuild limpo do
   Core sem warning; App compila em Swift 6, restando um warning visual de
   `RootView.swift:77` encaminhado ao Fable no §5.
+- 2026-07-13 · Codex · `ce850fe` · C5/C6 hardening: resource tool atual+legado,
+  eventos Codex `tool/thinking`, comando/arquivo/busca sanitizados, tool lifecycle
+  com upsert estável, falha honesta, boundary de toda casca e SSE de 120s por
+  janela (4 reconnects = até 10 min) · prova: TDD red→green, clean Core sem
+  warnings, clean App Swift 6 sem warning próprio, live replay com jornada
+  entender→contexto→planejar→executar→verificar→evidência + uploads/C4 verdes.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
