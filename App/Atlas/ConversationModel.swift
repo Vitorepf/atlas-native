@@ -79,6 +79,8 @@ enum FeedbackKind: String, CaseIterable, Identifiable {
 @MainActor
 @Observable
 final class ConversationModel {
+    private static let effortPreferenceKey = "atlas.composer.effort"
+
     var bubbles: [ChatBubble] = []
     var isSending = false
     var loadError: String?
@@ -91,6 +93,8 @@ final class ConversationModel {
     // Anexos do próximo envio + progresso agregado do upload (0…1, nil = ocioso)
     var drafts: [LocalDraft] = []
     var uploadPercent: Double?
+    /// Preferência persistente pertence ao model; a View só renderiza/cicla.
+    var effort: AtlasComputeEffort
 
     private let client: AtlasClient
     private(set) var threadId: String?
@@ -114,6 +118,14 @@ final class ConversationModel {
         self.threadId = threadId
         self.engine = AtlasRichInputEngine(transport: client, installSalt: Self.installSalt)
         self.outbox = InteractionOutbox(fileURL: InteractionOutbox.applicationSupportFileURL())
+        self.effort = AtlasComputeEffort(
+            rawValue: UserDefaults.standard.string(forKey: Self.effortPreferenceKey) ?? ""
+        ) ?? .auto
+    }
+
+    func cycleEffort() {
+        effort = effort.next
+        UserDefaults.standard.set(effort.rawValue, forKey: Self.effortPreferenceKey)
     }
 
     // MARK: - Anexos (imagem via PhotosPicker/câmera/clipboard)
@@ -400,9 +412,7 @@ final class ConversationModel {
             $0.qualitySummary = trace.qualitySummary
             let fromStream = atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
-            let known = Set($0.activities.map(\.id))
-            $0.activities.append(contentsOf: recovered.filter { !known.contains($0.id) })
-            if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
+            $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)
         }
     }
 
@@ -435,10 +445,10 @@ final class ConversationModel {
                 applyExecution(assistantId, trace)
             case .activity(let activity):
                 update(assistantId) {
-                    guard $0.activities.last?.title != activity.title ||
-                          $0.activities.last?.detail != activity.detail else { return }
-                    $0.activities.append(activity)
-                    if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
+                    $0.activities = atlasMergeAgentActivities(
+                        existing: $0.activities,
+                        incoming: [activity]
+                    )
                 }
             case .content(let frame):
                 guard atlasShouldRenderAssistantContent(frame),

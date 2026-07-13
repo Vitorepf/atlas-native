@@ -112,11 +112,15 @@ public struct AtlasAiTrace: Codable, Sendable, Identifiable {
 
 public struct AtlasAiToolEvent: Codable, Sendable, Identifiable {
     public let id: String
-    public let eventKey: String
+    /// Campos legados continuam opcionais porque o resource mobile atual
+    /// publica apenas o receipt seguro e necessário à apresentação.
+    public let eventKey: String?
     public let traceId: String?
     public let sessionId: String?
     public let threadId: String?
     public let tool: String
+    /// Categoria canônica calculada pelo servidor (`read`, `write`, `bash`…).
+    public let kind: String?
     public let risk: String?
     public let permissionStatus: String?
     public let approvalSource: String?
@@ -127,7 +131,8 @@ public struct AtlasAiToolEvent: Codable, Sendable, Identifiable {
     public let exitCode: Int?
     public let durationMs: Int?
     public let error: String?
-    public let createdAt: String
+    public let occurredAt: String?
+    public let createdAt: String?
 }
 
 // MARK: - Envelopes de resposta

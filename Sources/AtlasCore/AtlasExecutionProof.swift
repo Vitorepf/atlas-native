@@ -50,17 +50,17 @@ public extension AtlasAiTrace {
 
     var toolActivities: [AtlasAgentActivity] {
         (toolEvents ?? []).enumerated().map { index, event in
-            let lower = event.tool.lowercased()
+            let lower = event.kind?.lowercased() ?? event.tool.lowercased()
             let kind: AtlasAgentActivity.Kind
             let title: String
-            if lower.contains("edit") || lower.contains("write") || lower.contains("patch") || lower.contains("apply") {
+            if event.error != nil || (event.exitCode.map { $0 != 0 } ?? false) {
+                kind = .warning; title = "Ferramenta terminou com falha"
+            } else if lower.contains("edit") || lower.contains("write") || lower.contains("patch") || lower.contains("apply") {
                 kind = .editing; title = "Editando arquivos"
             } else if lower.contains("read") || lower.contains("open") || lower.contains("search") || lower.contains("find") {
                 kind = .reading; title = "Lendo o projeto"
             } else if lower.contains("test") || lower.contains("check") || lower.contains("verify") {
                 kind = .verifying; title = "Verificando o resultado"
-            } else if event.error != nil || (event.exitCode.map { $0 != 0 } ?? false) {
-                kind = .warning; title = "Ferramenta terminou com falha"
             } else {
                 kind = .executing; title = "Usando \(event.tool)"
             }
@@ -70,7 +70,7 @@ public extension AtlasAiTrace {
                 kind: kind,
                 title: title,
                 detail: firstChangedFile(event.changedFiles),
-                occurredAt: event.createdAt
+                occurredAt: event.occurredAt ?? event.createdAt
             )
         }
     }

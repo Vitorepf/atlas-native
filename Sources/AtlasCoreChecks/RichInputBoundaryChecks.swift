@@ -6,6 +6,8 @@ import CryptoKit
 // desktop): a doença dos dois chunkedUploaders TS não pode nascer aqui.
 //   1. AtlasCore não importa UIKit/AppKit/SwiftUI/PhotosUI (Foundation-only).
 //   2. Nenhum código do APP fala com /ai/uploads/* direto — só via engine.
+//   3. A casca é apresentação: zero rede, JSON ou storage. Esses efeitos vivem
+//      nos dois owners explícitos (models) ou no Core e chegam por seams tipados.
 
 func runRichInputBoundaryChecks(_ check: (String, Bool) -> Void) {
     print("\nRich Input · fronteiras (o segundo uploader não pode nascer):")
@@ -37,6 +39,24 @@ func runRichInputBoundaryChecks(_ check: (String, Bool) -> Void) {
     }
     check("app não fala com /ai/uploads/* direto (só via AtlasRichInputEngine)", appViolations.isEmpty)
     for v in appViolations { print("    ✗ \(v)") }
+
+    let presentationFiles = appFiles.filter {
+        let name = ($0 as NSString).lastPathComponent
+        return name != "ConversationModel.swift" && name != "AtlasSession.swift"
+    }
+    let forbiddenViewEffects = [
+        "URLSession", "URLRequest", "JSONDecoder", "JSONEncoder", "JSONSerialization",
+        "UserDefaults", "@AppStorage", "FileManager", "/ai/", "http://", "https://",
+    ]
+    var presentationViolations: [String] = []
+    for file in presentationFiles {
+        guard let source = try? String(contentsOfFile: file, encoding: .utf8) else { continue }
+        for token in forbiddenViewEffects where source.contains(token) {
+            presentationViolations.append("\((file as NSString).lastPathComponent): \(token)")
+        }
+    }
+    check("casca não faz rede, JSON ou storage", presentationViolations.isEmpty)
+    for violation in presentationViolations { print("    ✗ \(violation)") }
 }
 
 // Live-probe (opt-in: ATLAS_LIVE=1 + ATLAS_TOKEN) — sobe 3.2MB REAIS pro

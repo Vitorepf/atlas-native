@@ -36,8 +36,8 @@ public enum AtlasInteractionStreamError: Error, CustomStringConvertible, Sendabl
 
     public var description: String {
         switch self {
-        case .reconnectsExhausted(let traceId, let lastSequence):
-            return "Atlas stream incompleto após reconnects (trace=\(traceId), after=\(lastSequence))"
+        case .reconnectsExhausted(_, let lastSequence):
+            return "Atlas stream incompleto após reconexões (último evento=\(lastSequence)); o turno continua recuperável"
         }
     }
 }
@@ -168,7 +168,7 @@ public actor InteractionRun {
         transport: any AtlasInteractionTransport,
         reconnectPolicy: AtlasStreamReconnectPolicy = AtlasStreamReconnectPolicy(),
         pollIntervalNanoseconds: UInt64 = 1_300_000_000,
-        streamWindowSeconds: Int = 15,
+        streamWindowSeconds: Int = 120,
         outbox: InteractionOutbox? = nil
     ) {
         self.transport = transport

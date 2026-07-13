@@ -30,6 +30,7 @@ private actor ScriptedInteractionTransport: AtlasInteractionTransport {
     private let frames: [AtlasAiStreamFrame]?
     private var heldContinuation: AsyncThrowingStream<AtlasAiStreamFrame, Error>.Continuation?
     private var cancelledJobs: [String] = []
+    private var requestedTimeouts: [Int] = []
 
     init(created: AiTraceResponse, frames: [AtlasAiStreamFrame]?) {
         self.created = created
@@ -57,6 +58,7 @@ private actor ScriptedInteractionTransport: AtlasInteractionTransport {
         after: Int,
         timeoutSeconds: Int
     ) async throws -> AsyncThrowingStream<AtlasAiStreamFrame, Error> {
+        requestedTimeouts.append(timeoutSeconds)
         let frames = self.frames
         return AsyncThrowingStream { continuation in
             if let frames {
@@ -69,6 +71,7 @@ private actor ScriptedInteractionTransport: AtlasInteractionTransport {
     }
 
     func cancelledJobIds() -> [String] { cancelledJobs }
+    func streamTimeouts() -> [Int] { requestedTimeouts }
 
     private func hold(_ continuation: AsyncThrowingStream<AtlasAiStreamFrame, Error>.Continuation) {
         heldContinuation = continuation
@@ -128,7 +131,10 @@ private actor TerminalCreateFailureTransport: AtlasInteractionTransport {
     }
 }
 
-private func interactionResponse(jobStatus: String = "processing") throws -> AiTraceResponse {
+private func interactionResponse(
+    jobStatus: String = "processing",
+    toolExitCode: Int = 0
+) throws -> AiTraceResponse {
     let json = """
     {
       "trace": {
@@ -165,7 +171,7 @@ private func interactionResponse(jobStatus: String = "processing") throws -> AiT
           "thread_id":"thread-1","tool":"apply_patch","risk":"low",
           "permission_status":"allowed","approval_source":"policy","input_summary":{},
           "output_summary":{},"changed_files":["Sources/A.swift"],"checkpoint_id":null,
-          "exit_code":0,"duration_ms":42,"error":null,"created_at":"2026-07-12T10:00:00Z"
+          "exit_code":\(toolExitCode),"duration_ms":42,"error":null,"created_at":"2026-07-12T10:00:00Z"
         }],
         "created_at":"2026-07-12T10:00:00Z","updated_at":"2026-07-12T10:00:00Z"
       }
@@ -269,6 +275,8 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
             }
         }
         check("InteractionRun possui create → stream → done", sawCreated && content == "Olá" && sawCompleted)
+        check("InteractionRun usa janela SSE longa para agentes reais",
+              await transport.streamTimeouts() == [120])
     } catch {
         check("InteractionRun lifecycle não deveria falhar", false)
     }
@@ -339,6 +347,11 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     }
 
     check("shouldKeep mantém erro de rede", shouldKeepInteraction(after: URLError(.networkConnectionLost)))
+    let safeStreamError = String(describing: AtlasInteractionStreamError.reconnectsExhausted(
+        traceId: "internal-secret-trace", lastSequence: 12
+    ))
+    check("erro público de reconnect não expõe trace interno",
+          !safeStreamError.contains("internal-secret-trace"))
     check("shouldKeep mantém 408/429/5xx",
           shouldKeepInteraction(after: AtlasApiError(status: 408, path: "/ai/interactions", message: "timeout")) &&
           shouldKeepInteraction(after: AtlasApiError(status: 429, path: "/ai/interactions", message: "rate")) &&
@@ -382,6 +395,111 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     check("stdout cru não vira ruído no cockpit",
           atlasAgentActivity(from: stdout) == nil)
 
+    let currentToolResource = """
+    {
+      "id":"tool-current","trace_id":"trace-run","tool":"bash","kind":"bash",
+      "permission_status":"allowed","approval_source":"policy",
+      "input_summary":{},"output_summary":{},"changed_files":[],
+      "exit_code":0,"duration_ms":42,"error":null,
+      "occurred_at":"2026-07-12T10:00:01Z"
+    }
+    """
+    let currentToolDecoder = JSONDecoder()
+    currentToolDecoder.keyDecodingStrategy = atlasSnakeKeyDecoding
+    let currentTool = try? currentToolDecoder.decode(
+        AtlasAiToolEvent.self,
+        from: Data(currentToolResource.utf8)
+    )
+    check("tool receipt atual do servidor decodifica sem campos legados",
+          currentTool?.kind == "bash" && currentTool?.occurredAt == "2026-07-12T10:00:01Z")
+
+    let secretCommand = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 25, type: "lifecycle", content: "",
+        metadata: JSONObject([
+            "name": .string("process_started"),
+            "command": .array([
+                .string("curl"), .string("-H"),
+                .string("Authorization: Bearer atlas-super-secret"),
+                .string("https://atlas.test/run?api_key=also-secret"),
+                .string("--token"), .string("atlas-second-secret"),
+            ]),
+        ])
+    )
+    let safeCommand = atlasAgentActivity(from: secretCommand)?.detail ?? ""
+    check("activity de comando remove headers e query secrets",
+          !safeCommand.contains("atlas-super-secret") &&
+          !safeCommand.contains("also-secret") &&
+          !safeCommand.contains("atlas-second-secret") &&
+          safeCommand.contains("<redacted>"))
+
+    // Shape canônico de CodexJsonlEventParser.php no atlas-server.
+    let codexShell = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 26, type: "tool", channel: "activity",
+        content: "swift run AtlasCoreChecks",
+        metadata: JSONObject([
+            "name": .string("shell"), "phase": .string("item.started"),
+            "item_id": .string("internal-item-id"),
+        ])
+    )
+    let codexEdit = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 27, type: "tool", channel: "activity",
+        content: "/private/workspace/Sources/AtlasCore/A.swift",
+        metadata: JSONObject([
+            "name": .string("edit"), "phase": .string("item.completed"),
+        ])
+    )
+    let codexShellCompleted = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 31, type: "tool", channel: "activity",
+        content: "swift run AtlasCoreChecks",
+        metadata: JSONObject([
+            "name": .string("shell"), "phase": .string("item.completed"),
+            "item_id": .string("internal-item-id"), "exit_code": .number(0),
+            "status": .string("completed"),
+        ])
+    )
+    let codexSearch = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 28, type: "tool", channel: "activity",
+        content: "AtlasAgentActivity",
+        metadata: JSONObject(["name": .string("search")])
+    )
+    let codexSecretShell = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 29, type: "tool", channel: "activity",
+        content: "curl --token atlas-codex-secret https://atlas.test",
+        metadata: JSONObject([
+            "name": .string("shell"), "phase": .string("item.started"),
+        ])
+    )
+    let codexThinking = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 30, type: "thinking", channel: "activity",
+        content: "private chain of thought",
+        metadata: JSONObject([
+            "name": .string("reasoning"), "phase": .string("item.completed"),
+        ])
+    )
+    check("tool shell Codex vira comando visível e sanitizado",
+          atlasAgentActivity(from: codexShell)?.kind == .executing &&
+          atlasAgentActivity(from: codexShell)?.detail == "swift run AtlasCoreChecks")
+    let shellJourney = atlasAgentTimeline(from: [codexShell, codexShellCompleted])
+    check("started→completed do mesmo tool vira uma linha viva",
+          shellJourney.count == 1 && shellJourney.first?.kind == .completed &&
+          shellJourney.first?.detail == "swift run AtlasCoreChecks")
+    check("merge live substitui fase do mesmo tool sem id duplicado",
+          atlasMergeAgentActivities(
+              existing: [atlasAgentActivity(from: codexShell)!],
+              incoming: [atlasAgentActivity(from: codexShellCompleted)!]
+          ) == shellJourney)
+    check("tool edit Codex vira arquivo sem caminho interno",
+          atlasAgentActivity(from: codexEdit)?.kind == .editing &&
+          atlasAgentActivity(from: codexEdit)?.detail == "A.swift")
+    check("tool search Codex vira busca real",
+          atlasAgentActivity(from: codexSearch)?.kind == .reading &&
+          atlasAgentActivity(from: codexSearch)?.detail == "AtlasAgentActivity")
+    check("tool shell Codex nunca vaza argumento secreto",
+          atlasAgentActivity(from: codexSecretShell)?.detail == "<redacted>")
+    check("thinking Codex vira atividade sem chain-of-thought",
+          atlasAgentActivity(from: codexThinking)?.kind == .reasoning &&
+          atlasAgentActivity(from: codexThinking)?.detail == nil)
+
     do {
         let proofTrace = try interactionResponse().trace
         check("receipt tipado expõe escolha e razão",
@@ -392,6 +510,9 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
         check("tool event vira atividade de edição real",
               proofTrace.toolActivities.first?.kind == .editing &&
               proofTrace.toolActivities.first?.detail == "A.swift")
+        let failedToolTrace = try interactionResponse(toolExitCode: 1).trace
+        check("falha de tool receipt vence sua categoria visual",
+              failedToolTrace.toolActivities.first?.kind == .warning)
     } catch {
         check("projeções C5 deveriam decodificar", false)
     }
@@ -409,6 +530,16 @@ public func runInteractionRunLiveProbe(
             check("live trace decodificou receipt/decision C5", snapshot.trace.decisionSummary != nil)
             check("live trace decodificou tool/quality opcionais C5",
                   snapshot.trace.toolEvents != nil && snapshot.trace.qualityActions != nil)
+            let persistedTimeline = atlasAgentTimeline(from: snapshot.trace.streamEvents ?? [])
+            check("live ledger reconstrói comando executado persistente",
+                  persistedTimeline.contains { $0.kind == .executing && $0.detail != nil })
+            let expectedJourney: [AtlasAgentActivity.Kind] = [
+                .understanding, .context, .planning, .executing, .verifying, .evidence,
+            ]
+            check("live ledger cobre jornada editorial completa do cockpit",
+                  expectedJourney.allSatisfy { kind in
+                      persistedTimeline.contains { $0.kind == kind }
+                  })
             let stream = try await client.openInteractionStreamOnce(
                 traceId: replayTrace,
                 after: 0,
@@ -480,6 +611,61 @@ public func runInteractionRunLiveProbe(
         }
     } catch {
         check("live InteractionRun create → SSE → done", false)
+        print("    erro: \(error)")
+    }
+}
+
+/// Probe deliberadamente opt-in: consome uma execução Codex real para provar
+/// que o contrato rico (`event_type=tool`) atravessa Server → SSE/ledger → Core.
+/// A tarefa é read-only e determinística; nunca escreve no workspace remoto.
+public func runCodexToolActivityLiveProbe(
+    _ check: (String, Bool) -> Void,
+    client: AtlasClient
+) async {
+    print("\nAtlas AI · tool activity Codex AO VIVO (C5/U3):")
+    let input = CreateAiInteractionInput(
+        inputText: "Execute obrigatoriamente uma ferramenta de shell read-only com `shasum -a 256 composer.json` no workspace atual. Não infira e não responda antes de executar o comando; devolva apenas o hash observado.",
+        clientId: UUID().uuidString.lowercased(),
+        newThread: true,
+        agentSlug: "atlas",
+        provider: "codex_cli",
+        sourceType: "app",
+        payload: atlasMobileInteractionPayload(base: JSONObject([
+            "tool_permissions": .object(["mode": .string("read")]),
+        ]))
+    )
+    let run = InteractionRun(transport: client)
+    var traceId: String?
+    var liveActivities: [AtlasAgentActivity] = []
+    var completed = false
+    do {
+        for try await event in await run.start(input: input) {
+            switch event {
+            case .created(let trace): traceId = trace.id
+            case .activity(let activity):
+                liveActivities = atlasMergeAgentActivities(
+                    existing: liveActivities,
+                    incoming: [activity]
+                )
+            case .completed: completed = true
+            case .content, .execution, .remoteError: break
+            }
+        }
+        check("live Codex tool run concluiu", completed)
+        guard let traceId else {
+            check("live Codex tool run criou trace", false)
+            return
+        }
+        let snapshot = try await client.getAiInteraction(traceId)
+        let toolEvents = (snapshot.trace.streamEvents ?? []).filter { $0.type == "tool" }
+        let persisted = atlasAgentTimeline(from: snapshot.trace.streamEvents ?? [])
+        check("live Codex persistiu event_type=tool", !toolEvents.isEmpty)
+        check("live Codex tool apareceu durante execução",
+              liveActivities.contains { [.executing, .completed, .reading, .editing].contains($0.kind) })
+        check("live Codex tool reaparece no replay",
+              persisted.contains { [.executing, .completed, .reading, .editing].contains($0.kind) })
+    } catch {
+        check("live Codex tool activity", false)
         print("    erro: \(error)")
     }
 }

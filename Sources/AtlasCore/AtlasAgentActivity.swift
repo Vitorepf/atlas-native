@@ -51,7 +51,10 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     let name = metadata["name"]?.stringValue?.lowercased() ?? ""
     let checkpoint = metadata["checkpoint"]?.stringValue?.lowercased() ?? ""
     let outcome = metadata["outcome"]?.stringValue?.lowercased() ?? ""
-    let id = event.id ?? "\(event.traceId):\(event.sequence)"
+    let itemId = metadata["item_id"]?.stringValue ?? ""
+    let id = (event.type == "tool" || event.type == "thinking") && !itemId.isEmpty
+        ? "\(event.traceId):item:\(itemId)"
+        : event.id ?? "\(event.traceId):\(event.sequence)"
 
     func activity(
         _ kind: AtlasAgentActivity.Kind,
@@ -77,6 +80,9 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     if event.type == "stdout" || event.type == "response" {
         return nil
     }
+    if event.type == "thinking" {
+        return activity(.reasoning, "Raciocinando sobre a tarefa")
+    }
     if event.type == "token",
        name == "stdout_chunk" || metadata["parser"]?.stringValue?.lowercased() == "stdout_chunk" {
         return activity(.reasoning, "Raciocinando sobre a tarefa")
@@ -86,6 +92,36 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     }
     if event.type == "token" {
         return nil
+    }
+
+    // Contrato do CodexJsonlEventParser no atlas-server. O conteúdo de tool é
+    // uma projeção deliberadamente pequena (comando, arquivos ou busca), nunca
+    // stdout/output_excerpt nem reasoning do provider.
+    if event.type == "tool" {
+        let phase = metadata["phase"]?.stringValue?.lowercased() ?? ""
+        let status = metadata["status"]?.stringValue?.lowercased() ?? ""
+        let exitCode = metadata["exit_code"]?.doubleValue.map(Int.init)
+        let failed = exitCode.map { $0 != 0 } == true || ["failed", "error", "cancelled"].contains(status)
+        let finished = phase.contains("completed") || ["completed", "succeeded", "failed"].contains(status)
+
+        if name.contains("edit") || name.contains("write") || name.contains("patch") || name.contains("apply") {
+            return failed
+                ? activity(.warning, "Edição terminou com falha")
+                : activity(.editing, "Editando arquivos", detail: safeFileSummary(event.content))
+        }
+        if name.contains("search") || name.contains("find") || name.contains("grep") {
+            return activity(.reading, "Buscando no projeto", detail: safeActivityDetail(event.content))
+        }
+        if name == "shell" || name.contains("bash") || name.contains("exec") || name == "run" {
+            if failed { return activity(.warning, "Comando terminou com falha") }
+            if finished {
+                return activity(.completed, "Comando concluído", detail: safeCommandText(event.content))
+            }
+            return activity(.executing, "Executando comando", detail: safeCommandText(event.content))
+        }
+        return failed
+            ? activity(.warning, "Ferramenta terminou com falha")
+            : activity(.executing, "Usando ferramenta")
     }
 
     if name == "process_started" {
@@ -135,28 +171,85 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
 /// Projeta o ledger persistido numa timeline editorial: ordenada e sem repetir
 /// cada chunk de transporte como se fosse uma nova ação do agente.
 public func atlasAgentTimeline(from events: [AtlasAiStreamEvent]) -> [AtlasAgentActivity] {
-    events.sorted { $0.sequence < $1.sequence }.compactMap(atlasAgentActivity).reduce(into: []) { result, activity in
+    let projected = events.sorted { $0.sequence < $1.sequence }.compactMap(atlasAgentActivity)
+    return atlasMergeAgentActivities(existing: [], incoming: projected, limit: .max)
+}
+
+/// Um tool do Codex muda de fase mantendo `item_id`; substituir preserva uma
+/// linha viva e impede IDs repetidos no ForEach. Eventos sem identidade de item
+/// continuam append-only, com colapso apenas de chunks editoriais equivalentes.
+public func atlasMergeAgentActivities(
+    existing: [AtlasAgentActivity],
+    incoming: [AtlasAgentActivity],
+    limit: Int = 60
+) -> [AtlasAgentActivity] {
+    guard limit > 0 else { return [] }
+    var result = existing
+    for activity in incoming {
+        if let index = result.firstIndex(where: { $0.id == activity.id }) {
+            result[index] = activity
+            continue
+        }
         if let last = result.last,
            last.kind == activity.kind,
            last.title == activity.title,
            last.detail == activity.detail {
-            return
+            continue
         }
         result.append(activity)
     }
+    if result.count > limit {
+        result.removeFirst(result.count - limit)
+    }
+    return result
 }
 
 private func commandDetail(_ value: JSONValue?) -> String? {
     guard case .array(let values)? = value else { return nil }
     let parts = values.compactMap(\.stringValue)
     guard !parts.isEmpty else { return nil }
+    var redactNext = false
     return parts.map { part in
-        let lower = part.lowercased()
-        if lower.contains("token=") || lower.contains("api_key=") || lower.contains("secret=") {
+        if redactNext {
+            redactNext = false
             return "<redacted>"
         }
-        return part
+        let lower = part.lowercased()
+        if ["--token", "--api-key", "--apikey", "--secret", "--password", "--private-key"]
+            .contains(lower) {
+            redactNext = true
+            return part
+        }
+        return redactedCommandPart(part)
     }.joined(separator: " ")
+}
+
+private func redactedCommandPart(_ part: String) -> String {
+    let lower = part.lowercased()
+    return containsSensitiveCommandMaterial(lower) ? "<redacted>" : part
+}
+
+private func containsSensitiveCommandMaterial(_ lower: String) -> Bool {
+    let sensitiveMarkers = [
+        "authorization:", "bearer ", "token=", "token:", "api_key=", "api-key=",
+        "apikey=", "secret=", "secret:", "password=", "password:", "private_key=",
+        "--token", "--api-key", "--apikey", "--secret", "--password", "--private-key",
+    ]
+    return sensitiveMarkers.contains(where: lower.contains)
+}
+
+private func safeCommandText(_ value: String) -> String {
+    let singleLine = value.replacingOccurrences(of: "\n", with: " ")
+        .replacingOccurrences(of: "\r", with: " ")
+    guard !containsSensitiveCommandMaterial(singleLine.lowercased()) else { return "<redacted>" }
+    return String(singleLine.prefix(240))
+}
+
+private func safeFileSummary(_ value: String) -> String {
+    value.split(separator: ",", maxSplits: 4).map { raw in
+        let path = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        return (path as NSString).lastPathComponent
+    }.filter { !$0.isEmpty }.joined(separator: ", ")
 }
 
 private func pathDetail(_ metadata: JSONObject) -> String? {

@@ -307,6 +307,9 @@ if ProcessInfo.processInfo.environment["ATLAS_LIVE"] == "1",
     let liveHost = ProcessInfo.processInfo.environment["ATLAS_HOST"] ?? "127.0.0.1"
     let liveClient = AtlasClient(config: AtlasConfig(host: liveHost, port: 3737, token: liveToken))
     await runInteractionRunLiveProbe(check, client: liveClient)
+    if ProcessInfo.processInfo.environment["ATLAS_LIVE_TOOLS"] == "1" {
+        await runCodexToolActivityLiveProbe(check, client: liveClient)
+    }
     await runRichInputLiveProbe(check, client: liveClient)
     await runLongMessageLiveProbe(check, client: liveClient)
 } else {
