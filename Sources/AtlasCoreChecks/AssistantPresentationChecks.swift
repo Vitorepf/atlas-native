@@ -34,6 +34,7 @@ public func runAssistantPresentationChecks(_ check: (String, Bool) -> Void) {
     if let value = payload["hermes"], case .object(let object) = value { hermes = object }
     else { hermes = nil }
     check("mobile força Hermes one-shot sem raciocínio", hermes?["cli_oneshot"]?.boolValue == true)
+    check("mobile exige transporte Hermes estruturado", hermes?["execution_transport"]?.stringValue == "acp")
     check("política preserva payload existente", payload["compute_effort"]?.stringValue == "high")
     check("mobile se identifica como superfície interativa", payload["app_surface"]?.stringValue == "atlas_app")
 

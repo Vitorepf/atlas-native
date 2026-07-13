@@ -109,20 +109,26 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
         let failed = exitCode.map { $0 != 0 } == true || ["failed", "error", "cancelled"].contains(status)
         let finished = phase.contains("completed") || ["completed", "succeeded", "failed"].contains(status)
 
+        if name == "read" || name.contains("read_file") || name.contains("open_file") {
+            if failed { return activity(.warning, "Leitura terminou com falha", detail: safeFileSummary(event.content)) }
+            return finished
+                ? activity(.completed, "Leitura concluída", detail: safeFileSummary(event.content))
+                : activity(.reading, "Lendo arquivos", detail: safeFileSummary(event.content))
+        }
         if name.contains("edit") || name.contains("write") || name.contains("patch") || name.contains("apply") {
-            if failed { return activity(.warning, "Edição terminou com falha") }
+            if failed { return activity(.warning, "Edição terminou com falha", detail: safeFileSummary(event.content)) }
             return finished
                 ? activity(.completed, "Edição concluída", detail: safeFileSummary(event.content))
                 : activity(.editing, "Editando arquivos", detail: safeFileSummary(event.content))
         }
         if name.contains("search") || name.contains("find") || name.contains("grep") {
-            if failed { return activity(.warning, "Busca terminou com falha") }
+            if failed { return activity(.warning, "Busca terminou com falha", detail: safeActivityDetail(event.content)) }
             return finished
                 ? activity(.completed, "Busca concluída", detail: safeActivityDetail(event.content))
                 : activity(.reading, "Buscando no projeto", detail: safeActivityDetail(event.content))
         }
         if name == "shell" || name.contains("bash") || name.contains("exec") || name == "run" {
-            if failed { return activity(.warning, "Comando terminou com falha") }
+            if failed { return activity(.warning, "Comando terminou com falha", detail: safeCommandText(event.content)) }
             if finished {
                 return activity(.completed, "Comando concluído", detail: safeCommandText(event.content))
             }

@@ -39,6 +39,10 @@ public func atlasMobileInteractionPayload(base: JSONObject = JSONObject()) -> JS
     var hermes: [String: JSONValue]
     if case .object(let existing)? = payload["hermes"] { hermes = existing }
     else { hermes = [:] }
+    // ACP é o único transporte Hermes que separa pensamento, ferramentas e
+    // resposta em eventos estruturados. O CLI fica como fallback interno do
+    // servidor; nunca cabe ao app inferir tools a partir de stdout.
+    hermes["execution_transport"] = JSONValue.string("acp")
     hermes["cli_oneshot"] = JSONValue.bool(true)
     payload["hermes"] = JSONValue.object(hermes)
     return JSONObject(payload)

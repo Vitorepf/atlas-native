@@ -455,6 +455,14 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
             "status": .string("completed"),
         ])
     )
+    let acpShellFailed = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 38, type: "tool", channel: "activity",
+        content: "sleep 8 && pwd",
+        metadata: JSONObject([
+            "name": .string("shell"), "phase": .string("item.completed"),
+            "item_id": .string("acp-shell-failed"), "status": .string("failed"),
+        ])
+    )
     let codexSearch = AtlasAiStreamEvent(
         traceId: "trace-run", sequence: 28, type: "tool", channel: "activity",
         content: "AtlasAgentActivity",
@@ -480,6 +488,23 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
         content: "private chain of thought",
         metadata: JSONObject([
             "name": .string("reasoning"), "phase": .string("item.completed"),
+        ])
+    )
+    let acpReadStarted = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 36, type: "tool", channel: "activity",
+        content: "Sources/AtlasCore/AtlasClient.swift",
+        metadata: JSONObject([
+            "name": .string("read"), "phase": .string("item.started"),
+            "item_id": .string("acp-read-1"), "parser": .string("hermes_acp"),
+        ])
+    )
+    let acpReadCompleted = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 37, type: "tool", channel: "activity",
+        content: "Sources/AtlasCore/AtlasClient.swift",
+        metadata: JSONObject([
+            "name": .string("read"), "phase": .string("item.completed"),
+            "item_id": .string("acp-read-1"), "status": .string("completed"),
+            "parser": .string("hermes_acp"),
         ])
     )
     // Shape efetivamente persistido hoje: AiStreamRecorder converte tipos do
@@ -533,9 +558,18 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
           atlasAgentActivity(from: codexSearchCompleted)?.kind == .completed)
     check("tool shell Codex nunca vaza argumento secreto",
           atlasAgentActivity(from: codexSecretShell)?.detail == "<redacted>")
+    check("tool shell com falha preserva comando sanitizado no replay",
+          atlasAgentActivity(from: acpShellFailed)?.kind == .warning &&
+          atlasAgentActivity(from: acpShellFailed)?.detail == "sleep 8 && pwd")
     check("thinking Codex vira atividade sem chain-of-thought",
           atlasAgentActivity(from: codexThinking)?.kind == .reasoning &&
           atlasAgentActivity(from: codexThinking)?.detail == nil)
+    check("ACP read tool vira leitura real com arquivo sanitizado",
+          atlasAgentActivity(from: acpReadStarted)?.kind == .reading &&
+          atlasAgentActivity(from: acpReadStarted)?.detail == "AtlasClient.swift")
+    check("ACP read completion preserva identidade da linha viva",
+          atlasAgentActivity(from: acpReadCompleted)?.kind == .completed &&
+          atlasAgentActivity(from: acpReadStarted)?.id == atlasAgentActivity(from: acpReadCompleted)?.id)
     check("progress|shell real do ledger continua sendo comando visível",
           atlasAgentActivity(from: recordedShell)?.kind == .executing &&
           atlasAgentActivity(from: recordedShell)?.detail == "swift run AtlasCoreChecks")
@@ -678,22 +712,25 @@ public func runInteractionRunLiveProbe(
     }
 }
 
-/// Probe deliberadamente opt-in: consome uma execução Codex real para provar
+/// Probe deliberadamente opt-in: consome uma execução real do provider para provar
 /// que o contrato semântico de tool atravessa Server → SSE/ledger → Core com
 /// uma janela visual mensurável. Aceita o shape canônico `tool` e o shape
 /// compatível `progress|shell` enquanto o recorder do Server ainda os normaliza.
 /// A tarefa é read-only e determinística; nunca escreve no workspace remoto.
-public func runCodexToolActivityLiveProbe(
+public func runProviderToolActivityLiveProbe(
     _ check: (String, Bool) -> Void,
-    client: AtlasClient
+    client: AtlasClient,
+    provider: String
 ) async {
-    print("\nAtlas AI · tool activity Codex AO VIVO (C5/U3):")
+    let providerLabel = provider == "codex_cli" ? "Codex" : provider == "hermes_cli" ? "Hermes ACP" : provider
+    let toolCommand = "sleep 8 && pwd"
+    print("\nAtlas AI · tool activity \(providerLabel) AO VIVO (C5/U3):")
     let input = CreateAiInteractionInput(
-        inputText: "Execute obrigatoriamente uma ferramenta de shell read-only com `sleep 8 && shasum -a 256 composer.json` no workspace atual. Não infira e não responda antes de executar o comando; devolva apenas o hash observado.",
+        inputText: "Execute obrigatoriamente uma ferramenta de shell read-only com `\(toolCommand)` no workspace atual. Não infira e não responda antes de executar o comando; devolva apenas o diretório observado.",
         clientId: UUID().uuidString.lowercased(),
         newThread: true,
         agentSlug: "atlas",
-        provider: "codex_cli",
+        provider: provider,
         sourceType: "app",
         payload: atlasMobileInteractionPayload(base: JSONObject([
             "tool_permissions": .object(["mode": .string("read")]),
@@ -715,21 +752,21 @@ public func runCodexToolActivityLiveProbe(
                     incoming: [activity]
                 )
                 if activity.title == "Executando comando",
-                   activity.detail?.contains("shasum -a 256 composer.json") == true,
+                   activity.detail?.contains(toolCommand) == true,
                    liveToolStartedAt == nil {
                     liveToolStartedAt = Date()
                 }
-                if activity.title == "Comando concluído",
-                   activity.detail?.contains("shasum -a 256 composer.json") == true {
+                if ["Comando concluído", "Comando terminou com falha"].contains(activity.title),
+                   activity.detail?.contains(toolCommand) == true {
                     liveToolFinishedAt = Date()
                 }
             case .completed: completed = true
             case .content, .execution, .remoteError: break
             }
         }
-        check("live Codex tool run concluiu", completed)
+        check("live \(providerLabel) tool run concluiu", completed)
         guard let traceId else {
-            check("live Codex tool run criou trace", false)
+            check("live \(providerLabel) tool run criou trace", false)
             return
         }
         let snapshot = try await client.getAiInteraction(traceId)
@@ -739,20 +776,20 @@ public func runCodexToolActivityLiveProbe(
                     && event.metadata["name"]?.stringValue?.lowercased() == "shell")
         }
         let persisted = atlasAgentTimeline(from: snapshot.trace.streamEvents ?? [])
-        check("live Codex persistiu tool semântico", !toolEvents.isEmpty)
-        check("live Codex entregou shell.started durante execução", liveToolStartedAt != nil)
+        check("live \(providerLabel) persistiu tool semântico", !toolEvents.isEmpty)
+        check("live \(providerLabel) entregou shell.started durante execução", liveToolStartedAt != nil)
         let visibleToolSeconds = liveToolStartedAt.flatMap { started in
             liveToolFinishedAt.map { $0.timeIntervalSince(started) }
         }
-        check("live Codex manteve tool observável por pelo menos 5s",
+        check("live \(providerLabel) manteve tool observável por pelo menos 5s",
               visibleToolSeconds.map { $0 >= 5 } == true)
-        check("live Codex tool reaparece no replay",
+        check("live \(providerLabel) tool reaparece no replay",
               persisted.contains {
                   [.executing, .completed, .warning].contains($0.kind)
-                      && $0.detail?.contains("shasum -a 256 composer.json") == true
+                      && $0.detail?.contains(toolCommand) == true
               })
     } catch {
-        check("live Codex tool activity", false)
+        check("live \(providerLabel) tool activity", false)
         print("    erro: \(error)")
     }
 }

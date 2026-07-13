@@ -306,12 +306,18 @@ if ProcessInfo.processInfo.environment["ATLAS_LIVE"] == "1",
    let liveToken = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !liveToken.isEmpty {
     let liveHost = ProcessInfo.processInfo.environment["ATLAS_HOST"] ?? "127.0.0.1"
     let liveClient = AtlasClient(config: AtlasConfig(host: liveHost, port: 3737, token: liveToken))
-    await runInteractionRunLiveProbe(check, client: liveClient)
-    if ProcessInfo.processInfo.environment["ATLAS_LIVE_TOOLS"] == "1" {
-        await runCodexToolActivityLiveProbe(check, client: liveClient)
+    let liveScope = ProcessInfo.processInfo.environment["ATLAS_LIVE_SCOPE"]
+    if liveScope != "tools" {
+        await runInteractionRunLiveProbe(check, client: liveClient)
     }
-    await runRichInputLiveProbe(check, client: liveClient)
-    await runLongMessageLiveProbe(check, client: liveClient)
+    if ProcessInfo.processInfo.environment["ATLAS_LIVE_TOOLS"] == "1" {
+        let provider = ProcessInfo.processInfo.environment["ATLAS_LIVE_TOOL_PROVIDER"] ?? "codex_cli"
+        await runProviderToolActivityLiveProbe(check, client: liveClient, provider: provider)
+    }
+    if liveScope != "tools" {
+        await runRichInputLiveProbe(check, client: liveClient)
+        await runLongMessageLiveProbe(check, client: liveClient)
+    }
 } else {
     print("\n  ⚠ ATLAS_LIVE≠1 — live-probe de upload pulado (rode ATLAS_LIVE=1 ATLAS_TOKEN=… antes do make device)")
 }
