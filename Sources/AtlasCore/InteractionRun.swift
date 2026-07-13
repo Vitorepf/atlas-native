@@ -122,6 +122,7 @@ public protocol AtlasInteractionTransport: AtlasAiStreamSource {
 /// timeout, rate limit e servidor podem ter acontecido DEPOIS do commit no
 /// backend; 4xx terminais não podem entrar em loop.
 public func shouldKeepInteraction(after error: Error) -> Bool {
+    if error is AtlasInteractionStreamError { return true }
     if let api = error as? AtlasApiError {
         return api.status == 0 || api.status == 408 || api.status == 429 || api.status >= 500
     }
@@ -156,21 +157,25 @@ public actor InteractionRun {
     private let reconnectPolicy: AtlasStreamReconnectPolicy
     private let pollIntervalNanoseconds: UInt64
     private let streamWindowSeconds: Int
+    private let outbox: InteractionOutbox?
 
     private var activeTask: Task<Void, Never>?
     private var pollTask: Task<Void, Never>?
     private var activeJobIds: Set<String> = []
+    private var activeClientId: String?
 
     public init(
         transport: any AtlasInteractionTransport,
         reconnectPolicy: AtlasStreamReconnectPolicy = AtlasStreamReconnectPolicy(),
         pollIntervalNanoseconds: UInt64 = 1_300_000_000,
-        streamWindowSeconds: Int = 15
+        streamWindowSeconds: Int = 15,
+        outbox: InteractionOutbox? = nil
     ) {
         self.transport = transport
         self.reconnectPolicy = reconnectPolicy
         self.pollIntervalNanoseconds = pollIntervalNanoseconds
         self.streamWindowSeconds = min(max(streamWindowSeconds, 5), 600)
+        self.outbox = outbox
     }
 
     public func start(
@@ -196,14 +201,26 @@ public actor InteractionRun {
         activeTask?.cancel()
         pollTask?.cancel()
         await cancelActiveJobs()
+        if let activeClientId { try? await outbox?.remove(clientId: activeClientId) }
     }
 
     private func execute(
         input: CreateAiInteractionInput,
         continuation: AsyncThrowingStream<InteractionRunEvent, Error>.Continuation
     ) async {
+        var preparedInput = input
         do {
-            let created = try await createOrRecover(input)
+            let wasPending: Bool
+            if let outbox {
+                let prepared = try await outbox.prepare(input)
+                preparedInput = prepared.input
+                wasPending = prepared.wasPending
+            } else {
+                wasPending = false
+            }
+            activeClientId = preparedInput.clientId
+
+            let created = try await createOrRecover(preparedInput, wasPending: wasPending)
             updateActiveJobs(from: created.trace)
             continuation.yield(.created(created.trace))
 
@@ -244,6 +261,9 @@ public actor InteractionRun {
             }
             if let completed {
                 activeJobIds.removeAll()
+                if let clientId = preparedInput.clientId {
+                    try? await outbox?.remove(clientId: clientId)
+                }
                 continuation.yield(.completed(done: completed, finalTrace: final?.trace))
                 continuation.finish()
             } else {
@@ -251,17 +271,31 @@ public actor InteractionRun {
             }
         } catch is CancellationError {
             await cancelActiveJobs()
+            if let clientId = preparedInput.clientId {
+                try? await outbox?.remove(clientId: clientId)
+            }
             continuation.finish()
         } catch {
             pollTask?.cancel()
+            if !shouldKeepInteraction(after: error), let clientId = preparedInput.clientId {
+                try? await outbox?.remove(clientId: clientId)
+            }
             continuation.finish(throwing: error)
         }
 
         pollTask = nil
         activeTask = nil
+        activeClientId = nil
     }
 
-    private func createOrRecover(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {
+    private func createOrRecover(
+        _ input: CreateAiInteractionInput,
+        wasPending: Bool
+    ) async throws -> AiTraceResponse {
+        if wasPending, let clientId = input.clientId,
+           let recovered = try? await transport.findInteraction(clientId: clientId) {
+            return recovered
+        }
         do {
             return try await transport.createInteraction(input)
         } catch {

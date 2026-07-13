@@ -279,6 +279,7 @@ runRichInputChecks(check)
 await runRichInputEngineChecks(check)
 runRichInputBoundaryChecks(check)
 await runInteractionRunChecks(check)
+await runInteractionOutboxChecks(check)
 runAtlasImagingChecks(check)
 
 // Live-probe do upload (opt-in ATLAS_LIVE=1: sobe bytes reais no staging do

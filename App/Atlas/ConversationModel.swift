@@ -94,6 +94,7 @@ final class ConversationModel {
     private var activeRun: InteractionRun?
     private var attachmentInputs: [String: AttachmentInput] = [:]
     @ObservationIgnored private let engine: AtlasRichInputEngine
+    @ObservationIgnored private let outbox: InteractionOutbox
 
     /// Salt por instalação — escopa o client_upload_id no staging do servidor
     /// (que NÃO separa por device): iPhone e Mac futuro nunca colidem.
@@ -109,6 +110,7 @@ final class ConversationModel {
         self.client = client
         self.threadId = threadId
         self.engine = AtlasRichInputEngine(transport: client, installSalt: Self.installSalt)
+        self.outbox = InteractionOutbox(fileURL: InteractionOutbox.applicationSupportFileURL())
     }
 
     // MARK: - Anexos (imagem via PhotosPicker/câmera/clipboard)
@@ -140,21 +142,23 @@ final class ConversationModel {
     }
 
     func load() async {
-        guard let threadId else { return }
-        do {
-            let response = try await client.getAiThread(threadId)
-            if let w = response.thread.workspace, !w.isEmpty {
-                workspacePath = w
-                workspaceName = (w as NSString).lastPathComponent
-                workspaceSlug = workspaceName?.lowercased()
+        if let threadId {
+            do {
+                let response = try await client.getAiThread(threadId)
+                if let w = response.thread.workspace, !w.isEmpty {
+                    workspacePath = w
+                    workspaceName = (w as NSString).lastPathComponent
+                    workspaceSlug = workspaceName?.lowercased()
+                }
+                bubbles = (response.thread.messages ?? [])
+                    .sorted { $0.position < $1.position }
+                    .map { ChatBubble(id: $0.id, role: $0.role, text: $0.content,
+                                      traceId: $0.traceId, provider: $0.provider, model: $0.model) }
+            } catch {
+                loadError = String(describing: error)
             }
-            bubbles = (response.thread.messages ?? [])
-                .sorted { $0.position < $1.position }
-                .map { ChatBubble(id: $0.id, role: $0.role, text: $0.content,
-                                  traceId: $0.traceId, provider: $0.provider, model: $0.model) }
-        } catch {
-            loadError = String(describing: error)
         }
+        await recoverPendingIfNeeded()
     }
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
@@ -226,43 +230,9 @@ final class ConversationModel {
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,
                                                  uploadedDocuments: fields?.uploadedDocuments.isEmpty == false ? fields?.uploadedDocuments : nil,
                                                  richInputPayload: fields?.richInputPayload)
-            let run = InteractionRun(transport: client)
-            activeRun = run
-            var live = ""
-            for try await event in await run.start(input: input) {
-                switch event {
-                case .created(let trace):
-                    if threadId == nil { threadId = trace.threadId }
-                    update(aid) { $0.traceId = trace.id; $0.provider = trace.provider }
-                    applyExecution(aid, trace)
-                case .activity(let activity):
-                    update(aid) {
-                        guard $0.activities.last?.title != activity.title ||
-                              $0.activities.last?.detail != activity.detail else { return }
-                        $0.activities.append(activity)
-                        if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
-                    }
-                case .content(let frame):
-                    guard frame.channel == nil || frame.channel == "assistant" else { continue }
-                    guard frame.type == "token" || frame.type == "response" else { continue }
-                    guard !frame.content.isEmpty else { continue }
-                    live = frame.type == "response" ? frame.content : live + frame.content
-                    update(aid) { $0.text = live; $0.streaming = true }
-                case .execution(let trace):
-                    applyExecution(aid, trace)
-                case .remoteError(let payload):
-                    let message = payload["message"]?.stringValue ?? "erro no stream"
-                    update(aid) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
-                case .completed(_, let finalTrace):
-                    complete(aid, trace: finalTrace)
-                }
-            }
+            try await execute(input, assistantId: aid)
         } catch {
-            update(aid) {
-                if $0.text.isEmpty { $0.text = "⚠️ \(Self.userMessage(for: error))" }
-                $0.streaming = false
-            }
-            toast = Self.userMessage(for: error)
+            apply(error, to: aid)
         }
         activeRun = nil
         isSending = false
@@ -315,12 +285,91 @@ final class ConversationModel {
         }
     }
 
+    private func execute(_ input: CreateAiInteractionInput, assistantId: String) async throws {
+        let run = InteractionRun(transport: client, outbox: outbox)
+        activeRun = run
+        var live = ""
+        for try await event in await run.start(input: input) {
+            switch event {
+            case .created(let trace):
+                if threadId == nil { threadId = trace.threadId }
+                update(assistantId) { $0.traceId = trace.id; $0.provider = trace.provider }
+                applyExecution(assistantId, trace)
+            case .activity(let activity):
+                update(assistantId) {
+                    guard $0.activities.last?.title != activity.title ||
+                          $0.activities.last?.detail != activity.detail else { return }
+                    $0.activities.append(activity)
+                    if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
+                }
+            case .content(let frame):
+                guard frame.channel == nil || frame.channel == "assistant" else { continue }
+                guard frame.type == "token" || frame.type == "response" else { continue }
+                guard !frame.content.isEmpty else { continue }
+                live = frame.type == "response" ? frame.content : live + frame.content
+                update(assistantId) { $0.text = live; $0.streaming = true }
+            case .execution(let trace):
+                applyExecution(assistantId, trace)
+            case .remoteError(let payload):
+                let message = payload["message"]?.stringValue ?? "erro no stream"
+                update(assistantId) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
+            case .completed(_, let finalTrace):
+                complete(assistantId, trace: finalTrace)
+            }
+        }
+        activeRun = nil
+    }
+
+    private func recoverPendingIfNeeded() async {
+        guard activeRun == nil, !isSending else { return }
+        let pending = await outbox.pending()
+        guard let input = pending.first(where: {
+            if let threadId { return $0.threadId == threadId }
+            return $0.threadId == nil
+        }) else { return }
+
+        // Se o relaunch carregou uma thread já finalizada, não duplica a bolha.
+        if let clientId = input.clientId,
+           let trace = try? await client.findInteraction(clientId: clientId),
+           ["succeeded", "failed", "cancelled"].contains(trace.trace.status),
+           bubbles.contains(where: { $0.traceId == trace.trace.id }) {
+            try? await outbox.remove(clientId: clientId)
+            return
+        }
+
+        if !bubbles.suffix(2).contains(where: { $0.role == "user" && $0.text == input.inputText }) {
+            bubbles.append(ChatBubble(id: "recovered-user-\(input.clientId ?? UUID().uuidString)",
+                                      role: "user", text: input.inputText))
+        }
+        let aid = "recovered-assistant-\(input.clientId ?? UUID().uuidString)"
+        bubbles.append(ChatBubble(id: aid, role: "assistant", text: "", streaming: true, startedAt: Date()))
+        isSending = true
+        do {
+            try await execute(input, assistantId: aid)
+        } catch {
+            apply(error, to: aid)
+        }
+        activeRun = nil
+        isSending = false
+    }
+
+    private func apply(_ error: Error, to id: String) {
+        update(id) {
+            if $0.text.isEmpty { $0.text = "⚠️ \(Self.userMessage(for: error))" }
+            $0.streaming = false
+        }
+        toast = Self.userMessage(for: error)
+    }
+
     private func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
         guard let i = bubbles.firstIndex(where: { $0.id == id }) else { return }
         mutate(&bubbles[i])
     }
 
     private static func userMessage(for error: Error) -> String {
+        if error is AtlasInteractionStreamError {
+            return "A conexão com a execução caiu. O Atlas retomará este turno automaticamente."
+        }
         if let urlError = error as? URLError {
             switch urlError.code {
             case .networkConnectionLost, .notConnectedToInternet, .cannotConnectToHost,

@@ -110,7 +110,7 @@ public struct AiTraceResponse: Codable, Sendable { public let trace: AtlasAiTrac
 // MARK: - Input de criação (só o caminho JSON; upload em chunks precisa de
 // FileSystem do device e porta depois — createAiInteraction §1219 do .ts).
 
-public struct CreateAiInteractionInput: Encodable, Sendable {
+public struct CreateAiInteractionInput: Codable, Sendable {
     public var inputText: String
     public var clientId: String?
     public var threadId: String?

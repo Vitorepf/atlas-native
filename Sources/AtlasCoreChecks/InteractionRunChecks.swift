@@ -112,6 +112,22 @@ private actor LostCreateResponseTransport: AtlasInteractionTransport {
     func requestedRecoveryClientIds() -> [String] { recoveryClientIds }
 }
 
+private actor TerminalCreateFailureTransport: AtlasInteractionTransport {
+    func createInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {
+        throw AtlasApiError(status: 422, path: "/ai/interactions", message: "invalid")
+    }
+    func findInteraction(clientId: String) async throws -> AiTraceResponse? { nil }
+    func interactionSnapshot(traceId: String) async throws -> AiTraceResponse {
+        throw AtlasApiError(status: 404, path: "/ai/interactions", message: "missing")
+    }
+    func cancelInteractionJob(_ jobId: String) async {}
+    func openInteractionStreamOnce(
+        traceId: String, after: Int, timeoutSeconds: Int
+    ) async throws -> AsyncThrowingStream<AtlasAiStreamFrame, Error> {
+        AsyncThrowingStream { $0.finish() }
+    }
+}
+
 private func interactionResponse(jobStatus: String = "processing") throws -> AiTraceResponse {
     let json = """
     {
@@ -265,10 +281,15 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     do {
         let response = try interactionResponse(jobStatus: "succeeded")
         let transport = LostCreateResponseTransport(recovered: response)
+        let outboxURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("interaction-run-success-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: outboxURL) }
+        let outbox = InteractionOutbox(fileURL: outboxURL)
         let run = InteractionRun(
             transport: transport,
             reconnectPolicy: AtlasStreamReconnectPolicy(maxReconnects: 0, baseDelayMilliseconds: 0),
-            pollIntervalNanoseconds: 60_000_000_000
+            pollIntervalNanoseconds: 60_000_000_000,
+            outbox: outbox
         )
         let clientId = "f1bdc4b4-daa2-4f27-91bc-a4702307b553"
         var completed = false
@@ -280,8 +301,21 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
         }
         check("-1005 recupera create aceito via clientId", completed)
         check("recovery consulta exatamente o clientId estável", await transport.requestedRecoveryClientIds() == [clientId])
+        check("done remove turno da outbox", await outbox.pending().isEmpty)
     } catch {
         check("-1005 recupera create aceito via clientId", false)
+    }
+
+    do {
+        let outboxURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("interaction-run-terminal-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: outboxURL) }
+        let outbox = InteractionOutbox(fileURL: outboxURL)
+        let run = InteractionRun(transport: TerminalCreateFailureTransport(), outbox: outbox)
+        do {
+            for try await _ in await run.start(input: CreateAiInteractionInput(inputText: "inválido")) {}
+        } catch {}
+        check("422 terminal não fica em loop na outbox", await outbox.pending().isEmpty)
     }
 
     check("shouldKeep mantém erro de rede", shouldKeepInteraction(after: URLError(.networkConnectionLost)))
@@ -358,7 +392,11 @@ public func runInteractionRunLiveProbe(
         newThread: true,
         payload: payload
     )
-    let run = InteractionRun(transport: client)
+    let outboxURL = FileManager.default.temporaryDirectory
+        .appendingPathComponent("atlas-live-outbox-\(UUID().uuidString).json")
+    defer { try? FileManager.default.removeItem(at: outboxURL) }
+    let outbox = InteractionOutbox(fileURL: outboxURL)
+    let run = InteractionRun(transport: client, outbox: outbox)
     var created = false
     var receivedContent = false
     var completed = false
@@ -379,6 +417,7 @@ public func runInteractionRunLiveProbe(
         check("live create foi aceito pelo servidor", created)
         check("live SSE entregou conteúdo", receivedContent)
         check("live SSE recebeu done", completed)
+        check("live done drenou outbox", await outbox.pending().isEmpty)
     } catch {
         check("live InteractionRun create → SSE → done", false)
         print("    erro: \(error)")

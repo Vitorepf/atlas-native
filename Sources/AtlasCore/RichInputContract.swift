@@ -45,7 +45,7 @@ public enum AtlasAttachmentKind: String, Codable, Sendable {
 /// não omite) — para a fixture bater estruturalmente. O struct pode ser
 /// embutido tanto no encoder .convertToSnakeCase do AtlasClient (chaves snake
 /// são idempotentes sob a conversão) quanto dentro de JSONObject.
-public struct AtlasRichInputPayload: Encodable, Equatable, Sendable {
+public struct AtlasRichInputPayload: Codable, Equatable, Sendable {
     public static let schemaVersion = "atlas.rich_input.payload.v1"
 
     public var uploadedImageIds: [String]
@@ -90,7 +90,18 @@ public struct AtlasRichInputPayload: Encodable, Equatable, Sendable {
         }
     }
 
-    public struct TextBlock: Encodable, Equatable, Sendable {
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        uploadedImageIds = try c.decodeIfPresent([String].self, forKey: .uploadedImageIds) ?? []
+        uploadedDocumentIds = try c.decodeIfPresent([String].self, forKey: .uploadedDocumentIds) ?? []
+        textBlocks = try c.decodeIfPresent([TextBlock].self, forKey: .textBlocks) ?? []
+        urlAttachments = try c.decodeIfPresent([UrlAttachment].self, forKey: .urlAttachments) ?? []
+        sourceManifest = try c.decodeIfPresent([ManifestEntry].self, forKey: .sourceManifest) ?? []
+        let hashes = try c.decodeIfPresent([String: String].self, forKey: .hashes)
+        manifestSha256 = hashes?["manifest_sha256"]
+    }
+
+    public struct TextBlock: Codable, Equatable, Sendable {
         public var fileName: String
         public var mimeType: String
         public var language: String?
@@ -118,7 +129,7 @@ public struct AtlasRichInputPayload: Encodable, Equatable, Sendable {
         }
     }
 
-    public struct UrlAttachment: Encodable, Equatable, Sendable {
+    public struct UrlAttachment: Codable, Equatable, Sendable {
         public var url: String
         /// 'youtube' | 'vimeo' | 'github' | 'generic' — youtube exige refId de
         /// 11 chars no servidor (422 sem ele).
@@ -151,7 +162,7 @@ public struct AtlasRichInputPayload: Encodable, Equatable, Sendable {
         }
     }
 
-    public struct ManifestEntry: Encodable, Equatable, Sendable {
+    public struct ManifestEntry: Codable, Equatable, Sendable {
         public var id: String
         public var kind: AtlasAttachmentKind
         public var fileName: String
