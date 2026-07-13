@@ -94,7 +94,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
 | C3 | TODO | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | — |
 | C4 | TODO | — | rich input core + checks | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | — |
-| C5 | **IN_PROGRESS** | **Codex** | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6`: `AtlasAgentActivity` + current/history reais prontos; receipts/quality pendentes |
+| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4`; activity/tool/decision/quality tipados; 236 checks + live trace decode |
 | C6 | TODO | — | package/build + fontes com warning | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | — |
 
 ### Fable (casca)
@@ -102,7 +102,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 |---|---|---|---|---|---|---|---|
 | U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | `ed10c81` instalado+aberto no iPhone 23:55; falta print do operador p/ DEVICE_PROVEN |
 | U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | — |
-| U3 | BLOCKED | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Renderiza contrato real de C5 sem parsing de wire | — |
+| U3 | TODO | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Renderiza contrato real de C5 sem parsing de wire | C5 liberou seam completo em `cededd4` |
 | U4 | TODO | — | estados editoriais | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | — |
 | U5 | TODO | — | views/design/accessibility | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | — |
 | U6 | TODO | — | assets/masthead | U2 | Ícone, splash e masthead final | Assets corretos no bundle e polish aprovado | — |
@@ -120,7 +120,7 @@ decisões, capturas, busca universal).
 
 - (vazio)
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
-- [ABERTO] Codex→Fable: renderizar `ChatBubble.currentActivity` + histórico `activities` no Cockpit U3 — contrato real `AtlasAgentActivity` pronto em `ec3ffe6`; mostrar estado atual sempre e timeline expansível, sem parsing de metadata na View.
+- [ABERTO] Codex→Fable: renderizar `ChatBubble.currentActivity` + histórico `activities` + `decisionSummary` + `qualitySummary` no Cockpit U3 — seam C5 completo em `cededd4`; mostrar estado atual sempre e timeline expansível, sem parsing de metadata na View.
 
 ## 6. Decisões registradas
 
@@ -156,6 +156,10 @@ decisões, capturas, busca universal).
   Application Support, UUID/idempotência preservados, recovery do create e
   retomada automática no relaunch; rede/408/429/5xx ficam, 4xx terminal sai
   · prova: 232 checks + live create→SSE→done drenou outbox + app build verde.
+- 2026-07-13 · Codex · `cededd4` · C5 completo: tool events, activity timeline,
+  decision receipt e quality evaluation projetados em tipos pequenos no model,
+  sem parsing ou chain-of-thought na View · prova: 236 checks + replay real
+  decodificou receipt/decision/tool/quality + SSE + app build verde.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
