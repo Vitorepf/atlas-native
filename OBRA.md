@@ -96,7 +96,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea` + `ce850fe` + `c952c26` + `4b68d29`; `tool` e `progress\|shell` real, upsert started→completed, redaction, replay; processo do provider não finge ser tool nem expõe argv/path |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof | U1–U6 | Harness XCUITest físico reproduzível | Test target assinado dirige conversa/tool/cockpit no iPhone e captura evidence attachment sem depender de automação externa do macOS | `8407ca1`; Simulator XCUITest verde com Codex real + `Comando concluído` persistido; físico buildou/assinou mas o iPhone permaneceu bloqueado; rich input aguarda `PasteButton` (§5) |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` (latência live tool) | U1–U6 | Harness XCUITest físico reproduzível | Test target assinado dirige conversa/tool/cockpit no iPhone e captura evidence attachment; live-probe mede se `shell started` chega antes de `done` com janela visual real | `8407ca1` + `a08088e`; Simulator XCUITest verde; Codex real entregou `shell.started` antes de `done`, manteve tool observável >5s e persistiu replay; físico bloqueado e rich input/PasteButton pendentes (§5) |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -134,11 +134,12 @@ decisões, capturas, busca universal).
 - [ABERTO · SERVER] Codex→Backend: causa confirmada em
   `AiStreamRecorder`: a allowlist exclui `tool`/`thinking` e os converte para
   `progress`. Codex persiste `progress|shell` started→completed (9s no probe) e
-  o mobile `c952c26` já o projeta/reproduz; Kimi, porém, ainda entrega só o
-  processo do provider + stdout, sem tools internas. Corrigir o contrato
-  canônico provider-neutral (`tool`/`thinking` sem coerção), instrumentar todos
-  os providers e provar SSE da tool AO VIVO antes de `done`, não apenas replay.
-  `process_started` não vale como tool desde `4b68d29`.
+  o mobile `c952c26` já o projeta/reproduz. `a08088e` provou o evento AO VIVO
+  antes de `done`, observável por mais de 5s e persistido no replay. Kimi, porém,
+  ainda entrega só o processo do provider + stdout, sem tools internas. Falta
+  corrigir o contrato canônico provider-neutral (`tool`/`thinking` sem coerção)
+  e instrumentar todos os providers. `process_started` não vale como tool desde
+  `4b68d29`.
 - [ABERTO] Codex→Fable: substituir o botão que lê `UIPasteboard.general`
   diretamente por `PasteButton` nativo. No iOS 26 o fluxo atual abre “Permitir
   Colar”, bloqueia a automação e cria fricção real; o rich input Core já aceita
@@ -249,6 +250,10 @@ decisões, capturas, busca universal).
   físico-equivalente verde com Codex real, atividade ao vivo e comando
   persistido; execução no iPhone parou no preflight porque o aparelho estava
   bloqueado, logo C7 permanece IN_PROGRESS.
+- 2026-07-13 · Codex · `a08088e` · C7 medição live: probe Codex força comando
+  read-only de 8s e exige lifecycle semântico antes da conclusão · prova:
+  `shell.started` recebido durante a execução, tool observável por mais de 5s,
+  conclusão persistida e reaparecimento no replay; checks Core + App verdes.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
