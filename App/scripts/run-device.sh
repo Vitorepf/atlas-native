@@ -11,18 +11,21 @@ PROJECT="${3:-Atlas.xcodeproj}"
 # 1. Device: usa DEVICE_ID se dado, senão auto-detecta o 1º iPhone conectado.
 UDID="${DEVICE_ID:-}"
 if [ -z "$UDID" ]; then
-  UDID=$(xcrun devicectl list devices --json-output /dev/stdout 2>/dev/null | python3 -c '
+  DEVICES_JSON="$(mktemp)"
+  xcrun devicectl list devices --json-output "$DEVICES_JSON" >/dev/null 2>&1 || true
+  UDID=$(python3 -c '
 import sys, json
 try:
-    data = json.load(sys.stdin)
+    data = json.load(open(sys.argv[1]))
 except Exception:
     sys.exit(0)
 for dev in data.get("result", {}).get("devices", []):
     conn = dev.get("connectionProperties", {})
     hw = dev.get("hardwareProperties", {})
-    if hw.get("platform", "").lower().startswith("ios") and conn.get("tunnelState") not in (None, "unavailable"):
+    if hw.get("platform", "").lower().startswith("ios") and conn.get("pairingState") == "paired":
         print(hw.get("udid", "")); break
-' || true)
+' "$DEVICES_JSON" || true)
+  rm -f "$DEVICES_JSON"
 fi
 
 if [ -z "$UDID" ]; then
@@ -31,11 +34,11 @@ if [ -z "$UDID" ]; then
   echo "  Liste devices: xcrun devicectl list devices"
   exit 1
 fi
-echo "→ device: $UDID"
+echo "→ iPhone físico pareado encontrado"
 
 # 2. Build (assinatura automática, provisioning sob demanda).
 DERIVED="$(mktemp -d)"
-xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Debug \
+xcodebuild -quiet -project "$PROJECT" -scheme "$SCHEME" -configuration Debug \
   -destination "id=$UDID" -allowProvisioningUpdates \
   -derivedDataPath "$DERIVED" build
 

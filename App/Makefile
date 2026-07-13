@@ -12,7 +12,7 @@ SCHEME  := Atlas
 PROJECT := Atlas.xcodeproj
 BUNDLE  := com.vitor.atlas.native
 
-.PHONY: generate build sim device open clean
+.PHONY: generate build sim device device-proof open clean
 
 # Regenera o .xcodeproj a partir do project.yml (texto → projeto).
 generate:
@@ -40,6 +40,11 @@ runtime:
 # Builda + instala + abre no iPhone conectado/wireless (assinatura automática).
 device: generate
 	bash scripts/run-device.sh $(BUNDLE) $(SCHEME) $(PROJECT)
+
+# Prova reproduzível no iPhone físico: dirige rich input + conversa/cockpit e
+# exporta screenshots do xcresult para docs/evidence/<data>/device-proof.
+device-proof: generate
+	bash scripts/run-device-proof.sh $(SCHEME) $(PROJECT)
 
 open: generate
 	open $(PROJECT)
