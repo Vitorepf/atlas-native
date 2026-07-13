@@ -35,6 +35,8 @@ targets:
         product: AtlasCore
       - package: AtlasCore
         product: AtlasImaging
+      - target: AtlasWidgets
+        embed: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.vitor.atlas.native
@@ -49,6 +51,22 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_STRICT_CONCURRENCY: complete
         CODE_SIGN_STYLE: Automatic
+
+  AtlasWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Widgets
+      - path: Atlas/AtlasActivityAttributes.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vitor.atlas.native.widgets
+        INFOPLIST_FILE: Widgets/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_STRICT_CONCURRENCY: complete
+        CODE_SIGN_STYLE: Automatic
+        SKIP_INSTALL: YES
+        TARGETED_DEVICE_FAMILY: "1"
 
   AtlasDeviceProof:
     type: bundle.ui-testing

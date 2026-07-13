@@ -48,6 +48,9 @@ struct ConversationView: View {
         .navigationBarHidden(true)
         .overlay(alignment: .top) { toast }
         .task { await model.load() }
+        // Presença fora do app: Live Activity (lock screen/Dynamic Island)
+        // enquanto trabalha + notificação local quando conclui fora da tela.
+        .onAppear { TurnPresence.shared.watch(model, threadTitle: title) }
         .onChange(of: model.isSending) { was, now in
             // Resposta terminou → haptic de sucesso (o toque que fecha o ciclo)
             if was && !now { UINotificationFeedbackGenerator().notificationOccurred(.success) }
@@ -521,26 +524,12 @@ private struct ExecutionRibbon: View {
                         .frame(width: 26, height: 26).background(Circle().fill(AtlasTheme.surfaceHi))
                 }.buttonStyle(.plain)
             }
-            // A ATIVIDADE ATUAL — o que o Atlas está fazendo AGORA (contrato C5:
-            // projeção segura, sem stdout/reasoning cru).
-            if let act = bubble.currentActivity {
-                HStack(spacing: 8) {
-                    Image(systemName: activityIcon(act.kind))
-                        .font(.system(size: 12)).foregroundStyle(AtlasTheme.accent)
-                        .frame(width: 16)
-                    Text(act.title)
-                        .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.textSecondary)
-                        .lineLimit(1)
-                    if let d = act.detail, !d.isEmpty {
-                        Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                            .lineLimit(1).truncationMode(.middle)
-                    }
-                    Spacer(minLength: 0)
-                }
-                .padding(.leading, 24)
-                .id(act.id)
-                .transition(reduceMotion ? .opacity : .push(from: .bottom))
-                .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: act.id)
+            // A CONSTRUÇÃO AO VIVO — todos os passos empilham conforme chegam
+            // (contrato C5: projeção segura). O atual pulsa; os anteriores
+            // assentam. É a progressão do Cursor, na gramática do Atlas.
+            if !bubble.activities.isEmpty {
+                LiveTimeline(activities: bubble.activities, reduceMotion: reduceMotion)
+                    .padding(.leading, 24)
             }
             if !bubble.agents.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
@@ -686,6 +675,85 @@ private struct EmptyConversation: View {
 private struct BottomDistanceKey: PreferenceKey {
     static let defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+}
+
+// A timeline VIVA da execução: cada passo do agente aparece e FICA (empilha
+// como no Cursor), com o passo atual pulsando em gold e os anteriores
+// assentados. Pensamento fala em serif italic; ferramenta/arquivo em mono.
+// Cresce até ~8 linhas visíveis e rola sozinha pro passo novo.
+private struct LiveTimeline: View {
+    let activities: [AtlasAgentActivity]
+    let reduceMotion: Bool
+
+    var body: some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 7) {
+                    ForEach(activities) { act in
+                        LiveTimelineRow(activity: act,
+                                        isCurrent: act.id == activities.last?.id,
+                                        reduceMotion: reduceMotion)
+                            .id(act.id)
+                            .transition(reduceMotion ? .opacity
+                                        : .move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+                .padding(.trailing, 4)
+            }
+            .frame(maxHeight: min(CGFloat(activities.count) * 26 + 8, 216))
+            .scrollIndicators(.hidden)
+            .onChange(of: activities.count) {
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+                    proxy.scrollTo(activities.last?.id, anchor: .bottom)
+                }
+            }
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: activities.count)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("execução ao vivo, \(activities.count) passos")
+    }
+}
+
+private struct LiveTimelineRow: View {
+    let activity: AtlasAgentActivity
+    let isCurrent: Bool
+    let reduceMotion: Bool
+    @State private var pulse = false
+
+    private var isThought: Bool {
+        activity.kind == .reasoning || activity.kind == .understanding || activity.kind == .planning
+    }
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Image(systemName: activityIcon(activity.kind))
+                .font(.system(size: 11))
+                .foregroundStyle(isCurrent ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.45))
+                .frame(width: 15)
+                .opacity(isCurrent && pulse ? 0.45 : 1)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(activity.title)
+                    .font(isThought ? AtlasFont.serifItalic(13) : .system(.footnote))
+                    .foregroundStyle(isCurrent ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+                    .lineLimit(isCurrent ? 2 : 1)
+                if let d = activity.detail, !d.isEmpty {
+                    Text(d)
+                        .font(AtlasFont.mono(11))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .lineLimit(1).truncationMode(.middle)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .onAppear {
+            if isCurrent && !reduceMotion {
+                withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) { pulse = true }
+            }
+        }
+        .onChange(of: isCurrent) { _, now in
+            if !now { pulse = false }
+        }
+    }
 }
 
 // Ícone por kind de atividade (vocabulário estável do contrato C5).
