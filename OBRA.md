@@ -470,6 +470,15 @@ a casca não inventa número, progresso, status, prompt ou prova.
   warning falso de orientação iPad · prova: dois checks TDD red→green; Core +
   App verdes; build genérico iPhone `warning_count=0`; execução real bloqueada
   terminou `rc=2` em ~2s e manteve sentinelas do result/evidence.
+- 2026-07-13 · Codex · `3ec45aa87` (atlas-server) + `c2b8241` + `c955b65`
+  (atlas-native) · C8 APNs real: ActivityKit pede token por execução, Core o
+  registra/invalida contra o trace, servidor cifra/rota token e projeta o
+  ledger público do Terminal para APNs com JWT ES256, debounce e contagem por
+  instalação · prova: 3 Feature tests/20 asserts (registro, rotação,
+  invalidação e payload APNs redigido), migration local aplicada, rotas
+  protegidas confirmadas, `swift run AtlasCoreChecks` + `make build` verdes.
+  A prova final em iPhone/Lock Screen remoto aguarda somente credencial APNs
+  externa no cofre; não é marcada como entregue antes disso.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
