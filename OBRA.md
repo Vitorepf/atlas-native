@@ -91,7 +91,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
 | C1 | **DONE** | — | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | `ec3ffe6`; 220 checks; live create→SSE content→done; app build verde |
-| C2 | **IN_PROGRESS** | **Codex** | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | evidência real: “Boa noite” succeeded no servidor após iPhone perder resposta do POST; recovery em implementação |
+| C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
 | C3 | TODO | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | — |
 | C4 | TODO | — | rich input core + checks | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | — |
 | C5 | **IN_PROGRESS** | **Codex** | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6`: `AtlasAgentActivity` + current/history reais prontos; receipts/quality pendentes |
@@ -152,6 +152,10 @@ decisões, capturas, busca universal).
   cancel real, recovery de `-1005` por UUID e feed tipado de atividade do agente
   · prova: 220 checks + live create→SSE content→done + `make build` verde;
   deploy bloqueado apenas por iPhone fora da lista de devices pareados.
+- 2026-07-13 · Codex · `d1c78ba` · C2 completo: outbox JSON atômica em
+  Application Support, UUID/idempotência preservados, recovery do create e
+  retomada automática no relaunch; rede/408/429/5xx ficam, 4xx terminal sai
+  · prova: 232 checks + live create→SSE→done drenou outbox + app build verde.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
