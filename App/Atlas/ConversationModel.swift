@@ -32,7 +32,7 @@ struct ChatBubble: Identifiable, Equatable {
     var decideStage: String? = nil
     var decideStrategy: String? = nil
     var activities: [AtlasAgentActivity] = []
-    var currentActivity: AtlasAgentActivity? { activities.last }
+    var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
     var decisionSummary: AtlasDecisionSummary? = nil
     var qualitySummary: AtlasQualitySummary? = nil
 }

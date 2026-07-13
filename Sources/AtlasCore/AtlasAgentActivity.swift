@@ -110,12 +110,16 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
         let finished = phase.contains("completed") || ["completed", "succeeded", "failed"].contains(status)
 
         if name.contains("edit") || name.contains("write") || name.contains("patch") || name.contains("apply") {
-            return failed
-                ? activity(.warning, "Edição terminou com falha")
+            if failed { return activity(.warning, "Edição terminou com falha") }
+            return finished
+                ? activity(.completed, "Edição concluída", detail: safeFileSummary(event.content))
                 : activity(.editing, "Editando arquivos", detail: safeFileSummary(event.content))
         }
         if name.contains("search") || name.contains("find") || name.contains("grep") {
-            return activity(.reading, "Buscando no projeto", detail: safeActivityDetail(event.content))
+            if failed { return activity(.warning, "Busca terminou com falha") }
+            return finished
+                ? activity(.completed, "Busca concluída", detail: safeActivityDetail(event.content))
+                : activity(.reading, "Buscando no projeto", detail: safeActivityDetail(event.content))
         }
         if name == "shell" || name.contains("bash") || name.contains("exec") || name == "run" {
             if failed { return activity(.warning, "Comando terminou com falha") }
@@ -124,8 +128,9 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
             }
             return activity(.executing, "Executando comando", detail: safeCommandText(event.content))
         }
-        return failed
-            ? activity(.warning, "Ferramenta terminou com falha")
+        if failed { return activity(.warning, "Ferramenta terminou com falha") }
+        return finished
+            ? activity(.completed, "Ferramenta concluída")
             : activity(.executing, "Usando ferramenta")
     }
 
@@ -209,6 +214,20 @@ public func atlasMergeAgentActivities(
         result.removeFirst(result.count - limit)
     }
     return result
+}
+
+/// Escolhe o passo que merece o slot de atividade AO VIVO. Um provider pode
+/// continuar emitindo reasoning/progress enquanto uma ferramenta ainda está
+/// aberta; `activities.last` faria esse ruído substituir a ação real. Como o
+/// merge troca started→completed pelo mesmo item, basta priorizar o item de
+/// tool mais recente que ainda tem um kind ativo.
+public func atlasCurrentAgentActivity(
+    from activities: [AtlasAgentActivity]
+) -> AtlasAgentActivity? {
+    let activeKinds: Set<AtlasAgentActivity.Kind> = [.executing, .reading, .editing]
+    return activities.last(where: {
+        $0.id.contains(":item:") && activeKinds.contains($0.kind)
+    }) ?? activities.last
 }
 
 private func containsSensitiveCommandMaterial(_ lower: String) -> Bool {

@@ -460,6 +460,14 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
         content: "AtlasAgentActivity",
         metadata: JSONObject(["name": .string("search")])
     )
+    let codexSearchCompleted = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 35, type: "tool", channel: "activity",
+        content: "AtlasAgentActivity",
+        metadata: JSONObject([
+            "name": .string("search"), "phase": .string("item.completed"),
+            "item_id": .string("search-item"), "status": .string("completed"),
+        ])
+    )
     let codexSecretShell = AtlasAiStreamEvent(
         traceId: "trace-run", sequence: 29, type: "tool", channel: "activity",
         content: "curl --token atlas-codex-secret https://atlas.test",
@@ -515,12 +523,14 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
               existing: [atlasAgentActivity(from: codexShell)!],
               incoming: [atlasAgentActivity(from: codexShellCompleted)!]
           ) == shellJourney)
-    check("tool edit Codex vira arquivo sem caminho interno",
-          atlasAgentActivity(from: codexEdit)?.kind == .editing &&
+    check("tool edit Codex concluída não permanece falsamente ativa",
+          atlasAgentActivity(from: codexEdit)?.kind == .completed &&
           atlasAgentActivity(from: codexEdit)?.detail == "A.swift")
     check("tool search Codex vira busca real",
           atlasAgentActivity(from: codexSearch)?.kind == .reading &&
           atlasAgentActivity(from: codexSearch)?.detail == "AtlasAgentActivity")
+    check("tool search concluída não permanece falsamente ativa",
+          atlasAgentActivity(from: codexSearchCompleted)?.kind == .completed)
     check("tool shell Codex nunca vaza argumento secreto",
           atlasAgentActivity(from: codexSecretShell)?.detail == "<redacted>")
     check("thinking Codex vira atividade sem chain-of-thought",
@@ -535,6 +545,19 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     check("progress|reasoning real não vaza chain-of-thought",
           atlasAgentActivity(from: recordedThinking)?.kind == .reasoning &&
           atlasAgentActivity(from: recordedThinking)?.detail == nil)
+    let interleavedWhileShellRuns = atlasMergeAgentActivities(
+        existing: [],
+        incoming: [atlasAgentActivity(from: recordedShell)!,
+                   atlasAgentActivity(from: recordedThinking)!]
+    )
+    check("tool aberta continua atividade atual sobre reasoning intercalado",
+          atlasCurrentAgentActivity(from: interleavedWhileShellRuns)?.title == "Executando comando")
+    let interleavedAfterShellFinishes = atlasMergeAgentActivities(
+        existing: interleavedWhileShellRuns,
+        incoming: [atlasAgentActivity(from: recordedShellCompleted)!]
+    )
+    check("tool concluída libera a atividade atual",
+          atlasCurrentAgentActivity(from: interleavedAfterShellFinishes)?.kind == .reasoning)
 
     do {
         let proofTrace = try interactionResponse().trace
