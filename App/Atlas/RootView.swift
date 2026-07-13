@@ -13,6 +13,7 @@ enum Route: Hashable {
 // num workspace abre suas conversas com filtro de área.
 struct RootView: View {
     @Environment(AtlasSession.self) private var session
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var path = NavigationPath()
 
     var body: some View {
@@ -74,20 +75,55 @@ struct RootView: View {
     private var content: some View {
         switch session.phase {
         case .idle, .loading where session.threads.isEmpty:
-            centered { ProgressView().tint(AtlasTheme.textSecondary) }
+            centered {
+                VStack(spacing: 18) {
+                    BreathingGlyph(reduceMotion: reduceMotion)
+                    Text("abrindo o Atlas…")
+                        .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textTertiary)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("abrindo o Atlas")
+            }
 
         case .failed where session.threads.isEmpty:
             centered {
-                VStack(spacing: 10) {
-                    Image(systemName: "bolt.horizontal.circle").font(.system(size: 30)).foregroundStyle(AtlasTheme.textTertiary)
-                    Text(session.hasToken ? "Servidor desconectado" : "Falta o ATLAS_TOKEN")
-                        .font(.system(size: 16, weight: .medium)).foregroundStyle(AtlasTheme.textSecondary)
-                    Text(session.hasToken ? "em \(session.host)" : "configure em Secrets.xcconfig")
-                        .font(.system(size: 13)).foregroundStyle(AtlasTheme.textTertiary)
-                    Button("Tentar de novo") { Task { await session.loadThreads() } }
-                        .font(.system(size: 15, weight: .medium)).foregroundStyle(AtlasTheme.accent).padding(.top, 4)
+                // Falha editorial: diz O QUE houve e O QUE fazer — nunca um beco
+                // sem saída. Voz do Atlas, não voz de sistema.
+                VStack(spacing: 0) {
+                    Text("✦")
+                        .font(AtlasFont.serif(28)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
+                    Spacer().frame(height: 28)
+                    Text(session.hasToken ? "O servidor está fora de alcance."
+                                          : "Falta a chave do Atlas.")
+                        .font(AtlasFont.serif(22, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
+                        .multilineTextAlignment(.center)
+                    Spacer().frame(height: 12)
+                    Text(session.hasToken ? "\(session.host):3737" : "ATLAS_TOKEN · Secrets.xcconfig")
+                        .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
+                    Spacer().frame(height: 16)
+                    Text(session.hasToken
+                         ? "Confira se o Mac está acordado e o Tailscale ligado — a conversa continua de onde parou."
+                         : "Configure o token no Mac e reinstale — nada foi perdido.")
+                        .font(.system(size: 14)).lineSpacing(5)
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .multilineTextAlignment(.center)
+                    if session.hasToken {
+                        Spacer().frame(height: 28)
+                        Button {
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                            Task { await session.loadThreads() }
+                        } label: {
+                            Text("Tentar de novo")
+                                .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.accent)
+                                .padding(.horizontal, 22).padding(.vertical, 10)
+                                .background(Capsule().fill(AtlasTheme.goldVeil)
+                                    .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+                        }
+                        .buttonStyle(PressableScale())
+                        .accessibilityHint("reconecta ao servidor Atlas")
+                    }
                 }
-                .multilineTextAlignment(.center).padding(.horizontal, 40)
+                .padding(.horizontal, 44)
             }
 
         default:   // .loaded, ou refresh/erro com conteúdo já em tela
@@ -160,6 +196,24 @@ struct RootView: View {
 }
 
 // MARK: - Componentes compartilhados
+
+/// O ✦ respirando — a marca viva do Atlas nos estados de espera.
+struct BreathingGlyph: View {
+    let reduceMotion: Bool
+    @State private var on = false
+    var body: some View {
+        Text("✦")
+            .font(AtlasFont.serif(30)).foregroundStyle(AtlasTheme.accent)
+            .shadow(color: AtlasTheme.accent.opacity(0.30), radius: 4, y: 1)
+            .scaleEffect(on ? 1.08 : 1).opacity(on ? 0.8 : 1)
+            .onAppear {
+                if !reduceMotion {
+                    withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) { on = true }
+                }
+            }
+            .accessibilityHidden(true)
+    }
+}
 
 struct CircleButton: View {
     let icon: String

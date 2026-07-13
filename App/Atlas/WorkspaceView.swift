@@ -76,9 +76,19 @@ struct WorkspaceView: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 if threads.isEmpty {
-                    Text("Nenhuma conversa em \(area.label)")
-                        .font(.system(size: 15)).foregroundStyle(AtlasTheme.textTertiary)
-                        .frame(maxWidth: .infinity).padding(.top, 60)
+                    // Vazio editorial: convite, não aviso de sistema.
+                    VStack(spacing: 14) {
+                        Text("✦")
+                            .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
+                        Text(area == .tudo
+                             ? "“Nenhuma conversa aqui ainda.”"
+                             : "“Nada em \(area.label) — por enquanto.”")
+                            .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
+                            .multilineTextAlignment(.center)
+                        Text("comece uma abaixo")
+                            .font(.system(size: 13)).foregroundStyle(AtlasTheme.textTertiary)
+                    }
+                    .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
                 } else {
                     ForEach(threads) { t in
                         NavigationLink(value: Route.thread(id: t.id, title: t.title)) {
