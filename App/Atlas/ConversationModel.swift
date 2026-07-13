@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 import AtlasCore
 import AtlasImaging
 
@@ -117,7 +118,13 @@ final class ConversationModel {
 
     // MARK: - Anexos (imagem via PhotosPicker/câmera/clipboard)
 
-    func addImage(data: Data, suggestedName: String?, mimeType: String, identity: String) {
+    func addImage(
+        data: Data,
+        suggestedName: String?,
+        mimeType: String,
+        identity: String,
+        source: String = "photos"
+    ) {
         guard drafts.filter({ $0.kind == .image }).count < AtlasAttachmentLimits.canonical.maxImages else {
             toast = "máximo de 8 imagens"; return
         }
@@ -127,14 +134,69 @@ final class ConversationModel {
             let ext = n.mimeType == "image/png" ? "png" : n.mimeType == "image/gif" ? "gif" : "jpg"
             let name = suggestedName ?? "foto-\(Int(Date().timeIntervalSince1970)).\(ext)"
             let id = "att-\(UUID().uuidString.prefix(8))"
-            attachmentInputs[id] = AttachmentInput(
-                kind: .image, fileName: name, mimeType: n.mimeType, source: "photos",
-                identity: identity, bytes: DataByteSource(n.data),
-                width: n.width, height: n.height)
-            drafts.append(LocalDraft(id: id, fileName: name, mimeType: n.mimeType,
-                                     kind: .image, bytes: n.data.count, preview: n.data))
+            let input = AtlasAttachmentAdapter.data(
+                n.data, fileName: name, mimeType: n.mimeType, source: source,
+                identity: identity, width: n.width, height: n.height
+            )
+            append(input, id: id, preview: n.data)
         } catch {
             toast = "imagem inválida: \(error)"
+        }
+    }
+
+    func addFile(url: URL) {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        do {
+            let data = try Data(contentsOf: url, options: .mappedIfSafe)
+            let mime = UTType(filenameExtension: url.pathExtension)?.preferredMIMEType
+                ?? "application/octet-stream"
+            let input = AtlasAttachmentAdapter.data(
+                data, fileName: url.lastPathComponent, mimeType: mime,
+                source: "files", identity: url.standardizedFileURL.path
+            )
+            try ensureCapacity(for: input)
+            append(input, id: "att-\(UUID().uuidString.prefix(8))", preview: nil)
+        } catch {
+            toast = "não consegui anexar o arquivo: \(error)"
+        }
+    }
+
+    func addClipboard(text: String) {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { toast = "clipboard sem texto"; return }
+        do {
+            let input = AtlasAttachmentAdapter.clipboard(text: trimmed)
+            try ensureCapacity(for: input)
+            append(input, id: "att-\(UUID().uuidString.prefix(8))", preview: nil)
+        } catch {
+            toast = "não consegui anexar o clipboard: \(error)"
+        }
+    }
+
+    private func append(_ input: AttachmentInput, id: String, preview: Data?) {
+        attachmentInputs[id] = input
+        drafts.append(LocalDraft(
+            id: id, fileName: input.fileName, mimeType: input.mimeType,
+            kind: input.kind, bytes: input.bytes.totalBytes, preview: preview
+        ))
+    }
+
+    private func ensureCapacity(for input: AttachmentInput) throws {
+        let count = drafts.filter { draft in
+            if input.kind == .image { return draft.kind == .image }
+            if input.kind == .pdf { return draft.kind == .pdf }
+            return draft.kind == .text || draft.kind == .code
+        }.count
+        let maximum: Int
+        switch input.kind {
+        case .image: maximum = AtlasAttachmentLimits.canonical.maxImages
+        case .pdf: maximum = AtlasAttachmentLimits.canonical.maxPdfs
+        case .text, .code: maximum = AtlasAttachmentLimits.canonical.maxTextFiles
+        case .url: maximum = AtlasAttachmentLimits.canonical.maxUrls
+        }
+        guard count < maximum else {
+            throw AttachmentAdapterError.limitReached(maximum)
         }
     }
 

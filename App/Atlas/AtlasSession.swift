@@ -14,6 +14,7 @@ final class AtlasSession {
     }
 
     var phase: Phase = .idle
+    var failureKind: AtlasNetworkFailureKind?
     var threads: [AtlasAiThread] = []
 
     let host: String
@@ -32,11 +33,13 @@ final class AtlasSession {
 
     func loadThreads() async {
         phase = .loading
+        failureKind = nil
         do {
             let response = try await client.listAiThreads(light: true, limit: 100)
             threads = response.threads
             phase = .loaded
         } catch {
+            failureKind = atlasNetworkFailureKind(for: error)
             phase = .failed(String(describing: error))
         }
     }

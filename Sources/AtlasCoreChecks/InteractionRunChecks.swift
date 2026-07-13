@@ -345,6 +345,13 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
           shouldKeepInteraction(after: AtlasApiError(status: 503, path: "/ai/interactions", message: "down")))
     check("shouldKeep descarta 4xx terminal",
           !shouldKeepInteraction(after: AtlasApiError(status: 422, path: "/ai/interactions", message: "invalid")))
+    check("falha tipada distingue offline/timeout/recusada",
+          atlasNetworkFailureKind(for: URLError(.notConnectedToInternet)) == .offline &&
+          atlasNetworkFailureKind(for: URLError(.timedOut)) == .timedOut &&
+          atlasNetworkFailureKind(for: URLError(.cannotConnectToHost)) == .connectionRefused)
+    check("falha tipada distingue auth/servidor",
+          atlasNetworkFailureKind(for: AtlasApiError(status: 401, path: "/", message: "")) == .unauthorized &&
+          atlasNetworkFailureKind(for: AtlasApiError(status: 503, path: "/", message: "")) == .serverUnavailable)
 
     let planning = AtlasAiStreamEvent(
         traceId: "trace-run", sequence: 21, type: "lifecycle", content: "",

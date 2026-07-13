@@ -52,11 +52,17 @@ func runRichInputLiveProbe(_ check: (String, Bool) -> Void, client: AtlasClient)
     let salt = "liveprobe-\(ProcessInfo.processInfo.processIdentifier)"
     let engine = AtlasRichInputEngine(transport: client, installSalt: salt)
     do {
-        let asset = try await engine.upload(AttachmentInput(
-            kind: .image, fileName: "liveprobe.png", mimeType: "image/png",
-            source: "app", identity: "liveprobe", bytes: DataByteSource(payload)))
+        let adapted = AtlasAttachmentAdapter.data(
+            payload, fileName: "liveprobe.png", mimeType: "image/png",
+            source: "camera", identity: "liveprobe"
+        )
+        let asset = try await engine.upload(adapted)
         let localSha = SHA256.hash(data: payload).map { String(format: "%02x", $0) }.joined()
         check("upload 3.2MB real: sha256 do servidor == local", asset.sha256 == localSha)
+        let fields = engine.interactionFields(images: [asset], documents: [], inputText: "analise")
+        check("adapter câmera produz payload real do create",
+              fields.uploadedImages == [asset.uploadedId] &&
+              fields.richInputPayload?.sourceManifest.first?.source == "camera")
 
         // Resume real: re-start com a MESMA chave → received_chunks completo
         let key = atlasStableUploadKey(identity: "liveprobe", fileName: "liveprobe.png",
