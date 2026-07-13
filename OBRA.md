@@ -114,9 +114,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance |
 |---|---|---|---|---|---|---|
 | U7 | **IN_PROGRESS** | **Fable** | RootView/SearchView (casca) | — | Busca REAL na home (o botão hoje é morto — viola constituição) | busca filtra threads reais e navega |
-| U8 | TODO | Fable | ConversationView + Markdown views | — | Conversa suprema r2: FAB scroll-to-bottom, haptic de resposta, sugestões reais no vazio, copy em code block | tudo ação real |
-| U9 | BLOCKED | Fable | TurnNotifier (casca) + permissão UX | C9 | Notificação local quando resposta conclui fora da tela | notificação aparece na tela bloqueada |
-| U10 | BLOCKED | Fable | LiveActivity UI (widget ext) | C8 | Live Activity/Dynamic Island: "Atlas trabalhando…" na tela bloqueada, como Cursor | atividade vive na lock screen |
+| U8 | DONE (falta print) | Fable | ConversationView | — | Conversa suprema r2 + TIMELINE VIVA (passos empilham, atual pulsa — a progressão do Cursor) | `ca59dc2`+`c3eda84` |
+| U9 | DONE (falta print) | Fable | TurnPresence (casca, withObservationTracking — C9 dispensado: zero edição no model) | — | Notificação local na tela bloqueada ao concluir fora do app; permissão no 1º turno | `c3eda84` |
+| U10 | DONE (falta print) | Fable | Widgets/ + AtlasActivityAttributes + project.yml (TRAVESSIA ADITIVA autorizada pelo goal do operador; AtlasDeviceProof intacto) | — | Live Activity + Dynamic Island: ✦ + fase + timer; 'resposta pronta ✓' | `c3eda84` |
 
 ### Verticais seguintes (ordem)
 Voice Supremacy (LiveKit/ditado/resposta falada) → Agent Cockpit (obras
@@ -196,6 +196,13 @@ decisões, capturas, busca universal).
   entrega o TurnNotifier via UserNotifications — sem rede/JSON/storage).
 
 ## 6. Decisões registradas
+
+- 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
+  sob autoridade de goal direto do operador (tela bloqueada = Cursor); WIP do
+  Codex preservado. C8 remanescente pro Codex: entitlement/push APNs fase 2
+  (update de Live Activity além da janela de execução) + hardening do target.
+- 2026-07-13 · Fable corrigiu 2 erros Swift 6 no próprio TurnPresence
+  (Activity<T> não-Sendable → enumeração estática dentro da Task).
 
 - 2026-07-12 · Engine única contract-first no AtlasCore (painel 2 juízes);
   dossiê completo em `docs/rich-input-shared-core.md`.
