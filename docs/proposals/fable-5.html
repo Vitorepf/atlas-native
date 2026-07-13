@@ -38,7 +38,39 @@
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
   }
-  .page { max-width: 1280px; margin: 0 auto; padding: 64px 48px 96px; }
+  .page { max-width: 1280px; margin: 0 auto; padding: 48px 48px 96px; }
+
+  /* ── barra de navegação por atos ── */
+  .topnav {
+    position: sticky; top: 0; z-index: 60;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 11px 48px;
+    background: rgba(16,24,30,0.82); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--sep-soft);
+  }
+  .tn-brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+  .topnav nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .topnav a {
+    font-family: var(--mono); font-size: 10.5px; color: var(--ink2); text-decoration: none;
+    border: 1px solid transparent; border-radius: 999px; padding: 6px 11px; transition: all 0.2s;
+  }
+  .topnav a:hover { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .topnav a.codex { color: var(--ink3); border-color: var(--sep); }
+  #ato1, #ato2, #ato3, #veredito { scroll-margin-top: 72px; }
+
+  /* ── sumário executivo ── */
+  .keyfacts { display: flex; gap: 40px; margin-top: 28px; flex-wrap: wrap; }
+  .kf b { font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+  .kf span { font-size: 11.5px; color: var(--ink3); display: block; margin-top: 7px; max-width: 20ch; line-height: 1.45; text-wrap: pretty; }
+
+  /* ── toque para repetir — a página é instrumento, não filme ── */
+  .replayable { cursor: pointer; }
+  .scn-screen, .card { transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+  .scn-screen.replayable:hover, .card.replayable:hover {
+    border-color: rgba(212,168,90,0.45); transform: translateY(-2px);
+    box-shadow: 0 24px 55px rgba(0,0,0,0.36);
+  }
+  ::selection { background: rgba(212,168,90,0.25); }
 
   /* ── Masthead editorial ── */
   .kicker {
@@ -642,6 +674,16 @@
 </style>
 </head>
 <body>
+<header class="topnav">
+  <span class="tn-brand">Atlas · Proposta Fable 5</span>
+  <nav>
+    <a href="#ato1">Ato I · a cena</a>
+    <a href="#ato2">Ato II · situações</a>
+    <a href="#ato3">Ato III · Autônomos</a>
+    <a href="#veredito">Veredito</a>
+    <a class="codex" href="codex-execucao-viva/index.html">Proposta Codex ›</a>
+  </nav>
+</header>
 <div class="page">
 
   <div class="kicker">Atlas · Execução Viva — proposta Fable 5</div>
@@ -660,12 +702,17 @@
     <span class="chip">shipped · <b>fca1e73</b> multi-sessão</span>
     <span class="chip">gates <b>verdes</b> · Swift 6</span>
     <span class="chip">195+ golden checks</span>
-    <a class="chip" href="codex-execucao-viva/index.html" style="text-decoration:none">comparar · proposta Codex V7 ›</a>
+  </div>
+  <div class="keyfacts">
+    <div class="kf"><b>3</b><span>superfícies contando a mesma execução</span></div>
+    <div class="kf"><b>11</b><span>situações difíceis encenadas em loop</span></div>
+    <div class="kf"><b>24/7</b><span>frota Autônomos pulsando ao vivo</span></div>
+    <div class="kf"><b>5</b><span>commits já instalados no iPhone</span></div>
   </div>
   <div class="rule"></div>
 
   <!-- ═══ ATO I — O PALCO ═══ -->
-  <div class="stage">
+  <div class="stage" id="ato1" title="toque para repetir a cena">
 
     <!-- Fone A: conversa viva -->
     <div class="exhibit">
@@ -800,7 +847,7 @@
 
   <!-- ═══ ATO II — TEATRO DE SITUAÇÕES ═══ -->
   <div class="sec-head">
-    <div class="sec-kicker">Ato II · teatro de situações</div>
+    <div class="sec-kicker" id="ato2">Ato II · teatro de situações</div>
     <div class="sec-title">As situações difíceis não se descrevem. Encenam-se.</div>
     <p class="sec-lede">
       Uma galeria estática lista os casos; aqui cada caso <em>acontece</em>, em loop, na
@@ -814,7 +861,7 @@
     <!-- 01 · Atenção necessária -->
     <div class="scn">
       <div class="scn-label"><b>01 · Atenção necessária</b><span class="scn-tag">contrato §5 · permissões tipadas</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s01">
         <div class="scn-top"><span class="scn-title">Refinar assinatura</span><span class="scn-meta" id="p1t">0:00</span></div>
         <div class="mrow" id="p1s1"><div class="mdot"></div><div><div class="m-t">Preparando o target de widgets</div></div></div>
         <div class="callout" id="p1card">
@@ -835,7 +882,7 @@
     <!-- 02 · Replanejamento honesto -->
     <div class="scn">
       <div class="scn-label"><b>02 · Replanejamento honesto</b><span class="scn-tag">pedido §5 C10 · plano N/M</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s02">
         <div class="scn-top"><span class="scn-title">Plano · Session Hub</span><span class="badge" id="p2badge">v1 · 5 passos</span></div>
         <div class="mrow on" id="p2s1"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t">Mapear eventos existentes</div></div></div>
         <div class="mrow on" id="p2s2"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t">Definir contrato do hub</div></div></div>
@@ -855,7 +902,7 @@
     <!-- 03 · Reconexão sem perda -->
     <div class="scn">
       <div class="scn-label"><b>03 · Reconexão sem perda</b><span class="scn-tag live">no app hoje · resume + cursor</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s03">
         <div class="scn-top"><span class="scn-title">Corrigir relatório</span><span class="scn-meta" id="p3t">0:00</span></div>
         <div class="mrow" id="p3s1"><div class="mdot"></div><div><div class="m-t">Editando o relatório <span class="st">seq 148</span></div></div></div>
         <div class="callout alert" id="p3lost">
@@ -873,7 +920,7 @@
     <!-- 04 · Aguardando sistema externo -->
     <div class="scn">
       <div class="scn-label"><b>04 · Aguardando sistema externo</b><span class="scn-tag">receipts externos · a contratar</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s04">
         <div class="scn-top"><span class="scn-title">Build no iPhone</span><span class="scn-meta"><span class="g" id="p4n">2</span>/4</span></div>
         <div class="mrow on ok"><div class="mdot"></div><div><div class="m-t">Compilação <span class="st">aprovada</span></div></div></div>
         <div class="mrow on ok"><div class="mdot"></div><div><div class="m-t">Assinatura <span class="st">perfil válido</span></div></div></div>
@@ -891,7 +938,7 @@
     <!-- 05 · Orquestra de agentes -->
     <div class="scn">
       <div class="scn-label"><b>05 · Orquestra de agentes</b><span class="scn-tag live">InteractionRun · parcial no app</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s05">
         <div class="scn-top"><span class="scn-title">Refatorar execução</span><span class="scn-meta"><span class="g" id="p5n">2</span>/6</span></div>
         <div class="bar"><i id="p5bar" style="width:33%"></i></div>
         <div style="margin-top:6px">
@@ -912,7 +959,7 @@
     <!-- 06 · Missão noturna -->
     <div class="scn">
       <div class="scn-label"><b>06 · Missão noturna</b><span class="scn-tag">vertical Autônomos · futura</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s06">
         <div class="scn-top"><span class="scn-title">Auditar Atlas Native</span><span class="scn-meta"><span class="g" id="p6n">0</span>/7</span></div>
         <div class="night-clock" id="p6clock">23:10</div>
         <div class="night-sub" id="p6sub">missão iniciada — escopo e limites registrados</div>
@@ -928,7 +975,7 @@
     <!-- 07 · Revisão entre agentes -->
     <div class="scn">
       <div class="scn-label"><b>07 · Revisão entre agentes</b><span class="scn-tag live">aconteceu nesta obra · fca1e73</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s07">
         <div class="scn-top"><span class="scn-title">Revisão independente</span><span class="scn-meta"><span class="g" id="p7n">0</span>/3 pareceres</span></div>
         <div class="vrow" id="v1"><span class="vr-role">Implementador</span><span class="vr-text">Contrato do Session Hub entregue.</span><span class="vr-state" id="v1s">pronto</span></div>
         <div class="vrow" id="v2"><span class="vr-role">Revisor</span><span class="vr-text">Risco: atualizar todas as sessões com o mesmo estado.</span><span class="vr-state" id="v2s">1 objeção</span></div>
@@ -949,7 +996,7 @@
     <!-- 08 · Continuidade entre devices -->
     <div class="scn">
       <div class="scn-label"><b>08 · Continuidade entre devices</b><span class="scn-tag">vertical Continuity · futura</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s08">
         <div class="scn-top"><span class="scn-title">Continuar a sessão</span><span class="scn-meta">mesma obra</span></div>
         <div class="dev here" id="d1"><div><b>iPhone de Vitor</b><div class="d-sub" id="d1s">acompanhando ao vivo · agora</div></div><span class="d-act" id="d1a">este aparelho</span></div>
         <div class="dev" id="d2"><div><b>MacBook Pro</b><div class="d-sub" id="d2s">Atlas Desktop disponível</div></div><span class="d-act" id="d2a">continuar no Mac</span></div>
@@ -966,7 +1013,7 @@
     <!-- 09 · Voz contínua -->
     <div class="scn">
       <div class="scn-label"><b>09 · Voz contínua</b><span class="scn-tag">próxima vertical · Voice</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s09">
         <div class="scn-top"><span class="scn-title">Conversa por voz</span><span class="scn-meta g" id="p9live">AO VIVO</span></div>
         <div class="vx-stage">
           <div class="vx-state" id="p9state">OUVINDO</div>
@@ -982,7 +1029,7 @@
     <!-- 10 · Artefato pronto -->
     <div class="scn">
       <div class="scn-label"><b>10 · Artefato pronto</b><span class="scn-tag live">attachments + provas · no app</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s10">
         <div class="scn-top"><span class="scn-title">Entrega pronta</span><span class="scn-meta" id="p10m">verificando…</span></div>
         <div class="mrow on"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t">Relatório executivo corrigido <span class="st">HTML · 148 KB · PT-BR</span></div></div></div>
         <div class="proofs" style="margin-top:6px">
@@ -1007,7 +1054,7 @@
     <!-- 11 · Fila durante a execução -->
     <div class="scn">
       <div class="scn-label"><b>11 · Fila durante a execução</b><span class="scn-tag">paridade Cursor · contrato §5 C11</span></div>
-      <div class="scn-screen">
+      <div class="scn-screen" id="s11">
         <div class="scn-top"><span class="scn-title">Corrigir relatório</span><span class="scn-meta" id="q11t">0:00</span></div>
         <div class="mrow on current"><div class="mdot"></div><div><div class="m-t" id="q11now">Editando o dashboard <span class="st">agora</span></div></div></div>
         <div style="margin-top:auto">
@@ -1034,7 +1081,7 @@
 
   <!-- ═══ ATO III — AUTÔNOMOS 24/7 ═══ -->
   <div class="sec-head">
-    <div class="sec-kicker">Ato III · Autônomos 24/7</div>
+    <div class="sec-kicker" id="ato3">Ato III · Autônomos 24/7</div>
     <div class="sec-title">A frota não se descreve em quatro telas paradas. Ela pulsa.</div>
     <p class="sec-lede">
       A natureza do Autônomos é <em>tempo e responsabilidade</em>: quantas instâncias, onde, há quanto
@@ -1045,7 +1092,7 @@
 
   <div class="fleet-wrap">
     <div class="scn-label"><b>Command Center · frota viva</b><span class="scn-tag">vertical Autônomos · contrato §5</span></div>
-    <div class="scn-screen fleet">
+    <div class="scn-screen fleet" id="sFleet">
       <div class="scn-top"><span class="scn-title">Autônomos</span><span class="scn-meta"><span class="g" id="fEx">9</span> executando · <span id="fAt">1</span> atenção</span></div>
       <div class="fm-grid" style="margin-top:12px">
         <div class="fm"><b>12</b><span>instâncias registradas</span></div>
@@ -1095,7 +1142,7 @@
 
   <!-- ═══ DETALHES ═══ -->
   <div class="details">
-    <div class="card">
+    <div class="card" id="sIsland">
       <h3>A ilha vive todos os estados.</h3>
       <p>Não uma galeria de instantes: a MESMA ilha atravessa o ciclo —
          executando, plano pronto, resposta pronta, atenção — morfando na sua frente.</p>
@@ -1135,7 +1182,7 @@
   </div>
 
   <!-- ═══ VEREDITO ═══ -->
-  <div class="verdict">
+  <div class="verdict" id="veredito">
     <h2>Por que isto ganha: as mesmas situações — só que vivas, e com procedência.</h2>
     <div class="vgrid">
       <div class="vcol">
@@ -1168,7 +1215,7 @@
 
   <div class="colophon">
     <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
-    <span>Fable 5 · proposta viva v5 · 11 situações + frota 24/7 · arquivo único, duplo-clique e abre</span>
+    <span>Fable 5 · proposta viva v6 · 11 situações + frota 24/7 · toque em qualquer cena para repetir</span>
   </div>
 </div>
 
@@ -1548,6 +1595,19 @@ scene1(({ at, every, loop }) => {
 
 }
 boot();
+
+/* toque em qualquer cena para repeti-la — a página é instrumento, não filme.
+   A ordem espelha a criação das cenas em boot(); o lookup é dinâmico para
+   sobreviver ao restart() global. */
+const REPLAY_TARGETS = ['ato1','s01','s02','s03','s04','s05','s06','s07','s08',
+                        's09','sIsland','s10','s11','sFleet'];
+REPLAY_TARGETS.forEach((id, i) => {
+  const el = $(id);
+  if (!el) return;
+  el.classList.add('replayable');
+  el.title = 'toque para repetir a cena';
+  el.addEventListener('click', () => { const s = scenes[i]; if (s) { s.stop(); s.start(); } });
+});
 window.__ready = true;
 </script>
 </body>
