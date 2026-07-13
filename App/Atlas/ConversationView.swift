@@ -21,6 +21,7 @@ struct ConversationView: View {
     @State private var showFileImporter = false
     @State private var showCamera = false
     @FocusState private var focused: Bool
+    @State private var awayFromBottom = false
 
     // Contador de tokens (estimativa live do rascunho ≈ chars/4), como o desktop.
     private var draftTokens: Int { Int(ceil(Double(draft.count) / 4.0)) }
@@ -47,6 +48,10 @@ struct ConversationView: View {
         .navigationBarHidden(true)
         .overlay(alignment: .top) { toast }
         .task { await model.load() }
+        .onChange(of: model.isSending) { was, now in
+            // Resposta terminou → haptic de sucesso (o toque que fecha o ciclo)
+            if was && !now { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+        }
     }
 
     // MARK: - Header
@@ -72,7 +77,11 @@ struct ConversationView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 if model.bubbles.isEmpty {
-                    EmptyConversation(reduceMotion: reduceMotion)
+                    EmptyConversation(reduceMotion: reduceMotion) { suggestion in
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        let effort = model.effort
+                        Task { await model.send(suggestion, effort: effort) }
+                    }
                 } else {
                     LazyVStack(alignment: .leading, spacing: 40) {
                         ForEach(model.bubbles) { bubble in
@@ -83,6 +92,10 @@ struct ConversationView: View {
                             .id(bubble.id)
                         }
                         Color.clear.frame(height: 96).id("bottom")
+                            .background(GeometryReader { geo in
+                                Color.clear.preference(key: BottomDistanceKey.self,
+                                                       value: geo.frame(in: .global).minY)
+                            })
                     }
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, 16)
@@ -90,6 +103,33 @@ struct ConversationView: View {
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
+            .onPreferenceChange(BottomDistanceKey.self) { minY in
+                // marcador abaixo da dobra + margem → operador navegou pra cima
+                awayFromBottom = minY > UIScreen.main.bounds.height + 140
+            }
+            .overlay(alignment: .bottomTrailing) {
+                if awayFromBottom {
+                    Button {
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) {
+                            proxy.scrollTo("bottom", anchor: .bottom)
+                        }
+                    } label: {
+                        Image(systemName: "arrow.down")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                            .frame(width: 40, height: 40)
+                            .background(Circle().fill(AtlasTheme.surfaceHi)
+                                .overlay(Circle().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+                                .shadow(color: .black.opacity(0.25), radius: 8, y: 2))
+                    }
+                    .buttonStyle(PressableScale())
+                    .padding(.trailing, AtlasTheme.Space.screen).padding(.bottom, 110)
+                    .transition(.scale(scale: 0.8).combined(with: .opacity))
+                    .accessibilityLabel("ir para o fim da conversa")
+                }
+            }
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: awayFromBottom)
             .onChange(of: model.bubbles) {
                 withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { proxy.scrollTo("bottom", anchor: .bottom) }
             }
@@ -597,10 +637,19 @@ func providerWord(_ p: String?) -> String {
     return x
 }
 
-// Empty state vivo: a pergunta contemplativa ✦
+// Empty state vivo: a pergunta contemplativa ✦ + convites REAIS (cada chip
+// dispara um envio de verdade — nada decorativo).
 private struct EmptyConversation: View {
     let reduceMotion: Bool
+    let onSuggestion: (String) -> Void
     @State private var breathe = false
+
+    private let suggestions = [
+        "O que está rodando no Atlas agora?",
+        "Resuma meu dia até aqui",
+        "Qual o status dos meus projetos?",
+    ]
+
     var body: some View {
         VStack(spacing: 0) {
             Text("✦")
@@ -611,11 +660,32 @@ private struct EmptyConversation: View {
             Text("“O que você quer pensar agora?”")
                 .font(AtlasFont.serifItalic(22)).lineSpacing(10)
                 .multilineTextAlignment(.center).foregroundStyle(AtlasTheme.textPrimary)
+            Spacer().frame(height: 44)
+            VStack(spacing: 10) {
+                ForEach(suggestions, id: \.self) { s in
+                    Button { onSuggestion(s) } label: {
+                        Text(s)
+                            .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
+                            .padding(.horizontal, 18).padding(.vertical, 10)
+                            .frame(maxWidth: .infinity)
+                            .background(Capsule().fill(AtlasTheme.surface)
+                                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
+                    }
+                    .buttonStyle(PressableScale())
+                }
+            }
+            .padding(.horizontal, 12)
         }
-        .padding(.horizontal, 32).padding(.top, 140)
+        .padding(.horizontal, 32).padding(.top, 120)
         .frame(maxWidth: .infinity)
         .onAppear { if !reduceMotion { withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) { breathe = true } } }
     }
+}
+
+// Distância do marcador de fim da conversa ao topo global (FAB de retorno).
+private struct BottomDistanceKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
 }
 
 // Ícone por kind de atividade (vocabulário estável do contrato C5).
