@@ -299,6 +299,7 @@ runAttachmentAdapterChecks(check)
 await runLongMessageChecks(check)
 runAssistantPresentationChecks(check)
 await runAtlasImagingChecks(check)
+runDeviceProofHarnessChecks(check)
 
 // Live-probe do upload (opt-in ATLAS_LIVE=1: sobe bytes reais no staging do
 // atlas-server e prova sha+resume — gate recomendado do `make device`).

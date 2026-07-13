@@ -30,6 +30,24 @@ if [ -z "$UDID" ]; then
   exit 1
 fi
 
+# Não entregue o processo ao Xcode enquanto o aparelho estiver bloqueado: ele
+# aguarda indefinidamente por UI humana e pode deixar um .xcresult parcial. O
+# mesmo UDID aceito por xcodebuild também é aceito pelo CoreDevice.
+if ! LOCK_STATE="$(xcrun devicectl device info lockState --device "$UDID" 2>&1)"; then
+  echo "✗ Não foi possível confirmar se o iPhone está desbloqueado."
+  echo "$LOCK_STATE"
+  exit 2
+fi
+if grep -Fq "passcodeRequired: true" <<<"$LOCK_STATE"; then
+  echo "✗ O iPhone está bloqueado. Desbloqueie-o e mantenha a tela ativa antes de repetir make device-proof."
+  exit 2
+fi
+if ! grep -Fq "passcodeRequired: false" <<<"$LOCK_STATE"; then
+  echo "✗ Estado de bloqueio do iPhone não reconhecido; DeviceProof não será iniciado sem preflight confiável."
+  echo "$LOCK_STATE"
+  exit 2
+fi
+
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 STAMP="$(date +%F)"
 RESULT="${RESULT_PATH:-$ROOT/App/build/AtlasDeviceProof.xcresult}"
