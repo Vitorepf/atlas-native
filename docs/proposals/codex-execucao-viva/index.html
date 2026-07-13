@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Proposta Codex para a experiência nativa de execução, agentes, Session Hub, Live Activity e Dynamic Island do Atlas.">
-<title>Atlas · Experiência de Agentes V7 — proposta Codex</title>
+<title>Atlas · Execução Viva V8 — proposta final Codex</title>
 <style>
   :root{color-scheme:dark;--page:#171719;--page-surface:#202023;--page-line:#343438;--page-text:#dfe3e6;--page-muted:#8c9298;--page-blue:#2388ff}
   *{box-sizing:border-box}
@@ -20,6 +20,88 @@
   .option .letter{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#313136;color:#c9ced2;font-size:12px;font-weight:750}.option.selected .letter{background:var(--page-blue);color:#fff}
   .option .content h3{margin:1px 0 5px;color:#e1e5e8;font-size:13px}.option .content p{margin:0;color:#838a90;font-size:10px;line-height:1.45}
   @media(max-width:820px){.proposal-bar{align-items:flex-start;padding:11px 14px}.proposal-meta{display:none}.proposal-links{flex-wrap:wrap;justify-content:flex-end}.options{grid-template-columns:1fr}}
+</style>
+
+<style>
+  @font-face{font-family:"Atlas Fraunces";src:url("../../../App/Atlas/Fonts/Fraunces_400Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Atlas Fraunces";src:url("../../../App/Atlas/Fonts/Fraunces_600SemiBold.ttf") format("truetype");font-weight:600;font-style:normal;font-display:swap}
+  @font-face{font-family:"Atlas Fraunces";src:url("../../../App/Atlas/Fonts/Fraunces_400Regular_Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+  @font-face{font-family:"Atlas Mono";src:url("../../../App/Atlas/Fonts/JetBrainsMono_400Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+  :root{--atlas-bg:#1d2b34;--atlas-deep:#0f181f;--atlas-recessed:#15212a;--atlas-surface:#243743;--atlas-raised:#2d4351;--atlas-line:#313f47;--atlas-soft:#27353e;--atlas-gold:#d4a85a;--atlas-gold-light:#e6b966;--atlas-text:#d6dde2;--atlas-text-2:#95a3ac;--atlas-text-3:#677482;--atlas-blue:#7fa7c4;--atlas-green:#6fa06a;--atlas-red:#c6816f}
+  body{background:#111517}
+  .proposal-bar{height:54px;padding:0 28px;background:rgba(15,20,23,.9);border-color:rgba(149,163,172,.12)}
+  .proposal-brand{display:flex;align-items:center;gap:11px}
+  .proposal-brand img{width:28px;height:28px;border-radius:8px;box-shadow:0 0 0 1px rgba(212,168,90,.16)}
+  .proposal-id{display:block;line-height:1.15}.proposal-id strong{display:block;font-size:10px;letter-spacing:.16em}.proposal-id span{display:block;margin-top:3px;color:#87949c;font-size:9px}
+  .proposal-links a{min-height:32px;display:flex;align-items:center;border-color:rgba(149,163,172,.16);background:rgba(255,255,255,.015);font-size:9px}
+  .proposal-links a:hover{background:rgba(212,168,90,.05)}
+  .experience{max-width:1360px;min-height:calc(100vh - 54px);margin:0 auto;padding:18px 30px 46px;color:var(--atlas-text)}
+  .experience *{box-sizing:border-box}
+  .experience-intro{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:28px;max-width:1220px;margin:0 auto 8px}
+  .experience-kicker{color:var(--atlas-gold);font:600 10px/1.2 "Atlas Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
+  .experience h1{max-width:900px;margin:5px 0 0;color:#eef2f3;font:600 clamp(29px,2.5vw,36px)/1.02 "Atlas Fraunces",serif;letter-spacing:-.025em;text-wrap:balance}
+  .experience-intro p{max-width:840px;margin:7px 0 0;color:var(--atlas-text-2);font-size:11px;line-height:1.45;text-wrap:pretty}
+  .experience-proof{padding:6px 0 5px 18px;border-left:1px solid rgba(212,168,90,.32);text-align:right}
+  .experience-proof strong{display:block;color:#ccd5d9;font:400 10px "Atlas Mono",monospace}.experience-proof span{display:block;margin-top:5px;color:var(--atlas-text-3);font-size:9px}
+  .experience-stage{position:relative;display:grid;grid-template-columns:minmax(215px,275px) 334px minmax(230px,300px);justify-content:center;align-items:center;gap:clamp(22px,4vw,58px);max-width:1220px;min-height:704px;margin:0 auto;padding:2px 22px;border-top:1px solid rgba(149,163,172,.13);border-bottom:1px solid rgba(149,163,172,.13);overflow:hidden}
+  .experience-stage:before{content:"";position:absolute;z-index:-1;width:480px;height:480px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:rgba(212,168,90,.035);filter:blur(24px)}
+  .scene-rail{align-self:stretch;display:flex;flex-direction:column;justify-content:center;gap:4px}
+  .scene-rail-label{margin-bottom:10px;color:var(--atlas-text-3);font:400 8px "Atlas Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+  .scene-button{appearance:none;width:100%;min-height:54px;display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:center;padding:7px 8px;border:0;border-top:1px solid rgba(149,163,172,.1);background:transparent;color:var(--atlas-text-3);text-align:left;cursor:pointer;transition:color .22s ease,background .22s ease,padding .22s ease}
+  .scene-button:last-of-type{border-bottom:1px solid rgba(149,163,172,.1)}
+  .scene-button:hover{color:var(--atlas-text-2);background:rgba(255,255,255,.012)}
+  .scene-button.active{padding-left:12px;color:var(--atlas-text);background:rgba(212,168,90,.045)}
+  .scene-number{font:400 9px "Atlas Mono",monospace;color:inherit}.scene-button.active .scene-number{color:var(--atlas-gold)}
+  .scene-button b{display:block;font-size:11px;font-weight:620}.scene-button small{display:block;margin-top:3px;color:var(--atlas-text-3);font-size:8px;line-height:1.3}
+  .scene-button.active small{color:#82919a}
+  .scene-rail-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+  .autoplay-control{appearance:none;min-height:34px;padding:0 11px;border:1px solid rgba(149,163,172,.18);border-radius:999px;background:transparent;color:var(--atlas-text-2);font-size:8px;cursor:pointer}
+  .autoplay-control:hover{border-color:rgba(212,168,90,.42);color:var(--atlas-gold-light)}
+  .scene-position{color:var(--atlas-text-3);font:400 8px "Atlas Mono",monospace}
+  .device-slot{width:334px;height:701px;display:grid;place-items:start center;position:relative}
+  /* Huashu ios_frame.jsx inlined verbatim in geometry: iPhone 15 Pro 393×852. */
+  .ios-frame{position:relative;width:417px;height:876px;padding:12px;background:#030404;border-radius:60px;box-shadow:0 0 0 2px #25323a,0 28px 80px rgba(0,0,0,.48);transform:scale(.8);transform-origin:top center}
+  .ios-screen{position:relative;width:393px;height:852px;border-radius:48px;overflow:hidden;background:var(--atlas-bg)}
+  .ios-status{position:absolute;z-index:20;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;color:#eef2f4;font-size:14px;font-weight:650;pointer-events:none}
+  .ios-island{position:absolute;z-index:30;top:12px;left:50%;width:124px;height:36px;transform:translateX(-50%);border-radius:999px;background:#000}
+  .ios-icons{display:flex;align-items:center;gap:6px}.ios-signal{height:12px;display:flex;align-items:flex-end;gap:2px}.ios-signal i{width:3px;border-radius:1px;background:currentColor}.ios-signal i:nth-child(1){height:4px}.ios-signal i:nth-child(2){height:6px}.ios-signal i:nth-child(3){height:9px}.ios-signal i:nth-child(4){height:11px}
+  .ios-wifi{width:16px;height:12px}.ios-battery{position:relative;width:26px;height:12px;padding:1px;border:1.5px solid currentColor;border-radius:3px;opacity:.85}.ios-battery:after{content:"";position:absolute;top:3px;right:-3px;width:2px;height:6px;border-radius:0 1px 1px 0;background:currentColor}.ios-battery span{display:block;width:68%;height:100%;border-radius:1px;background:currentColor}
+  .ios-content{position:absolute;top:54px;left:0;right:0;bottom:34px;overflow:hidden;background:var(--atlas-bg)}
+  .ios-home{position:absolute;z-index:20;bottom:10px;left:50%;width:140px;height:5px;transform:translateX(-50%);border-radius:999px;background:rgba(255,255,255,.5)}
+  .player-app{position:relative;width:100%;height:100%;overflow:hidden;background:var(--atlas-bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}
+  .player-app-nav{height:60px;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:0 18px;border-bottom:1px solid var(--atlas-soft)}
+  .player-app-nav img{width:28px;height:28px;border-radius:8px}.player-app-nav strong{color:#edf1f3;font:600 19px "Atlas Fraunces",serif;text-align:center}.player-app-nav span{color:var(--atlas-gold);font:400 9px "Atlas Mono",monospace;text-align:right}
+  .player-scene{position:absolute;inset:60px 0 0;opacity:0;transform:translateX(12px);pointer-events:none;transition:opacity .28s ease,transform .32s cubic-bezier(.2,.85,.3,1)}
+  .player-scene.active{opacity:1;transform:translateX(0);pointer-events:auto}
+  .scene-scroll{height:100%;overflow:hidden;padding:18px 20px 132px}
+  .scene-scroll.no-dock{padding-bottom:20px}
+  .player-quote{padding:0 0 0 13px;border-left:2px solid var(--atlas-gold);color:#dbe2e6;font:italic 17px/1.45 "Atlas Fraunces",serif}
+  .player-work{margin-top:17px;padding:12px 13px;border-top:1px solid rgba(212,168,90,.32);border-bottom:1px solid var(--atlas-line)}
+  .player-work-head{display:flex;justify-content:space-between;gap:12px;color:#d8e0e4;font-size:12px;font-weight:650}.player-work-head span{color:var(--atlas-gold);font:400 10px "Atlas Mono",monospace}
+  .player-track{height:3px;margin-top:10px;border-radius:2px;background:#30424d;overflow:hidden}.player-track span{display:block;width:62%;height:100%;background:var(--atlas-gold)}
+  .player-work-meta{display:flex;justify-content:space-between;margin-top:7px;color:#778893;font-size:9px}
+  .player-timeline{position:relative;margin-top:18px;padding-left:18px}.player-timeline:before{content:"";position:absolute;left:4px;top:6px;bottom:7px;width:1px;background:linear-gradient(var(--atlas-gold) 0 68%,#405461 68%)}
+  .player-event{position:relative;margin-bottom:16px}.player-event:before{content:"";position:absolute;left:-17px;top:5px;width:7px;height:7px;border-radius:50%;background:#607681}.player-event.voice:before,.player-event.current:before{background:var(--atlas-gold)}.player-event.current:before{width:9px;height:9px;left:-18px;box-shadow:0 0 0 7px rgba(212,168,90,.08)}
+  .player-event b{display:block;color:#d9e1e5;font-size:12px;font-weight:620}.player-event p{margin:4px 0 0;color:#7e8f99;font-size:10px;line-height:1.45}.player-event.voice p{color:#cbd4d9;font-size:11px}
+  .player-tool{padding:10px 11px;border:1px solid rgba(212,168,90,.25);background:var(--atlas-surface);border-radius:11px}.player-tool-head{display:flex;justify-content:space-between;gap:10px;color:#d7dfe3;font-size:10px}.player-tool-head span{color:var(--atlas-gold);font:400 8px "Atlas Mono",monospace}.player-tool-sub{margin-top:5px;color:#748690;font:400 8px "Atlas Mono",monospace}
+  .player-dock{position:absolute;z-index:8;left:12px;right:12px;bottom:10px;padding:9px;background:rgba(36,55,67,.985);border:1px solid #405765;border-radius:21px;box-shadow:0 -18px 44px rgba(21,33,42,.86)}
+  .player-dock-state{display:flex;align-items:center;gap:7px;min-height:27px;padding:0 3px 7px;color:#cbd5da;font-size:9px}.player-live-dot{width:6px;height:6px;border-radius:50%;background:var(--atlas-gold);box-shadow:0 0 0 5px rgba(212,168,90,.06)}.player-dock-state span:nth-child(2){flex:1}.player-queue-chip{appearance:none;min-height:25px;padding:0 9px;border:1px solid rgba(212,168,90,.3);border-radius:999px;background:rgba(212,168,90,.06);color:var(--atlas-gold-light);font-size:8px;cursor:pointer}.player-stop{appearance:none;width:26px;height:26px;display:grid;place-items:center;border:0;border-radius:50%;background:#334b59;color:#c5cfd4;cursor:pointer}.player-stop:after{content:"";width:7px;height:7px;border-radius:2px;background:currentColor}
+  .player-composer{height:44px;display:grid;grid-template-columns:32px 1fr 32px 32px;align-items:center;gap:3px;padding:4px;border:1px solid #3a505d;border-radius:15px;background:#1b2a33}.player-composer button{appearance:none;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;color:#80919a;cursor:pointer}.player-composer button.send{background:var(--atlas-gold);color:var(--atlas-deep)}.player-composer svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.player-composer input{min-width:0;height:100%;padding:0 6px;border:0;outline:0;background:transparent;color:#e0e6e9;font:italic 12px "Atlas Fraunces",serif}.player-composer input::placeholder{color:#73848e}
+  .queue-stage{position:relative;height:100%;padding:18px 20px;background:rgba(15,24,31,.45)}.queue-stage .ghost{opacity:.32}.player-queue-sheet{position:absolute;z-index:10;left:10px;right:10px;bottom:8px;padding:8px 12px 14px;border:1px solid #405765;border-radius:25px;background:#20313b;box-shadow:0 -28px 70px rgba(0,0,0,.48)}
+  .queue-grabber{width:34px;height:3px;margin:1px auto 10px;border-radius:999px;background:#536974}.queue-head{display:flex;align-items:start;justify-content:space-between;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--atlas-line)}.queue-head b{color:#e2e8ea;font:600 16px "Atlas Fraunces",serif}.queue-head span{display:block;margin-top:4px;color:#71838d;font-size:8px}.queue-close{appearance:none;min-height:30px;padding:0 10px;border:0;border-radius:999px;background:#2d4351;color:#c8d2d7;font-size:8px;cursor:pointer}
+  .player-queue-list{display:grid;gap:8px;margin-top:10px}.player-queue-row{padding:10px 11px;border:1px solid #354b57;border-radius:13px;background:#1a2932}.player-queue-pos{color:var(--atlas-gold);font:400 7px "Atlas Mono",monospace;letter-spacing:.14em;text-transform:uppercase}.player-queue-text{margin-top:5px;color:#d6dee2;font-size:10px;line-height:1.4}.player-queue-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:9px}.player-queue-actions button{appearance:none;min-height:29px;padding:0 9px;border:0;border-radius:9px;background:transparent;color:#7e909a;font-size:8px;cursor:pointer}.player-queue-actions .promote{border:1px solid rgba(212,168,90,.28);background:rgba(212,168,90,.07);color:var(--atlas-gold-light)}
+  .priority-banner{margin:0 0 16px;padding:10px 12px;border-top:1px solid rgba(212,168,90,.42);border-bottom:1px solid rgba(212,168,90,.2);background:rgba(212,168,90,.045)}.priority-banner b{display:block;color:var(--atlas-gold);font:400 8px "Atlas Mono",monospace;letter-spacing:.13em;text-transform:uppercase}.priority-banner p{margin:6px 0 0;color:#dbe2e6;font-size:11px;line-height:1.4}
+  .result-hero{padding:13px;border:1px solid #3d5360;border-radius:14px;background:var(--atlas-surface)}.result-hero-top{display:flex;align-items:center;justify-content:space-between}.result-hero b{color:#e1e7ea;font-size:13px}.result-hero .done{color:var(--atlas-gold);font:400 9px "Atlas Mono",monospace}.result-hero p{margin:6px 0 0;color:#7f9099;font-size:9px;line-height:1.4}.result-proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.result-proof{padding-top:8px;border-top:1px solid #405562}.result-proof strong{display:block;color:#ccd5d9;font:400 10px "Atlas Mono",monospace}.result-proof span{display:block;margin-top:3px;color:#71828c;font-size:7px}.final-answer{margin-top:19px}.final-answer .label{color:var(--atlas-gold);font:400 8px "Atlas Mono",monospace;letter-spacing:.15em;text-transform:uppercase}.final-answer h3{margin:8px 0 0;color:#edf1f3;font:600 19px/1.22 "Atlas Fraunces",serif}.final-answer p{margin:10px 0 0;color:#aab7bd;font-size:11px;line-height:1.55}.proof-link{appearance:none;width:100%;min-height:40px;margin-top:14px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border:1px solid #3b505d;border-radius:11px;background:transparent;color:#9dabb2;font-size:9px;cursor:pointer}.proof-link span{color:var(--atlas-gold)}
+  .recovery-symbol{width:52px;height:52px;margin:4px auto 16px;display:grid;place-items:center;border:1px solid rgba(127,167,196,.3);border-radius:50%;color:var(--atlas-blue);font:400 12px "Atlas Mono",monospace}.recovery-title{text-align:center;color:#edf1f3;font:600 23px "Atlas Fraunces",serif}.recovery-copy{max-width:270px;margin:8px auto 0;text-align:center;color:#8d9ba3;font-size:10px;line-height:1.5}.recovery-ledger{margin-top:22px;border-top:1px solid var(--atlas-line)}.recovery-row{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--atlas-soft)}.recovery-row span{color:#71838d;font:400 8px "Atlas Mono",monospace}.recovery-row b{color:#cbd4d9;font-size:10px;font-weight:560}.retry-button{appearance:none;width:100%;min-height:43px;margin-top:16px;border:1px solid rgba(127,167,196,.36);border-radius:12px;background:rgba(127,167,196,.07);color:#afc8da;font-size:10px;cursor:pointer}
+  .player-context{align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+  .context-kicker{color:var(--atlas-gold);font:400 8px "Atlas Mono",monospace;letter-spacing:.15em;text-transform:uppercase}.context-title{min-height:58px;margin-top:8px;color:#e8edef;font:600 22px/1.18 "Atlas Fraunces",serif;text-wrap:balance}.context-copy{min-height:78px;margin-top:9px;color:#84949d;font-size:11px;line-height:1.55;text-wrap:pretty}.context-facts{margin-top:15px;border-top:1px solid rgba(149,163,172,.13)}.context-fact{display:grid;grid-template-columns:74px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid rgba(149,163,172,.09)}.context-fact span{color:var(--atlas-text-3);font:400 7px "Atlas Mono",monospace;text-transform:uppercase}.context-fact b{color:#bac5ca;font-size:9px;font-weight:560;line-height:1.35}
+  .player-progress{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:16px}.player-progress span{height:2px;border-radius:2px;background:#344651;transition:background .22s ease}.player-progress span.on{background:var(--atlas-gold)}
+  .experience-actions{max-width:1220px;margin:18px auto 0;display:flex;align-items:center;justify-content:space-between;gap:18px}.experience-actions p{margin:0;color:var(--atlas-text-3);font-size:9px}.experience-actions a{min-height:36px;display:flex;align-items:center;padding:0 13px;border:1px solid rgba(149,163,172,.17);border-radius:999px;color:#aeb9bf;font-size:9px;text-decoration:none}.experience-actions a:hover{border-color:rgba(212,168,90,.42);color:var(--atlas-gold-light)}
+  .atlas-all{padding-top:54px!important}.atlas-all .intro{padding-top:28px;border-top:1px solid rgba(149,163,172,.12)}
+  .atlas-all .intro .eyebrow{font-family:"Atlas Mono",monospace}.atlas-all h2,.atlas-all .section-title,.telemetry h2,.cases h2,.cases .tier-title{font-family:"Atlas Fraunces",serif!important}
+  @media(max-width:1050px){.experience-stage{grid-template-columns:220px 334px;gap:36px}.player-context{display:none}}
+  @media(max-width:720px){.proposal-links a:not(:first-child){display:none}.experience{padding:24px 12px 42px}.experience-intro{display:block;padding:0 8px}.experience-proof{display:none}.experience-stage{display:flex;min-height:auto;flex-direction:column;padding:18px 0 28px}.scene-rail{width:min(100%,420px);align-self:center;display:grid;grid-template-columns:repeat(5,1fr);gap:3px}.scene-rail-label,.scene-button small,.scene-rail-footer{display:none}.scene-button{min-height:44px;display:flex;justify-content:center;padding:5px;border:1px solid rgba(149,163,172,.1);text-align:center}.scene-button.active{padding:5px}.scene-number{display:none}.scene-button b{font-size:8px}.device-slot{transform:scale(.92);transform-origin:top center;margin-bottom:-58px}.experience-actions{padding:0 8px}.experience-actions p{display:none}}
+  @media(prefers-reduced-motion:reduce){.player-scene,.scene-button{transition:none}.experience-stage:before{display:none}}
 </style>
 
 <style>
@@ -75,23 +157,115 @@
 </head>
 <body>
 <header class="proposal-bar">
-  <div><div class="proposal-id"><strong>Codex</strong><span>Atlas Native Experience · V7</span></div><div class="proposal-meta">HTML autônomo · todas as telas cumulativas · 13 de julho de 2026</div></div>
+  <div class="proposal-brand"><img src="../../../App/Atlas/Assets.xcassets/AppIcon.appiconset/icon-1024.png" alt="Ícone do Atlas"><div class="proposal-id"><strong>Atlas · Codex</strong><span>Execução Viva · proposta final V8</span></div></div>
   <nav class="proposal-links" aria-label="Comparação de propostas">
     <a href="../codex-autonomos-command-center/index.html">Abrir Autônomos 24/7</a>
     <a href="../fable-execucao-viva/index.html">Abrir proposta Fable 5</a>
-    <a href="#codex-start">Voltar ao início</a>
+    <a href="#galeria-completa">Todas as telas</a>
   </nav>
 </header>
 <div id="codex-start"></div>
+
+<main class="experience" id="experience-player">
+  <div class="experience-intro">
+    <div>
+      <div class="experience-kicker">Atlas · o trabalho permanece visível</div>
+      <h1>O agente não desaparece enquanto trabalha.</h1>
+      <p>Intenção pública, ferramentas reais, fila de instruções, recuperação e resultado comprovado formam uma única narrativa — viva agora e consultável depois.</p>
+    </div>
+    <div class="experience-proof"><strong>5 estados · 1 sessão contínua</strong><span>interaja, interrompa ou deixe a narrativa avançar</span></div>
+  </div>
+
+  <section class="experience-stage" aria-label="Demonstração interativa da experiência Atlas">
+    <nav class="scene-rail" aria-label="Estados da execução">
+      <div class="scene-rail-label">Percorra a sessão</div>
+      <button class="scene-button active" type="button" data-scene="executing"><span class="scene-number">01</span><span><b>Executando</b><small>ferramenta e progresso reais</small></span></button>
+      <button class="scene-button" type="button" data-scene="queue"><span class="scene-number">02</span><span><b>Fila aberta</b><small>continue instruindo sem interromper</small></span></button>
+      <button class="scene-button" type="button" data-scene="redirect"><span class="scene-number">03</span><span><b>Redirecionado</b><small>a prioridade muda com contexto</small></span></button>
+      <button class="scene-button" type="button" data-scene="complete"><span class="scene-number">04</span><span><b>Concluído</b><small>resposta, artefatos e provas</small></span></button>
+      <button class="scene-button" type="button" data-scene="recovery"><span class="scene-number">05</span><span><b>Recuperação</b><small>nenhum trabalho desaparece</small></span></button>
+      <div class="scene-rail-footer"><button class="autoplay-control" id="player-autoplay" type="button">Pausar narrativa</button><span class="scene-position" id="scene-position">01 / 05</span></div>
+    </nav>
+
+    <div class="device-slot">
+      <div class="ios-frame" data-ios-frame="huashu-ios-frame-v1">
+        <div class="ios-screen">
+          <div class="ios-status"><span>10:42</span><div class="ios-icons"><div class="ios-signal" aria-hidden="true"><i></i><i></i><i></i><i></i></div><svg class="ios-wifi" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M8 11.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/><path d="M3 7.5a7 7 0 0 1 10 0M1 4.5a11 11 0 0 1 14 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><div class="ios-battery" aria-label="Bateria 68 por cento"><span></span></div></div></div>
+          <div class="ios-island" aria-hidden="true"></div>
+          <div class="ios-content">
+            <div class="player-app">
+              <div class="player-app-nav"><img src="../../../App/Atlas/Assets.xcassets/AppIcon.appiconset/icon-1024.png" alt=""><strong id="player-thread-title">Nova conversa</strong><span id="player-nav-state">AO VIVO</span></div>
+
+              <article class="player-scene active" data-player-scene="executing" aria-hidden="false">
+                <div class="scene-scroll">
+                  <div class="player-quote">“O relatório está ilegível. Corrija tudo em português.”</div>
+                  <div class="player-work"><div class="player-work-head"><b>Reescrever relatório em PT-BR</b><span>3 / 5</span></div><div class="player-track"><span></span></div><div class="player-work-meta"><span>Implementando</span><span>depois: verificar</span></div></div>
+                  <div class="player-timeline">
+                    <div class="player-event voice"><b>Entendi o problema.</b><p>Vou localizar o gerador, corrigir o idioma e remover métricas enganosas.</p></div>
+                    <div class="player-event"><b>Explorou 4 arquivos e 3 buscas</b><p>Context Pack consultado · causa localizada no builder.</p></div>
+                    <div class="player-event current"><div class="player-tool"><div class="player-tool-head"><b>Editando apresentação</b><span>AGORA</span></div><div class="player-tool-sub">EnterpriseReportDashboardHtml.php · +48 −12</div></div></div>
+                  </div>
+                </div>
+                <div class="player-dock"><div class="player-dock-state"><span class="player-live-dot"></span><span>Executando · 9 eventos · 54s</span><button class="player-queue-chip" id="player-queue-chip" type="button">Na fila <b id="player-queue-count">1</b></button><button class="player-stop" id="player-stop" type="button" aria-label="Parar execução"></button></div><form class="player-composer" id="player-followup-form"><button type="button" aria-label="Anexar"><svg viewBox="0 0 24 24"><path d="M9 17.5 17.2 9.3a3 3 0 0 0-4.2-4.2L4.8 13.3a5 5 0 0 0 7.1 7.1l7.5-7.5"/></svg></button><input id="player-followup-input" aria-label="Próxima instrução" placeholder="Continue instruindo o Atlas…"><button type="button" aria-label="Ditado"><svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="12" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg></button><button class="send" type="submit" aria-label="Adicionar à fila"><svg viewBox="0 0 24 24"><path d="m5 12 7-7 7 7M12 5v14"/></svg></button></form></div>
+              </article>
+
+              <article class="player-scene" data-player-scene="queue" aria-hidden="true">
+                <div class="queue-stage"><div class="ghost"><div class="player-quote">“O relatório está ilegível. Corrija tudo em português.”</div><div class="player-work"><div class="player-work-head"><b>Reescrever relatório em PT-BR</b><span>3 / 5</span></div><div class="player-track"><span></span></div></div></div><section class="player-queue-sheet" id="player-queue-sheet" role="dialog" aria-labelledby="player-queue-title"><div class="queue-grabber"></div><div class="queue-head"><div><b id="player-queue-title">Próximas instruções</b><span>O turno atual continua. A fila drena na ordem.</span></div><button class="queue-close" id="player-queue-close" type="button">Concluir</button></div><div class="player-queue-list" id="player-queue-list"></div></section></div>
+              </article>
+
+              <article class="player-scene" data-player-scene="redirect" aria-hidden="true">
+                <div class="scene-scroll">
+                  <div class="priority-banner"><b>Prioridade atualizada</b><p id="player-priority-message">Agora: faça uma revisão final e garanta que não existem gaps.</p></div>
+                  <div class="player-timeline">
+                    <div class="player-event voice"><b>Instrução recebida sem perder o contexto.</b><p>Concluí o passo seguro atual e preservei tudo que já foi produzido.</p></div>
+                    <div class="player-event"><b>Checkpoint criado</b><p>12 eventos · 2 arquivos alterados · estado recuperável.</p></div>
+                    <div class="player-event current"><div class="player-tool"><div class="player-tool-head"><b>Revisando gaps da entrega</b><span>AGORA</span></div><div class="player-tool-sub">contratos · testes · experiência final</div></div></div>
+                  </div>
+                </div>
+                <div class="player-dock"><div class="player-dock-state"><span class="player-live-dot"></span><span>Redirecionado · contexto preservado</span><button class="player-stop" type="button" aria-label="Parar execução"></button></div><div class="player-composer"><button type="button" aria-label="Anexar"><svg viewBox="0 0 24 24"><path d="M9 17.5 17.2 9.3a3 3 0 0 0-4.2-4.2L4.8 13.3a5 5 0 0 0 7.1 7.1l7.5-7.5"/></svg></button><input aria-label="Próxima instrução" placeholder="Continue instruindo o Atlas…"><button type="button" aria-label="Ditado"><svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="12" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg></button><button class="send" type="button" aria-label="Adicionar à fila"><svg viewBox="0 0 24 24"><path d="m5 12 7-7 7 7M12 5v14"/></svg></button></div></div>
+              </article>
+
+              <article class="player-scene" data-player-scene="complete" aria-hidden="true">
+                <div class="scene-scroll no-dock">
+                  <div class="result-hero"><div class="result-hero-top"><b>Obra concluída</b><span class="done">COMPROVADA</span></div><p>12 eventos · 2 arquivos · 1m 42s</p><div class="result-proof-grid"><div class="result-proof"><strong>5 / 5</strong><span>passos</span></div><div class="result-proof"><strong>3</strong><span>checks</span></div><div class="result-proof"><strong>+48 −12</strong><span>diff real</span></div></div></div>
+                  <div class="final-answer"><div class="label">Resposta final</div><h3>Relatório corrigido e pronto para decisão.</h3><p>Todo o conteúdo está em português, métricas falsas foram removidas e a hierarquia foi reorganizada usando apenas dados comprovados.</p></div>
+                  <button class="proof-link" id="player-proof-toggle" type="button"><span id="player-proof-label">Provas e histórico preservados</span><span>Abrir</span></button>
+                </div>
+              </article>
+
+              <article class="player-scene" data-player-scene="recovery" aria-hidden="true">
+                <div class="scene-scroll no-dock">
+                  <div class="recovery-symbol">12</div><div class="recovery-title">A sessão continua intacta.</div><div class="recovery-copy">A conexão caiu depois do evento 12. O Atlas preservou a fila, o diff e a ferramenta em andamento.</div>
+                  <div class="recovery-ledger"><div class="recovery-row"><span>ÚLTIMO EVENTO</span><b>Editando apresentação · sequência 12</b></div><div class="recovery-row"><span>PRESERVADO</span><b>2 arquivos, 1 instrução na fila e checkpoint</b></div><div class="recovery-row"><span>PRÓXIMA AÇÃO</span><b>Retomar a partir da sequência 13</b></div></div>
+                  <button class="retry-button" id="player-retry" type="button">Retomar agora</button>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="player-context" aria-live="polite">
+      <div class="context-kicker" id="context-kicker">Estado 01 · execução viva</div>
+      <div class="context-title" id="context-title">Você entende o que está acontecendo agora.</div>
+      <div class="context-copy" id="context-copy">O plano tem tamanho, a ferramenta real ocupa o presente e o próximo passo já está declarado. Nada depende de um “pensando” genérico.</div>
+      <div class="context-facts"><div class="context-fact"><span>Presente</span><b id="context-present">Editando a apresentação</b></div><div class="context-fact"><span>Histórico</span><b id="context-history">9 eventos consultáveis</b></div><div class="context-fact"><span>Controle</span><b id="context-control">Fila, ditado e parada reais</b></div></div>
+      <div class="player-progress" id="player-progress" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+    </aside>
+  </section>
+  <div class="experience-actions"><p>Use as setas ← → ou escolha um estado. A narrativa também avança sozinha.</p><a href="#galeria-completa">Explorar todas as superfícies</a></div>
+</main>
 
 <style>
   .atlas-all{--ink:#1d2b34;--surface:#243743;--surface2:#20313b;--line:#3b505d;--brass:#d4a85a;--text:#dce3e7;--muted:#8b9aa3;--quiet:#657681;max-width:1220px;margin:0 auto;padding:10px 4px 40px;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}.atlas-all *{box-sizing:border-box}.atlas-all .intro{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:26px}.atlas-all .eyebrow{color:var(--brass);font-size:12px;font-weight:750;letter-spacing:.17em;text-transform:uppercase;margin-bottom:8px}.atlas-all h2{margin:0;color:#f1f4f5;font:700 30px/1.12 Georgia,"Times New Roman",serif}.atlas-all .intro p{margin:10px 0 0;max-width:850px;color:var(--muted);font-size:15px;line-height:1.5}.atlas-all .version{color:var(--quiet);font-size:12px;white-space:nowrap}.atlas-all .section{margin-top:30px}.atlas-all .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:12px}.atlas-all .section-title{color:#e7ecee;font:700 21px Georgia,"Times New Roman",serif}.atlas-all .section-note{color:#71818a;font-size:11px}.atlas-all .screen-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.atlas-all .label{margin:0 0 9px 8px;color:var(--muted);font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}.atlas-all .phone{background:var(--ink);border:1px solid #344957;border-radius:32px;box-shadow:0 22px 60px rgba(0,0,0,.32);overflow:hidden;min-height:674px;position:relative}.atlas-all .status{height:34px;padding:13px 22px 0;display:flex;justify-content:space-between;color:var(--muted);font-size:10px;font-weight:650}.atlas-all .nav{height:52px;padding:0 20px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid rgba(149,163,172,.1)}.atlas-all .nav span{color:var(--muted);font-size:11px}.atlas-all .nav strong{font:700 16px Georgia,"Times New Roman",serif;color:#e4eaed}.atlas-all .nav .right{text-align:right;color:var(--brass);font-size:9px}.atlas-all .body{padding:18px 20px 98px}.atlas-all .quote{border-left:2px solid var(--brass);padding:2px 0 2px 12px;margin-bottom:17px;color:#dce3e7;font:italic 15px/1.45 Georgia,"Times New Roman",serif}.atlas-all .mission{border:1px solid rgba(212,168,90,.29);background:var(--surface);border-radius:13px;padding:10px 12px;margin-bottom:15px;animation:mission 3.8s ease-in-out infinite}.atlas-all .mission-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.atlas-all .mission-title{color:#dbe2e6;font-size:12px;font-weight:650}.atlas-all .counter{color:var(--brass);font-size:11px}.atlas-all .track{height:3px;background:#334955;border-radius:2px;margin-top:9px;overflow:hidden}.atlas-all .fill{height:100%;background:linear-gradient(90deg,#b88b3f,var(--brass),#e2c179);animation:travel 5.8s cubic-bezier(.3,.7,.2,1) infinite}.atlas-all .stage-meta{margin-top:6px;display:flex;justify-content:space-between;color:#788892;font-size:9px}.atlas-all .timeline{position:relative;padding-left:18px}.atlas-all .timeline:before{content:"";position:absolute;left:4px;top:7px;bottom:7px;width:1px;background:linear-gradient(var(--brass) 0 72%,#405461 72%)}.atlas-all .event{position:relative;margin-bottom:14px;animation:arrive .55s cubic-bezier(.22,.9,.32,1) both}.atlas-all .event:before{content:"";position:absolute;left:-17px;top:7px;width:6px;height:6px;border-radius:50%;background:#607681}.atlas-all .event.voice:before{width:7px;height:7px;background:var(--brass)}.atlas-all .event.active:before{width:9px;height:9px;left:-18px;background:var(--brass);animation:pulse 1.8s ease-out infinite}.atlas-all .voice-text{color:#e1e7ea;font-size:13px;line-height:1.46}.atlas-all .group,.atlas-all .active-card{border:1px solid #334956;background:rgba(32,49,59,.76);border-radius:10px;padding:9px 10px}.atlas-all .active-card{position:relative;overflow:hidden;border-color:rgba(212,168,90,.35);background:var(--surface)}.atlas-all .active-card:after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(212,168,90,.07) 48%,transparent 66%);transform:translateX(-120%);animation:sweep 3.4s ease-in-out infinite}.atlas-all .row{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#bbc5ca;font-size:11px}.atlas-all .sub{position:relative;z-index:1;margin-top:4px;color:#71818a;font-size:9px;line-height:1.4}.atlas-all .decision{border-left:2px solid rgba(212,168,90,.58);padding-left:9px}.atlas-all .decision-label{color:var(--brass);font-size:8px;font-weight:750;letter-spacing:.13em;text-transform:uppercase;margin-bottom:3px}.atlas-all .next{display:flex;justify-content:space-between;color:#6f7f89;font-size:9px}.atlas-all .livebar{position:absolute;left:14px;right:14px;bottom:14px;padding:10px 12px;background:rgba(36,55,67,.97);border:1px solid #405461;border-radius:17px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -12px 38px rgba(29,43,52,.82)}.atlas-all .live-title{display:flex;align-items:center;gap:7px;color:#d6dde2;font-size:11px}.atlas-all .live-dot{width:6px;height:6px;border-radius:50%;background:var(--brass);animation:dot 1.6s ease-in-out infinite}.atlas-all .live-sub{color:#758690;font-size:9px;margin-top:3px}.atlas-all .action{padding:7px 9px;border-radius:13px;background:#304754;color:#c7d0d5;font-size:9px}.atlas-all .result-card{border:1px solid #3b505d;background:#22343f;border-radius:13px;padding:12px;margin-bottom:16px}.atlas-all .result-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.atlas-all .result-title{font-size:12px;color:#dbe2e6;font-weight:650}.atlas-all .result-sub{font-size:9px;color:#7d8d96;margin-top:4px}.atlas-all .result-state{color:var(--brass);font-size:9px}.atlas-all .proofs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.atlas-all .proof{border-top:1px solid #3b505d;padding-top:7px}.atlas-all .proof b{display:block;color:#ccd5da;font-size:10px}.atlas-all .proof span{display:block;color:#6f8089;font-size:8px;margin-top:3px}.atlas-all .final-label{color:var(--brass);font-size:9px;font-weight:750;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}.atlas-all .final{color:#e0e6e9;font-size:13px;line-height:1.52}.atlas-all .change{display:grid;grid-template-columns:76px 1fr;gap:10px;padding:8px 0;border-top:1px solid rgba(149,163,172,.1)}.atlas-all .change b{color:#8998a1;font-size:9px}.atlas-all .change span{color:#c9d2d7;font-size:10px;line-height:1.4}.atlas-all .artifact{margin-top:10px;border:1px solid #344a57;border-radius:10px;padding:9px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}.atlas-all .artifact b{display:block;color:#cbd4d9;font-size:10px}.atlas-all .artifact span{display:block;color:#71828b;font-size:8px;margin-top:3px}.atlas-all .artifact-action{color:var(--brass);font-size:9px}.atlas-all .composer{position:absolute;left:14px;right:14px;bottom:14px;height:47px;background:var(--surface);border:1px solid #405461;border-radius:17px;display:flex;align-items:center;padding:0 14px;color:#778791;font:italic 12px Georgia,"Times New Roman",serif}.atlas-all .outside{display:grid;grid-template-columns:1.05fr .95fr;gap:22px}.atlas-all .lock{background:linear-gradient(160deg,#17232a,#21333e);border:1px solid #344957;border-radius:32px;min-height:650px;padding:18px;box-shadow:0 22px 60px rgba(0,0,0,.32);position:relative;overflow:hidden}.atlas-all .lock:before{content:"";position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(212,168,90,.055);filter:blur(45px);right:-110px;top:-130px;animation:ambient 7s ease-in-out infinite}.atlas-all .clock{position:relative;text-align:center;color:#eef2f4;font-size:49px;font-weight:250;letter-spacing:-.055em;margin:8px 0 6px}.atlas-all .date{position:relative;text-align:center;color:#9ba7ae;font-size:11px;margin-bottom:50px}.atlas-all .activity{position:relative;background:rgba(28,42,51,.92);border:1px solid rgba(149,163,172,.23);border-radius:21px;padding:13px}.atlas-all .activity-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(149,163,172,.12)}.atlas-all .brand{display:flex;align-items:center;gap:8px}.atlas-all .mark{width:9px;height:9px;border-radius:2px;background:var(--brass);transform:rotate(45deg);animation:mark 2.4s ease-in-out infinite}.atlas-all .brand strong{font:700 13px Georgia,"Times New Roman",serif;color:#e6ebed}.atlas-all .summary{color:var(--brass);font-size:10px}.atlas-all .session{display:grid;grid-template-columns:1fr auto;gap:11px;padding:11px 0;border-bottom:1px solid rgba(149,163,172,.1)}.atlas-all .session:last-child{border-bottom:0}.atlas-all .session-title{color:#dbe2e6;font-size:11px;font-weight:650}.atlas-all .session-phase{color:#80909a;font-size:9px;margin-top:4px}.atlas-all .timer{color:#aeb9bf;font:500 11px ui-monospace,"SF Mono",monospace;font-variant-numeric:tabular-nums;align-self:center}.atlas-all .progress{height:2px;background:#304651;border-radius:2px;margin-top:7px;overflow:hidden}.atlas-all .progress span{display:block;height:100%;background:var(--brass)}.atlas-all .more{display:flex;align-items:center;justify-content:space-between;padding-top:10px;color:#788892;font-size:9px}.atlas-all .island-wrap{position:absolute;left:50%;transform:translateX(-50%);bottom:38px;text-align:center}.atlas-all .island{min-width:180px;height:37px;border-radius:22px;background:#050606;display:flex;align-items:center;justify-content:space-between;padding:0 13px;box-shadow:0 9px 24px rgba(0,0,0,.42)}.atlas-all .island-left{display:flex;align-items:center;gap:7px;color:#dbe2e6;font-size:10px}.atlas-all .island-time{color:#9ba7ae;font:500 10px ui-monospace,"SF Mono",monospace}.atlas-all .island-note{color:#687983;font-size:8px;margin-top:7px}.atlas-all .terminal{display:grid;gap:13px}.atlas-all .state-card{background:var(--ink);border:1px solid #344957;border-radius:19px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,.22)}.atlas-all .state-card.plan{border-color:rgba(212,168,90,.35)}.atlas-all .state-card.done{background:linear-gradient(160deg,#1d2b34,#233640)}.atlas-all .state-card.attention{border-color:#765d3d}.atlas-all .state-top{display:flex;align-items:start;justify-content:space-between;gap:12px}.atlas-all .state-kicker{color:var(--brass);font-size:8px;font-weight:750;letter-spacing:.13em;text-transform:uppercase;margin-bottom:4px}.atlas-all .state-title{color:#e2e7ea;font:700 15px Georgia,"Times New Roman",serif}.atlas-all .state-time{color:#97a5ad;font:500 11px ui-monospace,"SF Mono",monospace}.atlas-all .state-body{color:#8998a1;font-size:10px;line-height:1.45;margin-top:7px}.atlas-all .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.atlas-all .chip{border:1px solid #3c515e;border-radius:11px;padding:4px 7px;color:#94a2aa;font-size:8px}.atlas-all .island-gallery{border:1px solid #333f47;background:#202d35;border-radius:18px;padding:14px}.atlas-all .island-gallery-title{color:#d9e0e4;font:700 15px Georgia,"Times New Roman",serif;margin-bottom:13px}.atlas-all .island-state{display:grid;grid-template-columns:82px 1fr;gap:10px;align-items:center;padding:10px 0;border-top:1px solid rgba(149,163,172,.11)}.atlas-all .island-state:first-of-type{border-top:0}.atlas-all .island-state b{color:#9cabb3;font-size:9px}.atlas-all .mini-island{height:34px;border-radius:19px;background:#050606;display:flex;align-items:center;justify-content:space-between;padding:0 11px;color:#d6dde2;font-size:9px}.atlas-all .mini-island .gold{color:var(--brass)}.atlas-all .choice{margin-top:27px}.atlas-all .choice h3{margin:0 0 5px;color:#edf1f3;font-size:17px}@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@keyframes mission{0%,100%{box-shadow:0 0 0 0 rgba(212,168,90,0)}50%{box-shadow:0 0 0 5px rgba(212,168,90,.035)}}@keyframes travel{0%,12%{width:48%}55%,100%{width:66%}}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(212,168,90,.34)}75%,100%{box-shadow:0 0 0 8px rgba(212,168,90,0)}}@keyframes sweep{0%,30%{transform:translateX(-120%)}75%,100%{transform:translateX(120%)}}@keyframes dot{0%,100%{opacity:.5;transform:scale(.82)}50%{opacity:1;transform:scale(1)}}@keyframes ambient{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-28px,28px,0)}}@keyframes mark{0%,100%{transform:rotate(45deg) scale(.88);opacity:.72}50%{transform:rotate(45deg) scale(1);opacity:1}}@media(prefers-reduced-motion:reduce){.atlas-all *{animation:none!important}}@media(max-width:900px){.atlas-all .screen-grid,.atlas-all .outside{grid-template-columns:1fr}.atlas-all .intro{display:block}.atlas-all .version{margin-top:9px}}
 </style>
 
-<div class="atlas-all">
+<div class="atlas-all" id="galeria-completa">
   <div class="intro">
-    <div><div class="eyebrow">Atlas · protótipo completo</div><h2>Todas as superfícies. Uma única obra contínua.</h2><p>A V7 reúne — sem substituir — a conversa viva, a entrega comprovada, o cockpit de múltiplas sessões, a Dynamic Island e todos os estados de conclusão.</p></div>
-    <div class="version">Galeria cumulativa · v7</div>
+    <div><div class="eyebrow">Atlas · galeria completa preservada</div><h2>Todas as superfícies continuam na obra.</h2><p>A V8 acrescenta o Experience Player sem apagar a conversa viva, a entrega comprovada, o cockpit de múltiplas sessões, a Dynamic Island e os estados de conclusão.</p></div>
+    <div class="version">Galeria cumulativa · v8</div>
   </div>
 
   <section class="section">
@@ -276,6 +450,25 @@
 </div>
 
 <script>
+  /* EXPERIENCE_STATE_START */
+  function createExperienceModel(){
+    const order=['executing','queue','redirect','complete','recovery'];
+    let index=0;
+    return {
+      scenes(){return [...order]},
+      current(){return order[index]},
+      select(scene){
+        const nextIndex=order.indexOf(scene);
+        if(nextIndex>=0)index=nextIndex;
+        return order[index];
+      },
+      next(){index=(index+1)%order.length;return order[index]},
+      previous(){index=(index-1+order.length)%order.length;return order[index]},
+      position(){return index}
+    };
+  }
+  /* EXPERIENCE_STATE_END */
+
   /* QUEUE_STATE_START */
   function createQueueModel(){
     let nextId=1;
@@ -415,6 +608,131 @@
     stopExecution.addEventListener('click',stopCurrentExecution);
     queueBackdrop.addEventListener('click',event=>{if(event.target===queueBackdrop)closeQueueSheet()});
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!queueBackdrop.hidden)closeQueueSheet()});
+  }
+
+  const experienceModel=createExperienceModel();
+  const playerQueue=createQueueModel();
+  playerQueue.enqueue('Faça uma revisão final e garanta que não existem gaps.');
+  const playerScenes=[...document.querySelectorAll('[data-player-scene]')];
+  const sceneButtons=[...document.querySelectorAll('.scene-button[data-scene]')];
+  const playerProgress=[...document.querySelectorAll('#player-progress span')];
+  const playerQueueList=document.getElementById('player-queue-list');
+  const playerQueueCount=document.getElementById('player-queue-count');
+  const playerQueueChip=document.getElementById('player-queue-chip');
+  const playerQueueClose=document.getElementById('player-queue-close');
+  const playerFollowupForm=document.getElementById('player-followup-form');
+  const playerFollowupInput=document.getElementById('player-followup-input');
+  const playerAutoplay=document.getElementById('player-autoplay');
+  const playerRetry=document.getElementById('player-retry');
+  const playerProofToggle=document.getElementById('player-proof-toggle');
+  const scenePosition=document.getElementById('scene-position');
+  const playerThreadTitle=document.getElementById('player-thread-title');
+  const playerNavState=document.getElementById('player-nav-state');
+  const playerPriorityMessage=document.getElementById('player-priority-message');
+  let playerAutoplayEnabled=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let playerTimer=null;
+
+  const playerNarrative={
+    executing:{kicker:'Estado 01 · execução viva',title:'Você entende o que está acontecendo agora.',copy:'O plano tem tamanho, a ferramenta real ocupa o presente e o próximo passo já está declarado. Nada depende de um “pensando” genérico.',present:'Editando a apresentação',history:'9 eventos consultáveis',control:'Fila, ditado e parada reais',thread:'Nova conversa',nav:'AO VIVO'},
+    queue:{kicker:'Estado 02 · continuidade',title:'Você continua dirigindo sem destruir o turno atual.',copy:'Toda nova instrução entra em uma fila visível. Você inspeciona a ordem, remove um item ou promove exatamente a mensagem que deve assumir agora.',present:'Turno atual segue intacto',history:'Fila ordenada e editável',control:'Enviar agora ou remover',thread:'Próximas instruções',nav:'FILA'},
+    redirect:{kicker:'Estado 03 · redirecionamento',title:'Mudar de ideia não apaga o que já foi conquistado.',copy:'O Atlas conclui o ponto seguro, grava um checkpoint e assume a nova prioridade com a decisão pública registrada na timeline.',present:'Revisando gaps da entrega',history:'Checkpoint na sequência 12',control:'Prioridade explícita',thread:'Prioridade atualizada',nav:'REDIRECIONADO'},
+    complete:{kicker:'Estado 04 · conclusão',title:'Terminar significa entregar e provar.',copy:'A resposta final fica separada da execução. Passos, checks, diff, arquivos e histórico permanecem acessíveis sem poluir a leitura principal.',present:'Resposta final pronta',history:'12 eventos preservados',control:'Abrir provas e continuar',thread:'Relatório corrigido',nav:'CONCLUÍDO'},
+    recovery:{kicker:'Estado 05 · resiliência',title:'Uma queda de rede não vira perda de trabalho.',copy:'O último evento confirmado, os arquivos alterados e a fila sobrevivem. A retomada declara exatamente de onde continua.',present:'Aguardando reconexão segura',history:'Sequência 12 preservada',control:'Retomar a partir do 13',thread:'Sessão preservada',nav:'RECUPERANDO'}
+  };
+
+  function setPlayerAutoplay(enabled){
+    playerAutoplayEnabled=enabled;
+    if(playerTimer){clearInterval(playerTimer);playerTimer=null}
+    if(playerAutoplayEnabled){playerTimer=setInterval(()=>setPlayerScene(experienceModel.next(),false),4600)}
+    if(playerAutoplay)playerAutoplay.textContent=playerAutoplayEnabled?'Pausar narrativa':'Reproduzir narrativa';
+  }
+
+  function setPlayerScene(scene,manual=true){
+    const selected=experienceModel.select(scene);
+    const index=experienceModel.position();
+    playerScenes.forEach(element=>{
+      const active=element.dataset.playerScene===selected;
+      element.classList.toggle('active',active);
+      element.setAttribute('aria-hidden',String(!active));
+    });
+    sceneButtons.forEach(button=>button.classList.toggle('active',button.dataset.scene===selected));
+    playerProgress.forEach((segment,segmentIndex)=>segment.classList.toggle('on',segmentIndex<=index));
+    const narrative=playerNarrative[selected];
+    document.getElementById('context-kicker').textContent=narrative.kicker;
+    document.getElementById('context-title').textContent=narrative.title;
+    document.getElementById('context-copy').textContent=narrative.copy;
+    document.getElementById('context-present').textContent=narrative.present;
+    document.getElementById('context-history').textContent=narrative.history;
+    document.getElementById('context-control').textContent=narrative.control;
+    playerThreadTitle.textContent=narrative.thread;
+    playerNavState.textContent=narrative.nav;
+    scenePosition.textContent=`${String(index+1).padStart(2,'0')} / 05`;
+    if(manual)setPlayerAutoplay(false);
+  }
+
+  function playerQueueButton(label,className,onClick){
+    const button=document.createElement('button');
+    button.type='button';button.className=className;button.textContent=label;button.addEventListener('click',onClick);
+    return button;
+  }
+
+  function renderPlayerQueue(){
+    if(!playerQueueList)return;
+    const items=playerQueue.items();
+    playerQueueCount.textContent=String(items.length);
+    playerQueueList.replaceChildren();
+    items.forEach((item,index)=>{
+      const row=document.createElement('article');row.className='player-queue-row';
+      const position=document.createElement('div');position.className='player-queue-pos';position.textContent=`${String(index+1).padStart(2,'0')} · na fila`;
+      const message=document.createElement('div');message.className='player-queue-text';message.textContent=item.text;
+      const actions=document.createElement('div');actions.className='player-queue-actions';
+      actions.append(
+        playerQueueButton('Remover','remove',()=>{playerQueue.remove(item.id);renderPlayerQueue()}),
+        playerQueueButton('Enviar agora','promote',()=>{
+          const promoted=playerQueue.promote(item.id);if(!promoted)return;
+          playerPriorityMessage.textContent=`Agora: ${promoted.text}`;renderPlayerQueue();setPlayerScene('redirect');
+        })
+      );
+      row.append(position,message,actions);playerQueueList.append(row);
+    });
+    if(items.length===0){
+      const empty=document.createElement('div');empty.className='player-queue-row';empty.textContent='A fila está vazia. A execução atual continua normalmente.';playerQueueList.append(empty);
+    }
+  }
+
+  if(playerScenes.length){
+    renderPlayerQueue();
+    sceneButtons.forEach(button=>button.addEventListener('click',()=>setPlayerScene(button.dataset.scene)));
+    playerQueueChip.addEventListener('click',()=>setPlayerScene('queue'));
+    playerQueueClose.addEventListener('click',()=>setPlayerScene('executing'));
+    playerFollowupForm.addEventListener('submit',event=>{
+      event.preventDefault();
+      const item=playerQueue.enqueue(playerFollowupInput.value);
+      if(!item){playerFollowupInput.focus();return}
+      playerFollowupInput.value='';renderPlayerQueue();setPlayerScene('queue');
+    });
+    document.querySelectorAll('.player-stop').forEach(button=>button.addEventListener('click',()=>{
+      document.querySelector('.recovery-title').textContent='Execução interrompida com segurança.';
+      document.querySelector('.recovery-copy').textContent='O Atlas encerrou o transporte, preservou o histórico e manteve a fila pronta para a próxima instrução.';
+      setPlayerScene('recovery');
+    }));
+    playerRetry.addEventListener('click',()=>{
+      document.querySelector('.recovery-title').textContent='A sessão continua intacta.';
+      document.querySelector('.recovery-copy').textContent='A conexão caiu depois do evento 12. O Atlas preservou a fila, o diff e a ferramenta em andamento.';
+      setPlayerScene('executing');
+    });
+    playerProofToggle.addEventListener('click',()=>{
+      const label=document.getElementById('player-proof-label');
+      label.textContent=label.textContent.startsWith('Provas')?'3 checks aprovados · 2 arquivos · 12 eventos':'Provas e histórico preservados';
+    });
+    playerAutoplay.addEventListener('click',()=>setPlayerAutoplay(!playerAutoplayEnabled));
+    document.addEventListener('keydown',event=>{
+      if(event.target instanceof HTMLInputElement)return;
+      if(event.key==='ArrowRight')setPlayerScene(experienceModel.next());
+      if(event.key==='ArrowLeft')setPlayerScene(experienceModel.previous());
+    });
+    setPlayerScene('executing',false);
+    setPlayerAutoplay(playerAutoplayEnabled);
   }
 
   function toggleSelect(element){
