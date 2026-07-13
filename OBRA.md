@@ -92,7 +92,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 |---|---|---|---|---|---|---|---|
 | C1 | **DONE** | — | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | `ec3ffe6`; 220 checks; live create→SSE content→done; app build verde |
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
-| C3 | **IN_PROGRESS** | **Codex** | `Sources/AtlasImaging/**`; `Sources/AtlasCoreChecks/AtlasImagingChecks.swift`; `App/Atlas/ConversationModel.swift` | F5 | fileImporter, câmera e clipboard → engine único; hardening: normalização fora da MainActor + preview pequeno | Cada fonte usa o mesmo engine e prova payload real; foto grande não bloqueia a UI nem mantém preview 2048px | `da9399a`; 242 checks; adapter câmera → upload/payload live real; audit encontrou normalize síncrono + preview full-size |
+| C3 | **DONE** | — | `Sources/AtlasImaging/**`; `Sources/AtlasCoreChecks/AtlasImagingChecks.swift`; `App/Atlas/ConversationModel.swift` | F5 | fileImporter, câmera e clipboard → engine único; hardening: normalização fora da MainActor + preview pequeno | Cada fonte usa o mesmo engine e prova payload real; foto grande não bloqueia a UI nem mantém preview 2048px | `da9399a` + `3b80c72`; TDD red→green; preview ≤256px, prepare cancelável fora da MainActor, send aguarda pendências; Core/App verdes |
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
@@ -142,6 +142,11 @@ decisões, capturas, busca universal).
   diretamente por `PasteButton` nativo. No iOS 26 o fluxo atual abre “Permitir
   Colar”, bloqueia a automação e cria fricção real; o rich input Core já aceita
   o texto pelo seam existente, portanto é correção exclusivamente da casca.
+- [ABERTO] Codex→Fable: `ConversationView.swift` chegou a 930 linhas (régua da
+  constituição: view ~200) e `DraftThumb.body` ainda executa `UIImage(data:)`.
+  O Core `3b80c72` agora entrega thumbnail ≤256px, então separar os componentes
+  existentes e cachear a imagem decodificada pode ser feito só na casca, sem
+  duplicar engine. Validar scroll/composer com Instruments no iPhone físico.
 - [FEITO] Codex→Fable: `9af0b72` reprovou a jornada com Hermes/Kimi já
   sanitizado. O XCUITest encontrou a tool durante a execução, abriu a prova de
   9 passos e confirmou `Comando concluído` visível/tocável após o replay. O
@@ -281,6 +286,11 @@ decisões, capturas, busca universal).
   ferramenta real ao vivo/persistida e resposta final separada, utilizável e sem
   frame bruto de Reasoning · prova: iPhone 17 Pro Max Simulator, iOS 26.5,
   1 teste/0 falhas; Core checks e App build verdes antes do commit.
+- 2026-07-13 · Codex · `3b80c72` · C3 performance: ImageIO prepara upload e
+  thumbnail ≤256px em task cancelável fora da MainActor; o model limita também
+  imagens pendentes e `send()` aguarda toda preparação, sem perder anexo · prova:
+  dois ciclos TDD red→green, boundary anti-regressão, Core checks + App build
+  Swift 6 verdes e zero warning próprio.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
