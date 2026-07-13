@@ -656,7 +656,9 @@ public func runInteractionRunLiveProbe(
 }
 
 /// Probe deliberadamente opt-in: consome uma execução Codex real para provar
-/// que o contrato rico (`event_type=tool`) atravessa Server → SSE/ledger → Core.
+/// que o contrato semântico de tool atravessa Server → SSE/ledger → Core com
+/// uma janela visual mensurável. Aceita o shape canônico `tool` e o shape
+/// compatível `progress|shell` enquanto o recorder do Server ainda os normaliza.
 /// A tarefa é read-only e determinística; nunca escreve no workspace remoto.
 public func runCodexToolActivityLiveProbe(
     _ check: (String, Bool) -> Void,
@@ -664,7 +666,7 @@ public func runCodexToolActivityLiveProbe(
 ) async {
     print("\nAtlas AI · tool activity Codex AO VIVO (C5/U3):")
     let input = CreateAiInteractionInput(
-        inputText: "Execute obrigatoriamente uma ferramenta de shell read-only com `shasum -a 256 composer.json` no workspace atual. Não infira e não responda antes de executar o comando; devolva apenas o hash observado.",
+        inputText: "Execute obrigatoriamente uma ferramenta de shell read-only com `sleep 8 && shasum -a 256 composer.json` no workspace atual. Não infira e não responda antes de executar o comando; devolva apenas o hash observado.",
         clientId: UUID().uuidString.lowercased(),
         newThread: true,
         agentSlug: "atlas",
@@ -677,6 +679,8 @@ public func runCodexToolActivityLiveProbe(
     let run = InteractionRun(transport: client)
     var traceId: String?
     var liveActivities: [AtlasAgentActivity] = []
+    var liveToolStartedAt: Date?
+    var liveToolFinishedAt: Date?
     var completed = false
     do {
         for try await event in await run.start(input: input) {
@@ -687,6 +691,15 @@ public func runCodexToolActivityLiveProbe(
                     existing: liveActivities,
                     incoming: [activity]
                 )
+                if activity.title == "Executando comando",
+                   activity.detail?.contains("shasum -a 256 composer.json") == true,
+                   liveToolStartedAt == nil {
+                    liveToolStartedAt = Date()
+                }
+                if activity.title == "Comando concluído",
+                   activity.detail?.contains("shasum -a 256 composer.json") == true {
+                    liveToolFinishedAt = Date()
+                }
             case .completed: completed = true
             case .content, .execution, .remoteError: break
             }
@@ -697,13 +710,24 @@ public func runCodexToolActivityLiveProbe(
             return
         }
         let snapshot = try await client.getAiInteraction(traceId)
-        let toolEvents = (snapshot.trace.streamEvents ?? []).filter { $0.type == "tool" }
+        let toolEvents = (snapshot.trace.streamEvents ?? []).filter { event in
+            event.type == "tool"
+                || (event.type == "progress"
+                    && event.metadata["name"]?.stringValue?.lowercased() == "shell")
+        }
         let persisted = atlasAgentTimeline(from: snapshot.trace.streamEvents ?? [])
-        check("live Codex persistiu event_type=tool", !toolEvents.isEmpty)
-        check("live Codex tool apareceu durante execução",
-              liveActivities.contains { [.executing, .completed, .reading, .editing].contains($0.kind) })
+        check("live Codex persistiu tool semântico", !toolEvents.isEmpty)
+        check("live Codex entregou shell.started durante execução", liveToolStartedAt != nil)
+        let visibleToolSeconds = liveToolStartedAt.flatMap { started in
+            liveToolFinishedAt.map { $0.timeIntervalSince(started) }
+        }
+        check("live Codex manteve tool observável por pelo menos 5s",
+              visibleToolSeconds.map { $0 >= 5 } == true)
         check("live Codex tool reaparece no replay",
-              persisted.contains { [.executing, .completed, .reading, .editing].contains($0.kind) })
+              persisted.contains {
+                  [.executing, .completed, .warning].contains($0.kind)
+                      && $0.detail?.contains("shasum -a 256 composer.json") == true
+              })
     } catch {
         check("live Codex tool activity", false)
         print("    erro: \(error)")
