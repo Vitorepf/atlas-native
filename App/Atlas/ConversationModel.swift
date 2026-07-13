@@ -30,6 +30,8 @@ struct ChatBubble: Identifiable, Equatable {
     var agents: [ExecAgent] = []
     var decideStage: String? = nil
     var decideStrategy: String? = nil
+    var activities: [AtlasAgentActivity] = []
+    var currentActivity: AtlasAgentActivity? { activities.last }
 }
 
 // Anexo local (pré-envio) — o ÚNICO contrato de UI de anexos: a strip do
@@ -89,8 +91,7 @@ final class ConversationModel {
 
     private let client: AtlasClient
     private(set) var threadId: String?
-    private var poll: Task<Void, Never>?
-    private var stream: Task<Void, Never>?
+    private var activeRun: InteractionRun?
     private var attachmentInputs: [String: AttachmentInput] = [:]
     @ObservationIgnored private let engine: AtlasRichInputEngine
 
@@ -163,7 +164,7 @@ final class ConversationModel {
         if trimmed.isEmpty && !sendingDrafts.isEmpty {
             trimmed = "analise \(sendingDrafts.count == 1 ? "o anexo enviado" : "os \(sendingDrafts.count) anexos enviados")"
         }
-        guard !trimmed.isEmpty, !isSending else { return }
+        guard !trimmed.isEmpty, !isSending, activeRun == nil else { return }
         isSending = true
 
         bubbles.append(ChatBubble(id: "local-user-\(bubbles.count)", role: "user", text: trimmed))
@@ -217,69 +218,59 @@ final class ConversationModel {
                 payload["workspace_name"] = .string(workspaceName ?? slug)
                 if let p = workspacePath { payload["workspace_path"] = .string(p) }
             }
-            let input = CreateAiInteractionInput(inputText: trimmed, threadId: threadId,
+            let input = CreateAiInteractionInput(inputText: trimmed,
+                                                 clientId: UUID().uuidString.lowercased(),
+                                                 threadId: threadId,
                                                  newThread: threadId == nil ? true : nil,
                                                  payload: JSONObject(payload),
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,
                                                  uploadedDocuments: fields?.uploadedDocuments.isEmpty == false ? fields?.uploadedDocuments : nil,
                                                  richInputPayload: fields?.richInputPayload)
-            let created = try await client.createAiInteraction(input)
-            if threadId == nil { threadId = created.trace.threadId }
-            let traceId = created.trace.id
-            update(aid) { $0.traceId = traceId; $0.provider = created.trace.provider }
-
-            // Poll da execução (a orquestra) em paralelo ao stream de conteúdo.
-            poll = Task { [weak self] in
-                while !Task.isCancelled {
-                    try? await Task.sleep(nanoseconds: 1_300_000_000)
-                    guard let self, !Task.isCancelled else { break }
-                    guard let resp = try? await self.client.getAiInteraction(traceId) else { continue }
-                    self.applyExecution(aid, resp.trace)
-                    if ["succeeded", "failed", "cancelled"].contains(resp.trace.status) { break }
-                }
-            }
-
-            // Stream numa Task PRÓPRIA (guardada em `stream`) para o Stop cancelar
-            // de verdade — cancelar a Task derruba o AsyncThrowingStream (o
-            // onTermination do AtlasClient cancela a conexão SSE por baixo).
-            let client = self.client
-            stream = Task { [weak self] in
-                var live = ""
-                do {
-                    frames: for try await frame in await client.streamInteraction(traceId: traceId) {
-                        guard let self, !Task.isCancelled else { break frames }
-                        switch frame {
-                        case .event(let e): live += e.content; self.update(aid) { $0.text = live; $0.streaming = true }
-                        case .done: break frames   // fim do turno — sair do LOOP, não só do switch
-                        case .error(let p):
-                            let m = p["message"]?.stringValue ?? "erro no stream"
-                            self.update(aid) { $0.text = live.isEmpty ? "⚠️ \(m)" : live }
-                        case .ignored: break
-                        }
+            let run = InteractionRun(transport: client)
+            activeRun = run
+            var live = ""
+            for try await event in await run.start(input: input) {
+                switch event {
+                case .created(let trace):
+                    if threadId == nil { threadId = trace.threadId }
+                    update(aid) { $0.traceId = trace.id; $0.provider = trace.provider }
+                    applyExecution(aid, trace)
+                case .activity(let activity):
+                    update(aid) {
+                        guard $0.activities.last?.title != activity.title ||
+                              $0.activities.last?.detail != activity.detail else { return }
+                        $0.activities.append(activity)
+                        if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
                     }
-                } catch {
-                    self?.update(aid) { if $0.text.isEmpty { $0.text = "⚠️ \(error)" } }
+                case .content(let frame):
+                    guard frame.channel == nil || frame.channel == "assistant" else { continue }
+                    guard frame.type == "token" || frame.type == "response" else { continue }
+                    guard !frame.content.isEmpty else { continue }
+                    live = frame.type == "response" ? frame.content : live + frame.content
+                    update(aid) { $0.text = live; $0.streaming = true }
+                case .execution(let trace):
+                    applyExecution(aid, trace)
+                case .remoteError(let payload):
+                    let message = payload["message"]?.stringValue ?? "erro no stream"
+                    update(aid) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
+                case .completed(_, let finalTrace):
+                    complete(aid, trace: finalTrace)
                 }
             }
-            await stream?.value
-            poll?.cancel()
-            finalize(aid, traceId: traceId)
         } catch {
-            update(aid) { $0.text = "⚠️ \(error)"; $0.streaming = false }
+            update(aid) {
+                if $0.text.isEmpty { $0.text = "⚠️ \(Self.userMessage(for: error))" }
+                $0.streaming = false
+            }
+            toast = Self.userMessage(for: error)
         }
+        activeRun = nil
         isSending = false
     }
 
     func cancel() {
-        poll?.cancel(); stream?.cancel()
-        // Stop de verdade: não há endpoint de cancel por interaction — a unidade
-        // real de execução são os JOBS. Cancela no servidor os ativos deste turno.
-        let active = bubbles.last(where: { $0.streaming })?
-            .agents.filter { ["queued", "processing"].contains($0.status) } ?? []
-        if !active.isEmpty {
-            let client = self.client
-            Task.detached { for j in active { _ = try? await client.cancelAiJob(j.id) } }
-        }
+        let run = activeRun
+        Task { await run?.cancel() }
         for i in bubbles.indices where bubbles[i].streaming { bubbles[i].streaming = false }
         isSending = false
         toast = "cancelado"
@@ -311,18 +302,15 @@ final class ConversationModel {
         }
     }
 
-    private func finalize(_ id: String, traceId: String) {
-        Task { [weak self] in
-            guard let self else { return }
-            let final = try? await self.client.getAiInteraction(traceId)
-            self.update(id) {
-                $0.streaming = false
-                $0.agents = []
-                $0.decideStage = nil
-                if let t = final?.trace {
-                    $0.model = t.model ?? $0.model
-                    $0.elapsedMs = t.latencyMs ?? $0.startedAt.map { Int(Date().timeIntervalSince($0) * 1000) }
-                }
+    private func complete(_ id: String, trace: AtlasAiTrace?) {
+        update(id) {
+            $0.streaming = false
+            $0.agents = []
+            $0.decideStage = nil
+            if let trace {
+                if $0.text.isEmpty, let response = trace.responseText { $0.text = response }
+                $0.model = trace.model ?? $0.model
+                $0.elapsedMs = trace.latencyMs ?? $0.startedAt.map { Int(Date().timeIntervalSince($0) * 1000) }
             }
         }
     }
@@ -330,5 +318,26 @@ final class ConversationModel {
     private func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
         guard let i = bubbles.firstIndex(where: { $0.id == id }) else { return }
         mutate(&bubbles[i])
+    }
+
+    private static func userMessage(for error: Error) -> String {
+        if let urlError = error as? URLError {
+            switch urlError.code {
+            case .networkConnectionLost, .notConnectedToInternet, .cannotConnectToHost,
+                 .cannotFindHost, .timedOut:
+                return "A conexão caiu. O Atlas vai recuperar este turno quando a rede voltar."
+            default:
+                return "Não foi possível falar com o Atlas agora. Tente novamente."
+            }
+        }
+        if let api = error as? AtlasApiError {
+            switch api.status {
+            case 401, 403: return "A sessão do Atlas precisa ser reconectada."
+            case 408, 429: return "O Atlas está ocupado. Este turno continua recuperável."
+            case 500...599: return "O servidor Atlas está temporariamente indisponível."
+            default: return api.message
+            }
+        }
+        return "A execução foi interrompida. Tente novamente."
     }
 }

@@ -16,12 +16,42 @@ public struct AtlasAiStreamEvent: Sendable, Equatable {
     public var content: String
     public var metadata: JSONObject
     public var occurredAt: String?
+
+    public init(
+        id: String? = nil,
+        traceId: String,
+        jobId: String? = nil,
+        attemptId: String? = nil,
+        sequence: Int,
+        type: String,
+        channel: String? = nil,
+        content: String,
+        metadata: JSONObject = JSONObject(),
+        occurredAt: String? = nil
+    ) {
+        self.id = id
+        self.traceId = traceId
+        self.jobId = jobId
+        self.attemptId = attemptId
+        self.sequence = sequence
+        self.type = type
+        self.channel = channel
+        self.content = content
+        self.metadata = metadata
+        self.occurredAt = occurredAt
+    }
 }
 
 public struct AtlasAiStreamDone: Sendable, Equatable {
     public var traceId: String
     public var status: String
     public var lastSequence: Int?
+
+    public init(traceId: String, status: String, lastSequence: Int? = nil) {
+        self.traceId = traceId
+        self.status = status
+        self.lastSequence = lastSequence
+    }
 }
 
 /// O resultado de despachar um frame. `.ignored` cobre tudo que o TS descarta

@@ -278,6 +278,7 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
 runRichInputChecks(check)
 await runRichInputEngineChecks(check)
 runRichInputBoundaryChecks(check)
+await runInteractionRunChecks(check)
 runAtlasImagingChecks(check)
 
 // Live-probe do upload (opt-in ATLAS_LIVE=1: sobe bytes reais no staging do
@@ -286,6 +287,7 @@ if ProcessInfo.processInfo.environment["ATLAS_LIVE"] == "1",
    let liveToken = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !liveToken.isEmpty {
     let liveHost = ProcessInfo.processInfo.environment["ATLAS_HOST"] ?? "127.0.0.1"
     let liveClient = AtlasClient(config: AtlasConfig(host: liveHost, port: 3737, token: liveToken))
+    await runInteractionRunLiveProbe(check, client: liveClient)
     await runRichInputLiveProbe(check, client: liveClient)
 } else {
     print("\n  ⚠ ATLAS_LIVE≠1 — live-probe de upload pulado (rode ATLAS_LIVE=1 ATLAS_TOKEN=… antes do make device)")

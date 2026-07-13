@@ -24,6 +24,11 @@ public struct AtlasApiError: Error, CustomStringConvertible, Sendable {
     public let status: Int
     public let path: String
     public let message: String
+    public init(status: Int, path: String, message: String) {
+        self.status = status
+        self.path = path
+        self.message = message
+    }
     public var description: String { "AtlasApiError(\(status), \(path)): \(message)" }
 }
 
@@ -31,7 +36,7 @@ public struct AtlasApiError: Error, CustomStringConvertible, Sendable {
 /// `URLSession` + async/await + `Codable`. Auth via `X-Atlas-Token` (the lane
 /// the /ai/* surface uses; the mobile Bearer lane ports with device pairing).
 /// Retry+backoff and the 401→clear-pairing invariant layer on next.
-public actor AtlasClient {
+public actor AtlasClient: AtlasAiStreamSource {
     private let config: AtlasConfig
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -115,53 +120,61 @@ public actor AtlasClient {
     public func streamInteraction(
         traceId: String,
         after: Int = 0,
-        timeoutSeconds: Int = 120
+        timeoutSeconds: Int = 120,
+        maxReconnects: Int = 4
     ) -> AsyncThrowingStream<AtlasAiStreamFrame, Error> {
+        makeAtlasResumableInteractionStream(
+            source: self,
+            traceId: traceId,
+            after: after,
+            timeoutSeconds: timeoutSeconds,
+            policy: AtlasStreamReconnectPolicy(maxReconnects: maxReconnects)
+        )
+    }
+
+    public func openInteractionStreamOnce(
+        traceId: String,
+        after: Int,
+        timeoutSeconds: Int
+    ) async throws -> AsyncThrowingStream<AtlasAiStreamFrame, Error> {
         let cfg = config
-        let ses = session
         return AsyncThrowingStream { continuation in
-            let task = Task {
-                do {
-                    let timeout = min(max(timeoutSeconds, 5), 600)
-                    let after = max(0, after)
-                    let encoded = traceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? traceId
-                    let path = "/ai/interactions/\(encoded)/stream?timeout=\(timeout)&after=\(after)"
-                    guard let url = URL(string: cfg.base + path) else {
-                        throw AtlasApiError(status: 0, path: path, message: "URL inválida")
-                    }
-                    var req = URLRequest(url: url)
-                    req.setValue("text/event-stream", forHTTPHeaderField: "Accept")
-                    req.setValue(cfg.token, forHTTPHeaderField: "X-Atlas-Token")
-
-                    let (bytes, response) = try await ses.bytes(for: req)
-                    let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                    guard (200..<300).contains(status) else {
-                        throw AtlasApiError(status: status, path: path, message: "Atlas stream \(status)")
-                    }
-
-                    var frameLines: [String] = []
-                    for try await line in bytes.lines {
-                        if Task.isCancelled { break }
-                        if line.isEmpty {
-                            if !frameLines.isEmpty {
-                                emit(dispatchAtlasAiStreamFrame(frameLines.joined(separator: "\n")),
-                                     traceId: traceId, into: continuation)
-                                frameLines.removeAll()
-                            }
-                        } else {
-                            frameLines.append(line)
-                        }
-                    }
-                    if !frameLines.isEmpty {
-                        emit(dispatchAtlasAiStreamFrame(frameLines.joined(separator: "\n")),
-                             traceId: traceId, into: continuation)
-                    }
-                    continuation.finish()
-                } catch {
-                    continuation.finish(throwing: error)
-                }
+            let timeout = min(max(timeoutSeconds, 5), 600)
+            let cursor = max(0, after)
+            let encoded = traceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? traceId
+            let path = "/ai/interactions/\(encoded)/stream?timeout=\(timeout)&after=\(cursor)"
+            guard let url = URL(string: cfg.base + path) else {
+                continuation.finish(throwing: AtlasApiError(status: 0, path: path, message: "URL inválida"))
+                return
             }
-            continuation.onTermination = { _ in task.cancel() }
+
+            var request = URLRequest(url: url)
+            request.timeoutInterval = TimeInterval(timeout + 15)
+            request.setValue("text/event-stream", forHTTPHeaderField: "Accept")
+            request.setValue(cfg.token, forHTTPHeaderField: "X-Atlas-Token")
+
+            // `URLSession.bytes.lines` devolveu corpo vazio contra o stream PHP
+            // real no device/macOS, embora curl recebesse os frames. O delegate
+            // é o caminho nativo realmente incremental: cada `didReceive data`
+            // alimenta o framing SSE sem esperar a resposta terminar.
+            let delegate = AtlasSSESessionDelegate(
+                traceId: traceId,
+                path: path,
+                continuation: continuation
+            )
+            let queue = OperationQueue()
+            queue.maxConcurrentOperationCount = 1
+            let configuration = URLSessionConfiguration.default
+            configuration.timeoutIntervalForRequest = TimeInterval(timeout + 15)
+            configuration.timeoutIntervalForResource = TimeInterval(timeout + 15)
+            let streamSession = URLSession(configuration: configuration, delegate: delegate, delegateQueue: queue)
+            let task = streamSession.dataTask(with: request)
+            continuation.onTermination = { _ in
+                task.cancel()
+                streamSession.invalidateAndCancel()
+                _ = delegate
+            }
+            task.resume()
         }
     }
 
@@ -292,5 +305,93 @@ private func emit(
     case .event(let e) where e.traceId != traceId: return
     case .done(let d) where d.traceId != traceId: return
     default: continuation.yield(frame)
+    }
+}
+
+private final class AtlasSSESessionDelegate: NSObject, URLSessionDataDelegate, @unchecked Sendable {
+    private let traceId: String
+    private let path: String
+    private let continuation: AsyncThrowingStream<AtlasAiStreamFrame, Error>.Continuation
+    private var buffer = Data()
+    private var finished = false
+
+    init(
+        traceId: String,
+        path: String,
+        continuation: AsyncThrowingStream<AtlasAiStreamFrame, Error>.Continuation
+    ) {
+        self.traceId = traceId
+        self.path = path
+        self.continuation = continuation
+    }
+
+    func urlSession(
+        _ session: URLSession,
+        dataTask: URLSessionDataTask,
+        didReceive response: URLResponse,
+        completionHandler: @escaping (URLSession.ResponseDisposition) -> Void
+    ) {
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        guard (200..<300).contains(status) else {
+            finish(throwing: AtlasApiError(status: status, path: path, message: "Atlas stream \(status)"))
+            completionHandler(.cancel)
+            return
+        }
+        completionHandler(.allow)
+    }
+
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        guard !finished else { return }
+        buffer.append(data)
+        drainCompleteFrames()
+    }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard !finished else { return }
+        if let error {
+            if (error as? URLError)?.code == .cancelled { finish() }
+            else { finish(throwing: error) }
+            return
+        }
+        drainRemainder()
+        finish()
+    }
+
+    private func drainCompleteFrames() {
+        while let range = firstDelimiter(in: buffer) {
+            let frameData = Data(buffer[..<range.lowerBound])
+            buffer.removeSubrange(..<range.upperBound)
+            dispatch(frameData)
+        }
+    }
+
+    private func drainRemainder() {
+        guard !buffer.isEmpty else { return }
+        let remainder = buffer
+        buffer.removeAll(keepingCapacity: false)
+        dispatch(remainder)
+    }
+
+    private func dispatch(_ data: Data) {
+        guard let frame = String(data: data, encoding: .utf8), !frame.isEmpty else { return }
+        emit(dispatchAtlasAiStreamFrame(frame), traceId: traceId, into: continuation)
+    }
+
+    private func firstDelimiter(in data: Data) -> Range<Data.Index>? {
+        let lf = data.range(of: Data("\n\n".utf8))
+        let crlf = data.range(of: Data("\r\n\r\n".utf8))
+        switch (lf, crlf) {
+        case (.some(let a), .some(let b)): return a.lowerBound < b.lowerBound ? a : b
+        case (.some(let a), .none): return a
+        case (.none, .some(let b)): return b
+        case (.none, .none): return nil
+        }
+    }
+
+    private func finish(throwing error: Error? = nil) {
+        guard !finished else { return }
+        finished = true
+        if let error { continuation.finish(throwing: error) }
+        else { continuation.finish() }
     }
 }
