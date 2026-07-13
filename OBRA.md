@@ -94,16 +94,16 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
 | C3 | **DONE** | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | `da9399a`; 242 checks; adapter câmera → upload/payload live real |
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
-| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea` + `ce850fe`; tool/thinking real do parser Codex, upsert started→completed, redaction e ledger persistido/reload; live jornada editorial completa |
+| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea` + `ce850fe` + `c952c26` + `4b68d29`; `tool` e `progress\|shell` real, upsert started→completed, redaction, replay; processo do provider não finge ser tool nem expõe argv/path |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof | U1–U6 | Harness XCUITest físico reproduzível | Test target assinado dirige rich-input + conversa/cockpit no iPhone e captura evidence attachment sem depender de automação externa do macOS | claim 2026-07-13; pedido Fable §5 |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof | U1–U6 | Harness XCUITest físico reproduzível | Test target assinado dirige conversa/tool/cockpit no iPhone e captura evidence attachment sem depender de automação externa do macOS | `8407ca1`; Simulator XCUITest verde com Codex real + `Comando concluído` persistido; físico buildou/assinou mas o iPhone permaneceu bloqueado; rich input aguarda `PasteButton` (§5) |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
 | U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | `ed10c81` instalado+aberto no iPhone 23:55; falta print do operador p/ DEVICE_PROVEN |
 | U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | `a59003f` slot 3-estados honesto instalado; falta aprovação visual |
-| U3 | **BLOCKER · TODO** | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Substitui `ExecutionRibbon` estático; mostra atividade atual e timeline registrada/expansível em cada resposta, incluindo tools, comandos sanitizados, receipt e quality | Core provado em `bb8ecea`; screenshot do operador provou que a View atual ainda ignora o seam |
+| U3 | **IN_PROGRESS** | **Fable** | execution views | C5 | Cockpit v2 para tools/receipt/quality | Substitui `ExecutionRibbon` estático; mostra atividade atual e timeline registrada/expansível em cada resposta, incluindo tools, comandos sanitizados, receipt e quality | `97c9fdc`; Simulator DeviceProof mostra atividade ao vivo e encontra `Comando concluído` persistido; falta tornar a linha da tool visível ao expandir e prova no físico (§5) |
 | U4 | **IN_PROGRESS** | **Fable** | `RootView.swift`, `WorkspaceView.swift` | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | `c9adefb` loading/falha/vazio editoriais instalados; distinção offline×timeout precisa de contrato (§5) |
 | U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | `a582dac` Dynamic Type em TODA tipografia (relativeTo) + VoiceOver labels; falta auditoria visual no device |
 | U6 | **IN_PROGRESS** | **Fable** | Assets.xcassets | U2 | Ícone, splash e masthead final | `5aa6245` ícone ✦ Ink & Brass no bundle e instalado; falta aprovação do operador na home | — |
@@ -131,13 +131,23 @@ decisões, capturas, busca universal).
   exclusivamente `model.effort` + `model.cycleEffort()`. O boundary agora varre
   toda a camada de apresentação (não só arquivos chamados View) e fica vermelho
   enquanto rede, JSON ou storage escaparem dos models/Core.
-- [ABERTO · SERVER] Codex→Backend: o probe read-only forçando `codex_cli` a
-  executar `shasum -a 256 composer.json` não persistiu `event_type=tool` antes
-  do job exceder a antiga janela mobile; ficaram apenas lifecycle events. O
-  parser PHP rico existe e o mobile `ce850fe` já consome seu shape, mas o Server
-  precisa provar provider real → `tool/thinking` → `ai_stream_events` → SSE.
-  Até isso fechar, o cockpit mostra processo/checkpoints reais, não inventa a
-  ferramenta interna que o ledger não entregou.
+- [ABERTO · SERVER] Codex→Backend: causa confirmada em
+  `AiStreamRecorder`: a allowlist exclui `tool`/`thinking` e os converte para
+  `progress`. Codex persiste `progress|shell` started→completed (9s no probe) e
+  o mobile `c952c26` já o projeta/reproduz; Kimi, porém, ainda entrega só o
+  processo do provider + stdout, sem tools internas. Corrigir o contrato
+  canônico provider-neutral (`tool`/`thinking` sem coerção), instrumentar todos
+  os providers e provar SSE da tool AO VIVO antes de `done`, não apenas replay.
+  `process_started` não vale como tool desde `4b68d29`.
+- [ABERTO] Codex→Fable: substituir o botão que lê `UIPasteboard.general`
+  diretamente por `PasteButton` nativo. No iOS 26 o fluxo atual abre “Permitir
+  Colar”, bloqueia a automação e cria fricção real; o rich input Core já aceita
+  o texto pelo seam existente, portanto é correção exclusivamente da casca.
+- [ABERTO] Codex→Fable: ao expandir `ExecutionProof`, garantir que todos os
+  passos sejam alcançáveis e que a tool persistida fique visível acima do
+  composer. O XCUITest encontra `Comando concluído` na árvore, mas a linha
+  continua `isHittable=false` mesmo após seis scrolls; teclado/composer ocultam
+  a timeline. Adicionar foco/scroll/layout e fechar teclado no envio/prova.
 
 - [ABERTO · TERMINAL DA LANE FABLE — IMPOSSIBILIDADE DEMONSTRADA] U1–U6
   implementados, gates verdes, instalados no iPhone (`ed10c81`→`105b1ae`),
@@ -230,6 +240,15 @@ decisões, capturas, busca universal).
   janela (4 reconnects = até 10 min) · prova: TDD red→green, clean Core sem
   warnings, clean App Swift 6 sem warning próprio, live replay com jornada
   entender→contexto→planejar→executar→verificar→evidência + uploads/C4 verdes.
+- 2026-07-13 · Codex · `c952c26` + `4b68d29` · compatibilidade com o ledger
+  real `progress|shell`, tool lifecycle persistente e separação honesta entre
+  processo do provider e ferramenta do agente (sem argv/path local) · prova:
+  checks red→green + replay real Codex com comando/jornada/SSE/done verdes.
+- 2026-07-13 · Codex · `8407ca1` · C7 DeviceProof reproduzível: target XCUITest
+  assinado, autodiscovery correto e evidence attachments · prova: Simulator
+  físico-equivalente verde com Codex real, atividade ao vivo e comando
+  persistido; execução no iPhone parou no preflight porque o aparelho estava
+  bloqueado, logo C7 permanece IN_PROGRESS.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
