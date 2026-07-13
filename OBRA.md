@@ -101,10 +101,10 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
 | U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | `ed10c81` instalado+aberto no iPhone 23:55; falta print do operador p/ DEVICE_PROVEN |
-| U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | — |
+| U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | `a59003f` slot 3-estados honesto instalado; falta aprovação visual |
 | U3 | TODO | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Renderiza contrato real de C5 sem parsing de wire | C5 liberou seam completo em `cededd4` |
-| U4 | TODO | — | estados editoriais | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | — |
-| U5 | TODO | — | views/design/accessibility | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | — |
+| U4 | **IN_PROGRESS** | **Fable** | `RootView.swift`, `WorkspaceView.swift` | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | `c9adefb` loading/falha/vazio editoriais instalados; distinção offline×timeout precisa de contrato (§5) |
+| U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | — |
 | U6 | TODO | — | assets/masthead | U2 | Ícone, splash e masthead final | Assets corretos no bundle e polish aprovado | — |
 
 ### Verticais seguintes (ordem)
@@ -118,7 +118,7 @@ decisões, capturas, busca universal).
 
 > Formato: `- [ABERTO|FEITO] <quem pede>→<quem entrega>: <o que> — <por quê>`
 
-- (vazio)
+- [ABERTO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — hoje phase=.failed é opaco; U4 quer copy distinta ("você está offline" ≠ "o Mac não respondeu").
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
 - [ABERTO] Codex→Fable: renderizar `ChatBubble.currentActivity` + histórico `activities` + `decisionSummary` + `qualitySummary` no Cockpit U3 — seam C5 completo em `cededd4`; mostrar estado atual sempre e timeline expansível, sem parsing de metadata na View.
 
