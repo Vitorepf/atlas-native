@@ -119,11 +119,52 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | U10 | DONE (falta print) | Fable | Widgets/ + AtlasActivityAttributes + project.yml (TRAVESSIA ADITIVA autorizada pelo goal do operador; AtlasDeviceProof intacto) | — | Live Activity + Dynamic Island: ✦ + fase + timer; 'resposta pronta ✓' | `c3eda84` |
 
 ### Verticais seguintes (ordem)
-Voice Supremacy (LiveKit/ditado/resposta falada) → Agent Cockpit (obras
-autônomas, pausar/redirecionar/escolhas) → Artifacts & Proof (screenshots,
+Voice Supremacy (LiveKit/ditado/resposta falada) → Agent Cockpit (sessões
+multiagente, pausar/redirecionar/escolhas) → Artifacts & Proof (screenshots,
 diffs, aprovação, evidência) → Continuity (Live Activities, Dynamic Island,
 push, widgets, App Intents, Share Extension) → Atlas-wide (agenda, saúde,
-decisões, capturas, busca universal).
+decisões, capturas, busca universal). **Autônomos Command Center é uma área
+24/7 própria e não pertence ao Agent Cockpit nem ao Session Hub.**
+
+### AVISO CANÔNICO A TODA IA — Autônomos possui superfície própria 24/7
+
+Esta decisão do operador é obrigatória para Codex, Fable e qualquer agente
+futuro. **Nunca encaixar Autônomos como card, conversa longa ou sessão comum.**
+O app terá uma rota/área superior exclusiva para operar todo o plano
+Autônomos, conforme o protótipo
+`docs/proposals/codex-autonomos-command-center/index.html`.
+
+A superfície própria deve, com dados reais e persistentes:
+
+- listar **todas as instâncias Autônomos** e contar registradas, executando,
+  aguardando, pausadas, stale, falhas e atenção necessária;
+- mostrar **onde cada instância roda**: placement humano, host/runtime,
+  workspace/repo, branch/escopo, capacidades, uptime, heartbeat, lease,
+  último checkpoint/restart e política de recuperação/failover;
+- mostrar **o que cada instância está fazendo**: missão, objetivo, limites,
+  estágio, plano N/M real, agentes, ferramentas/ações agregadas, próxima ação,
+  próxima revisão e timer 24/7;
+- oferecer o **ledger completo de tasks**: fila, executando, implementada,
+  verificada, falhou, bloqueada, pulada ou cancelada, incluindo o que foi
+  implementado, o que não foi, arquivos/diffs/commits, artifacts, receipts,
+  evidências e motivo honesto de cada estado;
+- preservar histórico de replanejamento, decisões públicas, incidentes,
+  handoffs, recuperações, aprendizados e resultados, sem apagar versões;
+- obter pelo contrato canônico do Atlas os **prompts/context packs do Cérebro
+  Externo e do Músculo Externo**, com ação explícita para copiar/abrir/usar no
+  executor correto. A projeção padrão é provider-safe e sanitizada; prompt
+  bruto, IDs/traces internos e detalhes de provider só aparecem no modo de
+  auditoria quando o operador solicitar;
+- ter controles reais e governados: criar missão, seguir, pausar, retomar,
+  drenar instância, transferir/handoff, reexecutar, cancelar e encerrar. Zero
+  botão falso e nenhuma ação destrutiva sem autoridade;
+- sobreviver a relaunch, troca de device e execução sem o app aberto. Trabalho
+  saudável entra em digest/checkpoints; notificação, tela bloqueada e Live
+  Activity aparecem por atenção real ou quando o operador escolher **Seguir**.
+
+O seam continua contract-first: atlas-server/AtlasCore fornecem identidade,
+estado e ledger; SwiftUI apenas projeta. Se o backend não fornecer um campo,
+a casca não inventa número, progresso, status, prompt ou prova.
 
 ## 5. Pedidos de contrato (Fable ⇄ Codex)
 
