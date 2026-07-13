@@ -288,6 +288,22 @@ a casca não inventa número, progresso, status, prompt ou prova.
   de `run_state.lock.held`. Core checks + `make build` verdes; falta casca e
   prova em device.
 
+- [ABERTO · QA real 2026-07-13 · Codex→Fable] **A casca foi exercitada contra
+  o servidor de verdade no iPhone 17 Pro Simulator**: thread carregada, turno
+  `Responda somente com a palavra ATLAS.`, cinco eventos vivos, resposta final
+  `ATLAS`, receipt `8 passos · 10,8 s · quality 85.0` e prompt nativo de
+  notificação apareceram. O mock precisa preservar estes fatos, mas há três
+  correções visuais obrigatórias antes de chamar U2/U3 de polidos: (1) a faixa
+  “Seguindo a execução · N eventos · tempo · Parar” não pode quebrar o título
+  em duas linhas nem competir com a caixa de escrita; ela deve seguir a régua
+  compacta do mock vencedor; (2) os pills `geral` e `auto` encolheram até
+  sobrar apenas o ponto — nunca esconder rótulo ou criar controles sem
+  significado; usar prioridade/overflow explícito em largura iPhone; (3) a
+  conclusão não pode deixar um composer gigante de controles vazios quando o
+  operador não está compondo. **Não alterar o fluxo Core nem trocar a
+  linguagem visual do Fable por uma cópia Cursor.** Evidência local desta
+  sessão: `/tmp/atlas-native-live.png` e `/tmp/atlas-native-complete.png`.
+
 ## 6. Decisões registradas
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
