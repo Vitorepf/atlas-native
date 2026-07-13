@@ -275,6 +275,8 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
     print("  ⚠ ATLAS_TOKEN ausente — check de AI ao vivo pulado (não conta como falha)")
 }
 
+runRichInputChecks(check)
+
 print("")
 if failures == 0 { print("AtlasCore: todos os checks passaram ✓") }
 else { print("AtlasCore: \(failures) check(s) FALHARAM ✗"); exit(1) }
