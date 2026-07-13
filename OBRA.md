@@ -167,11 +167,12 @@ decisões, capturas, busca universal).
 - 2026-07-13 · Codex · `da9399a` · C3 + contrato U4: adapters únicos para
   Files/câmera/clipboard e falhas de rede tipadas no AtlasSession · prova:
   242 checks + câmera→engine→upload/payload live real + app build verde.
-- 2026-07-13 · Codex · `bb8ecea` · resposta segura + timeline persistente:
+- 2026-07-13 · Codex · `bb8ecea` + `dfe4cfa` · resposta segura + timeline persistente:
   Hermes one-shot, `stdout_chunk` fora do texto, Reasoning rejeitado, ledger
   REST `stream_events` decodificado e restaurado em batches no reload · prova:
   golden checks verdes + live SSE sem Reasoning + resposta final apresentável +
-  snapshot com atividades + `make build` verde. U3 visual elevado a bloqueador.
+  snapshot com atividades, chunks repetidos colapsados + `make build` verde.
+  U3 visual elevado a bloqueador.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
