@@ -257,23 +257,32 @@ struct ConversationView: View {
         .buttonStyle(PressableScale())
     }
 
+    // Slot de 3 estados HONESTOS: enviando → losango respirando (Atlas
+    // trabalhando, nada clicável); pode enviar → seta gold; vazio → mic.
+    // (Antes, durante o envio aparecia o mic — controle falso.)
     private var sendOrMic: some View {
         let canSubmit = (!draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                          || !model.drafts.isEmpty) && !model.isSending
         return ZStack {
-            Image(systemName: "mic.fill")
-                .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
-                .opacity(canSubmit ? 0 : 1).allowsHitTesting(!canSubmit)
-            Button(action: send) {
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.system(size: 27)).foregroundStyle(AtlasTheme.accent)
+            if model.isSending {
+                BreathingDiamond(size: 13, reduceMotion: reduceMotion)
+                    .accessibilityLabel("Atlas processando")
+            } else {
+                Image(systemName: "mic.fill")
+                    .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
+                    .opacity(canSubmit ? 0 : 1).allowsHitTesting(!canSubmit)
+                Button(action: send) {
+                    Image(systemName: "arrow.up.circle.fill")
+                        .font(.system(size: 27)).foregroundStyle(AtlasTheme.accent)
+                }
+                .buttonStyle(.plain)
+                .opacity(canSubmit ? 1 : 0).allowsHitTesting(canSubmit)
+                .accessibilityLabel("enviar ao Atlas")
             }
-            .buttonStyle(.plain)
-            .opacity(canSubmit ? 1 : 0).allowsHitTesting(canSubmit)
-            .accessibilityLabel("enviar ao Atlas")
         }
         .frame(width: 30, height: 30)
         .animation(.easeOut(duration: 0.28), value: canSubmit)
+        .animation(.easeOut(duration: 0.28), value: model.isSending)
     }
 
     private func pill(label: String, action: @escaping () -> Void) -> some View {
@@ -311,6 +320,7 @@ struct ConversationView: View {
     }
 
     private func send() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         let text = draft
         draft = ""
         let effort = self.effort
