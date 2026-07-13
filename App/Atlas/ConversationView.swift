@@ -133,6 +133,15 @@ struct ConversationView: View {
                 }
             }
 
+            // Strip de anexos (o contrato de UI é o LocalDraft, nada mais)
+            if !model.drafts.isEmpty {
+                DraftStrip(drafts: model.drafts) { model.removeDraft($0) }
+            }
+            if let p = model.uploadPercent {
+                ProgressView(value: p).tint(AtlasTheme.accent)
+                    .scaleEffect(y: 0.6)
+            }
+
             HStack(spacing: 10) {
                 if !focused {
                     PhotosPicker(selection: $pickedPhoto, matching: .images) {
@@ -196,7 +205,16 @@ struct ConversationView: View {
             }
         }
         .onChange(of: pickedPhoto) {
-            if pickedPhoto != nil { model.toast = "anexo selecionado — envio em breve"; pickedPhoto = nil }
+            guard let item = pickedPhoto else { return }
+            pickedPhoto = nil
+            Task {
+                guard let data = try? await item.loadTransferable(type: Data.self) else {
+                    model.toast = "não consegui ler a foto"; return
+                }
+                let mime = item.supportedContentTypes.first?.preferredMIMEType ?? "image/jpeg"
+                model.addImage(data: data, suggestedName: nil, mimeType: mime,
+                               identity: item.itemIdentifier ?? UUID().uuidString)
+            }
         }
     }
 
@@ -220,7 +238,8 @@ struct ConversationView: View {
     }
 
     private var sendOrMic: some View {
-        let canSubmit = !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !model.isSending
+        let canSubmit = (!draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                         || !model.drafts.isEmpty) && !model.isSending
         return ZStack {
             Image(systemName: "mic.fill")
                 .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
@@ -519,6 +538,63 @@ private struct EmptyConversation: View {
         .padding(.horizontal, 32).padding(.top, 140)
         .frame(maxWidth: .infinity)
         .onAppear { if !reduceMotion { withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) { breathe = true } } }
+    }
+}
+
+// MARK: - Strip de anexos do composer
+
+private struct DraftStrip: View {
+    let drafts: [LocalDraft]
+    let onRemove: (String) -> Void
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                ForEach(drafts) { d in
+                    ZStack(alignment: .topTrailing) {
+                        thumb(d)
+                            .frame(width: 56, height: 56)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(borderColor(d), lineWidth: 1))
+                            .overlay {
+                                if d.state == .subindo {
+                                    ProgressView().tint(.white)
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                        .background(.black.opacity(0.35))
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                }
+                            }
+                        Button { onRemove(d.id) } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 16))
+                                .foregroundStyle(AtlasTheme.textPrimary, AtlasTheme.bgRecessed)
+                        }
+                        .buttonStyle(.plain)
+                        .offset(x: 6, y: -6)
+                        .opacity(d.state == .subindo ? 0 : 1)
+                    }
+                }
+            }
+            .padding(.top, 6)
+        }
+    }
+
+    @ViewBuilder private func thumb(_ d: LocalDraft) -> some View {
+        if d.kind == .image, let data = d.preview, let ui = UIImage(data: data) {
+            Image(uiImage: ui).resizable().scaledToFill()
+        } else {
+            VStack(spacing: 3) {
+                Image(systemName: "doc.fill").font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary)
+                Text((d.fileName as NSString).pathExtension.uppercased())
+                    .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(AtlasTheme.surfaceHi)
+        }
+    }
+
+    private func borderColor(_ d: LocalDraft) -> Color {
+        if case .falhou = d.state { return AtlasTheme.domOperacional }
+        return AtlasTheme.separator
     }
 }
 

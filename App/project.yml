@@ -33,6 +33,8 @@ targets:
     dependencies:
       - package: AtlasCore
         product: AtlasCore
+      - package: AtlasCore
+        product: AtlasImaging
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.vitor.atlas.native
