@@ -516,6 +516,66 @@
   }
   .cpill i { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); font-style: normal; }
 
+  /* conclusão rica (Ato I) — provas e artefato */
+  .proofs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+  .proof { border-top: 1px solid var(--sep); padding-top: 7px; }
+  .proof b { display: block; font-size: 13.5px; }
+  .proof span { display: block; font-size: 10px; color: var(--ink3); margin-top: 2px; }
+  .arti {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    border: 1px solid var(--sep); border-radius: 12px; padding: 10px 13px; margin-top: 14px;
+  }
+  .arti b { font-size: 12.5px; display: block; }
+  .arti span { font-size: 10px; color: var(--ink3); display: block; margin-top: 2px; }
+  .arti .act { color: var(--gold); font-family: var(--mono); font-size: 10.5px; white-space: nowrap; }
+
+  /* ilha que morfa pelos estados */
+  .morph-wrap { display: flex; flex-direction: column; align-items: center; }
+  .morph-island {
+    background: #000; border-radius: 999px; height: 36px;
+    display: inline-flex; align-items: center; gap: 10px; padding: 0 16px;
+    font-family: var(--mono); font-size: 11px; color: var(--ink2);
+    transition: all 0.45s cubic-bezier(0.32,0.72,0,1); white-space: nowrap;
+  }
+  .morph-island .g { color: var(--gold); font-family: var(--serif); font-size: 13px; }
+  .mi-label { font-family: var(--mono); font-size: 9.5px; color: var(--ink3); margin-top: 10px; letter-spacing: 0.12em; text-transform: uppercase; transition: opacity 0.3s; }
+
+  /* artefato que se monta */
+  .af-check { transition: color 0.3s; }
+  .af-check.okc { color: var(--green); }
+
+  /* ── Ato III · frota Autônomos ── */
+  .fleet-wrap { max-width: 660px; margin: 34px auto 0; }
+  .scn-screen.fleet { height: auto; min-height: 540px; }
+  .fm-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 4px; }
+  .fm { border: 1px solid var(--sep); border-radius: 12px; padding: 9px 10px; background: rgba(36,55,67,0.5); transition: border-color 0.3s; }
+  .fm b { display: block; font-family: var(--mono); font-size: 16px; color: var(--ink); transition: color 0.3s; }
+  .fm span { display: block; font-size: 9px; color: var(--ink3); margin-top: 3px; line-height: 1.3; }
+  .fm.attn { border-color: rgba(212,168,90,0.4); }
+  .fm.attn b { color: var(--gold); }
+  .inst { padding: 10px 0; border-bottom: 1px solid rgba(149,163,172,0.08); }
+  .inst-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+  .inst b { font-size: 12.5px; }
+  .i-state { font-family: var(--mono); font-size: 9.5px; color: var(--ink3); white-space: nowrap; font-variant-numeric: tabular-nums; transition: color 0.3s; }
+  .i-state.live { color: var(--gold); }
+  .i-state.okst { color: var(--green); }
+  .i-state.warnst { color: var(--alert); }
+  .i-mission { font-size: 10.5px; color: var(--ink2); margin-top: 3px; line-height: 1.4; }
+  .i-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+  .i-tag { border: 1px solid var(--sep); border-radius: 8px; padding: 2px 7px; font-size: 8.5px; color: var(--ink3); }
+  .hb { display: inline-flex; align-items: center; gap: 5px; font-size: 8.5px; color: var(--ink3); font-family: var(--mono); }
+  .hb i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 1.4s ease-in-out infinite; }
+  .hb.stale i { background: var(--alert); animation: none; }
+
+  /* vs Cursor */
+  .vcursor { margin-top: 22px; border: 1px solid var(--sep-soft); border-radius: 16px; padding: 20px 24px; }
+  .vcursor h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+  .vc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 9px 0; border-bottom: 1px solid rgba(149,163,172,0.07); font-size: 13.5px; color: var(--ink2); }
+  .vc-row:last-child { border-bottom: 0; }
+  .vc-row b { color: var(--ink); font-weight: 500; }
+  .vc-tag { font-family: var(--mono); font-size: 10.5px; color: var(--gold); white-space: nowrap; }
+  .vc-tag.par { color: var(--green); }
+
   /* ── veredito ── */
   .verdict { margin-top: 84px; border-top: 1px solid var(--sep-soft); padding-top: 40px; }
   .verdict h2 { font-family: var(--serif); font-weight: 600; font-size: 26px; max-width: 32ch; }
@@ -558,10 +618,11 @@
   <div class="kicker">Atlas · Execução Viva — proposta Fable 5</div>
   <h1>Um mock parado não compete com o produto vivo.</h1>
   <p class="lede">
-    Duas partes. Primeiro, a cena inteira <em>se movendo</em>: a conversa que narra a si mesma,
-    e a tela bloqueada com <em>duas sessões em paralelo</em>, cada uma com o próprio cronômetro —
-    plano concluído, resposta pronta, sessão encerrada. Depois, o <em>teatro de situações</em>:
-    as situações operacionais difíceis, não descritas em cartões parados — <em>encenadas</em>.
+    Três atos. Primeiro, a cena inteira <em>se movendo</em>: a conversa que narra a si mesma,
+    e a tela bloqueada com <em>duas sessões em paralelo</em>, cada uma com o próprio cronômetro.
+    Depois, o <em>teatro de situações</em>: dez situações operacionais difíceis — <em>encenadas</em>,
+    não descritas. Por fim, o <em>Autônomos 24/7</em>: a frota pulsando, com um incidente
+    acontecendo e sendo resolvido na sua frente.
     Nada aqui é conceito: o núcleo é o comportamento do app instalado no iPhone do operador.
   </p>
   <div class="provenance">
@@ -633,6 +694,11 @@
                 <div><b>Obra concluída</b><span>6 passos · 2 arquivos · 1m 42s</span></div>
                 <div class="open">Abrir</div>
               </div>
+              <div class="proofs">
+                <div class="proof"><b>PT-BR</b><span>idioma verificado</span></div>
+                <div class="proof"><b>3/3</b><span>checks aprovados</span></div>
+                <div class="proof"><b>0</b><span>warnings novos</span></div>
+              </div>
               <div class="final-label">RESPOSTA FINAL</div>
               <div class="final-text">
                 Corrigi o relatório inteiro. Agora ele está em português, com hierarquia
@@ -642,6 +708,10 @@
                   <li>uplift exibido somente com par comparável;</li>
                   <li>layout reorganizado para leitura executiva.</li>
                 </ul>
+              </div>
+              <div class="arti">
+                <div><b>Relatório corrigido</b><span>prévia, diff e evidências reunidas</span></div>
+                <span class="act">Inspecionar</span>
               </div>
               <div class="signature">— claude-sonnet-4-6, em 1m 42s</div>
               <div class="fpills"><span class="fpill">útil</span><span class="fpill">contexto</span><span class="fpill">longo</span><span class="fpill">fraco</span></div>
@@ -879,21 +949,103 @@
       </div>
       <p class="scn-caption">O estado <em>alterna na sua frente</em>: ouvindo, respondendo palavra a palavra, executando — o mesmo ciclo que a Dynamic Island mostrará.</p>
     </div>
+
+    <!-- 10 · Artefato pronto -->
+    <div class="scn">
+      <div class="scn-label"><b>10 · Artefato pronto</b><span class="scn-tag live">attachments + provas · no app</span></div>
+      <div class="scn-screen">
+        <div class="scn-top"><span class="scn-title">Entrega pronta</span><span class="scn-meta" id="p10m">verificando…</span></div>
+        <div class="mrow on"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t">Relatório executivo corrigido <span class="st">HTML · 148 KB · PT-BR</span></div></div></div>
+        <div class="proofs" style="margin-top:6px">
+          <div class="proof"><b class="af-check" id="af1">0/3</b><span>checks</span></div>
+          <div class="proof"><b class="af-check" id="af2">—</b><span>arquivos</span></div>
+          <div class="proof"><b class="af-check" id="af3">—</b><span>warnings</span></div>
+        </div>
+        <div class="callout" id="p10sum">
+          <div class="co-kicker">Resumo da mudança</div>
+          <div class="co-sub" style="margin-top:0">Idioma corrigido, métricas falsas removidas, hierarquia reorganizada para decisão executiva.</div>
+        </div>
+        <div class="co-pills" id="p10act" style="opacity:0; transition: opacity 0.4s">
+          <span class="co-pill primary">Abrir resultado</span>
+          <span class="co-pill">Ver diff</span>
+          <span class="co-pill">Ver provas</span>
+        </div>
+        <div class="scn-foot"><span id="p10foot">reunindo evidências</span><span>artefato vinculado ao ledger</span></div>
+      </div>
+      <p class="scn-caption">A entrega <em>se monta</em>: os checks aprovam um a um, as métricas assentam, e só então as ações acendem — prova antes de promessa.</p>
+    </div>
+  </div>
+
+  <!-- ═══ ATO III — AUTÔNOMOS 24/7 ═══ -->
+  <div class="sec-head">
+    <div class="sec-kicker">Ato III · Autônomos 24/7</div>
+    <div class="sec-title">A frota não se descreve em quatro telas paradas. Ela pulsa.</div>
+    <p class="sec-lede">
+      A natureza do Autônomos é <em>tempo e responsabilidade</em>: quantas instâncias, onde, há quanto
+      tempo, com qual prova. Aqui o centro de comando está <em>vivo</em> — uptimes correndo, heartbeats
+      batendo, e um incidente de lease acontecendo e sendo resolvido na sua frente, sem virar spam.
+    </p>
+  </div>
+
+  <div class="fleet-wrap">
+    <div class="scn-label"><b>Command Center · frota viva</b><span class="scn-tag">vertical Autônomos · contrato §5</span></div>
+    <div class="scn-screen fleet">
+      <div class="scn-top"><span class="scn-title">Autônomos</span><span class="scn-meta"><span class="g" id="fEx">9</span> executando · <span id="fAt">1</span> atenção</span></div>
+      <div class="fm-grid" style="margin-top:12px">
+        <div class="fm"><b>12</b><span>instâncias registradas</span></div>
+        <div class="fm"><b id="fmEx">9</b><span>executando</span></div>
+        <div class="fm"><b>2</b><span>aguardando</span></div>
+        <div class="fm attn" id="fmAtCard"><b id="fmAt">1</b><span>atenção</span></div>
+      </div>
+
+      <div class="inst">
+        <div class="inst-top"><b>Atlas Native Guardian</b><span class="i-state live">executando · <span id="up1">03:42:18</span></span></div>
+        <div class="i-mission">Auditar, corrigir e provar a experiência nativa no iPhone.</div>
+        <div class="i-tags"><span class="i-tag">Mac mini · escritório</span><span class="i-tag">atlas-native · main</span><span class="i-tag">3 agentes</span><span class="i-tag">passo 4/7</span><span class="hb"><i></i><span id="hb1">agora</span></span></div>
+      </div>
+      <div class="inst">
+        <div class="inst-top"><b>Quality Foundry Sentinel</b><span class="i-state live">executando · <span id="up2">18:09:44</span></span></div>
+        <div class="i-mission">Monitorar gates, localizar regressões e abrir obra comprovável.</div>
+        <div class="i-tags"><span class="i-tag">Atlas Server · local</span><span class="i-tag">2 agentes</span><span class="i-tag">checkpoint 14:00</span><span class="hb"><i></i><span id="hb2">3s</span></span></div>
+      </div>
+      <div class="inst">
+        <div class="inst-top"><b>Rivals Evaluator</b><span class="i-state">aguardando quota · <span id="up3">01:12:07</span></span></div>
+        <div class="i-mission">Comparar execução bare × Atlas na mesma bateria.</div>
+        <div class="i-tags"><span class="i-tag">runtime cloud</span><span class="i-tag">a vez é do sistema externo</span></div>
+      </div>
+      <div class="inst">
+        <div class="inst-top"><b>Knowledge Sync</b><span class="i-state warnst" id="ks">atenção · lease expira</span></div>
+        <div class="i-mission">Sincronizar KB e Code Intelligence após mudanças canônicas.</div>
+        <div class="i-tags"><span class="i-tag" id="ksTag">último heartbeat há 4m</span><span class="hb stale" id="ksHb"><i></i><span>atrasado</span></span></div>
+      </div>
+
+      <div class="callout alert" id="fInc">
+        <div class="co-kicker">Atenção · lease de Knowledge Sync expirando</div>
+        <div class="co-sub" style="margin-top:0">Nenhuma escrita nova até recuperar identidade ou transferir. Nenhuma ação destrutiva automática.</div>
+        <div class="co-pills">
+          <span class="co-pill primary" id="fTransfer">Transferir missão</span>
+          <span class="co-pill">Aguardar 5m</span>
+          <span class="co-pill">Abrir instância</span>
+        </div>
+      </div>
+      <div class="callout" id="fDigest">
+        <div class="co-kicker">14:00 · digest do operador</div>
+        <div class="co-sub" style="margin-top:0">Missão transferida com prova · 317 verificações aprovadas · nenhuma decisão pendente. Trabalho saudável vira digest, não notificação.</div>
+      </div>
+      <div class="scn-foot"><span id="fFoot">frota operacional · heartbeats vivos</span><span>alerta por exceção, nunca ruído</span></div>
+    </div>
+    <p class="scn-caption">Os uptimes <em>correm de verdade</em>, os heartbeats batem, o incidente aparece, a missão é transferida <em>com prova</em>, o contador de atenção zera — e a saúde vira digest das 14:00, não spam.</p>
   </div>
 
   <!-- ═══ DETALHES ═══ -->
   <div class="details">
     <div class="card">
-      <h3>A ilha conta o tempo.</h3>
-      <p>Compacta: ✦ e o cronômetro. Expandida: conversa, fase atual e o timer —
-         pressione e a orquestra aparece sem abrir o app.</p>
-      <div class="demo island-demo">
-        <div class="mini-island"><span class="g">✦</span> 0:38</div>
-        <div class="mini-island exp">
-          <span class="g" style="font-size:18px">✦</span>
-          <div class="col" style="flex:1; margin-left:8px"><b>Nova conversa</b><span>editando o dashboard…</span></div>
-          <span>0:38</span>
-        </div>
+      <h3>A ilha vive todos os estados.</h3>
+      <p>Não uma galeria de instantes: a MESMA ilha atravessa o ciclo —
+         executando, plano pronto, resposta pronta, atenção — morfando na sua frente.</p>
+      <div class="demo morph-wrap">
+        <div class="morph-island" id="mIsland"><span class="g">✦</span><span id="mBody">0:38</span></div>
+        <div class="mi-label" id="mLabel">executando</div>
       </div>
     </div>
     <div class="card">
@@ -947,11 +1099,19 @@
         </ul>
       </div>
     </div>
+    <div class="vcursor">
+      <h4>E contra o Cursor — paridade comprovada, depois vantagem</h4>
+      <div class="vc-row"><b>Progressão viva na conversa</b> — intenção, ferramentas agregadas, passo atual pulsando <span class="vc-tag par">paridade · shipado</span></div>
+      <div class="vc-row"><b>N sessões na tela bloqueada</b> — um card por sessão, timer próprio, contador × N <span class="vc-tag par">paridade · shipado fca1e73</span></div>
+      <div class="vc-row"><b>O porquê de cada decisão</b> — Atlas Decide com razão e confiança, gravado na conversa <span class="vc-tag">só o Atlas</span></div>
+      <div class="vc-row"><b>Prova permanente</b> — passos, quality e evidências consultáveis ao reabrir amanhã <span class="vc-tag">só o Atlas</span></div>
+      <div class="vc-row"><b>Autônomos 24/7</b> — frota com heartbeat, lease, incidente por exceção e digest <span class="vc-tag">só o Atlas</span></div>
+    </div>
   </div>
 
   <div class="colophon">
     <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
-    <span>Fable 5 · proposta viva v3 · 9 situações encenadas · arquivo único, duplo-clique e abre</span>
+    <span>Fable 5 · proposta viva v4 · 10 situações + frota 24/7 · arquivo único, duplo-clique e abre</span>
   </div>
 </div>
 
@@ -1218,6 +1378,77 @@ scene1(({ at, every, loop }) => {
   words.forEach((_, i) => at(2600 + i * 260, () => spans[i].classList.add('said')));
   at(2600 + words.length * 260 + 700, () => { mode = 'exec'; $('p9state').textContent = 'EXECUTANDO'; });
   loop(11000);
+});
+
+/* ── ilha que morfa: executando → plano pronto → resposta → atenção ── */
+scene1(({ at, every, loop }) => {
+  let sec = 38;
+  const states = [
+    { label: 'executando',      body: () => '<span class="g">✦</span><span>' + fmt(sec) + '</span>' },
+    { label: 'expandida',       body: () => '<span class="g">✦</span><span style="color:var(--ink)">Nova conversa</span><span style="font-family:var(--serif);font-style:italic">editando…</span><span>' + fmt(sec) + '</span>' },
+    { label: 'plano pronto',    body: () => '<span class="g">5/5 passos</span><span>verificando</span>' },
+    { label: 'resposta pronta', body: () => '<span class="g">✦</span><span style="color:var(--gold)">resposta pronta ✓</span>' },
+    { label: 'atenção',         body: () => '<span class="g">✦</span><span>1 decisão aguarda você</span>' },
+  ];
+  let idx = 0;
+  $('mIsland').innerHTML = states[0].body();
+  $('mLabel').textContent = states[0].label;
+  every(1000, () => { sec++; if (idx <= 1) { $('mIsland').innerHTML = states[idx].body(); } });
+  [1,2,3,4].forEach(i => at(2300 * i, () => { idx = i; $('mIsland').innerHTML = states[i].body(); $('mLabel').textContent = states[i].label; }));
+  loop(12000);
+});
+
+/* ── 10 · Artefato — a entrega se monta, prova antes de promessa ── */
+scene1(({ at, loop }) => {
+  $('af1').textContent = '0/3'; $('af1').classList.remove('okc');
+  $('af2').textContent = '—'; $('af3').textContent = '—';
+  $('p10sum').classList.remove('on'); $('p10act').style.opacity = 0;
+  $('p10m').textContent = 'verificando…'; $('p10foot').textContent = 'reunindo evidências';
+  at(1200, () => $('af1').textContent = '1/3');
+  at(2100, () => $('af1').textContent = '2/3');
+  at(3000, () => { $('af1').textContent = '3/3'; $('af1').classList.add('okc'); });
+  at(3600, () => $('af2').textContent = '2');
+  at(4100, () => $('af3').textContent = '0');
+  at(4800, () => $('p10sum').classList.add('on'));
+  at(6000, () => { $('p10act').style.opacity = 1; $('p10m').textContent = 'comprovada';
+                   $('p10foot').textContent = 'pronto para inspecionar'; });
+  loop(9500);
+});
+
+/* ── Ato III · frota — uptimes reais, heartbeats, incidente resolvido ── */
+scene1(({ at, every, loop }) => {
+  const fmtH = s => [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
+      .map(v => String(v).padStart(2, '0')).join(':');
+  let u1 = 3 * 3600 + 42 * 60 + 18, u2 = 18 * 3600 + 9 * 60 + 44, u3 = 3600 + 12 * 60 + 7;
+  every(1000, () => { u1++; u2++; u3++;
+    $('up1').textContent = fmtH(u1); $('up2').textContent = fmtH(u2); $('up3').textContent = fmtH(u3); });
+  let beat = 0;
+  every(1400, () => { beat = (beat + 1) % 3; const t = ['agora','3s','6s'];
+    $('hb1').textContent = t[beat]; $('hb2').textContent = t[(beat + 1) % 3]; });
+  // reset do incidente
+  $('fInc').classList.remove('on'); $('fDigest').classList.remove('on');
+  $('fTransfer').classList.remove('pressed');
+  $('ks').textContent = 'atenção · lease expira'; $('ks').className = 'i-state warnst';
+  $('ksTag').textContent = 'último heartbeat há 4m';
+  $('ksHb').classList.add('stale');
+  $('fmAt').textContent = '1'; $('fAt').textContent = '1';
+  $('fmEx').textContent = '9'; $('fEx').textContent = '9';
+  $('fmAtCard').classList.add('attn');
+  $('fFoot').textContent = 'frota operacional · 1 requer decisão';
+  at(2600, () => $('fInc').classList.add('on'));
+  at(5400, () => $('fTransfer').classList.add('pressed'));
+  at(6200, () => {
+    $('fInc').classList.remove('on');
+    $('ks').textContent = 'transferida · retomou do checkpoint'; $('ks').className = 'i-state okst';
+    $('ksTag').textContent = 'nova instância · Mac mini';
+    $('ksHb').classList.remove('stale');
+    $('fmAt').textContent = '0'; $('fAt').textContent = '0';
+    $('fmEx').textContent = '10'; $('fEx').textContent = '10';
+    $('fmAtCard').classList.remove('attn');
+    $('fFoot').textContent = 'frota operacional · heartbeats vivos';
+  });
+  at(7600, () => $('fDigest').classList.add('on'));
+  loop(12000);
 });
 
 }
