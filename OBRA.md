@@ -91,7 +91,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
 | C1 | **IN_PROGRESS** | **Codex** | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | pendente |
-| C2 | TODO | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | — |
+| C2 | **IN_PROGRESS** | **Codex** | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | evidência real: “Boa noite” succeeded no servidor após iPhone perder resposta do POST; recovery em implementação |
 | C3 | TODO | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | — |
 | C4 | TODO | — | rich input core + checks | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | — |
 | C5 | TODO | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | — |
@@ -100,7 +100,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
-| U1 | TODO | — | views de attachment/composer | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | — |
+| U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` (+`ConversationModel+UI.swift` se precisar, presentation-only) | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | — |
 | U2 | TODO | — | composer/views/design | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | — |
 | U3 | BLOCKED | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Renderiza contrato real de C5 sem parsing de wire | — |
 | U4 | TODO | — | estados editoriais | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | — |
