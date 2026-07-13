@@ -147,6 +147,26 @@ private func interactionResponse(jobStatus: String = "processing") throws -> AiT
           "metadata":{},"created_at":"2026-07-12T10:00:00Z","updated_at":"2026-07-12T10:00:00Z"
         }],
         "atlas_decide_execution":null,
+        "decision_receipt":{
+          "schema_version":1,"trace_id":"trace-run","decision_mode":"atlas_decide",
+          "selected_provider":"claude_cli","selected_model":"claude-sonnet-4-6",
+          "was_overridden":false,"reason":"melhor aderência à tarefa"
+        },
+        "quality_evaluation":{
+          "id":"quality-1","trace_id":"trace-run","thread_id":"thread-1","session_id":null,
+          "provider":"claude_cli","model":"claude-sonnet-4-6","agent_slug":"atlas",
+          "evaluator_version":"v3","score":0.91,"status":"passed","dimensions":{},
+          "flags":[],"suggested_actions":[],"metadata":{},"actions":[],
+          "created_at":"2026-07-12T10:00:00Z","updated_at":"2026-07-12T10:00:00Z"
+        },
+        "quality_actions":[],
+        "tool_events":[{
+          "id":"tool-1","event_key":"tool:key","trace_id":"trace-run","session_id":null,
+          "thread_id":"thread-1","tool":"apply_patch","risk":"low",
+          "permission_status":"allowed","approval_source":"policy","input_summary":{},
+          "output_summary":{},"changed_files":["Sources/A.swift"],"checkpoint_id":null,
+          "exit_code":0,"duration_ms":42,"error":null,"created_at":"2026-07-12T10:00:00Z"
+        }],
         "created_at":"2026-07-12T10:00:00Z","updated_at":"2026-07-12T10:00:00Z"
       }
     }
@@ -354,6 +374,20 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     )
     check("stdout cru não vira ruído no cockpit",
           atlasAgentActivity(from: stdout) == nil)
+
+    do {
+        let proofTrace = try interactionResponse().trace
+        check("receipt tipado expõe escolha e razão",
+              proofTrace.decisionSummary?.selectedProvider == "claude_cli" &&
+              proofTrace.decisionSummary?.reason == "melhor aderência à tarefa")
+        check("quality tipada expõe score/status",
+              proofTrace.qualitySummary?.score == 0.91 && proofTrace.qualitySummary?.status == "passed")
+        check("tool event vira atividade de edição real",
+              proofTrace.toolActivities.first?.kind == .editing &&
+              proofTrace.toolActivities.first?.detail == "A.swift")
+    } catch {
+        check("projeções C5 deveriam decodificar", false)
+    }
 }
 
 public func runInteractionRunLiveProbe(
@@ -364,6 +398,10 @@ public func runInteractionRunLiveProbe(
     if let replayTrace = ProcessInfo.processInfo.environment["ATLAS_LIVE_TRACE"],
        !replayTrace.isEmpty {
         do {
+            let snapshot = try await client.getAiInteraction(replayTrace)
+            check("live trace decodificou receipt/decision C5", snapshot.trace.decisionSummary != nil)
+            check("live trace decodificou tool/quality opcionais C5",
+                  snapshot.trace.toolEvents != nil && snapshot.trace.qualityActions != nil)
             let stream = try await client.openInteractionStreamOnce(
                 traceId: replayTrace,
                 after: 0,

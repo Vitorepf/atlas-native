@@ -32,6 +32,8 @@ struct ChatBubble: Identifiable, Equatable {
     var decideStrategy: String? = nil
     var activities: [AtlasAgentActivity] = []
     var currentActivity: AtlasAgentActivity? { activities.last }
+    var decisionSummary: AtlasDecisionSummary? = nil
+    var qualitySummary: AtlasQualitySummary? = nil
 }
 
 // Anexo local (pré-envio) — o ÚNICO contrato de UI de anexos: a strip do
@@ -269,6 +271,11 @@ final class ConversationModel {
             $0.agents = agents
             $0.decideStrategy = trace.atlasDecideExecution?.strategy
             $0.decideStage = trace.atlasDecideExecution?.atlasDecideStage
+            $0.decisionSummary = trace.decisionSummary
+            $0.qualitySummary = trace.qualitySummary
+            let known = Set($0.activities.map(\.id))
+            $0.activities.append(contentsOf: trace.toolActivities.filter { !known.contains($0.id) })
+            if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
         }
     }
 

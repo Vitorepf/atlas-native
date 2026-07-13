@@ -96,8 +96,35 @@ public struct AtlasAiTrace: Codable, Sendable, Identifiable {
     // Atlas Decide. Ligados para a Ribbon de Execução (transparência agêntica).
     public let jobs: [AtlasAiJob]?
     public let atlasDecideExecution: AtlasAiExecutionState?
+    public let routerDecision: AtlasAiRouterDecision?
+    public let atlasDecision: AtlasAiDecision?
+    public let decisionReceipt: AtlasAiDecisionReceipt?
+    public let qualityEvaluation: AtlasAiQualityEvaluation?
+    public let qualityActions: [AtlasAiQualityAction]?
+    public let toolEvents: [AtlasAiToolEvent]?
+    public let metricSummary: JSONObject?
     public let createdAt: String
     public let updatedAt: String
+}
+
+public struct AtlasAiToolEvent: Codable, Sendable, Identifiable {
+    public let id: String
+    public let eventKey: String
+    public let traceId: String?
+    public let sessionId: String?
+    public let threadId: String?
+    public let tool: String
+    public let risk: String?
+    public let permissionStatus: String?
+    public let approvalSource: String?
+    public let inputSummary: JSONObject?
+    public let outputSummary: JSONObject?
+    public let changedFiles: [JSONValue]?
+    public let checkpointId: String?
+    public let exitCode: Int?
+    public let durationMs: Int?
+    public let error: String?
+    public let createdAt: String
 }
 
 // MARK: - Envelopes de resposta
