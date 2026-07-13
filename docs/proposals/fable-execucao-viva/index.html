@@ -629,7 +629,10 @@
     box-shadow: 0 -10px 30px rgba(0,0,0,0.45);
   }
   .qsheet.on { transform: none; }
+  input.ph { background: transparent; border: 0; outline: none; color: var(--ink); font-size: 13px; width: 100%; font-family: var(--sans); }
+  input.ph::placeholder { color: var(--ink3); font-family: var(--serif); font-style: italic; }
   .qs-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .qs-done, .qa span { cursor: pointer; }
   .qs-title { font-family: var(--serif); font-weight: 600; font-size: 14px; }
   .qs-done { font-size: 11px; color: var(--gold); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 4px 12px; }
   .qrow {
@@ -640,6 +643,17 @@
   .qrow:last-child { border-bottom: 0; }
   .qrow .qa { margin-left: auto; display: flex; gap: 14px; color: var(--ink2); font-size: 12px; flex-shrink: 0; }
   .qrow.gonex { opacity: 0; height: 0; padding: 0; overflow: hidden; }
+
+  /* revisão de diff (cena 12) */
+  .frow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(149,163,172,0.08); opacity: 0; transform: translateY(6px); transition: all 0.4s ease; }
+  .frow.on { opacity: 1; transform: none; }
+  .frow .fname { font-family: var(--mono); font-size: 10.5px; color: var(--ink); }
+  .frow .fdiff { font-family: var(--mono); font-size: 10px; white-space: nowrap; }
+  .dsnip { border: 1px solid var(--sep-soft); background: var(--recessed); border-radius: 10px; padding: 8px; margin: 10px 0; opacity: 0; transition: opacity 0.4s; }
+  .dsnip.on { opacity: 1; }
+  .dline { font-family: var(--mono); font-size: 9.5px; padding: 2.5px 7px; border-radius: 4px; color: var(--ink3); }
+  .dline.del { color: var(--alert); background: rgba(201,138,138,0.07); }
+  .dline.add { color: var(--green); background: rgba(127,176,105,0.08); }
 
   /* vs Cursor */
   .vcursor { margin-top: 22px; border: 1px solid var(--sep-soft); border-radius: 16px; padding: 20px 24px; }
@@ -704,7 +718,7 @@
   <p class="lede">
     Três atos. Primeiro, a cena inteira <em>se movendo</em>: a conversa que narra a si mesma,
     e a tela bloqueada com <em>duas sessões em paralelo</em>, cada uma com o próprio cronômetro.
-    Depois, o <em>teatro de situações</em>: onze situações operacionais difíceis — <em>encenadas</em>,
+    Depois, o <em>teatro de situações</em>: treze situações operacionais difíceis — <em>encenadas</em>,
     não descritas. Por fim, o <em>Autônomos 24/7</em>: a frota pulsando, com um incidente
     acontecendo e sendo resolvido na sua frente.
     Nada aqui é conceito: o núcleo é o comportamento do app instalado no iPhone do operador.
@@ -718,7 +732,7 @@
   </div>
   <div class="keyfacts">
     <div class="kf"><b>3</b><span>superfícies contando a mesma execução</span></div>
-    <div class="kf"><b>11</b><span>situações difíceis encenadas em loop</span></div>
+    <div class="kf"><b>13</b><span>situações difíceis encenadas em loop</span></div>
     <div class="kf"><b>24/7</b><span>frota Autônomos pulsando ao vivo</span></div>
     <div class="kf"><b>5</b><span>commits já instalados no iPhone</span></div>
   </div>
@@ -1079,18 +1093,66 @@
           </div>
           <div class="composer" style="margin-top:10px; padding:8px 12px">
             <div class="plus">+</div>
-            <div class="ph" id="q11type" style="font-size:13px">Follow up…</div>
+            <input class="ph" id="q11type" placeholder="Follow up…" autocomplete="off"
+                   aria-label="escreva um follow-up para a fila">
             <div class="mic">🎙</div>
           </div>
         </div>
         <div class="scn-foot" style="margin-top:14px"><span id="q11foot">executando · a fila espera a vez</span><span>nada interrompe o turno</span></div>
         <div class="qsheet" id="q11sheet">
-          <div class="qs-head"><span class="qs-title">Fila · <span id="q11sn">2</span></span><span class="qs-done">Pronto</span></div>
-          <div class="qrow">Faça uma revisão e garanta que não tem gaps<span class="qa"><span>↑</span><span>🗑</span></span></div>
-          <div class="qrow" id="q11r2">Depois rode os gates de novo<span class="qa"><span>↑</span><span>🗑</span></span></div>
+          <div class="qs-head"><span class="qs-title">Fila · <span id="q11sn">2</span></span><span class="qs-done" id="q11done">Pronto</span></div>
+          <div id="q11list">
+            <div class="qrow">Faça uma revisão e garanta que não tem gaps<span class="qa"><span>↑</span><span>🗑</span></span></div>
+            <div class="qrow" id="q11r2">Depois rode os gates de novo<span class="qa"><span>↑</span><span>🗑</span></span></div>
+          </div>
         </div>
       </div>
       <p class="scn-caption">Igual ao Cursor: mandou durante a execução, <em>vira fila</em> — o chip conta, a folha lista com enviar-agora e apagar, e quando o turno conclui <em>a fila drena na ordem</em>, virando o próximo turno sozinha.</p>
+    </div>
+
+    <!-- 12 · Revisar mudanças (diff) -->
+    <div class="scn">
+      <div class="scn-label"><b>12 · Revisar mudanças</b><span class="scn-tag">paridade Cursor · Review</span></div>
+      <div class="scn-screen" id="s12">
+        <div class="scn-top"><span class="scn-title">Revisar</span><span class="scn-meta"><span class="wp-plus">+48</span> <span class="wp-minus">−12</span> · 2 arquivos</span></div>
+        <div class="frow" id="r1"><span class="fname">EnterpriseReportDashboardHtml.php</span><span class="fdiff"><span class="wp-plus">+36</span> <span class="wp-minus">−8</span></span></div>
+        <div class="dsnip" id="rsnip">
+          <div class="dline del">− <span style="text-decoration:line-through">"Total spend absence uplift"</span></div>
+          <div class="dline add">+ "Economia comprovada no período"</div>
+          <div class="dline">&nbsp;&nbsp;// par comparável exigido antes de exibir</div>
+        </div>
+        <div class="frow" id="r2"><span class="fname">ReportLocale.php</span><span class="fdiff"><span class="wp-plus">+12</span> <span class="wp-minus">−4</span></span></div>
+        <div class="co-pills" id="racts" style="opacity:0; transition:opacity 0.4s">
+          <span class="co-pill primary" id="rok">Aceitar tudo</span>
+          <span class="co-pill">Por arquivo</span>
+          <span class="co-pill">Rejeitar</span>
+        </div>
+        <div class="scn-foot"><span id="rfoot">mudanças aguardando você</span><span>cada linha ligada ao ledger</span></div>
+      </div>
+      <p class="scn-caption">O Review do Cursor, vivo: os arquivos chegam com o diff, o trecho mostra <em>a linha que morreu e a que nasceu</em>, e aceitar carimba tudo no ledger.</p>
+    </div>
+
+    <!-- 13 · Falha honesta -->
+    <div class="scn">
+      <div class="scn-label"><b>13 · Falha honesta do turno</b><span class="scn-tag live">checkpoint + resume · no app</span></div>
+      <div class="scn-screen" id="s13">
+        <div class="scn-top"><span class="scn-title">Endurecer gates</span><span class="scn-meta" id="f13t">0:00</span></div>
+        <div class="mrow on ok"><div class="mdot"></div><div><div class="m-t">Plano definido <span class="st">4 passos</span></div></div></div>
+        <div class="mrow on ok"><div class="mdot"></div><div><div class="m-t">Correções aplicadas <span class="st">seq 211</span></div></div></div>
+        <div class="callout alert" id="f13c">
+          <div class="co-kicker">O turno falhou — e diz por quê</div>
+          <div class="co-title">Provider interrompeu na etapa 3/4 · timeout 120s</div>
+          <div class="co-sub">Nada foi perdido: o checkpoint da seq 211 está no aparelho. Falha nunca vira “parou de trabalhar”.</div>
+          <div class="co-pills">
+            <span class="co-pill primary" id="f13r">Retomar do passo 3</span>
+            <span class="co-pill">Diagnóstico</span>
+            <span class="co-pill">Encerrar</span>
+          </div>
+        </div>
+        <div class="mrow" id="f13ok"><div class="mdot"></div><div><div class="m-t">Retomado do checkpoint <span class="st">seq 212</span></div><div class="m-sub">Mesmo plano, mesmo histórico — zero duplicação.</div></div></div>
+        <div class="scn-foot"><span id="f13foot">falha nomeada · ação concreta</span><span>o timer sobrevive à queda</span></div>
+      </div>
+      <p class="scn-caption">A falha tem <em>nome, motivo e saída</em>: retomar do checkpoint continua a obra da seq seguinte — nunca o genérico "algo deu errado".</p>
     </div>
   </div>
 
@@ -1223,7 +1285,8 @@
       <h4>E contra o Cursor — paridade comprovada, depois vantagem</h4>
       <div class="vc-row"><b>Progressão viva na conversa</b> — intenção, ferramentas agregadas, passo atual pulsando <span class="vc-tag par">paridade · shipado</span></div>
       <div class="vc-row"><b>N sessões na tela bloqueada</b> — um card por sessão, timer próprio, contador × N <span class="vc-tag par">paridade · shipado fca1e73</span></div>
-      <div class="vc-row"><b>Fila de mensagens durante a execução</b> — chip Fila N, folha com enviar-agora e apagar, drena na ordem <span class="vc-tag par">paridade · contrato C11</span></div>
+      <div class="vc-row"><b>Fila de mensagens durante a execução</b> — chip Fila N, folha operável (digite e enfileire aqui mesmo), drena na ordem <span class="vc-tag par">paridade · contrato C11</span></div>
+      <div class="vc-row"><b>Review de mudanças</b> — arquivos com diff, a linha que morreu e a que nasceu, aceite carimbado no ledger <span class="vc-tag par">paridade · cena 12</span></div>
       <div class="vc-row"><b>O porquê de cada decisão</b> — Atlas Decide com razão e confiança, gravado na conversa <span class="vc-tag">só o Atlas</span></div>
       <div class="vc-row"><b>Prova permanente</b> — passos, quality e evidências consultáveis ao reabrir amanhã <span class="vc-tag">só o Atlas</span></div>
       <div class="vc-row"><b>Autônomos 24/7</b> — frota com heartbeat, lease, incidente por exceção e digest <span class="vc-tag">só o Atlas</span></div>
@@ -1232,7 +1295,7 @@
 
   <div class="colophon">
     <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
-    <span>Fable 5 · proposta viva v6 · 11 situações + frota 24/7 · toque em qualquer cena para repetir</span>
+    <span>Fable 5 · proposta viva v9 · 13 situações + frota 24/7 · toque para repetir · a fila é operável</span>
   </div>
 </div>
 
@@ -1543,11 +1606,12 @@ scene1(({ at, loop }) => {
   loop(9500);
 });
 
-/* ── 11 · Fila — mandou durante a execução, drena na ordem ── */
+/* ── 11 · Fila — cinema até o primeiro toque; depois, instrumento real ── */
 scene1(({ at, every, loop }) => {
+  if (window.__q11m) return;   // o operador assumiu: o cinema se cala
   const msg1 = 'Faça uma revisão e garanta que não tem gaps';
   const msg2 = 'Depois rode os gates de novo';
-  $('q11type').textContent = 'Follow up…'; $('q11type').style.color = '';
+  $('q11type').value = '';
   $('q11fila').classList.remove('on'); $('q11n').textContent = '1';
   $('q11sheet').classList.remove('on'); $('q11r2').classList.remove('gonex');
   $('q11sn').textContent = '2';
@@ -1559,17 +1623,14 @@ scene1(({ at, every, loop }) => {
   every(36, () => {
     if (!typeMsg) return;
     pos++;
-    $('q11type').textContent = typeMsg.slice(0, pos);
-    $('q11type').style.color = 'var(--ink)';
+    $('q11type').value = typeMsg.slice(0, pos);
     if (pos >= typeMsg.length) typeMsg = null;
   });
   const startType = m => { typeMsg = m; pos = 0; };
   at(800,  () => startType(msg1));
-  at(3000, () => { $('q11type').textContent = 'Follow up…'; $('q11type').style.color = '';
-                   $('q11fila').classList.add('on'); });
+  at(3000, () => { $('q11type').value = ''; $('q11fila').classList.add('on'); });
   at(4000, () => startType(msg2));
-  at(5600, () => { $('q11type').textContent = 'Follow up…'; $('q11type').style.color = '';
-                   $('q11n').textContent = '2'; });
+  at(5600, () => { $('q11type').value = ''; $('q11n').textContent = '2'; });
   at(6400, () => $('q11sheet').classList.add('on'));
   at(8200, () => { $('q11r2').classList.add('gonex'); $('q11sn').textContent = '1'; $('q11n').textContent = '1'; });
   at(9400, () => $('q11sheet').classList.remove('on'));
@@ -1579,6 +1640,36 @@ scene1(({ at, every, loop }) => {
                    $('q11fila').classList.remove('on');
                    $('q11foot').textContent = 'drenou na ordem — sem você voltar'; });
   loop(13500);
+});
+
+/* ── 12 · Review — os arquivos chegam, o diff respira, aceitar carimba ── */
+scene1(({ at, loop }) => {
+  ['r1','r2'].forEach(id => $(id).classList.remove('on'));
+  $('rsnip').classList.remove('on');
+  $('racts').style.opacity = 0; $('rok').classList.remove('pressed');
+  $('rfoot').textContent = 'mudanças aguardando você';
+  at(900,  () => $('r1').classList.add('on'));
+  at(1900, () => $('rsnip').classList.add('on'));
+  at(3100, () => $('r2').classList.add('on'));
+  at(4000, () => $('racts').style.opacity = 1);
+  at(5800, () => $('rok').classList.add('pressed'));
+  at(6600, () => $('rfoot').textContent = 'aplicado ✓ · 2 arquivos no ledger');
+  loop(9500);
+});
+
+/* ── 13 · Falha honesta — nome, motivo, e a retomada do checkpoint ── */
+scene1(({ at, every, loop }) => {
+  $('f13c').classList.remove('on'); $('f13r').classList.remove('pressed');
+  $('f13ok').classList.remove('on','ok');
+  $('f13foot').textContent = 'falha nomeada · ação concreta';
+  let sec = 0; $('f13t').textContent = '0:00';
+  every(1000, () => { sec++; $('f13t').textContent = fmt(sec); });
+  at(2200, () => $('f13c').classList.add('on'));
+  at(5200, () => $('f13r').classList.add('pressed'));
+  at(6000, () => { $('f13c').classList.remove('on');
+                   $('f13ok').classList.add('on','ok');
+                   $('f13foot').textContent = 'obra continua · seq 212'; });
+  loop(9500);
 });
 
 /* ── Ato III · frota — uptimes reais, heartbeats, incidente resolvido ── */
@@ -1626,7 +1717,7 @@ boot();
    A ordem espelha a criação das cenas em boot(); o lookup é dinâmico para
    sobreviver ao restart() global. */
 const REPLAY_TARGETS = ['ato1','s01','s02','s03','s04','s05','s06','s07','s08',
-                        's09','sIsland','s10','s11','sFleet'];
+                        's09','sIsland','s10','s11','s12','s13','sFleet'];
 REPLAY_TARGETS.forEach((id, i) => {
   const el = $(id);
   if (!el) return;
@@ -1634,6 +1725,62 @@ REPLAY_TARGETS.forEach((id, i) => {
   el.title = 'toque para repetir a cena';
   el.addEventListener('click', () => { const s = scenes[i]; if (s) { s.stop(); s.start(); } });
 });
+
+/* ── fila OPERÁVEL: no primeiro toque o cinema se cala e o julgador opera —
+   digita, Enter enfileira, ↑ envia agora, 🗑 remove, e a drenagem é real. ── */
+const Q11 = { items: [], seq: 0, timer: null, sec: 0 };
+function q11Now(main, tag) {
+  $('q11now').replaceChildren();
+  const a = document.createElement('span'); a.textContent = main + ' ';
+  const b = document.createElement('span'); b.className = 'st'; b.textContent = tag;
+  $('q11now').append(a, b);
+}
+function q11Manualize() {
+  if (window.__q11m) return;
+  window.__q11m = true;
+  const s = scenes[12]; if (s) s.stop();
+  const m = $('q11t').textContent.match(/(\d+):(\d+)/) || [0, 0, 0];
+  Q11.sec = (+m[1]) * 60 + (+m[2]);
+  Q11.timer = setInterval(() => { Q11.sec++; $('q11t').textContent = fmt(Q11.sec); }, 1000);
+  $('q11type').value = '';
+  q11Now('Editando o dashboard', 'agora');
+  $('q11foot').textContent = 'modo real · Enter enfileira';
+  q11Render();
+}
+function q11Render() {
+  const n = Q11.items.length;
+  $('q11fila').classList.toggle('on', n > 0);
+  $('q11n').textContent = n; $('q11sn').textContent = n;
+  const list = $('q11list'); list.replaceChildren();
+  Q11.items.forEach(it => {
+    const row = document.createElement('div'); row.className = 'qrow';
+    const txt = document.createElement('span'); txt.textContent = it.text; txt.style.cssText = 'flex:1;min-width:0';
+    const qa = document.createElement('span'); qa.className = 'qa';
+    const up = document.createElement('span'); up.textContent = '↑'; up.title = 'enviar agora';
+    up.onclick = e => { e.stopPropagation();
+      Q11.items = Q11.items.filter(x => x.id !== it.id);
+      q11Now('Novo turno: “' + it.text.slice(0, 34) + (it.text.length > 34 ? '…' : '') + '”', 'da fila');
+      q11Render(); };
+    const del = document.createElement('span'); del.textContent = '🗑'; del.title = 'remover';
+    del.onclick = e => { e.stopPropagation();
+      Q11.items = Q11.items.filter(x => x.id !== it.id); q11Render(); };
+    qa.append(up, del); row.append(txt, qa); list.append(row);
+  });
+  if (!n) $('q11sheet').classList.remove('on');
+}
+$('q11type').addEventListener('click', e => { e.stopPropagation(); q11Manualize(); });
+$('q11type').addEventListener('keydown', e => {
+  e.stopPropagation(); q11Manualize();
+  if (e.key === 'Enter' && e.target.value.trim()) {
+    Q11.items.push({ id: ++Q11.seq, text: e.target.value.trim() });
+    e.target.value = ''; q11Render();
+    $('q11foot').textContent = 'enfileirada — drena quando o turno concluir';
+  }
+});
+$('q11fila').addEventListener('click', e => { e.stopPropagation(); q11Manualize();
+  if (Q11.items.length) $('q11sheet').classList.add('on'); });
+$('q11sheet').addEventListener('click', e => e.stopPropagation());
+$('q11done').addEventListener('click', () => $('q11sheet').classList.remove('on'));
 window.__ready = true;
 </script>
 </body>
