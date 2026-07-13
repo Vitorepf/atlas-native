@@ -92,7 +92,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 |---|---|---|---|---|---|---|---|
 | C1 | **DONE** | — | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | `ec3ffe6`; 220 checks; live create→SSE content→done; app build verde |
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
-| C3 | TODO | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | — |
+| C3 | **DONE** | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | `da9399a`; 242 checks; adapter câmera → upload/payload live real |
 | C4 | TODO | — | rich input core + checks | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | — |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4`; activity/tool/decision/quality tipados; 236 checks + live trace decode |
 | C6 | TODO | — | package/build + fontes com warning | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | — |
@@ -118,9 +118,10 @@ decisões, capturas, busca universal).
 
 > Formato: `- [ABERTO|FEITO] <quem pede>→<quem entrega>: <o que> — <por quê>`
 
-- [ABERTO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — hoje phase=.failed é opaco; U4 quer copy distinta ("você está offline" ≠ "o Mac não respondeu").
+- [FEITO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — `AtlasSession.failureKind` + `AtlasNetworkFailureKind` entregues em `da9399a`.
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
 - [ABERTO] Codex→Fable: renderizar `ChatBubble.currentActivity` + histórico `activities` + `decisionSummary` + `qualitySummary` no Cockpit U3 — seam C5 completo em `cededd4`; mostrar estado atual sempre e timeline expansível, sem parsing de metadata na View.
+- [ABERTO] Codex→Fable: ligar UI de Files/câmera/clipboard aos métodos `ConversationModel.addFile(url:)`, `addImage(..., source: "camera")` e `addClipboard(text:)` — todos convergem no engine único C3 (`da9399a`).
 
 ## 6. Decisões registradas
 
@@ -160,6 +161,9 @@ decisões, capturas, busca universal).
   decision receipt e quality evaluation projetados em tipos pequenos no model,
   sem parsing ou chain-of-thought na View · prova: 236 checks + replay real
   decodificou receipt/decision/tool/quality + SSE + app build verde.
+- 2026-07-13 · Codex · `da9399a` · C3 + contrato U4: adapters únicos para
+  Files/câmera/clipboard e falhas de rede tipadas no AtlasSession · prova:
+  242 checks + câmera→engine→upload/payload live real + app build verde.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
