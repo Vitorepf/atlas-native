@@ -24,13 +24,13 @@ final class TurnPresence {
     private final class Entry {
         weak var model: ConversationModel?
         var threadTitle: String
-        let key: String            // liga model ↔ activity (attributes.threadKey)
+        var activityKey: String?   // trace real que liga Activity ↔ conversa
+        var activityStarted = false
         var wasSending = false
         var startedAt = Date()
         init(model: ConversationModel, threadTitle: String) {
             self.model = model
             self.threadTitle = threadTitle
-            self.key = UUID().uuidString
         }
     }
 
@@ -78,10 +78,15 @@ final class TurnPresence {
         if sending && !entry.wasSending {
             entry.startedAt = Date()
             entry.wasSending = true
-            startActivity(entry)
+            if let traceId = model.currentStreamingTraceId {
+                startActivity(entry, traceId: traceId)
+            }
             broadcastCount()                 // as outras ganham o "× N"
         } else if sending {
-            updateActivity(entry, phase: phase)
+            if !entry.activityStarted, let traceId = model.currentStreamingTraceId {
+                startActivity(entry, traceId: traceId)
+            }
+            if entry.activityStarted { updateActivity(entry, phase: phase) }
         } else if entry.wasSending {
             entry.wasSending = false
             finishActivity(entry)            // "resposta pronta ✓", encerra em 4s
@@ -124,17 +129,19 @@ final class TurnPresence {
     // Activity<T> não é Sendable no Swift 6 — nunca atravessa Task. Dentro das
     // Tasks, enumeramos ESTATICAMENTE filtrando por attributes.threadKey.
 
-    private func startActivity(_ entry: Entry) {
+    private func startActivity(_ entry: Entry, traceId: String) {
         #if canImport(ActivityKit)
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         let state = AtlasTurnAttributes.ContentState(
             phaseTitle: "pensando…", startedAt: entry.startedAt,
             finished: false, activeSessions: max(1, activeCount))
         guard let activity = try? Activity.request(
-            attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: entry.key),
+            attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: traceId),
             content: .init(state: state, staleDate: nil),
             pushType: .token
         ) else { return }
+        entry.activityKey = traceId
+        entry.activityStarted = true
         LiveActivityRemoteBridge.shared.observePushTokens(
             activity: activity,
             model: entry.model!,
@@ -148,7 +155,7 @@ final class TurnPresence {
         let state = AtlasTurnAttributes.ContentState(
             phaseTitle: phase, startedAt: entry.startedAt,
             finished: false, activeSessions: max(1, activeCount))
-        let key = entry.key
+        guard let key = entry.activityKey else { return }
         Task { @MainActor in
             for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
                 await a.update(.init(state: state, staleDate: nil))
@@ -162,7 +169,7 @@ final class TurnPresence {
         let state = AtlasTurnAttributes.ContentState(
             phaseTitle: phase, startedAt: entry.startedAt,
             finished: true, activeSessions: max(0, activeCount))
-        let key = entry.key
+        guard let key = entry.activityKey else { return }
         let model = entry.model
         Task { @MainActor in
             for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
@@ -175,6 +182,8 @@ final class TurnPresence {
                             dismissalPolicy: .after(.now + 4))
             }
         }
+        entry.activityStarted = false
+        entry.activityKey = nil
         #endif
     }
 

@@ -49,6 +49,17 @@ struct RootView: View {
         }
         .tint(AtlasTheme.accent)
         .task { if session.phase == .idle { await session.loadThreads() } }
+        .onOpenURL { url in
+            guard url.scheme == "atlas", url.host == "execution",
+                  let traceId = url.pathComponents.dropFirst().first, !traceId.isEmpty else { return }
+            Task { @MainActor in
+                guard let trace = try? await session.client.getAiInteraction(traceId).trace,
+                      let threadId = trace.threadId else { return }
+                let title = session.threads.first(where: { $0.id == threadId })?.title ?? "Execução Atlas"
+                path = NavigationPath()
+                path.append(Route.thread(id: threadId, title: title))
+            }
+        }
     }
 
     // MARK: - Top bar

@@ -29,6 +29,7 @@ struct AtlasTurnLiveActivity: Widget {
             LockScreenView(context: context)
                 .activityBackgroundTint(Ink.bg)
                 .activitySystemActionForegroundColor(Ink.gold)
+                .widgetURL(URL(string: "atlas://execution/\(context.attributes.threadKey)"))
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
@@ -88,6 +89,7 @@ struct AtlasTurnLiveActivity: Widget {
                 Text("✦").font(.system(size: 14, design: .serif)).foregroundStyle(Ink.gold)
             }
             .keylineTint(Ink.gold)
+            .widgetURL(URL(string: "atlas://execution/\(context.attributes.threadKey)"))
         }
     }
 }

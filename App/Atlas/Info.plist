@@ -18,6 +18,13 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array><string>atlas</string></array>
+		</dict>
+	</array>
 	<!-- Splash: ardósia da marca no launch — sem flash branco genérico -->
 	<key>UILaunchScreen</key>
 	<dict>
