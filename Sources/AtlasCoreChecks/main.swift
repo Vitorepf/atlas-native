@@ -276,6 +276,7 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
 }
 
 runRichInputChecks(check)
+await runRichInputEngineChecks(check)
 
 print("")
 if failures == 0 { print("AtlasCore: todos os checks passaram ✓") }
