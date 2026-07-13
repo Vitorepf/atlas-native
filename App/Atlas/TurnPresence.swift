@@ -60,6 +60,7 @@ final class TurnPresence {
         withObservationTracking {
             _ = model.isSending
             _ = model.bubbles.last?.currentActivity?.title
+            _ = model.currentStreamingTraceId
         } onChange: { [weak self] in
             Task { @MainActor [weak self] in
                 self?.tick(id)
@@ -129,9 +130,16 @@ final class TurnPresence {
         let state = AtlasTurnAttributes.ContentState(
             phaseTitle: "pensando…", startedAt: entry.startedAt,
             finished: false, activeSessions: max(1, activeCount))
-        _ = try? Activity.request(
+        guard let activity = try? Activity.request(
             attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: entry.key),
-            content: .init(state: state, staleDate: nil))
+            content: .init(state: state, staleDate: nil),
+            pushType: .token
+        ) else { return }
+        LiveActivityRemoteBridge.shared.observePushTokens(
+            activity: activity,
+            model: entry.model!,
+            startedAt: entry.startedAt
+        )
         #endif
     }
 
@@ -155,8 +163,14 @@ final class TurnPresence {
             phaseTitle: phase, startedAt: entry.startedAt,
             finished: true, activeSessions: max(0, activeCount))
         let key = entry.key
+        let model = entry.model
         Task { @MainActor in
             for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
+                LiveActivityRemoteBridge.shared.end(
+                    activityID: a.id,
+                    model: model,
+                    reason: phase == "sessão encerrada" ? "session_closed" : "completed"
+                )
                 await a.end(.init(state: state, staleDate: nil),
                             dismissalPolicy: .after(.now + 4))
             }
