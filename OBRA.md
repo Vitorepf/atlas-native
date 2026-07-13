@@ -272,6 +272,17 @@ a casca não inventa número, progresso, status, prompt ou prova.
   narração continua vindo apenas de eventos públicos seguros classificados em
   `AtlasAgentActivity`, sem chain-of-thought.
 
+- [PARCIAL · C13 · Codex→Fable] **Autônomos é área 24/7 própria**: o Core agora
+  porta a superfície existente `ai/software-company-stewardship/loop` em
+  `AtlasAutonomos*` (áreas, lock/live, ciclos, backlog e recibo de
+  pause/resume/kill). `AutonomosModel` é uma fonte separada de `ConversationModel`
+  e já entra por `AtlasSession.autonomos`; controles exigem `operator_actor`,
+  ação explícita e só exibem o post-state devolvido pelo servidor. Fable deve
+  criar a rota/tela própria a partir desse seam — não filtrar threads por
+  `AtlasArea.autonomos`, não simular instâncias, não declarar `running` antes
+  de `run_state.lock.held`. Core checks + `make build` verdes; falta casca e
+  prova em device.
+
 ## 6. Decisões registradas
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)

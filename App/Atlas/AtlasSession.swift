@@ -20,6 +20,9 @@ final class AtlasSession {
     let host: String
     let hasToken: Bool
     let client: AtlasClient   // compartilhado com a ConversationModel
+    /// Área 24/7 independente de conversa. Root/Fable pode navegar para ela
+    /// sem usar threads como fonte falsa de estado.
+    let autonomos: AutonomosModel
 
     init() {
         let info = Bundle.main.infoDictionary ?? [:]
@@ -28,7 +31,9 @@ final class AtlasSession {
         let token = (info["ATLAS_TOKEN"] as? String) ?? ""
         self.host = host
         self.hasToken = !token.isEmpty
-        self.client = AtlasClient(config: AtlasConfig(host: host, port: port, token: token))
+        let client = AtlasClient(config: AtlasConfig(host: host, port: port, token: token))
+        self.client = client
+        self.autonomos = AutonomosModel(client: client)
     }
 
     func loadThreads() async {
