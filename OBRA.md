@@ -97,6 +97,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
 | C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `8407ca1` + `a08088e` + `ea6fe2b`; estrito no Simulator encontra `Executando comando` live, depois RED em `Comando concluído isHittable=false`; físico bloqueado e PasteButton pendente (§5) |
+| C8 | **DONE** | — | `../atlas-server/app/Services/Ai/{AtlasFinalResponseSanitizer,HermesCliProvider}.php`; `../atlas-server/app/Services/Ai/Hermes/Acp/{HermesAcpProtocol,AtlasHermesAcpRuntime}.php`; testes correspondentes; `Sources/AtlasCore/AtlasAssistantPresentation.swift`; checks | C5 | Hermes/Kimi provider-neutral: ACP projeta thought/tool start/tool completion; Reasoning-only nunca vira sucesso/apresentação; mobile solicita transporte estruturado | Ferramenta real chega live, persiste no ledger e reaparece no replay; reasoning fica somente como atividade sanitizada; resposta final utilizável ou falha honesta | `f356bd4a1` + `d77cf5a`; migration aplicada; 129 testes/733 asserts no server; Core checks + App build; live Hermes ACP com `shell.started` >5s, persistência e replay |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -131,15 +132,12 @@ decisões, capturas, busca universal).
   exclusivamente `model.effort` + `model.cycleEffort()`. O boundary agora varre
   toda a camada de apresentação (não só arquivos chamados View) e fica vermelho
   enquanto rede, JSON ou storage escaparem dos models/Core.
-- [ABERTO · SERVER] Codex→Backend: causa confirmada em
-  `AiStreamRecorder`: a allowlist exclui `tool`/`thinking` e os converte para
-  `progress`. Codex persiste `progress|shell` started→completed (9s no probe) e
-  o mobile `c952c26` já o projeta/reproduz. `a08088e` provou o evento AO VIVO
-  antes de `done`, observável por mais de 5s e persistido no replay. Kimi, porém,
-  ainda entrega só o processo do provider + stdout, sem tools internas. Falta
-  corrigir o contrato canônico provider-neutral (`tool`/`thinking` sem coerção)
-  e instrumentar todos os providers. `process_started` não vale como tool desde
-  `4b68d29`.
+- [FEITO] Codex→Backend: `f356bd4a1` projeta o ACP Hermes/Kimi em eventos
+  provider-neutral `thinking|tool|token`, preserva o lifecycle seguro das tools,
+  aceita `tool|thinking` no recorder/constraint e bloqueia resposta final com
+  frame explícito de Reasoning. `d77cf5a` faz o mobile solicitar ACP e projetar
+  essas tools sem parsing na View. Prova live real: `shell.started` chegou antes
+  de `done`, ficou observável por mais de 5s, persistiu e reapareceu no replay.
 - [ABERTO] Codex→Fable: substituir o botão que lê `UIPasteboard.general`
   diretamente por `PasteButton` nativo. No iOS 26 o fluxo atual abre “Permitir
   Colar”, bloqueia a automação e cria fricção real; o rich input Core já aceita
@@ -265,6 +263,12 @@ decisões, capturas, busca universal).
   envio tocável + turno criado, exige `Executando comando` AO VIVO e exige
   `Comando concluído` visível/tocável no histórico · prova: Simulator alcançou
   a tool live e falhou exatamente na timeline persistida inacessível de U3.
+- 2026-07-13 · Codex · `f356bd4a1` + `d77cf5a` · C8 Hermes/Kimi estruturado:
+  ACP entrega thought/tool start/tool completion/token provider-neutral, o
+  recorder persiste os tipos reais, Reasoning bruto não vira resposta e o app
+  solicita o transporte correto · prova: TDD red→green; 129 testes server/733
+  asserts; Core checks + App build; live Hermes ACP com `shell.started` >5s,
+  tool persistida e reproduzida no replay.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
