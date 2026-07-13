@@ -6,6 +6,7 @@ enum Route: Hashable {
     case workspace(key: String?, title: String)
     case thread(id: String, title: String)
     case new
+    case search
 }
 
 // Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
@@ -41,6 +42,8 @@ struct RootView: View {
                     ConversationView(client: session.client, threadId: id, title: title)
                 case .new:
                     ConversationView(client: session.client, threadId: nil, title: "Nova conversa")
+                case .search:
+                    SearchView()
                 }
             }
         }
@@ -58,7 +61,7 @@ struct RootView: View {
                 .overlay(Image(systemName: "person.fill").font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary))
                 .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
             Spacer()
-            CircleButton(icon: "magnifyingglass") {}
+            CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
             CircleButton(icon: "plus") { path.append(Route.new) }
         }
         // Nameplate "Atlas" centralizado + filete dourado — a assinatura
