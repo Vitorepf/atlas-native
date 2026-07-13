@@ -201,28 +201,29 @@
     border: 1px solid var(--sep); border-radius: 999px; padding: 5px 13px;
   }
 
-  /* rodapé de execução + composer */
+  /* composer + faixa de execução — UMA linha dentro do card, campo vivo */
   .conv-foot { padding: 0 16px 22px; }
-  .exec-footer {
-    display: flex; align-items: center; gap: 11px;
-    background: rgba(36,55,67,0.72); border: 1px solid var(--sep-soft);
-    border-radius: 16px; padding: 10px 14px; margin-bottom: 9px;
-    opacity: 0; transform: translateY(8px); transition: all 0.4s ease;
+  .cwrap { border-radius: 26px; transition: background 0.3s, border-color 0.3s, padding 0.3s; border: 1px solid transparent; }
+  .cwrap.live { background: var(--surface); border-color: var(--sep); padding: 10px 12px 8px; }
+  .exec-strip { display: none; }
+  .cwrap.live .exec-strip {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; color: var(--ink2);
+    padding: 2px 6px 10px; border-bottom: 1px solid var(--sep-soft); margin-bottom: 8px;
   }
-  .exec-footer.on { opacity: 1; transform: none; }
+  .exec-strip .es-m { font-family: var(--mono); font-size: 11px; color: var(--ink3); font-variant-numeric: tabular-nums; }
+  .exec-strip .es-stop { margin-left: auto; font-size: 12.5px; font-weight: 500; color: var(--ink2); }
   .diamond {
-    width: 13px; height: 13px; background: var(--gold); border-radius: 2.5px;
-    transform: rotate(45deg); animation: breathe 1.8s ease-in-out infinite;
+    width: 8px; height: 8px; background: var(--gold); border-radius: 2px;
+    transform: rotate(45deg); animation: breathe 1.8s ease-in-out infinite; flex-shrink: 0;
   }
   @keyframes breathe { 50% { transform: rotate(45deg) scale(1.16); opacity: 0.5; } }
-  .exec-footer .t1 { font-size: 13px; font-weight: 500; }
-  .exec-footer .t2 { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
-  .stop { margin-left: auto; font-size: 13px; font-weight: 500; background: var(--surface-hi); border-radius: 999px; padding: 7px 15px; }
   .composer {
     display: flex; align-items: center; gap: 10px;
     background: var(--surface); border: 1px solid var(--sep); border-radius: 999px;
-    padding: 9px 14px;
+    padding: 9px 14px; transition: background 0.3s, border-color 0.3s;
   }
+  .cwrap.live .composer { background: transparent; border-color: transparent; padding: 4px 6px 2px; }
   .composer .plus { width: 28px; height: 28px; border-radius: 50%; background: var(--surface-hi); display:flex; align-items:center; justify-content:center; color: var(--ink2); font-size: 15px; }
   .composer .ph { font-family: var(--serif); font-style: italic; font-size: 15.5px; color: var(--ink3); }
   .composer .mic { margin-left: auto; color: var(--ink2); font-size: 15px; }
@@ -647,16 +648,18 @@
             </div>
           </div>
           <div class="conv-foot">
-            <div class="exec-footer" id="execFooter">
-              <div class="diamond"></div>
-              <div><div class="t1">Atlas está executando</div>
-                   <div class="t2"><span id="evCount">0</span> eventos registrados · <span id="secCount">0</span>s</div></div>
-              <div class="stop">Parar</div>
-            </div>
-            <div class="composer">
-              <div class="plus">+</div>
-              <div class="ph" id="composerPh">Escreva ao Atlas</div>
-              <div class="mic">🎙</div>
+            <div class="cwrap" id="cwrap">
+              <div class="exec-strip">
+                <div class="diamond"></div>
+                <span>Seguindo a execução</span>
+                <span class="es-m">· <span id="evCount">0</span> eventos · <span id="secCount">0</span>s</span>
+                <span class="es-stop">Parar</span>
+              </div>
+              <div class="composer">
+                <div class="plus">+</div>
+                <div class="ph" id="composerPh">Escreva ao Atlas</div>
+                <div class="mic">🎙</div>
+              </div>
             </div>
           </div>
         </div>
@@ -979,7 +982,8 @@ function boot() {
 
 /* ── ATO I — as duas telas sincronizadas ── */
 scene1(({ at, every, loop }) => {
-  ['uq','execFooter','laCard','laCard2','notif','doneView'].forEach(id => $(id).classList.remove('on'));
+  ['uq','laCard','laCard2','notif','doneView'].forEach(id => $(id).classList.remove('on'));
+  $('cwrap').classList.remove('live');
   $('laCard').classList.remove('done','multi');
   $('laCard2').classList.remove('done','multi');
   $('laPhase2').textContent = 'executando testes…';
@@ -1013,7 +1017,7 @@ scene1(({ at, every, loop }) => {
   let t0 = null, t2 = null, frozen = false;
   at(600,  () => $('uq').classList.add('on'));
   at(1400, () => {
-    $('execFooter').classList.add('on'); $('islandA').classList.add('live');
+    $('cwrap').classList.add('live'); $('islandA').classList.add('live');
     $('wpill').classList.add('on');
     $('laCard').classList.add('on'); t0 = Date.now();
     every(250, () => {
@@ -1037,7 +1041,7 @@ scene1(({ at, every, loop }) => {
   at(13600,() => {
     frozen = true; editing = false;
     $('execView').style.transition = 'opacity 0.5s'; $('execView').style.opacity = 0;
-    $('execFooter').classList.remove('on'); $('islandA').classList.remove('live');
+    $('cwrap').classList.remove('live'); $('islandA').classList.remove('live');
   });
   at(14200,() => { $('doneView').classList.add('on');
                    $('composerPh').textContent = 'Continuar com Atlas…';
