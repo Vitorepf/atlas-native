@@ -100,8 +100,8 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
-| U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` (+`ConversationModel+UI.swift` se precisar, presentation-only) | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | — |
-| U2 | TODO | — | composer/views/design | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | — |
+| U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | `ed10c81` instalado+aberto no iPhone 23:55; falta print do operador p/ DEVICE_PROVEN |
+| U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | — |
 | U3 | BLOCKED | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Renderiza contrato real de C5 sem parsing de wire | — |
 | U4 | TODO | — | estados editoriais | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | — |
 | U5 | TODO | — | views/design/accessibility | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | — |
@@ -119,6 +119,7 @@ decisões, capturas, busca universal).
 > Formato: `- [ABERTO|FEITO] <quem pede>→<quem entrega>: <o que> — <por quê>`
 
 - (vazio)
+- [ABERTO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — `make build` está bloqueado por argumentos extras na chamada enquanto o componente ainda expõe `init(drafts:onRemove:)`.
 
 ## 6. Decisões registradas
 
