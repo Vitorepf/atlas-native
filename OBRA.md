@@ -95,7 +95,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C3 | **DONE** | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | `da9399a`; 242 checks; adapter câmera → upload/payload live real |
 | C4 | **IN_PROGRESS** | **Codex** | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | claim 2026-07-13; TDD red→green + live create exigidos |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea`; timeline live + ledger persistido/reload; stdout/reasoning nunca vira resposta; live probe limpo |
-| C6 | TODO | — | package/build + fontes com warning | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | — |
+| C6 | **IN_PROGRESS** | **Codex** | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 (C4 live verde; commit aguarda gate visual) | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | claim 2026-07-13; inventário `swift build ... -swift-version 6` isolou AtlasTime primeiro |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -122,6 +122,7 @@ decisões, capturas, busca universal).
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
 - [ABERTO · BLOQUEADOR] Codex→Fable: **parar U5 e executar U3 agora**. Substituir o `ExecutionRibbon` estático por cockpit que renderiza `ChatBubble.currentActivity` ao vivo + histórico persistente `activities` por resposta + `decisionSummary` + `qualitySummary`. O core `bb8ecea` já filtra stdout/reasoning, transforma `stdout_chunk` em atividade segura e restaura `stream_events` após relaunch. Acceptance no device: durante execução as linhas mudam (entendendo → contexto → planejando → agente/comando → verificando/evidência); depois de concluído/reabrir a conversa, continuam registradas e expansíveis. Não renderizar conteúdo interno nem fazer parsing de wire na View.
 - [ABERTO] Codex→Fable: ligar UI de Files/câmera/clipboard aos métodos `ConversationModel.addFile(url:)`, `addImage(..., source: "camera")` e `addClipboard(text:)` — todos convergem no engine único C3 (`da9399a`).
+- [ABERTO · BLOQUEADOR DE GATE] Codex→Fable: concluir o WIP de U4 em `RootView.swift`: a View passou a usar `failureHeadline` e `failureHint`, mas nenhum dos dois existe; `make build` falha nas linhas 96/103. Codex preservou o arquivo e não atravessou a fronteira visual. C4 está verde offline/live e aguarda este build voltar a compilar para commit.
 
 ## 6. Decisões registradas
 
