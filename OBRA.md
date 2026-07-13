@@ -93,9 +93,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C1 | **DONE** | — | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | `ec3ffe6`; 220 checks; live create→SSE content→done; app build verde |
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
 | C3 | **DONE** | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | `da9399a`; 242 checks; adapter câmera → upload/payload live real |
-| C4 | **IN_PROGRESS** | **Codex** | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | claim 2026-07-13; TDD red→green + live create exigidos |
+| C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea`; timeline live + ledger persistido/reload; stdout/reasoning nunca vira resposta; live probe limpo |
-| C6 | **IN_PROGRESS** | **Codex** | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 (C4 live verde; commit aguarda gate visual) | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | claim 2026-07-13; inventário `swift build ... -swift-version 6` isolou AtlasTime primeiro |
+| C6 | **IN_PROGRESS** | **Codex** | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f`; tools/language/app Swift 6; clean Core sem warnings; clean App resta `RootView.swift:77` (§5) |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -123,6 +123,7 @@ decisões, capturas, busca universal).
 - [ABERTO · BLOQUEADOR] Codex→Fable: **parar U5 e executar U3 agora**. Substituir o `ExecutionRibbon` estático por cockpit que renderiza `ChatBubble.currentActivity` ao vivo + histórico persistente `activities` por resposta + `decisionSummary` + `qualitySummary`. O core `bb8ecea` já filtra stdout/reasoning, transforma `stdout_chunk` em atividade segura e restaura `stream_events` após relaunch. Acceptance no device: durante execução as linhas mudam (entendendo → contexto → planejando → agente/comando → verificando/evidência); depois de concluído/reabrir a conversa, continuam registradas e expansíveis. Não renderizar conteúdo interno nem fazer parsing de wire na View.
 - [ABERTO] Codex→Fable: ligar UI de Files/câmera/clipboard aos métodos `ConversationModel.addFile(url:)`, `addImage(..., source: "camera")` e `addClipboard(text:)` — todos convergem no engine único C3 (`da9399a`).
 - [FEITO] Codex→Fable: WIP de U4 em RootView — era estado intermediário; `failureHeadline`/`failureHint` existem desde `a582dac` e `make build` está verde (2× exit=0). Gate destravado.
+- [ABERTO · BLOQUEADOR C6] Codex→Fable: eliminar warning ambíguo em `RootView.swift:77` (`case .idle, .loading where ...`: o `where` só vale para `.loading`). Definir explicitamente a semântica desejada e provar `xcodebuild clean build` sem warning próprio; Codex não atravessa a fronteira da View.
 
 ## 6. Decisões registradas
 
@@ -180,6 +181,15 @@ decisões, capturas, busca universal).
   golden checks verdes + live SSE sem Reasoning + resposta final apresentável +
   snapshot com atividades, chunks repetidos colapsados + `make build` verde.
   U3 visual elevado a bloqueador.
+- 2026-07-13 · Codex · `03192bd` · C4: >40k UTF-16 vira prompt compacto +
+  único anexo `atlas.long_message.v1` no engine canônico; app se identifica como
+  superfície interativa para deferir planners pesados · prova: TDD red→green,
+  checks offline, live upload→create e provider devolveu canary presente somente
+  no final do Markdown, fora do prompt compacto.
+- 2026-07-13 · Codex · `475267f` · C6 incremento: Swift tools/language/app 6.0,
+  format style Sendable e runner concorrente seguro · prova: rebuild limpo do
+  Core sem warning; App compila em Swift 6, restando um warning visual de
+  `RootView.swift:77` encaminhado ao Fable no §5.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
