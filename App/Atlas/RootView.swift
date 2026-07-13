@@ -61,11 +61,20 @@ struct RootView: View {
             CircleButton(icon: "magnifyingglass") {}
             CircleButton(icon: "plus") { path.append(Route.new) }
         }
-        // Nameplate "Atlas" centralizado no header (entre avatar e busca/+)
+        // Nameplate "Atlas" centralizado + filete dourado — a assinatura
+        // editorial do masthead (mesma do ícone).
         .overlay {
-            Text("Atlas")
-                .font(AtlasFont.serif(24, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
+            VStack(spacing: 5) {
+                Text("Atlas")
+                    .font(AtlasFont.serif(24, .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Rectangle()
+                    .fill(AtlasTheme.accent.opacity(0.6))
+                    .frame(width: 30, height: 1.5)
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Atlas")
+            .accessibilityAddTraits(.isHeader)
         }
     }
 
