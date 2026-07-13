@@ -90,11 +90,11 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
-| C1 | **IN_PROGRESS** | **Codex** | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | pendente |
+| C1 | **DONE** | — | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | `ec3ffe6`; 220 checks; live create→SSE content→done; app build verde |
 | C2 | **IN_PROGRESS** | **Codex** | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | evidência real: “Boa noite” succeeded no servidor após iPhone perder resposta do POST; recovery em implementação |
 | C3 | TODO | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | — |
 | C4 | TODO | — | rich input core + checks | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | — |
-| C5 | TODO | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | — |
+| C5 | **IN_PROGRESS** | **Codex** | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6`: `AtlasAgentActivity` + current/history reais prontos; receipts/quality pendentes |
 | C6 | TODO | — | package/build + fontes com warning | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | — |
 
 ### Fable (casca)
@@ -119,7 +119,8 @@ decisões, capturas, busca universal).
 > Formato: `- [ABERTO|FEITO] <quem pede>→<quem entrega>: <o que> — <por quê>`
 
 - (vazio)
-- [ABERTO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — `make build` está bloqueado por argumentos extras na chamada enquanto o componente ainda expõe `init(drafts:onRemove:)`.
+- [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
+- [ABERTO] Codex→Fable: renderizar `ChatBubble.currentActivity` + histórico `activities` no Cockpit U3 — contrato real `AtlasAgentActivity` pronto em `ec3ffe6`; mostrar estado atual sempre e timeline expansível, sem parsing de metadata na View.
 
 ## 6. Decisões registradas
 
@@ -146,6 +147,11 @@ decisões, capturas, busca universal).
   real (live-probe: 3.2MB reais, sha ✓, resume ✓), AtlasImaging (HEIC→JPEG),
   iOS liga (📎 real → chunks → create) · prova: 195 checks + live-probe verde +
   instalado no iPhone (verificação visual pendente = U1)
+- 2026-07-12 · Codex · `ec3ffe6` · C1 completo + primeira fatia C2/C5:
+  `InteractionRun` dono único, SSE delegate incremental, reconnect cursor/backoff,
+  cancel real, recovery de `-1005` por UUID e feed tipado de atividade do agente
+  · prova: 220 checks + live create→SSE content→done + `make build` verde;
+  deploy bloqueado apenas por iPhone fora da lista de devices pareados.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
