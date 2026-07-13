@@ -24,6 +24,11 @@ struct ConversationView: View {
     // Contador de tokens (estimativa live do rascunho ≈ chars/4), como o desktop.
     private var draftTokens: Int { Int(ceil(Double(draft.count) / 4.0)) }
 
+    // Anexo presente = card aberto: sem isso, anexar com o composer colapsado
+    // deixava o operador sem botão de enviar (a fileira de controles só existia
+    // com o teclado aberto). Estado de composição ⊃ estado de foco.
+    private var expanded: Bool { focused || !model.drafts.isEmpty }
+
     init(client: AtlasClient, threadId: String?, title: String) {
         self.title = title
         _model = State(initialValue: ConversationModel(client: client, threadId: threadId))
@@ -97,7 +102,7 @@ struct ConversationView: View {
     // CARD do app base (papel pousando): placeholder serif grande + linha de
     // controles (anexo · geral · auto · voz · mic), borda dourada.
     private var composer: some View {
-        VStack(alignment: .leading, spacing: focused ? 12 : 0) {
+        VStack(alignment: .leading, spacing: expanded ? 12 : 0) {
             if focused {
                 // Grabber → PUXE pra baixo (ou toque) para fechar o teclado.
                 // Área de toque generosa (padding antes do contentShape) + drag.
@@ -112,7 +117,10 @@ struct ConversationView: View {
                         DragGesture(minimumDistance: 6)
                             .onEnded { if $0.translation.height > 8 { dismissKeyboard() } }
                     )
-
+                    .accessibilityLabel("fechar teclado")
+                    .accessibilityAddTraits(.isButton)
+            }
+            if expanded {
                 // Header: seletor de workspace (real) + contador de tokens (como o desktop)
                 HStack(spacing: 6) {
                     Button {
@@ -135,40 +143,51 @@ struct ConversationView: View {
 
             // Strip de anexos (o contrato de UI é o LocalDraft, nada mais)
             if !model.drafts.isEmpty {
-                DraftStrip(drafts: model.drafts) { model.removeDraft($0) }
+                DraftStrip(drafts: model.drafts, reduceMotion: reduceMotion,
+                           onRemove: { model.removeDraft($0) },
+                           onFailedTap: { model.toast = $0 })
             }
             if let p = model.uploadPercent {
-                ProgressView(value: p).tint(AtlasTheme.accent)
-                    .scaleEffect(y: 0.6)
+                HStack(spacing: 10) {
+                    ProgressView(value: p).tint(AtlasTheme.accent)
+                    Text("\(Int(p * 100))%")
+                        .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                        .monospacedDigit()
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("enviando anexos, \(Int(p * 100)) por cento")
             }
 
             HStack(spacing: 10) {
-                if !focused {
+                if !expanded {
                     PhotosPicker(selection: $pickedPhoto, matching: .images) {
                         Image(systemName: "paperclip").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
                     }
+                    .accessibilityLabel("anexar foto")
                 }
                 ZStack(alignment: .topLeading) {
                     Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
-                        .font(AtlasFont.serifItalic(focused ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
-                        .allowsHitTesting(false).opacity(draft.isEmpty ? 1 : 0).offset(y: focused ? 0 : -1)
+                        .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
+                        .allowsHitTesting(false).opacity(draft.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
                         .animation(.easeOut(duration: 0.28), value: draft.isEmpty)
                     TextField("", text: $draft, axis: .vertical)
                         .font(.system(size: 16)).foregroundStyle(AtlasTheme.textPrimary)
                         .tint(AtlasTheme.accent).lineLimit(1...6).focused($focused)
                 }
-                if !focused {
+                if !expanded {
                     Button { model.toast = "ditado por voz — em breve" } label: {
                         Image(systemName: "mic.fill").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
                     }.buttonStyle(.plain)
+                    .accessibilityLabel("ditado por voz, em breve")
                 }
             }
 
-            if focused {
+            if expanded {
                 HStack(spacing: 8) {
                     PhotosPicker(selection: $pickedPhoto, matching: .images) {
                         Image(systemName: "paperclip").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 30, height: 30)
                     }
+                    .accessibilityLabel("anexar foto")
                     pill(label: mode) {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred(); showModeSheet = true
                     }
@@ -186,15 +205,16 @@ struct ConversationView: View {
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
         }
-        .padding(focused ? EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18)
-                         : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+        .padding(expanded ? EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18)
+                          : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
         .background(composerSurface)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
             LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
         )
-        .animation(.spring(response: 0.4, dampingFraction: 0.86), value: focused)
+        .animation(.spring(response: 0.4, dampingFraction: 0.86), value: expanded)
+        .animation(.spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
         .sheet(isPresented: $showWorkspaceSheet) {
             WorkspaceSheet(workspaces: session.workspaces, current: model.workspaceName) { ws in
@@ -219,7 +239,7 @@ struct ConversationView: View {
     }
 
     @ViewBuilder private var composerSurface: some View {
-        if focused {
+        if expanded {
             RoundedRectangle(cornerRadius: 26, style: .continuous).fill(AtlasTheme.surface)
                 .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).stroke(AtlasTheme.goldBorder, lineWidth: 1))
                 .shadow(color: .black.opacity(0.18), radius: 12, y: 4)
@@ -250,6 +270,7 @@ struct ConversationView: View {
             }
             .buttonStyle(.plain)
             .opacity(canSubmit ? 1 : 0).allowsHitTesting(canSubmit)
+            .accessibilityLabel("enviar ao Atlas")
         }
         .frame(width: 30, height: 30)
         .animation(.easeOut(duration: 0.28), value: canSubmit)
@@ -543,48 +564,75 @@ private struct EmptyConversation: View {
 
 // MARK: - Strip de anexos do composer
 
+// A strip renderiza LocalDraft e nada mais (contrato único de UI de anexos).
+// Estados legíveis: pronto (borda sutil), subindo (véu + spinner), falhou
+// (borda vermelha + ⚠; tocar mostra o motivo). ✕ com alvo de 44pt.
 private struct DraftStrip: View {
     let drafts: [LocalDraft]
+    let reduceMotion: Bool
     let onRemove: (String) -> Void
+    let onFailedTap: (String) -> Void
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
+            HStack(spacing: 12) {
                 ForEach(drafts) { d in
-                    ZStack(alignment: .topTrailing) {
-                        thumb(d)
-                            .frame(width: 56, height: 56)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(borderColor(d), lineWidth: 1))
-                            .overlay {
-                                if d.state == .subindo {
-                                    ProgressView().tint(.white)
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                        .background(.black.opacity(0.35))
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                }
-                            }
-                        Button { onRemove(d.id) } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 16))
-                                .foregroundStyle(AtlasTheme.textPrimary, AtlasTheme.bgRecessed)
-                        }
-                        .buttonStyle(.plain)
-                        .offset(x: 6, y: -6)
-                        .opacity(d.state == .subindo ? 0 : 1)
-                    }
+                    DraftThumb(draft: d, onRemove: onRemove, onFailedTap: onFailedTap)
+                        .transition(reduceMotion ? .opacity
+                                    : .scale(scale: 0.86).combined(with: .opacity))
                 }
             }
-            .padding(.top, 6)
+            .padding(.top, 6).padding(.trailing, 6)
         }
+        .scrollClipDisabled()   // o ✕ vaza do thumb; sem isto o clip corta o alvo
+    }
+}
+
+private struct DraftThumb: View {
+    let draft: LocalDraft
+    let onRemove: (String) -> Void
+    let onFailedTap: (String) -> Void
+
+    private var failedMessage: String? {
+        if case .falhou(let m) = draft.state { return m }
+        return nil
     }
 
-    @ViewBuilder private func thumb(_ d: LocalDraft) -> some View {
-        if d.kind == .image, let data = d.preview, let ui = UIImage(data: data) {
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            thumb
+                .frame(width: 64, height: 64)
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(failedMessage != nil ? AtlasTheme.domOperacional.opacity(0.8) : AtlasTheme.separator,
+                            lineWidth: failedMessage != nil ? 1.5 : 1))
+                .overlay { stateVeil }
+                .onTapGesture { if let m = failedMessage { onFailedTap("falhou: \(m)") } }
+
+            if draft.state != .subindo {
+                Button { onRemove(draft.id) } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(AtlasTheme.textPrimary, AtlasTheme.bgRecessed)
+                        .padding(8)          // alvo ~44pt sem crescer o ícone
+                        .contentShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .offset(x: 12, y: -12)
+                .accessibilityLabel("remover \(draft.fileName)")
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(a11yLabel)
+    }
+
+    @ViewBuilder private var thumb: some View {
+        if draft.kind == .image, let data = draft.preview, let ui = UIImage(data: data) {
             Image(uiImage: ui).resizable().scaledToFill()
         } else {
-            VStack(spacing: 3) {
-                Image(systemName: "doc.fill").font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary)
-                Text((d.fileName as NSString).pathExtension.uppercased())
+            VStack(spacing: 4) {
+                Image(systemName: "doc.fill").font(.system(size: 20)).foregroundStyle(AtlasTheme.textSecondary)
+                Text((draft.fileName as NSString).pathExtension.uppercased())
                     .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -592,9 +640,30 @@ private struct DraftStrip: View {
         }
     }
 
-    private func borderColor(_ d: LocalDraft) -> Color {
-        if case .falhou = d.state { return AtlasTheme.domOperacional }
-        return AtlasTheme.separator
+    @ViewBuilder private var stateVeil: some View {
+        if draft.state == .subindo {
+            ZStack { ProgressView().tint(.white) }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.black.opacity(0.38))
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        } else if failedMessage != nil {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 16))
+                .foregroundStyle(AtlasTheme.domOperacional)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                .padding(6)
+        }
+    }
+
+    private var a11yLabel: String {
+        let mb = String(format: "%.1f", Double(draft.bytes) / 1_048_576)
+        let state: String
+        switch draft.state {
+        case .pronto: state = "pronto para enviar"
+        case .subindo: state = "enviando"
+        case .falhou: state = "falhou, toque para ver o motivo"
+        }
+        return "anexo \(draft.fileName), \(mb) megabytes, \(state)"
     }
 }
 
