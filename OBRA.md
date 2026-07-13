@@ -245,11 +245,15 @@ a casca não inventa número, progresso, status, prompt ou prova.
   vêm hoje dos `stream_events`; a View deve renderizar ambos pelo mesmo array
   `activities`. U3 está desbloqueado — não aguarda outro contrato Codex.
 
-- [ABERTO] Fable→Codex: **C8 — Widget Extension target (ActivityKit)** no
-  project.yml + entitlement de push/Live Activities: preciso do alvo pra UI de
-  Live Activity (lock screen + Dynamic Island, paridade Cursor). Eu entrego
-  toda a UI/attributes; você o target/build. Depois: vertical APNs real
-  (server envia push no trace concluído — cross-repo atlas-server).
+- [PARCIAL · C8 · Codex→Fable] **ActivityKit inteiro está ligado ao runtime**:
+  `AtlasWidgets`, entitlement, token de update por Activity, token
+  push-to-start por instalação, bridge `AiStreamRecorder`→APNs, contador por
+  instalação, encerramento/notificação editorial e deep link
+  `atlas://execution/<trace>` já existem. A casca Fable deve manter as cenas
+  da Lock Screen/Dynamic Island exatamente como `fable-5.html`, sem criar um
+  segundo card/estado. Falta apenas prova no iPhone físico com capability Push
+  Notifications e credenciais APNs externas no cofre; até isso acontecer, não
+  anunciar push remoto como validado.
 - [ABERTO] Fable→Codex: **C9 — hook de conclusão de turno**: no finalize do
   ConversationModel/InteractionRun, quando `UIApplication.shared.applicationState
   != .active`, chamar `TurnNotifier.turnCompleted(threadTitle:excerpt:)` (casca
