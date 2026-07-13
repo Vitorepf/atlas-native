@@ -21,7 +21,7 @@ public func runAtlasAutonomosChecks(_ check: (String, Bool) -> Void) {
     {"schema_version":"atlas.software_company_stewardship.loop_command_live.v1",
      "area_id":"agentic_engineering_os","focus":"dev_forge","portfolio_id":"atlas_software_company",
      "read_only":true,"cockpit":{"status":"active"},
-     "run_state":{"lock":{"held":true},"pause":{"paused":false},"kill_switch":{"active":false}}}
+     "run_state":{"lock":{"held":true},"pause":{"active":false},"kill_switch":{"active":false}}}
     """
     let live = try? decoder.decode(AtlasAutonomosLiveResponse.self, from: Data(liveJSON.utf8))
     check("live separa lock, pausa e kill switch", live?.isRunning == true && live?.isPaused == false && live?.isKilled == false)
@@ -29,7 +29,7 @@ public func runAtlasAutonomosChecks(_ check: (String, Bool) -> Void) {
     let controlJSON = """
     {"schema_version":"atlas.software_company_stewardship.loop_command_run_control.v1",
      "area_id":"agentic_engineering_os","focus":"dev_forge","action":"pause","operator_actor":"vitor",
-     "applied":true,"kill_switch":{"active":false},"pause":{"paused":true},"note":"next boundary"}
+     "applied":true,"kill_switch":{"active":false},"pause":{"active":true},"note":"next boundary"}
     """
     let control = try? decoder.decode(AtlasAutonomosRunControlResponse.self, from: Data(controlJSON.utf8))
     check("recibo de controle só confirma ação aplicada pelo servidor", control?.applied == true && control?.action == .pause && control?.isPaused == true)

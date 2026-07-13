@@ -47,7 +47,7 @@ public struct AtlasAutonomosLiveResponse: Codable, Sendable, Equatable {
     public let runState: JSONObject
 
     public var isRunning: Bool { runState["lock"]?["held"]?.boolValue ?? false }
-    public var isPaused: Bool { runState["pause"]?["paused"]?.boolValue ?? false }
+    public var isPaused: Bool { runState["pause"]?["active"]?.boolValue ?? false }
     public var isKilled: Bool { runState["kill_switch"]?["active"]?.boolValue ?? false }
 }
 
@@ -105,7 +105,7 @@ public struct AtlasAutonomosRunControlResponse: Codable, Sendable, Equatable {
     public let pause: JSONObject
     public let note: String
 
-    public var isPaused: Bool { pause["paused"]?.boolValue ?? false }
+    public var isPaused: Bool { pause["active"]?.boolValue ?? false }
     public var isKilled: Bool { killSwitch["active"]?.boolValue ?? false }
 }
 
