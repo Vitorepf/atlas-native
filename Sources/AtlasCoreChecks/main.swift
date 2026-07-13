@@ -218,6 +218,7 @@ do {
 print("\nAtlas AI · superfície completa (golden decode por cluster):")
 runJobsChecks(check)
 runProvidersChecks(check)
+runAtlasExecutionPlanChecks(check)
 runDecisionsChecks(check)
 runTelemetryChecks(check)
 runPoliciesChecks(check)

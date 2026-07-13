@@ -35,6 +35,12 @@ struct ChatBubble: Identifiable, Equatable {
     var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
     var decisionSummary: AtlasDecisionSummary? = nil
     var qualitySummary: AtlasQualitySummary? = nil
+    /// Plano real criado pelo Terminal/CLI; a casca só recebe os dados já
+    /// saneados pelo Core, nunca metadata/prompt bruto.
+    var executionPlan: AtlasExecutionPlan? = nil
+    /// Posição do último checkpoint público observado no ledger. `nil` é o
+    /// estado honesto para traces legados ou sem checkpoint, não zero falso.
+    var executionProgress: AtlasExecutionPlan.Progress? = nil
 }
 
 // Anexo local (pré-envio) — o ÚNICO contrato de UI de anexos: a strip do
@@ -543,6 +549,8 @@ final class ConversationModel {
             $0.decideStage = trace.atlasDecideExecution?.atlasDecideStage
             $0.decisionSummary = trace.decisionSummary
             $0.qualitySummary = trace.qualitySummary
+            $0.executionPlan = trace.executionPlan
+            $0.executionProgress = trace.executionProgress
             let fromStream = atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
             $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)

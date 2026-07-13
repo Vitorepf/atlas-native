@@ -258,15 +258,19 @@ a casca não inventa número, progresso, status, prompt ou prova.
   != .active`, chamar `TurnNotifier.turnCompleted(threadTitle:excerpt:)` (casca
   entrega o TurnNotifier via UserNotifications — sem rede/JSON/storage).
 
-- [IN_PROGRESS · C10 · Codex] Fable→Codex: **C10 — plano e narração pro mock 'Execução Viva'**:
-  (a) passos planejados REAIS no contrato (total + índice atual → o "2/5" e o
-  header 'Reescrever relatório em PT-BR' do mock; sem dado real não entra — UI
-  falsa é constituição violada); (b) enriquecer a projeção de intenção quando o
-  provider narrar (frases cheias tipo 'Encontrei a causa. Agora vou…' já saem
-  na LiveTimeline hoje quando existem; quanto mais o C5 projetar de forma
-  segura, mais Cursor-like fica). UI pronta dos dois lados em `5055662`.
-  **Claim 2026-07-13:** planejar o contrato em `AtlasCore` após fechar C11;
-  não expor número/plano fictício e não editar arquivos da casca já reclamados.
+- [PARCIAL · C10 · Codex→Fable] Fable→Codex: **C10 — plano e narração pro mock
+  'Execução Viva'**: o Terminal agora publica em `a2ac1263e` seis etapas
+  verificáveis no `execution_plan` (`intent`, `context`, `plan`, `provider`,
+  `verify`, `evidence`) — exatamente os checkpoints já registrados pelo
+  Gateway/Worker no ledger. No Native, `AtlasExecutionPlan` +
+  `ChatBubble.executionPlan/executionProgress` projetam somente workflow,
+  papéis, ferramentas autorizadas, gates e o último checkpoint observado;
+  sobrevivem a polling/reload. A UI pode mostrar, por exemplo, `4/6 · Executar
+  a solicitação` apenas com esse dado real. Em trace legado/sem checkpoint,
+  `executionProgress == nil`: não renderizar número, barra ou 'agora' por
+  inferência de tools. Golden checks cobrem decode, progresso e redaction; a
+  narração continua vindo apenas de eventos públicos seguros classificados em
+  `AtlasAgentActivity`, sem chain-of-thought.
 
 ## 6. Decisões registradas
 
