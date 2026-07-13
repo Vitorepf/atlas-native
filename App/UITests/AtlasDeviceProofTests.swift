@@ -5,7 +5,8 @@ final class AtlasDeviceProofTests: XCTestCase {
     func testToolExecutionAndPersistentCockpit() {
         continueAfterFailure = false
         let app = XCUIApplication()
-        app.launchEnvironment["ATLAS_DEVICE_PROOF_PROVIDER"] = "codex_cli"
+        let provider = ProcessInfo.processInfo.environment["ATLAS_DEVICE_PROOF_PROVIDER"] ?? "hermes_cli"
+        app.launchEnvironment["ATLAS_DEVICE_PROOF_PROVIDER"] = provider
         app.launch()
         let newConversation = app.buttons["Escreva ao Atlas"]
         XCTAssertTrue(newConversation.waitForExistence(timeout: 45), "home não abriu uma ação de conversa")
@@ -14,7 +15,7 @@ final class AtlasDeviceProofTests: XCTestCase {
         let field = app.textFields.firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 20), "composer não apareceu")
         field.tap()
-        field.typeText("No workspace atlas-server, execute obrigatoriamente sleep 8 && shasum -a 256 composer.json com uma ferramenta shell read-only e responda apenas o hash observado.")
+        field.typeText("Execute obrigatoriamente sleep 8 && pwd com uma ferramenta shell read-only e responda apenas o caminho observado.")
         capture("01-composer")
 
         let send = app.buttons["enviar ao Atlas"]
@@ -23,7 +24,7 @@ final class AtlasDeviceProofTests: XCTestCase {
                       "botão de envio existe, mas não ficou tocável")
         send.tap()
         let sentTurn = app.staticTexts.matching(
-            NSPredicate(format: "label CONTAINS 'execute obrigatoriamente sleep 8'")
+            NSPredicate(format: "label CONTAINS 'Execute obrigatoriamente sleep 8'")
         ).firstMatch
         XCTAssertTrue(sentTurn.waitForExistence(timeout: 15),
                       "toque no envio não criou o turno do operador")
