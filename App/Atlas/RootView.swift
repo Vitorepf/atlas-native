@@ -86,7 +86,7 @@ struct RootView: View {
     @ViewBuilder
     private var content: some View {
         switch session.phase {
-        case .idle, .loading where session.threads.isEmpty:
+        case .idle where session.threads.isEmpty, .loading where session.threads.isEmpty:
             centered {
                 VStack(spacing: 18) {
                     BreathingGlyph(reduceMotion: reduceMotion)

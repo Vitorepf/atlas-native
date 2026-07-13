@@ -14,11 +14,11 @@ struct ConversationView: View {
     @Environment(AtlasSession.self) private var session
     @State private var model: ConversationModel
     @State private var draft = ""
-    @State private var effort: AtlasComputeEffort = .auto
     @State private var mode = "geral"
     @State private var showModeSheet = false
     @State private var showWorkspaceSheet = false
     @State private var pickedPhoto: PhotosPickerItem?
+    @State private var showFileImporter = false
     @FocusState private var focused: Bool
 
     // Contador de tokens (estimativa live do rascunho ≈ chars/4), como o desktop.
@@ -46,7 +46,6 @@ struct ConversationView: View {
         .navigationBarHidden(true)
         .overlay(alignment: .top) { toast }
         .task { await model.load() }
-        .onAppear { effort = ComposerPrefs.effort }
     }
 
     // MARK: - Header
@@ -191,10 +190,17 @@ struct ConversationView: View {
                     pill(label: mode) {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred(); showModeSheet = true
                     }
-                    pill(label: effort.shortLabel) {
-                        effort = effort.next
-                        ComposerPrefs.effort = effort
+                    pill(label: model.effort.shortLabel) {
+                        model.cycleEffort()
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    }
+                    controlIcon("doc") {
+                        showFileImporter = true
+                    }
+                    controlIcon("doc.on.clipboard") {
+                        if let t = UIPasteboard.general.string, !t.isEmpty {
+                            model.addClipboard(text: t)
+                        } else { model.toast = "nada de texto no clipboard" }
                     }
                     if draft.isEmpty {
                         controlIcon("headphones") { model.toast = "voz em tempo real — em breve" }
@@ -223,6 +229,10 @@ struct ConversationView: View {
                 model.workspaceName = ws.name
                 model.workspacePath = session.workspaceFullPath(forKey: ws.id)
             }
+        }
+        .fileImporter(isPresented: $showFileImporter,
+                      allowedContentTypes: [.pdf, .text, .sourceCode, .json, .commaSeparatedText]) { result in
+            if case .success(let url) = result { model.addFile(url: url) }
         }
         .onChange(of: pickedPhoto) {
             guard let item = pickedPhoto else { return }
@@ -323,7 +333,7 @@ struct ConversationView: View {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         let text = draft
         draft = ""
-        let effort = self.effort
+        let effort = model.effort
         Task { await model.send(text, effort: effort) }
     }
 
@@ -363,6 +373,9 @@ private struct EditorialTurn: View {
                         AtlasMarkdownView(text: bubble.text)
                     }
                     if !bubble.streaming {
+                        if !bubble.activities.isEmpty || bubble.decisionSummary != nil || bubble.qualitySummary != nil {
+                            ExecutionProof(bubble: bubble)
+                        }
                         SignatureLine(provider: bubble.provider, model: bubble.model, elapsedMs: bubble.elapsedMs)
                         FeedbackRow(active: bubble.feedbackAction, onFeedback: onFeedback)
                     }
@@ -455,6 +468,27 @@ private struct ExecutionRibbon: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .frame(width: 26, height: 26).background(Circle().fill(AtlasTheme.surfaceHi))
                 }.buttonStyle(.plain)
+            }
+            // A ATIVIDADE ATUAL — o que o Atlas está fazendo AGORA (contrato C5:
+            // projeção segura, sem stdout/reasoning cru).
+            if let act = bubble.currentActivity {
+                HStack(spacing: 8) {
+                    Image(systemName: activityIcon(act.kind))
+                        .font(.system(size: 12)).foregroundStyle(AtlasTheme.accent)
+                        .frame(width: 16)
+                    Text(act.title)
+                        .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.textSecondary)
+                        .lineLimit(1)
+                    if let d = act.detail, !d.isEmpty {
+                        Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                            .lineLimit(1).truncationMode(.middle)
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(.leading, 24)
+                .id(act.id)
+                .transition(reduceMotion ? .opacity : .push(from: .bottom))
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: act.id)
             }
             if !bubble.agents.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
@@ -569,6 +603,129 @@ private struct EmptyConversation: View {
         .padding(.horizontal, 32).padding(.top, 140)
         .frame(maxWidth: .infinity)
         .onAppear { if !reduceMotion { withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) { breathe = true } } }
+    }
+}
+
+// Ícone por kind de atividade (vocabulário estável do contrato C5).
+func activityIcon(_ kind: AtlasAgentActivity.Kind) -> String {
+    switch kind {
+    case .understanding: return "text.magnifyingglass"
+    case .context: return "square.stack.3d.up"
+    case .planning: return "list.bullet.rectangle"
+    case .permission: return "lock.shield"
+    case .reasoning: return "brain"
+    case .executing: return "chevron.left.forwardslash.chevron.right"
+    case .reading: return "doc.text"
+    case .editing: return "pencil.line"
+    case .verifying: return "checkmark.seal"
+    case .evidence: return "tray.full"
+    case .completed: return "checkmark.circle.fill"
+    case .warning: return "exclamationmark.triangle.fill"
+    case .progress: return "ellipsis.circle"
+    }
+}
+
+// A PROVA da execução — o que Cursor não mostra: depois da resposta, os passos
+// ficam (persistentes, expansíveis), com o Atlas Decide (por que este modelo)
+// e o quality gate (a auto-avaliação). Fechado = uma linha discreta.
+private struct ExecutionProof: View {
+    let bubble: ChatBubble
+    @State private var open = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                withAnimation(.easeOut(duration: 0.22)) { open.toggle() }
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: open ? "chevron.down" : "chevron.right")
+                        .font(.system(size: 9, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
+                    Text(summaryLine)
+                        .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
+                        .lineLimit(1)
+                    Spacer(minLength: 0)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("prova da execução, \(bubble.activities.count) passos")
+            .accessibilityHint(open ? "toque para fechar" : "toque para expandir")
+
+            if open {
+                VStack(alignment: .leading, spacing: 7) {
+                    ForEach(bubble.activities) { act in
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
+                            Image(systemName: activityIcon(act.kind))
+                                .font(.system(size: 11)).foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                                .frame(width: 15)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(act.title)
+                                    .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+                                if let d = act.detail, !d.isEmpty {
+                                    Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                                        .lineLimit(2).truncationMode(.middle)
+                                }
+                            }
+                        }
+                    }
+                    if let d = bubble.decisionSummary {
+                        Divider().overlay(AtlasTheme.separatorSoft)
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.triangle.branch")
+                                .font(.system(size: 11)).foregroundStyle(AtlasTheme.accent.opacity(0.8)).frame(width: 15)
+                            Text(decideLine(d))
+                                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                                .lineLimit(2)
+                        }
+                        if let r = d.reason, !r.isEmpty {
+                            Text("“\(r)”")
+                                .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
+                                .padding(.leading, 23)
+                        }
+                    }
+                    if let q = bubble.qualitySummary {
+                        HStack(spacing: 6) {
+                            Image(systemName: "seal")
+                                .font(.system(size: 11)).foregroundStyle(qualityColor(q)).frame(width: 15)
+                            Text("quality \(String(format: "%.1f", q.score)) · \(q.status)" +
+                                 (q.flagCount > 0 ? " · \(q.flagCount) alertas" : ""))
+                                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                        }
+                    }
+                }
+                .padding(.top, 8)
+                .padding(.leading, 4)
+                .transition(.opacity)
+            }
+        }
+        .padding(.vertical, 8).padding(.horizontal, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.35))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        )
+    }
+
+    private var summaryLine: String {
+        var parts: [String] = []
+        if !bubble.activities.isEmpty { parts.append("\(bubble.activities.count) passos") }
+        if let d = bubble.decisionSummary, let m = d.selectedModel { parts.append("decide → \(m)") }
+        if let q = bubble.qualitySummary { parts.append("quality \(String(format: "%.1f", q.score))") }
+        return parts.isEmpty ? "prova da execução" : parts.joined(separator: " · ")
+    }
+
+    private func decideLine(_ d: AtlasDecisionSummary) -> String {
+        var out = "atlas decide"
+        if let m = d.routeMode { out += " · \(m)" }
+        if let p = d.selectedProvider { out += " · \(p)" }
+        if let c = d.confidenceScore { out += " · conf \(String(format: "%.2f", c))" }
+        if d.wasOverridden { out += " · override" }
+        return out
+    }
+
+    private func qualityColor(_ q: AtlasQualitySummary) -> Color {
+        q.status.lowercased().contains("pass") || q.score >= 0.7
+            ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional
     }
 }
 
