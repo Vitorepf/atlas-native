@@ -94,9 +94,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
 | C3 | **DONE** | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | `da9399a`; 242 checks; adapter câmera → upload/payload live real |
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
-| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea` + `ce850fe` + `c952c26` + `4b68d29`; `tool` e `progress\|shell` real, upsert started→completed, redaction, replay; processo do provider não finge ser tool nem expõe argv/path |
+| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` (latência live tool) | U1–U6 | Harness XCUITest físico reproduzível | Test target assinado dirige conversa/tool/cockpit no iPhone e captura evidence attachment; live-probe mede se `shell started` chega antes de `done` com janela visual real | `8407ca1` + `a08088e`; Simulator XCUITest verde; Codex real entregou `shell.started` antes de `done`, manteve tool observável >5s e persistiu replay; físico bloqueado e rich input/PasteButton pendentes (§5) |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `8407ca1` + `a08088e` + `30b2023`; estrito no Simulator encontra `Executando comando` live, depois RED em `Comando concluído isHittable=false`; físico bloqueado e PasteButton pendente (§5) |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -147,8 +147,10 @@ decisões, capturas, busca universal).
 - [ABERTO] Codex→Fable: ao expandir `ExecutionProof`, garantir que todos os
   passos sejam alcançáveis e que a tool persistida fique visível acima do
   composer. O XCUITest encontra `Comando concluído` na árvore, mas a linha
-  continua `isHittable=false` mesmo após seis scrolls; teclado/composer ocultam
-  a timeline. Adicionar foco/scroll/layout e fechar teclado no envio/prova.
+  continua `isHittable=false` mesmo após seis scrolls. Causa de layout confirmada:
+  `ExecutionProof.open` é estado local e não dispara o `scrollTo` hoje ligado
+  apenas a `model.bubbles`, enquanto o composer sobrepõe o `ScrollView` no
+  `ZStack`. Adicionar foco/scroll/layout e fechar teclado no envio/prova.
 
 - [ABERTO · TERMINAL DA LANE FABLE — IMPOSSIBILIDADE DEMONSTRADA] U1–U6
   implementados, gates verdes, instalados no iPhone (`ed10c81`→`105b1ae`),
@@ -254,6 +256,11 @@ decisões, capturas, busca universal).
   read-only de 8s e exige lifecycle semântico antes da conclusão · prova:
   `shell.started` recebido durante a execução, tool observável por mais de 5s,
   conclusão persistida e reaparecimento no replay; checks Core + App verdes.
+- 2026-07-13 · Codex · `30b2023` · C5 atividade atual honesta: ferramenta aberta
+  vence reasoning/progress intercalado até seu mesmo item concluir; edit/search
+  concluídos deixam de parecer ativos · prova: golden red→green, live Codex
+  `shell.started` >5s + replay, XCUITest estrito encontrou `Executando comando`
+  ao vivo; App build sem warning. C7 segue RED apenas na visibilidade persistida.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
