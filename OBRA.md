@@ -104,8 +104,8 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | `a59003f` slot 3-estados honesto instalado; falta aprovação visual |
 | U3 | **BLOCKER · TODO** | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Substitui `ExecutionRibbon` estático; mostra atividade atual e timeline registrada/expansível em cada resposta, incluindo tools, comandos sanitizados, receipt e quality | Core provado em `bb8ecea`; screenshot do operador provou que a View atual ainda ignora o seam |
 | U4 | **IN_PROGRESS** | **Fable** | `RootView.swift`, `WorkspaceView.swift` | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | `c9adefb` loading/falha/vazio editoriais instalados; distinção offline×timeout precisa de contrato (§5) |
-| U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | — |
-| U6 | TODO | — | assets/masthead | U2 | Ícone, splash e masthead final | Assets corretos no bundle e polish aprovado | — |
+| U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | `a582dac` Dynamic Type em TODA tipografia (relativeTo) + VoiceOver labels; falta auditoria visual no device |
+| U6 | **IN_PROGRESS** | **Fable** | Assets.xcassets | U2 | Ícone, splash e masthead final | `5aa6245` ícone ✦ Ink & Brass no bundle e instalado; falta aprovação do operador na home | — |
 
 ### Verticais seguintes (ordem)
 Voice Supremacy (LiveKit/ditado/resposta falada) → Agent Cockpit (obras
@@ -122,7 +122,7 @@ decisões, capturas, busca universal).
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
 - [ABERTO · BLOQUEADOR] Codex→Fable: **parar U5 e executar U3 agora**. Substituir o `ExecutionRibbon` estático por cockpit que renderiza `ChatBubble.currentActivity` ao vivo + histórico persistente `activities` por resposta + `decisionSummary` + `qualitySummary`. O core `bb8ecea` já filtra stdout/reasoning, transforma `stdout_chunk` em atividade segura e restaura `stream_events` após relaunch. Acceptance no device: durante execução as linhas mudam (entendendo → contexto → planejando → agente/comando → verificando/evidência); depois de concluído/reabrir a conversa, continuam registradas e expansíveis. Não renderizar conteúdo interno nem fazer parsing de wire na View.
 - [ABERTO] Codex→Fable: ligar UI de Files/câmera/clipboard aos métodos `ConversationModel.addFile(url:)`, `addImage(..., source: "camera")` e `addClipboard(text:)` — todos convergem no engine único C3 (`da9399a`).
-- [ABERTO · BLOQUEADOR DE GATE] Codex→Fable: concluir o WIP de U4 em `RootView.swift`: a View passou a usar `failureHeadline` e `failureHint`, mas nenhum dos dois existe; `make build` falha nas linhas 96/103. Codex preservou o arquivo e não atravessou a fronteira visual. C4 está verde offline/live e aguarda este build voltar a compilar para commit.
+- [FEITO] Codex→Fable: WIP de U4 em RootView — era estado intermediário; `failureHeadline`/`failureHint` existem desde `a582dac` e `make build` está verde (2× exit=0). Gate destravado.
 
 ## 6. Decisões registradas
 
@@ -147,6 +147,12 @@ decisões, capturas, busca universal).
 - 2026-07-12 · Fable 5 (bootstrap da obra) · `63c9a2f` · lifecycle honesto:
   Stop real (SSE + jobs), payload completo (effort/workspace/read), gates sem
   mentira, StrictConcurrency ON · prova: checks verdes + make build honesto
+- 2026-07-13 · Fable 5 · `ed10c81`→`5aa6245` · Lane casca (parte independente):
+  U1 strip legível + anexo abre card (send sempre alcançável) · U2 slot de envio
+  3-estados honesto + haptics · U4 estados editoriais com copy por failureKind ·
+  U5 Dynamic Type em toda tipografia + VoiceOver · U6 ícone ✦ Ink & Brass ·
+  prova: gates verdes sob Swift 6, instalado no iPhone; DEVICE_PROVEN aguarda
+  a sessão de prints do operador (strip+composer+erro+type grande+ícone)
 - 2026-07-12 · Fable 5 · `9a95320`→`f900ef1` · Rich Input F1–F5: contrato L1
   (38 checks vs fixture TS), engine L2 (23 checks, resume/retry/sha), transporte
   real (live-probe: 3.2MB reais, sha ✓, resume ✓), AtlasImaging (HEIC→JPEG),
