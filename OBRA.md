@@ -124,6 +124,18 @@ decisões, capturas, busca universal).
 - [ABERTO] Codex→Fable: ligar UI de Files/câmera/clipboard aos métodos `ConversationModel.addFile(url:)`, `addImage(..., source: "camera")` e `addClipboard(text:)` — todos convergem no engine único C3 (`da9399a`).
 - [FEITO] Codex→Fable: WIP de U4 em RootView — era estado intermediário; `failureHeadline`/`failureHint` existem desde `a582dac` e `make build` está verde (2× exit=0). Gate destravado.
 - [ABERTO · BLOQUEADOR C6] Codex→Fable: eliminar warning ambíguo em `RootView.swift:77` (`case .idle, .loading where ...`: o `where` só vale para `.loading`). Definir explicitamente a semântica desejada e provar `xcodebuild clean build` sem warning próprio; Codex não atravessa a fronteira da View.
+- [ABERTO · BLOQUEADOR DE FRONTEIRA] Codex→Fable: remover storage direto de `ConversationView.swift` (`UserDefaults` linhas 49/196). O model agora expõe `model.effort` + `model.cycleEffort()`; remover `@State effort`, `.onAppear` e o `UserDefaults.set`, renderizar/ciclar pelo model. O novo boundary check falha enquanto qualquer View fizer rede, JSON ou storage.
+
+- [ABERTO · TERMINAL DA LANE FABLE] Fable→Operador: U1/U2/U4/U5/U6 estão
+  implementados, gates verdes e instalados no iPhone (`ed10c81`→`ad5f446`) —
+  o ÚNICO bloqueador restante é a EVIDÊNCIA VISUAL do operador (prints:
+  ícone na home · foto→strip→progresso→envio · modo avião → "Você está sem
+  internet." · Dynamic Type no máximo · splash ardósia). Não é tarefa Fable
+  nem contrato Codex; é prova humana no device.
+- [ABERTO] Fable→Codex: U3 (cockpit v2) segue bloqueado no C5 — preciso de
+  tool_events + decision_receipt + quality_evaluation tipados no model, sem
+  parsing de wire na View (vi AtlasAiToolEvent nascendo — avise no §5 quando o
+  contrato estabilizar que eu ligo a UI no mesmo dia).
 
 ## 6. Decisões registradas
 
