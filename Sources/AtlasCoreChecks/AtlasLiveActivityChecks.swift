@@ -23,10 +23,10 @@ public func runAtlasLiveActivityChecks(_ check: (String, Bool) -> Void) {
     check("ambiente APNs é explícito", object?["environment"] as? String == "sandbox")
 
     let receiptJSON = """
-    {"registration_id":"reg-1","trace_id":"trace-1","activity_id":"activity-1","status":"active"}
+    {"registration":{"id":"reg-1","trace_id":"trace-1","activity_id":"activity-1","status":"active"}}
     """.data(using: .utf8)!
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = atlasSnakeKeyDecoding
-    let receipt = try? decoder.decode(AtlasLiveActivityRegistrationReceipt.self, from: receiptJSON)
-    check("receipt nunca devolve o push token", receipt?.registrationId == "reg-1" && receipt?.status == "active")
+    let receipt = try? decoder.decode(AtlasLiveActivityRegistrationResponse.self, from: receiptJSON)
+    check("receipt nunca devolve o push token", receipt?.registration.registrationId == "reg-1" && receipt?.registration.status == "active")
 }

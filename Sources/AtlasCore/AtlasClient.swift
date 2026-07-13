@@ -243,7 +243,8 @@ public actor AtlasClient: AtlasAiStreamSource {
     public func registerLiveActivity(
         _ input: AtlasLiveActivityRegistrationInput
     ) async throws -> AtlasLiveActivityRegistrationReceipt {
-        try await post("/ai/live-activities", body: input)
+        let response: AtlasLiveActivityRegistrationResponse = try await post("/ai/live-activities", body: input)
+        return response.registration
     }
 
     /// Invalida um token quando a Live Activity acaba localmente. A chamada é
@@ -252,10 +253,11 @@ public actor AtlasClient: AtlasAiStreamSource {
         activityId: String,
         input: AtlasLiveActivityInvalidationInput
     ) async throws -> AtlasLiveActivityRegistrationReceipt {
-        try await post(
+        let response: AtlasLiveActivityRegistrationResponse = try await post(
             "/ai/live-activities/\(pathEncode(activityId))/invalidate",
             body: input
         )
+        return response.registration
     }
 
     private func pathEncode(_ s: String) -> String {

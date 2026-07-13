@@ -53,6 +53,23 @@ public struct AtlasLiveActivityRegistrationReceipt: Codable, Sendable, Equatable
         self.activityId = activityId
         self.status = status
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case registrationId = "id"
+        case traceId
+        case activityId
+        case status
+    }
+}
+
+/// Envelope de transporte do servidor. Mantê-lo separado do receipt evita que
+/// a casca precise saber como a API escolhe organizar respostas JSON.
+public struct AtlasLiveActivityRegistrationResponse: Codable, Sendable, Equatable {
+    public let registration: AtlasLiveActivityRegistrationReceipt
+
+    public init(registration: AtlasLiveActivityRegistrationReceipt) {
+        self.registration = registration
+    }
 }
 
 public struct AtlasLiveActivityInvalidationInput: Codable, Sendable, Equatable {
