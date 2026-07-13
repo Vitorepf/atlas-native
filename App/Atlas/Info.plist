@@ -46,8 +46,6 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 			<true/>
-			<key>NSAllowsLocalNetworking</key>
-		<true/>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Atlas conecta ao servidor local no seu Mac.</string>
