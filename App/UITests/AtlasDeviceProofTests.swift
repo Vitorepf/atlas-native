@@ -19,18 +19,23 @@ final class AtlasDeviceProofTests: XCTestCase {
 
         let send = app.buttons["enviar ao Atlas"]
         XCTAssertTrue(send.waitForExistence(timeout: 10), "envio real não ficou disponível")
+        XCTAssertTrue(waitUntilHittable(send, timeout: 10),
+                      "botão de envio existe, mas não ficou tocável")
         send.tap()
+        let sentTurn = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS 'execute obrigatoriamente sleep 8'")
+        ).firstMatch
+        XCTAssertTrue(sentTurn.waitForExistence(timeout: 15),
+                      "toque no envio não criou o turno do operador")
         let closeKeyboard = app.buttons["fechar teclado"]
         if closeKeyboard.waitForExistence(timeout: 5) { closeKeyboard.tap() }
 
-        let liveActivity = app.staticTexts.matching(NSPredicate(
-            format: "label IN %@",
-            ["Entendendo o pedido", "Reunindo contexto", "Planejando a execução",
-             "Iniciando o agente", "Executando comando", "Raciocinando sobre a tarefa",
-             "Verificando o resultado", "Registrando evidências"]
-        )).firstMatch
-        XCTAssertTrue(liveActivity.waitForExistence(timeout: 180), "cockpit não mostrou atividade tipada ao vivo")
-        capture("02-activity-live")
+        let liveCommand = app.staticTexts["Executando comando"]
+        XCTAssertTrue(liveCommand.waitForExistence(timeout: 180),
+                      "cockpit não mostrou a ferramenta shell enquanto ela executava")
+        XCTAssertTrue(liveCommand.isHittable,
+                      "a ferramenta shell ao vivo existe, mas está fora da região visível")
+        capture("02-tool-live")
 
         let proof = app.buttons.matching(
             NSPredicate(format: "label BEGINSWITH 'prova da execução'")
@@ -45,6 +50,8 @@ final class AtlasDeviceProofTests: XCTestCase {
         for _ in 0..<6 where !persistedCommand.isHittable {
             scrollStart.press(forDuration: 0.05, thenDragTo: scrollEnd)
         }
+        XCTAssertTrue(persistedCommand.isHittable,
+                      "a ferramenta persistida existe, mas não ficou alcançável ao expandir a prova")
         capture("03-execution-proof-expanded")
     }
 
@@ -54,6 +61,15 @@ final class AtlasDeviceProofTests: XCTestCase {
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    @MainActor
+    private func waitUntilHittable(_ element: XCUIElement, timeout: TimeInterval) -> Bool {
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "hittable == true"),
+            object: element
+        )
+        return XCTWaiter.wait(for: [expectation], timeout: timeout) == .completed
     }
 
 }
