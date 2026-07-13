@@ -325,10 +325,17 @@ final class ConversationModel {
                 payload["workspace_name"] = .string(workspaceName ?? slug)
                 if let p = workspacePath { payload["workspace_path"] = .string(p) }
             }
+            #if DEBUG
+            let proofProvider = ProcessInfo.processInfo.environment["ATLAS_DEVICE_PROOF_PROVIDER"]
+            #else
+            let proofProvider: String? = nil
+            #endif
             let input = CreateAiInteractionInput(inputText: trimmed,
                                                  clientId: UUID().uuidString.lowercased(),
                                                  threadId: threadId,
                                                  newThread: threadId == nil ? true : nil,
+                                                 agentSlug: proofProvider == nil ? nil : "atlas",
+                                                 provider: proofProvider,
                                                  sourceType: "app",
                                                  payload: atlasMobileInteractionPayload(base: JSONObject(payload)),
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,

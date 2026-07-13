@@ -130,7 +130,9 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     }
 
     if name == "process_started" {
-        return activity(.executing, "Executando comando", detail: commandDetail(metadata["command"]))
+        // Este é o processo do provider (Kimi/Codex/Claude), não uma tool do
+        // agente. Exibir argv aqui criava uma ferramenta falsa e vazava paths.
+        return activity(.executing, "Iniciando o agente")
     }
     if name == "process_finished" {
         let succeeded = metadata["successful"]?.boolValue
@@ -207,31 +209,6 @@ public func atlasMergeAgentActivities(
         result.removeFirst(result.count - limit)
     }
     return result
-}
-
-private func commandDetail(_ value: JSONValue?) -> String? {
-    guard case .array(let values)? = value else { return nil }
-    let parts = values.compactMap(\.stringValue)
-    guard !parts.isEmpty else { return nil }
-    var redactNext = false
-    return parts.map { part in
-        if redactNext {
-            redactNext = false
-            return "<redacted>"
-        }
-        let lower = part.lowercased()
-        if ["--token", "--api-key", "--apikey", "--secret", "--password", "--private-key"]
-            .contains(lower) {
-            redactNext = true
-            return part
-        }
-        return redactedCommandPart(part)
-    }.joined(separator: " ")
-}
-
-private func redactedCommandPart(_ part: String) -> String {
-    let lower = part.lowercased()
-    return containsSensitiveCommandMaterial(lower) ? "<redacted>" : part
 }
 
 private func containsSensitiveCommandMaterial(_ lower: String) -> Bool {

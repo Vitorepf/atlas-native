@@ -384,8 +384,9 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     )
     check("activity tipa checkpoint de planejamento",
           atlasAgentActivity(from: planning)?.kind == .planning)
-    check("activity expõe comando real sanitizado",
-          atlasAgentActivity(from: command)?.detail == "swift test")
+    check("processo do provider não finge ser ferramenta do agente",
+          atlasAgentActivity(from: command)?.title == "Iniciando o agente" &&
+          atlasAgentActivity(from: command)?.detail == nil)
     check("activity de raciocínio não vaza conteúdo interno",
           atlasAgentActivity(from: thinking)?.detail == nil &&
           atlasAgentActivity(from: thinking)?.kind == .reasoning)
@@ -426,11 +427,8 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
         ])
     )
     let safeCommand = atlasAgentActivity(from: secretCommand)?.detail ?? ""
-    check("activity de comando remove headers e query secrets",
-          !safeCommand.contains("atlas-super-secret") &&
-          !safeCommand.contains("also-secret") &&
-          !safeCommand.contains("atlas-second-secret") &&
-          safeCommand.contains("<redacted>"))
+    check("processo do provider nunca expõe comando ou segredo",
+          safeCommand.isEmpty)
 
     // Shape canônico de CodexJsonlEventParser.php no atlas-server.
     let codexShell = AtlasAiStreamEvent(
@@ -570,7 +568,11 @@ public func runInteractionRunLiveProbe(
                   snapshot.trace.toolEvents != nil && snapshot.trace.qualityActions != nil)
             let persistedTimeline = atlasAgentTimeline(from: snapshot.trace.streamEvents ?? [])
             check("live ledger reconstrói comando executado persistente",
-                  persistedTimeline.contains { $0.kind == .executing && $0.detail != nil })
+                  persistedTimeline.contains {
+                      [.executing, .completed, .warning].contains($0.kind)
+                          && $0.title.lowercased().contains("comando")
+                          && $0.detail != nil
+                  })
             let expectedJourney: [AtlasAgentActivity.Kind] = [
                 .understanding, .context, .planning, .executing, .verifying, .evidence,
             ]
