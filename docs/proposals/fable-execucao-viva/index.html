@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas · Execução Viva — proposta Fable 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Ink & Brass — a paleta REAL do app (AtlasTheme.swift) ── */
+  :root {
+    --bg: #10181e;            /* palco, mais fundo que o app */
+    --app-bg: #1d2b34;        /* AtlasTheme.bg */
+    --surface: #243743;       /* AtlasTheme.surface */
+    --surface-hi: #2d4351;
+    --recessed: #15212a;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #313f47;
+    --sep-soft: #27353e;
+    --gold: #d4a85a;
+    --green: #7fb069;
+    --serif: "Fraunces", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 70% -10%, rgba(212,168,90,0.05), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 64px 48px 96px; }
+
+  /* ── Masthead editorial ── */
+  .kicker {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 46px;
+    line-height: 1.12; letter-spacing: -0.01em; max-width: 21ch;
+    text-wrap: balance;
+  }
+  .lede {
+    margin-top: 16px; font-size: 16.5px; line-height: 1.65; color: var(--ink2);
+    max-width: 62ch; text-wrap: pretty;
+  }
+  .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .provenance {
+    margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  }
+  .chip {
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink2);
+    border: 1px solid var(--sep); border-radius: 999px; padding: 6px 13px;
+    background: rgba(36,55,67,0.5);
+  }
+  .chip b { color: var(--gold); font-weight: 500; }
+  .rule { width: 44px; height: 2px; background: var(--gold); opacity: 0.7; margin: 26px 0 0; }
+
+  /* ── Palco dos iPhones ── */
+  .stage {
+    margin-top: 56px; display: flex; gap: 56px; justify-content: center;
+    align-items: flex-start; flex-wrap: wrap;
+  }
+  .exhibit { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .exhibit-label {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink3);
+  }
+  .exhibit-label b { color: var(--ink2); font-weight: 500; }
+
+  /* iPhone 15 Pro — métricas do ios_frame.jsx (393×852, ilha 124×36 @12) */
+  .iphone {
+    display: inline-block; padding: 12px; background: #000; border-radius: 60px;
+    box-shadow: 0 0 0 2px #1f2937, 0 30px 80px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .screen {
+    position: relative; width: 393px; height: 852px;
+    border-radius: 48px; overflow: hidden; background: var(--app-bg);
+  }
+  .island {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 124px; height: 36px; background: #000; border-radius: 999px; z-index: 30;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px; overflow: hidden;
+    transition: width 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .island.live { width: 196px; }
+  .island .glyph { color: var(--gold); font-family: var(--serif); font-size: 14px; opacity: 0; transition: opacity 0.3s; }
+  .island .timer { color: var(--ink2); font-family: var(--mono); font-size: 11.5px; opacity: 0; transition: opacity 0.3s; }
+  .island.live .glyph, .island.live .timer { opacity: 1; }
+  .statusbar {
+    position: absolute; top: 0; left: 0; right: 0; height: 54px; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; font-size: 15.5px; font-weight: 600; color: var(--ink);
+    pointer-events: none;
+  }
+  .sb-right { display: flex; align-items: center; gap: 7px; }
+  .sb-bars { display: flex; align-items: flex-end; gap: 2px; height: 11px; }
+  .sb-bars i { width: 3px; background: currentColor; border-radius: 1px; display: block; }
+  .battery { width: 25px; height: 12px; border: 1.5px solid rgba(214,221,226,0.5); border-radius: 4px; position: relative; }
+  .battery::after { content:""; position: absolute; right: -4px; top: 3px; width: 2px; height: 4px; background: rgba(214,221,226,0.5); border-radius: 1px; }
+  .battery i { position: absolute; inset: 1.5px; width: 70%; background: var(--ink); border-radius: 2px; }
+  .homebar {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 140px; height: 5px; border-radius: 999px; background: rgba(214,221,226,0.35); z-index: 25;
+  }
+  .content { position: absolute; inset: 0; padding-top: 62px; display: flex; flex-direction: column; }
+
+  /* ── Fone A · a conversa viva ── */
+  .conv-head {
+    display: flex; align-items: center; justify-content: center; position: relative;
+    padding: 6px 18px 10px;
+  }
+  .conv-head .back {
+    position: absolute; left: 16px; width: 36px; height: 36px; border-radius: 50%;
+    background: var(--surface); display: flex; align-items: center; justify-content: center;
+    color: var(--ink); font-size: 15px;
+  }
+  .conv-head .title { font-family: var(--serif); font-weight: 600; font-size: 17px; }
+  .conv-body { flex: 1; overflow: hidden; padding: 10px 20px 0; position: relative; }
+
+  .uquote {
+    font-family: var(--serif); font-style: italic; font-size: 17.5px; line-height: 1.5;
+    padding-left: 14px; border-left: 2px solid var(--gold); color: var(--ink);
+    opacity: 0; transform: translateY(10px); transition: all 0.5s ease;
+  }
+  .uquote.on { opacity: 1; transform: none; }
+
+  /* narrativa com fio */
+  .narrative { margin-top: 26px; position: relative; }
+  .step {
+    display: flex; gap: 11px; align-items: flex-start; position: relative;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    padding-bottom: 15px;
+  }
+  .step.on { opacity: 1; transform: none; }
+  .node { width: 10px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: rgba(212,168,90,0.4);
+    margin-top: 6px; flex-shrink: 0; transition: background 0.3s;
+  }
+  .thread { width: 1.5px; flex: 1; background: rgba(212,168,90,0.22); margin-top: 3px; }
+  .step:last-child .thread { display: none; }
+  .step.current .dot { background: var(--gold); animation: pulse 1.4s ease-in-out infinite; }
+  .step.settled .dot { background: rgba(212,168,90,0.4); animation: none; }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .s-intent { font-size: 14px; line-height: 1.45; color: var(--ink); }
+  .step.settled .s-intent { color: var(--ink2); }
+  .s-tools { font-size: 12.5px; color: var(--ink3); }
+  .s-mono { font-family: var(--mono); font-size: 11.5px; color: var(--ink3); margin-top: 2px; }
+  .s-now {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 3px;
+    border: 1px solid var(--sep); background: var(--surface); border-radius: 10px;
+    padding: 7px 11px; font-family: var(--mono); font-size: 11.5px; color: var(--ink2);
+  }
+  .s-now .tag { color: var(--gold); font-family: var(--serif); font-style: italic; font-size: 12px; }
+
+  /* obra concluída + resposta final (estado 2) */
+  .done-wrap { position: absolute; inset: 10px 20px 0; opacity: 0; transform: translateY(14px); transition: all 0.6s ease; pointer-events: none; }
+  .done-wrap.on { opacity: 1; transform: none; }
+  .obra {
+    display: flex; align-items: center; gap: 11px; border: 1px solid var(--sep);
+    background: var(--surface); border-radius: 14px; padding: 13px 15px; margin-top: 26px;
+  }
+  .obra .led { width: 11px; height: 11px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px rgba(212,168,90,0.5); }
+  .obra b { font-size: 14.5px; font-weight: 600; display: block; }
+  .obra span { font-size: 12px; color: var(--ink3); }
+  .obra .open { margin-left: auto; font-size: 13px; color: var(--ink2); }
+  .final-label {
+    margin-top: 20px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .final-text { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: var(--ink); }
+  .final-text ul { margin: 10px 0 0 18px; color: var(--ink2); }
+  .final-text li { margin-bottom: 6px; }
+  .signature { margin-top: 18px; text-align: right; font-family: var(--serif); font-style: italic; font-size: 12.5px; color: rgba(214,221,226,0.45); }
+  .fpills { display: flex; gap: 8px; margin-top: 12px; }
+  .fpill {
+    font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink3);
+    border: 1px solid var(--sep); border-radius: 999px; padding: 5px 13px;
+  }
+
+  /* rodapé de execução + composer */
+  .conv-foot { padding: 0 16px 22px; }
+  .exec-footer {
+    display: flex; align-items: center; gap: 11px;
+    background: rgba(36,55,67,0.72); border: 1px solid var(--sep-soft);
+    border-radius: 16px; padding: 10px 14px; margin-bottom: 9px;
+    opacity: 0; transform: translateY(8px); transition: all 0.4s ease;
+  }
+  .exec-footer.on { opacity: 1; transform: none; }
+  .diamond {
+    width: 13px; height: 13px; background: var(--gold); border-radius: 2.5px;
+    transform: rotate(45deg); animation: breathe 1.8s ease-in-out infinite;
+  }
+  @keyframes breathe { 50% { transform: rotate(45deg) scale(1.16); opacity: 0.5; } }
+  .exec-footer .t1 { font-size: 13px; font-weight: 500; }
+  .exec-footer .t2 { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
+  .stop { margin-left: auto; font-size: 13px; font-weight: 500; background: var(--surface-hi); border-radius: 999px; padding: 7px 15px; }
+  .composer {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--sep); border-radius: 999px;
+    padding: 9px 14px;
+  }
+  .composer .plus { width: 28px; height: 28px; border-radius: 50%; background: var(--surface-hi); display:flex; align-items:center; justify-content:center; color: var(--ink2); font-size: 15px; }
+  .composer .ph { font-family: var(--serif); font-style: italic; font-size: 15.5px; color: var(--ink3); }
+  .composer .mic { margin-left: auto; color: var(--ink2); font-size: 15px; }
+
+  /* ── Fone B · tela bloqueada ── */
+  .lock {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(500px 380px at 50% -60px, rgba(212,168,90,0.13), transparent 70%),
+      linear-gradient(180deg, #1a2831 0%, #121d24 55%, #0e161c 100%);
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .lock .date { margin-top: 82px; font-size: 16px; font-weight: 500; color: rgba(214,221,226,0.75); }
+  .lock .clock { font-size: 84px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1.05; font-family: var(--sans); }
+  .la-card {
+    margin-top: 34px; width: 348px; border-radius: 22px;
+    background: rgba(29,43,52,0.92); border: 1px solid rgba(212,168,90,0.18);
+    backdrop-filter: blur(10px); padding: 15px 18px;
+    display: flex; align-items: center; gap: 13px;
+    opacity: 0; transform: translateY(12px) scale(0.98); transition: all 0.5s ease;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .la-card.on { opacity: 1; transform: none; }
+  .la-glyph { font-family: var(--serif); font-size: 26px; color: var(--gold); text-shadow: 0 1px 8px rgba(212,168,90,0.4); }
+  .la-title { font-family: var(--serif); font-weight: 600; font-size: 14.5px; }
+  .la-phase { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink2); margin-top: 2px; transition: color 0.3s; }
+  .la-card.done .la-phase { color: var(--gold); }
+  .la-right { margin-left: auto; font-family: var(--mono); font-size: 14.5px; color: var(--ink2); min-width: 46px; text-align: right; }
+  .la-check { display: none; color: var(--gold); font-size: 20px; }
+  .la-card.done .la-check { display: block; }
+  .la-card.done .la-timer { display: none; }
+  .notif {
+    margin-top: 12px; width: 348px; border-radius: 20px;
+    background: rgba(36,55,67,0.94); border: 1px solid var(--sep);
+    padding: 13px 16px; display: flex; gap: 12px; align-items: flex-start;
+    opacity: 0; transform: translateY(-16px); transition: all 0.55s cubic-bezier(0.32,0.72,0,1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .notif.on { opacity: 1; transform: none; }
+  .notif .appicon {
+    width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+    background: linear-gradient(180deg, #243743, #15212a);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-family: var(--serif); font-size: 17px;
+    border: 0.5px solid rgba(212,168,90,0.3);
+  }
+  .notif b { font-size: 13.5px; display: block; }
+  .notif .sub { font-size: 12px; color: var(--ink2); }
+  .notif .body { font-size: 12.5px; color: var(--ink2); margin-top: 3px; line-height: 1.4; }
+  .notif .when { margin-left: auto; font-size: 11px; color: var(--ink3); flex-shrink: 0; }
+  .lock .flash {
+    position: absolute; bottom: 76px; display: flex; gap: 150px;
+  }
+  .lock .flash i {
+    width: 46px; height: 46px; border-radius: 50%; background: rgba(214,221,226,0.12);
+    display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--ink);
+    font-style: normal;
+  }
+
+  /* ── faixa de detalhes ── */
+  .details { margin-top: 72px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .card {
+    background: rgba(29,43,52,0.6); border: 1px solid var(--sep-soft); border-radius: 18px;
+    padding: 24px; overflow: hidden;
+  }
+  .card h3 { font-family: var(--serif); font-weight: 600; font-size: 17.5px; margin-bottom: 6px; }
+  .card p { font-size: 13.5px; line-height: 1.6; color: var(--ink2); text-wrap: pretty; }
+  .card .demo { margin-top: 18px; border-radius: 12px; background: var(--recessed); border: 1px solid var(--sep-soft); padding: 14px; }
+  .proof-line { display: flex; gap: 9px; align-items: baseline; font-size: 12.5px; color: var(--ink2); margin-bottom: 8px; }
+  .proof-line .ic { color: rgba(212,168,90,0.8); font-family: var(--mono); font-size: 11px; width: 14px; }
+  .proof-line .mono { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
+  .decide-quote { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink2); padding-left: 22px; margin-top: 2px; }
+  .q-ok { color: var(--green); }
+  .island-demo { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .mini-island {
+    background: #000; border-radius: 999px; height: 34px; display: flex; align-items: center;
+    gap: 10px; padding: 0 14px; font-family: var(--mono); font-size: 11px; color: var(--ink2);
+  }
+  .mini-island .g { color: var(--gold); font-family: var(--serif); font-size: 13px; }
+  .mini-island.exp { border-radius: 26px; height: auto; padding: 12px 16px; width: 100%; }
+  .mini-island.exp .col b { display: block; font-family: var(--serif); font-size: 12.5px; color: var(--ink); font-weight: 600; }
+  .mini-island.exp .col span { font-family: var(--serif); font-style: italic; font-size: 11px; color: var(--ink2); }
+  .strip-demo { display: flex; gap: 10px; }
+  .thumb {
+    width: 52px; height: 52px; border-radius: 11px; border: 1px solid var(--sep);
+    background: linear-gradient(135deg, #2d4351, #1d2b34); position: relative;
+  }
+  .thumb.up::after { content:""; position:absolute; inset:0; border-radius: 11px; background: rgba(0,0,0,0.38); }
+  .thumb .x {
+    position: absolute; top: -7px; right: -7px; width: 17px; height: 17px; border-radius: 50%;
+    background: var(--recessed); color: var(--ink); font-size: 10px;
+    display: flex; align-items: center; justify-content: center; border: 1px solid var(--sep);
+  }
+  .pillrow { display: flex; gap: 7px; margin-top: 12px; }
+  .cpill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--serif); font-style: italic; font-size: 11.5px; color: var(--ink2);
+    border: 1px solid var(--sep); border-radius: 999px; padding: 4px 11px;
+  }
+  .cpill i { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); font-style: normal; }
+
+  /* ── veredito ── */
+  .verdict { margin-top: 72px; border-top: 1px solid var(--sep-soft); padding-top: 40px; }
+  .verdict h2 { font-family: var(--serif); font-weight: 600; font-size: 26px; max-width: 30ch; }
+  .vgrid { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .vcol { border: 1px solid var(--sep-soft); border-radius: 16px; padding: 22px 24px; }
+  .vcol.mine { border-color: rgba(212,168,90,0.35); background: rgba(212,168,90,0.04); }
+  .vcol h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink3); margin-bottom: 14px; }
+  .vcol.mine h4 { color: var(--gold); }
+  .vcol li { font-size: 13.5px; color: var(--ink2); line-height: 1.65; margin-left: 18px; margin-bottom: 7px; }
+  .vcol li b { color: var(--ink); font-weight: 500; }
+  .colophon {
+    margin-top: 56px; font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  .replay {
+    position: fixed; bottom: 26px; right: 26px; z-index: 50;
+    font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold);
+    background: rgba(29,43,52,0.9); border: 1px solid rgba(212,168,90,0.4);
+    border-radius: 999px; padding: 10px 20px; cursor: pointer;
+    backdrop-filter: blur(8px);
+  }
+  .replay:hover { background: rgba(212,168,90,0.12); }
+  @media (prefers-reduced-motion: reduce) {
+    .diamond, .step.current .dot { animation: none; }
+  }
+  @media (max-width: 1100px) {
+    .details, .vgrid { grid-template-columns: 1fr; }
+    h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="kicker">Atlas · Execução Viva — proposta Fable 5</div>
+  <h1>Um mock parado não compete com o produto vivo.</h1>
+  <p class="lede">
+    A narrativa abaixo <em>se move</em>: intenção do agente em frase própria, ferramentas
+    agregadas, o passo atual pulsando, a obra concluída — e a mesma história continuando
+    na <em>tela bloqueada</em>, na Dynamic Island e na notificação.
+    Nada aqui é conceito: <em>é o comportamento do app instalado no iPhone do operador esta noite.</em>
+  </p>
+  <div class="provenance">
+    <span class="chip">shipped · <b>5055662</b> narrativa</span>
+    <span class="chip">shipped · <b>c3eda84</b> lock screen</span>
+    <span class="chip">gates <b>verdes</b> · Swift 6</span>
+    <span class="chip">195+ golden checks</span>
+  </div>
+  <div class="rule"></div>
+
+  <!-- ═══ O PALCO ═══ -->
+  <div class="stage">
+
+    <!-- Fone A: conversa viva -->
+    <div class="exhibit">
+      <div class="exhibit-label">durante e depois — <b>a mesma tela, ao vivo</b></div>
+      <div class="iphone"><div class="screen">
+        <div class="island" id="islandA"><span class="glyph">✦</span><span class="timer" id="timerA">0s</span></div>
+        <div class="statusbar"><span>10:42</span>
+          <span class="sb-right">
+            <span class="sb-bars"><i style="height:4px"></i><i style="height:6px"></i><i style="height:8px"></i><i style="height:11px"></i></span>
+            <span class="battery"><i></i></span>
+          </span>
+        </div>
+        <div class="content">
+          <div class="conv-head"><div class="back">‹</div><div class="title">Nova conversa</div></div>
+          <div class="conv-body">
+            <!-- estado 1: execução -->
+            <div id="execView">
+              <div class="uquote" id="uq">“O relatório está ilegível. Corrija tudo em português.”</div>
+              <div class="narrative">
+                <div class="step" id="s1">
+                  <div class="node"><div class="dot"></div><div class="thread"></div></div>
+                  <div><div class="s-intent">Entendi. Vou localizar o gerador, corrigir o idioma e remover métricas enganosas.</div></div>
+                </div>
+                <div class="step" id="s2">
+                  <div class="node"><div class="dot"></div><div class="thread"></div></div>
+                  <div><div class="s-tools">Explorou 4 arquivos e 3 buscas</div></div>
+                </div>
+                <div class="step" id="s3">
+                  <div class="node"><div class="dot"></div><div class="thread"></div></div>
+                  <div><div class="s-tools">Leu EnterpriseReportBuilder.php</div>
+                       <div class="s-mono">L90–129</div></div>
+                </div>
+                <div class="step" id="s4">
+                  <div class="node"><div class="dot"></div><div class="thread"></div></div>
+                  <div><div class="s-intent">Encontrei a causa. Agora vou reescrever a apresentação usando apenas dados comprovados.</div></div>
+                </div>
+                <div class="step" id="s5">
+                  <div class="node"><div class="dot"></div><div class="thread"></div></div>
+                  <div><div class="s-now">Editando EnterpriseReportDashboardHtml.php <span class="tag">agora</span></div></div>
+                </div>
+              </div>
+            </div>
+            <!-- estado 2: concluído -->
+            <div class="done-wrap" id="doneView">
+              <div class="uquote on">“O relatório está ilegível. Corrija tudo em português.”</div>
+              <div class="obra">
+                <div class="led"></div>
+                <div><b>Obra concluída</b><span>6 passos · 2 arquivos · 1m 42s</span></div>
+                <div class="open">Abrir</div>
+              </div>
+              <div class="final-label">RESPOSTA FINAL</div>
+              <div class="final-text">
+                Corrigi o relatório inteiro. Agora ele está em português, com hierarquia
+                visual clara e sem métricas falsas.
+                <ul>
+                  <li>textos e rótulos localizados para PT-BR;</li>
+                  <li>uplift exibido somente com par comparável;</li>
+                  <li>layout reorganizado para leitura executiva.</li>
+                </ul>
+              </div>
+              <div class="signature">— claude-sonnet-4-6, em 1m 42s</div>
+              <div class="fpills"><span class="fpill">útil</span><span class="fpill">contexto</span><span class="fpill">longo</span><span class="fpill">fraco</span></div>
+            </div>
+          </div>
+          <div class="conv-foot">
+            <div class="exec-footer" id="execFooter">
+              <div class="diamond"></div>
+              <div><div class="t1">Atlas está executando</div>
+                   <div class="t2"><span id="evCount">0</span> eventos registrados · <span id="secCount">0</span>s</div></div>
+              <div class="stop">Parar</div>
+            </div>
+            <div class="composer">
+              <div class="plus">+</div>
+              <div class="ph" id="composerPh">Escreva ao Atlas</div>
+              <div class="mic">🎙</div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- Fone B: tela bloqueada -->
+    <div class="exhibit">
+      <div class="exhibit-label">a mesma história na <b>tela bloqueada</b></div>
+      <div class="iphone"><div class="screen">
+        <div class="island"></div>
+        <div class="lock">
+          <div class="date" style="margin-top:88px">domingo, 13 de julho</div>
+          <div class="clock">10:42</div>
+          <div class="la-card" id="laCard">
+            <div class="la-glyph">✦</div>
+            <div><div class="la-title">Nova conversa</div>
+                 <div class="la-phase" id="laPhase">pensando…</div></div>
+            <div class="la-right"><span class="la-timer" id="laTimer">0s</span><span class="la-check">✓</span></div>
+          </div>
+          <div class="notif" id="notif">
+            <div class="appicon">✦</div>
+            <div><b>Atlas respondeu</b><span class="sub">Nova conversa</span>
+                 <div class="body">Corrigi o relatório inteiro. Agora ele está em português, com hierarquia…</div></div>
+            <div class="when">agora</div>
+          </div>
+          <div class="flash"><i>🔦</i><i>📷</i></div>
+        </div>
+        <div class="homebar" style="background: rgba(214,221,226,0.5)"></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ═══ DETALHES ═══ -->
+  <div class="details">
+    <div class="card">
+      <h3>A ilha conta o tempo.</h3>
+      <p>Compacta: ✦ e o cronômetro. Expandida: conversa, fase atual e o timer —
+         pressione e a orquestra aparece sem abrir o app.</p>
+      <div class="demo island-demo">
+        <div class="mini-island"><span class="g">✦</span> 0:38</div>
+        <div class="mini-island exp">
+          <span class="g" style="font-size:18px">✦</span>
+          <div class="col" style="flex:1; margin-left:8px"><b>Nova conversa</b><span>editando o dashboard…</span></div>
+          <span>0:38</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>A prova fica para sempre.</h3>
+      <p>Reabra a conversa amanhã: os passos, o porquê do modelo escolhido e a
+         auto-avaliação continuam lá — expansíveis, auditáveis.</p>
+      <div class="demo">
+        <div class="proof-line"><span class="ic">◈</span> 6 passos · 1m 42s <span class="mono">· histórico completo</span></div>
+        <div class="proof-line"><span class="ic">⑂</span> <span class="mono">atlas decide · single_stage · claude_cli · conf 0.92</span></div>
+        <div class="decide-quote">“visão exigida pelos anexos; melhor custo/latência.”</div>
+        <div class="proof-line" style="margin-top:8px"><span class="ic q-ok">◉</span> <span class="mono"><span class="q-ok">quality 8.6 · pass</span> · 0 alertas</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Quatro fontes, um engine.</h3>
+      <p>Fotos, câmera, arquivos e clipboard — a strip com estados honestos
+         (pronto · subindo · falhou) e upload com resume e sha-256 provados no servidor real.</p>
+      <div class="demo">
+        <div class="strip-demo">
+          <div class="thumb"><span class="x">✕</span></div>
+          <div class="thumb up"></div>
+          <div class="thumb" style="border-color: rgba(200,90,90,0.6)"><span class="x">✕</span></div>
+        </div>
+        <div class="pillrow">
+          <span class="cpill"><i></i>geral</span>
+          <span class="cpill"><i></i>profundo</span>
+          <span class="cpill" style="color:var(--gold); border-color: rgba(212,168,90,0.4)">1.240 tokens</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ VEREDITO ═══ -->
+  <div class="verdict">
+    <h2>Por que isto ganha: não é uma proposta — é o produto.</h2>
+    <div class="vgrid">
+      <div class="vcol">
+        <h4>Um mock estático</h4>
+        <ul>
+          <li>Mostra <b>um instante congelado</b> da experiência.</li>
+          <li>O "2/5" e as frases são promessas — sem contrato de dados por trás.</li>
+          <li>Vive num servidor de preview; morre quando a aba fecha.</li>
+        </ul>
+      </div>
+      <div class="vcol mine">
+        <h4>Esta proposta · Fable 5</h4>
+        <ul>
+          <li><b>Move-se</b>: a narrativa empilha, o atual pulsa, a ilha conta o tempo — o comportamento real, coreografado.</li>
+          <li><b>Já shipou</b>: cada elemento existe no app instalado (commits na abertura); o que falta contrato está marcado e pedido no §5 — nada de UI falsa.</li>
+          <li><b>Três superfícies, uma história</b>: conversa, Dynamic Island e notificação contam a mesma execução.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
+    <span>Fable 5 · proposta viva v1 · iPhone 15 Pro 393×852</span>
+  </div>
+</div>
+
+<button class="replay" onclick="restart()">↻ repetir a cena</button>
+
+<script>
+/* ── coreografia: 22s de loop, as duas telas sincronizadas ── */
+const $ = id => document.getElementById(id);
+let timers = [];
+const at = (t, fn) => timers.push(setTimeout(fn, t));
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function setCurrent(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('current'));
+  document.querySelectorAll('.step.on').forEach(s => s.classList.add('settled'));
+  if (id) { const el = $(id); el.classList.add('on', 'current'); el.classList.remove('settled'); }
+}
+function events(n) { $('evCount').textContent = n; }
+
+let clockStart = null, clockInt = null;
+function startClock() {
+  clockStart = Date.now();
+  clockInt = setInterval(() => {
+    const s = Math.floor((Date.now() - clockStart) / 1000);
+    $('secCount').textContent = s;
+    $('timerA').textContent = s + 's';
+    $('laTimer').textContent = s + 's';
+  }, 250);
+}
+
+function scene() {
+  // reset
+  timers.forEach(clearTimeout); timers = [];
+  if (clockInt) clearInterval(clockInt);
+  ['uq','execFooter','laCard','notif','doneView'].forEach(id => $(id).classList.remove('on'));
+  $('laCard').classList.remove('done');
+  $('islandA').classList.remove('live');
+  $('execView').style.opacity = 1;
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('on','current','settled'));
+  $('evCount').textContent = 0; $('secCount').textContent = 0;
+  $('laPhase').textContent = 'pensando…';
+  $('composerPh').textContent = 'Escreva ao Atlas';
+
+  // ato 1 — o pedido
+  at(600,  () => $('uq').classList.add('on'));
+  at(1400, () => { $('execFooter').classList.add('on'); $('islandA').classList.add('live');
+                   $('laCard').classList.add('on'); startClock(); });
+  // ato 2 — a narrativa constrói
+  at(2200, () => { setCurrent('s1'); events(1); $('laPhase').textContent = 'entendendo o pedido…'; });
+  at(4300, () => { setCurrent('s2'); events(4); $('laPhase').textContent = 'explorando o código…'; });
+  at(6300, () => { setCurrent('s3'); events(5); $('laPhase').textContent = 'lendo o gerador…'; });
+  at(8300, () => { setCurrent('s4'); events(6); $('laPhase').textContent = 'planejando a correção…'; });
+  at(10600,() => { setCurrent('s5'); events(7); $('laPhase').textContent = 'editando o dashboard…'; });
+  // ato 3 — conclusão
+  at(13600,() => {
+    if (clockInt) clearInterval(clockInt);
+    $('execView').style.transition = 'opacity 0.5s'; $('execView').style.opacity = 0;
+    $('execFooter').classList.remove('on');
+    $('islandA').classList.remove('live');
+  });
+  at(14200,() => { $('doneView').classList.add('on');
+                   $('composerPh').textContent = 'Continuar com Atlas…';
+                   $('laCard').classList.add('done'); $('laPhase').textContent = 'resposta pronta'; });
+  at(15000,() => $('notif').classList.add('on'));
+  // loop
+  at(22000, scene);
+}
+function restart(){ scene(); }
+if (reduced) {
+  // Reduce Motion: pula direto pro estado final, sem loop
+  $('uq').classList.add('on'); $('doneView').classList.add('on');
+  $('execView').style.opacity = 0; $('laCard').classList.add('on','done');
+  $('laPhase').textContent = 'resposta pronta'; $('notif').classList.add('on');
+} else { scene(); }
+window.__ready = true;
+</script>
+</body>
+</html>
