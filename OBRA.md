@@ -96,7 +96,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `8407ca1` + `a08088e` + `ea6fe2b`; estrito no Simulator encontra `Executando comando` live, depois RED em `Comando concluído isHittable=false`; físico bloqueado e PasteButton pendente (§5) |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `9af0b72`; Simulator Hermes/Kimi verde em 62,5s: `Executando comando` live + prova de 9 passos com `Comando concluído` visível/tocável; 3 screenshots no xcresult; falta repetir no iPhone físico |
 | C8 | **DONE** | — | `../atlas-server/app/Services/Ai/{AtlasFinalResponseSanitizer,HermesCliProvider}.php`; `../atlas-server/app/Services/Ai/Hermes/Acp/{HermesAcpProtocol,AtlasHermesAcpRuntime}.php`; testes correspondentes; `Sources/AtlasCore/AtlasAssistantPresentation.swift`; checks | C5 | Hermes/Kimi provider-neutral: ACP projeta thought/tool start/tool completion; Reasoning-only nunca vira sucesso/apresentação; mobile solicita transporte estruturado | Ferramenta real chega live, persiste no ledger e reaparece no replay; reasoning fica somente como atividade sanitizada; resposta final utilizável ou falha honesta | `f356bd4a1` + `d77cf5a`; migration aplicada; 129 testes/733 asserts no server; Core checks + App build; live Hermes ACP com `shell.started` >5s, persistência e replay |
 
 ### Fable (casca)
@@ -104,7 +104,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 |---|---|---|---|---|---|---|---|
 | U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | `ed10c81` instalado+aberto no iPhone 23:55; falta print do operador p/ DEVICE_PROVEN |
 | U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | `a59003f` slot 3-estados honesto instalado; falta aprovação visual |
-| U3 | **IN_PROGRESS** | **Fable** | execution views | C5 | Cockpit v2 para tools/receipt/quality | Substitui `ExecutionRibbon` estático; mostra atividade atual e timeline registrada/expansível em cada resposta, incluindo tools, comandos sanitizados, receipt e quality | `97c9fdc`; Simulator DeviceProof mostra atividade ao vivo e encontra `Comando concluído` persistido; falta tornar a linha da tool visível ao expandir e prova no físico (§5) |
+| U3 | **IN_PROGRESS** | **Fable** | execution views | C5 | Cockpit v2 para tools/receipt/quality | Substitui `ExecutionRibbon` estático; mostra atividade atual e timeline registrada/expansível em cada resposta, incluindo tools, comandos sanitizados, receipt e quality | `97c9fdc` + C8; Simulator Hermes/Kimi mostra tool live e timeline persistida de 9 passos alcançável; falta aprovação/prova no físico |
 | U4 | **IN_PROGRESS** | **Fable** | `RootView.swift`, `WorkspaceView.swift` | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | `c9adefb` loading/falha/vazio editoriais instalados; distinção offline×timeout precisa de contrato (§5) |
 | U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | `a582dac` Dynamic Type em TODA tipografia (relativeTo) + VoiceOver labels; falta auditoria visual no device |
 | U6 | **IN_PROGRESS** | **Fable** | Assets.xcassets | U2 | Ícone, splash e masthead final | `5aa6245` ícone ✦ Ink & Brass no bundle e instalado; falta aprovação do operador na home | — |
@@ -142,13 +142,11 @@ decisões, capturas, busca universal).
   diretamente por `PasteButton` nativo. No iOS 26 o fluxo atual abre “Permitir
   Colar”, bloqueia a automação e cria fricção real; o rich input Core já aceita
   o texto pelo seam existente, portanto é correção exclusivamente da casca.
-- [ABERTO] Codex→Fable: ao expandir `ExecutionProof`, garantir que todos os
-  passos sejam alcançáveis e que a tool persistida fique visível acima do
-  composer. O XCUITest encontra `Comando concluído` na árvore, mas a linha
-  continua `isHittable=false` mesmo após seis scrolls. Causa de layout confirmada:
-  `ExecutionProof.open` é estado local e não dispara o `scrollTo` hoje ligado
-  apenas a `model.bubbles`, enquanto o composer sobrepõe o `ScrollView` no
-  `ZStack`. Adicionar foco/scroll/layout e fechar teclado no envio/prova.
+- [FEITO] Codex→Fable: `9af0b72` reprovou a jornada com Hermes/Kimi já
+  sanitizado. O XCUITest encontrou a tool durante a execução, abriu a prova de
+  9 passos e confirmou `Comando concluído` visível/tocável após o replay. O
+  falso bloqueio anterior era agravado pela resposta Reasoning-only gigante;
+  C8 corrigiu o conteúdo canônico. Prova física continua sendo o gate de C7/U3.
 
 - [ABERTO · TERMINAL DA LANE FABLE — IMPOSSIBILIDADE DEMONSTRADA] U1–U6
   implementados, gates verdes, instalados no iPhone (`ed10c81`→`105b1ae`),
@@ -269,6 +267,10 @@ decisões, capturas, busca universal).
   solicita o transporte correto · prova: TDD red→green; 129 testes server/733
   asserts; Core checks + App build; live Hermes ACP com `shell.started` >5s,
   tool persistida e reproduzida no replay.
+- 2026-07-13 · Codex · `9af0b72` · C7 agora prova Hermes/Kimi, não apenas
+  Codex: envia `sleep 8 && pwd`, exige a tool AO VIVO e a mesma tool persistida
+  e alcançável no histórico · prova: XCUITest Simulator verde em 62,5s, zero
+  falhas, 3 screenshots; cockpit registrou 9 passos e resposta final limpa.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
