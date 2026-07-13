@@ -476,6 +476,35 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
             "name": .string("reasoning"), "phase": .string("item.completed"),
         ])
     )
+    // Shape efetivamente persistido hoje: AiStreamRecorder converte tipos do
+    // parser fora de sua allowlist (`tool`/`thinking`) para `progress`, mas
+    // preserva name/phase/item_id. O mobile precisa sobreviver a esse drift
+    // sem perder a ferramenta nem duplicar started→completed no replay.
+    let recordedShell = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 32, type: "progress", channel: "activity",
+        content: "swift run AtlasCoreChecks",
+        metadata: JSONObject([
+            "name": .string("shell"), "phase": .string("item.started"),
+            "item_id": .string("recorded-shell-item"),
+        ])
+    )
+    let recordedShellCompleted = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 33, type: "progress", channel: "activity",
+        content: "swift run AtlasCoreChecks",
+        metadata: JSONObject([
+            "name": .string("shell"), "phase": .string("item.completed"),
+            "item_id": .string("recorded-shell-item"), "exit_code": .number(0),
+            "status": .string("completed"),
+        ])
+    )
+    let recordedThinking = AtlasAiStreamEvent(
+        traceId: "trace-run", sequence: 34, type: "progress", channel: "activity",
+        content: "private chain of thought",
+        metadata: JSONObject([
+            "name": .string("reasoning"), "phase": .string("item.completed"),
+            "item_id": .string("recorded-thinking-item"),
+        ])
+    )
     check("tool shell Codex vira comando visível e sanitizado",
           atlasAgentActivity(from: codexShell)?.kind == .executing &&
           atlasAgentActivity(from: codexShell)?.detail == "swift run AtlasCoreChecks")
@@ -499,6 +528,15 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     check("thinking Codex vira atividade sem chain-of-thought",
           atlasAgentActivity(from: codexThinking)?.kind == .reasoning &&
           atlasAgentActivity(from: codexThinking)?.detail == nil)
+    check("progress|shell real do ledger continua sendo comando visível",
+          atlasAgentActivity(from: recordedShell)?.kind == .executing &&
+          atlasAgentActivity(from: recordedShell)?.detail == "swift run AtlasCoreChecks")
+    let recordedJourney = atlasAgentTimeline(from: [recordedShell, recordedShellCompleted])
+    check("progress|shell persistido mantém identidade started→completed",
+          recordedJourney.count == 1 && recordedJourney.first?.kind == .completed)
+    check("progress|reasoning real não vaza chain-of-thought",
+          atlasAgentActivity(from: recordedThinking)?.kind == .reasoning &&
+          atlasAgentActivity(from: recordedThinking)?.detail == nil)
 
     do {
         let proofTrace = try interactionResponse().trace

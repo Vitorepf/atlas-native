@@ -51,8 +51,12 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     let name = metadata["name"]?.stringValue?.lowercased() ?? ""
     let checkpoint = metadata["checkpoint"]?.stringValue?.lowercased() ?? ""
     let outcome = metadata["outcome"]?.stringValue?.lowercased() ?? ""
+    let phase = metadata["phase"]?.stringValue?.lowercased() ?? ""
     let itemId = metadata["item_id"]?.stringValue ?? ""
-    let id = (event.type == "tool" || event.type == "thinking") && !itemId.isEmpty
+    let isProviderItem = phase.hasPrefix("item.") && !name.isEmpty
+    let isToolProjection = event.type == "tool"
+        || (event.type == "progress" && isProviderItem && name != "reasoning")
+    let id = (event.type == "tool" || event.type == "thinking" || isProviderItem) && !itemId.isEmpty
         ? "\(event.traceId):item:\(itemId)"
         : event.id ?? "\(event.traceId):\(event.sequence)"
 
@@ -80,7 +84,7 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     if event.type == "stdout" || event.type == "response" {
         return nil
     }
-    if event.type == "thinking" {
+    if event.type == "thinking" || (event.type == "progress" && isProviderItem && name == "reasoning") {
         return activity(.reasoning, "Raciocinando sobre a tarefa")
     }
     if event.type == "token",
@@ -94,11 +98,12 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
         return nil
     }
 
-    // Contrato do CodexJsonlEventParser no atlas-server. O conteúdo de tool é
-    // uma projeção deliberadamente pequena (comando, arquivos ou busca), nunca
-    // stdout/output_excerpt nem reasoning do provider.
-    if event.type == "tool" {
-        let phase = metadata["phase"]?.stringValue?.lowercased() ?? ""
+    // CodexJsonlEventParser produz `tool`, porém AiStreamRecorder atualmente
+    // normaliza tipos fora de sua allowlist para `progress`. `name` + `phase`
+    // + `item_id` sobrevivem no ledger, então ambos os shapes projetam a mesma
+    // ferramenta segura e persistente. Nunca mostramos output_excerpt nem
+    // reasoning do provider.
+    if isToolProjection {
         let status = metadata["status"]?.stringValue?.lowercased() ?? ""
         let exitCode = metadata["exit_code"]?.doubleValue.map(Int.init)
         let failed = exitCode.map { $0 != 0 } == true || ["failed", "error", "cancelled"].contains(status)
