@@ -278,6 +278,7 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
 runRichInputChecks(check)
 await runRichInputEngineChecks(check)
 runRichInputBoundaryChecks(check)
+runAtlasImagingChecks(check)
 
 // Live-probe do upload (opt-in ATLAS_LIVE=1: sobe bytes reais no staging do
 // atlas-server e prova sha+resume — gate recomendado do `make device`).
