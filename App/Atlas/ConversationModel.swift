@@ -100,6 +100,7 @@ final class ConversationModel {
     private(set) var threadId: String?
     private var activeRun: InteractionRun?
     private var attachmentInputs: [String: AttachmentInput] = [:]
+    @ObservationIgnored private var pendingImagePreparations: [String: Task<Void, Never>] = [:]
     @ObservationIgnored private let engine: AtlasRichInputEngine
     @ObservationIgnored private let outbox: InteractionOutbox
 
@@ -137,23 +138,37 @@ final class ConversationModel {
         identity: String,
         source: String = "photos"
     ) {
-        guard drafts.filter({ $0.kind == .image }).count < AtlasAttachmentLimits.canonical.maxImages else {
+        let imageCount = drafts.filter { $0.kind == .image }.count + pendingImagePreparations.count
+        guard imageCount < AtlasAttachmentLimits.canonical.maxImages else {
             toast = "máximo de 8 imagens"; return
         }
-        do {
-            // AtlasImaging: HEIC→JPEG, resize 2048, EXIF — ANTES do engine.
-            let n = try AtlasImaging.normalize(data, mimeType: mimeType)
-            let ext = n.mimeType == "image/png" ? "png" : n.mimeType == "image/gif" ? "gif" : "jpg"
-            let name = suggestedName ?? "foto-\(Int(Date().timeIntervalSince1970)).\(ext)"
-            let id = "att-\(UUID().uuidString.prefix(8))"
-            let input = AtlasAttachmentAdapter.data(
-                n.data, fileName: name, mimeType: n.mimeType, source: source,
-                identity: identity, width: n.width, height: n.height
-            )
-            append(input, id: id, preview: n.data)
-        } catch {
-            toast = "imagem inválida: \(error)"
+        let id = "att-\(UUID().uuidString.prefix(8))"
+        let task = Task { @MainActor [weak self] in
+            do {
+                // Decode, HEIC→JPEG, resize e thumbnail acontecem fora da
+                // MainActor. Só a mutação observável volta para o model.
+                let prepared = try await AtlasImaging.prepareForComposer(
+                    data, mimeType: mimeType
+                )
+                guard let self else { return }
+                self.pendingImagePreparations[id] = nil
+                guard !Task.isCancelled else { return }
+                let n = prepared.upload
+                let ext = n.mimeType == "image/png" ? "png" : n.mimeType == "image/gif" ? "gif" : "jpg"
+                let name = suggestedName ?? "foto-\(Int(Date().timeIntervalSince1970)).\(ext)"
+                let input = AtlasAttachmentAdapter.data(
+                    n.data, fileName: name, mimeType: n.mimeType, source: source,
+                    identity: identity, width: n.width, height: n.height
+                )
+                self.append(input, id: id, preview: prepared.preview.data)
+            } catch is CancellationError {
+                self?.pendingImagePreparations[id] = nil
+            } catch {
+                self?.pendingImagePreparations[id] = nil
+                self?.toast = "imagem inválida: \(error)"
+            }
         }
+        pendingImagePreparations[id] = task
     }
 
     func addFile(url: URL) {
@@ -245,6 +260,7 @@ final class ConversationModel {
     }
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
+        await finishPendingImagePreparations()
         var trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let sendingDrafts = drafts
         // Só anexos, sem texto → prompt sintético (paridade com o RN)
@@ -347,6 +363,13 @@ final class ConversationModel {
         }
         activeRun = nil
         isSending = false
+    }
+
+    private func finishPendingImagePreparations() async {
+        while !pendingImagePreparations.isEmpty {
+            let tasks = Array(pendingImagePreparations.values)
+            for task in tasks { await task.value }
+        }
     }
 
     func cancel() {

@@ -38,6 +38,11 @@ public enum AtlasImaging {
         public let height: Int
     }
 
+    public struct PreparedForComposer: Sendable {
+        public let upload: Normalized
+        public let preview: Normalized
+    }
+
     public static func normalize(
         _ data: Data, mimeType: String,
         limits: AtlasAttachmentLimits = .canonical
@@ -95,20 +100,91 @@ public enum AtlasImaging {
             }
         }()
         let keepPng = mime == "image/png" && hasAlpha
-        let outType: UTType = keepPng ? .png : .jpeg
+        return try encode(
+            cgImage,
+            preservingPng: keepPng,
+            jpegQuality: limits.imageJpegQuality
+        )
+    }
 
-        let out = NSMutableData()
-        guard let dest = CGImageDestinationCreateWithData(out, outType.identifier as CFString, 1, nil) else {
+    /// Preview pequeno para a casca decodificar durante o render sem manter a
+    /// imagem de upload (até 2048px) duplicada em memória.
+    public static func preview(
+        _ data: Data,
+        mimeType: String,
+        maximumPixelSize: Int = 256
+    ) throws -> Normalized {
+        guard maximumPixelSize > 0,
+              let source = CGImageSourceCreateWithData(data as CFData, nil) else {
+            throw AtlasImagingError.undecodable
+        }
+        let options: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceThumbnailMaxPixelSize: maximumPixelSize,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+        ]
+        guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
+            throw AtlasImagingError.undecodable
+        }
+        let hasAlpha: Bool
+        switch image.alphaInfo {
+        case .premultipliedLast, .premultipliedFirst, .last, .first: hasAlpha = true
+        default: hasAlpha = false
+        }
+        let keepPng = mimeType.lowercased() == "image/png" && hasAlpha
+        return try encode(image, preservingPng: keepPng, jpegQuality: 0.72)
+    }
+
+    /// Faz decode/resize/compress fora do actor chamador. O model iOS é
+    /// `@MainActor`; esta fronteira impede que fotos grandes bloqueiem input,
+    /// animação ou scroll enquanto o upload e o thumbnail são preparados.
+    public static func prepareForComposer(
+        _ data: Data,
+        mimeType: String,
+        maximumPreviewPixelSize: Int = 256
+    ) async throws -> PreparedForComposer {
+        let task = Task<PreparedForComposer, Error>.detached(priority: .userInitiated) {
+            try Task.checkCancellation()
+            let upload = try normalize(data, mimeType: mimeType)
+            try Task.checkCancellation()
+            let thumbnail = try preview(
+                upload.data,
+                mimeType: upload.mimeType,
+                maximumPixelSize: maximumPreviewPixelSize
+            )
+            return PreparedForComposer(upload: upload, preview: thumbnail)
+        }
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
+            task.cancel()
+        }
+    }
+
+    private static func encode(
+        _ image: CGImage,
+        preservingPng: Bool,
+        jpegQuality: Double
+    ) throws -> Normalized {
+        let data = NSMutableData()
+        let type: UTType = preservingPng ? .png : .jpeg
+        guard let destination = CGImageDestinationCreateWithData(
+            data, type.identifier as CFString, 1, nil
+        ) else {
             throw AtlasImagingError.encodeFailed
         }
-        let destOptions: [CFString: Any] = keepPng
+        let options: [CFString: Any] = preservingPng
             ? [:]
-            : [kCGImageDestinationLossyCompressionQuality: limits.imageJpegQuality]
-        CGImageDestinationAddImage(dest, cgImage, destOptions as CFDictionary)
-        guard CGImageDestinationFinalize(dest) else { throw AtlasImagingError.encodeFailed }
-
-        return Normalized(data: out as Data,
-                          mimeType: keepPng ? "image/png" : "image/jpeg",
-                          width: cgImage.width, height: cgImage.height)
+            : [kCGImageDestinationLossyCompressionQuality: jpegQuality]
+        CGImageDestinationAddImage(destination, image, options as CFDictionary)
+        guard CGImageDestinationFinalize(destination) else {
+            throw AtlasImagingError.encodeFailed
+        }
+        return Normalized(
+            data: data as Data,
+            mimeType: preservingPng ? "image/png" : "image/jpeg",
+            width: image.width,
+            height: image.height
+        )
     }
 }

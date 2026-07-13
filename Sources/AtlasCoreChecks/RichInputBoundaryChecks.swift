@@ -57,6 +57,16 @@ func runRichInputBoundaryChecks(_ check: (String, Bool) -> Void) {
     }
     check("casca não faz rede, JSON ou storage", presentationViolations.isEmpty)
     for violation in presentationViolations { print("    ✗ \(violation)") }
+
+    let conversationModel = try? String(
+        contentsOfFile: "App/Atlas/ConversationModel.swift",
+        encoding: .utf8
+    )
+    check("model prepara imagens fora da MainActor",
+          conversationModel?.contains("AtlasImaging.normalize(") == false
+          && conversationModel?.contains("AtlasImaging.prepareForComposer(") == true)
+    check("envio aguarda imagens ainda em preparação",
+          conversationModel?.contains("await finishPendingImagePreparations()") == true)
 }
 
 // Live-probe (opt-in: ATLAS_LIVE=1 + ATLAS_TOKEN) — sobe 3.2MB REAIS pro

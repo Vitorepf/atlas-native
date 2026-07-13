@@ -38,7 +38,7 @@ private func sniff(_ data: Data) -> (mime: String?, width: Int, height: Int) {
             props[kCGImagePropertyPixelHeight] as? Int ?? 0)
 }
 
-func runAtlasImagingChecks(_ check: (String, Bool) -> Void) {
+func runAtlasImagingChecks(_ check: (String, Bool) -> Void) async {
     print("\nAtlasImaging (ImageIO compartilhado iOS+macOS — HEIC/resize/alpha):")
     let limits = AtlasAttachmentLimits.canonical
 
@@ -56,6 +56,22 @@ func runAtlasImagingChecks(_ check: (String, Bool) -> Void) {
         check("jpeg 3000×1000 → ≤2048 no lado maior, mime jpeg",
               n?.mimeType == "image/jpeg" && (s?.width ?? 9999) <= limits.maxImageDimension
               && (s?.mime == "image/jpeg"))
+
+        let preview = n.flatMap {
+            try? AtlasImaging.preview($0.data, mimeType: $0.mimeType, maximumPixelSize: 256)
+        }
+        let previewSize = preview.map { sniff($0.data) }
+        check("preview do composer → ≤256px e menor que o upload",
+              max(previewSize?.width ?? 9999, previewSize?.height ?? 9999) <= 256
+              && (preview?.data.count ?? .max) < (n?.data.count ?? 0))
+
+        let prepared = try? await AtlasImaging.prepareForComposer(
+            big, mimeType: "image/jpeg", maximumPreviewPixelSize: 256
+        )
+        let preparedPreviewSize = prepared.map { sniff($0.preview.data) }
+        check("prepareForComposer → upload canônico + preview pequeno",
+              max(prepared?.upload.width ?? 9999, prepared?.upload.height ?? 9999) <= limits.maxImageDimension
+              && max(preparedPreviewSize?.width ?? 9999, preparedPreviewSize?.height ?? 9999) <= 256)
     } else { check("gerar jpeg grande de teste", false) }
 
     // 3. PNG com alpha oversized → resize MAS permanece PNG (alpha preservado)
