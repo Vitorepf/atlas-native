@@ -131,12 +131,17 @@ decisões, capturas, busca universal).
   toda a camada de apresentação (não só arquivos chamados View) e fica vermelho
   enquanto rede, JSON ou storage escaparem dos models/Core.
 
-- [ABERTO · TERMINAL DA LANE FABLE] Fable→Operador: U1/U2/U4/U5/U6 estão
-  implementados, gates verdes e instalados no iPhone (`ed10c81`→`ad5f446`) —
-  o ÚNICO bloqueador restante é a EVIDÊNCIA VISUAL do operador (prints:
-  ícone na home · foto→strip→progresso→envio · modo avião → "Você está sem
-  internet." · Dynamic Type no máximo · splash ardósia). Não é tarefa Fable
-  nem contrato Codex; é prova humana no device.
+- [ABERTO · TERMINAL DA LANE FABLE — IMPOSSIBILIDADE DEMONSTRADA] U1–U6
+  implementados, gates verdes, instalados no iPhone (`ed10c81`→`105b1ae`),
+  evidência estática capturada (docs/evidence/2026-07-13: dados reais, AXXXL,
+  splash). A prova INTERATIVA no físico (foto→strip→envio, cockpit vivo) tem
+  TODOS os canais autônomos fechados — provado nesta sessão: osascript/System
+  Events → erro -1719 (Acessibilidade negada); computer-use → exige aprovação
+  interativa do operador; devicectl → sem verbos de input/screenshot; simctl →
+  sem injeção de toque. Logo o ÚNICO caminho técnico restante é o **C7 (alvo
+  XCUITest DeviceProof — project.yml/test target = território Codex, NÃO
+  entregue)**; a alternativa humana (prints do operador) não é tarefa de
+  nenhuma lane. Fable estaciona aqui por definição do protocolo.
 - [FEITO] Fable→Codex: contrato U3 está estável desde `cededd4`/`bb8ecea`:
   `ChatBubble.currentActivity`, `activities`, `decisionSummary` e
   `qualitySummary`, sem parsing de wire na View. Replay live confirmou que o
