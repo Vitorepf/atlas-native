@@ -96,7 +96,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `9af0b72`; Simulator Hermes/Kimi verde em 62,5s: `Executando comando` live + prova de 9 passos com `Comando concluído` visível/tocável; 3 screenshots; tentativa física 03:45 interrompida no preflight porque o iPhone permaneceu bloqueado |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `9af0b72`; Simulator Hermes/Kimi verde em 62,5s: `Executando comando` live + prova de 9 passos com `Comando concluído` visível/tocável; auditoria fresca Core/App/live completa verde; físico segue bloqueado (`passcodeRequired=true`) |
 | C8 | **DONE** | — | `../atlas-server/app/Services/Ai/{AtlasFinalResponseSanitizer,HermesCliProvider}.php`; `../atlas-server/app/Services/Ai/Hermes/Acp/{HermesAcpProtocol,AtlasHermesAcpRuntime}.php`; testes correspondentes; `Sources/AtlasCore/AtlasAssistantPresentation.swift`; checks | C5 | Hermes/Kimi provider-neutral: ACP projeta thought/tool start/tool completion; Reasoning-only nunca vira sucesso/apresentação; mobile solicita transporte estruturado | Ferramenta real chega live, persiste no ledger e reaparece no replay; reasoning fica somente como atividade sanitizada; resposta final utilizável ou falha honesta | `f356bd4a1` + `d77cf5a`; migration aplicada; 129 testes/733 asserts no server; Core checks + App build; live Hermes ACP com `shell.started` >5s, persistência e replay |
 
 ### Fable (casca)
@@ -148,17 +148,17 @@ decisões, capturas, busca universal).
   falso bloqueio anterior era agravado pela resposta Reasoning-only gigante;
   C8 corrigiu o conteúdo canônico. Prova física continua sendo o gate de C7/U3.
 
-- [ABERTO · TERMINAL DA LANE FABLE — IMPOSSIBILIDADE DEMONSTRADA] U1–U6
+- [ABERTO · DEVICE FÍSICO] U1–U6
   implementados, gates verdes, instalados no iPhone (`ed10c81`→`105b1ae`),
   evidência estática capturada (docs/evidence/2026-07-13: dados reais, AXXXL,
   splash). A prova INTERATIVA no físico (foto→strip→envio, cockpit vivo) tem
   TODOS os canais autônomos fechados — provado nesta sessão: osascript/System
   Events → erro -1719 (Acessibilidade negada); computer-use → exige aprovação
   interativa do operador; devicectl → sem verbos de input/screenshot; simctl →
-  sem injeção de toque. Logo o ÚNICO caminho técnico restante é o **C7 (alvo
-  XCUITest DeviceProof — project.yml/test target = território Codex, NÃO
-  entregue)**; a alternativa humana (prints do operador) não é tarefa de
-  nenhuma lane. Fable estaciona aqui por definição do protocolo.
+  sem injeção de toque. O alvo XCUITest C7 foi entregue em `9af0b72` e está
+  verde no Simulator com Hermes/Kimi; no iPhone físico, o preflight continua
+  impedido porque o aparelho reporta `passcodeRequired=true`. Desbloquear o
+  device é a única mudança externa necessária para repetir a mesma prova.
 - [FEITO] Fable→Codex: contrato U3 está estável desde `cededd4`/`bb8ecea`:
   `ChatBubble.currentActivity`, `activities`, `decisionSummary` e
   `qualitySummary`, sem parsing de wire na View. Replay live confirmou que o
@@ -181,8 +181,9 @@ decisões, capturas, busca universal).
   cosmética de pastas separada de feature.
 - 2026-07-12 · AtlasDesignSystem vira target SPM só quando o macOS nascer.
 - 2026-07-13 · `stdout`/`stdout_chunk` é evidência de execução, nunca conteúdo
-  visível da resposta. Hermes mobile usa one-shot; qualquer envelope com frame
-  explícito de Reasoning é ocultado por defesa em profundidade.
+  visível da resposta. Hermes mobile solicita ACP estruturado; one-shot existe
+  apenas como fallback do servidor. Qualquer frame explícito de Reasoning é
+  ocultado por defesa em profundidade.
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
@@ -271,6 +272,11 @@ decisões, capturas, busca universal).
   Codex: envia `sleep 8 && pwd`, exige a tool AO VIVO e a mesma tool persistida
   e alcançável no histórico · prova: XCUITest Simulator verde em 62,5s, zero
   falhas, 3 screenshots; cockpit registrou 9 passos e resposta final limpa.
+- 2026-07-13 · Codex · `9af0b72` + `f356bd4a1` · revalidação integral da
+  Conversation Supremacy · prova: Core checks e App build exit 0; live real
+  create/SSE/replay + Hermes tool >5s + upload 3,2MB/SHA/resume + C4 verdes;
+  93 testes server/572 asserts e migration 86 `Ran`; DeviceProof físico não
+  iniciou porque o iPhone reportou `passcodeRequired=true`.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
