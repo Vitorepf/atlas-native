@@ -19,6 +19,7 @@ struct ConversationView: View {
     @State private var showWorkspaceSheet = false
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showFileImporter = false
+    @State private var showCamera = false
     @FocusState private var focused: Bool
 
     // Contador de tokens (estimativa live do rascunho ≈ chars/4), como o desktop.
@@ -197,6 +198,9 @@ struct ConversationView: View {
                     controlIcon("doc") {
                         showFileImporter = true
                     }
+                    controlIcon("camera") {
+                        showCamera = true
+                    }
                     controlIcon("doc.on.clipboard") {
                         if let t = UIPasteboard.general.string, !t.isEmpty {
                             model.addClipboard(text: t)
@@ -229,6 +233,14 @@ struct ConversationView: View {
                 model.workspaceName = ws.name
                 model.workspacePath = session.workspaceFullPath(forKey: ws.id)
             }
+        }
+        .fullScreenCover(isPresented: $showCamera) {
+            CameraPicker { data in
+                model.addImage(data: data, suggestedName: nil,
+                               mimeType: "image/jpeg",
+                               identity: UUID().uuidString, source: "camera")
+            }
+            .ignoresSafeArea()
         }
         .fileImporter(isPresented: $showFileImporter,
                       allowedContentTypes: [.pdf, .text, .sourceCode, .json, .commaSeparatedText]) { result in
