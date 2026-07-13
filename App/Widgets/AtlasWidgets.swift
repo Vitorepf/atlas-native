@@ -32,10 +32,17 @@ struct AtlasTurnLiveActivity: Widget {
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    Text("✦")
-                        .font(.system(size: 24, design: .serif))
-                        .foregroundStyle(Ink.gold)
-                        .padding(.leading, 6)
+                    VStack(spacing: 2) {
+                        Text("✦")
+                            .font(.system(size: 24, design: .serif))
+                            .foregroundStyle(Ink.gold)
+                        if context.state.activeSessions > 1 {
+                            Text("× \(context.state.activeSessions)")
+                                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                                .foregroundStyle(Ink.ink2)
+                        }
+                    }
+                    .padding(.leading, 6)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     VStack(alignment: .leading, spacing: 2) {
@@ -59,9 +66,15 @@ struct AtlasTurnLiveActivity: Widget {
                     }
                 }
             } compactLeading: {
-                Text("✦")
-                    .font(.system(size: 15, design: .serif))
-                    .foregroundStyle(Ink.gold)
+                if context.state.activeSessions > 1 {
+                    Text("✦\(context.state.activeSessions)")
+                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .foregroundStyle(Ink.gold)
+                } else {
+                    Text("✦")
+                        .font(.system(size: 15, design: .serif))
+                        .foregroundStyle(Ink.gold)
+                }
             } compactTrailing: {
                 if context.state.finished {
                     Image(systemName: "checkmark").font(.system(size: 11, weight: .bold))
@@ -89,10 +102,19 @@ private struct LockScreenView: View {
                 .foregroundStyle(Ink.gold)
                 .shadow(color: Ink.gold.opacity(0.35), radius: 4)
             VStack(alignment: .leading, spacing: 3) {
-                Text(context.attributes.threadTitle)
-                    .font(.system(size: 15, weight: .semibold, design: .serif))
-                    .foregroundStyle(Ink.ink).lineLimit(1)
-                Text(context.state.finished ? "resposta pronta" : context.state.phaseTitle)
+                HStack(spacing: 7) {
+                    Text(context.attributes.threadTitle)
+                        .font(.system(size: 15, weight: .semibold, design: .serif))
+                        .foregroundStyle(Ink.ink).lineLimit(1)
+                    if context.state.activeSessions > 1 {
+                        Text("× \(context.state.activeSessions)")
+                            .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(Ink.gold)
+                            .padding(.horizontal, 7).padding(.vertical, 2)
+                            .background(Capsule().fill(Ink.gold.opacity(0.14)))
+                    }
+                }
+                Text(context.state.phaseTitle)
                     .font(.system(size: 13, design: .serif)).italic()
                     .foregroundStyle(context.state.finished ? Ink.gold : Ink.ink2)
                     .lineLimit(1)
