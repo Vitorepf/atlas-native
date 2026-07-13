@@ -146,11 +146,6 @@ struct ConversationView: View {
     // controles (anexo · geral · auto · voz · mic), borda dourada.
     private var composer: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let live = model.bubbles.last(where: { $0.streaming }) {
-                ExecutingFooter(bubble: live, reduceMotion: reduceMotion) { model.cancel() }
-                    .padding(.bottom, 8)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-            }
             composerCard
         }
         .animation(.easeOut(duration: 0.25), value: model.isSending)
@@ -161,8 +156,22 @@ struct ConversationView: View {
         )
     }
 
+    /// Turno vivo (streaming) — dirige a faixa de execução dentro do composer.
+    private var liveBubble: ChatBubble? { model.bubbles.last(where: { $0.streaming }) }
+
     private var composerCard: some View {
         VStack(alignment: .leading, spacing: expanded ? 12 : 0) {
+            // Execução em curso: UMA linha discreta dentro do próprio card —
+            // nunca um segundo elemento empilhado. O campo continua aberto:
+            // escrever durante a execução é direito do operador.
+            if let live = liveBubble {
+                ExecutingStrip(bubble: live, reduceMotion: reduceMotion) { model.cancel() }
+                    .padding(.top, expanded ? 0 : 4)
+                    .padding(.bottom, expanded ? 0 : 8)
+                    .transition(.opacity)
+                Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
+                    .padding(.bottom, expanded ? 0 : 8)
+            }
             if focused {
                 // Grabber → PUXE pra baixo (ou toque) para fechar o teclado.
                 // Área de toque generosa (padding antes do contentShape) + drag.
@@ -316,9 +325,12 @@ struct ConversationView: View {
     }
 
     @ViewBuilder private var composerSurface: some View {
-        if expanded {
+        if expanded || liveBubble != nil {
+            // Com execução viva o card cresce em cartão (capsule de 2 linhas
+            // deformaria); a borda dourada continua reservada ao foco.
             RoundedRectangle(cornerRadius: 26, style: .continuous).fill(AtlasTheme.surface)
-                .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous)
+                    .stroke(expanded ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
                 .shadow(color: .black.opacity(0.18), radius: 12, y: 4)
         } else {
             Capsule(style: .continuous).fill(AtlasTheme.surface)
@@ -518,40 +530,35 @@ private struct FeedbackRow: View {
     }
 }
 
-// O rodapé de execução (mock aprovado): "Atlas está executando · N eventos ·
-// Xs · Parar" — ancorado acima do composer enquanto o turno vive.
-private struct ExecutingFooter: View {
+// A faixa de execução: UMA linha quieta dentro do card do composer —
+// "◆ Seguindo a execução · N eventos · Xs · Parar". Sem caixa própria,
+// sem segundo elemento; o campo de escrever permanece vivo logo abaixo.
+private struct ExecutingStrip: View {
     let bubble: ChatBubble
     let reduceMotion: Bool
     let onStop: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
-            BreathingDiamond(size: 13, reduceMotion: reduceMotion)
-            VStack(alignment: .leading, spacing: 1) {
-                Text("Atlas está executando")
-                    .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.textPrimary)
-                TimelineView(.periodic(from: .now, by: 1)) { ctx in
-                    let secs = bubble.startedAt.map { max(0, Int(ctx.date.timeIntervalSince($0))) } ?? 0
-                    Text("\(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") registrados · \(secs)s")
-                        .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                }
+        HStack(spacing: 8) {
+            BreathingDiamond(size: 8, reduceMotion: reduceMotion)
+            Text("Seguindo a execução")
+                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+            TimelineView(.periodic(from: .now, by: 1)) { ctx in
+                let secs = bubble.startedAt.map { max(0, Int(ctx.date.timeIntervalSince($0))) } ?? 0
+                Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
+                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    .monospacedDigit()
             }
             Spacer()
             Button(action: onStop) {
                 Text("Parar")
-                    .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.textPrimary)
-                    .padding(.horizontal, 16).padding(.vertical, 8)
-                    .background(Capsule().fill(AtlasTheme.surfaceHi))
+                    .font(.system(.footnote, weight: .medium))
+                    .foregroundStyle(AtlasTheme.textSecondary)
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel("parar execução")
         }
-        .padding(.horizontal, 16).padding(.vertical, 10)
-        .background(RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .fill(AtlasTheme.surface.opacity(0.72))
-            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(AtlasTheme.separatorSoft, lineWidth: 1)))
+        .padding(.horizontal, 6)
     }
 }
 
