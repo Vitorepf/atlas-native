@@ -197,7 +197,9 @@
   .step.current .dot { background: var(--gold); animation: pulse 1.4s ease-in-out infinite; }
   .step.settled .dot { background: rgba(212,168,90,0.4); animation: none; }
   @keyframes pulse { 50% { opacity: 0.35; } }
-  .s-intent { font-size: 14px; line-height: 1.45; color: var(--ink); }
+  /* a VOZ do agente é serif itálico (editorial); ferramenta é sans/mono —
+     duas naturezas, duas tipografias, legível num relance */
+  .s-intent { font-family: var(--serif); font-style: italic; font-size: 14.5px; line-height: 1.5; color: var(--ink); }
   .step.settled .s-intent { color: var(--ink2); }
   .s-tools { font-size: 12.5px; color: var(--ink3); }
   .s-mono { font-family: var(--mono); font-size: 11.5px; color: var(--ink3); margin-top: 2px; }
@@ -224,8 +226,11 @@
     color: var(--gold);
   }
   .final-text { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: var(--ink); }
-  .final-text ul { margin: 10px 0 0 18px; color: var(--ink2); }
-  .final-text li { margin-bottom: 6px; }
+  /* mudanças por eixo — cada frente da obra nomeada, escaneável */
+  .axes { margin-top: 14px; }
+  .axis { display: grid; grid-template-columns: 72px 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid rgba(149,163,172,0.1); }
+  .axis b { font-family: var(--mono); font-size: 10px; color: var(--ink3); font-weight: 500; padding-top: 1px; }
+  .axis span { font-size: 12.5px; color: var(--ink2); line-height: 1.45; }
   .signature { margin-top: 18px; text-align: right; font-family: var(--serif); font-style: italic; font-size: 12.5px; color: rgba(214,221,226,0.45); }
   .fpills { display: flex; gap: 8px; margin-top: 12px; }
   .fpill {
@@ -283,6 +288,10 @@
   .la-title { font-family: var(--serif); font-weight: 600; font-size: 14.5px; }
   .la-phase { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink2); margin-top: 2px; transition: color 0.3s; }
   .la-card.done .la-phase { color: var(--gold); }
+  /* progresso do plano no card (contrato C10): fio fino, nunca barra gorda */
+  .la-track { width: 170px; height: 2px; border-radius: 2px; background: rgba(214,221,226,0.12); margin-top: 7px; overflow: hidden; }
+  .la-track i { display: block; height: 100%; background: var(--gold); width: 0; transition: width 0.8s cubic-bezier(0.32,0.72,0,1); }
+  .la-card.done .la-track { display: none; }
   .la-count {
     font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--gold);
     background: rgba(212,168,90,0.14); border-radius: 999px; padding: 2px 8px;
@@ -435,7 +444,9 @@
   .bar { height: 3px; background: var(--recessed); border-radius: 2px; overflow: hidden; margin-top: 10px; }
   .bar i { display: block; height: 100%; background: var(--gold); border-radius: 2px; width: 0; transition: width 0.9s cubic-bezier(0.32,0.72,0,1); }
 
-  /* missão noturna */
+  /* missão noturna — a tela amanhece junto com a missão */
+  #s06 { transition: background 1.4s ease; }
+  #s06.dawn { background: linear-gradient(180deg, #26363f 0%, #1d2b34 55%); }
   .night-clock {
     text-align: center; font-family: var(--mono); font-size: 40px; font-weight: 500;
     color: var(--ink); letter-spacing: 0.02em; margin: 14px 0 2px;
@@ -781,11 +792,11 @@
               <div class="final-text">
                 Corrigi o relatório inteiro. Agora ele está em português, com hierarquia
                 visual clara e sem métricas falsas.
-                <ul>
-                  <li>textos e rótulos localizados para PT-BR;</li>
-                  <li>uplift exibido somente com par comparável;</li>
-                  <li>layout reorganizado para leitura executiva.</li>
-                </ul>
+              </div>
+              <div class="axes">
+                <div class="axis"><b>IDIOMA</b><span>textos e rótulos localizados para PT-BR</span></div>
+                <div class="axis"><b>MÉTRICAS</b><span>uplift exibido somente com par comparável real</span></div>
+                <div class="axis"><b>LEITURA</b><span>hierarquia reorganizada para decisão executiva</span></div>
               </div>
               <div class="arti">
                 <div><b>Relatório corrigido</b><span>prévia, diff e evidências reunidas</span></div>
@@ -825,13 +836,15 @@
           <div class="la-card" id="laCard">
             <div class="la-glyph">✦</div>
             <div><div class="la-title">Nova conversa <span class="la-count">× 2</span></div>
-                 <div class="la-phase" id="laPhase">pensando…</div></div>
+                 <div class="la-phase" id="laPhase">pensando…</div>
+                 <div class="la-track"><i id="laProg"></i></div></div>
             <div class="la-right"><span class="la-timer" id="laTimer">0s</span><span class="la-check">✓</span></div>
           </div>
           <div class="la-card" id="laCard2" style="margin-top:12px">
             <div class="la-glyph">✦</div>
             <div><div class="la-title">Refatorar auth <span class="la-count">× 2</span></div>
-                 <div class="la-phase" id="laPhase2">executando testes…</div></div>
+                 <div class="la-phase" id="laPhase2">executando testes…</div>
+                 <div class="la-track"><i id="laProg2"></i></div></div>
             <div class="la-right"><span class="la-timer" id="laTimer2">0s</span><span class="la-check">✓</span></div>
           </div>
           <div class="notif" id="notif">
@@ -886,16 +899,16 @@
       <div class="scn-label"><b>02 · Replanejamento honesto</b><span class="scn-tag">pedido §5 C10 · plano N/M</span></div>
       <div class="scn-screen" id="s02">
         <div class="scn-top"><span class="scn-title">Plano · Session Hub</span><span class="badge" id="p2badge">v1 · 5 passos</span></div>
-        <div class="mrow on" id="p2s1"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t">Mapear eventos existentes</div></div></div>
-        <div class="mrow on" id="p2s2"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t">Definir contrato do hub</div></div></div>
-        <div class="mrow on" id="p2s3"><div class="mdot"></div><div><div class="m-t">Criar widget target</div></div></div>
+        <div class="mrow on" id="p2s1"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t"><span class="st">1</span> Mapear eventos existentes</div></div></div>
+        <div class="mrow on" id="p2s2"><div class="mdot" style="background:var(--green)"></div><div><div class="m-t"><span class="st">2</span> Definir contrato do hub</div></div></div>
+        <div class="mrow on" id="p2s3"><div class="mdot"></div><div><div class="m-t"><span class="st">3</span> Criar widget target</div></div></div>
         <div class="callout" id="p2why">
           <div class="co-kicker">Por que mudou</div>
           <div class="co-title">O target de Live Activity já existe.</div>
           <div class="co-sub">1 passo removido · 2 passos reais adicionados. O plano v1 fica arquivado — nada é sobrescrito em silêncio.</div>
         </div>
-        <div class="mrow" id="p2s4"><div class="mdot"></div><div><div class="m-t">Agregar sessões no Session Hub <span class="st">novo</span></div></div></div>
-        <div class="mrow" id="p2s5"><div class="mdot"></div><div><div class="m-t">APNs para sessões longas <span class="st">novo</span></div></div></div>
+        <div class="mrow" id="p2s4"><div class="mdot"></div><div><div class="m-t"><span class="st">3</span> Agregar sessões no Session Hub <span class="st">novo</span></div></div></div>
+        <div class="mrow" id="p2s5"><div class="mdot"></div><div><div class="m-t"><span class="st">4</span> APNs para sessões longas <span class="st">novo</span></div></div></div>
         <div class="scn-foot"><span id="p2foot">plano vivo</span><span>v1 arquivado · comparar versões</span></div>
       </div>
       <p class="scn-caption">O plano corta um passo <em>na sua frente</em> — riscado, recolhido — e explica o porquê antes dos passos novos entrarem.</p>
@@ -1107,11 +1120,13 @@
         <div class="inst-top"><b>Atlas Native Guardian</b><span class="i-state live">executando · <span id="up1">03:42:18</span></span></div>
         <div class="i-mission">Auditar, corrigir e provar a experiência nativa no iPhone.</div>
         <div class="i-tags"><span class="i-tag">Mac mini · escritório</span><span class="i-tag">atlas-native · main</span><span class="i-tag">3 agentes</span><span class="i-tag">passo 4/7</span><span class="hb"><i></i><span id="hb1">agora</span></span></div>
+        <div class="bar" style="margin-top:8px"><i id="g1bar" style="width:57%"></i></div>
       </div>
       <div class="inst">
         <div class="inst-top"><b>Quality Foundry Sentinel</b><span class="i-state live">executando · <span id="up2">18:09:44</span></span></div>
         <div class="i-mission">Monitorar gates, localizar regressões e abrir obra comprovável.</div>
         <div class="i-tags"><span class="i-tag">Atlas Server · local</span><span class="i-tag">2 agentes</span><span class="i-tag">checkpoint 14:00</span><span class="hb"><i></i><span id="hb2">3s</span></span></div>
+        <div class="bar" style="margin-top:8px"><i id="g2bar" style="width:72%"></i></div>
       </div>
       <div class="inst">
         <div class="inst-top"><b>Rivals Evaluator</b><span class="i-state">aguardando quota · <span id="up3">01:12:07</span></span></div>
@@ -1260,6 +1275,7 @@ scene1(({ at, every, loop }) => {
   $('laPhase').textContent = 'pensando…';
   $('composerPh').textContent = 'Escreva ao Atlas';
   $('timerA').textContent = '0s'; $('laTimer').textContent = '0s'; $('laTimer2').textContent = '0s';
+  $('laProg').style.width = '0'; $('laProg2').style.width = '30%';
 
   const setCurrent = id => {
     document.querySelectorAll('.step').forEach(s => s.classList.remove('current'));
@@ -1295,15 +1311,17 @@ scene1(({ at, every, loop }) => {
         $('laTimer2').textContent = Math.floor((Date.now() - t2) / 1000) + 's';
     });
   });
-  at(2200, () => { setCurrent('s1'); events(1); wp(1); $('laPhase').textContent = 'entendendo o pedido…'; });
-  at(4300, () => { setCurrent('s2'); events(4); wp(2, 4); $('laPhase').textContent = 'explorando o código…'; });
-  at(6300, () => { setCurrent('s3'); events(5); wp(3, 5); $('laPhase').textContent = 'lendo o gerador…'; });
+  const prog = w => $('laProg').style.width = w;
+  at(2200, () => { setCurrent('s1'); events(1); wp(1); prog('15%'); $('laPhase').textContent = 'entendendo o pedido…'; });
+  at(4300, () => { setCurrent('s2'); events(4); wp(2, 4); prog('35%'); $('laPhase').textContent = 'explorando o código…'; });
+  at(6300, () => { setCurrent('s3'); events(5); wp(3, 5); prog('50%'); $('laPhase').textContent = 'lendo o gerador…'; });
   at(7200, () => { t2 = Date.now(); $('laCard2').classList.add('on');
                    $('laCard').classList.add('multi'); $('laCard2').classList.add('multi'); });
-  at(8300, () => { setCurrent('s4'); events(6); wp(4); $('laPhase').textContent = 'planejando a correção…'; });
-  at(10600,() => { setCurrent('s5'); events(7); wp(5, 2); editing = true;
+  at(8300, () => { setCurrent('s4'); events(6); wp(4); prog('65%'); $('laPhase').textContent = 'planejando a correção…'; });
+  at(10600,() => { setCurrent('s5'); events(7); wp(5, 2); editing = true; prog('82%');
                    $('laPhase').textContent = 'editando o dashboard…'; });
-  at(12400,() => { $('laPhase').textContent = 'plano concluído — revisando…'; });
+  at(12000,() => $('laProg2').style.width = '55%');
+  at(12400,() => { prog('100%'); $('laPhase').textContent = 'plano concluído — revisando…'; });
   at(13600,() => {
     frozen = true; editing = false;
     $('execView').style.transition = 'opacity 0.5s'; $('execView').style.opacity = 0;
@@ -1334,11 +1352,13 @@ scene1(({ at, every, loop }) => {
   at(900,  () => $('p1s1').classList.add('on','current'));
   at(2600, () => { $('p1card').classList.add('on'); paused = true;
                    $('p1t').classList.add('paused');
+                   $('p1t').textContent = '‖ ' + fmt(sec);
                    $('p1s1').classList.remove('current');
                    $('p1state').textContent = 'pausado · aguardando você'; });
   at(5400, () => $('p1yes').classList.add('pressed'));
   at(6100, () => { $('p1card').classList.remove('on'); paused = false;
                    $('p1t').classList.remove('paused');
+                   $('p1t').textContent = fmt(sec);
                    $('p1s2').classList.add('on','current');
                    $('p1state').textContent = 'executando'; });
   loop(9500);
@@ -1424,13 +1444,15 @@ scene1(({ at, every, loop }) => {
 /* ── 06 · Missão noturna — a noite passa na tela ── */
 scene1(({ at, loop }) => {
   ['q1','q2','q3','q4'].forEach(id => $(id).classList.remove('on'));
+  $('s06').classList.remove('dawn');
   $('p6clock').textContent = '23:10'; $('p6n').textContent = '0';
   $('p6sub').textContent = 'missão iniciada — escopo e limites registrados';
   const tick = (clock, n, sub) => { $('p6clock').textContent = clock; $('p6n').textContent = n; $('p6sub').textContent = sub; };
   at(900,  () => $('q1').classList.add('on'));
   at(2600, () => { tick('00:48', '2', 'arquitetura auditada — 12 achados'); $('q2').classList.add('on'); });
   at(4600, () => { tick('02:31', '4', 'correções em verificação — 3 agentes'); $('q3').classList.add('on'); });
-  at(6800, () => { tick('07:30', '7', 'bom dia — o resumo está pronto'); $('q4').classList.add('on'); });
+  at(6800, () => { tick('07:30', '7', 'bom dia — o resumo está pronto');
+                   $('q4').classList.add('on'); $('s06').classList.add('dawn'); });
   loop(10500);
 });
 
@@ -1579,7 +1601,9 @@ scene1(({ at, every, loop }) => {
   $('fmEx').textContent = '9'; $('fEx').textContent = '9';
   $('fmAtCard').classList.add('attn');
   $('fFoot').textContent = 'frota operacional · 1 requer decisão';
+  $('g1bar').style.width = '57%'; $('g2bar').style.width = '72%';
   at(2600, () => $('fInc').classList.add('on'));
+  at(5000, () => { $('g1bar').style.width = '61%'; $('g2bar').style.width = '74%'; });
   at(5400, () => $('fTransfer').classList.add('pressed'));
   at(6200, () => {
     $('fInc').classList.remove('on');
