@@ -96,7 +96,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `8407ca1` + `a08088e` + `30b2023`; estrito no Simulator encontra `Executando comando` live, depois RED em `Comando concluído isHittable=false`; físico bloqueado e PasteButton pendente (§5) |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `8407ca1` + `a08088e` + `ea6fe2b`; estrito no Simulator encontra `Executando comando` live, depois RED em `Comando concluído isHittable=false`; físico bloqueado e PasteButton pendente (§5) |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -261,6 +261,10 @@ decisões, capturas, busca universal).
   concluídos deixam de parecer ativos · prova: golden red→green, live Codex
   `shell.started` >5s + replay, XCUITest estrito encontrou `Executando comando`
   ao vivo; App build sem warning. C7 segue RED apenas na visibilidade persistida.
+- 2026-07-13 · Codex · `ea6fe2b` · C7 deixou de aceitar falso verde: confirma
+  envio tocável + turno criado, exige `Executando comando` AO VIVO e exige
+  `Comando concluído` visível/tocável no histórico · prova: Simulator alcançou
+  a tool live e falhou exatamente na timeline persistida inacessível de U3.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
