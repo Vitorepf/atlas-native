@@ -450,7 +450,9 @@
 
   /* pílula de telemetria viva (Ato I) — a resposta ao componente estático */
   .wpill {
-    display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+    /* simetria: o componente flutua CENTRADO na tela, nunca ancorado à esquerda */
+    display: flex; width: fit-content; margin: 18px auto 0;
+    align-items: center; gap: 8px;
     border: 1px solid var(--sep); background: rgba(36,55,67,0.72); border-radius: 999px;
     padding: 7px 13px; font-family: var(--mono); font-size: 11px; color: var(--ink2);
     font-variant-numeric: tabular-nums;
