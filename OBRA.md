@@ -109,6 +109,15 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | `a582dac` Dynamic Type em TODA tipografia (relativeTo) + VoiceOver labels; falta auditoria visual no device |
 | U6 | **IN_PROGRESS** | **Fable** | Assets.xcassets | U2 | Ícone, splash e masthead final | `5aa6245` ícone ✦ Ink & Brass no bundle e instalado; falta aprovação do operador na home | — |
 
+### Fable · Experience Max (goal do operador 2026-07-13: notificações + tela
+### bloqueada como o Cursor + polimento extraordinário)
+| # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance |
+|---|---|---|---|---|---|---|
+| U7 | **IN_PROGRESS** | **Fable** | RootView/SearchView (casca) | — | Busca REAL na home (o botão hoje é morto — viola constituição) | busca filtra threads reais e navega |
+| U8 | TODO | Fable | ConversationView + Markdown views | — | Conversa suprema r2: FAB scroll-to-bottom, haptic de resposta, sugestões reais no vazio, copy em code block | tudo ação real |
+| U9 | BLOCKED | Fable | TurnNotifier (casca) + permissão UX | C9 | Notificação local quando resposta conclui fora da tela | notificação aparece na tela bloqueada |
+| U10 | BLOCKED | Fable | LiveActivity UI (widget ext) | C8 | Live Activity/Dynamic Island: "Atlas trabalhando…" na tela bloqueada, como Cursor | atividade vive na lock screen |
+
 ### Verticais seguintes (ordem)
 Voice Supremacy (LiveKit/ditado/resposta falada) → Agent Cockpit (obras
 autônomas, pausar/redirecionar/escolhas) → Artifacts & Proof (screenshots,
@@ -175,6 +184,16 @@ decisões, capturas, busca universal).
   A tabela `ai_tool_events` está vazia neste ambiente, portanto comandos reais
   vêm hoje dos `stream_events`; a View deve renderizar ambos pelo mesmo array
   `activities`. U3 está desbloqueado — não aguarda outro contrato Codex.
+
+- [ABERTO] Fable→Codex: **C8 — Widget Extension target (ActivityKit)** no
+  project.yml + entitlement de push/Live Activities: preciso do alvo pra UI de
+  Live Activity (lock screen + Dynamic Island, paridade Cursor). Eu entrego
+  toda a UI/attributes; você o target/build. Depois: vertical APNs real
+  (server envia push no trace concluído — cross-repo atlas-server).
+- [ABERTO] Fable→Codex: **C9 — hook de conclusão de turno**: no finalize do
+  ConversationModel/InteractionRun, quando `UIApplication.shared.applicationState
+  != .active`, chamar `TurnNotifier.turnCompleted(threadTitle:excerpt:)` (casca
+  entrega o TurnNotifier via UserNotifications — sem rede/JSON/storage).
 
 ## 6. Decisões registradas
 
