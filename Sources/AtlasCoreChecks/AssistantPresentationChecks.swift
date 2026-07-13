@@ -45,4 +45,13 @@ public func runAssistantPresentationChecks(_ check: (String, Bool) -> Void) {
     let ledgerEvent = try? decoder.decode(AtlasAiStreamEvent.self, from: Data(ledgerJSON.utf8))
     check("ledger REST decodifica event_type", ledgerEvent?.type == "lifecycle")
     check("ledger REST reconstrói atividade", ledgerEvent.flatMap(atlasAgentActivity)?.kind == .understanding)
+
+    let stdoutChunk2 = AtlasAiStreamEvent(
+        traceId: "trace-1", sequence: 9, type: "token", channel: "assistant",
+        content: "more internal reasoning", metadata: JSONObject([
+            "name": .string("stdout_chunk"), "parser": .string("stdout_chunk"),
+        ])
+    )
+    check("replay colapsa chunks consecutivos equivalentes",
+          atlasAgentTimeline(from: [stdoutChunk, stdoutChunk2]).count == 1)
 }

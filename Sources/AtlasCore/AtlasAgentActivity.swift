@@ -132,6 +132,20 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     return nil
 }
 
+/// Projeta o ledger persistido numa timeline editorial: ordenada e sem repetir
+/// cada chunk de transporte como se fosse uma nova ação do agente.
+public func atlasAgentTimeline(from events: [AtlasAiStreamEvent]) -> [AtlasAgentActivity] {
+    events.sorted { $0.sequence < $1.sequence }.compactMap(atlasAgentActivity).reduce(into: []) { result, activity in
+        if let last = result.last,
+           last.kind == activity.kind,
+           last.title == activity.title,
+           last.detail == activity.detail {
+            return
+        }
+        result.append(activity)
+    }
+}
+
 private func commandDetail(_ value: JSONValue?) -> String? {
     guard case .array(let values)? = value else { return nil }
     let parts = values.compactMap(\.stringValue)

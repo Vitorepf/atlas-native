@@ -377,9 +377,7 @@ final class ConversationModel {
             $0.decideStage = trace.atlasDecideExecution?.atlasDecideStage
             $0.decisionSummary = trace.decisionSummary
             $0.qualitySummary = trace.qualitySummary
-            let fromStream = (trace.streamEvents ?? [])
-                .sorted { $0.sequence < $1.sequence }
-                .compactMap(atlasAgentActivity)
+            let fromStream = atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
             let known = Set($0.activities.map(\.id))
             $0.activities.append(contentsOf: recovered.filter { !known.contains($0.id) })
