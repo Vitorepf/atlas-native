@@ -77,6 +77,10 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
     if event.type == "stdout" || event.type == "response" {
         return nil
     }
+    if event.type == "token",
+       name == "stdout_chunk" || metadata["parser"]?.stringValue?.lowercased() == "stdout_chunk" {
+        return activity(.reasoning, "Raciocinando sobre a tarefa")
+    }
     if checkpoint == "provider_thinking" {
         return activity(.reasoning, "Raciocinando sobre a tarefa")
     }

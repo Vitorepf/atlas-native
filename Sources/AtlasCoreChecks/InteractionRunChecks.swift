@@ -428,9 +428,9 @@ public func runInteractionRunLiveProbe(
         }
         return
     }
-    let payload = JSONObject([
+    let payload = atlasMobileInteractionPayload(base: JSONObject([
         "tool_permissions": .object(["mode": .string("read")]),
-    ])
+    ]))
     let input = CreateAiInteractionInput(
         inputText: "Responda somente com a palavra ATLAS.",
         clientId: UUID().uuidString.lowercased(),
@@ -443,16 +443,22 @@ public func runInteractionRunLiveProbe(
     let outbox = InteractionOutbox(fileURL: outboxURL)
     let run = InteractionRun(transport: client, outbox: outbox)
     var created = false
+    var createdTraceId: String?
     var receivedContent = false
+    var leakedReasoning = false
     var completed = false
 
     do {
         for try await event in await run.start(input: input) {
             switch event {
-            case .created:
+            case .created(let trace):
                 created = true
+                createdTraceId = trace.id
             case .content(let frame):
-                receivedContent = receivedContent || !frame.content.isEmpty
+                if atlasShouldRenderAssistantContent(frame) {
+                    receivedContent = receivedContent || atlasVisibleAssistantText(frame.content) != nil
+                }
+                leakedReasoning = leakedReasoning || frame.content.lowercased().contains("┌─ reasoning")
             case .completed:
                 completed = true
             case .activity, .execution, .remoteError:
@@ -461,8 +467,16 @@ public func runInteractionRunLiveProbe(
         }
         check("live create foi aceito pelo servidor", created)
         check("live SSE entregou conteúdo", receivedContent)
+        check("live Hermes não vazou Reasoning", !leakedReasoning)
         check("live SSE recebeu done", completed)
         check("live done drenou outbox", await outbox.pending().isEmpty)
+        if let createdTraceId {
+            let final = try await client.getAiInteraction(createdTraceId)
+            check("live resposta final é apresentável",
+                  final.trace.responseText.flatMap(atlasVisibleAssistantText) != nil)
+            check("live snapshot preserva ledger de atividades",
+                  !(final.trace.streamEvents ?? []).isEmpty)
+        }
     } catch {
         check("live InteractionRun create → SSE → done", false)
         print("    erro: \(error)")

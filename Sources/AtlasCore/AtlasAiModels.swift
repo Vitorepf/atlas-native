@@ -102,6 +102,9 @@ public struct AtlasAiTrace: Codable, Sendable, Identifiable {
     public let qualityEvaluation: AtlasAiQualityEvaluation?
     public let qualityActions: [AtlasAiQualityAction]?
     public let toolEvents: [AtlasAiToolEvent]?
+    /// Ledger ordenado do que aconteceu durante a execução. É decodificado no
+    /// snapshot para que a timeline sobreviva ao stream, reload e relaunch.
+    public let streamEvents: [AtlasAiStreamEvent]?
     public let metricSummary: JSONObject?
     public let createdAt: String
     public let updatedAt: String

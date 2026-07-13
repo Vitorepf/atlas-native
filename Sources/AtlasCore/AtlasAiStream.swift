@@ -5,13 +5,15 @@ import Foundation
 // (URLSession.bytes) vive no AtlasClient. Contrato SSE: frames separados por
 // linha em branco; cada frame tem linhas `event:` e `data:`.
 
-public struct AtlasAiStreamEvent: Sendable, Equatable {
+public struct AtlasAiStreamEvent: Codable, Sendable, Equatable {
     public var id: String?
     public var traceId: String
     public var jobId: String?
     public var attemptId: String?
     public var sequence: Int
-    public var type: String
+    /// `event_type` no ledger REST; no SSE ele chega como `type` e entra pelo init.
+    public var eventType: String
+    public var type: String { eventType }
     public var channel: String?
     public var content: String
     public var metadata: JSONObject
@@ -34,7 +36,7 @@ public struct AtlasAiStreamEvent: Sendable, Equatable {
         self.jobId = jobId
         self.attemptId = attemptId
         self.sequence = sequence
-        self.type = type
+        self.eventType = type
         self.channel = channel
         self.content = content
         self.metadata = metadata

@@ -216,8 +216,15 @@ final class ConversationModel {
                 }
                 bubbles = (response.thread.messages ?? [])
                     .sorted { $0.position < $1.position }
-                    .map { ChatBubble(id: $0.id, role: $0.role, text: $0.content,
-                                      traceId: $0.traceId, provider: $0.provider, model: $0.model) }
+                    .map { message in
+                        let visible = message.role == "assistant"
+                            ? atlasVisibleAssistantText(message.content)
+                            : message.content
+                        return ChatBubble(id: message.id, role: message.role,
+                                      text: visible ?? "A resposta anterior continha saída interna e foi ocultada.",
+                                      traceId: message.traceId, provider: message.provider, model: message.model)
+                    }
+                await loadExecutionHistory()
             } catch {
                 loadError = String(describing: error)
             }
@@ -290,7 +297,7 @@ final class ConversationModel {
                                                  clientId: UUID().uuidString.lowercased(),
                                                  threadId: threadId,
                                                  newThread: threadId == nil ? true : nil,
-                                                 payload: JSONObject(payload),
+                                                 payload: atlasMobileInteractionPayload(base: JSONObject(payload)),
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,
                                                  uploadedDocuments: fields?.uploadedDocuments.isEmpty == false ? fields?.uploadedDocuments : nil,
                                                  richInputPayload: fields?.richInputPayload)
@@ -325,6 +332,41 @@ final class ConversationModel {
 
     // MARK: - Execução
 
+    /// O endpoint de lista é deliberadamente leve e não inclui `stream_events`.
+    /// Busca os snapshots completos em paralelo para que cada resposta reabra
+    /// com sua timeline registrada, inclusive depois de relaunch.
+    private func loadExecutionHistory() async {
+        let refs = bubbles.compactMap { bubble -> (String, String)? in
+            guard bubble.role == "assistant", let traceId = bubble.traceId else { return nil }
+            return (bubble.id, traceId)
+        }
+        let client = self.client
+        var snapshots: [(String, AtlasAiTrace?)] = []
+        // Bounded fan-out: restaura todo o histórico sem disparar dezenas de
+        // requests simultâneos contra o servidor ao abrir uma thread longa.
+        var cursor = refs.startIndex
+        while cursor < refs.endIndex {
+            let end = refs.index(cursor, offsetBy: 6, limitedBy: refs.endIndex) ?? refs.endIndex
+            let batch = refs[cursor..<end]
+            let values = await withTaskGroup(of: (String, AtlasAiTrace?).self) { group in
+                for (bubbleId, traceId) in batch {
+                    group.addTask {
+                        let trace = try? await client.getAiInteraction(traceId)
+                        return (bubbleId, trace?.trace)
+                    }
+                }
+                var values: [(String, AtlasAiTrace?)] = []
+                for await value in group { values.append(value) }
+                return values
+            }
+            snapshots.append(contentsOf: values)
+            cursor = end
+        }
+        for (bubbleId, trace) in snapshots {
+            if let trace { applyExecution(bubbleId, trace) }
+        }
+    }
+
     private func applyExecution(_ id: String, _ trace: AtlasAiTrace) {
         let agents = (trace.jobs ?? []).map {
             ExecAgent(id: $0.id, agent: $0.agentSlug, provider: $0.provider, model: $0.model, status: $0.status)
@@ -335,8 +377,12 @@ final class ConversationModel {
             $0.decideStage = trace.atlasDecideExecution?.atlasDecideStage
             $0.decisionSummary = trace.decisionSummary
             $0.qualitySummary = trace.qualitySummary
+            let fromStream = (trace.streamEvents ?? [])
+                .sorted { $0.sequence < $1.sequence }
+                .compactMap(atlasAgentActivity)
+            let recovered = fromStream + trace.toolActivities
             let known = Set($0.activities.map(\.id))
-            $0.activities.append(contentsOf: trace.toolActivities.filter { !known.contains($0.id) })
+            $0.activities.append(contentsOf: recovered.filter { !known.contains($0.id) })
             if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
         }
     }
@@ -347,7 +393,11 @@ final class ConversationModel {
             $0.agents = []
             $0.decideStage = nil
             if let trace {
-                if $0.text.isEmpty, let response = trace.responseText { $0.text = response }
+                if $0.text.isEmpty, let response = trace.responseText,
+                   let visible = atlasVisibleAssistantText(response) { $0.text = visible }
+                if $0.text.isEmpty {
+                    $0.text = "A execução terminou, mas a resposta continha saída interna e foi ocultada. Tente novamente."
+                }
                 $0.model = trace.model ?? $0.model
                 $0.elapsedMs = trace.latencyMs ?? $0.startedAt.map { Int(Date().timeIntervalSince($0) * 1000) }
             }
@@ -372,10 +422,9 @@ final class ConversationModel {
                     if $0.activities.count > 60 { $0.activities.removeFirst($0.activities.count - 60) }
                 }
             case .content(let frame):
-                guard frame.channel == nil || frame.channel == "assistant" else { continue }
-                guard frame.type == "token" || frame.type == "response" else { continue }
-                guard !frame.content.isEmpty else { continue }
-                live = frame.type == "response" ? frame.content : live + frame.content
+                guard atlasShouldRenderAssistantContent(frame),
+                      let visible = atlasVisibleAssistantText(frame.content) else { continue }
+                live = frame.type == "response" ? visible : live + visible
                 update(assistantId) { $0.text = live; $0.streaming = true }
             case .execution(let trace):
                 applyExecution(assistantId, trace)
