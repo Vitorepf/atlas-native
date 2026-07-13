@@ -60,6 +60,15 @@ final class AtlasSession {
             .sorted { $0.count > $1.count }
     }
 
+    /// Caminho completo do workspace (primeira thread do grupo) — pro payload
+    /// workspace_path do create. `nil` se a chave não existir.
+    func workspaceFullPath(forKey key: String) -> String? {
+        threads.first {
+            guard let w = $0.workspace, !w.isEmpty else { return false }
+            return (w as NSString).lastPathComponent.lowercased() == key
+        }?.workspace
+    }
+
     /// Threads de um workspace (por chave = nome de pasta minúsculo). `nil` = todas.
     func threads(inWorkspace key: String?) -> [AtlasAiThread] {
         guard let key else { return threads }

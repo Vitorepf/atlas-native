@@ -63,7 +63,11 @@ final class ConversationModel {
     var isSending = false
     var loadError: String?
     var toast: String?
-    var workspaceName: String?   // pro seletor de workspace no composer
+    // Workspace da conversa — entra no payload do create (workspace_slug/name/path,
+    // padrão do mobile RN; o servidor lê payload.workspace_* no AiGateway/AWIS).
+    var workspaceName: String?
+    var workspaceSlug: String?
+    var workspacePath: String?
 
     private let client: AtlasClient
     private(set) var threadId: String?
@@ -80,7 +84,9 @@ final class ConversationModel {
         do {
             let response = try await client.getAiThread(threadId)
             if let w = response.thread.workspace, !w.isEmpty {
+                workspacePath = w
                 workspaceName = (w as NSString).lastPathComponent
+                workspaceSlug = workspaceName?.lowercased()
             }
             bubbles = (response.thread.messages ?? [])
                 .sorted { $0.position < $1.position }
@@ -91,7 +97,7 @@ final class ConversationModel {
         }
     }
 
-    func send(_ text: String) async {
+    func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, !isSending else { return }
         isSending = true
@@ -101,13 +107,26 @@ final class ConversationModel {
         bubbles.append(ChatBubble(id: aid, role: "assistant", text: "", streaming: true, startedAt: Date()))
 
         do {
-            // Conversa = modo READ (menor privilégio): responde sem exigir
-            // workspace-cert. O servidor tem default `danger` (execução autônoma),
-            // que trava o chat com permission_denied. Escalar p/ write/danger é o
-            // fluxo de certificação de workspace — feature futura do seletor de modo.
+            // Payload do turno:
+            // - tool_permissions.mode=read — menor privilégio; o default do servidor
+            //   é `danger`, que trava o chat exigindo workspace-cert.
+            // - compute_effort — só quando ≠ auto (auto = Atlas Decide escolhe),
+            //   mesmo lane do RN (payload.compute_effort).
+            // - workspace_slug/name/path — escopo do repo, padrão do mobile RN.
+            //   (O "modo" geral/operacional/… do composer é UI-only: não existe
+            //   campo de wire pra ele no chat hoje; não inventamos contrato.)
+            var payload: [String: JSONValue] = [
+                "tool_permissions": .object(["mode": .string("read")]),
+            ]
+            if let e = effort.payloadValue { payload["compute_effort"] = .string(e) }
+            if let slug = workspaceSlug {
+                payload["workspace_slug"] = .string(slug)
+                payload["workspace_name"] = .string(workspaceName ?? slug)
+                if let p = workspacePath { payload["workspace_path"] = .string(p) }
+            }
             let input = CreateAiInteractionInput(inputText: trimmed, threadId: threadId,
                                                  newThread: threadId == nil ? true : nil,
-                                                 payload: JSONObject(["tool_permissions": .object(["mode": .string("read")])]))
+                                                 payload: JSONObject(payload))
             let created = try await client.createAiInteraction(input)
             if threadId == nil { threadId = created.trace.threadId }
             let traceId = created.trace.id
@@ -124,17 +143,29 @@ final class ConversationModel {
                 }
             }
 
-            var live = ""
-            for try await frame in await client.streamInteraction(traceId: traceId) {
-                switch frame {
-                case .event(let e): live += e.content; update(aid) { $0.text = live; $0.streaming = true }
-                case .done: break
-                case .error(let p):
-                    let m = p["message"]?.stringValue ?? "erro no stream"
-                    update(aid) { $0.text = live.isEmpty ? "⚠️ \(m)" : live }
-                case .ignored: break
+            // Stream numa Task PRÓPRIA (guardada em `stream`) para o Stop cancelar
+            // de verdade — cancelar a Task derruba o AsyncThrowingStream (o
+            // onTermination do AtlasClient cancela a conexão SSE por baixo).
+            let client = self.client
+            stream = Task { [weak self] in
+                var live = ""
+                do {
+                    frames: for try await frame in await client.streamInteraction(traceId: traceId) {
+                        guard let self, !Task.isCancelled else { break frames }
+                        switch frame {
+                        case .event(let e): live += e.content; self.update(aid) { $0.text = live; $0.streaming = true }
+                        case .done: break frames   // fim do turno — sair do LOOP, não só do switch
+                        case .error(let p):
+                            let m = p["message"]?.stringValue ?? "erro no stream"
+                            self.update(aid) { $0.text = live.isEmpty ? "⚠️ \(m)" : live }
+                        case .ignored: break
+                        }
+                    }
+                } catch {
+                    self?.update(aid) { if $0.text.isEmpty { $0.text = "⚠️ \(error)" } }
                 }
             }
+            await stream?.value
             poll?.cancel()
             finalize(aid, traceId: traceId)
         } catch {
@@ -145,6 +176,14 @@ final class ConversationModel {
 
     func cancel() {
         poll?.cancel(); stream?.cancel()
+        // Stop de verdade: não há endpoint de cancel por interaction — a unidade
+        // real de execução são os JOBS. Cancela no servidor os ativos deste turno.
+        let active = bubbles.last(where: { $0.streaming })?
+            .agents.filter { ["queued", "processing"].contains($0.status) } ?? []
+        if !active.isEmpty {
+            let client = self.client
+            Task.detached { for j in active { _ = try? await client.cancelAiJob(j.id) } }
+        }
         for i in bubbles.indices where bubbles[i].streaming { bubbles[i].streaming = false }
         isSending = false
         toast = "cancelado"

@@ -188,7 +188,12 @@ struct ConversationView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: focused)
         .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
         .sheet(isPresented: $showWorkspaceSheet) {
-            WorkspaceSheet(workspaces: session.workspaces, current: model.workspaceName) { model.workspaceName = $0 }
+            WorkspaceSheet(workspaces: session.workspaces, current: model.workspaceName) { ws in
+                // Escolha REAL: slug/name/path entram no payload do próximo envio.
+                model.workspaceSlug = ws.id
+                model.workspaceName = ws.name
+                model.workspacePath = session.workspaceFullPath(forKey: ws.id)
+            }
         }
         .onChange(of: pickedPhoto) {
             if pickedPhoto != nil { model.toast = "anexo selecionado — envio em breve"; pickedPhoto = nil }
@@ -268,7 +273,8 @@ struct ConversationView: View {
     private func send() {
         let text = draft
         draft = ""
-        Task { await model.send(text) }
+        let effort = self.effort
+        Task { await model.send(text, effort: effort) }
     }
 
     private func copy(_ text: String, label: String) {
@@ -582,7 +588,7 @@ private struct ModeSheet: View {
 private struct WorkspaceSheet: View {
     let workspaces: [Workspace]
     let current: String?
-    let onPick: (String) -> Void
+    let onPick: (Workspace) -> Void
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         SheetShell(title: "Workspace") {
@@ -591,7 +597,7 @@ private struct WorkspaceSheet: View {
             } else {
                 ForEach(workspaces) { ws in
                     SheetRow(label: ws.name, sub: "\(ws.count) conversas · main", selected: ws.name == current) {
-                        onPick(ws.name); UIImpactFeedbackGenerator(style: .soft).impactOccurred(); dismiss()
+                        onPick(ws); UIImpactFeedbackGenerator(style: .soft).impactOccurred(); dismiss()
                     }
                 }
             }

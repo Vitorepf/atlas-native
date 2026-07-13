@@ -15,7 +15,11 @@ let package = Package(
         .library(name: "AtlasCore", targets: ["AtlasCore"]),
     ],
     targets: [
-        .target(name: "AtlasCore"),
-        .executableTarget(name: "AtlasCoreChecks", dependencies: ["AtlasCore"]),
+        // StrictConcurrency cedo (5.4k linhas) — cada mês de espera encarece a
+        // migração pro modo Swift 6. Warnings hoje; zerar antes do bump de tools.
+        .target(name: "AtlasCore",
+                swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
+        .executableTarget(name: "AtlasCoreChecks", dependencies: ["AtlasCore"],
+                          swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
     ]
 )

@@ -20,10 +20,11 @@ generate:
 
 # Compila + linka o AtlasCore pro SDK do simulador. NÃO precisa de runtime nem
 # assinatura — é o "typecheck" do app, roda na CLI/CI. Prova que o fio compila.
+# GATE HONESTO: sem pipe pra xcpretty, sem `|| true` — falha de build = exit != 0.
 build: generate
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) \
 	  -destination 'generic/platform=iOS Simulator' -configuration Debug \
-	  build CODE_SIGNING_ALLOWED=NO | xcpretty || true
+	  -quiet build CODE_SIGNING_ALLOWED=NO
 
 # Roda no simulador (precisa do runtime iOS uma vez: make runtime).
 sim: generate
