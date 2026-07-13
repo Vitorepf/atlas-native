@@ -240,6 +240,12 @@
   .la-title { font-family: var(--serif); font-weight: 600; font-size: 14.5px; }
   .la-phase { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink2); margin-top: 2px; transition: color 0.3s; }
   .la-card.done .la-phase { color: var(--gold); }
+  .la-count {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--gold);
+    background: rgba(212,168,90,0.14); border-radius: 999px; padding: 2px 8px;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .la-card.multi .la-count { opacity: 1; }
   .la-right { margin-left: auto; font-family: var(--mono); font-size: 14.5px; color: var(--ink2); min-width: 46px; text-align: right; }
   .la-check { display: none; color: var(--gold); font-size: 20px; }
   .la-card.done .la-check { display: block; }
@@ -457,9 +463,15 @@
           <div class="clock">10:42</div>
           <div class="la-card" id="laCard">
             <div class="la-glyph">✦</div>
-            <div><div class="la-title">Nova conversa</div>
+            <div><div class="la-title">Nova conversa <span class="la-count">× 2</span></div>
                  <div class="la-phase" id="laPhase">pensando…</div></div>
             <div class="la-right"><span class="la-timer" id="laTimer">0s</span><span class="la-check">✓</span></div>
+          </div>
+          <div class="la-card" id="laCard2" style="margin-top:12px">
+            <div class="la-glyph">✦</div>
+            <div><div class="la-title">Refatorar auth <span class="la-count">× 2</span></div>
+                 <div class="la-phase" id="laPhase2">executando testes…</div></div>
+            <div class="la-right"><span class="la-timer" id="laTimer2">0s</span><span class="la-check">✓</span></div>
           </div>
           <div class="notif" id="notif">
             <div class="appicon">✦</div>
@@ -564,14 +576,17 @@ function setCurrent(id) {
 }
 function events(n) { $('evCount').textContent = n; }
 
-let clockStart = null, clockInt = null;
+let clockStart = null, clock2Start = null, clockInt = null;
 function startClock() {
   clockStart = Date.now();
   clockInt = setInterval(() => {
     const s = Math.floor((Date.now() - clockStart) / 1000);
     $('secCount').textContent = s;
     $('timerA').textContent = s + 's';
-    $('laTimer').textContent = s + 's';
+    if (!$('laCard').classList.contains('done')) $('laTimer').textContent = s + 's';
+    if (clock2Start && !$('laCard2').classList.contains('done')) {
+      $('laTimer2').textContent = Math.floor((Date.now() - clock2Start) / 1000) + 's';
+    }
   }, 250);
 }
 
@@ -579,8 +594,11 @@ function scene() {
   // reset
   timers.forEach(clearTimeout); timers = [];
   if (clockInt) clearInterval(clockInt);
-  ['uq','execFooter','laCard','notif','doneView'].forEach(id => $(id).classList.remove('on'));
-  $('laCard').classList.remove('done');
+  ['uq','execFooter','laCard','laCard2','notif','doneView'].forEach(id => $(id).classList.remove('on'));
+  $('laCard').classList.remove('done','multi');
+  $('laCard2').classList.remove('done','multi');
+  clock2Start = null;
+  $('laPhase2').textContent = 'executando testes…';
   $('islandA').classList.remove('live');
   $('execView').style.opacity = 1;
   document.querySelectorAll('.step').forEach(s => s.classList.remove('on','current','settled'));
@@ -597,7 +615,12 @@ function scene() {
   at(4300, () => { setCurrent('s2'); events(4); $('laPhase').textContent = 'explorando o código…'; });
   at(6300, () => { setCurrent('s3'); events(5); $('laPhase').textContent = 'lendo o gerador…'; });
   at(8300, () => { setCurrent('s4'); events(6); $('laPhase').textContent = 'planejando a correção…'; });
+  // 2ª sessão entra em paralelo → contador '× 2' nas duas (paridade Cursor)
+  at(7200, () => { clock2Start = Date.now(); $('laCard2').classList.add('on');
+                   $('laCard').classList.add('multi'); $('laCard2').classList.add('multi'); });
   at(10600,() => { setCurrent('s5'); events(7); $('laPhase').textContent = 'editando o dashboard…'; });
+  // plano da sessão 1 concluído (o momento que o operador pediu)
+  at(12400,() => { $('laPhase').textContent = 'plano concluído — revisando…'; });
   // ato 3 — conclusão
   at(13600,() => {
     if (clockInt) clearInterval(clockInt);
@@ -609,8 +632,12 @@ function scene() {
                    $('composerPh').textContent = 'Continuar com Atlas…';
                    $('laCard').classList.add('done'); $('laPhase').textContent = 'resposta pronta'; });
   at(15000,() => $('notif').classList.add('on'));
+  // contador some da sessão restante (voltou a ser uma só)
+  at(15400,() => { $('laCard').classList.remove('multi'); $('laCard2').classList.remove('multi'); });
+  // sessão 2 conclui também — 'sessão encerrada'
+  at(18800,() => { $('laCard2').classList.add('done'); $('laPhase2').textContent = 'sessão encerrada'; });
   // loop
-  at(22000, scene);
+  at(24000, scene);
 }
 function restart(){ scene(); }
 if (reduced) {
