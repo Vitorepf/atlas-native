@@ -98,6 +98,9 @@ final class ConversationModel {
     // Anexos do próximo envio + progresso agregado do upload (0…1, nil = ocioso)
     var drafts: [LocalDraft] = []
     var uploadPercent: Double?
+    /// Follow-ups enviados durante um turno. A casca mostra esta lista como
+    /// `Fila N`; a persistência/FIFO vivem no Core, não na View.
+    var queuedMessages: [QueuedMessage] = []
     /// Preferência persistente pertence ao model; a View só renderiza/cicla.
     var effort: AtlasComputeEffort
 
@@ -108,6 +111,8 @@ final class ConversationModel {
     @ObservationIgnored private var pendingAttachmentPreparations: [String: PendingAttachmentPreparation] = [:]
     @ObservationIgnored private let engine: AtlasRichInputEngine
     @ObservationIgnored private let outbox: InteractionOutbox
+    @ObservationIgnored private let queueStore: QueuedFollowUpStore
+    @ObservationIgnored private var queueScope: String
 
     /// Salt por instalação — escopa o client_upload_id no staging do servidor
     /// (que NÃO separa por device): iPhone e Mac futuro nunca colidem.
@@ -124,6 +129,8 @@ final class ConversationModel {
         self.threadId = threadId
         self.engine = AtlasRichInputEngine(transport: client, installSalt: Self.installSalt)
         self.outbox = InteractionOutbox(fileURL: InteractionOutbox.applicationSupportFileURL())
+        self.queueStore = QueuedFollowUpStore(fileURL: QueuedFollowUpStore.applicationSupportFileURL())
+        self.queueScope = threadId.map { "thread:\($0)" } ?? "local:\(UUID().uuidString.lowercased())"
         self.effort = AtlasComputeEffort(
             rawValue: UserDefaults.standard.string(forKey: Self.effortPreferenceKey) ?? ""
         ) ?? .auto
@@ -275,6 +282,7 @@ final class ConversationModel {
     }
 
     func load() async {
+        await loadQueuedMessages()
         if let threadId {
             do {
                 let response = try await client.getAiThread(threadId)
@@ -302,14 +310,62 @@ final class ConversationModel {
     }
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
-        await finishPendingAttachmentPreparations()
+        _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
+    }
+
+    /// Enfileira uma instrução como próximo turno. É deliberadamente assíncrono:
+    /// a confirmação visual só acontece depois do JSON atômico do Core.
+    func queue(text: String) async {
+        do {
+            guard let message = try await queueStore.enqueue(text: text, scope: queueScope) else { return }
+            queuedMessages.append(message)
+            toast = "Adicionada à fila"
+        } catch {
+            toast = "Não foi possível guardar esta instrução na fila."
+        }
+    }
+
+    /// “Enviar agora” no Fable/Cursor significa enviar no PRÓXIMO turno. Nunca
+    /// cancela a execução ou substitui o stream que está em andamento.
+    func promote(id: QueuedMessage.ID) async {
+        do {
+            try await queueStore.promote(id: id, scope: queueScope)
+            queuedMessages = await queueStore.messages(scope: queueScope)
+        } catch {
+            toast = "Não foi possível reordenar a fila."
+        }
+    }
+
+    func removeQueued(id: QueuedMessage.ID) async {
+        do {
+            try await queueStore.remove(id: id, scope: queueScope)
+            queuedMessages = await queueStore.messages(scope: queueScope)
+        } catch {
+            toast = "Não foi possível remover esta instrução."
+        }
+    }
+
+    @discardableResult
+    private func sendTurn(
+        _ text: String,
+        effort: AtlasComputeEffort,
+        drainQueueOnSuccess: Bool
+    ) async -> Bool {
         var trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Follow-up de texto durante execução: entra na fila imediatamente e
+        // não espera upload/preparação nem tenta competir com o stream atual.
+        if isSending || activeRun != nil {
+            await queue(text: trimmed)
+            return false
+        }
+
+        await finishPendingAttachmentPreparations()
         let sendingDrafts = drafts
         // Só anexos, sem texto → prompt sintético (paridade com o RN)
         if trimmed.isEmpty && !sendingDrafts.isEmpty {
             trimmed = "analise \(sendingDrafts.count == 1 ? "o anexo enviado" : "os \(sendingDrafts.count) anexos enviados")"
         }
-        guard !trimmed.isEmpty, !isSending, activeRun == nil else { return }
+        guard !trimmed.isEmpty else { return false }
 
         // C4: input_text do servidor tem teto e não é o lugar de transportar
         // uma obra inteira. O Core externaliza >40k como UM Markdown canônico;
@@ -323,7 +379,7 @@ final class ConversationModel {
             )
         } catch {
             toast = String(describing: error)
-            return
+            return false
         }
         trimmed = longMessage.inputText
         isSending = true
@@ -358,10 +414,11 @@ final class ConversationModel {
                 uploadPercent = nil
                 update(aid) { $0.text = "⚠️ upload falhou: \(error)"; $0.streaming = false }
                 isSending = false
-                return
+                return false
             }
         }
 
+        var completedSuccessfully = false
         do {
             // Payload do turno:
             // - tool_permissions.mode=read — menor privilégio; o default do servidor
@@ -399,12 +456,16 @@ final class ConversationModel {
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,
                                                  uploadedDocuments: fields?.uploadedDocuments.isEmpty == false ? fields?.uploadedDocuments : nil,
                                                  richInputPayload: fields?.richInputPayload)
-            try await execute(input, assistantId: aid)
+            completedSuccessfully = try await execute(input, assistantId: aid)
         } catch {
             apply(error, to: aid)
         }
         activeRun = nil
         isSending = false
+        if completedSuccessfully && drainQueueOnSuccess {
+            await drainQueuedMessages()
+        }
+        return completedSuccessfully
     }
 
     private func finishPendingAttachmentPreparations() async {
@@ -505,14 +566,18 @@ final class ConversationModel {
         }
     }
 
-    private func execute(_ input: CreateAiInteractionInput, assistantId: String) async throws {
+    private func execute(_ input: CreateAiInteractionInput, assistantId: String) async throws -> Bool {
         let run = InteractionRun(transport: client, outbox: outbox)
         activeRun = run
         var live = ""
+        var completedSuccessfully = false
         for try await event in await run.start(input: input) {
             switch event {
             case .created(let trace):
-                if threadId == nil { threadId = trace.threadId }
+                if let canonicalThreadId = trace.threadId, threadId != canonicalThreadId {
+                    threadId = canonicalThreadId
+                    await adoptQueueScope(threadId: canonicalThreadId)
+                }
                 update(assistantId) { $0.traceId = trace.id; $0.provider = trace.provider }
                 applyExecution(assistantId, trace)
             case .activity(let activity):
@@ -532,11 +597,13 @@ final class ConversationModel {
             case .remoteError(let payload):
                 let message = payload["message"]?.stringValue ?? "erro no stream"
                 update(assistantId) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
-            case .completed(_, let finalTrace):
+            case .completed(let done, let finalTrace):
                 complete(assistantId, trace: finalTrace)
+                completedSuccessfully = done.status.lowercased() == "succeeded"
             }
         }
         activeRun = nil
+        return completedSuccessfully
     }
 
     private func recoverPendingIfNeeded() async {
@@ -564,12 +631,55 @@ final class ConversationModel {
         bubbles.append(ChatBubble(id: aid, role: "assistant", text: "", streaming: true, startedAt: Date()))
         isSending = true
         do {
-            try await execute(input, assistantId: aid)
+            let completedSuccessfully = try await execute(input, assistantId: aid)
+            activeRun = nil
+            isSending = false
+            if completedSuccessfully { await drainQueuedMessages() }
         } catch {
             apply(error, to: aid)
         }
         activeRun = nil
         isSending = false
+    }
+
+    private func loadQueuedMessages() async {
+        queuedMessages = await queueStore.messages(scope: queueScope)
+    }
+
+    private func adoptQueueScope(threadId: String) async {
+        let canonicalScope = "thread:\(threadId)"
+        guard canonicalScope != queueScope else { return }
+        do {
+            try await queueStore.migrate(scope: queueScope, to: canonicalScope)
+            queueScope = canonicalScope
+            await loadQueuedMessages()
+        } catch {
+            // Mantém o escopo provisório em memória para não abandonar follow-up
+            // algum; a próxima abertura pode tentar a migração de novo.
+            toast = "A fila continua segura neste aparelho; a conversa ainda está sincronizando."
+        }
+    }
+
+    private func drainQueuedMessages() async {
+        while !isSending && activeRun == nil {
+            let next: QueuedMessage?
+            do {
+                next = try await queueStore.dequeue(scope: queueScope)
+            } catch {
+                toast = "Não foi possível preparar a próxima instrução da fila."
+                return
+            }
+            guard let next else { return }
+            queuedMessages = await queueStore.messages(scope: queueScope)
+            let completedSuccessfully = await sendTurn(
+                next.text,
+                effort: effort,
+                drainQueueOnSuccess: false
+            )
+            // Uma falha/atenção pede decisão do operador; a fila restante fica
+            // intacta e visível, nunca dispara trabalho em cascata às cegas.
+            guard completedSuccessfully else { return }
+        }
     }
 
     private func apply(_ error: Error, to id: String) {

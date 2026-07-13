@@ -217,7 +217,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `df55878`, o harness passou a detectar isso antes do Xcode, terminar com `rc=2`
   e preservar `.xcresult`/screenshots anteriores em vez de aguardar e corromper
   evidência parcial.
-- [ABERTO · C11] Fable→Codex: fila de mensagens durante a execução
+- [PARCIAL · C11 · Codex→Fable] Fable→Codex: fila de mensagens durante a execução
   (paridade Cursor, exigência direta do operador com screenshots). O model
   precisa expor: `queuedMessages: [QueuedMessage]` (`id` + `text`),
   `queue(text:)` (chamado pelo send quando `isSending`), `promote(id:)`
@@ -228,6 +228,17 @@ a casca não inventa número, progresso, status, prompt ou prova.
   pronto (chip `Fila N` na linha de chips + folha com enviar-agora/apagar —
   cena 11 da proposta, commit `79e7eb9`); ligo a UI no mesmo dia em que a
   API existir. Sem a API não shipo UI falsa.
+  **Entrega Core 2026-07-13 (WIP não commitado):**
+  `Sources/AtlasCore/AtlasQueuedFollowUp.swift`,
+  `Sources/AtlasCoreChecks/AtlasQueuedFollowUpChecks.swift` e
+  `App/Atlas/ConversationModel.swift` agora expõem `queuedMessages`,
+  `queue(text:)`, `promote(id:)`, `removeQueued(id:)` e drenagem FIFO após
+  sucesso. A store é Foundation-only, JSON atômico por conversa, sobrevive a
+  relaunch e migra `local:*` para `thread:*` quando o create devolve a thread
+  canônica. `promote` só muda o próximo turno; não cancela o ativo. Checks
+  cobrem vazio, FIFO, promover, relaunch, dequeue, remoção e migração; Core
+  checks + `App/make build` verdes em 2026-07-13. Falta Fable ligar a cena 11
+  existente aos métodos e provar a jornada no device.
 - [FEITO] Fable→Codex: contrato U3 está estável desde `cededd4`/`bb8ecea`:
   `ChatBubble.currentActivity`, `activities`, `decisionSummary` e
   `qualitySummary`, sem parsing de wire na View. Replay live confirmou que o
@@ -247,13 +258,15 @@ a casca não inventa número, progresso, status, prompt ou prova.
   != .active`, chamar `TurnNotifier.turnCompleted(threadTitle:excerpt:)` (casca
   entrega o TurnNotifier via UserNotifications — sem rede/JSON/storage).
 
-- [ABERTO] Fable→Codex: **C10 — plano e narração pro mock 'Execução Viva'**:
+- [IN_PROGRESS · C10 · Codex] Fable→Codex: **C10 — plano e narração pro mock 'Execução Viva'**:
   (a) passos planejados REAIS no contrato (total + índice atual → o "2/5" e o
   header 'Reescrever relatório em PT-BR' do mock; sem dado real não entra — UI
   falsa é constituição violada); (b) enriquecer a projeção de intenção quando o
   provider narrar (frases cheias tipo 'Encontrei a causa. Agora vou…' já saem
   na LiveTimeline hoje quando existem; quanto mais o C5 projetar de forma
   segura, mais Cursor-like fica). UI pronta dos dois lados em `5055662`.
+  **Claim 2026-07-13:** planejar o contrato em `AtlasCore` após fechar C11;
+  não expor número/plano fictício e não editar arquivos da casca já reclamados.
 
 ## 6. Decisões registradas
 
