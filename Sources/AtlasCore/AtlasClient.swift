@@ -215,10 +215,11 @@ public actor AtlasClient {
     /// Caminho JSON de `createAiInteraction` (sem anexos). Upload em chunks
     /// precisa do FileSystem do device — porta com a camada de anexos.
     public func createAiInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {
-        // O create é síncrono e pesado (monta contexto semântico do lado do
-        // servidor): pode levar dezenas de segundos. 15s (default) estoura o
-        // -1001. 90s dá folga sem pendurar pra sempre.
-        try await post("/ai/interactions", body: input, timeout: 90)
+        // O create é síncrono e pesado (monta contexto semântico; com DOCUMENTO
+        // ainda extrai PDF/OCR antes do 202): 15s default estoura o -1001.
+        // 90s sem documentos, 120s com.
+        let hasDocuments = !(input.uploadedDocuments ?? []).isEmpty
+        return try await post("/ai/interactions", body: input, timeout: hasDocuments ? 120 : 90)
     }
 
     private func pathEncode(_ s: String) -> String {

@@ -125,6 +125,12 @@ public struct CreateAiInteractionInput: Encodable, Sendable {
     public var includeSemanticContext: Bool?
     public var contextNoteLimit: Int?
     public var payload: JSONObject?
+    // Anexos — LIÇÃO DURA do servidor: uploaded_images/uploaded_documents no
+    // NÍVEL RAIZ é o que ANEXA de verdade (ids do upload chunked); o
+    // rich_input_payload é espelho para routing (detecção de visão) + audit.
+    public var uploadedImages: [String]?
+    public var uploadedDocuments: [String]?
+    public var richInputPayload: AtlasRichInputPayload?
 
     public init(
         inputText: String,
@@ -140,7 +146,10 @@ public struct CreateAiInteractionInput: Encodable, Sendable {
         priority: Int? = nil,
         includeSemanticContext: Bool? = nil,
         contextNoteLimit: Int? = nil,
-        payload: JSONObject? = nil
+        payload: JSONObject? = nil,
+        uploadedImages: [String]? = nil,
+        uploadedDocuments: [String]? = nil,
+        richInputPayload: AtlasRichInputPayload? = nil
     ) {
         self.inputText = inputText
         self.clientId = clientId
@@ -156,5 +165,8 @@ public struct CreateAiInteractionInput: Encodable, Sendable {
         self.includeSemanticContext = includeSemanticContext
         self.contextNoteLimit = contextNoteLimit
         self.payload = payload
+        self.uploadedImages = uploadedImages
+        self.uploadedDocuments = uploadedDocuments
+        self.richInputPayload = richInputPayload
     }
 }
