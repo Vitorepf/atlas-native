@@ -46,7 +46,7 @@ struct ConversationView: View {
         .navigationBarHidden(true)
         .overlay(alignment: .top) { toast }
         .task { await model.load() }
-        .onAppear { effort = AtlasComputeEffort(rawValue: UserDefaults.standard.string(forKey: "atlas.composer.effort") ?? "") ?? .auto }
+        .onAppear { effort = ComposerPrefs.effort }
     }
 
     // MARK: - Header
@@ -171,7 +171,7 @@ struct ConversationView: View {
                         .allowsHitTesting(false).opacity(draft.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
                         .animation(.easeOut(duration: 0.28), value: draft.isEmpty)
                     TextField("", text: $draft, axis: .vertical)
-                        .font(.system(size: 16)).foregroundStyle(AtlasTheme.textPrimary)
+                        .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
                         .tint(AtlasTheme.accent).lineLimit(1...6).focused($focused)
                 }
                 if !expanded {
@@ -193,7 +193,7 @@ struct ConversationView: View {
                     }
                     pill(label: effort.shortLabel) {
                         effort = effort.next
-                        UserDefaults.standard.set(effort.rawValue, forKey: "atlas.composer.effort")
+                        ComposerPrefs.effort = effort
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     }
                     if draft.isEmpty {

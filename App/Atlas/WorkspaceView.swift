@@ -54,7 +54,7 @@ struct WorkspaceView: View {
                     let active = a == area
                     Button { area = a } label: {
                         Text(a.label)
-                            .font(.system(size: 14, weight: .medium))
+                            .font(.system(.subheadline, weight: .medium))
                             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
                             .padding(.horizontal, 14).padding(.vertical, 7)
                             .background(
@@ -86,7 +86,7 @@ struct WorkspaceView: View {
                             .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
                             .multilineTextAlignment(.center)
                         Text("comece uma abaixo")
-                            .font(.system(size: 13)).foregroundStyle(AtlasTheme.textTertiary)
+                            .font(.system(.footnote)).foregroundStyle(AtlasTheme.textTertiary)
                     }
                     .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
                 } else {
@@ -115,7 +115,7 @@ struct WorkspaceView: View {
                 Image(systemName: "plus").font(.system(size: 17, weight: .medium))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 30, height: 30).background(Circle().fill(AtlasTheme.surfaceHi))
-                Text("Escreva ao Atlas").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
+                Text("Escreva ao Atlas").font(.system(.callout)).foregroundStyle(AtlasTheme.textTertiary)
                 Spacer()
                 Image(systemName: "mic.fill").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 30, height: 30)

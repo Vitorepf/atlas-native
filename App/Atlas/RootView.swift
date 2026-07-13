@@ -75,6 +75,9 @@ struct RootView: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Atlas")
             .accessibilityAddTraits(.isHeader)
+            // Cap deliberado: em AXXXL o nameplate colidia com busca/+ (evidência
+            // 03). Marca limita a própria escala; o CONTEÚDO escala livre.
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
     }
 
@@ -110,7 +113,7 @@ struct RootView: View {
                         .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
                     Spacer().frame(height: 16)
                     Text(failureHint)
-                        .font(.system(size: 14)).lineSpacing(5)
+                        .font(.system(.subheadline)).lineSpacing(5)
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .multilineTextAlignment(.center)
                     if session.hasToken {
@@ -188,7 +191,7 @@ struct RootView: View {
 
     private func sectionLabel(_ t: String) -> some View {
         Text(t)
-            .font(.system(size: 12, weight: .semibold))
+            .font(.system(.caption, weight: .semibold))
             .tracking(1.4)
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.horizontal, AtlasTheme.Space.screen)
@@ -212,7 +215,7 @@ struct RootView: View {
                 Image(systemName: "plus").font(.system(size: 17, weight: .medium))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 30, height: 30).background(Circle().fill(AtlasTheme.surfaceHi))
-                Text("Escreva ao Atlas").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
+                Text("Escreva ao Atlas").font(.system(.callout)).foregroundStyle(AtlasTheme.textTertiary)
                 Spacer()
                 Image(systemName: "mic.fill").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 30, height: 30)
@@ -270,9 +273,9 @@ private struct WorkspaceRow: View {
         Button(action: action) {
             HStack(spacing: 14) {
                 Image(systemName: icon).font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
-                Text(name).font(.system(size: 17)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                Text(name).font(.system(.body)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
                 Spacer(minLength: 8)
-                if let count { Text("\(count)").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary) }
+                if let count { Text("\(count)").font(.system(.callout)).foregroundStyle(AtlasTheme.textTertiary) }
                 Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
             }
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
@@ -288,7 +291,7 @@ struct ThreadRow: View {
     var body: some View {
         HStack(spacing: 14) {
             Image(systemName: "bubble.left").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
-            Text(thread.title).font(.system(size: 16)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1).truncationMode(.tail)
+            Text(thread.title).font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1).truncationMode(.tail)
             Spacer(minLength: 8)
             Text("\(thread.messageCount)").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
             Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
