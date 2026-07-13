@@ -62,6 +62,17 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 - Warnings de StrictConcurrency: **não aumentar** (baseline ~22; meta = 0
   antes do bump pro modo Swift 6).
 
+### Protocolo da main compartilhada
+
+1. Antes de iniciar, marque a linha da tarefa com `IN_PROGRESS`, agente, escopo
+   de escrita e dependência. Uma linha já reclamada não pode ser tomada.
+2. Atualizações deste arquivo usam o lock atômico `.atlas-mobile-plan.lock`;
+   lock existente significa reler `git status` e trabalhar fora do blackboard.
+3. Imediatamente antes de aplicar patch ou commitar: releia `OBRA.md`, rode
+   `git status --short` e preserve todo arquivo fora do seu escopo.
+4. Stage sempre explícito (`git add <arquivos>`), nunca `git add -A`.
+5. Ao entregar, preencha evidência/commit, mude para `DONE` e libere o claim.
+
 ## 3. Anti-inchaço (a constituição — cada linha nasce culpada)
 
 1. Dependência externa: **ZERO** hoje (Foundation/SwiftUI/ImageIO/CryptoKit).
@@ -77,24 +88,24 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ## 4. Fila de trabalho (Conversation Supremacy — vertical ativa)
 
 ### Codex (funciona)
-| # | Tarefa | Notas |
-|---|---|---|
-| C1 | **Reconnect do stream** (`after=` + backoff, maxReconnects=4 como o .ts) + extrair `InteractionRun` | A extração é dirigida por ESTA feature — create/stream/poll/reconnect/cancel num tipo; ConversationModel fica só apresentação |
-| C2 | **Outbox durável** (PendingSubmission: clientId estável, shouldKeep no core — rede/408/429 mantém, 4xx e 5xx-com-anexo descartam; recovery ≥8s ≤2min) | Paridade com o RN que hoje não perde mensagem |
-| C3 | Adapters restantes: **fileImporter (PDF/arquivos), câmera, clipboard** → `AttachmentInput` | ~30-60 linhas cada sobre o MESMO engine; PDFs exigem create timeout 120s (já no client) |
-| C4 | Long-message >40k chars → anexo `.md` | Paridade RN (prepareLongMessageForAtlas) |
-| C5 | Plumbing de `tool_events` + `decision_receipt` + `quality_evaluation` (trace → model) | Expor no ChatBubble/ExecAgent pro Fable renderizar |
-| C6 | Zerar warnings StrictConcurrency → bump modo Swift 6 | |
+| # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
+|---|---|---|---|---|---|---|---|
+| C1 | **IN_PROGRESS** | **Codex** | `Sources/AtlasCore/{AtlasClient,InteractionRun}.swift`; checks; `ConversationModel.swift` | `f900ef1` | Reconnect SSE (`after=` + backoff, max 4) + `InteractionRun` | Retoma de `lastSequence` sem duplicar; create/stream/poll/cancel têm um único dono; cancel encerra transporte, polling e job | pendente |
+| C2 | TODO | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | — |
+| C3 | TODO | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | — |
+| C4 | TODO | — | rich input core + checks | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | — |
+| C5 | TODO | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | — |
+| C6 | TODO | — | package/build + fontes com warning | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | — |
 
 ### Fable (casca)
-| # | Tarefa | Notas |
-|---|---|---|
-| U1 | **Verificar anexo no device** (foto → strip → progresso → envio) e polir a strip | primeira prova visual do rich input |
-| U2 | **Composer supremo**: estados (vazio/rascunho/anexos/subindo/erro), motion editorial, haptics calibrados | melhor que Cursor é o requisito, identidade própria |
-| U3 | **Cockpit de execução v2**: tool_events stream ("rodou git status"), decision receipt inline (tap → "considerou X,Y → escolheu W" + hash), quality gate | consome o plumbing do C5; é O diferencial vs Cursor |
-| U4 | Estados editoriais: vazio, erro de rede, offline, servidor fora | falha bonita > spinner infinito |
-| U5 | Acessibilidade (Dynamic Type, VoiceOver, Reduce Motion já respeitado) + auditoria 120Hz/startup no device | performance é feature |
-| U6 | Ícone do app + splash + polish do masthead | |
+| # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
+|---|---|---|---|---|---|---|---|
+| U1 | TODO | — | views de attachment/composer | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | — |
+| U2 | TODO | — | composer/views/design | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | — |
+| U3 | BLOCKED | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Renderiza contrato real de C5 sem parsing de wire | — |
+| U4 | TODO | — | estados editoriais | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | — |
+| U5 | TODO | — | views/design/accessibility | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | — |
+| U6 | TODO | — | assets/masthead | U2 | Ícone, splash e masthead final | Assets corretos no bundle e polish aprovado | — |
 
 ### Verticais seguintes (ordem)
 Voice Supremacy (LiveKit/ditado/resposta falada) → Agent Cockpit (obras
