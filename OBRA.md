@@ -94,7 +94,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C2 | **DONE** | — | core + model persistence | C1 | Outbox durável: clientId estável, recovery e `shouldKeep` | Rede/408/429 sobrevivem a relaunch; erros terminais não criam loop | `d1c78ba`; JSON atômico + relaunch/recovery; 232 checks; live outbox drenada no done |
 | C3 | **DONE** | — | adapters + rich input core | F5 | fileImporter, câmera e clipboard → `AttachmentInput` | Cada fonte usa o mesmo engine e prova payload real | `da9399a`; 242 checks; adapter câmera → upload/payload live real |
 | C4 | TODO | — | rich input core + checks | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | — |
-| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4`; activity/tool/decision/quality tipados; 236 checks + live trace decode |
+| C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decision receipt + quality evaluation | Model expõe estados tipados suficientes para U3, sem parsing em View | `ec3ffe6` + `cededd4` + `bb8ecea`; timeline live + ledger persistido/reload; stdout/reasoning nunca vira resposta; live probe limpo |
 | C6 | TODO | — | package/build + fontes com warning | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | — |
 
 ### Fable (casca)
@@ -102,7 +102,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 |---|---|---|---|---|---|---|---|
 | U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | `ed10c81` instalado+aberto no iPhone 23:55; falta print do operador p/ DEVICE_PROVEN |
 | U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | `a59003f` slot 3-estados honesto instalado; falta aprovação visual |
-| U3 | TODO | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Renderiza contrato real de C5 sem parsing de wire | C5 liberou seam completo em `cededd4` |
+| U3 | **BLOCKER · TODO** | — | execution views | C5 | Cockpit v2 para tools/receipt/quality | Substitui `ExecutionRibbon` estático; mostra atividade atual e timeline registrada/expansível em cada resposta, incluindo tools, comandos sanitizados, receipt e quality | Core provado em `bb8ecea`; screenshot do operador provou que a View atual ainda ignora o seam |
 | U4 | **IN_PROGRESS** | **Fable** | `RootView.swift`, `WorkspaceView.swift` | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | `c9adefb` loading/falha/vazio editoriais instalados; distinção offline×timeout precisa de contrato (§5) |
 | U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | — |
 | U6 | TODO | — | assets/masthead | U2 | Ícone, splash e masthead final | Assets corretos no bundle e polish aprovado | — |
@@ -120,7 +120,7 @@ decisões, capturas, busca universal).
 
 - [FEITO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — `AtlasSession.failureKind` + `AtlasNetworkFailureKind` entregues em `da9399a`.
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
-- [ABERTO] Codex→Fable: renderizar `ChatBubble.currentActivity` + histórico `activities` + `decisionSummary` + `qualitySummary` no Cockpit U3 — seam C5 completo em `cededd4`; mostrar estado atual sempre e timeline expansível, sem parsing de metadata na View.
+- [ABERTO · BLOQUEADOR] Codex→Fable: **parar U5 e executar U3 agora**. Substituir o `ExecutionRibbon` estático por cockpit que renderiza `ChatBubble.currentActivity` ao vivo + histórico persistente `activities` por resposta + `decisionSummary` + `qualitySummary`. O core `bb8ecea` já filtra stdout/reasoning, transforma `stdout_chunk` em atividade segura e restaura `stream_events` após relaunch. Acceptance no device: durante execução as linhas mudam (entendendo → contexto → planejando → agente/comando → verificando/evidência); depois de concluído/reabrir a conversa, continuam registradas e expansíveis. Não renderizar conteúdo interno nem fazer parsing de wire na View.
 - [ABERTO] Codex→Fable: ligar UI de Files/câmera/clipboard aos métodos `ConversationModel.addFile(url:)`, `addImage(..., source: "camera")` e `addClipboard(text:)` — todos convergem no engine único C3 (`da9399a`).
 
 ## 6. Decisões registradas
@@ -135,6 +135,9 @@ decisões, capturas, busca universal).
 - 2026-07-12 · Sem TCA. @Observable + actors + AsyncSequence. Sem reorganização
   cosmética de pastas separada de feature.
 - 2026-07-12 · AtlasDesignSystem vira target SPM só quando o macOS nascer.
+- 2026-07-13 · `stdout`/`stdout_chunk` é evidência de execução, nunca conteúdo
+  visível da resposta. Hermes mobile usa one-shot; qualquer envelope com frame
+  explícito de Reasoning é ocultado por defesa em profundidade.
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
@@ -164,6 +167,11 @@ decisões, capturas, busca universal).
 - 2026-07-13 · Codex · `da9399a` · C3 + contrato U4: adapters únicos para
   Files/câmera/clipboard e falhas de rede tipadas no AtlasSession · prova:
   242 checks + câmera→engine→upload/payload live real + app build verde.
+- 2026-07-13 · Codex · `bb8ecea` · resposta segura + timeline persistente:
+  Hermes one-shot, `stdout_chunk` fora do texto, Reasoning rejeitado, ledger
+  REST `stream_events` decodificado e restaurado em batches no reload · prova:
+  golden checks verdes + live SSE sem Reasoning + resposta final apresentável +
+  snapshot com atividades + `make build` verde. U3 visual elevado a bloqueador.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
