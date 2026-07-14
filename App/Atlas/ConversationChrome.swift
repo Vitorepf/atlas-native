@@ -27,6 +27,9 @@ struct EditorialTurn: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(alignment: .leading, spacing: 12) {
+                    // O PLANO da obra: durante a execução, o roteiro é percorrido
+                    // ao vivo (done/atual/pendente); depois, fica como prova.
+                    PlanCard(bubble: bubble)
                     if bubble.streaming {
                         ExecutionRibbon(bubble: bubble, reduceMotion: reduceMotion, onStop: onStop)
                     }
