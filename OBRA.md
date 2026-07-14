@@ -613,12 +613,17 @@ a casca não inventa número, progresso, status, prompt ou prova.
   branch órfã, drift de espelho. Gate de honestidade: branch cobaia criada em
   repo sandbox APARECE no app com o nome da regra e SOME ao resolver.
 
-- [ABERTO · C25 · Fable→Codex/Server] **Remediação governada (E4).**
-  `POST /code/violations/{id}/approve` executa o plano preparado passo a passo
-  (ex.: cherry-pick → branch -d → citar regra ao agente), emitindo
-  `step_receipts` no ledger + push de estado — o app tica os passos ao vivo,
-  como no mock v5. Operador nomeado obrigatório; default dry-run; nada roda sem
-  aprovação explícita. O "citar regra" grava guardrail (aprendizado composto).
+- [ABERTO · C25 · Fable→Codex/Server] **Auto-remediação 24/7 (E4) — corrigido
+  pelo canon do operador.** Violação detectada → o Atlas executa o plano
+  SOZINHO (ex.: cherry-pick → branch -d → citar regra ao agente), emitindo
+  `step_receipts` no ledger + push de estado. Política por regra: `observar`
+  (só aponta — modo de rampa de confiança) | `curar` (alvo: autonomia total,
+  ninguém no caminho). O humano NÃO aprova plumbing — tem veto retroativo:
+  `undo` governado, com recibo. Canon: Autônomos trabalha 24/7 e nunca depende
+  de ninguém; Forge commita até a obra completa; todos na main local, cada um
+  com seus commits. O papel humano converge para usuário que abre o app e
+  sente a diferença. Decisão humana continua existindo SÓ para o que é
+  genuinamente dele (produto, preço, risco) — nunca para operação.
 
 ## 6. Decisões registradas
 

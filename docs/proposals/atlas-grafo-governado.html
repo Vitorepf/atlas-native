@@ -130,6 +130,8 @@
   .violtag em { font-style: normal; font-weight: 400; opacity: 0.66; }
   .violtag.on { opacity: 1; transform: translateY(-50%); }
   .violtag.red { color: var(--red-hi); background: rgba(224,140,140,0.1); box-shadow: inset 0 0 0 1px rgba(224,140,140,0.32); }
+  .violtag.green { color: var(--green-hi); background: rgba(131,180,109,0.1); box-shadow: inset 0 0 0 1px rgba(131,180,109,0.32); }
+  .sh-kicker.ok { color: var(--green-hi); }
   .violtag.amber { color: var(--gold-hi); background: rgba(212,168,90,0.1); box-shadow: inset 0 0 0 1px rgba(212,168,90,0.32); }
 
 
@@ -282,7 +284,7 @@
   <div class="keyfacts">
     <div class="kf"><b>0</b><span>palavras para ver o problema — o visual já disse tudo</span></div>
     <div class="kf"><b>3</b><span>violações que você caça hoje no olho — apontadas sozinhas aqui</span></div>
-    <div class="kf"><b>1</b><span>toque: violação vira decisão, resolver desenha a volta à main</span></div>
+    <div class="kf"><b>0</b><span>toques: o Atlas cura sozinho, 24/7 — você confere quando quiser</span></div>
   </div>
   <div class="rule"></div>
 
@@ -326,7 +328,7 @@
 
             <!-- nós: sistema único — disco 5.5, anel do fundo 2, cor da lane -->
             <g class="nd" id="sn0"><circle cx="24" cy="27" r="10" fill="#d4a85a" opacity="0.14"/><circle cx="24" cy="27" r="5.5" fill="#e2b264" stroke="#182530" stroke-width="2"/></g>
-            <g class="nd" id="sn1"><circle cx="56" cy="81" r="10" fill="#e08c8c" opacity="0.15"/><circle cx="56" cy="81" r="5.5" fill="#e08c8c" stroke="#182530" stroke-width="2"/></g>
+            <g class="nd" id="sn1"><circle cx="56" cy="81" r="10" fill="#e08c8c" opacity="0.15"/><circle id="sn1dot" cx="56" cy="81" r="5.5" fill="#e08c8c" stroke="#182530" stroke-width="2"/></g>
             <g class="nd" id="sn1r"><circle class="pulse-r" cx="56" cy="81" r="13" fill="none" stroke="#e08c8c" stroke-width="1.5" opacity="0.8"/></g>
             <g class="nd" id="sn2"><circle cx="24" cy="135" r="5.5" fill="#83b46d" stroke="#182530" stroke-width="2"/></g>
             <g class="nd" id="sn3"><circle cx="24" cy="189" r="7" fill="#82a8bd" stroke="#182530" stroke-width="2"/><circle cx="24" cy="189" r="2.4" fill="#182530"/></g>
@@ -439,25 +441,24 @@
             </svg>
             <div class="sheet" id="gsheet">
               <div class="grab"></div>
-              <div class="sh-kicker"><svg class="ic"><use href="#i-warn"/></svg>Violação · regra pétrea main-only</div>
-              <div class="sh-title">forge-3 criou a branch "hotfix-rapido"</div>
-              <div class="sh-sub">Bloqueada antes do segundo commit; nada saiu da máquina. O trabalho está preservado.</div>
+              <div class="sh-kicker ok"><svg class="ic"><use href="#i-check"/></svg>Curado sozinho · main-only · 02:41</div>
+              <div class="sh-title">forge-3 saiu da main — o Atlas resolveu</div>
+              <div class="sh-sub">Detectada às 02:41. O commit foi preservado, trazido para a main e a branch encerrada — 12 segundos, sem acordar você.</div>
               <div class="plan">
-                <div class="plan-k">Plano pronto · Atlas executa em ~15s</div>
+                <div class="plan-k">O que o Atlas fez sozinho · 12s</div>
                 <div class="pstep"><svg class="ic"><use href="#i-merge"/></svg><span>Trazer o commit para a main</span><svg class="ic pst" id="pss1"><use href="#i-check"/></svg></div>
                 <div class="pstep"><svg class="ic"><use href="#i-branch"/></svg><span>Encerrar a branch hotfix-rapido</span><svg class="ic pst" id="pss2"><use href="#i-check"/></svg></div>
                 <div class="pstep"><svg class="ic"><use href="#i-doc"/></svg><span>Citar a regra ao forge-3 — ele aprende</span><svg class="ic pst" id="pss3"><use href="#i-check"/></svg></div>
               </div>
-              <div class="btn primary" id="gfix"><svg class="ic"><use href="#i-check"/></svg>Aprovar plano</div>
-              <div class="btn quiet">Descartar o trabalho</div>
-              <div class="receipt" id="grcpt"><svg class="ic"><use href="#i-check"/></svg><span><b>executado em 12s</b> · recibo no ledger · forge-3 aprendeu: main-only citada</span></div>
+              <div class="btn quiet" style="margin-top: 13px">Desfazer — com recibo</div>
+              <div class="receipt" id="grcpt"><svg class="ic"><use href="#i-check"/></svg><span><b>você não foi necessário</b> · recibo no ledger · forge-3 aprendeu: main-only citada</span></div>
             </div>
           </div>
           <div class="mpill"><div class="mplus">+</div><span>Pergunte: por que essa branch existe?</span></div>
         </div>
         <div class="homebar"></div>
       </div></div>
-      <p class="caption">Confiança se conquista — enquanto ela não existe, <em>o mapa vem primeiro</em>: a main é a espinha luminosa com todo mundo nela, e o desvio salta ao olho como curva saindo da linha. Tocar no desvio abre a decisão como <em>folha de vidro</em> — nunca no lugar do mapa. Resolver <em>desenha a volta para a main</em> na sua frente, e a cápsula central vira verde. Notificação de exceção? Modo opcional, para quando você passar a confiar — nunca fundação.</p>
+      <p class="caption">A história de uma noite: às 02:41 o forge-3 saiu da main — e às 02:41 o Atlas <em>curou sozinho</em>: commit preservado, branch encerrada, regra citada, 12 segundos. Você abre o app de manhã, o mapa mostra o que aconteceu e a folha é <em>recibo, não pedido</em> — seu único botão é "desfazer, com recibo". O mapa continua vindo primeiro (confiança se vê); a diferença é que <em>ninguém esperou por você</em>.</p>
     </div>
 
     <div id="estrutura">
@@ -473,8 +474,8 @@
           <b>As regras que hoje moram em doc viram sinal visual.</b>
           <p>main-only pétreo (atlas-server), allowlist de worktrees, "obra tem que voltar à main em N dias", branch órfã, drift de espelho. Cada regra do canon vira um verificador que <em>anota o grafo</em> — com o nome da regra, não um erro genérico.</p></div>
         <div class="st"><div class="k">Camada 4 · Julgamento (a ponte para a Nova Era)</div>
-          <b>Violação não é alerta — é decisão. E o mapa vem primeiro.</b>
-          <p>Desktop e iPhone mostram o MESMO mapa visual; a decisão é folha secundária por cima dele — o quê, a regra citada, dois verbos — e resolver desenha a volta para a main na sua frente, deixando recibo e realimentando o guardrail. Notificação de exceção é modo opcional para quando a confiança existir; enquanto ela não existe, <em>você vê</em>.</p></div>
+          <b>Violação não é pedido de permissão — é trabalho do Atlas.</b>
+          <p>Detectou, curou: sozinho, 24/7, com recibo por passo e a regra citada ao agente. O mapa mostra <em>o que aconteceu</em>, não o que espera você; seu poder é o veto retroativo (desfazer, com recibo). Decisão humana continua existindo só para o que é genuinamente seu — produto, preço, risco — nunca para operação.</p></div>
       </div>
     </div>
   </div>
@@ -482,7 +483,7 @@
   <!-- ═══ EVOLUÇÃO ═══ -->
   <div id="evolucao" style="margin-top: 72px">
     <h2>A evolução — do mockup vivo ao produto, um gate por fase</h2>
-    <p class="capd" style="max-width: 78ch">Regra da obra: <em>nenhuma fase avança sem o gate da anterior provado no device</em>, e nenhuma fase mostra dado inventado — a tela só existe no app quando a fonte real existe. Contratos registrados no blackboard (§5): C22–C25.</p>
+    <p class="capd" style="max-width: 78ch">Regra da obra: <em>nenhuma fase avança sem o gate da anterior provado no device</em>, e nenhuma fase mostra dado inventado. E a direção é uma só: a cada fase, <em>menos de você</em> — o Atlas trabalha 24/7 na main, commita sozinho, cura sozinho; seu papel converge para <em>usuário que abre o app e sente a diferença</em>. Contratos no blackboard (§5): C22–C25.</p>
     <div class="struct" style="margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
       <div class="st"><div class="k">E0 · Hoje — cumprida ✓</div>
         <b>A proposta viva (esta página).</b>
@@ -496,12 +497,12 @@
       <div class="st"><div class="k">E3 · A lei acende — contrato C24</div>
         <b>As regras do canon viram sinal no grafo.</b>
         <p>main-only, allowlist de worktrees, obra→main ≤ N dias, branch órfã, drift de espelho — verificadores sobre a topologia, anotando com o nome da regra. <em>Gate: branch cobaia num repo sandbox acende no app e apaga ao resolver.</em></p></div>
-      <div class="st"><div class="k">E4 · Aprovar executa — contrato C25</div>
-        <b>O plano pronto vira execução governada.</b>
-        <p>Aprovar dispara os passos no servidor (dry-run por default, operador nomeado), com recibo por passo no ledger e os ticks ao vivo na tela — e "citar a regra" grava guardrail no agente. <em>Gate: o fluxo do mock reproduzido de verdade, recibos conferíveis.</em></p></div>
-      <div class="st"><div class="k">E5 · Modo confiança — opcional, off por default</div>
-        <b>A exceção passa a te achar.</b>
-        <p>Só depois de E1–E4 provados e de você confiar: notificação por violação (Presença C14, já shipada) e o Código entrando no digest diário. <em>Gate: você liga quando quiser — nunca é fundação.</em></p></div>
+      <div class="st"><div class="k">E4 · Auto-remediação — contrato C25</div>
+        <b>O Atlas cura sozinho, 24/7 — ninguém no caminho.</b>
+        <p>Detectou → executa o plano na hora, recibo por passo no ledger, regra citada ao agente. Política por regra: "observar" (rampa de confiança) → "curar" (alvo). Você não aprova plumbing: pode <em>desfazer com recibo</em> se discordar. <em>Gate: branch cobaia nasce e é curada sem toque humano, recibos conferíveis.</em></p></div>
+      <div class="st"><div class="k">E5 · Prevenção + a semana</div>
+        <b>A violação deixa de existir — e você vira usuário.</b>
+        <p>Guardrails compostos previnem na origem: o agente já sabe a regra antes de errar. A experiência-alvo: abrir o app depois de uma semana e ler <em>"214 commits · 3 violações curadas sozinhas · 0 esperando você"</em> — sentir a diferença enorme. Notificação segue opcional; a autonomia, não.</p></div>
     </div>
   </div>
 
@@ -555,6 +556,9 @@ scene1(({ at, loop }) => {
   for (let i = 0; i <= 9; i++) { $('r' + i).classList.remove('on','viol-armed'); }
   ['sn0','sn1','sn1r','sn2','sn3','sn4','sn5','sn6','sn7','sn8','sn8r','sn9'].forEach(id => $(id).classList.remove('on'));
   ['v1','v6','v8'].forEach(id => $(id).classList.remove('on'));
+  $('v1').className = 'violtag red';
+  $('v1').innerHTML = '<svg class="ic"><use href="#i-warn"/></svg>Branch proibida <em>· main-only</em>';
+  $('sn1dot').setAttribute('fill', '#e08c8c');
   $('ggcountt').textContent = 'verificando regras…';
   at(250, () => { $('ln-main').style.strokeDashoffset = 0; });
   at(700, () => { ['ln-b','ln-c','ln-d'].forEach(id => $(id).style.strokeDashoffset = 0); });
@@ -563,8 +567,16 @@ scene1(({ at, loop }) => {
   rows.forEach((r, i) => at(950 + i * 220, () => { $('r' + r).classList.add('on'); $(nodes[r]).classList.add('on'); }));
   at(3600, () => { $('r1').classList.add('viol-armed'); $('sn1r').classList.add('on'); $('v1').classList.add('on'); });
   at(4200, () => { $('r6').classList.add('viol-armed'); $('v6').classList.add('on'); });
-  at(4800, () => { $('r8').classList.add('viol-armed'); $('sn8r').classList.add('on'); $('v8').classList.add('on'); $('ggcountt').textContent = '3 violações · 3 planos prontos'; });
-  loop(12500);
+  at(4800, () => { $('r8').classList.add('viol-armed'); $('sn8r').classList.add('on'); $('v8').classList.add('on'); $('ggcountt').textContent = '3 violações · curando sozinho'; });
+  at(6800, () => {
+    $('v1').innerHTML = '<svg class="ic"><use href="#i-check"/></svg>Curada sozinha <em>· recibo 9f27c1 · 12s</em>';
+    $('v1').className = 'violtag green on';
+    $('r1').classList.remove('viol-armed');
+    $('sn1r').classList.remove('on');
+    $('sn1dot').setAttribute('fill', '#83b46d');
+    $('ggcountt').textContent = '2 violações · curando sozinho';
+  });
+  loop(13500);
 });
 
 /* iPhone: o mapa PRIMEIRO → desvio salta ao olho → folha de vidro → a volta é desenhada */
@@ -574,30 +586,29 @@ scene1(({ at, loop }) => {
   $('mreturn').style.strokeDashoffset = 200;
   ['gm1','gm2','gm3','gm4','gm5','gm6','gm7','gmr'].forEach(id => $(id).classList.remove('on'));
   $('gm2dot').setAttribute('fill', '#e08c8c');
-  $('gsheet').classList.remove('on'); $('gfix').classList.remove('pressed'); $('grcpt').classList.remove('on');
+  $('gsheet').classList.remove('on'); $('grcpt').classList.remove('on');
   ['pss1','pss2','pss3'].forEach(id => $(id).classList.remove('on'));
-  $('gpcap').className = 'cap bad'; $('gpcapt').textContent = '1 desvio da main';
+  $('gpcap').className = 'cap bad'; $('gpcapt').textContent = '1 desvio — curando sozinho…';
   $('gpcapi').innerHTML = '<use href="#i-warn"/>';
   at(300, () => { $('mln').style.strokeDashoffset = 0; });
   const espinha = ['gm7','gm6','gm5','gm4','gm3','gm1'];
   espinha.forEach((id, i) => at(650 + i * 220, () => $(id).classList.add('on')));
   at(2300, () => { $('mfork').style.strokeDashoffset = 0; });
   at(2750, () => { $('gm2').classList.add('on'); $('gmr').classList.add('on'); });
-  at(4600, () => $('gsheet').classList.add('on'));
-  at(6900, () => $('gfix').classList.add('pressed'));
-  at(7350, () => $('pss1').classList.add('on'));
-  at(7800, () => $('pss2').classList.add('on'));
-  at(8250, () => $('pss3').classList.add('on'));
-  at(8750, () => $('grcpt').classList.add('on'));
-  at(10100, () => {
+  at(4400, () => $('gsheet').classList.add('on'));
+  at(4900, () => $('pss1').classList.add('on'));
+  at(5300, () => $('pss2').classList.add('on'));
+  at(5700, () => $('pss3').classList.add('on'));
+  at(6300, () => $('grcpt').classList.add('on'));
+  at(8300, () => {
     $('gsheet').classList.remove('on');
     $('mreturn').style.strokeDashoffset = 0;
     $('gmr').classList.remove('on');
     $('gm2dot').setAttribute('fill', '#83b46d');
-    $('gpcap').className = 'cap good'; $('gpcapt').textContent = 'main íntegra · 0 desvios';
+    $('gpcap').className = 'cap good'; $('gpcapt').textContent = 'main íntegra · curada às 02:41, sem você';
     $('gpcapi').innerHTML = '<use href="#i-check"/>';
   });
-  loop(14200);
+  loop(12000);
 });
 
 }
