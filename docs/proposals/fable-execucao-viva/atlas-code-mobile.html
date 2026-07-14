@@ -83,8 +83,8 @@
   .hrow .n { margin-left: auto; font-size: 13px; color: var(--ink3); }
   .hrow .chev { color: var(--ink3); font-size: 11px; }
   .hsec { font-size: 10px; font-weight: 600; letter-spacing: 1.3px; color: var(--ink3); padding: 14px 3px 8px; }
-  .hrow .attn { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--alert); }
-  .hrow .okn { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--green); }
+  .hrow .attn { margin-left: auto; font-size: 11px; color: var(--alert); }
+  .hrow .okn { margin-left: auto; font-size: 11px; color: var(--green); }
   .pillinput { position: absolute; left: 13px; right: 13px; bottom: 18px; display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--sep); border-radius: 999px; padding: 9px 13px; }
   .pillinput .plus { width: 24px; height: 24px; border-radius: 50%; background: var(--surface-hi); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink2); }
   .pillinput .ph { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink3); }
@@ -93,17 +93,11 @@
   .commit { display: flex; gap: 10px; padding: 9px 2px; opacity: 0; transform: translateY(7px); transition: all 0.4s ease; }
   .commit.on { opacity: 1; transform: none; }
   .c-node { width: 11px; display: flex; flex-direction: column; align-items: center; padding-top: 3px; }
-  .c-dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--gold); background: var(--app-bg); flex-shrink: 0; }
-  .c-dot.fable { background: var(--gold); }
-  .c-dot.codex { border-color: var(--codex); }
-  .c-dot.you { border-color: var(--green); background: var(--green); }
+  .c-dot { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink3); background: var(--app-bg); flex-shrink: 0; opacity: 0.9; }
   .c-line { width: 1.5px; flex: 1; background: rgba(212,168,90,0.18); margin-top: 3px; min-height: 14px; }
   .c-msg { font-size: 12px; color: var(--ink); line-height: 1.35; }
   .c-meta { font-family: var(--mono); font-size: 8.5px; color: var(--ink3); margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
-  .c-meta .agent { color: var(--gold); }
-  .c-meta .agent.codex { color: var(--codex); }
-  .c-meta .agent.you { color: var(--green); }
-  .c-meta .gate { color: var(--green); }
+  .c-meta .agent, .c-meta .agent.codex, .c-meta .agent.you { color: var(--ink3); }
 
   /* folha (sheet mobile) */
   .sheet {
@@ -297,20 +291,20 @@
           <div class="m-body">
             <div class="commit" id="m2c1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
               <div><div class="c-msg">fix(core): resposta parava de comer espaços</div>
-              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>683af18</span><span>2h</span></div></div></div>
+              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>2h</span></div></div></div>
             <div class="commit" id="m2c2"><div class="c-node"><div class="c-dot codex"></div><div class="c-line"></div></div>
               <div><div class="c-msg">feat(core): durable execution follow-up queue</div>
-              <div class="c-meta"><span class="agent codex"><svg class="ic"><use href="#i-diamond"/></svg> codex</span><span>da25e8a</span><span>232 checks</span><span>5h</span></div></div></div>
+              <div class="c-meta"><span class="agent codex"><svg class="ic"><use href="#i-diamond"/></svg> codex</span><span>5h</span></div></div></div>
             <div class="commit" id="m2c3"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
-              <div><div class="c-msg">polish(ui): C11 ligado — chip 'Fila N' + folha</div>
-              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>412a285</span><span>5h</span></div></div></div>
+              <div><div class="c-msg">polish(ui): C11 ligado · chip 'Fila N' + folha</div>
+              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>5h</span></div></div></div>
             <div class="commit" id="m2c4"><div class="c-node"><div class="c-dot you"></div></div>
               <div><div class="c-msg">docs(obra): canon · Autônomos é área própria</div>
-              <div class="c-meta"><span class="agent you"><svg class="ic"><use href="#i-user"/></svg> você</span><span>8b0af2d</span><span>1d</span></div></div></div>
+              <div class="c-meta"><span class="agent you"><svg class="ic"><use href="#i-user"/></svg> você</span><span>1d</span></div></div></div>
           </div>
           <div class="sheet" id="m2sheet">
             <div class="grab"></div>
-            <div class="sh-kicker">Proveniência — o porquê deste hash</div>
+            <div class="sh-kicker">Proveniência</div>
             <div class="sh-title">fix(core): resposta parava de comer espaços</div>
             <div class="sh-hash">683af18 · Fable 5 · 14/07 09:56</div>
             <div class="sh-block"><div class="k">Origem (sua frase, da conversa real)</div>
@@ -332,10 +326,8 @@
         <div class="content">
           <div class="m-head"><div class="back">‹</div><div class="title">Código</div><div class="side" id="m3side">1 atenção</div></div>
           <div class="m-body">
-            <div class="repo okr"><div class="repo-top"><div class="rled"></div><b>atlas-native</b><span class="rstate okc">espelhado</span></div>
-              <div class="rtags"><span class="rt goodt">0 não espelhados</span><span class="rt">2 agentes</span></div></div>
-            <div class="repo attn" id="m3r"><div class="repo-top"><div class="rled"></div><b>blackink-app</b><span class="rstate warn" id="m3rs">push bloqueado</span></div>
-              <div class="rtags"><span class="rt bad" id="m3rt">segredo no staged</span><span class="rt">7 commits</span></div></div>
+            <div class="repo okr"><div class="repo-top"><b>atlas-native</b></div></div>
+            <div class="repo attn" id="m3r"><div class="repo-top"><div class="rled"></div><b>blackink-app</b><span class="rstate warn" id="m3rs">espelho bloqueado</span></div></div>
             <div class="callout alert" id="m3c">
               <div class="co-k" id="m3ck">Varredura · segredo detectado</div>
               <div class="co-t" id="m3ct">FIREBASE_KEY em config/app.ts · espelho bloqueado</div>
@@ -387,9 +379,9 @@
           <div class="m-head"><div class="back">‹</div><div class="title">Espelhar para fora</div><div class="side">espelho: github</div></div>
           <div class="m-body">
             <div class="callout on" style="margin-top:4px">
-              <div class="co-k">3 commits prontos</div>
-              <div class="co-t">683af18 · b2f068a · 8387a2b</div>
-              <div class="co-s">Todos com gates verdes. A varredura roda antes de qualquer byte sair. Destino de hoje: GitHub — trocável por origin (Cursor), GitLab ou self-host; a verdade é local.</div>
+              <div class="co-k">Espelho</div>
+              <div class="co-t">3 commits da manhã, prontos</div>
+              <div class="co-s">A varredura roda antes de qualquer byte sair. Espelho de hoje: GitHub — trocável; a verdade é local.</div>
             </div>
             <div style="margin-top:10px">
               <div class="gcheck" id="m5g1"><span>Segredos no histórico a enviar</span><span class="st" id="m5s1">…</span></div>
@@ -400,7 +392,7 @@
             <div class="co-pills" style="margin-top:12px">
               <span class="co-pill">Desfazer — com recibo</span>
             </div>
-            <div class="receipt" id="m5r"><b>espelhado sozinho ✓</b> · push_receipt 9f27c1 · 3 → espelho (github) · varredura limpa · sem você</div>
+            <div class="receipt" id="m5r"><b>espelhado sozinho</b> · recibo 9f27c1 · sem você</div>
           </div>
         </div>
         <div class="homebar"></div>
@@ -433,10 +425,10 @@
           <div class="m-head"><div class="back">‹</div><div class="title">Nova conversa</div></div>
           <div class="m-body">
             <div class="uquote on">"o que mudou hoje no atlas-native?"</div>
-            <div class="nl-line" id="m6a1">Hoje entraram <b>6 commits</b>, todos com gates verdes:</div>
-            <div class="nl-line" id="m6a2"><span class="mono">683af18</span> — os espaços colados que você reportou. <span class="why">Trim no retorno do stream; agora verbatim, regressão travada.</span></div>
-            <div class="nl-line" id="m6a3"><span class="mono">8387a2b</span> — resumo da operação no Autônomos, por agregação de dado real.</div>
-            <div class="nl-line" id="m6a4">Nada pendente. Quer que eu <b>suba os 3 do server</b>? A varredura já passou.</div>
+            <div class="nl-line" id="m6a1">Hoje entraram <b>6 commits</b>. Os que importam:</div>
+            <div class="nl-line" id="m6a2">O conserto dos espaços colados que você reportou — <span class="why">com regressão travada para não voltar.</span></div>
+            <div class="nl-line" id="m6a3">O resumo da operação no Autônomos, com dado real.</div>
+            <div class="nl-line" id="m6a4">Nada pendente — os 3 do server <b>já foram espelhados sozinhos</b>, varredura limpa.</div>
           </div>
         </div>
         <div class="homebar"></div>
@@ -520,7 +512,6 @@ scene1(({ at, loop }) => {
   $('m3cs').textContent = 'Nada saiu da máquina. O Atlas está movendo para .env agora — sem esperar você.';
   $('m3pills').innerHTML = '<span class="co-pill">Ver diff</span>';
   $('m3rs').textContent = 'espelho bloqueado'; $('m3rs').className = 'rstate warn';
-  $('m3rt').textContent = 'segredo no staged'; $('m3rt').className = 'rt bad';
   $('m3side').textContent = '1 atenção';
   at(1400, () => $('m3c').classList.add('on'));
   at(4800, () => {
@@ -528,10 +519,9 @@ scene1(({ at, loop }) => {
     $('m3ck').textContent = 'Curado sozinho · com recibo';
     $('m3ct').textContent = 'Segredo em .env · espelho liberado e enviado';
     $('m3cs').textContent = '7 commits espelhados · config/app.ts limpo · você não foi necessário.';
-    $('m3pills').innerHTML = '<span class="co-pill">Desfazer — com recibo</span><span class="co-pill">Ver recibo</span>';
+    $('m3pills').innerHTML = '<span class="co-pill">Desfazer — com recibo</span>';
     $('m3r').classList.remove('attn');
     $('m3rs').textContent = 'espelhado'; $('m3rs').className = 'rstate okc';
-    $('m3rt').textContent = '0 não espelhados'; $('m3rt').className = 'rt goodt';
     $('m3side').textContent = '0 atenção';
   });
   loop(9500);
