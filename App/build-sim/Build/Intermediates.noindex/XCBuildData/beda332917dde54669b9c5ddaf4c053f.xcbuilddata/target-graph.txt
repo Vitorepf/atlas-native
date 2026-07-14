@@ -1,6 +1,0 @@
-Target dependency graph (3 targets)
-Target 'Atlas' in project 'Atlas'
-➜ Explicit dependency on target 'AtlasCore' in project 'AtlasCore'
-Target 'AtlasCore' in project 'AtlasCore'
-➜ Explicit dependency on target 'AtlasCore' in project 'AtlasCore'
-Target 'AtlasCore' in project 'AtlasCore' (no dependencies)

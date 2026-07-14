@@ -8,3 +8,6 @@ DerivedData/
 App/Atlas/Secrets.xcconfig
 App/build/
 *.xcodeproj/
+
+# Xcode build/index de simulador — nunca versionar
+App/build-sim/
