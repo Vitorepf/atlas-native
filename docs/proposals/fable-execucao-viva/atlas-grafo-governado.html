@@ -262,6 +262,7 @@
     <a href="#desktop">Desktop</a>
     <a href="#iphone">iPhone</a>
     <a href="#estrutura">Como estrutura</a>
+    <a href="#evolucao">Evolução</a>
     <a class="desk" href="atlas-nova-era.html">A Nova Era ›</a>
     <a class="desk" href="atlas-code-ledger.html">Cockpit desktop ›</a>
   </nav>
@@ -475,6 +476,32 @@
           <b>Violação não é alerta — é decisão. E o mapa vem primeiro.</b>
           <p>Desktop e iPhone mostram o MESMO mapa visual; a decisão é folha secundária por cima dele — o quê, a regra citada, dois verbos — e resolver desenha a volta para a main na sua frente, deixando recibo e realimentando o guardrail. Notificação de exceção é modo opcional para quando a confiança existir; enquanto ela não existe, <em>você vê</em>.</p></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ═══ EVOLUÇÃO ═══ -->
+  <div id="evolucao" style="margin-top: 72px">
+    <h2>A evolução — do mockup vivo ao produto, um gate por fase</h2>
+    <p class="capd" style="max-width: 78ch">Regra da obra: <em>nenhuma fase avança sem o gate da anterior provado no device</em>, e nenhuma fase mostra dado inventado — a tela só existe no app quando a fonte real existe. Contratos registrados no blackboard (§5): C22–C25.</p>
+    <div class="struct" style="margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
+      <div class="st"><div class="k">E0 · Hoje — cumprida ✓</div>
+        <b>A proposta viva (esta página).</b>
+        <p>Cenas E2E com zero erro, sistema de craft (ícones, geometria, materiais) e o loop agêntico completo encenado. Prova: <code>acd53d7</code>. É o contrato visual das fases seguintes.</p></div>
+      <div class="st"><div class="k">E1 · Topologia real — contrato C22</div>
+        <b>O grafo lê o git de verdade.</b>
+        <p><code>GET /code/graph</code> no atlas-server (local, no Mac): git log --all --topo-order + worktrees, read-only, cache incremental. A casca SwiftUI desenha spine e lanes com a geometria daqui. <em>Gate: hashes no iPhone = git log no Mac, conferidos lado a lado.</em></p></div>
+      <div class="st"><div class="k">E2 · Identidade — contrato C23</div>
+        <b>Cada commit ganha rosto e origem.</b>
+        <p>O ledger já carimba agente por trace; o nó ganha o ícone do autor e tocar abre a proveniência — a SUA frase que originou o commit. <em>Gate: tocar num commit real mostra a frase real; sem trace, diz "sem proveniência" — nunca inventa.</em></p></div>
+      <div class="st"><div class="k">E3 · A lei acende — contrato C24</div>
+        <b>As regras do canon viram sinal no grafo.</b>
+        <p>main-only, allowlist de worktrees, obra→main ≤ N dias, branch órfã, drift de espelho — verificadores sobre a topologia, anotando com o nome da regra. <em>Gate: branch cobaia num repo sandbox acende no app e apaga ao resolver.</em></p></div>
+      <div class="st"><div class="k">E4 · Aprovar executa — contrato C25</div>
+        <b>O plano pronto vira execução governada.</b>
+        <p>Aprovar dispara os passos no servidor (dry-run por default, operador nomeado), com recibo por passo no ledger e os ticks ao vivo na tela — e "citar a regra" grava guardrail no agente. <em>Gate: o fluxo do mock reproduzido de verdade, recibos conferíveis.</em></p></div>
+      <div class="st"><div class="k">E5 · Modo confiança — opcional, off por default</div>
+        <b>A exceção passa a te achar.</b>
+        <p>Só depois de E1–E4 provados e de você confiar: notificação por violação (Presença C14, já shipada) e o Código entrando no digest diário. <em>Gate: você liga quando quiser — nunca é fundação.</em></p></div>
     </div>
   </div>
 

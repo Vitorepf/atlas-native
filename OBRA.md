@@ -592,6 +592,34 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `previousVersions`), o PlanCard oferece "ver versão anterior". Sem contrato de
   histórico, o card mostra apenas o plano corrente (já entregue).
 
+### Grafo Governado — evolução da proposta (atlas-grafo-governado.html v5, `acd53d7`)
+
+- [ABERTO · C22 · Fable→Codex/Server] **Topologia real do grafo (fase E1).**
+  `GET /code/graph?repo=` → `nodes[] {hash, parents[], refs[], authorEmail, when}`,
+  `worktrees[]` — computado de `git log --all --topo-order --parents` +
+  `git worktree list` no Mac (local-first), read-only, cache incremental por
+  rev-list. A casca renderiza spine/lanes com a geometria da proposta (curva
+  midpoint). Sem endpoint, a tela não entra no app — zero mock em produto.
+
+- [ABERTO · C23 · Fable→Codex/Server] **Identidade + proveniência por commit (E2).**
+  Cada nó enriquecido com `agent {fable|codex|voce|autonomo:<nome>}` + `traceRef`
+  (ledger já carimba). Tocar → `GET /code/provenance/{hash}` devolve a frase de
+  origem do operador (trace real) + gates. Sem trace: "sem proveniência
+  registrada" — nunca inventar.
+
+- [ABERTO · C24 · Fable→Codex/Server] **Violações do rules engine (E3).**
+  `violations[] {ruleId (canon), target, since, severity, plan?: steps[]}` das
+  regras do canon: main-only pétreo, allowlist de worktrees, obra→main ≤ N dias,
+  branch órfã, drift de espelho. Gate de honestidade: branch cobaia criada em
+  repo sandbox APARECE no app com o nome da regra e SOME ao resolver.
+
+- [ABERTO · C25 · Fable→Codex/Server] **Remediação governada (E4).**
+  `POST /code/violations/{id}/approve` executa o plano preparado passo a passo
+  (ex.: cherry-pick → branch -d → citar regra ao agente), emitindo
+  `step_receipts` no ledger + push de estado — o app tica os passos ao vivo,
+  como no mock v5. Operador nomeado obrigatório; default dry-run; nada roda sem
+  aprovação explícita. O "citar regra" grava guardrail (aprendizado composto).
+
 ## 6. Decisões registradas
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
