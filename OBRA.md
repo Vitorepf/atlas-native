@@ -518,7 +518,14 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `onChoose(jobId, action.id)`. Assim uma falha/espera recuperável com ação
   declarada pelo servidor aparece sozinha — sem botão inventado.
 
-- [ABERTO · C17 · Fable→Codex] **Retomar turno após falha (cena 13).** Hoje a
+- [FEITO em `0482886` · C17 · fim-a-fim] **Retomar turno após falha (cena 13).**
+  Endpoint `/ai/jobs/{id}/retry` já existia; a casca agora fecha o ciclo:
+  `bubble.retryableJobId` (do `trace.jobs` com status `failed`) +
+  `model.retryTurn(jobId:)` (chama `retryAiJob`, relê o trace) + botão
+  "Retomar" no `ExecutionStateCard` de kind `.failed`. Zero fake. Build verde.
+  (Nota: o commit persistiu também seams C14/C15/continuidade do Codex que
+  estavam no working tree — tree consistente e buildando.)
+- [OBSOLETO — ver acima] Fable→Codex: **Retomar turno após falha (cena 13).** Hoje a
   falha é honesta (fase `Falhou` + notificação), mas não há ação manual de
   retomar. Duas formas de destravar, qualquer uma serve: (a) o servidor declara
   uma `action` (ex.: "Retomar do último checkpoint") no
