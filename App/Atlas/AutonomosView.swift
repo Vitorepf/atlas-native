@@ -101,6 +101,7 @@ struct AutonomosView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     if let fleet = model.fleet { fleetSummary(fleet) }
+                    operationDigest
                     areaPicker
                     if let area = model.selectedArea { areaDetail(area) }
                     if let receipt = model.lastStartRunReceipt, receipt.isEnqueued {
@@ -120,6 +121,68 @@ struct AutonomosView: View {
             .refreshable { await model.load() }
             .scrollIndicators(.hidden)
         }
+    }
+
+    // MARK: - Resumo da operação (C20: digest por agregação de dado REAL)
+
+    /// O "resumo ao acordar" da cena 06 — mas honesto: agrega SÓ o que o
+    /// servidor já publica (entregas comprovadas, pendências por risco,
+    /// decisões aguardando, incidente). Sem `next_digest_at` inventado — o
+    /// agendamento formal fica no pedido C20 até o servidor publicar o horário.
+    @ViewBuilder
+    private var operationDigest: some View {
+        let delivered = model.delivered?.deliveredTotal ?? 0
+        let pending = model.backlog?.workOrders.count ?? 0
+        let inbox = model.backlog?.inboxItems.count ?? 0
+        let incident = model.taskHealth?.incidents.present == true
+        let hasSignal = delivered > 0 || pending > 0 || inbox > 0 || incident
+        if hasSignal {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    sectionCaption("RESUMO DA OPERAÇÃO")
+                    Spacer()
+                    Text(incident ? "requer você" : "por exceção")
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(incident ? AtlasTheme.domOperacional : AtlasTheme.domAutonomos)
+                }
+                // A frase-título: o estado da frota em uma linha honesta.
+                Text(digestHeadline(delivered: delivered, pending: pending, incident: incident))
+                    .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: 8) {
+                    if delivered > 0 { digestChip("\(delivered)", "entregues · merge") }
+                    if pending > 0 { digestChip("\(pending)", "tarefas na fila") }
+                    if inbox > 0 { digestChip("\(inbox)", "decisões aguardam") }
+                }
+                if let byRisk = model.backlog?.findings.byRisk, !byRisk.isEmpty {
+                    HStack(spacing: 6) {
+                        ForEach(byRisk.sorted(by: { $0.value > $1.value }), id: \.key) { risk, n in
+                            tag("\(risk): \(n)")
+                        }
+                    }
+                }
+            }
+            .padding(14)
+            .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.surface))
+            .overlay(RoundedRectangle(cornerRadius: 14)
+                .stroke(incident ? AtlasTheme.domOperacional.opacity(0.4) : AtlasTheme.goldBorder, lineWidth: 1))
+        }
+    }
+
+    private func digestHeadline(delivered: Int, pending: Int, incident: Bool) -> String {
+        if incident { return "Um incidente aguarda sua decisão; o resto da frota segue por exceção." }
+        if delivered > 0 && pending == 0 { return "\(delivered) entrega\(delivered == 1 ? "" : "s") comprovada\(delivered == 1 ? "" : "s") — nada pendente para você." }
+        if delivered > 0 { return "\(delivered) entregue\(delivered == 1 ? "" : "s"), \(pending) ainda na fila — trabalho saudável em curso." }
+        return "\(pending) tarefa\(pending == 1 ? "" : "s") na fila; nenhuma entrega comprovada ainda nesta janela."
+    }
+
+    private func digestChip(_ value: String, _ label: String) -> some View {
+        HStack(spacing: 5) {
+            Text(value).font(AtlasFont.mono(14)).foregroundStyle(AtlasTheme.accent)
+            Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .padding(.horizontal, 9).padding(.vertical, 6)
+        .background(Capsule().fill(AtlasTheme.bgRecessed))
     }
 
     // MARK: - Frota global (C13: agentes reais, nunca contagem de áreas)

@@ -240,7 +240,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
   versionar `execution_plan` (v1..vN) com o motivo público da mudança e o diff
   de passos. Até lá a casca mostra só o plano corrente + a fase Replanejando.
 
-- [ABERTO · C20 · Fable→Codex] **Digest agendado do Autônomos.** A missão noturna
+- [PARCIAL · C20 · substância entregue por Fable em `AutonomosView.operationDigest` (agrega delivered/backlog/taskHealth REAIS: entregas comprovadas, pendências por risco, decisões aguardando, incidente por exceção). Falta SÓ o agendamento (`next_digest_at`) e o resumo governado por janela — contrato do servidor abaixo.] **Digest agendado do Autônomos.** A missão noturna
   termina com "07:30 · resumo ao acordar" e o Command Center fala em digest por
   exceção. Não há endpoint de digest nem `next_digest_at`. Pedido: resumo
   governado por janela (entregas comprovadas, riscos, decisões pendentes) + o
