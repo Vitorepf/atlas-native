@@ -126,6 +126,20 @@
   .receipt.on { opacity: 1; }
   .receipt b { color: var(--green); font-weight: 500; }
 
+  /* folha secundária (a decisão NUNCA cobre o mapa por padrão) */
+  .sheet {
+    position: absolute; left: 4px; right: 4px; bottom: 4px; z-index: 26;
+    background: var(--recessed); border: 1px solid rgba(201,138,138,0.5); border-radius: 20px;
+    padding: 14px; transform: translateY(112%);
+    transition: transform 0.45s cubic-bezier(0.32,0.72,0,1);
+    box-shadow: 0 -12px 34px rgba(0,0,0,0.5);
+  }
+  .sheet.on { transform: none; }
+  .sheet .grab { width: 34px; height: 4px; border-radius: 999px; background: rgba(214,221,226,0.25); margin: 0 auto 10px; }
+  .sh-kicker { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--alert); margin-bottom: 6px; }
+  .sh-title { font-family: var(--serif); font-size: 14.5px; font-weight: 600; line-height: 1.35; }
+  .sh-sub { font-size: 10.5px; color: var(--ink2); margin-top: 6px; line-height: 1.5; }
+
   /* estrutura real */
   .struct { display: flex; flex-direction: column; gap: 14px; }
   .st { border: 1px solid var(--sep-soft); border-radius: 14px; padding: 15px 18px; background: rgba(29,43,52,0.5); }
@@ -295,39 +309,76 @@
   <!-- ═══ IPHONE + ESTRUTURA ═══ -->
   <div class="duo">
     <div id="iphone">
-      <h2 style="margin-bottom:16px">No iPhone: a violação te acha</h2>
+      <h2 style="margin-bottom:16px">No iPhone: você VÊ — o mesmo mapa, sempre primeiro</h2>
       <div class="iphone" id="gph"><div class="screen">
         <div class="island"></div>
         <div class="content">
-          <div class="m-head"><div class="back">‹</div><div class="title">Grafo · atlas-server</div><div class="side" id="gpside">1 violação</div></div>
-          <div style="flex:1; overflow:hidden; padding-top:4px">
-            <div class="commit" id="gc1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
-              <div><div class="c-msg">feat(brain): council_review por membro</div>
-              <div class="c-meta"><span class="agent">✦ fable</span><span>9a06fd4</span><span>main</span><span>2h</span></div></div></div>
-            <div class="commit off1" id="gc2"><div class="c-node"><div class="c-dot bad"></div><div class="c-line" style="background:rgba(201,138,138,0.3)"></div></div>
-              <div><div class="c-msg" style="color:var(--alert)">wip: ajuste rápido no worker</div>
-              <div class="c-meta"><span class="agent bad">▲ forge-3</span><span>branch hotfix-rapido</span><span>agora</span></div></div></div>
-            <div class="commit" id="gc3"><div class="c-node"><div class="c-dot you"></div><div class="c-line"></div></div>
-              <div><div class="c-msg">docs(obra): canon — Autônomos é área própria</div>
-              <div class="c-meta"><span class="agent you">● você</span><span>8b0af2d</span><span>main</span><span>1d</span></div></div></div>
-            <div class="commit" id="gc4"><div class="c-node"><div class="c-dot codex"></div></div>
-              <div><div class="c-msg">feat(core): fila durável de follow-ups</div>
-              <div class="c-meta"><span class="agent codex">◆ codex</span><span>da25e8a</span><span>main</span><span>5h</span></div></div></div>
-            <div class="callout" id="gcall">
-              <div class="co-k">Violação — regra pétrea main-only</div>
-              <div class="co-t">forge-3 criou a branch "hotfix-rapido" no atlas-server</div>
-              <div class="co-s">Bloqueada antes do segundo commit. Nada saiu da máquina. O trabalho dele está preservado para você decidir o destino.</div>
-              <div class="co-pills">
-                <span class="co-pill primary" id="gfix">Trazer para main + encerrar branch</span>
+          <div class="m-head"><div class="back">‹</div><div class="title">Grafo · atlas-server</div><div class="side" id="gpside">1 desvio</div></div>
+          <div style="flex:1; position:relative; overflow:hidden">
+            <svg viewBox="0 0 292 480" width="100%" aria-label="grafo visual mobile — main como espinha">
+              <!-- a espinha: o mundo ideal é TODO MUNDO na main local -->
+              <line class="gg-lane gg-draw" id="mln" x1="30" y1="24" x2="30" y2="452" stroke="#d4a85a" opacity="0.55"/>
+              <!-- o desvio: fork saindo da linha — salta ao olho sem uma palavra -->
+              <path class="gg-fork gg-draw" id="mfork" d="M30,178 C30,150 66,148 66,120" stroke="#c98a8a" opacity="0.8"/>
+              <!-- a volta: desenhada só quando você resolve -->
+              <path class="gg-fork" id="mreturn" d="M66,120 C66,88 30,92 30,62" stroke="#7fb069" opacity="0" style="transition: opacity 0.7s"/>
+
+              <g class="gg-node" id="gm1">
+                <circle cx="30" cy="56" r="8" fill="#d4a85a"/><text x="30" y="60" text-anchor="middle" font-size="9" fill="#1d2b34">✦</text>
+                <text class="gg-msg" x="50" y="53" font-size="11.5">feat(brain): council_review por membro</text>
+                <text class="gg-meta" x="50" y="67" font-size="8">✦ fable · 9a06fd4 · main · 2h</text>
+              </g>
+              <g class="gg-node" id="gm2">
+                <circle id="gm2dot" cx="66" cy="120" r="8" fill="rgba(201,138,138,0.25)" stroke="#c98a8a" stroke-width="2"/><text x="66" y="124" text-anchor="middle" font-size="8" fill="#c98a8a">▲</text>
+                <text class="gg-msg" x="86" y="117" font-size="11.5" fill="#c98a8a">wip: ajuste rápido no worker</text>
+                <text class="gg-meta" x="86" y="131" font-size="8">▲ forge-3 · hotfix-rapido · agora</text>
+              </g>
+              <g class="gg-viol" id="gmr">
+                <circle class="pulse-r" cx="66" cy="120" r="14" fill="none" stroke="#c98a8a" stroke-width="1.5" opacity="0.85"/>
+                <text class="gg-meta" x="86" y="145" font-size="8" fill="#c98a8a">fora da main · toque para decidir</text>
+              </g>
+              <g class="gg-node" id="gm3">
+                <circle cx="30" cy="178" r="8" fill="none" stroke="#7fb069" stroke-width="2.5"/><circle cx="30" cy="178" r="3.5" fill="#7fb069"/>
+                <text class="gg-msg" x="50" y="175" font-size="11.5">docs(obra): canon — Autônomos</text>
+                <text class="gg-meta" x="50" y="189" font-size="8">● você · 8b0af2d · main · 1d</text>
+              </g>
+              <g class="gg-node" id="gm4">
+                <circle cx="30" cy="236" r="8" fill="none" stroke="#7fa3b8" stroke-width="2.5"/><text x="30" y="240" text-anchor="middle" font-size="8" fill="#7fa3b8">◆</text>
+                <text class="gg-msg" x="50" y="233" font-size="11.5">feat(core): fila durável de follow-ups</text>
+                <text class="gg-meta" x="50" y="247" font-size="8">◆ codex · da25e8a · main · 5h</text>
+              </g>
+              <g class="gg-node" id="gm5">
+                <circle cx="30" cy="294" r="8" fill="#d4a85a"/><text x="30" y="298" text-anchor="middle" font-size="9" fill="#1d2b34">✦</text>
+                <text class="gg-msg" x="50" y="291" font-size="11.5">fix(core): resposta verbatim</text>
+                <text class="gg-meta" x="50" y="305" font-size="8">✦ fable · 683af18 · main · 1d</text>
+              </g>
+              <g class="gg-node" id="gm6">
+                <circle cx="30" cy="352" r="8" fill="none" stroke="#7fb069" stroke-width="2.5"/><circle cx="30" cy="352" r="3.5" fill="#7fb069"/>
+                <text class="gg-msg" x="50" y="349" font-size="11.5">versão final</text>
+                <text class="gg-meta" x="50" y="363" font-size="8">● você · c4091ee · main · 4d</text>
+              </g>
+              <g class="gg-node" id="gm7">
+                <circle cx="30" cy="410" r="8" fill="none" stroke="#7fa3b8" stroke-width="2.5"/><text x="30" y="414" text-anchor="middle" font-size="8" fill="#7fa3b8">◆</text>
+                <text class="gg-msg" x="50" y="407" font-size="11.5">feat(core): durable follow-ups</text>
+                <text class="gg-meta" x="50" y="421" font-size="8">◆ codex · 4f81c02 · main · 5d</text>
+              </g>
+            </svg>
+            <div class="sheet" id="gsheet">
+              <div class="grab"></div>
+              <div class="sh-kicker">Violação — regra pétrea main-only</div>
+              <div class="sh-title">forge-3 criou a branch "hotfix-rapido"</div>
+              <div class="sh-sub">Bloqueada antes do segundo commit; nada saiu da máquina. O mundo ideal é todos na main local — o trabalho dele está preservado para você decidir.</div>
+              <div class="co-pills" style="margin-top:11px">
+                <span class="co-pill primary" id="gfix">Trazer para main + encerrar</span>
                 <span class="co-pill">Descartar</span>
               </div>
+              <div class="receipt" id="grcpt"><b>resolvido ✓</b> · trabalho na main · branch encerrada · recibo no ledger · regra citada ao agente</div>
             </div>
-            <div class="receipt" id="grcpt"><b>resolvido ✓</b> · trabalho na main · branch encerrada · recibo no ledger · regra citada ao agente</div>
           </div>
         </div>
         <div class="homebar"></div>
       </div></div>
-      <p class="caption">Você não abre o grafo para caçar — <em>a violação vira decisão e te acha</em> (a tela 3 da Nova Era). Um toque resolve, deixa recibo e <em>ensina a regra ao agente</em> — a violação de hoje é o guardrail de amanhã.</p>
+      <p class="caption">Confiança se conquista — enquanto ela não existe, <em>o mapa vem primeiro</em>: a main é a espinha com todo mundo nela (✦ ◆ ●), e o desvio salta ao olho como curva saindo da linha, igual desktop. Tocar no desvio abre a decisão como <em>folha secundária</em> — nunca no lugar do mapa. Resolver <em>desenha a volta para a main</em>, na sua frente. Notificação de exceção? Modo opcional, para quando você passar a confiar — nunca fundação.</p>
     </div>
 
     <div id="estrutura">
@@ -343,8 +394,8 @@
           <b>As regras que hoje moram em doc viram sinal visual.</b>
           <p>main-only pétreo (atlas-server), allowlist de worktrees, "obra tem que voltar à main em N dias", branch órfã, drift de espelho. Cada regra do canon vira um verificador que <em>anota o grafo</em> — com o nome da regra, não um erro genérico.</p></div>
         <div class="st"><div class="k">Camada 4 · Julgamento (a ponte para a Nova Era)</div>
-          <b>Violação não é alerta — é decisão.</b>
-          <p>Cada brilho no grafo vira uma pergunta completa da tela 3: o quê, a regra citada, o custo de cada lado, dois verbos. Resolver deixa recibo e realimenta o guardrail. Desktop = o mapa inteiro; iPhone = a exceção que te acha.</p></div>
+          <b>Violação não é alerta — é decisão. E o mapa vem primeiro.</b>
+          <p>Desktop e iPhone mostram o MESMO mapa visual; a decisão é folha secundária por cima dele — o quê, a regra citada, dois verbos — e resolver desenha a volta para a main na sua frente, deixando recibo e realimentando o guardrail. Notificação de exceção é modo opcional para quando a confiança existir; enquanto ela não existe, <em style="font-family: var(--serif); color: var(--ink)">você vê</em>.</p></div>
       </div>
     </div>
   </div>
@@ -411,19 +462,32 @@ scene1(({ at, loop }) => {
   loop(12000);
 });
 
-/* iPhone: a violação te acha → decisão → recibo */
+/* iPhone: o mapa PRIMEIRO (main = espinha) → desvio salta ao olho → toque abre a
+   folha secundária → resolver desenha a volta para a main, na sua frente */
 scene1(({ at, loop }) => {
-  ['gc1','gc2','gc3','gc4'].forEach(id => $(id).classList.remove('on'));
-  $('gcall').classList.remove('on'); $('gfix').classList.remove('pressed'); $('grcpt').classList.remove('on');
-  $('gpside').textContent = '1 violação';
-  at(500,  () => $('gc1').classList.add('on'));
-  at(900,  () => $('gc2').classList.add('on'));
-  at(1300, () => $('gc3').classList.add('on'));
-  at(1700, () => $('gc4').classList.add('on'));
-  at(2600, () => $('gcall').classList.add('on'));
-  at(5000, () => $('gfix').classList.add('pressed'));
-  at(6000, () => { $('grcpt').classList.add('on'); $('gpside').textContent = '0 violações'; });
-  loop(10500);
+  ['mln','mfork'].forEach(id => $(id).classList.remove('on'));
+  $('mreturn').style.opacity = 0;
+  ['gm1','gm2','gm3','gm4','gm5','gm6','gm7'].forEach(id => $(id).classList.remove('on'));
+  $('gmr').classList.remove('on');
+  $('gm2dot').setAttribute('stroke', '#c98a8a');
+  $('gsheet').classList.remove('on'); $('gfix').classList.remove('pressed'); $('grcpt').classList.remove('on');
+  $('gpside').textContent = '1 desvio';
+  at(300,  () => $('mln').classList.add('on'));
+  const espinha = ['gm7','gm6','gm5','gm4','gm3','gm1'];
+  espinha.forEach((id, i) => at(700 + i * 240, () => $(id).classList.add('on')));
+  at(2400, () => $('mfork').classList.add('on'));
+  at(2900, () => { $('gm2').classList.add('on'); $('gmr').classList.add('on'); });
+  at(4600, () => $('gsheet').classList.add('on'));   // o toque no desvio
+  at(6800, () => $('gfix').classList.add('pressed'));
+  at(7600, () => $('grcpt').classList.add('on'));
+  at(9000, () => {
+    $('gsheet').classList.remove('on');
+    $('mreturn').style.opacity = 1;                   // a volta para a main, visível
+    $('gmr').classList.remove('on');
+    $('gm2dot').setAttribute('stroke', '#7fb069');
+    $('gpside').textContent = '0 desvios';
+  });
+  loop(12500);
 });
 
 }
