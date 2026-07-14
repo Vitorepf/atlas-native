@@ -225,7 +225,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `df55878`, o harness passou a detectar isso antes do Xcode, terminar com `rc=2`
   e preservar `.xcresult`/screenshots anteriores em vez de aguardar e corromper
   evidência parcial.
-- [ABERTO · C18 · Fable→Codex] **Diff ao vivo durante a execução.** A cena da
+- [FEITO na FONTE em `9a06fd4c56` (atlas-server): checkpoint 'verify' publica diff_stats {files_touched,lines_added,lines_removed} medidos por git shortstat quando há workspace; sem workspace o campo é ausente (UI não inventa). Parser puro testado. Falta o decode AtlasCore + binding da pílula (Codex/Fable próxima rodada).] **Diff ao vivo durante a execução.** A cena da
   proposta mostra a pílula contando `+48 −12` ENQUANTO o Atlas edita. Hoje o
   diff só existe pós-turno (C15/change review); não há estatística incremental
   em nenhum evento do stream. Pedido: agregado provider-safe por trace
@@ -233,7 +233,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
   reais. Sem isso a casca NÃO renderiza número — a pílula fica só com o passo
   N/M (C10), que já é honesto.
 
-- [ABERTO · C19 · Fable→Codex] **Histórico/versões do plano (replanejamento).**
+- [FEITO na FONTE em `4b2b61f974` (atlas-server): todo replan arquiva o execution_plan corrente em plan_revisions[] (revision, iteration, reason, archived_at, plano completo; cap 10; nada fabricado). PHPUnit 4/14 verdes. Falta decode AtlasCore + UI 'comparar versões'.] **Histórico/versões do plano (replanejamento).**
   `AtlasExecutionPresentationState.replanning` existe e a casca mostra a fase,
   mas a cena 02 pede "plano v1 arquivado · comparar versões": qual passo saiu,
   quais entraram e por quê. Não há contrato de revisão de plano. Pedido:
@@ -246,7 +246,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
   governado por janela (entregas comprovadas, riscos, decisões pendentes) + o
   horário do próximo. Sem contrato a casca não inventa horário nem resumo.
 
-- [ABERTO · C21 · Fable→Codex] **Consenso/pareceres entre agentes.** `trace.jobs`
+- [FEITO na FONTE em `9a06fd4c56` (atlas-server): council persiste council_review por membro (provider, model, status, response_hash, error_code, latency_ms) no metadata do trace — posição por papel sem raciocínio privado; divergência = status distinto, jamais voto inventado. Falta decode AtlasCore + card na casca.] **Consenso/pareceres entre agentes.** `trace.jobs`
   já dá agentes reais com status (a casca renderiza) e o change review dá
   findings; mas "revisor objetou → verificador comprovou → consenso" não tem
   contrato. Pedido: quando o workflow for multi-agente, expor a posição pública
