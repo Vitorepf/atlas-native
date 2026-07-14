@@ -96,8 +96,11 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | C4 | **DONE** | — | `Sources/AtlasCore/LongMessage.swift`; `Sources/AtlasCoreChecks/LongMessageChecks.swift`; `ConversationModel.swift` | C3 | Long-message >40k → `.md` | Texto longo chega uma vez como documento canônico | `03192bd`; red→green; live upload→create→provider leu canary existente só no Markdown |
 | C5 | **DONE** | — | trace DTO/model + checks | C1 | tool events + decisão/quality + atividade atual honesta | Reasoning/progress intercalado não substitui tool aberta; completion libera o slot; View sem parsing | evidência anterior + `30b2023`; TDD red→green, live `shell.started` >5s/replay, XCUITest encontrou `Executando comando` ao vivo |
 | C6 | **DONE** | — | `Package.swift`; `App/project.yml`; `Sources/AtlasCore/AtlasTime.swift`; check runner e demais warnings Core | C1–C5 | Zerar warnings e ativar Swift 6 | Core e App compilam em Swift 6 com zero warning próprio | `475267f` + `97c9fdc`; rebuild limpo Core e `xcodebuild clean build` App sem warning próprio |
-| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/{InteractionRun,DeviceProofHarness}Checks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `9af0b72` + `9b92a8a` + `df55878`; Simulator Hermes/Kimi: 1 teste/0 falhas; físico chega ao destino correto, mas preflight confirma `Unlock iPhone de Vitor to Continue`; harness agora falha rápido e preserva evidência |
+| C7 | **IN_PROGRESS** | **Codex** | `App/project.yml`; `App/Makefile`; `App/UITests/**`; scripts de device proof; `Sources/AtlasCoreChecks/{InteractionRun,DeviceProofHarness}Checks.swift` | U1–U6 | Harness só fica verde com envio confirmado, tool exata ao vivo e tool persistida visível/tocável | XCUITest dirige conversa/tool/cockpit e captura evidence attachment no iPhone real | `9af0b72` + `9b92a8a` + `df55878`; Simulator Hermes/Kimi: 1 teste/0 falhas. O CoreDevice pode abrir túnel sob demanda, portanto o preflight aceita iPhone pareado e sonda lock antes de qualquer limpeza/Xcode. Core + App verdes. Em 2026-07-13 o aparelho respondeu, mas `passcodeRequired: true`; ainda não há prova física. |
 | C8 | **DONE** | — | `../atlas-server/app/Services/Ai/{AtlasFinalResponseSanitizer,HermesCliProvider}.php`; `../atlas-server/app/Services/Ai/Hermes/Acp/{HermesAcpProtocol,AtlasHermesAcpRuntime}.php`; testes correspondentes; `Sources/AtlasCore/AtlasAssistantPresentation.swift`; checks | C5 | Hermes/Kimi provider-neutral: ACP projeta thought/tool start/tool completion; Reasoning-only nunca vira sucesso/apresentação; mobile solicita transporte estruturado | Ferramenta real chega live, persiste no ledger e reaparece no replay; reasoning fica somente como atividade sanitizada; resposta final utilizável ou falha honesta | `f356bd4a1` + `d77cf5a`; migration aplicada; 129 testes/733 asserts no server; Core checks + App build; live Hermes ACP com `shell.started` >5s, persistência e replay |
+| C14 | **IN_PROGRESS** | **Codex** | `Sources/AtlasCore/AtlasExecutionPresentationState.swift`; checks; `ConversationModel.swift`; `../atlas-server/app/Services/Ai/{AiExecutionPresentationState,AiWorker,AiProviderChoiceResolver,AiJobController}.php` | C1, C5, C10 | Contrato público versionado para atenção, replanejamento, espera externa, recuperação, falha e conclusão | A casca recebe somente estados e ações declarados pelo servidor; último evento do ledger vence snapshot após reconexão; nenhum texto/model reasoning é inferido | Provider choice real projeta `attention_required`; o recibo produz `recovering|awaiting_external|failed`; worker direto **e council dual-review** gravam `completed|failed`; reparação nativa publica `replanning` somente após enfileirar a próxima iteração; cancelar diretamente grava `Sessão encerrada`; fallback automático Gemini→Claude e recovery stale (direto + Council) só publicam `recovering` após reenfileirar de verdade; falha stale só é terminal quando o rollup Council também encerrou. Lifecycle permanece sanitizado. O timer público acumula somente execução ativa, e Core rejeita timer incompatível com a fase. TDD red→green: 57 testes PHP (403 asserts); `swift run AtlasCoreChecks`, `make build` e `git diff --check` verdes. Faltam integrar e provar as telas Fable 5 no iPhone. |
+| C15 | **PARCIAL** | **Codex→Fable** | `../atlas-server/app/{Http/Controllers/Ai,Services/Ai,Models}; ../atlas-server/routes/api.php; Sources/AtlasCore/AtlasChangeReview.swift; Sources/AtlasCoreChecks/AtlasChangeReviewChecks.swift; ConversationModel.swift` | C5, C10, C12 | Projeção de artefatos e revisão vinculada ao trace | Todo artefato, diff e decisão resolve por `engineering_run.trace_id == ai_traces.id`; a casca nunca recebe `engineering_run_id`, nem inventa diff, resultado de check ou aprovação | Rotas trace-scoped de revisão/diff/decisão e recibo lifecycle são reais; zero ou múltiplos runs viram indisponibilidade explícita. TDD: 5 PHP/38 asserts; checks Core + build iOS verdes. Falta a casca renderizar e provar no iPhone. |
+| C16 | **PARCIAL** | **Codex→Fable** | `../atlas-server/app/{Http/Controllers/Ai,Services/Ai,Models}; migration; ../atlas-server/routes/api.php; Sources/AtlasCore/AtlasChangeReview.swift; Sources/AtlasCoreChecks/AtlasChangeReviewChecks.swift; ConversationModel.swift` | C15 | Decisão por arquivo vinculada ao patch imutável | `file_path` só é aceito se pertence ao patch do run unívoco da trace; a decisão atual é persistida por `(patch,file)`, ligada ao `diff_hash`, e cada ação produz recibo lifecycle | Aceite global agora aceita todos os arquivos capturados antes de aceitar o run; `accept|reject` por arquivo usa rota trace-scoped, sem `engineering_run_id`. TDD: 7 PHP/48 asserts; Core checks e `make build` verdes. Renderização e prova física seguem pendentes. |
 
 ### Fable (casca)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -125,6 +128,11 @@ diffs, aprovação, evidência) → Continuity (Live Activities, Dynamic Island,
 push, widgets, App Intents, Share Extension) → Atlas-wide (agenda, saúde,
 decisões, capturas, busca universal). **Autônomos Command Center é uma área
 24/7 própria e não pertence ao Agent Cockpit nem ao Session Hub.**
+
+> **Escopo ativo · Execução Viva Fable 5:** Voice permanece vertical futura.
+> Não criar microfone, LiveKit parcial, affordance decorativa ou tela “em
+> breve” nesta obra. Somente contratos sem UI já necessários ao runtime podem
+> existir; a cena 09 não entra em nenhum gate desta entrega.
 
 ### AVISO CANÔNICO A TODA IA — Autônomos possui superfície própria 24/7
 
@@ -188,11 +196,11 @@ a casca não inventa número, progresso, status, prompt ou prova.
   frame explícito de Reasoning. `d77cf5a` faz o mobile solicitar ACP e projetar
   essas tools sem parsing na View. Prova live real: `shell.started` chegou antes
   de `done`, ficou observável por mais de 5s, persistiu e reapareceu no replay.
-- [ABERTO] Codex→Fable: substituir o botão que lê `UIPasteboard.general`
+- [FEITO em `f6fbe79`] Codex→Fable: substituir o botão que lê `UIPasteboard.general`
   diretamente por `PasteButton` nativo. No iOS 26 o fluxo atual abre “Permitir
   Colar”, bloqueia a automação e cria fricção real; o rich input Core já aceita
   o texto pelo seam existente, portanto é correção exclusivamente da casca.
-- [ABERTO] Codex→Fable: `ConversationView.swift` chegou a 930 linhas (régua da
+- [FEITO em `f6fbe79`] Codex→Fable: `ConversationView.swift` chegou a 930 linhas (split → ConversationChrome/Cockpit + DraftThumb cacheado) (régua da
   constituição: view ~200) e `DraftThumb.body` ainda executa `UIImage(data:)`.
   O Core `3b80c72` agora entrega thumbnail ≤256px, então separar os componentes
   existentes e cachear a imagem decodificada pode ser feito só na casca, sem
@@ -281,16 +289,188 @@ a casca não inventa número, progresso, status, prompt ou prova.
   Activity/Lock Screen, a fase é o mesmo `executionProgress?.title`, com
   fallback honesto para `currentActivity?.title`; nunca texto de raciocínio.
 
-- [PARCIAL · C13 · Codex→Fable] **Autônomos é área 24/7 própria**: o Core agora
-  porta a superfície existente `ai/software-company-stewardship/loop` em
-  `AtlasAutonomos*` (áreas, lock/live, ciclos, backlog e recibo de
-  pause/resume/kill). `AutonomosModel` é uma fonte separada de `ConversationModel`
-  e já entra por `AtlasSession.autonomos`; controles exigem `operator_actor`,
-  ação explícita e só exibem o post-state devolvido pelo servidor. Fable deve
-  criar a rota/tela própria a partir desse seam — não filtrar threads por
-  `AtlasArea.autonomos`, não simular instâncias, não declarar `running` antes
-  de `run_state.lock.held`. Core checks + `make build` verdes; falta casca e
-  prova em device.
+- [PARCIAL · C14 · casca ligada em `06f88b5` (TurnPresence observa presence/traceId; ContentState aditivo paused/pausedDisplay; Widgets congelam ‖ m:ss; notificação só por fase terminal) — falta prova no device] **Presence é agora um contrato único, não uma
+  animação.** `ConversationModel.currentExecutionPresence` entrega somente
+  `phaseTitle`, `timing` (`running|paused|finished`), `isOngoing` e, para a
+  pausa emitida pelo servidor, `pauseTimestamp`; a chave canônica é
+  `currentExecutionPresenceTraceId`. Quando existir, o relógio vem em
+  `presence.elapsedActiveMilliseconds` + `presence.runningSince`: o servidor
+  acumula somente tempo ativo e persiste cada marco, portanto esse é o único
+  relógio permitido após pause/resume, reconnect, relaunch ou handoff. Em trace
+  legado, ambos ficam `nil`: mostrar a fase, sem fabricar duração. `TurnPresence`
+  e Widgets devem observar esses seams — não `bubbles.last?.currentActivity`,
+  `isSending` ou status cru — e manter a mesma Activity enquanto `isOngoing`
+  for verdadeiro, mesmo se o stream da tentativa fechou em
+  `awaiting_user_choice`.
+
+  Para `paused`, o título deve ser `Aguardando decisão` ou `Aguardando sistema
+  externo`, o contador de sessões continua ativo e o timer mostra exatamente
+  `elapsedActiveMilliseconds`, sem contar a espera. Para `running`, contar a
+  partir de `runningSince`; para `finished`, congelar o acumulado e encerrar
+  com a fase pública. Nunca iniciar com `pensando…`, nunca finalizar/avisar
+  “Atlas respondeu” apenas porque `isSending` virou falso. Alterar
+  `AtlasTurnAttributes.ContentState`/Widgets de modo aditivo para carregar o
+  acumulado e o marco de retomada necessários à Lock Screen e à Dynamic Island,
+  preservando o deep link pelo trace.
+
+- [PARCIAL · Continuidade · Codex→Fable] **Handoff entre superfícies preserva
+  a mesma thread e sessão.** `ConversationModel.handoffToSurface(_:)` aceita
+  somente `.mobile`, `.desktop` ou `.terminal` e publica
+  `model.latestSurfaceHandoff` apenas depois de `POST
+  /ai/threads/{thread}/handoff-surface`. O recibo tem `threadId`, `sessionId`,
+  origem, destino e status `ready`; não inclui brief, prompt, metadata, provider
+  nem conteúdo. A casca deve oferecer a ação só para uma conversa canônica e
+  dizer **“pronto para abrir no destino”** apenas com o recibo. O destino abre
+  a thread pelo `threadId` existente: não cria conversa, sessão, histórico ou
+  timer novos. Ainda falta a ligação visual/deep link do Fable, a abertura no
+  Desktop e a prova cruzada em device; portanto a cena 08 não está entregue.
+
+- [FEITO · Continuidade · Codex] O Atlas Terminal já consome uma thread de
+  outra superfície por `atlas:cli:state --thread=<threadId>`: a referência
+  explícita não é mais filtrada por `surface=atlas_cli`, preserva a mesma
+  sessão e não cria clone. A descoberta automática continua limitada à thread
+  CLI do workspace atual. Fable ainda precisa acionar o recibo e abrir o
+  destino; Desktop e prova cruzada no iPhone permanecem pendentes.
+
+- [PARCIAL · C15 · casca ligada em `06f88b5` (ChangeReviewSheet: unavailable explícito, diff canônico c/ aviso de hash, aceite por arquivo/run pós-recibo; entrada "Revisar mudanças" na conversa) — falta prova com trace real] **Artefatos e revisão só existem quando o
+  trace os prova.** A casca deve chamar
+  `model.refreshChangeReview(traceId:)` apenas para o trace da bolha e renderizar
+  `model.changeReviewsByTrace[traceId]`. `state == unavailable` é um estado
+  explícito (com `reason`); não mostrar arquivos, checks, diff ou botões.
+  `state == available` fornece os patches, controles, testes e findings já
+  persistidos, todos sem `engineering_run_id`. Para abrir um diff, chamar
+  `model.refreshChangeReviewDiff(traceId:patchId:)` e renderizar apenas
+  `model.changeReviewDiff(traceId:patchId:)`; nunca fazer rede na View, usar a
+  rota genérica de engineering ou tratar `diffURL` como autorização.
+
+  `accept` no run agora significa **aceitar todos os arquivos capturados** e
+  depois aceitar o run: chamar `model.applyChangeReview(traceId:action:note:)`
+  e só atualizar depois do `reviewReceipt`. Para um arquivo, a casca deve
+  renderizar somente `patch.fileReviews` e chamar
+  `model.applyChangeReviewFile(traceId:patchId:filePath:action:note:)` — o
+  model exige primeiro que `(trace, patch, file)` já pertença à projeção
+  canônica e depois confere o mesmo triplo no recibo. O servidor persiste o
+  estado atual por `(patch,file)` ligado ao `diff_hash`; o recibo é lifecycle
+  `trace_change_review_file_decided`. Não criar aprovação otimista, badge
+  'verificado' ou resultado de check derivado do texto. Se falhar, manter a
+  projeção anterior e mostrar o erro do model.
+
+- [FEITO · gate · Fable] A assinatura `WorkspaceView(..., freeOnly:)` está
+  coerente na casca atual; `cd App && make build` passou em 2026-07-13. Nenhum
+  Core/model foi alterado para contornar a integração visual.
+
+- [PARCIAL · C13 · Codex→Fable] **Autônomos é área 24/7 própria**: o Core porta a
+  superfície existente `ai/software-company-stewardship/loop` em
+  `AtlasAutonomos*` (áreas, lock/live, ciclos, backlog, entregas comprovadas e
+  recibo de pause/resume/kill). `AutonomosModel` é uma fonte separada de
+  `ConversationModel` e já entra por `AtlasSession.autonomos`.
+  `RootView.Route.autonomos` + `AutonomosView.swift` entregam a entrada própria
+  “Autônomos”: áreas registradas, lease real, objetivo, sistemas, ciclos,
+  backlog/inbox e controles com operador+motivo obrigatórios. A conversa não
+  é usada como fonte da Frota. O estado `executando` só aparece com
+  `run_state.lock.held`; a casca não exibe host, tarefa, uptime ou prova que o
+  endpoint ainda não forneceu. **Fable deve renderizar `model.delivered` como
+  “entregas comprovadas”: ele contém somente ciclos com `outcome=merged`,
+  `merge_performed=true` e `merge_hash`, nunca backlog/plano inferido.** O Core
+  agora também expõe a frota global real em `model.fleet` e seu ledger
+  append-only em `model.fleetHistory`: cada agente traz `alive`, `status`,
+  uptime, PIDs, gasto e estado desejado/autorizado; esses dados **não** são
+  associados artificialmente à área selecionada. A casca deve criar a seção
+  “Frota global” a partir desses tipos, e projetar somente campos públicos do
+  histórico (não `detail` JSON cru). Remover leitura direta de `JSONObject` da
+  View conforme cada tipo público do Core existir. Para placement, usar somente
+  `model.live?.runtimePlacement.host/acquiredAt/leaseTTLSeconds/environment/workspace/repository/branch`
+  e `area.repositoryNames`: todos são derivados no Core dos campos que o servidor
+  realmente publica. Workspace, repositório e branch são rótulos do lock real,
+  nunca caminho absoluto nem inferência da área/repo; se ausentes, permanecem
+  desconhecidos. O contrato de início também
+  é tipado: `execute` exige `operator_reason`, retorna somente o recibo
+  `enqueued` e deixa a execução depender do lease real. Provas: 35 testes PHP
+  / 276 asserts para os comandos HTTP do loop, 33 testes PHP / 198 asserts para
+  loop+governança; `swift run AtlasCoreChecks` + `make build` verdes. Faltam
+  missão, histórico completo, evidência e prova no device
+  antes de chamar a vertical de completa.
+
+- [FEITO em `06f88b5`] `AutonomosView.controls(for:)` não pode usar
+  `model.live?.readOnly` para desabilitar pause/resume/encerrar: esse campo
+  descreve o **GET** `/live`, enquanto os POSTs de controle existem, exigem
+  operador+motivo e retornam recibo. Usar exclusivamente
+  `model.canControlSelectedArea` para disponibilidade do controle. A ação
+  continua a passar por `model.control`, sem chamar rede na View.
+
+- [FEITO em `06f88b5`] Migrar os badges de área/loop de
+  `runState["…"]` para `area.loopStatus.phase` e
+  `model.live?.loopStatus.phase`. O Core resolve os sinais reais com a ordem
+  `terminated > paused > running > idle`; a View não deve reproduzir nem
+  reinterpretar essa lógica.
+
+- [FEITO em `06f88b5` (ensaio default; executar coleta ator+motivo; recibo mostrado como "na fila · ainda não iniciado")] O novo início de ciclo passa somente por
+  `await model.startRun(mode:operatorActor:operatorReason:)`. O default visual
+  deve ser `dry_run`; para `execute`, coletar ator e motivo auditável antes de
+  chamar o model. Depois, mostrar `model.lastStartRunReceipt` como **na fila,
+  ainda não iniciado** quando `isEnqueued`; jamais promovê-lo a “executando”.
+  O único sinal de execução continua sendo o lease relido em `model.live`.
+
+- [ABERTO · C13 · Codex→Fable] A decisão de finding usa exclusivamente
+  `await model.decide(_:findingHash:operatorActor:rationale:riskLevel:...)` e
+  o recibo `model.lastDecisionReceipt`. Para `accept` de risco `high` ou
+  `critical`, coletar justificativa antes do envio. Mesmo quando aceito,
+  apresentar como **decisão registrada, execução pendente do owner** somente
+  se `isRecordedDecisionOnly`; o contrato AP-724 proíbe apresentar branch,
+  provider, mutação de repo ou execução como ocorridos.
+
+- [PARCIAL · C13 · Codex→Fable] **Transferência real da mesma missão está
+  contratada.** `POST /loop/{area}/transfer` exige ator, motivo e um lock vivo;
+  persiste um recibo AP-790 ligado ao `run_id` fonte, pede yield somente no
+  limite seguro, guarda checkpoint, enfileira o sucessor com o mesmo
+  `area+focus` e o marca `target_claimed` apenas depois de ele adquirir o lock.
+  O Core expõe `AtlasAutonomosTransferInput/Response/Handoff` e
+  `AutonomosModel.transfer`/`refreshTransferStatus`. Fable deve oferecer a ação
+  somente por `await model.transfer(operatorActor:reason:)` e projetar os
+  estados `transfer_requested`/`source_released`/`successor_enqueued`/
+  `target_claimed` literalmente. Não escolher, mostrar ou prometer host alvo
+  antes de `target_claimed`; `model.lastTransferReceipt.handoff.checkpoint` é a
+  única fonte do checkpoint. Prova Codex: TDD red→green, 4 testes PHP/29
+  asserts + `swift run AtlasCoreChecks` verde. Falta renderização Fable e prova
+  no iPhone.
+
+- [FEITO · C13 · Codex] **Placement e topologia segura do runtime.** O lock
+  AP-790 passa a registrar no instante da aquisição somente os rótulos
+  verificados `environment`, `workspace`, `repository` e `branch`; a API
+  `/live` remove recursivamente `path` e `ledger_path` antes de responder. O
+  Core decodifica esses rótulos em `runtimePlacement`, sem a casca ler JSON ou
+  receber caminho absoluto. Prova: TDD red→green no runner (14 asserts),
+  `LoopCommandSurfaceTest` (45 asserts nos cenários live/control),
+  `swift run AtlasCoreChecks` verde. Fable pode exibir somente os seis campos
+  públicos de placement; ausência de branch não deve receber fallback visual.
+
+- [FEITO · C13 · Codex] **Saúde real da fila do músculo externo.**
+  `GET /agents/task-health` projeta somente contagens verificáveis da fila,
+  integridade de leases, flags de incidente e uma recomendação operacional
+  publicada pelo servidor. `AtlasAutonomosTaskHealthResponse` chega em
+  `AutonomosModel.taskHealth` como dado global: não pertence artificialmente à
+  área selecionada. O endpoint nunca devolve task packet, objetivo, prompt,
+  path, intervenção ou instrução executável. Prova TDD red→green: API 26
+  asserts; golden DTO; `swift run AtlasCoreChecks` e `make build` verdes.
+
+- [FEITO em `06f88b5` (saúde da fila: contagens+leases; incidente só quando present=true, com flags+recommendedAction)] Na seção **Frota global**, a casca pode mostrar
+  `model.taskHealth` somente como saúde da fila: `servableNow`, `claimed`,
+  `blocked`, `completed`, `recoverable`, leases e incidente. Não chamar isso
+  de lista, plano, missão, percentual de progresso ou task ledger: ainda não
+  existe uma relação área→packet nem títulos públicos sanitizados. Em
+  `incidents.present == false`, não criar alerta; em `true`, renderizar apenas
+  `incidents.flags` e `operating.recommendedAction` publicados pelo Core.
+
+- [PARCIAL em `06f88b5` (frota global real por model.fleet.agents: status/alive/uptime/pids/gasto/desired/authorized + fleetHistory público + placement do lock + entregas comprovadas + transferir com estados literais) — falta prova no device] A tela atual ainda não reproduz o Command Center da
+  referência: `fleetSummary` conta áreas, não `model.fleet.agents`; faltam os
+  cards da frota global com somente `status`, `alive`, `uptimeSeconds`, PIDs,
+  gasto e estado desejado/autorizado reais, e o histórico deve vir de
+  `model.fleetHistory.events` sem expor `detail` cru. Mostrar heartbeat,
+  incidente, progresso, missão transferida ou digest apenas quando o endpoint
+  oferecer o campo/prova correspondente. `abrir instância` ainda não tem
+  contrato Server: não criar affordance decorativa; pedir contrato ao Codex
+  antes. `transferir missão` tem o contrato acima; usá-lo sem inventar
+  placement/host futuro.
 
 - [ABERTO · QA real 2026-07-13 · Codex→Fable] **A casca foi exercitada contra
   o servidor de verdade no iPhone 17 Pro Simulator**: thread carregada, turno
@@ -490,6 +670,174 @@ a casca não inventa número, progresso, status, prompt ou prova.
   stdout, comando ou raciocínio no payload. Prova local: Feature test APNs
   start redigido + checks Core + build do app; a prova física ainda depende da
   chave APNs/capability assinada, portanto não confundir com entrega remota.
+- 2026-07-13 · Codex · C14 WIP local (sem commit) · fallback automático
+  Gemini→Claude passou a substituir o snapshot com `recovering` somente depois
+  de reenfileirar, e grava o mesmo estado público no lifecycle; quota/stderr e
+  detalhe do provider não entram na projeção móvel · prova: TDD red→green,
+  52 testes PHP / 364 asserts, `swift run AtlasCoreChecks` + `make build`
+  verdes. Recovery de job stale ainda é fatia pendente.
+- 2026-07-13 · Codex · C14 WIP local (sem commit) · recovery stale agora
+  projeta o estado público somente depois de mudar o job de verdade: direto
+  publica reenfileiramento ou falha terminal; Council publica recuperação ao
+  reenfileirar e só publica falha quando seu rollup terminou em falha. Nenhum
+  diagnóstico técnico entra no lifecycle · prova: TDD red→green, 55 testes
+  PHP / 387 asserts; `swift run AtlasCoreChecks` + `make build` verdes. A
+  integração/prova visual Fable 5 no iPhone continua pendente.
+- 2026-07-13 · Codex · C14 hardening local (sem commit) · o decoder Swift
+  falha fechado para `kind` desconhecido, ação com estilo inválido e título
+  acima do limite; nenhum desses payloads pode produzir card ou controle
+  inventado na casca · prova: golden checks novos verdes, `swift run
+  AtlasCoreChecks` + `make build` verdes e `git diff --check` limpo.
+- 2026-07-13 · Codex · C14 hardening local (sem commit) · pausa confirmada não
+  é mais tratada como reconnect esgotado: `InteractionRun` confere o snapshot
+  do trace, emite `suspended`, remove apenas a outbox já durável e preserva a
+  presença pelo mesmo trace. O servidor publica `paused_at` somente nos
+  estados pausáveis; Core valida o ISO, falha fechado se for inválido e expõe
+  `pauseTimestamp` para congelar o timer após reconnect/relaunch · prova: TDD
+  red→green, 6 testes PHP/41 asserts; `swift run AtlasCoreChecks`, `make build`
+  e `git diff --check` verdes. A ligação ActivityKit/Widget e a prova física
+  ainda pertencem à casca Fable e ao iPhone disponível.
+- 2026-07-13 · Codex · C15 WIP local (sem commit) · revisão de mudança agora
+  resolve somente o run unívoco cujo `trace_id` é o trace da conversa; zero ou
+  dois vínculos falham fechados. Projeção, diff e decisão usam rotas
+  trace-scoped e nunca retornam `engineering_run_id`; `accept|reject` persistem
+  a ação e um recibo lifecycle no ledger na mesma transação. O Core valida o
+  schema `atlas.trace_change_review.v1`, rejeita schema/estado inválido e o
+  model só expõe `refreshChangeReview`/`refreshChangeReviewDiff`/
+  `applyChangeReview` após conferir o mesmo trace e patch. Prova: TDD
+  red→green 5 testes PHP/38 asserts; `swift run AtlasCoreChecks` e `cd App &&
+  make build` verdes. A composição visual e a prova no iPhone permanecem com
+  Fable 5/dispositivo, portanto C15 não é marcada entregue.
+- 2026-07-13 · Codex · C16 WIP local (sem commit) · revisão por arquivo agora
+  é estado canônico, não affordance decorativa: a decisão aceita/rejeita apenas
+  path presente no patch do run unívoco da trace, persiste por `(patch,file)`
+  com `diff_hash`, e grava recibo lifecycle próprio. `accept` global registra o
+  aceite de todos os arquivos capturados na mesma transação antes de resolver o
+  run. Core recebeu DTO/cliente/model com revalidação trace→patch→file, sem rede
+  na View. Prova: TDD vermelho→verde, 7 testes PHP/48 asserts; `swift run
+  AtlasCoreChecks` verde. `cd App && make build` não passou por incompatibilidade
+  Fable preexistente `RootView freeOnly`/`WorkspaceView`; nenhum device claim.
+- 2026-07-13 · Codex · C13 WIP local (sem commit) · transferência AP-790 é
+  durável e sem host inventado: o endpoint só aceita um lock fonte vivo; o
+  runner entrega no limite de iteração com checkpoint; o job enfileira a mesma
+  missão; o sucessor só é recebido após o lock real. `GET transfer/{handoff}`
+  lê o recibo em vez de projetar otimismo. Core/model Swift receberam DTOs e
+  polling tipados; TDD vermelho→verde: feature HTTP 15 asserts, runner 7,
+  job 7; `swift run AtlasCoreChecks` verde. Casca Fable e prova física pendentes.
+- 2026-07-13 · Codex · C13 WIP local (sem commit) · placement tipado no Core:
+  host, instante e TTL de lease vêm somente do holder do lock; nomes de repo
+  vêm somente do escopo canônico da área. Workspace/branch não foram
+  inventados. Golden check vermelho→verde + `swift run AtlasCoreChecks` verde.
+- 2026-07-14 · Codex · C13 WIP local (sem commit) · saúde global da fila do
+  músculo externo: `/agents/task-health` fornece apenas contagens, leases,
+  flags e recomendação publicada; Core/model recebem DTO tipado sem task
+  packet, objetivo, prompt, path ou instrução executável. Prova: TDD 404→200,
+  8 testes PHP/47 asserts no Agent Governance API; golden Swift; `swift run
+  AtlasCoreChecks` + `cd App && make build` verdes. Renderização Fable e prova
+  no iPhone seguem pendentes.
+- 2026-07-14 · Codex · Continuidade WIP local (sem commit) · recibo de handoff
+  entre superfícies mantém `thread_id` e `session_id` canônicos e só projeta
+  origem/destino/status; provider brief, prompt, metadata e conteúdo não
+  atravessam. Servidor: migration aplicada + API TDD 404→200 (2 testes/15
+  asserts). Native: DTO, destinos fechados e seam `ConversationModel`, golden
+  TDD compilação vermelha→verde; `swift run AtlasCoreChecks` e `make build`
+  verdes. Faltam UI Fable, abertura no Desktop/Terminal e prova no iPhone.
+- 2026-07-14 · Codex · Continuidade WIP local (sem commit) · o Terminal agora
+  reabre uma thread de Mobile quando `--thread` é explícito, sem mudar a
+  descoberta automática de threads CLI por workspace. Prova TDD: falhava com
+  thread nula; `AtlasCliContinueCommandTest` verde (5 asserts), API surface
+  handoff verde (15 asserts). Desktop/UI Fable e prova cruzada física seguem
+  pendentes.
+- 2026-07-14 · Codex · C14 WIP local (sem commit) · o contrato de presença
+  agora persiste `timer.elapsed_active_ms` e marcos tipados de pausa/retomada/
+  término no ledger público. O servidor acumula apenas trabalho ativo entre
+  pause→resume→pause; Core Swift falha fechado para timer malformado e expõe o
+  acumulado à casca. Prova: TDD vermelho→verde no serviço (8 testes/53
+  asserts), bateria C14 do Worker/Resolver/controle (57 testes/403 asserts) e
+  `swift run AtlasCoreChecks` verde. ActivityKit/Widgets, screenshot e iPhone
+  físico ainda dependem da integração Fable e do device; não são declarados
+  entregues. Tentativa física em 2026-07-14: `make device` parou antes do
+  deploy porque não havia iPhone pareado e conectado; nenhuma evidência de
+  device foi fabricada.
+- 2026-07-14 · Codex · C14 hardening local (sem commit) · o decoder rejeita
+  um timer que contradiga a fase pública: atenção/espera exigem pausa,
+  recuperação/replanejamento exigem execução e falha/conclusão exigem relógio
+  finalizado. Traces legados sem timer continuam aceitos, mas contratos novos
+  inconsistentes não podem fazer App, Lock Screen e Dynamic Island divergir.
+  Prova TDD vermelho→verde: golden check novo, `swift run AtlasCoreChecks`,
+  `cd App && make build` e `git diff --check` verdes. Prova física continua
+  pendente de iPhone pareado/conectado.
+- 2026-07-14 · Codex · C13 hardening local (sem commit) · o teste de `/live`
+  foi alinhado ao contrato provider-safe: `path` interno de sinais/lease não
+  volta na projeção móvel, embora o runner continue a usá-lo internamente.
+  A bateria HTTP de áreas, ciclo, backlog, controles e transferência passou
+  com 45 testes / 344 asserts; `git diff --check` verde. A renderização Fable
+  e a prova no iPhone seguem pendentes.
+- 2026-07-14 · Codex · C13 hardening local (sem commit) · `/cycles` deixou de
+  devolver recibos internos do ledger. A allow-list pública contém apenas
+  marco, resultado, integridade, bloqueios codificados, resultado de merge e
+  horário; backlog de plano, referências diagnósticas, workcell e IDs internos
+  ficam no ledger/auditoria. `AtlasAutonomosCycle` torna a mesma projeção
+  Foundation-only no app. Prova TDD vermelho→verde: 46 testes HTTP / 353
+  asserts, `swift run AtlasCoreChecks`, `cd App && make build` e
+  `git diff --check` verdes. Fable ainda precisa renderizar esse histórico e
+  falta prova no iPhone.
+- 2026-07-13 · Codex · C7 hardening local (sem commit) · o preflight não exige
+  mais um `tunnelState=connected` já existente: `devicectl` adquiriu o túnel do
+  iPhone pareado sob demanda no `lockState`. Os scripts só selecionam iOS
+  pareado e deixam a sonda operacional decidir antes de apagar evidência ou
+  iniciar Xcode. TDD vermelho→verde no harness, `swift run AtlasCoreChecks`,
+  `cd App && make build` e `git diff --check` verdes. `make device-proof`
+  chegou ao aparelho e parou corretamente em `passcodeRequired: true`; nenhuma
+  evidência física foi fabricada.
+- 2026-07-13 · Codex · C13 hardening local (sem commit) · o histórico global
+  da frota agora é uma allow-list pública. `/agents/history` mantém `detail`
+  arbitrário apenas no ledger de auditoria e envia ao app agente, evento,
+  horário, ator/conta codificados, PID/duração e motivo codificado. O
+  `AtlasAutonomosFleetHistoryEvent` não possui mais JSON livre. Prova TDD
+  vermelho→verde contra prompt, chave e path sintéticos: 55 testes HTTP / 408
+  asserts, `swift run AtlasCoreChecks`, `cd App && make build` e
+  `git diff --check` verdes. A renderização Fable e a prova no iPhone seguem
+  pendentes.
+- 2026-07-13 · Codex · C13 hardening local (sem commit) · `/live` não entrega
+  mais o agregado inteiro Product Mode ao app. O cockpit agora é
+  `atlas.autonomos.cockpit_summary.v1` com apenas `status`; filas, diagnósticos
+  e instruções ficam no owner interno até existir contrato público próprio.
+  O Core recebeu `AtlasAutonomosCockpitSummary`. Prova TDD vermelho→verde: 27
+  testes HTTP / 232 asserts, `swift run AtlasCoreChecks`, `cd App && make build`
+  e `git diff --check` verdes. Fable não deve inferir missão, progresso ou
+  detalhe do resumo; prova física continua pendente.
+- 2026-07-13 · Codex · C13 hardening local (sem commit) · `/areas` reduz
+  `repo_scope` a `repos` públicos. `allowed_paths`, `forbidden_paths` e demais
+  policy/topologia canônicas não saem do servidor; Core usa
+  `AtlasAutonomosRepositoryScope` em vez de `JSONObject`. Prova TDD
+  vermelho→verde: 37 testes HTTP / 299 asserts, `swift run AtlasCoreChecks`,
+  `cd App && make build` e `git diff --check` verdes. Fable pode exibir apenas
+  `area.repositoryNames`; prova física continua pendente.
+- 2026-07-13 · Codex · C13 hardening local (sem commit) · `/done` deixou de
+  vazar o recorte bruto do ledger: cada entrega comprovada agora usa a mesma
+  allow-list de `/cycles`, sem `run_id`, `cycle_id`, `finding_key`, prompt,
+  workcell ou payload do worker. Core decodifica `AtlasAutonomosCycle`, não
+  JSON livre. Prova TDD vermelho→verde: 46 testes HTTP / 360 asserts,
+  `swift run AtlasCoreChecks`, `cd App && make build` e `git diff --check`
+  verdes. A renderização Fable e a prova no iPhone permanecem pendentes.
+- 2026-07-13 · Codex · C13 hardening local (sem commit) · o recibo de
+  `run-control` agora tem contrato fechado no Core: `AtlasAutonomosSignalState`
+  contém somente `active`. A API já redigia `path`; dois testes unitários ainda
+  exigiam esse dado interno e foram corrigidos para provar o sinal real no
+  runner sem recolocá-lo no payload. Prova de regressão: 54 testes HTTP / 414
+  asserts, `swift run AtlasCoreChecks`, `cd App && make build` e
+  `git diff --check` verdes. Casca Fable e evidência física continuam pendentes.
+- 2026-07-13 · Codex · C13 hardening local (sem commit) · backlog Autônomos
+  deixou de atravessar o Core como `JSONObject`/`JSONValue`: findings, work
+  orders, inbox e budgets agora têm DTOs Foundation-only com os campos públicos
+  declarados pelo servidor (hash, título público do backlog, risco, rota,
+  decisão, status e limites). Payload, rationale, evidência bruta, path, prompt
+  e stdout não cabem no tipo. O teste HTTP fixa as chaves reais do endpoint e o
+  golden Swift decodifica a bateria inteira. Prova: 54 testes PHP / 684 asserts,
+  `swift run AtlasCoreChecks`, `cd App && make build` e `git diff --check`
+  verdes. Fable pode usar `backlog.findings.items`, `workOrders`, `inboxItems`
+  e `budgets` sem parsing; prova no iPhone continua pendente.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
