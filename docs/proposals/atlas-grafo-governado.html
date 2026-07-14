@@ -88,7 +88,7 @@
   .rulerow .ok.bad .ic { color: var(--red); }
 
   /* grafo */
-  .gwrap { position: relative; padding: 6px 18px 76px 12px; }
+  .gwrap { position: relative; padding: 6px 18px 18px 12px; }
   .gcols { display: grid; grid-template-columns: 128px 112px 1fr 118px 48px; padding: 10px 8px 8px; font-size: 10px; letter-spacing: 0.08em; font-weight: 600; text-transform: uppercase; color: var(--ink4); }
   .gbody { position: relative; }
   .gsvg { position: absolute; left: 128px; top: 0; width: 112px; height: 540px; overflow: visible; pointer-events: none; }
@@ -119,8 +119,8 @@
   .refchip.done { color: var(--green-hi); background: rgba(131,180,109,0.08); box-shadow: inset 0 0 0 1px rgba(131,180,109,0.3); }
 
   /* violação: sinal contido e preciso */
-  .grow.viol-armed.viol { background: rgba(224,140,140,0.05); box-shadow: inset 2px 0 0 var(--red); }
-  .grow.viol-armed.violA { background: rgba(212,168,90,0.045); box-shadow: inset 2px 0 0 var(--gold); }
+  .grow.viol-armed.viol { box-shadow: inset 2px 0 0 var(--red); }
+  .grow.viol-armed.violA { box-shadow: inset 2px 0 0 var(--gold); }
   .violtag { position: absolute; right: 176px; top: 50%; transform: translateY(-50%) translateX(6px); display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0; padding: 4.5px 11px; border-radius: 999px; opacity: 0; transition: all 0.5s cubic-bezier(0.32,0.72,0,1); white-space: nowrap; }
   .violtag .ic { width: 12px; height: 12px; }
   .violtag em { font-style: normal; font-weight: 400; opacity: 0.66; }
@@ -128,18 +128,6 @@
   .violtag.red { color: var(--red-hi); background: rgba(224,140,140,0.1); box-shadow: inset 0 0 0 1px rgba(224,140,140,0.32); }
   .violtag.amber { color: var(--gold-hi); background: rgba(212,168,90,0.1); box-shadow: inset 0 0 0 1px rgba(212,168,90,0.32); }
 
-  .verdict {
-    position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(12px) scale(0.98);
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(16,25,32,0.78); backdrop-filter: blur(14px);
-    border: 1px solid var(--hairline-hi); border-radius: 999px; padding: 10px 22px;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.09);
-    opacity: 0; transition: all 0.65s cubic-bezier(0.32,0.72,0,1); white-space: nowrap;
-  }
-  .verdict.on { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-  .verdict .ic { width: 14px; height: 14px; color: var(--red); }
-  .verdict b { font-size: 13px; font-weight: 700; color: var(--red-hi); letter-spacing: -0.01em; }
-  .verdict span { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink2); }
 
   .lane { fill: none; stroke-linecap: round; }
   .dr { transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
@@ -148,10 +136,6 @@
   .pulse-r { animation: pulsr 1.7s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
   @keyframes pulsr { 50% { opacity: 0.3; } }
 
-  .gg-legend { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; padding: 11px 20px 13px; border-top: 1px solid var(--hairline); background: rgba(0,0,0,0.15); }
-  .lg { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 500; color: var(--ink3); }
-  .lg .ic { width: 12px; height: 12px; }
-  .gg-legend .src { margin-left: auto; font-family: var(--mono); font-size: 9px; color: var(--ink4); }
 
   .capd { margin-top: 14px; font-size: 12.5px; line-height: 1.6; color: var(--ink3); text-wrap: pretty; }
   .capd em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
@@ -174,7 +158,7 @@
   .ph-back { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.055); border: 0.5px solid var(--hairline); display: flex; align-items: center; justify-content: center; color: var(--ink2); }
   .ph-back .ic { width: 13px; height: 13px; }
   .ph-title { font-family: var(--serif); font-weight: 600; font-size: 23px; letter-spacing: -0.01em; text-align: center; margin-top: 10px; }
-  .ph-sub { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; color: var(--ink4); text-transform: uppercase; text-align: center; margin-top: 5px; }
+  .ph-sub { font-size: 11px; color: var(--ink3); text-align: center; margin-top: 5px; }
 
   .cap { margin: 13px auto 0; display: flex; align-items: center; gap: 7px; width: fit-content; font-size: 11px; font-weight: 600; padding: 6.5px 15px; border-radius: 999px; backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.32,0.72,0,1); }
   .cap .ic { width: 12px; height: 12px; }
@@ -297,33 +281,29 @@
       <div class="rail">
         <div class="rk">Repositórios</div>
         <div class="rrow sel"><svg class="ic"><use href="#i-repo"/></svg>atlas-server<span class="cnt bad">2</span></div>
-        <div class="rrow"><svg class="ic"><use href="#i-repo"/></svg>atlas-native<span class="cnt">✓</span></div>
-        <div class="rrow"><svg class="ic"><use href="#i-repo"/></svg>blackink-app<span class="cnt">✓</span></div>
+        <div class="rrow"><svg class="ic"><use href="#i-repo"/></svg>atlas-native</div>
+        <div class="rrow"><svg class="ic"><use href="#i-repo"/></svg>blackink-app</div>
         <div class="divi"></div>
         <div class="rk">Regras vigiando</div>
         <div class="rulerow"><svg class="ic"><use href="#i-shield"/></svg>main-only pétreo<span class="ok bad" id="rl1"><svg class="ic"><use href="#i-warn"/></svg></span></div>
         <div class="rulerow"><svg class="ic"><use href="#i-shield"/></svg>allowlist worktrees<span class="ok bad" id="rl2"><svg class="ic"><use href="#i-warn"/></svg></span></div>
         <div class="rulerow"><svg class="ic"><use href="#i-shield"/></svg>obra → main ≤ 2d<span class="ok bad" id="rl3"><svg class="ic"><use href="#i-warn"/></svg></span></div>
-        <div class="rulerow"><svg class="ic"><use href="#i-shield"/></svg>varredura de segredos<span class="ok"><svg class="ic"><use href="#i-check"/></svg></span></div>
-        <div class="rulerow"><svg class="ic"><use href="#i-shield"/></svg>drift de espelho<span class="ok"><svg class="ic"><use href="#i-check"/></svg></span></div>
+        <div class="rulerow"><svg class="ic"><use href="#i-shield"/></svg>varredura de segredos</div>
+        <div class="rulerow"><svg class="ic"><use href="#i-shield"/></svg>drift de espelho</div>
       </div>
       <div class="gwrap">
-        <div class="gcols"><span>Ref</span><span>Grafo</span><span>Mensagem</span><span>Autor</span><span style="text-align:right">Qdo</span></div>
+        <div class="gcols"><span>Ref</span><span>Grafo</span><span>Mensagem</span><span>Autor</span><span></span></div>
         <div class="gbody">
           <svg class="gsvg" viewBox="0 0 112 540" preserveAspectRatio="none" aria-hidden="true">
             <defs>
-              <linearGradient id="lgMain" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="lgMain" gradientUnits="userSpaceOnUse" x1="0" y1="27" x2="0" y2="513">
                 <stop offset="0" stop-color="#ecc984"/><stop offset="1" stop-color="#bb8d4c"/>
               </linearGradient>
             </defs>
             <!-- glow barato: traço largo por baixo · curvas com tangente vertical (midpoint) -->
-            <line id="ln-main-g" class="lane dr" x1="24" y1="27" x2="24" y2="513" stroke="#d4a85a" stroke-width="9" opacity="0.12" stroke-dasharray="900" stroke-dashoffset="900"/>
             <line id="ln-main" class="lane dr" x1="24" y1="27" x2="24" y2="513" stroke="url(#lgMain)" stroke-width="3" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
-            <path id="ln-b-g" class="lane dr" d="M24,513 C24,405 56,405 56,297 L56,243 C56,216 24,216 24,189" stroke="#82a8bd" stroke-width="7" opacity="0.1" stroke-dasharray="900" stroke-dashoffset="900"/>
             <path id="ln-b" class="lane dr" d="M24,513 C24,405 56,405 56,297 L56,243 C56,216 24,216 24,189" stroke="#82a8bd" stroke-width="2.5" opacity="0.85" stroke-dasharray="900" stroke-dashoffset="900"/>
-            <path id="ln-c-g" class="lane dr" d="M24,513 C24,486 88,486 88,459 L88,351" stroke="#d4a85a" stroke-width="7" opacity="0.09" stroke-dasharray="900" stroke-dashoffset="900"/>
             <path id="ln-c" class="lane dr" d="M24,513 C24,486 88,486 88,459 L88,351" stroke="#d4a85a" stroke-width="2.5" opacity="0.6" stroke-dasharray="900" stroke-dashoffset="900"/>
-            <path id="ln-d-g" class="lane dr" d="M24,135 C24,108 56,108 56,81" stroke="#e08c8c" stroke-width="7" opacity="0.14" stroke-dasharray="900" stroke-dashoffset="900"/>
             <path id="ln-d" class="lane dr" d="M24,135 C24,108 56,108 56,81" stroke="#e08c8c" stroke-width="2.5" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
 
             <!-- nós: sistema único — disco 5.5, anel do fundo 2, cor da lane -->
@@ -342,7 +322,7 @@
           </svg>
 
           <div class="grow" id="r0"><div><span class="refchip main"><svg class="ic"><use href="#i-branch"/></svg>main</span></div><div></div>
-            <div><div class="msg">polish(ui): recibo de conclusão vivo</div><div class="meta">2acbfa5 · gates ✓</div></div>
+            <div><div class="msg">polish(ui): recibo de conclusão vivo</div><div class="meta">2acbfa5</div></div>
             <div class="who"><span class="ava fable"><svg class="ic"><use href="#i-spark"/></svg></span>fable</div><div class="when">2h</div></div>
           <div class="grow viol" id="r1"><div><span class="refchip rogue"><svg class="ic"><use href="#i-branch"/></svg>hotfix-rapido</span></div><div></div>
             <div><div class="msg">wip: ajuste rápido no worker</div><div class="meta">sem gate · fora da main</div></div>
@@ -352,20 +332,20 @@
             <div><div class="msg">docs(obra): canon — Autônomos é área própria</div><div class="meta">8b0af2d</div></div>
             <div class="who"><span class="ava you"><svg class="ic"><use href="#i-user"/></svg></span>você</div><div class="when">1d</div></div>
           <div class="grow" id="r3"><div><span class="refchip done"><svg class="ic"><use href="#i-merge"/></svg>obra-11</span></div><div></div>
-            <div><div class="msg">Merge governado — obra-11 → main</div><div class="meta">varredura ✓ · recibo 4c11a · vitor</div></div>
+            <div><div class="msg">Merge governado: obra-11 → main</div><div class="meta">varredura ✓ · recibo 4c11a · vitor</div></div>
             <div class="who"><span class="ava you"><svg class="ic"><use href="#i-user"/></svg></span>você</div><div class="when">1d</div></div>
           <div class="grow" id="r4"><div></div><div></div>
-            <div><div class="msg">feat(core): fila durável de follow-ups</div><div class="meta">da25e8a · 232 checks ✓</div></div>
+            <div><div class="msg">feat(core): fila durável de follow-ups</div><div class="meta">da25e8a · 232 checks</div></div>
             <div class="who"><span class="ava codex"><svg class="ic"><use href="#i-diamond"/></svg></span>codex</div><div class="when">1d</div></div>
           <div class="grow" id="r5"><div></div><div></div>
-            <div><div class="msg">test(core): contrato da fila</div><div class="meta">91bd02f · gates ✓</div></div>
+            <div><div class="msg">test(core): contrato da fila</div><div class="meta">91bd02f</div></div>
             <div class="who"><span class="ava codex"><svg class="ic"><use href="#i-diamond"/></svg></span>codex</div><div class="when">1d</div></div>
           <div class="grow violA" id="r6"><div><span class="refchip obra"><svg class="ic"><use href="#i-branch"/></svg>obra-12</span></div><div></div>
-            <div><div class="msg">feat(report): motor de relatórios</div><div class="meta">0f33c81 · gates ✓</div></div>
+            <div><div class="msg">feat(report): motor de relatórios</div><div class="meta">0f33c81</div></div>
             <div class="who"><span class="ava fable"><svg class="ic"><use href="#i-spark"/></svg></span>fable</div><div class="when">3d</div>
             <div class="violtag amber" id="v6"><svg class="ic"><use href="#i-warn"/></svg>Obra parada <em>· 14 commits · 3d sem voltar à main</em></div></div>
           <div class="grow" id="r7"><div></div><div></div>
-            <div><div class="msg">feat(report): agregadores por período</div><div class="meta">7ac2e10 · gates ✓</div></div>
+            <div><div class="msg">feat(report): agregadores por período</div><div class="meta">7ac2e10</div></div>
             <div class="who"><span class="ava fable"><svg class="ic"><use href="#i-spark"/></svg></span>fable</div><div class="when">3d</div></div>
           <div class="grow viol" id="r8"><div></div><div></div>
             <div><div class="msg">chore: experimento de schema</div><div class="meta">worktree /private/tmp/wt-9f2</div></div>
@@ -375,18 +355,10 @@
             <div><div class="msg">versão final</div><div class="meta">c4091ee</div></div>
             <div class="who"><span class="ava you"><svg class="ic"><use href="#i-user"/></svg></span>você</div><div class="when">4d</div></div>
         </div>
-        <div class="verdict" id="ggverdict"><svg class="ic"><use href="#i-warn"/></svg><b>3 violações</b><span>— o grafo apontou sozinho; o resto ficou quieto</span></div>
       </div>
     </div>
-    <div class="gg-legend">
-      <span class="lg"><svg class="ic" style="color:var(--gold)"><use href="#i-spark"/></svg>fable</span>
-      <span class="lg"><svg class="ic" style="color:var(--blue)"><use href="#i-diamond"/></svg>codex</span>
-      <span class="lg"><svg class="ic" style="color:var(--green)"><use href="#i-user"/></svg>você</span>
-      <span class="lg"><svg class="ic" style="color:var(--red)"><use href="#i-warn"/></svg>violação — pulsa até decisão</span>
-      <span class="src">fontes: git log --all --topo-order · ledger (identidade) · canon (regras)</span>
-    </div>
   </div>
-  <p class="capd">A cena: o grafo se desenha como você conhece — a main é a <em>espinha luminosa</em>, as curvas entram e saem com tangente perfeita, cada nó tem autor. Aí a lei passa por cima: a linha inteira da branch proibida <em>acende com o nome da regra</em>; a obra-12 — cuja lane <em>morre no ar, sem voltar</em> — ganha a etiqueta âmbar; a worktree fora da allowlist pulsa quarentenada. A obra-11, que voltou à main com recibo, fica quieta. <em>Saudável não grita.</em></p>
+  <p class="capd">A cena: o grafo se desenha como você conhece — a main é a <em>espinha luminosa</em>, as curvas entram e saem com tangente perfeita, cada nó tem autor. Aí a lei passa por cima: a linha inteira da branch proibida <em>acende com o nome da regra</em>; a obra-12 — cuja lane <em>morre no ar, sem voltar</em> — ganha a etiqueta âmbar; a worktree fora da allowlist pulsa quarentenada. A obra-11, que voltou à main com recibo, fica quieta. <em>Saudável não grita.</em> Fontes de cada sinal: <code style="font-family:var(--mono); font-size:10px">git log --all --topo-order</code> · ledger (identidade por commit) · canon (regras).</p>
 
   <!-- ═══ IPHONE + ESTRUTURA ═══ -->
   <div class="duo">
@@ -397,18 +369,16 @@
         <div class="content">
           <div class="ph-nav"><div class="ph-back"><svg class="ic"><use href="#i-chev"/></svg></div><div style="width:30px"></div></div>
           <div class="ph-title">atlas-server</div>
-          <div class="ph-sub">grafo governado · local</div>
+          <div class="ph-sub">Grafo governado · local</div>
           <div class="cap bad" id="gpcap"><svg class="ic" id="gpcapi"><use href="#i-warn"/></svg><span id="gpcapt">1 desvio da main</span></div>
           <div class="mgraph">
             <svg viewBox="0 0 292 452" width="100%" aria-label="grafo visual mobile — main como espinha">
               <defs>
-                <linearGradient id="mlgMain" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="mlgMain" gradientUnits="userSpaceOnUse" x1="0" y1="24" x2="0" y2="428">
                   <stop offset="0" stop-color="#ecc984"/><stop offset="1" stop-color="#bb8d4c"/>
                 </linearGradient>
               </defs>
-              <line class="lane dr" id="mln-g" x1="30" y1="24" x2="30" y2="428" stroke="#d4a85a" stroke-width="8" opacity="0.12" stroke-dasharray="900" stroke-dashoffset="900"/>
               <line class="lane dr" id="mln" x1="30" y1="24" x2="30" y2="428" stroke="url(#mlgMain)" stroke-width="2.5" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
-              <path class="lane dr" id="mfork-g" d="M30,164 C30,136 66,136 66,108" stroke="#e08c8c" stroke-width="6" opacity="0.14" stroke-dasharray="200" stroke-dashoffset="200"/>
               <path class="lane dr" id="mfork" d="M30,164 C30,136 66,136 66,108" stroke="#e08c8c" stroke-width="2.2" opacity="0.95" stroke-dasharray="200" stroke-dashoffset="200"/>
               <path class="lane" id="mreturn" d="M66,108 C66,80 30,80 30,52" stroke="#83b46d" stroke-width="2.2" stroke-dasharray="200" stroke-dashoffset="200" style="transition: stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1)"/>
 
@@ -418,7 +388,6 @@
                 <text class="mrow-meta" x="52" y="63">fable · 9a06fd4 · main · 2h</text>
               </g>
               <g class="nd" id="gm2">
-                <rect x="48" y="86" rx="11" width="236" height="44" fill="rgba(224,140,140,0.06)" stroke="rgba(224,140,140,0.3)" stroke-width="0.75"/>
                 <circle id="gm2dot" cx="66" cy="108" r="5" fill="#e08c8c" stroke="#1b2830" stroke-width="2"/>
                 <text class="mrow-msg" x="84" y="105" fill="#f2b3ab">wip: ajuste rápido no worker</text>
                 <text class="mrow-meta" x="84" y="119" fill="#c98a8a">forge-3 · hotfix-rapido · fora da main</text>
@@ -531,38 +500,36 @@ function boot() {
 
 /* Desktop: espinha desenha → linhas cascateiam → a lei acende linha a linha → veredito */
 scene1(({ at, loop }) => {
-  ['ln-main','ln-main-g','ln-b','ln-b-g','ln-c','ln-c-g','ln-d','ln-d-g'].forEach(id => { $(id).style.strokeDashoffset = 900; });
+  ['ln-main','ln-b','ln-c','ln-d'].forEach(id => { $(id).style.strokeDashoffset = 900; });
   for (let i = 0; i <= 9; i++) { $('r' + i).classList.remove('on','viol-armed'); }
   ['sn0','sn1','sn1r','sn2','sn3','sn4','sn5','sn6','sn7','sn8','sn8r','sn9'].forEach(id => $(id).classList.remove('on'));
   ['v1','v6','v8'].forEach(id => $(id).classList.remove('on'));
-  $('ggverdict').classList.remove('on');
   $('ggcountt').textContent = 'verificando regras…';
-  at(250, () => { $('ln-main').style.strokeDashoffset = 0; $('ln-main-g').style.strokeDashoffset = 0; });
-  at(700, () => { ['ln-b','ln-b-g','ln-c','ln-c-g','ln-d','ln-d-g'].forEach(id => $(id).style.strokeDashoffset = 0); });
+  at(250, () => { $('ln-main').style.strokeDashoffset = 0; });
+  at(700, () => { ['ln-b','ln-c','ln-d'].forEach(id => $(id).style.strokeDashoffset = 0); });
   const rows = [9,8,7,6,5,4,3,2,1,0];
   const nodes = { 9:'sn9', 8:'sn8', 7:'sn7', 6:'sn6', 5:'sn5', 4:'sn4', 3:'sn3', 2:'sn2', 1:'sn1', 0:'sn0' };
   rows.forEach((r, i) => at(950 + i * 220, () => { $('r' + r).classList.add('on'); $(nodes[r]).classList.add('on'); }));
   at(3600, () => { $('r1').classList.add('viol-armed'); $('sn1r').classList.add('on'); $('v1').classList.add('on'); });
   at(4200, () => { $('r6').classList.add('viol-armed'); $('v6').classList.add('on'); });
   at(4800, () => { $('r8').classList.add('viol-armed'); $('sn8r').classList.add('on'); $('v8').classList.add('on'); $('ggcountt').textContent = '3 violações · atlas-server'; });
-  at(5800, () => $('ggverdict').classList.add('on'));
   loop(12500);
 });
 
 /* iPhone: o mapa PRIMEIRO → desvio salta ao olho → folha de vidro → a volta é desenhada */
 scene1(({ at, loop }) => {
-  $('mln').style.strokeDashoffset = 900; $('mln-g').style.strokeDashoffset = 900;
-  $('mfork').style.strokeDashoffset = 200; $('mfork-g').style.strokeDashoffset = 200;
+  $('mln').style.strokeDashoffset = 900;
+  $('mfork').style.strokeDashoffset = 200;
   $('mreturn').style.strokeDashoffset = 200;
   ['gm1','gm2','gm3','gm4','gm5','gm6','gm7','gmr'].forEach(id => $(id).classList.remove('on'));
   $('gm2dot').setAttribute('fill', '#e08c8c');
   $('gsheet').classList.remove('on'); $('gfix').classList.remove('pressed'); $('grcpt').classList.remove('on');
   $('gpcap').className = 'cap bad'; $('gpcapt').textContent = '1 desvio da main';
   $('gpcapi').innerHTML = '<use href="#i-warn"/>';
-  at(300, () => { $('mln').style.strokeDashoffset = 0; $('mln-g').style.strokeDashoffset = 0; });
+  at(300, () => { $('mln').style.strokeDashoffset = 0; });
   const espinha = ['gm7','gm6','gm5','gm4','gm3','gm1'];
   espinha.forEach((id, i) => at(650 + i * 220, () => $(id).classList.add('on')));
-  at(2300, () => { $('mfork').style.strokeDashoffset = 0; $('mfork-g').style.strokeDashoffset = 0; });
+  at(2300, () => { $('mfork').style.strokeDashoffset = 0; });
   at(2750, () => { $('gm2').classList.add('on'); $('gmr').classList.add('on'); });
   at(4600, () => $('gsheet').classList.add('on'));
   at(6900, () => $('gfix').classList.add('pressed'));
