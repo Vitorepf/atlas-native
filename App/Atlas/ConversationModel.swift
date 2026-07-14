@@ -41,6 +41,24 @@ struct ChatBubble: Identifiable, Equatable {
     /// Posição do último checkpoint público observado no ledger. `nil` é o
     /// estado honesto para traces legados ou sem checkpoint, não zero falso.
     var executionProgress: AtlasExecutionPlan.Progress? = nil
+    /// Estado editorial público e acionável, recebido do ledger/snapshot. A
+    /// View nunca deduz atenção, recovery ou falha a partir de texto do modelo.
+    var executionPresentationState: AtlasExecutionPresentationState? = nil
+    /// Job real que aceitaria uma ação pública. `nil` fora de atenção necessária;
+    /// a casca usa este id apenas através de `resolveExecutionChoice`.
+    var executionChoiceJobId: String? = nil
+    /// C17: job real que FALHOU e aceita retry (`/ai/jobs/{id}/retry`). `nil`
+    /// quando não há job em estado falho; a casca só oferece "Retomar" com ele.
+    var retryableJobId: String? = nil
+    /// Dado único para presença do iOS: título de fase e regra de timer vêm do
+    /// Core tipado, nunca de uma animação ou de texto do provider.
+    var executionPresence: AtlasExecutionPresence? {
+        AtlasExecutionPresence(
+            isExecuting: streaming,
+            presentationState: executionPresentationState,
+            currentActivity: currentActivity
+        )
+    }
 }
 
 // Anexo local (pré-envio) — o ÚNICO contrato de UI de anexos: a strip do
@@ -109,6 +127,16 @@ final class ConversationModel {
     var queuedMessages: [QueuedMessage] = []
     /// Preferência persistente pertence ao model; a View só renderiza/cicla.
     var effort: AtlasComputeEffort
+    /// Revisões carregadas sob demanda e sempre indexadas pelo trace público.
+    /// A casca pode mostrar ausência/indisponibilidade, mas não fabricar patch,
+    /// resultado de check ou decisão antes desta leitura canônica.
+    private(set) var changeReviewsByTrace: [String: AtlasTraceChangeReview] = [:]
+    /// Conteúdo de diff só entra aqui depois de o patch ser confirmado na
+    /// projeção do mesmo trace; a View nunca faz a requisição por conta própria.
+    private(set) var changeReviewDiffsByKey: [String: AtlasTraceChangeReviewDiffResponse] = [:]
+    /// Último recibo de continuidade. A View pode projetá-lo, mas nunca cria
+    /// sessão/local history por conta própria para simular o handoff.
+    private(set) var latestSurfaceHandoff: AtlasAiSurfaceHandoff?
 
     private let client: AtlasClient
     private(set) var threadId: String?
@@ -126,6 +154,26 @@ final class ConversationModel {
         bubbles.last(where: { $0.streaming && $0.traceId != nil })?.traceId
     }
 
+    /// Fonte única para Lock Screen e Dynamic Island. Inclui espera durável
+    /// confirmada pelo servidor mesmo depois que a conexão SSE da tentativa
+    /// fechou; a casca não deve inventar uma fase nesse intervalo.
+    var currentExecutionPresence: AtlasExecutionPresence? {
+        currentPresenceBubble?.executionPresence
+    }
+
+    /// Identidade canônica da mesma presença. A casca usa-a como chave da Live
+    /// Activity para não criar uma sessão nova ao transitar de stream para uma
+    /// pausa aguardando decisão ou sistema externo.
+    var currentExecutionPresenceTraceId: String? {
+        currentPresenceBubble?.traceId
+    }
+
+    private var currentPresenceBubble: ChatBubble? {
+        bubbles.reversed().first { bubble in
+            bubble.traceId != nil && bubble.executionPresence?.isOngoing == true
+        }
+    }
+
     init(client: AtlasClient, threadId: String?) {
         self.client = client
         self.threadId = threadId
@@ -141,6 +189,24 @@ final class ConversationModel {
     func cycleEffort() {
         effort = effort.next
         UserDefaults.standard.set(effort.rawValue, forKey: Self.effortPreferenceKey)
+    }
+
+    /// Pede ao servidor um recibo para outra superfície abrir esta mesma thread
+    /// e sessão. Não envia conteúdo da conversa e não cria uma thread nova.
+    func handoffToSurface(_ destination: AtlasAiSurfaceDestination) async {
+        guard let threadId else {
+            toast = "A conversa ainda não possui uma sessão canônica para continuar."
+            return
+        }
+
+        do {
+            latestSurfaceHandoff = try await client.handoffAiThreadSurface(
+                threadId,
+                input: .init(toSurface: destination)
+            ).handoff
+        } catch {
+            toast = "Não foi possível preparar a continuidade: \(error)"
+        }
     }
 
     // MARK: - Anexos (imagem via PhotosPicker/câmera/clipboard)
@@ -524,10 +590,25 @@ final class ConversationModel {
 
     func cancel() {
         let run = activeRun
-        Task { await run?.cancel() }
+        let activeTraces = bubbles.compactMap { bubble -> (id: String, traceId: String)? in
+            guard bubble.streaming, let traceId = bubble.traceId else { return nil }
+            return (bubble.id, traceId)
+        }
         for i in bubbles.indices where bubbles[i].streaming { bubbles[i].streaming = false }
         isSending = false
-        toast = "cancelado"
+        toast = "encerrando sessão…"
+        Task {
+            await run?.cancel()
+
+            var confirmed = false
+            for activeTrace in activeTraces {
+                guard let refreshed = try? await client.getAiInteraction(activeTrace.traceId) else { continue }
+                applyExecution(activeTrace.id, refreshed.trace)
+                confirmed = confirmed || refreshed.trace.status == "cancelled"
+            }
+
+            toast = confirmed ? "sessão encerrada" : "cancelamento solicitado"
+        }
     }
 
     func feedback(_ bubbleId: String, _ kind: FeedbackKind) async {
@@ -540,6 +621,127 @@ final class ConversationModel {
         } catch {
             bubbles[i].feedbackAction = previous
             toast = "feedback falhou"
+        }
+    }
+
+    /// Carrega a superfície de artefatos/revisão do trace. A resposta que não
+    /// ecoa o mesmo trace é descartada, pois vinculá-la à bolha errada seria um
+    /// vazamento de evidência entre execuções.
+    func refreshChangeReview(traceId: String) async {
+        do {
+            let response = try await client.getTraceChangeReview(traceId)
+            guard response.changeReview.traceId == traceId else {
+                toast = "A revisão recebida não corresponde a esta execução."
+                return
+            }
+            changeReviewsByTrace[traceId] = response.changeReview
+        } catch {
+            toast = Self.userMessage(for: error)
+        }
+    }
+
+    func changeReviewDiff(traceId: String, patchId: String) -> AtlasTraceChangeReviewDiffResponse? {
+        changeReviewDiffsByKey[Self.changeReviewDiffKey(traceId: traceId, patchId: patchId)]
+    }
+
+    /// Busca o diff somente se o patch já pertence à revisão canônica do trace.
+    /// Isso evita tanto rede na casca quanto a mistura de artefatos entre traces.
+    func refreshChangeReviewDiff(traceId: String, patchId: String) async {
+        if changeReviewsByTrace[traceId] == nil {
+            await refreshChangeReview(traceId: traceId)
+        }
+        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.id == patchId }) == true else {
+            toast = "Este diff não pertence à revisão desta execução."
+            return
+        }
+        do {
+            let response = try await client.getTraceChangeReviewDiff(traceId: traceId, patchId: patchId)
+            guard response.patch.id == patchId else {
+                toast = "O diff recebido não corresponde ao artefato solicitado."
+                return
+            }
+            changeReviewDiffsByKey[Self.changeReviewDiffKey(traceId: traceId, patchId: patchId)] = response
+        } catch {
+            toast = Self.userMessage(for: error)
+        }
+    }
+
+    /// Aceita ou rejeita o run inteiro através do recibo do servidor. Não há
+    /// ação local otimista: a UI só muda depois que a decisão e seu evento no
+    /// ledger foram persistidos e devolvidos pela mesma rota trace-scoped.
+    func applyChangeReview(
+        traceId: String,
+        action: AtlasTraceChangeReview.Action,
+        note: String? = nil
+    ) async {
+        do {
+            let response = try await client.applyTraceChangeReview(
+                traceId: traceId,
+                input: .init(action: action, actor: "mobile_operator", note: note)
+            )
+            guard response.changeReview.traceId == traceId else {
+                toast = "A decisão foi recusada porque o recibo não corresponde à execução."
+                return
+            }
+            changeReviewsByTrace[traceId] = response.changeReview
+            if let refreshed = try? await client.getAiInteraction(traceId) {
+                for bubble in bubbles where bubble.traceId == traceId {
+                    applyExecution(bubble.id, refreshed.trace)
+                }
+            }
+        } catch {
+            toast = Self.userMessage(for: error)
+        }
+    }
+
+    /// Decide um arquivo somente depois de provar que ele pertence ao patch já
+    /// vinculado ao mesmo trace. A resposta também é revalidada antes de tocar
+    /// no estado observado pela casca, eliminando aceite cruzado entre runs.
+    func applyChangeReviewFile(
+        traceId: String,
+        patchId: String,
+        filePath: String,
+        action: AtlasTraceChangeReview.Action,
+        note: String? = nil
+    ) async {
+        if changeReviewsByTrace[traceId] == nil {
+            await refreshChangeReview(traceId: traceId)
+        }
+        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.id == patchId && $0.contains(filePath) }) == true else {
+            toast = "Este arquivo não pertence ao patch desta execução."
+            return
+        }
+        do {
+            let response = try await client.applyTraceChangeReviewFile(
+                traceId: traceId,
+                input: .init(
+                    patchId: patchId,
+                    filePath: filePath,
+                    action: action,
+                    actor: "mobile_operator",
+                    note: note
+                )
+            )
+            guard response.changeReview.traceId == traceId,
+                  response.fileReviewReceipt.patchId == patchId,
+                  response.fileReviewReceipt.filePath == filePath,
+                  response.fileReviewReceipt.action == action,
+                  response.changeReview.patches.contains(where: {
+                      $0.id == patchId && $0.fileReviews.contains(where: {
+                          $0.filePath == filePath && $0.action == action
+                      })
+                  }) else {
+                toast = "A decisão por arquivo não corresponde ao patch revisado."
+                return
+            }
+            changeReviewsByTrace[traceId] = response.changeReview
+            if let refreshed = try? await client.getAiInteraction(traceId) {
+                for bubble in bubbles where bubble.traceId == traceId {
+                    applyExecution(bubble.id, refreshed.trace)
+                }
+            }
+        } catch {
+            toast = Self.userMessage(for: error)
         }
     }
 
@@ -592,9 +794,52 @@ final class ConversationModel {
             $0.qualitySummary = trace.qualitySummary
             $0.executionPlan = trace.executionPlan
             $0.executionProgress = trace.executionProgress
+            $0.executionPresentationState = trace.executionPresentationState
+            $0.executionChoiceJobId = trace.jobs?
+                .first(where: { $0.status == "awaiting_user_choice" })?.id
+            $0.retryableJobId = trace.jobs?
+                .first(where: { $0.status == "failed" })?.id
             let fromStream = atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
             $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)
+        }
+    }
+
+    /// Executa uma opção que o próprio servidor declarou para um job pausado.
+    /// A View fornece somente ids públicos; o recibo canônico é relido antes de
+    /// qualquer mudança visual para não antecipar estado nem duplicar ação.
+    func resolveExecutionChoice(jobId: String, optionId: String) async {
+        do {
+            let receipt = try await client.resumeAiJobChoice(jobId, optionId: optionId)
+            guard let traceId = receipt.job.traceId else {
+                toast = "A decisão foi registrada, mas a conversa ainda não está disponível."
+                return
+            }
+            let refreshed = try await client.getAiInteraction(traceId)
+            for bubble in bubbles where bubble.traceId == traceId {
+                applyExecution(bubble.id, refreshed.trace)
+            }
+        } catch {
+            toast = Self.userMessage(for: error)
+        }
+    }
+
+    /// C17: retoma um turno que FALHOU reenfileirando o job real
+    /// (`/ai/jobs/{id}/retry`). Não fabrica estado: relê o trace pelo job
+    /// devolvido e reaplica a execução, exatamente como `resolveExecutionChoice`.
+    func retryTurn(jobId: String) async {
+        do {
+            let receipt = try await client.retryAiJob(jobId)
+            guard let traceId = receipt.job.traceId else {
+                toast = "O turno foi reenfileirado."
+                return
+            }
+            let refreshed = try await client.getAiInteraction(traceId)
+            for bubble in bubbles where bubble.traceId == traceId {
+                applyExecution(bubble.id, refreshed.trace)
+            }
+        } catch {
+            toast = Self.userMessage(for: error)
         }
     }
 
@@ -651,6 +896,8 @@ final class ConversationModel {
                 update(assistantId) { $0.text = live; $0.streaming = true }
             case .execution(let trace):
                 applyExecution(assistantId, trace)
+            case .suspended(let trace):
+                complete(assistantId, trace: trace)
             case .remoteError(let payload):
                 let message = payload["message"]?.stringValue ?? "erro no stream"
                 update(assistantId) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
@@ -768,6 +1015,10 @@ final class ConversationModel {
     private func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
         guard let i = bubbles.firstIndex(where: { $0.id == id }) else { return }
         mutate(&bubbles[i])
+    }
+
+    private static func changeReviewDiffKey(traceId: String, patchId: String) -> String {
+        "\(traceId):\(patchId)"
     }
 
     private static func userMessage(for error: Error) -> String {

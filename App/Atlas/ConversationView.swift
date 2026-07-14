@@ -125,6 +125,9 @@ struct ConversationView: View {
                                           onStop: { model.cancel() },
                                           onExecutionChoice: { jobId, optionId in
                                               Task { await model.resolveExecutionChoice(jobId: jobId, optionId: optionId) }
+                                          },
+                                          onRetry: { jobId in
+                                              Task { await model.retryTurn(jobId: jobId) }
                                           })
                             .id(bubble.id)
                             // C15: revisão só entra pela projeção canônica do

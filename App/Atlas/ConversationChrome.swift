@@ -13,6 +13,7 @@ struct EditorialTurn: View {
     let onCopy: () -> Void
     let onStop: () -> Void
     let onExecutionChoice: (String, String) -> Void
+    var onRetry: (String) -> Void = { _ in }
     @State private var placed = false
 
     var body: some View {
@@ -37,7 +38,9 @@ struct EditorialTurn: View {
                         ExecutionStateCard(
                             state: state,
                             jobId: bubble.executionChoiceJobId,
-                            onChoose: onExecutionChoice
+                            onChoose: onExecutionChoice,
+                            retryableJobId: bubble.retryableJobId,
+                            onRetry: onRetry
                         )
                     }
                     let hasProof = !bubble.activities.isEmpty || bubble.decisionSummary != nil || bubble.qualitySummary != nil

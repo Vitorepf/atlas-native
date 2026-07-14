@@ -259,6 +259,10 @@ struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: String?
     let onChoose: (String, String) -> Void
+    /// C17: job falho que aceita retry. Presente → o card de falha oferece
+    /// "Retomar" (reenfileira o job real). Sem ele, a falha fica só informada.
+    var retryableJobId: String? = nil
+    var onRetry: (String) -> Void = { _ in }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -305,6 +309,16 @@ struct ExecutionStateCard: View {
                         .buttonStyle(ExecutionStateActionStyle(style: action.style))
                     }
                 }
+            } else if state.kind == .failed, let retryableJobId {
+                // C17: falha sem ação declarada pelo servidor → oferecemos o
+                // retry real do job (reenfileira do ponto de falha).
+                Button { onRetry(retryableJobId) } label: {
+                    Text("Retomar")
+                        .font(.system(.caption, weight: .semibold))
+                        .padding(.horizontal, 11).padding(.vertical, 8)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(ExecutionStateActionStyle(style: .primary))
             }
         }
         .padding(14)
