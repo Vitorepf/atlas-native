@@ -17,6 +17,7 @@ struct ConversationView: View {
     @State private var mode = "geral"
     @State private var showModeSheet = false
     @State private var showWorkspaceSheet = false
+    @State private var showQueueSheet = false
     @State private var showAttachmentSheet = false
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showFileImporter = false
@@ -184,6 +185,25 @@ struct ConversationView: View {
                 Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
                     .padding(.bottom, expanded ? 0 : 8)
             }
+            // C11: mensagens mandadas durante a execução viram FILA (o model
+            // enfileira sozinho). O chip só existe quando a fila existe —
+            // nada inventado; tocar abre a folha com enviar-agora e remover.
+            if !model.queuedMessages.isEmpty {
+                Button {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    showQueueSheet = true
+                } label: {
+                    Text("Fila \(model.queuedMessages.count)")
+                        .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
+                        .padding(.horizontal, 12).padding(.vertical, 5)
+                        .background(Capsule().fill(AtlasTheme.goldVeil)
+                            .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+                }
+                .buttonStyle(PressableScale())
+                .padding(.bottom, expanded ? 0 : 8)
+                .transition(.opacity)
+                .accessibilityLabel("\(model.queuedMessages.count) mensagens na fila, toque para gerenciar")
+            }
             if focused {
                 // Grabber → PUXE pra baixo (ou toque) para fechar o teclado.
                 // Área de toque generosa (padding antes do contentShape) + drag.
@@ -248,6 +268,40 @@ struct ConversationView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: expanded)
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
+        .sheet(isPresented: $showQueueSheet) {
+            SheetShell(title: "Fila · \(model.queuedMessages.count)") {
+                ForEach(model.queuedMessages) { m in
+                    HStack(spacing: 12) {
+                        Text(m.text)
+                            .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
+                            .lineLimit(2)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Button { Task { await model.promote(id: m.id) } } label: {
+                            Image(systemName: "arrow.up")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(AtlasTheme.accent)
+                                .frame(width: 38, height: 38)
+                                .background(Circle().fill(AtlasTheme.goldVeil))
+                        }
+                        .buttonStyle(PressableScale())
+                        .accessibilityLabel("enviar agora: \(m.text)")
+                        Button { Task { await model.removeQueued(id: m.id) } } label: {
+                            Image(systemName: "trash")
+                                .font(.system(size: 14))
+                                .foregroundStyle(AtlasTheme.textSecondary)
+                                .frame(width: 38, height: 38)
+                                .background(Circle().fill(AtlasTheme.surfaceHi))
+                        }
+                        .buttonStyle(PressableScale())
+                        .accessibilityLabel("remover da fila: \(m.text)")
+                    }
+                    .padding(.vertical, 6)
+                }
+            }
+        }
+        .onChange(of: model.queuedMessages.isEmpty) { _, empty in
+            if empty { showQueueSheet = false }
+        }
         .sheet(isPresented: $showAttachmentSheet) {
             ComposerAttachmentsSheet(
                 pickedPhoto: $pickedPhoto,

@@ -15,8 +15,16 @@ struct ExecutingStrip: View {
     var body: some View {
         HStack(spacing: 8) {
             BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-            Text("Seguindo a execução")
-                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+            // C10: com checkpoint REAL do plano, a faixa vira "N/M · etapa".
+            // Trace legado (progress nil) não inventa número nem barra.
+            if let p = bubble.executionProgress {
+                Text("\(p.current)/\(p.total) · \(p.title)")
+                    .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(1)
+            } else {
+                Text("Seguindo a execução")
+                    .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+            }
             TimelineView(.periodic(from: .now, by: 1)) { ctx in
                 let secs = bubble.startedAt.map { max(0, Int(ctx.date.timeIntervalSince($0))) } ?? 0
                 Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
