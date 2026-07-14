@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A nova era — a IA escreve o código, você decide o que existe (Fable 5)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #10181e; --app-bg: #1d2b34; --surface: #243743; --surface-hi: #2d4351;
+    --recessed: #15212a; --ink: #d6dde2; --ink2: #95a3ac; --ink3: #677482;
+    --sep: #313f47; --sep-soft: #27353e; --gold: #d4a85a; --green: #7fb069;
+    --alert: #c98a8a; --paper: #f2ede3; --paper-ink: #2a2620;
+    --serif: "Fraunces", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: radial-gradient(1200px 600px at 70% -10%, rgba(212,168,90,0.05), transparent 60%), var(--bg);
+    color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 56px 48px 96px; }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 60; display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; padding: 11px 48px;
+    background: rgba(16,24,30,0.82); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--sep-soft);
+  }
+  .tn-brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+  .topnav nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .topnav a { font-family: var(--mono); font-size: 10.5px; color: var(--ink2); text-decoration: none; border: 1px solid transparent; border-radius: 999px; padding: 6px 11px; transition: all 0.2s; }
+  .topnav a:hover { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .topnav a.desk { color: var(--ink3); border-color: var(--sep); }
+
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 50px; line-height: 1.1; letter-spacing: -0.01em; max-width: 20ch; text-wrap: balance; }
+  .lede { margin-top: 18px; font-size: 16.5px; line-height: 1.7; color: var(--ink2); max-width: 66ch; text-wrap: pretty; }
+  .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .keyfacts { display: flex; gap: 44px; margin-top: 28px; flex-wrap: wrap; }
+  .kf b { font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+  .kf span { font-size: 11.5px; color: var(--ink3); display: block; margin-top: 7px; max-width: 22ch; line-height: 1.45; }
+  .rule { width: 44px; height: 2px; background: var(--gold); opacity: 0.7; margin: 28px 0 0; }
+
+  /* ── a trindade ── */
+  .trinity { margin-top: 46px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .tri { border-top: 1px solid var(--sep); padding-top: 16px; }
+  .tri .tk { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; }
+  .tri h3 { font-family: var(--serif); font-size: 21px; font-weight: 600; margin-top: 8px; }
+  .tri p { font-size: 12.5px; color: var(--ink2); line-height: 1.6; margin-top: 7px; text-wrap: pretty; }
+  .tri .maps { font-family: var(--mono); font-size: 9.5px; color: var(--ink3); margin-top: 9px; }
+  .fourth { margin-top: 20px; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink2); }
+  .fourth b { color: var(--gold); font-weight: 500; }
+
+  /* ── grade de iPhones ── */
+  .grid { margin-top: 52px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 28px; justify-items: center; }
+  .cell { display: flex; flex-direction: column; align-items: center; max-width: 360px; }
+  .cell-label { align-self: stretch; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+  .cell-label b { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink2); font-weight: 500; }
+  .tag { font-family: var(--mono); font-size: 9px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 999px; padding: 3px 8px; white-space: nowrap; }
+  .tag.live { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .tag.ship { color: var(--green); border-color: rgba(127,176,105,0.35); }
+  .caption { margin-top: 12px; font-size: 12px; line-height: 1.55; color: var(--ink3); text-wrap: pretty; }
+  .caption em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+
+  /* iPhone (métricas 15 Pro, escala 0.82) */
+  .iphone {
+    padding: 10px; background: #000; border-radius: 49px;
+    box-shadow: 0 0 0 2px #1f2937, 0 24px 64px rgba(0,0,0,0.5);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .replayable { cursor: pointer; }
+  .iphone.replayable:hover { transform: translateY(-3px); box-shadow: 0 0 0 2px rgba(212,168,90,0.55), 0 28px 70px rgba(0,0,0,0.55); }
+  .screen { position: relative; width: 322px; height: 698px; border-radius: 39px; overflow: hidden; background: var(--app-bg); }
+  .island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 102px; height: 30px; background: #000; border-radius: 999px; z-index: 30; }
+  .content { position: absolute; inset: 0; padding: 50px 20px 0; display: flex; flex-direction: column; }
+  .homebar { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; border-radius: 999px; background: rgba(214,221,226,0.35); z-index: 25; }
+
+  /* linguagem das telas novas — pouquíssimos elementos, grandes */
+  .n-kicker { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); text-align: center; margin-top: 14px; }
+  .n-q { font-family: var(--serif); font-weight: 600; font-size: 23px; line-height: 1.3; text-align: center; margin-top: 12px; text-wrap: balance; }
+  .n-sub { font-size: 11.5px; color: var(--ink3); text-align: center; margin-top: 10px; line-height: 1.55; text-wrap: pretty; }
+  .n-sub em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+
+  .said { font-family: var(--serif); font-style: italic; font-size: 14.5px; line-height: 1.5; color: var(--ink); padding-left: 12px; border-left: 2px solid var(--gold); margin-top: 26px; opacity: 0; transform: translateY(8px); transition: all 0.5s cubic-bezier(0.32,0.72,0,1); }
+  .said.on { opacity: 1; transform: none; }
+  .heard { font-size: 13px; line-height: 1.6; color: var(--ink); margin-top: 18px; opacity: 0; transform: translateY(8px); transition: all 0.5s cubic-bezier(0.32,0.72,0,1); }
+  .heard.on { opacity: 1; transform: none; }
+  .heard b { color: var(--gold); font-weight: 600; }
+
+  .verb { display: block; width: 100%; text-align: center; font-family: var(--serif); font-size: 15px; color: var(--gold); border: 1px solid rgba(212,168,90,0.5); border-radius: 999px; padding: 13px 10px; transition: all 0.3s; }
+  .verb.quiet { color: var(--ink2); border-color: var(--sep); font-size: 13.5px; padding: 11px 10px; }
+  .verb.pressed { background: rgba(212,168,90,0.16); transform: scale(0.97); }
+  .verbrow { display: flex; flex-direction: column; gap: 9px; margin-top: 20px; opacity: 0; transition: opacity 0.5s; }
+  .verbrow.on { opacity: 1; }
+
+  .pillinput { position: absolute; left: 16px; right: 16px; bottom: 18px; display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--sep); border-radius: 999px; padding: 10px 14px; z-index: 24; }
+  .pillinput .plus { width: 24px; height: 24px; border-radius: 50%; background: var(--surface-hi); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink2); flex-shrink: 0; }
+  .pillinput .ph { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink3); white-space: nowrap; overflow: hidden; }
+  .pillinput .ph.typing { color: var(--ink); }
+  .caret { display: inline-block; width: 1.5px; height: 13px; background: var(--gold); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ausência — o halo central */
+  .halo-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: -30px; }
+  .halo { width: 120px; height: 120px; border-radius: 50%; border: 1.5px solid rgba(212,168,90,0.55); display: flex; flex-direction: column; align-items: center; justify-content: center; animation: breathe 3.2s ease-in-out infinite; }
+  @keyframes breathe { 50% { box-shadow: 0 0 0 14px rgba(212,168,90,0.06); border-color: rgba(212,168,90,0.85); } }
+  .halo .delta { font-family: var(--mono); font-size: 15px; font-weight: 500; }
+  .halo .delta .p { color: var(--green); } .halo .delta .m { color: var(--alert); }
+  .halo .ph2 { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink3); margin-top: 5px; }
+  .notneeded { font-family: var(--serif); font-style: italic; font-size: 17.5px; color: var(--ink); margin-top: 30px; text-align: center; }
+  .notneeded-sub { font-size: 11px; color: var(--ink3); margin-top: 8px; text-align: center; line-height: 1.5; }
+  .phase-line { font-family: var(--mono); font-size: 9px; color: var(--ink2); margin-top: 16px; letter-spacing: 0.08em; transition: opacity 0.3s; }
+
+  /* julgamento — contexto sem moldura */
+  .ctx { margin-top: 20px; opacity: 0; transition: opacity 0.5s; }
+  .ctx.on { opacity: 1; }
+  .ctx p { font-size: 12.5px; line-height: 1.65; color: var(--ink2); text-wrap: pretty; }
+  .ctx p + p { margin-top: 8px; }
+  .ctx p b { color: var(--ink); font-weight: 600; }
+  .seelink { display: block; font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--gold); margin-top: 14px; }
+  .decided { margin-top: 16px; font-family: var(--mono); font-size: 9.5px; color: var(--green); line-height: 1.6; opacity: 0; transition: opacity 0.5s; text-align: center; }
+  .decided.on { opacity: 1; }
+
+  /* veredito — a prova visual (o produto, não o código) */
+  .proof-shot { margin-top: 16px; border-radius: 16px; background: var(--paper); color: var(--paper-ink); padding: 16px 16px 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); opacity: 0; transform: translateY(10px) scale(0.98); transition: all 0.7s cubic-bezier(0.32,0.72,0,1); }
+  .proof-shot.on { opacity: 1; transform: none; }
+  .ps-title { font-weight: 700; font-size: 14px; }
+  .ps-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 11px; font-size: 11.5px; color: #5a544a; }
+  .ps-row b { color: var(--paper-ink); font-weight: 600; }
+  .ps-total { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 10px; border-top: 1px solid #ddd5c6; font-size: 13px; font-weight: 700; }
+  .ps-note { font-size: 9.5px; color: #8a8272; margin-top: 3px; }
+  .ps-btn { margin-top: 12px; background: #2a2620; color: #f2ede3; text-align: center; border-radius: 10px; padding: 10px; font-size: 12px; font-weight: 600; }
+  .shot-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); text-align: center; margin-top: 8px; }
+  .rcpt { display: flex; gap: 8px; align-items: baseline; font-size: 11.5px; color: var(--ink2); padding: 5px 2px; opacity: 0; transition: opacity 0.4s; }
+  .rcpt.on { opacity: 1; }
+  .rcpt .ok { margin-left: auto; font-family: var(--mono); font-size: 9px; color: var(--green); }
+  .codelink { font-family: var(--mono); font-size: 9px; color: var(--ink3); margin-top: 10px; display: block; text-align: center; }
+
+  /* o dia — cartões de exceção */
+  .day-date { font-family: var(--serif); font-size: 15px; font-weight: 600; text-align: center; margin-top: 10px; }
+  .day-sum { font-size: 11px; color: var(--ink2); text-align: center; margin-top: 6px; }
+  .day-sum b { color: var(--gold); font-weight: 600; }
+  .dcard { border: 1px solid var(--sep-soft); border-radius: 15px; padding: 13px 14px; margin-top: 11px; background: rgba(21,33,42,0.45); opacity: 0; transform: translateY(9px); transition: all 0.5s cubic-bezier(0.32,0.72,0,1); }
+  .dcard.on { opacity: 1; transform: none; }
+  .dcard.ask { border-color: rgba(212,168,90,0.5); }
+  .dcard .dt { font-family: var(--mono); font-size: 8.5px; color: var(--ink3); letter-spacing: 0.1em; }
+  .dcard.ask .dt { color: var(--gold); }
+  .dcard .dmsg { font-size: 12.5px; line-height: 1.5; margin-top: 5px; text-wrap: pretty; }
+  .dcard .dgo { font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--gold); margin-top: 8px; }
+  .day-foot { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink3); text-align: center; margin-top: 22px; opacity: 0; transition: opacity 0.6s; }
+  .day-foot.on { opacity: 1; }
+
+  /* assinatura — o gesto */
+  .checkline { display: flex; gap: 8px; align-items: baseline; font-size: 11.5px; color: var(--ink2); padding: 5px 2px; opacity: 0; transition: opacity 0.35s; }
+  .checkline.on { opacity: 1; }
+  .checkline .st { margin-left: auto; font-family: var(--mono); font-size: 9px; color: var(--ink3); }
+  .checkline .st.ok { color: var(--green); }
+  .sign-track { position: relative; margin-top: 26px; height: 52px; border-radius: 999px; border: 1px solid rgba(212,168,90,0.45); background: rgba(212,168,90,0.06); display: flex; align-items: center; justify-content: center; overflow: hidden; opacity: 0; transition: opacity 0.5s; }
+  .sign-track.on { opacity: 1; }
+  .sign-hint { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink2); transition: opacity 0.3s; }
+  .sign-thumb { position: absolute; left: 5px; top: 5px; width: 42px; height: 42px; border-radius: 50%; background: var(--gold); color: #1d2b34; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; transition: transform 1.1s cubic-bezier(0.32,0.72,0,1); }
+  .sign-track.done { background: rgba(127,176,105,0.12); border-color: rgba(127,176,105,0.5); }
+  .sign-track.done .sign-hint { font-style: normal; font-family: var(--mono); font-size: 10px; color: var(--green); }
+  .pub-rcpt { margin-top: 14px; text-align: center; font-family: var(--mono); font-size: 9px; color: var(--ink2); line-height: 1.7; opacity: 0; transition: opacity 0.5s; }
+  .pub-rcpt.on { opacity: 1; }
+  .pub-rcpt b { color: var(--green); font-weight: 500; }
+
+  /* leis */
+  .laws { margin-top: 76px; }
+  .laws h2 { font-family: var(--serif); font-size: 26px; font-weight: 600; }
+  .laws-grid { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px 28px; }
+  .law { border-top: 1px solid var(--sep-soft); padding-top: 12px; }
+  .law b { font-family: var(--serif); font-size: 14.5px; font-weight: 600; display: block; }
+  .law p { font-size: 11.5px; color: var(--ink3); line-height: 1.6; margin-top: 5px; text-wrap: pretty; }
+
+  /* embaixo do vidro */
+  .glass { margin-top: 64px; border: 1px solid var(--sep-soft); border-radius: 18px; padding: 26px 30px; background: rgba(29,43,52,0.5); }
+  .glass h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; }
+  .glass p { margin-top: 8px; font-size: 13px; line-height: 1.65; color: var(--ink2); max-width: 78ch; text-wrap: pretty; }
+  .glass p em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .glass .links { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .glass a { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--gold); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 8px 18px; text-decoration: none; }
+  .glass a:hover { background: rgba(212,168,90,0.1); }
+
+  .colophon { margin-top: 56px; font-family: var(--mono); font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .replay { position: fixed; bottom: 26px; right: 26px; z-index: 50; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); background: rgba(29,43,52,0.9); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 10px 20px; cursor: pointer; backdrop-filter: blur(8px); }
+  .replay:hover { background: rgba(212,168,90,0.12); }
+  ::selection { background: rgba(212,168,90,0.25); }
+
+  @media (max-width: 1160px) { .grid { grid-template-columns: 1fr 1fr; } .trinity, .laws-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 780px) { .grid, .trinity, .laws-grid { grid-template-columns: 1fr; } .page { padding: 40px 20px 72px; } h1 { font-size: 36px; } }
+</style>
+</head>
+<body>
+<header class="topnav">
+  <span class="tn-brand">Atlas · A Nova Era</span>
+  <nav>
+    <a href="#telas">Telas</a>
+    <a href="#leis">Leis</a>
+    <a href="#vidro">Embaixo do vidro</a>
+    <a class="desk" href="atlas-code-mobile.html">versão anterior</a>
+    <a class="desk" href="atlas-code-ledger.html">desktop ›</a>
+  </nav>
+</header>
+<div class="page">
+
+  <div class="kicker">Se a IA programa, qual é o papel do ser humano? — proposta Fable 5</div>
+  <h1>A IA escreve o código.<br>Você decide o que existe.</h1>
+  <p class="lede">
+    Quando a IA programa, o engenheiro não desaparece — ele <em>se concentra</em>. Sobram três
+    coisas que máquina nenhuma pode possuir: a <em>intenção</em> (o que deve existir e por quê),
+    o <em>julgamento</em> (qual futuro escolher quando o caminho bifurca) e a
+    <em>responsabilidade</em> (assinar o que sai para o mundo). Estas seis telas são só isso.
+    Arquivos, diffs, branches e builds continuam existindo — <em>embaixo do vidro</em>: à mão
+    quando você quiser, invisíveis quando não. A ferramenta nº&nbsp;1 da nova era não é a que
+    mostra mais. <em>É a que pede menos.</em>
+  </p>
+  <div class="keyfacts">
+    <div class="kf"><b>3</b><span>papéis humanos restantes — e são toda a arquitetura do app</span></div>
+    <div class="kf"><b>1</b><span>ação primária por tela, sem exceção</span></div>
+    <div class="kf"><b>60s</b><span>teto de uma decisão — com tudo para decidir já na mão</span></div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="trinity">
+    <div class="tri">
+      <div class="tk">Papel I</div>
+      <h3>Intenção</h3>
+      <p>Você diz o que deve existir, em palavras humanas. A IA transforma em plano e em código — não o contrário.</p>
+      <div class="maps">→ tela 1</div>
+    </div>
+    <div class="tri">
+      <div class="tk">Papel II</div>
+      <h3>Julgamento</h3>
+      <p>Preço, nome, risco, trade-off: quando o caminho bifurca, só você escolhe. A IA entrega a pergunta perfeita — e prova, não opinião.</p>
+      <div class="maps">→ telas 3 · 4 · 5</div>
+    </div>
+    <div class="tri">
+      <div class="tk">Papel III</div>
+      <h3>Responsabilidade</h3>
+      <p>Nada sai para o mundo sem a sua assinatura. E assinar é um gesto deliberado, com recibo eterno — não um tap distraído.</p>
+      <div class="maps">→ tela 6</div>
+    </div>
+  </div>
+  <p class="fourth">E há uma quarta coisa, que não é papel — é prêmio: <b>o seu tempo de volta</b> (tela 2).</p>
+
+  <div id="telas" class="grid">
+
+    <!-- N1 · INTENÇÃO -->
+    <div class="cell">
+      <div class="cell-label"><b>1 · intenção — a folha em branco</b><span class="tag ship">conversa shipada no seu iPhone</span></div>
+      <div class="iphone" id="n1"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; margin-top:-40px">
+            <div class="n-q" id="n1q">O que deve existir?</div>
+            <div class="n-sub" id="n1sub">Diga em palavras humanas.<br>O resto é comigo.</div>
+            <div class="said" id="n1said">"Quero que o checkout aceite cartão internacional — sem assustar o cliente no preço."</div>
+            <div class="heard" id="n1heard">Entendi. O checkout vai aceitar <b>Visa e Master internacionais</b>, mostrando a taxa e o preço final <b>antes</b> de confirmar. Nada muda para cartões nacionais.</div>
+            <div class="verbrow" id="n1verbs"><span class="verb" id="n1go">Fazer acontecer</span></div>
+          </div>
+          <div class="pillinput"><div class="plus">+</div><div class="ph" id="n1pill">Escreva ou fale</div></div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">A tela mais importante é <em>quase vazia</em>. Sua parte durou vinte segundos: uma frase. A IA devolve o que entendeu — em uma frase também — e um único verbo. Plano, arquivos e passos nascem depois, sem você.</p>
+    </div>
+
+    <!-- N2 · AUSÊNCIA -->
+    <div class="cell">
+      <div class="cell-label"><b>2 · ausência — o seu tempo de volta</b><span class="tag ship">presença C14 shipada</span></div>
+      <div class="iphone" id="n2"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="halo-wrap">
+            <div class="halo">
+              <div class="delta"><span class="p" id="n2p">+131</span> <span class="m" id="n2m">−27</span></div>
+              <div class="ph2" id="n2ph">construindo</div>
+            </div>
+            <div class="notneeded">Você não é necessário agora.</div>
+            <div class="notneeded-sub">Vamos te chamar quando houver<br>uma decisão que só você pode tomar.</div>
+            <div class="phase-line" id="n2line">checkout internacional · fase 2 de 4</div>
+          </div>
+          <div class="pillinput"><div class="plus">+</div><div class="ph">Escreva — entra na fila, sem interromper</div></div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">A era velha disputava sua atenção; a nova <em>devolve</em>. Um pulso central — simétrico, vivo, honesto (+linhas reais) — e uma promessa: só te chamamos para julgamento. O campo de escrever nunca some: falar não interrompe, <em>enfileira</em>.</p>
+    </div>
+
+    <!-- N3 · JULGAMENTO -->
+    <div class="cell">
+      <div class="cell-label"><b>3 · julgamento — a pergunta perfeita</b><span class="tag live">decision point · contrato</span></div>
+      <div class="iphone" id="n3"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="n-kicker">uma decisão espera você</div>
+          <div class="n-q" style="font-size:20px; margin-top:18px">A taxa internacional de 3% — repassar ao cliente ou absorver?</div>
+          <div class="ctx" id="n3ctx">
+            <p>Absorver custa <b>~R$ 2,10 por venda</b> e mantém o preço limpo.</p>
+            <p>Repassar aparece no preço final e <b>pode reduzir conversão</b> — é a única parte que o cliente vê.</p>
+            <a class="seelink">ver os números que sustentam isso ›</a>
+          </div>
+          <div class="verbrow" id="n3verbs">
+            <span class="verb" id="n3a">Repassar no preço</span>
+            <span class="verb quiet">Absorver a taxa</span>
+          </div>
+          <div class="decided" id="n3done">decidido às 14:32 · registrado com recibo · o trabalho continua</div>
+          <div class="pillinput"><div class="plus">+</div><div class="ph">ou me pergunte mais antes de decidir</div></div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">O coração da nova era. A IA nunca decide preço, nome ou risco por você — e quando pergunta, chega <em>completa</em>: o quê, o custo de cada lado, a prova a um toque, dois verbos. Responder leva menos de um minuto. É por isso que o app existe.</p>
+    </div>
+
+    <!-- N4 · VEREDITO -->
+    <div class="cell">
+      <div class="cell-label"><b>4 · veredito — prove, não me faça ler</b><span class="tag ship">review C15 evoluído</span></div>
+      <div class="iphone" id="n4"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="n-kicker">pronto para o seu veredito</div>
+          <div class="n-q" style="font-size:18px; margin-top:14px">O checkout aceita cartão internacional.</div>
+          <div class="n-sub" style="margin-top:6px">Com o preço final antes de confirmar — como você pediu.</div>
+          <div class="proof-shot" id="n4shot">
+            <div class="ps-title">Pagamento</div>
+            <div class="ps-row"><span>•••• 4242 · Visa internacional</span><b>✓</b></div>
+            <div class="ps-row"><span>Assinatura mensal</span><b>R$ 212,28</b></div>
+            <div class="ps-total"><span>Total</span><span>R$ 218,40</span></div>
+            <div class="ps-note">inclui taxa internacional de R$ 6,12 — exibida antes de confirmar</div>
+            <div class="ps-btn">Confirmar compra</div>
+          </div>
+          <div class="shot-label" id="n4lbl">imagem da execução real, no simulador</div>
+          <div style="margin-top:10px">
+            <div class="rcpt" id="n4r1"><span>23 testes novos</span><span class="ok">todos verdes ✓</span></div>
+            <div class="rcpt" id="n4r2"><span>Rodou de verdade — a imagem acima é da execução</span><span class="ok">✓</span></div>
+            <div class="rcpt" id="n4r3"><span>Contrato de pagamento verificado</span><span class="ok">✓</span></div>
+          </div>
+          <div class="verbrow" id="n4verbs">
+            <span class="verb" id="n4ok">Aceitar</span>
+            <span class="verb quiet">Pedir mudança</span>
+          </div>
+          <a class="codelink">ver o código — 2.140 linhas ›</a>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">Você não revisa código — <em>revisa o produto</em>. A prova principal é a tela construída, rodando de verdade; os recibos dizem o resto. "Ver o código" existe, pequeno, no fim: é o tamanho certo dele na nova era.</p>
+    </div>
+
+    <!-- N5 · O DIA -->
+    <div class="cell">
+      <div class="cell-label"><b>5 · o dia — enquanto você vivia</b><span class="tag ship">digest do Autônomos shipado</span></div>
+      <div class="iphone" id="n5"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="n-kicker">enquanto você dormia</div>
+          <div class="day-date">terça, 14 de julho · 07:10</div>
+          <div class="day-sum"><b>1 decisão espera você</b> · 2 entregas prontas · 0 incidentes</div>
+          <div class="dcard ask" id="n5c1">
+            <div class="dt">02:41 · PRECISA DE VOCÊ</div>
+            <div class="dmsg">O e-mail de recibo: só português, ou nos dois idiomas do cliente?</div>
+            <div class="dgo">decidir agora — leva um minuto ›</div>
+          </div>
+          <div class="dcard" id="n5c2">
+            <div class="dt">02:14 · ENTREGUE, COM PROVA</div>
+            <div class="dmsg">Checkout internacional pronto e testado. Seu veredito quando quiser.</div>
+            <div class="dgo">ver a prova ›</div>
+          </div>
+          <div class="dcard" id="n5c3">
+            <div class="dt">04:37 · SILÊNCIO BOM</div>
+            <div class="dmsg">Vigília noturna completa: testes verdes, nada exige você.</div>
+          </div>
+          <div class="day-foot" id="n5foot">O resto do dia é seu.</div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">O produto avança 24/7 — então a manhã começa com <em>julgamento, não leitura</em>. Só o que precisa de você sobe; o que correu bem vira uma linha de silêncio. Estado por exceção, tempo como eixo.</p>
+    </div>
+
+    <!-- N6 · ASSINATURA -->
+    <div class="cell">
+      <div class="cell-label"><b>6 · assinatura — nada sai sem você</b><span class="tag live">publicação governada · contrato</span></div>
+      <div class="iphone" id="n6"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="n-kicker">nada sai para o mundo sem você</div>
+          <div class="n-q" style="font-size:20px; margin-top:18px">Publicar: checkout internacional</div>
+          <div class="n-sub" style="margin-top:8px">Para todos os clientes, agora.</div>
+          <div style="margin-top:22px">
+            <div class="checkline" id="n6c1"><span>Nenhum segredo vaza</span><span class="st" id="n6s1">…</span></div>
+            <div class="checkline" id="n6c2"><span>Todos os testes verdes</span><span class="st" id="n6s2">…</span></div>
+            <div class="checkline" id="n6c3"><span>Contrato de pagamento intacto</span><span class="st" id="n6s3">…</span></div>
+          </div>
+          <div class="sign-track" id="n6track">
+            <span class="sign-hint" id="n6hint">deslize para assinar</span>
+            <div class="sign-thumb" id="n6thumb">›</div>
+          </div>
+          <div class="pub-rcpt" id="n6rcpt"><b>publicado ✓</b> · assinado por vitor · 14:45<br>recibo guardado para sempre</div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">Responsabilidade é o que resta — e é sagrada. Por isso assinar é um <em>gesto deliberado</em>, não um tap: as varreduras já correram sozinhas, e o que fica para você é só o ato de assumir. Com recibo eterno.</p>
+    </div>
+  </div>
+
+  <!-- ═══ AS LEIS ═══ -->
+  <div id="leis" class="laws">
+    <h2>As seis leis destas telas</h2>
+    <div class="laws-grid">
+      <div class="law"><b>Uma coisa por tela.</b><p>Cada tela tem um trabalho e uma ação primária. Se precisa de duas, são duas telas.</p></div>
+      <div class="law"><b>Silêncio por padrão.</b><p>Se você não é necessário, o app diz isso em uma linha — e some. Atenção é o recurso mais caro do melhor engenheiro do mundo.</p></div>
+      <div class="law"><b>Linguagem humana em cima, máquina embaixo do vidro.</b><p>A manchete é sempre uma frase de gente. Hash, diff e log existem — dois toques abaixo, nunca na superfície.</p></div>
+      <div class="law"><b>Toda pergunta chega completa.</b><p>O quê, o custo de cada lado, a prova a um toque e dois verbos. Você nunca caça contexto para poder decidir.</p></div>
+      <div class="law"><b>Prova em vez de leitura.</b><p>Confiança vem de recibos — testes, execução real, contratos verificados — não de você ler duas mil linhas.</p></div>
+      <div class="law"><b>Assinar é gesto, não tap.</b><p>O que é irreversível pede um movimento deliberado do corpo. E deixa recibo para sempre.</p></div>
+    </div>
+  </div>
+
+  <!-- ═══ EMBAIXO DO VIDRO ═══ -->
+  <div id="vidro" class="glass">
+    <h3>Embaixo do vidro — nada foi jogado fora</h3>
+    <p>
+      Commits, branches, diffs, varreduras, frota, ledger: tudo o que a
+      <a href="atlas-code-mobile.html" style="color: var(--gold)">versão anterior</a> mostrava
+      continua existindo e continua auditável — mas virou <em>camada de profundidade</em>, não
+      interface. "Ver os números", "ver a prova", "ver o código": cada superfície humana tem um
+      alçapão para a máquina, para o dia em que você quiser descer. O erro da era velha não era
+      ter esses dados — era <em>começar por eles</em>.
+    </p>
+    <div class="links">
+      <a href="atlas-code-mobile.html">a camada máquina (v1) ›</a>
+      <a href="atlas-code-ledger.html">o cockpit desktop ›</a>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
+    <span>Fable 5 · A Nova Era v1 · 6 telas iPhone · toque num iPhone para repetir a cena</span>
+  </div>
+</div>
+
+<button class="replay" onclick="restart()">↻ repetir as cenas</button>
+
+<script>
+const $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function makeScene(run) {
+  let handles = [];
+  const at = (t, fn) => handles.push(setTimeout(fn, reduced ? 0 : t));
+  const every = (ms, fn) => { const h = setInterval(fn, ms); handles.push({ clear: () => clearInterval(h) }); return h; };
+  const stop = () => { handles.forEach(h => h.clear ? h.clear() : clearTimeout(h)); handles = []; };
+  const loop = dur => { if (!reduced) at(dur, () => { stop(); run(api); }); };
+  const api = { at, every, stop, loop };
+  return { start: () => run(api), stop };
+}
+const scenes = [];
+function scene1(fn) { const s = makeScene(fn); scenes.push(s); s.start(); }
+function restart() { scenes.forEach(s => s.stop()); scenes.length = 0; boot(); }
+
+function boot() {
+
+/* N1 · intenção: a frase é digitada, vira intenção dita, Atlas devolve o entendimento */
+scene1(({ at, every, loop }) => {
+  const pill = $('n1pill');
+  const full = 'Quero que o checkout aceite cartão internacional…';
+  pill.textContent = 'Escreva ou fale'; pill.classList.remove('typing');
+  $('n1said').classList.remove('on'); $('n1heard').classList.remove('on');
+  $('n1verbs').classList.remove('on'); $('n1go').classList.remove('pressed');
+  at(900, () => {
+    pill.classList.add('typing'); pill.innerHTML = '<span class="caret"></span>';
+    let i = 0;
+    const t = every(46, () => {
+      i++;
+      pill.innerHTML = full.slice(0, i) + '<span class="caret"></span>';
+      if (i >= full.length) clearInterval(t);
+    });
+  });
+  at(3600, () => { pill.classList.remove('typing'); pill.textContent = 'Escreva ou fale'; $('n1said').classList.add('on'); });
+  at(4600, () => $('n1heard').classList.add('on'));
+  at(5800, () => $('n1verbs').classList.add('on'));
+  at(7200, () => $('n1go').classList.add('pressed'));
+  loop(9800);
+});
+
+/* N2 · ausência: o halo respira, as linhas contam, a fase avança — você não é necessário */
+scene1(({ at, every, loop }) => {
+  let p = 131, m = 27;
+  $('n2p').textContent = '+' + p; $('n2m').textContent = '−' + m;
+  $('n2ph').textContent = 'construindo';
+  $('n2line').textContent = 'checkout internacional · fase 2 de 4';
+  every(700, () => {
+    p += 3 + (p % 4); m += (p % 3 === 0) ? 1 : 0;
+    $('n2p').textContent = '+' + p; $('n2m').textContent = '−' + m;
+  });
+  at(3800, () => { $('n2ph').textContent = 'testando'; $('n2line').textContent = 'checkout internacional · fase 3 de 4'; });
+  at(7200, () => { $('n2ph').textContent = 'verificando'; $('n2line').textContent = 'checkout internacional · fase 4 de 4'; });
+  loop(10000);
+});
+
+/* N3 · julgamento: a pergunta chega completa, um verbo é escolhido, recibo */
+scene1(({ at, loop }) => {
+  $('n3ctx').classList.remove('on'); $('n3verbs').classList.remove('on');
+  $('n3a').classList.remove('pressed'); $('n3done').classList.remove('on');
+  at(800,  () => $('n3ctx').classList.add('on'));
+  at(1800, () => $('n3verbs').classList.add('on'));
+  at(4200, () => $('n3a').classList.add('pressed'));
+  at(5100, () => $('n3done').classList.add('on'));
+  loop(9000);
+});
+
+/* N4 · veredito: a prova visual revela, recibos tiquetaqueiam, aceite */
+scene1(({ at, loop }) => {
+  $('n4shot').classList.remove('on');
+  ['n4r1','n4r2','n4r3'].forEach(id => $(id).classList.remove('on'));
+  $('n4verbs').classList.remove('on'); $('n4ok').classList.remove('pressed');
+  at(700,  () => $('n4shot').classList.add('on'));
+  at(2000, () => $('n4r1').classList.add('on'));
+  at(2500, () => $('n4r2').classList.add('on'));
+  at(3000, () => $('n4r3').classList.add('on'));
+  at(3800, () => $('n4verbs').classList.add('on'));
+  at(5600, () => $('n4ok').classList.add('pressed'));
+  loop(9000);
+});
+
+/* N5 · o dia: os cartões da noite chegam por exceção */
+scene1(({ at, loop }) => {
+  ['n5c1','n5c2','n5c3'].forEach(id => $(id).classList.remove('on'));
+  $('n5foot').classList.remove('on');
+  at(700,  () => $('n5c1').classList.add('on'));
+  at(1500, () => $('n5c2').classList.add('on'));
+  at(2300, () => $('n5c3').classList.add('on'));
+  at(3400, () => $('n5foot').classList.add('on'));
+  loop(8500);
+});
+
+/* N6 · assinatura: varreduras correm sozinhas, o gesto assina, recibo eterno */
+scene1(({ at, loop }) => {
+  ['n6c1','n6c2','n6c3'].forEach(id => $(id).classList.remove('on'));
+  ['n6s1','n6s2','n6s3'].forEach(id => { $(id).textContent = '…'; $(id).className = 'st'; });
+  const track = $('n6track'), thumb = $('n6thumb'), hint = $('n6hint');
+  track.classList.remove('on','done');
+  thumb.style.transform = 'none';
+  hint.textContent = 'deslize para assinar';
+  $('n6rcpt').classList.remove('on');
+  const ok = id => { $(id).textContent = 'limpo ✓'; $(id).className = 'st ok'; };
+  at(600,  () => $('n6c1').classList.add('on'));
+  at(1300, () => { ok('n6s1'); $('n6c2').classList.add('on'); });
+  at(2000, () => { ok('n6s2'); $('n6c3').classList.add('on'); });
+  at(2700, () => ok('n6s3'));
+  at(3400, () => track.classList.add('on'));
+  at(4600, () => { thumb.style.transform = 'translateX(228px)'; hint.style.opacity = 0.25; });
+  at(5900, () => {
+    track.classList.add('done');
+    hint.style.opacity = 1;
+    hint.textContent = 'assinado — vitor · 14:45';
+    thumb.textContent = '✓';
+  });
+  at(6600, () => $('n6rcpt').classList.add('on'));
+  loop(10500);
+});
+
+}
+boot();
+
+['n1','n2','n3','n4','n5','n6'].forEach((id, i) => {
+  const el = $(id);
+  if (!el) return;
+  el.classList.add('replayable');
+  el.title = 'toque para repetir a cena';
+  el.addEventListener('click', () => { const s = scenes[i]; if (s) { s.stop(); s.start(); } });
+});
+window.__ready = true;
+</script>
+</body>
+</html>
