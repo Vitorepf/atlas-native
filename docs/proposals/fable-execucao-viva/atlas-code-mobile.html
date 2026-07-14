@@ -209,6 +209,19 @@
   .hrow svg.ic { width: 16px; height: 16px; color: var(--ink2); }
   .hrow svg.chev, .c-meta svg.ic, .notif svg.ic { width: 11px; height: 11px; }
   .agent svg.ic { width: 10px; height: 10px; vertical-align: -1px; }
+  .cap { margin: 2px auto 6px; display: flex; align-items: center; gap: 7px; width: fit-content; font-size: 10.5px; font-weight: 600; padding: 6px 14px; border-radius: 999px; font-variant-numeric: tabular-nums; transition: all 0.6s cubic-bezier(0.32,0.72,0,1); }
+  .cap svg.ic { width: 11px; height: 11px; }
+  .cap.bad { color: var(--alert); background: rgba(201,138,138,0.09); box-shadow: inset 0 0 0 1px rgba(201,138,138,0.35); }
+  .cap.good { color: var(--green); background: rgba(127,176,105,0.09); box-shadow: inset 0 0 0 1px rgba(127,176,105,0.35); }
+  .lane { fill: none; stroke-linecap: round; }
+  .dr { transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1); }
+  .gnd { opacity: 0; transition: opacity 0.35s ease; }
+  .gnd.on { opacity: 1; }
+  .pulse-r { animation: gpulse 1.7s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+  @keyframes gpulse { 50% { opacity: 0.3; } }
+  .mm { font-size: 12px; font-weight: 500; fill: var(--ink); }
+  .mmeta { font-family: var(--mono); font-size: 8px; fill: var(--ink3); }
+  .sh-kicker.okc { color: var(--green); }
 </style>
 </head>
 <body>
@@ -221,6 +234,7 @@
 <symbol id="i-spark" viewBox="0 0 16 16"><path d="M8 1.6c.5 3.4 1.6 4.9 6.4 6.4-4.8 1.5-5.9 3-6.4 6.4-.5-3.4-1.6-4.9-6.4-6.4C6.4 6.5 7.5 5 8 1.6z" fill="currentColor"/></symbol>
 <symbol id="i-diamond" viewBox="0 0 16 16"><rect x="3.6" y="3.6" width="8.8" height="8.8" rx="1.6" transform="rotate(45 8 8)" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
 <symbol id="i-user" viewBox="0 0 16 16"><circle cx="8" cy="5.4" r="2.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.8 14c.7-2.9 2.7-4.2 5.2-4.2s4.5 1.3 5.2 4.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-merge" viewBox="0 0 16 16"><circle cx="4.5" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="11.5" cy="4" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11.5 6c0 3.4-3.4 3.6-5.2 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
 <symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8.6 3.2 3.2L13 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 2.4 14.2 13a.9.9 0 0 1-.78 1.35H2.58A.9.9 0 0 1 1.8 13L8 2.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.4v3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.9" fill="currentColor"/></symbol>
 </defs></svg>
@@ -228,7 +242,6 @@
   <span class="tn-brand">Atlas Código · iPhone</span>
   <nav>
     <a href="atlas-codigo-plano.html" style="color: var(--gold); border-color: rgba(212,168,90,0.4)">Plano completo ›</a>
-    <a href="atlas-nova-era.html" style="color: var(--gold); border-color: rgba(212,168,90,0.4)">A Nova Era — versão definitiva ›</a>
     <a href="#telas">Telas</a>
     <a href="#desktop">Desktop (futuro)</a>
     <a class="desk" href="atlas-code-ledger.html">Cockpit desktop ›</a>
@@ -247,13 +260,64 @@
     daqui diz o que dela cresce lá.
   </p>
   <div class="keyfacts">
-    <div class="kf"><b>6</b><span>telas iPhone, vivas — toque para repetir</span></div>
+    <div class="kf"><b>7</b><span>telas iPhone, vivas — toque para repetir</span></div>
     <div class="kf"><b>1</b><span>já shipada no seu aparelho (review C15)</span></div>
     <div class="kf"><b>0</b><span>números inventados — cada tela com a fonte do dado</span></div>
   </div>
   <div class="rule"></div>
 
   <div id="telas" class="grid">
+
+    <!-- M0 · GRAFO — o mapa do repo -->
+    <div class="cell">
+      <div class="cell-label"><b>M0 · grafo governado — o mapa</b><span class="tag live">contratos C22–C25</span></div>
+      <div class="iphone" id="m0"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="m-head"><div class="back">‹</div><div class="title">Grafo · atlas-server</div></div>
+          <div class="m-body">
+            <div class="cap bad" id="g7cap"><svg class="ic" id="g7capi"><use href="#i-warn"/></svg><span id="g7capt">1 desvio da main</span></div>
+            <svg viewBox="0 0 292 440" width="100%" aria-label="grafo — main como espinha">
+              <defs><linearGradient id="g7main" gradientUnits="userSpaceOnUse" x1="0" y1="18" x2="0" y2="420">
+                <stop offset="0" stop-color="#ecc984"/><stop offset="1" stop-color="#bb8d4c"/></linearGradient></defs>
+              <line class="lane dr" id="g7ln" x1="26" y1="18" x2="26" y2="420" stroke="url(#g7main)" stroke-width="2.5" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
+              <path class="lane dr" id="g7fork" d="M26,158 C26,131 62,131 62,104" stroke="#c98a8a" stroke-width="2.2" opacity="0.95" stroke-dasharray="200" stroke-dashoffset="200"/>
+              <path class="lane" id="g7ret" d="M62,104 C62,77 26,77 26,50" stroke="#7fb069" stroke-width="2.2" stroke-dasharray="200" stroke-dashoffset="200" style="transition: stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1)"/>
+              <g class="gnd" id="g7n1"><circle cx="26" cy="50" r="5" fill="#e2b264" stroke="#1d2b34" stroke-width="2"/>
+                <text class="mm" x="48" y="47">feat(brain): council_review</text><text class="mmeta" x="48" y="61">fable · main · 2h</text></g>
+              <g class="gnd" id="g7n2"><circle id="g7dot" cx="62" cy="104" r="5" fill="#c98a8a" stroke="#1d2b34" stroke-width="2"/>
+                <text class="mm" x="80" y="101" fill="#d9a8a8">wip: ajuste rápido no worker</text><text class="mmeta" x="80" y="115" fill="#b98a8a">forge-3 · hotfix-rapido · fora da main</text></g>
+              <g class="gnd" id="g7r"><circle class="pulse-r" cx="62" cy="104" r="12" fill="none" stroke="#c98a8a" stroke-width="1.4" opacity="0.8"/></g>
+              <g class="gnd" id="g7n3"><circle cx="26" cy="158" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
+                <text class="mm" x="48" y="155">docs(obra): canon · Autônomos</text><text class="mmeta" x="48" y="169">você · main · 1d</text></g>
+              <g class="gnd" id="g7n4"><circle cx="26" cy="212" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
+                <text class="mm" x="48" y="209">feat(core): fila durável</text><text class="mmeta" x="48" y="223">codex · main · 5h</text></g>
+              <g class="gnd" id="g7n5"><circle cx="26" cy="266" r="5" fill="#e2b264" stroke="#1d2b34" stroke-width="2"/>
+                <text class="mm" x="48" y="263">fix(core): resposta verbatim</text><text class="mmeta" x="48" y="277">fable · main · 1d</text></g>
+              <g class="gnd" id="g7n6"><circle cx="26" cy="320" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
+                <text class="mm" x="48" y="317">versão final</text><text class="mmeta" x="48" y="331">você · main · 4d</text></g>
+              <g class="gnd" id="g7n7"><circle cx="26" cy="374" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
+                <text class="mm" x="48" y="371">feat(core): durable follow-ups</text><text class="mmeta" x="48" y="385">codex · main · 5d</text></g>
+            </svg>
+            <div class="sheet" id="g7sheet">
+              <div class="grab"></div>
+              <div class="sh-kicker okc">Curado sozinho · main-only · 02:41</div>
+              <div class="sh-title">forge-3 saiu da main · o Atlas resolveu</div>
+              <div class="co-s" style="margin-top:6px">Detectada às 02:41. Commit preservado, trazido para a main, branch encerrada — 12 segundos, sem acordar você.</div>
+              <div style="margin-top:9px">
+                <div class="gcheck on"><span>Trazer o commit para a main</span><span class="st ok" id="g7s1"></span></div>
+                <div class="gcheck on"><span>Encerrar a branch hotfix-rapido</span><span class="st ok" id="g7s2"></span></div>
+                <div class="gcheck on"><span>Citar a regra ao forge-3 — ele aprende</span><span class="st ok" id="g7s3"></span></div>
+              </div>
+              <div class="co-pills" style="margin-top:10px"><span class="co-pill">Desfazer — com recibo</span></div>
+              <div class="receipt" id="g7rcpt"><b>você não foi necessário</b> · recibo no ledger · forge-3 aprendeu</div>
+            </div>
+          </div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">A primeira tela do Código: <em>o mapa</em>. A main é a espinha — todo mundo commita nela — e o desvio salta ao olho. O Atlas cura sozinho; a folha é <em>recibo</em>, e o único botão é desfazer. Desktop com a janela completa: <a href="atlas-grafo-governado.html" style="color: var(--gold)">grafo governado ›</a></p>
+    </div>
 
     <!-- M1 · Hub com seção CÓDIGO -->
     <div class="cell">
@@ -482,6 +546,37 @@ function restart() { scenes.forEach(s => s.stop()); scenes.length = 0; boot(); }
 
 function boot() {
 
+/* M0 · grafo: mapa desenha → desvio → cura sozinha → recibo → volta à main */
+scene1(({ at, loop }) => {
+  $('g7ln').style.strokeDashoffset = 900;
+  $('g7fork').style.strokeDashoffset = 200;
+  $('g7ret').style.strokeDashoffset = 200;
+  ['g7n1','g7n2','g7n3','g7n4','g7n5','g7n6','g7n7','g7r'].forEach(id => $(id).classList.remove('on'));
+  $('g7dot').setAttribute('fill', '#c98a8a');
+  $('g7sheet').classList.remove('on'); $('g7rcpt').classList.remove('on');
+  ['g7s1','g7s2','g7s3'].forEach(id => $(id).textContent = '');
+  $('g7cap').className = 'cap bad'; $('g7capt').textContent = '1 desvio da main';
+  $('g7capi').innerHTML = '<use href="#i-warn"/>';
+  at(300, () => $('g7ln').style.strokeDashoffset = 0);
+  ['g7n7','g7n6','g7n5','g7n4','g7n3','g7n1'].forEach((id, i) => at(600 + i * 200, () => $(id).classList.add('on')));
+  at(2100, () => $('g7fork').style.strokeDashoffset = 0);
+  at(2550, () => { $('g7n2').classList.add('on'); $('g7r').classList.add('on'); });
+  at(4300, () => $('g7sheet').classList.add('on'));
+  at(4800, () => $('g7s1').textContent = '✓');
+  at(5200, () => $('g7s2').textContent = '✓');
+  at(5600, () => $('g7s3').textContent = '✓');
+  at(6200, () => $('g7rcpt').classList.add('on'));
+  at(8200, () => {
+    $('g7sheet').classList.remove('on');
+    $('g7ret').style.strokeDashoffset = 0;
+    $('g7r').classList.remove('on');
+    $('g7dot').setAttribute('fill', '#7fb069');
+    $('g7cap').className = 'cap good'; $('g7capt').textContent = 'main íntegra · curada às 02:41, sem você';
+    $('g7capi').innerHTML = '<use href="#i-check"/>';
+  });
+  loop(11500);
+});
+
 /* M1 · hub: blackink resolve depois de um tempo (push feito em M3) */
 scene1(({ at, loop }) => {
   $('m1s3').textContent = '7 não espelhados'; $('m1s3').className = 'attn';
@@ -574,7 +669,7 @@ scene1(({ at, loop }) => {
 }
 boot();
 
-['m1','m2','m3','m4','m5','m6'].forEach((id, i) => {
+['m0','m1','m2','m3','m4','m5','m6'].forEach((id, i) => {
   const el = $(id);
   if (!el) return;
   el.classList.add('replayable');
