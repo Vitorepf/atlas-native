@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Código no iPhone — a vertical no app nativo (Fable 5)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #10181e; --app-bg: #1d2b34; --surface: #243743; --surface-hi: #2d4351;
+    --recessed: #15212a; --ink: #d6dde2; --ink2: #95a3ac; --ink3: #677482;
+    --sep: #313f47; --sep-soft: #27353e; --gold: #d4a85a; --green: #7fb069;
+    --alert: #c98a8a; --codex: #7fa3b8;
+    --serif: "Fraunces", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: radial-gradient(1200px 600px at 70% -10%, rgba(212,168,90,0.05), transparent 60%), var(--bg);
+    color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 48px 48px 96px; }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 60; display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; padding: 11px 48px;
+    background: rgba(16,24,30,0.82); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--sep-soft);
+  }
+  .tn-brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+  .topnav nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .topnav a { font-family: var(--mono); font-size: 10.5px; color: var(--ink2); text-decoration: none; border: 1px solid transparent; border-radius: 999px; padding: 6px 11px; transition: all 0.2s; }
+  .topnav a:hover { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .topnav a.desk { color: var(--ink3); border-color: var(--sep); }
+
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 1.12; letter-spacing: -0.01em; max-width: 22ch; text-wrap: balance; }
+  .lede { margin-top: 16px; font-size: 16px; line-height: 1.65; color: var(--ink2); max-width: 64ch; text-wrap: pretty; }
+  .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .keyfacts { display: flex; gap: 40px; margin-top: 26px; flex-wrap: wrap; }
+  .kf b { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+  .kf span { font-size: 11.5px; color: var(--ink3); display: block; margin-top: 7px; max-width: 20ch; line-height: 1.45; }
+  .rule { width: 44px; height: 2px; background: var(--gold); opacity: 0.7; margin: 26px 0 0; }
+
+  /* ── grade de iPhones ── */
+  .grid { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px 28px; justify-items: center; }
+  .cell { display: flex; flex-direction: column; align-items: center; max-width: 360px; }
+  .cell-label { align-self: stretch; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+  .cell-label b { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink2); font-weight: 500; }
+  .tag { font-family: var(--mono); font-size: 9px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 999px; padding: 3px 8px; white-space: nowrap; }
+  .tag.live { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .tag.ship { color: var(--green); border-color: rgba(127,176,105,0.35); }
+  .caption { margin-top: 12px; font-size: 12px; line-height: 1.55; color: var(--ink3); text-wrap: pretty; }
+  .caption em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+
+  /* iPhone (métricas 15 Pro, escala 0.82) */
+  .iphone {
+    padding: 10px; background: #000; border-radius: 49px;
+    box-shadow: 0 0 0 2px #1f2937, 0 24px 64px rgba(0,0,0,0.5);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .replayable { cursor: pointer; }
+  .iphone.replayable:hover { transform: translateY(-3px); box-shadow: 0 0 0 2px rgba(212,168,90,0.55), 0 28px 70px rgba(0,0,0,0.55); }
+  .screen { position: relative; width: 322px; height: 698px; border-radius: 39px; overflow: hidden; background: var(--app-bg); }
+  .island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 102px; height: 30px; background: #000; border-radius: 999px; z-index: 30; }
+  .sbar { position: absolute; top: 0; left: 0; right: 0; height: 44px; z-index: 20; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; font-size: 13px; font-weight: 600; }
+  .content { position: absolute; inset: 0; padding-top: 50px; display: flex; flex-direction: column; }
+  .m-head { display: flex; align-items: center; justify-content: center; position: relative; padding: 6px 16px 8px; }
+  .m-head .back { position: absolute; left: 13px; width: 30px; height: 30px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .m-head .title { font-family: var(--serif); font-weight: 600; font-size: 15px; }
+  .m-head .side { position: absolute; right: 14px; font-family: var(--mono); font-size: 9px; color: var(--ink3); }
+  .m-body { flex: 1; padding: 4px 15px 0; overflow: hidden; position: relative; }
+  .homebar { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; border-radius: 999px; background: rgba(214,221,226,0.35); z-index: 25; }
+
+  /* hub rows (a linguagem REAL do app) */
+  .hrow { display: flex; align-items: center; gap: 11px; padding: 12px 3px; border-bottom: 1px solid rgba(149,163,172,0.08); }
+  .hrow .ic { width: 20px; text-align: center; color: var(--ink2); font-size: 14px; }
+  .hrow b { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+  .hrow .n { margin-left: auto; font-size: 13px; color: var(--ink3); }
+  .hrow .chev { color: var(--ink3); font-size: 11px; }
+  .hsec { font-size: 10px; font-weight: 600; letter-spacing: 1.3px; color: var(--ink3); padding: 14px 3px 8px; }
+  .hrow .attn { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--alert); }
+  .hrow .okn { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--green); }
+  .pillinput { position: absolute; left: 13px; right: 13px; bottom: 18px; display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--sep); border-radius: 999px; padding: 9px 13px; }
+  .pillinput .plus { width: 24px; height: 24px; border-radius: 50%; background: var(--surface-hi); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink2); }
+  .pillinput .ph { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink3); }
+
+  /* commits mobile */
+  .commit { display: flex; gap: 10px; padding: 9px 2px; opacity: 0; transform: translateY(7px); transition: all 0.4s ease; }
+  .commit.on { opacity: 1; transform: none; }
+  .c-node { width: 11px; display: flex; flex-direction: column; align-items: center; padding-top: 3px; }
+  .c-dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--gold); background: var(--app-bg); flex-shrink: 0; }
+  .c-dot.fable { background: var(--gold); }
+  .c-dot.codex { border-color: var(--codex); }
+  .c-dot.you { border-color: var(--green); background: var(--green); }
+  .c-line { width: 1.5px; flex: 1; background: rgba(212,168,90,0.18); margin-top: 3px; min-height: 14px; }
+  .c-msg { font-size: 12px; color: var(--ink); line-height: 1.35; }
+  .c-meta { font-family: var(--mono); font-size: 8.5px; color: var(--ink3); margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .c-meta .agent { color: var(--gold); }
+  .c-meta .agent.codex { color: var(--codex); }
+  .c-meta .agent.you { color: var(--green); }
+  .c-meta .gate { color: var(--green); }
+
+  /* folha (sheet mobile) */
+  .sheet {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 26;
+    background: var(--recessed); border: 1px solid var(--sep); border-radius: 20px;
+    padding: 14px; transform: translateY(112%);
+    transition: transform 0.45s cubic-bezier(0.32,0.72,0,1);
+    box-shadow: 0 -12px 34px rgba(0,0,0,0.5);
+  }
+  .sheet.on { transform: none; }
+  .sheet .grab { width: 34px; height: 4px; border-radius: 999px; background: rgba(214,221,226,0.25); margin: 0 auto 10px; }
+  .sh-kicker { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .sh-title { font-family: var(--serif); font-size: 14.5px; font-weight: 600; line-height: 1.35; }
+  .sh-hash { font-family: var(--mono); font-size: 9px; color: var(--ink3); margin-top: 3px; }
+  .sh-block { margin-top: 10px; padding: 10px; border: 1px solid var(--sep-soft); border-radius: 12px; }
+  .sh-block .k { font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em; color: var(--ink3); text-transform: uppercase; margin-bottom: 4px; }
+  .sh-block .v { font-size: 11.5px; color: var(--ink); line-height: 1.45; }
+  .sh-block .v em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+  .gates { display: flex; gap: 6px; margin-top: 8px; }
+  .pg { font-family: var(--mono); font-size: 8.5px; color: var(--green); border: 1px solid rgba(127,176,105,0.35); border-radius: 999px; padding: 3px 8px; }
+
+  /* radar mobile */
+  .repo { border: 1px solid var(--sep-soft); border-radius: 13px; padding: 11px 12px; margin-bottom: 9px; background: rgba(21,33,42,0.5); transition: border-color 0.3s; }
+  .repo.attn { border-color: rgba(201,138,138,0.5); }
+  .repo.okr { border-color: rgba(127,176,105,0.28); }
+  .repo-top { display: flex; align-items: center; gap: 8px; }
+  .repo-top b { font-family: var(--serif); font-size: 13.5px; font-weight: 600; }
+  .rled { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .repo.attn .rled { background: var(--alert); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .rstate { margin-left: auto; font-family: var(--mono); font-size: 8.5px; color: var(--ink3); transition: color 0.3s; }
+  .rstate.warn { color: var(--alert); } .rstate.okc { color: var(--green); }
+  .rtags { display: flex; gap: 5px; margin-top: 7px; flex-wrap: wrap; }
+  .rt { font-family: var(--mono); font-size: 8px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 7px; padding: 2px 6px; }
+  .rt.bad { color: var(--alert); border-color: rgba(201,138,138,0.4); }
+  .rt.goodt { color: var(--green); border-color: rgba(127,176,105,0.3); }
+
+  /* callout / pills (padrão do app) */
+  .callout { border: 1px solid rgba(212,168,90,0.35); background: var(--surface); border-radius: 13px; padding: 11px 12px; margin-top: 10px; opacity: 0; transform: translateY(9px) scale(0.98); transition: all 0.45s cubic-bezier(0.32,0.72,0,1); }
+  .callout.on { opacity: 1; transform: none; }
+  .callout.alert { border-color: rgba(201,138,138,0.45); }
+  .callout.okc { border-color: rgba(127,176,105,0.4); }
+  .co-k { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .callout.alert .co-k { color: var(--alert); }
+  .callout.okc .co-k { color: var(--green); }
+  .co-t { font-size: 12px; font-weight: 600; line-height: 1.35; }
+  .co-s { font-size: 10px; color: var(--ink2); margin-top: 4px; line-height: 1.45; }
+  .co-pills { display: flex; gap: 6px; margin-top: 9px; }
+  .co-pill { flex: 1; text-align: center; font-size: 10px; color: var(--ink2); border: 1px solid var(--sep); border-radius: 999px; padding: 6px 4px; transition: all 0.3s; }
+  .co-pill.primary { color: var(--gold); border-color: rgba(212,168,90,0.5); }
+  .co-pill.pressed { background: rgba(212,168,90,0.16); transform: scale(0.97); }
+
+  /* diff mobile */
+  .file { display: flex; align-items: baseline; gap: 8px; padding: 8px 2px; font-family: var(--mono); font-size: 10px; color: var(--ink); border-bottom: 1px solid rgba(149,163,172,0.07); }
+  .file .fd { margin-left: auto; font-size: 8.5px; }
+  .plus { color: var(--green); } .minus { color: var(--alert); }
+  .dline { font-family: var(--mono); font-size: 9.5px; padding: 3px 8px; border-radius: 4px; color: var(--ink3); white-space: pre; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity 0.3s; }
+  .dline.on { opacity: 1; }
+  .dline.del { color: var(--alert); background: rgba(201,138,138,0.07); }
+  .dline.add { color: var(--green); background: rgba(127,176,105,0.08); }
+  .receipt { margin-top: 10px; padding: 9px 11px; border-radius: 11px; background: var(--recessed); border: 1px solid rgba(127,176,105,0.3); font-family: var(--mono); font-size: 9px; color: var(--ink2); line-height: 1.6; opacity: 0; transition: opacity 0.4s; }
+  .receipt.on { opacity: 1; }
+  .receipt b { color: var(--green); font-weight: 500; }
+
+  /* varredura (push governado) */
+  .gcheck { display: flex; gap: 8px; align-items: baseline; padding: 6px 2px; font-size: 11px; color: var(--ink2); opacity: 0; transition: all 0.35s ease; }
+  .gcheck.on { opacity: 1; }
+  .gcheck .st { font-family: var(--mono); font-size: 8.5px; margin-left: auto; color: var(--ink3); }
+  .gcheck .st.ok { color: var(--green); } .gcheck .st.run { color: var(--gold); }
+
+  /* lock screen (presença) */
+  .lock { position: absolute; inset: 0; background: radial-gradient(420px 320px at 50% -50px, rgba(212,168,90,0.13), transparent 70%), linear-gradient(180deg, #1a2831 0%, #121d24 55%, #0e161c 100%); display: flex; flex-direction: column; align-items: center; }
+  .lock .date { margin-top: 66px; font-size: 13px; font-weight: 500; color: rgba(214,221,226,0.75); }
+  .lock .clock { font-size: 66px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+  .notif { margin-top: 26px; width: 282px; border-radius: 17px; background: rgba(36,55,67,0.94); border: 1px solid var(--sep); padding: 11px 13px; display: flex; gap: 10px; align-items: flex-start; opacity: 0; transform: translateY(-14px); transition: all 0.55s cubic-bezier(0.32,0.72,0,1); box-shadow: 0 10px 34px rgba(0,0,0,0.4); }
+  .notif.on { opacity: 1; transform: none; }
+  .notif .appicon { width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0; background: linear-gradient(180deg, #243743, #15212a); display: flex; align-items: center; justify-content: center; color: var(--gold); font-family: var(--serif); font-size: 14px; border: 0.5px solid rgba(212,168,90,0.3); }
+  .notif b { font-size: 11.5px; display: block; }
+  .notif .nb { font-size: 10.5px; color: var(--ink2); margin-top: 2px; line-height: 1.4; }
+  .notif .when { margin-left: auto; font-size: 9px; color: var(--ink3); flex-shrink: 0; }
+
+  /* conversa (linguagem natural) */
+  .uquote { font-family: var(--serif); font-style: italic; font-size: 14px; line-height: 1.45; padding-left: 11px; border-left: 2px solid var(--gold); opacity: 0; transition: all 0.4s ease; }
+  .uquote.on { opacity: 1; }
+  .nl-line { font-size: 11.5px; line-height: 1.55; color: var(--ink); opacity: 0; transform: translateY(6px); transition: all 0.4s ease; margin-top: 9px; }
+  .nl-line.on { opacity: 1; transform: none; }
+  .nl-line .mono { font-family: var(--mono); font-size: 9px; color: var(--gold); }
+  .nl-line .why { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+
+  /* ponte pro desktop */
+  .bridge { margin-top: 72px; border: 1px solid var(--sep-soft); border-radius: 18px; padding: 26px 30px; background: rgba(29,43,52,0.5); display: flex; gap: 26px; align-items: center; flex-wrap: wrap; }
+  .bridge .btxt { flex: 1; min-width: 280px; }
+  .bridge h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; }
+  .bridge p { margin-top: 8px; font-size: 13px; line-height: 1.6; color: var(--ink2); text-wrap: pretty; }
+  .bridge a.go { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 10px 22px; text-decoration: none; white-space: nowrap; }
+  .bridge a.go:hover { background: rgba(212,168,90,0.1); }
+  .bmap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; margin-top: 14px; }
+  .bmap .bi { font-size: 11.5px; color: var(--ink3); display: flex; gap: 8px; align-items: baseline; }
+  .bmap .bi b { color: var(--ink2); font-weight: 500; font-family: var(--mono); font-size: 10px; }
+
+  .colophon { margin-top: 56px; font-family: var(--mono); font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .replay { position: fixed; bottom: 26px; right: 26px; z-index: 50; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); background: rgba(29,43,52,0.9); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 10px 20px; cursor: pointer; backdrop-filter: blur(8px); }
+  .replay:hover { background: rgba(212,168,90,0.12); }
+  ::selection { background: rgba(212,168,90,0.25); }
+
+  @media (max-width: 1160px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } .page { padding: 40px 20px 72px; } h1 { font-size: 34px; } }
+</style>
+</head>
+<body>
+<header class="topnav">
+  <span class="tn-brand">Atlas Código · iPhone</span>
+  <nav>
+    <a href="#telas">Telas</a>
+    <a href="#desktop">Desktop (futuro)</a>
+    <a class="desk" href="atlas-code-ledger.html">Cockpit desktop ›</a>
+  </nav>
+</header>
+<div class="page">
+
+  <div class="kicker">Atlas Código · sessão mobile nativa — proposta Fable 5</div>
+  <h1>No bolso, o código se lê e se decide.</h1>
+  <p class="lede">
+    Esta é a vertical Atlas Código <em>no app nativo</em> — só iPhone, na linguagem exata
+    do app que já está instalado (hub com seções, folhas, recibos, presença). O telefone
+    faz o que o telefone faz melhor: <em>ler a história, decidir reviews, autorizar atos e
+    ser avisado por exceção</em>. O plumbing e o cockpit pleno ficam para o
+    <a href="atlas-code-ledger.html" style="color: var(--gold)">desktop, no futuro</a> — cada tela
+    daqui diz o que dela cresce lá.
+  </p>
+  <div class="keyfacts">
+    <div class="kf"><b>6</b><span>telas iPhone, vivas — toque para repetir</span></div>
+    <div class="kf"><b>1</b><span>já shipada no seu aparelho (review C15)</span></div>
+    <div class="kf"><b>0</b><span>números inventados — cada tela com a fonte do dado</span></div>
+  </div>
+  <div class="rule"></div>
+
+  <div id="telas" class="grid">
+
+    <!-- M1 · Hub com seção CÓDIGO -->
+    <div class="cell">
+      <div class="cell-label"><b>M1 · o hub ganha CÓDIGO</b><span class="tag live">integra no hub shipado</span></div>
+      <div class="iphone" id="m1"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="m-head"><div class="title" style="font-size:17px">Atlas</div></div>
+          <div class="m-body">
+            <div class="hsec">CONVERSAS</div>
+            <div class="hrow"><span class="ic">💬</span><b>Conversas livres</b><span class="n">12</span><span class="chev">›</span></div>
+            <div class="hsec">CÓDIGO</div>
+            <div class="hrow" id="m1r1"><span class="ic">⌥</span><b>atlas-native</b><span class="okn" id="m1s1">sincronizado ✓</span><span class="chev">›</span></div>
+            <div class="hrow" id="m1r2"><span class="ic">⌥</span><b>atlas-server</b><span class="okn">sincronizado ✓</span><span class="chev">›</span></div>
+            <div class="hrow" id="m1r3"><span class="ic">⌥</span><b>blackink-app</b><span class="attn" id="m1s3">7 não enviados</span><span class="chev">›</span></div>
+            <div class="hsec">OPERAÇÃO</div>
+            <div class="hrow"><span class="ic">⚡︎</span><b>Autônomos</b><span class="chev">›</span></div>
+            <div class="hsec">WORKSPACES</div>
+            <div class="hrow"><span class="ic">📁</span><b>Todas as conversas</b><span class="n">100</span><span class="chev">›</span></div>
+          </div>
+          <div class="pillinput"><div class="plus">+</div><div class="ph">Escreva ao Atlas</div></div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">A seção <em>CÓDIGO</em> entra no hub real, entre CONVERSAS e OPERAÇÃO: cada repo com o estado por exceção — saudável fica quieto, <em>"7 não enviados" chama</em>. Fonte: git status/rev-list por repo (F2).</p>
+    </div>
+
+    <!-- M2 · Linha do tempo -->
+    <div class="cell">
+      <div class="cell-label"><b>M2 · linha do tempo de obras</b><span class="tag live">git log + traces reais</span></div>
+      <div class="iphone" id="m2"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="m-head"><div class="back">‹</div><div class="title">atlas-native</div><div class="side">144 · main</div></div>
+          <div class="m-body">
+            <div class="commit" id="m2c1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+              <div><div class="c-msg">fix(core): resposta parava de comer espaços — verbatim</div>
+              <div class="c-meta"><span class="agent">✦ fable</span><span>683af18</span><span class="gate">gates ✓</span><span>2h</span></div></div></div>
+            <div class="commit" id="m2c2"><div class="c-node"><div class="c-dot codex"></div><div class="c-line"></div></div>
+              <div><div class="c-msg">feat(core): durable execution follow-up queue</div>
+              <div class="c-meta"><span class="agent codex">◆ codex</span><span>da25e8a</span><span class="gate">232 ✓</span><span>5h</span></div></div></div>
+            <div class="commit" id="m2c3"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+              <div><div class="c-msg">polish(ui): C11 ligado — chip 'Fila N' + folha</div>
+              <div class="c-meta"><span class="agent">✦ fable</span><span>412a285</span><span class="gate">✓</span><span>5h</span></div></div></div>
+            <div class="commit" id="m2c4"><div class="c-node"><div class="c-dot you"></div></div>
+              <div><div class="c-msg">docs(obra): canon — Autônomos é área própria</div>
+              <div class="c-meta"><span class="agent you">● você</span><span>8b0af2d</span><span>1d</span></div></div></div>
+          </div>
+          <div class="sheet" id="m2sheet">
+            <div class="grab"></div>
+            <div class="sh-kicker">Proveniência — o porquê deste hash</div>
+            <div class="sh-title">fix(core): resposta parava de comer espaços</div>
+            <div class="sh-hash">683af18 · Fable 5 · 14/07 09:56</div>
+            <div class="sh-block"><div class="k">Origem (sua frase, da conversa real)</div>
+              <div class="v"><em>"identifica todos os erros, principalmente de resposta e formatação"</em> — com screenshot do iPhone.</div></div>
+            <div class="sh-block"><div class="k">Prova</div>
+              <div class="gates"><span class="pg">checks exit=0</span><span class="pg">regressão travada</span><span class="pg">device ✓</span></div></div>
+          </div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">Commits como <em>recibos</em> — quem (✦ ◆ ●), gate, quando. Tocar num hash sobe a folha de <em>proveniência</em>: a SUA frase que o originou e a prova. No desktop isso vira o graph completo com painel fixo.</p>
+    </div>
+
+    <!-- M3 · Radar / segredo bloqueia push -->
+    <div class="cell">
+      <div class="cell-label"><b>M3 · radar — segredo bloqueia push</b><span class="tag live">a varredura de 14/07, automática</span></div>
+      <div class="iphone" id="m3"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="m-head"><div class="back">‹</div><div class="title">Código</div><div class="side" id="m3side">1 atenção</div></div>
+          <div class="m-body">
+            <div class="repo okr"><div class="repo-top"><div class="rled"></div><b>atlas-native</b><span class="rstate okc">sincronizado</span></div>
+              <div class="rtags"><span class="rt goodt">0 não enviados</span><span class="rt">2 agentes</span></div></div>
+            <div class="repo attn" id="m3r"><div class="repo-top"><div class="rled"></div><b>blackink-app</b><span class="rstate warn" id="m3rs">push bloqueado</span></div>
+              <div class="rtags"><span class="rt bad" id="m3rt">segredo no staged</span><span class="rt">7 commits</span></div></div>
+            <div class="callout alert" id="m3c">
+              <div class="co-k" id="m3ck">Push bloqueado pela varredura</div>
+              <div class="co-t" id="m3ct">FIREBASE_KEY detectada em config/app.ts</div>
+              <div class="co-s" id="m3cs">Entraria no commit 3/7. Nada sai até você decidir — a varredura roda antes de todo envio, sempre.</div>
+              <div class="co-pills">
+                <span class="co-pill primary" id="m3fix">Mover p/ .env + ignorar</span>
+                <span class="co-pill">Ver diff</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">O incidente que quase aconteceu com seu token — <em>impossível daqui em diante</em>: segredo no staged bloqueia o push e te chama. Resolver move para .env, libera e <em>deixa recibo</em>.</p>
+    </div>
+
+    <!-- M4 · Review (JÁ SHIPADO) -->
+    <div class="cell">
+      <div class="cell-label"><b>M4 · review como decisão</b><span class="tag ship">JÁ NO SEU IPHONE · 06f88b5</span></div>
+      <div class="iphone" id="m4"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="m-head"><div class="back">‹</div><div class="title">Revisar mudanças</div><div class="side"><span class="plus">+48</span> <span class="minus">−12</span></div></div>
+          <div class="m-body">
+            <div class="file"><span>DashboardHtml.php</span><span class="fd"><span class="plus">+36</span> <span class="minus">−8</span></span></div>
+            <div class="dline" id="m4d1">  private function renderUplift($m) {</div>
+            <div class="dline del" id="m4d2">−   $label = "Total spend absence uplift";</div>
+            <div class="dline add" id="m4d3">+   if (!$this-&gt;hasComparablePair($m)) return '';</div>
+            <div class="dline add" id="m4d4">+   $label = "Economia comprovada no período";</div>
+            <div class="file" style="margin-top:8px"><span>ReportLocale.php</span><span class="fd"><span class="plus">+12</span> <span class="minus">−4</span></span></div>
+            <div class="gates" style="margin-top:10px"><span class="pg">3/3 checks</span><span class="pg">testes passed</span><span class="pg">0 warnings</span></div>
+            <div class="co-pills" style="margin-top:12px">
+              <span class="co-pill primary" id="m4ok">Aceitar tudo</span>
+              <span class="co-pill">Rejeitar</span>
+            </div>
+            <div class="receipt" id="m4r"><b>aplicado ✓</b> · recibo trace_change_review · 2 arquivos · ledger 14:12</div>
+          </div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">Esta tela <em>não é proposta — é produto</em>: o C15 está instalado no seu aparelho. A linha que morreu, a que nasceu, e o aceite que só muda a tela <em>depois do recibo</em>. No desktop ganha diff lado a lado.</p>
+    </div>
+
+    <!-- M5 · Push governado -->
+    <div class="cell">
+      <div class="cell-label"><b>M5 · push governado</b><span class="tag">contrato: push_receipt no ledger</span></div>
+      <div class="iphone" id="m5"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="m-head"><div class="back">‹</div><div class="title">Subir para origin</div><div class="side">main</div></div>
+          <div class="m-body">
+            <div class="callout on" style="margin-top:4px">
+              <div class="co-k">3 commits prontos</div>
+              <div class="co-t">683af18 · b2f068a · 8387a2b</div>
+              <div class="co-s">Todos com gates verdes. A varredura roda antes de qualquer byte sair.</div>
+            </div>
+            <div style="margin-top:10px">
+              <div class="gcheck" id="m5g1"><span>Segredos no histórico a enviar</span><span class="st" id="m5s1">…</span></div>
+              <div class="gcheck" id="m5g2"><span>Lixo de build fora do rastreio</span><span class="st" id="m5s2">…</span></div>
+              <div class="gcheck" id="m5g3"><span>Drift contra origin/main</span><span class="st" id="m5s3">…</span></div>
+              <div class="gcheck" id="m5g4"><span>Branch = main local (pétreo)</span><span class="st" id="m5s4">…</span></div>
+            </div>
+            <div class="co-pills" style="margin-top:12px">
+              <span class="co-pill primary" id="m5btn">Confirmar · operador vitor</span>
+              <span class="co-pill">Cancelar</span>
+            </div>
+            <div class="receipt" id="m5r"><b>enviado ✓</b> · push_receipt 9f27c1 · 3 → origin/main · varredura limpa · ledger</div>
+          </div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">Subir vira <em>ato governado</em>: varredura tick a tick, operador nomeado, recibo no ledger. Do sofá, com a mesma segurança do desktop.</p>
+    </div>
+
+    <!-- M6 · Presença: lock screen + conversa -->
+    <div class="cell">
+      <div class="cell-label"><b>M6 · presença + linguagem natural</b><span class="tag live">TurnPresence + conversa — tudo existe</span></div>
+      <div class="iphone" id="m6"><div class="screen">
+        <div class="island"></div>
+        <div class="lock" id="m6lock">
+          <div class="date">terça, 14 de julho</div>
+          <div class="clock">14:12</div>
+          <div class="notif" id="m6n1">
+            <div class="appicon">✦</div>
+            <div><b>Push bloqueado — blackink-app</b>
+              <div class="nb">Segredo detectado no staged. Nada foi enviado; toque para decidir.</div></div>
+            <div class="when">agora</div>
+          </div>
+          <div class="notif" id="m6n2" style="margin-top:10px">
+            <div class="appicon">✦</div>
+            <div><b>Obra do dia — atlas-native</b>
+              <div class="nb">6 commits, todos com gates verdes. Nada pendente de envio.</div></div>
+            <div class="when">18:00</div>
+          </div>
+        </div>
+        <div class="content" id="m6chat" style="opacity:0; transition: opacity 0.5s; background: var(--app-bg);">
+          <div class="m-head"><div class="back">‹</div><div class="title">Nova conversa</div></div>
+          <div class="m-body">
+            <div class="uquote on">"o que mudou hoje no atlas-native?"</div>
+            <div class="nl-line" id="m6a1">Hoje entraram <b>6 commits</b>, todos com gates verdes:</div>
+            <div class="nl-line" id="m6a2"><span class="mono">683af18</span> — os espaços colados que você reportou. <span class="why">Trim no retorno do stream; agora verbatim, regressão travada.</span></div>
+            <div class="nl-line" id="m6a3"><span class="mono">8387a2b</span> — resumo da operação no Autônomos, por agregação de dado real.</div>
+            <div class="nl-line" id="m6a4">Nada pendente. Quer que eu <b>suba os 3 do server</b>? A varredura já passou.</div>
+          </div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">O Código entra na <em>Presença</em>: bloqueio de push avisa na tela fechada; o resumo do dia chega às 18h; e na conversa você <em>pergunta</em> — hash, porquê e próxima ação governada. É aqui que nenhum cliente git alcança.</p>
+    </div>
+  </div>
+
+  <!-- ═══ PONTE PARA O DESKTOP ═══ -->
+  <div id="desktop" class="bridge">
+    <div class="btxt">
+      <h3>O que cresce no desktop — cada tela daqui tem seu par lá.</h3>
+      <p>O iPhone lê, decide e autoriza. O Mac ganha o cockpit pleno: o graph completo com
+         painel de proveniência fixo, diff lado a lado, a frota inteira num olhar e o merge
+         governado. Mesmo ledger, mesma linguagem, mesmos recibos.</p>
+      <div class="bmap">
+        <div class="bi"><b>M2</b> linha do tempo → graph completo + filtros por agente</div>
+        <div class="bi"><b>M3</b> radar → frota com histórico e varredura contínua</div>
+        <div class="bi"><b>M4</b> review → diff lado a lado + findings por eixo</div>
+        <div class="bi"><b>M5</b> push → merge/rollback governados</div>
+        <div class="bi"><b>M6</b> presença → digest diário + pergunta no desktop</div>
+        <div class="bi"><b>M1</b> hub → workspace certificado (AWIS)</div>
+      </div>
+    </div>
+    <a class="go" href="atlas-code-ledger.html">ver o cockpit desktop ›</a>
+  </div>
+
+  <div class="colophon">
+    <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
+    <span>Fable 5 · Atlas Código mobile v1 · 6 telas iPhone · toque para repetir</span>
+  </div>
+</div>
+
+<button class="replay" onclick="restart()">↻ repetir as cenas</button>
+
+<script>
+const $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function makeScene(run) {
+  let handles = [];
+  const at = (t, fn) => handles.push(setTimeout(fn, reduced ? 0 : t));
+  const every = (ms, fn) => { const h = setInterval(fn, ms); handles.push({ clear: () => clearInterval(h) }); return h; };
+  const stop = () => { handles.forEach(h => h.clear ? h.clear() : clearTimeout(h)); handles = []; };
+  const loop = dur => { if (!reduced) at(dur, () => { stop(); run(api); }); };
+  const api = { at, every, stop, loop };
+  return { start: () => run(api), stop };
+}
+const scenes = [];
+function scene1(fn) { const s = makeScene(fn); scenes.push(s); s.start(); }
+function restart() { scenes.forEach(s => s.stop()); scenes.length = 0; boot(); }
+
+function boot() {
+
+/* M1 · hub: blackink resolve depois de um tempo (push feito em M3) */
+scene1(({ at, loop }) => {
+  $('m1s3').textContent = '7 não enviados'; $('m1s3').className = 'attn';
+  at(5200, () => { $('m1s3').textContent = 'sincronizado ✓'; $('m1s3').className = 'okn'; });
+  loop(9000);
+});
+
+/* M2 · timeline: commits chegam; proveniência sobe */
+scene1(({ at, loop }) => {
+  ['m2c1','m2c2','m2c3','m2c4'].forEach(id => $(id).classList.remove('on'));
+  $('m2sheet').classList.remove('on');
+  at(600,  () => $('m2c1').classList.add('on'));
+  at(1100, () => $('m2c2').classList.add('on'));
+  at(1600, () => $('m2c3').classList.add('on'));
+  at(2100, () => $('m2c4').classList.add('on'));
+  at(3200, () => $('m2sheet').classList.add('on'));
+  at(8200, () => $('m2sheet').classList.remove('on'));
+  loop(10000);
+});
+
+/* M3 · segredo bloqueia push → resolver → liberado com recibo */
+scene1(({ at, loop }) => {
+  $('m3c').classList.remove('on','okc'); $('m3c').classList.add('alert');
+  $('m3fix').classList.remove('pressed');
+  $('m3r').classList.add('attn');
+  $('m3ck').textContent = 'Push bloqueado pela varredura';
+  $('m3ct').textContent = 'FIREBASE_KEY detectada em config/app.ts';
+  $('m3cs').textContent = 'Entraria no commit 3/7. Nada sai até você decidir — a varredura roda antes de todo envio, sempre.';
+  $('m3rs').textContent = 'push bloqueado'; $('m3rs').className = 'rstate warn';
+  $('m3rt').textContent = 'segredo no staged'; $('m3rt').className = 'rt bad';
+  $('m3side').textContent = '1 atenção';
+  at(1400, () => $('m3c').classList.add('on'));
+  at(3800, () => $('m3fix').classList.add('pressed'));
+  at(4800, () => {
+    $('m3c').classList.remove('alert'); $('m3c').classList.add('okc');
+    $('m3ck').textContent = 'Resolvido · com recibo';
+    $('m3ct').textContent = 'Segredo em .env — push liberado e enviado';
+    $('m3cs').textContent = '7 commits em origin/main. config/app.ts limpo. Recibo no ledger.';
+    $('m3r').classList.remove('attn');
+    $('m3rs').textContent = 'sincronizado'; $('m3rs').className = 'rstate okc';
+    $('m3rt').textContent = '0 não enviados'; $('m3rt').className = 'rt goodt';
+    $('m3side').textContent = '0 atenção';
+  });
+  loop(9500);
+});
+
+/* M4 · review: diff aparece, aceitar → recibo (o fluxo shipado) */
+scene1(({ at, loop }) => {
+  ['m4d1','m4d2','m4d3','m4d4'].forEach(id => $(id).classList.remove('on'));
+  $('m4ok').classList.remove('pressed');
+  $('m4r').classList.remove('on');
+  at(700,  () => $('m4d1').classList.add('on'));
+  at(1100, () => $('m4d2').classList.add('on'));
+  at(1500, () => $('m4d3').classList.add('on'));
+  at(1900, () => $('m4d4').classList.add('on'));
+  at(3600, () => $('m4ok').classList.add('pressed'));
+  at(4600, () => $('m4r').classList.add('on'));
+  loop(8500);
+});
+
+/* M5 · push governado: varredura → confirmar → recibo */
+scene1(({ at, loop }) => {
+  ['m5g1','m5g2','m5g3','m5g4'].forEach(id => $(id).classList.remove('on'));
+  ['m5s1','m5s2','m5s3','m5s4'].forEach(id => { $(id).textContent = '…'; $(id).className = 'st run'; });
+  $('m5btn').classList.remove('pressed');
+  $('m5r').classList.remove('on');
+  const ok = (id, t) => { $(id).textContent = t; $(id).className = 'st ok'; };
+  at(600,  () => $('m5g1').classList.add('on'));
+  at(1500, () => { ok('m5s1','limpo ✓'); $('m5g2').classList.add('on'); });
+  at(2300, () => { ok('m5s2','limpo ✓'); $('m5g3').classList.add('on'); });
+  at(3000, () => { ok('m5s3','sem drift ✓'); $('m5g4').classList.add('on'); });
+  at(3600, () => ok('m5s4','main ✓'));
+  at(4700, () => $('m5btn').classList.add('pressed'));
+  at(5600, () => $('m5r').classList.add('on'));
+  loop(9500);
+});
+
+/* M6 · lock screen com avisos → vira a conversa respondendo */
+scene1(({ at, loop }) => {
+  $('m6lock').style.opacity = 1; $('m6chat').style.opacity = 0;
+  $('m6n1').classList.remove('on'); $('m6n2').classList.remove('on');
+  ['m6a1','m6a2','m6a3','m6a4'].forEach(id => $(id).classList.remove('on'));
+  at(800,  () => $('m6n1').classList.add('on'));
+  at(1800, () => $('m6n2').classList.add('on'));
+  at(4200, () => { $('m6lock').style.transition = 'opacity 0.5s'; $('m6lock').style.opacity = 0; $('m6chat').style.opacity = 1; });
+  at(4900, () => $('m6a1').classList.add('on'));
+  at(5600, () => $('m6a2').classList.add('on'));
+  at(6400, () => $('m6a3').classList.add('on'));
+  at(7200, () => $('m6a4').classList.add('on'));
+  loop(11000);
+});
+
+}
+boot();
+
+['m1','m2','m3','m4','m5','m6'].forEach((id, i) => {
+  const el = $(id);
+  if (!el) return;
+  el.classList.add('replayable');
+  el.title = 'toque para repetir a cena';
+  el.addEventListener('click', () => { const s = scenes[i]; if (s) { s.stop(); s.start(); } });
+});
+window.__ready = true;
+</script>
+</body>
+</html>
