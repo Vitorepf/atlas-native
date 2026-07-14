@@ -8,10 +8,15 @@ struct WorkspaceView: View {
     @Environment(\.dismiss) private var dismiss
     let workspaceKey: String?
     let title: String
+    /// Modo sem projeto: só conversas com workspace nulo (perguntas, pesquisas,
+    /// pensamento livre — o uso GPT-no-iPhone). O projeto é opcional, não regra.
+    var freeOnly: Bool = false
     @State private var area: AtlasArea = .tudo
 
     private var threads: [AtlasAiThread] {
-        let base = session.threads(inWorkspace: workspaceKey)
+        let base = freeOnly
+            ? session.threads.filter { $0.workspace == nil }
+            : session.threads(inWorkspace: workspaceKey)
         return area == .tudo ? base : base.filter { AtlasArea.of($0) == area }
     }
 

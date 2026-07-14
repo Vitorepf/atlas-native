@@ -6,7 +6,9 @@ enum Route: Hashable {
     case workspace(key: String?, title: String)
     case thread(id: String, title: String)
     case new
+    case conversas
     case search
+    case autonomos
 }
 
 // Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
@@ -42,8 +44,12 @@ struct RootView: View {
                     ConversationView(client: session.client, threadId: id, title: title)
                 case .new:
                     ConversationView(client: session.client, threadId: nil, title: "Nova conversa")
+                case .conversas:
+                    WorkspaceView(workspaceKey: nil, title: "Conversas", freeOnly: true)
                 case .search:
                     SearchView()
+                case .autonomos:
+                    AutonomosView()
                 }
             }
         }
@@ -152,6 +158,20 @@ struct RootView: View {
         default:   // .loaded, ou refresh/erro com conteúdo já em tela
             ScrollView {
                 LazyVStack(spacing: 0) {
+                    // A conversa é o centro — projeto é opcional. Aqui vivem as
+                    // conversas SEM projeto: perguntas, pesquisas, pensamento
+                    // livre (o uso GPT-no-iPhone). A pílula embaixo cria uma.
+                    sectionLabel("CONVERSAS")
+                    WorkspaceRow(icon: "bubble.left.and.bubble.right", name: "Conversas livres",
+                                 count: freeThreadCount) {
+                        path.append(Route.conversas)
+                    }
+                    rowDivider
+                    sectionLabel("OPERAÇÃO")
+                    WorkspaceRow(icon: "bolt.horizontal.circle", name: "Autônomos", count: nil) {
+                        path.append(Route.autonomos)
+                    }
+                    rowDivider
                     sectionLabel("WORKSPACES")
 
                     WorkspaceRow(icon: "tray.full", name: "Todas as conversas", count: session.threads.count) {
@@ -203,6 +223,11 @@ struct RootView: View {
         }
     }
 
+    /// Conversas sem projeto (workspace nulo) — o modo "só conversar".
+    private var freeThreadCount: Int {
+        session.threads.filter { $0.workspace == nil }.count
+    }
+
     private func sectionLabel(_ t: String) -> some View {
         Text(t)
             .font(.system(.caption, weight: .semibold))
@@ -229,10 +254,8 @@ struct RootView: View {
                 Image(systemName: "plus").font(.system(size: 17, weight: .medium))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 30, height: 30).background(Circle().fill(AtlasTheme.surfaceHi))
-                Text("Escreva ao Atlas").font(.system(.callout)).foregroundStyle(AtlasTheme.textTertiary)
+                Text("Escreva ao Atlas").font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
                 Spacer()
-                Image(systemName: "mic.fill").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 30, height: 30)
             }
             .padding(.horizontal, 12).padding(.vertical, 8)
             .background(Capsule().fill(AtlasTheme.surface).overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
@@ -299,18 +322,33 @@ private struct WorkspaceRow: View {
     }
 }
 
-// Linha de conversa — compartilhada com a WorkspaceView.
+// Linha de conversa — compartilhada com a WorkspaceView. O hub é VIVO: a
+// conversa com turno executando troca o ícone pelo losango respirando e o
+// contador por "executando" — você sabe onde o Atlas trabalha sem entrar.
 struct ThreadRow: View {
     let thread: AtlasAiThread
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var isRunning: Bool { TurnPresence.shared.runningTitles.contains(thread.title) }
+
     var body: some View {
         HStack(spacing: 14) {
-            Image(systemName: "bubble.left").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+            if isRunning {
+                BreathingDiamond(size: 9, reduceMotion: reduceMotion).frame(width: 22)
+            } else {
+                Image(systemName: "bubble.left").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+            }
             Text(thread.title).font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1).truncationMode(.tail)
             Spacer(minLength: 8)
-            Text("\(thread.messageCount)").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
+            if isRunning {
+                Text("executando").font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
+            } else {
+                Text("\(thread.messageCount)").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
+            }
             Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
         .contentShape(Rectangle())
+        .accessibilityHint(isRunning ? "Atlas executando nesta conversa" : "")
     }
 }

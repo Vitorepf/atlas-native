@@ -15,10 +15,14 @@ import ActivityKit
 // servidor (fase APNs, §5 C8), a atualização em background vive da janela de
 // execução do iOS (~30s) — cobre o turno típico; turnos longos concluem a
 // notificação quando o app volta.
-@MainActor
+@Observable @MainActor
 final class TurnPresence {
     static let shared = TurnPresence()
     private init() {}
+
+    /// Títulos das conversas com turno executando AGORA — o hub lê isto para
+    /// mostrar vida na lista (◆ pulsando na linha certa) sem tocar nos models.
+    private(set) var runningTitles: Set<String> = []
 
     /// Um turno observado. Classe (não struct) para `weak model` no registro.
     private final class Entry {
@@ -34,8 +38,12 @@ final class TurnPresence {
         }
     }
 
-    private var entries: [ObjectIdentifier: Entry] = [:]
-    private var askedPermission = false
+    @ObservationIgnored private var entries: [ObjectIdentifier: Entry] = [:]
+    @ObservationIgnored private var askedPermission = false
+
+    private func syncRunning() {
+        runningTitles = Set(entries.values.filter { $0.wasSending }.map { $0.threadTitle })
+    }
 
     /// Quantas sessões estão executando agora (a verdade do contador).
     private var activeCount: Int { entries.values.filter { $0.wasSending }.count }
@@ -82,6 +90,7 @@ final class TurnPresence {
                 startActivity(entry, traceId: traceId)
             }
             broadcastCount()                 // as outras ganham o "× N"
+            syncRunning()
         } else if sending {
             if !entry.activityStarted, let traceId = model.currentStreamingTraceId {
                 startActivity(entry, traceId: traceId)
@@ -93,6 +102,7 @@ final class TurnPresence {
             broadcastCount()                 // as vivas atualizam o contador
             notifyIfAway(entry, model: model)
             requestPermissionOnce()
+            syncRunning()
         }
     }
 
@@ -101,6 +111,7 @@ final class TurnPresence {
         guard let entry = entries.removeValue(forKey: id) else { return }
         if entry.wasSending { finishActivity(entry, phase: "sessão encerrada") }
         broadcastCount()
+        syncRunning()
     }
 
     // MARK: - Notificação local (tela bloqueada)
