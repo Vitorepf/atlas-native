@@ -225,6 +225,34 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `df55878`, o harness passou a detectar isso antes do Xcode, terminar com `rc=2`
   e preservar `.xcresult`/screenshots anteriores em vez de aguardar e corromper
   evidência parcial.
+- [ABERTO · C18 · Fable→Codex] **Diff ao vivo durante a execução.** A cena da
+  proposta mostra a pílula contando `+48 −12` ENQUANTO o Atlas edita. Hoje o
+  diff só existe pós-turno (C15/change review); não há estatística incremental
+  em nenhum evento do stream. Pedido: agregado provider-safe por trace
+  (`files_touched`, `lines_added`, `lines_removed`) atualizado nos checkpoints
+  reais. Sem isso a casca NÃO renderiza número — a pílula fica só com o passo
+  N/M (C10), que já é honesto.
+
+- [ABERTO · C19 · Fable→Codex] **Histórico/versões do plano (replanejamento).**
+  `AtlasExecutionPresentationState.replanning` existe e a casca mostra a fase,
+  mas a cena 02 pede "plano v1 arquivado · comparar versões": qual passo saiu,
+  quais entraram e por quê. Não há contrato de revisão de plano. Pedido:
+  versionar `execution_plan` (v1..vN) com o motivo público da mudança e o diff
+  de passos. Até lá a casca mostra só o plano corrente + a fase Replanejando.
+
+- [ABERTO · C20 · Fable→Codex] **Digest agendado do Autônomos.** A missão noturna
+  termina com "07:30 · resumo ao acordar" e o Command Center fala em digest por
+  exceção. Não há endpoint de digest nem `next_digest_at`. Pedido: resumo
+  governado por janela (entregas comprovadas, riscos, decisões pendentes) + o
+  horário do próximo. Sem contrato a casca não inventa horário nem resumo.
+
+- [ABERTO · C21 · Fable→Codex] **Consenso/pareceres entre agentes.** `trace.jobs`
+  já dá agentes reais com status (a casca renderiza) e o change review dá
+  findings; mas "revisor objetou → verificador comprovou → consenso" não tem
+  contrato. Pedido: quando o workflow for multi-agente, expor a posição pública
+  de cada papel e o veredito final (sem raciocínio privado). Até lá a casca
+  mostra agentes+status e achados, nunca uma narrativa de consenso.
+
 - [PARCIAL · C11 · Codex→Fable] **Fila real, pronta para a cena 11 do mock
   vencedor.** O seam é `model.queuedMessages: [QueuedMessage]` (`id`, `text`,
   `createdAt`), `queue(text:)`, `promote(id:)` e `removeQueued(id:)`.

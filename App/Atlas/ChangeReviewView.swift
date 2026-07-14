@@ -222,25 +222,56 @@ struct ChangeReviewSheet: View {
         }
     }
 
+    /// Achados agrupados pelo EIXO real que o servidor classificou
+    /// (`finding.category`) — a leitura por frente do mock, com dado verdadeiro.
+    /// Sem categoria, o achado cai em "gerais": nada é inventado.
     private func findingsSection(_ findings: [AtlasTraceChangeReview.Finding]) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            caption("FINDINGS")
-            ForEach(findings) { f in
-                VStack(alignment: .leading, spacing: 2) {
+        let groups = Dictionary(grouping: findings) { $0.category?.uppercased() ?? "GERAIS" }
+        return VStack(alignment: .leading, spacing: 10) {
+            caption("ACHADOS · \(findings.count)")
+            ForEach(groups.keys.sorted(), id: \.self) { axis in
+                VStack(alignment: .leading, spacing: 5) {
                     HStack(spacing: 8) {
-                        if let severity = f.severity {
-                            Text(severity).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domOperacional)
-                        }
-                        Text(f.title ?? "finding").font(.footnote).foregroundStyle(AtlasTheme.textPrimary)
-                            .lineLimit(2)
+                        Text(axis).font(AtlasFont.mono(9)).tracking(0.8)
+                            .foregroundStyle(AtlasTheme.accent)
+                        Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
+                        Text("\(groups[axis]?.count ?? 0)")
+                            .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
                     }
-                    if let path = f.filePath {
-                        Text(path + (f.startLine.map { ":\($0)" } ?? ""))
-                            .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
-                    }
+                    ForEach(groups[axis] ?? []) { f in findingRow(f) }
                 }
-                .padding(.vertical, 3)
             }
+        }
+    }
+
+    private func findingRow(_ f: AtlasTraceChangeReview.Finding) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 8) {
+                if let severity = f.severity {
+                    Text(severity).font(AtlasFont.mono(9))
+                        .foregroundStyle(Self.severityColor(severity))
+                }
+                Text(f.title ?? "finding").font(.footnote).foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(2)
+            }
+            if let path = f.filePath {
+                Text(path + (f.startLine.map { ":\($0)" } ?? ""))
+                    .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+            }
+            if let rec = f.recommendation {
+                Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(3).padding(.top, 1)
+            }
+        }
+        .padding(.vertical, 3)
+    }
+
+    /// A severidade é do servidor; a cor só traduz — nunca reclassifica.
+    private static func severityColor(_ s: String) -> Color {
+        switch s.lowercased() {
+        case "critical", "high": return AtlasTheme.domOperacional
+        case "medium": return AtlasTheme.accent
+        default: return AtlasTheme.textTertiary
         }
     }
 
