@@ -509,6 +509,54 @@ a casca não inventa número, progresso, status, prompt ou prova.
   essas credenciais o servidor é no-op honesto e a experiência permanece
   local, nunca “24/7” de mentira.
 
+- [FEITO em `71c30b2`] Fable→casca: **PlanCard** renderiza `bubble.executionPlan`
+  (workflow, passos com done/atual/pendente do checkpoint real, tools/agentes/
+  gates) — antes o plano computado pelo Core era invisível. Aparece ao vivo
+  (percorrido) e persistente. Sem `executionPlan` no trace, o card não existe.
+- [FEITO em `71c30b2`] Fable→casca: `ExecutionStateCard` passou a renderizar
+  `state.actions` para QUALQUER kind (não só `attentionRequired`), roteando por
+  `onChoose(jobId, action.id)`. Assim uma falha/espera recuperável com ação
+  declarada pelo servidor aparece sozinha — sem botão inventado.
+
+- [ABERTO · C17 · Fable→Codex] **Retomar turno após falha (cena 13).** Hoje a
+  falha é honesta (fase `Falhou` + notificação), mas não há ação manual de
+  retomar. Duas formas de destravar, qualquer uma serve: (a) o servidor declara
+  uma `action` (ex.: "Retomar do último checkpoint") no
+  `AtlasExecutionPresentationState` de kind `.failed`/`.awaitingExternal` e
+  expõe o `jobId` correspondente em `bubble.executionChoiceJobId` — a casca já
+  renderiza e roteia por `resolveExecutionChoice`; OU (b) `model.retryTurn()`
+  usando o `client.retryAiJob` que já existe, com `bubble.retryableJobId`
+  vindo de `trace.jobs`. Prefiro (a): reaproveita todo o caminho já ligado.
+  A casca não pode chamar `retryAiJob` direto (rede fora do model).
+
+- [ABERTO · C18 · Fable→Codex] **Resumo da mudança por eixo (recibo de
+  conclusão).** A `ExecutionProof` mostra passos, decide e quality, mas não os
+  "eixos" nomeados (IDIOMA/MÉTRICAS/LEITURA da proposta). Isso exige o servidor
+  classificar as mudanças do run em eixos rotulados. Se `AtlasTraceChangeReview`
+  (ou o trace) expuser `changeAxes: [{label, summary}]`, a casca renderiza a
+  grade de eixos na prova. Sem o contrato, não inferir eixos de texto.
+
+- [ABERTO · C19 · Fable→Codex] **Digest do Autônomos (missão noturna · "resumo
+  ao acordar").** A `AutonomosView` mostra frota, saúde e ciclos, mas não o
+  digest agendado. Pedido: `GET /autonomos/digest` (ou campo em `/live`)
+  expondo `nextDigestAt` + o último digest publicado (mudanças, riscos,
+  decisões pendentes) — tudo provider-safe. A casca renderiza a seção "próximo
+  resumo" e o último. Sem endpoint, nada é mostrado (nunca horário inventado).
+
+- [ABERTO · C20 · Fable→Codex] **Consenso entre agentes na revisão (cena 07).**
+  O `ChangeReviewSheet` já mostra findings; falta o painel de "pareceres +
+  consenso". Se `AtlasTraceChangeReview.review` (ou o run) expuser
+  `agentVerdicts: [{role, position, objection?, evidenceRef?}]` + `consensus`,
+  a casca renderiza a seção. Não expor raciocínio privado — só posição,
+  objeção relevante e evidência, como o contrato do mock exige.
+
+- [ABERTO · C21 · Fable→Codex] **Histórico de plano (replanejamento · comparar
+  versões, cena 02).** A fase `Replanejando` já surge no `ExecutionStateCard`;
+  falta o "plano v1 arquivado · comparar versões". Se o trace expuser
+  `planRevisions: [AtlasExecutionPlan]` (ou o `executionPlan` carregar
+  `previousVersions`), o PlanCard oferece "ver versão anterior". Sem contrato de
+  histórico, o card mostra apenas o plano corrente (já entregue).
+
 ## 6. Decisões registradas
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
