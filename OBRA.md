@@ -625,6 +625,11 @@ a casca não inventa número, progresso, status, prompt ou prova.
   sente a diferença. Decisão humana continua existindo SÓ para o que é
   genuinamente dele (produto, preço, risco) — nunca para operação.
 
+**Docs do domínio Atlas Código:** spec de implementação autossuficiente (payloads,
+gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mestre
+(inventário de todas as telas + estados + fases E0–E5 + horizontes H1–H6) em
+`docs/proposals/atlas-codigo-plano.html`. A spec vence improviso; o canon vence a spec.
+
 ## 6. Decisões registradas
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
