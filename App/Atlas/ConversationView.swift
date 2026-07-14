@@ -18,6 +18,9 @@ struct ConversationView: View {
     @State private var showModeSheet = false
     @State private var showWorkspaceSheet = false
     @State private var showQueueSheet = false
+    @State private var reviewTrace: ReviewTraceRef?
+
+    struct ReviewTraceRef: Identifiable { let id: String }
     @State private var showAttachmentSheet = false
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showFileImporter = false
@@ -79,7 +82,25 @@ struct ConversationView: View {
             Spacer()
             Text(title).font(AtlasFont.serif(17, .semibold)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
             Spacer()
-            Color.clear.frame(width: 40, height: 40)
+            // Continuidade: a MESMA thread/sessão continua em outra superfície.
+            // Só para conversa canônica; o "pronto" só aparece com o recibo.
+            if model.threadId != nil {
+                Menu {
+                    Button {
+                        Task { await model.handoffToSurface(.desktop) }
+                    } label: { Label("Continuar no Mac", systemImage: "desktopcomputer") }
+                    Button {
+                        Task { await model.handoffToSurface(.terminal) }
+                    } label: { Label("Continuar no Terminal", systemImage: "terminal") }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 15, weight: .semibold)).foregroundStyle(AtlasTheme.textSecondary)
+                        .frame(width: 40, height: 40).background(Circle().fill(AtlasTheme.surface))
+                }
+                .accessibilityLabel("continuar esta conversa em outra superfície")
+            } else {
+                Color.clear.frame(width: 40, height: 40)
+            }
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 4).padding(.bottom, 4)
     }
@@ -106,6 +127,22 @@ struct ConversationView: View {
                                               Task { await model.resolveExecutionChoice(jobId: jobId, optionId: optionId) }
                                           })
                             .id(bubble.id)
+                            // C15: revisão só entra pela projeção canônica do
+                            // trace (a folha diz "sem artefatos" quando não há).
+                            if bubble.role == "assistant", !bubble.streaming,
+                               !bubble.activities.isEmpty, let trace = bubble.traceId {
+                                Button { reviewTrace = ReviewTraceRef(id: trace) } label: {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "plus.forwardslash.minus").font(.system(size: 11))
+                                        Text("Revisar mudanças").font(.system(.footnote, weight: .medium))
+                                    }
+                                    .foregroundStyle(AtlasTheme.textSecondary)
+                                    .padding(.horizontal, 13).padding(.vertical, 7)
+                                    .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                                }
+                                .buttonStyle(PressableScale())
+                                .accessibilityHint("abre arquivos, diff e provas desta execução")
+                            }
                         }
                         Color.clear.frame(height: 96).id("bottom")
                             .background(GeometryReader { geo in
@@ -268,6 +305,9 @@ struct ConversationView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: expanded)
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
+        .sheet(item: $reviewTrace) { ref in
+            ChangeReviewSheet(model: model, traceId: ref.id)
+        }
         .sheet(isPresented: $showQueueSheet) {
             SheetShell(title: "Fila · \(model.queuedMessages.count)") {
                 ForEach(model.queuedMessages) { m in
@@ -301,6 +341,14 @@ struct ConversationView: View {
         }
         .onChange(of: model.queuedMessages.isEmpty) { _, empty in
             if empty { showQueueSheet = false }
+        }
+        // Recibo do handoff (status ready) → "pronto para abrir no destino".
+        // O destino abre a MESMA thread; nada de sessão/histórico novos.
+        .onChange(of: model.latestSurfaceHandoff?.id) {
+            guard let h = model.latestSurfaceHandoff, h.status == "ready" else { return }
+            let destino = h.toSurface == "atlas_desktop" ? "Mac"
+                        : h.toSurface == "atlas_terminal" ? "Terminal" : h.toSurface
+            model.toast = "Pronto para abrir no \(destino) — mesma conversa, mesma sessão."
         }
         .sheet(isPresented: $showAttachmentSheet) {
             ComposerAttachmentsSheet(

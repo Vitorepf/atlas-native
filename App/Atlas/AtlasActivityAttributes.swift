@@ -19,6 +19,12 @@ struct AtlasTurnAttributes: ActivityAttributes {
         /// Quantas sessões estão executando em paralelo AGORA (inclui esta).
         /// 1 = não exibe contador; >1 = "× N" na ilha e "· N sessões" no card.
         var activeSessions: Int
+        /// C14 (aditivo/opcional — payload APNs antigo segue decodando):
+        /// pausa confirmada pelo servidor; true → o widget congela
+        /// `pausedDisplay` em vez de rodar o timer. Espera NÃO conta tempo.
+        var paused: Bool? = nil
+        /// Tempo ATIVO acumulado formatado ("m:ss"), congelado na pausa/fim.
+        var pausedDisplay: String? = nil
     }
 
     /// Título da conversa — fixo pela vida da activity.

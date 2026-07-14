@@ -59,6 +59,11 @@ struct AtlasTurnLiveActivity: Widget {
                     if context.state.finished {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(Ink.gold).padding(.trailing, 6)
+                    } else if context.state.paused == true {
+                        // C14: pausa do servidor congela o tempo ATIVO — a espera não conta
+                        Text("‖ \(context.state.pausedDisplay ?? "—")")
+                            .font(.system(size: 12, design: .monospaced))
+                            .foregroundStyle(Ink.ink2).padding(.trailing, 6)
                     } else {
                         Text(context.state.startedAt, style: .timer)
                             .font(.system(size: 13, design: .monospaced))
@@ -80,6 +85,9 @@ struct AtlasTurnLiveActivity: Widget {
                 if context.state.finished {
                     Image(systemName: "checkmark").font(.system(size: 11, weight: .bold))
                         .foregroundStyle(Ink.gold)
+                } else if context.state.paused == true {
+                    Text("‖").font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(Ink.ink2)
                 } else {
                     Text(context.state.startedAt, style: .timer)
                         .font(.system(size: 12, design: .monospaced))
@@ -125,6 +133,10 @@ private struct LockScreenView: View {
             if context.state.finished {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 22)).foregroundStyle(Ink.gold)
+            } else if context.state.paused == true {
+                Text("‖ \(context.state.pausedDisplay ?? "—")")
+                    .font(.system(size: 13, design: .monospaced))
+                    .foregroundStyle(Ink.ink2)
             } else {
                 Text(context.state.startedAt, style: .timer)
                     .font(.system(size: 15, design: .monospaced))

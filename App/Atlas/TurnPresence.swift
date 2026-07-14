@@ -1,5 +1,6 @@
 import SwiftUI
 import UserNotifications
+import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteira
 #if canImport(ActivityKit)
 import ActivityKit
 #endif
@@ -30,8 +31,8 @@ final class TurnPresence {
         var threadTitle: String
         var activityKey: String?   // trace real que liga Activity ↔ conversa
         var activityStarted = false
-        var wasSending = false
-        var startedAt = Date()
+        var ongoing = false        // C14: running OU paused — a sessão vive
+        var startedAt = Date()     // base local só para trace legado (timer nil)
         init(model: ConversationModel, threadTitle: String) {
             self.model = model
             self.threadTitle = threadTitle
@@ -42,11 +43,11 @@ final class TurnPresence {
     @ObservationIgnored private var askedPermission = false
 
     private func syncRunning() {
-        runningTitles = Set(entries.values.filter { $0.wasSending }.map { $0.threadTitle })
+        runningTitles = Set(entries.values.filter { $0.ongoing }.map { $0.threadTitle })
     }
 
-    /// Quantas sessões estão executando agora (a verdade do contador).
-    private var activeCount: Int { entries.values.filter { $0.wasSending }.count }
+    /// Quantas sessões vivem agora (running + paused — a verdade do contador).
+    private var activeCount: Int { entries.values.filter { $0.ongoing }.count }
 
     /// Chamado pela ConversationView no onAppear — registra/atualiza o alvo.
     /// Cada conversa aberta é observada de forma independente (multi-sessão).
@@ -66,9 +67,10 @@ final class TurnPresence {
             cleanup(id); return
         }
         withObservationTracking {
-            _ = model.isSending
-            _ = model.bubbles.last?.currentActivity?.title
-            _ = model.currentStreamingTraceId
+            // C14: o seam é a PRESENÇA tipada, nunca isSending/status cru.
+            _ = model.currentExecutionPresenceTraceId
+            _ = model.currentExecutionPresence?.phaseTitle
+            _ = model.currentExecutionPresence?.timing
         } onChange: { [weak self] in
             Task { @MainActor [weak self] in
                 self?.tick(id)
@@ -80,49 +82,64 @@ final class TurnPresence {
     private func tick(_ id: ObjectIdentifier) {
         guard let entry = entries[id] else { return }
         guard let model = entry.model else { cleanup(id); return }
-        let sending = model.isSending
-        let phase = model.bubbles.last?.currentActivity?.title ?? "pensando…"
+        let presence = model.currentExecutionPresence
+        let trace = model.currentExecutionPresenceTraceId
 
-        if sending && !entry.wasSending {
-            entry.startedAt = Date()
-            entry.wasSending = true
-            if let traceId = model.currentStreamingTraceId {
-                startActivity(entry, traceId: traceId)
+        if let p = presence, let trace {
+            // Sessão viva (running OU paused): a MESMA Activity atravessa
+            // stream fechado, pausa aguardando decisão e reconexão.
+            if entry.activityKey != nil && entry.activityKey != trace {
+                finishActivity(entry, presence: lastPresence(model, key: entry.activityKey))
             }
-            broadcastCount()                 // as outras ganham o "× N"
-            syncRunning()
-        } else if sending {
-            if !entry.activityStarted, let traceId = model.currentStreamingTraceId {
-                startActivity(entry, traceId: traceId)
+            if !entry.ongoing || !entry.activityStarted {
+                if !entry.ongoing { entry.startedAt = Date() }   // base legada
+                entry.ongoing = true
+                startActivity(entry, traceId: trace, presence: p)
+                broadcastCount()
+                syncRunning()
+            } else {
+                updateActivity(entry, presence: p)
             }
-            if entry.activityStarted { updateActivity(entry, phase: phase) }
-        } else if entry.wasSending {
-            entry.wasSending = false
-            finishActivity(entry)            // "resposta pronta ✓", encerra em 4s
-            broadcastCount()                 // as vivas atualizam o contador
-            notifyIfAway(entry, model: model)
+        } else if entry.ongoing {
+            // Fase pública terminal (Concluído/Falhou) ou fim legado — nunca
+            // "porque isSending virou falso": a presença é quem decide.
+            entry.ongoing = false
+            let final = lastPresence(model, key: entry.activityKey)
+            finishActivity(entry, presence: final)
+            broadcastCount()
+            notifyIfAway(entry, model: model, finalPresence: final)
             requestPermissionOnce()
             syncRunning()
         }
     }
 
+    /// A presença final da bolha dona da Activity (fase "Concluído"/"Falhou").
+    private func lastPresence(_ model: ConversationModel, key: String?) -> AtlasExecutionPresence? {
+        guard let key else { return nil }
+        return model.bubbles.last(where: { $0.traceId == key })?.executionPresence
+    }
+
     /// Model desalocado (conversa fechada): encerra a activity órfã com honestidade.
     private func cleanup(_ id: ObjectIdentifier) {
         guard let entry = entries.removeValue(forKey: id) else { return }
-        if entry.wasSending { finishActivity(entry, phase: "sessão encerrada") }
+        if entry.ongoing { finishActivity(entry, presence: nil, phaseOverride: "sessão encerrada") }
         broadcastCount()
         syncRunning()
     }
 
     // MARK: - Notificação local (tela bloqueada)
 
-    private func notifyIfAway(_ entry: Entry, model: ConversationModel) {
+    /// Avisa SÓ pela fase pública terminal — nunca por isSending virar falso.
+    private func notifyIfAway(_ entry: Entry, model: ConversationModel,
+                              finalPresence: AtlasExecutionPresence?) {
         guard UIApplication.shared.applicationState != .active else { return }
+        let failed = finalPresence?.phaseTitle == "Falhou"
         let excerpt = model.bubbles.last(where: { $0.role == "assistant" })?.text ?? ""
         let content = UNMutableNotificationContent()
-        content.title = "Atlas respondeu"
+        content.title = failed ? "O turno falhou" : "Atlas respondeu"
         content.subtitle = entry.threadTitle
-        content.body = String(excerpt.prefix(140))
+        content.body = failed ? "Toque para ver o motivo e retomar."
+                              : String(excerpt.prefix(140))
         content.sound = .default
         UNUserNotificationCenter.current().add(
             UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil))
@@ -140,18 +157,52 @@ final class TurnPresence {
     // Activity<T> não é Sendable no Swift 6 — nunca atravessa Task. Dentro das
     // Tasks, enumeramos ESTATICAMENTE filtrando por attributes.threadKey.
 
-    private func startActivity(_ entry: Entry, traceId: String) {
+    /// ContentState a partir da presença tipada — o ÚNICO relógio permitido:
+    /// com timer do servidor, o timer nativo parte de (runningSince − ativo
+    /// acumulado) e mostra exatamente o tempo ATIVO; pausado congela o
+    /// acumulado em texto; trace legado cai na base local sem fingir pausas.
+    private func contentState(_ entry: Entry, presence p: AtlasExecutionPresence?,
+                              finished: Bool, phaseOverride: String? = nil)
+        -> AtlasTurnAttributes.ContentState {
+        var started = entry.startedAt
+        var paused: Bool? = nil
+        var pausedDisplay: String? = nil
+        if let p {
+            if let since = p.runningSince {
+                started = since.addingTimeInterval(-Double(p.elapsedActiveMilliseconds ?? 0) / 1000)
+            } else if p.isTimerPaused {
+                paused = true
+                pausedDisplay = p.elapsedActiveMilliseconds.map(Self.clock)
+            }
+            if finished, let ms = p.elapsedActiveMilliseconds {
+                pausedDisplay = Self.clock(ms)   // congela o total ativo no fim
+            }
+        }
+        return AtlasTurnAttributes.ContentState(
+            phaseTitle: phaseOverride ?? p?.phaseTitle ?? (finished ? "resposta pronta" : "Executando"),
+            startedAt: started,
+            finished: finished,
+            activeSessions: max(finished ? 0 : 1, activeCount),
+            paused: paused,
+            pausedDisplay: pausedDisplay)
+    }
+
+    private static func clock(_ ms: Int) -> String {
+        let s = ms / 1000
+        return s >= 3600 ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
+                         : String(format: "%d:%02d", s / 60, s % 60)
+    }
+
+    private func startActivity(_ entry: Entry, traceId: String, presence: AtlasExecutionPresence) {
         #if canImport(ActivityKit)
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
-        let state = AtlasTurnAttributes.ContentState(
-            phaseTitle: "pensando…", startedAt: entry.startedAt,
-            finished: false, activeSessions: max(1, activeCount))
+        entry.activityKey = traceId
+        let state = contentState(entry, presence: presence, finished: false)
         guard let activity = try? Activity.request(
             attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: traceId),
             content: .init(state: state, staleDate: nil),
             pushType: .token
-        ) else { return }
-        entry.activityKey = traceId
+        ) else { entry.activityKey = nil; return }
         entry.activityStarted = true
         LiveActivityRemoteBridge.shared.observePushTokens(
             activity: activity,
@@ -161,12 +212,10 @@ final class TurnPresence {
         #endif
     }
 
-    private func updateActivity(_ entry: Entry, phase: String) {
+    private func updateActivity(_ entry: Entry, presence: AtlasExecutionPresence) {
         #if canImport(ActivityKit)
-        let state = AtlasTurnAttributes.ContentState(
-            phaseTitle: phase, startedAt: entry.startedAt,
-            finished: false, activeSessions: max(1, activeCount))
         guard let key = entry.activityKey else { return }
+        let state = contentState(entry, presence: presence, finished: false)
         Task { @MainActor in
             for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
                 await a.update(.init(state: state, staleDate: nil))
@@ -175,19 +224,20 @@ final class TurnPresence {
         #endif
     }
 
-    private func finishActivity(_ entry: Entry, phase: String = "resposta pronta") {
+    private func finishActivity(_ entry: Entry, presence: AtlasExecutionPresence?,
+                                phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
-        let state = AtlasTurnAttributes.ContentState(
-            phaseTitle: phase, startedAt: entry.startedAt,
-            finished: true, activeSessions: max(0, activeCount))
         guard let key = entry.activityKey else { return }
+        let state = contentState(entry, presence: presence, finished: true,
+                                 phaseOverride: phaseOverride)
         let model = entry.model
+        let closed = phaseOverride == "sessão encerrada"
         Task { @MainActor in
             for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
                 LiveActivityRemoteBridge.shared.end(
                     activityID: a.id,
                     model: model,
-                    reason: phase == "sessão encerrada" ? "session_closed" : "completed"
+                    reason: closed ? "session_closed" : "completed"
                 )
                 await a.end(.init(state: state, staleDate: nil),
                             dismissalPolicy: .after(.now + 4))
@@ -207,9 +257,8 @@ final class TurnPresence {
             for a in Activity<AtlasTurnAttributes>.activities {
                 let s = a.content.state
                 guard !s.finished, s.activeSessions != max(1, count) else { continue }
-                let next = AtlasTurnAttributes.ContentState(
-                    phaseTitle: s.phaseTitle, startedAt: s.startedAt,
-                    finished: false, activeSessions: max(1, count))
+                var next = s
+                next.activeSessions = max(1, count)   // preserva fase, timer e pausa
                 await a.update(.init(state: next, staleDate: nil))
             }
         }
