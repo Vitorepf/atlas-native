@@ -27,7 +27,19 @@ public func runAssistantPresentationChecks(_ check: (String, Bool) -> Void) {
     Resposta final
     """
     check("bloco de reasoning é rejeitado por defesa", atlasVisibleAssistantText(leaked) == nil)
-    check("resposta comum é preservada", atlasVisibleAssistantText("  Sim, está funcionando.  ") == "Sim, está funcionando.")
+    // Contrato: o texto sai VERBATIM. O trim serve só aos guards; quem cuida do
+    // espaço externo é o parser de blocos do markdown (linha em branco é pulada).
+    check("resposta comum passa verbatim", atlasVisibleAssistantText("  Sim, está funcionando.  ") == "  Sim, está funcionando.  ")
+    check("delta só com espaço não vira texto", atlasVisibleAssistantText("   \n ") == nil)
+
+    // Regressão REAL vista no iPhone (2026-07-14): o stream concatena deltas em
+    // `live + visible`; trimar o retorno comia o espaço de fronteira do token e
+    // colava as palavras ("consigo dizer" → "consigodizer").
+    let deltas = ["Não consigo", " dizer o que está", " rodando no Atlas", " agora."]
+    let streamed = deltas.compactMap(atlasVisibleAssistantText).joined()
+    check("streaming preserva o espaço de fronteira entre deltas",
+          streamed == "Não consigo dizer o que está rodando no Atlas agora.")
+    check("delta preserva espaço à esquerda", atlasVisibleAssistantText(" dizer") == " dizer")
 
     let payload = atlasMobileInteractionPayload(base: JSONObject(["compute_effort": .string("high")]))
     let hermes: [String: JSONValue]?

@@ -18,13 +18,17 @@ public func atlasShouldRenderAssistantContent(_ event: AtlasAiStreamEvent) -> Bo
 /// de raciocínio no campo de resposta. Não tenta adivinhar onde começa a resposta:
 /// se o envelope está contaminado, rejeita tudo para jamais expor pensamento interno.
 public func atlasVisibleAssistantText(_ text: String) -> String? {
+    // O trim serve APENAS aos guards (vazio / moldura de raciocínio). O texto
+    // devolvido preserva o original: no streaming cada delta passa por aqui e
+    // `live + visible` os concatena — trimar o retorno comia o espaço de
+    // fronteira do token e colava as palavras ("consigo dizer" → "consigodizer").
     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else { return nil }
     let lower = trimmed.lowercased()
     let hasReasoningFrame = (trimmed.contains("┌") || trimmed.contains("╭"))
         && (lower.contains("reasoning") || lower.contains("chain of thought"))
     guard !hasReasoningFrame else { return nil }
-    return trimmed
+    return text
 }
 
 /// Hermes possui um modo próprio para automação (`-z`) que imprime somente a
