@@ -86,6 +86,13 @@ final class TurnPresence {
         let trace = model.currentExecutionPresenceTraceId
 
         if let p = presence, let trace {
+            // C10: rodando com checkpoint REAL do plano, a fase da Lock
+            // Screen é "N/M · etapa"; sem plano, a fase pública da presença.
+            var phase: String? = nil
+            if p.timing == .running,
+               let prog = model.bubbles.last(where: { $0.traceId == trace })?.executionProgress {
+                phase = "\(prog.current)/\(prog.total) · \(prog.title)"
+            }
             // Sessão viva (running OU paused): a MESMA Activity atravessa
             // stream fechado, pausa aguardando decisão e reconexão.
             if entry.activityKey != nil && entry.activityKey != trace {
@@ -94,11 +101,11 @@ final class TurnPresence {
             if !entry.ongoing || !entry.activityStarted {
                 if !entry.ongoing { entry.startedAt = Date() }   // base legada
                 entry.ongoing = true
-                startActivity(entry, traceId: trace, presence: p)
+                startActivity(entry, traceId: trace, presence: p, phaseOverride: phase)
                 broadcastCount()
                 syncRunning()
             } else {
-                updateActivity(entry, presence: p)
+                updateActivity(entry, presence: p, phaseOverride: phase)
             }
         } else if entry.ongoing {
             // Fase pública terminal (Concluído/Falhou) ou fim legado — nunca
@@ -193,11 +200,12 @@ final class TurnPresence {
                          : String(format: "%d:%02d", s / 60, s % 60)
     }
 
-    private func startActivity(_ entry: Entry, traceId: String, presence: AtlasExecutionPresence) {
+    private func startActivity(_ entry: Entry, traceId: String, presence: AtlasExecutionPresence,
+                               phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         entry.activityKey = traceId
-        let state = contentState(entry, presence: presence, finished: false)
+        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride)
         guard let activity = try? Activity.request(
             attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: traceId),
             content: .init(state: state, staleDate: nil),
@@ -212,10 +220,11 @@ final class TurnPresence {
         #endif
     }
 
-    private func updateActivity(_ entry: Entry, presence: AtlasExecutionPresence) {
+    private func updateActivity(_ entry: Entry, presence: AtlasExecutionPresence,
+                                phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
         guard let key = entry.activityKey else { return }
-        let state = contentState(entry, presence: presence, finished: false)
+        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride)
         Task { @MainActor in
             for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
                 await a.update(.init(state: state, staleDate: nil))
