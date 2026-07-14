@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Código — o ledger da obra (proposta Fable 5)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #10181e; --app-bg: #1d2b34; --surface: #243743; --surface-hi: #2d4351;
+    --recessed: #15212a; --ink: #d6dde2; --ink2: #95a3ac; --ink3: #677482;
+    --sep: #313f47; --sep-soft: #27353e; --gold: #d4a85a; --green: #7fb069;
+    --alert: #c98a8a;
+    --serif: "Fraunces", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: radial-gradient(1200px 600px at 70% -10%, rgba(212,168,90,0.05), transparent 60%), var(--bg);
+    color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 48px 48px 96px; }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 60; display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; padding: 11px 48px;
+    background: rgba(16,24,30,0.82); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--sep-soft);
+  }
+  .tn-brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+  .topnav nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .topnav a { font-family: var(--mono); font-size: 10.5px; color: var(--ink2); text-decoration: none; border: 1px solid transparent; border-radius: 999px; padding: 6px 11px; transition: all 0.2s; }
+  .topnav a:hover { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  #tese, #plano, #telas, #veredito { scroll-margin-top: 72px; }
+
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 46px; line-height: 1.12; letter-spacing: -0.01em; max-width: 22ch; text-wrap: balance; }
+  .lede { margin-top: 16px; font-size: 16.5px; line-height: 1.65; color: var(--ink2); max-width: 64ch; text-wrap: pretty; }
+  .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .keyfacts { display: flex; gap: 40px; margin-top: 28px; flex-wrap: wrap; }
+  .kf b { font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+  .kf span { font-size: 11.5px; color: var(--ink3); display: block; margin-top: 7px; max-width: 20ch; line-height: 1.45; text-wrap: pretty; }
+  .rule { width: 44px; height: 2px; background: var(--gold); opacity: 0.7; margin: 26px 0 0; }
+
+  .sec-head { margin-top: 84px; }
+  .sec-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; }
+  .sec-title { font-family: var(--serif); font-weight: 600; font-size: 28px; margin-top: 8px; max-width: 34ch; }
+  .sec-lede { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: var(--ink2); max-width: 68ch; text-wrap: pretty; }
+  .sec-lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+
+  /* ── plano por fases ── */
+  .fases { margin-top: 30px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .fase { border: 1px solid var(--sep-soft); border-radius: 16px; padding: 20px; background: rgba(29,43,52,0.6); }
+  .fase .fnum { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--gold); line-height: 1; }
+  .fase h3 { font-family: var(--serif); font-size: 17px; font-weight: 600; margin: 10px 0 6px; }
+  .fase p { font-size: 12.5px; line-height: 1.55; color: var(--ink2); text-wrap: pretty; }
+  .fase .fdado { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--sep-soft); font-family: var(--mono); font-size: 9.5px; line-height: 1.6; color: var(--ink3); }
+  .fase .fdado b { color: var(--green); font-weight: 500; }
+  .fase .fdado i { color: var(--gold); font-style: normal; }
+
+  /* ── janela desktop (macOS chrome) ── */
+  .exhibit { margin-top: 40px; }
+  .exhibit-label { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink3); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .exhibit-label b { color: var(--ink2); font-weight: 500; }
+  .scn-tag { font-family: var(--mono); font-size: 9.5px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 999px; padding: 3px 8px; white-space: nowrap; letter-spacing: 0; text-transform: none; }
+  .scn-tag.live { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .win {
+    border-radius: 14px; overflow: hidden; background: var(--app-bg);
+    border: 1px solid #344957; box-shadow: 0 26px 70px rgba(0,0,0,0.42);
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .win.replayable:hover { border-color: rgba(212,168,90,0.45); transform: translateY(-2px); }
+  .win-bar {
+    display: flex; align-items: center; gap: 8px; padding: 11px 14px;
+    background: var(--recessed); border-bottom: 1px solid var(--sep-soft);
+  }
+  .dot3 { display: flex; gap: 7px; }
+  .dot3 i { width: 11px; height: 11px; border-radius: 50%; background: #3a4a55; }
+  .win-title { flex: 1; text-align: center; font-family: var(--serif); font-size: 13px; color: var(--ink2); }
+  .win-side { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+  .win-body { display: flex; min-height: 430px; }
+
+  /* timeline de obras */
+  .tl-rail { flex: 1.15; border-right: 1px solid var(--sep-soft); padding: 14px 0; overflow: hidden; }
+  .tl-filters { display: flex; gap: 6px; padding: 0 16px 12px; }
+  .tl-f { font-family: var(--mono); font-size: 9.5px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 999px; padding: 4px 10px; }
+  .tl-f.on { color: var(--gold); border-color: rgba(212,168,90,0.45); }
+  .commit {
+    display: flex; gap: 12px; padding: 10px 16px; align-items: flex-start;
+    opacity: 0; transform: translateY(8px); transition: all 0.4s ease;
+    border-left: 2px solid transparent;
+  }
+  .commit.on { opacity: 1; transform: none; }
+  .commit.sel { background: rgba(212,168,90,0.06); border-left-color: var(--gold); }
+  .c-node { width: 12px; display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+  .c-dot { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--gold); background: var(--app-bg); flex-shrink: 0; }
+  .c-dot.fable { background: var(--gold); }
+  .c-dot.codex { border-color: #7fa3b8; }
+  .c-dot.you { border-color: var(--green); background: var(--green); }
+  .c-line { width: 1.5px; flex: 1; background: rgba(212,168,90,0.18); margin-top: 3px; min-height: 18px; }
+  .c-msg { font-size: 12.5px; color: var(--ink); line-height: 1.4; }
+  .c-meta { font-family: var(--mono); font-size: 9.5px; color: var(--ink3); margin-top: 3px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .c-meta .agent { color: var(--gold); }
+  .c-meta .agent.codex { color: #7fa3b8; }
+  .c-meta .agent.you { color: var(--green); }
+  .c-meta .gate { color: var(--green); }
+
+  /* painel de proveniência */
+  .prov { flex: 1; padding: 18px; opacity: 0; transform: translateX(10px); transition: all 0.45s ease; }
+  .prov.on { opacity: 1; transform: none; }
+  .prov-kicker { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .prov h4 { font-family: var(--serif); font-size: 17px; font-weight: 600; line-height: 1.35; margin-bottom: 4px; }
+  .prov .hash { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+  .prov-block { margin-top: 14px; padding: 12px; border: 1px solid var(--sep-soft); border-radius: 12px; background: rgba(21,33,42,0.6); }
+  .prov-block .pb-k { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--ink3); text-transform: uppercase; margin-bottom: 6px; }
+  .prov-block .pb-v { font-size: 12.5px; color: var(--ink); line-height: 1.5; }
+  .prov-block .pb-v em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+  .prov-gates { display: flex; gap: 8px; margin-top: 8px; }
+  .pg { font-family: var(--mono); font-size: 9.5px; color: var(--green); border: 1px solid rgba(127,176,105,0.35); border-radius: 999px; padding: 3px 9px; }
+
+  /* radar da frota de repos */
+  .repo-grid { padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+  .repo {
+    border: 1px solid var(--sep-soft); border-radius: 14px; padding: 14px;
+    background: rgba(21,33,42,0.5); transition: border-color 0.3s;
+  }
+  .repo.attn { border-color: rgba(201,138,138,0.5); }
+  .repo.okr { border-color: rgba(127,176,105,0.3); }
+  .repo-top { display: flex; align-items: center; gap: 9px; }
+  .repo-top b { font-family: var(--serif); font-size: 15px; font-weight: 600; }
+  .repo-led { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .repo.attn .repo-led { background: var(--alert); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .repo-state { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--ink3); transition: color 0.3s; }
+  .repo-state.warn { color: var(--alert); }
+  .repo-state.okc { color: var(--green); }
+  .repo-tags { display: flex; gap: 6px; margin-top: 9px; flex-wrap: wrap; }
+  .rtag { font-family: var(--mono); font-size: 9px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 8px; padding: 3px 7px; }
+  .rtag.bad { color: var(--alert); border-color: rgba(201,138,138,0.4); }
+  .rtag.goodt { color: var(--green); border-color: rgba(127,176,105,0.3); }
+  .incident {
+    grid-column: 1 / -1; border: 1px solid rgba(201,138,138,0.45); border-radius: 14px;
+    background: var(--surface); padding: 13px 14px;
+    opacity: 0; transform: translateY(10px); transition: all 0.45s cubic-bezier(0.32,0.72,0,1);
+  }
+  .incident.on { opacity: 1; transform: none; }
+  .incident.resolved { border-color: rgba(127,176,105,0.4); }
+  .inc-kicker { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--alert); margin-bottom: 5px; transition: color 0.3s; }
+  .incident.resolved .inc-kicker { color: var(--green); }
+  .inc-title { font-size: 13px; font-weight: 600; }
+  .inc-sub { font-size: 11px; color: var(--ink2); margin-top: 4px; line-height: 1.5; }
+  .inc-pills { display: flex; gap: 7px; margin-top: 10px; }
+  .ipill { flex: 1; text-align: center; font-size: 11px; color: var(--ink2); border: 1px solid var(--sep); border-radius: 999px; padding: 7px 4px; transition: all 0.3s; cursor: pointer; }
+  .ipill.primary { color: var(--gold); border-color: rgba(212,168,90,0.5); }
+  .ipill.pressed { background: rgba(212,168,90,0.16); transform: scale(0.97); }
+
+  /* review desktop */
+  .rev-files { flex: 0.9; border-right: 1px solid var(--sep-soft); padding: 14px 0; }
+  .rev-file { display: flex; align-items: center; gap: 9px; padding: 9px 16px; font-family: var(--mono); font-size: 11px; color: var(--ink); opacity: 0; transition: all 0.35s ease; }
+  .rev-file.on { opacity: 1; }
+  .rev-file.sel { background: rgba(212,168,90,0.07); }
+  .rev-file .fd { margin-left: auto; font-size: 9.5px; }
+  .fd .plus { color: var(--green); } .fd .minus { color: var(--alert); }
+  .rev-decided { font-family: var(--mono); font-size: 9px; color: var(--green); }
+  .rev-diff { flex: 1.4; padding: 14px 16px; }
+  .dline { font-family: var(--mono); font-size: 11px; padding: 3px 10px; border-radius: 4px; color: var(--ink3); white-space: pre; opacity: 0; transition: opacity 0.3s; }
+  .dline.on { opacity: 1; }
+  .dline.del { color: var(--alert); background: rgba(201,138,138,0.07); }
+  .dline.add { color: var(--green); background: rgba(127,176,105,0.08); }
+  .rev-checks { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+  .rev-actions { display: flex; gap: 9px; margin-top: 14px; }
+
+  /* push governado */
+  .gov { width: 100%; max-width: 560px; margin: 0 auto; padding: 26px 20px; }
+  .gov-card { border: 1px solid rgba(212,168,90,0.35); border-radius: 16px; background: var(--surface); padding: 18px; }
+  .gov h4 { font-family: var(--serif); font-size: 18px; font-weight: 600; }
+  .gov .gsub { font-size: 12px; color: var(--ink2); margin-top: 4px; }
+  .gchecks { margin-top: 14px; }
+  .gcheck { display: flex; gap: 10px; align-items: baseline; padding: 7px 0; font-size: 12.5px; color: var(--ink2); opacity: 0; transition: all 0.35s ease; }
+  .gcheck.on { opacity: 1; }
+  .gcheck .st { font-family: var(--mono); font-size: 10px; margin-left: auto; color: var(--ink3); }
+  .gcheck .st.ok { color: var(--green); }
+  .gcheck .st.run { color: var(--gold); }
+  .greceipt { margin-top: 14px; padding: 12px; border-radius: 12px; background: var(--recessed); border: 1px solid rgba(127,176,105,0.3); font-family: var(--mono); font-size: 10.5px; color: var(--ink2); line-height: 1.7; opacity: 0; transition: opacity 0.4s; }
+  .greceipt.on { opacity: 1; }
+  .greceipt b { color: var(--green); font-weight: 500; }
+
+  /* linguagem natural */
+  .nl { width: 100%; max-width: 640px; margin: 0 auto; padding: 26px 20px; }
+  .nl-q { font-family: var(--serif); font-style: italic; font-size: 18px; padding-left: 14px; border-left: 2px solid var(--gold); opacity: 0; transition: all 0.4s ease; }
+  .nl-q.on { opacity: 1; }
+  .nl-a { margin-top: 18px; }
+  .nl-line { font-size: 14px; line-height: 1.6; color: var(--ink); opacity: 0; transform: translateY(6px); transition: all 0.4s ease; margin-bottom: 10px; }
+  .nl-line.on { opacity: 1; transform: none; }
+  .nl-line .mono { font-family: var(--mono); font-size: 11px; color: var(--gold); }
+  .nl-line .why { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+
+  /* iPhones (mobile) */
+  .phones { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; padding: 10px 0 4px; width: 100%; }
+  .iphone { padding: 10px; background: #000; border-radius: 46px; box-shadow: 0 0 0 2px #1f2937, 0 22px 60px rgba(0,0,0,0.45); }
+  .screen { position: relative; width: 300px; height: 610px; border-radius: 37px; overflow: hidden; background: var(--app-bg); }
+  .island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 94px; height: 28px; background: #000; border-radius: 999px; z-index: 30; }
+  .m-head { padding: 46px 16px 10px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .m-head .title { font-family: var(--serif); font-weight: 600; font-size: 15px; }
+  .m-body { padding: 4px 14px; }
+  .m-commit { display: flex; gap: 9px; padding: 8px 2px; opacity: 0; transform: translateY(6px); transition: all 0.4s ease; }
+  .m-commit.on { opacity: 1; transform: none; }
+  .m-commit .c-msg { font-size: 11px; }
+  .m-commit .c-meta { font-size: 8.5px; }
+
+  .caption { margin: 14px 6px 0; font-size: 12.5px; line-height: 1.6; color: var(--ink3); text-wrap: pretty; max-width: 78ch; }
+  .caption em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+
+  /* veredito */
+  .verdict { margin-top: 84px; border-top: 1px solid var(--sep-soft); padding-top: 40px; }
+  .verdict h2 { font-family: var(--serif); font-weight: 600; font-size: 26px; max-width: 32ch; }
+  .vgrid { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .vcol { border: 1px solid var(--sep-soft); border-radius: 16px; padding: 22px 24px; }
+  .vcol.mine { border-color: rgba(212,168,90,0.35); background: rgba(212,168,90,0.04); }
+  .vcol h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink3); margin-bottom: 14px; }
+  .vcol.mine h4 { color: var(--gold); }
+  .vcol li { font-size: 13.5px; color: var(--ink2); line-height: 1.65; margin-left: 18px; margin-bottom: 7px; }
+  .vcol li b { color: var(--ink); font-weight: 500; }
+  .filtro { margin-top: 22px; border: 1px solid var(--sep-soft); border-radius: 16px; padding: 20px 24px; }
+  .filtro h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+  .f-row { display: flex; justify-content: space-between; gap: 14px; padding: 8px 0; border-bottom: 1px solid rgba(149,163,172,0.07); font-size: 13px; color: var(--ink2); }
+  .f-row:last-child { border-bottom: 0; }
+  .f-row .ok { font-family: var(--mono); font-size: 10.5px; color: var(--green); white-space: nowrap; }
+
+  .colophon { margin-top: 56px; font-family: var(--mono); font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .replay { position: fixed; bottom: 26px; right: 26px; z-index: 50; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); background: rgba(29,43,52,0.9); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 10px 20px; cursor: pointer; backdrop-filter: blur(8px); }
+  .replay:hover { background: rgba(212,168,90,0.12); }
+  .replayable { cursor: pointer; }
+  ::selection { background: rgba(212,168,90,0.25); }
+
+  @media (max-width: 1100px) {
+    .fases { grid-template-columns: 1fr 1fr; }
+    .vgrid { grid-template-columns: 1fr; }
+    h1 { font-size: 36px; }
+    .win-body { flex-direction: column; }
+    .tl-rail, .rev-files { border-right: 0; border-bottom: 1px solid var(--sep-soft); }
+  }
+  @media (max-width: 720px) {
+    .fases { grid-template-columns: 1fr; }
+    .page { padding: 40px 20px 72px; }
+    .repo-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header class="topnav">
+  <span class="tn-brand">Atlas Código · Ledger da Obra</span>
+  <nav>
+    <a href="#tese">Tese</a>
+    <a href="#plano">Plano</a>
+    <a href="#telas">Telas</a>
+    <a href="#veredito">Veredito</a>
+  </nav>
+</header>
+<div class="page">
+
+  <div id="tese" class="kicker">Atlas Código — vertical Artifacts &amp; Proof · proposta Fable 5</div>
+  <h1>Git não se opera. Julga-se.</h1>
+  <p class="lede">
+    O GitKraken é um painel para o humano <em>operar o encanamento</em>. Na era de agentes,
+    quem opera são Fable, Codex e os Autônomos — o que sobra para você é <em>ler, decidir e auditar</em>.
+    O Atlas Código transforma git na <em>camada de evidência da obra</em>: commit é recibo com
+    porquê, diff é objeto de decisão, push é ato governado, e a frota inteira de repositórios
+    vigia a si mesma por exceção. É o que o GitKraken nunca poderá ser — porque só o Atlas
+    tem a camada de intenção (traces, contratos, gates) por trás de cada hash.
+  </p>
+  <div class="keyfacts">
+    <div class="kf"><b>4</b><span>fases — ler, vigiar, decidir, agir</span></div>
+    <div class="kf"><b>6</b><span>telas vivas — desktop cockpit + mobile</span></div>
+    <div class="kf"><b>80%</b><span>do seu GitKraken é ler e decidir — o Atlas é exponencial aqui</span></div>
+    <div class="kf"><b>5/5</b><span>no filtro canônico das cinco perguntas</span></div>
+  </div>
+  <div class="rule"></div>
+
+  <!-- ═══ PLANO ═══ -->
+  <div id="plano" class="sec-head">
+    <div class="sec-kicker">O plano · quatro fases, cada uma útil sozinha</div>
+    <div class="sec-title">Cada fase entrega uma vertical demonstrável — e diz de onde vem o dado.</div>
+    <p class="sec-lede">
+      A régua da obra continua: <em>zero UI falsa</em>. Cada fase lista o dado que já existe
+      hoje (git local, traces, C15) e o contrato que precisa nascer. Nada é desenhado sem fonte.
+    </p>
+  </div>
+  <div class="fases">
+    <div class="fase">
+      <div class="fnum">F1</div>
+      <h3>Linha do tempo de obras</h3>
+      <p>O graph de commits com a dimensão que só o Atlas tem: cada hash ligado ao trace,
+         ao agente e ao porquê. Ler a história como recibos, não como strings.</p>
+      <div class="fdado"><b>dado real hoje:</b> git log local · traces/OBRA · convenção de mensagens<br><i>contrato:</i> índice commit↔trace (leve, servidor)</div>
+    </div>
+    <div class="fase">
+      <div class="fnum">F2</div>
+      <h3>Radar da frota</h3>
+      <p>Todos os repos do guarda-chuva vigiados por exceção: não-enviados, drift, worktree
+         sujo, segredo no staged. O susto de "143 commits sem remote" nunca mais.</p>
+      <div class="fdado"><b>dado real hoje:</b> git status/rev-list por repo · varredura de segredos (a de 14/07, automatizada)<br><i>contrato:</i> daemon de vigília (host)</div>
+    </div>
+    <div class="fase">
+      <div class="fnum">F3</div>
+      <h3>Review como decisão</h3>
+      <p>O C15 que já vive no iPhone, no tamanho desktop: diff lado a lado, checks, findings
+         por eixo, aceitar por arquivo ou run — sempre pós-recibo.</p>
+      <div class="fdado"><b>dado real hoje:</b> C15 completo (API + recibos + mobile shipado)<br><i>contrato:</i> nenhum — é port de superfície</div>
+    </div>
+    <div class="fase">
+      <div class="fnum">F4</div>
+      <h3>Ações governadas</h3>
+      <p>Push, merge e rollback como os controles do Autônomos: varredura antes, operador +
+         motivo, recibo no ledger. Git auditável como todo o resto do Atlas.</p>
+      <div class="fdado"><b>dado real hoje:</b> git/gh no host · padrão de recibo do Autônomos<br><i>contrato:</i> receipts de push/merge (ledger)</div>
+    </div>
+  </div>
+
+  <!-- ═══ TELAS ═══ -->
+  <div id="telas" class="sec-head">
+    <div class="sec-kicker">As telas · cenas vivas — toque em qualquer uma para repetir</div>
+    <div class="sec-title">O cockpit no desktop; ler e decidir no bolso.</div>
+  </div>
+
+  <!-- T1 · Linha do tempo -->
+  <div class="exhibit">
+    <div class="exhibit-label"><span>T1 · <b>linha do tempo de obras</b> — o graph com porquê</span><span class="scn-tag live">F1 · git log + traces reais</span></div>
+    <div class="win" id="t1">
+      <div class="win-bar"><div class="dot3"><i></i><i></i><i></i></div><div class="win-title">Atlas Código — atlas-native · main</div><div class="win-side">144 commits · sincronizado ✓</div></div>
+      <div class="win-body">
+        <div class="tl-rail">
+          <div class="tl-filters">
+            <span class="tl-f on">todos</span><span class="tl-f">fable</span><span class="tl-f">codex</span><span class="tl-f">você</span><span class="tl-f">autônomos</span>
+          </div>
+          <div class="commit" id="c1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+            <div><div class="c-msg">fix(core): resposta parava de comer espaços — verbatim</div>
+            <div class="c-meta"><span class="agent">✦ fable</span><span>683af18</span><span class="gate">gates ✓</span><span>há 2h</span></div></div></div>
+          <div class="commit" id="c2"><div class="c-node"><div class="c-dot codex"></div><div class="c-line"></div></div>
+            <div><div class="c-msg">feat(core): add durable execution follow-up queue</div>
+            <div class="c-meta"><span class="agent codex">◆ codex</span><span>da25e8a</span><span class="gate">232 checks ✓</span><span>há 5h</span></div></div></div>
+          <div class="commit" id="c3"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+            <div><div class="c-msg">polish(ui): C11 ligado — chip 'Fila N' + folha</div>
+            <div class="c-meta"><span class="agent">✦ fable</span><span>412a285</span><span class="gate">gates ✓</span><span>há 5h</span></div></div></div>
+          <div class="commit" id="c4"><div class="c-node"><div class="c-dot you"></div><div class="c-line"></div></div>
+            <div><div class="c-msg">docs(obra): decisão — Autônomos é área própria 24/7</div>
+            <div class="c-meta"><span class="agent you">● você</span><span>8b0af2d</span><span>canon</span><span>ontem</span></div></div></div>
+          <div class="commit" id="c5"><div class="c-node"><div class="c-dot codex"></div></div>
+            <div><div class="c-msg">feat(native): relay live activity tokens through atlas</div>
+            <div class="c-meta"><span class="agent codex">◆ codex</span><span>c955b65</span><span class="gate">live-probe ✓</span><span>ontem</span></div></div></div>
+        </div>
+        <div class="prov" id="prov">
+          <div class="prov-kicker">Proveniência · o que nenhum cliente git tem</div>
+          <h4>fix(core): resposta parava de comer espaços</h4>
+          <div class="hash">683af18 · main · Fable 5 · 2026-07-14 09:56</div>
+          <div class="prov-block">
+            <div class="pb-k">Por quê (da conversa real)</div>
+            <div class="pb-v"><em>"faça uma análise e identifica todos os erros, principalmente de resposta e formatação"</em> — operador, com screenshot do iPhone mostrando "consigodizer".</div>
+          </div>
+          <div class="prov-block">
+            <div class="pb-k">Causa-raiz registrada</div>
+            <div class="pb-v">atlasVisibleAssistantText trimava o retorno; o stream concatena deltas — o espaço de fronteira era comido a cada token.</div>
+          </div>
+          <div class="prov-block">
+            <div class="pb-k">Prova</div>
+            <div class="prov-gates"><span class="pg">checks exit=0</span><span class="pg">regressão travada</span><span class="pg">device ✓</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Os commits chegam como <em>recibos de obra</em>: quem (✦ fable · ◆ codex · ● você), gates, e — ao selecionar — a <em>proveniência</em>: a frase sua que originou, a causa-raiz, a prova. O GitKraken mostra o hash; o Atlas mostra a história.</p>
+  </div>
+
+  <!-- T2 · Radar da frota -->
+  <div class="exhibit">
+    <div class="exhibit-label"><span>T2 · <b>radar da frota de repos</b> — vigília por exceção</span><span class="scn-tag live">F2 · git status real + varredura 14/07</span></div>
+    <div class="win" id="t2">
+      <div class="win-bar"><div class="dot3"><i></i><i></i><i></i></div><div class="win-title">Atlas Código — frota</div><div class="win-side" id="r-side">4 repos · 1 atenção</div></div>
+      <div class="win-body">
+        <div class="repo-grid">
+          <div class="repo okr"><div class="repo-top"><div class="repo-led"></div><b>atlas-native</b><span class="repo-state okc">sincronizado</span></div>
+            <div class="repo-tags"><span class="rtag goodt">0 não enviados</span><span class="rtag">main</span><span class="rtag">2 agentes ativos</span></div></div>
+          <div class="repo okr"><div class="repo-top"><div class="repo-led"></div><b>atlas-server</b><span class="repo-state okc">sincronizado</span></div>
+            <div class="repo-tags"><span class="rtag goodt">0 não enviados</span><span class="rtag">main</span><span class="rtag">brain viva</span></div></div>
+          <div class="repo attn" id="r3"><div class="repo-top"><div class="repo-led"></div><b>blackink-app</b><span class="repo-state warn" id="r3s">7 não enviados · 3 dias</span></div>
+            <div class="repo-tags"><span class="rtag bad" id="r3t">risco de perda</span><span class="rtag">main</span></div></div>
+          <div class="repo" id="r4"><div class="repo-top"><div class="repo-led"></div><b>atlas-vault-b</b><span class="repo-state" id="r4s">worktree sujo</span></div>
+            <div class="repo-tags"><span class="rtag">4 arquivos soltos</span><span class="rtag">sem remote</span></div></div>
+          <div class="incident" id="inc">
+            <div class="inc-kicker" id="incK">Atenção · push bloqueado pela varredura</div>
+            <div class="inc-title" id="incT">Segredo detectado no diff de blackink-app</div>
+            <div class="inc-sub" id="incS">`FIREBASE_KEY=AIza…` em config/app.ts entraria no commit 3/7. O push NÃO sai até você decidir — a varredura de segredos roda antes de qualquer envio, sempre.</div>
+            <div class="inc-pills">
+              <span class="ipill primary" id="incFix">Mover para .env + ignorar</span>
+              <span class="ipill">Ver o diff</span>
+              <span class="ipill">Ignorar desta vez</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">A frota inteira num olhar — e o alerta é <em>por exceção</em>, como no Autônomos: trabalho saudável fica quieto; segredo no staged <em>bloqueia o push e te chama</em>. Foi exatamente a varredura que fiz na mão em 14/07 — automatizada para sempre.</p>
+  </div>
+
+  <!-- T3 · Review como decisão -->
+  <div class="exhibit">
+    <div class="exhibit-label"><span>T3 · <b>review como decisão</b> — o C15 no tamanho desktop</span><span class="scn-tag live">F3 · API C15 já existe · shipado no iPhone</span></div>
+    <div class="win" id="t3">
+      <div class="win-bar"><div class="dot3"><i></i><i></i><i></i></div><div class="win-title">Revisar mudanças — trace a241cd0e</div><div class="win-side"><span class="fd"><span class="plus">+48</span> <span class="minus">−12</span></span> · 2 arquivos</div></div>
+      <div class="win-body">
+        <div class="rev-files">
+          <div class="rev-file sel" id="f1"><span>EnterpriseReportDashboardHtml.php</span><span class="fd"><span class="plus">+36</span> <span class="minus">−8</span></span></div>
+          <div class="rev-file" id="f2"><span>ReportLocale.php</span><span class="fd" id="f2d"><span class="plus">+12</span> <span class="minus">−4</span></span></div>
+          <div class="rev-checks" style="padding: 10px 16px 0">
+            <span class="pg" id="ck1">3/3 checks</span><span class="pg" id="ck2">testes passed</span><span class="pg" id="ck3">0 warnings</span>
+          </div>
+          <div class="rev-actions" style="padding: 6px 16px 0">
+            <span class="ipill primary" id="acceptAll">Aceitar tudo</span>
+            <span class="ipill">Rejeitar</span>
+          </div>
+        </div>
+        <div class="rev-diff">
+          <div class="dline" id="d1">  private function renderUplift(array $m): string {</div>
+          <div class="dline del" id="d2">−     $label = "Total spend absence uplift";</div>
+          <div class="dline add" id="d3">+     // par comparável exigido antes de exibir</div>
+          <div class="dline add" id="d4">+     if (!$this-&gt;hasComparablePair($m)) { return ''; }</div>
+          <div class="dline add" id="d5">+     $label = "Economia comprovada no período";</div>
+          <div class="dline" id="d6">      return $this-&gt;metricCard($label, $m);</div>
+          <div class="greceipt" id="revReceipt"><b>aplicado ✓</b> · recibo trace_change_review · 2 arquivos aceitos · registrado no ledger às 14:12</div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">A linha que morreu, a que nasceu, os checks — e <em>aceitar</em> só muda a tela depois do recibo do servidor. Zero aprovação otimista. A API inteira já existe (C15); esta tela é só a superfície desktop dela.</p>
+  </div>
+
+  <!-- T4 · Push governado -->
+  <div class="exhibit">
+    <div class="exhibit-label"><span>T4 · <b>ações governadas</b> — push com varredura e recibo</span><span class="scn-tag">F4 · contrato: receipts de push no ledger</span></div>
+    <div class="win" id="t4">
+      <div class="win-bar"><div class="dot3"><i></i><i></i><i></i></div><div class="win-title">Subir para origin — atlas-native</div><div class="win-side">main → github/Vitorepf</div></div>
+      <div class="win-body">
+        <div class="gov">
+          <div class="gov-card">
+            <h4>3 commits prontos para o remoto</h4>
+            <div class="gsub">683af18 · b2f068a · 8387a2b — todos com gates verdes</div>
+            <div class="gchecks">
+              <div class="gcheck" id="g1"><span>Varredura de segredos no histórico a enviar</span><span class="st" id="g1s">…</span></div>
+              <div class="gcheck" id="g2"><span>Lixo de build fora do rastreio</span><span class="st" id="g2s">…</span></div>
+              <div class="gcheck" id="g3"><span>Drift contra origin/main</span><span class="st" id="g3s">…</span></div>
+              <div class="gcheck" id="g4"><span>Branch = main local (regra pétrea)</span><span class="st" id="g4s">…</span></div>
+            </div>
+            <div class="inc-pills" style="margin-top:14px">
+              <span class="ipill primary" id="pushBtn">Confirmar push · operador vitor</span>
+              <span class="ipill">Cancelar</span>
+            </div>
+            <div class="greceipt" id="pushReceipt"><b>enviado ✓</b> · push_receipt 9f27c1 · 3 commits → origin/main · varredura limpa · ledger atualizado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">O push vira um <em>ato governado</em>: a varredura roda primeiro (a mesma que salvou seu token hoje), o operador confirma, e o recibo entra no ledger. Errar deixa de ser possível em silêncio.</p>
+  </div>
+
+  <!-- T5 · Mobile -->
+  <div class="exhibit">
+    <div class="exhibit-label"><span>T5 · <b>no bolso</b> — ler a linha do tempo, decidir o review</span><span class="scn-tag live">C15 mobile JÁ SHIPADO · timeline = F1</span></div>
+    <div class="win" id="t5" style="background: transparent; border: none; box-shadow: none;">
+      <div class="phones">
+        <div class="iphone"><div class="screen">
+          <div class="island"></div>
+          <div class="m-head"><div class="title">atlas-native</div></div>
+          <div class="m-body">
+            <div class="m-commit" id="m1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+              <div><div class="c-msg">fix(core): espaços verbatim</div><div class="c-meta"><span class="agent">✦ fable</span><span class="gate">✓</span><span>2h</span></div></div></div>
+            <div class="m-commit" id="m2"><div class="c-node"><div class="c-dot codex"></div><div class="c-line"></div></div>
+              <div><div class="c-msg">feat(core): follow-up queue</div><div class="c-meta"><span class="agent codex">◆ codex</span><span class="gate">✓</span><span>5h</span></div></div></div>
+            <div class="m-commit" id="m3"><div class="c-node"><div class="c-dot you"></div></div>
+              <div><div class="c-msg">docs(obra): canon Autônomos</div><div class="c-meta"><span class="agent you">● você</span><span>1d</span></div></div></div>
+          </div>
+        </div></div>
+        <div class="iphone"><div class="screen">
+          <div class="island"></div>
+          <div class="m-head"><div class="title">Revisar mudanças</div></div>
+          <div class="m-body">
+            <div class="rev-file on" style="padding: 8px 2px"><span style="font-size:10px">DashboardHtml.php</span><span class="fd"><span class="plus">+36</span> <span class="minus">−8</span></span></div>
+            <div class="dline add on" style="font-size:9.5px">+ if (!$this-&gt;hasComparablePair…</div>
+            <div class="dline del on" style="font-size:9.5px">− "Total spend absence uplift"</div>
+            <div class="rev-checks" style="margin: 10px 0 0"><span class="pg" style="font-size:8.5px">3/3</span><span class="pg" style="font-size:8.5px">passed</span></div>
+            <div class="inc-pills" style="margin-top: 12px"><span class="ipill primary" style="font-size:10px">Aceitar tudo</span><span class="ipill" style="font-size:10px">Rejeitar</span></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <p class="caption">O telefone <em>lê e decide</em> — linha do tempo com agente e gate, review com aceite governado (esta segunda tela <em>já está instalada no seu iPhone</em>, commit 06f88b5). O cockpit pleno vive no desktop.</p>
+  </div>
+
+  <!-- T6 · Linguagem natural -->
+  <div class="exhibit">
+    <div class="exhibit-label"><span>T6 · <b>a exponencialidade</b> — o ledger responde em linguagem natural</span><span class="scn-tag live">conversa + git log + traces — tudo existe</span></div>
+    <div class="win" id="t6">
+      <div class="win-bar"><div class="dot3"><i></i><i></i><i></i></div><div class="win-title">Atlas — conversa</div><div class="win-side">ledger conectado</div></div>
+      <div class="win-body">
+        <div class="nl">
+          <div class="nl-q" id="nlq">"Atlas, o que mudou hoje no atlas-native — e por quê?"</div>
+          <div class="nl-a">
+            <div class="nl-line" id="nla1">Hoje entraram <b>6 commits</b>, todos com gates verdes:</div>
+            <div class="nl-line" id="nla2"><span class="mono">683af18</span> — o bug dos espaços colados que você reportou com screenshot. <span class="why">Causa: trim no retorno do stream; agora verbatim, com regressão travada.</span></div>
+            <div class="nl-line" id="nla3"><span class="mono">b2f068a</span> — achados do review agrupados por eixo real. <span class="why">Origem: sua exigência de "todas as partes parciais implementadas".</span></div>
+            <div class="nl-line" id="nla4"><span class="mono">8387a2b</span> — resumo da operação no Autônomos por agregação de dado real.</div>
+            <div class="nl-line" id="nla5">Nada pendente de envio. Quer que eu <b>suba os 3 do server</b> também? A varredura já passou.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">É aqui que o Atlas deixa qualquer cliente git para trás: você <em>pergunta</em> e o ledger responde com hash, porquê e próxima ação governada. GitKraken é um painel; isto é um interlocutor.</p>
+  </div>
+
+  <!-- ═══ VEREDITO ═══ -->
+  <div id="veredito" class="verdict">
+    <h2>Por que isto não envelhece como o VS Code.</h2>
+    <div class="vgrid">
+      <div class="vcol">
+        <h4>GitKraken / clientes git</h4>
+        <ul>
+          <li>Superfície para o humano <b>operar plumbing</b> — stage, rebase, drag de branch. Os agentes já fazem isso melhor.</li>
+          <li>Vê só o git: hash, mensagem, autor. <b>Zero acesso à intenção</b> — nunca saberá o porquê.</li>
+          <li>Um repo por aba; vigília é você lembrar de olhar.</li>
+        </ul>
+      </div>
+      <div class="vcol mine">
+        <h4>Atlas Código</h4>
+        <ul>
+          <li>Superfície para o humano <b>julgar</b>: ler recibos, decidir reviews, governar atos — o que não envelhece, porque decisão não se delega.</li>
+          <li><b>Dono da camada de significado</b>: commit↔trace↔contrato↔prova, local-first. GitHub/origin/Cursor viram transporte trocável — antifragilidade N×M.</li>
+          <li><b>Frota vigiada por exceção</b> + varredura de segredos antes de todo push — o incidente de hoje vira impossível.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="filtro">
+      <h4>O filtro canônico das cinco perguntas</h4>
+      <div class="f-row"><span>Aumenta o wrapper multiplicador composto?</span><span class="ok">sim — evidência composta commit↔trace</span></div>
+      <div class="f-row"><span>É antifrágil?</span><span class="ok">sim — host de git é plugável, significado é local</span></div>
+      <div class="f-row"><span>Aproxima da execução fim-a-fim em linguagem natural?</span><span class="ok">sim — T6 é literalmente isso</span></div>
+      <div class="f-row"><span>Destrava substituir uma função/empresa?</span><span class="ok">sim — engenharia ultra-profissional governada</span></div>
+      <div class="f-row"><span>Preserva soberania local-first?</span><span class="ok">sim — ledger no Mac; remoto é backup</span></div>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
+    <span>Fable 5 · Atlas Código v1 · 6 telas vivas · toque para repetir</span>
+  </div>
+</div>
+
+<button class="replay" onclick="restart()">↻ repetir as cenas</button>
+
+<script>
+const $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function makeScene(run) {
+  let handles = [];
+  const at = (t, fn) => handles.push(setTimeout(fn, reduced ? 0 : t));
+  const every = (ms, fn) => { const h = setInterval(fn, ms); handles.push({ clear: () => clearInterval(h) }); return h; };
+  const stop = () => { handles.forEach(h => h.clear ? h.clear() : clearTimeout(h)); handles = []; };
+  const loop = dur => { if (!reduced) at(dur, () => { stop(); run(api); }); };
+  const api = { at, every, stop, loop };
+  return { start: () => run(api), stop };
+}
+const scenes = [];
+function scene1(fn) { const s = makeScene(fn); scenes.push(s); s.start(); }
+function restart() { scenes.forEach(s => s.stop()); scenes.length = 0; boot(); }
+
+function boot() {
+
+/* T1 · linha do tempo: commits chegam, um é selecionado, proveniência abre */
+scene1(({ at, loop }) => {
+  ['c1','c2','c3','c4','c5'].forEach(id => $(id).classList.remove('on','sel'));
+  $('prov').classList.remove('on');
+  at(600,  () => $('c1').classList.add('on'));
+  at(1100, () => $('c2').classList.add('on'));
+  at(1600, () => $('c3').classList.add('on'));
+  at(2100, () => $('c4').classList.add('on'));
+  at(2600, () => $('c5').classList.add('on'));
+  at(3400, () => { $('c1').classList.add('sel'); $('prov').classList.add('on'); });
+  loop(11000);
+});
+
+/* T2 · radar: incidente de segredo → bloqueio → resolução */
+scene1(({ at, loop }) => {
+  $('inc').classList.remove('on','resolved');
+  $('incFix').classList.remove('pressed');
+  $('incK').textContent = 'Atenção · push bloqueado pela varredura';
+  $('incT').textContent = 'Segredo detectado no diff de blackink-app';
+  $('incS').textContent = '`FIREBASE_KEY=AIza…` em config/app.ts entraria no commit 3/7. O push NÃO sai até você decidir — a varredura roda antes de qualquer envio, sempre.';
+  $('r3').classList.add('attn'); $('r3s').textContent = '7 não enviados · 3 dias'; $('r3s').className = 'repo-state warn';
+  $('r3t').textContent = 'risco de perda'; $('r3t').className = 'rtag bad';
+  $('r-side').textContent = '4 repos · 1 atenção';
+  at(1800, () => $('inc').classList.add('on'));
+  at(4600, () => $('incFix').classList.add('pressed'));
+  at(5600, () => {
+    $('inc').classList.add('resolved');
+    $('incK').textContent = 'Resolvido · com recibo';
+    $('incT').textContent = 'Segredo movido para .env — push liberado e enviado';
+    $('incS').textContent = 'config/app.ts limpo, .env ignorado, 7 commits em origin/main. Recibo no ledger.';
+    $('r3').classList.remove('attn');
+    $('r3s').textContent = 'sincronizado'; $('r3s').className = 'repo-state okc';
+    $('r3t').textContent = '0 não enviados'; $('r3t').className = 'rtag goodt';
+    $('r-side').textContent = '4 repos · 0 atenção';
+  });
+  loop(10500);
+});
+
+/* T3 · review: arquivos + diff aparecem, aceitar → recibo */
+scene1(({ at, loop }) => {
+  ['f1','f2'].forEach(id => $(id).classList.add('on'));
+  ['d1','d2','d3','d4','d5','d6'].forEach(id => $(id).classList.remove('on'));
+  $('acceptAll').classList.remove('pressed');
+  $('revReceipt').classList.remove('on');
+  at(700,  () => $('d1').classList.add('on'));
+  at(1100, () => $('d2').classList.add('on'));
+  at(1500, () => $('d3').classList.add('on'));
+  at(1800, () => $('d4').classList.add('on'));
+  at(2100, () => $('d5').classList.add('on'));
+  at(2400, () => $('d6').classList.add('on'));
+  at(4200, () => $('acceptAll').classList.add('pressed'));
+  at(5200, () => $('revReceipt').classList.add('on'));
+  loop(9500);
+});
+
+/* T4 · push governado: varredura tick a tick → confirmar → recibo */
+scene1(({ at, loop }) => {
+  ['g1','g2','g3','g4'].forEach(id => $(id).classList.remove('on'));
+  ['g1s','g2s','g3s','g4s'].forEach(id => { $(id).textContent = '…'; $(id).className = 'st run'; });
+  $('pushBtn').classList.remove('pressed');
+  $('pushReceipt').classList.remove('on');
+  const ok = id => { $(id).textContent = 'limpo ✓'; $(id).className = 'st ok'; };
+  at(700,  () => $('g1').classList.add('on'));
+  at(1700, () => { ok('g1s'); $('g2').classList.add('on'); });
+  at(2600, () => { ok('g2s'); $('g3').classList.add('on'); });
+  at(3400, () => { $('g3s').textContent = 'sem drift ✓'; $('g3s').className = 'st ok'; $('g4').classList.add('on'); });
+  at(4000, () => { $('g4s').textContent = 'main ✓'; $('g4s').className = 'st ok'; });
+  at(5200, () => $('pushBtn').classList.add('pressed'));
+  at(6100, () => $('pushReceipt').classList.add('on'));
+  loop(10000);
+});
+
+/* T5 · mobile: commits chegam no telefone */
+scene1(({ at, loop }) => {
+  ['m1','m2','m3'].forEach(id => $(id).classList.remove('on'));
+  at(800,  () => $('m1').classList.add('on'));
+  at(1400, () => $('m2').classList.add('on'));
+  at(2000, () => $('m3').classList.add('on'));
+  loop(8000);
+});
+
+/* T6 · linguagem natural: pergunta → resposta com hash e porquê */
+scene1(({ at, loop }) => {
+  $('nlq').classList.remove('on');
+  ['nla1','nla2','nla3','nla4','nla5'].forEach(id => $(id).classList.remove('on'));
+  at(600,  () => $('nlq').classList.add('on'));
+  at(1800, () => $('nla1').classList.add('on'));
+  at(2600, () => $('nla2').classList.add('on'));
+  at(3600, () => $('nla3').classList.add('on'));
+  at(4400, () => $('nla4').classList.add('on'));
+  at(5400, () => $('nla5').classList.add('on'));
+  loop(11000);
+});
+
+}
+boot();
+
+/* toque em qualquer cena para repeti-la */
+['t1','t2','t3','t4','t5','t6'].forEach((id, i) => {
+  const el = $(id);
+  if (!el) return;
+  el.classList.add('replayable');
+  el.title = 'toque para repetir a cena';
+  el.addEventListener('click', () => { const s = scenes[i]; if (s) { s.stop(); s.start(); } });
+});
+window.__ready = true;
+</script>
+</body>
+</html>
