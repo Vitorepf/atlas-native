@@ -211,9 +211,25 @@
 
   @media (max-width: 1160px) { .grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } .page { padding: 40px 20px 72px; } h1 { font-size: 34px; } }
+  svg.ic { width: 14px; height: 14px; flex-shrink: 0; }
+  .hrow svg.ic { width: 16px; height: 16px; color: var(--ink2); }
+  .hrow svg.chev, .c-meta svg.ic, .notif svg.ic { width: 11px; height: 11px; }
+  .agent svg.ic { width: 10px; height: 10px; vertical-align: -1px; }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-chat" viewBox="0 0 16 16"><path d="M2.2 8c0-3 2.6-5.2 5.8-5.2S13.8 5 13.8 8 11.2 13.2 8 13.2c-.7 0-1.4-.1-2-.3L3 13.8l.9-2.4C2.9 10.5 2.2 9.3 2.2 8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+<symbol id="i-repo" viewBox="0 0 16 16"><rect x="2.2" y="2.2" width="11.6" height="11.6" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.5 4 8l1.5 2.5M10.5 5.5 12 8l-1.5 2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 16 16"><path d="M8.8 1.8 3.6 9h3.2l-.6 5.2L11.4 7H8.2l.6-5.2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-folder" viewBox="0 0 16 16"><path d="M2.2 4.4c0-.7.5-1.2 1.2-1.2h3l1.4 1.6h4.8c.7 0 1.2.5 1.2 1.2v5.6c0 .7-.5 1.2-1.2 1.2H3.4c-.7 0-1.2-.5-1.2-1.2V4.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+<symbol id="i-chev-r" viewBox="0 0 16 16"><path d="m6 3 4.4 5L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-spark" viewBox="0 0 16 16"><path d="M8 1.6c.5 3.4 1.6 4.9 6.4 6.4-4.8 1.5-5.9 3-6.4 6.4-.5-3.4-1.6-4.9-6.4-6.4C6.4 6.5 7.5 5 8 1.6z" fill="currentColor"/></symbol>
+<symbol id="i-diamond" viewBox="0 0 16 16"><rect x="3.6" y="3.6" width="8.8" height="8.8" rx="1.6" transform="rotate(45 8 8)" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+<symbol id="i-user" viewBox="0 0 16 16"><circle cx="8" cy="5.4" r="2.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.8 14c.7-2.9 2.7-4.2 5.2-4.2s4.5 1.3 5.2 4.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8.6 3.2 3.2L13 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 2.4 14.2 13a.9.9 0 0 1-.78 1.35H2.58A.9.9 0 0 1 1.8 13L8 2.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.4v3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.9" fill="currentColor"/></symbol>
+</defs></svg>
 <header class="topnav">
   <span class="tn-brand">Atlas Código · iPhone</span>
   <nav>
@@ -254,21 +270,21 @@
           <div class="m-head"><div class="title" style="font-size:17px">Atlas</div></div>
           <div class="m-body">
             <div class="hsec">CONVERSAS</div>
-            <div class="hrow"><span class="ic">💬</span><b>Conversas livres</b><span class="n">12</span><span class="chev">›</span></div>
+            <div class="hrow"><svg class="ic"><use href="#i-chat"/></svg><b>Conversas livres</b><span class="n">12</span><svg class="ic chev" style="color:var(--ink3)"><use href="#i-chev-r"/></svg></div>
             <div class="hsec">CÓDIGO</div>
-            <div class="hrow" id="m1r1"><span class="ic">⌥</span><b>atlas-native</b><span class="okn" id="m1s1">sincronizado ✓</span><span class="chev">›</span></div>
-            <div class="hrow" id="m1r2"><span class="ic">⌥</span><b>atlas-server</b><span class="okn">sincronizado ✓</span><span class="chev">›</span></div>
-            <div class="hrow" id="m1r3"><span class="ic">⌥</span><b>blackink-app</b><span class="attn" id="m1s3">7 não enviados</span><span class="chev">›</span></div>
+            <div class="hrow" id="m1r1"><svg class="ic"><use href="#i-repo"/></svg><b>atlas-native</b><svg class="ic chev" style="color:var(--ink3); margin-left:auto"><use href="#i-chev-r"/></svg></div>
+            <div class="hrow" id="m1r2"><svg class="ic"><use href="#i-repo"/></svg><b>atlas-server</b><svg class="ic chev" style="color:var(--ink3); margin-left:auto"><use href="#i-chev-r"/></svg></div>
+            <div class="hrow" id="m1r3"><svg class="ic"><use href="#i-repo"/></svg><b>blackink-app</b><span class="attn" id="m1s3">7 não espelhados</span><svg class="ic chev" style="color:var(--ink3)"><use href="#i-chev-r"/></svg></div>
             <div class="hsec">OPERAÇÃO</div>
-            <div class="hrow"><span class="ic">⚡︎</span><b>Autônomos</b><span class="chev">›</span></div>
+            <div class="hrow"><svg class="ic"><use href="#i-bolt"/></svg><b>Autônomos</b><svg class="ic chev" style="color:var(--ink3); margin-left:auto"><use href="#i-chev-r"/></svg></div>
             <div class="hsec">WORKSPACES</div>
-            <div class="hrow"><span class="ic">📁</span><b>Todas as conversas</b><span class="n">100</span><span class="chev">›</span></div>
+            <div class="hrow"><svg class="ic"><use href="#i-folder"/></svg><b>Todas as conversas</b><span class="n">100</span><svg class="ic chev" style="color:var(--ink3)"><use href="#i-chev-r"/></svg></div>
           </div>
           <div class="pillinput"><div class="plus">+</div><div class="ph">Escreva ao Atlas</div></div>
         </div>
         <div class="homebar"></div>
       </div></div>
-      <p class="caption">A seção <em>CÓDIGO</em> entra no hub real, entre CONVERSAS e OPERAÇÃO: cada repo com o estado por exceção — saudável fica quieto, <em>"7 não enviados" chama</em>. Fonte: git status/rev-list por repo (F2).</p>
+      <p class="caption">A seção <em>CÓDIGO</em> no hub real: <em>saudável é silêncio total</em> — nenhum "sincronizado ✓" decorativo. Só a exceção fala ("7 não espelhados"), o Atlas cura sozinho, e a linha volta ao silêncio. Fonte: git status/rev-list por repo (C22).</p>
     </div>
 
     <!-- M2 · Linha do tempo -->
@@ -280,17 +296,17 @@
           <div class="m-head"><div class="back">‹</div><div class="title">atlas-native</div><div class="side">144 · main</div></div>
           <div class="m-body">
             <div class="commit" id="m2c1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
-              <div><div class="c-msg">fix(core): resposta parava de comer espaços — verbatim</div>
-              <div class="c-meta"><span class="agent">✦ fable</span><span>683af18</span><span class="gate">gates ✓</span><span>2h</span></div></div></div>
+              <div><div class="c-msg">fix(core): resposta parava de comer espaços</div>
+              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>683af18</span><span>2h</span></div></div></div>
             <div class="commit" id="m2c2"><div class="c-node"><div class="c-dot codex"></div><div class="c-line"></div></div>
               <div><div class="c-msg">feat(core): durable execution follow-up queue</div>
-              <div class="c-meta"><span class="agent codex">◆ codex</span><span>da25e8a</span><span class="gate">232 ✓</span><span>5h</span></div></div></div>
+              <div class="c-meta"><span class="agent codex"><svg class="ic"><use href="#i-diamond"/></svg> codex</span><span>da25e8a</span><span>232 checks</span><span>5h</span></div></div></div>
             <div class="commit" id="m2c3"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
               <div><div class="c-msg">polish(ui): C11 ligado — chip 'Fila N' + folha</div>
-              <div class="c-meta"><span class="agent">✦ fable</span><span>412a285</span><span class="gate">✓</span><span>5h</span></div></div></div>
+              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>412a285</span><span>5h</span></div></div></div>
             <div class="commit" id="m2c4"><div class="c-node"><div class="c-dot you"></div></div>
-              <div><div class="c-msg">docs(obra): canon — Autônomos é área própria</div>
-              <div class="c-meta"><span class="agent you">● você</span><span>8b0af2d</span><span>1d</span></div></div></div>
+              <div><div class="c-msg">docs(obra): canon · Autônomos é área própria</div>
+              <div class="c-meta"><span class="agent you"><svg class="ic"><use href="#i-user"/></svg> você</span><span>8b0af2d</span><span>1d</span></div></div></div>
           </div>
           <div class="sheet" id="m2sheet">
             <div class="grab"></div>
@@ -316,16 +332,15 @@
         <div class="content">
           <div class="m-head"><div class="back">‹</div><div class="title">Código</div><div class="side" id="m3side">1 atenção</div></div>
           <div class="m-body">
-            <div class="repo okr"><div class="repo-top"><div class="rled"></div><b>atlas-native</b><span class="rstate okc">sincronizado</span></div>
-              <div class="rtags"><span class="rt goodt">0 não enviados</span><span class="rt">2 agentes</span></div></div>
+            <div class="repo okr"><div class="repo-top"><div class="rled"></div><b>atlas-native</b><span class="rstate okc">espelhado</span></div>
+              <div class="rtags"><span class="rt goodt">0 não espelhados</span><span class="rt">2 agentes</span></div></div>
             <div class="repo attn" id="m3r"><div class="repo-top"><div class="rled"></div><b>blackink-app</b><span class="rstate warn" id="m3rs">push bloqueado</span></div>
               <div class="rtags"><span class="rt bad" id="m3rt">segredo no staged</span><span class="rt">7 commits</span></div></div>
             <div class="callout alert" id="m3c">
-              <div class="co-k" id="m3ck">Push bloqueado pela varredura</div>
-              <div class="co-t" id="m3ct">FIREBASE_KEY detectada em config/app.ts</div>
-              <div class="co-s" id="m3cs">Entraria no commit 3/7. Nada sai até você decidir — a varredura roda antes de todo envio, sempre.</div>
-              <div class="co-pills">
-                <span class="co-pill primary" id="m3fix">Mover p/ .env + ignorar</span>
+              <div class="co-k" id="m3ck">Varredura · segredo detectado</div>
+              <div class="co-t" id="m3ct">FIREBASE_KEY em config/app.ts · espelho bloqueado</div>
+              <div class="co-s" id="m3cs">Nada saiu da máquina. O Atlas está movendo para .env agora — sem esperar você.</div>
+              <div class="co-pills" id="m3pills">
                 <span class="co-pill">Ver diff</span>
               </div>
             </div>
@@ -333,7 +348,7 @@
         </div>
         <div class="homebar"></div>
       </div></div>
-      <p class="caption">O incidente que quase aconteceu com seu token — <em>impossível daqui em diante</em>: segredo no staged bloqueia o push e te chama. Resolver move para .env, libera e <em>deixa recibo</em>.</p>
+      <p class="caption">O incidente do seu token, <em>impossível daqui em diante</em> — e sem você no caminho: a varredura bloqueia, o Atlas move para .env <em>sozinho</em>, libera, espelha e deixa recibo. Seu botão é "Desfazer", nunca "Resolver". (C24 + C25)</p>
     </div>
 
     <!-- M4 · Review (JÁ SHIPADO) -->
@@ -383,15 +398,14 @@
               <div class="gcheck" id="m5g4"><span>Branch = main local (pétreo)</span><span class="st" id="m5s4">…</span></div>
             </div>
             <div class="co-pills" style="margin-top:12px">
-              <span class="co-pill primary" id="m5btn">Confirmar · operador vitor</span>
-              <span class="co-pill">Cancelar</span>
+              <span class="co-pill">Desfazer — com recibo</span>
             </div>
-            <div class="receipt" id="m5r"><b>enviado ✓</b> · push_receipt 9f27c1 · 3 → espelho (github) · varredura limpa · ledger local</div>
+            <div class="receipt" id="m5r"><b>espelhado sozinho ✓</b> · push_receipt 9f27c1 · 3 → espelho (github) · varredura limpa · sem você</div>
           </div>
         </div>
         <div class="homebar"></div>
       </div></div>
-      <p class="caption">Subir vira <em>ato governado</em> — e o host é <em>adaptador, não fundação</em>: GitHub hoje, origin da Cursor quando existir, qualquer espelho amanhã. Mesma tela, mesmo recibo; a verdade mora no Mac. Varredura tick a tick, operador nomeado, ledger local.</p>
+      <p class="caption">Espelhar é <em>operação — o Atlas faz sozinho</em>: varredura tick a tick e envio automático com recibo; seu botão é "Desfazer". O host é <em>adaptador</em> (GitHub hoje, origin da Cursor amanhã); a verdade mora no Mac. Assinatura humana fica para o que é seu: o release ao mundo (Nova Era, tela 6).</p>
     </div>
 
     <!-- M6 · Presença: lock screen + conversa -->
@@ -403,15 +417,15 @@
           <div class="date">terça, 14 de julho</div>
           <div class="clock">14:12</div>
           <div class="notif" id="m6n1">
-            <div class="appicon">✦</div>
-            <div><b>Push bloqueado — blackink-app</b>
-              <div class="nb">Segredo detectado no staged. Nada foi enviado; toque para decidir.</div></div>
+            <div class="appicon"><svg class="ic" style="color:var(--gold)"><use href="#i-spark"/></svg></div>
+            <div><b>Curado sozinho · blackink-app</b>
+              <div class="nb">Segredo movido para .env; espelho enviado. Toque para o recibo.</div></div>
             <div class="when">agora</div>
           </div>
           <div class="notif" id="m6n2" style="margin-top:10px">
-            <div class="appicon">✦</div>
-            <div><b>Obra do dia — atlas-native</b>
-              <div class="nb">6 commits, todos com gates verdes. Nada pendente de envio.</div></div>
+            <div class="appicon"><svg class="ic" style="color:var(--gold)"><use href="#i-spark"/></svg></div>
+            <div><b>O dia · atlas-native</b>
+              <div class="nb">6 commits · 1 cura sozinha · nada exige você.</div></div>
             <div class="when">18:00</div>
           </div>
         </div>
@@ -478,9 +492,10 @@ function boot() {
 
 /* M1 · hub: blackink resolve depois de um tempo (push feito em M3) */
 scene1(({ at, loop }) => {
-  $('m1s3').textContent = '7 não enviados'; $('m1s3').className = 'attn';
-  at(5200, () => { $('m1s3').textContent = 'sincronizado ✓'; $('m1s3').className = 'okn'; });
-  loop(9000);
+  $('m1s3').textContent = '7 não espelhados'; $('m1s3').className = 'attn';
+  at(5200, () => { $('m1s3').textContent = 'espelhado sozinho'; $('m1s3').className = 'okn'; });
+  at(7600, () => { $('m1s3').textContent = ''; });
+  loop(9500);
 });
 
 /* M2 · timeline: commits chegam; proveniência sobe */
@@ -499,24 +514,24 @@ scene1(({ at, loop }) => {
 /* M3 · segredo bloqueia push → resolver → liberado com recibo */
 scene1(({ at, loop }) => {
   $('m3c').classList.remove('on','okc'); $('m3c').classList.add('alert');
-  $('m3fix').classList.remove('pressed');
   $('m3r').classList.add('attn');
-  $('m3ck').textContent = 'Push bloqueado pela varredura';
-  $('m3ct').textContent = 'FIREBASE_KEY detectada em config/app.ts';
-  $('m3cs').textContent = 'Entraria no commit 3/7. Nada sai até você decidir — a varredura roda antes de todo envio, sempre.';
-  $('m3rs').textContent = 'push bloqueado'; $('m3rs').className = 'rstate warn';
+  $('m3ck').textContent = 'Varredura · segredo detectado';
+  $('m3ct').textContent = 'FIREBASE_KEY em config/app.ts · espelho bloqueado';
+  $('m3cs').textContent = 'Nada saiu da máquina. O Atlas está movendo para .env agora — sem esperar você.';
+  $('m3pills').innerHTML = '<span class="co-pill">Ver diff</span>';
+  $('m3rs').textContent = 'espelho bloqueado'; $('m3rs').className = 'rstate warn';
   $('m3rt').textContent = 'segredo no staged'; $('m3rt').className = 'rt bad';
   $('m3side').textContent = '1 atenção';
   at(1400, () => $('m3c').classList.add('on'));
-  at(3800, () => $('m3fix').classList.add('pressed'));
   at(4800, () => {
     $('m3c').classList.remove('alert'); $('m3c').classList.add('okc');
-    $('m3ck').textContent = 'Resolvido · com recibo';
-    $('m3ct').textContent = 'Segredo em .env — push liberado e enviado';
-    $('m3cs').textContent = '7 commits em origin/main. config/app.ts limpo. Recibo no ledger.';
+    $('m3ck').textContent = 'Curado sozinho · com recibo';
+    $('m3ct').textContent = 'Segredo em .env · espelho liberado e enviado';
+    $('m3cs').textContent = '7 commits espelhados · config/app.ts limpo · você não foi necessário.';
+    $('m3pills').innerHTML = '<span class="co-pill">Desfazer — com recibo</span><span class="co-pill">Ver recibo</span>';
     $('m3r').classList.remove('attn');
-    $('m3rs').textContent = 'sincronizado'; $('m3rs').className = 'rstate okc';
-    $('m3rt').textContent = '0 não enviados'; $('m3rt').className = 'rt goodt';
+    $('m3rs').textContent = 'espelhado'; $('m3rs').className = 'rstate okc';
+    $('m3rt').textContent = '0 não espelhados'; $('m3rt').className = 'rt goodt';
     $('m3side').textContent = '0 atenção';
   });
   loop(9500);
@@ -540,7 +555,6 @@ scene1(({ at, loop }) => {
 scene1(({ at, loop }) => {
   ['m5g1','m5g2','m5g3','m5g4'].forEach(id => $(id).classList.remove('on'));
   ['m5s1','m5s2','m5s3','m5s4'].forEach(id => { $(id).textContent = '…'; $(id).className = 'st run'; });
-  $('m5btn').classList.remove('pressed');
   $('m5r').classList.remove('on');
   const ok = (id, t) => { $(id).textContent = t; $(id).className = 'st ok'; };
   at(600,  () => $('m5g1').classList.add('on'));
@@ -548,8 +562,7 @@ scene1(({ at, loop }) => {
   at(2300, () => { ok('m5s2','limpo ✓'); $('m5g3').classList.add('on'); });
   at(3000, () => { ok('m5s3','sem drift ✓'); $('m5g4').classList.add('on'); });
   at(3600, () => ok('m5s4','main ✓'));
-  at(4700, () => $('m5btn').classList.add('pressed'));
-  at(5600, () => $('m5r').classList.add('on'));
+  at(4900, () => $('m5r').classList.add('on'));
   loop(9500);
 });
 
