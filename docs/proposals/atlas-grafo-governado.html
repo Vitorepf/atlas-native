@@ -65,9 +65,11 @@
   .seg { margin-left: 22px; display: flex; background: rgba(0,0,0,0.26); border-radius: 8px; padding: 2px; }
   .seg span { font-size: 11.5px; color: var(--ink3); padding: 4.5px 14px; border-radius: 6px; font-weight: 500; }
   .seg span.act { color: var(--ink); background: rgba(255,255,255,0.09); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 1px 2px rgba(0,0,0,0.3); font-weight: 600; }
-  .statchip { margin-left: auto; display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--red-hi); background: rgba(224,140,140,0.09); border: 1px solid rgba(224,140,140,0.32); border-radius: 999px; padding: 5px 12px; transition: all 0.5s; }
+  .statchip { margin-left: 8px; display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--red-hi); background: rgba(224,140,140,0.09); border: 1px solid rgba(224,140,140,0.32); border-radius: 999px; padding: 5px 12px; transition: all 0.5s; }
   .statchip .ic { width: 12px; height: 12px; animation: breathe-led 2s ease-in-out infinite; }
   @keyframes breathe-led { 50% { opacity: 0.45; } }
+  .cmdk { margin-left: auto; display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 500; color: var(--ink3); border: 1px solid var(--hairline); border-radius: 7px; padding: 4.5px 6px 4.5px 10px; }
+  .cmdk kbd { font-family: var(--mono); font-size: 9px; color: var(--ink3); background: rgba(255,255,255,0.06); border-radius: 4px; padding: 2px 5px; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3), inset 0 0 0 0.5px var(--hairline); }
 
   .winmain { display: grid; grid-template-columns: 216px 1fr; }
 
@@ -100,6 +102,8 @@
     transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.32,0.72,0,1), background 0.4s, box-shadow 0.5s;
   }
   .grow.on { opacity: 1; transform: none; }
+  .grow:hover { background: rgba(255,255,255,0.02); }
+  .grow .when, .grow .meta, .mrow-meta, .statchip, .cap { font-variant-numeric: tabular-nums; }
   .grow + .grow::before { content: ""; position: absolute; top: 0; left: 250px; right: 8px; height: 1px; background: rgba(255,255,255,0.035); }
   .grow .msg { font-size: 13px; font-weight: 500; color: var(--ink); letter-spacing: -0.005em; line-height: 1.3; }
   .grow .meta { font-family: var(--mono); font-size: 9.5px; color: var(--ink4); margin-top: 3.5px; }
@@ -133,6 +137,8 @@
   .dr { transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
   .nd { opacity: 0; transition: opacity 0.4s ease; }
   .nd.on { opacity: 1; }
+  .gsvg .nd { transform: scale(0.5); transform-origin: center; transform-box: fill-box; transition: opacity 0.3s ease, transform 0.55s cubic-bezier(0.34,1.45,0.5,1); }
+  .gsvg .nd.on { transform: scale(1); }
   .pulse-r { animation: pulsr 1.7s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
   @keyframes pulsr { 50% { opacity: 0.3; } }
 
@@ -194,6 +200,16 @@
   .receipt .ic { width: 12px; height: 12px; color: var(--green); margin-top: 1px; }
   .receipt.on { opacity: 1; }
   .receipt b { color: var(--green-hi); font-weight: 500; }
+  .plan { margin-top: 12px; border: 0.5px solid var(--hairline); border-radius: 12px; padding: 10px 12px 8px; background: rgba(255,255,255,0.028); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+  .plan-k { font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink4); margin-bottom: 5px; }
+  .pstep { display: flex; align-items: center; gap: 9px; padding: 5.5px 0; font-size: 12px; color: var(--ink2); }
+  .pstep > .ic:first-child { width: 12px; height: 12px; color: var(--ink4); }
+  .pstep span { flex: 1; }
+  .pst { width: 12px; height: 12px; color: var(--green); opacity: 0; transition: opacity 0.3s; }
+  .pst.on { opacity: 1; }
+  .mpill { position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 20; display: flex; align-items: center; gap: 9px; background: rgba(34,52,64,0.75); backdrop-filter: blur(12px); border: 0.5px solid var(--hairline); border-radius: 999px; padding: 9px 13px; box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.07); }
+  .mpill .mplus { width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink3); flex-shrink: 0; }
+  .mpill span { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .struct { display: flex; flex-direction: column; gap: 14px; }
   .st { border: 1px solid var(--hairline); border-radius: 16px; padding: 16px 19px; background: linear-gradient(180deg, rgba(34,52,64,0.5), rgba(27,40,48,0.42)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.045); }
@@ -275,6 +291,7 @@
       <span class="dot3" style="background:#e0655f"></span><span class="dot3" style="background:#e0b25f"></span><span class="dot3" style="background:#7fb069"></span>
       <span class="t">Atlas Código <span>— grafo governado</span></span>
       <div class="seg"><span class="act">Grafo</span><span>Linha do tempo</span><span>Frota</span></div>
+      <div class="cmdk">Perguntar<kbd>⌘K</kbd></div>
       <div class="statchip" id="ggcount"><svg class="ic"><use href="#i-warn"/></svg><span id="ggcountt">verificando regras…</span></div>
     </div>
     <div class="winmain">
@@ -423,12 +440,19 @@
               <div class="grab"></div>
               <div class="sh-kicker"><svg class="ic"><use href="#i-warn"/></svg>Violação · regra pétrea main-only</div>
               <div class="sh-title">forge-3 criou a branch "hotfix-rapido"</div>
-              <div class="sh-sub">Bloqueada antes do segundo commit; nada saiu da máquina. O mundo ideal é todos na main local — o trabalho dele está preservado para você decidir.</div>
-              <div class="btn primary" id="gfix"><svg class="ic"><use href="#i-merge"/></svg>Trazer para main e encerrar</div>
+              <div class="sh-sub">Bloqueada antes do segundo commit; nada saiu da máquina. O trabalho está preservado.</div>
+              <div class="plan">
+                <div class="plan-k">Plano pronto · Atlas executa em ~15s</div>
+                <div class="pstep"><svg class="ic"><use href="#i-merge"/></svg><span>Trazer o commit para a main</span><svg class="ic pst" id="pss1"><use href="#i-check"/></svg></div>
+                <div class="pstep"><svg class="ic"><use href="#i-branch"/></svg><span>Encerrar a branch hotfix-rapido</span><svg class="ic pst" id="pss2"><use href="#i-check"/></svg></div>
+                <div class="pstep"><svg class="ic"><use href="#i-doc"/></svg><span>Citar a regra ao forge-3 — ele aprende</span><svg class="ic pst" id="pss3"><use href="#i-check"/></svg></div>
+              </div>
+              <div class="btn primary" id="gfix"><svg class="ic"><use href="#i-check"/></svg>Aprovar plano</div>
               <div class="btn quiet">Descartar o trabalho</div>
-              <div class="receipt" id="grcpt"><svg class="ic"><use href="#i-check"/></svg><span><b>resolvido</b> · trabalho na main · branch encerrada · recibo no ledger · regra citada ao agente</span></div>
+              <div class="receipt" id="grcpt"><svg class="ic"><use href="#i-check"/></svg><span><b>executado em 12s</b> · recibo no ledger · forge-3 aprendeu: main-only citada</span></div>
             </div>
           </div>
+          <div class="mpill"><div class="mplus">+</div><span>Pergunte: por que essa branch existe?</span></div>
         </div>
         <div class="homebar"></div>
       </div></div>
@@ -512,7 +536,7 @@ scene1(({ at, loop }) => {
   rows.forEach((r, i) => at(950 + i * 220, () => { $('r' + r).classList.add('on'); $(nodes[r]).classList.add('on'); }));
   at(3600, () => { $('r1').classList.add('viol-armed'); $('sn1r').classList.add('on'); $('v1').classList.add('on'); });
   at(4200, () => { $('r6').classList.add('viol-armed'); $('v6').classList.add('on'); });
-  at(4800, () => { $('r8').classList.add('viol-armed'); $('sn8r').classList.add('on'); $('v8').classList.add('on'); $('ggcountt').textContent = '3 violações · atlas-server'; });
+  at(4800, () => { $('r8').classList.add('viol-armed'); $('sn8r').classList.add('on'); $('v8').classList.add('on'); $('ggcountt').textContent = '3 violações · 3 planos prontos'; });
   loop(12500);
 });
 
@@ -524,6 +548,7 @@ scene1(({ at, loop }) => {
   ['gm1','gm2','gm3','gm4','gm5','gm6','gm7','gmr'].forEach(id => $(id).classList.remove('on'));
   $('gm2dot').setAttribute('fill', '#e08c8c');
   $('gsheet').classList.remove('on'); $('gfix').classList.remove('pressed'); $('grcpt').classList.remove('on');
+  ['pss1','pss2','pss3'].forEach(id => $(id).classList.remove('on'));
   $('gpcap').className = 'cap bad'; $('gpcapt').textContent = '1 desvio da main';
   $('gpcapi').innerHTML = '<use href="#i-warn"/>';
   at(300, () => { $('mln').style.strokeDashoffset = 0; });
@@ -533,8 +558,11 @@ scene1(({ at, loop }) => {
   at(2750, () => { $('gm2').classList.add('on'); $('gmr').classList.add('on'); });
   at(4600, () => $('gsheet').classList.add('on'));
   at(6900, () => $('gfix').classList.add('pressed'));
-  at(7700, () => $('grcpt').classList.add('on'));
-  at(9200, () => {
+  at(7350, () => $('pss1').classList.add('on'));
+  at(7800, () => $('pss2').classList.add('on'));
+  at(8250, () => $('pss3').classList.add('on'));
+  at(8750, () => $('grcpt').classList.add('on'));
+  at(10100, () => {
     $('gsheet').classList.remove('on');
     $('mreturn').style.strokeDashoffset = 0;
     $('gmr').classList.remove('on');
@@ -542,7 +570,7 @@ scene1(({ at, loop }) => {
     $('gpcap').className = 'cap good'; $('gpcapt').textContent = 'main íntegra · 0 desvios';
     $('gpcapi').innerHTML = '<use href="#i-check"/>';
   });
-  loop(13000);
+  loop(14200);
 });
 
 }
