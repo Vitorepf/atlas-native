@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O grafo governado — o visual que fala por tudo (Fable 5)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #10181e; --app-bg: #1d2b34; --surface: #243743; --surface-hi: #2d4351;
+    --recessed: #15212a; --ink: #d6dde2; --ink2: #95a3ac; --ink3: #677482;
+    --sep: #313f47; --sep-soft: #27353e; --gold: #d4a85a; --green: #7fb069;
+    --alert: #c98a8a; --codex: #7fa3b8; --amber: #d4a85a;
+    --serif: "Fraunces", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: radial-gradient(1200px 600px at 70% -10%, rgba(212,168,90,0.05), transparent 60%), var(--bg);
+    color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 56px 48px 96px; }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 60; display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; padding: 11px 48px;
+    background: rgba(16,24,30,0.82); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--sep-soft);
+  }
+  .tn-brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+  .topnav nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .topnav a { font-family: var(--mono); font-size: 10.5px; color: var(--ink2); text-decoration: none; border: 1px solid transparent; border-radius: 999px; padding: 6px 11px; transition: all 0.2s; }
+  .topnav a:hover { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .topnav a.desk { color: var(--ink3); border-color: var(--sep); }
+
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 46px; line-height: 1.1; letter-spacing: -0.01em; max-width: 22ch; text-wrap: balance; }
+  .lede { margin-top: 18px; font-size: 16px; line-height: 1.7; color: var(--ink2); max-width: 68ch; text-wrap: pretty; }
+  .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .keyfacts { display: flex; gap: 44px; margin-top: 26px; flex-wrap: wrap; }
+  .kf b { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+  .kf span { font-size: 11.5px; color: var(--ink3); display: block; margin-top: 7px; max-width: 24ch; line-height: 1.45; }
+  .rule { width: 44px; height: 2px; background: var(--gold); opacity: 0.7; margin: 26px 0 0; }
+
+  /* janela mac */
+  .macwin { margin-top: 46px; border-radius: 14px; border: 1px solid var(--sep); background: var(--app-bg); box-shadow: 0 30px 80px rgba(0,0,0,0.5); overflow: hidden; }
+  .macbar { display: flex; align-items: center; gap: 8px; padding: 11px 14px; background: var(--recessed); border-bottom: 1px solid var(--sep-soft); }
+  .dot3 { width: 11px; height: 11px; border-radius: 50%; }
+  .macbar .t { margin-left: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--ink3); letter-spacing: 0.08em; }
+  .macbar .r { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--alert); }
+  .winbody { position: relative; padding: 10px 18px 16px; overflow-x: auto; }
+
+  /* grafo SVG */
+  svg text { font-family: var(--sans); }
+  .gg-lane { stroke-width: 2; fill: none; }
+  .gg-fork { stroke-width: 2; fill: none; }
+  .gg-draw { stroke-dasharray: 900; stroke-dashoffset: 900; transition: stroke-dashoffset 1.4s ease; }
+  .gg-draw.on { stroke-dashoffset: 0; }
+  .gg-node { opacity: 0; transition: opacity 0.4s ease; }
+  .gg-node.on { opacity: 1; }
+  .gg-msg { font-size: 12.5px; fill: var(--ink); }
+  .gg-meta { font-family: var(--mono); font-size: 9px; fill: var(--ink3); }
+  .gg-refbadge { font-family: var(--mono); font-size: 9px; }
+  .gg-viol { opacity: 0; transition: opacity 0.5s ease; }
+  .gg-viol.on { opacity: 1; }
+  .pulse-r { animation: pulsr 1.6s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+  @keyframes pulsr { 50% { opacity: 0.45; } }
+
+  .gg-legend { display: flex; gap: 22px; flex-wrap: wrap; padding: 12px 18px 4px; border-top: 1px solid var(--sep-soft); margin-top: 4px; }
+  .lg { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--ink3); }
+  .lg .sw { width: 10px; height: 10px; border-radius: 50%; }
+
+  .verdict-chip { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(16px); background: rgba(21,33,42,0.95); border: 1px solid rgba(201,138,138,0.55); border-radius: 999px; padding: 10px 22px; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink); opacity: 0; transition: all 0.6s cubic-bezier(0.32,0.72,0,1); box-shadow: 0 12px 34px rgba(0,0,0,0.5); white-space: nowrap; }
+  .verdict-chip.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .verdict-chip b { color: var(--alert); font-style: normal; }
+
+  /* seção dupla: iPhone + estrutura */
+  .duo { margin-top: 64px; display: grid; grid-template-columns: 380px 1fr; gap: 48px; align-items: start; }
+  h2 { font-family: var(--serif); font-size: 26px; font-weight: 600; }
+  .caption { margin-top: 12px; font-size: 12px; line-height: 1.55; color: var(--ink3); text-wrap: pretty; max-width: 340px; }
+  .caption em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+
+  .iphone { padding: 10px; background: #000; border-radius: 49px; box-shadow: 0 0 0 2px #1f2937, 0 24px 64px rgba(0,0,0,0.5); transition: transform 0.25s ease, box-shadow 0.25s ease; width: fit-content; }
+  .replayable { cursor: pointer; }
+  .iphone.replayable:hover { transform: translateY(-3px); box-shadow: 0 0 0 2px rgba(212,168,90,0.55), 0 28px 70px rgba(0,0,0,0.55); }
+  .screen { position: relative; width: 322px; height: 698px; border-radius: 39px; overflow: hidden; background: var(--app-bg); }
+  .island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 102px; height: 30px; background: #000; border-radius: 999px; z-index: 30; }
+  .content { position: absolute; inset: 0; padding: 50px 15px 0; display: flex; flex-direction: column; }
+  .m-head { display: flex; align-items: center; justify-content: center; position: relative; padding: 6px 2px 8px; }
+  .m-head .back { position: absolute; left: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .m-head .title { font-family: var(--serif); font-weight: 600; font-size: 15px; }
+  .m-head .side { position: absolute; right: 2px; font-family: var(--mono); font-size: 9px; color: var(--alert); }
+  .homebar { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; border-radius: 999px; background: rgba(214,221,226,0.35); z-index: 25; }
+
+  .commit { display: flex; gap: 10px; padding: 8px 2px; opacity: 0; transform: translateY(7px); transition: all 0.4s ease; }
+  .commit.on { opacity: 1; transform: none; }
+  .commit.off1 { padding-left: 22px; }
+  .c-node { width: 11px; display: flex; flex-direction: column; align-items: center; padding-top: 3px; }
+  .c-dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--gold); background: var(--app-bg); flex-shrink: 0; }
+  .c-dot.fable { background: var(--gold); }
+  .c-dot.codex { border-color: var(--codex); }
+  .c-dot.you { border-color: var(--green); background: var(--green); }
+  .c-dot.bad { border-color: var(--alert); background: rgba(201,138,138,0.25); box-shadow: 0 0 0 3px rgba(201,138,138,0.18); }
+  .c-line { width: 1.5px; flex: 1; background: rgba(212,168,90,0.18); margin-top: 3px; min-height: 12px; }
+  .c-msg { font-size: 12px; color: var(--ink); line-height: 1.35; }
+  .c-meta { font-family: var(--mono); font-size: 8.5px; color: var(--ink3); margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .c-meta .agent { color: var(--gold); }
+  .c-meta .agent.codex { color: var(--codex); }
+  .c-meta .agent.you { color: var(--green); }
+  .c-meta .agent.bad { color: var(--alert); }
+
+  .callout { border: 1px solid rgba(201,138,138,0.5); background: var(--surface); border-radius: 13px; padding: 11px 12px; margin-top: 10px; opacity: 0; transform: translateY(9px) scale(0.98); transition: all 0.45s cubic-bezier(0.32,0.72,0,1); }
+  .callout.on { opacity: 1; transform: none; }
+  .co-k { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--alert); margin-bottom: 4px; }
+  .co-t { font-size: 12px; font-weight: 600; line-height: 1.35; }
+  .co-s { font-size: 10px; color: var(--ink2); margin-top: 4px; line-height: 1.45; }
+  .co-pills { display: flex; gap: 6px; margin-top: 9px; }
+  .co-pill { flex: 1; text-align: center; font-size: 10px; color: var(--ink2); border: 1px solid var(--sep); border-radius: 999px; padding: 6px 4px; transition: all 0.3s; }
+  .co-pill.primary { color: var(--gold); border-color: rgba(212,168,90,0.5); }
+  .co-pill.pressed { background: rgba(212,168,90,0.16); transform: scale(0.97); }
+  .receipt { margin-top: 10px; padding: 9px 11px; border-radius: 11px; background: var(--recessed); border: 1px solid rgba(127,176,105,0.3); font-family: var(--mono); font-size: 9px; color: var(--ink2); line-height: 1.6; opacity: 0; transition: opacity 0.4s; }
+  .receipt.on { opacity: 1; }
+  .receipt b { color: var(--green); font-weight: 500; }
+
+  /* estrutura real */
+  .struct { display: flex; flex-direction: column; gap: 14px; }
+  .st { border: 1px solid var(--sep-soft); border-radius: 14px; padding: 15px 18px; background: rgba(29,43,52,0.5); }
+  .st .k { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+  .st b { font-family: var(--serif); font-size: 15.5px; font-weight: 600; display: block; margin-top: 5px; }
+  .st p { font-size: 12px; color: var(--ink2); line-height: 1.6; margin-top: 5px; text-wrap: pretty; }
+  .st p code { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+
+  .glass { margin-top: 64px; border: 1px solid var(--sep-soft); border-radius: 18px; padding: 26px 30px; background: rgba(29,43,52,0.5); }
+  .glass h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; }
+  .glass p { margin-top: 8px; font-size: 13px; line-height: 1.65; color: var(--ink2); max-width: 78ch; text-wrap: pretty; }
+  .glass p em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .glass .links { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .glass a { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--gold); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 8px 18px; text-decoration: none; }
+  .glass a:hover { background: rgba(212,168,90,0.1); }
+
+  .colophon { margin-top: 56px; font-family: var(--mono); font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .replay { position: fixed; bottom: 26px; right: 26px; z-index: 50; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); background: rgba(29,43,52,0.9); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 10px 20px; cursor: pointer; backdrop-filter: blur(8px); }
+  .replay:hover { background: rgba(212,168,90,0.12); }
+  ::selection { background: rgba(212,168,90,0.25); }
+
+  @media (max-width: 1000px) { .duo { grid-template-columns: 1fr; } .page { padding: 40px 20px 72px; } h1 { font-size: 34px; } }
+</style>
+</head>
+<body>
+<header class="topnav">
+  <span class="tn-brand">Atlas · Grafo Governado</span>
+  <nav>
+    <a href="#desktop">Desktop</a>
+    <a href="#iphone">iPhone</a>
+    <a href="#estrutura">Como estrutura</a>
+    <a class="desk" href="atlas-nova-era.html">A Nova Era ›</a>
+    <a class="desk" href="atlas-code-ledger.html">Cockpit desktop ›</a>
+  </nav>
+</header>
+<div class="page">
+
+  <div class="kicker">O visual que fala por tudo — proposta Fable 5</div>
+  <h1>O grafo que se julga sozinho.</h1>
+  <p class="lede">
+    O GitKraken te dá <em>os olhos</em>: lanes, curvas, avatares — e você, olhando, encontra a
+    branch que não devia existir, a worktree errada, a obra que nunca voltou à main. Mas quem
+    sabe as regras é <em>você</em>. O Atlas sabe as regras — <em>main-only pétreo, allowlist de
+    worktrees, obra tem que voltar à main</em> — então o grafo do Atlas faz o que nenhum cliente
+    git fará: <em>aponta a violação sozinho</em>. A mesma linguagem visual que você já ama,
+    com a lei pintada por cima. Quieto = saudável. Brilho = violação. Zero palavras necessárias.
+  </p>
+  <div class="keyfacts">
+    <div class="kf"><b>0</b><span>palavras para ver o problema — o visual já disse tudo</span></div>
+    <div class="kf"><b>3</b><span>violações que você caça hoje no olho — apontadas sozinhas aqui</span></div>
+    <div class="kf"><b>1</b><span>toque: violação vira decisão (tela 3 da Nova Era)</span></div>
+  </div>
+  <div class="rule"></div>
+
+  <!-- ═══ DESKTOP: o grafo vivo ═══ -->
+  <div id="desktop" class="macwin">
+    <div class="macbar">
+      <span class="dot3" style="background:#e0655f"></span><span class="dot3" style="background:#e0b25f"></span><span class="dot3" style="background:#7fb069"></span>
+      <span class="t">Atlas Código — grafo governado · atlas-server + atlas-native</span>
+      <span class="r" id="ggcount">verificando regras…</span>
+    </div>
+    <div class="winbody">
+      <svg viewBox="0 0 980 560" width="100%" style="min-width:860px" aria-label="grafo de commits governado">
+        <!-- espinha da main -->
+        <line class="gg-lane gg-draw" id="ln-main" x1="150" y1="46" x2="150" y2="514" stroke="#d4a85a" opacity="0.55"/>
+        <!-- lane B (obra-11, mergeada — saudável) -->
+        <path class="gg-fork gg-draw" id="ln-b" d="M150,352 C150,322 210,332 210,302 L210,252 C210,222 150,232 150,202" stroke="#7fa3b8" opacity="0.6"/>
+        <!-- lane C (obra-12, nunca voltou) -->
+        <path class="gg-fork gg-draw" id="ln-c" d="M150,502 C150,478 270,486 270,456 L270,356" stroke="#d4a85a" opacity="0.5"/>
+        <!-- lane D (branch proibida) -->
+        <path class="gg-fork gg-draw" id="ln-d" d="M150,152 C150,128 330,136 330,106" stroke="#c98a8a" opacity="0.7"/>
+
+        <!-- refs -->
+        <g class="gg-node" id="rf-main">
+          <rect x="24" y="38" rx="8" width="76" height="20" fill="rgba(212,168,90,0.12)" stroke="rgba(212,168,90,0.5)"/>
+          <text class="gg-refbadge" x="62" y="52" text-anchor="middle" fill="#d4a85a">main ✓</text>
+        </g>
+
+        <!-- r1 main · fable -->
+        <g class="gg-node" id="n1">
+          <circle cx="150" cy="50" r="9" fill="#d4a85a"/><text x="150" y="54" text-anchor="middle" font-size="10" fill="#1d2b34">✦</text>
+          <text class="gg-msg" x="380" y="54">polish(ui): recibo de conclusão vivo</text>
+          <text class="gg-meta" x="380" y="69">✦ fable · 2acbfa5 · gates ✓ · 2h</text>
+        </g>
+        <!-- r2 laneD · VIOLAÇÃO branch proibida -->
+        <g class="gg-node" id="n2">
+          <circle cx="330" cy="100" r="9" fill="rgba(201,138,138,0.25)" stroke="#c98a8a" stroke-width="2"/><text x="330" y="104" text-anchor="middle" font-size="9" fill="#c98a8a">▲</text>
+          <text class="gg-msg" x="380" y="97" fill="#c98a8a">wip: ajuste rápido no worker</text>
+          <text class="gg-meta" x="380" y="112">▲ forge-3 · branch hotfix-rapido · atlas-server</text>
+        </g>
+        <g class="gg-viol" id="v2">
+          <circle class="pulse-r" cx="330" cy="100" r="16" fill="none" stroke="#c98a8a" stroke-width="1.5" opacity="0.8"/>
+          <rect x="620" y="86" rx="9" width="330" height="28" fill="rgba(201,138,138,0.1)" stroke="rgba(201,138,138,0.55)"/>
+          <text class="gg-refbadge" x="785" y="104" text-anchor="middle" fill="#c98a8a">BRANCH PROIBIDA — regra pétrea: main-only ✕</text>
+        </g>
+        <!-- r3 main · você -->
+        <g class="gg-node" id="n3">
+          <circle cx="150" cy="150" r="9" fill="none" stroke="#7fb069" stroke-width="2.5"/><circle cx="150" cy="150" r="4" fill="#7fb069"/>
+          <text class="gg-msg" x="380" y="147">docs(obra): canon — Autônomos é área própria</text>
+          <text class="gg-meta" x="380" y="162">● você · 8b0af2d · 1d</text>
+        </g>
+        <!-- r4 merge governado -->
+        <g class="gg-node" id="n4">
+          <circle cx="150" cy="200" r="7" fill="#7fa3b8"/>
+          <text class="gg-msg" x="380" y="197">Merge governado — obra-11 → main</text>
+          <text class="gg-meta" x="380" y="212">varredura ✓ · recibo 4c11a · vitor</text>
+          <rect x="620" y="188" rx="9" width="150" height="24" fill="rgba(127,176,105,0.08)" stroke="rgba(127,176,105,0.4)"/>
+          <text class="gg-refbadge" x="695" y="204" text-anchor="middle" fill="#7fb069">obra completa ✓</text>
+        </g>
+        <!-- r5/r6 laneB codex -->
+        <g class="gg-node" id="n5">
+          <circle cx="210" cy="250" r="9" fill="none" stroke="#7fa3b8" stroke-width="2.5"/><text x="210" y="254" text-anchor="middle" font-size="9" fill="#7fa3b8">◆</text>
+          <text class="gg-msg" x="380" y="247">feat(core): fila durável de follow-ups</text>
+          <text class="gg-meta" x="380" y="262">◆ codex · da25e8a · 232 checks ✓</text>
+        </g>
+        <g class="gg-node" id="n6">
+          <circle cx="210" cy="300" r="9" fill="none" stroke="#7fa3b8" stroke-width="2.5"/><text x="210" y="304" text-anchor="middle" font-size="9" fill="#7fa3b8">◆</text>
+          <text class="gg-msg" x="380" y="297">test(core): contrato da fila</text>
+          <text class="gg-meta" x="380" y="312">◆ codex · 91bd02f · gates ✓</text>
+        </g>
+        <!-- r7 laneC head · VIOLAÇÃO obra sem merge -->
+        <g class="gg-node" id="n7">
+          <circle cx="270" cy="350" r="9" fill="#d4a85a"/><text x="270" y="354" text-anchor="middle" font-size="10" fill="#1d2b34">✦</text>
+          <text class="gg-msg" x="380" y="347">feat(report): motor de relatórios</text>
+          <text class="gg-meta" x="380" y="362">✦ fable · obra-12 · 0f33c81 · 3d</text>
+        </g>
+        <g class="gg-viol" id="v7">
+          <rect x="620" y="336" rx="9" width="330" height="28" fill="rgba(212,168,90,0.08)" stroke="rgba(212,168,90,0.55)"/>
+          <text class="gg-refbadge" x="785" y="354" text-anchor="middle" fill="#d4a85a">OBRA PARADA — 14 commits, nunca voltou à main · 3 dias</text>
+        </g>
+        <!-- r8 laneC -->
+        <g class="gg-node" id="n8">
+          <circle cx="270" cy="405" r="9" fill="#d4a85a"/><text x="270" y="409" text-anchor="middle" font-size="10" fill="#1d2b34">✦</text>
+          <text class="gg-msg" x="380" y="402">feat(report): agregadores por período</text>
+          <text class="gg-meta" x="380" y="417">✦ fable · 7ac2e10 · 3d</text>
+        </g>
+        <!-- r9 laneC · VIOLAÇÃO worktree -->
+        <g class="gg-node" id="n9">
+          <circle cx="270" cy="455" r="9" fill="rgba(201,138,138,0.25)" stroke="#c98a8a" stroke-width="2"/><text x="270" y="459" text-anchor="middle" font-size="10" fill="#c98a8a">✦</text>
+          <text class="gg-msg" x="380" y="452">chore: experimento de schema</text>
+          <text class="gg-meta" x="380" y="467">✦ fable · worktree /private/tmp/wt-9f2</text>
+        </g>
+        <g class="gg-viol" id="v9">
+          <circle class="pulse-r" cx="270" cy="455" r="16" fill="none" stroke="#c98a8a" stroke-width="1.5" opacity="0.8"/>
+          <rect x="620" y="441" rx="9" width="330" height="28" fill="rgba(201,138,138,0.1)" stroke="rgba(201,138,138,0.55)"/>
+          <text class="gg-refbadge" x="785" y="459" text-anchor="middle" fill="#c98a8a">WORKTREE FORA DA ALLOWLIST — quarentenada ✕</text>
+        </g>
+        <!-- r10 main base -->
+        <g class="gg-node" id="n10">
+          <circle cx="150" cy="505" r="9" fill="none" stroke="#7fb069" stroke-width="2.5"/><circle cx="150" cy="505" r="4" fill="#7fb069"/>
+          <text class="gg-msg" x="380" y="502">versão final</text>
+          <text class="gg-meta" x="380" y="517">● você · c4091ee · 4d</text>
+        </g>
+      </svg>
+      <div class="verdict-chip" id="ggverdict"><b>3 violações</b> — o grafo apontou sozinho; o resto ficou quieto</div>
+    </div>
+    <div class="gg-legend">
+      <span class="lg"><span class="sw" style="background:#d4a85a"></span>✦ fable</span>
+      <span class="lg"><span class="sw" style="border:2px solid #7fa3b8; background:transparent"></span>◆ codex</span>
+      <span class="lg"><span class="sw" style="background:#7fb069"></span>● você</span>
+      <span class="lg"><span class="sw" style="border:2px solid #c98a8a; background:rgba(201,138,138,0.25)"></span>violação — pulsa até decisão</span>
+      <span class="lg" style="margin-left:auto; font-family:var(--mono); font-size:9.5px">fontes: git log --all --topo-order · ledger (identidade por commit) · canon (regras)</span>
+    </div>
+  </div>
+  <p class="caption" style="max-width:none">A cena: o grafo se desenha como você conhece — lanes, curvas, quem fez o quê. Aí as regras passam por cima: a branch proibida no atlas-server <em>acende em vermelho com o nome da regra pétrea</em>; a obra-12 com 14 commits que nunca voltou à main <em>ganha a etiqueta âmbar de obra parada</em>; a worktree fora da allowlist <em>pulsa quarentenada</em>. A obra-11, mergeada com recibo, fica verde e quieta — saudável não grita.</p>
+
+  <!-- ═══ IPHONE + ESTRUTURA ═══ -->
+  <div class="duo">
+    <div id="iphone">
+      <h2 style="margin-bottom:16px">No iPhone: a violação te acha</h2>
+      <div class="iphone" id="gph"><div class="screen">
+        <div class="island"></div>
+        <div class="content">
+          <div class="m-head"><div class="back">‹</div><div class="title">Grafo · atlas-server</div><div class="side" id="gpside">1 violação</div></div>
+          <div style="flex:1; overflow:hidden; padding-top:4px">
+            <div class="commit" id="gc1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+              <div><div class="c-msg">feat(brain): council_review por membro</div>
+              <div class="c-meta"><span class="agent">✦ fable</span><span>9a06fd4</span><span>main</span><span>2h</span></div></div></div>
+            <div class="commit off1" id="gc2"><div class="c-node"><div class="c-dot bad"></div><div class="c-line" style="background:rgba(201,138,138,0.3)"></div></div>
+              <div><div class="c-msg" style="color:var(--alert)">wip: ajuste rápido no worker</div>
+              <div class="c-meta"><span class="agent bad">▲ forge-3</span><span>branch hotfix-rapido</span><span>agora</span></div></div></div>
+            <div class="commit" id="gc3"><div class="c-node"><div class="c-dot you"></div><div class="c-line"></div></div>
+              <div><div class="c-msg">docs(obra): canon — Autônomos é área própria</div>
+              <div class="c-meta"><span class="agent you">● você</span><span>8b0af2d</span><span>main</span><span>1d</span></div></div></div>
+            <div class="commit" id="gc4"><div class="c-node"><div class="c-dot codex"></div></div>
+              <div><div class="c-msg">feat(core): fila durável de follow-ups</div>
+              <div class="c-meta"><span class="agent codex">◆ codex</span><span>da25e8a</span><span>main</span><span>5h</span></div></div></div>
+            <div class="callout" id="gcall">
+              <div class="co-k">Violação — regra pétrea main-only</div>
+              <div class="co-t">forge-3 criou a branch "hotfix-rapido" no atlas-server</div>
+              <div class="co-s">Bloqueada antes do segundo commit. Nada saiu da máquina. O trabalho dele está preservado para você decidir o destino.</div>
+              <div class="co-pills">
+                <span class="co-pill primary" id="gfix">Trazer para main + encerrar branch</span>
+                <span class="co-pill">Descartar</span>
+              </div>
+            </div>
+            <div class="receipt" id="grcpt"><b>resolvido ✓</b> · trabalho na main · branch encerrada · recibo no ledger · regra citada ao agente</div>
+          </div>
+        </div>
+        <div class="homebar"></div>
+      </div></div>
+      <p class="caption">Você não abre o grafo para caçar — <em>a violação vira decisão e te acha</em> (a tela 3 da Nova Era). Um toque resolve, deixa recibo e <em>ensina a regra ao agente</em> — a violação de hoje é o guardrail de amanhã.</p>
+    </div>
+
+    <div id="estrutura">
+      <h2>Como estrutura — quatro camadas, tudo já existe</h2>
+      <div class="struct" style="margin-top:16px">
+        <div class="st"><div class="k">Camada 1 · Topologia (dado bruto, local)</div>
+          <b>O git já sabe o desenho.</b>
+          <p><code>git log --all --topo-order --parents</code> + refs + <code>git worktree list</code>, por repo. É exatamente o que o GitKraken lê — zero invenção, zero dependência externa.</p></div>
+        <div class="st"><div class="k">Camada 2 · Identidade (ledger)</div>
+          <b>Cada commit tem um rosto.</b>
+          <p>O Atlas já carimba quem fez o quê (✦ fable · ◆ codex · ● você · ▲ autônomos) via traces e recibos no ledger. O avatar do GitKraken vira o glifo do agente — e clicar nele abre a proveniência: a SUA frase que originou o commit.</p></div>
+        <div class="st"><div class="k">Camada 3 · Lei (canon → rules engine)</div>
+          <b>As regras que hoje moram em doc viram sinal visual.</b>
+          <p>main-only pétreo (atlas-server), allowlist de worktrees, "obra tem que voltar à main em N dias", branch órfã, drift de espelho. Cada regra do canon vira um verificador que <em>anota o grafo</em> — com o nome da regra, não um erro genérico.</p></div>
+        <div class="st"><div class="k">Camada 4 · Julgamento (a ponte para a Nova Era)</div>
+          <b>Violação não é alerta — é decisão.</b>
+          <p>Cada brilho no grafo vira uma pergunta completa da tela 3: o quê, a regra citada, o custo de cada lado, dois verbos. Resolver deixa recibo e realimenta o guardrail. Desktop = o mapa inteiro; iPhone = a exceção que te acha.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FILTRO ═══ -->
+  <div class="glass">
+    <h3>Passa no filtro pétreo? 5/5</h3>
+    <p>
+      <em>Composto</em>: cada violação resolvida vira guardrail e memória — o grafo fica mais esperto a cada erro.
+      <em>Antifrágil</em>: mais agentes e mais caos = mais valor; nenhum host ou provider nomeado — a topologia é do git local, o espelho é trocável.
+      <em>Linguagem natural</em>: tocar qualquer nó responde "por que isso existe?" em frase humana.
+      <em>Substitui função</em>: isto é o olho do gestor de engenharia supervisionando uma equipe — a equipe agora é de agentes.
+      <em>Soberania</em>: tudo lido da máquina, regras do canon, recibos no ledger. E honra a lei do visual:
+      <em>o grafo não precisa falar nada — mas se você perguntar, ele responde</em>.
+    </p>
+    <div class="links">
+      <a href="atlas-nova-era.html">A Nova Era — as telas humanas ›</a>
+      <a href="atlas-code-mobile.html">a camada máquina (v1) ›</a>
+      <a href="atlas-code-ledger.html">o cockpit desktop ›</a>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
+    <span>Fable 5 · Grafo Governado v1 · desktop + iPhone · toque para repetir</span>
+  </div>
+</div>
+
+<button class="replay" onclick="restart()">↻ repetir as cenas</button>
+
+<script>
+const $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function makeScene(run) {
+  let handles = [];
+  const at = (t, fn) => handles.push(setTimeout(fn, reduced ? 0 : t));
+  const every = (ms, fn) => { const h = setInterval(fn, ms); handles.push({ clear: () => clearInterval(h) }); return h; };
+  const stop = () => { handles.forEach(h => h.clear ? h.clear() : clearTimeout(h)); handles = []; };
+  const loop = dur => { if (!reduced) at(dur, () => { stop(); run(api); }); };
+  const api = { at, every, stop, loop };
+  return { start: () => run(api), stop };
+}
+const scenes = [];
+function scene1(fn) { const s = makeScene(fn); scenes.push(s); s.start(); }
+function restart() { scenes.forEach(s => s.stop()); scenes.length = 0; boot(); }
+
+function boot() {
+
+/* Desktop: o grafo se desenha → as regras acendem → veredito */
+scene1(({ at, loop }) => {
+  ['ln-main','ln-b','ln-c','ln-d'].forEach(id => $(id).classList.remove('on'));
+  ['rf-main','n1','n2','n3','n4','n5','n6','n7','n8','n9','n10'].forEach(id => $(id).classList.remove('on'));
+  ['v2','v7','v9'].forEach(id => $(id).classList.remove('on'));
+  $('ggverdict').classList.remove('on');
+  $('ggcount').textContent = 'verificando regras…';
+  at(300,  () => $('ln-main').classList.add('on'));
+  at(600,  () => { ['ln-b','ln-c','ln-d'].forEach(id => $(id).classList.add('on')); $('rf-main').classList.add('on'); });
+  const order = ['n10','n9','n8','n7','n6','n5','n4','n3','n2','n1'];
+  order.forEach((id, i) => at(900 + i * 260, () => $(id).classList.add('on')));
+  at(4000, () => $('v2').classList.add('on'));
+  at(4500, () => $('v7').classList.add('on'));
+  at(5000, () => { $('v9').classList.add('on'); $('ggcount').textContent = '3 violações · 2 repos'; });
+  at(5900, () => $('ggverdict').classList.add('on'));
+  loop(12000);
+});
+
+/* iPhone: a violação te acha → decisão → recibo */
+scene1(({ at, loop }) => {
+  ['gc1','gc2','gc3','gc4'].forEach(id => $(id).classList.remove('on'));
+  $('gcall').classList.remove('on'); $('gfix').classList.remove('pressed'); $('grcpt').classList.remove('on');
+  $('gpside').textContent = '1 violação';
+  at(500,  () => $('gc1').classList.add('on'));
+  at(900,  () => $('gc2').classList.add('on'));
+  at(1300, () => $('gc3').classList.add('on'));
+  at(1700, () => $('gc4').classList.add('on'));
+  at(2600, () => $('gcall').classList.add('on'));
+  at(5000, () => $('gfix').classList.add('pressed'));
+  at(6000, () => { $('grcpt').classList.add('on'); $('gpside').textContent = '0 violações'; });
+  loop(10500);
+});
+
+}
+boot();
+
+const win = document.querySelector('.macwin');
+win.classList.add('replayable'); win.style.cursor = 'pointer';
+win.addEventListener('click', () => { scenes[0].stop(); scenes[0].start(); });
+const ph = $('gph');
+ph.classList.add('replayable');
+ph.addEventListener('click', () => { scenes[1].stop(); scenes[1].start(); });
+window.__ready = true;
+</script>
+</body>
+</html>
