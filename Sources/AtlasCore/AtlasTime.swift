@@ -19,10 +19,14 @@ public enum AtlasTime {
     /// NaN then propagates through `>=` comparisons as `false`, so a bad timestamp
     /// never wins the LWW compare (matching the JS behaviour verbatim).
     public static func ms(_ value: String?) -> Double {
-        guard let value, !value.isEmpty else { return .nan }
-        if let date = (try? withFractional.parse(value)) ?? (try? plain.parse(value)) {
-            return date.timeIntervalSince1970 * 1000
-        }
-        return .nan
+        guard let date = date(value) else { return .nan }
+        return date.timeIntervalSince1970 * 1000
+    }
+
+    /// Data canônica quando o servidor declara um instante público. Diferente
+    /// de `Date()` no cliente, este valor sobrevive a reconnect e relaunch.
+    public static func date(_ value: String?) -> Date? {
+        guard let value, !value.isEmpty else { return nil }
+        return (try? withFractional.parse(value)) ?? (try? plain.parse(value))
     }
 }

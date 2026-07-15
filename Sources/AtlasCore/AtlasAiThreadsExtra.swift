@@ -106,6 +106,25 @@ public struct AiCompactResponse: Codable, Sendable {
 public struct AiSwitchProviderResponse: Codable, Sendable { public let handoff: AtlasAiProviderHandoff }
 public struct AiSnapshotsResponse: Codable, Sendable { public let snapshots: [AtlasAiContextSnapshot] }
 
+/// Recibo mínimo para abrir a mesma thread/sessão em outra superfície. Não
+/// contém brief, prompt, metadata, provider ou conteúdo da conversa.
+public struct AtlasAiSurfaceHandoff: Codable, Sendable, Identifiable {
+    public let schemaVersion: String
+    public let handoffId: String
+    public let threadId: String
+    public let sessionId: String
+    public let fromSurface: String
+    public let toSurface: String
+    public let status: String
+    public let createdAt: String?
+
+    public var id: String { handoffId }
+}
+
+public struct AiSurfaceHandoffResponse: Codable, Sendable {
+    public let handoff: AtlasAiSurfaceHandoff
+}
+
 // MARK: - Inputs (camelCase; o encoder faz .convertToSnakeCase)
 
 public struct CreateAiThreadInput: Encodable, Sendable {
@@ -175,6 +194,20 @@ public struct SwitchAiThreadProviderInput: Encodable, Sendable {
     }
 }
 
+public enum AtlasAiSurfaceDestination: String, Codable, Sendable, CaseIterable {
+    case mobile = "atlas_mobile"
+    case desktop = "atlas_desktop"
+    case terminal = "atlas_terminal"
+}
+
+public struct HandoffAiThreadSurfaceInput: Encodable, Sendable {
+    public var toSurface: AtlasAiSurfaceDestination
+
+    public init(toSurface: AtlasAiSurfaceDestination) {
+        self.toSurface = toSurface
+    }
+}
+
 public struct FeedbackAiInteractionInput: Encodable, Sendable {
     public var feedbackScore: Double?
     public var feedbackAction: String?
@@ -216,6 +249,13 @@ public extension AtlasClient {
     func switchAiThreadProvider(_ id: String, input: SwitchAiThreadProviderInput) async throws -> AiSwitchProviderResponse {
         let seg = id.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? id
         return try await post("/ai/threads/\(seg)/switch-provider", body: input)
+    }
+
+    /// Cria um recibo provider-safe para outra superfície abrir a mesma thread
+    /// e sessão canônicas; não cria conversa, sessão ou provider novo.
+    func handoffAiThreadSurface(_ id: String, input: HandoffAiThreadSurfaceInput) async throws -> AiSurfaceHandoffResponse {
+        let seg = id.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? id
+        return try await post("/ai/threads/\(seg)/handoff-surface", body: input)
     }
 
     /// `listAiThreadSnapshots` (§1644).
@@ -300,5 +340,35 @@ public func runThreadsExtraChecks(_ check: (String, Bool) -> Void) {
         check("compaction Int counts + null → nil", c.sourceMessageCount == 4 && c.tokenEstimateBefore == 1200 && c.provider == nil)
     } else {
         check("compaction decodes", false)
+    }
+
+    let surfaceHandoffJSON = """
+    {
+      "handoff": {
+        "schema_version": "atlas.ai.surface_handoff.v1",
+        "handoff_id": "surface_1",
+        "thread_id": "th_42",
+        "session_id": "session_7",
+        "from_surface": "atlas_mobile",
+        "to_surface": "atlas_terminal",
+        "status": "ready",
+        "created_at": "2026-07-14T00:00:00Z"
+      }
+    }
+    """
+    if let receipt = try? dec.decode(AiSurfaceHandoffResponse.self, from: Data(surfaceHandoffJSON.utf8)) {
+        check("surface handoff preserva thread e sessão canônicas", receipt.handoff.threadId == "th_42" && receipt.handoff.sessionId == "session_7")
+        check("surface handoff só projeta superfícies e status público", receipt.handoff.fromSurface == "atlas_mobile" && receipt.handoff.toSurface == "atlas_terminal" && receipt.handoff.status == "ready")
+    } else {
+        check("surface handoff decodes", false)
+    }
+
+    let handoffEncoder = JSONEncoder()
+    handoffEncoder.keyEncodingStrategy = .convertToSnakeCase
+    if let data = try? handoffEncoder.encode(HandoffAiThreadSurfaceInput(toSurface: .terminal)),
+       let json = try? JSONSerialization.jsonObject(with: data) as? [String: String] {
+        check("surface handoff só codifica o destino permitido", json == ["to_surface": "atlas_terminal"])
+    } else {
+        check("surface handoff input encodes", false)
     }
 }

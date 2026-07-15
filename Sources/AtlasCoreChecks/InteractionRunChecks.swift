@@ -132,6 +132,7 @@ private actor TerminalCreateFailureTransport: AtlasInteractionTransport {
 }
 
 private func interactionResponse(
+    traceStatus: String = "processing",
     jobStatus: String = "processing",
     toolExitCode: Int = 0
 ) throws -> AiTraceResponse {
@@ -139,7 +140,7 @@ private func interactionResponse(
     {
       "trace": {
         "id":"trace-run","trace_key":"trace-key","thread_id":"thread-1",
-        "session_id":null,"status":"processing","operator_input":"oi",
+        "session_id":null,"status":"\(traceStatus)","operator_input":"oi",
         "intent":null,"agent_slug":"atlas","provider":"claude_cli","model":null,
         "response_text":null,"latency_ms":null,"completed_at":null,"metadata":{},
         "jobs":[{
@@ -282,6 +283,36 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
               await transport.streamTimeouts() == [120])
     } catch {
         check("InteractionRun lifecycle não deveria falhar", false)
+    }
+
+    do {
+        let response = try interactionResponse(
+            traceStatus: "awaiting_user_choice",
+            jobStatus: "awaiting_user_choice"
+        )
+        let transport = ScriptedInteractionTransport(created: response, frames: [])
+        let outboxURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("interaction-run-suspended-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: outboxURL) }
+        let outbox = InteractionOutbox(fileURL: outboxURL)
+        let run = InteractionRun(
+            transport: transport,
+            reconnectPolicy: AtlasStreamReconnectPolicy(maxReconnects: 0, baseDelayMilliseconds: 0),
+            pollIntervalNanoseconds: 60_000_000_000,
+            outbox: outbox
+        )
+        var suspendedTrace: AtlasAiTrace?
+        for try await event in await run.start(input: CreateAiInteractionInput(
+            inputText: "precisa decidir",
+            clientId: "7db18161-6a21-4c49-a442-d55034522e31"
+        )) {
+            if case .suspended(let trace) = event { suspendedTrace = trace }
+        }
+        check("pausa durável não vira erro de reconnect", suspendedTrace?.status == "awaiting_user_choice")
+        check("pausa durável remove o turno já confirmado da outbox", await outbox.pending().isEmpty)
+    } catch {
+        check("pausa durável não vira erro de reconnect", false)
+        check("pausa durável remove o turno já confirmado da outbox", false)
     }
 
     do {
@@ -699,7 +730,7 @@ public func runInteractionRunLiveProbe(
                 leakedReasoning = leakedReasoning || frame.content.lowercased().contains("┌─ reasoning")
             case .completed:
                 completed = true
-            case .persisted, .activity, .execution, .remoteError:
+            case .persisted, .activity, .execution, .remoteError, .suspended:
                 break
             }
         }
@@ -770,7 +801,7 @@ public func runProviderToolActivityLiveProbe(
                     liveToolFinishedAt = Date()
                 }
             case .completed: completed = true
-            case .persisted, .content, .execution, .remoteError: break
+            case .persisted, .content, .execution, .remoteError, .suspended: break
             }
         }
         check("live \(providerLabel) tool run concluiu", completed)

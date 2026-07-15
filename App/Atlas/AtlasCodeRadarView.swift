@@ -49,6 +49,31 @@ final class AtlasCodeRadarModel {
         repos.filter { if case .exception = $0.signal { return true } else { return false } }.count
     }
 
+    /// O problema dominante da frota inteira — o que o operador precisa ouvir
+    /// primeiro. Soma o mesmo tipo entre repos, prioriza o grave.
+    var headlineIssue: AtlasCodeIssue? {
+        var byRule: [String: AtlasCodeIssue] = [:]
+        for repo in repos {
+            guard case .exception(_, let issues) = repo.signal else { continue }
+            for issue in issues {
+                if let existing = byRule[issue.ruleId] {
+                    byRule[issue.ruleId] = AtlasCodeIssue(
+                        ruleId: issue.ruleId,
+                        count: existing.count + issue.count,
+                        severity: existing.isSevere || issue.isSevere ? "high" : issue.severity,
+                        oldestDays: max(existing.oldestDays ?? -1, issue.oldestDays ?? -1) >= 0
+                            ? max(existing.oldestDays ?? 0, issue.oldestDays ?? 0) : nil
+                    )
+                } else {
+                    byRule[issue.ruleId] = issue
+                }
+            }
+        }
+        return byRule.values.sorted {
+            ($0.isSevere ? 0 : 1, -$0.count) < ($1.isSevere ? 0 : 1, -$1.count)
+        }.first
+    }
+
     /// Quantos o Atlas conseguiu de fato julgar. Repo ilegível e scanner mudo
     /// NÃO entram: dizer "frota íntegra" sem ter lido nada seria mentira.
     var repositoriesJudged: Int {
@@ -136,9 +161,8 @@ struct AtlasCodeRadarView: View {
             : (judged == 0 ? AtlasTheme.textTertiary : AtlasCodePalette.healed)
         let icon = exceptions > 0 ? "exclamationmark.triangle" : (judged == 0 ? "eye.slash" : "checkmark")
         let text: String = {
-            if exceptions > 0 {
-                return exceptions == 1 ? "1 repositório pede atenção" : "\(exceptions) repositórios pedem atenção"
-            }
+            // A cápsula fala do PROBLEMA, não de uma contagem sem sujeito.
+            if let issue = model.headlineIssue { return issue.headline }
             if judged == 0 { return "frota não lida" }
             return judged == model.repos.count ? "frota íntegra" : "\(judged) de \(model.repos.count) lidos · sem exceção"
         }()
@@ -166,85 +190,95 @@ private struct AtlasCodeRepoCard: View {
 
     var body: some View {
         Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 7) {
-                HStack(spacing: 9) {
+            VStack(alignment: .leading, spacing: 0) {
+                // Linha 1 · o nome. Em repouso, é a única coisa que existe.
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text(repo.name ?? repo.slug)
-                        .font(AtlasFont.serif(16, .semibold))
+                        .font(AtlasFont.serif(17, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Spacer(minLength: 6)
-                    signalBadge
+                    trailingMark
                 }
-                if case .exception(_, let rules) = repo.signal, !rules.isEmpty {
-                    // Um sinal primário: a regra, pelo nome do canon.
-                    HStack(spacing: 5) {
-                        ForEach(rules.prefix(3), id: \.self) { rule in
-                            Text(rule)
-                                .font(AtlasFont.mono(9))
-                                .foregroundStyle(AtlasCodePalette.alert)
-                                .padding(.horizontal, 7)
-                                .padding(.vertical, 3)
-                                .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.3), lineWidth: 1))
+
+                // Linha 2+ · a HISTÓRIA em português. Nunca id de regra.
+                if case .exception(_, let issues) = repo.signal, !issues.isEmpty {
+                    VStack(alignment: .leading, spacing: 7) {
+                        ForEach(issues) { issue in
+                            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                                // Marcador de gravidade: cheio = grave.
+                                Circle()
+                                    .fill(issue.isSevere ? AtlasCodePalette.alert : AtlasCodePalette.alert.opacity(0.45))
+                                    .frame(width: 5, height: 5)
+                                    .offset(y: -3)
+                                Text(issue.headline)
+                                    .font(.system(size: 13.5))
+                                    .foregroundStyle(AtlasTheme.textSecondary)
+                                if let age = issue.ageNote {
+                                    Text(age)
+                                        .font(.system(size: 11.5))
+                                        .foregroundStyle(AtlasTheme.textTertiary)
+                                }
+                            }
                         }
                     }
+                    .padding(.top, 9)
                 }
+
                 if case .unreadable(let reason) = repo.signal {
                     Text(honestReason(reason))
-                        .font(.system(size: 11))
+                        .font(.system(size: 12))
                         .foregroundStyle(AtlasTheme.textTertiary)
+                        .padding(.top, 5)
                 }
                 if case .scanUnavailable = repo.signal {
-                    Text("varredura indisponível — sem juízo sobre este repo")
-                        .font(.system(size: 11))
+                    Text("não foi possível varrer agora")
+                        .font(.system(size: 12))
                         .foregroundStyle(AtlasTheme.textTertiary)
+                        .padding(.top, 5)
                 }
             }
-            .padding(13)
+            .padding(.horizontal, 15)
+            .padding(.vertical, 14)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(background, in: RoundedRectangle(cornerRadius: 14))
+            .background(AtlasTheme.surface.opacity(0.4), in: RoundedRectangle(cornerRadius: 14))
+            .overlay(alignment: .leading) {
+                // Um sinal primário: o filete. Sem moldura vermelha inteira.
+                if case .exception = repo.signal {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(AtlasCodePalette.alert)
+                        .frame(width: 3)
+                        .padding(.vertical, 12)
+                }
+            }
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
-                    .strokeBorder(borderColor, lineWidth: 1)
+                    .strokeBorder(AtlasTheme.separator, lineWidth: 0.5)
             )
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
         .accessibilityIdentifier("radar-repo-\(repo.slug)")
     }
 
+    /// À direita: nada quando saudável; o chevron convida a entrar.
     @ViewBuilder
-    private var signalBadge: some View {
+    private var trailingMark: some View {
         switch repo.signal {
         case .silent:
-            EmptyView()  // saudável não grita
-        case .exception(let count, _):
-            HStack(spacing: 5) {
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.system(size: 9, weight: .semibold))
-                Text("\(count)")
-                    .font(.system(size: 11, weight: .semibold))
-                    .monospacedDigit()
-            }
-            .foregroundStyle(AtlasCodePalette.alert)
-        case .unreadable:
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+        case .exception:
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(AtlasCodePalette.alert.opacity(0.8))
+        case .unreadable, .scanUnavailable:
             Image(systemName: "eye.slash")
                 .font(.system(size: 11))
                 .foregroundStyle(AtlasTheme.textTertiary)
-        case .scanUnavailable:
-            Image(systemName: "questionmark.circle")
-                .font(.system(size: 11))
-                .foregroundStyle(AtlasTheme.textTertiary)
         }
-    }
-
-    private var background: Color {
-        if case .exception = repo.signal { return AtlasCodePalette.alert.opacity(0.05) }
-        return AtlasTheme.surface.opacity(0.4)
-    }
-
-    private var borderColor: Color {
-        if case .exception = repo.signal { return AtlasCodePalette.alert.opacity(0.35) }
-        return AtlasTheme.separator
     }
 
     private func honestReason(_ reason: String) -> String {
@@ -259,10 +293,11 @@ private struct AtlasCodeRepoCard: View {
     private var accessibilityText: String {
         let name = repo.name ?? repo.slug
         switch repo.signal {
-        case .silent: return "\(name), sem exceções"
-        case .exception(let count, let rules): return "\(name), \(count) exceções, regras \(rules.joined(separator: ", "))"
-        case .unreadable: return "\(name), ilegível"
-        case .scanUnavailable: return "\(name), varredura indisponível"
+        case .silent: return "\(name), sem problemas"
+        case .exception(_, let issues):
+            return "\(name): " + issues.map(\.headline).joined(separator: ", ")
+        case .unreadable(let reason): return "\(name), \(honestReason(reason))"
+        case .scanUnavailable: return "\(name), não foi possível varrer"
         }
     }
 }

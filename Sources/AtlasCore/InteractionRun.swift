@@ -140,6 +140,10 @@ public enum InteractionRunEvent: Sendable {
     case content(AtlasAiStreamEvent)
     case execution(AtlasAiTrace)
     case remoteError(JSONValue)
+    /// O servidor confirmou uma pausa durável (por exemplo, decisão do
+    /// operador), portanto o stream pode encerrar sem transformar a pausa em
+    /// falha de rede nem reenviar a mesma instrução da outbox.
+    case suspended(AtlasAiTrace?)
     case completed(done: AtlasAiStreamDone, finalTrace: AtlasAiTrace?)
 }
 
@@ -242,20 +246,25 @@ public actor InteractionRun {
                 policy: reconnectPolicy
             )
             var completed: AtlasAiStreamDone?
-            stream: for try await frame in frames {
-                try Task.checkCancellation()
-                switch frame {
-                case .event(let event):
-                    if let activity = atlasAgentActivity(from: event) {
-                        continuation.yield(.activity(activity))
+            do {
+                stream: for try await frame in frames {
+                    try Task.checkCancellation()
+                    switch frame {
+                    case .event(let event):
+                        if let activity = atlasAgentActivity(from: event) {
+                            continuation.yield(.activity(activity))
+                        }
+                        continuation.yield(.content(event))
+                    case .done(let done):
+                        completed = done
+                        break stream
+                    case .error(let payload): continuation.yield(.remoteError(payload))
+                    case .ignored: break
                     }
-                    continuation.yield(.content(event))
-                case .done(let done):
-                    completed = done
-                    break stream
-                case .error(let payload): continuation.yield(.remoteError(payload))
-                case .ignored: break
                 }
+            } catch is AtlasInteractionStreamError {
+                // Um snapshot posterior pode provar que o servidor chegou a
+                // um estado estável enquanto a conexão SSE caiu.
             }
             try Task.checkCancellation()
 
@@ -265,12 +274,36 @@ public actor InteractionRun {
                 updateActiveJobs(from: final.trace)
                 continuation.yield(.execution(final.trace))
             }
-            if let completed {
+            if let finalTrace = final?.trace, Self.isSuspended(finalTrace) {
+                activeJobIds.removeAll()
+                if let clientId = preparedInput.clientId {
+                    try? await outbox?.remove(clientId: clientId)
+                }
+                continuation.yield(.suspended(finalTrace))
+                continuation.finish()
+            } else if let completed, Self.isSuspensionStatus(completed.status) {
+                activeJobIds.removeAll()
+                if let clientId = preparedInput.clientId {
+                    try? await outbox?.remove(clientId: clientId)
+                }
+                continuation.yield(.suspended(final?.trace))
+                continuation.finish()
+            } else if let completed, Self.isTerminal(completed.status) {
                 activeJobIds.removeAll()
                 if let clientId = preparedInput.clientId {
                     try? await outbox?.remove(clientId: clientId)
                 }
                 continuation.yield(.completed(done: completed, finalTrace: final?.trace))
+                continuation.finish()
+            } else if let finalTrace = final?.trace, Self.isTerminal(finalTrace.status) {
+                activeJobIds.removeAll()
+                if let clientId = preparedInput.clientId {
+                    try? await outbox?.remove(clientId: clientId)
+                }
+                continuation.yield(.completed(
+                    done: AtlasAiStreamDone(traceId: finalTrace.id, status: finalTrace.status, lastSequence: nil),
+                    finalTrace: finalTrace
+                ))
                 continuation.finish()
             } else {
                 throw AtlasInteractionStreamError.reconnectsExhausted(traceId: traceId, lastSequence: 0)
@@ -365,6 +398,20 @@ public actor InteractionRun {
 
     private static func isTerminal(_ status: String) -> Bool {
         ["succeeded", "failed", "cancelled"].contains(status)
+    }
+
+    private static func isSuspensionStatus(_ status: String) -> Bool {
+        ["awaiting_user_choice", "awaiting_external"].contains(status)
+    }
+
+    private static func isSuspended(_ trace: AtlasAiTrace) -> Bool {
+        if isSuspensionStatus(trace.status) { return true }
+        switch trace.executionPresentationState?.kind {
+        case .attentionRequired, .awaitingExternal:
+            return true
+        default:
+            return false
+        }
     }
 }
 

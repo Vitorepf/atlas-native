@@ -22,7 +22,10 @@ except Exception:
 for dev in data.get("result", {}).get("devices", []):
     conn = dev.get("connectionProperties", {})
     hw = dev.get("hardwareProperties", {})
-    if hw.get("platform", "").lower().startswith("ios") and conn.get("pairingState") == "paired":
+    # `devicectl` pode adquirir o túnel local sob demanda. Exigir que ele já
+    # exista rejeita um iPhone pareado que o próprio build conseguiria usar.
+    if (hw.get("platform", "").lower().startswith("ios")
+            and conn.get("pairingState") == "paired"):
         print(hw.get("udid", "")); break
 ' "$DEVICES_JSON" || true)
   rm -f "$DEVICES_JSON"
@@ -30,7 +33,7 @@ fi
 
 if [ -z "$UDID" ]; then
   echo "✗ Nenhum iPhone pareado encontrado."
-  echo "  1ª vez: conecte via cabo, confie no Mac, e rode Cmd+R no Xcode (make open)."
+  echo "  Conecte por cabo ou rede, confie no Mac, desbloqueie-o e rode Cmd+R no Xcode (make open)."
   echo "  Liste devices: xcrun devicectl list devices"
   exit 1
 fi

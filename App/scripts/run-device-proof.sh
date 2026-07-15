@@ -19,7 +19,10 @@ except Exception:
 for dev in data.get("result", {}).get("devices", []):
     conn = dev.get("connectionProperties", {})
     hw = dev.get("hardwareProperties", {})
-    if hw.get("platform", "").lower().startswith("ios") and conn.get("pairingState") == "paired":
+    # O CoreDevice abre o túnel quando `lockState` é consultado. Só pareamento
+    # é pré-requisito aqui; a sonda abaixo é a fonte operacional de verdade.
+    if (hw.get("platform", "").lower().startswith("ios")
+            and conn.get("pairingState") == "paired"):
         print(hw.get("udid", "")); break
 ' "$DEVICES_JSON" || true)
   rm -f "$DEVICES_JSON"
@@ -27,6 +30,7 @@ fi
 
 if [ -z "$UDID" ]; then
   echo "✗ Nenhum iPhone pareado disponível para DeviceProof."
+  echo "  Reconecte por cabo ou rede, confie no Mac e confirme em: xcrun devicectl list devices"
   exit 1
 fi
 

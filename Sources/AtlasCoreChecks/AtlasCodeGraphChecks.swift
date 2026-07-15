@@ -79,6 +79,37 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     check("cura C25 preserva recibo e undo", heal?.stepReceipts.first?.action == "delete_branch" && heal?.stepReceipts.first?.undoRef?["branch"] == "feature/cobaia")
     check("cura C25 não oferece aprovação", heal?.stepReceipts.first?.status == "completed" && heal?.mode == "observe")
 
+    // M3 · a tela fala português: id de regra NUNCA chega ao operador.
+    let reposJSON = """
+    {"schema_version":"atlas.code.repos.v1","generated_at":"2026-07-15T14:00:00Z",
+     "repos":[
+       {"slug":"atlas-server","name":"Atlas Server","readable":true,"violations":22,
+        "issues":[{"rule_id":"orphan_branch","count":4,"severity":"high","oldest_days":9},
+                  {"rule_id":"obra_return_deadline","count":17,"severity":"medium","oldest_days":22},
+                  {"rule_id":"worktree_allowlist","count":1,"severity":"medium"}]},
+       {"slug":"atlas-native","name":"Atlas Native","readable":true},
+       {"slug":"atlas","name":"Atlas","readable":false,"unreadable_reason":"not_a_git_repository"}
+     ]}
+    """
+    let repos = try? decoder.decode(AtlasCodeReposResponse.self, from: Data(reposJSON.utf8))
+    let server = repos?.repos.first
+    check("radar M3 decodifica a frota", repos?.repos.count == 3 && server?.violations == 22)
+    if case .exception(let count, let issues)? = server?.signal {
+        check("radar agrupa por regra com o grave primeiro", count == 22 && issues.first?.ruleId == "orphan_branch")
+        check("frase humana: obra que não voltou", issues.first(where: { $0.ruleId == "obra_return_deadline" })?.headline == "17 obras nunca voltaram à main")
+        check("frase humana: branch abandonada", issues.first?.headline == "4 branches abandonadas")
+        check("idade medida vira nota humana", issues.first(where: { $0.ruleId == "obra_return_deadline" })?.ageNote == "a mais antiga há 22 dias")
+        check("sem idade medida, nenhuma nota é inventada", issues.first(where: { $0.ruleId == "worktree_allowlist" })?.ageNote == nil)
+        check("singular resolvido", issues.first(where: { $0.ruleId == "worktree_allowlist" })?.headline == "1 worktree fora do lugar")
+        // A prova que importa: nenhum id de máquina no que o operador lê.
+        let visivel = issues.map { $0.headline + ($0.ageNote ?? "") }.joined(separator: " ")
+        check("nenhum id de regra vaza para a tela", !visivel.contains("_"))
+    } else {
+        check("radar exception decodificado", false)
+    }
+    check("repo saudável é silêncio", repos?.repos[1].signal == .silent)
+    check("pasta sem git é estado próprio", repos?.repos[2].signal == .unreadable(reason: "not_a_git_repository"))
+
     let weekJSON = """
     {"schema_version":"atlas.code.week.v1","repo":"atlas-server","window":"2026-07-08..2026-07-15",
      "commits":214,"heals":3,"prevented":5,"waiting_for_you":0,

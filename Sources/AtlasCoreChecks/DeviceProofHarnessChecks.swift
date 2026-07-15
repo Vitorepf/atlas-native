@@ -21,6 +21,10 @@ func runDeviceProofHarnessChecks(_ check: (String, Bool) -> Void) {
           lockProbe != nil && lockedState != nil && destructiveCleanup != nil &&
           lockPrecedesCleanup)
 
+    check("device pareado alcança o lock probe mesmo com túnel sob demanda",
+          script.contains("conn.get(\"pairingState\") == \"paired\"") &&
+          !script.contains("conn.get(\"tunnelState\") == \"connected\""))
+
     let project = try? String(contentsOfFile: "App/project.yml", encoding: .utf8)
     check("target desta vertical é iPhone-only e não gera warning de orientação iPad",
           project?.contains("TARGETED_DEVICE_FAMILY: \"1\"") == true)
