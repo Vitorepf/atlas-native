@@ -248,6 +248,11 @@ public actor AtlasClient: AtlasAiStreamSource {
         return try await get("/code/provenance/\(pathEncode(hash))\(query)")
     }
 
+    /// C24 · Read-only five-rule governance scan for the selected repository.
+    public func getCodeViolations(repo: String) async throws -> AtlasCodeViolationsResponse {
+        try await get("/code/violations\(atlasQueryString([("repo", .string(repo))]))")
+    }
+
     /// Caminho JSON de `createAiInteraction` (sem anexos). Upload em chunks
     /// precisa do FileSystem do device — porta com a camada de anexos.
     public func createAiInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {

@@ -105,6 +105,33 @@ struct AtlasCodeView: View {
                 .padding(12)
                 .background(AtlasTheme.surface, in: RoundedRectangle(cornerRadius: 12))
 
+                if let violations = model.violations, !violations.violations.isEmpty {
+                    VStack(alignment: .leading, spacing: 9) {
+                        Text("Sinais de governança")
+                            .font(AtlasFont.serif(18, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        ForEach(violations.violations) { violation in
+                            HStack(alignment: .top, spacing: 9) {
+                                Text(violation.ruleId)
+                                    .font(AtlasFont.mono(10))
+                                    .foregroundStyle(Color(hex: 0xE08C8C))
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(violation.target)
+                                        .font(AtlasFont.mono(10))
+                                        .foregroundStyle(AtlasTheme.textSecondary)
+                                    Text("\(violation.plan.count) ações no plano")
+                                        .font(AtlasFont.mono(9))
+                                        .foregroundStyle(AtlasTheme.textTertiary)
+                                }
+                            }
+                        }
+                    }
+                    .padding(12)
+                    .background(Color(hex: 0xE08C8C).opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+                    .accessibilityElement(children: .contain)
+                    .accessibilityLabel("\(violations.violations.count) violações de governança")
+                }
+
                 GraphCanvas(nodes: graph.nodes, reduceMotion: reduceMotion)
                     .frame(height: min(max(180, CGFloat(graph.nodes.count) * 54), 640))
 

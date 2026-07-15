@@ -37,4 +37,17 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     let provenance = try? decoder.decode(AtlasCodeProvenance.self, from: Data(provenanceJSON.utf8))
     check("proveniência C23 decodifica identidade real", provenance?.agent == "voce" && provenance?.hash == "d0a65d0")
     check("proveniência C23 mantém ausência de trace", provenance?.traceId == nil && provenance?.operatorQuote == "Autonomia > aprovação")
+
+    let violationsJSON = """
+    {"schema_version":"atlas.code.violations.v1","repo":"atlas-server",
+     "generated_at":"2026-07-15T05:00:00Z",
+     "violations":[{"rule_id":"main_only","target":"feature/cobaia","since":"2026-07-14T00:00:00Z","severity":"high",
+       "plan":[{"action":"cite_rule_to_agent","label":"Citar main_only ao agente"}]}],
+     "plan":[{"rule_id":"main_only","target":"feature/cobaia","steps":[{"action":"cite_rule_to_agent","label":"Citar main_only ao agente"}]}]}
+    """
+    let violations = try? decoder.decode(AtlasCodeViolationsResponse.self, from: Data(violationsJSON.utf8))
+    check("scanner C24 preserva regra e alvo", violations?.violations.first?.ruleId == "main_only" && violations?.violations.first?.target == "feature/cobaia")
+    check("scanner C24 preserva plan executável", violations?.plan.first?.steps.first?.action == "cite_rule_to_agent")
+    let unknownViolationsSchema = violationsJSON.replacingOccurrences(of: "atlas.code.violations.v1", with: "atlas.code.violations.v2")
+    check("schema de violações desconhecido falha fechado", (try? decoder.decode(AtlasCodeViolationsResponse.self, from: Data(unknownViolationsSchema.utf8))) == nil)
 }

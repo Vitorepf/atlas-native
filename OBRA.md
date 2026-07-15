@@ -612,11 +612,14 @@ a casca não inventa número, progresso, status, prompt ou prova.
   correção append-only para registros inválidos, endpoint C23 e folha nativa;
   três commits reais de `atlas-native` foram conferidos contra Git e ledger.
 
-- [ABERTO · C24 · Fable→Codex/Server] **Violações do rules engine (E3).**
+- [FEITO · C24 · Fable→Codex/Server] **Violações do rules engine (E3).**
   `violations[] {ruleId (canon), target, since, severity, plan?: steps[]}` das
   regras do canon: main-only pétreo, allowlist de worktrees, obra→main ≤ N dias,
-  branch órfã, drift de espelho. Gate de honestidade: branch cobaia criada em
-  repo sandbox APARECE no app com o nome da regra e SOME ao resolver.
+  branch órfã, drift de espelho. O scanner puro, endpoint, comando, DTO nativo,
+  tag nativa e `App/scripts/atlas-code-sandbox.sh` estão entregues. Prova real:
+  o simulador exibiu `Sinais de governança` e regras/targets vindos de
+  `/api/code/violations`; a cobaia isolada criou `atlas-code-cobaia` e voltou a
+  `main` sem tocar nos workspaces. A prova física permanece `device-pending`.
 
 - [ABERTO · C25 · Fable→Codex/Server] **Auto-remediação 24/7 (E4) — corrigido
   pelo canon do operador.** Violação detectada → o Atlas executa o plano
@@ -987,6 +990,13 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   `trace_id` ausente). PHPUnit C22/C23: 8 testes / 62 asserts; `swift run
   AtlasCoreChecks` e `cd App && make build` verdes. O simulador expôs os cartões
   tocáveis e a prova física continua `device-pending`.
+- 2026-07-15 · Codex · C24/E3 · `AtlasCodeViolationService` puro com as cinco
+  regras, `GET /api/code/violations`, `atlas:code:scan`, contrato C24 no
+  AtlasCore, tag nativa e sandbox isolado. Prova: scan real de `atlas-server`
+  retornou violações e `plan[]`; simulador exibiu `Sinais de governança` com
+  `worktree_allowlist`/`obra_return_deadline`; 24 testes PHPUnit / 106 asserts,
+  `swift run AtlasCoreChecks`, `cd App && make build`, sandbox create→resolve e
+  `git diff --check` verdes. Device físico `device-pending`.
 - 2026-07-13 · Codex · C13 hardening local (sem commit) · backlog Autônomos
   deixou de atravessar o Core como `JSONObject`/`JSONValue`: findings, work
   orders, inbox e budgets agora têm DTOs Foundation-only com os campos públicos
