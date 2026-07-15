@@ -14,12 +14,14 @@ struct AtlasCodeView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var model: AtlasCodeModel
     @State private var provenanceModel: AtlasCodeProvenanceModel
+    @State private var mirrorModel: AtlasCodeMirrorModel
     @State private var selectedNode: AtlasCodeGraphNode?
     @State private var showsHealReceipt = false
 
     init(client: AtlasClient, repo: String = "atlas-server") {
         _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
         _provenanceModel = State(initialValue: AtlasCodeProvenanceModel(client: client, repo: repo))
+        _mirrorModel = State(initialValue: AtlasCodeMirrorModel(client: client, repo: repo))
     }
 
     var body: some View {
@@ -39,6 +41,7 @@ struct AtlasCodeView: View {
             }
         }
         .task { if model.phase == .idle { await model.load() } }
+        .task { await mirrorModel.refresh() }
         .sheet(item: $selectedNode) { node in
             AtlasCodeProvenanceSheet(node: node, phase: provenanceModel.phase)
                 .presentationDetents([.medium, .large])
@@ -115,6 +118,11 @@ struct AtlasCodeView: View {
                         selectedNode = node
                         Task { await provenanceModel.load(hash: node.hash) }
                     }
+                }
+
+                if let mirror = mirrorModel.response {
+                    AtlasCodeMirrorCard(response: mirror)
+                        .padding(.top, 22)
                 }
 
                 if model.week != nil || model.hasHealReceipt {

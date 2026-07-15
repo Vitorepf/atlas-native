@@ -258,6 +258,11 @@ public actor AtlasClient: AtlasAiStreamSource {
         try await get("/code/repos")
     }
 
+    /// M5 mirror · what would leave the Mac, and what the scan found. Read-only.
+    public func getCodeMirror(repo: String) async throws -> AtlasCodeMirrorResponse {
+        try await get("/code/mirror\(atlasQueryString([("repo", .string(repo))]))")
+    }
+
     /// C25 · Observe/heal tick. Observe remains the default and does not mutate Git.
     public func getCodeHealTick(repo: String, mode: String = "observe") async throws -> AtlasCodeHealResponse {
         let query = atlasQueryString([
