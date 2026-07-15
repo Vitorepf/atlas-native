@@ -416,6 +416,27 @@ private struct AtlasCodeAnswerCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier("code-ask-answer")
 
+            // A lei que sustenta a resposta. Acusar sem citar a lei é o pior
+            // silêncio de uma ferramenta de governança.
+            let laws = response.evidence.filter { $0.canon != nil }
+            if !laws.isEmpty {
+                VStack(alignment: .leading, spacing: 3) {
+                    ForEach(laws) { law in
+                        HStack(spacing: 6) {
+                            Text(law.ref)
+                                .font(AtlasFont.mono(9))
+                                .foregroundStyle(AtlasCodePalette.alert)
+                            Text(law.canon ?? "")
+                                .font(AtlasFont.mono(8.5))
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .lineLimit(1)
+                                .truncationMode(.head)
+                        }
+                    }
+                }
+                .accessibilityIdentifier("code-ask-laws")
+            }
+
             HStack(spacing: 8) {
                 // A âncora é a prova: o grafo acendeu exatamente estes.
                 if let note = response.anchorNote {

@@ -88,9 +88,17 @@ public enum AtlasCodeAskIntent: String, Decodable, Equatable, Sendable {
     }
 }
 
+/// O que a resposta leu para poder afirmar o que afirma.
+///
+/// Numa exceção, a evidência é a LEI que ela viola — com o documento que a
+/// justifica. "Está errado porque sim" é o pior silêncio de uma ferramenta de
+/// governança; `canon` é o fim desse silêncio.
 public struct AtlasCodeAskEvidence: Decodable, Equatable, Sendable, Identifiable {
     public let kind: String
     public let ref: String
+    /// O doc canônico que justifica a regra. Ausente quando a regra ainda não
+    /// tem lei escrita — e ausência é dita, não preenchida.
+    public let canon: String?
     public let target: String?
 
     public var id: String { "\(kind):\(ref):\(target ?? "")" }
