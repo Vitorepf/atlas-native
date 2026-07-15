@@ -418,20 +418,32 @@ private struct AtlasCodeAnswerCard: View {
 
             // A lei que sustenta a resposta. Acusar sem citar a lei é o pior
             // silêncio de uma ferramenta de governança.
+            //
+            // O que aparece aqui é o ALVO — a coisa concreta que ele vai abrir.
+            // O id da regra (`worktree_allowlist`) NÃO sobe: é vocabulário de
+            // máquina, e a frase acima já disse "1 worktree fora do lugar" em
+            // português. Dizer as duas coisas é repetir em dois idiomas.
             let laws = response.evidence.filter { $0.canon != nil }
             if !laws.isEmpty {
-                VStack(alignment: .leading, spacing: 3) {
+                VStack(alignment: .leading, spacing: 5) {
                     ForEach(laws) { law in
-                        HStack(spacing: 6) {
-                            Text(law.ref)
-                                .font(AtlasFont.mono(9))
-                                .foregroundStyle(AtlasCodePalette.alert)
+                        VStack(alignment: .leading, spacing: 1) {
+                            if let target = law.target {
+                                Text(target)
+                                    .font(AtlasFont.mono(9))
+                                    .foregroundStyle(AtlasCodePalette.alert)
+                                    .lineLimit(1)
+                                    .truncationMode(.head)
+                            }
+                            // O doc que justifica a regra: prova, não manchete.
                             Text(law.canon ?? "")
-                                .font(AtlasFont.mono(8.5))
-                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .font(AtlasFont.mono(8))
+                                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.8))
                                 .lineLimit(1)
                                 .truncationMode(.head)
                         }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("\(law.target ?? law.ref), regra \(law.ref)")
                     }
                 }
                 .accessibilityIdentifier("code-ask-laws")

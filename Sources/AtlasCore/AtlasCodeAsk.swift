@@ -117,10 +117,16 @@ public struct AtlasCodeAskWindow: Decodable, Equatable, Sendable {
 /// o Atlas SABE responder — prometer o que não se cumpre foi o defeito da
 /// primeira versão dela.
 public enum AtlasCodeAskSuggestions {
+    /// Cada uma é uma pergunta que o Atlas SABE responder — provado no
+    /// servidor, onde o roteador mora (`test_every_pill_suggestion_routes_to_a_real_intent`).
+    ///
+    /// A ordem não é decorativa: é o que o operador quer saber ao abrir a tela,
+    /// do mais imediato ao mais reflexivo. Estado primeiro (tem problema?),
+    /// depois o dia, depois o esforço, e por fim mandar trabalhar.
     public static let all: [String] = [
-        "o que mudou hoje?",
         "tem algum problema?",
-        "por que essa branch existe?",
-        "o que mudou essa semana?",
+        "o que mudou hoje?",
+        "qual arquivo mais mexe?",
+        "revise os commits de hoje",
     ]
 }
