@@ -6,6 +6,7 @@
 ATLAS_HOST = 127.0.0.1
 ATLAS_PORT = 3737
 ATLAS_TOKEN =
+ATLAS_CODE_REPO = atlas-server
 
 // Secrets por último = vence os defaults acima. `#include?` não falha se ausente.
 #include? "Secrets.xcconfig"

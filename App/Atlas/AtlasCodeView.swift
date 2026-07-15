@@ -9,7 +9,6 @@ struct AtlasCodeView: View {
     @State private var model: AtlasCodeModel
     @State private var provenanceModel: AtlasCodeProvenanceModel
     @State private var selectedNode: AtlasCodeGraphNode?
-    @State private var showingProvenance = false
 
     init(client: AtlasClient, repo: String = "atlas-server") {
         _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
@@ -92,6 +91,10 @@ struct AtlasCodeView: View {
     private func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                if let selectedNode {
+                    AtlasCodeProvenancePanel(node: selectedNode, phase: provenanceModel.phase)
+                }
+
                 HStack(spacing: 8) {
                     Circle().fill(graph.defaultBranch == "main" ? AtlasTheme.accent : Color(hex: 0xE08C8C)).frame(width: 7, height: 7)
                     Text(graph.defaultBranch.map { "\($0) · \(graph.nodes.count) nós" } ?? "branch desconhecida")
@@ -104,6 +107,36 @@ struct AtlasCodeView: View {
                 }
                 .padding(12)
                 .background(AtlasTheme.surface, in: RoundedRectangle(cornerRadius: 12))
+
+                GraphCanvas(nodes: graph.nodes, reduceMotion: reduceMotion)
+                    .frame(height: min(max(180, CGFloat(graph.nodes.count) * 54), 640))
+
+                ForEach(graph.nodes) { node in
+                    Button {
+                        selectedNode = node
+                        Task { await provenanceModel.load(hash: node.hash) }
+                    } label: {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(node.hash)
+                                .font(AtlasFont.mono(11))
+                                .foregroundStyle(AtlasTheme.accent)
+                            Text(node.authorName.isEmpty ? node.authorEmail : node.authorName)
+                                .font(.system(.subheadline))
+                                .foregroundStyle(AtlasTheme.textPrimary)
+                            Text(node.refs.joined(separator: " · "))
+                                .font(AtlasFont.mono(9))
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .contentShape(Rectangle())
+                    .padding(.vertical, 9)
+                    .padding(.horizontal, 12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(AtlasTheme.surface.opacity(0.65), in: RoundedRectangle(cornerRadius: 10))
+                    .accessibilityLabel("Abrir proveniência do commit \(node.hash.prefix(8))")
+                    .accessibilityIdentifier("code-provenance-\(node.hash.prefix(8))")
+                }
 
                 if let week = model.week {
                     VStack(alignment: .leading, spacing: 8) {
@@ -167,6 +200,9 @@ struct AtlasCodeView: View {
                         Text("CURADO SOZINHO · \(heal.mode)")
                             .font(AtlasFont.mono(10))
                             .foregroundStyle(AtlasTheme.accent)
+                        Text("você não foi necessário")
+                            .font(AtlasFont.serifItalic(14))
+                            .foregroundStyle(AtlasTheme.textSecondary)
                         ForEach(heal.stepReceipts) { receipt in
                             HStack(alignment: .top, spacing: 8) {
                                 Image(systemName: receipt.status == "completed" ? "checkmark.circle.fill" : "xmark.circle")
@@ -194,44 +230,9 @@ struct AtlasCodeView: View {
                     .accessibilityLabel("Recibo de cura com desfazer")
                 }
 
-                GraphCanvas(nodes: graph.nodes, reduceMotion: reduceMotion)
-                    .frame(height: min(max(180, CGFloat(graph.nodes.count) * 54), 640))
-
-                ForEach(graph.nodes) { node in
-                    Button {
-                        selectedNode = node
-                        showingProvenance = true
-                        Task { await provenanceModel.load(hash: node.hash) }
-                    } label: {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(node.hash)
-                                .font(AtlasFont.mono(11))
-                                .foregroundStyle(AtlasTheme.accent)
-                            Text(node.authorName.isEmpty ? node.authorEmail : node.authorName)
-                                .font(.system(.subheadline))
-                                .foregroundStyle(AtlasTheme.textPrimary)
-                            Text(node.refs.joined(separator: " · "))
-                                .font(AtlasFont.mono(9))
-                                .foregroundStyle(AtlasTheme.textTertiary)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .padding(.vertical, 9)
-                    .padding(.horizontal, 12)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(AtlasTheme.surface.opacity(0.65), in: RoundedRectangle(cornerRadius: 10))
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Abrir proveniência do commit \(node.hash.prefix(8))")
-                }
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.bottom, 24)
-        }
-        .sheet(isPresented: $showingProvenance) {
-            if let node = selectedNode {
-                AtlasCodeProvenanceSheet(node: node, phase: provenanceModel.phase)
-                    .presentationDetents([.medium, .large])
-            }
         }
     }
 
@@ -244,6 +245,46 @@ struct AtlasCodeView: View {
                 .font(AtlasFont.mono(9))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
+    }
+}
+
+private struct AtlasCodeProvenancePanel: View {
+    let node: AtlasCodeGraphNode
+    let phase: AtlasCodeProvenanceModel.Phase
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Por que esta linha existe")
+                .font(AtlasFont.serif(18, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text(node.hash)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.accent)
+            switch phase {
+            case .idle, .loading:
+                Text("lendo o ledger…")
+                    .font(AtlasFont.serifItalic(15))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            case .failed(let message):
+                Text(message)
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(Color(hex: 0xE08C8C))
+            case .loaded(let provenance):
+                if let quote = provenance.operatorQuote {
+                    Text("\u{201C}\(quote)\u{201D}")
+                        .font(AtlasFont.serifItalic(17))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                } else {
+                    Text("sem proveniência registrada")
+                        .font(AtlasFont.serifItalic(16))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                }
+            }
+        }
+        .padding(12)
+        .background(AtlasTheme.surface, in: RoundedRectangle(cornerRadius: 12))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Por que esta linha existe")
     }
 }
 

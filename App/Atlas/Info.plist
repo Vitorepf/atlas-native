@@ -52,6 +52,8 @@
 	<string>$(ATLAS_PORT)</string>
 	<key>ATLAS_TOKEN</key>
 	<string>$(ATLAS_TOKEN)</string>
+	<key>ATLAS_CODE_REPO</key>
+	<string>$(ATLAS_CODE_REPO)</string>
 	<!-- Dev: permite HTTP pro atlas-server local (127.0.0.1 no simulador, IP da LAN no device) -->
 	<key>NSAppTransportSecurity</key>
 	<dict>

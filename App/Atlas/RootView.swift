@@ -52,7 +52,7 @@ struct RootView: View {
                 case .autonomos:
                     AutonomosView()
                 case .code:
-                    AtlasCodeView(client: session.client)
+                    AtlasCodeView(client: session.client, repo: codeRepo)
                 }
             }
         }
@@ -69,6 +69,14 @@ struct RootView: View {
                 path.append(Route.thread(id: threadId, title: title))
             }
         }
+    }
+
+    private var codeRepo: String {
+        let value = Bundle.main.object(forInfoDictionaryKey: "ATLAS_CODE_REPO") as? String
+        if let value, !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return value
+        }
+        return "atlas-server"
     }
 
     // MARK: - Top bar

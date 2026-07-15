@@ -1023,6 +1023,33 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   verdes. Fable pode usar `backlog.findings.items`, `workOrders`, `inboxItems`
   e `budgets` sem parsing; prova no iPhone continua pendente.
 
+- 2026-07-15 · Codex · C22–C26/E1–E5 · fechamento vertical autorizado pelo
+  operador: sandbox real do backend apareceu no simulador via
+  `ATLAS_CODE_REPO=sandbox:/tmp/atlas-code-sandbox-e3-container`; E3 mostrou
+  `main_only`/`orphan_branch` e depois ficou silencioso após a resolução. E4
+  executou `heal` sem aprovação, gravou dois recibos, e `undo` restaurou
+  `main`/branch/worktree com `state=byte_for_byte`; a UI mostrou `CURADO
+  SOZINHO`, `você não foi necessário` e apenas o veto retroativo. E2 abriu
+  proveniência no simulador e manteve `sem proveniência registrada` para
+  commit sem ledger. E5 bloqueou preflight real e reconciliou `/code/week`
+  (`1` Git commit, `2` heal IDs, `1` preflight bloqueado) com Git e SQL direto
+  do ledger; notificações permaneceram off. Prova: backend saudável em :3737,
+  PHPUnit focado verde (20 testes/119 asserts), simulador build/run verde,
+  `swift run AtlasCoreChecks`, `cd App && make build` e `git diff --check`;
+  prova de iPhone físico permanece `device-pending`.
+
+- 2026-07-15 · Codex · regressão final C25 · após corrigir a união de arrays,
+  o POST `mode=heal` devolveu imediatamente dois `step_receipts` completos;
+  undo retornou `state=byte_for_byte` e o sandbox terminou limpo em `main`.
+  Reconciliação final de `/code/week` com Git/SQL: `1` commit, `3` heal IDs,
+  `1` preflight bloqueado, `0` aguardando, notificações off; o aparelho físico
+  continua `device-pending`.
+
+- 2026-07-15 · Codex · correção de fechamento · os números acima são a
+  reconciliação final após a regressão (a entrada anterior registrava o estado
+  intermediário). Gate PHPUnit final da superfície C22–C26: 31 testes/191
+  assertions verdes; Core Checks e build App também verdes.
+
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
 - Backend: atlas-server em OrbStack (`atlas-backend`, :3737, 16 PHP workers —
