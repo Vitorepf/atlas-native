@@ -479,6 +479,8 @@
   @keyframes ggp { 50% { opacity: 0.3; } }
   .gmm { font-size: 12px; font-weight: 500; fill: var(--ink); }
   .gmeta { font-family: var(--mono); font-size: 8px; fill: var(--ink3); }
+  .c-meta .ava svg, .c-meta .ava.codex svg, .c-meta .ava.you svg { color: var(--ink3); }
+  .co-pills.done { opacity: 0.35; pointer-events: none; transition: opacity 0.4s; }
 </style>
 </head>
 <body>
@@ -566,24 +568,24 @@
               <svg viewBox="0 0 292 400" width="100%" aria-label="main como espinha; desvio salta ao olho">
                 <defs><linearGradient id="g0main" gradientUnits="userSpaceOnUse" x1="0" y1="16" x2="0" y2="386">
                   <stop offset="0" stop-color="#ecc984"/><stop offset="1" stop-color="#bb8d4c"/></linearGradient></defs>
-                <line class="glane" id="g0ln" x1="26" y1="16" x2="26" y2="386" stroke="url(#g0main)" stroke-width="2.5" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
+                <line class="glane" id="g0ln" x1="26" y1="16" x2="26" y2="368" stroke="url(#g0main)" stroke-width="2.5" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
                 <path class="glane" id="g0fork" d="M26,152 C26,126 62,126 62,100" stroke="#c98a8a" stroke-width="2.2" opacity="0.95" stroke-dasharray="200" stroke-dashoffset="200"/>
                 <path class="glane" id="g0ret" d="M62,100 C62,74 26,74 26,48" stroke="#7fb069" stroke-width="2.2" stroke-dasharray="200" stroke-dashoffset="200" style="transition-duration: 0.9s"/>
                 <g class="ggn" id="g0n1"><circle cx="26" cy="48" r="5" fill="#d4a85a" stroke="#1d2b34" stroke-width="2"/>
-                  <text class="gmm" x="48" y="45">feat(brain): council_review</text><text class="gmeta" x="48" y="59">fable · main · 2h</text></g>
+                  <text class="gmm" x="48" y="45">feat(brain): council_review</text><text class="gmeta" x="48" y="59">fable · 2h</text></g>
                 <g class="ggn" id="g0n2"><circle id="g0dot" cx="62" cy="100" r="5" fill="#c98a8a" stroke="#1d2b34" stroke-width="2"/>
                   <text class="gmm" x="80" y="97" fill="#d9a8a8">wip: ajuste rápido no worker</text><text class="gmeta" x="80" y="111" fill="#b98a8a">forge-3 · fora da main</text></g>
                 <g class="ggn" id="g0r"><circle class="ggpulse" cx="62" cy="100" r="12" fill="none" stroke="#c98a8a" stroke-width="1.4" opacity="0.8"/></g>
                 <g class="ggn" id="g0n3"><circle cx="26" cy="152" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
-                  <text class="gmm" x="48" y="149">docs(obra): Autônomos é área própria</text><text class="gmeta" x="48" y="163">você · main · 1d</text></g>
+                  <text class="gmm" x="48" y="149">docs(obra): Autônomos é área própria</text><text class="gmeta" x="48" y="163">você · 1d</text></g>
                 <g class="ggn" id="g0n4"><circle cx="26" cy="204" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
-                  <text class="gmm" x="48" y="201">feat(core): fila durável</text><text class="gmeta" x="48" y="215">codex · main · 5h</text></g>
+                  <text class="gmm" x="48" y="201">feat(core): fila durável</text><text class="gmeta" x="48" y="215">codex · 5h</text></g>
                 <g class="ggn" id="g0n5"><circle cx="26" cy="256" r="5" fill="#d4a85a" stroke="#1d2b34" stroke-width="2"/>
-                  <text class="gmm" x="48" y="253">fix(core): resposta verbatim</text><text class="gmeta" x="48" y="267">fable · main · 1d</text></g>
+                  <text class="gmm" x="48" y="253">fix(core): resposta verbatim</text><text class="gmeta" x="48" y="267">fable · 1d</text></g>
                 <g class="ggn" id="g0n6"><circle cx="26" cy="308" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
-                  <text class="gmm" x="48" y="305">versão final</text><text class="gmeta" x="48" y="319">você · main · 4d</text></g>
+                  <text class="gmm" x="48" y="305">versão final</text><text class="gmeta" x="48" y="319">você · 4d</text></g>
                 <g class="ggn" id="g0n7"><circle cx="26" cy="360" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
-                  <text class="gmm" x="48" y="357">feat(core): durable follow-ups</text><text class="gmeta" x="48" y="371">codex · main · 5d</text></g>
+                  <text class="gmm" x="48" y="357">feat(core): durable follow-ups</text><text class="gmeta" x="48" y="371">codex · 5d</text></g>
               </svg>
               <div class="sheet" id="g0sheet" role="dialog" aria-label="Recibo de cura">
                 <div class="grab" aria-hidden="true"></div>
@@ -694,7 +696,7 @@
                     <div class="c-msg">fix(core): resposta parava de comer espaços</div>
                     <div class="c-meta">
                       <span class="ava"><svg class="ic"><use href="#i-spark"/></svg></span>
-                      <span>fable</span><span class="tabular">683af18</span><span>2h</span>
+                      <span>fable</span><span>2h</span>
                     </div>
                   </div>
                 </div>
@@ -704,7 +706,7 @@
                     <div class="c-msg">feat(core): durable execution follow-up queue</div>
                     <div class="c-meta">
                       <span class="ava codex"><svg class="ic"><use href="#i-diamond"/></svg></span>
-                      <span>codex</span><span class="tabular">da25e8a</span><span>5h</span>
+                      <span>codex</span><span>5h</span>
                     </div>
                   </div>
                 </div>
@@ -714,7 +716,7 @@
                     <div class="c-msg">polish(ui): chip Fila N + folha</div>
                     <div class="c-meta">
                       <span class="ava"><svg class="ic"><use href="#i-spark"/></svg></span>
-                      <span>fable</span><span class="tabular">412a285</span><span>5h</span>
+                      <span>fable</span><span>5h</span>
                     </div>
                   </div>
                 </div>
@@ -724,7 +726,7 @@
                     <div class="c-msg">docs(obra): Autônomos é área própria</div>
                     <div class="c-meta">
                       <span class="ava you"><svg class="ic"><use href="#i-user"/></svg></span>
-                      <span>você</span><span class="tabular">8b0af2d</span><span>1d</span>
+                      <span>você</span><span>1d</span>
                     </div>
                   </div>
                 </div>
@@ -741,7 +743,7 @@
                 <div class="sh-block">
                   <div class="k">Prova no ledger</div>
                   <div class="gates">
-                    <span class="pg"><svg class="ic"><use href="#i-check"/></svg>checks 0</span>
+                    <span class="pg"><svg class="ic"><use href="#i-check"/></svg>checks limpos</span>
                     <span class="pg"><svg class="ic"><use href="#i-check"/></svg>regressão</span>
                   </div>
                 </div>
@@ -775,7 +777,6 @@
             <div class="m-body" style="padding-bottom:70px">
               <div class="repo silent" id="m3ok">
                 <div class="repo-top">
-                  <div class="rled" aria-hidden="true"></div>
                   <b>atlas-native</b>
                 </div>
               </div>
@@ -783,14 +784,14 @@
                 <div class="repo-top">
                   <div class="rled" aria-hidden="true"></div>
                   <b>blackink-app</b>
-                  <span class="rstate warn" id="m3rs">push bloqueado</span>
+                  <span class="rstate warn" id="m3rs">espelho bloqueado</span>
                 </div>
                 <div class="rtags"><span class="rt bad" id="m3rt">segredo no staged</span></div>
               </div>
               <div class="callout alert" id="m3c">
                 <div class="co-k" id="m3ck"><svg class="ic"><use href="#i-shield"/></svg><span>Varredura</span></div>
                 <div class="co-t" id="m3ct">FIREBASE_KEY em config/app.ts</div>
-                <div class="co-s" id="m3cs">Entraria no commit 3/7. Nada sai. Isto é risco — decisão sua.</div>
+                <div class="co-s" id="m3cs">Entraria no commit 3/7. Nada sai. Isto é risco · decisão sua.</div>
                 <div class="co-pills">
                   <span class="co-pill primary" id="m3fix"><svg class="ic"><use href="#i-shield"/></svg>Quarentena</span>
                   <span class="co-pill ghost">Ver</span>
@@ -834,7 +835,7 @@
                 <b>Finding · clareza</b>
                 Label deixa de narrar ausência e passa a afirmar economia só com par comparável.
               </div>
-              <div class="co-pills" style="margin-top:14px">
+              <div class="co-pills" style="margin-top:14px" id="m4verbs">
                 <span class="co-pill primary" id="m4ok">Aceitar</span>
                 <span class="co-pill ghost">Rejeitar</span>
               </div>
@@ -870,9 +871,7 @@
             </div>
             <div class="m-body" style="padding-bottom:70px">
               <div class="statusline" id="m5status">
-                <strong>3 commits</strong> com gates verdes.<br>
-                <span class="mono">683af18 · b2f068a · 8387a2b</span><br>
-                Host é adaptador. A verdade fica no Mac.
+                <strong>3 commits</strong> da noite, com gates verdes.
               </div>
               <div class="scanlist">
                 <div class="gcheck" id="m5g1">
@@ -892,13 +891,13 @@
                 </div>
                 <div class="gcheck" id="m5g4">
                   <span class="mark" id="m5m4"><svg class="ic" style="width:10px;height:10px"><use href="#i-branch"/></svg></span>
-                  <span>Branch = main local</span>
+                  <span>Tudo na main</span>
                   <span class="st" id="m5s4">…</span>
                 </div>
               </div>
               <div class="receipt" id="m5r">
                 <svg class="ic"><use href="#i-mirror"/></svg>
-                <div><b>espelhado</b> · push_receipt · 3 → github · você não foi necessário</div>
+                <div><b>espelhado</b> · recibo no ledger · você não foi necessário</div>
               </div>
               <div class="co-pills" style="margin-top:12px; opacity:0; transition:opacity 0.35s" id="m5undo">
                 <span class="co-pill ghost" style="flex:1"><svg class="ic"><use href="#i-undo"/></svg>Desfazer · com recibo</span>
@@ -945,7 +944,7 @@
               <div class="uquote" id="m6q">“o que mudou hoje no atlas-native?”</div>
               <div class="nl-line" id="m6a1">Seis commits na main. Nenhum pedindo você.</div>
               <div class="nl-line" id="m6a2"><span class="mono">683af18</span> — os espaços colados. <span class="why">Trim no stream; agora verbatim.</span>
-                <span class="nl-ref"><svg class="ic" style="width:10px;height:10px"><use href="#i-spark"/></svg>trace · checks 0</span>
+                <span class="nl-ref"><svg class="ic" style="width:10px;height:10px"><use href="#i-spark"/></svg>trace · checks limpos</span>
               </div>
               <div class="nl-line" id="m6a3">O espelho do server já subiu sozinho. Posso mostrar o recibo.</div>
             </div>
@@ -1068,8 +1067,8 @@ function boot() {
     $('m3ok').classList.add('silent');
     $('m3ck').innerHTML = '<svg class="ic"><use href="#i-shield"/></svg><span>Varredura</span>';
     $('m3ct').textContent = 'FIREBASE_KEY em config/app.ts';
-    $('m3cs').textContent = 'Entraria no commit 3/7. Nada sai. Isto é risco — decisão sua.';
-    $('m3rs').textContent = 'push bloqueado';
+    $('m3cs').textContent = 'Entraria no commit 3/7. Nada sai. Isto é risco · decisão sua.';
+    $('m3rs').textContent = 'espelho bloqueado';
     $('m3rt').textContent = 'segredo no staged';
     $('m3rt').className = 'rt bad';
     $('m3side').textContent = '1 atenção';
@@ -1093,6 +1092,7 @@ function boot() {
     ['m4d1','m4d2','m4d3','m4d4'].forEach(id => $(id).classList.remove('on'));
     $('m4f').classList.remove('on');
     $('m4ok').classList.remove('pressed');
+    $('m4verbs').classList.remove('done');
     $('m4r').classList.remove('on');
     at(600,  () => $('m4d1').classList.add('on'));
     at(950,  () => $('m4d2').classList.add('on'));
@@ -1100,7 +1100,7 @@ function boot() {
     at(1650, () => $('m4d4').classList.add('on'));
     at(2200, () => $('m4f').classList.add('on'));
     at(3800, () => $('m4ok').classList.add('pressed'));
-    at(4800, () => $('m4r').classList.add('on'));
+    at(4800, () => { $('m4r').classList.add('on'); $('m4verbs').classList.add('done'); });
     loop(9000);
   });
 
@@ -1125,10 +1125,10 @@ function boot() {
       const icons = ['#i-shield','#i-shield','#i-shield','#i-branch'];
       $(id).innerHTML = `<svg class="ic" style="width:10px;height:10px"><use href="${icons[idx]}"/></svg>`;
     });
-    at(400, () => tick(1, 'limpo'));
-    at(1100, () => tick(2, 'limpo'));
-    at(1800, () => tick(3, 'ok'));
-    at(2500, () => tick(4, 'main'));
+    at(400, () => tick(1, ''));
+    at(1100, () => tick(2, ''));
+    at(1800, () => tick(3, ''));
+    at(2500, () => tick(4, ''));
     at(4200, () => $('m5r').classList.add('on'));
     at(4800, () => { $('m5undo').style.opacity = 1; });
     loop(10000);
