@@ -47,14 +47,96 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     check("schema de grafo desconhecido falha fechado", (try? decoder.decode(AtlasCodeGraphResponse.self, from: Data(unknownSchema.utf8))) == nil)
 
     let provenanceJSON = """
-    {"schema_version":"atlas.code.provenance.v1","repo":"atlas-native","hash":"d0a65d0",
-     "commit_message":"feat(core): add Atlas Codigo graph projection","author_name":"Vitor Freire",
+    {"schema_version":"atlas.code.provenance.v2","repo":"atlas-native","hash":"d0a65d0",
+     "commit_message":"feat(core): add Atlas Codigo graph projection",
+     "commit_body":"O mapa vem primeiro: a mensagem é a manchete.","author_name":"Vitor Freire",
      "author_email":"vitordsny@gmail.com","authored_at":1784092694,"agent":"voce",
+     "files":[
+       {"path":"Sources/AtlasCore/AtlasCodeGraph.swift","status":"modified","additions":48,"deletions":12,"renamed_from":null},
+       {"path":"Sources/AtlasCore/AtlasCodeIssue.swift","status":"added","additions":56,"deletions":0,"renamed_from":null},
+       {"path":"App/Assets/icon.png","status":"added","additions":null,"deletions":null,"renamed_from":null},
+       {"path":"Sources/AtlasCore/New.swift","status":"renamed","additions":3,"deletions":1,"renamed_from":"Sources/AtlasCore/Old.swift"}],
      "operator_quote":"Autonomia > aprovação","gates":["simulator"]}
     """
     let provenance = try? decoder.decode(AtlasCodeProvenance.self, from: Data(provenanceJSON.utf8))
     check("proveniência C23 decodifica identidade real", provenance?.agent == "voce" && provenance?.hash == "d0a65d0")
     check("proveniência C23 mantém ausência de trace", provenance?.traceId == nil && provenance?.operatorQuote == "Autonomia > aprovação")
+
+    // A folha precisa dizer O QUE mudou: descrição + arquivos com verbo.
+    check("proveniência C23 carrega a descrição do commit", provenance?.commitBody == "O mapa vem primeiro: a mensagem é a manchete.")
+    check("proveniência C23 lista os arquivos com verbo", provenance?.files.count == 4 && provenance?.files.first?.status == .modified)
+    check("proveniência C23 preserva rename com origem", provenance?.files.last?.status == .renamed && provenance?.files.last?.renamedFrom == "Sources/AtlasCore/Old.swift")
+    // Binário: ausência de contagem jamais vira 0.
+    check("proveniência C23 diz ausência de contagem em binário", provenance?.files[2].additions == nil && provenance?.files[2].deletions == nil)
+    // Total derivado: binário conta como arquivo e soma zero linha.
+    check("proveniência C23 soma o diff sem inventar binário", provenance?.diffHeadline == "4 arquivos · +107 \u{2212}13")
+    check("proveniência C23 separa nome e pasta do arquivo", provenance?.files.first?.fileName == "AtlasCodeGraph.swift" && provenance?.files.first?.directory == "Sources/AtlasCore")
+
+    let unknownStatusJSON = provenanceJSON.replacingOccurrences(of: "\"status\":\"modified\"", with: "\"status\":\"submoduled\"")
+    let unknownStatus = try? decoder.decode(AtlasCodeProvenance.self, from: Data(unknownStatusJSON.utf8))
+    // Verbo novo do Git não derruba a folha inteira: aparece como desconhecido.
+    check("proveniência C23 sobrevive a verbo de arquivo desconhecido", unknownStatus?.files.first?.status == .unknown)
+
+    let singleFileJSON = """
+    {"schema_version":"atlas.code.provenance.v2","repo":"atlas-native","hash":"d0a65d0",
+     "commit_message":"fix: typo","author_name":"Vitor Freire","author_email":"vitordsny@gmail.com",
+     "authored_at":1784092694,"agent":"voce","files":[{"path":"README.md","status":"modified","additions":1,"deletions":1,"renamed_from":null}]}
+    """
+    let singleFile = try? decoder.decode(AtlasCodeProvenance.self, from: Data(singleFileJSON.utf8))
+    check("proveniência C23 fala português no singular", singleFile?.diffHeadline == "1 arquivo · +1 \u{2212}1")
+    check("proveniência C23 admite commit sem descrição", singleFile?.commitBody == nil)
+
+    let emptyDiffJSON = singleFileJSON.replacingOccurrences(of: "\"files\":[{\"path\":\"README.md\",\"status\":\"modified\",\"additions\":1,\"deletions\":1,\"renamed_from\":null}]", with: "\"files\":[]")
+    let emptyDiff = try? decoder.decode(AtlasCodeProvenance.self, from: Data(emptyDiffJSON.utf8))
+    // Sem arquivo não há manchete de diff — ausência é dita, não preenchida.
+    check("proveniência C23 cala quando não há arquivo", emptyDiff?.files.isEmpty == true && emptyDiff?.diffHeadline == nil)
+
+    let unknownProvenanceSchema = provenanceJSON.replacingOccurrences(of: "atlas.code.provenance.v2", with: "atlas.code.provenance.v1")
+    check("schema de proveniência antigo falha fechado", (try? decoder.decode(AtlasCodeProvenance.self, from: Data(unknownProvenanceSchema.utf8))) == nil)
+
+    // O corpo do commit foi escrito para o terminal (quebra em 72 colunas).
+    // A folha é prosa: a quebra acidental some, a quebra com forma fica.
+    let hardWrapped = """
+    Erro de MODELO apontado pelo operador: 'Atlas' e 'Blackink' apareciam
+    como repositórios quebrados.
+
+    O que muda:
+    - pasta vira pasta, não repo quebrado
+    - recentes viram atalho, não cópia
+
+    Co-Authored-By: Atlas <atlas@local>
+    """
+    let reflowed = AtlasCodeCommitBody.prose(hardWrapped)
+    check(
+        "corpo do commit reflui a quebra de 72 colunas em prosa",
+        reflowed.hasPrefix("Erro de MODELO apontado pelo operador: 'Atlas' e 'Blackink' apareciam como repositórios quebrados.")
+    )
+    check("corpo do commit preserva o parágrafo em branco", reflowed.contains("\n\nO que muda:\n\n- pasta vira pasta"))
+    check("corpo do commit preserva item de lista em linha própria", reflowed.contains("- pasta vira pasta, não repo quebrado\n\n- recentes viram atalho, não cópia"))
+    // Trailer é encanamento do Git — e nomeia o motor. Não sobe à superfície.
+    check("corpo do commit não vaza trailer do Git", !reflowed.contains("Co-Authored-By"))
+    check("corpo do commit termina na prosa, não no encanamento", reflowed.hasSuffix("- recentes viram atalho, não cópia"))
+    check("corpo do commit não inventa texto quando está vazio", AtlasCodeCommitBody.prose("") == "")
+    // Um corpo que é só trailer não vira bloco vazio na tela.
+    check("corpo só de trailer some inteiro", AtlasCodeCommitBody.prose("Co-Authored-By: Atlas <atlas@local>") == "")
+    // Travessão abre prosa; só o hífen ASCII com espaço marca item de lista.
+    check(
+        "corpo do commit não confunde travessão com lista",
+        AtlasCodeCommitBody.prose("a verdade é grave\n— e o portão recusou") == "a verdade é grave — e o portão recusou"
+    )
+    // Dois-pontos no meio da frase não é trailer: prosa continua prosa.
+    check(
+        "corpo do commit não confunde frase com trailer",
+        AtlasCodeCommitBody.prose("Na tela: bloco vermelho no topo") == "Na tela: bloco vermelho no topo"
+    )
+    // Código indentado é forma: a quebra dele é significado.
+    check(
+        "corpo do commit preserva código indentado",
+        AtlasCodeCommitBody.prose("rode:\n\n    make device\n    make build").contains("make device\n\nmake build")
+    )
+
+    // O servidor fala slug; a superfície fala a língua do operador.
+    check("proveniência C23 traduz o agente para português", provenance?.agentLabel == "você")
 
     let violationsJSON = """
     {"schema_version":"atlas.code.violations.v1","repo":"atlas-server",

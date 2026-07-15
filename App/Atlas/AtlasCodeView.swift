@@ -43,9 +43,14 @@ struct AtlasCodeView: View {
         .task { if model.phase == .idle { await model.load() } }
         .task { await mirrorModel.refresh() }
         .sheet(item: $selectedNode) { node in
-            AtlasCodeProvenanceSheet(node: node, phase: provenanceModel.phase)
-                .presentationDetents([.medium, .large])
-                .presentationDragIndicator(.visible)
+            AtlasCodeProvenanceSheet(
+                node: node,
+                state: model.state(for: node),
+                ruleId: model.ruleId(for: node),
+                phase: provenanceModel.phase
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showsHealReceipt) {
             if let heal = model.heal {
@@ -370,35 +375,98 @@ enum AtlasCodeRelativeTime {
 
 // MARK: - Folha: por que esta linha existe (C23)
 
+/// A folha responde, em ordem, as perguntas de quem abre um commit: em que
+/// estado ele está, o que ele diz, por que existe, e o que ele tocou.
+/// O hash fecha a folha — máquina embaixo do vidro (lei 6).
 private struct AtlasCodeProvenanceSheet: View {
     let node: AtlasCodeGraphNode
+    let state: AtlasCodeNodeState
+    let ruleId: String?
     let phase: AtlasCodeProvenanceModel.Phase
 
     var body: some View {
         ZStack {
             AtlasTheme.bg.ignoresSafeArea()
             ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
-                    Text("PROVENIÊNCIA")
-                        .font(.system(size: 9, weight: .bold))
-                        .tracking(1.4)
-                        .foregroundStyle(AtlasTheme.accent)
-                    Text(node.message ?? "Por que esta linha existe")
-                        .font(AtlasFont.serif(21, .semibold))
-                        .foregroundStyle(AtlasTheme.textPrimary)
-                    // Máquina embaixo do vidro: o hash mora aqui, não na lista.
-                    Text(node.hash)
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .textSelection(.enabled)
+                VStack(alignment: .leading, spacing: 18) {
+                    header
                     content
-                    Spacer(minLength: 0)
+                    hashFooter
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(22)
+                .padding(.bottom, 12)
             }
         }
     }
+
+    // MARK: Cabeçalho — estado, manchete, dateline
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(AtlasCodePalette.color(for: state))
+                    .frame(width: 6, height: 6)
+                Text(stateLabel)
+                    .font(.system(size: 9, weight: .bold))
+                    .tracking(1.4)
+                    .foregroundStyle(AtlasCodePalette.color(for: state))
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(stateLabel.lowercased())
+            .accessibilityIdentifier("code-provenance-state")
+
+            Text(node.message ?? "Por que esta linha existe")
+                .font(AtlasFont.serif(22, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(dateline)
+                    .font(AtlasFont.mono(9.5))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                // A magnitude do commit vem cedo: uma descrição longa não pode
+                // esconder o tamanho do que ele fez. A lista fica no fim.
+                if case .loaded(let provenance) = phase, let headline = provenance.diffHeadline {
+                    Text(headline)
+                        .font(AtlasFont.mono(9.5))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .monospacedDigit()
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var stateLabel: String {
+        switch state {
+        case .onMain: return "NA MAIN"
+        case .violating: return ruleId.map { "FORA DA MAIN · \($0.uppercased())" } ?? "FORA DA MAIN"
+        case .healed: return "CURADO"
+        case .history: return "HISTÓRIA"
+        }
+    }
+
+    /// Autor · agente · quando. O agente só aparece quando o ledger respondeu.
+    private var dateline: String {
+        let author = node.authorName.isEmpty ? node.authorEmail : node.authorName
+        var parts = [author]
+        if case .loaded(let provenance) = phase { parts.append(provenance.agentLabel) }
+        parts.append("há \(AtlasCodeRelativeTime.short(from: node.authoredAt))")
+        return parts.joined(separator: " · ")
+    }
+
+    private var hashFooter: some View {
+        Text(node.hash)
+            .font(AtlasFont.mono(9))
+            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+            .textSelection(.enabled)
+            .padding(.top, 2)
+            .accessibilityLabel("hash do commit")
+    }
+
+    // MARK: Corpo
 
     @ViewBuilder
     private var content: some View {
@@ -410,42 +478,94 @@ private struct AtlasCodeProvenanceSheet: View {
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
-            .padding(.top, 6)
+            .padding(.top, 2)
         case .failed(let message):
-            Text(message)
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasCodePalette.alert)
+            VStack(alignment: .leading, spacing: 6) {
+                Text("não consegui ler a proveniência")
+                    .font(AtlasFont.serifItalic(15))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                Text(message)
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasCodePalette.alert)
+            }
         case .loaded(let provenance):
-            VStack(alignment: .leading, spacing: 14) {
-                block("Sua frase") {
-                    if let quote = provenance.operatorQuote {
-                        Text("\u{201C}\(quote)\u{201D}")
-                            .font(AtlasFont.serifItalic(16))
-                            .foregroundStyle(AtlasTheme.textPrimary)
-                    } else {
-                        // Ausência é dita, nunca preenchida.
-                        Text("sem proveniência registrada")
-                            .font(AtlasFont.serifItalic(15))
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                    }
+            VStack(alignment: .leading, spacing: 18) {
+                // A descrição que o autor escreveu — o raciocínio, não o rótulo.
+                // O corpo vem quebrado para o terminal; aqui ele volta a ser prosa.
+                if let body = provenance.commitBody {
+                    Text(AtlasCodeCommitBody.prose(body))
+                        .font(AtlasFont.serif(15))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .lineSpacing(5)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("code-commit-body")
                 }
+
+                // A frase do operador: o que só o Atlas sabe, porque só o Atlas
+                // guarda o ledger. Ausência é dita, nunca preenchida.
+                if let quote = provenance.operatorQuote {
+                    pullQuote(quote)
+                }
+
                 if let gates = provenance.gates, !gates.isEmpty {
-                    block("Prova no ledger") {
-                        AtlasCodeChipRow(items: gates)
-                    }
+                    block("Prova no ledger") { AtlasCodeChipRow(items: gates) }
                 }
                 if let obra = provenance.obra, !obra.isEmpty {
-                    block("Obra") {
-                        AtlasCodeChipRow(items: obra)
-                    }
+                    block("Obra") { AtlasCodeChipRow(items: obra) }
                 }
-                block("Autor") {
-                    Text("\(provenance.authorName) · \(provenance.agent)")
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                }
+
+                filesSection(provenance)
             }
         }
+    }
+
+    private func pullQuote(_ quote: String) -> some View {
+        HStack(alignment: .top, spacing: 11) {
+            Rectangle()
+                .fill(AtlasTheme.accent.opacity(0.55))
+                .frame(width: 2)
+            VStack(alignment: .leading, spacing: 5) {
+                Text("\u{201C}\(quote)\u{201D}")
+                    .font(AtlasFont.serifItalic(16))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("sua frase")
+                    .font(.system(size: 9))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .accessibilityLabel("sua frase: \(quote)")
+    }
+
+    /// O que o commit tocou — no fim, onde o olho procura depois de entender.
+    private func filesSection(_ provenance: AtlasCodeProvenance) -> some View {
+        VStack(alignment: .leading, spacing: 9) {
+            Text("ARQUIVOS")
+                .font(.system(size: 8.5, weight: .semibold))
+                .tracking(1.2)
+                .foregroundStyle(AtlasTheme.textTertiary)
+
+            if provenance.files.isEmpty {
+                // Merge ou commit vazio: o Git não mediu diff direto.
+                Text("nenhum arquivo mudou neste commit")
+                    .font(AtlasFont.serifItalic(14))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(Array(provenance.files.enumerated()), id: \.element.id) { index, file in
+                        if index > 0 {
+                            Divider().overlay(AtlasTheme.separator.opacity(0.5))
+                        }
+                        AtlasCodeFileRow(file: file)
+                    }
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 4)
+                .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
+        .accessibilityIdentifier("code-commit-files")
     }
 
     private func block(_ title: String, @ViewBuilder body: () -> some View) -> some View {
@@ -459,6 +579,95 @@ private struct AtlasCodeProvenanceSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+/// Uma linha por arquivo. O VERBO é a forma do símbolo, não a cor: cor aqui
+/// é reservada ao estado do commit (main/fora/curado) e mentiria se pintasse
+/// tipo de mudança de vermelho dentro de um commit saudável.
+private struct AtlasCodeFileRow: View {
+    let file: AtlasCodeFileChange
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 10) {
+            Image(systemName: symbol)
+                .font(.system(size: 8.5, weight: .bold))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .frame(width: 17, height: 17)
+                .background(AtlasTheme.surfaceHi, in: RoundedRectangle(cornerRadius: 5))
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text(file.fileName)
+                    .font(.system(size: 12.5, weight: .medium))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                if let subtitle {
+                    Text(subtitle)
+                        .font(AtlasFont.mono(8.5))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                }
+            }
+
+            Spacer(minLength: 8)
+
+            if let additions = file.additions, let deletions = file.deletions {
+                Text("+\(additions) \u{2212}\(deletions)")
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .monospacedDigit()
+            } else {
+                // Binário: o Git não conta linhas — e o Atlas não inventa.
+                Text("binário")
+                    .font(AtlasFont.mono(8.5))
+                    .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+            }
+        }
+        .padding(.vertical, 9)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityText)
+    }
+
+    private var subtitle: String? {
+        if let from = file.renamedFrom { return "de \(from)" }
+        return file.directory
+    }
+
+    private var symbol: String {
+        switch file.status {
+        case .added: return "plus"
+        case .modified: return "pencil"
+        case .deleted: return "minus"
+        case .renamed: return "arrow.right"
+        case .copied: return "doc.on.doc"
+        case .typeChanged: return "arrow.triangle.2.circlepath"
+        case .unknown: return "questionmark"
+        }
+    }
+
+    private var verb: String {
+        switch file.status {
+        case .added: return "adicionado"
+        case .modified: return "alterado"
+        case .deleted: return "removido"
+        case .renamed: return "renomeado"
+        case .copied: return "copiado"
+        case .typeChanged: return "tipo alterado"
+        case .unknown: return "mudança desconhecida"
+        }
+    }
+
+    private var accessibilityText: String {
+        var text = "\(file.path), \(verb)"
+        if let from = file.renamedFrom { text += ", de \(from)" }
+        if let additions = file.additions, let deletions = file.deletions {
+            text += ", \(additions) linhas adicionadas, \(deletions) removidas"
+        } else {
+            text += ", arquivo binário"
+        }
+        return text
     }
 }
 

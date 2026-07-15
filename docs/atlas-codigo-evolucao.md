@@ -128,15 +128,46 @@ idênticos. Sem endpoint → a tela não entra no app.
 - Enriquecer cada nó com `agent`: `{"kind": "fable|codex|voce|autonomo", "name": "forge-3"}`.
   Mapeamento: `author_email → agente` (tabela de config) + correlação com traces do ledger
   (o Atlas já carimba execuções com trace/recibo).
-- `GET /api/code/provenance/{hash}` →
+- `GET /api/code/provenance/{hash}` → schema `atlas.code.provenance.v2`:
 ```json
-{ "hash": "683af18", "trace_id": "tr_…", "operator_quote": "identifica todos os erros…",
-  "obra": "obra-17", "gates": ["checks exit=0", "device ✓"], "agent": {"kind": "fable"} }
+{ "schema_version": "atlas.code.provenance.v2", "hash": "683af18",
+  "commit_message": "billing: comando para desligar a renovação",
+  "commit_body": "Wind-down do faturamento sem tirar acesso de ninguém.\n\n…",
+  "agent": "voce", "trace_id": "tr_…", "operator_quote": "identifica todos os erros…",
+  "obra": ["obra-17"], "gates": ["checks exit=0", "device ✓"],
+  "files": [ {"path": "app/Console/Commands/CancelAll.php", "status": "added",
+              "additions": 160, "deletions": 0, "renamed_from": null} ] }
 ```
 - Sem trace correspondente → **campo ausente** e a UI mostra "sem proveniência registrada".
+- `files[]` vem de `git show --raw --numstat -M` (um comando, dois blocos casados por
+  posição — o numstat escreve rename como `src/{a => b}.ts` e não serve de chave).
+  `status` ∈ `added|modified|deleted|renamed|copied|type_changed`. Binário → `additions`
+  e `deletions` **ausentes**: o Git não mediu, e ausência nunca vira `0`.
+- `commit_body` é o raciocínio do autor. A tela reflui a quebra de 72 colunas
+  (`AtlasCodeCommitBody.prose`) e **remove trailers** (`Co-Authored-By:`) — encanamento do
+  Git que nomeia o motor não sobe à superfície.
+- Totais (`7 arquivos · +457 −323`) são **derivados no app** (`diffHeadline`), nunca uma
+  segunda fonte de verdade no servidor.
 
 **Gate E2:** tocar em ≥3 commits reais mostra a frase real do operador vinda do ledger;
-tocar num commit antigo sem trace mostra o estado honesto.
+tocar num commit antigo sem trace mostra o estado honesto; a folha lista os arquivos
+tocados com verbo e contagem conferíveis contra `git show --numstat` no Mac.
+
+### E2.1 · Uma frota só (localizador de repositório)
+
+O radar (M3 v2) lê o Mac; o grafo lia perfis do banco. O app listava 12 repositórios e
+abria 3 — `nivor-back-end` respondia `404 repository_profile_not_found` com o nome que o
+operador acabara de ver na tela.
+
+- `AtlasCodeRepoLocator`: **perfil registrado vence** (slug canônico + config, é o que os
+  gates consultam) → **senão o disco responde** (leitura é livre).
+- `findByReference` **não** ganhou descoberta em disco de propósito: ele também decide
+  governança (onboarding, workspace intelligence, code graph), e descoberta automática ali
+  faria repositório não registrado passar por workspace governado. Leitura livre;
+  autoridade continua registrada à mão.
+- Slug ambíguo (dois produtos com repo de mesmo nome) → **silêncio**. Mostrar a história do
+  repositório errado é mentira, e mentira é pior que erro numa ferramenta de governança.
+- Slug é segmento de diretório: `..` e `/` nunca viram leitura de disco.
 
 ### E3 · A Lei — rules engine (contrato C24)
 

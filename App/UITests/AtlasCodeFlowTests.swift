@@ -41,13 +41,32 @@ final class AtlasCodeFlowTests: XCTestCase {
                       "a pílula nunca some (lei 7)")
         attach(app, name: "03-grafo-do-repo")
 
-        // 4 · Tocar num commit abre a proveniência — a SUA frase, ou a ausência dita.
+        // 4 · Tocar num commit abre a folha: estado, descrição, e o que mudou.
         let commit = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'code-commit-'")).firstMatch
         if commit.waitForExistence(timeout: 10) {
             commit.tap()
-            let sheetTitle = app.staticTexts["PROVENIÊNCIA"]
-            XCTAssertTrue(sheetTitle.waitForExistence(timeout: 15), "a folha de proveniência precisa abrir")
+
+            // A folha diz o estado do commit na gramática do domínio — nunca
+            // um rótulo genérico de tela.
+            let stateKicker = app.descendants(matching: .any)["code-provenance-state"]
+            XCTAssertTrue(stateKicker.waitForExistence(timeout: 15), "a folha precisa dizer em que estado o commit está")
+            let vocabulary = ["na main", "fora da main", "curado", "história"]
+            XCTAssertTrue(
+                vocabulary.contains { stateKicker.label.hasPrefix($0) },
+                "o estado precisa falar a gramática do domínio, não jargão: \(stateKicker.label)"
+            )
+
+            // O gap que o operador apontou: a folha precisa listar o que o
+            // commit tocou, não só quem o assinou.
+            let files = app.descendants(matching: .any)["code-commit-files"]
+            XCTAssertTrue(files.waitForExistence(timeout: 15), "a folha precisa mostrar os arquivos tocados")
             attach(app, name: "04-proveniencia")
+
+            // 5 · A lista de arquivos vive no fim: rolar até ela é parte da prova.
+            for _ in 0..<8 where !files.isHittable {
+                app.swipeUp()
+            }
+            attach(app, name: "05-arquivos-tocados")
         }
     }
 
