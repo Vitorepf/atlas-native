@@ -253,6 +253,26 @@ public actor AtlasClient: AtlasAiStreamSource {
         try await get("/code/violations\(atlasQueryString([("repo", .string(repo))]))")
     }
 
+    /// C25 · Observe/heal tick. Observe remains the default and does not mutate Git.
+    public func getCodeHealTick(repo: String, mode: String = "observe") async throws -> AtlasCodeHealResponse {
+        let query = atlasQueryString([
+            ("repo", .string(repo)),
+            ("mode", .string(mode)),
+        ])
+        return try await get("/code/heals/tick\(query)")
+    }
+
+    /// C25 · Reverses a recorded heal step; the server validates the undo window.
+    public func undoCodeHeal(id: String, repo: String) async throws -> AtlasCodeHealStepReceipt {
+        struct UndoBody: Encodable { let repo: String }
+        return try await post("/code/heals/\(pathEncode(id))/undo", body: UndoBody(repo: repo))
+    }
+
+    /// E5 · real weekly code numbers; notification remains opt-in.
+    public func getCodeWeek(repo: String) async throws -> AtlasCodeWeek {
+        try await get("/code/week\(atlasQueryString([("repo", .string(repo))]))")
+    }
+
     /// Caminho JSON de `createAiInteraction` (sem anexos). Upload em chunks
     /// precisa do FileSystem do device — porta com a camada de anexos.
     public func createAiInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {

@@ -13,6 +13,8 @@ final class AtlasCodeModel {
     private(set) var phase: Phase = .idle
     private(set) var graph: AtlasCodeGraphResponse?
     private(set) var violations: AtlasCodeViolationsResponse?
+    private(set) var heal: AtlasCodeHealResponse?
+    private(set) var week: AtlasCodeWeek?
 
     init(client: AtlasClient, repo: String = "atlas-server") {
         self.client = client
@@ -25,9 +27,21 @@ final class AtlasCodeModel {
             graph = try await client.getCodeGraph(repo: repo, before: before)
             // A stale or unavailable scan must not hide a valid topology.
             violations = try? await client.getCodeViolations(repo: repo)
+            heal = try? await client.getCodeHealTick(repo: repo)
+            week = try? await client.getCodeWeek(repo: repo)
             phase = .loaded
         } catch {
             phase = .failed(String(describing: error))
+        }
+    }
+
+    func undoLastHeal() async {
+        guard let id = heal?.healId else { return }
+        do {
+            _ = try await client.undoCodeHeal(id: id, repo: repo)
+            heal = try? await client.getCodeHealTick(repo: repo)
+        } catch {
+            heal = nil
         }
     }
 }

@@ -50,4 +50,24 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     check("scanner C24 preserva plan executável", violations?.plan.first?.steps.first?.action == "cite_rule_to_agent")
     let unknownViolationsSchema = violationsJSON.replacingOccurrences(of: "atlas.code.violations.v1", with: "atlas.code.violations.v2")
     check("schema de violações desconhecido falha fechado", (try? decoder.decode(AtlasCodeViolationsResponse.self, from: Data(unknownViolationsSchema.utf8))) == nil)
+
+    let healJSON = """
+    {"schema_version":"atlas.code.heals.v1","repo":"atlas-server","generated_at":"2026-07-15T05:00:00Z",
+     "mode":"observe","violations":[],"plan":[],"step_receipts":[{"step":1,"action":"delete_branch",
+     "status":"completed","result":"branch removed","undo_ref":{"branch":"feature/cobaia","head":"abc"},
+     "undo_expires_at":"2026-08-14T05:00:00Z"}]}
+    """
+    let heal = try? decoder.decode(AtlasCodeHealResponse.self, from: Data(healJSON.utf8))
+    check("cura C25 preserva recibo e undo", heal?.stepReceipts.first?.action == "delete_branch" && heal?.stepReceipts.first?.undoRef?["branch"] == "feature/cobaia")
+    check("cura C25 não oferece aprovação", heal?.stepReceipts.first?.status == "completed" && heal?.mode == "observe")
+
+    let weekJSON = """
+    {"schema_version":"atlas.code.week.v1","repo":"atlas-server","window":"2026-07-08..2026-07-15",
+     "commits":214,"heals":3,"prevented":5,"waiting_for_you":0,
+     "by_agent":{"fable":84,"codex":96,"voce":34,"autonomo:desconhecido":0},
+     "notifications":{"enabled":false,"reason":"operator_opt_in"}}
+    """
+    let week = try? decoder.decode(AtlasCodeWeek.self, from: Data(weekJSON.utf8))
+    check("semana E5 preserva números reais e buckets", week?.commits == 214 && week?.byAgent["codex"] == 96)
+    check("semana E5 mantém notificações off", week?.notifications.enabled == false)
 }

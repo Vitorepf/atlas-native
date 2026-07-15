@@ -105,6 +105,33 @@ struct AtlasCodeView: View {
                 .padding(12)
                 .background(AtlasTheme.surface, in: RoundedRectangle(cornerRadius: 12))
 
+                if let week = model.week {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("A semana")
+                                .font(AtlasFont.serif(18, .semibold))
+                                .foregroundStyle(AtlasTheme.textPrimary)
+                            Spacer()
+                            Text(week.window)
+                                .font(AtlasFont.mono(9))
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                        }
+                        HStack(spacing: 16) {
+                            weekMetric("commits", value: week.commits)
+                            weekMetric("curas", value: week.heals)
+                            weekMetric("prevenidas", value: week.prevented)
+                            weekMetric("aguardando", value: week.waitingForYou)
+                        }
+                        Text("notificações desligadas por padrão")
+                            .font(AtlasFont.mono(9))
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                    }
+                    .padding(12)
+                    .background(AtlasTheme.surface, in: RoundedRectangle(cornerRadius: 12))
+                    .accessibilityElement(children: .contain)
+                    .accessibilityLabel("A semana: \(week.commits) commits, \(week.heals) curas, \(week.prevented) prevenidas")
+                }
+
                 if let violations = model.violations, !violations.violations.isEmpty {
                     VStack(alignment: .leading, spacing: 9) {
                         Text("Sinais de governança")
@@ -130,6 +157,41 @@ struct AtlasCodeView: View {
                     .background(Color(hex: 0xE08C8C).opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
                     .accessibilityElement(children: .contain)
                     .accessibilityLabel("\(violations.violations.count) violações de governança")
+                }
+
+                if let heal = model.heal, !heal.stepReceipts.isEmpty {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Recibo de cura")
+                            .font(AtlasFont.serif(18, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        Text("CURADO SOZINHO · \(heal.mode)")
+                            .font(AtlasFont.mono(10))
+                            .foregroundStyle(AtlasTheme.accent)
+                        ForEach(heal.stepReceipts) { receipt in
+                            HStack(alignment: .top, spacing: 8) {
+                                Image(systemName: receipt.status == "completed" ? "checkmark.circle.fill" : "xmark.circle")
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(receipt.action)
+                                        .font(AtlasFont.mono(10))
+                                    Text(receipt.result)
+                                        .font(AtlasFont.mono(9))
+                                        .foregroundStyle(AtlasTheme.textTertiary)
+                                }
+                            }
+                        }
+                        if heal.healId != nil {
+                            Button("Desfazer — com recibo") {
+                                Task { await model.undoLastHeal() }
+                            }
+                            .buttonStyle(.bordered)
+                            .tint(AtlasTheme.accent)
+                        }
+                    }
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .padding(12)
+                    .background(AtlasTheme.accent.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+                    .accessibilityElement(children: .contain)
+                    .accessibilityLabel("Recibo de cura com desfazer")
                 }
 
                 GraphCanvas(nodes: graph.nodes, reduceMotion: reduceMotion)
@@ -170,6 +232,17 @@ struct AtlasCodeView: View {
                 AtlasCodeProvenanceSheet(node: node, phase: provenanceModel.phase)
                     .presentationDetents([.medium, .large])
             }
+        }
+    }
+
+    private func weekMetric(_ label: String, value: Int) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(String(value))
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text(label)
+                .font(AtlasFont.mono(9))
+                .foregroundStyle(AtlasTheme.textTertiary)
         }
     }
 }

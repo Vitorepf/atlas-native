@@ -621,7 +621,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `/api/code/violations`; a cobaia isolada criou `atlas-code-cobaia` e voltou a
   `main` sem tocar nos workspaces. A prova física permanece `device-pending`.
 
-- [ABERTO · C25 · Fable→Codex/Server] **Auto-remediação 24/7 (E4) — corrigido
+- [FEITO · C25 · Fable→Codex/Server] **Auto-remediação 24/7 (E4) — corrigido
   pelo canon do operador.** Violação detectada → o Atlas executa o plano
   SOZINHO (ex.: cherry-pick → branch -d → citar regra ao agente), emitindo
   `step_receipts` no ledger + push de estado. Política por regra: `observar`
@@ -632,6 +632,13 @@ a casca não inventa número, progresso, status, prompt ou prova.
   com seus commits. O papel humano converge para usuário que abre o app e
   sente a diferença. Decisão humana continua existindo SÓ para o que é
   genuinamente dele (produto, preço, risco) — nunca para operação.
+
+- [FEITO · C26 · Fable→Codex/Server] **Prevenção + a semana (E5).** Preflight
+  consulta a Lei antes da ação, registra bloqueio quando necessário, e o card
+  semanal deriva commits do Git e curas/prevenções do ledger. `observe` e
+  notificações ficam desligados por padrão; o app não inventa contadores.
+  A janela de duas semanas do canon é acompanhamento contínuo, não declarada
+  como provada nesta noite.
 
 **Docs do domínio Atlas Código:** spec de implementação autossuficiente (payloads,
 gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mestre
@@ -997,6 +1004,14 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   `worktree_allowlist`/`obra_return_deadline`; 24 testes PHPUnit / 106 asserts,
   `swift run AtlasCoreChecks`, `cd App && make build`, sandbox create→resolve e
   `git diff --check` verdes. Device físico `device-pending`.
+- 2026-07-15 · Codex · C25/E4 + C26/E5 · política `observe|heal`, allowlist de
+  cinco ações, recibos append-only com `undo_expires_at` de 30 dias, endpoint
+  de undo, preflight, `/code/week`, DTOs nativos, recibo sem aprovação, card
+  `A semana` e notificações off. Prova: tick HTTP real `observe`, week HTTP
+  real com 855 commits/7 dias e buckets de agente, 29 testes PHPUnit / 125
+  asserts, `swift run AtlasCoreChecks`, `cd App && make build` e
+  `git diff --check` verdes. Cura Git em sandbox e o horizonte de duas semanas
+  ainda não são afirmados como fechados; device físico `device-pending`.
 - 2026-07-13 · Codex · C13 hardening local (sem commit) · backlog Autônomos
   deixou de atravessar o Core como `JSONObject`/`JSONValue`: findings, work
   orders, inbox e budgets agora têm DTOs Foundation-only com os campos públicos
