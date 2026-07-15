@@ -3,541 +3,1000 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Atlas Código no iPhone — a vertical no app nativo (Fable 5)</title>
+<title>Atlas Código no iPhone — experiência máxima (Fable 5)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #10181e; --app-bg: #1d2b34; --surface: #243743; --surface-hi: #2d4351;
-    --recessed: #15212a; --ink: #d6dde2; --ink2: #95a3ac; --ink3: #677482;
-    --sep: #313f47; --sep-soft: #27353e; --gold: #d4a85a; --green: #7fb069;
-    --alert: #c98a8a; --codex: #7fa3b8;
+    --bg: #0f161c; --app-bg: #1b2830; --surface: #223440; --surface-hi: #2a3f4d;
+    --recessed: #141f27; --ink: #e6ebee; --ink2: #9aacb6; --ink3: #647682; --ink4: #465662;
+    --gold: #d4a85a; --gold-hi: #ecc984; --green: #83b46d; --red: #e08c8c; --blue: #82a8bd;
+    --hairline: rgba(255,255,255,0.065); --hairline-hi: rgba(255,255,255,0.12);
     --serif: "Fraunces", Georgia, serif;
     --mono: "JetBrains Mono", ui-monospace, monospace;
     --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+    --spring: cubic-bezier(0.32, 0.72, 0, 1);
+    --bounce: cubic-bezier(0.34, 1.45, 0.5, 1);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    background: radial-gradient(1200px 600px at 70% -10%, rgba(212,168,90,0.05), transparent 60%), var(--bg);
+    background:
+      radial-gradient(1400px 700px at 72% -12%, rgba(212,168,90,0.06), transparent 62%),
+      radial-gradient(900px 500px at 8% 40%, rgba(130,168,189,0.035), transparent 60%),
+      var(--bg);
     color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh;
   }
-  .page { max-width: 1280px; margin: 0 auto; padding: 48px 48px 96px; }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 48px 120px; }
+  svg.ic { width: 14px; height: 14px; flex-shrink: 0; display: block; }
+  svg.ic.lg { width: 16px; height: 16px; }
+  .tabular { font-variant-numeric: tabular-nums; }
 
   .topnav {
     position: sticky; top: 0; z-index: 60; display: flex; justify-content: space-between;
     align-items: center; gap: 16px; padding: 11px 48px;
-    background: rgba(16,24,30,0.82); backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--sep-soft);
+    background: rgba(15,22,28,0.82); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--hairline);
   }
   .tn-brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
   .topnav nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-  .topnav a { font-family: var(--mono); font-size: 10.5px; color: var(--ink2); text-decoration: none; border: 1px solid transparent; border-radius: 999px; padding: 6px 11px; transition: all 0.2s; }
-  .topnav a:hover { color: var(--gold); border-color: rgba(212,168,90,0.4); }
-  .topnav a.desk { color: var(--ink3); border-color: var(--sep); }
+  .topnav a {
+    font-family: var(--mono); font-size: 10.5px; color: var(--ink2); text-decoration: none;
+    border: 1px solid transparent; border-radius: 999px; padding: 6px 11px; transition: color 0.2s, border-color 0.2s;
+  }
+  .topnav a:hover, .topnav a:focus-visible { color: var(--gold); border-color: rgba(212,168,90,0.4); outline: none; }
+  .topnav a.desk { color: var(--ink3); border-color: var(--hairline); }
 
   .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
-  h1 { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 1.12; letter-spacing: -0.01em; max-width: 22ch; text-wrap: balance; }
-  .lede { margin-top: 16px; font-size: 16px; line-height: 1.65; color: var(--ink2); max-width: 64ch; text-wrap: pretty; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; max-width: 20ch; text-wrap: balance; }
+  .lede { margin-top: 16px; font-size: 16px; line-height: 1.65; color: var(--ink2); max-width: 62ch; text-wrap: pretty; }
   .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
-  .keyfacts { display: flex; gap: 40px; margin-top: 26px; flex-wrap: wrap; }
-  .kf b { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
-  .kf span { font-size: 11.5px; color: var(--ink3); display: block; margin-top: 7px; max-width: 20ch; line-height: 1.45; }
+  .keyfacts { display: flex; gap: 36px; margin-top: 26px; flex-wrap: wrap; }
+  .kf b { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+  .kf span { font-size: 11.5px; color: var(--ink3); display: block; margin-top: 7px; max-width: 22ch; line-height: 1.45; }
   .rule { width: 44px; height: 2px; background: var(--gold); opacity: 0.7; margin: 26px 0 0; }
 
-  /* ── grade de iPhones ── */
-  .grid { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px 28px; justify-items: center; }
-  .cell { display: flex; flex-direction: column; align-items: center; max-width: 360px; }
-  .cell-label { align-self: stretch; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-  .cell-label b { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink2); font-weight: 500; }
-  .tag { font-family: var(--mono); font-size: 9px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 999px; padding: 3px 8px; white-space: nowrap; }
-  .tag.live { color: var(--gold); border-color: rgba(212,168,90,0.4); }
-  .tag.ship { color: var(--green); border-color: rgba(127,176,105,0.35); }
-  .caption { margin-top: 12px; font-size: 12px; line-height: 1.55; color: var(--ink3); text-wrap: pretty; }
-  .caption em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
-
-  /* iPhone (métricas 15 Pro, escala 0.82) */
-  .iphone {
-    padding: 10px; background: #000; border-radius: 49px;
-    box-shadow: 0 0 0 2px #1f2937, 0 24px 64px rgba(0,0,0,0.5);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  .principles {
+    margin-top: 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
   }
-  .replayable { cursor: pointer; }
-  .iphone.replayable:hover { transform: translateY(-3px); box-shadow: 0 0 0 2px rgba(212,168,90,0.55), 0 28px 70px rgba(0,0,0,0.55); }
-  .screen { position: relative; width: 322px; height: 698px; border-radius: 39px; overflow: hidden; background: var(--app-bg); }
-  .island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 102px; height: 30px; background: #000; border-radius: 999px; z-index: 30; }
-  .sbar { position: absolute; top: 0; left: 0; right: 0; height: 44px; z-index: 20; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; font-size: 13px; font-weight: 600; }
+  .principles article {
+    border: 1px solid var(--hairline); border-radius: 14px; padding: 14px 16px;
+    background: rgba(27,40,48,0.45);
+  }
+  .principles h3 { font-family: var(--serif); font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .principles p { font-size: 12px; line-height: 1.5; color: var(--ink3); }
+
+  .grid { margin-top: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 28px; justify-items: center; }
+  .cell { display: flex; flex-direction: column; align-items: center; max-width: 360px; width: 100%; }
+  .cell-label { align-self: stretch; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+  .cell-label b { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink2); font-weight: 500; }
+  .tag {
+    font-family: var(--mono); font-size: 9px; color: var(--ink3); border: 1px solid var(--hairline);
+    border-radius: 999px; padding: 3px 8px; white-space: nowrap;
+  }
+  .tag.live { color: var(--gold); border-color: rgba(212,168,90,0.4); }
+  .tag.part { color: var(--blue); border-color: rgba(130,168,189,0.4); }
+  .tag.contract { color: var(--ink2); border-color: rgba(154,172,182,0.28); }
+  .caption { margin-top: 14px; font-size: 12.5px; line-height: 1.55; color: var(--ink3); text-wrap: pretty; align-self: stretch; }
+  .caption em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+  .caption .src { display: block; margin-top: 6px; font-family: var(--mono); font-size: 9.5px; color: var(--ink4); letter-spacing: 0.04em; }
+
+  /* iPhone frame */
+  .iphone {
+    padding: 10px; background: #05080a; border-radius: 50px;
+    box-shadow:
+      0 0 0 1px #1a242c,
+      0 0 0 2px #0a1014,
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 28px 72px rgba(0,0,0,0.55);
+    transition: transform 0.28s var(--spring), box-shadow 0.28s var(--spring);
+  }
+  .iphone.replayable { cursor: pointer; }
+  .iphone.replayable:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px rgba(212,168,90,0.45),
+      0 0 0 2px #0a1014,
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 32px 80px rgba(0,0,0,0.6);
+  }
+  .iphone.replayable:focus-visible {
+    outline: 2px solid var(--gold); outline-offset: 4px;
+  }
+  .screen {
+    position: relative; width: 322px; height: 698px; border-radius: 40px; overflow: hidden;
+    background: var(--app-bg);
+  }
+  .island {
+    position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+    width: 104px; height: 30px; background: #000; border-radius: 999px; z-index: 40;
+  }
   .content { position: absolute; inset: 0; padding-top: 50px; display: flex; flex-direction: column; }
-  .m-head { display: flex; align-items: center; justify-content: center; position: relative; padding: 6px 16px 8px; }
-  .m-head .back { position: absolute; left: 13px; width: 30px; height: 30px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 13px; }
-  .m-head .title { font-family: var(--serif); font-weight: 600; font-size: 15px; }
-  .m-head .side { position: absolute; right: 14px; font-family: var(--mono); font-size: 9px; color: var(--ink3); }
-  .m-body { flex: 1; padding: 4px 15px 0; overflow: hidden; position: relative; }
-  .homebar { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; border-radius: 999px; background: rgba(214,221,226,0.35); z-index: 25; }
+  .m-head {
+    display: flex; align-items: center; justify-content: center; position: relative;
+    padding: 4px 14px 10px; min-height: 36px;
+  }
+  .m-head .back, .m-head .sidebtn {
+    position: absolute; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--surface); border: 1px solid var(--hairline);
+    display: flex; align-items: center; justify-content: center; color: var(--ink2);
+  }
+  .m-head .back { left: 12px; }
+  .m-head .sidebtn { right: 12px; }
+  .m-head .title { font-family: var(--serif); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+  .m-head .meta {
+    position: absolute; right: 14px; font-family: var(--mono); font-size: 9.5px; color: var(--ink3);
+  }
+  .m-body { flex: 1; padding: 2px 16px 0; overflow: hidden; position: relative; }
+  .homebar {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 112px; height: 4px; border-radius: 999px; background: rgba(230,235,238,0.32); z-index: 35;
+  }
 
-  /* hub rows (a linguagem REAL do app) */
-  .hrow { display: flex; align-items: center; gap: 11px; padding: 12px 3px; border-bottom: 1px solid rgba(149,163,172,0.08); }
-  .hrow .ic { width: 20px; text-align: center; color: var(--ink2); font-size: 14px; }
-  .hrow b { font-size: 13.5px; font-weight: 500; color: var(--ink); }
-  .hrow .n { margin-left: auto; font-size: 13px; color: var(--ink3); }
-  .hrow .chev { color: var(--ink3); font-size: 11px; }
-  .hsec { font-size: 10px; font-weight: 600; letter-spacing: 1.3px; color: var(--ink3); padding: 14px 3px 8px; }
-  .hrow .attn { margin-left: auto; font-size: 11px; color: var(--alert); }
-  .hrow .okn { margin-left: auto; font-size: 11px; color: var(--green); }
-  .pillinput { position: absolute; left: 13px; right: 13px; bottom: 18px; display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--sep); border-radius: 999px; padding: 9px 13px; }
-  .pillinput .plus { width: 24px; height: 24px; border-radius: 50%; background: var(--surface-hi); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink2); }
-  .pillinput .ph { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink3); }
+  /* persistent ask pill — lei 7 */
+  .askpill {
+    position: absolute; left: 14px; right: 14px; bottom: 22px; z-index: 30;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(34,52,64,0.92); border: 1px solid var(--hairline-hi);
+    border-radius: 999px; padding: 9px 12px 9px 10px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+    backdrop-filter: blur(16px);
+  }
+  .askpill .plus {
+    width: 26px; height: 26px; border-radius: 50%; background: var(--surface-hi);
+    display: flex; align-items: center; justify-content: center; color: var(--ink2); flex-shrink: 0;
+  }
+  .askpill .ph { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink3); flex: 1; }
+  .askpill .mic { color: var(--ink3); flex-shrink: 0; }
 
-  /* commits mobile */
-  .commit { display: flex; gap: 10px; padding: 9px 2px; opacity: 0; transform: translateY(7px); transition: all 0.4s ease; }
+  /* hub */
+  .hsec {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(--ink4);
+    text-transform: uppercase; padding: 16px 2px 8px;
+  }
+  .hsec:first-child { padding-top: 4px; }
+  .hrow {
+    display: flex; align-items: center; gap: 12px; padding: 13px 2px;
+    border-bottom: 1px solid var(--hairline); min-height: 48px;
+  }
+  .hrow .icwrap {
+    width: 28px; height: 28px; border-radius: 8px; background: var(--surface);
+    display: flex; align-items: center; justify-content: center; color: var(--ink2); flex-shrink: 0;
+  }
+  .hrow b { font-size: 14px; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+  .hrow .n { margin-left: auto; font-size: 13px; color: var(--ink3); font-variant-numeric: tabular-nums; }
+  .hrow .chev { color: var(--ink4); margin-left: 4px; }
+  .hrow .attn {
+    margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--red);
+    letter-spacing: 0.02em; display: flex; align-items: center; gap: 5px;
+  }
+  .hrow.quiet .n, .hrow.quiet .attn { display: none; }
+  .hrow.quiet .chev { margin-left: auto; }
+  .hrow.flash { animation: rowflash 0.7s var(--spring); }
+  @keyframes rowflash {
+    0% { background: rgba(224,140,140,0.12); }
+    100% { background: transparent; }
+  }
+
+  /* timeline + mini graph */
+  .tl { position: relative; padding-left: 0; padding-bottom: 70px; }
+  .commit {
+    display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 10px 0;
+    opacity: 0; transform: translateY(8px); transition: opacity 0.45s var(--spring), transform 0.45s var(--bounce);
+  }
   .commit.on { opacity: 1; transform: none; }
-  .c-node { width: 11px; display: flex; flex-direction: column; align-items: center; padding-top: 3px; }
-  .c-dot { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink3); background: var(--app-bg); flex-shrink: 0; opacity: 0.9; }
-  .c-line { width: 1.5px; flex: 1; background: rgba(212,168,90,0.18); margin-top: 3px; min-height: 14px; }
-  .c-msg { font-size: 12px; color: var(--ink); line-height: 1.35; }
-  .c-meta { font-family: var(--mono); font-size: 8.5px; color: var(--ink3); margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
-  .c-meta .agent, .c-meta .agent.codex, .c-meta .agent.you { color: var(--ink3); }
+  .c-node { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+  .c-dot {
+    width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--gold);
+    background: var(--app-bg); flex-shrink: 0; box-shadow: 0 0 0 2px var(--app-bg);
+    transition: transform 0.35s var(--bounce);
+  }
+  .commit.on .c-dot { transform: scale(1); }
+  .c-dot.fable { background: var(--gold); }
+  .c-dot.codex { border-color: var(--blue); background: var(--app-bg); }
+  .c-dot.you { border-color: var(--green); background: var(--green); }
+  .c-line { width: 2px; flex: 1; min-height: 18px; margin-top: 3px; background: linear-gradient(180deg, rgba(212,168,90,0.35), rgba(212,168,90,0.08)); }
+  .c-msg { font-size: 12.5px; color: var(--ink); line-height: 1.35; letter-spacing: -0.01em; }
+  .c-meta {
+    font-family: var(--mono); font-size: 9px; color: var(--ink3); margin-top: 4px;
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-variant-numeric: tabular-nums;
+  }
+  .ava {
+    width: 16px; height: 16px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center;
+    background: var(--recessed); border: 1px solid var(--hairline); color: var(--gold);
+  }
+  .ava.codex { color: var(--blue); }
+  .ava.you { color: var(--green); }
+  .ava .ic { width: 10px; height: 10px; }
 
-  /* folha (sheet mobile) */
+  /* sheet */
   .sheet {
-    position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 26;
-    background: var(--recessed); border: 1px solid var(--sep); border-radius: 20px;
-    padding: 14px; transform: translateY(112%);
-    transition: transform 0.45s cubic-bezier(0.32,0.72,0,1);
-    box-shadow: 0 -12px 34px rgba(0,0,0,0.5);
+    position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 32;
+    background: rgba(20,31,39,0.96); border: 1px solid var(--hairline-hi); border-radius: 22px;
+    padding: 12px 16px 18px; transform: translateY(110%);
+    transition: transform 0.5s var(--spring);
+    box-shadow: 0 -16px 48px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
   }
   .sheet.on { transform: none; }
-  .sheet .grab { width: 34px; height: 4px; border-radius: 999px; background: rgba(214,221,226,0.25); margin: 0 auto 10px; }
-  .sh-kicker { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-  .sh-title { font-family: var(--serif); font-size: 14.5px; font-weight: 600; line-height: 1.35; }
-  .sh-hash { font-family: var(--mono); font-size: 9px; color: var(--ink3); margin-top: 3px; }
-  .sh-block { margin-top: 10px; padding: 10px; border: 1px solid var(--sep-soft); border-radius: 12px; }
-  .sh-block .k { font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em; color: var(--ink3); text-transform: uppercase; margin-bottom: 4px; }
-  .sh-block .v { font-size: 11.5px; color: var(--ink); line-height: 1.45; }
+  .sheet .grab {
+    width: 36px; height: 4px; border-radius: 999px; background: rgba(230,235,238,0.22);
+    margin: 0 auto 12px;
+  }
+  .sh-kicker {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .sh-title { font-family: var(--serif); font-size: 16px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+  .sh-hash { font-family: var(--mono); font-size: 9.5px; color: var(--ink3); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .sh-block {
+    margin-top: 12px; padding: 12px; border: 1px solid var(--hairline); border-radius: 14px;
+    background: rgba(0,0,0,0.18);
+  }
+  .sh-block .k {
+    font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.12em; color: var(--ink4);
+    text-transform: uppercase; margin-bottom: 5px;
+  }
+  .sh-block .v { font-size: 12.5px; color: var(--ink); line-height: 1.45; }
   .sh-block .v em { font-family: var(--serif); font-style: italic; color: var(--ink2); }
-  .gates { display: flex; gap: 6px; margin-top: 8px; }
-  .pg { font-family: var(--mono); font-size: 8.5px; color: var(--green); border: 1px solid rgba(127,176,105,0.35); border-radius: 999px; padding: 3px 8px; }
+  .gates { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .pg {
+    font-family: var(--mono); font-size: 9px; color: var(--green); border: 1px solid rgba(131,180,109,0.35);
+    border-radius: 999px; padding: 4px 9px; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .pg .ic { width: 10px; height: 10px; }
 
-  /* radar mobile */
-  .repo { border: 1px solid var(--sep-soft); border-radius: 13px; padding: 11px 12px; margin-bottom: 9px; background: rgba(21,33,42,0.5); transition: border-color 0.3s; }
-  .repo.attn { border-color: rgba(201,138,138,0.5); }
-  .repo.okr { border-color: rgba(127,176,105,0.28); }
-  .repo-top { display: flex; align-items: center; gap: 8px; }
-  .repo-top b { font-family: var(--serif); font-size: 13.5px; font-weight: 600; }
-  .rled { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-  .repo.attn .rled { background: var(--alert); animation: pulse 1.4s ease-in-out infinite; }
-  @keyframes pulse { 50% { opacity: 0.35; } }
-  .rstate { margin-left: auto; font-family: var(--mono); font-size: 8.5px; color: var(--ink3); transition: color 0.3s; }
-  .rstate.warn { color: var(--alert); } .rstate.okc { color: var(--green); }
-  .rtags { display: flex; gap: 5px; margin-top: 7px; flex-wrap: wrap; }
-  .rt { font-family: var(--mono); font-size: 8px; color: var(--ink3); border: 1px solid var(--sep); border-radius: 7px; padding: 2px 6px; }
-  .rt.bad { color: var(--alert); border-color: rgba(201,138,138,0.4); }
-  .rt.goodt { color: var(--green); border-color: rgba(127,176,105,0.3); }
+  /* radar */
+  .repo {
+    border: 1px solid var(--hairline); border-radius: 16px; padding: 13px 14px; margin-bottom: 10px;
+    background: rgba(20,31,39,0.4); transition: border-color 0.35s, transform 0.35s var(--bounce);
+  }
+  .repo.attn {
+    border-color: rgba(224,140,140,0.45);
+    box-shadow: 0 0 0 1px rgba(224,140,140,0.08), inset 0 0 0 1px rgba(224,140,140,0.06);
+  }
+  .repo-top { display: flex; align-items: center; gap: 9px; }
+  .repo-top b { font-family: var(--serif); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .rled { width: 7px; height: 7px; border-radius: 50%; background: transparent; border: 1.5px solid var(--ink4); }
+  .repo.attn .rled {
+    background: var(--red); border-color: var(--red);
+    animation: breathe 1.6s ease-in-out infinite;
+  }
+  @keyframes breathe { 50% { opacity: 0.4; } }
+  .rstate { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--ink4); }
+  .rstate.warn { color: var(--red); }
+  .rtags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .rt {
+    font-family: var(--mono); font-size: 9px; color: var(--ink3); border: 1px solid var(--hairline);
+    border-radius: 7px; padding: 3px 7px; white-space: nowrap;
+  }
+  .rt.bad { color: var(--red); border-color: rgba(224,140,140,0.4); }
+  .repo.silent .rtags { display: none; }
+  .repo.silent .rstate { display: none; }
 
-  /* callout / pills (padrão do app) */
-  .callout { border: 1px solid rgba(212,168,90,0.35); background: var(--surface); border-radius: 13px; padding: 11px 12px; margin-top: 10px; opacity: 0; transform: translateY(9px) scale(0.98); transition: all 0.45s cubic-bezier(0.32,0.72,0,1); }
+  .callout {
+    border: 1px solid rgba(212,168,90,0.35); background: var(--surface); border-radius: 16px;
+    padding: 13px 14px; margin-top: 8px;
+    opacity: 0; transform: translateY(10px) scale(0.98);
+    transition: opacity 0.45s var(--spring), transform 0.45s var(--bounce);
+  }
   .callout.on { opacity: 1; transform: none; }
-  .callout.alert { border-color: rgba(201,138,138,0.45); }
-  .callout.okc { border-color: rgba(127,176,105,0.4); }
-  .co-k { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
-  .callout.alert .co-k { color: var(--alert); }
+  .callout.alert { border-color: rgba(224,140,140,0.45); }
+  .callout.okc { border-color: rgba(131,180,109,0.4); }
+  .co-k {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+  }
+  .callout.alert .co-k { color: var(--red); }
   .callout.okc .co-k { color: var(--green); }
-  .co-t { font-size: 12px; font-weight: 600; line-height: 1.35; }
-  .co-s { font-size: 10px; color: var(--ink2); margin-top: 4px; line-height: 1.45; }
-  .co-pills { display: flex; gap: 6px; margin-top: 9px; }
-  .co-pill { flex: 1; text-align: center; font-size: 10px; color: var(--ink2); border: 1px solid var(--sep); border-radius: 999px; padding: 6px 4px; transition: all 0.3s; }
+  .co-t { font-family: var(--serif); font-size: 15px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+  .co-s { font-size: 11.5px; color: var(--ink2); margin-top: 5px; line-height: 1.45; }
+  .co-pills { display: flex; gap: 8px; margin-top: 12px; }
+  .co-pill {
+    flex: 1; text-align: center; font-size: 12px; font-weight: 500; color: var(--ink2);
+    border: 1px solid var(--hairline); border-radius: 999px; padding: 9px 8px;
+    transition: transform 0.25s var(--bounce), background 0.25s, border-color 0.25s, color 0.25s;
+    min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
   .co-pill.primary { color: var(--gold); border-color: rgba(212,168,90,0.5); }
-  .co-pill.pressed { background: rgba(212,168,90,0.16); transform: scale(0.97); }
+  .co-pill.pressed { background: rgba(212,168,90,0.14); transform: scale(0.97); }
+  .co-pill.ghost { color: var(--ink3); }
 
-  /* diff mobile */
-  .file { display: flex; align-items: baseline; gap: 8px; padding: 8px 2px; font-family: var(--mono); font-size: 10px; color: var(--ink); border-bottom: 1px solid rgba(149,163,172,0.07); }
-  .file .fd { margin-left: auto; font-size: 8.5px; }
-  .plus { color: var(--green); } .minus { color: var(--alert); }
-  .dline { font-family: var(--mono); font-size: 9.5px; padding: 3px 8px; border-radius: 4px; color: var(--ink3); white-space: pre; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity 0.3s; }
-  .dline.on { opacity: 1; }
-  .dline.del { color: var(--alert); background: rgba(201,138,138,0.07); }
-  .dline.add { color: var(--green); background: rgba(127,176,105,0.08); }
-  .receipt { margin-top: 10px; padding: 9px 11px; border-radius: 11px; background: var(--recessed); border: 1px solid rgba(127,176,105,0.3); font-family: var(--mono); font-size: 9px; color: var(--ink2); line-height: 1.6; opacity: 0; transition: opacity 0.4s; }
-  .receipt.on { opacity: 1; }
+  /* review */
+  .file {
+    display: flex; align-items: baseline; gap: 8px; padding: 10px 2px;
+    font-family: var(--mono); font-size: 11px; color: var(--ink);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .file .fd { margin-left: auto; font-size: 9.5px; font-variant-numeric: tabular-nums; }
+  .plus { color: var(--green); } .minus { color: var(--red); }
+  .diffbox {
+    margin-top: 8px; border: 1px solid var(--hairline); border-radius: 12px; overflow: hidden;
+    background: rgba(0,0,0,0.2);
+  }
+  .dline {
+    font-family: var(--mono); font-size: 10px; padding: 5px 10px; color: var(--ink3);
+    white-space: pre; overflow: hidden; text-overflow: ellipsis;
+    opacity: 0; transform: translateX(-4px);
+    transition: opacity 0.3s, transform 0.3s var(--spring);
+  }
+  .dline.on { opacity: 1; transform: none; }
+  .dline.del { color: var(--red); background: rgba(224,140,140,0.07); }
+  .dline.add { color: var(--green); background: rgba(131,180,109,0.08); }
+  .finding {
+    margin-top: 10px; padding: 10px 12px; border-radius: 12px;
+    border: 1px solid rgba(130,168,189,0.28); background: rgba(130,168,189,0.06);
+    font-size: 11.5px; line-height: 1.4; color: var(--ink2);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .finding.on { opacity: 1; }
+  .finding b { color: var(--blue); font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; font-weight: 500; display: block; margin-bottom: 3px; }
+  .receipt {
+    margin-top: 12px; padding: 11px 13px; border-radius: 12px;
+    background: var(--recessed); border: 1px solid rgba(131,180,109,0.3);
+    font-family: var(--mono); font-size: 9.5px; color: var(--ink2); line-height: 1.55;
+    opacity: 0; transform: translateY(6px); transition: opacity 0.4s, transform 0.4s var(--spring);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .receipt.on { opacity: 1; transform: none; }
   .receipt b { color: var(--green); font-weight: 500; }
+  .receipt .ic { color: var(--green); margin-top: 1px; }
 
-  /* varredura (push governado) */
-  .gcheck { display: flex; gap: 8px; align-items: baseline; padding: 6px 2px; font-size: 11px; color: var(--ink2); opacity: 0; transition: all 0.35s ease; }
-  .gcheck.on { opacity: 1; }
-  .gcheck .st { font-family: var(--mono); font-size: 8.5px; margin-left: auto; color: var(--ink3); }
-  .gcheck .st.ok { color: var(--green); } .gcheck .st.run { color: var(--gold); }
+  /* governed mirror — scan ticks */
+  .scanlist { margin-top: 12px; }
+  .gcheck {
+    display: flex; gap: 10px; align-items: center; padding: 8px 2px;
+    font-size: 12px; color: var(--ink2);
+    opacity: 0; transform: translateY(4px);
+    transition: opacity 0.35s, transform 0.35s var(--spring);
+  }
+  .gcheck.on { opacity: 1; transform: none; }
+  .gcheck .mark {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ink4);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--ink4);
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+  }
+  .gcheck .mark.run { border-color: var(--gold); color: var(--gold); animation: breathe 1s ease-in-out infinite; }
+  .gcheck .mark.ok { border-color: rgba(131,180,109,0.5); color: var(--green); background: rgba(131,180,109,0.08); }
+  .gcheck .st { margin-left: auto; font-family: var(--mono); font-size: 9px; color: var(--ink4); font-variant-numeric: tabular-nums; }
+  .gcheck .st.ok { color: var(--green); }
+  .statusline {
+    margin-top: 14px; padding: 12px 14px; border-radius: 14px;
+    border: 1px solid var(--hairline); background: rgba(0,0,0,0.16);
+    font-size: 12.5px; line-height: 1.45; color: var(--ink2);
+  }
+  .statusline strong { color: var(--ink); font-weight: 600; }
+  .statusline .mono { font-family: var(--mono); font-size: 10px; color: var(--gold); }
 
-  /* lock screen (presença) */
-  .lock { position: absolute; inset: 0; background: radial-gradient(420px 320px at 50% -50px, rgba(212,168,90,0.13), transparent 70%), linear-gradient(180deg, #1a2831 0%, #121d24 55%, #0e161c 100%); display: flex; flex-direction: column; align-items: center; }
-  .lock .date { margin-top: 66px; font-size: 13px; font-weight: 500; color: rgba(214,221,226,0.75); }
-  .lock .clock { font-size: 66px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
-  .notif { margin-top: 26px; width: 282px; border-radius: 17px; background: rgba(36,55,67,0.94); border: 1px solid var(--sep); padding: 11px 13px; display: flex; gap: 10px; align-items: flex-start; opacity: 0; transform: translateY(-14px); transition: all 0.55s cubic-bezier(0.32,0.72,0,1); box-shadow: 0 10px 34px rgba(0,0,0,0.4); }
+  /* lock / presence */
+  .lock {
+    position: absolute; inset: 0; z-index: 20;
+    background:
+      radial-gradient(420px 320px at 50% -40px, rgba(212,168,90,0.14), transparent 70%),
+      linear-gradient(180deg, #1a2831 0%, #121d24 55%, #0e161c 100%);
+    display: flex; flex-direction: column; align-items: center;
+    transition: opacity 0.5s var(--spring);
+  }
+  .lock .date { margin-top: 68px; font-size: 14px; font-weight: 500; color: rgba(230,235,238,0.72); }
+  .lock .clock {
+    font-size: 72px; font-weight: 700; letter-spacing: -0.03em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .notif {
+    margin-top: 28px; width: 286px; border-radius: 18px;
+    background: rgba(34,52,64,0.94); border: 1px solid var(--hairline-hi);
+    padding: 12px 14px; display: flex; gap: 11px; align-items: flex-start;
+    opacity: 0; transform: translateY(-16px) scale(0.98);
+    transition: opacity 0.55s var(--spring), transform 0.55s var(--bounce);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.42);
+  }
   .notif.on { opacity: 1; transform: none; }
-  .notif .appicon { width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0; background: linear-gradient(180deg, #243743, #15212a); display: flex; align-items: center; justify-content: center; color: var(--gold); font-family: var(--serif); font-size: 14px; border: 0.5px solid rgba(212,168,90,0.3); }
-  .notif b { font-size: 11.5px; display: block; }
-  .notif .nb { font-size: 10.5px; color: var(--ink2); margin-top: 2px; line-height: 1.4; }
-  .notif .when { margin-left: auto; font-size: 9px; color: var(--ink3); flex-shrink: 0; }
+  .notif .appicon {
+    width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+    background: linear-gradient(180deg, #243743, #15212a);
+    display: flex; align-items: center; justify-content: center; color: var(--gold);
+    border: 0.5px solid rgba(212,168,90,0.3);
+  }
+  .notif b { font-size: 12.5px; display: block; letter-spacing: -0.01em; }
+  .notif .nb { font-size: 11.5px; color: var(--ink2); margin-top: 3px; line-height: 1.4; }
+  .notif .when { margin-left: auto; font-size: 10px; color: var(--ink3); flex-shrink: 0; font-variant-numeric: tabular-nums; }
 
-  /* conversa (linguagem natural) */
-  .uquote { font-family: var(--serif); font-style: italic; font-size: 14px; line-height: 1.45; padding-left: 11px; border-left: 2px solid var(--gold); opacity: 0; transition: all 0.4s ease; }
+  .uquote {
+    font-family: var(--serif); font-style: italic; font-size: 15px; line-height: 1.45;
+    padding-left: 12px; border-left: 2px solid var(--gold);
+    opacity: 0; transition: opacity 0.4s;
+  }
   .uquote.on { opacity: 1; }
-  .nl-line { font-size: 11.5px; line-height: 1.55; color: var(--ink); opacity: 0; transform: translateY(6px); transition: all 0.4s ease; margin-top: 9px; }
+  .nl-line {
+    font-size: 12.5px; line-height: 1.55; color: var(--ink);
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.4s, transform 0.4s var(--spring); margin-top: 11px;
+  }
   .nl-line.on { opacity: 1; transform: none; }
-  .nl-line .mono { font-family: var(--mono); font-size: 9px; color: var(--gold); }
+  .nl-line .mono { font-family: var(--mono); font-size: 10px; color: var(--gold); font-variant-numeric: tabular-nums; }
   .nl-line .why { font-family: var(--serif); font-style: italic; color: var(--ink2); }
+  .nl-ref {
+    display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;
+    font-family: var(--mono); font-size: 9px; color: var(--ink3);
+  }
 
-  /* ponte pro desktop */
-  .bridge { margin-top: 72px; border: 1px solid var(--sep-soft); border-radius: 18px; padding: 26px 30px; background: rgba(29,43,52,0.5); display: flex; gap: 26px; align-items: center; flex-wrap: wrap; }
+  .bridge {
+    margin-top: 72px; border: 1px solid var(--hairline); border-radius: 18px; padding: 28px 32px;
+    background: rgba(27,40,48,0.5); display: flex; gap: 26px; align-items: center; flex-wrap: wrap;
+  }
   .bridge .btxt { flex: 1; min-width: 280px; }
-  .bridge h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; }
-  .bridge p { margin-top: 8px; font-size: 13px; line-height: 1.6; color: var(--ink2); text-wrap: pretty; }
-  .bridge a.go { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 10px 22px; text-decoration: none; white-space: nowrap; }
+  .bridge h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .bridge p { margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: var(--ink2); text-wrap: pretty; }
+  .bridge a.go {
+    font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold);
+    border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 11px 22px; text-decoration: none; white-space: nowrap;
+  }
   .bridge a.go:hover { background: rgba(212,168,90,0.1); }
-  .bmap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; margin-top: 14px; }
-  .bmap .bi { font-size: 11.5px; color: var(--ink3); display: flex; gap: 8px; align-items: baseline; }
+  .bmap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; margin-top: 16px; }
+  .bmap .bi { font-size: 12px; color: var(--ink3); display: flex; gap: 8px; align-items: baseline; }
   .bmap .bi b { color: var(--ink2); font-weight: 500; font-family: var(--mono); font-size: 10px; }
 
-  .colophon { margin-top: 56px; font-family: var(--mono); font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-  .replay { position: fixed; bottom: 26px; right: 26px; z-index: 50; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); background: rgba(29,43,52,0.9); border: 1px solid rgba(212,168,90,0.4); border-radius: 999px; padding: 10px 20px; cursor: pointer; backdrop-filter: blur(8px); }
-  .replay:hover { background: rgba(212,168,90,0.12); }
+  .colophon {
+    margin-top: 56px; font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  .replay {
+    position: fixed; bottom: 26px; right: 26px; z-index: 50;
+    font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold);
+    background: rgba(27,40,48,0.92); border: 1px solid rgba(212,168,90,0.4);
+    border-radius: 999px; padding: 11px 20px; cursor: pointer; backdrop-filter: blur(10px);
+  }
+  .replay:hover, .replay:focus-visible { background: rgba(212,168,90,0.12); outline: none; }
   ::selection { background: rgba(212,168,90,0.25); }
 
-  @media (max-width: 1160px) { .grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } .page { padding: 40px 20px 72px; } h1 { font-size: 34px; } }
-  svg.ic { width: 14px; height: 14px; flex-shrink: 0; }
-  .hrow svg.ic { width: 16px; height: 16px; color: var(--ink2); }
-  .hrow svg.chev, .c-meta svg.ic, .notif svg.ic { width: 11px; height: 11px; }
-  .agent svg.ic { width: 10px; height: 10px; vertical-align: -1px; }
-  .cap { margin: 2px auto 6px; display: flex; align-items: center; gap: 7px; width: fit-content; font-size: 10.5px; font-weight: 600; padding: 6px 14px; border-radius: 999px; font-variant-numeric: tabular-nums; transition: all 0.6s cubic-bezier(0.32,0.72,0,1); }
-  .cap svg.ic { width: 11px; height: 11px; }
-  .cap.bad { color: var(--alert); background: rgba(201,138,138,0.09); box-shadow: inset 0 0 0 1px rgba(201,138,138,0.35); }
-  .cap.good { color: var(--green); background: rgba(127,176,105,0.09); box-shadow: inset 0 0 0 1px rgba(127,176,105,0.35); }
-  .lane { fill: none; stroke-linecap: round; }
-  .dr { transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1); }
-  .gnd { opacity: 0; transition: opacity 0.35s ease; }
-  .gnd.on { opacity: 1; }
-  .pulse-r { animation: gpulse 1.7s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
-  @keyframes gpulse { 50% { opacity: 0.3; } }
-  .mm { font-size: 12px; font-weight: 500; fill: var(--ink); }
-  .mmeta { font-family: var(--mono); font-size: 8px; fill: var(--ink3); }
-  .sh-kicker.okc { color: var(--green); }
+  @media (max-width: 1160px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .principles { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 780px) {
+    .grid { grid-template-columns: 1fr; }
+    .page { padding: 40px 20px 96px; }
+    .topnav { padding: 11px 20px; }
+    h1 { font-size: 34px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  /* M0 · grafo */
+  .gcap { margin: 2px auto 8px; display: flex; align-items: center; gap: 7px; width: fit-content; font-size: 10.5px; font-weight: 600; padding: 6px 14px; border-radius: 999px; transition: all 0.6s cubic-bezier(0.32,0.72,0,1); }
+  .gcap svg.ic { width: 11px; height: 11px; }
+  .gcap.bad { color: var(--alert); background: rgba(201,138,138,0.08); box-shadow: inset 0 0 0 1px rgba(201,138,138,0.35); }
+  .gcap.good { color: var(--green); background: rgba(127,176,105,0.08); box-shadow: inset 0 0 0 1px rgba(127,176,105,0.35); }
+  .glane { fill: none; stroke-linecap: round; transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1); }
+  .ggn { opacity: 0; transition: opacity 0.35s ease; }
+  .ggn.on { opacity: 1; }
+  .ggpulse { animation: ggp 1.7s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+  @keyframes ggp { 50% { opacity: 0.3; } }
+  .gmm { font-size: 12px; font-weight: 500; fill: var(--ink); }
+  .gmeta { font-family: var(--mono); font-size: 8px; fill: var(--ink3); }
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<symbol id="i-chat" viewBox="0 0 16 16"><path d="M2.2 8c0-3 2.6-5.2 5.8-5.2S13.8 5 13.8 8 11.2 13.2 8 13.2c-.7 0-1.4-.1-2-.3L3 13.8l.9-2.4C2.9 10.5 2.2 9.3 2.2 8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
-<symbol id="i-repo" viewBox="0 0 16 16"><rect x="2.2" y="2.2" width="11.6" height="11.6" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.5 4 8l1.5 2.5M10.5 5.5 12 8l-1.5 2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-<symbol id="i-bolt" viewBox="0 0 16 16"><path d="M8.8 1.8 3.6 9h3.2l-.6 5.2L11.4 7H8.2l.6-5.2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
-<symbol id="i-folder" viewBox="0 0 16 16"><path d="M2.2 4.4c0-.7.5-1.2 1.2-1.2h3l1.4 1.6h4.8c.7 0 1.2.5 1.2 1.2v5.6c0 .7-.5 1.2-1.2 1.2H3.4c-.7 0-1.2-.5-1.2-1.2V4.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
-<symbol id="i-chev-r" viewBox="0 0 16 16"><path d="m6 3 4.4 5L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-<symbol id="i-spark" viewBox="0 0 16 16"><path d="M8 1.6c.5 3.4 1.6 4.9 6.4 6.4-4.8 1.5-5.9 3-6.4 6.4-.5-3.4-1.6-4.9-6.4-6.4C6.4 6.5 7.5 5 8 1.6z" fill="currentColor"/></symbol>
-<symbol id="i-diamond" viewBox="0 0 16 16"><rect x="3.6" y="3.6" width="8.8" height="8.8" rx="1.6" transform="rotate(45 8 8)" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
-<symbol id="i-user" viewBox="0 0 16 16"><circle cx="8" cy="5.4" r="2.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.8 14c.7-2.9 2.7-4.2 5.2-4.2s4.5 1.3 5.2 4.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
-<symbol id="i-merge" viewBox="0 0 16 16"><circle cx="4.5" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="11.5" cy="4" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11.5 6c0 3.4-3.4 3.6-5.2 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
-<symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8.6 3.2 3.2L13 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-<symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 2.4 14.2 13a.9.9 0 0 1-.78 1.35H2.58A.9.9 0 0 1 1.8 13L8 2.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.4v3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.9" fill="currentColor"/></symbol>
-</defs></svg>
+<!-- sprite canônico — mesma linguagem do grafo -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-branch" viewBox="0 0 16 16"><circle cx="4.5" cy="4" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="11.5" cy="6" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 6v4M11.5 8c0 2.5-3 2-5.5 2.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 2.4 14.2 13a.9.9 0 0 1-.78 1.35H2.58A.9.9 0 0 1 1.8 13L8 2.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.4v3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.9" fill="currentColor"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8.6 3.2 3.2L13 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 16 16"><path d="M8 1.8 13.2 3.6v4.2c0 3.4-2.2 5.5-5.2 6.6-3-1.1-5.2-3.2-5.2-6.6V3.6L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-repo" viewBox="0 0 16 16"><rect x="2.2" y="2.2" width="11.6" height="11.6" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.5 4 8l1.5 2.5M10.5 5.5 12 8l-1.5 2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 16 16"><path d="M8 1.6c.5 3.4 1.6 4.9 6.4 6.4-4.8 1.5-5.9 3-6.4 6.4-.5-3.4-1.6-4.9-6.4-6.4C6.4 6.5 7.5 5 8 1.6z" fill="currentColor"/></symbol>
+    <symbol id="i-diamond" viewBox="0 0 16 16"><rect x="3.6" y="3.6" width="8.8" height="8.8" rx="1.6" transform="rotate(45 8 8)" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-user" viewBox="0 0 16 16"><circle cx="8" cy="5.4" r="2.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.8 14c.7-2.9 2.7-4.2 5.2-4.2s4.5 1.3 5.2 4.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 16 16"><rect x="2.8" y="5" width="10.4" height="8" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V2.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="2.2" r="0.9" fill="currentColor"/><circle cx="5.8" cy="9" r="1" fill="currentColor"/><circle cx="10.2" cy="9" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 16 16"><path d="M10 3 5.6 8 10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 16 16"><path d="M6 3l4.4 5L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3.2v9.6M3.2 8h9.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 16 16"><path d="M3 3.2h10a1.4 1.4 0 0 1 1.4 1.4v5.2A1.4 1.4 0 0 1 13 11.2H7.2L4 13.6V11.2H3A1.4 1.4 0 0 1 1.6 9.8V4.6A1.4 1.4 0 0 1 3 3.2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 16 16"><path d="M9 1.8 4.2 9h3.4L7 14.2 12.2 7H8.6L9 1.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-tray" viewBox="0 0 16 16"><path d="M2.4 4.2h11.2v7.6a1.4 1.4 0 0 1-1.4 1.4H3.8a1.4 1.4 0 0 1-1.4-1.4V4.2z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.4 9.2h11.2" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 16 16"><rect x="5.8" y="1.8" width="4.4" height="7.2" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.8 7.8a4.2 4.2 0 0 0 8.4 0M8 12v2.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 16 16"><path d="M5.2 5.2H2.4V2.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 8.2A5 5 0 1 0 4.4 4.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-mirror" viewBox="0 0 16 16"><path d="M8 2.2v11.6M3.2 5.2 8 2.2l4.8 3M3.2 10.8 8 13.8l4.8-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
 <header class="topnav">
   <span class="tn-brand">Atlas Código · iPhone</span>
-  <nav>
+  <nav aria-label="Navegação da proposta">
     <a href="atlas-codigo-plano.html" style="color: var(--gold); border-color: rgba(212,168,90,0.4)">Plano completo ›</a>
+    <a href="atlas-grafo-governado.html">Grafo ›</a>
+    <a href="atlas-nova-era.html">Nova Era ›</a>
     <a href="#telas">Telas</a>
-    <a href="#desktop">Desktop (futuro)</a>
     <a class="desk" href="atlas-code-ledger.html">Cockpit desktop ›</a>
   </nav>
 </header>
-<div class="page">
 
-  <div class="kicker">Atlas Código · sessão mobile nativa — proposta Fable 5</div>
-  <h1>No bolso, o código se lê e se decide.</h1>
+<div class="page">
+  <div class="kicker">Proposta viva · Ink &amp; Brass · v2 experiência</div>
+  <h1>No bolso, só a exceção fala.</h1>
   <p class="lede">
-    Esta é a vertical Atlas Código <em>no app nativo</em> — só iPhone, na linguagem exata
-    do app que já está instalado (hub com seções, folhas, recibos, presença). O telefone
-    faz o que o telefone faz melhor: <em>ler a história, decidir reviews, autorizar atos e
-    ser avisado por exceção</em>. O plumbing e o cockpit pleno ficam para o
-    <a href="atlas-code-ledger.html" style="color: var(--gold)">desktop, no futuro</a> — cada tela
-    daqui diz o que dela cresce lá.
+    Sete telas. Uma lei: <em>saudável é silêncio</em>. O iPhone lê a história, decide o que é humano,
+    recebe o fato consumado e pergunta em linguagem natural — sem ✓ decorativo, sem portão
+    para plumbing, sem número inventado no produto. Aqui a encenação é explícita; no app, a fonte manda.
   </p>
   <div class="keyfacts">
-    <div class="kf"><b>7</b><span>telas iPhone, vivas — toque para repetir</span></div>
-    <div class="kf"><b>1</b><span>já shipada no seu aparelho (review C15)</span></div>
-    <div class="kf"><b>0</b><span>números inventados — cada tela com a fonte do dado</span></div>
+    <div class="kf"><b>7</b><span>telas — toque num iPhone para repetir a cena</span></div>
+    <div class="kf"><b>1</b><span>casca parcial no aparelho (review C15 — prova pendente)</span></div>
+    <div class="kf"><b>0</b><span>aprovação humana para operação — veto com recibo</span></div>
   </div>
   <div class="rule"></div>
 
+  <div class="principles" aria-label="Princípios de experiência">
+    <article>
+      <h3>UX — um job por tela</h3>
+      <p>Hub aponta. Timeline prova. Radar bloqueia. Review decide produto. Espelho registra. Presença chama.</p>
+    </article>
+    <article>
+      <h3>AX — o corpo entende</h3>
+      <p>Reduce Motion zera loops. Alvos ≥40px. Pílula nunca some. Labels nos frames. Sem depender de cor só.</p>
+    </article>
+    <article>
+      <h3>Canon — autonomia</h3>
+      <p>Varredura e espelho correm sozinhos. Você desfaz com recibo. Decisão humana: produto, preço, risco.</p>
+    </article>
+  </div>
+
   <div id="telas" class="grid">
 
-    <!-- M0 · GRAFO — o mapa do repo -->
+    <!-- M0 -->
     <div class="cell">
-      <div class="cell-label"><b>M0 · grafo governado — o mapa</b><span class="tag live">contratos C22–C25</span></div>
-      <div class="iphone" id="m0"><div class="screen">
-        <div class="island"></div>
-        <div class="content">
-          <div class="m-head"><div class="back">‹</div><div class="title">Grafo · atlas-server</div></div>
-          <div class="m-body">
-            <div class="cap bad" id="g7cap"><svg class="ic" id="g7capi"><use href="#i-warn"/></svg><span id="g7capt">1 desvio da main</span></div>
-            <svg viewBox="0 0 292 440" width="100%" aria-label="grafo — main como espinha">
-              <defs><linearGradient id="g7main" gradientUnits="userSpaceOnUse" x1="0" y1="18" x2="0" y2="420">
-                <stop offset="0" stop-color="#ecc984"/><stop offset="1" stop-color="#bb8d4c"/></linearGradient></defs>
-              <line class="lane dr" id="g7ln" x1="26" y1="18" x2="26" y2="420" stroke="url(#g7main)" stroke-width="2.5" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
-              <path class="lane dr" id="g7fork" d="M26,158 C26,131 62,131 62,104" stroke="#c98a8a" stroke-width="2.2" opacity="0.95" stroke-dasharray="200" stroke-dashoffset="200"/>
-              <path class="lane" id="g7ret" d="M62,104 C62,77 26,77 26,50" stroke="#7fb069" stroke-width="2.2" stroke-dasharray="200" stroke-dashoffset="200" style="transition: stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1)"/>
-              <g class="gnd" id="g7n1"><circle cx="26" cy="50" r="5" fill="#e2b264" stroke="#1d2b34" stroke-width="2"/>
-                <text class="mm" x="48" y="47">feat(brain): council_review</text><text class="mmeta" x="48" y="61">fable · main · 2h</text></g>
-              <g class="gnd" id="g7n2"><circle id="g7dot" cx="62" cy="104" r="5" fill="#c98a8a" stroke="#1d2b34" stroke-width="2"/>
-                <text class="mm" x="80" y="101" fill="#d9a8a8">wip: ajuste rápido no worker</text><text class="mmeta" x="80" y="115" fill="#b98a8a">forge-3 · hotfix-rapido · fora da main</text></g>
-              <g class="gnd" id="g7r"><circle class="pulse-r" cx="62" cy="104" r="12" fill="none" stroke="#c98a8a" stroke-width="1.4" opacity="0.8"/></g>
-              <g class="gnd" id="g7n3"><circle cx="26" cy="158" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
-                <text class="mm" x="48" y="155">docs(obra): canon · Autônomos</text><text class="mmeta" x="48" y="169">você · main · 1d</text></g>
-              <g class="gnd" id="g7n4"><circle cx="26" cy="212" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
-                <text class="mm" x="48" y="209">feat(core): fila durável</text><text class="mmeta" x="48" y="223">codex · main · 5h</text></g>
-              <g class="gnd" id="g7n5"><circle cx="26" cy="266" r="5" fill="#e2b264" stroke="#1d2b34" stroke-width="2"/>
-                <text class="mm" x="48" y="263">fix(core): resposta verbatim</text><text class="mmeta" x="48" y="277">fable · main · 1d</text></g>
-              <g class="gnd" id="g7n6"><circle cx="26" cy="320" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
-                <text class="mm" x="48" y="317">versão final</text><text class="mmeta" x="48" y="331">você · main · 4d</text></g>
-              <g class="gnd" id="g7n7"><circle cx="26" cy="374" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
-                <text class="mm" x="48" y="371">feat(core): durable follow-ups</text><text class="mmeta" x="48" y="385">codex · main · 5d</text></g>
-            </svg>
-            <div class="sheet" id="g7sheet">
-              <div class="grab"></div>
-              <div class="sh-kicker okc">Curado sozinho · main-only · 02:41</div>
-              <div class="sh-title">forge-3 saiu da main · o Atlas resolveu</div>
-              <div class="co-s" style="margin-top:6px">Detectada às 02:41. Commit preservado, trazido para a main, branch encerrada — 12 segundos, sem acordar você.</div>
-              <div style="margin-top:9px">
-                <div class="gcheck on"><span>Trazer o commit para a main</span><span class="st ok" id="g7s1"></span></div>
-                <div class="gcheck on"><span>Encerrar a branch hotfix-rapido</span><span class="st ok" id="g7s2"></span></div>
-                <div class="gcheck on"><span>Citar a regra ao forge-3 — ele aprende</span><span class="st ok" id="g7s3"></span></div>
-              </div>
-              <div class="co-pills" style="margin-top:10px"><span class="co-pill">Desfazer — com recibo</span></div>
-              <div class="receipt" id="g7rcpt"><b>você não foi necessário</b> · recibo no ledger · forge-3 aprendeu</div>
+      <div class="cell-label"><b>M0 · grafo — o mapa</b><span class="tag contract">proposta · C22–C25</span></div>
+      <div class="iphone replayable" id="m0" role="button" tabindex="0" aria-label="Grafo governado — toque para repetir" title="toque para repetir">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="content">
+            <div class="m-head">
+              <div class="back" aria-hidden="true"><svg class="ic"><use href="#i-chev"/></svg></div>
+              <div class="title">Grafo</div>
+              <div class="meta tabular">atlas-server</div>
             </div>
-          </div>
-        </div>
-        <div class="homebar"></div>
-      </div></div>
-      <p class="caption">A primeira tela do Código: <em>o mapa</em>. A main é a espinha — todo mundo commita nela — e o desvio salta ao olho. O Atlas cura sozinho; a folha é <em>recibo</em>, e o único botão é desfazer. Desktop com a janela completa: <a href="atlas-grafo-governado.html" style="color: var(--gold)">grafo governado ›</a></p>
-    </div>
-
-    <!-- M1 · Hub com seção CÓDIGO -->
-    <div class="cell">
-      <div class="cell-label"><b>M1 · o hub ganha CÓDIGO</b><span class="tag live">integra no hub shipado</span></div>
-      <div class="iphone" id="m1"><div class="screen">
-        <div class="island"></div>
-        <div class="content">
-          <div class="m-head"><div class="title" style="font-size:17px">Atlas</div></div>
-          <div class="m-body">
-            <div class="hsec">CONVERSAS</div>
-            <div class="hrow"><svg class="ic"><use href="#i-chat"/></svg><b>Conversas livres</b><span class="n">12</span><svg class="ic chev" style="color:var(--ink3)"><use href="#i-chev-r"/></svg></div>
-            <div class="hsec">CÓDIGO</div>
-            <div class="hrow" id="m1r1"><svg class="ic"><use href="#i-repo"/></svg><b>atlas-native</b><svg class="ic chev" style="color:var(--ink3); margin-left:auto"><use href="#i-chev-r"/></svg></div>
-            <div class="hrow" id="m1r2"><svg class="ic"><use href="#i-repo"/></svg><b>atlas-server</b><svg class="ic chev" style="color:var(--ink3); margin-left:auto"><use href="#i-chev-r"/></svg></div>
-            <div class="hrow" id="m1r3"><svg class="ic"><use href="#i-repo"/></svg><b>blackink-app</b><span class="attn" id="m1s3">7 não espelhados</span><svg class="ic chev" style="color:var(--ink3)"><use href="#i-chev-r"/></svg></div>
-            <div class="hsec">OPERAÇÃO</div>
-            <div class="hrow"><svg class="ic"><use href="#i-bolt"/></svg><b>Autônomos</b><svg class="ic chev" style="color:var(--ink3); margin-left:auto"><use href="#i-chev-r"/></svg></div>
-            <div class="hsec">WORKSPACES</div>
-            <div class="hrow"><svg class="ic"><use href="#i-folder"/></svg><b>Todas as conversas</b><span class="n">100</span><svg class="ic chev" style="color:var(--ink3)"><use href="#i-chev-r"/></svg></div>
-          </div>
-          <div class="pillinput"><div class="plus">+</div><div class="ph">Escreva ao Atlas</div></div>
-        </div>
-        <div class="homebar"></div>
-      </div></div>
-      <p class="caption">A seção <em>CÓDIGO</em> no hub real: <em>saudável é silêncio total</em> — nenhum "sincronizado ✓" decorativo. Só a exceção fala ("7 não espelhados"), o Atlas cura sozinho, e a linha volta ao silêncio. Fonte: git status/rev-list por repo (C22).</p>
-    </div>
-
-    <!-- M2 · Linha do tempo -->
-    <div class="cell">
-      <div class="cell-label"><b>M2 · linha do tempo de obras</b><span class="tag live">git log + traces reais</span></div>
-      <div class="iphone" id="m2"><div class="screen">
-        <div class="island"></div>
-        <div class="content">
-          <div class="m-head"><div class="back">‹</div><div class="title">atlas-native</div><div class="side">144 · main</div></div>
-          <div class="m-body">
-            <div class="commit" id="m2c1"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
-              <div><div class="c-msg">fix(core): resposta parava de comer espaços</div>
-              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>2h</span></div></div></div>
-            <div class="commit" id="m2c2"><div class="c-node"><div class="c-dot codex"></div><div class="c-line"></div></div>
-              <div><div class="c-msg">feat(core): durable execution follow-up queue</div>
-              <div class="c-meta"><span class="agent codex"><svg class="ic"><use href="#i-diamond"/></svg> codex</span><span>5h</span></div></div></div>
-            <div class="commit" id="m2c3"><div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
-              <div><div class="c-msg">polish(ui): C11 ligado · chip 'Fila N' + folha</div>
-              <div class="c-meta"><span class="agent"><svg class="ic"><use href="#i-spark"/></svg> fable</span><span>5h</span></div></div></div>
-            <div class="commit" id="m2c4"><div class="c-node"><div class="c-dot you"></div></div>
-              <div><div class="c-msg">docs(obra): canon · Autônomos é área própria</div>
-              <div class="c-meta"><span class="agent you"><svg class="ic"><use href="#i-user"/></svg> você</span><span>1d</span></div></div></div>
-          </div>
-          <div class="sheet" id="m2sheet">
-            <div class="grab"></div>
-            <div class="sh-kicker">Proveniência</div>
-            <div class="sh-title">fix(core): resposta parava de comer espaços</div>
-            <div class="sh-hash">683af18 · Fable 5 · 14/07 09:56</div>
-            <div class="sh-block"><div class="k">Origem (sua frase, da conversa real)</div>
-              <div class="v"><em>"identifica todos os erros, principalmente de resposta e formatação"</em> — com screenshot do iPhone.</div></div>
-            <div class="sh-block"><div class="k">Prova</div>
-              <div class="gates"><span class="pg">checks exit=0</span><span class="pg">regressão travada</span><span class="pg">device ✓</span></div></div>
-          </div>
-        </div>
-        <div class="homebar"></div>
-      </div></div>
-      <p class="caption">Commits como <em>recibos</em> — quem (✦ ◆ ●), gate, quando. Tocar num hash sobe a folha de <em>proveniência</em>: a SUA frase que o originou e a prova. No desktop isso vira o graph completo com painel fixo.</p>
-    </div>
-
-    <!-- M3 · Radar / segredo bloqueia push -->
-    <div class="cell">
-      <div class="cell-label"><b>M3 · radar — segredo bloqueia push</b><span class="tag live">a varredura de 14/07, automática</span></div>
-      <div class="iphone" id="m3"><div class="screen">
-        <div class="island"></div>
-        <div class="content">
-          <div class="m-head"><div class="back">‹</div><div class="title">Código</div><div class="side" id="m3side">1 atenção</div></div>
-          <div class="m-body">
-            <div class="repo okr"><div class="repo-top"><b>atlas-native</b></div></div>
-            <div class="repo attn" id="m3r"><div class="repo-top"><div class="rled"></div><b>blackink-app</b><span class="rstate warn" id="m3rs">espelho bloqueado</span></div></div>
-            <div class="callout alert" id="m3c">
-              <div class="co-k" id="m3ck">Varredura · segredo detectado</div>
-              <div class="co-t" id="m3ct">FIREBASE_KEY em config/app.ts · espelho bloqueado</div>
-              <div class="co-s" id="m3cs">Nada saiu da máquina. O Atlas está movendo para .env agora — sem esperar você.</div>
-              <div class="co-pills" id="m3pills">
-                <span class="co-pill">Ver diff</span>
+            <div class="m-body">
+              <div class="gcap bad" id="g0cap"><svg class="ic" id="g0capi"><use href="#i-warn"/></svg><span id="g0capt">1 desvio da main</span></div>
+              <svg viewBox="0 0 292 400" width="100%" aria-label="main como espinha; desvio salta ao olho">
+                <defs><linearGradient id="g0main" gradientUnits="userSpaceOnUse" x1="0" y1="16" x2="0" y2="386">
+                  <stop offset="0" stop-color="#ecc984"/><stop offset="1" stop-color="#bb8d4c"/></linearGradient></defs>
+                <line class="glane" id="g0ln" x1="26" y1="16" x2="26" y2="386" stroke="url(#g0main)" stroke-width="2.5" opacity="0.95" stroke-dasharray="900" stroke-dashoffset="900"/>
+                <path class="glane" id="g0fork" d="M26,152 C26,126 62,126 62,100" stroke="#c98a8a" stroke-width="2.2" opacity="0.95" stroke-dasharray="200" stroke-dashoffset="200"/>
+                <path class="glane" id="g0ret" d="M62,100 C62,74 26,74 26,48" stroke="#7fb069" stroke-width="2.2" stroke-dasharray="200" stroke-dashoffset="200" style="transition-duration: 0.9s"/>
+                <g class="ggn" id="g0n1"><circle cx="26" cy="48" r="5" fill="#d4a85a" stroke="#1d2b34" stroke-width="2"/>
+                  <text class="gmm" x="48" y="45">feat(brain): council_review</text><text class="gmeta" x="48" y="59">fable · main · 2h</text></g>
+                <g class="ggn" id="g0n2"><circle id="g0dot" cx="62" cy="100" r="5" fill="#c98a8a" stroke="#1d2b34" stroke-width="2"/>
+                  <text class="gmm" x="80" y="97" fill="#d9a8a8">wip: ajuste rápido no worker</text><text class="gmeta" x="80" y="111" fill="#b98a8a">forge-3 · fora da main</text></g>
+                <g class="ggn" id="g0r"><circle class="ggpulse" cx="62" cy="100" r="12" fill="none" stroke="#c98a8a" stroke-width="1.4" opacity="0.8"/></g>
+                <g class="ggn" id="g0n3"><circle cx="26" cy="152" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
+                  <text class="gmm" x="48" y="149">docs(obra): Autônomos é área própria</text><text class="gmeta" x="48" y="163">você · main · 1d</text></g>
+                <g class="ggn" id="g0n4"><circle cx="26" cy="204" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
+                  <text class="gmm" x="48" y="201">feat(core): fila durável</text><text class="gmeta" x="48" y="215">codex · main · 5h</text></g>
+                <g class="ggn" id="g0n5"><circle cx="26" cy="256" r="5" fill="#d4a85a" stroke="#1d2b34" stroke-width="2"/>
+                  <text class="gmm" x="48" y="253">fix(core): resposta verbatim</text><text class="gmeta" x="48" y="267">fable · main · 1d</text></g>
+                <g class="ggn" id="g0n6"><circle cx="26" cy="308" r="5" fill="#7fb069" stroke="#1d2b34" stroke-width="2"/>
+                  <text class="gmm" x="48" y="305">versão final</text><text class="gmeta" x="48" y="319">você · main · 4d</text></g>
+                <g class="ggn" id="g0n7"><circle cx="26" cy="360" r="5" fill="#7fa3b8" stroke="#1d2b34" stroke-width="2"/>
+                  <text class="gmm" x="48" y="357">feat(core): durable follow-ups</text><text class="gmeta" x="48" y="371">codex · main · 5d</text></g>
+              </svg>
+              <div class="sheet" id="g0sheet" role="dialog" aria-label="Recibo de cura">
+                <div class="grab" aria-hidden="true"></div>
+                <div class="sh-kicker"><svg class="ic"><use href="#i-check"/></svg>Curado sozinho · 02:41</div>
+                <div class="sh-title">forge-3 saiu da main</div>
+                <div class="sh-block">
+                  <div class="k">O que o Atlas fez · 12s</div>
+                  <div class="gates">
+                    <span class="pg"><svg class="ic"><use href="#i-check"/></svg>commit → main</span>
+                    <span class="pg"><svg class="ic"><use href="#i-check"/></svg>branch encerrada</span>
+                    <span class="pg"><svg class="ic"><use href="#i-check"/></svg>regra citada</span>
+                  </div>
+                </div>
+                <div class="sh-block">
+                  <div class="k">Sem você</div>
+                  <div class="v">Recibo no ledger · <em>Desfazer — com recibo ›</em></div>
+                </div>
               </div>
             </div>
+            <div class="askpill" aria-label="Perguntar ao Atlas">
+              <div class="plus"><svg class="ic"><use href="#i-plus"/></svg></div>
+              <div class="ph">por que essa branch existe?</div>
+              <div class="mic"><svg class="ic"><use href="#i-mic"/></svg></div>
+            </div>
           </div>
+          <div class="homebar" aria-hidden="true"></div>
         </div>
-        <div class="homebar"></div>
-      </div></div>
-      <p class="caption">O incidente do seu token, <em>impossível daqui em diante</em> — e sem você no caminho: a varredura bloqueia, o Atlas move para .env <em>sozinho</em>, libera, espelha e deixa recibo. Seu botão é "Desfazer", nunca "Resolver". (C24 + C25)</p>
+      </div>
+      <p class="caption">A primeira tela: <em>o mapa</em>. Main é a espinha; o desvio salta ao olho, o Atlas cura sozinho às 02:41 e a folha é recibo — seu único verbo é desfazer.
+        <span class="src">fonte: git log --topo-order + rules engine · C22–C25 · desktop: <a href="atlas-grafo-governado.html" style="color: var(--gold)">grafo ›</a></span></p>
     </div>
 
-    <!-- M4 · Review (JÁ SHIPADO) -->
+    <!-- M1 -->
     <div class="cell">
-      <div class="cell-label"><b>M4 · review como decisão</b><span class="tag ship">JÁ NO SEU IPHONE · 06f88b5</span></div>
-      <div class="iphone" id="m4"><div class="screen">
-        <div class="island"></div>
-        <div class="content">
-          <div class="m-head"><div class="back">‹</div><div class="title">Revisar mudanças</div><div class="side"><span class="plus">+48</span> <span class="minus">−12</span></div></div>
-          <div class="m-body">
-            <div class="file"><span>DashboardHtml.php</span><span class="fd"><span class="plus">+36</span> <span class="minus">−8</span></span></div>
-            <div class="dline" id="m4d1">  private function renderUplift($m) {</div>
-            <div class="dline del" id="m4d2">−   $label = "Total spend absence uplift";</div>
-            <div class="dline add" id="m4d3">+   if (!$this-&gt;hasComparablePair($m)) return '';</div>
-            <div class="dline add" id="m4d4">+   $label = "Economia comprovada no período";</div>
-            <div class="file" style="margin-top:8px"><span>ReportLocale.php</span><span class="fd"><span class="plus">+12</span> <span class="minus">−4</span></span></div>
-            <div class="gates" style="margin-top:10px"><span class="pg">3/3 checks</span><span class="pg">testes passed</span><span class="pg">0 warnings</span></div>
-            <div class="co-pills" style="margin-top:12px">
-              <span class="co-pill primary" id="m4ok">Aceitar tudo</span>
-              <span class="co-pill">Rejeitar</span>
+      <div class="cell-label"><b>M1 · hub — só a exceção</b><span class="tag contract">proposta · C22</span></div>
+      <div class="iphone replayable" id="m1" role="button" tabindex="0" aria-label="Hub com seção Código — toque para repetir" title="toque para repetir">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="content">
+            <div class="m-head"><div class="title" style="font-size:18px">Atlas</div></div>
+            <div class="m-body">
+              <div class="hsec">Conversas</div>
+              <div class="hrow">
+                <span class="icwrap"><svg class="ic"><use href="#i-chat"/></svg></span>
+                <b>Conversas livres</b><span class="n tabular">12</span>
+                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
+              </div>
+              <div class="hsec">Código</div>
+              <div class="hrow quiet">
+                <span class="icwrap"><svg class="ic"><use href="#i-repo"/></svg></span>
+                <b>atlas-native</b>
+                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
+              </div>
+              <div class="hrow quiet">
+                <span class="icwrap"><svg class="ic"><use href="#i-repo"/></svg></span>
+                <b>atlas-server</b>
+                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
+              </div>
+              <div class="hrow" id="m1r3">
+                <span class="icwrap" style="color:var(--red)"><svg class="ic"><use href="#i-warn"/></svg></span>
+                <b>blackink-app</b>
+                <span class="attn" id="m1s3"><svg class="ic" style="width:11px;height:11px"><use href="#i-warn"/></svg>7 não enviados</span>
+                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
+              </div>
+              <div class="hsec">Operação</div>
+              <div class="hrow quiet">
+                <span class="icwrap"><svg class="ic"><use href="#i-bolt"/></svg></span>
+                <b>Autônomos</b>
+                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
+              </div>
+              <div class="hsec">Workspaces</div>
+              <div class="hrow">
+                <span class="icwrap"><svg class="ic"><use href="#i-tray"/></svg></span>
+                <b>Todas as conversas</b><span class="n tabular">100</span>
+                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
+              </div>
             </div>
-            <div class="receipt" id="m4r"><b>aplicado ✓</b> · recibo trace_change_review · 2 arquivos · ledger 14:12</div>
+            <div class="askpill" aria-label="Perguntar ao Atlas">
+              <div class="plus"><svg class="ic"><use href="#i-plus"/></svg></div>
+              <div class="ph">Escreva ao Atlas</div>
+              <div class="mic"><svg class="ic"><use href="#i-mic"/></svg></div>
+            </div>
           </div>
+          <div class="homebar" aria-hidden="true"></div>
         </div>
-        <div class="homebar"></div>
-      </div></div>
-      <p class="caption">Esta tela <em>não é proposta — é produto</em>: o C15 está instalado no seu aparelho. A linha que morreu, a que nasceu, e o aceite que só muda a tela <em>depois do recibo</em>. No desktop ganha diff lado a lado.</p>
+      </div>
+      <p class="caption">Repos saudável: <em>nome + chevron</em>. Nada mais. A única linha que fala é a exceção — e some quando o espelho conclui.
+        <span class="src">fonte produto: git status / rev-list · C22</span></p>
     </div>
 
-    <!-- M5 · Push governado -->
+    <!-- M2 -->
     <div class="cell">
-      <div class="cell-label"><b>M5 · push governado</b><span class="tag">contrato: push_receipt no ledger</span></div>
-      <div class="iphone" id="m5"><div class="screen">
-        <div class="island"></div>
-        <div class="content">
-          <div class="m-head"><div class="back">‹</div><div class="title">Espelhar para fora</div><div class="side">espelho: github</div></div>
-          <div class="m-body">
-            <div class="callout on" style="margin-top:4px">
-              <div class="co-k">Espelho</div>
-              <div class="co-t">3 commits da manhã, prontos</div>
-              <div class="co-s">A varredura roda antes de qualquer byte sair. Espelho de hoje: GitHub — trocável; a verdade é local.</div>
+      <div class="cell-label"><b>M2 · mapa + proveniência</b><span class="tag contract">proposta · C22+C23</span></div>
+      <div class="iphone replayable" id="m2" role="button" tabindex="0" aria-label="Linha do tempo com proveniência — toque para repetir" title="toque para repetir">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="content">
+            <div class="m-head">
+              <div class="back" aria-hidden="true"><svg class="ic"><use href="#i-chev"/></svg></div>
+              <div class="title">atlas-native</div>
+              <div class="meta tabular">main</div>
             </div>
-            <div style="margin-top:10px">
-              <div class="gcheck" id="m5g1"><span>Segredos no histórico a enviar</span><span class="st" id="m5s1">…</span></div>
-              <div class="gcheck" id="m5g2"><span>Lixo de build fora do rastreio</span><span class="st" id="m5s2">…</span></div>
-              <div class="gcheck" id="m5g3"><span>Drift contra origin/main</span><span class="st" id="m5s3">…</span></div>
-              <div class="gcheck" id="m5g4"><span>Branch = main local (pétreo)</span><span class="st" id="m5s4">…</span></div>
+            <div class="m-body">
+              <div class="tl">
+                <div class="commit" id="m2c1">
+                  <div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+                  <div>
+                    <div class="c-msg">fix(core): resposta parava de comer espaços</div>
+                    <div class="c-meta">
+                      <span class="ava"><svg class="ic"><use href="#i-spark"/></svg></span>
+                      <span>fable</span><span class="tabular">683af18</span><span>2h</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="commit" id="m2c2">
+                  <div class="c-node"><div class="c-dot codex"></div><div class="c-line"></div></div>
+                  <div>
+                    <div class="c-msg">feat(core): durable execution follow-up queue</div>
+                    <div class="c-meta">
+                      <span class="ava codex"><svg class="ic"><use href="#i-diamond"/></svg></span>
+                      <span>codex</span><span class="tabular">da25e8a</span><span>5h</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="commit" id="m2c3">
+                  <div class="c-node"><div class="c-dot fable"></div><div class="c-line"></div></div>
+                  <div>
+                    <div class="c-msg">polish(ui): chip Fila N + folha</div>
+                    <div class="c-meta">
+                      <span class="ava"><svg class="ic"><use href="#i-spark"/></svg></span>
+                      <span>fable</span><span class="tabular">412a285</span><span>5h</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="commit" id="m2c4">
+                  <div class="c-node"><div class="c-dot you"></div></div>
+                  <div>
+                    <div class="c-msg">docs(obra): Autônomos é área própria</div>
+                    <div class="c-meta">
+                      <span class="ava you"><svg class="ic"><use href="#i-user"/></svg></span>
+                      <span>você</span><span class="tabular">8b0af2d</span><span>1d</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sheet" id="m2sheet" role="dialog" aria-label="Proveniência do commit">
+                <div class="grab" aria-hidden="true"></div>
+                <div class="sh-kicker"><svg class="ic"><use href="#i-spark"/></svg>Proveniência</div>
+                <div class="sh-title">Por que esta linha existe</div>
+                <div class="sh-hash tabular">683af18 · Fable 5 · 14/07 09:56</div>
+                <div class="sh-block">
+                  <div class="k">Sua frase</div>
+                  <div class="v"><em>“identifica todos os erros, principalmente de resposta e formatação”</em> — com o print do iPhone.</div>
+                </div>
+                <div class="sh-block">
+                  <div class="k">Prova no ledger</div>
+                  <div class="gates">
+                    <span class="pg"><svg class="ic"><use href="#i-check"/></svg>checks 0</span>
+                    <span class="pg"><svg class="ic"><use href="#i-check"/></svg>regressão</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="co-pills" style="margin-top:12px">
-              <span class="co-pill">Desfazer — com recibo</span>
+            <div class="askpill" aria-label="Perguntar ao Atlas">
+              <div class="plus"><svg class="ic"><use href="#i-plus"/></svg></div>
+              <div class="ph">por que 683af18?</div>
+              <div class="mic"><svg class="ic"><use href="#i-mic"/></svg></div>
             </div>
-            <div class="receipt" id="m5r"><b>espelhado sozinho</b> · recibo 9f27c1 · sem você</div>
           </div>
+          <div class="homebar" aria-hidden="true"></div>
         </div>
-        <div class="homebar"></div>
-      </div></div>
-      <p class="caption">Espelhar é <em>operação — o Atlas faz sozinho</em>: varredura tick a tick e envio automático com recibo; seu botão é "Desfazer". O host é <em>adaptador</em> (GitHub hoje, origin da Cursor amanhã); a verdade mora no Mac. Assinatura humana fica para o que é seu: o release ao mundo (Nova Era, tela 6).</p>
+      </div>
+      <p class="caption">O mapa primeiro — commits como recibos. Tocar abre a <em>sua</em> frase, não o diff. Hash e agente ficam sob o vidro.
+        <span class="src">fonte: git log + /code/provenance · C22+C23</span></p>
     </div>
 
-    <!-- M6 · Presença: lock screen + conversa -->
+    <!-- M3 -->
     <div class="cell">
-      <div class="cell-label"><b>M6 · presença + linguagem natural</b><span class="tag live">TurnPresence + conversa — tudo existe</span></div>
-      <div class="iphone" id="m6"><div class="screen">
-        <div class="island"></div>
-        <div class="lock" id="m6lock">
-          <div class="date">terça, 14 de julho</div>
-          <div class="clock">14:12</div>
-          <div class="notif" id="m6n1">
-            <div class="appicon"><svg class="ic" style="color:var(--gold)"><use href="#i-spark"/></svg></div>
-            <div><b>Curado sozinho · blackink-app</b>
-              <div class="nb">Segredo movido para .env; espelho enviado. Toque para o recibo.</div></div>
-            <div class="when">agora</div>
+      <div class="cell-label"><b>M3 · radar — um sinal</b><span class="tag contract">proposta · C24</span></div>
+      <div class="iphone replayable" id="m3" role="button" tabindex="0" aria-label="Radar com segredo bloqueando push — toque para repetir" title="toque para repetir">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="content">
+            <div class="m-head">
+              <div class="back" aria-hidden="true"><svg class="ic"><use href="#i-chev"/></svg></div>
+              <div class="title">Código</div>
+              <div class="meta" id="m3side">1 atenção</div>
+            </div>
+            <div class="m-body" style="padding-bottom:70px">
+              <div class="repo silent" id="m3ok">
+                <div class="repo-top">
+                  <div class="rled" aria-hidden="true"></div>
+                  <b>atlas-native</b>
+                </div>
+              </div>
+              <div class="repo attn" id="m3r">
+                <div class="repo-top">
+                  <div class="rled" aria-hidden="true"></div>
+                  <b>blackink-app</b>
+                  <span class="rstate warn" id="m3rs">push bloqueado</span>
+                </div>
+                <div class="rtags"><span class="rt bad" id="m3rt">segredo no staged</span></div>
+              </div>
+              <div class="callout alert" id="m3c">
+                <div class="co-k" id="m3ck"><svg class="ic"><use href="#i-shield"/></svg><span>Varredura</span></div>
+                <div class="co-t" id="m3ct">FIREBASE_KEY em config/app.ts</div>
+                <div class="co-s" id="m3cs">Entraria no commit 3/7. Nada sai. Isto é risco — decisão sua.</div>
+                <div class="co-pills">
+                  <span class="co-pill primary" id="m3fix"><svg class="ic"><use href="#i-shield"/></svg>Quarentena</span>
+                  <span class="co-pill ghost">Ver</span>
+                </div>
+              </div>
+            </div>
+            <div class="askpill" aria-label="Perguntar ao Atlas">
+              <div class="plus"><svg class="ic"><use href="#i-plus"/></svg></div>
+              <div class="ph">o que está bloqueado?</div>
+              <div class="mic"><svg class="ic"><use href="#i-mic"/></svg></div>
+            </div>
           </div>
-          <div class="notif" id="m6n2" style="margin-top:10px">
-            <div class="appicon"><svg class="ic" style="color:var(--gold)"><use href="#i-spark"/></svg></div>
-            <div><b>O dia · atlas-native</b>
-              <div class="nb">6 commits · 1 cura sozinha · nada exige você.</div></div>
-            <div class="when">18:00</div>
-          </div>
+          <div class="homebar" aria-hidden="true"></div>
         </div>
-        <div class="content" id="m6chat" style="opacity:0; transition: opacity 0.5s; background: var(--app-bg);">
-          <div class="m-head"><div class="back">‹</div><div class="title">Nova conversa</div></div>
-          <div class="m-body">
-            <div class="uquote on">"o que mudou hoje no atlas-native?"</div>
-            <div class="nl-line" id="m6a1">Hoje entraram <b>6 commits</b>. Os que importam:</div>
-            <div class="nl-line" id="m6a2">O conserto dos espaços colados que você reportou — <span class="why">com regressão travada para não voltar.</span></div>
-            <div class="nl-line" id="m6a3">O resumo da operação no Autônomos, com dado real.</div>
-            <div class="nl-line" id="m6a4">Nada pendente — os 3 do server <b>já foram espelhados sozinhos</b>, varredura limpa.</div>
+      </div>
+      <p class="caption">Um sinal primário: a regra. Repo quieto some o estado. Resolver o segredo é <em>risco humano</em> — não plumbing.
+        <span class="src">fonte: rules engine · C24</span></p>
+    </div>
+
+    <!-- M4 -->
+    <div class="cell">
+      <div class="cell-label"><b>M4 · review como decisão</b><span class="tag part">parcial · casca 06f88b5</span></div>
+      <div class="iphone replayable" id="m4" role="button" tabindex="0" aria-label="Review de mudanças — toque para repetir" title="toque para repetir">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="content">
+            <div class="m-head">
+              <div class="back" aria-hidden="true"><svg class="ic"><use href="#i-chev"/></svg></div>
+              <div class="title">Revisar mudanças</div>
+              <div class="meta"><span class="plus">+48</span> <span class="minus">−12</span></div>
+            </div>
+            <div class="m-body" style="padding-bottom:70px">
+              <div class="file"><span>DashboardHtml.php</span><span class="fd"><span class="plus">+36</span> <span class="minus">−8</span></span></div>
+              <div class="diffbox">
+                <div class="dline" id="m4d1">  private function renderUplift($m) {</div>
+                <div class="dline del" id="m4d2">−   $label = "Total spend absence uplift";</div>
+                <div class="dline add" id="m4d3">+   if (!$this-&gt;hasComparablePair($m)) return '';</div>
+                <div class="dline add" id="m4d4">+   $label = "Economia comprovada no período";</div>
+              </div>
+              <div class="finding" id="m4f">
+                <b>Finding · clareza</b>
+                Label deixa de narrar ausência e passa a afirmar economia só com par comparável.
+              </div>
+              <div class="co-pills" style="margin-top:14px">
+                <span class="co-pill primary" id="m4ok">Aceitar</span>
+                <span class="co-pill ghost">Rejeitar</span>
+              </div>
+              <div class="receipt" id="m4r">
+                <svg class="ic"><use href="#i-check"/></svg>
+                <div><b>aplicado</b> · recibo no ledger · 2 arquivos · a tela só mudou depois do fato</div>
+              </div>
+            </div>
+            <div class="askpill" aria-label="Perguntar ao Atlas">
+              <div class="plus"><svg class="ic"><use href="#i-plus"/></svg></div>
+              <div class="ph">por que esta linha?</div>
+              <div class="mic"><svg class="ic"><use href="#i-mic"/></svg></div>
+            </div>
           </div>
+          <div class="homebar" aria-hidden="true"></div>
         </div>
-        <div class="homebar"></div>
-      </div></div>
-      <p class="caption">O Código entra na <em>Presença</em>: bloqueio de push avisa na tela fechada; o resumo do dia chega às 18h; e na conversa você <em>pergunta</em> — hash, porquê e próxima ação governada. É aqui que nenhum cliente git alcança.</p>
+      </div>
+      <p class="caption">Casca ligada na conversa — <em>não DEVICE_PROVEN</em>. Aceite só após recibo. Unavailable explícito no produto real.
+        <span class="src">fonte: C15 change review · prova no device pendente</span></p>
+    </div>
+
+    <!-- M5 -->
+    <div class="cell">
+      <div class="cell-label"><b>M5 · espelho sozinho</b><span class="tag contract">proposta · recibo + veto</span></div>
+      <div class="iphone replayable" id="m5" role="button" tabindex="0" aria-label="Espelhamento governado autônomo — toque para repetir" title="toque para repetir">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="content">
+            <div class="m-head">
+              <div class="back" aria-hidden="true"><svg class="ic"><use href="#i-chev"/></svg></div>
+              <div class="title">Espelhar</div>
+              <div class="meta">github</div>
+            </div>
+            <div class="m-body" style="padding-bottom:70px">
+              <div class="statusline" id="m5status">
+                <strong>3 commits</strong> com gates verdes.<br>
+                <span class="mono">683af18 · b2f068a · 8387a2b</span><br>
+                Host é adaptador. A verdade fica no Mac.
+              </div>
+              <div class="scanlist">
+                <div class="gcheck" id="m5g1">
+                  <span class="mark" id="m5m1"><svg class="ic" style="width:10px;height:10px"><use href="#i-shield"/></svg></span>
+                  <span>Segredos no histórico</span>
+                  <span class="st" id="m5s1">…</span>
+                </div>
+                <div class="gcheck" id="m5g2">
+                  <span class="mark" id="m5m2"><svg class="ic" style="width:10px;height:10px"><use href="#i-shield"/></svg></span>
+                  <span>Lixo de build</span>
+                  <span class="st" id="m5s2">…</span>
+                </div>
+                <div class="gcheck" id="m5g3">
+                  <span class="mark" id="m5m3"><svg class="ic" style="width:10px;height:10px"><use href="#i-shield"/></svg></span>
+                  <span>Drift do espelho</span>
+                  <span class="st" id="m5s3">…</span>
+                </div>
+                <div class="gcheck" id="m5g4">
+                  <span class="mark" id="m5m4"><svg class="ic" style="width:10px;height:10px"><use href="#i-branch"/></svg></span>
+                  <span>Branch = main local</span>
+                  <span class="st" id="m5s4">…</span>
+                </div>
+              </div>
+              <div class="receipt" id="m5r">
+                <svg class="ic"><use href="#i-mirror"/></svg>
+                <div><b>espelhado</b> · push_receipt · 3 → github · você não foi necessário</div>
+              </div>
+              <div class="co-pills" style="margin-top:12px; opacity:0; transition:opacity 0.35s" id="m5undo">
+                <span class="co-pill ghost" style="flex:1"><svg class="ic"><use href="#i-undo"/></svg>Desfazer · com recibo</span>
+              </div>
+            </div>
+            <div class="askpill" aria-label="Perguntar ao Atlas">
+              <div class="plus"><svg class="ic"><use href="#i-plus"/></svg></div>
+              <div class="ph">o que foi espelhado?</div>
+              <div class="mic"><svg class="ic"><use href="#i-mic"/></svg></div>
+            </div>
+          </div>
+          <div class="homebar" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p class="caption">Sem “Confirmar”. A varredura corre; o espelho acontece; sobra <em>veto com recibo</em>. Autonomia &gt; aprovação.
+        <span class="src">fonte: push_receipt + undo_ref · E4/H2</span></p>
+    </div>
+
+    <!-- M6 -->
+    <div class="cell">
+      <div class="cell-label"><b>M6 · presença por exceção</b><span class="tag part">parcial · turno existe</span></div>
+      <div class="iphone replayable" id="m6" role="button" tabindex="0" aria-label="Presença na tela bloqueada e conversa — toque para repetir" title="toque para repetir">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="lock" id="m6lock">
+            <div class="date">terça, 14 de julho</div>
+            <div class="clock tabular">14:12</div>
+            <div class="notif" id="m6n1">
+              <div class="appicon"><svg class="ic lg"><use href="#i-spark"/></svg></div>
+              <div>
+                <b>Push bloqueado</b>
+                <div class="nb">blackink-app · segredo no staged. Nada saiu.</div>
+              </div>
+              <div class="when">agora</div>
+            </div>
+            <!-- sem digest “tudo bem” — silêncio quando saudável -->
+          </div>
+          <div class="content" id="m6chat" style="opacity:0; transition: opacity 0.5s var(--spring); background: var(--app-bg);">
+            <div class="m-head">
+              <div class="back" aria-hidden="true"><svg class="ic"><use href="#i-chev"/></svg></div>
+              <div class="title">Atlas</div>
+            </div>
+            <div class="m-body" style="padding-bottom:70px">
+              <div class="uquote" id="m6q">“o que mudou hoje no atlas-native?”</div>
+              <div class="nl-line" id="m6a1">Seis commits na main. Nenhum pedindo você.</div>
+              <div class="nl-line" id="m6a2"><span class="mono">683af18</span> — os espaços colados. <span class="why">Trim no stream; agora verbatim.</span>
+                <span class="nl-ref"><svg class="ic" style="width:10px;height:10px"><use href="#i-spark"/></svg>trace · checks 0</span>
+              </div>
+              <div class="nl-line" id="m6a3">O espelho do server já subiu sozinho. Posso mostrar o recibo.</div>
+            </div>
+            <div class="askpill" aria-label="Perguntar ao Atlas">
+              <div class="plus"><svg class="ic"><use href="#i-plus"/></svg></div>
+              <div class="ph">mostrar o recibo</div>
+              <div class="mic"><svg class="ic"><use href="#i-mic"/></svg></div>
+            </div>
+          </div>
+          <div class="homebar" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p class="caption">Notificação só por <em>exceção</em>. Digest “tudo verde” não existe. TurnPresence de turno já roda; presença de Código e H6 ainda são proposta.
+        <span class="src">turno: C14 parcial · código: H6</span></p>
     </div>
   </div>
 
-  <!-- ═══ PONTE PARA O DESKTOP ═══ -->
   <div id="desktop" class="bridge">
     <div class="btxt">
-      <h3>O que cresce no desktop — cada tela daqui tem seu par lá.</h3>
-      <p>O iPhone lê, decide e autoriza. O Mac ganha o cockpit pleno: o graph completo com
-         painel de proveniência fixo, diff lado a lado, a frota inteira num olhar e o merge
-         governado. Mesmo ledger, mesma linguagem, mesmos recibos.</p>
+      <h3>No Mac, o mesmo ledger — mapa pleno.</h3>
+      <p>O telefone decide e é avisado. O desktop mostra o grafo inteiro, diff lado a lado e a frota num olhar. Mesma geometria, mesmos recibos, mesma pílula.</p>
       <div class="bmap">
-        <div class="bi"><b>M2</b> linha do tempo → graph completo + filtros por agente</div>
-        <div class="bi"><b>M3</b> radar → frota com histórico e varredura contínua</div>
-        <div class="bi"><b>M4</b> review → diff lado a lado + findings por eixo</div>
-        <div class="bi"><b>M5</b> push → merge/rollback governados</div>
-        <div class="bi"><b>M6</b> presença → digest diário + pergunta no desktop</div>
-        <div class="bi"><b>M1</b> hub → workspace certificado (AWIS)</div>
+        <div class="bi"><b>M2</b> → grafo + filtros</div>
+        <div class="bi"><b>M3</b> → frota + varredura</div>
+        <div class="bi"><b>M4</b> → diff dual + findings</div>
+        <div class="bi"><b>M5</b> → merge/rollback</div>
+        <div class="bi"><b>M6</b> → ⌘K + digest</div>
+        <div class="bi"><b>M1</b> → AWIS</div>
       </div>
     </div>
     <a class="go" href="atlas-code-ledger.html">ver o cockpit desktop ›</a>
   </div>
 
   <div class="colophon">
-    <span>ATLAS · INK &amp; BRASS — slate teal #1d2b34 · gold #d4a85a · Fraunces</span>
-    <span>Fable 5 · Atlas Código mobile v1 · 6 telas iPhone · toque para repetir</span>
+    <span>ATLAS · INK &amp; BRASS — #1b2830 · #d4a85a · Fraunces</span>
+    <span>Fable 5 · mobile v2 · silêncio · veto · pílula eterna</span>
   </div>
 </div>
 
-<button class="replay" onclick="restart()">↻ repetir as cenas</button>
+<button class="replay" type="button" onclick="restart()" aria-label="Repetir todas as cenas">↻ repetir as cenas</button>
 
 <script>
 const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 function makeScene(run) {
   let handles = [];
   const at = (t, fn) => handles.push(setTimeout(fn, reduced ? 0 : t));
-  const every = (ms, fn) => { const h = setInterval(fn, ms); handles.push({ clear: () => clearInterval(h) }); return h; };
-  const stop = () => { handles.forEach(h => h.clear ? h.clear() : clearTimeout(h)); handles = []; };
+  const stop = () => { handles.forEach(h => clearTimeout(h)); handles = []; };
   const loop = dur => { if (!reduced) at(dur, () => { stop(); run(api); }); };
-  const api = { at, every, stop, loop };
+  const api = { at, stop, loop };
   return { start: () => run(api), stop };
 }
 const scenes = [];
@@ -545,136 +1004,166 @@ function scene1(fn) { const s = makeScene(fn); scenes.push(s); s.start(); }
 function restart() { scenes.forEach(s => s.stop()); scenes.length = 0; boot(); }
 
 function boot() {
-
-/* M0 · grafo: mapa desenha → desvio → cura sozinha → recibo → volta à main */
-scene1(({ at, loop }) => {
-  $('g7ln').style.strokeDashoffset = 900;
-  $('g7fork').style.strokeDashoffset = 200;
-  $('g7ret').style.strokeDashoffset = 200;
-  ['g7n1','g7n2','g7n3','g7n4','g7n5','g7n6','g7n7','g7r'].forEach(id => $(id).classList.remove('on'));
-  $('g7dot').setAttribute('fill', '#c98a8a');
-  $('g7sheet').classList.remove('on'); $('g7rcpt').classList.remove('on');
-  ['g7s1','g7s2','g7s3'].forEach(id => $(id).textContent = '');
-  $('g7cap').className = 'cap bad'; $('g7capt').textContent = '1 desvio da main';
-  $('g7capi').innerHTML = '<use href="#i-warn"/>';
-  at(300, () => $('g7ln').style.strokeDashoffset = 0);
-  ['g7n7','g7n6','g7n5','g7n4','g7n3','g7n1'].forEach((id, i) => at(600 + i * 200, () => $(id).classList.add('on')));
-  at(2100, () => $('g7fork').style.strokeDashoffset = 0);
-  at(2550, () => { $('g7n2').classList.add('on'); $('g7r').classList.add('on'); });
-  at(4300, () => $('g7sheet').classList.add('on'));
-  at(4800, () => $('g7s1').textContent = '✓');
-  at(5200, () => $('g7s2').textContent = '✓');
-  at(5600, () => $('g7s3').textContent = '✓');
-  at(6200, () => $('g7rcpt').classList.add('on'));
-  at(8200, () => {
-    $('g7sheet').classList.remove('on');
-    $('g7ret').style.strokeDashoffset = 0;
-    $('g7r').classList.remove('on');
-    $('g7dot').setAttribute('fill', '#7fb069');
-    $('g7cap').className = 'cap good'; $('g7capt').textContent = 'main íntegra · curada às 02:41, sem você';
-    $('g7capi').innerHTML = '<use href="#i-check"/>';
+  /* M0 · mapa desenha → desvio → cura sozinha → recibo → volta à main */
+  scene1(({ at, loop }) => {
+    $('g0ln').style.strokeDashoffset = 900;
+    $('g0fork').style.strokeDashoffset = 200;
+    $('g0ret').style.strokeDashoffset = 200;
+    ['g0n1','g0n2','g0n3','g0n4','g0n5','g0n6','g0n7','g0r'].forEach(id => $(id).classList.remove('on'));
+    $('g0dot').setAttribute('fill', '#c98a8a');
+    $('g0sheet').classList.remove('on');
+    $('g0cap').className = 'gcap bad'; $('g0capt').textContent = '1 desvio da main';
+    $('g0capi').innerHTML = '<use href="#i-warn"/>';
+    at(300, () => $('g0ln').style.strokeDashoffset = 0);
+    ['g0n7','g0n6','g0n5','g0n4','g0n3','g0n1'].forEach((id, i) => at(550 + i * 180, () => $(id).classList.add('on')));
+    at(1900, () => $('g0fork').style.strokeDashoffset = 0);
+    at(2350, () => { $('g0n2').classList.add('on'); $('g0r').classList.add('on'); });
+    at(4000, () => $('g0sheet').classList.add('on'));
+    at(7400, () => {
+      $('g0sheet').classList.remove('on');
+      $('g0ret').style.strokeDashoffset = 0;
+      $('g0r').classList.remove('on');
+      $('g0dot').setAttribute('fill', '#7fb069');
+      $('g0cap').className = 'gcap good'; $('g0capt').textContent = 'main íntegra · curada às 02:41, sem você';
+      $('g0capi').innerHTML = '<use href="#i-check"/>';
+    });
+    loop(10500);
   });
-  loop(11500);
-});
 
-/* M1 · hub: blackink resolve depois de um tempo (push feito em M3) */
-scene1(({ at, loop }) => {
-  $('m1s3').textContent = '7 não espelhados'; $('m1s3').className = 'attn';
-  at(5200, () => { $('m1s3').textContent = 'espelhado sozinho'; $('m1s3').className = 'okn'; });
-  at(7600, () => { $('m1s3').textContent = ''; });
-  loop(9500);
-});
-
-/* M2 · timeline: commits chegam; proveniência sobe */
-scene1(({ at, loop }) => {
-  ['m2c1','m2c2','m2c3','m2c4'].forEach(id => $(id).classList.remove('on'));
-  $('m2sheet').classList.remove('on');
-  at(600,  () => $('m2c1').classList.add('on'));
-  at(1100, () => $('m2c2').classList.add('on'));
-  at(1600, () => $('m2c3').classList.add('on'));
-  at(2100, () => $('m2c4').classList.add('on'));
-  at(3200, () => $('m2sheet').classList.add('on'));
-  at(8200, () => $('m2sheet').classList.remove('on'));
-  loop(10000);
-});
-
-/* M3 · segredo bloqueia push → resolver → liberado com recibo */
-scene1(({ at, loop }) => {
-  $('m3c').classList.remove('on','okc'); $('m3c').classList.add('alert');
-  $('m3r').classList.add('attn');
-  $('m3ck').textContent = 'Varredura · segredo detectado';
-  $('m3ct').textContent = 'FIREBASE_KEY em config/app.ts · espelho bloqueado';
-  $('m3cs').textContent = 'Nada saiu da máquina. O Atlas está movendo para .env agora — sem esperar você.';
-  $('m3pills').innerHTML = '<span class="co-pill">Ver diff</span>';
-  $('m3rs').textContent = 'espelho bloqueado'; $('m3rs').className = 'rstate warn';
-  $('m3side').textContent = '1 atenção';
-  at(1400, () => $('m3c').classList.add('on'));
-  at(4800, () => {
-    $('m3c').classList.remove('alert'); $('m3c').classList.add('okc');
-    $('m3ck').textContent = 'Curado sozinho · com recibo';
-    $('m3ct').textContent = 'Segredo em .env · espelho liberado e enviado';
-    $('m3cs').textContent = '7 commits espelhados · config/app.ts limpo · você não foi necessário.';
-    $('m3pills').innerHTML = '<span class="co-pill">Desfazer — com recibo</span>';
-    $('m3r').classList.remove('attn');
-    $('m3rs').textContent = 'espelhado'; $('m3rs').className = 'rstate okc';
-    $('m3side').textContent = '0 atenção';
+  /* M1 · exceção some quando o espelho conclui — saudável permanece mudo */
+  scene1(({ at, loop }) => {
+    const row = $('m1r3');
+    const st = $('m1s3');
+    row.classList.remove('quiet', 'flash');
+    st.innerHTML = '<svg class="ic" style="width:11px;height:11px"><use href="#i-warn"/></svg>7 não enviados';
+    st.className = 'attn';
+    at(4800, () => {
+      row.classList.add('flash');
+      st.innerHTML = '';
+      st.className = 'attn';
+      row.classList.add('quiet');
+    });
+    loop(9000);
   });
-  loop(9500);
-});
 
-/* M4 · review: diff aparece, aceitar → recibo (o fluxo shipado) */
-scene1(({ at, loop }) => {
-  ['m4d1','m4d2','m4d3','m4d4'].forEach(id => $(id).classList.remove('on'));
-  $('m4ok').classList.remove('pressed');
-  $('m4r').classList.remove('on');
-  at(700,  () => $('m4d1').classList.add('on'));
-  at(1100, () => $('m4d2').classList.add('on'));
-  at(1500, () => $('m4d3').classList.add('on'));
-  at(1900, () => $('m4d4').classList.add('on'));
-  at(3600, () => $('m4ok').classList.add('pressed'));
-  at(4600, () => $('m4r').classList.add('on'));
-  loop(8500);
-});
+  /* M2 · commits sobem; proveniência como folha */
+  scene1(({ at, loop }) => {
+    ['m2c1','m2c2','m2c3','m2c4'].forEach(id => $(id).classList.remove('on'));
+    $('m2sheet').classList.remove('on');
+    at(500,  () => $('m2c1').classList.add('on'));
+    at(950,  () => $('m2c2').classList.add('on'));
+    at(1400, () => $('m2c3').classList.add('on'));
+    at(1850, () => $('m2c4').classList.add('on'));
+    at(3000, () => $('m2sheet').classList.add('on'));
+    at(7800, () => $('m2sheet').classList.remove('on'));
+    loop(10000);
+  });
 
-/* M5 · push governado: varredura → confirmar → recibo */
-scene1(({ at, loop }) => {
-  ['m5g1','m5g2','m5g3','m5g4'].forEach(id => $(id).classList.remove('on'));
-  ['m5s1','m5s2','m5s3','m5s4'].forEach(id => { $(id).textContent = '…'; $(id).className = 'st run'; });
-  $('m5r').classList.remove('on');
-  const ok = (id, t) => { $(id).textContent = t; $(id).className = 'st ok'; };
-  at(600,  () => $('m5g1').classList.add('on'));
-  at(1500, () => { ok('m5s1','limpo ✓'); $('m5g2').classList.add('on'); });
-  at(2300, () => { ok('m5s2','limpo ✓'); $('m5g3').classList.add('on'); });
-  at(3000, () => { ok('m5s3','sem drift ✓'); $('m5g4').classList.add('on'); });
-  at(3600, () => ok('m5s4','main ✓'));
-  at(4900, () => $('m5r').classList.add('on'));
-  loop(9500);
-});
+  /* M3 · risco humano · quarentena · silêncio */
+  scene1(({ at, loop }) => {
+    $('m3c').classList.remove('on','okc'); $('m3c').classList.add('alert');
+    $('m3fix').classList.remove('pressed');
+    $('m3r').classList.add('attn');
+    $('m3r').classList.remove('silent');
+    $('m3ok').classList.add('silent');
+    $('m3ck').innerHTML = '<svg class="ic"><use href="#i-shield"/></svg><span>Varredura</span>';
+    $('m3ct').textContent = 'FIREBASE_KEY em config/app.ts';
+    $('m3cs').textContent = 'Entraria no commit 3/7. Nada sai. Isto é risco — decisão sua.';
+    $('m3rs').textContent = 'push bloqueado';
+    $('m3rt').textContent = 'segredo no staged';
+    $('m3rt').className = 'rt bad';
+    $('m3side').textContent = '1 atenção';
+    at(1200, () => $('m3c').classList.add('on'));
+    at(3600, () => $('m3fix').classList.add('pressed'));
+    at(4600, () => {
+      $('m3c').classList.remove('alert'); $('m3c').classList.add('okc');
+      $('m3ck').innerHTML = '<svg class="ic"><use href="#i-check"/></svg><span>Quarentena</span>';
+      $('m3ct').textContent = 'Segredo isolado · push liberado';
+      $('m3cs').textContent = 'Recibo no ledger. O Atlas espelha sozinho daqui.';
+      $('m3r').classList.remove('attn');
+      $('m3r').classList.add('silent');
+      $('m3side').textContent = '';
+    });
+    at(6200, () => { $('m3c').classList.remove('on'); });
+    loop(9500);
+  });
 
-/* M6 · lock screen com avisos → vira a conversa respondendo */
-scene1(({ at, loop }) => {
-  $('m6lock').style.opacity = 1; $('m6chat').style.opacity = 0;
-  $('m6n1').classList.remove('on'); $('m6n2').classList.remove('on');
-  ['m6a1','m6a2','m6a3','m6a4'].forEach(id => $(id).classList.remove('on'));
-  at(800,  () => $('m6n1').classList.add('on'));
-  at(1800, () => $('m6n2').classList.add('on'));
-  at(4200, () => { $('m6lock').style.transition = 'opacity 0.5s'; $('m6lock').style.opacity = 0; $('m6chat').style.opacity = 1; });
-  at(4900, () => $('m6a1').classList.add('on'));
-  at(5600, () => $('m6a2').classList.add('on'));
-  at(6400, () => $('m6a3').classList.add('on'));
-  at(7200, () => $('m6a4').classList.add('on'));
-  loop(11000);
-});
+  /* M4 · diff · finding · aceite pós-recibo */
+  scene1(({ at, loop }) => {
+    ['m4d1','m4d2','m4d3','m4d4'].forEach(id => $(id).classList.remove('on'));
+    $('m4f').classList.remove('on');
+    $('m4ok').classList.remove('pressed');
+    $('m4r').classList.remove('on');
+    at(600,  () => $('m4d1').classList.add('on'));
+    at(950,  () => $('m4d2').classList.add('on'));
+    at(1300, () => $('m4d3').classList.add('on'));
+    at(1650, () => $('m4d4').classList.add('on'));
+    at(2200, () => $('m4f').classList.add('on'));
+    at(3800, () => $('m4ok').classList.add('pressed'));
+    at(4800, () => $('m4r').classList.add('on'));
+    loop(9000);
+  });
 
+  /* M5 · varredura → espelho sozinho → veto */
+  scene1(({ at, loop }) => {
+    ['m5g1','m5g2','m5g3','m5g4'].forEach(id => $(id).classList.remove('on'));
+    ['m5m1','m5m2','m5m3','m5m4'].forEach(id => { $(id).className = 'mark'; });
+    ['m5s1','m5s2','m5s3','m5s4'].forEach(id => { $(id).textContent = '…'; $(id).className = 'st'; });
+    $('m5r').classList.remove('on');
+    $('m5undo').style.opacity = 0;
+    const tick = (i, label) => {
+      $(`m5g${i}`).classList.add('on');
+      $(`m5m${i}`).className = 'mark run';
+      at(i * 700 + 200, () => {
+        $(`m5m${i}`).className = 'mark ok';
+        $(`m5m${i}`).innerHTML = '<svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg>';
+        $(`m5s${i}`).textContent = label;
+        $(`m5s${i}`).className = 'st ok';
+      });
+    };
+    ['m5m1','m5m2','m5m3','m5m4'].forEach((id, idx) => {
+      const icons = ['#i-shield','#i-shield','#i-shield','#i-branch'];
+      $(id).innerHTML = `<svg class="ic" style="width:10px;height:10px"><use href="${icons[idx]}"/></svg>`;
+    });
+    at(400, () => tick(1, 'limpo'));
+    at(1100, () => tick(2, 'limpo'));
+    at(1800, () => tick(3, 'ok'));
+    at(2500, () => tick(4, 'main'));
+    at(4200, () => $('m5r').classList.add('on'));
+    at(4800, () => { $('m5undo').style.opacity = 1; });
+    loop(10000);
+  });
+
+  /* M6 · só a exceção na lock · depois a pergunta */
+  scene1(({ at, loop }) => {
+    $('m6lock').style.opacity = 1;
+    $('m6chat').style.opacity = 0;
+    $('m6n1').classList.remove('on');
+    $('m6q').classList.remove('on');
+    ['m6a1','m6a2','m6a3'].forEach(id => $(id).classList.remove('on'));
+    at(700,  () => $('m6n1').classList.add('on'));
+    at(3800, () => {
+      $('m6lock').style.opacity = 0;
+      $('m6chat').style.opacity = 1;
+    });
+    at(4400, () => $('m6q').classList.add('on'));
+    at(5000, () => $('m6a1').classList.add('on'));
+    at(5600, () => $('m6a2').classList.add('on'));
+    at(6400, () => $('m6a3').classList.add('on'));
+    loop(11000);
+  });
 }
+
 boot();
 
 ['m0','m1','m2','m3','m4','m5','m6'].forEach((id, i) => {
   const el = $(id);
   if (!el) return;
-  el.classList.add('replayable');
-  el.title = 'toque para repetir a cena';
-  el.addEventListener('click', () => { const s = scenes[i]; if (s) { s.stop(); s.start(); } });
+  const replay = () => { const s = scenes[i]; if (s) { s.stop(); s.start(); } };
+  el.addEventListener('click', replay);
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); replay(); }
+  });
 });
 window.__ready = true;
 </script>
