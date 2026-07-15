@@ -7,9 +7,13 @@ struct AtlasCodeView: View {
     @Environment(AtlasSession.self) private var session
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var model: AtlasCodeModel
+    @State private var provenanceModel: AtlasCodeProvenanceModel
+    @State private var selectedNode: AtlasCodeGraphNode?
+    @State private var showingProvenance = false
 
     init(client: AtlasClient, repo: String = "atlas-server") {
         _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
+        _provenanceModel = State(initialValue: AtlasCodeProvenanceModel(client: client, repo: repo))
     }
 
     var body: some View {
@@ -102,28 +106,105 @@ struct AtlasCodeView: View {
                 .background(AtlasTheme.surface, in: RoundedRectangle(cornerRadius: 12))
 
                 GraphCanvas(nodes: graph.nodes, reduceMotion: reduceMotion)
-                    .frame(height: max(180, CGFloat(graph.nodes.count) * 54))
+                    .frame(height: min(max(180, CGFloat(graph.nodes.count) * 54), 640))
 
                 ForEach(graph.nodes) { node in
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text(node.hash)
-                            .font(AtlasFont.mono(11))
-                            .foregroundStyle(AtlasTheme.accent)
-                        Text(node.authorName.isEmpty ? node.authorEmail : node.authorName)
-                            .font(.system(.subheadline))
-                            .foregroundStyle(AtlasTheme.textPrimary)
-                        Text(node.refs.joined(separator: " · "))
-                            .font(AtlasFont.mono(9))
-                            .foregroundStyle(AtlasTheme.textTertiary)
+                    Button {
+                        selectedNode = node
+                        showingProvenance = true
+                        Task { await provenanceModel.load(hash: node.hash) }
+                    } label: {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(node.hash)
+                                .font(AtlasFont.mono(11))
+                                .foregroundStyle(AtlasTheme.accent)
+                            Text(node.authorName.isEmpty ? node.authorEmail : node.authorName)
+                                .font(.system(.subheadline))
+                                .foregroundStyle(AtlasTheme.textPrimary)
+                            Text(node.refs.joined(separator: " · "))
+                                .font(AtlasFont.mono(9))
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .padding(.vertical, 9)
                     .padding(.horizontal, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AtlasTheme.surface.opacity(0.65), in: RoundedRectangle(cornerRadius: 10))
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Abrir proveniência do commit \(node.hash.prefix(8))")
                 }
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.bottom, 24)
+        }
+        .sheet(isPresented: $showingProvenance) {
+            if let node = selectedNode {
+                AtlasCodeProvenanceSheet(node: node, phase: provenanceModel.phase)
+                    .presentationDetents([.medium, .large])
+            }
+        }
+    }
+}
+
+private struct AtlasCodeProvenanceSheet: View {
+    let node: AtlasCodeGraphNode
+    let phase: AtlasCodeProvenanceModel.Phase
+
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Por que esta linha existe")
+                    .font(AtlasFont.serif(25, .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text(node.hash)
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.accent)
+                content
+                Spacer()
+            }
+            .padding(24)
+            .background(AtlasTheme.bg.ignoresSafeArea())
+            .navigationTitle("Proveniência")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch phase {
+        case .idle, .loading:
+            HStack(spacing: 10) {
+                ProgressView().tint(AtlasTheme.accent)
+                Text("lendo o ledger…")
+                    .font(AtlasFont.serifItalic(16))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            }
+        case .failed(let message):
+            Text(message)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(Color(hex: 0xE08C8C))
+        case .loaded(let provenance):
+            VStack(alignment: .leading, spacing: 12) {
+                LabeledContent("agente", value: provenance.agent)
+                LabeledContent("autor", value: provenance.authorName)
+                if let quote = provenance.operatorQuote {
+                    Text("\u{201C}\(quote)\u{201D}")
+                        .font(AtlasFont.serifItalic(18))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                } else {
+                    Text("sem proveniência registrada")
+                        .font(AtlasFont.serifItalic(17))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                }
+                if let traceId = provenance.traceId {
+                    Text("trace \(traceId)")
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                }
+            }
+            .font(AtlasFont.mono(11))
+            .foregroundStyle(AtlasTheme.textSecondary)
         }
     }
 }

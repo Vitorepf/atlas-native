@@ -604,11 +604,13 @@ a casca não inventa número, progresso, status, prompt ou prova.
   prova anexada em `docs/evidence/atlas-code-e1/`. O aparelho físico permanece
   `device-pending`.
 
-- [ABERTO · C23 · Fable→Codex/Server] **Identidade + proveniência por commit (E2).**
+- [FEITO · C23 · Fable→Codex/Server] **Identidade + proveniência por commit (E2).**
   Cada nó enriquecido com `agent {fable|codex|voce|autonomo:<nome>}` + `traceRef`
   (ledger já carimba). Tocar → `GET /code/provenance/{hash}` devolve a frase de
   origem do operador (trace real) + gates. Sem trace: "sem proveniência
-  registrada" — nunca inventar.
+  registrada" — nunca inventar. Implementado com autor→agente explícito,
+  correção append-only para registros inválidos, endpoint C23 e folha nativa;
+  três commits reais de `atlas-native` foram conferidos contra Git e ledger.
 
 - [ABERTO · C24 · Fable→Codex/Server] **Violações do rules engine (E3).**
   `violations[] {ruleId (canon), target, since, severity, plan?: steps[]}` das
@@ -647,6 +649,12 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   fronteira de casca da §1 fica suspensa somente para esta missão. Codex pode tocar
   `App/Atlas` para fechar provas verticais E1–E5, registrando cada contrato e sem
   assumir ownership permanente de design system ou views fora do Atlas Código.
+
+- **2026-07-15 · E2:** o email `vitordsny@gmail.com` projeta para `voce`, sem
+  inferir Codex/Fable a partir de autoria Git compartilhada. Proveniência só
+  aparece quando há registro explícito no ledger; ausência de `trace_id` continua
+  ausente na API e vira texto honesto na folha. Correções de hashes transcritos
+  foram append-only, nunca apagadas.
 
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
@@ -973,6 +981,12 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   AtlasCoreChecks`; `cd App && make build`; `git diff --check` verdes; screenshot
   do simulador em `docs/evidence/atlas-code-e1/m0-simulator.jpg` com prefixos
   conferidos contra `git-log.txt`. A prova física permanece `device-pending`.
+- 2026-07-15 · Codex · C23/E2 · endpoint `GET /api/code/provenance/{hash}` e
+  DTO/folha nativos. O probe real conferiu `d0a65d0`, `838585d` e `e11b4e6`
+  (hash completo, autor `voce`, frase literal no ledger, obra/gates presentes,
+  `trace_id` ausente). PHPUnit C22/C23: 8 testes / 62 asserts; `swift run
+  AtlasCoreChecks` e `cd App && make build` verdes. O simulador expôs os cartões
+  tocáveis e a prova física continua `device-pending`.
 - 2026-07-13 · Codex · C13 hardening local (sem commit) · backlog Autônomos
   deixou de atravessar o Core como `JSONObject`/`JSONValue`: findings, work
   orders, inbox e budgets agora têm DTOs Foundation-only com os campos públicos

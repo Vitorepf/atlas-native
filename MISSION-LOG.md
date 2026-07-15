@@ -26,3 +26,13 @@
   segredo ou `.env` foi alterado. O gate físico segue `device-pending`.
 - Próxima ação: E2 — correlação de autor, ledger e traces, com ausência honesta
   quando não houver proveniência.
+
+## 2026-07-15 · Ciclo E2 fechado
+
+- Backend C23 entregue: `GET /api/code/provenance/{hash}?repo=atlas-native` lê
+  identidade Git real e somente projeta quote/obra/gates quando existem no ledger.
+- Gate: três commits reais (`d0a65d0`, `838585d`, `e11b4e6`) foram consultados por
+  hash completo; todos retornaram `agent=voce`, quote literal e `trace_id` ausente.
+- A folha nativa é tocável e mostra `sem proveniência registrada` quando não há
+  registro. O endpoint também foi exercitado no commit de servidor `b43e907daa`.
+- Próxima ação: E3 — scanner puro, cinco leis e sandbox de branch.

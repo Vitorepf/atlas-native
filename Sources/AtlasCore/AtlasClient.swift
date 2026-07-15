@@ -240,6 +240,14 @@ public actor AtlasClient: AtlasAiStreamSource {
         return try await get("/code/graph\(query)")
     }
 
+    /// C23 · Read-only identity and ledger-backed provenance for one commit.
+    public func getCodeProvenance(hash: String, repo: String? = nil) async throws -> AtlasCodeProvenance {
+        let query = atlasQueryString([
+            ("repo", repo.map { .string($0) }),
+        ])
+        return try await get("/code/provenance/\(pathEncode(hash))\(query)")
+    }
+
     /// Caminho JSON de `createAiInteraction` (sem anexos). Upload em chunks
     /// precisa do FileSystem do device — porta com a camada de anexos.
     public func createAiInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {

@@ -27,4 +27,14 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
 
     let unknownSchema = json.replacingOccurrences(of: "atlas.code.graph.v1", with: "atlas.code.graph.v2")
     check("schema de grafo desconhecido falha fechado", (try? decoder.decode(AtlasCodeGraphResponse.self, from: Data(unknownSchema.utf8))) == nil)
+
+    let provenanceJSON = """
+    {"schema_version":"atlas.code.provenance.v1","repo":"atlas-native","hash":"d0a65d0",
+     "commit_message":"feat(core): add Atlas Codigo graph projection","author_name":"Vitor Freire",
+     "author_email":"vitordsny@gmail.com","authored_at":1784092694,"agent":"voce",
+     "operator_quote":"Autonomia > aprovação","gates":["simulator"]}
+    """
+    let provenance = try? decoder.decode(AtlasCodeProvenance.self, from: Data(provenanceJSON.utf8))
+    check("proveniência C23 decodifica identidade real", provenance?.agent == "voce" && provenance?.hash == "d0a65d0")
+    check("proveniência C23 mantém ausência de trace", provenance?.traceId == nil && provenance?.operatorQuote == "Autonomia > aprovação")
 }

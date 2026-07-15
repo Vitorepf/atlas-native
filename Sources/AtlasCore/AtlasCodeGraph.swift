@@ -72,6 +72,57 @@ public struct AtlasCodeGraphCache: Decodable, Equatable, Sendable {
     public let invalidated: Bool
 }
 
+/// Public C23 commit identity/provenance contract. Optional provenance fields
+/// stay absent when the ledger has no matching record; the app must not turn
+/// absence into a synthetic trace or quote.
+public struct AtlasCodeProvenance: Decodable, Equatable, Sendable {
+    public static let schemaVersion = "atlas.code.provenance.v1"
+
+    public let schemaVersion: String
+    public let repo: String
+    public let hash: String
+    public let commitMessage: String
+    public let authorName: String
+    public let authorEmail: String
+    public let authoredAt: Int
+    public let agent: String
+    public let traceId: String?
+    public let operatorQuote: String?
+    public let obra: [String]?
+    public let gates: [String]?
+    public let traceAgent: String?
+
+    private enum CodingKeys: String, CodingKey {
+        case schemaVersion, repo, hash, commitMessage, authorName, authorEmail
+        case authoredAt, agent, traceId, operatorQuote, obra, gates, traceAgent
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let schemaVersion = try values.decode(String.self, forKey: .schemaVersion)
+        guard schemaVersion == Self.schemaVersion else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .schemaVersion,
+                in: values,
+                debugDescription: "Unsupported Atlas Code provenance schema."
+            )
+        }
+        self.schemaVersion = schemaVersion
+        self.repo = try values.decode(String.self, forKey: .repo)
+        self.hash = try values.decode(String.self, forKey: .hash)
+        self.commitMessage = try values.decode(String.self, forKey: .commitMessage)
+        self.authorName = try values.decode(String.self, forKey: .authorName)
+        self.authorEmail = try values.decode(String.self, forKey: .authorEmail)
+        self.authoredAt = try values.decode(Int.self, forKey: .authoredAt)
+        self.agent = try values.decode(String.self, forKey: .agent)
+        self.traceId = try values.decodeIfPresent(String.self, forKey: .traceId)
+        self.operatorQuote = try values.decodeIfPresent(String.self, forKey: .operatorQuote)
+        self.obra = try values.decodeIfPresent([String].self, forKey: .obra)
+        self.gates = try values.decodeIfPresent([String].self, forKey: .gates)
+        self.traceAgent = try values.decodeIfPresent(String.self, forKey: .traceAgent)
+    }
+}
+
 /// The canonical fork/merge geometry from the Atlas Código spec.
 public enum AtlasCodeGraphGeometry {
     public static func midpointPath(fromX: Double, fromY: Double, toX: Double, toY: Double) -> String {
