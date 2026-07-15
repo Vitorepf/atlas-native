@@ -481,6 +481,17 @@
   .gmeta { font-family: var(--mono); font-size: 8px; fill: var(--ink3); }
   .c-meta .ava svg, .c-meta .ava.codex svg, .c-meta .ava.you svg { color: var(--ink3); }
   .co-pills.done { opacity: 0.35; pointer-events: none; transition: opacity 0.4s; }
+  /* hub agregado — 4 áreas, exceção como sublinha */
+  .hub4 .hrow { padding: 17px 2px; }
+  .hub4 .hrow b { font-size: 15.5px; }
+  .hub4 .hrow > b { flex: 1; }
+  .harea { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .hsub { font-size: 11.5px; color: var(--red); max-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity 0.5s, max-height 0.5s ease 0.2s; }
+  .hsub.ok { color: var(--green); }
+  .hsub.gone { opacity: 0; max-height: 0; }
+  .hbadge { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--red); background: rgba(201,138,138,0.09); box-shadow: inset 0 0 0 1px rgba(201,138,138,0.32); border-radius: 999px; padding: 3px 9px; transition: opacity 0.5s; font-variant-numeric: tabular-nums; }
+  .hbadge svg.ic { width: 11px; height: 11px; }
+  .hbadge.gone { opacity: 0; }
 </style>
 </head>
 <body>
@@ -626,40 +637,29 @@
           <div class="island" aria-hidden="true"></div>
           <div class="content">
             <div class="m-head"><div class="title" style="font-size:18px">Atlas</div></div>
-            <div class="m-body">
-              <div class="hsec">Conversas</div>
+            <div class="m-body hub4" style="padding-top:10px">
               <div class="hrow">
                 <span class="icwrap"><svg class="ic"><use href="#i-chat"/></svg></span>
-                <b>Conversas livres</b><span class="n tabular">12</span>
+                <b>Conversas</b>
                 <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
               </div>
-              <div class="hsec">Código</div>
-              <div class="hrow quiet">
-                <span class="icwrap"><svg class="ic"><use href="#i-repo"/></svg></span>
-                <b>atlas-native</b>
+              <div class="hrow" id="m1code">
+                <span class="icwrap" id="m1ic" style="color:var(--red)"><svg class="ic"><use href="#i-warn"/></svg></span>
+                <div class="harea">
+                  <b>Código</b>
+                  <span class="hsub" id="m1sub">blackink · espelho bloqueado</span>
+                </div>
+                <span class="hbadge" id="m1badge"><svg class="ic"><use href="#i-warn"/></svg>1</span>
                 <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
               </div>
-              <div class="hrow quiet">
-                <span class="icwrap"><svg class="ic"><use href="#i-repo"/></svg></span>
-                <b>atlas-server</b>
-                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
-              </div>
-              <div class="hrow" id="m1r3">
-                <span class="icwrap" style="color:var(--red)"><svg class="ic"><use href="#i-warn"/></svg></span>
-                <b>blackink-app</b>
-                <span class="attn" id="m1s3"><svg class="ic" style="width:11px;height:11px"><use href="#i-warn"/></svg>7 não enviados</span>
-                <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
-              </div>
-              <div class="hsec">Operação</div>
-              <div class="hrow quiet">
+              <div class="hrow">
                 <span class="icwrap"><svg class="ic"><use href="#i-bolt"/></svg></span>
                 <b>Autônomos</b>
                 <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
               </div>
-              <div class="hsec">Workspaces</div>
               <div class="hrow">
                 <span class="icwrap"><svg class="ic"><use href="#i-tray"/></svg></span>
-                <b>Todas as conversas</b><span class="n tabular">100</span>
+                <b>Workspaces</b>
                 <span class="chev"><svg class="ic"><use href="#i-chev-r"/></svg></span>
               </div>
             </div>
@@ -672,8 +672,8 @@
           <div class="homebar" aria-hidden="true"></div>
         </div>
       </div>
-      <p class="caption">Repos saudável: <em>nome + chevron</em>. Nada mais. A única linha que fala é a exceção — e some quando o espelho conclui.
-        <span class="src">fonte produto: git status / rev-list · C22</span></p>
+      <p class="caption">O hub não enumera — <em>agrega</em>. Uma linha por área; a exceção vira sublinha, cura e some. Com 3 repos ou 30, o hub tem o mesmo tamanho.
+        <span class="src">fonte: rollup de git status por área · C22</span></p>
     </div>
 
     <!-- M2 -->
@@ -1029,20 +1029,25 @@ function boot() {
     loop(10500);
   });
 
-  /* M1 · exceção some quando o espelho conclui — saudável permanece mudo */
+  /* M1 · hub agrega: exceção como sublinha → cura → silêncio de 4 linhas */
   scene1(({ at, loop }) => {
-    const row = $('m1r3');
-    const st = $('m1s3');
-    row.classList.remove('quiet', 'flash');
-    st.innerHTML = '<svg class="ic" style="width:11px;height:11px"><use href="#i-warn"/></svg>7 não enviados';
-    st.className = 'attn';
-    at(4800, () => {
-      row.classList.add('flash');
-      st.innerHTML = '';
-      st.className = 'attn';
-      row.classList.add('quiet');
+    const sub = $('m1sub'), badge = $('m1badge'), ic = $('m1ic');
+    sub.textContent = 'blackink · espelho bloqueado';
+    sub.className = 'hsub';
+    badge.className = 'hbadge';
+    ic.style.color = 'var(--red)';
+    ic.innerHTML = '<svg class="ic"><use href="#i-warn"/></svg>';
+    at(4600, () => {
+      sub.textContent = 'curado sozinho · recibo no ledger';
+      sub.className = 'hsub ok';
+      badge.classList.add('gone');
     });
-    loop(9000);
+    at(7200, () => {
+      sub.classList.add('gone');
+      ic.style.color = '';
+      ic.innerHTML = '<svg class="ic"><use href="#i-repo"/></svg>';
+    });
+    loop(10500);
   });
 
   /* M2 · commits sobem; proveniência como folha */
