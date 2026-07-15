@@ -15,13 +15,16 @@ struct AtlasCodeView: View {
     @State private var model: AtlasCodeModel
     @State private var provenanceModel: AtlasCodeProvenanceModel
     @State private var mirrorModel: AtlasCodeMirrorModel
+    @State private var askModel: AtlasCodeAskModel
     @State private var selectedNode: AtlasCodeGraphNode?
     @State private var showsHealReceipt = false
+    @FocusState private var askFieldFocused: Bool
 
     init(client: AtlasClient, repo: String = "atlas-server") {
         _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
         _provenanceModel = State(initialValue: AtlasCodeProvenanceModel(client: client, repo: repo))
         _mirrorModel = State(initialValue: AtlasCodeMirrorModel(client: client, repo: repo))
+        _askModel = State(initialValue: AtlasCodeAskModel(client: client, repo: repo))
     }
 
     var body: some View {
@@ -118,7 +121,10 @@ struct AtlasCodeView: View {
                         state: model.state(for: node),
                         ruleId: model.ruleId(for: node),
                         isFirst: index == 0,
-                        isLast: index == graph.nodes.count - 1
+                        isLast: index == graph.nodes.count - 1,
+                        // A resposta da pílula acende o que ela cita: o mapa é
+                        // que responde. Sem resposta, ninguém está apagado.
+                        isDimmed: askModel.isAnchoring && !askModel.anchors.contains(node.hash)
                     ) {
                         selectedNode = node
                         Task { await provenanceModel.load(hash: node.hash) }
@@ -227,31 +233,228 @@ struct AtlasCodeView: View {
         }
     }
 
-    /// Lei 7: a pílula nunca some — nem aqui.
+    /// Lei 7: a pílula nunca some — nem aqui. E agora ela responde.
+    ///
+    /// Ela não abre outra tela: expande sobre o grafo, que continua visível
+    /// atrás (lei 3, o mapa vem primeiro). A resposta acende os commits que
+    /// cita — o mapa é que responde, não uma bolha de conversa.
+    @ViewBuilder
     private var askPill: some View {
+        VStack(spacing: 10) {
+            if askModel.isOpen {
+                askPanel
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+            pillBar
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.bottom, 10)
+        .animation(reduceMotion ? nil : .spring(response: 0.32, dampingFraction: 0.86), value: askModel.isOpen)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: askModel.phase)
+    }
+
+    private var pillBar: some View {
         HStack(spacing: 9) {
-            Image(systemName: "plus")
+            Image(systemName: askModel.isOpen ? "xmark" : "plus")
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 22, height: 22)
                 .background(Circle().fill(AtlasTheme.surfaceHi))
-            Text("por que essa branch existe?")
-                .font(AtlasFont.serifItalic(13))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(1)
-            Spacer()
-            Image(systemName: "mic")
-                .font(.system(size: 11))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .onTapGesture {
+                    if askModel.isOpen {
+                        askModel.isOpen = false
+                        askModel.clear()
+                    } else {
+                        askModel.isOpen = true
+                    }
+                }
+                .accessibilityIdentifier("code-ask-toggle")
+                .accessibilityLabel(askModel.isOpen ? "Fechar" : "Perguntar")
+
+            if askModel.isOpen {
+                TextField("pergunte sobre este grafo", text: $askModel.draft)
+                    .textFieldStyle(.plain)
+                    .font(AtlasFont.serifItalic(14))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .submitLabel(.send)
+                    .focused($askFieldFocused)
+                    .onSubmit { submitAsk(askModel.draft) }
+                    .accessibilityIdentifier("code-ask-field")
+            } else {
+                Text("por que essa branch existe?")
+                    .font(AtlasFont.serifItalic(13))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+                Spacer(minLength: 0)
+            }
+
+            if askModel.isOpen && !askModel.draft.isEmpty {
+                Button { submitAsk(askModel.draft) } label: {
+                    Image(systemName: "arrow.up")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(AtlasTheme.bg)
+                        .frame(width: 22, height: 22)
+                        .background(Circle().fill(AtlasTheme.accent))
+                }
+                .accessibilityIdentifier("code-ask-send")
+                .accessibilityLabel("Perguntar")
+            }
         }
         .padding(.horizontal, 13)
         .padding(.vertical, 10)
         .background(.ultraThinMaterial, in: Capsule())
         .overlay(Capsule().strokeBorder(AtlasTheme.separator, lineWidth: 0.5))
-        .padding(.horizontal, AtlasTheme.Space.screen)
-        .padding(.bottom, 10)
+        .contentShape(Capsule())
+        .onTapGesture {
+            guard !askModel.isOpen else { return }
+            askModel.isOpen = true
+            askFieldFocused = true
+        }
+        // `.contain` é obrigatório aqui: sem ele o identificador da pílula
+        // sobrescreve o dos filhos, e o campo de texto deixa de ser alcançável
+        // — para quem dirige o teste E para quem usa VoiceOver.
+        .accessibilityElement(children: .contain)
         .accessibilityLabel("Perguntar ao Atlas sobre o código")
         .accessibilityIdentifier("code-ask-pill")
+    }
+
+    /// O painel: sugestões quando vazio, resposta quando há resposta.
+    @ViewBuilder
+    private var askPanel: some View {
+        switch askModel.phase {
+        case .idle:
+            AtlasCodeAskSuggestionsView { question in
+                submitAsk(question)
+            }
+        case .asking(let question):
+            HStack(spacing: 9) {
+                ProgressView().tint(AtlasTheme.accent).scaleEffect(0.7)
+                Text(question)
+                    .font(AtlasFont.serifItalic(13))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(13)
+            .background(AtlasCodeAskSurface())
+        case .answered(let response):
+            AtlasCodeAnswerCard(response: response) { askModel.clear() }
+        case .failed(let message):
+            VStack(alignment: .leading, spacing: 5) {
+                Text("não consegui perguntar")
+                    .font(AtlasFont.serif(14, .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text(message)
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasCodePalette.alert)
+                    .lineLimit(3)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(13)
+            .background(AtlasCodeAskSurface())
+        }
+    }
+
+    private func submitAsk(_ question: String) {
+        askFieldFocused = false
+        Task { await askModel.ask(question) }
+    }
+}
+
+// MARK: - Sugestões: a pílula ensina o próprio poder
+
+/// Uma pílula vazia não ensina nada, e o operador não tem como adivinhar que
+/// pode perguntar. Cada chip é uma pergunta que o Atlas SABE responder —
+/// prometer o que não se cumpre foi o defeito da primeira versão dela.
+private struct AtlasCodeAskSuggestionsView: View {
+    let onPick: (String) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("PERGUNTE AO GRAFO")
+                .font(.system(size: 8.5, weight: .semibold))
+                .tracking(1.2)
+                .foregroundStyle(AtlasTheme.textTertiary)
+            ForEach(AtlasCodeAskSuggestions.all, id: \.self) { suggestion in
+                Button { onPick(suggestion) } label: {
+                    HStack(spacing: 8) {
+                        Text(suggestion)
+                            .font(AtlasFont.serifItalic(14))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                        Spacer(minLength: 0)
+                        Image(systemName: "arrow.up.left")
+                            .font(.system(size: 9))
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("code-ask-suggestion")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .background(AtlasCodeAskSurface())
+        .overlay(
+            RoundedRectangle(cornerRadius: 16).strokeBorder(AtlasTheme.separator, lineWidth: 0.5)
+        )
+    }
+}
+
+// MARK: - A resposta: fato + âncora, nunca bolha de conversa
+
+private struct AtlasCodeAnswerCard: View {
+    let response: AtlasCodeAskResponse
+    let onClear: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            Text(response.answer)
+                .font(AtlasFont.serif(15))
+                .foregroundStyle(response.answered ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier("code-ask-answer")
+
+            HStack(spacing: 8) {
+                // A âncora é a prova: o grafo acendeu exatamente estes.
+                if let note = response.anchorNote {
+                    Label(note, systemImage: "circle.fill")
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(AtlasTheme.accent)
+                        .imageScale(.small)
+                }
+                Spacer(minLength: 0)
+                Button(action: onClear) {
+                    Text("limpar")
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                }
+                .accessibilityIdentifier("code-ask-clear")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        // Opaco de propósito: este cartão flutua sobre uma lista que rola, e
+        // qualquer transparência deixa o texto do grafo atravessar a resposta.
+        .background(AtlasCodeAskSurface())
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder(response.answered ? AtlasTheme.accent.opacity(0.28) : AtlasTheme.separator, lineWidth: 1)
+        )
+    }
+}
+
+/// O fundo dos painéis da pílula.
+///
+/// Um cartão flutuando sobre lista que rola precisa ser opaco: material fino
+/// deixa a manchete de um commit atravessar a resposta e as duas viram sopa.
+/// A sombra separa os planos sem pedir mais uma borda.
+private struct AtlasCodeAskSurface: View {
+    var body: some View {
+        RoundedRectangle(cornerRadius: 16)
+            .fill(AtlasTheme.surface)
+            .shadow(color: .black.opacity(0.45), radius: 18, y: 6)
     }
 }
 
@@ -276,11 +479,16 @@ enum AtlasCodePalette {
 // MARK: - Linha do commit (mensagem é a manchete)
 
 private struct AtlasCodeCommitRow: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let node: AtlasCodeGraphNode
     let state: AtlasCodeNodeState
     let ruleId: String?
     let isFirst: Bool
     let isLast: Bool
+    /// A pílula respondeu e este commit não está na resposta: ele recua, mas
+    /// nunca some — esconder história para responder uma pergunta seria mentir
+    /// sobre o repositório.
+    var isDimmed: Bool = false
     let onTap: () -> Void
 
     private var color: Color { AtlasCodePalette.color(for: state) }
@@ -316,8 +524,12 @@ private struct AtlasCodeCommitRow: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .opacity(isDimmed ? 0.26 : 1)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.28), value: isDimmed)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
+        // O leitor de tela precisa do mesmo sinal que o olho recebe.
+        .accessibilityHint(isDimmed ? "fora da resposta" : "")
         .accessibilityIdentifier("code-commit-\(node.hash.prefix(8))")
     }
 

@@ -258,6 +258,24 @@ public actor AtlasClient: AtlasAiStreamSource {
         try await get("/code/repos")
     }
 
+    /// H6 · a pílula pergunta ao grafo. Read-only: perguntar nunca muta o repo.
+    ///
+    /// O fuso vai do aparelho, não do servidor: quem sabe que dia é "hoje" para
+    /// o operador é o telefone no bolso dele. Sem isso o servidor responde em
+    /// UTC e "hoje" começa às 21h de ontem.
+    public func askCode(repo: String, question: String) async throws -> AtlasCodeAskResponse {
+        struct Body: Encodable {
+            let repo: String
+            let question: String
+            let timezone: String
+        }
+        return try await post(
+            "/code/ask",
+            body: Body(repo: repo, question: question, timezone: TimeZone.current.identifier),
+            timeout: 25
+        )
+    }
+
     /// M5 mirror · what would leave the Mac, and what the scan found. Read-only.
     public func getCodeMirror(repo: String) async throws -> AtlasCodeMirrorResponse {
         try await get("/code/mirror\(atlasQueryString([("repo", .string(repo))]))")

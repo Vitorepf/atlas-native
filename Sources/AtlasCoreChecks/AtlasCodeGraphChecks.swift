@@ -138,6 +138,41 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     // O servidor fala slug; a superfície fala a língua do operador.
     check("proveniência C23 traduz o agente para português", provenance?.agentLabel == "você")
 
+    // H6 · a pílula. Resposta é fato com âncora, não bolha de conversa.
+    let askJSON = """
+    {"schema_version":"atlas.code.ask.v1","repo":"atlas-native","question":"o que mudou hoje?",
+     "intent":"changes","answered":true,"answer":"22 commits hoje — 22 de Vitor Freire.",
+     "commits":["9a06fd4c56","d0a65d0aa1"],"truncated":false,
+     "evidence":[],"source":"graph",
+     "window":{"kind":"today","since":1784084400,"timezone":"America/Sao_Paulo"}}
+    """
+    let ask = try? decoder.decode(AtlasCodeAskResponse.self, from: Data(askJSON.utf8))
+    check("pílula H6 decodifica a resposta ancorada", ask?.intent == .changes && ask?.answered == true)
+    check("pílula H6 entrega as âncoras que o grafo acende", ask?.anchorSet == ["9a06fd4c56", "d0a65d0aa1"])
+    // A janela viaja junto: "hoje" é uma afirmação sobre o tempo, conferível.
+    check("pílula H6 diz o recorte de tempo que usou", ask?.window?.timezone == "America/Sao_Paulo" && ask?.window?.since == 1784084400)
+
+    let unknownAskJSON = """
+    {"schema_version":"atlas.code.ask.v1","repo":"atlas-native","question":"foi uma boa ideia?",
+     "intent":"philosophy","answered":false,"answer":"essa pergunta precisa do cérebro.",
+     "source":"graph"}
+    """
+    let unknownAsk = try? decoder.decode(AtlasCodeAskResponse.self, from: Data(unknownAskJSON.utf8))
+    // Intenção nova do servidor não derruba a tela: cai no caminho do "não sei".
+    check("pílula H6 sobrevive a intenção desconhecida", unknownAsk?.intent == .unknown)
+    // Ausência de resposta é DITA. Este é o defeito original da pílula: ela
+    // prometia sem cumprir.
+    check("pílula H6 admite quando não sabe, sem âncora falsa", unknownAsk?.answered == false && unknownAsk?.commits.isEmpty == true && unknownAsk?.window == nil)
+
+    let unknownAskSchema = askJSON.replacingOccurrences(of: "atlas.code.ask.v1", with: "atlas.code.ask.v2")
+    check("schema de pergunta desconhecido falha fechado", (try? decoder.decode(AtlasCodeAskResponse.self, from: Data(unknownAskSchema.utf8))) == nil)
+
+    // Sugestão que a pílula não sabe responder é promessa falsa — o defeito
+    // original dela. Que CADA sugestão roteia para intenção real quem prova é
+    // AtlasCodeQuestionRouterTest::test_every_pill_suggestion_routes_to_a_real_intent,
+    // no servidor, onde o roteador mora. Aqui só se prova o que daqui se vê.
+    check("pílula H6 tem sugestão para ensinar o próprio poder", AtlasCodeAskSuggestions.all.count >= 3 && AtlasCodeAskSuggestions.all.allSatisfy { !$0.isEmpty })
+
     let violationsJSON = """
     {"schema_version":"atlas.code.violations.v1","repo":"atlas-server",
      "generated_at":"2026-07-15T05:00:00Z",

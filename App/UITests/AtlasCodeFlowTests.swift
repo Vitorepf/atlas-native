@@ -70,6 +70,74 @@ final class AtlasCodeFlowTests: XCTestCase {
         }
     }
 
+    /// H6 · a pílula responde de verdade.
+    ///
+    /// O defeito original dela era ser bonita e morta: um placeholder que
+    /// prometia "por que essa branch existe?" e não fazia nada. Este teste
+    /// existe para essa promessa nunca mais ficar sem cobrança.
+    func testPillAnswersAndAnchorsTheGraph() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let codeButton = app.buttons["topbar-code"]
+        XCTAssertTrue(codeButton.waitForExistence(timeout: 20))
+        codeButton.tap()
+
+        let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'radar-repo-'")).firstMatch
+        guard repoCard.waitForExistence(timeout: 25) else {
+            attach(app, name: "10-sem-fonte")
+            return
+        }
+        repoCard.tap()
+
+        XCTAssertTrue(app.descendants(matching: .any)["code-status"].waitForExistence(timeout: 30))
+
+        // 1 · A pílula está lá (lei 7) e agora ABRE. O identificador propaga
+        // para os filhos da pílula, então quem dirige pega o primeiro.
+        let pill = app.descendants(matching: .any).matching(identifier: "code-ask-pill").firstMatch
+        XCTAssertTrue(pill.waitForExistence(timeout: 10), "a pílula nunca some")
+        pill.tap()
+
+        // 2 · Vazia, ela ensina o próprio poder em vez de esperar adivinhação.
+        let suggestion = app.buttons.matching(identifier: "code-ask-suggestion").firstMatch
+        XCTAssertTrue(suggestion.waitForExistence(timeout: 10), "a pílula precisa sugerir o que sabe responder")
+        attach(app, name: "11-pilula-sugestoes")
+
+        // 3 · Tocar numa sugestão RESPONDE — com fato, não com promessa.
+        suggestion.tap()
+        let answer = app.descendants(matching: .any)["code-ask-answer"]
+        XCTAssertTrue(answer.waitForExistence(timeout: 30), "a pílula precisa responder")
+        XCTAssertFalse(answer.label.isEmpty, "resposta vazia é a promessa não cumprida de novo")
+        attach(app, name: "12-pilula-resposta")
+
+        // 4 · O grafo continua atrás: a resposta não abre outra tela (lei 3).
+        XCTAssertTrue(app.descendants(matching: .any)["code-status"].exists,
+                      "o mapa vem primeiro — a resposta não pode substituí-lo")
+        attach(app, name: "13-grafo-ancorado")
+
+        // 5 · A pílula é campo, não só menu de chips: o operador escreve o que
+        // quiser, com as palavras dele.
+        let field = app.textFields["code-ask-field"]
+        XCTAssertTrue(field.waitForExistence(timeout: 10), "a pílula precisa aceitar a pergunta escrita")
+        field.tap()
+        field.typeText("quem mexeu no AtlasCodeView.swift?")
+        app.buttons["code-ask-send"].firstMatch.tap()
+
+        // A resposta troca — a pílula não empilha conversa, ela responde sobre
+        // o grafo que está ali.
+        let typedAnswer = app.descendants(matching: .any)["code-ask-answer"]
+        XCTAssertTrue(typedAnswer.waitForExistence(timeout: 30))
+        let expectation = expectation(for: NSPredicate(format: "label CONTAINS[c] 'atlascodeview'"), evaluatedWith: typedAnswer)
+        wait(for: [expectation], timeout: 30)
+        attach(app, name: "14-pergunta-escrita")
+
+        // 6 · Limpar apaga a âncora: o grafo volta a mostrar tudo igual.
+        app.buttons["code-ask-clear"].firstMatch.tap()
+        XCTAssertTrue(app.buttons.matching(identifier: "code-ask-suggestion").firstMatch.waitForExistence(timeout: 10),
+                      "limpar devolve a pílula ao convite, não a um vazio mudo")
+        attach(app, name: "15-limpo")
+    }
+
     private func attach(_ app: XCUIApplication, name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = name
