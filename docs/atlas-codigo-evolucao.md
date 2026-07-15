@@ -260,10 +260,40 @@ prevenidas ≥ curadas ao longo de 2 semanas (a Lei migrando para a origem).
 - Métrica-alvo: `violações/semana → 0` com `prevenidas > curadas`. O grafo permanentemente
   quieto é a vitória — quieto É o produto. Depende de: E4+E5 maduras.
 
-### H6 · Perguntar sobre o código (⌘K / pílula)
-- Open Brain sobre topologia+ledger+canon: "o que o forge-3 fez essa semana?", "por que essa
-  branch existe?", "qual obra está mais atrasada?". Respostas com refs conferíveis (hash,
-  recibo). No iPhone: a pílula (lei 7). Depende de: E1–E3; melhora com H1.
+### H6 · Perguntar sobre o código (⌘K / pílula) — **ENTREGUE (leitura); 2 naturezas abertas**
+
+A pílula tem quatro naturezas. Duas estão vivas e provadas; duas não.
+
+**Contrato:** `atlas.code.ask.v1` · `POST /api/code/ask {repo, question, timezone?}` →
+`{intent, answered, answer, commits[], commits_total, truncated, evidence[], source, window?}`
+
+**A decisão central — determinístico ANTES do cérebro.** As perguntas que o operador faz sobre o
+próprio grafo são poucas e repetidas, e todas têm resposta EXATA na topologia: é filtro, não
+opinião. Passar isso por um modelo troca um fato por paráfrase, custa segundos de provider, exige
+rede e pode alucinar um hash. Todo hash citado foi **filtrado, não lembrado**. O cérebro é a cauda
+longa, não o caminho.
+
+| natureza | estado |
+|---|---|
+| **Perguntar** — `changes(janela)` · `who_touched` · `find` · `why_branch` | ✅ os commits citados **acendem** no grafo; o resto recua a 26% (nunca some: esconder história para responder seria mentir) |
+| **Investigar** — `problems` | ✅ com a **lei citada** (`rule_canon_ref`) |
+| **Revisar em lote com agentes** | ❌ exige obra + N agentes; `enqueueInteraction` é assíncrono (workers por provider) |
+| **Mandar fazer** | ⛔ **bloqueado por decisão do operador**: o container monta `~/develop` como `:ro` (provado: `Read-only file system`). Executar exige conceder escrita — decisão de confiança que o Atlas não toma sozinho. `AtlasCodeHealService::tick(mode: observe\|heal)` + undo já existem. |
+
+**Cauda longa → ACOS:** intenção desconhecida vai ao Open Brain + canon de engenharia
+(`EngineeringKnowledgeBaseService::search`). É **retrieval, não geração**: o Atlas CITA o que
+conhece; frase redigida por modelo seria plausível e inconferível — o oposto de proveniência.
+Réguas separadas por escala: léxica 0.35 (`EngineeringKnowledgeSearch`), semântica 0.45
+(`AtlasCodeBrainService`) — quem mede é dono do próprio piso; **não unificar**.
+
+**"Hoje" é o dia do OPERADOR:** o fuso vem do aparelho. O servidor roda em UTC e, em São Paulo,
+meia-noite UTC é 21h de ontem — a pílula dizia 24 commits onde o git via 22. A janela viaja na
+resposta para ser conferível.
+
+**Buraco do ecossistema (medido 15/07/2026):** 825 docs ativos na Engineering KB, **0** no índice
+semântico que o Open Brain consulta (169 notas, todas do vault). O Atlas TINHA o conhecimento e o
+cérebro não procurava nele. O Código já enxerga o canon; o `AiContextPackBuilder` ainda não —
+até lá, toda outra superfície segue cega.
 
 ### H7–H12 · O anel do produto (resumo; detalhar quando destravar)
 
