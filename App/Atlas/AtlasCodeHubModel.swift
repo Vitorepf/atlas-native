@@ -12,7 +12,6 @@ import SwiftUI
 @Observable
 final class AtlasCodeHubModel {
     private let client: AtlasClient
-    private let repos: [String]
     /// Exceção resolvida a partir de dado real. `nil` = silêncio (nunca "0".)
     private(set) var exception: Exception?
 
@@ -22,19 +21,21 @@ final class AtlasCodeHubModel {
         let count: Int
     }
 
-    init(client: AtlasClient, repos: [String] = ["atlas-server", "atlas-native"]) {
+    init(client: AtlasClient) {
         self.client = client
-        self.repos = repos
     }
 
     /// Varre as áreas e mantém apenas a primeira exceção real. Falha de rede
     /// não inventa exceção nem apaga a anterior de forma silenciosa: sem
     /// resposta, a linha simplesmente não fala.
+    /// Varre os repositórios recentes — o trabalho vivo. Sem resposta, o
+    /// ponto não acende: ausência nunca vira exceção.
     func refresh() async {
-        for repo in repos {
-            guard let response = try? await client.getCodeViolations(repo: repo) else { continue }
+        guard let workspace = try? await client.getCodeWorkspace() else { return }
+        for repo in workspace.recents {
+            guard let response = try? await client.getCodeViolations(repo: repo.slug) else { continue }
             if let first = response.violations.first {
-                exception = Exception(repo: repo, ruleId: first.ruleId, count: response.violations.count)
+                exception = Exception(repo: repo.name, ruleId: first.ruleId, count: response.violations.count)
                 return
             }
         }

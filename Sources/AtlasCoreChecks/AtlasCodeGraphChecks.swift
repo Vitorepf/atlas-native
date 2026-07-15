@@ -79,36 +79,44 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     check("cura C25 preserva recibo e undo", heal?.stepReceipts.first?.action == "delete_branch" && heal?.stepReceipts.first?.undoRef?["branch"] == "feature/cobaia")
     check("cura C25 não oferece aprovação", heal?.stepReceipts.first?.status == "completed" && heal?.mode == "observe")
 
-    // M3 · a tela fala português: id de regra NUNCA chega ao operador.
-    let reposJSON = """
-    {"schema_version":"atlas.code.repos.v1","generated_at":"2026-07-15T14:00:00Z",
-     "repos":[
-       {"slug":"atlas-server","name":"Atlas Server","readable":true,"violations":22,
-        "issues":[{"rule_id":"orphan_branch","count":4,"severity":"high","oldest_days":9},
-                  {"rule_id":"obra_return_deadline","count":17,"severity":"medium","oldest_days":22},
-                  {"rule_id":"worktree_allowlist","count":1,"severity":"medium"}]},
-       {"slug":"atlas-native","name":"Atlas Native","readable":true},
-       {"slug":"atlas","name":"Atlas","readable":false,"unreadable_reason":"not_a_git_repository"}
-     ]}
+    // M3 v2 · o workspace real: pastas de produto + recentes. Pasta NÃO é
+    // repositório quebrado — e a tela fala português.
+    let workspaceJSON = """
+    {"schema_version":"atlas.code.repos.v2","generated_at":"2026-07-15T14:00:00Z",
+     "workspace_root":"/Users/vitorepf/develop",
+     "recents":[
+       {"slug":"atlas-server","name":"Atlas Server","path":"/d/Atlas/atlas-server","folder":"Atlas","last_commit_at":1784316000},
+       {"slug":"blackink-website","name":"Blackink Website","path":"/d/blackink/blackink-website","folder":"blackink","last_commit_at":1784200000}],
+     "folders":[
+       {"slug":"Atlas","name":"Atlas","repositories":2,"last_commit_at":1784316000,
+        "repos":[{"slug":"atlas-server","name":"Atlas Server","path":"/d/Atlas/atlas-server","folder":"Atlas","last_commit_at":1784316000},
+                 {"slug":"atlas-desktop","name":"Atlas Desktop","path":"/d/Atlas/atlas-desktop","folder":"Atlas","last_commit_at":null}]},
+       {"slug":"blackink","name":"Blackink","repositories":1,"last_commit_at":1784200000,
+        "repos":[{"slug":"blackink-website","name":"Blackink Website","path":"/d/blackink/blackink-website","folder":"blackink","last_commit_at":1784200000}]}],
+     "loose":[{"slug":"vitorepf-site","name":"Vitorepf Site","path":"/d/vitorepf-site","folder":null,"last_commit_at":1784000000}]}
     """
-    let repos = try? decoder.decode(AtlasCodeReposResponse.self, from: Data(reposJSON.utf8))
-    let server = repos?.repos.first
-    check("radar M3 decodifica a frota", repos?.repos.count == 3 && server?.violations == 22)
-    if case .exception(let count, let issues)? = server?.signal {
-        check("radar agrupa por regra com o grave primeiro", count == 22 && issues.first?.ruleId == "orphan_branch")
-        check("frase humana: obra que não voltou", issues.first(where: { $0.ruleId == "obra_return_deadline" })?.headline == "17 obras nunca voltaram à main")
-        check("frase humana: branch abandonada", issues.first?.headline == "4 branches abandonadas")
-        check("idade medida vira nota humana", issues.first(where: { $0.ruleId == "obra_return_deadline" })?.ageNote == "a mais antiga há 22 dias")
-        check("sem idade medida, nenhuma nota é inventada", issues.first(where: { $0.ruleId == "worktree_allowlist" })?.ageNote == nil)
-        check("singular resolvido", issues.first(where: { $0.ruleId == "worktree_allowlist" })?.headline == "1 worktree fora do lugar")
-        // A prova que importa: nenhum id de máquina no que o operador lê.
-        let visivel = issues.map { $0.headline + ($0.ageNote ?? "") }.joined(separator: " ")
-        check("nenhum id de regra vaza para a tela", !visivel.contains("_"))
-    } else {
-        check("radar exception decodificado", false)
-    }
-    check("repo saudável é silêncio", repos?.repos[1].signal == .silent)
-    check("pasta sem git é estado próprio", repos?.repos[2].signal == .unreadable(reason: "not_a_git_repository"))
+    let workspace = try? decoder.decode(AtlasCodeWorkspaceResponse.self, from: Data(workspaceJSON.utf8))
+    check("workspace v2 decodifica pastas de produto", workspace?.folders.count == 2 && workspace?.folders.first?.name == "Atlas")
+    check("workspace v2 separa recentes", workspace?.recents.count == 2 && workspace?.recents.first?.slug == "atlas-server")
+    check("workspace v2 preserva repo solto", workspace?.loose.first?.slug == "vitorepf-site" && workspace?.loose.first?.folder == nil)
+    check("pasta guarda seus repositórios sem remover os recentes", workspace?.folders.first?.repos.count == 2)
+    check("contagem real de repositórios", workspace?.repositoryCount == 4)
+    check("repo sem história mantém ausência", workspace?.folders.first?.repos.last?.lastCommitAt == nil)
+    check("sem data, nenhuma idade é inventada", AtlasCodeAge.short(from: nil) == nil)
+
+    // A tela fala português: id de regra nunca chega ao operador.
+    let issues = [
+        AtlasCodeIssue(ruleId: "orphan_branch", count: 4, severity: "high", oldestDays: 9),
+        AtlasCodeIssue(ruleId: "obra_return_deadline", count: 17, severity: "medium", oldestDays: 22),
+        AtlasCodeIssue(ruleId: "worktree_allowlist", count: 1, severity: "medium", oldestDays: nil),
+    ]
+    check("frase humana: branch abandonada", issues[0].headline == "4 branches abandonadas")
+    check("frase humana: obra que não voltou", issues[1].headline == "17 obras nunca voltaram à main")
+    check("singular resolvido", issues[2].headline == "1 worktree fora do lugar")
+    check("idade medida vira nota humana", issues[1].ageNote == "a mais antiga há 22 dias")
+    check("sem idade medida, nenhuma nota", issues[2].ageNote == nil)
+    let visivel = issues.map { $0.headline + ($0.ageNote ?? "") }.joined(separator: " ")
+    check("nenhum id de regra vaza para a tela", !visivel.contains("_"))
 
     let weekJSON = """
     {"schema_version":"atlas.code.week.v1","repo":"atlas-server","window":"2026-07-08..2026-07-15",

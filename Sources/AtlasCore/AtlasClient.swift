@@ -253,8 +253,8 @@ public actor AtlasClient: AtlasAiStreamSource {
         try await get("/code/violations\(atlasQueryString([("repo", .string(repo))]))")
     }
 
-    /// M3 radar · the repository fleet, by exception. Read-only.
-    public func getCodeRepos() async throws -> AtlasCodeReposResponse {
+    /// M3 radar · o workspace real: recentes + pastas de produto. Read-only.
+    public func getCodeWorkspace() async throws -> AtlasCodeWorkspaceResponse {
         try await get("/code/repos")
     }
 
