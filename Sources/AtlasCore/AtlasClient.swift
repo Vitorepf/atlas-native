@@ -253,6 +253,11 @@ public actor AtlasClient: AtlasAiStreamSource {
         try await get("/code/violations\(atlasQueryString([("repo", .string(repo))]))")
     }
 
+    /// M3 radar · the repository fleet, by exception. Read-only.
+    public func getCodeRepos() async throws -> AtlasCodeReposResponse {
+        try await get("/code/repos")
+    }
+
     /// C25 · Observe/heal tick. Observe remains the default and does not mutate Git.
     public func getCodeHealTick(repo: String, mode: String = "observe") async throws -> AtlasCodeHealResponse {
         let query = atlasQueryString([

@@ -4,6 +4,8 @@ import AtlasCore
 // Rotas: um workspace (repo), uma thread existente, ou conversa nova.
 enum Route: Hashable {
     case workspace(key: String?, title: String)
+    /// M0 · o grafo de UM repositório, escolhido no radar (M3).
+    case codeGraph(repo: String)
     case thread(id: String, title: String)
     case new
     case conversas
@@ -53,7 +55,12 @@ struct RootView: View {
                 case .autonomos:
                     AutonomosView()
                 case .code:
-                    AtlasCodeView(client: session.client, repo: codeRepo)
+                    // A porta do domínio é o radar: a frota primeiro, o repo depois.
+                    AtlasCodeRadarView(client: session.client) { repo in
+                        path.append(Route.codeGraph(repo: repo))
+                    }
+                case .codeGraph(let repo):
+                    AtlasCodeView(client: session.client, repo: repo)
                 }
             }
         }
@@ -76,14 +83,6 @@ struct RootView: View {
                 path.append(Route.thread(id: threadId, title: title))
             }
         }
-    }
-
-    private var codeRepo: String {
-        let value = Bundle.main.object(forInfoDictionaryKey: "ATLAS_CODE_REPO") as? String
-        if let value, !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return value
-        }
-        return "atlas-server"
     }
 
     // MARK: - Top bar
