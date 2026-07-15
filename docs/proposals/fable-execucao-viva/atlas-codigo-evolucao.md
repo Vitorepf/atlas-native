@@ -234,6 +234,21 @@ prevenidas ≥ curadas ao longo de 2 semanas (a Lei migrando para a origem).
   branch existe?", "qual obra está mais atrasada?". Respostas com refs conferíveis (hash,
   recibo). No iPhone: a pílula (lei 7). Depende de: E1–E3; melhora com H1.
 
+### H7–H12 · O anel do produto (resumo; detalhar quando destravar)
+
+- **H7 · Grafo do PRODUTO:** o Atlas agrupa commits e responde "o que o app faz hoje que
+  ontem não fazia" — capacidades, não hashes. *Depende: E2+E5.*
+- **H8 · Grafo que cresce ao vivo:** intenção na pílula → obra nasce → commits brotando na
+  espinha em tempo real (canal de presença C14, já shipado). *Depende: E1.*
+- **H9 · Futuro fantasma:** antes de cura/merge/release, o grafo COMO FICARÁ em nós
+  translúcidos — dry-run como imagem. *Depende: E4.*
+- **H10 · Custo/valor por commit:** custo de motor + capacidade entregue = P&L de engenharia
+  ("R$ 47 → 3 capacidades"). Ponte para gestão de empresas. *Depende: E2.*
+- **H11 · Organismo multi-repo:** contrato mudou no server → decode nasce no app sozinho;
+  violação nova "drift de contrato entre repos". *Depende: E4 madura.*
+- **H12 · A noite falada:** o briefing por voz (LiveKit no ecossistema) — o Código sem tela.
+  *Depende: E5.*
+
 ## 4½. Anel Nativo Absurdo — N1–N8 (só possível em Swift puro)
 
 > **Por que existe:** o app é Swift puro para ser o mais rápido, mais confiável e mais

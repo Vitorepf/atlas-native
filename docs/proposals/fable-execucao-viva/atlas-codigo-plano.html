@@ -184,6 +184,8 @@
   </div>
 
   <!-- ═══ CONTRATOS ═══ -->
+  <p class="sub" style="margin-top:16px"><em>Anel seguinte (H7–H12, spec §4):</em> grafo do PRODUTO ("o que o app faz hoje que ontem não fazia") · grafo que cresce ao vivo · futuro fantasma (dry-run como imagem) · custo/valor por commit (P&L de engenharia) · organismo multi-repo · a noite falada por voz.</p>
+
   <h2 id="nativo"><span class="n">5 ·</span> Anel Nativo N1–N8 — Swift puro no limite do iPhone</h2>
   <p class="sub">Por que Swift puro: <em>o mais rápido, o mais confiável, o mais próximo do hardware — o máximo do iPhone é o mínimo do Atlas.</em> Este anel é o que Electron/RN/web não conseguem seguir. Detalhe completo na spec §4½.</p>
   <div class="cards">
@@ -208,13 +210,19 @@
   </table>
 
   <h2><span class="n">7 ·</span> A ordem — dependências</h2>
-  <pre class="dep"><span class="h">E1</span> ──► <span class="h">E2</span> ──► <span class="h">E3</span> ──► <span class="h">E4</span> ──► <span class="h">E5</span>
-        │      │       │      └──► H3 (semana/frota)
-        │      │       └─────────► H5 (prevenção — maturidade)
-        │      └─────────────────► H6 (⌘K v1 — brilha após H1)
-        ├────────────────────────► <span class="h">H1 (blame semântico — o próximo grande salto)</span>
-        └────────────────────────► H4 (review agêntica — decode C21)
-                       E4 ───────► H2 (release governado)</pre>
+  <pre class="dep"><span class="h">VIGENTE JÁ:</span> N8 performance como lei · leis do domínio · craft
+
+<span class="h">FUNDAÇÃO</span>  E1(+N1 Metal) ──► E2 ──► E3 ──► E4 ──► E5
+
+<span class="h">FILA PÓS-FUNDAÇÃO</span> (ordem)
+ 6. H4 review agêntica (fonte C21 pronta — só decode+casca)
+ 7. H8 grafo ao vivo          8. N2 espelho git no iPhone
+ 9. <span class="h">H1 blame semântico</span>       10. H7 grafo do produto
+11. H3 semana da frota        12. N3 on-device
+13. H6 pílula do código       14. H10 custo/valor
+15. H2+N4 release+Enclave     16. H9 futuro fantasma
+17. H11 multi-repo            18. H5 prevenção na origem
+19. H12 noite falada     ·    N5/N6/N7 incrementais sempre</pre>
   <p class="sub">Racional: E1–E2 são leitura pura (confiança pelo "eu preciso ver"); E3 julga sem tocar; E4 age com undo; E5 e os horizontes compõem. H1 anda em paralelo após E2 — é o diferencial que só o Atlas pode ter.</p>
 
   <!-- ═══ LEIS ═══ -->
