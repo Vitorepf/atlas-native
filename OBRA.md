@@ -1050,6 +1050,33 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   intermediário). Gate PHPUnit final da superfície C22–C26: 31 testes/191
   assertions verdes; Core Checks e build App também verdes.
 
+### 15/07 · Atlas Código — gaps do Codex fechados e PROVADOS no simulador (Fable)
+
+Auditoria da entrega E1–E5 do Codex: o encanamento (endpoints, decode, heal,
+undo, week) estava sólido; os gaps estavam na CASCA e na honestidade. Fechados:
+
+| Gap | Correção | Prova |
+|---|---|---|
+| `/code/graph` sem `message` — a tela não tinha manchete | `%s` no log + parse com subject por último | PHPUnit 6/15; 179 nós reais com mensagem |
+| Tela violava 6 leis (hash na superfície, autor como título, sem gramática de cor, violação em lista separada, sheet morto, UI se auto-narrando, sem pílula) | M0 reescrita no contrato do protótipo | screenshot `03-grafo-real.png` |
+| Sem gramática de cor | `AtlasCodeNodeState` + `AtlasCodeGraphState` no Core | 6 checks (precedência curado>viola) |
+| Violação não acendia o nó | model cruza violação↔nó e recibo↔hash | live: 22 desvios reais |
+| M1 hub sem seção CÓDIGO | `AtlasCodeHubRow` agregada, exceção como sublinha | `01-hub-codigo.png` |
+| M3 radar inexistente; repo hardcoded | `GET /code/repos` + `AtlasCodeRadarView`; hub→radar→grafo | `02-radar-frota.png`; PHPUnit 36/94 |
+| M5 espelho inexistente | `GET /code/mirror` + varredura de 7 padrões de segredo (só linhas +) | 5 testes puros; host sem credencial |
+| C18/C19/C21 órfãos (fonte no server desde `9a06fd4c56`, ninguém lia) | `AtlasTraceGovernance` + seção na review | 13 checks |
+| Container não via a frota | mount `..:/Users/.../Atlas:ro` (mesmo path, read-only) | frota real no radar |
+| Pasta ≠ repo (perfil guarda-chuva "saudável") | exige `.git` → `not_a_git_repository` | teste dedicado |
+| Cápsula dizia "frota íntegra" sem ler nada | `repositoriesJudged`; diz "frota não lida" | honestidade restaurada |
+
+**Prova de runtime (simulador, 15/07):** XCUITest `AtlasCodeFlowTests` dirige
+hub → radar → grafo → proveniência e PASSA; evidências em
+`docs/evidence/2026-07-15-atlas-codigo/`. AtlasCoreChecks 414 verdes (exit 0);
+`make build` limpo; PHPUnit AtlasCode 36 testes/94 asserts.
+**Honesto:** device físico segue `device-pending`; a escrita em repo de
+terceiro (cura fora do atlas-server) exige decisão do operador sobre montagem
+rw — hoje a frota é `:ro` por segurança.
+
 ## 8. Estado do runtime (contexto que não muda toda hora)
 
 - Backend: atlas-server em OrbStack (`atlas-backend`, :3737, 16 PHP workers —

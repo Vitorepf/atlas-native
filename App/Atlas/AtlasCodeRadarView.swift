@@ -26,16 +26,38 @@ final class AtlasCodeRadarModel {
     func load() async {
         phase = .loading
         do {
-            repos = try await client.getCodeRepos().repos
+            // A exceção sobe: o que pede você vem antes do que está quieto;
+            // o que nem foi lido fica por último.
+            repos = try await client.getCodeRepos().repos.sorted { Self.rank($0.signal) < Self.rank($1.signal) }
             phase = .loaded
         } catch {
             phase = .failed(String(describing: error))
         }
     }
 
+    private static func rank(_ signal: AtlasCodeRepo.Signal) -> Int {
+        switch signal {
+        case .exception: return 0
+        case .silent: return 1
+        case .scanUnavailable: return 2
+        case .unreadable: return 3
+        }
+    }
+
     /// Quantos repositórios têm exceção agora — a única contagem que informa.
     var repositoriesWithException: Int {
         repos.filter { if case .exception = $0.signal { return true } else { return false } }.count
+    }
+
+    /// Quantos o Atlas conseguiu de fato julgar. Repo ilegível e scanner mudo
+    /// NÃO entram: dizer "frota íntegra" sem ter lido nada seria mentira.
+    var repositoriesJudged: Int {
+        repos.filter {
+            switch $0.signal {
+            case .silent, .exception: return true
+            case .unreadable, .scanUnavailable: return false
+            }
+        }.count
     }
 }
 
@@ -105,22 +127,35 @@ struct AtlasCodeRadarView: View {
         }
     }
 
+    /// A cápsula nunca declara saúde que não foi verificada: sem nenhum repo
+    /// julgado, ela diz o estado honesto — "frota não lida".
     private var statusCapsule: some View {
-        let count = model.repositoriesWithException
-        let healthy = count == 0
+        let exceptions = model.repositoriesWithException
+        let judged = model.repositoriesJudged
+        let tone: Color = exceptions > 0 ? AtlasCodePalette.alert
+            : (judged == 0 ? AtlasTheme.textTertiary : AtlasCodePalette.healed)
+        let icon = exceptions > 0 ? "exclamationmark.triangle" : (judged == 0 ? "eye.slash" : "checkmark")
+        let text: String = {
+            if exceptions > 0 {
+                return exceptions == 1 ? "1 repositório pede atenção" : "\(exceptions) repositórios pedem atenção"
+            }
+            if judged == 0 { return "frota não lida" }
+            return judged == model.repos.count ? "frota íntegra" : "\(judged) de \(model.repos.count) lidos · sem exceção"
+        }()
         return HStack(spacing: 7) {
-            Image(systemName: healthy ? "checkmark" : "exclamationmark.triangle")
+            Image(systemName: icon)
                 .font(.system(size: 10, weight: .semibold))
-            Text(healthy ? "frota íntegra" : (count == 1 ? "1 repositório pede atenção" : "\(count) repositórios pedem atenção"))
+            Text(text)
                 .font(.system(size: 11, weight: .semibold))
                 .monospacedDigit()
         }
-        .foregroundStyle(healthy ? AtlasCodePalette.healed : AtlasCodePalette.alert)
+        .foregroundStyle(tone)
         .padding(.horizontal, 15)
         .padding(.vertical, 7)
-        .background(Capsule().fill((healthy ? AtlasCodePalette.healed : AtlasCodePalette.alert).opacity(0.09)))
-        .overlay(Capsule().strokeBorder((healthy ? AtlasCodePalette.healed : AtlasCodePalette.alert).opacity(0.35), lineWidth: 1))
+        .background(Capsule().fill(tone.opacity(0.09)))
+        .overlay(Capsule().strokeBorder(tone.opacity(0.35), lineWidth: 1))
         .frame(maxWidth: .infinity, alignment: .center)
+        .accessibilityLabel(text)
         .accessibilityIdentifier("radar-status")
     }
 }
@@ -216,6 +251,7 @@ private struct AtlasCodeRepoCard: View {
         switch reason {
         case "repository_path_missing": return "sem caminho configurado"
         case "repository_path_unreadable": return "caminho ilegível no Mac"
+        case "not_a_git_repository": return "não é um repositório git"
         default: return reason
         }
     }
