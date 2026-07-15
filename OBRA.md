@@ -632,6 +632,15 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 6. Decisões registradas
 
+- **15/07 · Canon do app (operador):** o app nativo é a ferramenta de ENGENHARIA DE
+  SOFTWARE mais completa possível da era agêntica. Dois pilares: **Atlas AI** (AX —
+  conversa, execução viva, presença, fila, review; desenhado e shipando) + **Source
+  Manager / Atlas Código** (o GitKraken do Atlas: grafo governado, proveniência,
+  radar, espelho autônomo, cura 24/7; em construção). O fluxo fecha ponta a ponta no
+  nativo: intenção → execução → review → grafo → espelho/release → a semana.
+  Superfície desktop REMOVIDA do escopo (commit 26757d3).
+
+
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
   sob autoridade de goal direto do operador (tela bloqueada = Cursor); WIP do
   Codex preservado. C8 remanescente pro Codex: entitlement/push APNs fase 2
