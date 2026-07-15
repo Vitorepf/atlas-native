@@ -1,0 +1,16 @@
+Command:
+git log --all --topo-order --parents --format='%H|%P|%an|%ae|%at|%D' -n 12
+
+Observed on 2026-07-15:
+b43e907daa72c21d7f0b2aab59d0e8ab0fbc61d6|d62fd13241c2a778479579c6a5c0416ea920e812|Vitor Freire|vitordsny@gmail.com|1784092695|HEAD -> main, origin/main, origin/HEAD
+d62fd13241c2a778479579c6a5c0416ea920e812|3caf75384606299924f8f65de7fff85d92c38106|Vitor Freire|vitordsny@gmail.com|1784066982|
+3caf75384606299924f8f65de7fff85d92c38106|1c9e2e81d75ebcacf2ee9e88ea58c9975060eae4|Vitor Freire|vitordsny@gmail.com|1784064596|
+1c9e2e81d75ebcacf2ee9e88ea58c9975060eae4|31354901328ddb75de32f8f5e2c54893abf1de4d|Vitor Freire|vitordsny@gmail.com|1784061102|
+31354901328ddb75de32f8f5e2c54893abf1de4d|69f589bd6230465998833243b0feaa6f460f4c2d|Vitor Freire|vitordsny@gmail.com|1784060360|
+69f589bd6230465998833243b0feaa6f460f4c2d|affd8e1a0bc82775c27c2b9dbfc7a9aff7cea98c|Vitor Freire|vitordsny@gmail.com|1784058102|
+affd8e1a0bc82775c27c2b9dbfc7a9aff7cea98c|647ec51ec1bf6b9780036690990db4e92237b04f|Vitor Freire|vitordsny@gmail.com|1784056598|
+647ec51ec1bf6b9780036690990db4e92237b04f|39373fc1e64fea78ff88b1a0753c807c159fb469|Vitor Freire|vitordsny@gmail.com|1784056238|
+39373fc1e64fea78ff88b1a0753c807c159fb469|bab6bd3b2848b6178e80a9e0dec585e8219ced4c|Vitor Freire|vitordsny@gmail.com|1784055316|
+bab6bd3b2848b6178e80a9e0dec585e8219ced4c|617aad4068adcd654a35bd62c0cd0b9e608af61f|Vitor Freire|vitordsny@gmail.com|1784054730|
+617aad4068adcd654a35bd62c0cd0b9e608af61f|f708145e7e3b32d73e972ec530869295d2bccc04|Vitor Freire|vitordsny@gmail.com|1784054560|
+f708145e7e3b32d73e972ec530869295d2bccc04|32b14338834deb0e5e36309e546ac321359cf222|Vitor Freire|vitordsny@gmail.com|1784054170|

@@ -15,3 +15,14 @@
   `git log` — não foi executado nesta sessão.
 - Decisão de vigília: E2–E5 não avançam até o gate de E1 previsto no contrato;
   não há claim de conclusão da missão.
+
+## 2026-07-15 · Ciclo E1 fechado
+
+- O simulador iPhone 17 Pro abriu M0 contra uma instância Laravel local da versão
+  atual; a tela mostrou `atlas-server`, `main · 200 nós` e os prefixos dos hashes.
+- Os 12 primeiros prefixos visíveis conferem byte a byte com `git log` e com o
+  probe real do endpoint. Evidência: `docs/evidence/atlas-code-e1/`.
+- `ATLAS_HOST=127.0.0.1` foi somente argumento de build para o simulador; nenhum
+  segredo ou `.env` foi alterado. O gate físico segue `device-pending`.
+- Próxima ação: E2 — correlação de autor, ledger e traces, com ausência honesta
+  quando não houver proveniência.

@@ -149,6 +149,10 @@ private struct GraphCanvas: View {
                 let rect = CGRect(x: x - 6, y: y - 6, width: 12, height: 12)
                 context.fill(Path(ellipseIn: rect), with: .color(AtlasTheme.accent))
                 context.stroke(Path(ellipseIn: rect.insetBy(dx: -2, dy: -2)), with: .color(AtlasTheme.bg), lineWidth: 2)
+                let hashLabel = Text(String(nodes[index].hash.prefix(8)))
+                    .font(.system(size: 9, design: .monospaced))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                context.draw(hashLabel, at: CGPoint(x: x + 16, y: y), anchor: .leading)
             }
         }
         .accessibilityLabel("espinha do grafo com \(nodes.count) nós")

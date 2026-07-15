@@ -594,14 +594,15 @@ a casca não inventa número, progresso, status, prompt ou prova.
 
 ### Grafo Governado — evolução da proposta (tela M0 de `atlas-code-mobile.html`; superfície DESKTOP removida do escopo por decisão do operador em 15/07 — foco exclusivo no app nativo)
 
-- [PARCIAL · C22 · Fable→Codex/Server] **Topologia real do grafo (fase E1).**
+- [FEITO · C22 · Fable→Codex/Server] **Topologia real do grafo (fase E1).**
   `GET /api/code/graph?repo=` → `nodes[] {hash, parents[], refs[], authorEmail, when}`,
   `worktrees[]` — computado de `git log --all --topo-order --parents` +
   `git worktree list` no Mac (local-first), read-only, cache incremental por
-  fingerprint de refs. O servidor e o app nativo já têm DTO, cliente e Canvas
-  M0 com curva midpoint; o gate visual em iPhone e o screenshot lado a lado
-  com `git log` ainda estão pendentes. Sem endpoint, a tela não entra no app —
-  zero mock em produto.
+  fingerprint de refs. O servidor e o app nativo têm DTO, cliente e Canvas M0 com
+  curva midpoint. Gate do simulador fechado em 2026-07-15: screenshot real com
+  200 nós e prefixos de hash idênticos ao `git log --all --topo-order --parents`;
+  prova anexada em `docs/evidence/atlas-code-e1/`. O aparelho físico permanece
+  `device-pending`.
 
 - [ABERTO · C23 · Fable→Codex/Server] **Identidade + proveniência por commit (E2).**
   Cada nó enriquecido com `agent {fable|codex|voce|autonomo:<nome>}` + `traceRef`
@@ -641,6 +642,11 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   radar, espelho autônomo, cura 24/7; em construção). O fluxo fecha ponta a ponta no
   nativo: intenção → execução → review → grafo → espelho/release → a semana.
   Superfície desktop REMOVIDA do escopo (commit 26757d3).
+
+- **2026-07-15 · Missão noturna E1–E5:** por autorização explícita do operador, a
+  fronteira de casca da §1 fica suspensa somente para esta missão. Codex pode tocar
+  `App/Atlas` para fechar provas verticais E1–E5, registrando cada contrato e sem
+  assumir ownership permanente de design system ou views fora do Atlas Código.
 
 
 - 2026-07-13 · Fable atravessou `project.yml` ADITIVAMENTE (target AtlasWidgets)
@@ -960,14 +966,13 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   runner sem recolocá-lo no payload. Prova de regressão: 54 testes HTTP / 414
   asserts, `swift run AtlasCoreChecks`, `cd App && make build` e
   `git diff --check` verdes. Casca Fable e evidência física continuam pendentes.
-- 2026-07-15 · Codex · `d0a65d0` + server `b43e907da` · C22/E1 parcial:
+- 2026-07-15 · Codex · `d0a65d0` + `838585d` + server `b43e907da` · C22/E1 concluído:
   endpoint read-only de topologia Git, contrato versionado no AtlasCore, cliente,
-  Canvas M0 e geometria midpoint; `MISSION-LOG.md` registra a prova e o gate
-  físico pendente. Prova: endpoint real 200 em Laravel novo com `head`, nós,
-  worktrees e fingerprint; 4 testes PHPUnit / 43 asserts; `swift run
-  AtlasCoreChecks`; `cd App && make build`; `git diff --check` verdes. A porta
-  3737 continua apontando para processo OrbStack antigo sem a rota; E2–E5 não
-  avançam sem screenshot no iPhone comparado ao `git log`.
+  Canvas M0 e geometria midpoint. Prova: endpoint real 200 em Laravel novo com
+  `head`, nós, worktrees e fingerprint; 4 testes PHPUnit / 43 asserts; `swift run
+  AtlasCoreChecks`; `cd App && make build`; `git diff --check` verdes; screenshot
+  do simulador em `docs/evidence/atlas-code-e1/m0-simulator.jpg` com prefixos
+  conferidos contra `git-log.txt`. A prova física permanece `device-pending`.
 - 2026-07-13 · Codex · C13 hardening local (sem commit) · backlog Autônomos
   deixou de atravessar o Core como `JSONObject`/`JSONValue`: findings, work
   orders, inbox e budgets agora têm DTOs Foundation-only com os campos públicos
