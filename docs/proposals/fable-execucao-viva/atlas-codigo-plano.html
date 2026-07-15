@@ -118,7 +118,7 @@
     domínio vira produto.
   </p>
   <div class="keyfacts">
-    <div class="kf"><b>17</b><span>telas/momentos inventariados, cada um com estado honesto</span></div>
+    <div class="kf"><b>9</b><span>telas/momentos do app nativo, cada um com estado honesto</span></div>
     <div class="kf"><b>6+6</b><span>fases E0–E5 com gate + horizontes H1–H6</span></div>
     <div class="kf"><b>4</b><span>contratos abertos no blackboard (C22–C25)</span></div>
     <div class="kf"><b>1</b><span>spec autossuficiente — qualquer IA implementa</span></div>
@@ -132,9 +132,7 @@
     <tr><th style="width:34%">Documento</th><th style="width:18%">Papel</th><th>Conteúdo</th></tr>
     <tr><td><b>atlas-codigo-plano.html</b> <span class="mono">(este)</span></td><td><span class="tag spec">mapa-mestre</span></td><td>Índice do domínio: telas, estados, fases, contratos, ordem.</td></tr>
     <tr><td><a class="doc" href="../atlas-codigo-evolucao.md">docs/atlas-codigo-evolucao.md</a></td><td><span class="tag spec">spec p/ qualquer IA</span></td><td>Implementação autossuficiente: endpoints + payloads JSON, geometria canônica do grafo, rules engine, executor de cura com undo, design system executável, segurança, definição de pronto.</td></tr>
-    <tr><td><a class="doc" href="atlas-grafo-governado.html">atlas-grafo-governado.html</a> <span class="mono">v6</span></td><td><span class="tag prop">proposta viva</span></td><td>O contrato visual do coração do domínio: Grafo Governado desktop + iPhone, cura autônoma encenada, seção Evolução E0–E5.</td></tr>
     <tr><td><a class="doc" href="atlas-code-mobile.html">atlas-code-mobile.html</a> <span class="mono">v1</span></td><td><span class="tag prop">proposta viva</span></td><td>A camada máquina no iPhone: hub, timeline, radar, review, espelho, presença (M1–M6).</td></tr>
-    <tr><td><a class="doc" href="atlas-code-ledger.html">atlas-code-ledger.html</a></td><td><span class="tag prop">proposta viva</span></td><td>O cockpit desktop (T1–T6) + fases F1–F4 dado-real-vs-contrato + veredito vs GitKraken.</td></tr>
     <tr><td><b>OBRA.md §5 · §7</b> <span class="mono">(raiz do repo)</span></td><td><span class="tag contract">blackboard</span></td><td>Contratos C22–C25 (abertos), fronteiras de lane, entregas com prova (append-only).</td></tr>
   </table>
 
@@ -142,16 +140,10 @@
   <h2 id="telas"><span class="n">2 ·</span> As telas — vivas, dentro do plano</h2>
   <p class="sub">Cada vitrine abaixo é a proposta REAL rodando (cenas ao vivo — role dentro da janela; toque num iPhone repete a cena). Etiquetas de estado: <span class="tag ship">shipada</span> = instalada no iPhone do operador · <span class="tag prop">proposta</span> = contrato visual vivo · <span class="tag contract">contrato</span> = depende de C22–C25 · <span class="tag abs">absorvida</span> = evoluiu para outra tela.</p>
 
-  <div class="exhibit">
-    <div class="ex-bar"><b>Grafo Governado</b><span class="tag prop">proposta v6 · o coração do domínio</span><a href="atlas-grafo-governado.html">abrir em tela cheia ›</a></div>
-    <div class="fclip"><iframe src="atlas-grafo-governado.html" loading="lazy" title="Grafo Governado — proposta viva"></iframe></div>
-    <div class="ex-note">Desktop com cura ao vivo ("Curada sozinha · recibo · 12s") + iPhone mapa-primeiro + Recibo de Cura. Contratos C22–C25.</div>
-  </div>
-
   <table>
     <tr><th style="width:30%">iPhone (app nativo)</th><th style="width:14%">Estado</th><th>O que é · dependência</th></tr>
-    <tr><td><b>Grafo Governado mobile</b> — o mapa primeiro</td><td><span class="tag contract">contrato</span></td><td>Main como espinha, desvio salta ao olho, mapa nunca substituído por resumo. Depende: C22 (topologia) + C24 (lei). Proposta: grafo v6.</td></tr>
-    <tr><td><b>Recibo de Cura</b> — bottom sheet</td><td><span class="tag contract">contrato</span></td><td>Fato consumado + passos executados + "você não foi necessário" + Desfazer-com-recibo. Depende: C25. Proposta: grafo v6.</td></tr>
+    <tr><td><b>Grafo Governado mobile</b> — o mapa primeiro</td><td><span class="tag contract">contrato</span></td><td>Main como espinha, desvio salta ao olho, mapa nunca substituído por resumo. Depende: C22 (topologia) + C24 (lei). É a M0 do protótipo.</td></tr>
+    <tr><td><b>Recibo de Cura</b> — bottom sheet</td><td><span class="tag contract">contrato</span></td><td>Fato consumado + passos executados + "você não foi necessário" + Desfazer-com-recibo. Depende: C25. É a M0 do protótipo.</td></tr>
     <tr><td><b>M1 · Hub — seção CÓDIGO</b></td><td><span class="tag prop">proposta</span></td><td>Repos por exceção no hub real do app. Depende: C22 (estado por repo). </td></tr>
     <tr><td><b>M2 · Linha do tempo + proveniência</b></td><td><span class="tag prop">proposta</span></td><td>Commits como recibos; folha de proveniência (commit → SUA frase). Depende: C22+C23.</td></tr>
     <tr><td><b>M3 · Radar — segredo bloqueia espelho</b></td><td><span class="tag prop">proposta</span></td><td>Frota por exceção; varredura de segredos trava envio. Depende: C24 (regra) + varredura.</td></tr>
@@ -166,22 +158,6 @@
     <div class="fclip"><iframe src="atlas-code-mobile.html" loading="lazy" title="Atlas Código mobile v1"></iframe></div>
     <div class="ex-note">Hub CÓDIGO · timeline+proveniência · radar/segredo · review (shipada) · espelhar para fora · presença.</div>
   </div>
-
-  <div class="exhibit">
-    <div class="ex-bar"><b>Cockpit desktop</b><span class="tag prop">proposta viva · T1–T6</span><a href="atlas-code-ledger.html">abrir em tela cheia ›</a></div>
-    <div class="fclip"><iframe src="atlas-code-ledger.html" loading="lazy" title="Atlas Código desktop"></iframe></div>
-    <div class="ex-note">T1/T2 absorvidas pelo Grafo Governado; T3 review, T4 ações governadas e T6 linguagem natural seguem vivas abaixo.</div>
-  </div>
-
-  <table>
-    <tr><th style="width:30%">Desktop (Mac — futuro)</th><th style="width:14%">Estado</th><th>O que é · dependência</th></tr>
-    <tr><td><b>Janela Grafo Governado</b></td><td><span class="tag prop">proposta v6</span></td><td>O centro do cockpit: grafo + rail de repos + regras vigiando + cura ao vivo ("Curada sozinha · recibo · 12s") + Perguntar ⌘K. Mesmos contratos C22–C25.</td></tr>
-    <tr><td>T1 · Linha do tempo de obras</td><td><span class="tag abs">absorvida</span></td><td>Evoluiu para o Grafo Governado (a timeline é o próprio grafo com proveniência).</td></tr>
-    <tr><td>T2 · Radar da frota</td><td><span class="tag abs">absorvida</span></td><td>Virou o rail REPOSITÓRIOS + REGRAS VIGIANDO da janela do grafo; visão-frota plena volta em H3.</td></tr>
-    <tr><td><b>T3 · Review no tamanho desktop</b></td><td><span class="tag prop">proposta</span></td><td>Diff lado a lado; API C15 já existe (shipada no iPhone) — é decode+casca desktop.</td></tr>
-    <tr><td><b>T4 · Ações governadas</b></td><td><span class="tag prop">proposta</span></td><td>Espelho/merge/rollback com varredura e recibo — irmã desktop da M5.</td></tr>
-    <tr><td><b>T6 · Ledger responde em linguagem natural</b></td><td><span class="tag prop">proposta</span></td><td>Evolui para H6 (⌘K sobre topologia+ledger+canon).</td></tr>
-  </table>
 
   <!-- ═══ FASES ═══ -->
   <h2 id="fases"><span class="n">3 ·</span> A evolução E0–E5 — um gate por fase, menos humano por fase</h2>

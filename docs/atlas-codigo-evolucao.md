@@ -6,7 +6,7 @@
 > documento vence. Se conflitar com o canon do operador, o canon vence — e este doc deve ser
 > corrigido via OBRA.md §5.
 >
-> **Estado:** E0 concluída (proposta viva `docs/proposals/atlas-grafo-governado.html`, v6,
+> **Estado:** E0 concluída (proposta viva `docs/proposals/atlas-code-mobile.html` — tela M0,
 > commit `aa01cfa`). Contratos C22–C25 registrados em `OBRA.md` §5.
 
 ---
@@ -39,7 +39,7 @@
 2. **Zero dado inventado.** Sem fonte real → o elemento **não existe** na tela. Nunca
    placeholder numérico, nunca barra de progresso fabricada, nunca "0" quando o dado é
    desconhecido (ausente ≠ zero).
-3. **Visual primeiro.** Toda superfície (desktop e iPhone) mostra o MESMO mapa; a decisão/
+3. **Visual primeiro.** Toda superfície mostra o MESMO mapa; a decisão/
    recibo é folha secundária por cima dele.
 4. **Estado por exceção.** Saudável = silêncio absoluto (sem ✓ decorativo). Só a exceção
    fala.
@@ -70,7 +70,7 @@
 ```
 
 - **Onde roda:** atlas-server (Laravel, no próprio Mac) expõe os endpoints; o app nativo
-  (SwiftUI, repo `atlas-native`) consome; o desktop (futuro) consome os mesmos endpoints.
+  (SwiftUI, repo `atlas-native`) consome. Foco exclusivo: o app nativo — sem superfície desktop no escopo.
 - **Lanes da obra:** endpoints/motor = lane servidor (Codex ou quem o operador autorizar);
   decode Swift em `Sources/AtlasCore` = lane Codex; casca SwiftUI em `App/` = lane Fable.
   Fronteiras em `OBRA.md` §1 — quem não é dono não edita, pede via §5.
@@ -117,7 +117,7 @@ git worktree list --porcelain
   radial em nó. Espinha da main = traço 3px com gradiente vertical
   (**`gradientUnits="userSpaceOnUse"`** — objectBoundingBox em linha vertical tem bbox de
   largura zero e fica invisível).
-- Layout de linha (desktop): `Ref | Grafo | Mensagem+meta | Autor | tempo` — chips de ref
+- Layout de linha (referência de densidade máxima): `Grafo | Mensagem+meta | Autor | tempo` — chips de ref
   nunca quebram linha (`nowrap`).
 
 **Gate E1:** screenshot no iPhone lado a lado com `git log --oneline -20` no Mac — hashes
@@ -232,7 +232,7 @@ prevenidas ≥ curadas ao longo de 2 semanas (a Lei migrando para a origem).
 ### H6 · Perguntar sobre o código (⌘K / pílula)
 - Open Brain sobre topologia+ledger+canon: "o que o forge-3 fez essa semana?", "por que essa
   branch existe?", "qual obra está mais atrasada?". Respostas com refs conferíveis (hash,
-  recibo). Desktop: `⌘K`; iPhone: a pílula (lei 7). Depende de: E1–E3; melhora com H1.
+  recibo). No iPhone: a pílula (lei 7). Depende de: E1–E3; melhora com H1.
 
 ## 5. Design system (resumo executável — Ink & Brass)
 
@@ -310,9 +310,8 @@ diferencial que só o Atlas pode ter.
 
 ## 9. Referências
 
-- Proposta viva (contrato visual): `docs/proposals/atlas-grafo-governado.html` (v6)
+- Proposta viva (contrato visual): `docs/proposals/atlas-code-mobile.html` (M0–M6)
 - Blackboard: `OBRA.md` §5 (C22–C25), §7 (entregas com prova)
-- Páginas irmãs: `atlas-nova-era.html` (papéis humanos), `atlas-code-mobile.html` (camada
-  máquina v1), `atlas-code-ledger.html` (desktop futuro)
+- Plano-mestre: `docs/proposals/atlas-codigo-plano.html`
 - Canon pétreo: `atlas-server/docs/engineering-knowledge-base/atlas-local-main-only-rule.md`
 - Governança de conhecimento: `../CLAUDE.md` (projeção Atlas; memória Atlas é canônica)

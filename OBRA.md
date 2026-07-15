@@ -592,7 +592,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
   `previousVersions`), o PlanCard oferece "ver versão anterior". Sem contrato de
   histórico, o card mostra apenas o plano corrente (já entregue).
 
-### Grafo Governado — evolução da proposta (atlas-grafo-governado.html v5, `acd53d7`)
+### Grafo Governado — evolução da proposta (tela M0 de `atlas-code-mobile.html`; superfície DESKTOP removida do escopo por decisão do operador em 15/07 — foco exclusivo no app nativo)
 
 - [ABERTO · C22 · Fable→Codex/Server] **Topologia real do grafo (fase E1).**
   `GET /code/graph?repo=` → `nodes[] {hash, parents[], refs[], authorEmail, when}`,
