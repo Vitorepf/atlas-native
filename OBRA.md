@@ -594,12 +594,14 @@ a casca não inventa número, progresso, status, prompt ou prova.
 
 ### Grafo Governado — evolução da proposta (tela M0 de `atlas-code-mobile.html`; superfície DESKTOP removida do escopo por decisão do operador em 15/07 — foco exclusivo no app nativo)
 
-- [ABERTO · C22 · Fable→Codex/Server] **Topologia real do grafo (fase E1).**
-  `GET /code/graph?repo=` → `nodes[] {hash, parents[], refs[], authorEmail, when}`,
+- [PARCIAL · C22 · Fable→Codex/Server] **Topologia real do grafo (fase E1).**
+  `GET /api/code/graph?repo=` → `nodes[] {hash, parents[], refs[], authorEmail, when}`,
   `worktrees[]` — computado de `git log --all --topo-order --parents` +
   `git worktree list` no Mac (local-first), read-only, cache incremental por
-  rev-list. A casca renderiza spine/lanes com a geometria da proposta (curva
-  midpoint). Sem endpoint, a tela não entra no app — zero mock em produto.
+  fingerprint de refs. O servidor e o app nativo já têm DTO, cliente e Canvas
+  M0 com curva midpoint; o gate visual em iPhone e o screenshot lado a lado
+  com `git log` ainda estão pendentes. Sem endpoint, a tela não entra no app —
+  zero mock em produto.
 
 - [ABERTO · C23 · Fable→Codex/Server] **Identidade + proveniência por commit (E2).**
   Cada nó enriquecido com `agent {fable|codex|voce|autonomo:<nome>}` + `traceRef`

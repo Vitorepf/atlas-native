@@ -9,6 +9,7 @@ enum Route: Hashable {
     case conversas
     case search
     case autonomos
+    case code
 }
 
 // Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
@@ -50,6 +51,8 @@ struct RootView: View {
                     SearchView()
                 case .autonomos:
                     AutonomosView()
+                case .code:
+                    AtlasCodeView(client: session.client)
                 }
             }
         }
@@ -78,6 +81,7 @@ struct RootView: View {
                 .overlay(Image(systemName: "person.fill").font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary))
                 .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
             Spacer()
+            CircleButton(icon: "point.3.connected.trianglepath.dotted") { path.append(Route.code) }
             CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
             CircleButton(icon: "plus") { path.append(Route.new) }
         }

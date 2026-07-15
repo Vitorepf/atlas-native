@@ -225,6 +225,21 @@ public actor AtlasClient: AtlasAiStreamSource {
         try await get("/ai/interactions/\(pathEncode(id))")
     }
 
+    /// C22 · Read-only Git topology for Atlas Código. The server owns Git
+    /// inspection; the native client only decodes the versioned projection.
+    public func getCodeGraph(
+        repo: String,
+        before: String? = nil,
+        limit: Int = 200
+    ) async throws -> AtlasCodeGraphResponse {
+        let query = atlasQueryString([
+            ("repo", .string(repo)),
+            ("before", before.map { .string($0) }),
+            ("limit", .int(limit)),
+        ])
+        return try await get("/code/graph\(query)")
+    }
+
     /// Caminho JSON de `createAiInteraction` (sem anexos). Upload em chunks
     /// precisa do FileSystem do device — porta com a camada de anexos.
     public func createAiInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {
