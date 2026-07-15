@@ -960,6 +960,14 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   runner sem recolocá-lo no payload. Prova de regressão: 54 testes HTTP / 414
   asserts, `swift run AtlasCoreChecks`, `cd App && make build` e
   `git diff --check` verdes. Casca Fable e evidência física continuam pendentes.
+- 2026-07-15 · Codex · `d0a65d0` + server `b43e907da` · C22/E1 parcial:
+  endpoint read-only de topologia Git, contrato versionado no AtlasCore, cliente,
+  Canvas M0 e geometria midpoint; `MISSION-LOG.md` registra a prova e o gate
+  físico pendente. Prova: endpoint real 200 em Laravel novo com `head`, nós,
+  worktrees e fingerprint; 4 testes PHPUnit / 43 asserts; `swift run
+  AtlasCoreChecks`; `cd App && make build`; `git diff --check` verdes. A porta
+  3737 continua apontando para processo OrbStack antigo sem a rota; E2–E5 não
+  avançam sem screenshot no iPhone comparado ao `git log`.
 - 2026-07-13 · Codex · C13 hardening local (sem commit) · backlog Autônomos
   deixou de atravessar o Core como `JSONObject`/`JSONValue`: findings, work
   orders, inbox e budgets agora têm DTOs Foundation-only com os campos públicos
