@@ -234,6 +234,69 @@ prevenidas ≥ curadas ao longo de 2 semanas (a Lei migrando para a origem).
   branch existe?", "qual obra está mais atrasada?". Respostas com refs conferíveis (hash,
   recibo). No iPhone: a pílula (lei 7). Depende de: E1–E3; melhora com H1.
 
+## 4½. Anel Nativo Absurdo — N1–N8 (só possível em Swift puro)
+
+> **Por que existe:** o app é Swift puro para ser o mais rápido, mais confiável e mais
+> próximo do hardware do iPhone — usando o máximo que o aparelho entrega. Isso é o MÍNIMO.
+> Este anel é o que nenhum concorrente (Electron/RN/web) consegue seguir.
+
+### N1 · Metal Graph Engine
+O Grafo Governado renderizado em **Metal** (não Canvas): 120Hz ProMotion, milhares de nós,
+zoom/pan com física de inércia, glow por shader. O grafo mais rápido do mundo, no bolso.
+**Gate:** 1.000 nós a 120fps sustentados no device; hitch rate 0 (Instruments).
+*Eleva: E1-casca.*
+
+### N2 · Espelho git no aparelho
+libgit2 embarcado: o iPhone guarda **espelho de leitura dos repos** (sync incremental via
+BGTask). Grafo, blame e diff funcionam **offline total** — o iPhone vira nó do organismo.
+**Gate:** modo avião → M0/M2/M4 funcionam com dado real local.
+*Estende: E1 (fonte dupla: API do Mac + espelho local).*
+
+### N3 · Inteligência on-device (Neural Engine)
+Foundation Models/Core ML no aparelho: a pílula responde "por que essa branch existe?" e o
+sumário da noite nasce **sem rede** — embeddings e busca semântica locais. Soberania extrema.
+**Gate:** pergunta respondida em modo avião em < 2s.
+*Eleva: H6, E5.*
+
+### N4 · Assinatura na Secure Enclave
+O release (H2) assinado com **chave que nunca sai do silício** + Face ID: slide-to-sign vira
+ato criptográfico real, recibo verificável no ledger.
+**Gate:** assinatura de release validável criptograficamente.
+*Eleva: H2.*
+
+### N5 · Gramática háptica
+Core Haptics como linguagem: cura = pulso duplo suave; violação = textura áspera curta;
+assinar = crescendo. O estado que se **sente** sem olhar — irmã tátil da gramática de cor.
+**Gate:** mapa háptico por estado documentado + implementado; Reduce Motion/haptics respeitados.
+
+### N6 · Sistema por toda parte
+App Intents + Siri + Action Button + Atalhos ("Siri, como foi a noite do código?"), widgets
+interativos (a Semana na home), e **StandBy noturno**: o iPhone carregando deitado vira o
+painel da vigília — os commits da noite nascendo na mesa de cabeceira.
+**Gate:** o intent responde com dado real; widget 100% fonte real.
+*Eleva: E5, M6.*
+
+### N7 · Zero-espera
+BGTaskScheduler + push silencioso: tudo pré-carregado **antes do olhar**. Cold launch, sync
+e digest prontos quando o polegar chega.
+**Gate:** MetricKit no CI; cold launch < 400ms medido em device.
+
+### N8 · Contratos de performance como lei (transversal, desde já)
+| Métrica | Teto |
+|---|---|
+| Cold launch | < 400ms |
+| Toque → folha aberta | < 100ms |
+| Grafo (1k nós) | 120fps, hitch 0 |
+| Memória em uso | < 150MB |
+| Crash-free | ≥ 99,99% |
+| Decode do snapshot do grafo | < 10ms |
+
+Medidos por XCTest Performance + MetricKit; **regressão de performance = gate vermelho =
+não commita**. Lento é bug, não detalhe.
+
+**Encaixe na ordem:** N8 vale desde já (gate permanente); N1 junto com a casca do E1;
+N2 após E1 provado; N3 com E5/H6; N4 com H2; N5–N7 transversais incrementais.
+
 ## 5. Design system (resumo executável — Ink & Brass)
 
 **Tokens:**

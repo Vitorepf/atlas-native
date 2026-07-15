@@ -101,6 +101,7 @@
     <a href="#telas">Telas</a>
     <a href="#fases">Fases</a>
     <a href="#horizontes">Horizontes</a>
+    <a href="#nativo">Nativo</a>
     <a href="#contratos">Contratos</a>
     <a href="#leis">Leis</a>
   </nav>
@@ -119,7 +120,7 @@
   </p>
   <div class="keyfacts">
     <div class="kf"><b>9</b><span>telas/momentos do app nativo, cada um com estado honesto</span></div>
-    <div class="kf"><b>6+6</b><span>fases E0–E5 com gate + horizontes H1–H6</span></div>
+    <div class="kf"><b>6+6+8</b><span>fases E0–E5 · horizontes H1–H6 · anel nativo N1–N8</span></div>
     <div class="kf"><b>4</b><span>contratos abertos no blackboard (C22–C25)</span></div>
     <div class="kf"><b>1</b><span>spec autossuficiente — qualquer IA implementa</span></div>
   </div>
@@ -183,7 +184,20 @@
   </div>
 
   <!-- ═══ CONTRATOS ═══ -->
-  <h2 id="contratos"><span class="n">5 ·</span> Contratos e lanes — quem faz o quê</h2>
+  <h2 id="nativo"><span class="n">5 ·</span> Anel Nativo N1–N8 — Swift puro no limite do iPhone</h2>
+  <p class="sub">Por que Swift puro: <em>o mais rápido, o mais confiável, o mais próximo do hardware — o máximo do iPhone é o mínimo do Atlas.</em> Este anel é o que Electron/RN/web não conseguem seguir. Detalhe completo na spec §4½.</p>
+  <div class="cards">
+    <div class="card"><div class="k">N1 · Metal Graph Engine</div><b>O grafo mais rápido do mundo, no bolso</b><p>Renderizado em Metal: 120Hz ProMotion, milhares de nós, zoom com física, glow por shader. <em>Gate: 1.000 nós @ 120fps, hitch 0.</em></p></div>
+    <div class="card"><div class="k">N2 · Espelho git no aparelho</div><b>Offline total — o iPhone vira nó do organismo</b><p>libgit2 embarcado, sync incremental em background. <em>Gate: modo avião → grafo/blame/diff com dado real.</em></p></div>
+    <div class="card"><div class="k">N3 · Inteligência on-device</div><b>A pílula responde sem rede</b><p>Neural Engine (Foundation Models/Core ML): busca semântica e sumário da noite locais. <em>Gate: resposta em modo avião &lt; 2s.</em></p></div>
+    <div class="card"><div class="k">N4 · Secure Enclave</div><b>Assinar com o rosto, no silício</b><p>Release assinado com chave que nunca sai do chip + Face ID — recibo criptográfico verificável. Eleva H2.</p></div>
+    <div class="card"><div class="k">N5 · Gramática háptica</div><b>O estado que se sente</b><p>Cura = pulso duplo suave; violação = textura áspera; assinar = crescendo. Irmã tátil da gramática de cor.</p></div>
+    <div class="card"><div class="k">N6 · Sistema por toda parte</div><b>Siri, Action Button, widgets, StandBy</b><p>"Siri, como foi a noite do código?" · a Semana na home · o iPhone deitado à noite vira o painel da vigília.</p></div>
+    <div class="card"><div class="k">N7 · Zero-espera</div><b>Pronto antes do olhar</b><p>Background tasks + push silencioso: tudo pré-carregado. <em>Gate: cold launch &lt; 400ms (MetricKit no CI).</em></p></div>
+    <div class="card"><div class="k">N8 · Performance como lei</div><b>Lento é bug — gate vermelho</b><p>Launch &lt;400ms · toque→folha &lt;100ms · 120fps · mem &lt;150MB · crash-free 99,99% · decode &lt;10ms. Regressão não commita. Vale desde já.</p></div>
+  </div>
+
+  <h2 id="contratos"><span class="n">6 ·</span> Contratos e lanes — quem faz o quê</h2>
   <table>
     <tr><th style="width:14%">Contrato</th><th style="width:26%">Entrega</th><th style="width:18%">Estado</th><th>Lane</th></tr>
     <tr><td><b>C22</b></td><td>GET /code/graph (topologia)</td><td><span class="tag contract">aberto · OBRA §5</span></td><td rowspan="4">Motor/endpoints: servidor (Codex, ou Fable com autorização do operador — como em C18–C21) · Decode Swift: Codex (Sources/AtlasCore) · Casca SwiftUI: Fable (App/)</td></tr>
@@ -193,7 +207,7 @@
     <tr><td><b>C21*</b></td><td>council_review (H4)</td><td><span class="tag ship">fonte pronta no servidor</span></td><td>Falta decode AtlasCore (Codex) + casca (Fable)</td></tr>
   </table>
 
-  <h2><span class="n">6 ·</span> A ordem — dependências</h2>
+  <h2><span class="n">7 ·</span> A ordem — dependências</h2>
   <pre class="dep"><span class="h">E1</span> ──► <span class="h">E2</span> ──► <span class="h">E3</span> ──► <span class="h">E4</span> ──► <span class="h">E5</span>
         │      │       │      └──► H3 (semana/frota)
         │      │       └─────────► H5 (prevenção — maturidade)
@@ -204,7 +218,7 @@
   <p class="sub">Racional: E1–E2 são leitura pura (confiança pelo "eu preciso ver"); E3 julga sem tocar; E4 age com undo; E5 e os horizontes compõem. H1 anda em paralelo após E2 — é o diferencial que só o Atlas pode ter.</p>
 
   <!-- ═══ LEIS ═══ -->
-  <h2 id="leis"><span class="n">7 ·</span> As leis do domínio (violou = rejeitado)</h2>
+  <h2 id="leis"><span class="n">8 ·</span> As leis do domínio (violou = rejeitado)</h2>
   <ol class="laws">
     <li><b>Autonomia &gt; aprovação.</b> Operação nunca espera humano; "Aprovar" para plumbing é proibido; existe observe→heal e undo governado.</li>
     <li><b>Zero dado inventado.</b> Sem fonte real, o elemento não existe (ausente ≠ zero).</li>
