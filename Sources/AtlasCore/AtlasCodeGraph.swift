@@ -48,8 +48,56 @@ public struct AtlasCodeGraphNode: Decodable, Equatable, Sendable, Identifiable {
     public let authorName: String
     public let authorEmail: String
     public let authoredAt: Int
+    /// Commit subject — the headline of the graph screen. Absent on older
+    /// server builds: the shell must fall back to the honest empty state and
+    /// never fabricate a message.
+    public let message: String?
 
     public var id: String { hash }
+
+    /// The default branch is the norm; a node either belongs to it or it is
+    /// the exception the operator must see. `refs` carries names like
+    /// "HEAD -> main" and "origin/main".
+    public func isOnDefaultBranch(_ defaultBranch: String?) -> Bool {
+        guard let defaultBranch, !defaultBranch.isEmpty else { return false }
+        for ref in refs {
+            let normalized = ref
+                .replacingOccurrences(of: "HEAD -> ", with: "")
+                .replacingOccurrences(of: "origin/", with: "")
+                .trimmingCharacters(in: .whitespaces)
+            if normalized == defaultBranch { return true }
+        }
+        return false
+    }
+}
+
+/// The color grammar of the graph, stated once so the shell never invents it.
+/// Color encodes STATE, never author or commit type — those are already text.
+public enum AtlasCodeNodeState: String, Equatable, Sendable {
+    /// On the default branch: the norm, the color of the spine.
+    case onMain
+    /// Off the default branch and flagged by a rule: the exception.
+    case violating
+    /// Healed by Atlas: the return to main.
+    case healed
+    /// Reachable history that is neither the spine nor an exception.
+    case history
+}
+
+public enum AtlasCodeGraphState {
+    /// Pure resolution used by the shell and by the checks.
+    /// Precedence: healed > violating > onMain > history.
+    public static func state(
+        for node: AtlasCodeGraphNode,
+        defaultBranch: String?,
+        violatingHashes: Set<String>,
+        healedHashes: Set<String>
+    ) -> AtlasCodeNodeState {
+        if healedHashes.contains(node.hash) { return .healed }
+        if violatingHashes.contains(node.hash) { return .violating }
+        if node.isOnDefaultBranch(defaultBranch) { return .onMain }
+        return .history
+    }
 }
 
 public struct AtlasCodeGraphWorktree: Decodable, Equatable, Sendable, Identifiable {

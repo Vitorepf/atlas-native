@@ -9,7 +9,7 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
       "generated_at":"2026-07-15T05:00:00Z",
       "head":"9a06fd4c56",
       "default_branch":"main",
-      "nodes":[{"hash":"9a06fd4c56","parents":["4b2b61f974","7c1e8d2a90"],"refs":["main"],"author_name":"Vitor Freire","author_email":"vitor@example.test","authored_at":1784316000}],
+      "nodes":[{"hash":"9a06fd4c56","parents":["4b2b61f974","7c1e8d2a90"],"refs":["HEAD -> main","origin/main"],"author_name":"Vitor Freire","author_email":"vitor@example.test","authored_at":1784316000,"message":"feat(brain): council_review por membro"}],
       "worktrees":[{"path":"/Users/vitor/worktrees/atlas","branch":"main","head":"9a06fd4c56"}],
       "pagination":{"limit":200,"before":null,"has_more":false},
       "cache":{"strategy":"refs_fingerprint","refs_fingerprint":"abc","invalidated":false}
@@ -20,7 +20,25 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     let decoded = try? decoder.decode(AtlasCodeGraphResponse.self, from: Data(json.utf8))
 
     check("grafo C22 preserva o hash e os pais reais", decoded?.nodes.first?.hash == "9a06fd4c56" && decoded?.nodes.first?.parents.count == 2)
-    check("grafo C22 preserva autor e refs", decoded?.nodes.first?.authorEmail == "vitor@example.test" && decoded?.nodes.first?.refs == ["main"])
+    check("grafo C22 preserva autor e refs", decoded?.nodes.first?.authorEmail == "vitor@example.test" && decoded?.nodes.first?.refs.first == "HEAD -> main")
+
+    // A mensagem do commit é a manchete da tela: sem ela, a linha não existe.
+    check("grafo C22 traz a mensagem do commit verbatim", decoded?.nodes.first?.message == "feat(brain): council_review por membro")
+    let semMensagem = json.replacingOccurrences(of: ",\"message\":\"feat(brain): council_review por membro\"", with: "")
+    let legado = try? decoder.decode(AtlasCodeGraphResponse.self, from: Data(semMensagem.utf8))
+    check("grafo sem mensagem decodifica com ausência honesta", legado != nil && legado?.nodes.first?.message == nil)
+
+    // Gramática de cor: estado, nunca autor nem tipo de commit.
+    if let node = decoded?.nodes.first {
+        check("nó com ref da default branch é 'na main'", node.isOnDefaultBranch("main") == true)
+        check("nó não é 'na main' quando a default branch é outra", node.isOnDefaultBranch("develop") == false)
+        check("gramática: sem violação e na main → onMain", AtlasCodeGraphState.state(for: node, defaultBranch: "main", violatingHashes: [], healedHashes: []) == .onMain)
+        check("gramática: hash em violação → violating", AtlasCodeGraphState.state(for: node, defaultBranch: "main", violatingHashes: ["9a06fd4c56"], healedHashes: []) == .violating)
+        check("gramática: curado vence violação", AtlasCodeGraphState.state(for: node, defaultBranch: "main", violatingHashes: ["9a06fd4c56"], healedHashes: ["9a06fd4c56"]) == .healed)
+        check("gramática: fora da main sem regra → history", AtlasCodeGraphState.state(for: node, defaultBranch: "develop", violatingHashes: [], healedHashes: []) == .history)
+    } else {
+        check("gramática de cor exige nó decodificado", false)
+    }
     check("grafo C22 preserva worktree sem inventar estado", decoded?.worktrees.first?.branch == "main" && decoded?.worktrees.first?.head == "9a06fd4c56")
     check("grafo C22 preserva paginação/cache", decoded?.pagination.limit == 200 && decoded?.cache.invalidated == false)
     check("curva do grafo usa midpoint com tangentes verticais", AtlasCodeGraphGeometry.midpointPath(fromX: 24, fromY: 10, toX: 56, toY: 50) == "M 24.0,10.0 C 24.0,30.0 56.0,30.0 56.0,50.0")

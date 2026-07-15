@@ -19,6 +19,7 @@ struct RootView: View {
     @Environment(AtlasSession.self) private var session
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var path = NavigationPath()
+    @State private var codeHub: AtlasCodeHubModel?
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -58,6 +59,12 @@ struct RootView: View {
         }
         .tint(AtlasTheme.accent)
         .task { if session.phase == .idle { await session.loadThreads() } }
+        .task {
+            // A linha CÓDIGO só fala com dado real: sem resposta, ela cala.
+            let hub = codeHub ?? AtlasCodeHubModel(client: session.client)
+            codeHub = hub
+            await hub.refresh()
+        }
         .onOpenURL { url in
             guard url.scheme == "atlas", url.host == "execution",
                   let traceId = url.pathComponents.dropFirst().first, !traceId.isEmpty else { return }
@@ -177,6 +184,15 @@ struct RootView: View {
                     WorkspaceRow(icon: "bubble.left.and.bubble.right", name: "Conversas livres",
                                  count: freeThreadCount) {
                         path.append(Route.conversas)
+                    }
+                    rowDivider
+                    sectionLabel("CÓDIGO")
+                    // O hub agrega: uma linha para a área inteira. A exceção
+                    // vira sublinha viva e some quando o Atlas cura sozinho.
+                    if let codeHub {
+                        AtlasCodeHubRow(model: codeHub) {
+                            path.append(Route.code)
+                        }
                     }
                     rowDivider
                     sectionLabel("OPERAÇÃO")
