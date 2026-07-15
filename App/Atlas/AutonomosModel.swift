@@ -21,8 +21,18 @@ final class AutonomosModel {
     var selectedAreaID: String?
     var live: AtlasAutonomosLiveResponse?
     var cycles: AtlasAutonomosCyclesResponse?
+    var delivered: AtlasAutonomosDeliveredResponse?
     var backlog: AtlasAutonomosBacklogResponse?
+    /// Estado global da frota; não é associado artificialmente à área selecionada.
+    var fleet: AtlasAutonomosFleetResponse?
+    var fleetHistory: AtlasAutonomosFleetHistoryResponse?
+    /// Saúde global da fila do músculo externo; não é um progresso estimado
+    /// nem é atribuída artificialmente à área selecionada.
+    var taskHealth: AtlasAutonomosTaskHealthResponse?
+    var lastStartRunReceipt: AtlasAutonomosStartRunResponse?
+    var lastTransferReceipt: AtlasAutonomosTransferResponse?
     var lastControlReceipt: AtlasAutonomosRunControlResponse?
+    var lastDecisionReceipt: AtlasAutonomosOperatorDecisionReceipt?
     var controlError: String?
 
     init(client: AtlasClient) {
@@ -31,6 +41,12 @@ final class AutonomosModel {
 
     var selectedArea: AtlasAutonomosArea? {
         areas.first { $0.id == selectedAreaID }
+    }
+
+    /// `live.readOnly` descreve somente a consulta GET. Os comandos possuem
+    /// endpoint e recibo próprios; só uma área registrada pode expô-los à UI.
+    var canControlSelectedArea: Bool {
+        selectedArea?.registered == true
     }
 
     /// Primeiro carregamento: lista de instâncias e, em seguida, o conjunto
@@ -97,21 +113,133 @@ final class AutonomosModel {
         }
     }
 
+    /// Um recibo `enqueued` não muda a UI para executando. A confirmação vem
+    /// exclusivamente do lease relido em `/live` após o comando.
+    func startRun(
+        mode: AtlasAutonomosStartRunMode,
+        operatorActor: String,
+        operatorReason: String
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosStartRunInput(
+                mode: mode,
+                operatorActor: operatorActor,
+                operatorReason: operatorReason,
+                focus: area.focus
+            )
+            lastStartRunReceipt = try await client.startAutonomosRun(area: area.id, input: input)
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    /// A transferência pede que a fonte com lease entregue a mesma missão no
+    /// próximo limite seguro. O recibo ainda não significa target iniciado;
+    /// `target_claimed` só aparece no polling após um worker obter o lock.
+    func transfer(
+        operatorActor: String,
+        reason: String
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosTransferInput(
+                operatorActor: operatorActor,
+                reason: reason,
+                focus: area.focus
+            )
+            lastTransferReceipt = try await client.transferAutonomosMission(area: area.id, input: input)
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    func refreshTransferStatus() async {
+        guard let area = selectedArea, let handoffId = lastTransferReceipt?.handoff.handoffId else { return }
+        do {
+            lastTransferReceipt = try await client.autonomosTransferStatus(area: area.id, handoffId: handoffId)
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    /// A decisão é só um recibo governado: mesmo um aceite não aciona owner,
+    /// provider ou branch neste caminho. A casca deve mostrá-la como decisão
+    /// registrada, nunca como trabalho já executado.
+    func decide(
+        _ decision: AtlasAutonomosOperatorDecision,
+        findingHash: String,
+        operatorActor: String,
+        rationale: String = "",
+        riskLevel: AtlasAutonomosRiskLevel = .medium,
+        inboxItemId: String? = nil,
+        workOrderId: String? = nil,
+        evidencePackHash: String? = nil
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosOperatorDecisionInput(
+                operatorActor: operatorActor,
+                decision: decision,
+                findingHash: findingHash,
+                rationale: rationale,
+                riskLevel: riskLevel,
+                inboxItemId: inboxItemId,
+                workOrderId: workOrderId,
+                evidencePackHash: evidencePackHash
+            )
+            lastDecisionReceipt = try await client.decideAutonomosOperatorAction(area: area.id, input: input)
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
     private func loadSelectedDetails() async throws {
         guard let area = selectedArea else {
-            live = nil; cycles = nil; backlog = nil
+            live = nil; cycles = nil; delivered = nil; backlog = nil; fleet = nil; fleetHistory = nil; taskHealth = nil
             return
         }
         async let liveRequest = client.autonomosLive(area: area.id, focus: area.focus)
         async let cyclesRequest = client.autonomosCycles(area: area.id, focus: area.focus)
+        async let deliveredRequest = client.autonomosDelivered(area: area.id, focus: area.focus)
         async let backlogRequest = client.autonomosBacklog(area: area.id, focus: area.focus)
-        let (nextLive, nextCycles, nextBacklog) = try await (liveRequest, cyclesRequest, backlogRequest)
+        async let fleetRequest = client.autonomosFleet()
+        async let fleetHistoryRequest = client.autonomosFleetHistory()
+        async let taskHealthRequest = client.autonomosTaskHealth()
+        let (nextLive, nextCycles, nextDelivered, nextBacklog) = try await (liveRequest, cyclesRequest, deliveredRequest, backlogRequest)
         live = nextLive
         cycles = nextCycles
+        delivered = nextDelivered
         backlog = nextBacklog
+        // A frota é outra superfície autenticada. Se ela estiver degradada, a
+        // área/ledger selecionados continuam verdadeiros e visíveis; nenhuma
+        // contagem global é reaproveitada como fallback.
+        fleet = try? await fleetRequest
+        fleetHistory = try? await fleetHistoryRequest
+        taskHealth = try? await taskHealthRequest
     }
 
     private static func publicMessage(_ error: Error) -> String {
+        if let client = error as? AtlasAutonomosClientError {
+            switch client {
+            case .missingOperatorActor:
+                return "Informe quem autoriza esta ação."
+            case .missingOperatorReasonForExecute:
+                return "Informe o motivo auditável antes de iniciar uma execução."
+            case .missingFindingHash:
+                return "Escolha uma evidência ou finding antes de registrar a decisão."
+            case .missingRationaleForHighRiskAccept:
+                return "Aceites de risco alto exigem uma justificativa auditável."
+            case .missingTransferReason:
+                return "Informe o motivo auditável antes de transferir a missão."
+            }
+        }
         if let api = error as? AtlasApiError { return api.message }
         return "Não foi possível atualizar o estado do Autônomos agora."
     }

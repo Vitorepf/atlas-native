@@ -94,8 +94,17 @@ struct RootView: View {
                 .frame(width: 44, height: 44)
                 .overlay(Image(systemName: "person.fill").font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary))
                 .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
+            // A ponte para o Atlas Código mora aqui: equilibra a barra (2 à
+            // esquerda, 2 à direita) e é a única porta do domínio — o hub
+            // não repete a área. O ponto vermelho preserva a exceção: sem
+            // ele, uma violação real ficaria invisível no repouso.
+            CircleButton(icon: "point.3.connected.trianglepath.dotted",
+                         badge: codeHub?.exception != nil) { path.append(Route.code) }
+                .accessibilityLabel(codeHub?.exception == nil
+                                    ? "Atlas Código"
+                                    : "Atlas Código, \(codeHub?.exception?.count ?? 0) exceções")
+                .accessibilityIdentifier("topbar-code")
             Spacer()
-            CircleButton(icon: "point.3.connected.trianglepath.dotted") { path.append(Route.code) }
             CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
             CircleButton(icon: "plus") { path.append(Route.new) }
         }
@@ -183,15 +192,6 @@ struct RootView: View {
                     WorkspaceRow(icon: "bubble.left.and.bubble.right", name: "Conversas livres",
                                  count: freeThreadCount) {
                         path.append(Route.conversas)
-                    }
-                    rowDivider
-                    sectionLabel("CÓDIGO")
-                    // O hub agrega: uma linha para a área inteira. A exceção
-                    // vira sublinha viva e some quando o Atlas cura sozinho.
-                    if let codeHub {
-                        AtlasCodeHubRow(model: codeHub) {
-                            path.append(Route.code)
-                        }
                     }
                     rowDivider
                     sectionLabel("OPERAÇÃO")
@@ -318,13 +318,27 @@ struct BreathingGlyph: View {
 
 struct CircleButton: View {
     let icon: String
+    /// Ponto de exceção: só aparece quando existe algo que fala. Silêncio é o
+    /// estado normal — o botão não carrega contador decorativo.
+    var badge: Bool = false
     let action: () -> Void
     var body: some View {
         Button(action: action) {
             Image(systemName: icon)
                 .font(.system(size: 17, weight: .medium)).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 44, height: 44).background(Circle().fill(AtlasTheme.surface))
+                .overlay(alignment: .topTrailing) {
+                    if badge {
+                        Circle()
+                            .fill(AtlasCodePalette.alert)
+                            .frame(width: 9, height: 9)
+                            .overlay(Circle().strokeBorder(AtlasTheme.bg, lineWidth: 1.5))
+                            .offset(x: 1, y: -1)
+                            .accessibilityHidden(true)
+                    }
+                }
         }
+        .accessibilityAddTraits(.isButton)
     }
 }
 

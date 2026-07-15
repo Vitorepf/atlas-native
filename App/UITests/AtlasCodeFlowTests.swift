@@ -9,11 +9,12 @@ final class AtlasCodeFlowTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        // 1 · O hub mostra a área CÓDIGO (agregada, não uma linha por repo).
-        let codeRow = app.buttons["hub-code-row"]
-        XCTAssertTrue(codeRow.waitForExistence(timeout: 20), "a linha CÓDIGO precisa existir no hub")
+        // 1 · A única porta do domínio é o ícone da barra (à esquerda do
+        // masthead); o hub não repete a área.
+        let codeButton = app.buttons["topbar-code"]
+        XCTAssertTrue(codeButton.waitForExistence(timeout: 20), "o ícone do Código precisa existir na barra")
         attach(app, name: "01-hub-codigo")
-        codeRow.tap()
+        codeButton.tap()
 
         // 2 · O radar responde com a frota real (ou diz honestamente que falhou).
         // A cápsula é um container (HStack): procurar em qualquer descendente.
