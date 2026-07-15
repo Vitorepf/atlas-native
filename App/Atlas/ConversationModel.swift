@@ -131,6 +131,9 @@ final class ConversationModel {
     /// A casca pode mostrar ausência/indisponibilidade, mas não fabricar patch,
     /// resultado de check ou decisão antes desta leitura canônica.
     private(set) var changeReviewsByTrace: [String: AtlasTraceChangeReview] = [:]
+    /// Provas de governança do turno (C18 diff_stats · C19 plan_revisions ·
+    /// C21 council_review). Vêm do metadata do trace; ausência = nada a dizer.
+    private(set) var governanceByTrace: [String: AtlasAiTrace] = [:]
     /// Conteúdo de diff só entra aqui depois de o patch ser confirmado na
     /// projeção do mesmo trace; a View nunca faz a requisição por conta própria.
     private(set) var changeReviewDiffsByKey: [String: AtlasTraceChangeReviewDiffResponse] = [:]
@@ -635,6 +638,10 @@ final class ConversationModel {
                 return
             }
             changeReviewsByTrace[traceId] = response.changeReview
+            // O mesmo toque que abre a revisão traz as provas do turno.
+            if let trace = try? await client.getAiInteraction(traceId).trace, trace.id == traceId || trace.traceKey == traceId {
+                governanceByTrace[traceId] = trace
+            }
         } catch {
             toast = Self.userMessage(for: error)
         }
