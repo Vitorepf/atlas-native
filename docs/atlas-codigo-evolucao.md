@@ -604,3 +604,32 @@ que a legenda de cor seria filler, não lei faltando. **Convergência é o sinal
 limite que o goal previu.** O que resta são obras (o `:ro`, a proveniência sem
 escritor) ou integrações especulativas (Evidence Ledger genérico no card do
 git), não bugs de baixo risco.
+
+### 11.4 As vozes novas (5ª rodada consumida)
+
+- **INTENT_COMMIT** — a pergunta que a folha do commit semeia ("o que o commit
+  f76c8be fez, e por quê?") caía em `unknown`: o agente respondia SEM os fatos
+  do commit que o operador olhava. Agora o determinístico entrega identidade +
+  descrição do autor + diff (provado: 8.9k de fatos), e ancora o hash COMPLETO
+  no grafo. Sonda anti-mentira: `rev-parse HEAD` primeiro — git fora vira "não
+  consegui ler", nunca "não achei o commit X" sobre um git que ninguém leu.
+  Hash inexistente com git de pé = ausência VERIFICADA, fato.
+- **INTENT_HEALS** — a voz do veto (canon nº 1). "O que você curou?" e "o que
+  eu vetei?" leem o `vetoCycle` do ledger; zero lido é fato ("nenhuma cura nos
+  últimos 7 dias"), ledger fora do ar é dito. Armadilha: "proCURA" contém
+  "cura" — fronteira de palavra obrigatória.
+- **"Nasceu fora do Atlas" aposentada enquanto o registro estiver morto** — o
+  escritor de proveniência nunca foi chamado (0 eventos em 2.125), então TODA
+  branch recebia a acusação. Ausência num registro que nunca gravou nada não
+  discrimina nada. A frase fica reservada ao caso em que informa: registro
+  VIVO e a branch fora dele. E o bug que quase entrou junto: namespace errado
+  no enum mascarado por `catch (Throwable)` — a frase certa pelo motivo errado.
+
+### 11.5 O que ficou com o operador
+
+- **Chip criado**: o scheduler diário do Atlas está DESLIGADO (`launchd
+  com.atlas.scheduler` não carregado; crontab `# DISABLED-BY-CLAUDE`) — por
+  isso o Reality Graph está vazio. Investigar POR QUE antes de religar.
+- **Executor no host** (opção b): destrava "mandar fazer" E fecha o circuito de
+  proveniência com a mesma peça — worker no Mac lê atos preparados do banco e
+  executa com recibo; container fica `:ro`. Decisão do operador.
