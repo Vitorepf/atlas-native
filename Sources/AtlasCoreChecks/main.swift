@@ -78,6 +78,7 @@ do {
     let frames = parseAtlasAiSseFrames("a: 1\n\n\r\n\r\nb: 2\n\n   \n\n")
     check("parseFrames split por linha-em-branco + drop vazios", frames == ["a: 1", "b: 2"])
 }
+runAtlasAiStreamFrameChecks(check)
 
 print("\nqueryString (gotchas de core.ts — limit clamp + boolean 1/0):")
 check("vazio → \"\"", atlasQueryString([]) == "")
