@@ -55,11 +55,16 @@ struct ConversationView: View {
         emptySuggestions: [String]? = nil,
         taskKind: String? = nil,
         workspace: String? = nil,
+        draft: String = "",
         turnFacts: ((String) async -> String?)? = nil,
         onThread: ((String) -> Void)? = nil
     ) {
         self.title = title
         self.startFocused = threadId == nil
+        // Pergunta semeada por quem abriu (ex.: a folha do commit): o operador
+        // chega com o assunto escrito e edita se quiser. Semear NÃO é enviar —
+        // mandar sozinho seria decidir por ele.
+        _draft = State(initialValue: draft)
         self.emptyPrompt = emptyPrompt
         self.emptySuggestions = emptySuggestions
         self.onThread = onThread

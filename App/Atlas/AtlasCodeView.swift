@@ -24,6 +24,9 @@ struct AtlasCodeView: View {
     /// A conversa deste repositório continua onde parou. Fechar o card não é
     /// encerrar o assunto; é só tirar a folha da frente do mapa.
     @State private var askThreadId: String?
+    /// Pergunta semeada por quem abriu o card (a folha do commit semeia o
+    /// commit). Vazia = a pílula abrindo pelo caminho normal.
+    @State private var askDraft = ""
 
     init(client: AtlasClient, repo: String = "atlas-server") {
         _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
@@ -55,7 +58,22 @@ struct AtlasCodeView: View {
                 node: node,
                 state: model.state(for: node),
                 ruleId: model.ruleId(for: node),
-                phase: provenanceModel.phase
+                phase: provenanceModel.phase,
+                // A folha do commit era um beco: o operador abre justamente o
+                // commit que NÃO entendeu, e ali não havia caminho nenhum para
+                // perguntar — a pílula fica atrás da folha, inalcançável. Ele
+                // teria de decorar o hash, fechar, abrir o card e digitar.
+                //
+                // Duas folhas não coexistem no SwiftUI: fechar esta é o que
+                // abre aquela. O commit vai junto na pergunta.
+                onAsk: {
+                    selectedNode = nil
+                    askDraft = "o que o commit \(node.hash.prefix(10)) fez, e por quê?"
+                    // O sistema precisa terminar de fechar a primeira folha
+                    // antes de a segunda subir; sem o respiro, o iOS engole a
+                    // segunda e o toque vira nada.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { showsAskCard = true }
+                }
             )
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
@@ -84,6 +102,7 @@ struct AtlasCodeView: View {
                 // os fatos prefixados, virou a máquina decidindo por si mesma.
                 taskKind: "code",
                 workspace: model.repo,
+                draft: askDraft,
                 turnFacts: { [askModel] question in await askModel.facts(for: question) },
                 onThread: { askThreadId = $0 }
             )
@@ -318,6 +337,10 @@ struct AtlasCodeView: View {
         .contentShape(Capsule())
         .onTapGesture {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            // A pílula abre limpa: a pergunta semeada é de quem semeou (a folha
+            // do commit), e herdá-la aqui seria a tela pondo palavra na boca do
+            // operador que só quis abrir a conversa.
+            askDraft = ""
             showsAskCard = true
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
@@ -466,6 +489,8 @@ private struct AtlasCodeProvenanceSheet: View {
     let state: AtlasCodeNodeState
     let ruleId: String?
     let phase: AtlasCodeProvenanceModel.Phase
+    /// A saída do beco: daqui o operador fala com o agente SOBRE este commit.
+    let onAsk: () -> Void
 
     var body: some View {
         ZStack {
@@ -473,6 +498,7 @@ private struct AtlasCodeProvenanceSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     header
+                    askButton
                     content
                     hashFooter
                 }
@@ -481,6 +507,36 @@ private struct AtlasCodeProvenanceSheet: View {
                 .padding(.bottom, 12)
             }
         }
+    }
+
+    /// A porta para o agente, com o commit já no assunto.
+    ///
+    /// Fica logo abaixo da manchete, e não no rodapé: quem abre um commit que
+    /// não entendeu não deveria ter de rolar a folha inteira — passando pelo
+    /// que ele não entendeu — para achar como perguntar.
+    private var askButton: some View {
+        Button(action: onAsk) {
+            HStack(spacing: 8) {
+                Text("✦")
+                    .font(AtlasFont.serif(12))
+                    .foregroundStyle(AtlasTheme.accent)
+                Text("perguntar sobre este commit")
+                    .font(AtlasFont.serifItalic(14))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                Spacer(minLength: 0)
+                Image(systemName: "arrow.up.right")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface))
+            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(AtlasTheme.separator, lineWidth: 0.5))
+            .contentShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("code-provenance-ask")
+        .accessibilityLabel("Perguntar ao Atlas sobre este commit")
     }
 
     // MARK: Cabeçalho — estado, manchete, dateline
