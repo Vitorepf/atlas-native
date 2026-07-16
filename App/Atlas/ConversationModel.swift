@@ -397,30 +397,6 @@ final class ConversationModel {
 
         var completedSuccessfully = false
         do {
-            // Payload do turno:
-            // - tool_permissions.mode=read — menor privilégio; o default do servidor
-            //   é `danger`, que trava o chat exigindo workspace-cert.
-            // - compute_effort — só quando ≠ auto (auto = Atlas Decide escolhe),
-            //   mesmo lane do RN (payload.compute_effort).
-            // - workspace_slug/name/path — escopo do repo, padrão do mobile RN.
-            //   (O "modo" geral/operacional/… do composer é UI-only: não existe
-            //   campo de wire pra ele no chat hoje; não inventamos contrato.)
-            var payload: [String: JSONValue] = [
-                "tool_permissions": .object(["mode": .string("read")]),
-            ]
-            // A superfície declara a natureza da tarefa em vez de deixar o
-            // roteador farejá-la na prosa. `task_type` é contrato existente do
-            // Atlas Decide (`isProgrammingTask`), não invenção minha.
-            if let taskKind { payload["task_type"] = .string(taskKind) }
-            if let e = effort.payloadValue { payload["compute_effort"] = .string(e) }
-            if let metadata = longMessage.metadata {
-                payload["long_message"] = .object(metadata.values)
-            }
-            if let slug = workspaceSlug {
-                payload["workspace_slug"] = .string(slug)
-                payload["workspace_name"] = .string(workspaceName ?? slug)
-                if let p = workspacePath { payload["workspace_path"] = .string(p) }
-            }
             #if DEBUG
             let proofProvider = ProcessInfo.processInfo.environment["ATLAS_DEVICE_PROOF_PROVIDER"]
             #else
@@ -431,6 +407,7 @@ final class ConversationModel {
             // existem; com isto ele não tem como inventar. A bolha local não
             // muda — o operador vê a própria frase, não o dossiê.
             var wireText = trimmed
+            var operatorText: String?
             if let collectFacts = turnFacts,
                let facts = await collectFacts(originalText),
                !facts.isEmpty {
@@ -440,8 +417,21 @@ final class ConversationModel {
                 // dossiê que a própria máquina anexou — e grava a prosa dela
                 // como se fosse a voz dele. Medido: 8 de 13 sinais de
                 // aprendizado eram frases que o operador nunca escreveu.
-                payload["operator_text"] = .string(originalText)
+                operatorText = originalText
             }
+            // Payload do turno: read-only por padrão, task_type declarado pela
+            // superfície, esforço só quando ≠ auto, workspace real e metadata de
+            // long message. A política mobile/Hermes continua aplicada abaixo.
+            let workspace = workspaceSlug.map {
+                TurnPayloadBuilder.Workspace(slug: $0, name: workspaceName, path: workspacePath)
+            }
+            let payload = TurnPayloadBuilder.build(
+                taskKind: taskKind,
+                effort: effort,
+                workspace: workspace,
+                longMessage: longMessage.metadata,
+                operatorText: operatorText
+            )
             let input = CreateAiInteractionInput(inputText: wireText,
                                                  clientId: UUID().uuidString.lowercased(),
                                                  threadId: threadId?.rawValue,
@@ -449,7 +439,7 @@ final class ConversationModel {
                                                  agentSlug: proofProvider == nil ? nil : "atlas",
                                                  provider: proofProvider,
                                                  sourceType: "app",
-                                                 payload: atlasMobileInteractionPayload(base: JSONObject(payload)),
+                                                 payload: atlasMobileInteractionPayload(base: payload),
                                                  uploadedImages: fields?.uploadedImages.isEmpty == false ? fields?.uploadedImages : nil,
                                                  uploadedDocuments: fields?.uploadedDocuments.isEmpty == false ? fields?.uploadedDocuments : nil,
                                                  richInputPayload: fields?.richInputPayload)

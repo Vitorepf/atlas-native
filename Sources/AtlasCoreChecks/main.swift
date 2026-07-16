@@ -165,6 +165,9 @@ do {
     } else { check("encode CreateAiInteractionInput falhou", false) }
 }
 
+print("\nAtlas AI · TurnPayloadBuilder (equivalência do payload do turno):")
+runTurnPayloadBuilderChecks(check)
+
 print("\nAtlasClient (engine de rede — check AO VIVO contra 127.0.0.1:3737, sem CORS):")
 do {
     let client = AtlasClient(config: AtlasConfig(host: "127.0.0.1", port: 3737))
