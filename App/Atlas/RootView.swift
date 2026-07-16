@@ -76,7 +76,7 @@ struct RootView: View {
             guard url.scheme == "atlas", url.host == "execution",
                   let traceId = url.pathComponents.dropFirst().first, !traceId.isEmpty else { return }
             Task { @MainActor in
-                guard let trace = try? await session.client.getAiInteraction(traceId).trace,
+                guard let trace = try? await session.client.getAiInteraction(TraceID(traceId)).trace,
                       let threadId = trace.threadId else { return }
                 let title = session.threads.first(where: { $0.id == threadId })?.title ?? "Execução Atlas"
                 path = NavigationPath()

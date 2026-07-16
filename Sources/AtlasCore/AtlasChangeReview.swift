@@ -13,7 +13,7 @@ public struct AtlasTraceChangeReview: Decodable, Sendable {
     public let schemaVersion: String
     public let state: State
     public let reason: String?
-    public let traceId: String
+    public let traceId: TraceID
     public let run: Run?
     public let patches: [Patch]
     public let controls: [Control]
@@ -44,6 +44,7 @@ public struct AtlasTraceChangeReview: Decodable, Sendable {
         public let fileReviews: [FileReview]
         public let createdAt: String?
         public let diffURL: String
+        public var patchID: PatchID { PatchID(id) }
 
         private enum CodingKeys: String, CodingKey {
             case id, baseRef, headRef, diffHash, changedFiles, createdFiles, deletedFiles, riskFlags, fileReviews, createdAt
@@ -150,7 +151,7 @@ public struct AtlasTraceChangeReview: Decodable, Sendable {
         self.schemaVersion = schemaVersion
         self.state = try values.decode(State.self, forKey: .state)
         self.reason = try values.decodeIfPresent(String.self, forKey: .reason)
-        self.traceId = try values.decode(String.self, forKey: .traceId)
+        self.traceId = try values.decode(TraceID.self, forKey: .traceId)
         self.run = try values.decodeIfPresent(Run.self, forKey: .run)
         self.patches = try values.decode([Patch].self, forKey: .patches)
         self.controls = try values.decode([Control].self, forKey: .controls)
@@ -187,6 +188,7 @@ public struct AtlasTraceChangeReviewDiffResponse: Decodable, Sendable {
         public let createdFiles: [String]
         public let deletedFiles: [String]
         public let riskFlags: [String]
+        public var patchID: PatchID { PatchID(id) }
     }
 
     public struct Diff: Decodable, Sendable {
@@ -225,14 +227,14 @@ public struct AtlasTraceChangeReviewActionResponse: Decodable, Sendable {
 }
 
 public struct AtlasTraceChangeReviewFileActionInput: Encodable, Sendable {
-    public let patchId: String
+    public let patchId: PatchID
     public let filePath: String
     public let action: AtlasTraceChangeReview.Action
     public let actor: String?
     public let note: String?
 
     public init(
-        patchId: String,
+        patchId: PatchID,
         filePath: String,
         action: AtlasTraceChangeReview.Action,
         actor: String? = nil,
@@ -253,41 +255,46 @@ public struct AtlasTraceChangeReviewFileActionResponse: Decodable, Sendable {
     public struct Receipt: Decodable, Sendable {
         public let action: AtlasTraceChangeReview.Action
         public let filePath: String
-        public let patchId: String
+        public let patchId: PatchID
         public let occurredAt: String?
     }
 }
 
 extension AtlasClient {
-    public func getTraceChangeReview(_ traceId: String) async throws -> AtlasTraceChangeReviewResponse {
-        let trace = traceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? traceId
+    public func getTraceChangeReview(_ traceId: TraceID) async throws -> AtlasTraceChangeReviewResponse {
+        let rawTraceId = traceId.rawValue
+        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
         return try await get("/ai/interactions/\(trace)/change-review")
     }
 
     public func getTraceChangeReviewDiff(
-        traceId: String,
-        patchId: String,
+        traceId: TraceID,
+        patchId: PatchID,
         maxBytes: Int? = nil
     ) async throws -> AtlasTraceChangeReviewDiffResponse {
-        let trace = traceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? traceId
-        let patch = patchId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? patchId
+        let rawTraceId = traceId.rawValue
+        let rawPatchId = patchId.rawValue
+        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
+        let patch = rawPatchId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawPatchId
         let query = maxBytes.map { "?max_bytes=\(min(max($0, 1024), 1_048_576))" } ?? ""
         return try await get("/ai/interactions/\(trace)/change-review/patches/\(patch)/diff\(query)")
     }
 
     public func applyTraceChangeReview(
-        traceId: String,
+        traceId: TraceID,
         input: AtlasTraceChangeReviewActionInput
     ) async throws -> AtlasTraceChangeReviewActionResponse {
-        let trace = traceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? traceId
+        let rawTraceId = traceId.rawValue
+        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
         return try await post("/ai/interactions/\(trace)/change-review/action", body: input)
     }
 
     public func applyTraceChangeReviewFile(
-        traceId: String,
+        traceId: TraceID,
         input: AtlasTraceChangeReviewFileActionInput
     ) async throws -> AtlasTraceChangeReviewFileActionResponse {
-        let trace = traceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? traceId
+        let rawTraceId = traceId.rawValue
+        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
         return try await post("/ai/interactions/\(trace)/change-review/file-action", body: input)
     }
 }

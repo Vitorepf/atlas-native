@@ -9,7 +9,7 @@ import AtlasCore
 // garante); diff vem por refreshChangeReviewDiff — nunca rede na View.
 struct ChangeReviewSheet: View {
     let model: ConversationModel
-    let traceId: String
+    let traceId: TraceID
     @Environment(\.dismiss) private var dismiss
     @State private var expandedDiffPatch: String?
     @State private var applying = false
@@ -193,7 +193,7 @@ struct ChangeReviewSheet: View {
                         expandedDiffPatch = nil
                     } else {
                         expandedDiffPatch = patch.id
-                        Task { await model.refreshChangeReviewDiff(traceId: traceId, patchId: patch.id) }
+                        Task { await model.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID) }
                     }
                 }
                 .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.accent)
@@ -236,12 +236,12 @@ struct ChangeReviewSheet: View {
                     .foregroundStyle(decided.action == .accept ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
             } else {
                 Button("aceitar") {
-                    Task { await model.applyChangeReviewFile(traceId: traceId, patchId: patch.id,
+                    Task { await model.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
                                                              filePath: file, action: .accept) }
                 }
                 .font(.system(.caption, weight: .medium)).foregroundStyle(AtlasTheme.accent)
                 Button("rejeitar") {
-                    Task { await model.applyChangeReviewFile(traceId: traceId, patchId: patch.id,
+                    Task { await model.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
                                                              filePath: file, action: .reject) }
                 }
                 .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
@@ -252,7 +252,7 @@ struct ChangeReviewSheet: View {
 
     @ViewBuilder
     private func diffView(_ patch: AtlasTraceChangeReview.Patch) -> some View {
-        if let response = model.changeReviewDiff(traceId: traceId, patchId: patch.id) {
+        if let response = model.changeReviewDiff(traceId: traceId, patchId: patch.patchID) {
             VStack(alignment: .leading, spacing: 6) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     Text(response.diff.content)

@@ -41,11 +41,11 @@ private actor ScriptedInteractionTransport: AtlasInteractionTransport {
         created
     }
 
-    func interactionSnapshot(traceId: String) async throws -> AiTraceResponse {
+    func interactionSnapshot(traceId: TraceID) async throws -> AiTraceResponse {
         created
     }
 
-    func findInteraction(clientId: String) async throws -> AiTraceResponse? { nil }
+    func findInteraction(clientId: ClientID) async throws -> AiTraceResponse? { nil }
 
     func cancelInteractionJob(_ jobId: String) async {
         cancelledJobs.append(jobId)
@@ -88,10 +88,10 @@ private actor LostCreateResponseTransport: AtlasInteractionTransport {
         throw URLError(.networkConnectionLost)
     }
 
-    func interactionSnapshot(traceId: String) async throws -> AiTraceResponse { recovered }
+    func interactionSnapshot(traceId: TraceID) async throws -> AiTraceResponse { recovered }
 
-    func findInteraction(clientId: String) async throws -> AiTraceResponse? {
-        recoveryClientIds.append(clientId)
+    func findInteraction(clientId: ClientID) async throws -> AiTraceResponse? {
+        recoveryClientIds.append(clientId.rawValue)
         return recovered
     }
 
@@ -119,8 +119,8 @@ private actor TerminalCreateFailureTransport: AtlasInteractionTransport {
     func createInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse {
         throw AtlasApiError(status: 422, path: "/ai/interactions", message: "invalid")
     }
-    func findInteraction(clientId: String) async throws -> AiTraceResponse? { nil }
-    func interactionSnapshot(traceId: String) async throws -> AiTraceResponse {
+    func findInteraction(clientId: ClientID) async throws -> AiTraceResponse? { nil }
+    func interactionSnapshot(traceId: TraceID) async throws -> AiTraceResponse {
         throw AtlasApiError(status: 404, path: "/ai/interactions", message: "missing")
     }
     func cancelInteractionJob(_ jobId: String) async {}
@@ -659,7 +659,7 @@ public func runInteractionRunLiveProbe(
     if let replayTrace = ProcessInfo.processInfo.environment["ATLAS_LIVE_TRACE"],
        !replayTrace.isEmpty {
         do {
-            let snapshot = try await client.getAiInteraction(replayTrace)
+            let snapshot = try await client.getAiInteraction(TraceID(replayTrace))
             check("live trace decodificou receipt/decision C5", snapshot.trace.decisionSummary != nil)
             check("live trace decodificou tool/quality opcionais C5",
                   snapshot.trace.toolEvents != nil && snapshot.trace.qualityActions != nil)
@@ -740,7 +740,7 @@ public func runInteractionRunLiveProbe(
         check("live SSE recebeu done", completed)
         check("live done drenou outbox", await outbox.pending().isEmpty)
         if let createdTraceId {
-            let final = try await client.getAiInteraction(createdTraceId)
+            let final = try await client.getAiInteraction(TraceID(createdTraceId))
             check("live resposta final é apresentável",
                   final.trace.responseText.flatMap(atlasVisibleAssistantText) != nil)
             check("live snapshot preserva ledger de atividades",
@@ -809,7 +809,7 @@ public func runProviderToolActivityLiveProbe(
             check("live \(providerLabel) tool run criou trace", false)
             return
         }
-        let snapshot = try await client.getAiInteraction(traceId)
+        let snapshot = try await client.getAiInteraction(TraceID(traceId))
         let toolEvents = (snapshot.trace.streamEvents ?? []).filter { event in
             event.type == "tool"
                 || (event.type == "progress"

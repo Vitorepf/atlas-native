@@ -203,6 +203,7 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
 
 print("\nAtlasTurnStatus (lifecycle tipado do turno):")
 runTurnStatusChecks(check)
+runAtlasIDChecks(check)
 
 runRichInputChecks(check)
 await runRichInputEngineChecks(check)

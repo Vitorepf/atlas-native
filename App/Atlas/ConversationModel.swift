@@ -130,10 +130,10 @@ final class ConversationModel {
     /// Revisões carregadas sob demanda e sempre indexadas pelo trace público.
     /// A casca pode mostrar ausência/indisponibilidade, mas não fabricar patch,
     /// resultado de check ou decisão antes desta leitura canônica.
-    private(set) var changeReviewsByTrace: [String: AtlasTraceChangeReview] = [:]
+    private(set) var changeReviewsByTrace: [TraceID: AtlasTraceChangeReview] = [:]
     /// Provas de governança do turno (C18 diff_stats · C19 plan_revisions ·
     /// C21 council_review). Vêm do metadata do trace; ausência = nada a dizer.
-    private(set) var governanceByTrace: [String: AtlasAiTrace] = [:]
+    private(set) var governanceByTrace: [TraceID: AtlasAiTrace] = [:]
     /// Conteúdo de diff só entra aqui depois de o patch ser confirmado na
     /// projeção do mesmo trace; a View nunca faz a requisição por conta própria.
     private(set) var changeReviewDiffsByKey: [String: AtlasTraceChangeReviewDiffResponse] = [:]
@@ -645,7 +645,7 @@ final class ConversationModel {
 
             var confirmed = false
             for activeTrace in activeTraces {
-                guard let refreshed = try? await client.getAiInteraction(activeTrace.traceId) else { continue }
+                guard let refreshed = try? await client.getAiInteraction(TraceID(activeTrace.traceId)) else { continue }
                 applyExecution(activeTrace.id, refreshed.trace)
                 confirmed = confirmed || refreshed.trace.turnStatus == .cancelled
             }
@@ -670,7 +670,7 @@ final class ConversationModel {
     /// Carrega a superfície de artefatos/revisão do trace. A resposta que não
     /// ecoa o mesmo trace é descartada, pois vinculá-la à bolha errada seria um
     /// vazamento de evidência entre execuções.
-    func refreshChangeReview(traceId: String) async {
+    func refreshChangeReview(traceId: TraceID) async {
         do {
             let response = try await client.getTraceChangeReview(traceId)
             guard response.changeReview.traceId == traceId else {
@@ -679,7 +679,8 @@ final class ConversationModel {
             }
             changeReviewsByTrace[traceId] = response.changeReview
             // O mesmo toque que abre a revisão traz as provas do turno.
-            if let trace = try? await client.getAiInteraction(traceId).trace, trace.id == traceId || trace.traceKey == traceId {
+            if let trace = try? await client.getAiInteraction(traceId).trace,
+               trace.id == traceId.rawValue || trace.traceKey == traceId.rawValue {
                 governanceByTrace[traceId] = trace
             }
         } catch {
@@ -687,23 +688,23 @@ final class ConversationModel {
         }
     }
 
-    func changeReviewDiff(traceId: String, patchId: String) -> AtlasTraceChangeReviewDiffResponse? {
+    func changeReviewDiff(traceId: TraceID, patchId: PatchID) -> AtlasTraceChangeReviewDiffResponse? {
         changeReviewDiffsByKey[Self.changeReviewDiffKey(traceId: traceId, patchId: patchId)]
     }
 
     /// Busca o diff somente se o patch já pertence à revisão canônica do trace.
     /// Isso evita tanto rede na casca quanto a mistura de artefatos entre traces.
-    func refreshChangeReviewDiff(traceId: String, patchId: String) async {
+    func refreshChangeReviewDiff(traceId: TraceID, patchId: PatchID) async {
         if changeReviewsByTrace[traceId] == nil {
             await refreshChangeReview(traceId: traceId)
         }
-        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.id == patchId }) == true else {
+        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.patchID == patchId }) == true else {
             toast = "Este diff não pertence à revisão desta execução."
             return
         }
         do {
             let response = try await client.getTraceChangeReviewDiff(traceId: traceId, patchId: patchId)
-            guard response.patch.id == patchId else {
+            guard response.patch.patchID == patchId else {
                 toast = "O diff recebido não corresponde ao artefato solicitado."
                 return
             }
@@ -717,7 +718,7 @@ final class ConversationModel {
     /// ação local otimista: a UI só muda depois que a decisão e seu evento no
     /// ledger foram persistidos e devolvidos pela mesma rota trace-scoped.
     func applyChangeReview(
-        traceId: String,
+        traceId: TraceID,
         action: AtlasTraceChangeReview.Action,
         note: String? = nil
     ) async {
@@ -732,7 +733,7 @@ final class ConversationModel {
             }
             changeReviewsByTrace[traceId] = response.changeReview
             if let refreshed = try? await client.getAiInteraction(traceId) {
-                for bubble in bubbles where bubble.traceId == traceId {
+                for bubble in bubbles where bubble.traceId == traceId.rawValue {
                     applyExecution(bubble.id, refreshed.trace)
                 }
             }
@@ -745,8 +746,8 @@ final class ConversationModel {
     /// vinculado ao mesmo trace. A resposta também é revalidada antes de tocar
     /// no estado observado pela casca, eliminando aceite cruzado entre runs.
     func applyChangeReviewFile(
-        traceId: String,
-        patchId: String,
+        traceId: TraceID,
+        patchId: PatchID,
         filePath: String,
         action: AtlasTraceChangeReview.Action,
         note: String? = nil
@@ -754,7 +755,7 @@ final class ConversationModel {
         if changeReviewsByTrace[traceId] == nil {
             await refreshChangeReview(traceId: traceId)
         }
-        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.id == patchId && $0.contains(filePath) }) == true else {
+        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.patchID == patchId && $0.contains(filePath) }) == true else {
             toast = "Este arquivo não pertence ao patch desta execução."
             return
         }
@@ -774,7 +775,7 @@ final class ConversationModel {
                   response.fileReviewReceipt.filePath == filePath,
                   response.fileReviewReceipt.action == action,
                   response.changeReview.patches.contains(where: {
-                      $0.id == patchId && $0.fileReviews.contains(where: {
+                      $0.patchID == patchId && $0.fileReviews.contains(where: {
                           $0.filePath == filePath && $0.action == action
                       })
                   }) else {
@@ -783,7 +784,7 @@ final class ConversationModel {
             }
             changeReviewsByTrace[traceId] = response.changeReview
             if let refreshed = try? await client.getAiInteraction(traceId) {
-                for bubble in bubbles where bubble.traceId == traceId {
+                for bubble in bubbles where bubble.traceId == traceId.rawValue {
                     applyExecution(bubble.id, refreshed.trace)
                 }
             }
@@ -813,7 +814,7 @@ final class ConversationModel {
             let values = await withTaskGroup(of: (String, AtlasAiTrace?).self) { group in
                 for (bubbleId, traceId) in batch {
                     group.addTask {
-                        let trace = try? await client.getAiInteraction(traceId)
+                        let trace = try? await client.getAiInteraction(TraceID(traceId))
                         return (bubbleId, trace?.trace)
                     }
                 }
@@ -862,7 +863,7 @@ final class ConversationModel {
                 toast = "A decisão foi registrada, mas a conversa ainda não está disponível."
                 return
             }
-            let refreshed = try await client.getAiInteraction(traceId)
+            let refreshed = try await client.getAiInteraction(TraceID(traceId))
             for bubble in bubbles where bubble.traceId == traceId {
                 applyExecution(bubble.id, refreshed.trace)
             }
@@ -881,7 +882,7 @@ final class ConversationModel {
                 toast = "O turno foi reenfileirado."
                 return
             }
-            let refreshed = try await client.getAiInteraction(traceId)
+            let refreshed = try await client.getAiInteraction(TraceID(traceId))
             for bubble in bubbles where bubble.traceId == traceId {
                 applyExecution(bubble.id, refreshed.trace)
             }
@@ -967,7 +968,7 @@ final class ConversationModel {
 
         // Se o relaunch carregou uma thread já finalizada, não duplica a bolha.
         if let clientId = input.clientId,
-           let trace = try? await client.findInteraction(clientId: clientId),
+           let trace = try? await client.findInteraction(clientId: ClientID(clientId)),
            trace.trace.turnStatus.isTerminal,
            bubbles.contains(where: { $0.traceId == trace.trace.id }) {
             try? await outbox.remove(clientId: clientId)
@@ -1064,8 +1065,8 @@ final class ConversationModel {
         mutate(&bubbles[i])
     }
 
-    private static func changeReviewDiffKey(traceId: String, patchId: String) -> String {
-        "\(traceId):\(patchId)"
+    private static func changeReviewDiffKey(traceId: TraceID, patchId: PatchID) -> String {
+        "\(traceId.rawValue):\(patchId.rawValue)"
     }
 
     private static func userMessage(for error: Error) -> String {

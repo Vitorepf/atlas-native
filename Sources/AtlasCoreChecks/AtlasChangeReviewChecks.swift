@@ -17,8 +17,9 @@ public func runAtlasChangeReviewChecks(_ check: (String, Bool) -> Void) {
     """
 
     let decoded = try? decoder.decode(AtlasTraceChangeReviewResponse.self, from: Data(available.utf8))
-    check("review disponível preserva o trace canônico", decoded?.changeReview.traceId == "tr-15")
+    check("review disponível preserva o trace canônico", decoded?.changeReview.traceId == TraceID("tr-15"))
     check("review não vaza engineering_run_id", decoded?.changeReview.run?.status == "passed")
+    check("patch expõe PatchID tipado", decoded?.changeReview.patches.first?.patchID == PatchID("patch-1"))
     check("patch preserva somente a rota trace-scoped do diff", decoded?.changeReview.patches.first?.diffURL == "/ai/interactions/tr-15/change-review/patches/patch-1/diff")
     check("decisão por arquivo fica ligada ao patch canônico", decoded?.changeReview.patches.first?.fileReviews.first?.filePath == "Sources/AtlasCore/InteractionRun.swift" && decoded?.changeReview.patches.first?.fileReviews.first?.action == .accept)
     check("checks e testes são recebidos como evidência real", decoded?.changeReview.controls.first?.slug == "swift-core-checks" && decoded?.changeReview.testRuns.first?.exitCode == 0)

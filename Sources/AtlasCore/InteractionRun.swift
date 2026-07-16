@@ -113,8 +113,8 @@ public func makeAtlasResumableInteractionStream(
 /// somente `InteractionRun`; o actor esconde create, polling, SSE e cancel de jobs.
 public protocol AtlasInteractionTransport: AtlasAiStreamSource {
     func createInteraction(_ input: CreateAiInteractionInput) async throws -> AiTraceResponse
-    func findInteraction(clientId: String) async throws -> AiTraceResponse?
-    func interactionSnapshot(traceId: String) async throws -> AiTraceResponse
+    func findInteraction(clientId: ClientID) async throws -> AiTraceResponse?
+    func interactionSnapshot(traceId: TraceID) async throws -> AiTraceResponse
     func cancelInteractionJob(_ jobId: String) async
 }
 
@@ -234,14 +234,14 @@ public actor InteractionRun {
             updateActiveJobs(from: created.trace)
             continuation.yield(.created(created.trace))
 
-            let traceId = created.trace.id
+            let traceId = TraceID(created.trace.id)
             pollTask = Task { [weak self] in
                 await self?.poll(traceId: traceId, continuation: continuation)
             }
 
             let frames = makeAtlasResumableInteractionStream(
                 source: transport,
-                traceId: traceId,
+                traceId: traceId.rawValue,
                 timeoutSeconds: streamWindowSeconds,
                 policy: reconnectPolicy
             )
@@ -306,7 +306,7 @@ public actor InteractionRun {
                 ))
                 continuation.finish()
             } else {
-                throw AtlasInteractionStreamError.reconnectsExhausted(traceId: traceId, lastSequence: 0)
+                throw AtlasInteractionStreamError.reconnectsExhausted(traceId: traceId.rawValue, lastSequence: 0)
             }
         } catch is CancellationError {
             await cancelActiveJobs()
@@ -332,7 +332,7 @@ public actor InteractionRun {
         wasPending: Bool
     ) async throws -> AiTraceResponse {
         if wasPending, let clientId = input.clientId,
-           let recovered = try? await transport.findInteraction(clientId: clientId) {
+           let recovered = try? await transport.findInteraction(clientId: ClientID(clientId)) {
             return recovered
         }
         do {
@@ -354,7 +354,7 @@ public actor InteractionRun {
                     }
                 }
                 do {
-                    if let recovered = try await transport.findInteraction(clientId: clientId) {
+                    if let recovered = try await transport.findInteraction(clientId: ClientID(clientId)) {
                         return recovered
                     }
                 } catch {
@@ -366,7 +366,7 @@ public actor InteractionRun {
     }
 
     private func poll(
-        traceId: String,
+        traceId: TraceID,
         continuation: AsyncThrowingStream<InteractionRunEvent, Error>.Continuation
     ) async {
         while !Task.isCancelled {
@@ -420,12 +420,12 @@ extension AtlasClient: AtlasInteractionTransport {
         try await createAiInteraction(input)
     }
 
-    public func interactionSnapshot(traceId: String) async throws -> AiTraceResponse {
+    public func interactionSnapshot(traceId: TraceID) async throws -> AiTraceResponse {
         try await getAiInteraction(traceId)
     }
 
-    public func findInteraction(clientId: String) async throws -> AiTraceResponse? {
-        let response = try await listAiInteractions(clientId: clientId, limit: 1)
+    public func findInteraction(clientId: ClientID) async throws -> AiTraceResponse? {
+        let response = try await listAiInteractions(clientId: clientId.rawValue, limit: 1)
         return response.traces.first.map(AiTraceResponse.init(trace:))
     }
 

@@ -97,8 +97,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S5 | **DONE** | **Grok 4.5** | `App/Atlas/Fonts/*`; `AtlasType.swift`; `Info.plist` | S4 | F0.7 fontes inalcançáveis | só SemiBold/Regular/Italic/Mono no bundle; build verde | −144K Bold+Medium; 28/28 serif→SemiBold; checks+build exit 0 |
 | S6 | **DONE** | **Grok 4.5** | `docs/proposals/**`; `docs/superpowers/`; `.gitignore` | S5 | F0.8 docs dups + arquivamento | links repontados; dups fora; archive | dups −~264K + index; superpowers→archive; checks+build exit 0 |
 | S7 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasTurnStatus.swift` + call sites | S6 | F1.1 AtlasTurnStatus | 0 literais de status fora do enum/checks; checks+build verdes | enum + computed turnStatus; InteractionRun/Model/Cockpit; 11 golden checks; exit 0 |
-| S8 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/AtlasIDs.swift` + Core signatures | S7 | F1.2 IDs tipados (Core) | TraceID/ThreadID/JobID/PatchID/ClientID; Core compila | — |
-| S9–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S8 | commits 9–34 da spec | DoD por eixo com prova | — |
+| S8 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasIDs.swift` + ChangeReview/Client Core + casca mínima | S7 | F1.2 IDs tipados (Core) | TraceID/PatchID nas APIs de review + getAiInteraction; checks+build verdes | AtlasIDs + golden; review APIs tipadas |
+| S9 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/ConversationModel.swift` (+ models) | S8 | F1.2 IDs tipados (models) | threadId/jobId/clientId/traceId tipados no model | — |
+| S10–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S9 | commits 10–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -730,13 +731,21 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   casca (**prioridade máxima do operador**), Artifacts & Proof completo,
   Continuity total, Atlas-wide, H1 blame semântico, H9 futuro fantasma, Anel
   Nativo N1–N8, Memória de critério do operador, Contratos por geração.
-  Agent Cockpit em avaliação. Pré-requisito de tudo: plano SOTA 10/10
-  (`docs/plano-sota-10-de-10.md`) concluído com provas.
+  **Agent Cockpit aprovado como POSTURA PADRÃO adaptativa do app** (decisão
+  do operador 2026-07-16): com nada vivo, a home permanece editorial
+  intenção-primeiro; com qualquer sessão viva, a home se reorganiza em
+  cockpit ("VIVO AGORA" no topo via seams do TurnPresence — postura v1 sem
+  contrato novo). Regência completa (pausar/redirecionar agente em run vivo)
+  exige contrato de steering do servidor e fica sequenciada à parte.
+  Autônomos permanece superfície 24/7 própria (aviso canônico do §4 intacto).
+  Pré-requisito de tudo: plano SOTA 10/10 (`docs/plano-sota-10-de-10.md`)
+  concluído com provas.
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S8/F1.2-Core · `AtlasIDs` (Trace/Thread/Job/Patch/Client, Codable single-value) + APIs ChangeReview/getAiInteraction tipadas; casca mínima ajustada p/ gate verde · prova: runAtlasIDChecks; checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S7/F1.1 · `AtlasTurnStatus` tipado (wire fail-open via `.unknown`); InteractionRun/ConversationModel/Cockpit usam `turnStatus`; literais de lifecycle só no enum; golden: unknown nunca terminal · prova: checks exit 0 (incl. 11 TurnStatus); build exit 0; git diff --check limpo
 - 2026-07-16 · Grok 4.5 · SOTA S6/F0.8 + **F0 FECHADA** · DELETE dups byte-idênticos em fable-execucao-viva/ (−3 HTML + index + evolucao antiga); links → fable-5.html; arquiva docs/superpowers + scripts/codex-execution-queue.test.mjs em docs/archive/; .DS_Store já no gitignore · prova: md5 idênticos antes do delete; checks exit 0; build exit 0. Saldo Swift F0 ≈ −2.250+; assets −144K; docs −~300K+
 - 2026-07-16 · Grok 4.5 · SOTA S5/F0.7 · DELETE Fraunces Bold+Medium (144K) + cases mortos do switch; Regular permanece como fallback · prova: 28/28 AtlasFont.serif resolvem SemiBold; checks exit 0; build exit 0

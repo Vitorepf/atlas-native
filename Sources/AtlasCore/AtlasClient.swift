@@ -221,8 +221,8 @@ public actor AtlasClient: AtlasAiStreamSource {
         return try await get("/ai/interactions\(q)")
     }
 
-    public func getAiInteraction(_ id: String) async throws -> AiTraceResponse {
-        try await get("/ai/interactions/\(pathEncode(id))")
+    public func getAiInteraction(_ id: TraceID) async throws -> AiTraceResponse {
+        try await get("/ai/interactions/\(pathEncode(id.rawValue))")
     }
 
     /// C22 · Read-only Git topology for Atlas Código. The server owns Git
