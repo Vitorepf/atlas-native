@@ -21,6 +21,25 @@ public struct AtlasCodeIssue: Decodable, Equatable, Sendable, Identifiable {
 
     public var isSevere: Bool { severity == "high" }
 
+    /// A frase com a linha pelo NOME dela.
+    ///
+    /// As frases canônicas dizem "main" porque a regra pétrea se chama assim —
+    /// mas metade da frota tem trunk `production`, e a cápsula da mesma tela já
+    /// fala o nome real ("2 desvios da production"). A linha da issue dizendo
+    /// "fora da main" ao lado é a tela discutindo consigo mesma. Com a trunk
+    /// dita, a frase troca a palavra; sem trunk (ambígua/servidor antigo), fica
+    /// "main", que é o canon.
+    public func headline(trunk: String?) -> String {
+        guard let trunk, !trunk.isEmpty, trunk != "main" else { return headline }
+        return headline.replacingOccurrences(of: "à main", with: "à \(trunk)")
+            .replacingOccurrences(of: "da main", with: "da \(trunk)")
+    }
+
+    /// A lei em português, no singular, com a linha pelo nome — para um caso só.
+    public static func law(_ ruleId: String, trunk: String?) -> String {
+        AtlasCodeIssue(ruleId: ruleId, count: 1, severity: "high", oldestDays: nil).headline(trunk: trunk)
+    }
+
     /// A lei em português, no singular — para um caso só.
     ///
     /// O grafo mostrava `worktree_allowlist` cru na linha do commit e

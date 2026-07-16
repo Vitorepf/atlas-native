@@ -22,6 +22,10 @@ final class AtlasCodeWorkspaceModel {
     private(set) var workspace: AtlasCodeWorkspaceResponse?
     /// Exceções por repo (slug → issues). Chave ausente = ainda não varrido.
     private(set) var issuesBySlug: [String: [AtlasCodeIssue]] = [:]
+    /// A trunk real de cada repo varrido — a frase da issue fala o nome da
+    /// linha ("fora da production"), nunca "main" no chute.
+    private(set) var trunkBySlug: [String: String] = [:]
+
     /// Repos que NÃO responderam. Falha é um fato e precisa ser guardada.
     ///
     /// Sem isto, o `continue` do scan fazia "falhou" e "ainda não varri"
@@ -66,6 +70,7 @@ final class AtlasCodeWorkspaceModel {
             }
             failedSlugs.remove(slug)
             issuesBySlug[slug] = Self.group(response.violations)
+            if let trunk = response.trunk { trunkBySlug[slug] = trunk }
         }
     }
 
@@ -79,6 +84,8 @@ final class AtlasCodeWorkspaceModel {
     }
 
     func issues(for slug: String) -> [AtlasCodeIssue]? { issuesBySlug[slug] }
+
+    func trunk(for slug: String) -> String? { trunkBySlug[slug] }
 
     /// A frase do workspace: o problema dominante entre o que já foi varrido.
     ///
@@ -229,7 +236,7 @@ struct AtlasCodeRadarView: View {
                 if !workspace.recents.isEmpty {
                     sectionLabel("RECENTES")
                     ForEach(workspace.recents) { repo in
-                        AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), showsFolder: true) {
+                        AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), trunk: model.trunk(for: repo.slug), showsFolder: true) {
                             onOpenRepo(repo.slug)
                         }
                         if repo.id != workspace.recents.last?.id { rowDivider }
@@ -244,6 +251,7 @@ struct AtlasCodeRadarView: View {
                             folder: folder,
                             isExpanded: model.expandedFolders.contains(folder.slug),
                             issuesFor: { model.issues(for: $0) },
+                            trunkFor: { model.trunk(for: $0) },
                             onToggle: { Task { await model.toggle(folder) } },
                             onOpenRepo: onOpenRepo
                         )
@@ -255,7 +263,7 @@ struct AtlasCodeRadarView: View {
                     sectionLabel("AVULSOS")
                         .padding(.top, 22)
                     ForEach(workspace.loose) { repo in
-                        AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), showsFolder: false) {
+                        AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), trunk: model.trunk(for: repo.slug), showsFolder: false) {
                             onOpenRepo(repo.slug)
                         }
                         if repo.id != workspace.loose.last?.id { rowDivider }
@@ -323,6 +331,8 @@ struct AtlasCodeRadarView: View {
 private struct AtlasCodeRepoRow: View {
     let repo: AtlasCodeRepoRef
     let issues: [AtlasCodeIssue]?
+    /// A trunk real deste repo: a frase da issue fala o nome da linha.
+    var trunk: String? = nil
     /// Nos recentes a pasta situa; dentro da pasta seria redundante.
     let showsFolder: Bool
     let onTap: () -> Void
@@ -350,7 +360,7 @@ private struct AtlasCodeRepoRow: View {
                             Circle()
                                 .fill(first.isSevere ? AtlasCodePalette.alert : AtlasCodePalette.alert.opacity(0.45))
                                 .frame(width: 4.5, height: 4.5)
-                            Text(issues.count == 1 ? first.headline : "\(first.headline) · +\(issues.count - 1)")
+                            Text(issues.count == 1 ? first.headline(trunk: trunk) : "\(first.headline(trunk: trunk)) · +\(issues.count - 1)")
                                 .font(.system(size: 12))
                                 .foregroundStyle(AtlasTheme.textSecondary)
                                 .lineLimit(1)
@@ -379,7 +389,7 @@ private struct AtlasCodeRepoRow: View {
 
     private var accessibilityText: String {
         var parts = [repo.name]
-        if let issues, !issues.isEmpty { parts.append(issues.map(\.headline).joined(separator: ", ")) }
+        if let issues, !issues.isEmpty { parts.append(issues.map { $0.headline(trunk: trunk) }.joined(separator: ", ")) }
         if let age = AtlasCodeAge.short(from: repo.lastCommitAt) { parts.append("último commit \(age)") }
         return parts.joined(separator: ", ")
     }
@@ -391,6 +401,7 @@ private struct AtlasCodeFolderRow: View {
     let folder: AtlasCodeFolder
     let isExpanded: Bool
     let issuesFor: (String) -> [AtlasCodeIssue]?
+    let trunkFor: (String) -> String?
     let onToggle: () -> Void
     let onOpenRepo: (String) -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -441,7 +452,7 @@ private struct AtlasCodeFolderRow: View {
             if isExpanded {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(folder.repos) { repo in
-                        AtlasCodeRepoRow(repo: repo, issues: issuesFor(repo.slug), showsFolder: false) {
+                        AtlasCodeRepoRow(repo: repo, issues: issuesFor(repo.slug), trunk: trunkFor(repo.slug), showsFolder: false) {
                             onOpenRepo(repo.slug)
                         }
                         .padding(.leading, 32)

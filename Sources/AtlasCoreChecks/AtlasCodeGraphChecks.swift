@@ -427,4 +427,28 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     )
     check("código fica o código, sem as crases", AtlasMarkdown.plainText("rode `git log` aí") == "rode git log aí")
     check("texto sem markdown atravessa intacto", AtlasMarkdown.plainText("45 commits hoje.") == "45 commits hoje.")
+
+    // A LEI FALA O NOME DA LINHA. A cápsula diz "2 desvios da production" e a
+    // linha da issue dizia "1 branch fora da main" — a mesma tela discutindo
+    // consigo mesma no nivor-back-end, cuja trunk é production.
+    check(
+        "com trunk production, a lei fala production",
+        AtlasCodeIssue.law("main_only", trunk: "production") == "1 branch fora da production"
+    )
+    check(
+        "a obra que não voltou também fala o nome da linha",
+        AtlasCodeIssue.law("obra_return_deadline", trunk: "production") == "1 obra nunca voltou à production"
+    )
+    check(
+        "sem trunk dita, a frase fica no canon: main",
+        AtlasCodeIssue.law("main_only", trunk: nil) == "1 branch fora da main"
+    )
+    check(
+        "trunk main não duplica nem quebra a frase",
+        AtlasCodeIssue.law("main_only", trunk: "main") == "1 branch fora da main"
+    )
+    check(
+        "regra sem a palavra main atravessa intacta",
+        AtlasCodeIssue.law("worktree_allowlist", trunk: "production") == "1 worktree fora do lugar"
+    )
 }

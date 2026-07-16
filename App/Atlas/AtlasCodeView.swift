@@ -97,6 +97,7 @@ struct AtlasCodeView: View {
                 state: model.state(for: node),
                 ruleId: model.ruleId(for: node),
                 ruleCanon: model.ruleCanon(for: node),
+                trunk: model.violations?.trunk,
                 phase: provenanceModel.phase,
                 // A folha do commit era um beco: o operador abre justamente o
                 // commit que NÃO entendeu, e ali não havia caminho nenhum para
@@ -228,6 +229,7 @@ struct AtlasCodeView: View {
                         node: node,
                         state: model.state(for: node),
                         ruleId: model.ruleId(for: node),
+                        trunk: model.violations?.trunk,
                         isFirst: index == 0,
                         isLast: index == graph.nodes.count - 1,
                         // A resposta da pílula acende o que ela cita: o mapa é
@@ -459,6 +461,8 @@ private struct AtlasCodeCommitRow: View {
     let node: AtlasCodeGraphNode
     let state: AtlasCodeNodeState
     let ruleId: String?
+    /// A trunk real: a lei na linha fala o nome da linha, nunca "main" no chute.
+    let trunk: String?
     let isFirst: Bool
     let isLast: Bool
     /// A pílula respondeu e este commit não está na resposta: ele recua, mas
@@ -491,7 +495,7 @@ private struct AtlasCodeCommitRow: View {
                             // máquina e não sobe à tela em que o operador decide
                             // se apaga trabalho — o tradutor já existia, e só o
                             // grafo continuava falando snake_case.
-                            Text(AtlasCodeIssue.law(ruleId))
+                            Text(AtlasCodeIssue.law(ruleId, trunk: trunk))
                                 .foregroundStyle(AtlasCodePalette.alert)
                         }
                     }
@@ -577,6 +581,8 @@ private struct AtlasCodeProvenanceSheet: View {
     /// O doc que sustenta a acusação. Ausente = a regra ainda não tem lei
     /// escrita, e isso é dito calando — nunca com um caminho plausível.
     let ruleCanon: String?
+    /// A trunk real — a lei citada fala o nome da linha, nunca "main" no chute.
+    let trunk: String?
     let phase: AtlasCodeProvenanceModel.Phase
     /// A saída do beco: daqui o operador fala com o agente SOBRE este commit.
     let onAsk: () -> Void
@@ -613,7 +619,7 @@ private struct AtlasCodeProvenanceSheet: View {
     private var lawCitation: some View {
         if state == .violating, let ruleId {
             VStack(alignment: .leading, spacing: 3) {
-                Text(AtlasCodeIssue.law(ruleId))
+                Text(AtlasCodeIssue.law(ruleId, trunk: trunk))
                     .font(AtlasFont.serif(14, .semibold))
                     .foregroundStyle(AtlasCodePalette.alert)
                 if let ruleCanon {
@@ -711,7 +717,7 @@ private struct AtlasCodeProvenanceSheet: View {
         // A lei em português e em caixa alta de manchete — nunca o id cru:
         // "FORA DA MAIN · WORKTREE_ALLOWLIST" era metade português, metade
         // banco de dados.
-        case .violating: return ruleId.map { "FORA DA LINHA · \(AtlasCodeIssue.law($0).uppercased())" } ?? "FORA DA LINHA"
+        case .violating: return ruleId.map { "FORA DA LINHA · \(AtlasCodeIssue.law($0, trunk: trunk).uppercased())" } ?? "FORA DA LINHA"
         case .healed: return "CURADO"
         case .history: return "HISTÓRIA"
         }
