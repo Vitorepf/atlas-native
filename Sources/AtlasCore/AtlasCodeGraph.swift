@@ -23,11 +23,10 @@ public struct AtlasCodeGraphResponse: Decodable, Sendable {
     /// menos do que devia, nunca pinta errado.
     public let trunkHead: String?
     public let nodes: [AtlasCodeGraphNode]
-    public let worktrees: [AtlasCodeGraphWorktree]
     public let pagination: AtlasCodeGraphPagination
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, repo, generatedAt, head, defaultBranch, trunkHead, nodes, worktrees, pagination
+        case schemaVersion, repo, generatedAt, head, defaultBranch, trunkHead, nodes, pagination
     }
 
     public init(from decoder: Decoder) throws {
@@ -47,7 +46,6 @@ public struct AtlasCodeGraphResponse: Decodable, Sendable {
         self.defaultBranch = try values.decodeIfPresent(String.self, forKey: .defaultBranch)
         self.trunkHead = try values.decodeIfPresent(String.self, forKey: .trunkHead)
         self.nodes = try values.decode([AtlasCodeGraphNode].self, forKey: .nodes)
-        self.worktrees = try values.decode([AtlasCodeGraphWorktree].self, forKey: .worktrees)
         self.pagination = try values.decode(AtlasCodeGraphPagination.self, forKey: .pagination)
     }
 }
@@ -149,14 +147,6 @@ public enum AtlasCodeGraphState {
         if spineHashes.isEmpty, node.isOnDefaultBranch(defaultBranch) { return .onMain }
         return .history
     }
-}
-
-public struct AtlasCodeGraphWorktree: Decodable, Equatable, Sendable, Identifiable {
-    public let path: String
-    public let branch: String?
-    public let head: String
-
-    public var id: String { path }
 }
 
 public struct AtlasCodeGraphPagination: Decodable, Equatable, Sendable {
