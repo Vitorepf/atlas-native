@@ -18,7 +18,12 @@ struct AtlasCodeView: View {
     @State private var askModel: AtlasCodeAskModel
     @State private var selectedNode: AtlasCodeGraphNode?
     @State private var showsHealReceipt = false
-    @FocusState private var askFieldFocused: Bool
+    /// A pílula é porta, não formulário. Tocar abre o card de conversa — o mesmo
+    /// gesto do commit, que abre a folha acima do grafo.
+    @State private var showsAskCard = false
+    /// A conversa deste repositório continua onde parou. Fechar o card não é
+    /// encerrar o assunto; é só tirar a folha da frente do mapa.
+    @State private var askThreadId: String?
 
     init(client: AtlasClient, repo: String = "atlas-server") {
         _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
@@ -61,6 +66,24 @@ struct AtlasCodeView: View {
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }
+        }
+        // O card: uma conversa de verdade sobre ESTE repositório. Não é uma
+        // pílula que devolve fato solto — é o agente do Atlas, com toda a
+        // memória e o ACOS atrás dele, lendo os fatos que o determinístico
+        // coletou do git no mesmo turno. Os fatos impedem invenção; o agente
+        // entrega entendimento. Nenhum dos dois sozinho é a ferramenta.
+        .sheet(isPresented: $showsAskCard) {
+            ConversationView(
+                client: session.client,
+                threadId: askThreadId,
+                title: "Código · \(model.repo)",
+                emptyPrompt: "O que você quer saber deste repositório?",
+                emptySuggestions: AtlasCodeAskSuggestions.all,
+                turnFacts: { [askModel] question in await askModel.facts(for: question) },
+                onThread: { askThreadId = $0 }
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
     }
 
@@ -238,256 +261,51 @@ struct AtlasCodeView: View {
     /// Ela não abre outra tela: expande sobre o grafo, que continua visível
     /// atrás (lei 3, o mapa vem primeiro). A resposta acende os commits que
     /// cita — o mapa é que responde, não uma bolha de conversa.
-    @ViewBuilder
+    /// A pílula não responde: ela abre quem responde. Um campo de texto
+    /// espremido numa cápsula sobre o grafo prometia conversa e entregava
+    /// formulário — e o operador tinha razão em chamar aquilo de burro. O card
+    /// tem histórico, agente, orquestra ao vivo e anexo; a cápsula não tinha
+    /// nada disso e nunca teria.
     private var askPill: some View {
-        VStack(spacing: 10) {
-            if askModel.isOpen {
-                askPanel
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-            }
-            pillBar
-        }
-        .padding(.horizontal, AtlasTheme.Space.screen)
-        .padding(.bottom, 10)
-        .animation(reduceMotion ? nil : .spring(response: 0.32, dampingFraction: 0.86), value: askModel.isOpen)
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: askModel.phase)
-    }
-
-    private var pillBar: some View {
         HStack(spacing: 9) {
-            Image(systemName: askModel.isOpen ? "xmark" : "plus")
-                .font(.system(size: 11, weight: .semibold))
+            Text("✦")
+                .font(AtlasFont.serif(13))
+                .foregroundStyle(AtlasTheme.accent)
+            Text("pergunte sobre este repositório")
+                .font(AtlasFont.serifItalic(13))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .lineLimit(1)
+            Spacer(minLength: 0)
+            if askModel.isAnchoring {
+                // A conversa anterior deixou o mapa aceso: dá para apagar sem
+                // reabrir o card.
+                Button { askModel.clear() } label: {
+                    Text("mostrar tudo")
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("code-ask-clear")
+            }
+            Image(systemName: "chevron.up")
+                .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 22, height: 22)
-                .background(Circle().fill(AtlasTheme.surfaceHi))
-                .onTapGesture {
-                    if askModel.isOpen {
-                        askModel.isOpen = false
-                        askModel.clear()
-                    } else {
-                        askModel.isOpen = true
-                    }
-                }
-                .accessibilityIdentifier("code-ask-toggle")
-                .accessibilityLabel(askModel.isOpen ? "Fechar" : "Perguntar")
-
-            if askModel.isOpen {
-                TextField("pergunte sobre este grafo", text: $askModel.draft)
-                    .textFieldStyle(.plain)
-                    .font(AtlasFont.serifItalic(14))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .submitLabel(.send)
-                    .focused($askFieldFocused)
-                    .onSubmit { submitAsk(askModel.draft) }
-                    .accessibilityIdentifier("code-ask-field")
-            } else {
-                Text("por que essa branch existe?")
-                    .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1)
-                Spacer(minLength: 0)
-            }
-
-            if askModel.isOpen && !askModel.draft.isEmpty {
-                Button { submitAsk(askModel.draft) } label: {
-                    Image(systemName: "arrow.up")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundStyle(AtlasTheme.bg)
-                        .frame(width: 22, height: 22)
-                        .background(Circle().fill(AtlasTheme.accent))
-                }
-                .accessibilityIdentifier("code-ask-send")
-                .accessibilityLabel("Perguntar")
-            }
         }
-        .padding(.horizontal, 13)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 11)
         .background(.ultraThinMaterial, in: Capsule())
         .overlay(Capsule().strokeBorder(AtlasTheme.separator, lineWidth: 0.5))
         .contentShape(Capsule())
         .onTapGesture {
-            guard !askModel.isOpen else { return }
-            askModel.isOpen = true
-            askFieldFocused = true
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            showsAskCard = true
         }
-        // `.contain` é obrigatório aqui: sem ele o identificador da pílula
-        // sobrescreve o dos filhos, e o campo de texto deixa de ser alcançável
-        // — para quem dirige o teste E para quem usa VoiceOver.
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.bottom, 10)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Perguntar ao Atlas sobre o código")
+        .accessibilityLabel("Conversar com o Atlas sobre este repositório")
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier("code-ask-pill")
-    }
-
-    /// O painel: sugestões quando vazio, resposta quando há resposta.
-    @ViewBuilder
-    private var askPanel: some View {
-        switch askModel.phase {
-        case .idle:
-            AtlasCodeAskSuggestionsView { question in
-                submitAsk(question)
-            }
-        case .asking(let question):
-            HStack(spacing: 9) {
-                ProgressView().tint(AtlasTheme.accent).scaleEffect(0.7)
-                Text(question)
-                    .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(13)
-            .background(AtlasCodeAskSurface())
-        case .answered(let response):
-            AtlasCodeAnswerCard(response: response) { askModel.clear() }
-        case .failed(let message):
-            VStack(alignment: .leading, spacing: 5) {
-                Text("não consegui perguntar")
-                    .font(AtlasFont.serif(14, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                Text(message)
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasCodePalette.alert)
-                    .lineLimit(3)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(13)
-            .background(AtlasCodeAskSurface())
-        }
-    }
-
-    private func submitAsk(_ question: String) {
-        askFieldFocused = false
-        Task { await askModel.ask(question) }
-    }
-}
-
-// MARK: - Sugestões: a pílula ensina o próprio poder
-
-/// Uma pílula vazia não ensina nada, e o operador não tem como adivinhar que
-/// pode perguntar. Cada chip é uma pergunta que o Atlas SABE responder —
-/// prometer o que não se cumpre foi o defeito da primeira versão dela.
-private struct AtlasCodeAskSuggestionsView: View {
-    let onPick: (String) -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("PERGUNTE AO GRAFO")
-                .font(.system(size: 8.5, weight: .semibold))
-                .tracking(1.2)
-                .foregroundStyle(AtlasTheme.textTertiary)
-            ForEach(AtlasCodeAskSuggestions.all, id: \.self) { suggestion in
-                Button { onPick(suggestion) } label: {
-                    HStack(spacing: 8) {
-                        Text(suggestion)
-                            .font(AtlasFont.serifItalic(14))
-                            .foregroundStyle(AtlasTheme.textSecondary)
-                        Spacer(minLength: 0)
-                        Image(systemName: "arrow.up.left")
-                            .font(.system(size: 9))
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("code-ask-suggestion")
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .background(AtlasCodeAskSurface())
-        .overlay(
-            RoundedRectangle(cornerRadius: 16).strokeBorder(AtlasTheme.separator, lineWidth: 0.5)
-        )
-    }
-}
-
-// MARK: - A resposta: fato + âncora, nunca bolha de conversa
-
-private struct AtlasCodeAnswerCard: View {
-    let response: AtlasCodeAskResponse
-    let onClear: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 9) {
-            Text(response.answer)
-                .font(AtlasFont.serif(15))
-                .foregroundStyle(response.answered ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
-                .lineSpacing(3)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityIdentifier("code-ask-answer")
-
-            // A lei que sustenta a resposta. Acusar sem citar a lei é o pior
-            // silêncio de uma ferramenta de governança.
-            //
-            // O que aparece aqui é o ALVO — a coisa concreta que ele vai abrir.
-            // O id da regra (`worktree_allowlist`) NÃO sobe: é vocabulário de
-            // máquina, e a frase acima já disse "1 worktree fora do lugar" em
-            // português. Dizer as duas coisas é repetir em dois idiomas.
-            let laws = response.evidence.filter { $0.canon != nil }
-            if !laws.isEmpty {
-                VStack(alignment: .leading, spacing: 5) {
-                    ForEach(laws) { law in
-                        VStack(alignment: .leading, spacing: 1) {
-                            if let target = law.target {
-                                Text(target)
-                                    .font(AtlasFont.mono(9))
-                                    .foregroundStyle(AtlasCodePalette.alert)
-                                    .lineLimit(1)
-                                    .truncationMode(.head)
-                            }
-                            // O doc que justifica a regra: prova, não manchete.
-                            Text(law.canon ?? "")
-                                .font(AtlasFont.mono(8))
-                                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.8))
-                                .lineLimit(1)
-                                .truncationMode(.head)
-                        }
-                        .accessibilityElement(children: .combine)
-                        .accessibilityLabel("\(law.target ?? law.ref), regra \(law.ref)")
-                    }
-                }
-                .accessibilityIdentifier("code-ask-laws")
-            }
-
-            HStack(spacing: 8) {
-                // A âncora é a prova: o grafo acendeu exatamente estes.
-                if let note = response.anchorNote {
-                    Label(note, systemImage: "circle.fill")
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(AtlasTheme.accent)
-                        .imageScale(.small)
-                }
-                Spacer(minLength: 0)
-                Button(action: onClear) {
-                    Text("limpar")
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                }
-                .accessibilityIdentifier("code-ask-clear")
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        // Opaco de propósito: este cartão flutua sobre uma lista que rola, e
-        // qualquer transparência deixa o texto do grafo atravessar a resposta.
-        .background(AtlasCodeAskSurface())
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(response.answered ? AtlasTheme.accent.opacity(0.28) : AtlasTheme.separator, lineWidth: 1)
-        )
-    }
-}
-
-/// O fundo dos painéis da pílula.
-///
-/// Um cartão flutuando sobre lista que rola precisa ser opaco: material fino
-/// deixa a manchete de um commit atravessar a resposta e as duas viram sopa.
-/// A sombra separa os planos sem pedir mais uma borda.
-private struct AtlasCodeAskSurface: View {
-    var body: some View {
-        RoundedRectangle(cornerRadius: 16)
-            .fill(AtlasTheme.surface)
-            .shadow(color: .black.opacity(0.45), radius: 18, y: 6)
     }
 }
 

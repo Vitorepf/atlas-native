@@ -70,12 +70,19 @@ final class AtlasCodeFlowTests: XCTestCase {
         }
     }
 
-    /// H6 · a pílula responde de verdade.
+    /// H6 · a pílula abre o card, e o card conversa com o agente.
     ///
-    /// O defeito original dela era ser bonita e morta: um placeholder que
-    /// prometia "por que essa branch existe?" e não fazia nada. Este teste
-    /// existe para essa promessa nunca mais ficar sem cobrança.
-    func testPillAnswersAndAnchorsTheGraph() {
+    /// A pílula teve dois defeitos, nesta ordem. O primeiro: ser bonita e morta
+    /// — um placeholder que prometia "por que essa branch existe?" e não fazia
+    /// nada. O segundo, pior: responder feito máquina de busca, um fato solto
+    /// por vez, sem histórico e sem entender a pergunta. Agora ela é PORTA: o
+    /// card atrás dela é a mesma conversa do Atlas — com agente, memória e
+    /// orquestra —, só que semeada com os fatos que o git acabou de dar.
+    ///
+    /// Este teste cobra as duas promessas: que o card abre, e que perguntar
+    /// ancora o mapa (a prova de que o determinístico leu o git de verdade
+    /// naquele turno — sem isso o agente estaria opinando no vazio).
+    func testPillOpensTheCardAndAnchorsTheGraph() {
         let app = XCUIApplication()
         app.launch()
 
@@ -92,50 +99,52 @@ final class AtlasCodeFlowTests: XCTestCase {
 
         XCTAssertTrue(app.descendants(matching: .any)["code-status"].waitForExistence(timeout: 30))
 
-        // 1 · A pílula está lá (lei 7) e agora ABRE. O identificador propaga
-        // para os filhos da pílula, então quem dirige pega o primeiro.
+        // 1 · A pílula está lá (lei 7) e é porta, não formulário.
         let pill = app.descendants(matching: .any).matching(identifier: "code-ask-pill").firstMatch
         XCTAssertTrue(pill.waitForExistence(timeout: 10), "a pílula nunca some")
         pill.tap()
 
-        // 2 · Vazia, ela ensina o próprio poder em vez de esperar adivinhação.
-        let suggestion = app.buttons.matching(identifier: "code-ask-suggestion").firstMatch
-        XCTAssertTrue(suggestion.waitForExistence(timeout: 10), "a pílula precisa sugerir o que sabe responder")
-        attach(app, name: "11-pilula-sugestoes")
+        // 2 · O card abre sobre o grafo — e chega perguntando sobre ESTE
+        // repositório, não sobre a vida.
+        let convite = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS 'saber deste repositório'")
+        ).firstMatch
+        XCTAssertTrue(convite.waitForExistence(timeout: 15), "a pílula precisa abrir o card de conversa")
+        attach(app, name: "11-card-aberto")
 
-        // 3 · Tocar numa sugestão RESPONDE — com fato, não com promessa.
+        // 3 · Vazio, o card ensina o próprio poder em vez de esperar adivinhação.
+        let suggestion = app.buttons["tem algum problema?"]
+        XCTAssertTrue(suggestion.waitForExistence(timeout: 10),
+                      "o card precisa sugerir o que o Atlas SABE responder")
         suggestion.tap()
-        let answer = app.descendants(matching: .any)["code-ask-answer"]
-        XCTAssertTrue(answer.waitForExistence(timeout: 30), "a pílula precisa responder")
-        XCTAssertFalse(answer.label.isEmpty, "resposta vazia é a promessa não cumprida de novo")
-        attach(app, name: "12-pilula-resposta")
 
-        // 4 · O grafo continua atrás: a resposta não abre outra tela (lei 3).
-        XCTAssertTrue(app.descendants(matching: .any)["code-status"].exists,
-                      "o mapa vem primeiro — a resposta não pode substituí-lo")
+        // 4 · O turno do operador nasce com a frase dele — nunca com o dossiê de
+        // fatos que viaja no fio por baixo.
+        let turno = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS 'tem algum problema'")
+        ).firstMatch
+        XCTAssertTrue(turno.waitForExistence(timeout: 20), "tocar na sugestão precisa criar o turno")
+        XCTAssertFalse(turno.label.contains("Fatos lidos do git"),
+                       "o dossiê é para o agente ler, não para o operador ver")
+        attach(app, name: "12-turno-enviado")
+
+        // 5 · A prova do par: o determinístico leu o git NESTE turno e ancorou o
+        // mapa. Sem isto, o agente estaria opinando sobre um repositório que não
+        // enxerga — que era o defeito que a pílula existe para matar.
+        let fechar = app.buttons["fechar teclado"]
+        if fechar.waitForExistence(timeout: 8) { fechar.tap() }
+        app.swipeDown(velocity: .fast)
+
+        let ancora = app.buttons["code-ask-clear"]
+        XCTAssertTrue(ancora.waitForExistence(timeout: 60),
+                      "perguntar tem de acender o grafo: a resposta aponta para a topologia")
         attach(app, name: "13-grafo-ancorado")
 
-        // 5 · A pílula é campo, não só menu de chips: o operador escreve o que
-        // quiser, com as palavras dele.
-        let field = app.textFields["code-ask-field"]
-        XCTAssertTrue(field.waitForExistence(timeout: 10), "a pílula precisa aceitar a pergunta escrita")
-        field.tap()
-        field.typeText("quem mexeu no AtlasCodeView.swift?")
-        app.buttons["code-ask-send"].firstMatch.tap()
-
-        // A resposta troca — a pílula não empilha conversa, ela responde sobre
-        // o grafo que está ali.
-        let typedAnswer = app.descendants(matching: .any)["code-ask-answer"]
-        XCTAssertTrue(typedAnswer.waitForExistence(timeout: 30))
-        let expectation = expectation(for: NSPredicate(format: "label CONTAINS[c] 'atlascodeview'"), evaluatedWith: typedAnswer)
-        wait(for: [expectation], timeout: 30)
-        attach(app, name: "14-pergunta-escrita")
-
-        // 6 · Limpar apaga a âncora: o grafo volta a mostrar tudo igual.
-        app.buttons["code-ask-clear"].firstMatch.tap()
-        XCTAssertTrue(app.buttons.matching(identifier: "code-ask-suggestion").firstMatch.waitForExistence(timeout: 10),
-                      "limpar devolve a pílula ao convite, não a um vazio mudo")
-        attach(app, name: "15-limpo")
+        // 6 · Mostrar tudo apaga a âncora: o grafo volta ao estado normal.
+        ancora.tap()
+        XCTAssertFalse(app.buttons["code-ask-clear"].waitForExistence(timeout: 5),
+                       "mostrar tudo devolve o grafo inteiro")
+        attach(app, name: "14-limpo")
     }
 
     private func attach(_ app: XCUIApplication, name: String) {

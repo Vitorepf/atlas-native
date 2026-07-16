@@ -263,15 +263,32 @@ public actor AtlasClient: AtlasAiStreamSource {
     /// O fuso vai do aparelho, não do servidor: quem sabe que dia é "hoje" para
     /// o operador é o telefone no bolso dele. Sem isso o servidor responde em
     /// UTC e "hoje" começa às 21h de ontem.
-    public func askCode(repo: String, question: String) async throws -> AtlasCodeAskResponse {
+    /// H6 · a leitura determinística do git.
+    ///
+    /// `mode` é o verbo, e por isso é explícito: `facts` LÊ (é o que roda a cada
+    /// turno do card, alimentando o agente); `answer` pode AGIR — "revise os
+    /// commits de hoje" nele manda a frota trabalhar. Um coletor de fato que
+    /// despacha 12 agentes é a definição de efeito colateral, então quem chama
+    /// diz o que quer, e o servidor recusa modo que não conhece.
+    public func askCode(
+        repo: String,
+        question: String,
+        mode: AtlasCodeAskMode = .answer
+    ) async throws -> AtlasCodeAskResponse {
         struct Body: Encodable {
             let repo: String
             let question: String
             let timezone: String
+            let mode: String
         }
         return try await post(
             "/code/ask",
-            body: Body(repo: repo, question: question, timezone: TimeZone.current.identifier),
+            body: Body(
+                repo: repo,
+                question: question,
+                timezone: TimeZone.current.identifier,
+                mode: mode.rawValue
+            ),
             timeout: 25
         )
     }

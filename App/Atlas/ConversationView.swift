@@ -36,10 +36,34 @@ struct ConversationView: View {
     // Conversa nova (sem thread) abre com o teclado JÁ de pé — chegou, falou.
     private let startFocused: Bool
 
-    init(client: AtlasClient, threadId: String?, title: String) {
+    /// O convite do estado vazio. A conversa do Atlas pergunta o que você quer
+    /// pensar; a do Código pergunta sobre o repositório aberto. Mesma máquina,
+    /// assunto diferente — não é tela nova, é a mesma com outro chamado.
+    private let emptyPrompt: String?
+    private let emptySuggestions: [String]?
+    /// A thread real, assim que o servidor a confirma. Quem apresenta esta view
+    /// numa folha precisa guardá-la: fechar a folha destrói o model, e sem isto
+    /// reabrir começaria do zero — a conversa existiria no servidor e não na
+    /// tela, que é a pior das duas verdades.
+    private let onThread: ((String) -> Void)?
+
+    init(
+        client: AtlasClient,
+        threadId: String?,
+        title: String,
+        emptyPrompt: String? = nil,
+        emptySuggestions: [String]? = nil,
+        turnFacts: ((String) async -> String?)? = nil,
+        onThread: ((String) -> Void)? = nil
+    ) {
         self.title = title
         self.startFocused = threadId == nil
-        _model = State(initialValue: ConversationModel(client: client, threadId: threadId))
+        self.emptyPrompt = emptyPrompt
+        self.emptySuggestions = emptySuggestions
+        self.onThread = onThread
+        let model = ConversationModel(client: client, threadId: threadId)
+        model.turnFacts = turnFacts
+        _model = State(initialValue: model)
     }
 
     var body: some View {
@@ -63,6 +87,9 @@ struct ConversationView: View {
                 // do foco, senão o iOS engole o teclado
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { focused = true }
             }
+        }
+        .onChange(of: model.threadId) { _, now in
+            if let now { onThread?(now) }
         }
         .onChange(of: model.isSending) { was, now in
             // Resposta terminou → haptic de sucesso (o toque que fecha o ciclo)
@@ -111,7 +138,11 @@ struct ConversationView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 if model.bubbles.isEmpty {
-                    EmptyConversation(reduceMotion: reduceMotion) { suggestion in
+                    EmptyConversation(
+                        reduceMotion: reduceMotion,
+                        prompt: emptyPrompt,
+                        suggestions: emptySuggestions
+                    ) { suggestion in
                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         let effort = model.effort
                         Task { await model.send(suggestion, effort: effort) }

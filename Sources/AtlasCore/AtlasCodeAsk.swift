@@ -30,9 +30,16 @@ public struct AtlasCodeAskResponse: Decodable, Equatable, Sendable {
     /// Só em perguntas sobre mudança: o recorte de tempo que a resposta usou,
     /// para o operador poder conferir contra o próprio git.
     public let window: AtlasCodeAskWindow?
+    /// O que o AGENTE lê e o operador não vê: o código cru dos commits.
+    ///
+    /// Só vem no modo `facts`, e só quando a pergunta pede código (revisar).
+    /// Nunca vai para a tela — é o dossiê, não a resposta. Sem ele, "revise os
+    /// commits de hoje" entrega hashes e nenhuma linha, e revisar sem ver o
+    /// código é opinar com voz de autoridade.
+    public let detail: String?
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, repo, question, intent, answered, answer, commits, commitsTotal, truncated, evidence, source, window
+        case schemaVersion, repo, question, intent, answered, answer, commits, commitsTotal, truncated, evidence, source, window, detail
     }
 
     public init(from decoder: Decoder) throws {
@@ -58,6 +65,7 @@ public struct AtlasCodeAskResponse: Decodable, Equatable, Sendable {
         self.evidence = try values.decodeIfPresent([AtlasCodeAskEvidence].self, forKey: .evidence) ?? []
         self.source = try values.decode(String.self, forKey: .source)
         self.window = try values.decodeIfPresent(AtlasCodeAskWindow.self, forKey: .window)
+        self.detail = try values.decodeIfPresent(String.self, forKey: .detail)
     }
 
     /// Os hashes que a resposta cita, prontos para o grafo comparar.
@@ -73,6 +81,20 @@ public struct AtlasCodeAskResponse: Decodable, Equatable, Sendable {
         }
         return commits.count == 1 ? "1 commit aceso no grafo" : "\(commits.count) commits acesos no grafo"
     }
+}
+
+/// O verbo de quem chama `/code/ask`.
+///
+/// Existe porque a mesma porta faz duas coisas de naturezas opostas, e
+/// confundi-las custa caro: perguntando, "revise os commits de hoje" é ORDEM e
+/// manda a frota trabalhar; coletando fato para o agente do card ler, a mesma
+/// frase é só o assunto do turno — e despachar 12 agentes por causa dela seria
+/// obedecer o que ninguém pediu, duas vezes.
+public enum AtlasCodeAskMode: String, Sendable {
+    /// Lê o git e pode agir: o verbo é do operador.
+    case answer
+    /// Leitura pura, para o agente ler antes de responder. Nunca despacha.
+    case facts
 }
 
 /// A natureza da pergunta. Um intent novo do servidor não derruba a folha:

@@ -141,14 +141,31 @@ func providerWord(_ p: String?) -> String {
 // dispara um envio de verdade — nada decorativo).
 struct EmptyConversation: View {
     let reduceMotion: Bool
+    /// Assunto da conversa. Ausente = a conversa do Atlas, que é sobre tudo.
+    var prompt: String? = nil
+    var suggestionsOverride: [String]? = nil
     let onSuggestion: (String) -> Void
     @State private var breathe = false
 
-    private let suggestions = [
-        "O que está rodando no Atlas agora?",
-        "Resuma meu dia até aqui",
-        "Qual o status dos meus projetos?",
-    ]
+    init(
+        reduceMotion: Bool,
+        prompt: String? = nil,
+        suggestions: [String]? = nil,
+        onSuggestion: @escaping (String) -> Void
+    ) {
+        self.reduceMotion = reduceMotion
+        self.prompt = prompt
+        self.suggestionsOverride = suggestions
+        self.onSuggestion = onSuggestion
+    }
+
+    private var suggestions: [String] {
+        suggestionsOverride ?? [
+            "O que está rodando no Atlas agora?",
+            "Resuma meu dia até aqui",
+            "Qual o status dos meus projetos?",
+        ]
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -157,7 +174,7 @@ struct EmptyConversation: View {
                 .shadow(color: AtlasTheme.accent.opacity(0.30), radius: 4, y: 1)
                 .scaleEffect(breathe ? 1.06 : 1).opacity(breathe ? 0.85 : 1)
             Spacer().frame(height: 40)
-            Text("“O que você quer pensar agora?”")
+            Text("“\(prompt ?? "O que você quer pensar agora?")”")
                 .font(AtlasFont.serifItalic(22)).lineSpacing(10)
                 .multilineTextAlignment(.center).foregroundStyle(AtlasTheme.textPrimary)
             Spacer().frame(height: 44)

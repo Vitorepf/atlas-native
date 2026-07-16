@@ -2,28 +2,26 @@ import Foundation
 import Observation
 import AtlasCore
 
-/// H6 · o estado da pílula.
+/// H6 · a âncora do grafo.
 ///
-/// Deliberadamente NÃO guarda histórico de conversa: a pílula não é um chat.
-/// Existe a última pergunta e a última resposta, porque a resposta vive
-/// ancorada no grafo que está atrás dela — e um grafo não tem duas verdades
-/// ao mesmo tempo. Perguntar de novo substitui; não empilha.
+/// Isto NÃO é o estado de uma conversa — a conversa é a `ConversationModel`, no
+/// card. Aqui vive só a última leitura determinística do git: os commits que a
+/// resposta citou, que o grafo acende atrás do vidro. Um grafo não tem duas
+/// verdades ao mesmo tempo; perguntar de novo substitui, não empilha.
+///
+/// A divisão de trabalho: este model LÊ o git e ancora o mapa; o agente ENTENDE
+/// e responde. Os fatos daqui viajam no fio como prefixo da pergunta.
 @Observable
 @MainActor
 final class AtlasCodeAskModel {
     enum Phase: Equatable {
         case idle
-        case asking(String)
         case answered(AtlasCodeAskResponse)
-        case failed(String)
     }
 
     let client: AtlasClient
     let repo: String
     private(set) var phase: Phase = .idle
-    /// Aberta = a pílula virou campo. Fechada = ela volta a ser convite.
-    var isOpen = false
-    var draft = ""
 
     init(client: AtlasClient, repo: String) {
         self.client = client
@@ -40,24 +38,23 @@ final class AtlasCodeAskModel {
     /// apaga o resto, porque a resposta é o assunto.
     var isAnchoring: Bool { !anchors.isEmpty }
 
-    func ask(_ question: String) async {
-        let asked = question.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !asked.isEmpty else { return }
-
-        phase = .asking(asked)
-        draft = ""
-        do {
-            let response = try await client.askCode(repo: repo, question: asked)
-            phase = .answered(response)
-        } catch {
-            // Erro de rede não vira resposta plausível: vira erro dito.
-            phase = .failed(String(describing: error))
-        }
-    }
-
     /// Limpar apaga a âncora: o grafo volta a mostrar tudo.
     func clear() {
         phase = .idle
-        draft = ""
+    }
+
+    /// Os fatos de um turno da conversa, para o agente ler antes de responder.
+    ///
+    /// Efeito colateral deliberado: a mesma leitura ancora o grafo. Quando o
+    /// card fecha, o mapa atrás já está aceso nos commits que sustentaram a
+    /// resposta — perguntar move a topologia, que é o ponto da tela.
+    ///
+    /// `nil` quando o determinístico não sabe (julgamento não é filtro de git) e
+    /// quando a rede cai: o agente responde sem muleta, e falha de rede nunca
+    /// vira fato inventado com ar de autoridade.
+    func facts(for question: String) async -> String? {
+        guard let response = try? await client.askCode(repo: repo, question: question, mode: .facts) else { return nil }
+        phase = .answered(response)
+        return AtlasCodeFacts.block(from: response)
     }
 }

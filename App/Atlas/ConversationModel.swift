@@ -141,6 +141,15 @@ final class ConversationModel {
     /// sessão/local history por conta própria para simular o handoff.
     private(set) var latestSurfaceHandoff: AtlasAiSurfaceHandoff?
 
+    /// Fatos determinísticos coletados por turno e prefixados à pergunta NO FIO.
+    /// A bolha do operador continua sendo o que ele escreveu — mesma lei do
+    /// `AtlasLongMessage`: o que se transporta não é o que se mostra.
+    ///
+    /// É isto que torna o card do Código uma conversa ANCORADA em vez de um
+    /// chat que opina: quem lê o git é o determinístico, quem entende é o
+    /// agente. `nil` (ausente ou devolvendo nil) = conversa normal, sem muleta.
+    @ObservationIgnored var turnFacts: ((String) async -> String?)?
+
     private let client: AtlasClient
     private(set) var threadId: String?
     private var activeRun: InteractionRun?
@@ -557,7 +566,17 @@ final class ConversationModel {
             #else
             let proofProvider: String? = nil
             #endif
-            let input = CreateAiInteractionInput(inputText: trimmed,
+            // Fatos antes da pergunta: quem lê o git é o determinístico, quem
+            // entende é o agente. Sem isto o agente opina sobre commits que não
+            // existem; com isto ele não tem como inventar. A bolha local não
+            // muda — o operador vê a própria frase, não o dossiê.
+            var wireText = trimmed
+            if let collectFacts = turnFacts,
+               let facts = await collectFacts(originalText),
+               !facts.isEmpty {
+                wireText = facts + "\n\n" + trimmed
+            }
+            let input = CreateAiInteractionInput(inputText: wireText,
                                                  clientId: UUID().uuidString.lowercased(),
                                                  threadId: threadId,
                                                  newThread: threadId == nil ? true : nil,
