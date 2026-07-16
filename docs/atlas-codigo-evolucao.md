@@ -454,3 +454,100 @@ diferencial que só o Atlas pode ter.
 - Plano-mestre: `docs/proposals/atlas-codigo-plano.html`
 - Canon pétreo: `atlas-server/docs/engineering-knowledge-base/atlas-local-main-only-rule.md`
 - Governança de conhecimento: `../CLAUDE.md` (projeção Atlas; memória Atlas é canônica)
+
+---
+
+## 10. Sessão de 15/07/2026 — o par, e a caça (o que ficou PROVADO)
+
+> Esta seção é histórico com prova, não plano. Cada linha foi medida contra o git, o banco ou o
+> contrato real; nenhuma é suposição. 18 commits (atlas-native + atlas-server).
+
+### 10.1 A pílula virou porta; o card é quem responde
+
+A pílula era um campo de texto espremido numa cápsula sobre o grafo: prometia conversa e
+entregava formulário. Agora ela ABRE o card — a `ConversationView` que já existe, com agente,
+histórico, orquestra ao vivo e anexo. **Não é lane nova**: `source_type=app` + agente `atlas` é a
+única rota que comprovadamente devolve texto limpo (medido em `ai_traces`: 25 respostas limpas em
+3 dias; `source_type=system` volta com moldura de raciocínio e é bloqueada pelo guarda).
+
+**A síntese (o par):** o determinístico (`/code/ask`, `mode=facts`) lê o git no turno e os fatos
+viajam PREFIXADOS à pergunta, no fio. A bolha do operador continua sendo o que ele escreveu —
+mesma lei do `AtlasLongMessage`: o que se transporta não é o que se mostra. **Os fatos impedem
+invenção; o agente entrega entendimento. Nenhum dos dois sozinho é a ferramenta.**
+
+- `.medium` primeiro (não `.large`): em tela cheia o mapa some e sobra um chat comum sobre git.
+- "perguntar sobre este commit" na folha: ela era um beco — o operador abre o commit que NÃO
+  entendeu e não tinha como perguntar sobre ele.
+- `mode=facts` é LEITURA PURA: sem isso, "revise os commits de hoje" dispararia a frota E mandaria
+  a pergunta ao agente. Provado ao vivo: 152 jobs antes, 152 depois.
+- Revisar entrega o DIFF (teto 12k, do mais recente para trás) + confissão do que não coube:
+  3 lidos de 45, e o agente obrigado a dizer que não viu os outros 42.
+
+### 10.2 A família "falha vira fato" (a mentira mais cara)
+
+| defeito | o operador lia | verdade |
+|---|---|---|
+| `git` estoura 20s / `.git` corrompido | "não há commit hoje" | ninguém leu o git |
+| varredura cai (`try?` → nil) | "main íntegra" | ninguém varreu |
+| ledger fora do ar (catch VAZIO) | "a branch nasceu fora do Atlas" | ninguém perguntou |
+| `$byAgent` semeado com zeros | "fable: 0, codex: 0" | baldes que não podem sair de zero |
+| e-mail não mapeado | `autonomo:desconhecido` | pode ser colega, bot de CI, GitHub web |
+
+Guarda na RAIZ: 11 chamadas de git → 1 exceção tipada (`AtlasCodeGitUnavailable`) + 1 ponto de
+captura. **Saída vazia COM sucesso continua sendo fato** (git log num dia sem commit sai zero com
+nada). Agravante achado: o comentário do catch do ledger AFIRMAVA que não inventava explicação —
+e o código fazia o contrário.
+
+### 10.3 A espinha dourada não existia (2 nós de 197)
+
+`isOnDefaultBranch` lia só `refs`, e **o git decora só a PONTA**. Medido no contrato real: 200 nós,
+2 pintados, 197 na main. E o servidor publicava `git branch --show-current` com o nome
+`default_branch` — a branch ATUAL, não a trunk: numa obra, pintava a obra de dourado (a exceção
+vestida de norma). Metade da frota nem tem main (`nivor-back-end` = `production`).
+
+- `spine(nodes:head:)` = travessia de pais, pura, uma vez por grafo.
+- `trunk_head` no contrato: `head` é onde o OPERADOR está; a espinha nasce da TRUNK.
+- Sem trunk → espinha vazia → a tela cai na ref: **pinta menos, nunca pinta errado.**
+- Custo medido: grafo completo em 180ms num repo de 8.700 commits (resolver = 29ms).
+
+### 10.4 O ACOS ligado ao que fala com o operador
+
+- **`'constitutional' => []`** era literal vazio: 16 invariantes RODANDO
+  (`atlas:constitutional:kernel --action=list-invariants`) e nenhuma chegava ao agente. Agora
+  `## Lei Petrea` vai PRIMEIRO na janela. **Governança no gate corrige o erro; no contexto, evita.**
+- **Canon de engenharia**: 972 docs na KB, ZERO referência no `AiContextPackBuilder`. O Atlas
+  respondia sobre o Atlas sem abrir a lei do Atlas. Agora vai com o CAMINHO do doc — regra sem
+  endereço é boato com boa reputação.
+- **Sigla = nome**: "o que é o ACOS?" deixava o doc-MÃE em 0.2506 (abaixo do piso) e devolvia 5
+  satélites a 0.418 — os filhos abreviam, a mãe soletra. `initials()` é regra geral, sem
+  dicionário: provado com AWIS sem uma linha sobre AWIS no código.
+- **Ordem canônica da janela** (não inverter): Lei Pétrea → Canon de Engenharia → Recall.
+
+### 10.5 Soberania da memória do operador
+
+8 dos 13 sinais de aprendizado eram prosa da máquina ("O coletor determinístico leu o Git…")
+gravada como REGRA DELE. Causa estrutural: superfícies prefixam contexto no `input_text`. A guarda
+mora no domínio (`OperatorLearningRuntimeCaptureService::operatorWords`), não no gateway: quem for
+aprender o operador amanhã por outra porta herda a proteção. A superfície diz o que ele digitou
+(`payload.operator_text`); sem isso, `input_text` continua valendo — superfície com bug não pode
+APAGAR o operador.
+
+### 10.6 O que a caça ensinou (padrão reusável)
+
+6 lentes DIFERENTES + refutação adversarial. Duas rodadas: 48 achados, 39 sobreviveram. **O valor
+está nos refutadores** — eles corrigem o conserto lendo o código ("o campo certo é `answered`, não
+`commits.isEmpty`"). E pegam o que o autor acabou de quebrar: dois achados eram consertos meus, de
+minutos antes.
+
+**O achado mais valioso das duas rodadas foi um SLOT VAZIO, não um bug de lógica.** Pergunte
+sempre: *que dado o servidor calcula e ninguém lê?*
+
+### 10.7 Aberto (com causa, não com desculpa)
+
+- **H6-P6 "mandar fazer"**: container `:ro` — decisão do operador.
+- **Proveniência**: circuito aberto — `AtlasCodeProvenanceLedgerService::record()` tem ZERO
+  chamadores; 1609 eventos no ledger, 0 de proveniência; 0 de 5 commits recentes têm o pedido do
+  operador registrado. Só quem COMMITA pode registrar por que o commit existe, e hoje quem commita
+  são agentes externos fora da API do Atlas. Mesma obra que destravar o `:ro`.
+- **Prova na tela**: o iPhone ficou fora da rede desde as 21h. Tudo compila e está commitado; o
+  XCUITest da pílula/card não rodou no aparelho.
