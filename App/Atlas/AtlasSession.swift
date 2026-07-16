@@ -8,6 +8,8 @@ import AtlasCore
 @MainActor
 @Observable
 final class AtlasSession {
+    static let rhythm = AtlasDayRhythm()
+
     var phase: LoadPhase = .idle
     var failureKind: AtlasNetworkFailureKind?
     var threads: [AtlasAiThread] = []
@@ -38,6 +40,7 @@ final class AtlasSession {
             let response = try await client.listAiThreads(light: true, limit: 100)
             threads = response.threads
             phase = .loaded
+            Task { await Self.rhythm.recordActivity(workspace: nil) }
         } catch {
             failureKind = atlasNetworkFailureKind(for: error)
             phase = .failed(String(describing: error))

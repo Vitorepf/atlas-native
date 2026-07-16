@@ -656,6 +656,7 @@ final class ConversationModel {
                 }
                 update(assistantId) { $0.traceId = TraceID(trace.id); $0.provider = trace.provider }
                 applyExecution(assistantId, trace)
+                Task { await AtlasSession.rhythm.recordActivity(workspace: workspaceName ?? workspaceSlug) }
             case .activity(let activity):
                 update(assistantId) {
                     $0.activities = atlasMergeAgentActivities(
