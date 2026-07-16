@@ -6,7 +6,7 @@ enum Route: Hashable {
     case workspace(key: String?, title: String)
     /// M0 · o grafo de UM repositório, escolhido no radar (M3).
     case codeGraph(repo: String)
-    case thread(id: String, title: String)
+    case thread(id: ThreadID, title: String)
     case new
     case conversas
     case search
@@ -77,8 +77,9 @@ struct RootView: View {
                   let traceId = url.pathComponents.dropFirst().first, !traceId.isEmpty else { return }
             Task { @MainActor in
                 guard let trace = try? await session.client.getAiInteraction(TraceID(traceId)).trace,
-                      let threadId = trace.threadId else { return }
-                let title = session.threads.first(where: { $0.id == threadId })?.title ?? "Execução Atlas"
+                      let rawThread = trace.threadId else { return }
+                let threadId = ThreadID(rawThread)
+                let title = session.threads.first(where: { $0.id == rawThread })?.title ?? "Execução Atlas"
                 path = NavigationPath()
                 path.append(Route.thread(id: threadId, title: title))
             }

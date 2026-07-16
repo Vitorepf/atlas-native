@@ -45,11 +45,11 @@ struct ConversationView: View {
     /// numa folha precisa guardá-la: fechar a folha destrói o model, e sem isto
     /// reabrir começaria do zero — a conversa existiria no servidor e não na
     /// tela, que é a pior das duas verdades.
-    private let onThread: ((String) -> Void)?
+    private let onThread: ((ThreadID) -> Void)?
 
     init(
         client: AtlasClient,
-        threadId: String?,
+        threadId: ThreadID?,
         title: String,
         emptyPrompt: String? = nil,
         emptySuggestions: [String]? = nil,
@@ -57,7 +57,7 @@ struct ConversationView: View {
         workspace: String? = nil,
         draft: String = "",
         turnFacts: ((String) async -> String?)? = nil,
-        onThread: ((String) -> Void)? = nil
+        onThread: ((ThreadID) -> Void)? = nil
     ) {
         self.title = title
         self.startFocused = threadId == nil
@@ -68,7 +68,7 @@ struct ConversationView: View {
         self.emptyPrompt = emptyPrompt
         self.emptySuggestions = emptySuggestions
         self.onThread = onThread
-        let model = ConversationModel(client: client, threadId: threadId.map { ThreadID($0) })
+        let model = ConversationModel(client: client, threadId: threadId)
         model.turnFacts = turnFacts
         model.taskKind = taskKind
         if let workspace {
@@ -101,7 +101,7 @@ struct ConversationView: View {
             }
         }
         .onChange(of: model.threadId) { _, now in
-            if let now { onThread?(now.rawValue) }
+            if let now { onThread?(now) }
         }
         .onChange(of: model.isSending) { was, now in
             // Resposta terminou → haptic de sucesso (o toque que fecha o ciclo)

@@ -99,7 +99,7 @@ struct SearchView: View {
                             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
                     }
                     ForEach(results) { t in
-                        NavigationLink(value: Route.thread(id: t.id, title: t.title)) {
+                        NavigationLink(value: Route.thread(id: ThreadID(t.id), title: t.title)) {
                             ThreadRow(thread: t)
                         }
                         .buttonStyle(.plain)

@@ -99,8 +99,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S7 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasTurnStatus.swift` + call sites | S6 | F1.1 AtlasTurnStatus | 0 literais de status fora do enum/checks; checks+build verdes | enum + computed turnStatus; InteractionRun/Model/Cockpit; 11 golden checks; exit 0 |
 | S8 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasIDs.swift` + ChangeReview/Client Core + casca mínima | S7 | F1.2 IDs tipados (Core) | TraceID/PatchID nas APIs de review + getAiInteraction; checks+build verdes | AtlasIDs + golden; review APIs tipadas |
 | S9 | **DONE** | **Grok 4.5** | `App/Atlas/ConversationModel.swift` (+ presence/bridge) | S8 | F1.2 IDs tipados (models) | threadId/jobId/clientId/traceId tipados no model | ChatBubble/Model seams tipados; checks+build exit 0 |
-| S10 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/*View*.swift` | S9 | F1.2 IDs tipados (views) | 0 Id:String em assinatura de view do loop | — |
-| S11–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S10 | commits 11–34 da spec | DoD por eixo com prova | — |
+| S10 | **DONE** | **Grok 4.5** | `App/Atlas/*View*.swift` | S9 | F1.2 IDs tipados (views) | 0 Id:String em assinatura de view do loop | Route/ConversationView/askThread tipados; rg 0 em App/Atlas |
+| S11 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore` schema helpers | S10 | F1.3 requireSchema() | schema-guards deduplicados; checks fail-closed verdes | — |
+| S12–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S11 | commits 12–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -746,6 +747,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S10/F1.2-views · Route.thread/ConversationView/AtlasCode askThread usam ThreadID; 0 `Id: String` em App/Atlas · prova: rg zero; checks+build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S9/F1.2-models · ConversationModel/ChatBubble/TurnPresence/LiveActivity seams: TraceID/ThreadID/JobID tipados; rawValue só na borda ActivityKit · prova: checks exit 0; build exit 0; 0 Id:String em *Model*.swift
 - 2026-07-16 · Grok 4.5 · SOTA S8/F1.2-Core · `AtlasIDs` (Trace/Thread/Job/Patch/Client, Codable single-value) + APIs ChangeReview/getAiInteraction tipadas; casca mínima ajustada p/ gate verde · prova: runAtlasIDChecks; checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S7/F1.1 · `AtlasTurnStatus` tipado (wire fail-open via `.unknown`); InteractionRun/ConversationModel/Cockpit usam `turnStatus`; literais de lifecycle só no enum; golden: unknown nunca terminal · prova: checks exit 0 (incl. 11 TurnStatus); build exit 0; git diff --check limpo

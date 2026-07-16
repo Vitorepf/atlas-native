@@ -96,7 +96,7 @@ struct WorkspaceView: View {
                     .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
                 } else {
                     ForEach(threads) { t in
-                        NavigationLink(value: Route.thread(id: t.id, title: t.title)) {
+                        NavigationLink(value: Route.thread(id: ThreadID(t.id), title: t.title)) {
                             ThreadRow(thread: t)
                         }
                         .buttonStyle(.plain)

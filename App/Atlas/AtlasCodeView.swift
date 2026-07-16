@@ -23,7 +23,7 @@ struct AtlasCodeView: View {
     @State private var showsAskCard = false
     /// A conversa deste repositório continua onde parou. Fechar o card não é
     /// encerrar o assunto; é só tirar a folha da frente do mapa.
-    @State private var askThreadId: String?
+    @State private var askThreadId: ThreadID?
     /// Pergunta semeada por quem abriu o card (a folha do commit semeia o
     /// commit). Vazia = a pílula abrindo pelo caminho normal.
     @State private var askDraft = ""
