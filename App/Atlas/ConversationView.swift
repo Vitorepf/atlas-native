@@ -366,7 +366,7 @@ struct ConversationView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
         .sheet(item: $reviewTrace) { ref in
-            ChangeReviewSheet(model: model, traceId: ref.id)
+            ChangeReviewSheet(reviews: model.reviews, traceId: ref.id)
         }
         .sheet(isPresented: $showQueueSheet) {
             SheetShell(title: "Fila · \(model.queuedMessages.count)") {

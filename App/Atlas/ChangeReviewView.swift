@@ -2,19 +2,19 @@ import SwiftUI
 import AtlasCore
 
 // C15 — Revisar mudanças de uma execução (o "Review" da cena 12, real).
-// A casca renderiza SOMENTE model.changeReviewsByTrace[traceId]:
+// A casca renderiza SOMENTE reviews.changeReviewsByTrace[traceId]:
 // `unavailable` é um estado explícito com motivo (sem arquivos/botões);
 // `available` traz patches, controles, testes e findings persistidos.
 // Aceitar/rejeitar só muda a tela depois do recibo do servidor (o model
 // garante); diff vem por refreshChangeReviewDiff — nunca rede na View.
 struct ChangeReviewSheet: View {
-    let model: ConversationModel
+    let reviews: ChangeReviewModel
     let traceId: TraceID
     @Environment(\.dismiss) private var dismiss
     @State private var expandedDiffPatch: String?
     @State private var applying = false
 
-    private var review: AtlasTraceChangeReview? { model.changeReviewsByTrace[traceId] }
+    private var review: AtlasTraceChangeReview? { reviews.changeReviewsByTrace[traceId] }
 
     var body: some View {
         NavigationStack {
@@ -27,8 +27,9 @@ struct ChangeReviewSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Fechar") { dismiss() } }
             }
+            .overlay(alignment: .top) { toast }
         }
-        .task { await model.refreshChangeReview(traceId: traceId) }
+        .task { await reviews.refreshChangeReview(traceId: traceId) }
     }
 
     @ViewBuilder
@@ -84,7 +85,7 @@ struct ChangeReviewSheet: View {
     /// esta seção inteira desaparece (estado por exceção).
     @ViewBuilder
     private var governanceSection: some View {
-        if let trace = model.governanceByTrace[traceId] {
+        if let trace = reviews.governanceByTrace[traceId] {
             let stats = AtlasTraceGovernance.diffStats(from: trace.metadata)
             let revisions = AtlasTraceGovernance.planRevisions(from: trace.metadata)
             let council = AtlasTraceGovernance.councilReview(from: trace.metadata)
@@ -193,7 +194,7 @@ struct ChangeReviewSheet: View {
                         expandedDiffPatch = nil
                     } else {
                         expandedDiffPatch = patch.id
-                        Task { await model.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID) }
+                        Task { await reviews.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID) }
                     }
                 }
                 .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.accent)
@@ -236,12 +237,12 @@ struct ChangeReviewSheet: View {
                     .foregroundStyle(decided.action == .accept ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
             } else {
                 Button("aceitar") {
-                    Task { await model.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
+                    Task { await reviews.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
                                                              filePath: file, action: .accept) }
                 }
                 .font(.system(.caption, weight: .medium)).foregroundStyle(AtlasTheme.accent)
                 Button("rejeitar") {
-                    Task { await model.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
+                    Task { await reviews.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
                                                              filePath: file, action: .reject) }
                 }
                 .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
@@ -252,7 +253,7 @@ struct ChangeReviewSheet: View {
 
     @ViewBuilder
     private func diffView(_ patch: AtlasTraceChangeReview.Patch) -> some View {
-        if let response = model.changeReviewDiff(traceId: traceId, patchId: patch.patchID) {
+        if let response = reviews.changeReviewDiff(traceId: traceId, patchId: patch.patchID) {
             VStack(alignment: .leading, spacing: 6) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     Text(response.diff.content)
@@ -387,7 +388,7 @@ struct ChangeReviewSheet: View {
                 if available.contains(.accept) {
                     Button {
                         applying = true
-                        Task { await model.applyChangeReview(traceId: traceId, action: .accept); applying = false }
+                        Task { await reviews.applyChangeReview(traceId: traceId, action: .accept); applying = false }
                     } label: {
                         Text("Aceitar tudo")
                             .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
@@ -398,7 +399,7 @@ struct ChangeReviewSheet: View {
                 if available.contains(.reject) {
                     Button {
                         applying = true
-                        Task { await model.applyChangeReview(traceId: traceId, action: .reject); applying = false }
+                        Task { await reviews.applyChangeReview(traceId: traceId, action: .reject); applying = false }
                     } label: {
                         Text("Rejeitar")
                             .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.domOperacional)
@@ -416,5 +417,20 @@ struct ChangeReviewSheet: View {
 
     private func caption(_ t: String) -> some View {
         Text(t).font(AtlasFont.mono(10)).tracking(1.0).foregroundStyle(AtlasTheme.textTertiary)
+    }
+
+    @ViewBuilder private var toast: some View {
+        if let t = reviews.toast {
+            Text(t)
+                .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
+                .padding(.horizontal, 16).padding(.vertical, 9)
+                .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+                .padding(.top, 8)
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .task {
+                    try? await Task.sleep(nanoseconds: 1_400_000_000)
+                    withAnimation(AtlasMotion.editorial) { reviews.toast = nil }
+                }
+        }
     }
 }

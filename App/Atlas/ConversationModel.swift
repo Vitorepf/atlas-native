@@ -3,103 +3,6 @@ import UniformTypeIdentifiers
 import AtlasCore
 import AtlasImaging
 
-// Motor de uma conversa: carrega mensagens, envia + STREAMING ao vivo, registra
-// feedback governado, e — o diferencial vs Cursor — expõe a EXECUÇÃO agêntica ao
-// vivo (a orquestra: quais agentes/providers/modelos, o estágio do Atlas Decide),
-// via poll do trace durante o turno.
-
-struct ExecAgent: Equatable, Identifiable {
-    let id: String
-    let agent: String?     // orquestrador / atlas / …
-    let provider: String?  // hermes_cli / claude_cli / …
-    let model: String?     // claude-sonnet-4-6 / qwen3.6-27b / …
-    let status: String     // queued / processing / succeeded / failed / …
-}
-
-struct ChatBubble: Identifiable, Equatable {
-    let id: String
-    let role: String
-    var text: String
-    var streaming: Bool = false
-    var traceId: TraceID? = nil
-    var provider: String? = nil
-    var model: String? = nil
-    var feedbackAction: String? = nil
-    // Execução ao vivo (a orquestra)
-    var startedAt: Date? = nil
-    var elapsedMs: Int? = nil
-    var agents: [ExecAgent] = []
-    var decideStage: String? = nil
-    var decideStrategy: String? = nil
-    var activities: [AtlasAgentActivity] = []
-    var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
-    var decisionSummary: AtlasDecisionSummary? = nil
-    var qualitySummary: AtlasQualitySummary? = nil
-    /// Plano real criado pelo Terminal/CLI; a casca só recebe os dados já
-    /// saneados pelo Core, nunca metadata/prompt bruto.
-    var executionPlan: AtlasExecutionPlan? = nil
-    /// Posição do último checkpoint público observado no ledger. `nil` é o
-    /// estado honesto para traces legados ou sem checkpoint, não zero falso.
-    var executionProgress: AtlasExecutionPlan.Progress? = nil
-    /// Estado editorial público e acionável, recebido do ledger/snapshot. A
-    /// View nunca deduz atenção, recovery ou falha a partir de texto do modelo.
-    var executionPresentationState: AtlasExecutionPresentationState? = nil
-    /// Job real que aceitaria uma ação pública. `nil` fora de atenção necessária;
-    /// a casca usa este id apenas através de `resolveExecutionChoice`.
-    var executionChoiceJobId: JobID? = nil
-    /// C17: job real que FALHOU e aceita retry (`/ai/jobs/{id}/retry`). `nil`
-    /// quando não há job em estado falho; a casca só oferece "Retomar" com ele.
-    var retryableJobId: JobID? = nil
-    /// Dado único para presença do iOS: título de fase e regra de timer vêm do
-    /// Core tipado, nunca de uma animação ou de texto do provider.
-    var executionPresence: AtlasExecutionPresence? {
-        AtlasExecutionPresence(
-            isExecuting: streaming,
-            presentationState: executionPresentationState,
-            currentActivity: currentActivity
-        )
-    }
-}
-
-// Anexo local (pré-envio) — o ÚNICO contrato de UI de anexos: a strip do
-// composer renderiza isto e nada mais. O AttachmentInput correspondente vive
-// no model, fora da View.
-struct LocalDraft: Identifiable, Equatable {
-    enum State: Equatable { case pronto, subindo, falhou(String) }
-    let id: String
-    let fileName: String
-    let mimeType: String
-    let kind: AtlasAttachmentKind
-    let bytes: Int
-    let preview: Data?     // pequena o bastante pra UIImage(data:) direto
-    var state: State = .pronto
-}
-
-enum FeedbackKind: String, CaseIterable, Identifiable {
-    case util, contexto, longo, fraco
-    var id: String { rawValue }
-    var label: String {
-        switch self {
-        case .util: return "útil"; case .contexto: return "contexto"
-        case .longo: return "longo"; case .fraco: return "fraco"
-        }
-    }
-    var payload: FeedbackAiInteractionInput {
-        switch self {
-        case .util: return .init(feedbackScore: 5, feedbackAction: "useful")
-        case .contexto: return .init(feedbackScore: 1, feedbackAction: "wrong_context")
-        case .longo: return .init(feedbackScore: 2, feedbackComment: "[too_long]")
-        case .fraco: return .init(feedbackScore: 1, feedbackComment: "[weak]")
-        }
-    }
-    var activeAction: String {
-        switch self {
-        case .util: return "useful"; case .contexto: return "wrong_context"
-        case .longo: return "too_long"; case .fraco: return "weak"
-        }
-    }
-}
-
 @MainActor
 @Observable
 final class ConversationModel {
@@ -127,19 +30,12 @@ final class ConversationModel {
     var queuedMessages: [QueuedMessage] = []
     /// Preferência persistente pertence ao model; a View só renderiza/cicla.
     var effort: AtlasComputeEffort
-    /// Revisões carregadas sob demanda e sempre indexadas pelo trace público.
-    /// A casca pode mostrar ausência/indisponibilidade, mas não fabricar patch,
-    /// resultado de check ou decisão antes desta leitura canônica.
-    private(set) var changeReviewsByTrace: [TraceID: AtlasTraceChangeReview] = [:]
-    /// Provas de governança do turno (C18 diff_stats · C19 plan_revisions ·
-    /// C21 council_review). Vêm do metadata do trace; ausência = nada a dizer.
-    private(set) var governanceByTrace: [TraceID: AtlasAiTrace] = [:]
-    /// Conteúdo de diff só entra aqui depois de o patch ser confirmado na
-    /// projeção do mesmo trace; a View nunca faz a requisição por conta própria.
-    private(set) var changeReviewDiffsByKey: [String: AtlasTraceChangeReviewDiffResponse] = [:]
+    /// Artefatos, diff e decisões de revisão vivem num domínio dedicado. A
+    /// conversa só recebe de volta o trace atualizado para refrescar as bolhas.
+    let reviews: ChangeReviewModel
     /// Último recibo de continuidade. A View pode projetá-lo, mas nunca cria
     /// sessão/local history por conta própria para simular o handoff.
-    private(set) var latestSurfaceHandoff: AtlasAiSurfaceHandoff?
+    var latestSurfaceHandoff: AtlasAiSurfaceHandoff?
 
     /// Fatos determinísticos coletados por turno e prefixados à pergunta NO FIO.
     /// A bolha do operador continua sendo o que ele escreveu — mesma lei do
@@ -161,7 +57,7 @@ final class ConversationModel {
     /// é; adivinhar o que já se sabe é o desperdício mais bobo de todos.
     @ObservationIgnored var taskKind: String?
 
-    private let client: AtlasClient
+    let client: AtlasClient
     private(set) var threadId: ThreadID?
     private var activeRun: InteractionRun?
     private var attachmentInputs: [String: AttachmentInput] = [:]
@@ -199,6 +95,7 @@ final class ConversationModel {
 
     init(client: AtlasClient, threadId: ThreadID?) {
         self.client = client
+        self.reviews = ChangeReviewModel(client: client)
         self.threadId = threadId
         self.engine = AtlasRichInputEngine(transport: client, installSalt: AtlasInstallationIdentity.id)
         self.outbox = InteractionOutbox(fileURL: InteractionOutbox.applicationSupportFileURL())
@@ -207,29 +104,17 @@ final class ConversationModel {
         self.effort = AtlasComputeEffort(
             rawValue: UserDefaults.standard.string(forKey: Self.effortPreferenceKey) ?? ""
         ) ?? .auto
+        self.reviews.onTraceUpdated = { [weak self] traceId, trace in
+            guard let self else { return }
+            for bubble in self.bubbles where bubble.traceId == traceId {
+                self.applyExecution(bubble.id, trace)
+            }
+        }
     }
 
     func cycleEffort() {
         effort = effort.next
         UserDefaults.standard.set(effort.rawValue, forKey: Self.effortPreferenceKey)
-    }
-
-    /// Pede ao servidor um recibo para outra superfície abrir esta mesma thread
-    /// e sessão. Não envia conteúdo da conversa e não cria uma thread nova.
-    func handoffToSurface(_ destination: AtlasAiSurfaceDestination) async {
-        guard let threadId else {
-            toast = "A conversa ainda não possui uma sessão canônica para continuar."
-            return
-        }
-
-        do {
-            latestSurfaceHandoff = try await client.handoffAiThreadSurface(
-                threadId.rawValue,
-                input: .init(toSurface: destination)
-            ).handoff
-        } catch {
-            toast = "Não foi possível preparar a continuidade: \(error)"
-        }
     }
 
     // MARK: - Anexos (imagem via PhotosPicker/câmera/clipboard)
@@ -402,46 +287,6 @@ final class ConversationModel {
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
         _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
-    }
-
-    /// Ponte não visual para ActivityKit. A casca observa o `traceId` real da
-    /// bolha e chama isto apenas quando receber um token de push do sistema.
-    /// Não há fallback falso: sem trace ou sem token, a Live Activity permanece
-    /// local e o servidor não anuncia cobertura remota.
-    func registerLiveActivityPushToken(
-        traceId: TraceID,
-        activityId: String,
-        pushToken: String,
-        environment: AtlasLiveActivityRegistrationInput.Environment,
-        startedAt: Date,
-        frequentUpdatesEnabled: Bool
-    ) async -> AtlasLiveActivityRegistrationReceipt? {
-        do {
-            return try await client.registerLiveActivity(.init(
-                traceId: traceId.rawValue,
-                activityId: activityId,
-                installationId: AtlasInstallationIdentity.id,
-                pushToken: pushToken,
-                environment: environment,
-                startedAt: startedAt,
-                frequentUpdatesEnabled: frequentUpdatesEnabled
-            ))
-        } catch {
-            // A execução e a UI não podem cair porque APNs está indisponível.
-            // A cobertura será explicitamente local até o próximo token válido.
-            return nil
-        }
-    }
-
-    func invalidateLiveActivityPushToken(
-        traceId: TraceID,
-        activityId: String,
-        reason: String
-    ) async {
-        _ = try? await client.invalidateLiveActivity(
-            activityId: activityId,
-            input: .init(traceId: traceId.rawValue, reason: reason)
-        ) as AtlasLiveActivityRegistrationReceipt
     }
 
     /// Enfileira uma instrução como próximo turno. É deliberadamente assíncrono:
@@ -667,132 +512,6 @@ final class ConversationModel {
         }
     }
 
-    /// Carrega a superfície de artefatos/revisão do trace. A resposta que não
-    /// ecoa o mesmo trace é descartada, pois vinculá-la à bolha errada seria um
-    /// vazamento de evidência entre execuções.
-    func refreshChangeReview(traceId: TraceID) async {
-        do {
-            let response = try await client.getTraceChangeReview(traceId)
-            guard response.changeReview.traceId == traceId else {
-                toast = "A revisão recebida não corresponde a esta execução."
-                return
-            }
-            changeReviewsByTrace[traceId] = response.changeReview
-            // O mesmo toque que abre a revisão traz as provas do turno.
-            if let trace = try? await client.getAiInteraction(traceId).trace,
-               trace.id == traceId.rawValue || trace.traceKey == traceId.rawValue {
-                governanceByTrace[traceId] = trace
-            }
-        } catch {
-            toast = Self.userMessage(for: error)
-        }
-    }
-
-    func changeReviewDiff(traceId: TraceID, patchId: PatchID) -> AtlasTraceChangeReviewDiffResponse? {
-        changeReviewDiffsByKey[Self.changeReviewDiffKey(traceId: traceId, patchId: patchId)]
-    }
-
-    /// Busca o diff somente se o patch já pertence à revisão canônica do trace.
-    /// Isso evita tanto rede na casca quanto a mistura de artefatos entre traces.
-    func refreshChangeReviewDiff(traceId: TraceID, patchId: PatchID) async {
-        if changeReviewsByTrace[traceId] == nil {
-            await refreshChangeReview(traceId: traceId)
-        }
-        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.patchID == patchId }) == true else {
-            toast = "Este diff não pertence à revisão desta execução."
-            return
-        }
-        do {
-            let response = try await client.getTraceChangeReviewDiff(traceId: traceId, patchId: patchId)
-            guard response.patch.patchID == patchId else {
-                toast = "O diff recebido não corresponde ao artefato solicitado."
-                return
-            }
-            changeReviewDiffsByKey[Self.changeReviewDiffKey(traceId: traceId, patchId: patchId)] = response
-        } catch {
-            toast = Self.userMessage(for: error)
-        }
-    }
-
-    /// Aceita ou rejeita o run inteiro através do recibo do servidor. Não há
-    /// ação local otimista: a UI só muda depois que a decisão e seu evento no
-    /// ledger foram persistidos e devolvidos pela mesma rota trace-scoped.
-    func applyChangeReview(
-        traceId: TraceID,
-        action: AtlasTraceChangeReview.Action,
-        note: String? = nil
-    ) async {
-        do {
-            let response = try await client.applyTraceChangeReview(
-                traceId: traceId,
-                input: .init(action: action, actor: "mobile_operator", note: note)
-            )
-            guard response.changeReview.traceId == traceId else {
-                toast = "A decisão foi recusada porque o recibo não corresponde à execução."
-                return
-            }
-            changeReviewsByTrace[traceId] = response.changeReview
-            if let refreshed = try? await client.getAiInteraction(traceId) {
-                for bubble in bubbles where bubble.traceId == traceId {
-                    applyExecution(bubble.id, refreshed.trace)
-                }
-            }
-        } catch {
-            toast = Self.userMessage(for: error)
-        }
-    }
-
-    /// Decide um arquivo somente depois de provar que ele pertence ao patch já
-    /// vinculado ao mesmo trace. A resposta também é revalidada antes de tocar
-    /// no estado observado pela casca, eliminando aceite cruzado entre runs.
-    func applyChangeReviewFile(
-        traceId: TraceID,
-        patchId: PatchID,
-        filePath: String,
-        action: AtlasTraceChangeReview.Action,
-        note: String? = nil
-    ) async {
-        if changeReviewsByTrace[traceId] == nil {
-            await refreshChangeReview(traceId: traceId)
-        }
-        guard changeReviewsByTrace[traceId]?.patches.contains(where: { $0.patchID == patchId && $0.contains(filePath) }) == true else {
-            toast = "Este arquivo não pertence ao patch desta execução."
-            return
-        }
-        do {
-            let response = try await client.applyTraceChangeReviewFile(
-                traceId: traceId,
-                input: .init(
-                    patchId: patchId,
-                    filePath: filePath,
-                    action: action,
-                    actor: "mobile_operator",
-                    note: note
-                )
-            )
-            guard response.changeReview.traceId == traceId,
-                  response.fileReviewReceipt.patchId == patchId,
-                  response.fileReviewReceipt.filePath == filePath,
-                  response.fileReviewReceipt.action == action,
-                  response.changeReview.patches.contains(where: {
-                      $0.patchID == patchId && $0.fileReviews.contains(where: {
-                          $0.filePath == filePath && $0.action == action
-                      })
-                  }) else {
-                toast = "A decisão por arquivo não corresponde ao patch revisado."
-                return
-            }
-            changeReviewsByTrace[traceId] = response.changeReview
-            if let refreshed = try? await client.getAiInteraction(traceId) {
-                for bubble in bubbles where bubble.traceId == traceId {
-                    applyExecution(bubble.id, refreshed.trace)
-                }
-            }
-        } catch {
-            toast = Self.userMessage(for: error)
-        }
-    }
-
     // MARK: - Execução
 
     /// O endpoint de lista é deliberadamente leve e não inclui `stream_events`.
@@ -873,7 +592,7 @@ final class ConversationModel {
                 applyExecution(bubble.id, refreshed.trace)
             }
         } catch {
-            toast = Self.userMessage(for: error)
+            toast = atlasUserMessage(for: error)
         }
     }
 
@@ -893,7 +612,7 @@ final class ConversationModel {
                 applyExecution(bubble.id, refreshed.trace)
             }
         } catch {
-            toast = Self.userMessage(for: error)
+            toast = atlasUserMessage(for: error)
         }
     }
 
@@ -1064,10 +783,10 @@ final class ConversationModel {
 
     private func apply(_ error: Error, to id: String) {
         update(id) {
-            if $0.text.isEmpty { $0.text = "⚠️ \(Self.userMessage(for: error))" }
+            if $0.text.isEmpty { $0.text = "⚠️ \(atlasUserMessage(for: error))" }
             $0.streaming = false
         }
-        toast = Self.userMessage(for: error)
+        toast = atlasUserMessage(for: error)
     }
 
     private func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
@@ -1075,31 +794,4 @@ final class ConversationModel {
         mutate(&bubbles[i])
     }
 
-    private static func changeReviewDiffKey(traceId: TraceID, patchId: PatchID) -> String {
-        "\(traceId.rawValue):\(patchId.rawValue)"
-    }
-
-    private static func userMessage(for error: Error) -> String {
-        if error is AtlasInteractionStreamError {
-            return "A conexão com a execução caiu. O Atlas retomará este turno automaticamente."
-        }
-        if let urlError = error as? URLError {
-            switch urlError.code {
-            case .networkConnectionLost, .notConnectedToInternet, .cannotConnectToHost,
-                 .cannotFindHost, .timedOut:
-                return "A conexão caiu. O Atlas vai recuperar este turno quando a rede voltar."
-            default:
-                return "Não foi possível falar com o Atlas agora. Tente novamente."
-            }
-        }
-        if let api = error as? AtlasApiError {
-            switch api.status {
-            case 401, 403: return "A sessão do Atlas precisa ser reconectada."
-            case 408, 429: return "O Atlas está ocupado. Este turno continua recuperável."
-            case 500...599: return "O servidor Atlas está temporariamente indisponível."
-            default: return api.message
-            }
-        }
-        return "A execução foi interrompida. Tente novamente."
-    }
 }
