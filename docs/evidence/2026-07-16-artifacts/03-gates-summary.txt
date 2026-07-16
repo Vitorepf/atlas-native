@@ -1,0 +1,12 @@
+server_commit_08=99ba5abd3
+native_commit_09=5396b21
+native_commit_10=d6732ea
+server_phpunit_artifacts=8 tests / 43 assertions
+server_phpunit_c15_regression=7 tests / 48 assertions
+server_http_probe=manifest 200, content 200, sha_match yes
+native_core_checks=passed before commit 09 and commit 10
+native_app_build=passed before commit 09 and commit 10
+native_diff_check=passed before commit 09 and commit 10
+ATLAS_TOKEN=absent; live-probe skipped
+XCUITest_artifacts=skipped; no seeded artifact UI harness and no live token
+Device=device-pending

@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+Host: 127.0.0.1:62926
+Connection: close
+X-Powered-By: PHP/8.5.5
+Cache-Control: no-cache, private
+Date: Thu, 16 Jul 2026 21:59:38 GMT
+Content-Type: text/markdown; charset=utf-8
+X-Atlas-Sha256: b022699a35425002aa359e0f7f30faef7c1301480eaa3ae23516eac9df66df50
+Vary: Origin
+
