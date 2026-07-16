@@ -566,6 +566,8 @@ final class ConversationModel {
             $0.decisionSummary = trace.decisionSummary
             $0.qualitySummary = trace.qualitySummary
             $0.executionPlan = trace.executionPlan
+            $0.diffStats = AtlasTraceGovernance.diffStats(from: trace.metadata)
+            $0.planRevisions = AtlasTraceGovernance.planRevisions(from: trace.metadata)
             $0.executionProgress = trace.executionProgress
             $0.executionPresentationState = trace.executionPresentationState
             $0.executionChoiceJobId = choiceJob.map { JobID($0.id) }

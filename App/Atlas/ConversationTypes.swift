@@ -31,6 +31,11 @@ struct ChatBubble: Identifiable, Equatable {
     /// Plano real criado pelo Terminal/CLI; a casca só recebe os dados já
     /// saneados pelo Core, nunca metadata/prompt bruto.
     var executionPlan: AtlasExecutionPlan? = nil
+    /// C18: shortstat real do workspace. `nil` = sem workspace / sem medida —
+    /// a casca NÃO inventa +0 −0.
+    var diffStats: AtlasTraceGovernance.DiffStats? = nil
+    /// C19: planos arquivados em replanejamento. Vazio = nunca replanejou.
+    var planRevisions: [AtlasTraceGovernance.PlanRevision] = []
     /// Posição do último checkpoint público observado no ledger. `nil` é o
     /// estado honesto para traces legados ou sem checkpoint, não zero falso.
     var executionProgress: AtlasExecutionPlan.Progress? = nil

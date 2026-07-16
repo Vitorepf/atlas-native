@@ -31,6 +31,13 @@ struct ExecutingStrip: View {
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
             }
+            // C18: pílula +N −M só quando o servidor mediu shortstat no workspace.
+            if let stats = bubble.diffStats {
+                Text("+\(stats.linesAdded) −\(stats.linesRemoved)")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.accent)
+                    .accessibilityLabel("mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
+            }
             Spacer()
             Button(action: onStop) {
                 Text("Parar")

@@ -8,11 +8,13 @@ import AtlasCore
 struct PlanCard: View {
     let bubble: ChatBubble
     @State private var showDetail = false
+    @State private var showRevisions = false
 
     private var plan: AtlasExecutionPlan? { bubble.executionPlan }
     // Índice 1-based do passo atual; nil = plano sem checkpoint observado ainda.
     private var currentIndex: Int? { bubble.executionProgress?.current }
     private var isTerminal: Bool { bubble.executionProgress?.isTerminal == true }
+    private var revisions: [AtlasTraceGovernance.PlanRevision] { bubble.planRevisions }
 
     var body: some View {
         if let plan, !plan.steps.isEmpty {
@@ -31,6 +33,29 @@ struct PlanCard: View {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(plan.steps.enumerated()), id: \.element.id) { idx, step in
                         planStepRow(idx: idx, step: step, isLast: idx == plan.steps.count - 1)
+                    }
+                }
+                // C19: "comparar versões" só quando o servidor arquivou planos.
+                if !revisions.isEmpty {
+                    Button {
+                        withAnimation(.easeOut(duration: 0.2)) { showRevisions.toggle() }
+                    } label: {
+                        Text(showRevisions
+                             ? "ocultar versões"
+                             : "comparar versões · \(revisions.count)")
+                            .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("comparar versões do plano")
+                    if showRevisions {
+                        VStack(alignment: .leading, spacing: 5) {
+                            ForEach(revisions) { rev in
+                                Text("v\(rev.revision) — \(rev.humanReason)")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(AtlasTheme.textSecondary)
+                            }
+                        }
+                        .transition(.opacity)
                     }
                 }
                 if !plan.tools.isEmpty || !plan.agents.isEmpty || !plan.qualityGates.isEmpty {
