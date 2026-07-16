@@ -5,21 +5,12 @@ import Foundation
 // então snake_case do servidor vira camelCase aqui sem CodingKeys. Todo campo
 // que o servidor pode mandar `null` é opcional — senão o decode quebra.
 //
-// A superfície de ops (telemetry / policy / domain-catalog / cost-rates /
-// observability, ~1000 linhas do .ts) é admin, não o loop de conversa. Porta
-// depois; isto é o que o operador realmente usa.
+// Clusters admin (telemetry/policies/providers/attachments) foram podados em
+// F0 — 0 consumidores de produto. Isto é o loop que o operador realmente usa.
 
 /// `AtlasAiProvider | string` no TS é uma união aberta — o servidor pode mandar
 /// valores fora da lista. Portanto provider/status ficam `String` (um enum
-/// estrito quebraria o decode num valor novo). Constantes ficam aqui pra uso.
-public enum AtlasAiProviders {
-    public static let hermesCli = "hermes_cli"
-    public static let claudeCli = "claude_cli"
-    public static let codexCli = "codex_cli"
-    public static let geminiCli = "gemini_cli"
-    public static let minimax = "minimax_m27_cli"
-    public static let claudeCodex = "claude_codex"
-}
+/// estrito quebraria o decode num valor novo).
 
 public struct AtlasAiSession: Codable, Sendable, Identifiable, Equatable {
     public let id: String

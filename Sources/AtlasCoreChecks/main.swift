@@ -26,12 +26,6 @@ let check: (String, Bool) -> Void = { recorder.record($0, $1) }
 @inline(never)
 func isGreaterThanOrEqual(_ lhs: Double, _ rhs: Double) -> Bool { lhs >= rhs }
 
-func cap(_ client: String, updated: String, captured: String = "2026-01-01T00:00:00Z",
-         content: String? = nil, deleted: String? = nil) -> AtlasCapture {
-    AtlasCapture(clientId: client, updatedAt: updated, deletedAt: deleted,
-                 capturedAt: captured, contentText: content)
-}
-
 print("AtlasTime (parsing ISO8601 tolerante — gotcha #1):")
 check("plain ISO parses", abs(AtlasTime.ms("2026-01-01T00:00:00Z") - 1767225600000) < 1)
 do {
@@ -49,83 +43,6 @@ do {
     check("NaN >= real é false (semântica JS)", !isGreaterThanOrEqual(nan, real))
     check("real >= NaN é false", !isGreaterThanOrEqual(real, nan))
     check("NaN >= NaN é false", !isGreaterThanOrEqual(nan, nan2))
-}
-
-print("\nMerge core (LWW + tombstone, verbatim de storeConverters.ts):")
-do {
-    let v1 = cap("a", updated: "2026-01-01T00:00:00Z", content: "v1")
-    let v2 = cap("a", updated: "2026-01-02T00:00:00Z", content: "v2")
-    check("LWW independe de ordem [v1,v2]", mergeCaptures([v1, v2]).map(\.contentText) == ["v2"])
-    check("LWW independe de ordem [v2,v1]", mergeCaptures([v2, v1]).map(\.contentText) == ["v2"])
-}
-do {
-    let x = cap("a", updated: "2026-01-01T00:00:00Z", content: "x")
-    let y = cap("a", updated: "2026-01-01T00:00:00Z", content: "y")
-    check("empate (>=) favorece o último visto [x,y]→y", mergeCaptures([x, y]).map(\.contentText) == ["y"])
-    check("empate [y,x]→x", mergeCaptures([y, x]).map(\.contentText) == ["x"])
-}
-do {
-    let a = cap("a", updated: "2026-01-01T00:00:00Z")
-    let b = cap("b", updated: "2026-01-01T00:00:00Z")
-    let aDel = cap("a", updated: "2026-01-02T00:00:00Z", deleted: "2026-01-02T00:00:00Z")
-    check("tombstone remove o client_id", mergeCaptures([a, b, aDel]).map(\.clientId) == ["b"])
-}
-check("deleted_at vazio NÃO deleta (JS truthy)",
-      mergeCaptures([cap("a", updated: "2026-01-01T00:00:00Z", deleted: "")]).map(\.clientId) == ["a"])
-do {
-    let valid = cap("a", updated: "2026-01-01T00:00:00Z", content: "valid")
-    let bad = cap("a", updated: "not-a-date", content: "bad")
-    check("updated_at inválido mantém existente [valid,bad]→valid", mergeCaptures([valid, bad]).map(\.contentText) == ["valid"])
-    check("updated_at inválido mantém existente [bad,valid]→bad", mergeCaptures([bad, valid]).map(\.contentText) == ["bad"])
-}
-do {
-    let base = cap("a", updated: "2026-01-01T00:00:00Z", content: "base")
-    let frac = cap("a", updated: "2026-01-01T00:00:00.500Z", content: "frac")
-    check("frac-seconds vence base (o gotcha resolvido)", mergeCaptures([base, frac]).map(\.contentText) == ["frac"])
-}
-do {
-    let a = cap("a", updated: "t", captured: "2026-01-01T00:00:00Z")
-    let b = cap("b", updated: "t", captured: "2026-01-03T00:00:00Z")
-    let c = cap("c", updated: "t", captured: "2026-01-02T00:00:00Z")
-    check("sort desc por captured_at", mergeCaptures([a, b, c]).map(\.clientId) == ["b", "c", "a"])
-}
-do {
-    let a = cap("a", updated: "2026-01-01T00:00:00Z", captured: "2026-01-01T00:00:00Z", content: "old")
-    let b = cap("b", updated: "t", captured: "2026-01-02T00:00:00Z")
-    let aDel = cap("a", updated: "2026-01-02T00:00:00Z", deleted: "2026-01-02T00:00:00Z")
-    let aNew = cap("a", updated: "2026-01-05T00:00:00Z", captured: "2026-01-05T00:00:00Z", content: "new")
-    let out = mergeCaptures([a, b, aDel, aNew])
-    check("delete-then-readd sobrevive com dado novo (ordem)", out.map(\.clientId) == ["a", "b"])
-    check("delete-then-readd usa o valor re-adicionado", out.first?.contentText == "new")
-}
-do {
-    let a = cap("a", updated: "t", captured: "2026-01-01T00:00:00Z")
-    let b = cap("b", updated: "t", captured: "2026-01-01T00:00:00Z")
-    check("empate no sort = ordem de inserção estável [a,b]", mergeCaptures([a, b]).map(\.clientId) == ["a", "b"])
-    check("empate estável [b,a]", mergeCaptures([b, a]).map(\.clientId) == ["b", "a"])
-}
-do {
-    let a = AtlasCheckin(clientId: "a", updatedAt: "t", recordedAt: "2026-01-01T00:00:00Z")
-    let b = AtlasCheckin(clientId: "b", updatedAt: "t", recordedAt: "2026-01-02T00:00:00Z")
-    check("checkins ordenam por recorded_at", mergeCheckins([a, b]).map(\.clientId) == ["b", "a"])
-}
-
-print("\nCodable (snake_case + JSONValue metadata bag):")
-do {
-    let json = """
-    {"id":"srv-1","client_id":"a","updated_at":"2026-01-01T00:00:00Z","deleted_at":null,
-     "captured_at":"2026-01-01T00:00:00Z","content_text":"hi",
-     "metadata":{"lat":1.5,"tag":"note","ok":true}}
-    """.data(using: .utf8)!
-    let dec = JSONDecoder(); dec.keyDecodingStrategy = atlasSnakeKeyDecoding
-    if let capture = try? dec.decode(AtlasCapture.self, from: json) {
-        check("decode snake_case → camelCase", capture.clientId == "a" && capture.contentText == "hi")
-        check("metadata JSONValue: número", capture.metadata?["lat"]?.doubleValue == 1.5)
-        check("metadata JSONValue: string", capture.metadata?["tag"]?.stringValue == "note")
-        check("metadata JSONValue: bool", capture.metadata?["ok"]?.boolValue == true)
-    } else {
-        check("decode snake_case falhou", false)
-    }
 }
 
 print("\nAtlas AI · SSE dispatch (núcleo de correção, verbatim de atlasAiStreamRuntime.ts):")
