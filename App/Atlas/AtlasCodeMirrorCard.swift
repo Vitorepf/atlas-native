@@ -23,7 +23,15 @@ final class AtlasCodeMirrorModel {
 
     func refresh() async {
         // Sem resposta, a seção não fala — ausência nunca vira "0 a espelhar".
-        response = try? await client.getCodeMirror(repo: repo)
+        //
+        // E falha NÃO APAGA a leitura anterior: `response = try?` zerava o
+        // card no primeiro fetch que caísse, e o estado que mais precisa de
+        // olho — espelho BLOQUEADO POR SEGREDO — sumia da tela por causa de
+        // uma queda de rede. O alarme aceso fica aceso até uma leitura REAL
+        // dizer o contrário; só resposta nova escreve o estado.
+        if let fresh = try? await client.getCodeMirror(repo: repo) {
+            response = fresh
+        }
     }
 }
 
