@@ -50,9 +50,19 @@ final class AtlasCodeModel {
             graph = try? await client.getCodeGraph(repo: repo)
             violations = try? await client.getCodeViolations(repo: repo)
         } catch {
-            heal = nil
+            // O veto FALHOU (rede, 500) — e apagar o recibo aqui era esconder
+            // exatamente o que o operador tentava desfazer: a folha sumia, ele
+            // ficava sem saber se o undo pegou nem como tentar de novo. Falha de
+            // veto mantém o recibo na tela; a cura ainda está lá para ser
+            // vetada. Silêncio de falha não pode apagar a única ação humana
+            // desta tela.
+            undoError = "não consegui desfazer agora — a cura continua aqui, tente de novo."
         }
     }
+
+    /// Última falha do veto, para a folha do recibo dizer que o undo não pegou.
+    /// `nil` = sem erro pendente; a folha não inventa alarme.
+    private(set) var undoError: String?
 
     // MARK: - Gramática de estado (cor = estado, nunca autor)
 
