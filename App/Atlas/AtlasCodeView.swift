@@ -82,8 +82,20 @@ struct AtlasCodeView: View {
                 turnFacts: { [askModel] question in await askModel.facts(for: question) },
                 onThread: { askThreadId = $0 }
             )
-            .presentationDetents([.large])
+            // Abre em MEIA tela, e isto é a tese, não conforto: em `.large` o
+            // card tapa o mapa inteiro e o acendimento acontece atrás de um
+            // vidro opaco — o operador conversa sobre uma topologia que ele não
+            // vê se mexer, e o que sobra é um chat comum sobre git. Em `.medium`
+            // o grafo fica atrás e a resposta ACENDE na frente dele, ao vivo.
+            // A resposta não é o texto: é o mapa se transformando.
+            //
+            // `.large` continua ali para quem quer ler uma revisão longa —
+            // arrastar para cima é do operador, não meu.
+            .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
+            // Fundo translúcido: o mapa atrás não pode virar papel de parede
+            // preto. Ele é o assunto.
+            .presentationBackground(.ultraThinMaterial)
         }
     }
 
