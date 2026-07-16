@@ -96,8 +96,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S4 | **DONE** | **Grok 4.5** | `App/Atlas/{AtlasTheme,RootView}.swift` | S3 | F0.6 tema morto + botão morto | 0 usos dos tokens; zero botão falso; build verde | −5 tokens + botão falso; prussian fica; checks+build exit 0 |
 | S5 | **DONE** | **Grok 4.5** | `App/Atlas/Fonts/*`; `AtlasType.swift`; `Info.plist` | S4 | F0.7 fontes inalcançáveis | só SemiBold/Regular/Italic/Mono no bundle; build verde | −144K Bold+Medium; 28/28 serif→SemiBold; checks+build exit 0 |
 | S6 | **DONE** | **Grok 4.5** | `docs/proposals/**`; `docs/superpowers/`; `.gitignore` | S5 | F0.8 docs dups + arquivamento | links repontados; dups fora; archive | dups −~264K + index; superpowers→archive; checks+build exit 0 |
-| S7 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/AtlasTurnStatus.swift` + call sites | S6 | F1.1 AtlasTurnStatus | 0 literais de status fora do enum/checks; checks+build verdes | — |
-| S8–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S7 | commits 8–34 da spec | DoD por eixo com prova | — |
+| S7 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasTurnStatus.swift` + call sites | S6 | F1.1 AtlasTurnStatus | 0 literais de status fora do enum/checks; checks+build verdes | enum + computed turnStatus; InteractionRun/Model/Cockpit; 11 golden checks; exit 0 |
+| S8 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/AtlasIDs.swift` + Core signatures | S7 | F1.2 IDs tipados (Core) | TraceID/ThreadID/JobID/PatchID/ClientID; Core compila | — |
+| S9–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S8 | commits 9–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -721,10 +722,22 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   iPad só entra com layouts, rotações, multitarefa e prova próprios; anunciar
   iPad agora gerava warning físico e uma promessa de experiência não validada.
 
+- **2026-07-16 · Canon do operador — roadmap do próximo patamar:**
+  **Voice Supremacy REMOVIDA do roadmap** (futuro distante; o veto do §4 a
+  microfone/LiveKit/affordance de voz vale para TODAS as obras até decisão
+  nova). Lista aprovada para estruturação em `docs/roadmap-proximo-patamar.md`
+  (P1–P10): Presença Ambiental (v1 "Proposta das 21h"), Self-Construction na
+  casca (**prioridade máxima do operador**), Artifacts & Proof completo,
+  Continuity total, Atlas-wide, H1 blame semântico, H9 futuro fantasma, Anel
+  Nativo N1–N8, Memória de critério do operador, Contratos por geração.
+  Agent Cockpit em avaliação. Pré-requisito de tudo: plano SOTA 10/10
+  (`docs/plano-sota-10-de-10.md`) concluído com provas.
+
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S7/F1.1 · `AtlasTurnStatus` tipado (wire fail-open via `.unknown`); InteractionRun/ConversationModel/Cockpit usam `turnStatus`; literais de lifecycle só no enum; golden: unknown nunca terminal · prova: checks exit 0 (incl. 11 TurnStatus); build exit 0; git diff --check limpo
 - 2026-07-16 · Grok 4.5 · SOTA S6/F0.8 + **F0 FECHADA** · DELETE dups byte-idênticos em fable-execucao-viva/ (−3 HTML + index + evolucao antiga); links → fable-5.html; arquiva docs/superpowers + scripts/codex-execution-queue.test.mjs em docs/archive/; .DS_Store já no gitignore · prova: md5 idênticos antes do delete; checks exit 0; build exit 0. Saldo Swift F0 ≈ −2.250+; assets −144K; docs −~300K+
 - 2026-07-16 · Grok 4.5 · SOTA S5/F0.7 · DELETE Fraunces Bold+Medium (144K) + cases mortos do switch; Regular permanece como fallback · prova: 28/28 AtlasFont.serif resolvem SemiBold; checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S4/F0.6 · remove tokens mortos (bgDeep/goldDeep/goldLight/domProgramacao/domAtlas) + botão falso «Adicionar workspace»; prussian mantido · prova: rg 0 usos; checks exit 0; build exit 0

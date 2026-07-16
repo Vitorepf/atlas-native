@@ -395,23 +395,25 @@ struct AgentRow: View {
             Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
         }
     }
+    private var turnStatus: AtlasTurnStatus { AtlasTurnStatus(rawValue: agent.status) }
     private var statusColor: Color {
-        switch agent.status {
-        case "processing": return AtlasTheme.accent
-        case "succeeded": return AtlasTheme.domAutonomos
-        case "failed", "cancelled": return AtlasTheme.domOperacional
+        switch turnStatus {
+        case .processing: return AtlasTheme.accent
+        case .succeeded: return AtlasTheme.domAutonomos
+        case .failed, .cancelled: return AtlasTheme.domOperacional
         default: return AtlasTheme.textTertiary
         }
     }
     private var statusWord: String {
-        switch agent.status {
-        case "queued": return "na fila"
-        case "processing": return "processando"
-        case "succeeded": return "pronto"
-        case "failed": return "falhou"
-        case "cancelled": return "cancelado"
-        case "awaiting_user_choice": return "aguardando"
-        default: return agent.status
+        switch turnStatus {
+        case .queued: return "na fila"
+        case .processing: return "processando"
+        case .succeeded: return "pronto"
+        case .failed: return "falhou"
+        case .cancelled: return "cancelado"
+        case .awaitingUserChoice: return "aguardando"
+        case .awaitingExternal: return "aguardando externo"
+        case .unknown(let raw): return raw
         }
     }
 }

@@ -386,7 +386,7 @@ public actor InteractionRun {
 
     private func updateActiveJobs(from trace: AtlasAiTrace) {
         activeJobIds = Set((trace.jobs ?? []).compactMap { job in
-            ["queued", "processing"].contains(job.status) ? job.id : nil
+            job.turnStatus.isActiveWork ? job.id : nil
         })
     }
 
@@ -397,15 +397,15 @@ public actor InteractionRun {
     }
 
     private static func isTerminal(_ status: String) -> Bool {
-        ["succeeded", "failed", "cancelled"].contains(status)
+        AtlasTurnStatus(rawValue: status).isTerminal
     }
 
     private static func isSuspensionStatus(_ status: String) -> Bool {
-        ["awaiting_user_choice", "awaiting_external"].contains(status)
+        AtlasTurnStatus(rawValue: status).isSuspension
     }
 
     private static func isSuspended(_ trace: AtlasAiTrace) -> Bool {
-        if isSuspensionStatus(trace.status) { return true }
+        if trace.turnStatus.isSuspension { return true }
         switch trace.executionPresentationState?.kind {
         case .attentionRequired, .awaitingExternal:
             return true

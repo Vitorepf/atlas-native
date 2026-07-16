@@ -647,7 +647,7 @@ final class ConversationModel {
             for activeTrace in activeTraces {
                 guard let refreshed = try? await client.getAiInteraction(activeTrace.traceId) else { continue }
                 applyExecution(activeTrace.id, refreshed.trace)
-                confirmed = confirmed || refreshed.trace.status == "cancelled"
+                confirmed = confirmed || refreshed.trace.turnStatus == .cancelled
             }
 
             toast = confirmed ? "sessão encerrada" : "cancelamento solicitado"
@@ -843,9 +843,9 @@ final class ConversationModel {
             $0.executionProgress = trace.executionProgress
             $0.executionPresentationState = trace.executionPresentationState
             $0.executionChoiceJobId = trace.jobs?
-                .first(where: { $0.status == "awaiting_user_choice" })?.id
+                .first(where: { $0.turnStatus == .awaitingUserChoice })?.id
             $0.retryableJobId = trace.jobs?
-                .first(where: { $0.status == "failed" })?.id
+                .first(where: { $0.turnStatus == .failed })?.id
             let fromStream = atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
             $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)
@@ -950,7 +950,7 @@ final class ConversationModel {
                 update(assistantId) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
             case .completed(let done, let finalTrace):
                 complete(assistantId, trace: finalTrace)
-                completedSuccessfully = done.status.lowercased() == "succeeded"
+                completedSuccessfully = done.turnStatus == .succeeded
             }
         }
         activeRun = nil
@@ -968,7 +968,7 @@ final class ConversationModel {
         // Se o relaunch carregou uma thread já finalizada, não duplica a bolha.
         if let clientId = input.clientId,
            let trace = try? await client.findInteraction(clientId: clientId),
-           ["succeeded", "failed", "cancelled"].contains(trace.trace.status),
+           trace.trace.turnStatus.isTerminal,
            bubbles.contains(where: { $0.traceId == trace.trace.id }) {
             try? await outbox.remove(clientId: clientId)
             return

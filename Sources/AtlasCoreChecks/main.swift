@@ -201,6 +201,9 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
     print("  ⚠ ATLAS_TOKEN ausente — check de AI ao vivo pulado (não conta como falha)")
 }
 
+print("\nAtlasTurnStatus (lifecycle tipado do turno):")
+runTurnStatusChecks(check)
+
 runRichInputChecks(check)
 await runRichInputEngineChecks(check)
 runRichInputBoundaryChecks(check)
