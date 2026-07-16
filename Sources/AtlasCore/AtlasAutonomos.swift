@@ -630,12 +630,12 @@ public struct AtlasAutonomosTransferResponse: Codable, Sendable, Equatable {
 
 public extension AtlasClient {
     func listAutonomosAreas() async throws -> AtlasAutonomosAreasResponse {
-        try await get("/ai/software-company-stewardship/loop/areas")
+        try await get(AtlasRoute.autonomosAreas)
     }
 
     func autonomosLive(area: String, focus: String? = nil) async throws -> AtlasAutonomosLiveResponse {
         let query = atlasQueryString([("focus", focus.map { .string($0) })])
-        return try await get("/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/live\(query)")
+        return try await get("\(AtlasRoute.autonomosLive(area: area))\(query)")
     }
 
     func autonomosCycles(area: String, focus: String? = nil, tail: Int = 20) async throws -> AtlasAutonomosCyclesResponse {
@@ -643,7 +643,7 @@ public extension AtlasClient {
             ("focus", focus.map { .string($0) }),
             ("tail", .int(tail)),
         ])
-        return try await get("/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/cycles\(query)")
+        return try await get("\(AtlasRoute.autonomosCycles(area: area))\(query)")
     }
 
     func autonomosDelivered(area: String, focus: String? = nil, limit: Int = 20) async throws -> AtlasAutonomosDeliveredResponse {
@@ -651,7 +651,7 @@ public extension AtlasClient {
             ("focus", focus.map { .string($0) }),
             ("limit", .int(limit)),
         ])
-        return try await get("/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/done\(query)")
+        return try await get("\(AtlasRoute.autonomosDone(area: area))\(query)")
     }
 
     func autonomosBacklog(area: String, focus: String? = nil, limit: Int = 20) async throws -> AtlasAutonomosBacklogResponse {
@@ -659,24 +659,24 @@ public extension AtlasClient {
             ("focus", focus.map { .string($0) }),
             ("limit", .int(limit)),
         ])
-        return try await get("/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/backlog\(query)")
+        return try await get("\(AtlasRoute.autonomosBacklog(area: area))\(query)")
     }
 
     /// Fonte global de agentes reais. O endpoint é separado da área de loop;
     /// callers devem preservar essa proveniência na apresentação.
     func autonomosFleet() async throws -> AtlasAutonomosFleetResponse {
-        try await get("/agents/status")
+        try await get(AtlasRoute.agentsStatus)
     }
 
     func autonomosFleetHistory(limit: Int = 100) async throws -> AtlasAutonomosFleetHistoryResponse {
         let query = atlasQueryString([("limit", .int(limit))])
-        return try await get("/agents/history\(query)")
+        return try await get("\(AtlasRoute.agentsHistory)\(query)")
     }
 
     /// Projeção global da fila de tarefas do Autônomos. Ela não é atribuída à
     /// área selecionada porque o servidor não publica essa relação.
     func autonomosTaskHealth() async throws -> AtlasAutonomosTaskHealthResponse {
-        try await get("/agents/task-health")
+        try await get(AtlasRoute.agentsTaskHealth)
     }
 
     func controlAutonomosRun(
@@ -687,7 +687,7 @@ public extension AtlasClient {
             throw AtlasAutonomosClientError.missingOperatorActor
         }
         return try await post(
-            "/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/run-control",
+            AtlasRoute.autonomosRunControl(area: area),
             body: input,
             timeout: 30
         )
@@ -704,7 +704,7 @@ public extension AtlasClient {
             throw AtlasAutonomosClientError.missingOperatorReasonForExecute
         }
         return try await post(
-            "/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/start-run",
+            AtlasRoute.autonomosStartRun(area: area),
             body: input,
             timeout: 30
         )
@@ -721,7 +721,7 @@ public extension AtlasClient {
             throw AtlasAutonomosClientError.missingTransferReason
         }
         return try await post(
-            "/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/transfer",
+            AtlasRoute.autonomosTransfer(area: area),
             body: input,
             timeout: 30
         )
@@ -731,9 +731,7 @@ public extension AtlasClient {
         area: String,
         handoffId: String
     ) async throws -> AtlasAutonomosTransferResponse {
-        try await get(
-            "/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/transfer/\(atlasPathComponent(handoffId))"
-        )
+        try await get(AtlasRoute.autonomosTransferStatus(area: area, handoffId: handoffId))
     }
 
     func decideAutonomosOperatorAction(
@@ -750,7 +748,7 @@ public extension AtlasClient {
             throw AtlasAutonomosClientError.missingRationaleForHighRiskAccept
         }
         return try await post(
-            "/ai/software-company-stewardship/loop/\(atlasPathComponent(area))/operator-decision",
+            AtlasRoute.autonomosOperatorDecision(area: area),
             body: input,
             timeout: 30
         )
@@ -763,8 +761,4 @@ public enum AtlasAutonomosClientError: Error, Sendable, Equatable {
     case missingFindingHash
     case missingRationaleForHighRiskAccept
     case missingTransferReason
-}
-
-private func atlasPathComponent(_ value: String) -> String {
-    value.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? value
 }

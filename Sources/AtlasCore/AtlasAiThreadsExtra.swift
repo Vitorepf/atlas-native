@@ -59,14 +59,12 @@ public extension AtlasClient {
     /// Cria um recibo provider-safe para outra superfície abrir a mesma thread
     /// e sessão canônicas; não cria conversa, sessão ou provider novo.
     func handoffAiThreadSurface(_ id: String, input: HandoffAiThreadSurfaceInput) async throws -> AiSurfaceHandoffResponse {
-        let seg = id.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? id
-        return try await post("/ai/threads/\(seg)/handoff-surface", body: input)
+        return try await post(AtlasRoute.aiThreadHandoffSurface(id), body: input)
     }
 
     /// `feedbackAiInteraction` — score/ação/comentário do operador no turno.
     func feedbackAiInteraction(_ id: String, feedback: FeedbackAiInteractionInput) async throws -> AiTraceResponse {
-        let seg = id.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? id
-        return try await post("/ai/interactions/\(seg)/feedback", body: feedback)
+        return try await post(AtlasRoute.aiInteractionFeedback(id), body: feedback)
     }
 }
 

@@ -254,9 +254,7 @@ public struct AtlasTraceChangeReviewFileActionResponse: Decodable, Sendable {
 
 extension AtlasClient {
     public func getTraceChangeReview(_ traceId: TraceID) async throws -> AtlasTraceChangeReviewResponse {
-        let rawTraceId = traceId.rawValue
-        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
-        return try await get("/ai/interactions/\(trace)/change-review")
+        return try await get(AtlasRoute.aiInteractionChangeReview(traceId.rawValue))
     }
 
     public func getTraceChangeReviewDiff(
@@ -264,29 +262,21 @@ extension AtlasClient {
         patchId: PatchID,
         maxBytes: Int? = nil
     ) async throws -> AtlasTraceChangeReviewDiffResponse {
-        let rawTraceId = traceId.rawValue
-        let rawPatchId = patchId.rawValue
-        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
-        let patch = rawPatchId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawPatchId
         let query = maxBytes.map { "?max_bytes=\(min(max($0, 1024), 1_048_576))" } ?? ""
-        return try await get("/ai/interactions/\(trace)/change-review/patches/\(patch)/diff\(query)")
+        return try await get("\(AtlasRoute.aiInteractionChangeReviewDiff(traceId: traceId.rawValue, patchId: patchId.rawValue))\(query)")
     }
 
     public func applyTraceChangeReview(
         traceId: TraceID,
         input: AtlasTraceChangeReviewActionInput
     ) async throws -> AtlasTraceChangeReviewActionResponse {
-        let rawTraceId = traceId.rawValue
-        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
-        return try await post("/ai/interactions/\(trace)/change-review/action", body: input)
+        return try await post(AtlasRoute.aiInteractionChangeReviewAction(traceId.rawValue), body: input)
     }
 
     public func applyTraceChangeReviewFile(
         traceId: TraceID,
         input: AtlasTraceChangeReviewFileActionInput
     ) async throws -> AtlasTraceChangeReviewFileActionResponse {
-        let rawTraceId = traceId.rawValue
-        let trace = rawTraceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? rawTraceId
-        return try await post("/ai/interactions/\(trace)/change-review/file-action", body: input)
+        return try await post(AtlasRoute.aiInteractionChangeReviewFileAction(traceId.rawValue), body: input)
     }
 }

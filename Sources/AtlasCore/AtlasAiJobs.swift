@@ -127,24 +127,24 @@ public extension AtlasClient {
             ("provider", provider.map { .string($0) }),
             ("limit", limit.map { .int($0) }),
         ])
-        return try await get("/ai/jobs\(q)")
+        return try await get("\(AtlasRoute.aiJobs)\(q)")
     }
 
     func getAiJob(_ id: String) async throws -> AiJobResponse {
-        try await get("/ai/jobs/\(jobPathSeg(id))")
+        try await get(AtlasRoute.aiJob(id))
     }
 
     func retryAiJob(_ id: String) async throws -> AiJobResponse {
-        try await post("/ai/jobs/\(jobPathSeg(id))/retry")
+        try await post(AtlasRoute.aiJobRetry(id))
     }
 
     func cancelAiJob(_ id: String) async throws -> AiJobResponse {
-        try await post("/ai/jobs/\(jobPathSeg(id))/cancel")
+        try await post(AtlasRoute.aiJobCancel(id))
     }
 
     func resumeAiJobChoice(_ jobId: String, optionId: String) async throws -> AiJobResponse {
         try await post(
-            "/ai/jobs/\(jobPathSeg(jobId))/resume-choice",
+            AtlasRoute.aiJobResumeChoice(jobId),
             body: ResumeChoiceInput(optionId: optionId)
         )
     }
@@ -154,12 +154,6 @@ public extension AtlasClient {
 /// (optionId -> option_id), casando o `{ option_id }` do .ts.
 private struct ResumeChoiceInput: Encodable {
     let optionId: String
-}
-
-/// `encodeURIComponent` para segmento de path (encodeURIComponentAllowed já
-/// definido no módulo). File-private: não colide com helpers de outros clusters.
-private func jobPathSeg(_ s: String) -> String {
-    s.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? s
 }
 
 // MARK: - Golden checks

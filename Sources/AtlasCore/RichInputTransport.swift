@@ -9,18 +9,14 @@ private struct EmptyBody: Encodable {}
 
 extension AtlasClient: UploadTransport {
     public func start(_ request: ChunkStartRequest) async throws -> ChunkStartResponse {
-        try await post("/ai/uploads/chunks/start", body: request, timeout: 30)
+        try await post(AtlasRoute.uploadChunksStart, body: request, timeout: 30)
     }
 
     public func sendChunk(uploadId: String, _ body: ChunkPartRequest) async throws -> ChunkPartResponse {
-        try await post("/ai/uploads/chunks/\(pathEncoded(uploadId))/chunk", body: body, timeout: 45)
+        try await post(AtlasRoute.uploadChunk(uploadId), body: body, timeout: 45)
     }
 
     public func complete(uploadId: String) async throws -> ChunkCompleteResponse {
-        try await post("/ai/uploads/chunks/\(pathEncoded(uploadId))/complete", body: EmptyBody(), timeout: 60)
-    }
-
-    private func pathEncoded(_ s: String) -> String {
-        s.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? s
+        try await post(AtlasRoute.uploadChunksComplete(uploadId), body: EmptyBody(), timeout: 60)
     }
 }

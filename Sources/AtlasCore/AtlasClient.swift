@@ -141,8 +141,7 @@ public actor AtlasClient: AtlasAiStreamSource {
         return AsyncThrowingStream { continuation in
             let timeout = min(max(timeoutSeconds, 5), 600)
             let cursor = max(0, after)
-            let encoded = traceId.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? traceId
-            let path = "/ai/interactions/\(encoded)/stream?timeout=\(timeout)&after=\(cursor)"
+            let path = AtlasRoute.aiInteractionStream(traceId, timeout: timeout, after: cursor)
             guard let url = URL(string: cfg.base + path) else {
                 continuation.finish(throwing: AtlasApiError(status: 0, path: path, message: "URL inválida"))
                 return
@@ -192,19 +191,19 @@ public actor AtlasClient: AtlasAiStreamSource {
             ("light", light.map { .bool($0) }),
             ("limit", limit.map { .int($0) }),
         ])
-        return try await get("/ai/threads\(q)")
+        return try await get("\(AtlasRoute.aiThreads)\(q)")
     }
 
     public func getAiThread(_ id: String) async throws -> AiThreadResponse {
-        try await get("/ai/threads/\(pathEncode(id))")
+        try await get(AtlasRoute.aiThread(id))
     }
 
     public func updateAiThread(_ id: String, patch: [String: JSONValue]) async throws -> AiThreadResponse {
-        try await self.patch("/ai/threads/\(pathEncode(id))", body: patch)
+        try await self.patch(AtlasRoute.aiThread(id), body: patch)
     }
 
     public func deleteAiThread(_ id: String) async throws -> JSONValue {
-        try await delete("/ai/threads/\(pathEncode(id))")
+        try await delete(AtlasRoute.aiThread(id))
     }
 
     public func listAiInteractions(
@@ -218,11 +217,11 @@ public actor AtlasClient: AtlasAiStreamSource {
             ("client_id", clientId.map { .string($0) }),
             ("limit", limit.map { .int($0) }),
         ])
-        return try await get("/ai/interactions\(q)")
+        return try await get("\(AtlasRoute.aiInteractions)\(q)")
     }
 
     public func getAiInteraction(_ id: TraceID) async throws -> AiTraceResponse {
-        try await get("/ai/interactions/\(pathEncode(id.rawValue))")
+        try await get(AtlasRoute.aiInteraction(id.rawValue))
     }
 
     /// C22 · Read-only Git topology for Atlas Código. The server owns Git
@@ -237,7 +236,7 @@ public actor AtlasClient: AtlasAiStreamSource {
             ("before", before.map { .string($0) }),
             ("limit", .int(limit)),
         ])
-        return try await get("/code/graph\(query)")
+        return try await get("\(AtlasRoute.codeGraph)\(query)")
     }
 
     /// C23 · Read-only identity and ledger-backed provenance for one commit.
@@ -245,17 +244,17 @@ public actor AtlasClient: AtlasAiStreamSource {
         let query = atlasQueryString([
             ("repo", repo.map { .string($0) }),
         ])
-        return try await get("/code/provenance/\(pathEncode(hash))\(query)")
+        return try await get("\(AtlasRoute.codeProvenance(hash))\(query)")
     }
 
     /// C24 · Read-only five-rule governance scan for the selected repository.
     public func getCodeViolations(repo: String) async throws -> AtlasCodeViolationsResponse {
-        try await get("/code/violations\(atlasQueryString([("repo", .string(repo))]))")
+        try await get("\(AtlasRoute.codeViolations)\(atlasQueryString([("repo", .string(repo))]))")
     }
 
     /// M3 radar · o workspace real: recentes + pastas de produto. Read-only.
     public func getCodeWorkspace() async throws -> AtlasCodeWorkspaceResponse {
-        try await get("/code/repos")
+        try await get(AtlasRoute.codeRepos)
     }
 
     /// H6 · a pílula pergunta ao grafo. Read-only: perguntar nunca muta o repo.
@@ -282,7 +281,7 @@ public actor AtlasClient: AtlasAiStreamSource {
             let mode: String
         }
         return try await post(
-            "/code/ask",
+            AtlasRoute.codeAsk,
             body: Body(
                 repo: repo,
                 question: question,
@@ -295,7 +294,7 @@ public actor AtlasClient: AtlasAiStreamSource {
 
     /// M5 mirror · what would leave the Mac, and what the scan found. Read-only.
     public func getCodeMirror(repo: String) async throws -> AtlasCodeMirrorResponse {
-        try await get("/code/mirror\(atlasQueryString([("repo", .string(repo))]))")
+        try await get("\(AtlasRoute.codeMirror)\(atlasQueryString([("repo", .string(repo))]))")
     }
 
     /// C25 · Observe/heal tick. Observe remains the default and does not mutate Git.
@@ -304,18 +303,18 @@ public actor AtlasClient: AtlasAiStreamSource {
             ("repo", .string(repo)),
             ("mode", .string(mode)),
         ])
-        return try await get("/code/heals/tick\(query)")
+        return try await get("\(AtlasRoute.codeHealsTick)\(query)")
     }
 
     /// C25 · Reverses a recorded heal step; the server validates the undo window.
     public func undoCodeHeal(id: String, repo: String) async throws -> AtlasCodeHealStepReceipt {
         struct UndoBody: Encodable { let repo: String }
-        return try await post("/code/heals/\(pathEncode(id))/undo", body: UndoBody(repo: repo))
+        return try await post(AtlasRoute.codeHealUndo(id), body: UndoBody(repo: repo))
     }
 
     /// E5 · real weekly code numbers; notification remains opt-in.
     public func getCodeWeek(repo: String) async throws -> AtlasCodeWeek {
-        try await get("/code/week\(atlasQueryString([("repo", .string(repo))]))")
+        try await get("\(AtlasRoute.codeWeek)\(atlasQueryString([("repo", .string(repo))]))")
     }
 
     /// Caminho JSON de `createAiInteraction` (sem anexos). Upload em chunks
@@ -325,7 +324,7 @@ public actor AtlasClient: AtlasAiStreamSource {
         // ainda extrai PDF/OCR antes do 202): 15s default estoura o -1001.
         // 90s sem documentos, 120s com.
         let hasDocuments = !(input.uploadedDocuments ?? []).isEmpty
-        return try await post("/ai/interactions", body: input, timeout: hasDocuments ? 120 : 90)
+        return try await post(AtlasRoute.aiInteractions, body: input, timeout: hasDocuments ? 120 : 90)
     }
 
     // MARK: - Live Activities remotas (APNs)
@@ -336,7 +335,7 @@ public actor AtlasClient: AtlasAiStreamSource {
     public func registerLiveActivity(
         _ input: AtlasLiveActivityRegistrationInput
     ) async throws -> AtlasLiveActivityRegistrationReceipt {
-        let response: AtlasLiveActivityRegistrationResponse = try await post("/ai/live-activities", body: input)
+        let response: AtlasLiveActivityRegistrationResponse = try await post(AtlasRoute.liveActivities, body: input)
         return response.registration
     }
 
@@ -346,7 +345,7 @@ public actor AtlasClient: AtlasAiStreamSource {
         _ input: AtlasLiveActivityStartTokenInput
     ) async throws -> AtlasLiveActivityStartTokenReceipt {
         let response: AtlasLiveActivityStartTokenResponse = try await post(
-            "/ai/live-activities/start-tokens", body: input
+            AtlasRoute.liveActivityStartTokens, body: input
         )
         return response.registration
     }
@@ -358,14 +357,10 @@ public actor AtlasClient: AtlasAiStreamSource {
         input: AtlasLiveActivityInvalidationInput
     ) async throws -> AtlasLiveActivityRegistrationReceipt {
         let response: AtlasLiveActivityRegistrationResponse = try await post(
-            "/ai/live-activities/\(pathEncode(activityId))/invalidate",
+            AtlasRoute.liveActivityInvalidate(activityId),
             body: input
         )
         return response.registration
-    }
-
-    private func pathEncode(_ s: String) -> String {
-        s.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? s
     }
 }
 

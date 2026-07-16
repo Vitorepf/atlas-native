@@ -89,6 +89,9 @@ check("boolean vira 1/0", atlasQueryString([("light", .bool(true)), ("x", .bool(
 check("encoda valores (espaço/&)", atlasQueryString([("q", .string("a b&c"))]) == "?q=a%20b%26c")
 check("ordem de inserção preservada", atlasQueryString([("status", .string("active")), ("limit", .int(10))]) == "?status=active&limit=10")
 
+print("\nAtlasRoute (constantes de path e segmentos codificados):")
+runAtlasRouteChecks(check)
+
 print("\nJSONValue (ponte JSONSerialization sem alterar contrato Codable):")
 do {
     let json = Data("""
