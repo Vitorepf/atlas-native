@@ -59,6 +59,11 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
   (Wispr Flow bloqueia verificação no simulador; device é a prova).
 - Commits escopados e prefixados: `feat(core)|fix(core)` = Codex ·
   `feat(ui)|polish(ui)` = Fable · branch **main local apenas**, sem merges.
+
+- **N8 (performance como lei):** mudança que regride um baseline de F5.1
+  (Instruments no device: cold launch, hitches @120Hz, grafo 200, upload 20MB)
+  **não commita**. Sem baseline medido, a pendência fica em §5 — nunca declarar
+  alvos atingidos sem evidência.
 - Warnings de StrictConcurrency: **não aumentar** (baseline ~22; meta = 0
   antes do bump pro modo Swift 6).
 
@@ -115,7 +120,12 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S23 | **DONE** | **Grok 4.5** | `App/Atlas/AtlasCode*.swift` | S22 | F3.2 split AtlasCodeView | nenhum arquivo CodeView > 400 | `c2ddf0c`; View 176; checks+build exit 0 |
 | S24 | **DONE** | **Grok 4.5** | PlanCard/ExecutionStateCard/LiveTimeline | S23 | F3.3 split ConversationCockpit | shell 115; cards < 250 | `0c12f96`; checks+build exit 0 |
 | S25–S27 | **DONE** | **Grok 4.5** | Cockpit DiffStats; PlanCard revisions; ChangeReview Council | S24 | F3.4 seams C18/C19/C21 na casca | refs em App/Atlas; ausência≠zero | F3.4 commit; Council pré-existente na sheet; checks+build exit 0 |
-| S28–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S27 | commits 28–34 | DoD por eixo com prova | — |
+| S28 | **DONE** | **Grok 4.5** | `App/Atlas/AtlasTheme.swift` + cards | S27 | F4.2 `.atlasCard()` | chrome canônico migrado onde idêntico | `2f338df`; checks+build exit 0 |
+| S29 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasRoute.swift` + clients | S28 | F4.4 AtlasRoute | paths centralizados | `4cea5df`; checks+build exit 0 |
+| S30 | **DONE** | **Grok 4.5** | `TurnPayloadBuilder` + golden | S29 | F4.5 TurnPayloadBuilder | equivalência payload; 0 JSON cru montado na casca | `9339f0c`; checks+build exit 0 |
+| S31–S32 | **DONE** | **Grok 4.5** | ThreadReadCache + ConversationModel/View | S30 | F6.1 read-cache SWR | selo «visto há»; offline ≠ tela vazia | `4cdeb9f`+`a777d6c`; Model 798; checks+build exit 0 |
+| S33 | **DONE** | **Grok 4.5** | OBRA §2 N8 + §5 DEVICE_PROVEN | S32 | F5.3+F5.4 N8 gate + prints | N8 em §2; prints = pendência operador | este commit |
+| S34 | **DONE** | **Grok 4.5** | OBRA §7 registro final | S33 | docs(obra) fechamento SOTA | DoD por eixo com prova/honesto | este commit |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -691,6 +701,14 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 6. Decisões registradas
 
+
+- **2026-07-16 · F6.2 Multi-host: NÃO construir (YAGNI).** Seam futuro:
+  `AtlasConfig` → coleção de hosts; outbox/fila re-escopadas por conta. Um host
+  local (Mac :3737) é o produto. Construir multi-host agora seria fundação-pra-depois.
+
+- **2026-07-16 · F6.3 Metal Graph Engine (N1): NÃO agora.** Com F2.9 (`LazyVStack`)
+  o grafo aguenta a vertical atual. Horizonte registrado — não código.
+
 - **2026-07-16 · Grok 4.5 executa a spec SOTA 10/10** (`docs/plano-sota-10-de-10.md`)
   com autorização do operador para atravessar as lanes Codex/Fable durante esta
   missão, sem assumir ownership permanente. Precedente: decisão de 2026-07-15 da
@@ -782,6 +800,12 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · **SOTA MISSÃO — registro final (S34)** · Ordem mestra 1–34 entregue na main local. **Saldo Swift** desde `8744eb6^`: ver medição no fechamento (~−700 a −900 líquido após tipagem/splits/F4/F6 — **abaixo do alvo −2.500**; a poda F0 sozinha foi −2.275 e as fases seguintes adicionaram linhas tipadas). **DoD por eixo:** Arquitetura ✓ (Model≤800, TurnStatus/IDs, TurnPayloadBuilder, F6.1); Qualidade ✓ (A11yID, schema, status tipado); Fluidez UI parcial (F2 memo/scroll/lazy/equatable ✓; Instruments 120Hz/launch = §5 pendência operador); Saúde evolutiva parcial (saldo < alvo; views>400 restantes: ConversationView/Chrome/Autonomos/Radar/ChangeReview); Eficiência ✓ (1 decoder/stream, poll O(T+N), Time fast-path, markdown throttle). F5.1/F5.4 DEVICE_PROVEN = pendência operador. Prova gates: checks+build verdes ao longo da missão.
+- 2026-07-16 · Grok 4.5 · SOTA S33/F5.3+F5.4 · N8 registrado em OBRA §2; sessão de prints U1–U6/DEVICE_PROVEN permanece pendência do operador (sem device Instruments nesta sessão) · prova: texto em §2/§5
+- 2026-07-16 · Grok 4.5 · SOTA S31–S32/F6.1 · ThreadReadCache atômico + selo «visto há»; Model 798 · prova: `4cdeb9f`+`a777d6c`; checks+build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S30/F4.5 · TurnPayloadBuilder + golden equivalência · prova: `9339f0c`; checks+build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S29/F4.4 · AtlasRoute constantes · prova: `4cea5df`; checks+build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S28/F4.2 · `.atlasCard()` · prova: `2f338df`; checks+build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S25–S27/F3.4 · DiffStats na ExecutingStrip + PlanRevision «comparar versões» no PlanCard; bolha projeta metadata; Council já na ChangeReviewSheet · prova: checks+build exit 0; screenshot device-pending (trace real com campos)
 - 2026-07-16 · Grok 4.5 · SOTA S24/F3.3 · ConversationCockpit → PlanCard/ExecutionStateCard/LiveTimeline · prova: `0c12f96`; checks+build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S23/F3.2 · AtlasCodeView fatiado (Provenance/Heal/CommitRow/Palette/Graph) · prova: `c2ddf0c`; checks+build exit 0
