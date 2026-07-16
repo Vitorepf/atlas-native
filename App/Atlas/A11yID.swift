@@ -18,6 +18,9 @@ enum A11yID {
     static let codeProvenanceState = "code-provenance-state"
     static let codeCommitBody = "code-commit-body"
     static let codeCommitFiles = "code-commit-files"
+    static let whySheet = "why-sheet"
+    static let whyRowPrefix = "why-row-"
+    static let whyFileRowPrefix = "why-file-row-"
     static let codeHealUndoWindow = "code-heal-undo-window"
     static let codeHealUndo = "code-heal-undo"
     static let codeMirror = "code-mirror"
@@ -53,4 +56,6 @@ enum A11yID {
     static func radarRepo(_ slug: String) -> String { radarRepoPrefix + slug }
     static func radarFolder(_ slug: String) -> String { radarFolderPrefix + slug }
     static func codeCommit(hashPrefix: String) -> String { codeCommitPrefix + hashPrefix }
+    static func whyRow(_ index: Int) -> String { whyRowPrefix + String(index) }
+    static func whyFileRow(_ index: Int) -> String { whyFileRowPrefix + String(index) }
 }

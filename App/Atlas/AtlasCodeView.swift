@@ -93,6 +93,8 @@ struct AtlasCodeView: View {
         .task { await mirrorModel.refresh() }
         .sheet(item: $selectedNode) { node in
             AtlasCodeProvenanceSheet(
+                client: session.client,
+                repo: model.repo,
                 node: node,
                 state: model.state(for: node),
                 ruleId: model.ruleId(for: node),

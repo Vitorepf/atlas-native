@@ -7,6 +7,14 @@ import AtlasCore
 /// estado ele está, o que ele diz, por que existe, e o que ele tocou.
 /// O hash fecha a folha — máquina embaixo do vidro (lei 6).
 struct AtlasCodeProvenanceSheet: View {
+    private struct WhyTarget: Identifiable {
+        let path: String
+        var id: String { path }
+    }
+
+    @State private var whyTarget: WhyTarget?
+    let client: AtlasClient
+    let repo: String
     let node: AtlasCodeGraphNode
     let state: AtlasCodeNodeState
     let ruleId: String?
@@ -34,6 +42,11 @@ struct AtlasCodeProvenanceSheet: View {
                 .padding(22)
                 .padding(.bottom, 12)
             }
+        }
+        .sheet(item: $whyTarget) { target in
+            AtlasCodeWhySheet(client: client, repo: repo, file: target.path)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
         }
     }
 }
@@ -245,7 +258,14 @@ extension AtlasCodeProvenanceSheet {
                         if index > 0 {
                             Divider().overlay(AtlasTheme.separator.opacity(0.5))
                         }
-                        AtlasCodeFileRow(file: file)
+                        Button {
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                            whyTarget = WhyTarget(path: file.path)
+                        } label: {
+                            AtlasCodeFileRow(file: file)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier(A11yID.whyFileRow(index))
                     }
                 }
                 .padding(.horizontal, 12)
