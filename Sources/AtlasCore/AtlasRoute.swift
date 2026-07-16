@@ -11,6 +11,7 @@ public enum AtlasRoute {
     public static let codeMirror = "/code/mirror"
     public static let codeHealsTick = "/code/heals/tick"
     public static let codeWeek = "/code/week"
+    public static let codeWhy = "/code/why"
     public static let liveActivities = "/ai/live-activities"
     public static let liveActivityStartTokens = "/ai/live-activities/start-tokens"
     public static let uploadChunksStart = "/ai/uploads/chunks/start"
@@ -159,4 +160,5 @@ public func runAtlasRouteChecks(_ check: (String, Bool) -> Void) {
           AtlasRoute.uploadChunk("up/7") == "/ai/uploads/chunks/up%2F7/chunk")
     check("route autonomos transfer status keeps area and handoff encoded",
           AtlasRoute.autonomosTransferStatus(area: "obra/17", handoffId: "handoff 9") == "/ai/software-company-stewardship/loop/obra%2F17/transfer/handoff%209")
+    check("route code why uses canonical H1 path", AtlasRoute.codeWhy == "/code/why")
 }
