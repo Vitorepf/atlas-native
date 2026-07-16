@@ -94,8 +94,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S2 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/{AtlasAiDecisions,AtlasAiQuality,AtlasAiThreadsExtra}.swift` | S1 | F0.3 poda parcial Decisions/Quality/ThreadsExtra | tipos pinados pelo trace vivos; APIs mortas fora; checks+build verdes | −456 Swift; checks exit 0; build exit 0 |
 | S3 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/{Models,Merge}.swift`; trio VERIFICAR em AtlasAiModels; checks main.swift | S2 | F0.4+F0.5 Models+Merge DELETE (default) + trio VERIFICAR | 0 refs produto; checks+build verdes | −~210 Swift; Session/Message KEEP (estruturais); Providers enum DELETE; ressalva sync offline em §7 |
 | S4 | **DONE** | **Grok 4.5** | `App/Atlas/{AtlasTheme,RootView}.swift` | S3 | F0.6 tema morto + botão morto | 0 usos dos tokens; zero botão falso; build verde | −5 tokens + botão falso; prussian fica; checks+build exit 0 |
-| S5 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/Fonts/*`; `AtlasType.swift`; `Info.plist` | S4 | F0.7 fontes inalcançáveis | só SemiBold/Regular/Italic/Mono no bundle; build verde | — |
-| S6–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S5 | commits 6–34 da spec | DoD por eixo com prova | — |
+| S5 | **DONE** | **Grok 4.5** | `App/Atlas/Fonts/*`; `AtlasType.swift`; `Info.plist` | S4 | F0.7 fontes inalcançáveis | só SemiBold/Regular/Italic/Mono no bundle; build verde | −144K Bold+Medium; 28/28 serif→SemiBold; checks+build exit 0 |
+| S6 | **IN_PROGRESS** | **Grok 4.5** | `docs/proposals/**`; `docs/superpowers/`; `.gitignore` | S5 | F0.8 docs dups + arquivamento | links repontados; dups fora; archive | — |
+| S7–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S6 | commits 7–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -723,6 +724,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S5/F0.7 · DELETE Fraunces Bold+Medium (144K) + cases mortos do switch; Regular permanece como fallback · prova: 28/28 AtlasFont.serif resolvem SemiBold; checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S4/F0.6 · remove tokens mortos (bgDeep/goldDeep/goldLight/domProgramacao/domAtlas) + botão falso «Adicionar workspace»; prussian mantido · prova: rg 0 usos; checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S3/F0.4+F0.5 · DELETE Models+Merge (−125) + checks Merge/Codable Capture (−~80) + enum AtlasAiProviders (−9); KEEP AtlasAiSession/Message (estruturais em AtlasAiThread). **Ressalva F0.4:** PoC de sync offline LWW/tombstone nunca ligado — default da spec DELETE (lei sem fundação pra depois); ressuscita do git se sync nascer · prova: re-grep 0 refs produto; checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S2/F0.3 · poda parcial Decisions/Quality/ThreadsExtra (−456): mantém tipos pinados pelo trace + surface-handoff/feedback; remove APIs admin órfãs · prova: re-grep 0 refs produto; checks exit 0; build exit 0; git diff --check limpo

@@ -8,13 +8,12 @@ import SwiftUI
 // O textStyle âncora deriva do tamanho base: título escala como título, corpo
 // como corpo, legenda como legenda — a hierarquia editorial sobrevive ao zoom.
 enum AtlasFont {
-    /// Serif Fraunces. Pesos mapeados pros nomes PostScript dos .ttf bundleados.
+    /// Serif Fraunces. Só SemiBold é usado na casca (28/28); Regular é o
+    /// fallback do default — Bold/Medium foram podados (0 chamadas).
     static func serif(_ size: CGFloat, _ weight: Font.Weight = .semibold) -> Font {
         let name: String
         switch weight {
-        case .bold, .heavy, .black: name = "Fraunces-Bold"
         case .semibold: name = "Fraunces-SemiBold"
-        case .medium: name = "Fraunces-Medium"
         default: name = "Fraunces-Regular"
         }
         return .custom(name, size: size, relativeTo: anchor(size))
