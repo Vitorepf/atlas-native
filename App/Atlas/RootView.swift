@@ -22,6 +22,7 @@ struct RootView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var path = NavigationPath()
     @State private var codeHub: AtlasCodeHubModel?
+    @State private var nightly = NightlyProposalController.shared
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -65,6 +66,15 @@ struct RootView: View {
             }
         }
         .tint(AtlasTheme.accent)
+        .onAppear {
+            nightly.registerOpenAutonomos {
+                path = NavigationPath()
+                path.append(Route.autonomos)
+            }
+            #if DEBUG
+            nightly.installDemoIfRequested()
+            #endif
+        }
         .task { if session.phase == .idle { await session.loadThreads() } }
         .task {
             // A linha CÓDIGO só fala com dado real: sem resposta, ela cala.

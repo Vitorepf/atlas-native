@@ -30,6 +30,11 @@ enum A11yID {
     static let liveNowRowPrefix = "live-now-row-"
     static func liveNowRow(_ index: Int) -> String { liveNowRowPrefix + String(index) }
 
+    // V2 · Proposta das 21h
+    static let nightlyProposalCard = "nightly-proposal-card"
+    static let nightlyProposalAccept = "nightly-proposal-accept"
+    static let nightlyProposalDismiss = "nightly-proposal-dismiss"
+
     /// Prefixo para `NSPredicate` nos UITests (slug/hash variáveis).
     static let radarRepoPrefix = "radar-repo-"
     static let radarFolderPrefix = "radar-folder-"

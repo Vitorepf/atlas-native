@@ -11,6 +11,8 @@ struct AutonomosView: View {
     @State private var control: AtlasAutonomosRunAction?
     @State private var startRunMode: AtlasAutonomosStartRunMode?
     @State private var showTransferSheet = false
+    @State private var nightly = NightlyProposalController.shared
+    @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
 
     private var model: AutonomosModel { session.autonomos }
 
@@ -32,6 +34,23 @@ struct AutonomosView: View {
         .sheet(item: $startRunMode) { mode in
             AutonomosStartRunSheet(mode: mode) { actor, reason in
                 Task { await model.startRun(mode: mode, operatorActor: actor, operatorReason: reason) }
+            }
+        }
+        .sheet(item: $nightlyStartProposal) { proposal in
+            AutonomosReasonSheet(
+                title: "Preparar missão noturna",
+                explainer: "Ensaio (dry-run): a frota recebe a missão proposta e o recibo entra na fila; só o lease confirma execução.",
+                reasonOptional: true,
+                initialReason: proposal.prefilledReason
+            ) { actor, reason in
+                Task {
+                    let previous = model.lastStartRunReceipt
+                    await model.startRun(mode: .dryRun, operatorActor: actor, operatorReason: reason)
+                    if model.lastStartRunReceipt != previous,
+                       model.lastStartRunReceipt?.isEnqueued == true {
+                        await nightly.accept(proposal)
+                    }
+                }
             }
         }
         .sheet(isPresented: $showTransferSheet) {
@@ -100,6 +119,14 @@ struct AutonomosView: View {
         case .loaded:
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 16) {
+                    if let proposal = nightly.pendingProposal {
+                        NightlyProposalCard(
+                            proposal: proposal,
+                            onAccept: { nightlyStartProposal = proposal },
+                            onDismiss: { nightly.dismissProposal() }
+                        )
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
                     if let fleet = model.fleet { fleetSummary(fleet) }
                     operationDigest
                     areaPicker
@@ -548,6 +575,20 @@ private struct AutonomosReasonSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var actor = ""
     @State private var reason = ""
+
+    init(
+        title: String,
+        explainer: String,
+        reasonOptional: Bool = false,
+        initialReason: String = "",
+        onConfirm: @escaping (String, String) -> Void
+    ) {
+        self.title = title
+        self.explainer = explainer
+        self.reasonOptional = reasonOptional
+        self.onConfirm = onConfirm
+        _reason = State(initialValue: initialReason)
+    }
 
     var body: some View {
         NavigationStack {
