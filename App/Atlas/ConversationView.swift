@@ -87,6 +87,7 @@ struct ConversationView: View {
             AtlasTheme.bg.ignoresSafeArea()
             VStack(spacing: 0) {
                 header
+                cacheAgeSeal
                 messages
             }
             composer
@@ -146,6 +147,16 @@ struct ConversationView: View {
             }
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 4).padding(.bottom, 4)
+    }
+
+    @ViewBuilder private var cacheAgeSeal: some View {
+        if model.showingStaleCache, let capturedAt = model.cacheCapturedAt {
+            StaleReadSeal(capturedAt: capturedAt)
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.top, 2)
+                .padding(.bottom, 8)
+                .transition(.opacity)
+        }
     }
 
     // MARK: - Turnos (página editorial)
@@ -561,4 +572,36 @@ struct ConversationView: View {
 private struct BottomDistanceKey: PreferenceKey {
     static let defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+}
+
+private struct StaleReadSeal: View {
+    let capturedAt: Date
+
+    var body: some View {
+        TimelineView(.periodic(from: Date(), by: 60)) { context in
+            HStack(spacing: 6) {
+                Image(systemName: "clock.arrow.circlepath")
+                    .font(.system(size: 10, weight: .semibold))
+                Text("visto há \(atlasRelativeAgePT(since: capturedAt, now: context.date))")
+                    .font(AtlasFont.mono(11))
+            }
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityLabel("histórico salvo visto há \(atlasRelativeAgePT(since: capturedAt, now: context.date))")
+        }
+    }
+}
+
+private func atlasRelativeAgePT(since date: Date, now: Date = Date()) -> String {
+    let seconds = max(0, Int(now.timeIntervalSince(date)))
+    if seconds < 60 { return "menos de 1 min" }
+
+    let minutes = seconds / 60
+    if minutes < 60 { return "\(minutes) min" }
+
+    let hours = minutes / 60
+    if hours < 24 { return "\(hours)h" }
+
+    let days = hours / 24
+    return days == 1 ? "1 dia" : "\(days) dias"
 }

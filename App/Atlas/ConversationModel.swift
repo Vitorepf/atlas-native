@@ -17,6 +17,8 @@ final class ConversationModel {
     var isSending = false
     var loadError: String?
     var toast: String?
+    var cacheCapturedAt: Date?
+    var showingStaleCache = false
     // Workspace da conversa — entra no payload do create (workspace_slug/name/path,
     // padrão do mobile RN; o servidor lê payload.workspace_* no AiGateway/AWIS).
     var workspaceName: String?
@@ -65,6 +67,7 @@ final class ConversationModel {
     @ObservationIgnored private let engine: AtlasRichInputEngine
     @ObservationIgnored private let outbox: InteractionOutbox
     @ObservationIgnored private let queueStore: QueuedFollowUpStore
+    @ObservationIgnored private let readCache: ThreadReadCache
     @ObservationIgnored private var queueScope: String
 
     /// Identidade da execução atual exposta à ponte ActivityKit, nunca à View.
@@ -93,13 +96,18 @@ final class ConversationModel {
         }
     }
 
-    init(client: AtlasClient, threadId: ThreadID?) {
+    init(
+        client: AtlasClient,
+        threadId: ThreadID?,
+        readCache: ThreadReadCache = ThreadReadCache(fileURL: ThreadReadCache.applicationSupportFileURL())
+    ) {
         self.client = client
         self.reviews = ChangeReviewModel(client: client)
         self.threadId = threadId
         self.engine = AtlasRichInputEngine(transport: client, installSalt: AtlasInstallationIdentity.id)
         self.outbox = InteractionOutbox(fileURL: InteractionOutbox.applicationSupportFileURL())
         self.queueStore = QueuedFollowUpStore(fileURL: QueuedFollowUpStore.applicationSupportFileURL())
+        self.readCache = readCache
         self.queueScope = threadId.map { "thread:\($0.rawValue)" } ?? "local:\(UUID().uuidString.lowercased())"
         self.effort = AtlasComputeEffort(
             rawValue: UserDefaults.standard.string(forKey: Self.effortPreferenceKey) ?? ""
@@ -260,29 +268,120 @@ final class ConversationModel {
     func load() async {
         await loadQueuedMessages()
         if let threadId {
+            let hydratedFromCache = await hydrateFromCache(threadId: threadId)
             do {
                 let response = try await client.getAiThread(threadId.rawValue)
-                if let w = response.thread.workspace, !w.isEmpty {
-                    workspacePath = w
-                    workspaceName = (w as NSString).lastPathComponent
-                    workspaceSlug = workspaceName?.lowercased()
-                }
-                bubbles = (response.thread.messages ?? [])
-                    .sorted { $0.position < $1.position }
-                    .map { message in
-                        let visible = message.role == "assistant"
-                            ? atlasVisibleAssistantText(message.content)
-                            : message.content
-                        return ChatBubble(id: message.id, role: message.role,
-                                      text: visible ?? "A resposta anterior continha saída interna e foi ocultada.",
-                                      traceId: message.traceId.map { TraceID($0) }, provider: message.provider, model: message.model)
-                    }
+                applyWorkspace(response.thread.workspace)
+                let messages = (response.thread.messages ?? []).sorted { $0.position < $1.position }
+                bubbles = Self.bubbles(from: messages)
+                showingStaleCache = false
+                cacheCapturedAt = nil
+                loadError = nil
+                try? await readCache.save(snapshot: Self.snapshot(
+                    threadId: threadId.rawValue,
+                    workspacePath: response.thread.workspace,
+                    messages: messages
+                ))
                 await loadExecutionHistory()
             } catch {
-                loadError = String(describing: error)
+                if hydratedFromCache || showingStaleCache {
+                    toast = "Sem rede agora — mantendo a última leitura salva."
+                } else if bubbles.isEmpty {
+                    loadError = atlasUserMessage(for: error)
+                }
             }
         }
         await recoverPendingIfNeeded()
+    }
+
+    private func hydrateFromCache(threadId: ThreadID) async -> Bool {
+        guard let snapshot = await readCache.load(threadId: threadId.rawValue) else {
+            showingStaleCache = false
+            cacheCapturedAt = nil
+            return false
+        }
+        applyWorkspace(snapshot.workspacePath)
+        bubbles = Self.bubbles(from: snapshot.messages)
+        cacheCapturedAt = snapshot.capturedAt
+        showingStaleCache = true
+        loadError = nil
+        return true
+    }
+
+    private func applyWorkspace(_ path: String?) {
+        guard let path, !path.isEmpty else { return }
+        workspacePath = path
+        workspaceName = (path as NSString).lastPathComponent
+        workspaceSlug = workspaceName?.lowercased()
+    }
+
+    private static func bubbles(from messages: [AtlasAiMessage]) -> [ChatBubble] {
+        messages.map { message in
+            bubble(
+                id: message.id,
+                role: message.role,
+                content: message.content,
+                traceId: message.traceId,
+                provider: message.provider,
+                model: message.model
+            )
+        }
+    }
+
+    private static func bubbles(from messages: [ThreadReadCache.Message]) -> [ChatBubble] {
+        messages.map { message in
+            bubble(
+                id: message.id,
+                role: message.role,
+                content: message.content,
+                traceId: message.traceId,
+                provider: message.provider,
+                model: message.model
+            )
+        }
+    }
+
+    private static func bubble(
+        id: String,
+        role: String,
+        content: String,
+        traceId: String?,
+        provider: String?,
+        model: String?
+    ) -> ChatBubble {
+        let visible = role == "assistant"
+            ? atlasVisibleAssistantText(content)
+            : content
+        return ChatBubble(
+            id: id,
+            role: role,
+            text: visible ?? "A resposta anterior continha saída interna e foi ocultada.",
+            traceId: traceId.map { TraceID($0) },
+            provider: provider,
+            model: model
+        )
+    }
+
+    private static func snapshot(
+        threadId: String,
+        workspacePath: String?,
+        messages: [AtlasAiMessage]
+    ) -> ThreadReadCache.Snapshot {
+        ThreadReadCache.Snapshot(
+            threadId: threadId,
+            capturedAt: Date(),
+            workspacePath: workspacePath,
+            messages: messages.map {
+                ThreadReadCache.Message(
+                    id: $0.id,
+                    role: $0.role,
+                    content: $0.content,
+                    traceId: $0.traceId,
+                    provider: $0.provider,
+                    model: $0.model
+                )
+            }
+        )
     }
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
