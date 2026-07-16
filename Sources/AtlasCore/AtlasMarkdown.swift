@@ -122,12 +122,19 @@ public enum AtlasMarkdown {
     private static let quoteRE = re("^>\\s?")
     private static let tableSepRE = re("^\\s*\\|?\\s*:?-{2,}:?\\s*(\\|\\s*:?-{2,}:?\\s*)+\\|?\\s*$")
 
+    private static func range(_ ns: NSString) -> NSRange {
+        NSRange(location: 0, length: ns.length)
+    }
+    private static func firstMatch(_ r: NSRegularExpression, _ s: String, _ ns: NSString) -> NSTextCheckingResult? {
+        r.firstMatch(in: s, range: range(ns))
+    }
     private static func test(_ r: NSRegularExpression, _ s: String) -> Bool {
-        r.firstMatch(in: s, range: NSRange(location: 0, length: (s as NSString).length)) != nil
+        let ns = s as NSString
+        return firstMatch(r, s, ns) != nil
     }
     private static func strip(_ r: NSRegularExpression, _ s: String) -> String {
         let ns = s as NSString
-        return r.stringByReplacingMatches(in: s, options: [], range: NSRange(location: 0, length: ns.length), withTemplate: "")
+        return r.stringByReplacingMatches(in: s, options: [], range: range(ns), withTemplate: "")
     }
 
     private static func parseBlocks(_ text: String) -> [MarkdownBlock] {
@@ -136,12 +143,13 @@ public enum AtlasMarkdown {
         var i = 0
         while i < lines.count {
             let line = lines[i]
+            let lineNS = line as NSString
             if line.trimmingCharacters(in: .whitespaces).isEmpty { i += 1; continue }
 
-            if test(dividerRE, line) { blocks.append(.divider); i += 1; continue }
+            if firstMatch(dividerRE, line, lineNS) != nil { blocks.append(.divider); i += 1; continue }
 
-            if let f = fenceRE.firstMatch(in: line, range: NSRange(location: 0, length: (line as NSString).length)) {
-                let lang = group(f, 1, line as NSString).flatMap { $0.isEmpty ? nil : $0 }
+            if let f = firstMatch(fenceRE, line, lineNS) {
+                let lang = group(f, 1, lineNS).flatMap { $0.isEmpty ? nil : $0 }
                 var buf: [String] = []
                 i += 1
                 while i < lines.count && !test(fenceEndRE, lines[i]) { buf.append(lines[i]); i += 1 }
@@ -150,9 +158,9 @@ public enum AtlasMarkdown {
                 continue
             }
 
-            if let h = headingRE.firstMatch(in: line, range: NSRange(location: 0, length: (line as NSString).length)) {
-                let level = group(h, 1, line as NSString)?.count ?? 1
-                blocks.append(.heading(level: level, spans: parseInline(group(h, 2, line as NSString) ?? "")))
+            if let h = firstMatch(headingRE, line, lineNS) {
+                let level = group(h, 1, lineNS)?.count ?? 1
+                blocks.append(.heading(level: level, spans: parseInline(group(h, 2, lineNS) ?? "")))
                 i += 1
                 continue
             }
@@ -200,7 +208,7 @@ public enum AtlasMarkdown {
     }
 
     private static func isBlockStart(_ line: String) -> Bool {
-        test(re("^#{1,3}\\s"), line) || test(ulistRE, line) || test(olistRE, line)
+        test(headingRE, line) || test(ulistRE, line) || test(olistRE, line)
             || test(quoteRE, line) || line.hasPrefix("```") || test(dividerRE, line)
     }
 

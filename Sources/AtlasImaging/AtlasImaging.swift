@@ -47,6 +47,20 @@ public enum AtlasImaging {
         _ data: Data, mimeType: String,
         limits: AtlasAttachmentLimits = .canonical
     ) throws -> Normalized {
+        try normalizeUpload(data, mimeType: mimeType, limits: limits, previewMaximumPixelSize: nil).upload
+    }
+
+    private struct NormalizedUpload {
+        let upload: Normalized
+        let previewImage: CGImage?
+    }
+
+    private static func normalizeUpload(
+        _ data: Data,
+        mimeType: String,
+        limits: AtlasAttachmentLimits,
+        previewMaximumPixelSize: Int?
+    ) throws -> NormalizedUpload {
         let mime = mimeType.lowercased()
 
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
@@ -61,7 +75,11 @@ public enum AtlasImaging {
 
         // GIF: nunca re-encodar (perderia frames)
         if mime == "image/gif" {
-            return Normalized(data: data, mimeType: "image/gif", width: width, height: height)
+            let previewImage = try previewMaximumPixelSize.map { try thumbnail(from: source, maximumPixelSize: $0) }
+            return NormalizedUpload(
+                upload: Normalized(data: data, mimeType: "image/gif", width: width, height: height),
+                previewImage: previewImage
+            )
         }
 
         let serverSafe = AtlasAttachmentClassifier.supportedImageMime.contains(mime)
@@ -69,22 +87,26 @@ public enum AtlasImaging {
 
         // Fast path: já aceita pelo servidor e dentro da dimensão → intacta
         if serverSafe && !needsResize {
-            return Normalized(data: data, mimeType: mime == "image/jpg" ? "image/jpeg" : mime,
-                              width: width, height: height)
+            let previewImage: CGImage?
+            if previewMaximumPixelSize != nil {
+                guard let full = CGImageSourceCreateImageAtIndex(source, 0, nil) else {
+                    throw AtlasImagingError.undecodable
+                }
+                previewImage = full
+            } else {
+                previewImage = nil
+            }
+            return NormalizedUpload(
+                upload: Normalized(data: data, mimeType: mime == "image/jpg" ? "image/jpeg" : mime,
+                                   width: width, height: height),
+                previewImage: previewImage
+            )
         }
 
         // Decode (com resize + transform EXIF quando necessário)
         let cgImage: CGImage
         if needsResize {
-            let options: [CFString: Any] = [
-                kCGImageSourceCreateThumbnailFromImageAlways: true,
-                kCGImageSourceThumbnailMaxPixelSize: limits.maxImageDimension,
-                kCGImageSourceCreateThumbnailWithTransform: true,
-            ]
-            guard let thumb = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
-                throw AtlasImagingError.undecodable
-            }
-            cgImage = thumb
+            cgImage = try thumbnail(from: source, maximumPixelSize: limits.maxImageDimension)
         } else {
             guard let full = CGImageSourceCreateImageAtIndex(source, 0, nil) else {
                 throw AtlasImagingError.undecodable
@@ -93,17 +115,14 @@ public enum AtlasImaging {
         }
 
         // PNG com alpha permanece PNG; resto (HEIC, TIFF, oversized JPEG…) vira JPEG q0.86
-        let hasAlpha: Bool = {
-            switch cgImage.alphaInfo {
-            case .premultipliedLast, .premultipliedFirst, .last, .first: return true
-            default: return false
-            }
-        }()
-        let keepPng = mime == "image/png" && hasAlpha
-        return try encode(
-            cgImage,
-            preservingPng: keepPng,
-            jpegQuality: limits.imageJpegQuality
+        let keepPng = mime == "image/png" && hasAlpha(cgImage)
+        return NormalizedUpload(
+            upload: try encode(
+                cgImage,
+                preservingPng: keepPng,
+                jpegQuality: limits.imageJpegQuality
+            ),
+            previewImage: cgImage
         )
     }
 
@@ -118,20 +137,17 @@ public enum AtlasImaging {
               let source = CGImageSourceCreateWithData(data as CFData, nil) else {
             throw AtlasImagingError.undecodable
         }
-        let options: [CFString: Any] = [
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceThumbnailMaxPixelSize: maximumPixelSize,
-            kCGImageSourceCreateThumbnailWithTransform: true,
-        ]
-        guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
-            throw AtlasImagingError.undecodable
-        }
-        let hasAlpha: Bool
-        switch image.alphaInfo {
-        case .premultipliedLast, .premultipliedFirst, .last, .first: hasAlpha = true
-        default: hasAlpha = false
-        }
-        let keepPng = mimeType.lowercased() == "image/png" && hasAlpha
+        let image = try thumbnail(from: source, maximumPixelSize: maximumPixelSize)
+        return try preview(image, mimeType: mimeType, maximumPixelSize: maximumPixelSize)
+    }
+
+    public static func preview(
+        _ image: CGImage,
+        mimeType: String,
+        maximumPixelSize: Int = 256
+    ) throws -> Normalized {
+        let image = try downscale(image, maximumPixelSize: maximumPixelSize)
+        let keepPng = mimeType.lowercased() == "image/png" && hasAlpha(image)
         return try encode(image, preservingPng: keepPng, jpegQuality: 0.72)
     }
 
@@ -145,13 +161,28 @@ public enum AtlasImaging {
     ) async throws -> PreparedForComposer {
         let task = Task<PreparedForComposer, Error>.detached(priority: .userInitiated) {
             try Task.checkCancellation()
-            let upload = try normalize(data, mimeType: mimeType)
-            try Task.checkCancellation()
-            let thumbnail = try preview(
-                upload.data,
-                mimeType: upload.mimeType,
-                maximumPixelSize: maximumPreviewPixelSize
+            let normalized = try normalizeUpload(
+                data,
+                mimeType: mimeType,
+                limits: .canonical,
+                previewMaximumPixelSize: maximumPreviewPixelSize > 0 ? maximumPreviewPixelSize : nil
             )
+            let upload = normalized.upload
+            try Task.checkCancellation()
+            let thumbnail: Normalized
+            if let previewImage = normalized.previewImage {
+                thumbnail = try preview(
+                    previewImage,
+                    mimeType: upload.mimeType,
+                    maximumPixelSize: maximumPreviewPixelSize
+                )
+            } else {
+                thumbnail = try preview(
+                    upload.data,
+                    mimeType: upload.mimeType,
+                    maximumPixelSize: maximumPreviewPixelSize
+                )
+            }
             return PreparedForComposer(upload: upload, preview: thumbnail)
         }
         return try await withTaskCancellationHandler {
@@ -159,6 +190,53 @@ public enum AtlasImaging {
         } onCancel: {
             task.cancel()
         }
+    }
+
+    private static func thumbnail(from source: CGImageSource, maximumPixelSize: Int) throws -> CGImage {
+        guard maximumPixelSize > 0 else { throw AtlasImagingError.undecodable }
+        let options: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceThumbnailMaxPixelSize: maximumPixelSize,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+        ]
+        guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
+            throw AtlasImagingError.undecodable
+        }
+        return image
+    }
+
+    private static func hasAlpha(_ image: CGImage) -> Bool {
+        switch image.alphaInfo {
+        case .premultipliedLast, .premultipliedFirst, .last, .first: return true
+        default: return false
+        }
+    }
+
+    private static func downscale(_ image: CGImage, maximumPixelSize: Int) throws -> CGImage {
+        guard maximumPixelSize > 0 else { throw AtlasImagingError.undecodable }
+        let largest = max(image.width, image.height)
+        guard largest > maximumPixelSize else { return image }
+
+        let scale = Double(maximumPixelSize) / Double(largest)
+        let width = max(1, Int((Double(image.width) * scale).rounded()))
+        let height = max(1, Int((Double(image.height) * scale).rounded()))
+        let alphaInfo: CGImageAlphaInfo = hasAlpha(image) ? .premultipliedLast : .noneSkipLast
+        let bitmapInfo = CGBitmapInfo.byteOrder32Big.rawValue | alphaInfo.rawValue
+        guard let context = CGContext(
+            data: nil,
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bytesPerRow: 0,
+            space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: bitmapInfo
+        ) else {
+            throw AtlasImagingError.encodeFailed
+        }
+        context.interpolationQuality = .high
+        context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+        guard let scaled = context.makeImage() else { throw AtlasImagingError.encodeFailed }
+        return scaled
     }
 
     private static func encode(

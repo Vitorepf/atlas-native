@@ -41,20 +41,43 @@ public struct DataByteSource: AttachmentByteSource {
 /// FileHandle com seek+read — Files/fileImporter/NSOpenPanel. Diferente do
 /// expo-file-system, leitura por offset NUNCA é indisponível → sem fallback.
 public struct FileByteSource: AttachmentByteSource {
-    private let url: URL
+    private let handle: FileByteSourceHandle
     public let totalBytes: Int
     public init(url: URL) throws {
-        self.url = url
         let scoped = url.startAccessingSecurityScopedResource()
-        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-        let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
-        self.totalBytes = (attrs[.size] as? Int) ?? 0
+        do {
+            let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
+            let openHandle = try FileHandle(forReadingFrom: url)
+            self.totalBytes = (attrs[.size] as? Int) ?? (attrs[.size] as? NSNumber)?.intValue ?? 0
+            self.handle = FileByteSourceHandle(handle: openHandle, scopedURL: scoped ? url : nil)
+        } catch {
+            if scoped { url.stopAccessingSecurityScopedResource() }
+            throw error
+        }
     }
     public func read(offset: Int, length: Int) throws -> Data {
-        let scoped = url.startAccessingSecurityScopedResource()
-        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-        let handle = try FileHandle(forReadingFrom: url)
-        defer { try? handle.close() }
+        try handle.read(offset: offset, length: length)
+    }
+}
+
+private final class FileByteSourceHandle: @unchecked Sendable {
+    private let handle: FileHandle
+    private let scopedURL: URL?
+    private let lock = NSLock()
+
+    init(handle: FileHandle, scopedURL: URL?) {
+        self.handle = handle
+        self.scopedURL = scopedURL
+    }
+
+    deinit {
+        try? handle.close()
+        scopedURL?.stopAccessingSecurityScopedResource()
+    }
+
+    func read(offset: Int, length: Int) throws -> Data {
+        lock.lock()
+        defer { lock.unlock() }
         try handle.seek(toOffset: UInt64(offset))
         return try handle.read(upToCount: length) ?? Data()
     }
