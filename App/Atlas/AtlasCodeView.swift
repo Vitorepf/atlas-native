@@ -79,6 +79,11 @@ struct AtlasCodeView: View {
                 title: "Código · \(model.repo)",
                 emptyPrompt: "O que você quer saber deste repositório?",
                 emptySuggestions: AtlasCodeAskSuggestions.all,
+                // Esta tela é inteira sobre um repositório: ela DIZ isso, em vez
+                // de deixar o Atlas Decide farejar "commit" na prosa — que, com
+                // os fatos prefixados, virou a máquina decidindo por si mesma.
+                taskKind: "code",
+                workspace: model.repo,
                 turnFacts: { [askModel] question in await askModel.facts(for: question) },
                 onThread: { askThreadId = $0 }
             )

@@ -53,6 +53,8 @@ struct ConversationView: View {
         title: String,
         emptyPrompt: String? = nil,
         emptySuggestions: [String]? = nil,
+        taskKind: String? = nil,
+        workspace: String? = nil,
         turnFacts: ((String) async -> String?)? = nil,
         onThread: ((String) -> Void)? = nil
     ) {
@@ -63,6 +65,11 @@ struct ConversationView: View {
         self.onThread = onThread
         let model = ConversationModel(client: client, threadId: threadId)
         model.turnFacts = turnFacts
+        model.taskKind = taskKind
+        if let workspace {
+            model.workspaceSlug = workspace
+            model.workspaceName = workspace
+        }
         _model = State(initialValue: model)
     }
 

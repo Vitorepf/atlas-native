@@ -150,6 +150,17 @@ final class ConversationModel {
     /// agente. `nil` (ausente ou devolvendo nil) = conversa normal, sem muleta.
     @ObservationIgnored var turnFacts: ((String) async -> String?)?
 
+    /// A natureza da tarefa, DECLARADA pela superfície (`payload.task_type`).
+    ///
+    /// O Atlas Decide precisa saber se é código para escolher o motor, e sem
+    /// isto ele adivinha farejando palavra na prosa (`hasProgrammingIntentSignal`
+    /// procura "repo", "commit"…). Duas consequências ruins: numa conversa sobre
+    /// a vida, citar "commit" viraria tarefa de código; e no card do Código —
+    /// que é uma tela inteira sobre um repositório — quem acabava decidindo era
+    /// o dossiê de fatos que a própria máquina prefixou. A tela SABE o que ela
+    /// é; adivinhar o que já se sabe é o desperdício mais bobo de todos.
+    @ObservationIgnored var taskKind: String?
+
     private let client: AtlasClient
     private(set) var threadId: String?
     private var activeRun: InteractionRun?
@@ -552,6 +563,10 @@ final class ConversationModel {
             var payload: [String: JSONValue] = [
                 "tool_permissions": .object(["mode": .string("read")]),
             ]
+            // A superfície declara a natureza da tarefa em vez de deixar o
+            // roteador farejá-la na prosa. `task_type` é contrato existente do
+            // Atlas Decide (`isProgrammingTask`), não invenção minha.
+            if let taskKind { payload["task_type"] = .string(taskKind) }
             if let e = effort.payloadValue { payload["compute_effort"] = .string(e) }
             if let metadata = longMessage.metadata {
                 payload["long_message"] = .object(metadata.values)
@@ -575,6 +590,12 @@ final class ConversationModel {
                let facts = await collectFacts(originalText),
                !facts.isEmpty {
                 wireText = facts + "\n\n" + trimmed
+                // Quem sabe o que o operador DIGITOU é esta tela, e ela tem de
+                // dizer: sem isto o Atlas aprende "regras do operador" lendo o
+                // dossiê que a própria máquina anexou — e grava a prosa dela
+                // como se fosse a voz dele. Medido: 8 de 13 sinais de
+                // aprendizado eram frases que o operador nunca escreveu.
+                payload["operator_text"] = .string(originalText)
             }
             let input = CreateAiInteractionInput(inputText: wireText,
                                                  clientId: UUID().uuidString.lowercased(),
