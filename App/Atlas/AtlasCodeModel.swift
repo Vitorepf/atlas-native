@@ -4,13 +4,10 @@ import Observation
 @MainActor
 @Observable
 final class AtlasCodeModel {
-    enum Phase: Equatable {
-        case idle, loading, loaded, failed(String)
-    }
 
     let client: AtlasClient
     let repo: String
-    private(set) var phase: Phase = .idle
+    private(set) var phase: LoadPhase = .idle
     private(set) var graph: AtlasCodeGraphResponse?
     private(set) var violations: AtlasCodeViolationsResponse?
     private(set) var heal: AtlasCodeHealResponse?

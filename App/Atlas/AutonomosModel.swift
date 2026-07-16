@@ -7,16 +7,10 @@ import AtlasCore
 @MainActor
 @Observable
 final class AutonomosModel {
-    enum Phase: Equatable {
-        case idle
-        case loading
-        case loaded
-        case failed(String)
-    }
 
     private let client: AtlasClient
 
-    var phase: Phase = .idle
+    var phase: LoadPhase = .idle
     var areas: [AtlasAutonomosArea] = []
     var selectedAreaID: String?
     var live: AtlasAutonomosLiveResponse?

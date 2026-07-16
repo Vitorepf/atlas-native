@@ -13,12 +13,9 @@ import SwiftUI
 @MainActor
 @Observable
 final class AtlasCodeWorkspaceModel {
-    enum Phase: Equatable {
-        case idle, loading, loaded, failed(String)
-    }
 
     private let client: AtlasClient
-    private(set) var phase: Phase = .idle
+    private(set) var phase: LoadPhase = .idle
     private(set) var workspace: AtlasCodeWorkspaceResponse?
     /// Exceções por repo (slug → issues). Chave ausente = ainda não varrido.
     private(set) var issuesBySlug: [String: [AtlasCodeIssue]] = [:]

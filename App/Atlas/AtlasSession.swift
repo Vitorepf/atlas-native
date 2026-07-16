@@ -8,12 +8,7 @@ import AtlasCore
 @MainActor
 @Observable
 final class AtlasSession {
-    enum Phase: Equatable {
-        case idle, loading, loaded
-        case failed(String)
-    }
-
-    var phase: Phase = .idle
+    var phase: LoadPhase = .idle
     var failureKind: AtlasNetworkFailureKind?
     var threads: [AtlasAiThread] = []
 

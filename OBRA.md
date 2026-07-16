@@ -101,8 +101,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S9 | **DONE** | **Grok 4.5** | `App/Atlas/ConversationModel.swift` (+ presence/bridge) | S8 | F1.2 IDs tipados (models) | threadId/jobId/clientId/traceId tipados no model | ChatBubble/Model seams tipados; checks+build exit 0 |
 | S10 | **DONE** | **Grok 4.5** | `App/Atlas/*View*.swift` | S9 | F1.2 IDs tipados (views) | 0 Id:String em assinatura de view do loop | Route/ConversationView/askThread tipados; rg 0 em App/Atlas |
 | S11 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasDecoding.swift` + 9 call sites | S10 | F1.3 requireSchema() | schema-guards deduplicados; checks fail-closed verdes | −~64; 9 sites; checks+build exit 0 |
-| S12 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/LoadPhase.swift` + models | S11 | F1.4 LoadPhase compartilhado | Autonomos/Code/Provenance usam LoadPhase | — |
-| S13–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S12 | commits 13–34 da spec | DoD por eixo com prova | — |
+| S12 | **DONE** | **Grok 4.5** | `App/Atlas/LoadPhase.swift` + models | S11 | F1.4 LoadPhase compartilhado | Autonomos/Code/Workspace/Session usam LoadPhase | Provenance/Ask mantêm Phase própria (associada); F1 FECHADA |
+| S13 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/AtlasClient.swift` SSE | S12 | F2.1 SSE sem gordura (TDD) | drain por cursor; 1 decoder; checks equiv; live-probe se token | — |
+| S14–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S13 | commits 14–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -668,6 +669,14 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   `/ai/quality/*`, `/ai/attachments/search`, `POST /ai/threads`,
   `GET /ai/threads/{id}/state|snapshots`, `POST /ai/threads/{id}/compact|switch-provider`.
 
+- [ABERTO · SOTA F5.1 · Grok→operador] **Baseline Instruments no iPhone físico**
+  (cold launch <400ms; 0 hitches @120Hz em streaming 40k; grafo 200 nós; upload
+  20MB <60MB incrementais). Sessão CLI sem Xcode+device Instruments: registrar
+  números em `docs/evidence/perf-baseline/{antes,depois}/` quando o operador
+  rodar. Roteiro: Instruments templates Time Profiler + Animation Hitches +
+  Allocations; app Debug no device; capturar antes (pós-F1) e depois (pós-F2).
+  NUNCA declarar alvos atingidos sem medição real.
+
 ## 6. Decisões registradas
 
 - **2026-07-16 · Grok 4.5 executa a spec SOTA 10/10** (`docs/plano-sota-10-de-10.md`)
@@ -748,6 +757,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S12/F1.4 + **F1 FECHADA** · `LoadPhase` compartilhado (Autonomos/Code/Workspace/Session); Provenance/Ask mantêm Phase com associated value · prova: checks+build exit 0. F5.1 baseline Instruments → §5 pendência operador
 - 2026-07-16 · Grok 4.5 · SOTA S11/F1.3 · `KeyedDecodingContainer.requireSchema` + 9 sites (Week/Violations/Graph×2/Ask/Mirror/Workspace/Heals/ChangeReview) · prova: checks schema desconhecido verdes; checks+build exit 0; −~64 linhas
 - 2026-07-16 · Grok 4.5 · SOTA S10/F1.2-views · Route.thread/ConversationView/AtlasCode askThread usam ThreadID; 0 `Id: String` em App/Atlas · prova: rg zero; checks+build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S9/F1.2-models · ConversationModel/ChatBubble/TurnPresence/LiveActivity seams: TraceID/ThreadID/JobID tipados; rawValue só na borda ActivityKit · prova: checks exit 0; build exit 0; 0 Id:String em *Model*.swift
