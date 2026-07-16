@@ -302,4 +302,41 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
         "pai fora da janela não quebra a travessia",
         AtlasCodeGraphState.spine(nodes: [no("x", parents: ["forade"])].compactMap { $0 }, head: "x") == ["x", "forade"]
     )
+
+    // HEAD ≠ TRUNK: os dois são fatos diferentes e confundi-los INVERTE a lei
+    // da cor. Medido no nivor-back-end (trunk=`production`, operador noutra
+    // branch): 173 nós pela trunk, 167 pelo head — conjuntos diferentes, e os
+    // 167 incluíam trabalho FORA da trunk pintado como norma.
+    let contrato = """
+    {"schema_version":"atlas.code.graph.v1","repo":"nivor-back-end",
+     "generated_at":"2026-07-15T05:00:00Z","head":"obra1","default_branch":"production",
+     "trunk_head":"prod1",
+     "nodes":[
+       {"hash":"obra1","parents":["prod1"],"refs":["HEAD -> obra/x"],"author_name":"V","author_email":"v@x.test","authored_at":1784316000,"message":"trabalho na obra"},
+       {"hash":"prod1","parents":[],"refs":["production"],"author_name":"V","author_email":"v@x.test","authored_at":1784315000,"message":"na trunk"}
+     ],
+     "worktrees":[],"pagination":{"limit":200,"before":null,"has_more":false},
+     "cache":{"strategy":"refs_fingerprint","refs_fingerprint":"x","invalidated":false}}
+    """
+    let d2 = JSONDecoder(); d2.keyDecodingStrategy = atlasSnakeKeyDecoding
+    let grafo = try? d2.decode(AtlasCodeGraphResponse.self, from: Data(contrato.utf8))
+
+    check("o contrato traz a ponta da trunk, separada do head", grafo?.trunkHead == "prod1" && grafo?.head == "obra1")
+
+    let daTrunk = AtlasCodeGraphState.spine(nodes: grafo?.nodes ?? [], head: grafo?.trunkHead)
+    check("a espinha da trunk NÃO inclui o commit da obra", daTrunk == ["prod1"])
+
+    let doHead = AtlasCodeGraphState.spine(nodes: grafo?.nodes ?? [], head: grafo?.head)
+    check("traçar do head pintaria a obra de dourado — o defeito que isto trava", doHead.contains("obra1"))
+
+    if let obra = grafo?.nodes.first(where: { $0.hash == "obra1" }) {
+        check(
+            "commit de obra é história, nunca 'na main'",
+            AtlasCodeGraphState.state(for: obra, defaultBranch: grafo?.defaultBranch, violatingHashes: [], healedHashes: [], spineHashes: daTrunk) == .history
+        )
+    }
+
+    // Servidor antigo/trunk ambígua: sem trunk_head, a tela cai na ref e pinta
+    // menos — nunca pinta de dourado o que não está na trunk.
+    check("sem trunk_head a espinha é vazia, não um chute", AtlasCodeGraphState.spine(nodes: grafo?.nodes ?? [], head: nil).isEmpty)
 }

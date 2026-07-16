@@ -8,15 +8,27 @@ public struct AtlasCodeGraphResponse: Decodable, Sendable {
     public let schemaVersion: String
     public let repo: String
     public let generatedAt: String
+    /// Onde o operador está parado. NÃO é de onde a espinha nasce.
     public let head: String?
     public let defaultBranch: String?
+    /// A ponta da TRUNK — a origem da espinha dourada.
+    ///
+    /// Existe porque `head` e a trunk são fatos diferentes e confundi-los
+    /// inverte a lei da cor: estando numa obra, traçar a espinha do `head`
+    /// pinta a obra inteira de dourado — a exceção vestida de norma, o oposto
+    /// do que o operador precisa ver. Medido no nivor-back-end (trunk =
+    /// `production`): 173 nós pela trunk, 167 pelo head, conjuntos diferentes.
+    ///
+    /// Ausente quando a trunk é ambígua ou o servidor é antigo: aí a tela pinta
+    /// menos do que devia, nunca pinta errado.
+    public let trunkHead: String?
     public let nodes: [AtlasCodeGraphNode]
     public let worktrees: [AtlasCodeGraphWorktree]
     public let pagination: AtlasCodeGraphPagination
     public let cache: AtlasCodeGraphCache
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, repo, generatedAt, head, defaultBranch, nodes, worktrees, pagination, cache
+        case schemaVersion, repo, generatedAt, head, defaultBranch, trunkHead, nodes, worktrees, pagination, cache
     }
 
     public init(from decoder: Decoder) throws {
@@ -34,6 +46,7 @@ public struct AtlasCodeGraphResponse: Decodable, Sendable {
         self.generatedAt = try values.decode(String.self, forKey: .generatedAt)
         self.head = try values.decodeIfPresent(String.self, forKey: .head)
         self.defaultBranch = try values.decodeIfPresent(String.self, forKey: .defaultBranch)
+        self.trunkHead = try values.decodeIfPresent(String.self, forKey: .trunkHead)
         self.nodes = try values.decode([AtlasCodeGraphNode].self, forKey: .nodes)
         self.worktrees = try values.decode([AtlasCodeGraphWorktree].self, forKey: .worktrees)
         self.pagination = try values.decode(AtlasCodeGraphPagination.self, forKey: .pagination)

@@ -26,10 +26,14 @@ final class AtlasCodeModel {
         do {
             let graph = try await client.getCodeGraph(repo: repo, before: before)
             self.graph = graph
-            // A espinha vem da travessia dos pais a partir do head, não das
-            // refs: o git decora só a ponta, e sem isto 197 dos 200 commits da
-            // main apareciam como história cinza.
-            spineHashes = AtlasCodeGraphState.spine(nodes: graph.nodes, head: graph.head)
+            // A espinha nasce da ponta da TRUNK e desce pelos pais.
+            //
+            // Duas coisas que pareciam uma: o git decora só a ponta (por isso a
+            // travessia), e `head` é onde o OPERADOR está, não a trunk (por
+            // isso `trunkHead`). Traçar do `head` numa obra pintaria a obra
+            // inteira de dourado — a exceção vestida de norma. Sem trunk, sem
+            // espinha: pinta menos, nunca pinta errado.
+            spineHashes = AtlasCodeGraphState.spine(nodes: graph.nodes, head: graph.trunkHead)
             // A stale or unavailable scan must not hide a valid topology.
             violations = try? await client.getCodeViolations(repo: repo)
             heal = try? await client.getCodeHealTick(repo: repo)
