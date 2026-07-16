@@ -89,6 +89,36 @@ check("boolean vira 1/0", atlasQueryString([("light", .bool(true)), ("x", .bool(
 check("encoda valores (espaço/&)", atlasQueryString([("q", .string("a b&c"))]) == "?q=a%20b%26c")
 check("ordem de inserção preservada", atlasQueryString([("status", .string("active")), ("limit", .int(10))]) == "?status=active&limit=10")
 
+print("\nJSONValue (ponte JSONSerialization sem alterar contrato Codable):")
+do {
+    let json = Data("""
+    {"trace_id":"t-1","pinned":true,"score":4.5,"items":[null,"ok"],"meta":{"empty":[]}}
+    """.utf8)
+    let value = try JSONDecoder().decode(JSONValue.self, from: json)
+    check("JSONValue preserva objeto/array/escalares", {
+        guard case .object(let obj) = value else { return false }
+        return obj["trace_id"]?.stringValue == "t-1"
+            && obj["pinned"]?.boolValue == true
+            && obj["score"]?.doubleValue == 4.5
+            && obj["items"] == .array([.null, .string("ok")])
+            && obj["meta"]?["empty"] == .array([])
+    }())
+
+    let snakeDecoder = JSONDecoder()
+    snakeDecoder.keyDecodingStrategy = atlasSnakeKeyDecoding
+    let snakeValue = try snakeDecoder.decode(JSONValue.self, from: Data("{\"trace_id\":\"t-2\"}".utf8))
+    check("JSONValue direto preserva chaves cruas", snakeValue["trace_id"]?.stringValue == "t-2")
+
+    check("JSONObject decoda objeto", (try JSONDecoder().decode(JSONObject.self, from: json))["trace_id"]?.stringValue == "t-1")
+    check("JSONObject mantém [] Laravel como bag vazio",
+          (try JSONDecoder().decode(JSONObject.self, from: Data("[]".utf8))).isEmpty)
+    check("JSONObject mantém não-objeto como bag vazio",
+          (try JSONDecoder().decode(JSONObject.self, from: Data("\"x\"".utf8))).isEmpty)
+} catch {
+    check("JSONValue/JSONObject decode sem erro", false)
+    print("    erro: \(error)")
+}
+
 print("\nAtlas AI · Codable DTOs (snake_case → camelCase, o loop de conversa):")
 do {
     let json = """
