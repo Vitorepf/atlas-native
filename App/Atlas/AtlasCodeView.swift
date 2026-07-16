@@ -107,7 +107,17 @@ struct AtlasCodeView: View {
                 // abre aquela. O commit vai junto na pergunta.
                 onAsk: {
                     selectedNode = nil
-                    askDraft = "o que o commit \(node.hash.prefix(10)) fez, e por quê?"
+                    // O roteador só reconhece hash com pelo menos um DÍGITO
+                    // (senão `decade`/`facade` virariam alvo). Um prefixo de 10
+                    // pode ser todo letra — raro, mas a pergunta semeada cairia
+                    // em `unknown` em silêncio. Cresce o prefixo até ter dígito.
+                    var citado = String(node.hash.prefix(10))
+                    var tamanho = 10
+                    while !citado.contains(where: \.isNumber), tamanho < node.hash.count {
+                        tamanho += 4
+                        citado = String(node.hash.prefix(tamanho))
+                    }
+                    askDraft = "o que o commit \(citado) fez, e por quê?"
                     // O sistema precisa terminar de fechar a primeira folha
                     // antes de a segunda subir; sem o respiro, o iOS engole a
                     // segunda e o toque vira nada.
