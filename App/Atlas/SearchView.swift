@@ -77,7 +77,15 @@ struct SearchView: View {
                     VStack(spacing: 14) {
                         Text("✦")
                             .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
-                        Text("“Nada com ‘\(query)’.”")
+                        // "Nada com X" é uma afirmação ABSOLUTA, mas a busca só
+                        // olhou as conversas carregadas (teto de 100). Bateu o
+                        // teto e a frase mente por omissão: sugere que varreu
+                        // tudo. É a mesma família do "nada mudou hoje" do git —
+                        // ausência afirmada sobre uma janela parcial. Confessa o
+                        // recorte quando ele existe.
+                        Text(session.threads.count >= 100
+                             ? "“Nada com ‘\(query)’ nas 100 conversas mais recentes.”"
+                             : "“Nada com ‘\(query)’.”")
                             .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
                             .multilineTextAlignment(.center)
                     }

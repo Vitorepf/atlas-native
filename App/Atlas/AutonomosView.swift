@@ -256,7 +256,11 @@ struct AutonomosView: View {
 
     private func historySection(_ history: AtlasAutonomosFleetHistoryResponse) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            sectionCaption("HISTÓRICO DA FROTA")
+            // A legenda conta o total: mostrar 6 de N sem dizer N faz o operador
+            // ler "6" como "tudo". Nada cortado em silêncio.
+            sectionCaption(history.events.count > 6
+                           ? "HISTÓRICO DA FROTA · 6 DE \(history.events.count)"
+                           : "HISTÓRICO DA FROTA")
             ForEach(history.events.prefix(6)) { event in
                 HStack(alignment: .firstTextBaseline, spacing: 10) {
                     Text(event.event).font(.system(.caption, weight: .semibold))
