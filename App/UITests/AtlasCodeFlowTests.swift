@@ -90,9 +90,20 @@ final class AtlasCodeFlowTests: XCTestCase {
         XCTAssertTrue(codeButton.waitForExistence(timeout: 20))
         codeButton.tap()
 
+        // O radar precisa mesmo ter carregado a frota do Mac. Se o card do
+        // repositório não aparece, é porque o app não alcançou o servidor (Mac
+        // dormindo, Tailscale fora, backend fora da porta) — e um teste que
+        // FALHA silencioso aqui é o pior teste que existe: verde sem prova. Era
+        // exatamente esta a armadilha. `attach; return` passava a bateria sem
+        // ter tocado a pílula uma única vez, e o "passou" mentia.
+        //
+        // Não alcançar o Mac não é falha DESTE código — mas é falha do TESTE
+        // dizer que provou o card quando nunca chegou nele. Então falha, com a
+        // foto do que apareceu no lugar.
         let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'radar-repo-'")).firstMatch
-        guard repoCard.waitForExistence(timeout: 25) else {
-            attach(app, name: "10-sem-fonte")
+        if !repoCard.waitForExistence(timeout: 25) {
+            attach(app, name: "10-radar-nao-carregou")
+            XCTFail("o radar não carregou a frota — o app não alcançou o Mac, então este teste NÃO provou o card. Verde aqui seria mentira.")
             return
         }
         repoCard.tap()
@@ -113,31 +124,49 @@ final class AtlasCodeFlowTests: XCTestCase {
         attach(app, name: "11-card-aberto")
 
         // 3 · Vazio, o card ensina o próprio poder em vez de esperar adivinhação.
-        let suggestion = app.buttons["tem algum problema?"]
-        XCTAssertTrue(suggestion.waitForExistence(timeout: 10),
+        //     A sugestão existir prova a promessa; a pergunta que MOVE o mapa é
+        //     digitada, porque a prova do par precisa de âncoras reais.
+        //
+        //     "tem algum problema?" NÃO serve de prova de ancoragem, e isto é
+        //     design correto, não bug: as exceções são obras e branches, não
+        //     commits na janela do grafo (`commits: []`). Acender commit para
+        //     uma pergunta sobre branch seria a cor mentindo. Perguntar sobre
+        //     MUDANÇA é o que aponta para a topologia — e "essa semana" sempre
+        //     tem commits num repo vivo, então a prova não depende da hora do
+        //     dia.
+        XCTAssertTrue(app.buttons["tem algum problema?"].waitForExistence(timeout: 10),
                       "o card precisa sugerir o que o Atlas SABE responder")
-        suggestion.tap()
 
-        // 4 · O turno do operador nasce com a frase dele — nunca com o dossiê de
-        // fatos que viaja no fio por baixo.
+        let campo = app.textFields["conversation-input"]
+        XCTAssertTrue(campo.waitForExistence(timeout: 10), "o card tem um campo para escrever")
+        campo.tap()
+        campo.typeText("o que mudou essa semana?")
+
+        // 4 · O turno do operador nasce com a frase DELE — nunca com o dossiê de
+        // fatos que viaja no fio por baixo. Esta é a lei da soberania na tela.
+        let enviar = app.buttons["enviar ao Atlas"]
+        XCTAssertTrue(enviar.waitForExistence(timeout: 5), "o campo escrito revela o botão de enviar")
+        enviar.tap()
+
         let turno = app.staticTexts.matching(
-            NSPredicate(format: "label CONTAINS 'tem algum problema'")
+            NSPredicate(format: "label CONTAINS 'o que mudou essa semana'")
         ).firstMatch
-        XCTAssertTrue(turno.waitForExistence(timeout: 20), "tocar na sugestão precisa criar o turno")
-        XCTAssertFalse(turno.label.contains("Fatos lidos do git"),
+        XCTAssertTrue(turno.waitForExistence(timeout: 20), "enviar precisa criar o turno")
+        XCTAssertFalse(turno.label.contains("Fatos lidos do git") || turno.label.contains("commits"),
                        "o dossiê é para o agente ler, não para o operador ver")
         attach(app, name: "12-turno-enviado")
 
-        // 5 · A prova do par: o determinístico leu o git NESTE turno e ancorou o
+        // 5 · A prova do PAR: o determinístico leu o git NESTE turno e acendeu o
         // mapa. Sem isto, o agente estaria opinando sobre um repositório que não
-        // enxerga — que era o defeito que a pílula existe para matar.
+        // enxerga — o defeito que a pílula existe para matar. A ancoragem NÃO
+        // espera o agente responder: é o coletor determinístico, ~1-2s.
         let fechar = app.buttons["fechar teclado"]
         if fechar.waitForExistence(timeout: 8) { fechar.tap() }
         app.swipeDown(velocity: .fast)
 
         let ancora = app.buttons["code-ask-clear"]
-        XCTAssertTrue(ancora.waitForExistence(timeout: 60),
-                      "perguntar tem de acender o grafo: a resposta aponta para a topologia")
+        XCTAssertTrue(ancora.waitForExistence(timeout: 30),
+                      "perguntar sobre mudança tem de acender o grafo: a resposta aponta para a topologia")
         attach(app, name: "13-grafo-ancorado")
 
         // 6 · Mostrar tudo apaga a âncora: o grafo volta ao estado normal.
