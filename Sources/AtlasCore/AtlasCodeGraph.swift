@@ -303,3 +303,19 @@ public enum AtlasCodeGraphGeometry {
         base + Double(max(0, index)) * step
     }
 }
+
+/// O estado geral da varredura — a gramática da cápsula.
+///
+/// Três estados, não dois. `hasViolations` era booleano, e o falso cobria duas
+/// coisas opostas: "varri e está são" e "NÃO CONSEGUI VARRER". A tela dava alta
+/// em verde com um tique quando a varredura caía — cor é ESTADO, e o estado ali
+/// era "não olhei". Boa notícia é o que o operador quer ouvir; por isso mentira
+/// verde é a mais cara de todas.
+public enum AtlasCodeScanState: String, Equatable, Sendable {
+    /// Varreu e achou exceção. Vermelho.
+    case violating
+    /// Varreu e não há exceção. Verde — a única alta legítima.
+    case clean
+    /// Não varreu (rede, 500, timeout). Nem verde nem vermelho: ausência.
+    case unknown
+}

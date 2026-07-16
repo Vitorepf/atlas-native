@@ -160,8 +160,20 @@ final class AtlasCodeModel {
         return integra
     }
 
-    /// A varredura respondeu? Sem isto a tela não tem como distinguir "está são"
-    /// de "não olhei", e cor é ESTADO: dourado de alta sem exame é a cor
-    /// mentindo, que é o pior lugar para uma mentira nesta tela.
-    var scanAnswered: Bool { violations != nil }
+    /// O estado geral que a cápsula pinta — TRÊS, não dois.
+    ///
+    /// O código conhecia só `hasViolations`: verdadeiro = alerta, falso = alta
+    /// em verde com ✓. E `falso` cobria duas coisas opostas: "varri e está são"
+    /// e "não consegui varrer". A varredura caindo dava alta ao repositório com
+    /// um tique verde — cor é ESTADO, e o estado ali era "não olhei".
+    ///
+    /// Eu mesmo escrevi `scanAnswered` ao consertar a manchete e esqueci de
+    /// ligar na cor: a frase dizia "não consegui varrer a main" e a cápsula
+    /// continuava verde ao redor dela. Meio conserto é pior que nenhum — a
+    /// frase honesta com a cor mentindo ensina o operador a ler a cor, que é
+    /// mais rápida, e ignorar a frase.
+    var scanState: AtlasCodeScanState {
+        guard let violations else { return .unknown }
+        return violations.violations.isEmpty ? .clean : .violating
+    }
 }

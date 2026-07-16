@@ -378,4 +378,16 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
         "regra sem lei escrita (e servidor sem trunk) decodificam com ausência honesta",
         velho != nil && velho?.violations.first?.ruleCanonRef == nil && velho?.trunk == nil
     )
+
+    // A CÁPSULA TEM TRÊS ESTADOS. O booleano fazia o falso cobrir "está são" e
+    // "não consegui varrer" — e a varredura caindo dava alta em VERDE com tique.
+    // Cor é estado, e boa notícia é o que o operador quer ouvir: mentira verde é
+    // a mais cara.
+    check("varreu e achou exceção → vermelho", AtlasCodeScanState.violating.rawValue == "violating")
+    check("varreu e está são → verde (a única alta legítima)", AtlasCodeScanState.clean.rawValue == "clean")
+    check("não varreu → nem verde nem vermelho", AtlasCodeScanState.unknown.rawValue == "unknown")
+    check(
+        "os três estados são distintos — nenhum colapsa no outro",
+        Set([AtlasCodeScanState.violating, .clean, .unknown]).count == 3
+    )
 }

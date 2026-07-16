@@ -246,25 +246,42 @@ struct AtlasCodeView: View {
     }
 
     /// Cápsula central e simétrica: a única voz do estado geral.
+    ///
+    /// TRÊS estados, não dois. O booleano `hasViolations` fazia o falso cobrir
+    /// duas coisas opostas — "varri e está são" e "não consegui varrer" —, e a
+    /// varredura caindo dava alta em verde com um tique. Cor é ESTADO, e o
+    /// estado ali era "não olhei": nem verde nem vermelho, ausência.
     private var statusCapsule: some View {
-        HStack(spacing: 7) {
-            Image(systemName: model.hasViolations ? "exclamationmark.triangle" : "checkmark")
+        let cor: Color = {
+            switch model.scanState {
+            case .violating: return AtlasCodePalette.alert
+            case .clean: return AtlasCodePalette.healed
+            case .unknown: return AtlasTheme.textTertiary
+            }
+        }()
+        let simbolo: String = {
+            switch model.scanState {
+            case .violating: return "exclamationmark.triangle"
+            case .clean: return "checkmark"
+            // Nem alerta nem tique: interrogação é o que se sabe.
+            case .unknown: return "questionmark"
+            }
+        }()
+
+        return HStack(spacing: 7) {
+            Image(systemName: simbolo)
                 .font(.system(size: 10, weight: .semibold))
             Text(model.statusHeadline)
                 .font(.system(size: 11, weight: .semibold))
                 .monospacedDigit()
         }
-        .foregroundStyle(model.hasViolations ? AtlasCodePalette.alert : AtlasCodePalette.healed)
+        .foregroundStyle(cor)
         .padding(.horizontal, 15)
         .padding(.vertical, 7)
-        .background(
-            Capsule().fill((model.hasViolations ? AtlasCodePalette.alert : AtlasCodePalette.healed).opacity(0.09))
-        )
-        .overlay(
-            Capsule().strokeBorder((model.hasViolations ? AtlasCodePalette.alert : AtlasCodePalette.healed).opacity(0.35), lineWidth: 1)
-        )
+        .background(Capsule().fill(cor.opacity(0.09)))
+        .overlay(Capsule().strokeBorder(cor.opacity(0.35), lineWidth: 1))
         .frame(maxWidth: .infinity, alignment: .center)
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.hasViolations)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.scanState)
         .accessibilityLabel(model.statusHeadline)
         .accessibilityIdentifier("code-status")
     }
