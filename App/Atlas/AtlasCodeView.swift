@@ -28,6 +28,44 @@ struct AtlasCodeView: View {
     /// commit). Vazia = a pílula abrindo pelo caminho normal.
     @State private var askDraft = ""
 
+    /// As âncoras que EXISTEM nesta janela do grafo.
+    ///
+    /// A resposta cita commits do repositório inteiro; a tela carrega 200. Um
+    /// commit de três meses atrás é âncora legítima e não está aqui. Sem cruzar
+    /// os dois, "tem algum problema?" apagava o mapa INTEIRO — todos os 200 nós
+    /// esmaecidos, nenhum aceso — enquanto a pílula anunciava "12 acesos no
+    /// grafo". A tela apagando tudo e dizendo que acendeu doze.
+    ///
+    /// Interseção vazia = o mapa não tem nada a mostrar sobre esta resposta, e
+    /// então ele não finge: fica inteiro, como estava.
+    private var visibleAnchors: Set<String> {
+        guard askModel.isAnchoring, let nodes = model.graph?.nodes else { return [] }
+        return askModel.anchors.intersection(nodes.map(\.hash))
+    }
+
+    /// O que a pílula diz sobre o mapa — contado no que ACENDEU.
+    ///
+    /// Três estados, três frases, nenhuma inventada:
+    /// - nada ancorado → convite;
+    /// - âncoras acesas → quantas, e quantas a resposta citou ao todo;
+    /// - âncoras todas fora desta janela → dizer isso, porque o mapa ficar
+    ///   intacto depois de uma resposta que citou commits precisa de
+    ///   explicação, senão lê como pergunta ignorada.
+    private var anchorLegend: String? {
+        guard askModel.isAnchoring else { return nil }
+        let acesas = visibleAnchors.count
+        let citadas = askModel.anchors.count
+        if acesas == 0 {
+            return citadas == 1
+                ? "o commit da resposta está fora desta janela"
+                : "os \(citadas) commits da resposta estão fora desta janela"
+        }
+        if acesas < citadas {
+            return "\(acesas) de \(citadas) acesos aqui — o resto está fora desta janela"
+        }
+        return askModel.anchorNote
+    }
+
     init(client: AtlasClient, repo: String = "atlas-server") {
         _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
         _provenanceModel = State(initialValue: AtlasCodeProvenanceModel(client: client, repo: repo))
@@ -183,7 +221,7 @@ struct AtlasCodeView: View {
                         isLast: index == graph.nodes.count - 1,
                         // A resposta da pílula acende o que ela cita: o mapa é
                         // que responde. Sem resposta, ninguém está apagado.
-                        isDimmed: askModel.isAnchoring && !askModel.anchors.contains(node.hash)
+                        isDimmed: !visibleAnchors.isEmpty && !visibleAnchors.contains(node.hash)
                     ) {
                         selectedNode = node
                         Task { await provenanceModel.load(hash: node.hash) }
@@ -309,9 +347,13 @@ struct AtlasCodeView: View {
                 .foregroundStyle(AtlasTheme.accent)
             // Ancorado, a pílula deixa de convidar e passa a LEGENDAR: o mapa
             // atrás está recortado, e recorte sem legenda lê como "é só isso".
-            Text(askModel.anchorNote ?? "pergunte sobre este repositório")
+            //
+            // A legenda conta o que ACENDEU, não o que a resposta citou: dizer
+            // "12 acesos" com zero acesos na tela é a pílula desmentindo o mapa
+            // logo acima dela.
+            Text(anchorLegend ?? "pergunte sobre este repositório")
                 .font(AtlasFont.serifItalic(13))
-                .foregroundStyle(askModel.isAnchoring ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
+                .foregroundStyle(anchorLegend != nil ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .lineLimit(1)
                 .accessibilityIdentifier("code-ask-anchor-note")
             Spacer(minLength: 0)
