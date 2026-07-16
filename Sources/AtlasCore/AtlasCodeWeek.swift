@@ -11,12 +11,11 @@ public struct AtlasCodeWeek: Decodable, Equatable, Sendable {
     public let commits: Int
     public let heals: Int
     public let prevented: Int
-    public let waitingForYou: Int
     public let byAgent: [String: Int]
     public let notifications: AtlasCodeNotificationPreference
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, repo, window, commits, heals, prevented, waitingForYou, byAgent, notifications
+        case schemaVersion, repo, window, commits, heals, prevented, byAgent, notifications
     }
 
     public init(from decoder: Decoder) throws {
@@ -35,7 +34,6 @@ public struct AtlasCodeWeek: Decodable, Equatable, Sendable {
         self.commits = try values.decode(Int.self, forKey: .commits)
         self.heals = try values.decode(Int.self, forKey: .heals)
         self.prevented = try values.decode(Int.self, forKey: .prevented)
-        self.waitingForYou = try values.decode(Int.self, forKey: .waitingForYou)
         self.byAgent = try values.decode([String: Int].self, forKey: .byAgent)
         self.notifications = try values.decode(AtlasCodeNotificationPreference.self, forKey: .notifications)
     }

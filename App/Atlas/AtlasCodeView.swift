@@ -303,10 +303,9 @@ struct AtlasCodeView: View {
                     weekMetric("commits", value: week.commits)
                     weekMetric("curas", value: week.heals)
                     weekMetric("prevenidas", value: week.prevented)
-                    weekMetric("esperando você", value: week.waitingForYou)
                 }
                 .accessibilityElement(children: .contain)
-                .accessibilityLabel("A semana: \(week.commits) commits, \(week.heals) curas, \(week.prevented) prevenidas, \(week.waitingForYou) esperando você")
+                .accessibilityLabel("A semana: \(week.commits) commits, \(week.heals) curas, \(week.prevented) prevenidas")
             }
 
             if model.hasHealReceipt {
@@ -984,7 +983,20 @@ private struct AtlasCodeHealReceiptSheet: View {
                 .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
 
                 // Único verbo humano: o veto retroativo. Nunca "Aprovar".
-                if heal.healId != nil {
+                //
+                // E ele tem PRAZO: o servidor grava `undo_expires_at` em todo
+                // recibo (30 dias) e recusa de verdade depois. A tela nunca lia
+                // o campo — o botão continuava convidativo e o toque falhava,
+                // então o operador descobria que perdeu o direito no momento em
+                // que tentava exercê-lo. Numa tela cujo poder humano é esse e
+                // só esse, prazo invisível é poder retirado em silêncio.
+                if let note = AtlasCodeUndoWindow.note(expiresAt: heal.stepReceipts.first?.undoExpiresAt) {
+                    Text(note)
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityIdentifier("code-heal-undo-window")
+                }
+                if heal.healId != nil, AtlasCodeUndoWindow.isOpen(expiresAt: heal.stepReceipts.first?.undoExpiresAt) {
                     Button {
                         onUndo()
                         dismiss()

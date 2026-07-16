@@ -390,4 +390,22 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
         "os três estados são distintos — nenhum colapsa no outro",
         Set([AtlasCodeScanState.violating, .clean, .unknown]).count == 3
     )
+
+    // O RELÓGIO DO VETO: o único verbo humano da tela tem prazo, o servidor o
+    // ENFORCA (30 dias, `heal_undo_expired`), e a tela nunca lia o campo — o
+    // botão continuava convidativo e o toque falhava. Poder retirado em
+    // silêncio numa tela cujo canon é "humano = veto retroativo".
+    let agora = Date(timeIntervalSince1970: 1_784_000_000)
+    let daquiA30 = ISO8601DateFormatter().string(from: agora.addingTimeInterval(30 * 86400))
+    let ontem = ISO8601DateFormatter().string(from: agora.addingTimeInterval(-86400))
+
+    check("dentro do prazo, o veto vale", AtlasCodeUndoWindow.isOpen(expiresAt: daquiA30, now: agora))
+    check("vencido, o veto NÃO vale — o botão cala em vez de falhar no toque", !AtlasCodeUndoWindow.isOpen(expiresAt: ontem, now: agora))
+    check(
+        "recibo sem prazo declarado não inventa prazo: o servidor é a autoridade",
+        AtlasCodeUndoWindow.isOpen(expiresAt: nil, now: agora) && AtlasCodeUndoWindow.note(expiresAt: nil, now: agora) == nil
+    )
+    check("o prazo é DITO em português", AtlasCodeUndoWindow.note(expiresAt: daquiA30, now: agora)?.hasPrefix("desfazível até") == true)
+    check("vencido, a frase diz que venceu", AtlasCodeUndoWindow.note(expiresAt: ontem, now: agora) == "o prazo de veto venceu")
+    check("data que não parseia não vira prazo inventado", AtlasCodeUndoWindow.note(expiresAt: "amanhã talvez", now: agora) == nil)
 }
