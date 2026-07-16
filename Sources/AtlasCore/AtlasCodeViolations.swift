@@ -50,6 +50,20 @@ public struct AtlasCodeViolation: Decodable, Equatable, Sendable, Identifiable {
     public let since: String?
     public let severity: String
     public let plan: [AtlasCodeViolationPlanStep]
+    /// O documento canônico que sustenta a acusação.
+    ///
+    /// O contrato C24 promete `rule_canon_ref` desde o começo e o servidor o
+    /// manda; o app não tinha o campo, e a lei morria no fio. Acusar sem citar
+    /// a lei é o pior silêncio de uma ferramenta de governança: "está errado
+    /// porque sim" não é governança, é autoridade sem prova.
+    ///
+    /// Ausente quando a regra ainda não tem lei escrita — e isso é dito, não
+    /// preenchido com um caminho plausível.
+    public let ruleCanonRef: String?
+
+    private enum CodingKeys: String, CodingKey {
+        case ruleId, target, since, severity, plan, ruleCanonRef
+    }
 
     public var id: String { "\(ruleId):\(target)" }
 }

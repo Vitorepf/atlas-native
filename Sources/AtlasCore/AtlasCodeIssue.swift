@@ -21,6 +21,20 @@ public struct AtlasCodeIssue: Decodable, Equatable, Sendable, Identifiable {
 
     public var isSevere: Bool { severity == "high" }
 
+    /// A lei em português, no singular — para um caso só.
+    ///
+    /// O grafo mostrava `worktree_allowlist` cru na linha do commit e
+    /// "FORA DA MAIN · WORKTREE_ALLOWLIST" no cabeçalho da folha: vocabulário
+    /// de máquina na cara do operador, na tela em que ele decide se apaga
+    /// trabalho. O tradutor já existia aqui e o grafo não o usava — o radar
+    /// fala português desde sempre e o mapa continuava falando snake_case.
+    ///
+    /// Regra nova do canon não vira mentira: vira o id legível, que é dizer
+    /// "não tenho frase para isto" sem esconder o que é.
+    public static func law(_ ruleId: String) -> String {
+        AtlasCodeIssue(ruleId: ruleId, count: 1, severity: "high", oldestDays: nil).headline
+    }
+
     /// A frase que o operador lê. Plural resolvido, sujeito explícito.
     public var headline: String {
         switch ruleId {

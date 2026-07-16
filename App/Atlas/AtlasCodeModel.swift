@@ -114,6 +114,17 @@ final class AtlasCodeModel {
         violations?.violations.first { matches(node, target: $0.target) }?.ruleId
     }
 
+    /// O documento canônico que sustenta a acusação contra este nó.
+    ///
+    /// O contrato C24 promete `rule_canon_ref` desde o começo e o servidor o
+    /// manda; o app não tinha o campo e a lei morria no fio. Acusar sem citar a
+    /// lei é o pior silêncio de uma ferramenta de governança — "está errado
+    /// porque sim" é autoridade sem prova, e é o que faz o operador parar de
+    /// confiar na cor.
+    func ruleCanon(for node: AtlasCodeGraphNode) -> String? {
+        violations?.violations.first { matches(node, target: $0.target) }?.ruleCanonRef
+    }
+
     var hasViolations: Bool { !(violations?.violations.isEmpty ?? true) }
 
     var hasHealReceipt: Bool { !(heal?.stepReceipts.isEmpty ?? true) }

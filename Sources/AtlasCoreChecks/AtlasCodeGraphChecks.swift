@@ -339,4 +339,43 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     // Servidor antigo/trunk ambígua: sem trunk_head, a tela cai na ref e pinta
     // menos — nunca pinta de dourado o que não está na trunk.
     check("sem trunk_head a espinha é vazia, não um chute", AtlasCodeGraphState.spine(nodes: grafo?.nodes ?? [], head: nil).isEmpty)
+
+    // A LEI FALA PORTUGUÊS. `worktree_allowlist` é nome de banco de dados e não
+    // sobe à tela onde o operador decide se apaga trabalho. O tradutor existia
+    // no radar desde sempre; só o grafo continuava em snake_case.
+    check("a lei de um caso vem no singular e em português", AtlasCodeIssue.law("worktree_allowlist") == "1 worktree fora do lugar")
+    check("main_only em português", AtlasCodeIssue.law("main_only") == "1 branch fora da main")
+    check("obra_return_deadline em português", AtlasCodeIssue.law("obra_return_deadline") == "1 obra nunca voltou à main")
+    check(
+        "regra nova do canon não vira mentira nem snake_case",
+        AtlasCodeIssue.law("regra_que_nao_existe_ainda") == "1 caso de regra que nao existe ainda"
+    )
+
+    // O doc que sustenta a acusação: o contrato C24 promete desde o começo e o
+    // app jogava fora. Acusar sem citar a lei é autoridade sem prova.
+    let comCanon = """
+    {"schema_version":"atlas.code.violations.v1","repo":"atlas-server","generated_at":"2026-07-15T05:00:00Z",
+     "trunk":"production",
+     "violations":[{"rule_id":"main_only","target":"obra/x","since":"2026-07-01","severity":"high","plan":[],
+                    "rule_canon_ref":"docs/engineering-knowledge-base/atlas-local-main-only-rule.md"}],
+     "plan":[]}
+    """
+    let dv = JSONDecoder(); dv.keyDecodingStrategy = atlasSnakeKeyDecoding
+    let viol = try? dv.decode(AtlasCodeViolationsResponse.self, from: Data(comCanon.utf8))
+    check("a trunk real chega ao app — a tela não chuta 'main'", viol?.trunk == "production")
+    check("o doc que sustenta a acusação chega ao app", viol?.violations.first?.ruleCanonRef == "docs/engineering-knowledge-base/atlas-local-main-only-rule.md")
+
+    // Servidor antigo, ou regra do canon que ainda não tem lei escrita: o app
+    // decodifica e diz a ausência calando — nunca inventa um caminho plausível,
+    // que seria a pior forma de citar uma lei.
+    let semCanon = """
+    {"schema_version":"atlas.code.violations.v1","repo":"atlas-server","generated_at":"2026-07-15T05:00:00Z",
+     "violations":[{"rule_id":"main_only","target":"obra/x","since":null,"severity":"high","plan":[]}],
+     "plan":[]}
+    """
+    let velho = try? dv.decode(AtlasCodeViolationsResponse.self, from: Data(semCanon.utf8))
+    check(
+        "regra sem lei escrita (e servidor sem trunk) decodificam com ausência honesta",
+        velho != nil && velho?.violations.first?.ruleCanonRef == nil && velho?.trunk == nil
+    )
 }

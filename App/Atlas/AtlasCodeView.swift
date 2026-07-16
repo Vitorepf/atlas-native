@@ -96,6 +96,7 @@ struct AtlasCodeView: View {
                 node: node,
                 state: model.state(for: node),
                 ruleId: model.ruleId(for: node),
+                ruleCanon: model.ruleCanon(for: node),
                 phase: provenanceModel.phase,
                 // A folha do commit era um beco: o operador abre justamente o
                 // commit que NÃO entendeu, e ali não havia caminho nenhum para
@@ -447,7 +448,11 @@ private struct AtlasCodeCommitRow: View {
                         Text(AtlasCodeRelativeTime.short(from: node.authoredAt))
                         if let ruleId {
                             Text("·")
-                            Text(ruleId)
+                            // A lei em português. `worktree_allowlist` é nome de
+                            // máquina e não sobe à tela em que o operador decide
+                            // se apaga trabalho — o tradutor já existia, e só o
+                            // grafo continuava falando snake_case.
+                            Text(AtlasCodeIssue.law(ruleId))
                                 .foregroundStyle(AtlasCodePalette.alert)
                         }
                     }
@@ -530,6 +535,9 @@ private struct AtlasCodeProvenanceSheet: View {
     let node: AtlasCodeGraphNode
     let state: AtlasCodeNodeState
     let ruleId: String?
+    /// O doc que sustenta a acusação. Ausente = a regra ainda não tem lei
+    /// escrita, e isso é dito calando — nunca com um caminho plausível.
+    let ruleCanon: String?
     let phase: AtlasCodeProvenanceModel.Phase
     /// A saída do beco: daqui o operador fala com o agente SOBRE este commit.
     let onAsk: () -> Void
@@ -540,6 +548,7 @@ private struct AtlasCodeProvenanceSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     header
+                    lawCitation
                     askButton
                     content
                     hashFooter
@@ -548,6 +557,43 @@ private struct AtlasCodeProvenanceSheet: View {
                 .padding(22)
                 .padding(.bottom, 12)
             }
+        }
+    }
+
+    /// A lei que sustenta a acusação — e o documento que a prova.
+    ///
+    /// Só existe quando há acusação, e é onde a governança se separa da
+    /// autoridade sem prova: "está errado porque sim" faz o operador parar de
+    /// confiar na cor. O contrato C24 promete `rule_canon_ref` desde o começo e
+    /// o servidor o mandava; o app não tinha o campo, e a lei morria no fio.
+    ///
+    /// Sem o doc (regra do canon que ainda não tem lei escrita), a frase em
+    /// português aparece sozinha: ausência dita calando, não preenchida com um
+    /// caminho plausível.
+    @ViewBuilder
+    private var lawCitation: some View {
+        if state == .violating, let ruleId {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(AtlasCodeIssue.law(ruleId))
+                    .font(AtlasFont.serif(14, .semibold))
+                    .foregroundStyle(AtlasCodePalette.alert)
+                if let ruleCanon {
+                    Text(ruleCanon)
+                        .font(AtlasFont.mono(8.5))
+                        .foregroundStyle(AtlasTheme.textTertiary.opacity(0.85))
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 13)
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(AtlasCodePalette.alert.opacity(0.08))
+            )
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("code-provenance-law")
         }
     }
 
@@ -623,7 +669,10 @@ private struct AtlasCodeProvenanceSheet: View {
     private var stateLabel: String {
         switch state {
         case .onMain: return "NA MAIN"
-        case .violating: return ruleId.map { "FORA DA MAIN · \($0.uppercased())" } ?? "FORA DA MAIN"
+        // A lei em português e em caixa alta de manchete — nunca o id cru:
+        // "FORA DA MAIN · WORKTREE_ALLOWLIST" era metade português, metade
+        // banco de dados.
+        case .violating: return ruleId.map { "FORA DA LINHA · \(AtlasCodeIssue.law($0).uppercased())" } ?? "FORA DA LINHA"
         case .healed: return "CURADO"
         case .history: return "HISTÓRIA"
         }
