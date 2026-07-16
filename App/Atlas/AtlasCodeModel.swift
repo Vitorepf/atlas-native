@@ -24,7 +24,12 @@ final class AtlasCodeModel {
     func load(before: String? = nil) async {
         phase = .loading
         do {
-            graph = try await client.getCodeGraph(repo: repo, before: before)
+            let graph = try await client.getCodeGraph(repo: repo, before: before)
+            self.graph = graph
+            // A espinha vem da travessia dos pais a partir do head, não das
+            // refs: o git decora só a ponta, e sem isto 197 dos 200 commits da
+            // main apareciam como história cinza.
+            spineHashes = AtlasCodeGraphState.spine(nodes: graph.nodes, head: graph.head)
             // A stale or unavailable scan must not hide a valid topology.
             violations = try? await client.getCodeViolations(repo: repo)
             heal = try? await client.getCodeHealTick(repo: repo)
@@ -86,12 +91,17 @@ final class AtlasCodeModel {
         return hashes
     }
 
+    /// A espinha inteira, calculada UMA vez por grafo — não uma travessia por
+    /// nó, que seria O(n²) numa lista que rola.
+    private var spineHashes: Set<String> = []
+
     func state(for node: AtlasCodeGraphNode) -> AtlasCodeNodeState {
         AtlasCodeGraphState.state(
             for: node,
             defaultBranch: graph?.defaultBranch,
             violatingHashes: violatingHashes,
-            healedHashes: healedHashes
+            healedHashes: healedHashes,
+            spineHashes: spineHashes
         )
     }
 
@@ -105,11 +115,24 @@ final class AtlasCodeModel {
     var hasHealReceipt: Bool { !(heal?.stepReceipts.isEmpty ?? true) }
 
     /// Estado por exceção: quando o mundo está são, a tela diz isso e cala.
+    ///
+    /// `nil` NÃO é `[]`. A varredura falhando (rede, 500, timeout) devolvia nil
+    /// pelo `try?` do load, e nil caía direto no "main íntegra" — a tela dava
+    /// alta ao repositório sem ter olhado para ele. É a mesma classe de mentira
+    /// do git que devolvia "nada mudou hoje" ao estourar o tempo: silêncio de
+    /// falha vestido de boa notícia, e a boa notícia é o que o operador quer
+    /// ouvir, então ele acredita e vai dormir.
     var statusHeadline: String {
-        if let count = violations?.violations.count, count > 0 {
-            return count == 1 ? "1 desvio da main" : "\(count) desvios da main"
+        guard let violations else { return "não consegui varrer a main" }
+        if violations.violations.count > 0 {
+            return violations.violations.count == 1 ? "1 desvio da main" : "\(violations.violations.count) desvios da main"
         }
         if hasHealReceipt { return "main íntegra · curada sem você" }
         return "main íntegra"
     }
+
+    /// A varredura respondeu? Sem isto a tela não tem como distinguir "está são"
+    /// de "não olhei", e cor é ESTADO: dourado de alta sem exame é a cor
+    /// mentindo, que é o pior lugar para uma mentira nesta tela.
+    var scanAnswered: Bool { violations != nil }
 }

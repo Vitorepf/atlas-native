@@ -244,4 +244,62 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     let week = try? decoder.decode(AtlasCodeWeek.self, from: Data(weekJSON.utf8))
     check("semana E5 preserva números reais e buckets", week?.commits == 214 && week?.byAgent["codex"] == 96)
     check("semana E5 mantém notificações off", week?.notifications.enabled == false)
+
+    // A ESPINHA: a lei central da tela (dourado = na main) dependia da ref, e o
+    // git decora só a PONTA. Medido no atlas-server real: dos 200 commits da
+    // janela, 197 estavam na main e a tela pintava 6. A espinha é alcance a
+    // partir do head pelos pais — não decoração.
+    func no(_ hash: String, parents: [String], refs: [String] = []) -> AtlasCodeGraphNode? {
+        let refsJson = refs.map { "\"\($0)\"" }.joined(separator: ",")
+        let parentsJson = parents.map { "\"\($0)\"" }.joined(separator: ",")
+        let json = """
+        {"hash":"\(hash)","parents":[\(parentsJson)],"refs":[\(refsJson)],
+         "author_name":"Vitor","author_email":"v@x.test","authored_at":1784316000,"message":"x"}
+        """
+        let d = JSONDecoder(); d.keyDecodingStrategy = atlasSnakeKeyDecoding
+        return try? d.decode(AtlasCodeGraphNode.self, from: Data(json.utf8))
+    }
+
+    // ponta → pai → avô: só a ponta tem ref, e os três estão na main.
+    let ponta = no("aaa", parents: ["bbb"], refs: ["HEAD -> main"])
+    let pai = no("bbb", parents: ["ccc"])
+    let avo = no("ccc", parents: [])
+    let solto = no("zzz", parents: [])
+    let cadeia = [ponta, pai, avo, solto].compactMap { $0 }
+
+    let espinha = AtlasCodeGraphState.spine(nodes: cadeia, head: "aaa")
+    check("a espinha alcança o ancestral sem ref — o git decora só a ponta", espinha == ["aaa", "bbb", "ccc"])
+    check("commit fora do alcance do head não entra na espinha", !espinha.contains("zzz"))
+
+    check(
+        "o pai sem ref é DOURADO: ele está na main",
+        AtlasCodeGraphState.state(for: pai!, defaultBranch: "main", violatingHashes: [], healedHashes: [], spineHashes: espinha) == .onMain
+    )
+    check(
+        "o commit fora da main continua história",
+        AtlasCodeGraphState.state(for: solto!, defaultBranch: "main", violatingHashes: [], healedHashes: [], spineHashes: espinha) == .history
+    )
+    check(
+        "violação vence a espinha: a exceção é o que o operador precisa ver",
+        AtlasCodeGraphState.state(for: pai!, defaultBranch: "main", violatingHashes: ["bbb"], healedHashes: [], spineHashes: espinha) == .violating
+    )
+
+    // Ciclo não existe em git, mas merge faz o mesmo nó ser alcançado por dois
+    // caminhos: a travessia não pode entrar em loop nem contar duas vezes.
+    let merge = [no("m", parents: ["a", "b"]), no("a", parents: ["base"]), no("b", parents: ["base"]), no("base", parents: [])].compactMap { $0 }
+    check("merge: os dois caminhos chegam na base sem loop", AtlasCodeGraphState.spine(nodes: merge, head: "m") == ["m", "a", "b", "base"])
+
+    // Sem head (contrato antigo), errar para o lado de NÃO afirmar.
+    check("sem head, a espinha é vazia — nunca um chute", AtlasCodeGraphState.spine(nodes: cadeia, head: nil).isEmpty)
+    check(
+        "sem espinha, a tela volta à ref: pinta menos, nunca pinta errado",
+        AtlasCodeGraphState.state(for: ponta!, defaultBranch: "main", violatingHashes: [], healedHashes: [], spineHashes: []) == .onMain
+            && AtlasCodeGraphState.state(for: pai!, defaultBranch: "main", violatingHashes: [], healedHashes: [], spineHashes: []) == .history
+    )
+
+    // Pai fora da janela paginada é normal: a travessia para, sem drama.
+    check(
+        "pai fora da janela não quebra a travessia",
+        AtlasCodeGraphState.spine(nodes: [no("x", parents: ["forade"])].compactMap { $0 }, head: "x") == ["x", "forade"]
+    )
 }
