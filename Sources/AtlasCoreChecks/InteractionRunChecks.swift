@@ -588,6 +588,23 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
               existing: [atlasAgentActivity(from: codexShell)!],
               incoming: [atlasAgentActivity(from: codexShellCompleted)!]
           ) == shellJourney)
+    var syntheticProjection = AtlasAgentTimelineProjection()
+    var projectionCount = 0
+    let syntheticLedger = (1...500).map { sequence in
+        AtlasAiStreamEvent(
+            traceId: "trace-incremental", sequence: sequence, type: "lifecycle", content: "",
+            metadata: JSONObject(["checkpoint": .string(sequence.isMultiple(of: 2) ? "context" : "verify")])
+        )
+    }
+    for end in stride(from: 50, through: syntheticLedger.count, by: 50) {
+        _ = syntheticProjection.merge(
+            events: Array(syntheticLedger.prefix(end)),
+            limit: .max,
+            projectionCounter: { projectionCount += 1 }
+        )
+    }
+    check("poll incremental projeta cada evento do ledger no máximo uma vez",
+          projectionCount <= 500 && syntheticProjection.timeline.count == 500)
     check("tool edit Codex concluída não permanece falsamente ativa",
           atlasAgentActivity(from: codexEdit)?.kind == .completed &&
           atlasAgentActivity(from: codexEdit)?.detail == "A.swift")

@@ -830,7 +830,11 @@ final class ConversationModel {
         }
     }
 
-    private func applyExecution(_ id: String, _ trace: AtlasAiTrace) {
+    private func applyExecution(
+        _ id: String,
+        _ trace: AtlasAiTrace,
+        projectedStreamActivities: [AtlasAgentActivity]? = nil
+    ) {
         let agents = (trace.jobs ?? []).map {
             ExecAgent(id: $0.id, agent: $0.agentSlug, provider: $0.provider, model: $0.model, status: $0.status)
         }
@@ -847,7 +851,7 @@ final class ConversationModel {
             $0.executionPresentationState = trace.executionPresentationState
             $0.executionChoiceJobId = choiceJob.map { JobID($0.id) }
             $0.retryableJobId = failedJob.map { JobID($0.id) }
-            let fromStream = atlasAgentTimeline(from: trace.streamEvents ?? [])
+            let fromStream = projectedStreamActivities ?? atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
             $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)
         }
@@ -944,8 +948,12 @@ final class ConversationModel {
                       let visible = atlasVisibleAssistantText(frame.content) else { continue }
                 live = frame.type == "response" ? visible : live + visible
                 update(assistantId) { $0.text = live; $0.streaming = true }
-            case .execution(let trace):
-                applyExecution(assistantId, trace)
+            case .execution(let snapshot):
+                applyExecution(
+                    assistantId,
+                    snapshot.trace,
+                    projectedStreamActivities: snapshot.projectedActivities
+                )
             case .suspended(let trace):
                 complete(assistantId, trace: trace)
             case .remoteError(let payload):

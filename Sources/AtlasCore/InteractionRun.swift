@@ -138,13 +138,23 @@ public enum InteractionRunEvent: Sendable {
     case created(AtlasAiTrace)
     case activity(AtlasAgentActivity)
     case content(AtlasAiStreamEvent)
-    case execution(AtlasAiTrace)
+    case execution(InteractionRunExecution)
     case remoteError(JSONValue)
     /// O servidor confirmou uma pausa durável (por exemplo, decisão do
     /// operador), portanto o stream pode encerrar sem transformar a pausa em
     /// falha de rede nem reenviar a mesma instrução da outbox.
     case suspended(AtlasAiTrace?)
     case completed(done: AtlasAiStreamDone, finalTrace: AtlasAiTrace?)
+}
+
+public struct InteractionRunExecution: Sendable {
+    public let trace: AtlasAiTrace
+    public let projectedActivities: [AtlasAgentActivity]
+
+    public init(trace: AtlasAiTrace, projectedActivities: [AtlasAgentActivity]) {
+        self.trace = trace
+        self.projectedActivities = projectedActivities
+    }
 }
 
 public enum InteractionRunError: Error, CustomStringConvertible, Sendable {
@@ -170,6 +180,7 @@ public actor InteractionRun {
     private var pollTask: Task<Void, Never>?
     private var activeJobIds: Set<String> = []
     private var activeClientId: String?
+    private var timelineProjection = AtlasAgentTimelineProjection()
 
     public init(
         transport: any AtlasInteractionTransport,
@@ -231,6 +242,7 @@ public actor InteractionRun {
             activeClientId = preparedInput.clientId
 
             let created = try await createOrRecover(preparedInput, wasPending: wasPending)
+            timelineProjection = AtlasAgentTimelineProjection()
             updateActiveJobs(from: created.trace)
             continuation.yield(.created(created.trace))
 
@@ -272,7 +284,7 @@ public actor InteractionRun {
             let final = try? await transport.interactionSnapshot(traceId: traceId)
             if let final {
                 updateActiveJobs(from: final.trace)
-                continuation.yield(.execution(final.trace))
+                continuation.yield(.execution(projectedExecution(from: final.trace)))
             }
             if let finalTrace = final?.trace, Self.isSuspended(finalTrace) {
                 activeJobIds.removeAll()
@@ -378,10 +390,15 @@ public actor InteractionRun {
             if let response = try? await transport.interactionSnapshot(traceId: traceId) {
                 guard !Task.isCancelled else { return }
                 updateActiveJobs(from: response.trace)
-                continuation.yield(.execution(response.trace))
+                continuation.yield(.execution(projectedExecution(from: response.trace)))
                 if Self.isTerminal(response.trace.status) { return }
             }
         }
+    }
+
+    private func projectedExecution(from trace: AtlasAiTrace) -> InteractionRunExecution {
+        let projectedActivities = timelineProjection.merge(events: trace.streamEvents ?? [], limit: .max)
+        return InteractionRunExecution(trace: trace, projectedActivities: projectedActivities)
     }
 
     private func updateActiveJobs(from trace: AtlasAiTrace) {

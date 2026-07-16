@@ -103,8 +103,10 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S11 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasDecoding.swift` + 9 call sites | S10 | F1.3 requireSchema() | schema-guards deduplicados; checks fail-closed verdes | −~64; 9 sites; checks+build exit 0 |
 | S12 | **DONE** | **Grok 4.5** | `App/Atlas/LoadPhase.swift` + models | S11 | F1.4 LoadPhase compartilhado | Autonomos/Code/Workspace/Session usam LoadPhase | Provenance/Ask mantêm Phase própria (associada); F1 FECHADA |
 | S13 | **DONE** | **Grok 4.5** | `AtlasClient` SSE + `AtlasAiStream` Data path | S12 | F2.1 SSE sem gordura (TDD) | drain por cursor; 1 decoder; checks equiv | TDD red→green; checks+build exit 0; live skip (sem token) |
-| S14 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/JSONValue.swift` | S13 | F2.2 JSONValue via JSONSerialization | API pública igual; checks byte-a-byte verdes | — |
-| S15–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S14 | commits 15–34 da spec | DoD por eixo com prova | — |
+| S14 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/JSONValue.swift` | S13 | F2.2 JSONValue via JSONSerialization | API pública igual; checks byte-a-byte verdes | ponte JSONSerialization; checks+build exit 0 |
+| S15 | **DONE** | **Grok 4.5** | InteractionRun + AtlasAgentActivity + ConversationModel | S14 | F2.3 poll incremental + check contagem | projeção ≤500 em ledger 500 | cache lastProjected; índice por id |
+| S16 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/AtlasTime.swift` | S15 | F2.4 AtlasTime fast-path | ISO plain sem throw/catch | — |
+| S17–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S16 | commits 16–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -758,6 +760,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S15/F2.3 · timeline poll incremental (lastProjected + índice por id); check 500 eventos ≤500 projeções · prova: checks exit 0; build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S14/F2.2 · JSONValue via JSONSerialization (sem cascata try?); quirk []→bag vazio preservado · prova: checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S13/F2.1 · SSE: delimiters static, drain por cursor, dispatch Data bytes, 1 JSONDecoder/delegate; equivalência bytes≡string (TDD) · prova: checks exit 0; build exit 0; live-probe pulado (sem ATLAS_TOKEN)
 - 2026-07-16 · Grok 4.5 · SOTA S12/F1.4 + **F1 FECHADA** · `LoadPhase` compartilhado (Autonomos/Code/Workspace/Session); Provenance/Ask mantêm Phase com associated value · prova: checks+build exit 0. F5.1 baseline Instruments → §5 pendência operador
 - 2026-07-16 · Grok 4.5 · SOTA S11/F1.3 · `KeyedDecodingContainer.requireSchema` + 9 sites (Week/Violations/Graph×2/Ask/Mirror/Workspace/Heals/ChangeReview) · prova: checks schema desconhecido verdes; checks+build exit 0; −~64 linhas

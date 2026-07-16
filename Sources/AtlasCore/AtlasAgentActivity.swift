@@ -189,8 +189,91 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
 /// Projeta o ledger persistido numa timeline editorial: ordenada e sem repetir
 /// cada chunk de transporte como se fosse uma nova ação do agente.
 public func atlasAgentTimeline(from events: [AtlasAiStreamEvent]) -> [AtlasAgentActivity] {
-    let projected = events.sorted { $0.sequence < $1.sequence }.compactMap(atlasAgentActivity)
-    return atlasMergeAgentActivities(existing: [], incoming: projected, limit: .max)
+    var projection = AtlasAgentTimelineProjection()
+    return projection.merge(events: events, limit: .max)
+}
+
+/// Cache incremental da timeline do ledger. Snapshots de poll chegam com o
+/// ledger inteiro, mas só eventos acima do último `sequence` precisam virar
+/// `AtlasAgentActivity` novamente.
+public struct AtlasAgentTimelineProjection: Sendable {
+    public private(set) var timeline: [AtlasAgentActivity] = []
+    public private(set) var lastProjected: Int?
+
+    private var indexById: [String: Int] = [:]
+
+    public init() {}
+
+    @discardableResult
+    public mutating func merge(
+        events: [AtlasAiStreamEvent],
+        limit: Int = 60,
+        projectionCounter: (() -> Void)? = nil
+    ) -> [AtlasAgentActivity] {
+        guard limit > 0 else {
+            timeline.removeAll()
+            indexById.removeAll()
+            return timeline
+        }
+
+        let floor = lastProjected ?? Int.min
+        let newEvents = events
+            .filter { $0.sequence > floor }
+            .sorted { $0.sequence < $1.sequence }
+        guard !newEvents.isEmpty else { return timeline }
+
+        var projected: [AtlasAgentActivity] = []
+        projected.reserveCapacity(newEvents.count)
+        var maxSequence = floor
+        for event in newEvents {
+            projectionCounter?()
+            maxSequence = max(maxSequence, event.sequence)
+            if let activity = atlasAgentActivity(from: event) {
+                projected.append(activity)
+            }
+        }
+        lastProjected = maxSequence
+        merge(projected, limit: limit)
+        return timeline
+    }
+
+    public mutating func merge(
+        activities incoming: [AtlasAgentActivity],
+        limit: Int = 60
+    ) {
+        merge(incoming, limit: limit)
+    }
+
+    private mutating func merge(
+        _ incoming: [AtlasAgentActivity],
+        limit: Int
+    ) {
+        for activity in incoming {
+            if let index = indexById[activity.id] {
+                timeline[index] = activity
+                continue
+            }
+            if let last = timeline.last,
+               last.kind == activity.kind,
+               last.title == activity.title,
+               last.detail == activity.detail {
+                continue
+            }
+            indexById[activity.id] = timeline.count
+            timeline.append(activity)
+        }
+        if timeline.count > limit {
+            timeline.removeFirst(timeline.count - limit)
+            rebuildIndex()
+        }
+    }
+
+    private mutating func rebuildIndex() {
+        indexById.removeAll(keepingCapacity: true)
+        for (offset, activity) in timeline.enumerated() {
+            indexById[activity.id] = offset
+        }
+    }
 }
 
 /// Um tool do Codex muda de fase mantendo `item_id`; substituir preserva uma
@@ -203,8 +286,13 @@ public func atlasMergeAgentActivities(
 ) -> [AtlasAgentActivity] {
     guard limit > 0 else { return [] }
     var result = existing
+    var indexById: [String: Int] = [:]
+    indexById.reserveCapacity(result.count + incoming.count)
+    for (offset, activity) in result.enumerated() {
+        indexById[activity.id] = offset
+    }
     for activity in incoming {
-        if let index = result.firstIndex(where: { $0.id == activity.id }) {
+        if let index = indexById[activity.id] {
             result[index] = activity
             continue
         }
@@ -214,6 +302,7 @@ public func atlasMergeAgentActivities(
            last.detail == activity.detail {
             continue
         }
+        indexById[activity.id] = result.count
         result.append(activity)
     }
     if result.count > limit {
