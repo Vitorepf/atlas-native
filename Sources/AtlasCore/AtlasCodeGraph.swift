@@ -25,10 +25,9 @@ public struct AtlasCodeGraphResponse: Decodable, Sendable {
     public let nodes: [AtlasCodeGraphNode]
     public let worktrees: [AtlasCodeGraphWorktree]
     public let pagination: AtlasCodeGraphPagination
-    public let cache: AtlasCodeGraphCache
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, repo, generatedAt, head, defaultBranch, trunkHead, nodes, worktrees, pagination, cache
+        case schemaVersion, repo, generatedAt, head, defaultBranch, trunkHead, nodes, worktrees, pagination
     }
 
     public init(from decoder: Decoder) throws {
@@ -50,7 +49,6 @@ public struct AtlasCodeGraphResponse: Decodable, Sendable {
         self.nodes = try values.decode([AtlasCodeGraphNode].self, forKey: .nodes)
         self.worktrees = try values.decode([AtlasCodeGraphWorktree].self, forKey: .worktrees)
         self.pagination = try values.decode(AtlasCodeGraphPagination.self, forKey: .pagination)
-        self.cache = try values.decode(AtlasCodeGraphCache.self, forKey: .cache)
     }
 }
 
@@ -167,11 +165,10 @@ public struct AtlasCodeGraphPagination: Decodable, Equatable, Sendable {
     public let hasMore: Bool
 }
 
-public struct AtlasCodeGraphCache: Decodable, Equatable, Sendable {
-    public let strategy: String
-    public let refsFingerprint: String
-    public let invalidated: Bool
-}
+// AtlasCodeGraphCache foi deletado: era teatro. `invalidated` prometia dizer se
+// o grafo mudou desde a última carga, mas o serviço não é singleton — sempre
+// devolvia false — e nenhuma tela lia. Campo que não pode ser verdadeiro é pior
+// que campo ausente.
 
 /// What a commit did to one file. `additions`/`deletions` are absent for
 /// binary files: Git measured nothing there, and nothing is not zero.

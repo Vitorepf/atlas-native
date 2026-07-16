@@ -11,8 +11,7 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
       "default_branch":"main",
       "nodes":[{"hash":"9a06fd4c56","parents":["4b2b61f974","7c1e8d2a90"],"refs":["HEAD -> main","origin/main"],"author_name":"Vitor Freire","author_email":"vitor@example.test","authored_at":1784316000,"message":"feat(brain): council_review por membro"}],
       "worktrees":[{"path":"/Users/vitor/worktrees/atlas","branch":"main","head":"9a06fd4c56"}],
-      "pagination":{"limit":200,"before":null,"has_more":false},
-      "cache":{"strategy":"refs_fingerprint","refs_fingerprint":"abc","invalidated":false}
+      "pagination":{"limit":200,"before":null,"has_more":false}
     }
     """
     let decoder = JSONDecoder()
@@ -40,7 +39,7 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
         check("gramática de cor exige nó decodificado", false)
     }
     check("grafo C22 preserva worktree sem inventar estado", decoded?.worktrees.first?.branch == "main" && decoded?.worktrees.first?.head == "9a06fd4c56")
-    check("grafo C22 preserva paginação/cache", decoded?.pagination.limit == 200 && decoded?.cache.invalidated == false)
+    check("grafo C22 preserva paginação", decoded?.pagination.limit == 200 && decoded?.pagination.hasMore == false)
     check("curva do grafo usa midpoint com tangentes verticais", AtlasCodeGraphGeometry.midpointPath(fromX: 24, fromY: 10, toX: 56, toY: 50) == "M 24.0,10.0 C 24.0,30.0 56.0,30.0 56.0,50.0")
 
     let unknownSchema = json.replacingOccurrences(of: "atlas.code.graph.v1", with: "atlas.code.graph.v2")
@@ -315,8 +314,7 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
        {"hash":"obra1","parents":["prod1"],"refs":["HEAD -> obra/x"],"author_name":"V","author_email":"v@x.test","authored_at":1784316000,"message":"trabalho na obra"},
        {"hash":"prod1","parents":[],"refs":["production"],"author_name":"V","author_email":"v@x.test","authored_at":1784315000,"message":"na trunk"}
      ],
-     "worktrees":[],"pagination":{"limit":200,"before":null,"has_more":false},
-     "cache":{"strategy":"refs_fingerprint","refs_fingerprint":"x","invalidated":false}}
+     "worktrees":[],"pagination":{"limit":200,"before":null,"has_more":false}}
     """
     let d2 = JSONDecoder(); d2.keyDecodingStrategy = atlasSnakeKeyDecoding
     let grafo = try? d2.decode(AtlasCodeGraphResponse.self, from: Data(contrato.utf8))
