@@ -319,7 +319,7 @@ struct AtlasCodeRadarView: View {
         .overlay(Capsule().strokeBorder(tone.opacity(0.35), lineWidth: 1))
         .frame(maxWidth: .infinity, alignment: .center)
         .accessibilityLabel(model.headline)
-        .accessibilityIdentifier("radar-status")
+        .accessibilityIdentifier(A11yID.radarStatus)
     }
 }
 
@@ -381,7 +381,7 @@ private struct AtlasCodeRepoRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
-        .accessibilityIdentifier("radar-repo-\(repo.slug)")
+        .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
     }
 
     private var accessibilityText: String {
@@ -444,7 +444,7 @@ private struct AtlasCodeFolderRow: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel("\(folder.name), \(folder.repositories) repositórios\(exceptionCount > 0 ? ", \(exceptionCount) problemas" : "")")
-            .accessibilityIdentifier("radar-folder-\(folder.slug)")
+            .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
 
             if isExpanded {
                 VStack(alignment: .leading, spacing: 0) {

@@ -104,7 +104,7 @@ struct RootView: View {
                 .accessibilityLabel(codeHub?.exception == nil
                                     ? "Atlas Código"
                                     : "Atlas Código, \(codeHub?.exception?.count ?? 0) exceções")
-                .accessibilityIdentifier("topbar-code")
+                .accessibilityIdentifier(A11yID.topbarCode)
             Spacer()
             CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
             CircleButton(icon: "plus") { path.append(Route.new) }

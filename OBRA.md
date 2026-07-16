@@ -110,7 +110,8 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S18 | **DONE** | **Grok 4.5** | Markdown/RichInput/Imaging | S17 | F2.6 micro-opt hot path | trim/prefix/bytes | `1dd7d5e`; checks+build exit 0 |
 | S19 | **DONE** | **Grok 4.5** | `App/Atlas/{AtlasMarkdownView,ConversationView}.swift` | S18 | F2.7+F2.8 markdown memo + scroll | throttle 100ms; scroll coalescido | checks+build exit 0 |
 | S20 | **DONE** | **Grok 4.5** | `App/Atlas/{AtlasCodeView,ConversationChrome,ConversationView}.swift` | S19 | F2.9+F2.10 LazyVStack + Equatable | grafo lazy; bolha `.equatable()` | checks+build exit 0 |
-| S21–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S20 | commits 21–34 da spec | DoD por eixo com prova | — |
+| S21 | **DONE** | **Grok 4.5** | `App/Atlas/A11yID.swift`; `App/project.yml`; UITests | S20 | F4.1 A11yID compartilhado | 0 literais accessibilityIdentifier na casca; UITests usam A11yID | checks+build exit 0 |
+| S22–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S21 | commits 22–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -764,6 +765,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S21/F4.1 · `A11yID` compartilhado (casca + AtlasDeviceProof via project.yml); 0 literais accessibilityIdentifier em App/Atlas · prova: checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S20/F2.9+F2.10 · grafo `LazyVStack`; `EditorialTurn: Equatable` + `.equatable()` (closures não invalidam) · prova: checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S19/F2.7+F2.8 · markdown streaming memo (throttle ~100ms / fronteira bloco; parse force no finalize) + scroll coalescido (>100ms ou count mudou) · prova: checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S18/F2.6 · micro-opt Markdown/RichInput/Imaging · prova: `1dd7d5e`; checks+build exit 0

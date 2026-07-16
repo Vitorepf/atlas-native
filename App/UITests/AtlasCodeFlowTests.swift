@@ -11,15 +11,15 @@ final class AtlasCodeFlowTests: XCTestCase {
 
         // 1 · A única porta do domínio é o ícone da barra (à esquerda do
         // masthead); o hub não repete a área.
-        let codeButton = app.buttons["topbar-code"]
+        let codeButton = app.buttons[A11yID.topbarCode]
         XCTAssertTrue(codeButton.waitForExistence(timeout: 20), "o ícone do Código precisa existir na barra")
         attach(app, name: "01-hub-codigo")
         codeButton.tap()
 
         // 2 · O radar responde com a frota real (ou diz honestamente que falhou).
         // A cápsula é um container (HStack): procurar em qualquer descendente.
-        let radarStatus = app.descendants(matching: .any)["radar-status"]
-        let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'radar-repo-'")).firstMatch
+        let radarStatus = app.descendants(matching: .any)[A11yID.radarStatus]
+        let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.radarRepoPrefix)).firstMatch
         XCTAssertTrue(
             radarStatus.waitForExistence(timeout: 25) || repoCard.waitForExistence(timeout: 5),
             "o radar precisa mostrar o estado da frota"
@@ -35,20 +35,20 @@ final class AtlasCodeFlowTests: XCTestCase {
         repoCard.tap()
 
         // 3 · O grafo do repo escolhido, com a cápsula de estado e a pílula.
-        let status = app.descendants(matching: .any)["code-status"]
+        let status = app.descendants(matching: .any)[A11yID.codeStatus]
         XCTAssertTrue(status.waitForExistence(timeout: 30), "o grafo precisa dizer o estado da main")
-        XCTAssertTrue(app.descendants(matching: .any)["code-ask-pill"].exists,
+        XCTAssertTrue(app.descendants(matching: .any)[A11yID.codeAskPill].exists,
                       "a pílula nunca some (lei 7)")
         attach(app, name: "03-grafo-do-repo")
 
         // 4 · Tocar num commit abre a folha: estado, descrição, e o que mudou.
-        let commit = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'code-commit-'")).firstMatch
+        let commit = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.codeCommitPrefix)).firstMatch
         if commit.waitForExistence(timeout: 10) {
             commit.tap()
 
             // A folha diz o estado do commit na gramática do domínio — nunca
             // um rótulo genérico de tela.
-            let stateKicker = app.descendants(matching: .any)["code-provenance-state"]
+            let stateKicker = app.descendants(matching: .any)[A11yID.codeProvenanceState]
             XCTAssertTrue(stateKicker.waitForExistence(timeout: 15), "a folha precisa dizer em que estado o commit está")
             let vocabulary = ["na main", "fora da main", "curado", "história"]
             XCTAssertTrue(
@@ -58,7 +58,7 @@ final class AtlasCodeFlowTests: XCTestCase {
 
             // O gap que o operador apontou: a folha precisa listar o que o
             // commit tocou, não só quem o assinou.
-            let files = app.descendants(matching: .any)["code-commit-files"]
+            let files = app.descendants(matching: .any)[A11yID.codeCommitFiles]
             XCTAssertTrue(files.waitForExistence(timeout: 15), "a folha precisa mostrar os arquivos tocados")
             attach(app, name: "04-proveniencia")
 
@@ -86,7 +86,7 @@ final class AtlasCodeFlowTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        let codeButton = app.buttons["topbar-code"]
+        let codeButton = app.buttons[A11yID.topbarCode]
         XCTAssertTrue(codeButton.waitForExistence(timeout: 20))
         codeButton.tap()
 
@@ -100,7 +100,7 @@ final class AtlasCodeFlowTests: XCTestCase {
         // Não alcançar o Mac não é falha DESTE código — mas é falha do TESTE
         // dizer que provou o card quando nunca chegou nele. Então falha, com a
         // foto do que apareceu no lugar.
-        let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'radar-repo-'")).firstMatch
+        let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.radarRepoPrefix)).firstMatch
         if !repoCard.waitForExistence(timeout: 25) {
             attach(app, name: "10-radar-nao-carregou")
             XCTFail("o radar não carregou a frota — o app não alcançou o Mac, então este teste NÃO provou o card. Verde aqui seria mentira.")
@@ -108,10 +108,10 @@ final class AtlasCodeFlowTests: XCTestCase {
         }
         repoCard.tap()
 
-        XCTAssertTrue(app.descendants(matching: .any)["code-status"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.descendants(matching: .any)[A11yID.codeStatus].waitForExistence(timeout: 30))
 
         // 1 · A pílula está lá (lei 7) e é porta, não formulário.
-        let pill = app.descendants(matching: .any).matching(identifier: "code-ask-pill").firstMatch
+        let pill = app.descendants(matching: .any).matching(identifier: A11yID.codeAskPill).firstMatch
         XCTAssertTrue(pill.waitForExistence(timeout: 10), "a pílula nunca some")
         pill.tap()
 
@@ -137,7 +137,7 @@ final class AtlasCodeFlowTests: XCTestCase {
         XCTAssertTrue(app.buttons["tem algum problema?"].waitForExistence(timeout: 10),
                       "o card precisa sugerir o que o Atlas SABE responder")
 
-        let campo = app.textFields["conversation-input"]
+        let campo = app.textFields[A11yID.conversationInput]
         XCTAssertTrue(campo.waitForExistence(timeout: 10), "o card tem um campo para escrever")
         campo.tap()
         campo.typeText("o que mudou essa semana?")
@@ -164,14 +164,14 @@ final class AtlasCodeFlowTests: XCTestCase {
         if fechar.waitForExistence(timeout: 8) { fechar.tap() }
         app.swipeDown(velocity: .fast)
 
-        let ancora = app.buttons["code-ask-clear"]
+        let ancora = app.buttons[A11yID.codeAskClear]
         XCTAssertTrue(ancora.waitForExistence(timeout: 30),
                       "perguntar sobre mudança tem de acender o grafo: a resposta aponta para a topologia")
         attach(app, name: "13-grafo-ancorado")
 
         // 6 · Mostrar tudo apaga a âncora: o grafo volta ao estado normal.
         ancora.tap()
-        XCTAssertFalse(app.buttons["code-ask-clear"].waitForExistence(timeout: 5),
+        XCTAssertFalse(app.buttons[A11yID.codeAskClear].waitForExistence(timeout: 5),
                        "mostrar tudo devolve o grafo inteiro")
         attach(app, name: "14-limpo")
     }

@@ -72,7 +72,7 @@ struct AtlasCodeMirrorCard: View {
         .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(borderColor, lineWidth: 1))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
-        .accessibilityIdentifier("code-mirror")
+        .accessibilityIdentifier(A11yID.codeMirror)
     }
 
     @ViewBuilder

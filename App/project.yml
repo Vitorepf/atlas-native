@@ -79,6 +79,8 @@ targets:
     platform: iOS
     sources:
       - path: UITests
+      # Mesmas constantes que a casca — XCUITest não pode divergir em silêncio.
+      - path: Atlas/A11yID.swift
     dependencies:
       - target: Atlas
     settings:

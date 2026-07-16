@@ -354,7 +354,7 @@ struct ConversationView: View {
                     TextField("", text: $draft, axis: .vertical)
                         .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
                         .tint(AtlasTheme.accent).lineLimit(1...6).focused($focused)
-                        .accessibilityIdentifier("conversation-input")
+                        .accessibilityIdentifier(A11yID.conversationInput)
                 }
                 composerTrailingControl
             }

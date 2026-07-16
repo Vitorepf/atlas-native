@@ -252,7 +252,7 @@ struct AtlasCodeView: View {
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 16)
-                        .accessibilityIdentifier("code-graph-truncated")
+                        .accessibilityIdentifier(A11yID.codeGraphTruncated)
                 }
 
                 if let mirror = mirrorModel.response {
@@ -309,7 +309,7 @@ struct AtlasCodeView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.scanState)
         .accessibilityLabel(model.statusHeadline)
-        .accessibilityIdentifier("code-status")
+        .accessibilityIdentifier(A11yID.codeStatus)
     }
 
     /// A semana + o recibo da noite: fatos consumados, nunca pedidos.
@@ -356,7 +356,7 @@ struct AtlasCodeView: View {
                             .strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
                     )
                 }
-                .accessibilityIdentifier("code-heal-receipt")
+                .accessibilityIdentifier(A11yID.codeHealReceipt)
             }
         }
     }
@@ -398,7 +398,7 @@ struct AtlasCodeView: View {
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(anchorLegend != nil ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .lineLimit(1)
-                .accessibilityIdentifier("code-ask-anchor-note")
+                .accessibilityIdentifier(A11yID.codeAskAnchorNote)
             Spacer(minLength: 0)
             if askModel.isAnchoring {
                 // A conversa anterior deixou o mapa aceso: dá para apagar sem
@@ -409,7 +409,7 @@ struct AtlasCodeView: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }
                 .buttonStyle(.plain)
-                .accessibilityIdentifier("code-ask-clear")
+                .accessibilityIdentifier(A11yID.codeAskClear)
             }
             Image(systemName: "chevron.up")
                 .font(.system(size: 10, weight: .semibold))
@@ -433,7 +433,7 @@ struct AtlasCodeView: View {
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Conversar com o Atlas sobre este repositório")
         .accessibilityAddTraits(.isButton)
-        .accessibilityIdentifier("code-ask-pill")
+        .accessibilityIdentifier(A11yID.codeAskPill)
     }
 }
 
@@ -515,7 +515,7 @@ private struct AtlasCodeCommitRow: View {
         .accessibilityLabel(accessibilityText)
         // O leitor de tela precisa do mesmo sinal que o olho recebe.
         .accessibilityHint(isDimmed ? "fora da resposta" : "")
-        .accessibilityIdentifier("code-commit-\(node.hash.prefix(8))")
+        .accessibilityIdentifier(A11yID.codeCommit(hashPrefix: String(node.hash.prefix(8))))
     }
 
     /// A espinha: linha contínua + o nó. O desvio salta ao olho pela cor.
@@ -639,7 +639,7 @@ private struct AtlasCodeProvenanceSheet: View {
                     .fill(AtlasCodePalette.alert.opacity(0.08))
             )
             .accessibilityElement(children: .combine)
-            .accessibilityIdentifier("code-provenance-law")
+            .accessibilityIdentifier(A11yID.codeProvenanceLaw)
         }
     }
 
@@ -669,7 +669,7 @@ private struct AtlasCodeProvenanceSheet: View {
             .contentShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)
-        .accessibilityIdentifier("code-provenance-ask")
+        .accessibilityIdentifier(A11yID.codeProvenanceAsk)
         .accessibilityLabel("Perguntar ao Atlas sobre este commit")
     }
 
@@ -688,7 +688,7 @@ private struct AtlasCodeProvenanceSheet: View {
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel(stateLabel.lowercased())
-            .accessibilityIdentifier("code-provenance-state")
+            .accessibilityIdentifier(A11yID.codeProvenanceState)
 
             Text(node.message ?? "Por que esta linha existe")
                 .font(AtlasFont.serif(22, .semibold))
@@ -774,7 +774,7 @@ private struct AtlasCodeProvenanceSheet: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .lineSpacing(5)
                         .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityIdentifier("code-commit-body")
+                        .accessibilityIdentifier(A11yID.codeCommitBody)
                 }
 
                 // A frase do operador: o que só o Atlas sabe, porque só o Atlas
@@ -841,7 +841,7 @@ private struct AtlasCodeProvenanceSheet: View {
                 .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
             }
         }
-        .accessibilityIdentifier("code-commit-files")
+        .accessibilityIdentifier(A11yID.codeCommitFiles)
     }
 
     private func block(_ title: String, @ViewBuilder body: () -> some View) -> some View {
@@ -1024,7 +1024,7 @@ private struct AtlasCodeHealReceiptSheet: View {
                     Text(note)
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityIdentifier("code-heal-undo-window")
+                        .accessibilityIdentifier(A11yID.codeHealUndoWindow)
                 }
                 if heal.healId != nil, AtlasCodeUndoWindow.isOpen(expiresAt: heal.stepReceipts.first?.undoExpiresAt) {
                     Button {
@@ -1045,7 +1045,7 @@ private struct AtlasCodeHealReceiptSheet: View {
                                 .strokeBorder(AtlasTheme.separator, lineWidth: 0.5)
                         )
                     }
-                    .accessibilityIdentifier("code-heal-undo")
+                    .accessibilityIdentifier(A11yID.codeHealUndo)
                 }
                 Spacer(minLength: 0)
             }
