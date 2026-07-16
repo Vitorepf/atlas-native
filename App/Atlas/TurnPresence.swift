@@ -114,8 +114,15 @@ final class TurnPresence {
             let final = lastPresence(model, key: entry.activityKey)
             finishActivity(entry, presence: final)
             broadcastCount()
-            notifyIfAway(entry, model: model, finalPresence: final)
-            requestPermissionOnce()
+            // A permissão PRIMEIRO, e esperando o veredito: pedir depois de
+            // notificar fazia a primeira notificação da vida do app ser sempre
+            // descartada em silêncio — justamente a que prova ao operador que a
+            // presença funciona. Continua sendo no primeiro turno concluído (o
+            // momento de valor real), nunca no launch.
+            Task { @MainActor in
+                await requestPermissionOnce()
+                notifyIfAway(entry, model: model, finalPresence: final)
+            }
             syncRunning()
         }
     }
@@ -145,8 +152,11 @@ final class TurnPresence {
         let content = UNMutableNotificationContent()
         content.title = failed ? "O turno falhou" : "Atlas respondeu"
         content.subtitle = entry.threadTitle
+        // O texto SEM a sintaxe: este é o mesmo campo que a tela entrega ao
+        // parser markdown, e ia cru para a Lock Screen — o operador longe do app
+        // lia `**pronto**` e `## Resposta` em vez da resposta.
         content.body = failed ? "Toque para ver o motivo e retomar."
-                              : String(excerpt.prefix(140))
+                              : String(AtlasMarkdown.plainText(excerpt).prefix(140))
         content.sound = .default
         UNUserNotificationCenter.current().add(
             UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil))
@@ -154,10 +164,12 @@ final class TurnPresence {
 
     /// Pede permissão no PRIMEIRO turno concluído (momento de valor real),
     /// nunca no launch — UX de permissão digna.
-    private func requestPermissionOnce() {
+    private func requestPermissionOnce() async {
         guard !askedPermission else { return }
         askedPermission = true
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+        // `await` de propósito: sem esperar o veredito, a notificação sai antes
+        // de existir permissão e o iOS a descarta calada.
+        _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
     }
 
     // MARK: - Live Activities (uma por sessão; contador compartilhado)

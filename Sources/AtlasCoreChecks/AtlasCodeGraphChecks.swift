@@ -408,4 +408,26 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
     check("o prazo é DITO em português", AtlasCodeUndoWindow.note(expiresAt: daquiA30, now: agora)?.hasPrefix("desfazível até") == true)
     check("vencido, a frase diz que venceu", AtlasCodeUndoWindow.note(expiresAt: ontem, now: agora) == "o prazo de veto venceu")
     check("data que não parseia não vira prazo inventado", AtlasCodeUndoWindow.note(expiresAt: "amanhã talvez", now: agora) == nil)
+
+    // A LOCK SCREEN NÃO RENDERIZA MARKDOWN. A notificação recebia o mesmo campo
+    // que a tela entrega ao parser, cru: o operador longe do app lia a sintaxe
+    // em vez da resposta.
+    check(
+        "negrito e itálico somem, o texto fica",
+        AtlasMarkdown.plainText("**pronto**: o *grafo* respondeu") == "pronto: o grafo respondeu"
+    )
+    check(
+        "título vira frase",
+        AtlasMarkdown.plainText("## Resposta\n\n45 commits hoje") == "Resposta\n45 commits hoje"
+    )
+    check(
+        "o link vira o texto dele — a URL não cabe numa linha de aviso",
+        AtlasMarkdown.plainText("veja [o commit](https://x.test/abc) agora") == "veja o commit agora"
+    )
+    check(
+        "item de lista ganha marcador legível",
+        AtlasMarkdown.plainText("- primeiro\n- segundo") == "• primeiro\n• segundo"
+    )
+    check("código fica o código, sem as crases", AtlasMarkdown.plainText("rode `git log` aí") == "rode git log aí")
+    check("texto sem markdown atravessa intacto", AtlasMarkdown.plainText("45 commits hoje.") == "45 commits hoje.")
 }
