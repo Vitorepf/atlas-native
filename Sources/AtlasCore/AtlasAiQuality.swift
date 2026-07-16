@@ -1,17 +1,11 @@
 import Foundation
 
-// Cluster Quality: avaliações de qualidade e ações de remediação portadas de
-// lib/api/atlasAi.ts (AtlasAiQualityEvaluation / AtlasAiQualityAction, §420-460;
-// listAiQualityActions / runAiQualityAction, §1820-1832). O decoder usa
-// `.convertFromSnakeCase` — sem CodingKeys. `AtlasAiQualityStatus` e
-// `AtlasAiQualityActionStatus` são uniões abertas no TS (`... | string`), então
-// `status`/`action_type`/`provider` ficam `String` — um enum estrito quebraria
-// o decode num valor novo do servidor.
+// Tipos de qualidade pinados por `AtlasAiTrace` (qualityEvaluation /
+// qualityActions). As rotas admin list/run foram podadas em F0.3 — 0
+// consumidores de produto. `status`/`action_type`/`provider` ficam String
+// (uniões abertas no wire).
 
-/// `AtlasAiQualityEvaluation` (atlasAi.ts). O grafo pesado (dimensions, flags,
-/// suggested_actions, metadata) vive como bags `JSONValue`. `actions` é a
-/// relação opcional de remediações; `remediation_trace` de cada ação referencia
-/// `AtlasAiTrace` (owned pelo loop de conversa).
+/// Avaliação de qualidade embutida no trace. Bags pesados vivem como `JSONValue`.
 public struct AtlasAiQualityEvaluation: Codable, Sendable, Identifiable {
     public let id: String
     public let traceId: String?
@@ -32,9 +26,8 @@ public struct AtlasAiQualityEvaluation: Codable, Sendable, Identifiable {
     public let updatedAt: String
 }
 
-/// `AtlasAiQualityAction` (atlasAi.ts). `remediation_trace` é a trace da
-/// remediação executada, opcional — `AtlasAiTrace` é definido no arquivo do loop
-/// de conversa (referência, não redefinir aqui).
+/// Ação de remediação ligada à avaliação. `remediationTrace` referencia
+/// `AtlasAiTrace` do loop de conversa.
 public struct AtlasAiQualityAction: Codable, Sendable, Identifiable {
     public let id: String
     public let evaluationId: String?
@@ -55,44 +48,6 @@ public struct AtlasAiQualityAction: Codable, Sendable, Identifiable {
     public let remediationTrace: AtlasAiTrace?
     public let createdAt: String
     public let updatedAt: String
-}
-
-// MARK: - Envelopes de resposta
-
-public struct AiQualityActionsResponse: Codable, Sendable {
-    public let actions: [AtlasAiQualityAction]
-}
-
-public struct AiQualityActionResponse: Codable, Sendable {
-    public let action: AtlasAiQualityAction
-}
-
-// MARK: - Client methods (mirror de atlasAi.ts §1820-1832)
-
-public extension AtlasClient {
-    /// GET /ai/quality/actions — `listAiQualityActions`.
-    func listAiQualityActions(
-        status: String? = nil,
-        actionType: String? = nil,
-        traceId: String? = nil,
-        threadId: String? = nil,
-        limit: Int? = nil
-    ) async throws -> AiQualityActionsResponse {
-        let q = atlasQueryString([
-            ("status", status.map { .string($0) }),
-            ("action_type", actionType.map { .string($0) }),
-            ("trace_id", traceId.map { .string($0) }),
-            ("thread_id", threadId.map { .string($0) }),
-            ("limit", limit.map { .int($0) }),
-        ])
-        return try await get("/ai/quality/actions\(q)")
-    }
-
-    /// POST /ai/quality/actions/{id}/run — `runAiQualityAction` (corpo `{}`).
-    func runAiQualityAction(_ id: String) async throws -> AiQualityActionResponse {
-        let seg = id.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? id
-        return try await post("/ai/quality/actions/\(seg)/run")
-    }
 }
 
 // MARK: - Golden checks

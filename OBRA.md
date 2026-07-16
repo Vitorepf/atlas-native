@@ -90,8 +90,10 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ### SOTA 10/10 (Grok 4.5 · spec `docs/plano-sota-10-de-10.md`)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
-| S1 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/{AtlasAiTelemetry,AtlasAiPolicies,AtlasAiProviders,AtlasAiAttachments}.swift`; `Sources/AtlasCoreChecks/main.swift` | decisão §6 2026-07-16 | F0.2 poda 4 arquivos inteiros + cascata checks | 0 refs produto; checks+build verdes | — |
-| S2–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S1 | commits 2–34 da spec | DoD por eixo com prova | — |
+| S1 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/{AtlasAiTelemetry,AtlasAiPolicies,AtlasAiProviders,AtlasAiAttachments}.swift`; `Sources/AtlasCoreChecks/main.swift` | decisão §6 2026-07-16 | F0.2 poda 4 arquivos inteiros + cascata checks | 0 refs produto; checks+build verdes | −1.577 Swift; cascata main.swift; checks exit 0; build exit 0 |
+| S2 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/{AtlasAiDecisions,AtlasAiQuality,AtlasAiThreadsExtra}.swift` | S1 | F0.3 poda parcial Decisions/Quality/ThreadsExtra | tipos pinados pelo trace vivos; APIs mortas fora; checks+build verdes | −456 Swift; checks exit 0; build exit 0 |
+| S3 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/{Models,Merge}.swift`; trio VERIFICAR em AtlasAiModels; checks main.swift | S2 | F0.4+F0.5 Models+Merge DELETE (default) + trio VERIFICAR | 0 refs produto; checks+build verdes | — |
+| S4–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S3 | commits 4–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -713,6 +715,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S2/F0.3 · poda parcial Decisions/Quality/ThreadsExtra (−456): mantém tipos pinados pelo trace + surface-handoff/feedback; remove APIs admin órfãs · prova: re-grep 0 refs produto; checks exit 0; build exit 0; git diff --check limpo
+- 2026-07-16 · Grok 4.5 · SOTA S1/F0.2 · delete `AtlasAiTelemetry/Policies/Providers/Attachments` (−1.577) + cascata `main.swift` (providers/decisions/telemetry/policies/attachments + live-probe providers) · prova: re-grep 0 refs produto; `swift run AtlasCoreChecks` exit 0; `cd App && make build` exit 0; `git diff --check` limpo
 - 2026-07-12 · Fable 5 (bootstrap da obra) · `63c9a2f` · lifecycle honesto:
   Stop real (SSE + jobs), payload completo (effort/workspace/read), gates sem
   mentira, StrictConcurrency ON · prova: checks verdes + make build honesto
