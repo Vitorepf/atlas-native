@@ -37,6 +37,7 @@ enum AtlasCodeRelativeTime {
 /// tipo de mudança de vermelho dentro de um commit saudável.
 struct AtlasCodeFileRow: View {
     let file: AtlasCodeFileChange
+    var accessibilityIdentifier: String?
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
@@ -78,6 +79,7 @@ struct AtlasCodeFileRow: View {
         .padding(.vertical, 9)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
+        .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 
     private var subtitle: String? {

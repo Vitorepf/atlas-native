@@ -63,10 +63,20 @@ final class AtlasCodeFlowTests: XCTestCase {
             attach(app, name: "04-proveniencia")
 
             // 5 · A lista de arquivos vive no fim: rolar até ela é parte da prova.
-            for _ in 0..<8 where !files.isHittable {
+            let fileRow = app.descendants(matching: .any)[A11yID.whyFileRow(0)]
+            for _ in 0..<8 where !fileRow.exists {
                 app.swipeUp()
             }
             attach(app, name: "05-arquivos-tocados")
+
+            XCTAssertTrue(fileRow.waitForExistence(timeout: 10), "a linha de arquivo precisa abrir a biografia H1")
+            fileRow.tap()
+
+            let whySheet = app.descendants(matching: .any)[A11yID.whySheet]
+            XCTAssertTrue(whySheet.waitForExistence(timeout: 20), "tocar no arquivo abre a biografia sem nova rota")
+            XCTAssertTrue(app.descendants(matching: .any)[A11yID.whyRow(0)].waitForExistence(timeout: 20),
+                          "a biografia precisa listar a história do arquivo")
+            attach(app, name: "06-biografia-arquivo")
         }
     }
 

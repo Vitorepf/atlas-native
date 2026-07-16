@@ -1,0 +1,11 @@
+{
+  "schema_version": "atlas.code.why.v1",
+  "repo": "atlas-native",
+  "file": "App/Atlas/RootView.swift",
+  "commits_total": 24,
+  "truncated": true,
+  "commit_count": 20,
+  "provenance_quotes": 0,
+  "null_provenance": 20,
+  "first_subject": "feat(ui): propõe missão noturna nos Autônomos"
+}

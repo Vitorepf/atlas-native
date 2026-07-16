@@ -247,6 +247,7 @@ extension AtlasCodeProvenanceSheet {
                 .font(.system(size: 8.5, weight: .semibold))
                 .tracking(1.2)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityIdentifier(A11yID.codeCommitFiles)
 
             if provenance.files.isEmpty {
                 Text("nenhum arquivo mudou neste commit")
@@ -262,7 +263,7 @@ extension AtlasCodeProvenanceSheet {
                             UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                             whyTarget = WhyTarget(path: file.path)
                         } label: {
-                            AtlasCodeFileRow(file: file)
+                            AtlasCodeFileRow(file: file, accessibilityIdentifier: A11yID.whyFileRow(index))
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier(A11yID.whyFileRow(index))
@@ -273,7 +274,6 @@ extension AtlasCodeProvenanceSheet {
                 .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
             }
         }
-        .accessibilityIdentifier(A11yID.codeCommitFiles)
     }
 
     private func block(_ title: String, @ViewBuilder body: () -> some View) -> some View {
