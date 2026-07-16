@@ -138,8 +138,8 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | P06 | **DONE** | **GPT-5.5** | `App/Atlas/{NightlyProposal,A11yID,AtlasApp,RootView,AutonomosView}.swift` | P05 | V2.T2.3 proposta das 21h | delegate, scenePhase, card Autônomos, sheet prefilled, manhã sem números | `316d82e`; checks+build+diff |
 | P07 | **DONE** | **GPT-5.5** | `App/Atlas/AutonomosView.swift`; `App/UITests/AtlasNightlyProposalTests.swift`; `docs/evidence/2026-07-16-proposta-21h/`; `OBRA.md` | P06 | V2.T2.4 prova + registro | XCUITest card→sheet→dismiss; card independe do carregamento; screenshots; device físico honesto | este commit; sim verde; device-pending |
 | P08–P11 | **DONE** | **GPT-5.5** | `../atlas-server` artifacts; `Sources/AtlasCore*`; `App/Atlas/{ChangeReviewModel,ConversationChrome,ExecutionStateCard,ArtifactSheet,A11yID}.swift`; `docs/evidence/2026-07-16-artifacts/`; `OBRA.md` | P07 | V4 Artifacts & Proof commits 08–11 | manifesto+content trace-scoped; Core fail-closed; linha/sheet; prova §V4.6 | server `99ba5abd3`; core `5396b21`; ui `d6732ea`; prova neste commit; device/live token pendentes |
-| P12–P15 | **PARCIAL** | **GPT-5.5** | `../atlas-server/app/Services/Ai/SelfConstruction/AtlasNativeConstitutionScanner.php`; `../atlas-server/app/Console/Commands/AtlasNativeConstitutionScanCommand.php`; area/backlog Autônomos; `Sources/AtlasCore/AtlasAutonomos.swift`; `Sources/AtlasCoreChecks/AtlasAutonomosChecks.swift`; `App/Atlas/{AutonomosView,A11yID,SelfConstructionReceiptSheet}.swift`; `docs/evidence/2026-07-16-selfconstruction/`; `OBRA.md` | P11 | V3 Self-Construction scanner→backlog→UI + prova parcial | PHPUnit R1–R5 verde; área `atlas-native` + policy R1 observe/R2–R5 heal; backlog HTTP provado; UI mostra recibo sem botão falso; e2e parou em dry-run sem worker lease | server `c651eed7b7`+`5e2485460`; native `e269ea7`+este commit; evidência `docs/evidence/2026-07-16-selfconstruction/`; bloqueio §5 |
-| P16–P20 | **DONE** | **GPT-5.5** | `../atlas-server` `/api/code/why`; `Sources/AtlasCore/{AtlasCodeWhy,AtlasRoute}.swift`; `Sources/AtlasCoreChecks/{AtlasCodeWhyChecks,main}.swift`; `App/Atlas/{AtlasCodeWhySheet,AtlasCodeProvenanceSheet,AtlasCodePalette,A11yID}.swift`; `App/UITests/AtlasCodeFlowTests.swift`; `docs/evidence/2026-07-16-h1-why/`; `OBRA.md` | P15 | V5 H1 Biografia do arquivo + fechamento global | `GET /api/code/why` schema `atlas.code.why.v1`; Core fail-closed; sheet sem rota nova; probe real; XCUITest file→why verde; fechamento V1–V5 | server `cbc7e52aa0`; core `233b9e1`; ui `e09aa5a`; prova `0e48051`; docs este commit; Route=8 cases; device-pending honesto |
+| P12–P15 | **PARCIAL** | **GPT-5.5→Grok 4.5** | scanner+healer server; área/backlog; UI recibo; `docs/evidence/2026-07-16-selfconstruction/` | P11 | V3 Self-Construction scanner→backlog→cura mecânica R2 + UI | Scanner R1–R5 + healer R2 PHPUnit verde; worker SCL drenou dry_run; canário plant→scan→heal→ausente; falta delivered/merge no app | healer+worker unlock nesta sessão; evidência atualizada; bloqueios restantes §5 |
+| P16–P20 | PENDING | — | conforme ORDEM MESTRA §E | P15 | V5 H1 Biografia do arquivo + fechamento global | DoD §F | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -232,7 +232,9 @@ a casca não inventa número, progresso, status, prompt ou prova.
 
 > Formato: `- [ABERTO|FEITO] <quem pede>→<quem entrega>: <o que> — <por quê>`
 
-- [ABERTO] GPT-5.5→Codex/Autônomos: destravar worker/lease real para V3 Self-Construction `atlas-native` — prova parcial em `docs/evidence/2026-07-16-selfconstruction/`: canário R2 detectado pelo scanner e visto no backlog HTTP; `POST /loop/atlas-native/start-run` em `dry_run` retornou `status=enqueued`, `started=false`, `requires_worker=true`, `queue=software_company_loop`; após polling de `/live`, `run_state.lock.held=false`. Falta um worker consumindo `software_company_loop` com workspace/lease válido para executar a cura, rodar gates, mergear e produzir recibo real no app. Sem isso, §G risco #1 manda parar; nenhuma cura/merge foi simulada.
+- [FEITO] GPT-5.5→Codex/Autônomos: worker `software_company_loop` — `php artisan queue:work database --queue=software_company_loop` no host (Docker `atlas-queue` só ouve `transcription,default`). Prova: job dry_run RUNNING→DONE; ciclo 54 `dry_run_planned`.
+- [FEITO] Grok 4.5→Codex: healer mecânico R2 `atlas:native:constitution-heal` — AP-786/senior-loop é ferramenta errada p/ dead_symbol (TDD/BDD + factory_max rouba seleção). Canário `sha1:19fc7482…` dry_run→healed; re-scan ausente. start-run passa `repo_root` / `allow_canonical_worktree_write` / `injected_finding`.
+- [ABERTO] Grok 4.5→Codex/Fable: V3 DoD restante — heal mecânico ainda **não** grava ciclo `outcome=merged` em `model.delivered`; casca sem recibo "O ATLAS MELHOROU O PRÓPRIO APP" até haver merge/ledger real **ou** contrato de heal-receipt (sem fabricar delivered). Device screenshots: `passcodeRequired=true`.
 - [FEITO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — `AtlasSession.failureKind` + `AtlasNetworkFailureKind` entregues em `da9399a`.
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
 - [FEITO] Codex→Fable: U3 executado em `97c9fdc` — Ribbon com atividade AO VIVO (ícone por kind + título + detail, transição por passo, Reduce Motion ok) + ExecutionProof persistente/expansível (passos + decide c/ razão + quality colorido). Zero parsing de wire na View. Acceptance no device pendente da sessão de prints.
@@ -823,8 +825,6 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
-- 2026-07-16 · GPT-5.5 · **Próximo Patamar V1–V5 — fechamento final (P20)** · server `cbc7e52aa0`; native `233b9e1` + `e09aa5a` + `0e48051` + este commit · cinco verticais entregues sem rota H1 nova: V1 Cockpit postura com XCUITest verde; V2 Proposta das 21h com rhythm local/card/sheet e prova de simulador; V3 Self-Construction **PARCIAL** honesta (scanner/backlog/UI, mas sem worker/lease/cura/merge/recibo real); V4 Artifacts & Proof com endpoints, Core fail-closed e sheet; V5 H1 Biografia do arquivo com `/api/code/why`, Core, sheet via FileRow e prova hub→arquivo→why. Prova final: `swift run AtlasCoreChecks` verde; `cd App && make build` verde; `AtlasCodeFlowTests.testHubToRadarToGraphAndProvenance` verde no iPhone 17 Pro Simulator; `rg RootView` confirmou `enum Route` com 8 cases e nenhum case Why. **Honesto:** V2 mantém device-pending de notificação real/Lock Screen/startRun/manhã; V4 mantém device/live-token pending de artefato semeado; V5 mantém device físico pending (prova atual é simulador + probe real); V3 permanece bloqueada por worker/lease.
-
 - 2026-07-16 · GPT-5.5 · **V5 H1 Biografia do arquivo — prova (P19)** · este commit · fluxo real hub → radar → grafo → commit → arquivo → biografia sem nova rota; `AtlasCodeFlowTests.testHubToRadarToGraphAndProvenance` abre `AtlasCodeWhySheet` a partir da `FileRow` da folha de proveniência. Probe real `/api/code/why` em `atlas-native`/`App/Atlas/RootView.swift`: schema `atlas.code.why.v1`, `commits_total=24`, `commit_count=20`, `truncated=true`, `null_provenance=20`, `provenance_quotes=0` — ausência preservada, sem inventar ledger. Prova: `docs/evidence/2026-07-16-h1-why/probe-rootview.json`, `probe-summary.json`, `AtlasCodeFlowWhy.log` com `** TEST SUCCEEDED **`, `.xcresult` e screenshots exportados (`01-hub-codigo.png` … `06-biografia-arquivo.png`).
 
 - 2026-07-16 · GPT-5.5 · **V3 Self-Construction PARCIAL honesta (P12–P15)** · server `c651eed7b7`+`5e2485460`; native `e269ea7`+este commit · scanner `AtlasNativeConstitutionScanner` + comando `atlas:native:constitution-scan` com R1 observe/R2–R5 heal, cache no backlog Autônomos existente; área `atlas-native` registrada com `repo_scope` e `native_constitution_policy`; casca mostra header "O ATLAS MELHOROU O PRÓPRIO APP" e `SelfConstructionReceiptSheet` sem botão de veto quando não há undo contract. Prova: PHPUnit servidor 51 testes/659 assertions no pacote V3; probe real scanner `finding_count=319` pós-limpeza; canário temporário R2 `sha1:19fc748292b5ba86400dfaf8800a214d8e4e27e6` apareceu no backlog HTTP; dry-run real retornou `status=enqueued`, `started=false`, `requires_worker=true`; `/live` manteve `lock_held=false`. Gates nativos: `swift run AtlasCoreChecks`, `cd App && make build`, `git diff --check` verdes; `make device` instalou no iPhone mas falhou ao abrir por device bloqueado. Evidência: `docs/evidence/2026-07-16-selfconstruction/`. **Honesto:** sem worker/lease não houve execute, cura, merge nem recibo real no app; bloqueio aberto em §5; nenhuma cura/merge foi simulada.
@@ -1241,6 +1241,20 @@ hub → radar → grafo → proveniência e PASSA; evidências em
 **Honesto:** device físico segue `device-pending`; a escrita em repo de
 terceiro (cura fora do atlas-server) exige decisão do operador sobre montagem
 rw — hoje a frota é `:ro` por segurança.
+
+### 16/07 · Destrava tudo — V3 worker + healer mecânico R2 (Grok 4.5)
+
+Autorização do operador: “Destrava tudo”. Cadeia destravada sem fabricar merge:
+
+| Unlock | Prova |
+|---|---|
+| Worker `software_company_loop` no host | dry_run enfileirado → job DONE; ledger ciclo 54 `dry_run_planned` |
+| `atlas:native:constitution-heal` (R2) | PHPUnit 5/23; canário real dry_run→`healed`; arquivo apagado; re-scan 0 canary |
+| start-run passthrough | `repo_root`, `allow_canonical_worktree_write`, `injected_finding` no job input |
+
+**Ainda aberto (honesto):** `model.delivered` vazio (heal ≠ merge ledger); device
+`passcodeRequired`; `factory_max` prefere seeds AP-789. Evidência:
+`docs/evidence/2026-07-16-selfconstruction/`.
 
 ## 8. Estado do runtime (contexto que não muda toda hora)
 

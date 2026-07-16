@@ -1,0 +1,1 @@
+{"schema_version":"atlas.native.constitution_heal.v1","status":"dry_run_planned","executed":false,"mutated":false,"finding_hash":"sha1:19fc748292b5ba86400dfaf8800a214d8e4e27e6","rule_id":"R2","policy":"heal","files_to_delete":["Sources/AtlasCore/AtlasNativeSelfConstructionCanary.swift"],"symbol":"AtlasNativeSelfConstructionCanary","provider_invoked":false,"merge_performed":false}

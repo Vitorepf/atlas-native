@@ -4,50 +4,35 @@
   "commits": {
     "server_scanner": "c651eed7b7",
     "server_area_policy": "5e2485460",
+    "server_healer_unlock": "ac20bfc009",
     "native_receipt_ui": "e269ea7"
   },
-  "scanner_canary_probe": {
-    "scan_schema": "atlas.native.constitution_scan.v1",
-    "finding_count_with_canary": 320,
-    "canary": {
-      "hash": "sha1:19fc748292b5ba86400dfaf8800a214d8e4e27e6",
-      "rule_id": "R2",
-      "policy": "heal",
-      "target": "Sources/AtlasCore/AtlasNativeSelfConstructionCanary.swift:AtlasNativeSelfConstructionCanary"
+  "unlocked": {
+    "software_company_loop_worker": {
+      "command": "php artisan queue:work database --queue=software_company_loop --sleep=1 --tries=1 --timeout=87000",
+      "note": "atlas-queue Docker only listens transcription,default — SCL needs a dedicated worker",
+      "proven": "job RUNNING→DONE at 2026-07-16T23:34:33Z; cycle 54 dry_run_planned"
     },
-    "cache": "findings.json"
+    "mechanical_r2_healer": {
+      "command": "php artisan atlas:native:constitution-heal --repo=… --finding-hash=sha1:… [--execute] [--file-findings] --json",
+      "proven": "canary sha1:19fc7482… dry_run_planned → healed; finding_present_after=false; finding_count_after=320"
+    },
+    "start_run_passthrough": [
+      "repo_root",
+      "allow_canonical_worktree_write",
+      "injected_finding"
+    ]
   },
-  "backlog_probe": {
-    "found": true,
-    "hash": "sha1:19fc748292b5ba86400dfaf8800a214d8e4e27e6",
-    "source": "native_constitution_scan",
-    "gap_kind": "dead_symbol",
-    "rule_id": "R2",
-    "route": "queued"
+  "still_blocked_for_full_dod": {
+    "app_delivered_receipt": "model.delivered still empty — mechanical heal does not write AP-790 merge ledger; needs commit+merge with gates OR receipt contract for heal receipts",
+    "factory_max_selection": "default scope_profile=factory_max prefers AP-789 forge topology seeds over native_constitution canaries",
+    "ap786_for_r2": "injected R2 finding blocks on missing_capability:tdd_test_contract|bdd_acceptance_contract — wrong tool; use mechanical healer",
+    "canonical_execute_without_opt_in": "execute on human checkout → stopped_canonical_worktree_write_refused unless allow_canonical_worktree_write or dedicated worktree repo_root",
+    "device": "passcodeRequired=true blocks make device / screenshots"
   },
-  "dry_run": {
-    "status": "enqueued",
-    "area_id": "atlas-native",
-    "mode": "dry_run",
-    "execute": false,
-    "started": false,
-    "requires_worker": true,
-    "provider_invoked": false,
-    "merge_performed": false,
-    "queue": "software_company_loop"
+  "scanner_canary_probe": {
+    "finding_hash": "sha1:19fc748292b5ba86400dfaf8800a214d8e4e27e6",
+    "healed": true
   },
-  "live_after_dry_run": {
-    "area_id": "atlas-native",
-    "cockpit_status": "ready",
-    "lock_held": false,
-    "lock_available": true,
-    "holder_present": false
-  },
-  "cleanup_scan": {
-    "finding_count_after_cleanup": 319,
-    "canary_present_after_cleanup": false,
-    "cache": "findings.json"
-  },
-  "blocked_at": "dry_run_enqueued_no_worker_lease",
   "fabricated": false
 }
