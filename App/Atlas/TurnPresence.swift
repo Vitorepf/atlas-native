@@ -16,6 +16,20 @@ import ActivityKit
 // servidor (fase APNs, §5 C8), a atualização em background vive da janela de
 // execução do iOS (~30s) — cobre o turno típico; turnos longos concluem a
 // notificação quando o app volta.
+/// Snapshot de uma sessão viva observada neste processo — a home lê isto
+/// para virar cockpit (V1). Zero rede; só o que o TurnPresence já sabe.
+struct LiveSessionSnapshot: Identifiable, Equatable {
+    let id: String            // traceId corrente (estável por execução)
+    let threadId: ThreadID?   // para Route.thread; nil se conversa nova local
+    let title: String
+    let phaseTitle: String
+    let timing: AtlasExecutionPresence.Timing
+    let elapsedActiveMs: Int?
+    let runningSince: Date?
+    /// 1ª observação local — só ordenação; nunca exibido como duração.
+    let startedAt: Date
+}
+
 @Observable @MainActor
 final class TurnPresence {
     static let shared = TurnPresence()
@@ -25,17 +39,23 @@ final class TurnPresence {
     /// mostrar vida na lista (◆ pulsando na linha certa) sem tocar nos models.
     private(set) var runningTitles: Set<String> = []
 
+    /// Sessões vivas ordenadas por `startedAt` — a home materializa "VIVO AGORA"
+    /// só quando este array não está vazio (lei V1.1).
+    private(set) var liveSessions: [LiveSessionSnapshot] = []
+
     /// Um turno observado. Classe (não struct) para `weak model` no registro.
     private final class Entry {
         weak var model: ConversationModel?
         var threadTitle: String
+        var threadId: ThreadID?
         var activityKey: TraceID?   // trace real que liga Activity ↔ conversa
         var activityStarted = false
         var ongoing = false        // C14: running OU paused — a sessão vive
         var startedAt = Date()     // base local só para trace legado (timer nil)
-        init(model: ConversationModel, threadTitle: String) {
+        init(model: ConversationModel, threadTitle: String, threadId: ThreadID?) {
             self.model = model
             self.threadTitle = threadTitle
+            self.threadId = threadId
         }
     }
 
@@ -44,6 +64,35 @@ final class TurnPresence {
 
     private func syncRunning() {
         runningTitles = Set(entries.values.filter { $0.ongoing }.map { $0.threadTitle })
+        publishLiveSessions()
+    }
+
+    /// Reconstrói `liveSessions` a partir das entries ongoing. Dedup por
+    /// traceId; conversa nova sem thread canônica fica sem navegação.
+    private func publishLiveSessions() {
+        var byTrace: [String: LiveSessionSnapshot] = [:]
+        for entry in entries.values where entry.ongoing {
+            guard let model = entry.model,
+                  let presence = model.currentExecutionPresence,
+                  let trace = model.currentExecutionPresenceTraceId else { continue }
+            var phase = presence.phaseTitle
+            if presence.timing == .running,
+               let prog = model.bubbles.last(where: { $0.traceId == trace })?.executionProgress {
+                phase = "\(prog.current)/\(prog.total) · \(prog.title)"
+            }
+            let snap = LiveSessionSnapshot(
+                id: trace.rawValue,
+                threadId: entry.threadId ?? model.threadId,
+                title: entry.threadTitle,
+                phaseTitle: phase,
+                timing: presence.timing,
+                elapsedActiveMs: presence.elapsedActiveMilliseconds,
+                runningSince: presence.runningSince,
+                startedAt: entry.startedAt
+            )
+            byTrace[snap.id] = snap
+        }
+        liveSessions = byTrace.values.sorted { $0.startedAt < $1.startedAt }
     }
 
     /// Quantas sessões vivem agora (running + paused — a verdade do contador).
@@ -51,13 +100,17 @@ final class TurnPresence {
 
     /// Chamado pela ConversationView no onAppear — registra/atualiza o alvo.
     /// Cada conversa aberta é observada de forma independente (multi-sessão).
-    func watch(_ model: ConversationModel, threadTitle: String) {
+    /// `threadId` nil = conversa nova local (linha viva sem navegação até o
+    /// servidor confirmar a thread canônica).
+    func watch(_ model: ConversationModel, threadTitle: String, threadId: ThreadID? = nil) {
         let id = ObjectIdentifier(model)
         if let existing = entries[id] {
             existing.threadTitle = threadTitle
+            existing.threadId = threadId ?? model.threadId
+            publishLiveSessions()
             return
         }
-        let entry = Entry(model: model, threadTitle: threadTitle)
+        let entry = Entry(model: model, threadTitle: threadTitle, threadId: threadId ?? model.threadId)
         entries[id] = entry
         observe(id)
     }

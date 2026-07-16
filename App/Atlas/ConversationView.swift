@@ -98,7 +98,7 @@ struct ConversationView: View {
         // Presença fora do app: Live Activity (lock screen/Dynamic Island)
         // enquanto trabalha + notificação local quando conclui fora da tela.
         .onAppear {
-            TurnPresence.shared.watch(model, threadTitle: title)
+            TurnPresence.shared.watch(model, threadTitle: title, threadId: model.threadId)
             if startFocused && model.bubbles.isEmpty {
                 // pequeno atraso: o push da navegação precisa assentar antes
                 // do foco, senão o iOS engole o teclado
@@ -106,6 +106,7 @@ struct ConversationView: View {
             }
         }
         .onChange(of: model.threadId) { _, now in
+            TurnPresence.shared.watch(model, threadTitle: title, threadId: now)
             if let now { onThread?(now) }
         }
         .onChange(of: model.isSending) { was, now in
