@@ -551,3 +551,56 @@ sempre: *que dado o servidor calcula e ninguém lê?*
   são agentes externos fora da API do Atlas. Mesma obra que destravar o `:ro`.
 - **Prova na tela**: o iPhone ficou fora da rede desde as 21h. Tudo compila e está commitado; o
   XCUITest da pílula/card não rodou no aparelho.
+
+---
+
+## 11. Sessão de 16/07/2026 — a prova de tela, e a caça até o platô
+
+### 11.1 A prova que faltava: XCUITest no iPhone físico
+
+O dia 15 fechou com "compila e o contrato responde", que eu chamava de provado.
+No dia 16, com o iPhone de volta na rede, rodei o `AtlasCodeFlowTests` no
+aparelho — e o primeiro "passou" era MENTIRA: um `guard repoCard else { attach;
+return }` passava verde sem tocar a pílula quando o app não alcançava o Mac.
+Mesma classe de teste mentiroso que a caça pegou o dia todo, e era meu.
+Consertado (`XCTFail`), e a pergunta trocada para uma que MOVE o mapa ("o que
+mudou essa semana?" — "tem algum problema?" retorna violações, `commits:[]`, e
+legitimamente não ancora). **TEST SUCCEEDED, 42s**: pílula→card→frase limpa do
+operador→grafo aceso "12 de 886". Fotos em `docs/evidence/2026-07-16-*`.
+
+**Lição:** prova de contrato ≠ prova de tela. "Funciona na mão do operador" só o
+XCUITest no device físico fecha. E teste que não prova o que promete tem de
+FALHAR, nunca `return` silencioso.
+
+### 11.2 A caça até o platô (rodadas 3 e 4)
+
+Mais cortes de "falha vira fato", agora achados pela própria caça:
+- **A cápsula tinha 2 estados, precisa de 3**: varredura caindo dava alta em
+  VERDE com ✓ (`scanAnswered` escrito e nunca ligado — meio conserto meu).
+  Agora vermelho/verde/cinza; verde é afirmação e só sai quando varreu.
+- **O radar dava alta à frota que não varreu**: falha virou `failedSlugs`, um
+  fato guardado, não um `continue`.
+- **O veto tinha prazo invisível**: `undo_expires_at` (30 dias) lido do fio;
+  vencido, o botão CALA em vez de falhar no toque.
+- **"esperando você: 0"**: constante literal E vocabulário de fila de aprovação
+  numa tela cujo canon é o contrário. Deletado.
+- **Notificação**: markdown cru na Lock Screen (achatado) + permissão pedida
+  DEPOIS de notificar (a 1ª notificação sumia).
+- **Cortes silenciosos**: grafo "200 de 8.700" agora confessa; busca "nada com X"
+  agora diz "nas 100 mais recentes"; histórico da frota diz "6 de N".
+
+Deleções (peso morto — deleção é evolução):
+- **`cache` do grafo**: `invalidated` era estruturalmente sempre false (serviço
+  não-singleton). Teatro nas duas pontas.
+- **`worktrees` do grafo**: subprocesso `git worktree list` a cada pull,
+  decodificado e nunca pintado. O MÉTODO parseWorktrees vive (ViolationService).
+
+### 11.3 O sinal de platô
+
+Quatro rodadas de caça (6 lentes cada, refutação adversarial): ~90 achados. A
+4ª rodada re-achou o que a 3ª já consertou, e os achados de UX novos (gramática
+de cor, Live Activity, dois cinzas) foram REFUTADOS pelo verificador — sinal de
+que a legenda de cor seria filler, não lei faltando. **Convergência é o sinal de
+limite que o goal previu.** O que resta são obras (o `:ro`, a proveniência sem
+escritor) ou integrações especulativas (Evidence Ledger genérico no card do
+git), não bugs de baixo risco.
