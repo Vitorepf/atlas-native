@@ -1,0 +1,35 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "C2416CBC-C5D9-41F9-ACD8-45EED8FC355E",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "E95F1EE7-CBEA-42C8-A831-2D083D8D1AA5.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "03-card-dismissed_0_F0F4F248-E1A7-4263-8AA9-B87C52B6621D.png",
+        "timestamp" : 1784237827.786
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "C2416CBC-C5D9-41F9-ACD8-45EED8FC355E",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "E2BE681D-132A-42B4-8EDB-7F1F637CF976.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "02-sheet-prefilled_0_1E261232-025F-4EEB-BAA2-22718B44EA21.png",
+        "timestamp" : 1784237820.346
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "C2416CBC-C5D9-41F9-ACD8-45EED8FC355E",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "28656AD4-2B9D-4A7C-BCBD-1E278797369D.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "01-card-proposta_0_36B7A47C-D833-4CD4-BE3A-4C030E3781E0.png",
+        "timestamp" : 1784237816.916
+      }
+    ],
+    "testIdentifier" : "AtlasNightlyProposalTests/testNightlyProposalCardOpensPrefilledSheetAndDismisses()",
+    "testIdentifierURL" : "test://com.apple.xcode/Atlas/AtlasDeviceProof/AtlasNightlyProposalTests/testNightlyProposalCardOpensPrefilledSheetAndDismisses"
+  }
+]

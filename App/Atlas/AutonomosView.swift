@@ -95,6 +95,11 @@ struct AutonomosView: View {
     private var content: some View {
         switch model.phase {
         case .idle, .loading:
+            if let proposal = nightly.pendingProposal {
+                nightlyProposal(proposal)
+                    .padding(.horizontal, AtlasTheme.Space.screen)
+                    .padding(.top, 10)
+            }
             Spacer()
             VStack(spacing: 14) {
                 ProgressView().tint(AtlasTheme.accent)
@@ -103,6 +108,11 @@ struct AutonomosView: View {
             }
             Spacer()
         case .failed(let message):
+            if let proposal = nightly.pendingProposal {
+                nightlyProposal(proposal)
+                    .padding(.horizontal, AtlasTheme.Space.screen)
+                    .padding(.top, 10)
+            }
             Spacer()
             VStack(spacing: 14) {
                 Image(systemName: "exclamationmark.triangle")
@@ -120,11 +130,7 @@ struct AutonomosView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     if let proposal = nightly.pendingProposal {
-                        NightlyProposalCard(
-                            proposal: proposal,
-                            onAccept: { nightlyStartProposal = proposal },
-                            onDismiss: { nightly.dismissProposal() }
-                        )
+                        nightlyProposal(proposal)
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                     if let fleet = model.fleet { fleetSummary(fleet) }
@@ -148,6 +154,14 @@ struct AutonomosView: View {
             .refreshable { await model.load() }
             .scrollIndicators(.hidden)
         }
+    }
+
+    private func nightlyProposal(_ proposal: NightlyProposalController.ProposalPayload) -> some View {
+        NightlyProposalCard(
+            proposal: proposal,
+            onAccept: { nightlyStartProposal = proposal },
+            onDismiss: { nightly.dismissProposal() }
+        )
     }
 
     // MARK: - Resumo da operação (C20: digest por agregação de dado REAL)
