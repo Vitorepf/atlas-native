@@ -127,6 +127,12 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S33 | **DONE** | **Grok 4.5** | OBRA §2 N8 + §5 DEVICE_PROVEN | S32 | F5.3+F5.4 N8 gate + prints | N8 em §2; prints = pendência operador | este commit |
 | S34 | **DONE** | **Grok 4.5** | OBRA §7 registro final | S33 | docs(obra) fechamento SOTA | DoD por eixo com prova/honesto | este commit |
 
+### Próximo Patamar (Grok 4.5 · spec `docs/spec-proximo-patamar.md`)
+| # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
+|---|---|---|---|---|---|---|---|
+| P01 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/TurnPresence.swift`; ConversationView | SOTA S34 + decisão §6 | V1.T1.1 liveSessions + threadId no watch | liveSessions espelha TurnPresence; zero rota nova | — |
+| P02–P20 | PENDING | — | conforme ORDEM MESTRA §E | P01 | commits 02–20 | DoD §F por vertical | — |
+
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
@@ -708,6 +714,14 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 - **2026-07-16 · F6.3 Metal Graph Engine (N1): NÃO agora.** Com F2.9 (`LazyVStack`)
   o grafo aguenta a vertical atual. Horizonte registrado — não código.
+
+- **2026-07-16 · Grok 4.5 executa a spec Próximo Patamar** (`docs/spec-proximo-patamar.md`)
+  com autorização do operador para atravessar as lanes (casca + engine + atlas-server
+  quando o contrato exigir) nesta missão, sem assumir ownership permanente.
+  Write-scope: `App/Atlas/*`, `Sources/*`, `App/UITests/*`, `docs/evidence/*` (append),
+  `OBRA.md` (append §4/§5/§6/§7), e no atlas-server os caminhos listados na spec V3/V4/V5.
+  Pré-requisito SOTA (S1–S34) verificado: TurnStatus/A11yID/LoadPhase/atlasCard presentes;
+  baseline checks+build verdes em 2026-07-16.
 
 - **2026-07-16 · Grok 4.5 executa a spec SOTA 10/10** (`docs/plano-sota-10-de-10.md`)
   com autorização do operador para atravessar as lanes Codex/Fable durante esta
