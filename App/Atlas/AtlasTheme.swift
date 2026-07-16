@@ -9,7 +9,6 @@ enum AtlasTheme {
     static let bgRecessed = Color(hex: 0x15212A)  // afundado (footer/sidebar)
     static let surface = Color(hex: 0x243743)      // surface canon (cards, pílula)
     static let surfaceHi = Color(hex: 0x2D4351)   // elevado (raised/pressed)
-    static let bgDeep = Color(hex: 0x0F181F)      // seleção profunda
 
     // Divisores (≈ branco alpha baixo sobre slate)
     static let separator = Color(hex: 0x313F47)
@@ -22,17 +21,13 @@ enum AtlasTheme {
 
     // Atlas gold (bronze canon) + info
     static let accent = Color(hex: 0xD4A85A)        // atlas gold
-    static let goldDeep = Color(hex: 0xA8853F)      // hover/pressed
-    static let goldLight = Color(hex: 0xE6B966)     // accent-strong
     static let goldVeil = Color(hex: 0xD4A85A, alpha: 0.10)  // fill sutil (pill ativa)
     static let goldBorder = Color(hex: 0xD4A85A, alpha: 0.34)
-    static let prussian = Color(hex: 0x7FA7C4)      // info / azul
+    static let prussian = Color(hex: 0x7FA7C4)      // info / azul (vivo em AtlasMarkdownView)
 
-    // Cores de domínio (pra organizar áreas: programação / operacional / autônomos)
-    static let domProgramacao = Color(hex: 0x7FA7C4) // azul
+    // Cores de domínio com uso real na casca
     static let domOperacional = Color(hex: 0x9B7A3F) // bronze
     static let domAutonomos = Color(hex: 0x6FA06A)   // verde (moss clareado p/ dark)
-    static let domAtlas = Color(hex: 0x9B86C7)       // roxo (domAtlas clareado)
 
     enum Space {
         static let screen: CGFloat = 20

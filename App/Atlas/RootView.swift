@@ -210,10 +210,6 @@ struct RootView: View {
                             path.append(Route.workspace(key: ws.id, title: ws.name))
                         }
                     }
-                    rowDivider
-                    WorkspaceRow(icon: "folder.badge.plus", name: "Adicionar workspace", count: nil) {
-                        // ponytail: placeholder — abrir picker de repo entra numa próxima rodada
-                    }
                 }
                 .padding(.bottom, 96)
             }
