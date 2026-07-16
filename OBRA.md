@@ -112,8 +112,10 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S20 | **DONE** | **Grok 4.5** | `App/Atlas/{AtlasCodeView,ConversationChrome,ConversationView}.swift` | S19 | F2.9+F2.10 LazyVStack + Equatable | grafo lazy; bolha `.equatable()` | checks+build exit 0 |
 | S21 | **DONE** | **Grok 4.5** | `App/Atlas/A11yID.swift`; `App/project.yml`; UITests | S20 | F4.1 A11yID compartilhado | 0 literais accessibilityIdentifier na casca; UITests usam A11yID | checks+build exit 0 |
 | S22 | **DONE** | **Grok 4.5** | `App/Atlas/ChangeReviewModel.swift` (+ Continuity/Types) | S21 | F3.1 ChangeReviewModel | ConversationModel < 800; sheet usa reviews | `d99c053`; 797 linhas; checks+build exit 0 |
-| S23 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/AtlasCodeView.swift` → sheets/rows | S22 | F3.2 split AtlasCodeView | nenhum arquivo > 400; View ~200 | — |
-| S24–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S23 | commits 24–34 da spec | DoD por eixo com prova | — |
+| S23 | **DONE** | **Grok 4.5** | `App/Atlas/AtlasCode*.swift` | S22 | F3.2 split AtlasCodeView | nenhum arquivo CodeView > 400 | `c2ddf0c`; View 176; checks+build exit 0 |
+| S24 | **DONE** | **Grok 4.5** | PlanCard/ExecutionStateCard/LiveTimeline | S23 | F3.3 split ConversationCockpit | shell 115; cards < 250 | `0c12f96`; checks+build exit 0 |
+| S25–S27 | **DONE** | **Grok 4.5** | Cockpit DiffStats; PlanCard revisions; ChangeReview Council | S24 | F3.4 seams C18/C19/C21 na casca | refs em App/Atlas; ausência≠zero | F3.4 commit; Council pré-existente na sheet; checks+build exit 0 |
+| S28–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S27 | commits 28–34 | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -763,10 +765,26 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   Pré-requisito de tudo: plano SOTA 10/10 (`docs/plano-sota-10-de-10.md`)
   concluído com provas.
 
+- **2026-07-16 · Corte de foco (operador — a lição do RN/desktop não se
+  repete):** ZERO telas novas nesta era; profundidade sobre superfície. Das
+  P1–P10, avançam AGORA somente 5 verticais — Cockpit postura v1, Proposta
+  das 21h, Self-Construction na casca (prioridade máxima), Artifacts & Proof
+  restrito às superfícies existentes (sem galeria/rota), H1 biografia do
+  arquivo — spec executável em `docs/spec-proximo-patamar.md`. Condicionadas:
+  regência (aguarda contrato de steering), Continuity fatia mínima (App
+  Intents + APNs; Share Extension/StandBy cortados), P10 em janela de
+  manutenção. CONGELADAS: Atlas-wide, H9, Anel Nativo N1–N7 (N8 vive no
+  SOTA), Memória de critério. Única tela nova autorizada: superfície de
+  medição dos motores ("Rivals") — aguardando decisão de nome (vocabulário
+  proibido em código pela regra Criação≠Medição) e escopo do operador.
+
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S25–S27/F3.4 · DiffStats na ExecutingStrip + PlanRevision «comparar versões» no PlanCard; bolha projeta metadata; Council já na ChangeReviewSheet · prova: checks+build exit 0; screenshot device-pending (trace real com campos)
+- 2026-07-16 · Grok 4.5 · SOTA S24/F3.3 · ConversationCockpit → PlanCard/ExecutionStateCard/LiveTimeline · prova: `0c12f96`; checks+build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S23/F3.2 · AtlasCodeView fatiado (Provenance/Heal/CommitRow/Palette/Graph) · prova: `c2ddf0c`; checks+build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S22/F3.1 · `ChangeReviewModel` extraído; ConversationModel 797 linhas (<800); Continuity/Types auxiliares; sheet usa `model.reviews` · prova: `d99c053`; checks+build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S21/F4.1 · `A11yID` compartilhado (casca + AtlasDeviceProof via project.yml); 0 literais accessibilityIdentifier em App/Atlas · prova: checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S20/F2.9+F2.10 · grafo `LazyVStack`; `EditorialTurn: Equatable` + `.equatable()` (closures não invalidam) · prova: checks exit 0; build exit 0
