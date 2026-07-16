@@ -27,14 +27,7 @@ public struct AtlasCodeViolationsResponse: Decodable, Equatable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        let schemaVersion = try values.decode(String.self, forKey: .schemaVersion)
-        guard schemaVersion == Self.schemaVersion else {
-            throw DecodingError.dataCorruptedError(
-                forKey: .schemaVersion,
-                in: values,
-                debugDescription: "Unsupported Atlas Code violations schema."
-            )
-        }
+        let schemaVersion = try values.requireSchema(Self.schemaVersion, forKey: .schemaVersion, message: "Unsupported Atlas Code violations schema.")
         self.schemaVersion = schemaVersion
         self.repo = try values.decode(String.self, forKey: .repo)
         self.generatedAt = try values.decode(String.self, forKey: .generatedAt)

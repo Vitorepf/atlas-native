@@ -22,14 +22,7 @@ public struct AtlasCodeWorkspaceResponse: Decodable, Equatable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        let schemaVersion = try values.decode(String.self, forKey: .schemaVersion)
-        guard schemaVersion == Self.schemaVersion else {
-            throw DecodingError.dataCorruptedError(
-                forKey: .schemaVersion,
-                in: values,
-                debugDescription: "Unsupported Atlas Code workspace schema."
-            )
-        }
+        let schemaVersion = try values.requireSchema(Self.schemaVersion, forKey: .schemaVersion, message: "Unsupported Atlas Code workspace schema.")
         self.schemaVersion = schemaVersion
         self.generatedAt = try values.decode(String.self, forKey: .generatedAt)
         self.workspaceRoot = try values.decodeIfPresent(String.self, forKey: .workspaceRoot)

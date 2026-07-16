@@ -139,15 +139,7 @@ public struct AtlasTraceChangeReview: Decodable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        let schemaVersion = try values.decode(String.self, forKey: .schemaVersion)
-        guard schemaVersion == Self.schemaVersion else {
-            throw DecodingError.dataCorruptedError(
-                forKey: .schemaVersion,
-                in: values,
-                debugDescription: "Unsupported trace change review schema."
-            )
-        }
-
+        let schemaVersion = try values.requireSchema(Self.schemaVersion, forKey: .schemaVersion, message: "Unsupported trace change review schema.")
         self.schemaVersion = schemaVersion
         self.state = try values.decode(State.self, forKey: .state)
         self.reason = try values.decodeIfPresent(String.self, forKey: .reason)

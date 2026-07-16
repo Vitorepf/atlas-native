@@ -31,14 +31,7 @@ public struct AtlasCodeGraphResponse: Decodable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        let schemaVersion = try values.decode(String.self, forKey: .schemaVersion)
-        guard schemaVersion == Self.schemaVersion else {
-            throw DecodingError.dataCorruptedError(
-                forKey: .schemaVersion,
-                in: values,
-                debugDescription: "Unsupported Atlas Code graph schema."
-            )
-        }
+        let schemaVersion = try values.requireSchema(Self.schemaVersion, forKey: .schemaVersion, message: "Unsupported Atlas Code graph schema.")
         self.schemaVersion = schemaVersion
         self.repo = try values.decode(String.self, forKey: .repo)
         self.generatedAt = try values.decode(String.self, forKey: .generatedAt)
@@ -253,14 +246,7 @@ public struct AtlasCodeProvenance: Decodable, Equatable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        let schemaVersion = try values.decode(String.self, forKey: .schemaVersion)
-        guard schemaVersion == Self.schemaVersion else {
-            throw DecodingError.dataCorruptedError(
-                forKey: .schemaVersion,
-                in: values,
-                debugDescription: "Unsupported Atlas Code provenance schema."
-            )
-        }
+        let schemaVersion = try values.requireSchema(Self.schemaVersion, forKey: .schemaVersion, message: "Unsupported Atlas Code provenance schema.")
         self.schemaVersion = schemaVersion
         self.repo = try values.decode(String.self, forKey: .repo)
         self.hash = try values.decode(String.self, forKey: .hash)
