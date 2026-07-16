@@ -87,6 +87,12 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 
 ## 4. Fila de trabalho (Conversation Supremacy — vertical ativa)
 
+### SOTA 10/10 (Grok 4.5 · spec `docs/plano-sota-10-de-10.md`)
+| # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
+|---|---|---|---|---|---|---|---|
+| S1 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/{AtlasAiTelemetry,AtlasAiPolicies,AtlasAiProviders,AtlasAiAttachments}.swift`; `Sources/AtlasCoreChecks/main.swift` | decisão §6 2026-07-16 | F0.2 poda 4 arquivos inteiros + cascata checks | 0 refs produto; checks+build verdes | — |
+| S2–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S1 | commits 2–34 da spec | DoD por eixo com prova | — |
+
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
@@ -646,6 +652,13 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 `docs/proposals/atlas-codigo-plano.html`. A spec vence improviso; o canon vence a spec.
 
 ## 6. Decisões registradas
+
+- **2026-07-16 · Grok 4.5 executa a spec SOTA 10/10** (`docs/plano-sota-10-de-10.md`)
+  com autorização do operador para atravessar as lanes Codex/Fable durante esta
+  missão, sem assumir ownership permanente. Precedente: decisão de 2026-07-15 da
+  missão E1–E5. Write-scope da missão: `Sources/*`, `App/Atlas/*`, docs de poda
+  listados na spec, `OBRA.md` (append §4/§5/§6/§7). Gates e leis de honestidade
+  da §2/§3 permanecem invioláveis.
 
 - **15/07 · Canon do app (operador):** o app nativo é a ferramenta de ENGENHARIA DE
   SOFTWARE mais completa possível da era agêntica. Dois pilares: **Atlas AI** (AX —

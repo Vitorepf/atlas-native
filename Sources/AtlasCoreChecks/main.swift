@@ -217,7 +217,6 @@ do {
 
 print("\nAtlas AI · superfície completa (golden decode por cluster):")
 runJobsChecks(check)
-runProvidersChecks(check)
 runAtlasLiveActivityChecks(check)
 runAtlasExecutionPlanChecks(check)
 runAtlasExecutionPresentationStateChecks(check)
@@ -226,11 +225,7 @@ runAtlasCodeGraphChecks(check)
 runAtlasCodeFactsChecks(check)
 runAtlasTraceGovernanceChecks(check)
 runAtlasAutonomosChecks(check)
-runDecisionsChecks(check)
-runTelemetryChecks(check)
-runPoliciesChecks(check)
 runQualityChecks(check)
-runAttachmentsChecks(check)
 runThreadsExtraChecks(check)
 
 print("\nAtlasMarkdown (parser editorial, verbatim de markdown/parse.ts):")
@@ -276,15 +271,6 @@ if let token = ProcessInfo.processInfo.environment["ATLAS_TOKEN"], !token.isEmpt
         print("    \(threads.threads.count) thread(s):")
         for t in threads.threads.prefix(2) {
             print("      · \(t.title.prefix(44)) — \(t.messageCount) msgs · \(t.surface)")
-        }
-
-        // Prova real dos clusters admin (payloads pesados — o Providers é o que
-        // pegou o bug 24H; decodar o real fecha o loop).
-        let status = try await client.getAiProvidersStatus()
-        check("GET /ai/providers/status decodou (payload admin real)", true)
-        print("    fila: \(status.queue.queued) queued · \(status.queue.processing) processing · providers: \(status.providers.count)")
-        for p in status.providers.prefix(3) {
-            print("      · \(p.provider): \(p.status) — \(p.totalJobs24h) jobs/24h, \(p.failedJobs24h) falhas")
         }
 
         let jobs = try await client.listAiJobs(limit: 3)
