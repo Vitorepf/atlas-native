@@ -41,6 +41,10 @@ enum A11yID {
     static let artifactsItemPrefix = "artifacts-item-"
     static func artifactsItem(_ index: Int) -> String { artifactsItemPrefix + String(index) }
 
+    // V3 · Self-Construction
+    static let selfReceiptSheet = "self-receipt-sheet"
+    static let selfReceiptVeto = "self-receipt-veto"
+
     /// Prefixo para `NSPredicate` nos UITests (slug/hash variáveis).
     static let radarRepoPrefix = "radar-repo-"
     static let radarFolderPrefix = "radar-folder-"

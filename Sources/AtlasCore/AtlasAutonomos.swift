@@ -208,6 +208,8 @@ public struct AtlasAutonomosFinding: Codable, Sendable, Equatable, Identifiable 
     public let priorityScore: Int
     public let route: String
     public let count: Int
+    public let ruleId: String?
+    public let ruleText: String?
 
     public var id: String { findingHash }
 }

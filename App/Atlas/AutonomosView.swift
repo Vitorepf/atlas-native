@@ -13,6 +13,7 @@ struct AutonomosView: View {
     @State private var showTransferSheet = false
     @State private var nightly = NightlyProposalController.shared
     @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
+    @State private var selfConstructionReceipt: SelfConstructionReceipt?
 
     private var model: AutonomosModel { session.autonomos }
 
@@ -58,6 +59,11 @@ struct AutonomosView: View {
                                  explainer: "A fonte entrega a MESMA missão no próximo limite seguro; o alvo só existe quando reivindicar o lock.") { actor, reason in
                 Task { await model.transfer(operatorActor: actor, reason: reason) }
             }
+        }
+        .sheet(item: $selfConstructionReceipt) { receipt in
+            SelfConstructionReceiptSheet(receipt: receipt)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
         }
     }
 
@@ -363,7 +369,7 @@ struct AutonomosView: View {
                 DetailMetric(label: "inbox", value: "\(model.backlog?.inboxItems.count ?? 0)")
             }
             placementSection
-            deliveredSection
+            deliveredSection(for: area)
             if !area.ownedSystems.isEmpty {
                 VStack(alignment: .leading, spacing: 5) {
                     Text("SISTEMAS SOB RESPONSABILIDADE").font(AtlasFont.mono(10)).tracking(0.9).foregroundStyle(AtlasTheme.textTertiary)
@@ -400,22 +406,53 @@ struct AutonomosView: View {
 
     /// C13: somente ciclos com merge comprovado (outcome=merged + hash real).
     @ViewBuilder
-    private var deliveredSection: some View {
+    private func deliveredSection(for area: AtlasAutonomosArea) -> some View {
         if let delivered = model.delivered, delivered.deliveredTotal > 0 {
+            let isSelf = isSelfConstructionArea(area)
             VStack(alignment: .leading, spacing: 6) {
-                Text("ENTREGAS COMPROVADAS · \(delivered.deliveredTotal)")
-                    .font(AtlasFont.mono(10)).tracking(0.9).foregroundStyle(AtlasTheme.accent)
+                Text(isSelf ? "O ATLAS MELHOROU O PRÓPRIO APP" : "ENTREGAS COMPROVADAS · \(delivered.deliveredTotal)")
+                    .font(AtlasFont.mono(10)).tracking(0.9)
+                    .foregroundStyle(isSelf ? AtlasTheme.domAutonomos : AtlasTheme.accent)
                 ForEach(delivered.delivered.prefix(3)) { cycle in
-                    HStack(spacing: 8) {
-                        Text("ciclo \(cycle.cycleIndex)").font(.caption).foregroundStyle(AtlasTheme.textSecondary)
-                        Text(String(cycle.mergeHash.prefix(8))).font(AtlasFont.mono(10))
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                        Spacer()
-                        Text(cycle.recordedAt).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
-                            .lineLimit(1)
+                    if isSelf {
+                        Button {
+                            selfConstructionReceipt = SelfConstructionReceipt(
+                                cycle: cycle,
+                                finding: selfConstructionFinding
+                            )
+                        } label: {
+                            deliveredRow(cycle)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("recibo de auto-construção, ciclo \(cycle.cycleIndex), merge \(String(cycle.mergeHash.prefix(8)))")
+                    } else {
+                        deliveredRow(cycle)
                     }
                 }
             }
+        }
+    }
+
+    private func deliveredRow(_ cycle: AtlasAutonomosCycle) -> some View {
+        HStack(spacing: 8) {
+            Text("ciclo \(cycle.cycleIndex)").font(.caption).foregroundStyle(AtlasTheme.textSecondary)
+            Text(String(cycle.mergeHash.prefix(8))).font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+            Spacer()
+            Text(cycle.recordedAt).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+                .lineLimit(1)
+        }
+        .contentShape(Rectangle())
+    }
+
+    private func isSelfConstructionArea(_ area: AtlasAutonomosArea) -> Bool {
+        area.repositoryNames.contains("atlas-native")
+    }
+
+    private var selfConstructionFinding: AtlasAutonomosFinding? {
+        model.backlog?.findings.items.first {
+            $0.source == "native_constitution_scan"
+                && (($0.ruleId?.isEmpty == false) || ($0.ruleText?.isEmpty == false))
         }
     }
 

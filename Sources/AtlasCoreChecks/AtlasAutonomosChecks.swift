@@ -69,7 +69,8 @@ public func runAtlasAutonomosChecks(_ check: (String, Bool) -> Void) {
        "by_risk":{"high":1},"by_route":{"atlas_dev":1},
        "items":[{"finding_hash":"sha256:abc123","title":"Contrato de fila","source":"area_focus",
          "source_owner":"atlas_dev","gap_kind":"partial_canon","risk_level":"high",
-         "priority_score":85,"route":"atlas_dev","count":2}]},
+         "priority_score":85,"route":"atlas_dev","count":2,
+         "rule_id":"R2","rule_text":"Símbolo public sem consumidor."}]},
      "work_orders":[{"work_order_id":"awo_123","finding_hash":"sha256:abc123","title":"Contrato de fila",
        "route":"atlas_dev","routes_to_owner_service":"atlas_dev","risk_level":"high","priority_score":85,
        "requires_branch_isolation":true,"operator_decision_required":true,"evidence_required":true,
@@ -82,6 +83,7 @@ public func runAtlasAutonomosChecks(_ check: (String, Bool) -> Void) {
     """
     let backlog = try? decoder.decode(AtlasAutonomosBacklogResponse.self, from: Data(backlogJSON.utf8))
     check("backlog Autônomos é tipado sem payload interno", backlog?.findings.items.first?.title == "Contrato de fila" && backlog?.workOrders.first?.requiresBranchIsolation == true && backlog?.inboxItems.first?.decisionOptions == ["accept", "reject"] && backlog?.budgets.wipLimit == 3)
+    check("finding Autônomos preserva regra citada quando servidor publica", backlog?.findings.items.first?.ruleId == "R2" && backlog?.findings.items.first?.ruleText == "Símbolo public sem consumidor.")
 
     let controlJSON = """
     {"schema_version":"atlas.software_company_stewardship.loop_command_run_control.v1",
