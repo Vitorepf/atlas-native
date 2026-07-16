@@ -103,6 +103,8 @@ public enum AtlasCodeAskIntent: String, Decodable, Equatable, Sendable {
     case problems, changes, find, unknown
     case whyBranch = "why_branch"
     case whoTouched = "who_touched"
+    case reviewBatch = "review_batch"
+    case hottest, commit, heals
 
     public init(from decoder: Decoder) throws {
         let raw = try decoder.singleValueContainer().decode(String.self)
