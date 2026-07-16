@@ -636,6 +636,65 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     check("progress|reasoning real não vaza chain-of-thought",
           atlasAgentActivity(from: recordedThinking)?.kind == .reasoning &&
           atlasAgentActivity(from: recordedThinking)?.detail == nil)
+    let snapshotWithItemId = """
+    {
+      "trace": {
+        "id": "trace-snapshot-item",
+        "trace_key": "snapshot-item",
+        "status": "succeeded",
+        "operator_input": "rode os checks",
+        "agent_slug": "atlas.executor",
+        "stream_events": [
+          {
+            "id": "snapshot-start",
+            "trace_id": "trace-snapshot-item",
+            "sequence": 1,
+            "event_type": "progress",
+            "channel": "activity",
+            "content": "swift run AtlasCoreChecks",
+            "metadata": {
+              "name": "shell",
+              "phase": "item.started",
+              "item_id": "snapshot-shell-item"
+            },
+            "occurred_at": "2026-07-16T12:00:00Z"
+          },
+          {
+            "id": "snapshot-complete",
+            "trace_id": "trace-snapshot-item",
+            "sequence": 2,
+            "event_type": "progress",
+            "channel": "activity",
+            "content": "swift run AtlasCoreChecks",
+            "metadata": {
+              "name": "shell",
+              "phase": "item.completed",
+              "item_id": "snapshot-shell-item",
+              "status": "completed"
+            },
+            "occurred_at": "2026-07-16T12:00:01Z"
+          }
+        ],
+        "created_at": "2026-07-16T12:00:00Z",
+        "updated_at": "2026-07-16T12:00:01Z"
+      }
+    }
+    """
+    let snapshotDecoder = JSONDecoder()
+    snapshotDecoder.keyDecodingStrategy = atlasSnakeKeyDecoding
+    do {
+        let snapshot = try snapshotDecoder.decode(AiTraceResponse.self, from: Data(snapshotWithItemId.utf8))
+        let events = snapshot.trace.streamEvents ?? []
+        let timeline = atlasAgentTimeline(from: events)
+        check("snapshot preserva metadata item_id verbatim",
+              events.first?.metadata["item_id"]?.stringValue == "snapshot-shell-item")
+        check("snapshot com item_id projeta tool persistida em uma linha",
+              timeline.count == 1 &&
+              timeline.first?.id == "trace-snapshot-item:item:snapshot-shell-item" &&
+              timeline.first?.kind == .completed)
+    } catch {
+        check("snapshot com item_id decodifica", false)
+    }
     let interleavedWhileShellRuns = atlasMergeAgentActivities(
         existing: [],
         incoming: [atlasAgentActivity(from: recordedShell)!,

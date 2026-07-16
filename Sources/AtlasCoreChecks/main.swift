@@ -109,6 +109,15 @@ do {
     let snakeValue = try snakeDecoder.decode(JSONValue.self, from: Data("{\"trace_id\":\"t-2\"}".utf8))
     check("JSONValue direto preserva chaves cruas", snakeValue["trace_id"]?.stringValue == "t-2")
 
+    struct MetadataEnvelope: Decodable { let metadata: JSONObject }
+    let envelope = try snakeDecoder.decode(MetadataEnvelope.self, from: Data("""
+    {"metadata":{"item_id":"bag-item","exit_code":0}}
+    """.utf8))
+    check("JSONObject aninhado preserva chaves cruas",
+          envelope.metadata["item_id"]?.stringValue == "bag-item" &&
+          envelope.metadata["exit_code"]?.doubleValue == 0 &&
+          envelope.metadata["itemId"] == nil)
+
     check("JSONObject decoda objeto", (try JSONDecoder().decode(JSONObject.self, from: json))["trace_id"]?.stringValue == "t-1")
     check("JSONObject mantém [] Laravel como bag vazio",
           (try JSONDecoder().decode(JSONObject.self, from: Data("[]".utf8))).isEmpty)
