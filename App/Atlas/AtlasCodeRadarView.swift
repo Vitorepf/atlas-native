@@ -22,6 +22,19 @@ final class AtlasCodeWorkspaceModel {
     private(set) var workspace: AtlasCodeWorkspaceResponse?
     /// Exceções por repo (slug → issues). Chave ausente = ainda não varrido.
     private(set) var issuesBySlug: [String: [AtlasCodeIssue]] = [:]
+    /// Repos que NÃO responderam. Falha é um fato e precisa ser guardada.
+    ///
+    /// Sem isto, o `continue` do scan fazia "falhou" e "ainda não varri"
+    /// colapsarem no mesmo nil — e a cápsula agregava o vazio em alta: um repo
+    /// respondendo `[]` entre doze mudos dava "nada pede você" com ✓ verde
+    /// sobre uma frota 92% não varrida. O comentário do scan promete "jamais
+    /// vira 0 problemas", e a promessa valia só para a LINHA do repo; a cápsula
+    /// somava e virava exatamente o 0 que ele nega.
+    ///
+    /// Set separado, e não `[String: [Issue]?]`: o dicionário optional não
+    /// compila aqui E mataria o retry — o guard do scan compara a chave, então
+    /// repo mudo nunca mais seria varrido, nem no puxar-para-atualizar.
+    private(set) var failedSlugs: Set<String> = []
     private(set) var expandedFolders: Set<String> = []
 
     init(client: AtlasClient) {
@@ -45,7 +58,13 @@ final class AtlasCodeWorkspaceModel {
     /// vira "0 problemas".
     func scan(_ slugs: [String]) async {
         for slug in slugs where issuesBySlug[slug] == nil {
-            guard let response = try? await client.getCodeViolations(repo: slug) else { continue }
+            guard let response = try? await client.getCodeViolations(repo: slug) else {
+                // Falha é FATO: guardada, não engolida. Sem isto a cápsula soma
+                // o silêncio como se fosse saúde.
+                failedSlugs.insert(slug)
+                continue
+            }
+            failedSlugs.remove(slug)
             issuesBySlug[slug] = Self.group(response.violations)
         }
     }
@@ -62,9 +81,18 @@ final class AtlasCodeWorkspaceModel {
     func issues(for slug: String) -> [AtlasCodeIssue]? { issuesBySlug[slug] }
 
     /// A frase do workspace: o problema dominante entre o que já foi varrido.
+    ///
+    /// Quando nada pede o operador, a frase tem de dizer sobre QUANTOS repos
+    /// ela está falando. "nada pede você" é um veredito sobre a frota, e emiti-lo
+    /// a partir de uma amostra que a tela não conta é a primeira frase da
+    /// ferramenta sendo um chute.
     var headline: String {
         let all = issuesBySlug.values.flatMap { $0 }
         guard !all.isEmpty else {
+            if !failedSlugs.isEmpty {
+                let mudos = failedSlugs.count
+                return mudos == 1 ? "1 repositório não respondeu" : "\(mudos) repositórios não responderam"
+            }
             return issuesBySlug.isEmpty ? "lendo o workspace…" : "nada pede você"
         }
         var byRule: [String: AtlasCodeIssue] = [:]
@@ -85,6 +113,18 @@ final class AtlasCodeWorkspaceModel {
     }
 
     var hasException: Bool { issuesBySlug.values.contains { !$0.isEmpty } }
+
+    /// O tom da cápsula do radar — TRÊS estados, como no grafo.
+    ///
+    /// Verde é afirmação ("varri a frota e nada pede você") e só pode sair
+    /// quando a conta fecha. Repo mudo, ou varredura ainda não começada, é
+    /// ausência: cinza. A tela dizia "lendo o workspace…" com um ✓ verde ao
+    /// lado — dois estados contraditórios ao mesmo tempo, nenhum verdadeiro.
+    var scanState: AtlasCodeScanState {
+        if hasException { return .violating }
+        if !failedSlugs.isEmpty || issuesBySlug.isEmpty { return .unknown }
+        return .clean
+    }
 
     /// Agrupa violações cruas por regra medindo a idade real do caso mais
     /// antigo — mesmo contrato do servidor.
@@ -243,9 +283,25 @@ struct AtlasCodeRadarView: View {
     }
 
     private var statusCapsule: some View {
-        let tone: Color = model.hasException ? AtlasCodePalette.alert : AtlasCodePalette.healed
+        // Três estados, como no grafo: verde é AFIRMAÇÃO sobre a frota e só sai
+        // quando a conta fecha. "lendo o workspace…" com ✓ verde ao lado eram
+        // dois estados contraditórios ao mesmo tempo, nenhum deles verdadeiro.
+        let tone: Color = {
+            switch model.scanState {
+            case .violating: return AtlasCodePalette.alert
+            case .clean: return AtlasCodePalette.healed
+            case .unknown: return AtlasTheme.textTertiary
+            }
+        }()
+        let simbolo: String = {
+            switch model.scanState {
+            case .violating: return "exclamationmark.triangle"
+            case .clean: return "checkmark"
+            case .unknown: return "questionmark"
+            }
+        }()
         return HStack(spacing: 7) {
-            Image(systemName: model.hasException ? "exclamationmark.triangle" : "checkmark")
+            Image(systemName: simbolo)
                 .font(.system(size: 10, weight: .semibold))
             Text(model.headline)
                 .font(.system(size: 11, weight: .semibold))
