@@ -32,13 +32,22 @@ final class AtlasCodeHubModel {
     /// ponto não acende: ausência nunca vira exceção.
     func refresh() async {
         guard let workspace = try? await client.getCodeWorkspace() else { return }
+
+        // Apagar o ponto é uma AFIRMAÇÃO ("varri e está são") e só pode sair
+        // de uma varredura que respondeu. Antes, se TODAS as leituras
+        // falhassem, o laço terminava e `exception = nil` apagava o ponto
+        // sobre uma frota que ninguém varreu — a mesma alta em verde da
+        // cápsula, em miniatura. Falha mantém o estado anterior: o ponto que
+        // estava aceso continua aceso até uma leitura real dizer o contrário.
+        var scanned = false
         for repo in workspace.recents {
             guard let response = try? await client.getCodeViolations(repo: repo.slug) else { continue }
+            scanned = true
             if let first = response.violations.first {
                 exception = Exception(repo: repo.name, ruleId: first.ruleId, count: response.violations.count)
                 return
             }
         }
-        exception = nil
+        if scanned { exception = nil }
     }
 }
