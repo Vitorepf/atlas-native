@@ -55,6 +55,15 @@ public enum AtlasRoute {
         "\(aiInteractionChangeReview(traceId))/file-action"
     }
 
+    public static func aiInteractionArtifacts(_ traceId: String) -> String {
+        "\(aiInteraction(traceId))/artifacts"
+    }
+
+    public static func aiInteractionArtifactContent(traceId: String, artifactId: String, maxBytes: Int) -> String {
+        let capped = min(max(maxBytes, 1), 10_485_760)
+        return "\(aiInteractionArtifacts(traceId))/\(component(artifactId))/content?max_bytes=\(capped)"
+    }
+
     public static func codeProvenance(_ hash: String) -> String {
         "/code/provenance/\(component(hash))"
     }
@@ -144,6 +153,8 @@ public func runAtlasRouteChecks(_ check: (String, Bool) -> Void) {
           AtlasRoute.aiInteractionStream("trace/1", timeout: 120, after: 9) == "/ai/interactions/trace%2F1/stream?timeout=120&after=9")
     check("route change review diff encodes both ids",
           AtlasRoute.aiInteractionChangeReviewDiff(traceId: "tr 1", patchId: "patch/2") == "/ai/interactions/tr%201/change-review/patches/patch%2F2/diff")
+    check("route artifact content encodes ids and max bytes",
+          AtlasRoute.aiInteractionArtifactContent(traceId: "tr/1", artifactId: "art 2", maxBytes: 9) == "/ai/interactions/tr%2F1/artifacts/art%202/content?max_bytes=9")
     check("route upload chunk uses canonical chunks path",
           AtlasRoute.uploadChunk("up/7") == "/ai/uploads/chunks/up%2F7/chunk")
     check("route autonomos transfer status keeps area and handoff encoded",

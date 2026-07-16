@@ -32,6 +32,13 @@ public struct AtlasApiError: Error, CustomStringConvertible, Sendable {
     public var description: String { "AtlasApiError(\(status), \(path)): \(message)" }
 }
 
+public struct AtlasRawDataResponse: Sendable {
+    public let data: Data
+    public let status: Int
+    public let contentType: String
+    public let atlasSha256: String?
+}
+
 /// The request engine — the Swift analog of `apiRequest<T>` (lib/api/core.ts).
 /// `URLSession` + async/await + `Codable`. Auth via `X-Atlas-Token` (the lane
 /// the /ai/* surface uses; the mobile Bearer lane ports with device pairing).
@@ -57,6 +64,31 @@ public actor AtlasClient: AtlasAiStreamSource {
 
     public func get<T: Decodable>(_ path: String, auth: Bool = true) async throws -> T {
         try await request(path, method: "GET", body: nil, auth: auth)
+    }
+
+    public func getData(_ path: String, auth: Bool = true, timeout: TimeInterval = 15) async throws -> AtlasRawDataResponse {
+        guard let url = URL(string: config.base + path) else {
+            throw AtlasApiError(status: 0, path: path, message: "URL inválida")
+        }
+        var req = URLRequest(url: url)
+        req.httpMethod = "GET"
+        req.timeoutInterval = timeout
+        req.setValue("*/*", forHTTPHeaderField: "Accept")
+        if auth { req.setValue(config.token, forHTTPHeaderField: "X-Atlas-Token") }
+
+        let (data, response) = try await session.data(for: req)
+        let http = response as? HTTPURLResponse
+        let status = http?.statusCode ?? 0
+        guard (200..<300).contains(status) else {
+            throw AtlasApiError(status: status, path: path, message: Self.errorMessage(data) ?? "HTTP \(status)")
+        }
+
+        return AtlasRawDataResponse(
+            data: data,
+            status: status,
+            contentType: http?.value(forHTTPHeaderField: "Content-Type") ?? "application/octet-stream",
+            atlasSha256: http?.value(forHTTPHeaderField: "X-Atlas-Sha256")
+        )
     }
 
     public func post<T: Decodable, B: Encodable>(_ path: String, body: B, auth: Bool = true, timeout: TimeInterval = 15) async throws -> T {
