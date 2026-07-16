@@ -5,9 +5,17 @@ import AtlasCore
 // Regra de ouro: *italic* é SEMPRE Fraunces italic (oralidade); **bold** é Sans
 // semibold (peso editorial); `code` é JetBrains Mono em surface (registro).
 // Tom "operational" (padrão das respostas): corpo em Sans; headings escalonados.
+//
+// Streaming (F2.7): enquanto `streaming`, memoiza o parse por contagem de chars
+// com throttle ~100ms (ou fronteira de bloco `\n\n` / fence). No finalize,
+// parse completo único — evita O(n²) re-parse a cada token.
 struct AtlasMarkdownView: View {
     let text: String
-    private var blocks: [MarkdownBlock] { AtlasMarkdown.parse(text) }
+    var streaming: Bool = false
+
+    @State private var blocks: [MarkdownBlock] = []
+    @State private var cachedCount: Int = -1
+    @State private var lastParseAt: CFAbsoluteTime = 0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -16,6 +24,33 @@ struct AtlasMarkdownView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .onAppear { refreshBlocks(force: true) }
+        .onChange(of: text) { _, _ in refreshBlocks(force: !streaming) }
+        .onChange(of: streaming) { _, isStreaming in
+            if !isStreaming { refreshBlocks(force: true) }
+        }
+    }
+
+    private func refreshBlocks(force: Bool) {
+        let count = text.count
+        if count == cachedCount, !force { return }
+
+        if !force, streaming {
+            let now = CFAbsoluteTimeGetCurrent()
+            let elapsed = now - lastParseAt
+            if elapsed < 0.1, !Self.isBlockBoundary(text) { return }
+            lastParseAt = now
+        } else {
+            lastParseAt = CFAbsoluteTimeGetCurrent()
+        }
+
+        cachedCount = count
+        blocks = AtlasMarkdown.parse(text)
+    }
+
+    /// Fronteira barata: parágrafo novo ou fence fechando — re-parse imediato.
+    private static func isBlockBoundary(_ text: String) -> Bool {
+        text.hasSuffix("\n\n") || text.hasSuffix("```\n") || text.hasSuffix("```")
     }
 
     @ViewBuilder

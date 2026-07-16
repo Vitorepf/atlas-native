@@ -105,8 +105,12 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S13 | **DONE** | **Grok 4.5** | `AtlasClient` SSE + `AtlasAiStream` Data path | S12 | F2.1 SSE sem gordura (TDD) | drain por cursor; 1 decoder; checks equiv | TDD red→green; checks+build exit 0; live skip (sem token) |
 | S14 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/JSONValue.swift` | S13 | F2.2 JSONValue via JSONSerialization | API pública igual; checks byte-a-byte verdes | ponte JSONSerialization; checks+build exit 0 |
 | S15 | **DONE** | **Grok 4.5** | InteractionRun + AtlasAgentActivity + ConversationModel | S14 | F2.3 poll incremental + check contagem | projeção ≤500 em ledger 500 | cache lastProjected; índice por id |
-| S16 | **IN_PROGRESS** | **Grok 4.5** | `Sources/AtlasCore/AtlasTime.swift` | S15 | F2.4 AtlasTime fast-path | ISO plain sem throw/catch | — |
-| S17–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S16 | commits 16–34 da spec | DoD por eixo com prova | — |
+| S16 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasTime.swift` | S15 | F2.4 AtlasTime fast-path | ISO plain sem throw/catch | `64a3863`; checks+build exit 0 |
+| S17 | **DONE** | **Grok 4.5** | `Sources/AtlasCoreChecks/{main,InteractionRunChecks}.swift` | S16 | F2.5 goldens item_id snake_case | goldens snapshot+SSE | `2677b5a`; checks+build exit 0 |
+| S18 | **DONE** | **Grok 4.5** | Markdown/RichInput/Imaging | S17 | F2.6 micro-opt hot path | trim/prefix/bytes | `1dd7d5e`; checks+build exit 0 |
+| S19 | **DONE** | **Grok 4.5** | `App/Atlas/{AtlasMarkdownView,ConversationView}.swift` | S18 | F2.7+F2.8 markdown memo + scroll | throttle 100ms; scroll coalescido | checks+build exit 0 |
+| S20 | **DONE** | **Grok 4.5** | `App/Atlas/{AtlasCodeView,ConversationChrome,ConversationView}.swift` | S19 | F2.9+F2.10 LazyVStack + Equatable | grafo lazy; bolha `.equatable()` | checks+build exit 0 |
+| S21–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S20 | commits 21–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -760,6 +764,11 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S20/F2.9+F2.10 · grafo `LazyVStack`; `EditorialTurn: Equatable` + `.equatable()` (closures não invalidam) · prova: checks exit 0; build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S19/F2.7+F2.8 · markdown streaming memo (throttle ~100ms / fronteira bloco; parse force no finalize) + scroll coalescido (>100ms ou count mudou) · prova: checks exit 0; build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S18/F2.6 · micro-opt Markdown/RichInput/Imaging · prova: `1dd7d5e`; checks+build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S17/F2.5 · goldens `item_id` snake_case no snapshot (produção já tipada pós-F2.2; sem fix paralelo no log) · prova: `2677b5a`; checks+build exit 0
+- 2026-07-16 · Grok 4.5 · SOTA S16/F2.4 · AtlasTime fast-path ISO plain + cache fractional · prova: `64a3863`; checks+build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S15/F2.3 · timeline poll incremental (lastProjected + índice por id); check 500 eventos ≤500 projeções · prova: checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S14/F2.2 · JSONValue via JSONSerialization (sem cascata try?); quirk []→bag vazio preservado · prova: checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S13/F2.1 · SSE: delimiters static, drain por cursor, dispatch Data bytes, 1 JSONDecoder/delegate; equivalência bytes≡string (TDD) · prova: checks exit 0; build exit 0; live-probe pulado (sem ATLAS_TOKEN)

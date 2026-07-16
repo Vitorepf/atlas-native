@@ -27,6 +27,10 @@ struct ConversationView: View {
     @State private var showCamera = false
     @FocusState private var focused: Bool
     @State private var awayFromBottom = false
+    /// F2.8: coalescer scroll durante streaming (tokens) — anima se >100ms
+    /// desde o último ou se a contagem de bolhas mudou.
+    @State private var lastScrollAt: CFAbsoluteTime = 0
+    @State private var lastScrollBubbleCount = 0
 
     // Anexo presente = card aberto: sem isso, anexar com o composer colapsado
     // deixava o operador sem botão de enviar (a fileira de controles só existia
@@ -172,6 +176,7 @@ struct ConversationView: View {
                                           onRetry: { jobId in
                                               Task { await model.retryTurn(jobId: jobId) }
                                           })
+                            .equatable()
                             .id(bubble.id)
                             // C15: revisão só entra pela projeção canônica do
                             // trace (a folha diz "sem artefatos" quando não há).
@@ -230,7 +235,15 @@ struct ConversationView: View {
             }
             .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: awayFromBottom)
             .onChange(of: model.bubbles) {
-                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { proxy.scrollTo("bottom", anchor: .bottom) }
+                let count = model.bubbles.count
+                let now = CFAbsoluteTimeGetCurrent()
+                let countChanged = count != lastScrollBubbleCount
+                guard countChanged || now - lastScrollAt >= 0.1 else { return }
+                lastScrollAt = now
+                lastScrollBubbleCount = count
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) {
+                    proxy.scrollTo("bottom", anchor: .bottom)
+                }
             }
         }
     }
