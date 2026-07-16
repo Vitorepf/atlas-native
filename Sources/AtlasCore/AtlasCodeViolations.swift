@@ -10,9 +10,19 @@ public struct AtlasCodeViolationsResponse: Decodable, Equatable, Sendable {
     public let generatedAt: String
     public let violations: [AtlasCodeViolation]
     public let plan: [AtlasCodeViolationPlan]
+    /// A trunk REAL deste repositório, dita pelo servidor.
+    ///
+    /// A tela escrevia "desvios da main" na mão, e metade da frota não tem
+    /// main: a trunk do nivor-back-end é `production`. Dizer "desvio da main"
+    /// sobre um repositório sem main é a tela afirmando com segurança uma coisa
+    /// que não existe — e o operador conferindo no git não acha o que ela citou.
+    ///
+    /// Ausente = trunk ambígua (o servidor recusa o chute) ou servidor antigo:
+    /// aí a frase fala de "desvio" sem nomear a linha, que é o que se sabe.
+    public let trunk: String?
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, repo, generatedAt, violations, plan
+        case schemaVersion, repo, generatedAt, violations, plan, trunk
     }
 
     public init(from decoder: Decoder) throws {
@@ -30,6 +40,7 @@ public struct AtlasCodeViolationsResponse: Decodable, Equatable, Sendable {
         self.generatedAt = try values.decode(String.self, forKey: .generatedAt)
         self.violations = try values.decode([AtlasCodeViolation].self, forKey: .violations)
         self.plan = try values.decode([AtlasCodeViolationPlan].self, forKey: .plan)
+        self.trunk = try values.decodeIfPresent(String.self, forKey: .trunk)
     }
 }
 

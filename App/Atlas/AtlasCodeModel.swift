@@ -127,12 +127,26 @@ final class AtlasCodeModel {
     /// falha vestido de boa notícia, e a boa notícia é o que o operador quer
     /// ouvir, então ele acredita e vai dormir.
     var statusHeadline: String {
-        guard let violations else { return "não consegui varrer a main" }
-        if violations.violations.count > 0 {
-            return violations.violations.count == 1 ? "1 desvio da main" : "\(violations.violations.count) desvios da main"
+        // A linha pelo nome REAL dela. "main" estava escrito na mão, e metade da
+        // frota não tem main — a trunk do nivor-back-end é `production`. Dizer
+        // "desvio da main" sobre um repositório sem main é a tela afirmando com
+        // segurança uma coisa que não existe, e o operador que for conferir no
+        // git não acha o que ela citou.
+        //
+        // Sem trunk (ambígua, ou servidor antigo), a frase fala de desvio sem
+        // nomear a linha: é o que se sabe, e nomear no chute seria pior.
+        let linha = violations?.trunk
+        guard let violations else {
+            return linha.map { "não consegui varrer a \($0)" } ?? "não consegui varrer a linha principal"
         }
-        if hasHealReceipt { return "main íntegra · curada sem você" }
-        return "main íntegra"
+        if violations.violations.count > 0 {
+            let quantos = violations.violations.count
+            let alvo = linha.map { " da \($0)" } ?? ""
+            return quantos == 1 ? "1 desvio\(alvo)" : "\(quantos) desvios\(alvo)"
+        }
+        let integra = linha.map { "\($0) íntegra" } ?? "linha principal íntegra"
+        if hasHealReceipt { return "\(integra) · curada sem você" }
+        return integra
     }
 
     /// A varredura respondeu? Sem isto a tela não tem como distinguir "está são"
