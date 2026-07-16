@@ -98,8 +98,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | S6 | **DONE** | **Grok 4.5** | `docs/proposals/**`; `docs/superpowers/`; `.gitignore` | S5 | F0.8 docs dups + arquivamento | links repontados; dups fora; archive | dups −~264K + index; superpowers→archive; checks+build exit 0 |
 | S7 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasTurnStatus.swift` + call sites | S6 | F1.1 AtlasTurnStatus | 0 literais de status fora do enum/checks; checks+build verdes | enum + computed turnStatus; InteractionRun/Model/Cockpit; 11 golden checks; exit 0 |
 | S8 | **DONE** | **Grok 4.5** | `Sources/AtlasCore/AtlasIDs.swift` + ChangeReview/Client Core + casca mínima | S7 | F1.2 IDs tipados (Core) | TraceID/PatchID nas APIs de review + getAiInteraction; checks+build verdes | AtlasIDs + golden; review APIs tipadas |
-| S9 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/ConversationModel.swift` (+ models) | S8 | F1.2 IDs tipados (models) | threadId/jobId/clientId/traceId tipados no model | — |
-| S10–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S9 | commits 10–34 da spec | DoD por eixo com prova | — |
+| S9 | **DONE** | **Grok 4.5** | `App/Atlas/ConversationModel.swift` (+ presence/bridge) | S8 | F1.2 IDs tipados (models) | threadId/jobId/clientId/traceId tipados no model | ChatBubble/Model seams tipados; checks+build exit 0 |
+| S10 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/*View*.swift` | S9 | F1.2 IDs tipados (views) | 0 Id:String em assinatura de view do loop | — |
+| S11–S34 | PENDING | — | conforme ORDEM MESTRA da spec | S10 | commits 11–34 da spec | DoD por eixo com prova | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -745,6 +746,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-16 · Grok 4.5 · SOTA S9/F1.2-models · ConversationModel/ChatBubble/TurnPresence/LiveActivity seams: TraceID/ThreadID/JobID tipados; rawValue só na borda ActivityKit · prova: checks exit 0; build exit 0; 0 Id:String em *Model*.swift
 - 2026-07-16 · Grok 4.5 · SOTA S8/F1.2-Core · `AtlasIDs` (Trace/Thread/Job/Patch/Client, Codable single-value) + APIs ChangeReview/getAiInteraction tipadas; casca mínima ajustada p/ gate verde · prova: runAtlasIDChecks; checks exit 0; build exit 0
 - 2026-07-16 · Grok 4.5 · SOTA S7/F1.1 · `AtlasTurnStatus` tipado (wire fail-open via `.unknown`); InteractionRun/ConversationModel/Cockpit usam `turnStatus`; literais de lifecycle só no enum; golden: unknown nunca terminal · prova: checks exit 0 (incl. 11 TurnStatus); build exit 0; git diff --check limpo
 - 2026-07-16 · Grok 4.5 · SOTA S6/F0.8 + **F0 FECHADA** · DELETE dups byte-idênticos em fable-execucao-viva/ (−3 HTML + index + evolucao antiga); links → fable-5.html; arquiva docs/superpowers + scripts/codex-execution-queue.test.mjs em docs/archive/; .DS_Store já no gitignore · prova: md5 idênticos antes do delete; checks exit 0; build exit 0. Saldo Swift F0 ≈ −2.250+; assets −144K; docs −~300K+

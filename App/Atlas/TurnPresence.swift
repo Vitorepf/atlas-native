@@ -29,7 +29,7 @@ final class TurnPresence {
     private final class Entry {
         weak var model: ConversationModel?
         var threadTitle: String
-        var activityKey: String?   // trace real que liga Activity ↔ conversa
+        var activityKey: TraceID?   // trace real que liga Activity ↔ conversa
         var activityStarted = false
         var ongoing = false        // C14: running OU paused — a sessão vive
         var startedAt = Date()     // base local só para trace legado (timer nil)
@@ -128,7 +128,7 @@ final class TurnPresence {
     }
 
     /// A presença final da bolha dona da Activity (fase "Concluído"/"Falhou").
-    private func lastPresence(_ model: ConversationModel, key: String?) -> AtlasExecutionPresence? {
+    private func lastPresence(_ model: ConversationModel, key: TraceID?) -> AtlasExecutionPresence? {
         guard let key else { return nil }
         return model.bubbles.last(where: { $0.traceId == key })?.executionPresence
     }
@@ -212,14 +212,14 @@ final class TurnPresence {
                          : String(format: "%d:%02d", s / 60, s % 60)
     }
 
-    private func startActivity(_ entry: Entry, traceId: String, presence: AtlasExecutionPresence,
+    private func startActivity(_ entry: Entry, traceId: TraceID, presence: AtlasExecutionPresence,
                                phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         entry.activityKey = traceId
         let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride)
         guard let activity = try? Activity.request(
-            attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: traceId),
+            attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: traceId.rawValue),
             content: .init(state: state, staleDate: nil),
             pushType: .token
         ) else { entry.activityKey = nil; return }
@@ -238,7 +238,7 @@ final class TurnPresence {
         guard let key = entry.activityKey else { return }
         let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride)
         Task { @MainActor in
-            for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
+            for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key.rawValue {
                 await a.update(.init(state: state, staleDate: nil))
             }
         }
@@ -254,7 +254,7 @@ final class TurnPresence {
         let model = entry.model
         let closed = phaseOverride == "sessão encerrada"
         Task { @MainActor in
-            for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key {
+            for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key.rawValue {
                 LiveActivityRemoteBridge.shared.end(
                     activityID: a.id,
                     model: model,

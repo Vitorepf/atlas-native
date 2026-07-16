@@ -12,8 +12,8 @@ struct EditorialTurn: View {
     let onFeedback: (FeedbackKind) -> Void
     let onCopy: () -> Void
     let onStop: () -> Void
-    let onExecutionChoice: (String, String) -> Void
-    var onRetry: (String) -> Void = { _ in }
+    let onExecutionChoice: (JobID, String) -> Void
+    var onRetry: (JobID) -> Void = { _ in }
     @State private var placed = false
 
     var body: some View {

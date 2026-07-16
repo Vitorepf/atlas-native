@@ -257,12 +257,12 @@ struct ExecutionRibbon: View {
 /// conversa oferece uma ação. Não há botão, prazo ou risco criado pela casca.
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
-    let jobId: String?
-    let onChoose: (String, String) -> Void
+    let jobId: JobID?
+    let onChoose: (JobID, String) -> Void
     /// C17: job falho que aceita retry. Presente → o card de falha oferece
     /// "Retomar" (reenfileira o job real). Sem ele, a falha fica só informada.
-    var retryableJobId: String? = nil
-    var onRetry: (String) -> Void = { _ in }
+    var retryableJobId: JobID? = nil
+    var onRetry: (JobID) -> Void = { _ in }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {

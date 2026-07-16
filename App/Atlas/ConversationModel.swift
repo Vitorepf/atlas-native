@@ -21,7 +21,7 @@ struct ChatBubble: Identifiable, Equatable {
     let role: String
     var text: String
     var streaming: Bool = false
-    var traceId: String? = nil
+    var traceId: TraceID? = nil
     var provider: String? = nil
     var model: String? = nil
     var feedbackAction: String? = nil
@@ -46,10 +46,10 @@ struct ChatBubble: Identifiable, Equatable {
     var executionPresentationState: AtlasExecutionPresentationState? = nil
     /// Job real que aceitaria uma ação pública. `nil` fora de atenção necessária;
     /// a casca usa este id apenas através de `resolveExecutionChoice`.
-    var executionChoiceJobId: String? = nil
+    var executionChoiceJobId: JobID? = nil
     /// C17: job real que FALHOU e aceita retry (`/ai/jobs/{id}/retry`). `nil`
     /// quando não há job em estado falho; a casca só oferece "Retomar" com ele.
-    var retryableJobId: String? = nil
+    var retryableJobId: JobID? = nil
     /// Dado único para presença do iOS: título de fase e regra de timer vêm do
     /// Core tipado, nunca de uma animação ou de texto do provider.
     var executionPresence: AtlasExecutionPresence? {
@@ -162,7 +162,7 @@ final class ConversationModel {
     @ObservationIgnored var taskKind: String?
 
     private let client: AtlasClient
-    private(set) var threadId: String?
+    private(set) var threadId: ThreadID?
     private var activeRun: InteractionRun?
     private var attachmentInputs: [String: AttachmentInput] = [:]
     @ObservationIgnored private var pendingAttachmentPreparations: [String: PendingAttachmentPreparation] = [:]
@@ -173,7 +173,7 @@ final class ConversationModel {
 
     /// Identidade da execução atual exposta à ponte ActivityKit, nunca à View.
     /// `nil` até o servidor confirmar o trace continua sendo um estado normal.
-    var currentStreamingTraceId: String? {
+    var currentStreamingTraceId: TraceID? {
         bubbles.last(where: { $0.streaming && $0.traceId != nil })?.traceId
     }
 
@@ -187,7 +187,7 @@ final class ConversationModel {
     /// Identidade canônica da mesma presença. A casca usa-a como chave da Live
     /// Activity para não criar uma sessão nova ao transitar de stream para uma
     /// pausa aguardando decisão ou sistema externo.
-    var currentExecutionPresenceTraceId: String? {
+    var currentExecutionPresenceTraceId: TraceID? {
         currentPresenceBubble?.traceId
     }
 
@@ -197,13 +197,13 @@ final class ConversationModel {
         }
     }
 
-    init(client: AtlasClient, threadId: String?) {
+    init(client: AtlasClient, threadId: ThreadID?) {
         self.client = client
         self.threadId = threadId
         self.engine = AtlasRichInputEngine(transport: client, installSalt: AtlasInstallationIdentity.id)
         self.outbox = InteractionOutbox(fileURL: InteractionOutbox.applicationSupportFileURL())
         self.queueStore = QueuedFollowUpStore(fileURL: QueuedFollowUpStore.applicationSupportFileURL())
-        self.queueScope = threadId.map { "thread:\($0)" } ?? "local:\(UUID().uuidString.lowercased())"
+        self.queueScope = threadId.map { "thread:\($0.rawValue)" } ?? "local:\(UUID().uuidString.lowercased())"
         self.effort = AtlasComputeEffort(
             rawValue: UserDefaults.standard.string(forKey: Self.effortPreferenceKey) ?? ""
         ) ?? .auto
@@ -224,7 +224,7 @@ final class ConversationModel {
 
         do {
             latestSurfaceHandoff = try await client.handoffAiThreadSurface(
-                threadId,
+                threadId.rawValue,
                 input: .init(toSurface: destination)
             ).handoff
         } catch {
@@ -376,7 +376,7 @@ final class ConversationModel {
         await loadQueuedMessages()
         if let threadId {
             do {
-                let response = try await client.getAiThread(threadId)
+                let response = try await client.getAiThread(threadId.rawValue)
                 if let w = response.thread.workspace, !w.isEmpty {
                     workspacePath = w
                     workspaceName = (w as NSString).lastPathComponent
@@ -390,7 +390,7 @@ final class ConversationModel {
                             : message.content
                         return ChatBubble(id: message.id, role: message.role,
                                       text: visible ?? "A resposta anterior continha saída interna e foi ocultada.",
-                                      traceId: message.traceId, provider: message.provider, model: message.model)
+                                      traceId: message.traceId.map { TraceID($0) }, provider: message.provider, model: message.model)
                     }
                 await loadExecutionHistory()
             } catch {
@@ -409,7 +409,7 @@ final class ConversationModel {
     /// Não há fallback falso: sem trace ou sem token, a Live Activity permanece
     /// local e o servidor não anuncia cobertura remota.
     func registerLiveActivityPushToken(
-        traceId: String,
+        traceId: TraceID,
         activityId: String,
         pushToken: String,
         environment: AtlasLiveActivityRegistrationInput.Environment,
@@ -418,7 +418,7 @@ final class ConversationModel {
     ) async -> AtlasLiveActivityRegistrationReceipt? {
         do {
             return try await client.registerLiveActivity(.init(
-                traceId: traceId,
+                traceId: traceId.rawValue,
                 activityId: activityId,
                 installationId: AtlasInstallationIdentity.id,
                 pushToken: pushToken,
@@ -434,13 +434,13 @@ final class ConversationModel {
     }
 
     func invalidateLiveActivityPushToken(
-        traceId: String,
+        traceId: TraceID,
         activityId: String,
         reason: String
     ) async {
         _ = try? await client.invalidateLiveActivity(
             activityId: activityId,
-            input: .init(traceId: traceId, reason: reason)
+            input: .init(traceId: traceId.rawValue, reason: reason)
         ) as AtlasLiveActivityRegistrationReceipt
     }
 
@@ -599,7 +599,7 @@ final class ConversationModel {
             }
             let input = CreateAiInteractionInput(inputText: wireText,
                                                  clientId: UUID().uuidString.lowercased(),
-                                                 threadId: threadId,
+                                                 threadId: threadId?.rawValue,
                                                  newThread: threadId == nil ? true : nil,
                                                  agentSlug: proofProvider == nil ? nil : "atlas",
                                                  provider: proofProvider,
@@ -633,7 +633,7 @@ final class ConversationModel {
 
     func cancel() {
         let run = activeRun
-        let activeTraces = bubbles.compactMap { bubble -> (id: String, traceId: String)? in
+        let activeTraces = bubbles.compactMap { bubble -> (id: String, traceId: TraceID)? in
             guard bubble.streaming, let traceId = bubble.traceId else { return nil }
             return (bubble.id, traceId)
         }
@@ -645,7 +645,7 @@ final class ConversationModel {
 
             var confirmed = false
             for activeTrace in activeTraces {
-                guard let refreshed = try? await client.getAiInteraction(TraceID(activeTrace.traceId)) else { continue }
+                guard let refreshed = try? await client.getAiInteraction(activeTrace.traceId) else { continue }
                 applyExecution(activeTrace.id, refreshed.trace)
                 confirmed = confirmed || refreshed.trace.turnStatus == .cancelled
             }
@@ -659,7 +659,7 @@ final class ConversationModel {
         let previous = bubbles[i].feedbackAction
         bubbles[i].feedbackAction = kind.activeAction
         do {
-            _ = try await client.feedbackAiInteraction(trace, feedback: kind.payload)
+            _ = try await client.feedbackAiInteraction(trace.rawValue, feedback: kind.payload)
             toast = "\(kind.label) registrado"
         } catch {
             bubbles[i].feedbackAction = previous
@@ -733,7 +733,7 @@ final class ConversationModel {
             }
             changeReviewsByTrace[traceId] = response.changeReview
             if let refreshed = try? await client.getAiInteraction(traceId) {
-                for bubble in bubbles where bubble.traceId == traceId.rawValue {
+                for bubble in bubbles where bubble.traceId == traceId {
                     applyExecution(bubble.id, refreshed.trace)
                 }
             }
@@ -784,7 +784,7 @@ final class ConversationModel {
             }
             changeReviewsByTrace[traceId] = response.changeReview
             if let refreshed = try? await client.getAiInteraction(traceId) {
-                for bubble in bubbles where bubble.traceId == traceId.rawValue {
+                for bubble in bubbles where bubble.traceId == traceId {
                     applyExecution(bubble.id, refreshed.trace)
                 }
             }
@@ -799,7 +799,7 @@ final class ConversationModel {
     /// Busca os snapshots completos em paralelo para que cada resposta reabra
     /// com sua timeline registrada, inclusive depois de relaunch.
     private func loadExecutionHistory() async {
-        let refs = bubbles.compactMap { bubble -> (String, String)? in
+        let refs = bubbles.compactMap { bubble -> (String, TraceID)? in
             guard bubble.role == "assistant", let traceId = bubble.traceId else { return nil }
             return (bubble.id, traceId)
         }
@@ -814,7 +814,7 @@ final class ConversationModel {
             let values = await withTaskGroup(of: (String, AtlasAiTrace?).self) { group in
                 for (bubbleId, traceId) in batch {
                     group.addTask {
-                        let trace = try? await client.getAiInteraction(TraceID(traceId))
+                        let trace = try? await client.getAiInteraction(traceId)
                         return (bubbleId, trace?.trace)
                     }
                 }
@@ -834,6 +834,8 @@ final class ConversationModel {
         let agents = (trace.jobs ?? []).map {
             ExecAgent(id: $0.id, agent: $0.agentSlug, provider: $0.provider, model: $0.model, status: $0.status)
         }
+        let choiceJob = trace.jobs?.first { $0.turnStatus == .awaitingUserChoice }
+        let failedJob = trace.jobs?.first { $0.turnStatus == .failed }
         update(id) {
             $0.agents = agents
             $0.decideStrategy = trace.atlasDecideExecution?.strategy
@@ -843,10 +845,8 @@ final class ConversationModel {
             $0.executionPlan = trace.executionPlan
             $0.executionProgress = trace.executionProgress
             $0.executionPresentationState = trace.executionPresentationState
-            $0.executionChoiceJobId = trace.jobs?
-                .first(where: { $0.turnStatus == .awaitingUserChoice })?.id
-            $0.retryableJobId = trace.jobs?
-                .first(where: { $0.turnStatus == .failed })?.id
+            $0.executionChoiceJobId = choiceJob.map { JobID($0.id) }
+            $0.retryableJobId = failedJob.map { JobID($0.id) }
             let fromStream = atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
             $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)
@@ -856,15 +856,16 @@ final class ConversationModel {
     /// Executa uma opção que o próprio servidor declarou para um job pausado.
     /// A View fornece somente ids públicos; o recibo canônico é relido antes de
     /// qualquer mudança visual para não antecipar estado nem duplicar ação.
-    func resolveExecutionChoice(jobId: String, optionId: String) async {
+    func resolveExecutionChoice(jobId: JobID, optionId: String) async {
         do {
-            let receipt = try await client.resumeAiJobChoice(jobId, optionId: optionId)
+            let receipt = try await client.resumeAiJobChoice(jobId.rawValue, optionId: optionId)
             guard let traceId = receipt.job.traceId else {
                 toast = "A decisão foi registrada, mas a conversa ainda não está disponível."
                 return
             }
-            let refreshed = try await client.getAiInteraction(TraceID(traceId))
-            for bubble in bubbles where bubble.traceId == traceId {
+            let typedTraceId = TraceID(traceId)
+            let refreshed = try await client.getAiInteraction(typedTraceId)
+            for bubble in bubbles where bubble.traceId == typedTraceId {
                 applyExecution(bubble.id, refreshed.trace)
             }
         } catch {
@@ -875,15 +876,16 @@ final class ConversationModel {
     /// C17: retoma um turno que FALHOU reenfileirando o job real
     /// (`/ai/jobs/{id}/retry`). Não fabrica estado: relê o trace pelo job
     /// devolvido e reaplica a execução, exatamente como `resolveExecutionChoice`.
-    func retryTurn(jobId: String) async {
+    func retryTurn(jobId: JobID) async {
         do {
-            let receipt = try await client.retryAiJob(jobId)
+            let receipt = try await client.retryAiJob(jobId.rawValue)
             guard let traceId = receipt.job.traceId else {
                 toast = "O turno foi reenfileirado."
                 return
             }
-            let refreshed = try await client.getAiInteraction(TraceID(traceId))
-            for bubble in bubbles where bubble.traceId == traceId {
+            let typedTraceId = TraceID(traceId)
+            let refreshed = try await client.getAiInteraction(typedTraceId)
+            for bubble in bubbles where bubble.traceId == typedTraceId {
                 applyExecution(bubble.id, refreshed.trace)
             }
         } catch {
@@ -924,11 +926,11 @@ final class ConversationModel {
                     await consumeQueuedMessageAfterPersistence(id: followUpId)
                 }
             case .created(let trace):
-                if let canonicalThreadId = trace.threadId, threadId != canonicalThreadId {
+                if let canonicalThreadId = trace.threadId.map({ ThreadID($0) }), threadId != canonicalThreadId {
                     threadId = canonicalThreadId
                     await adoptQueueScope(threadId: canonicalThreadId)
                 }
-                update(assistantId) { $0.traceId = trace.id; $0.provider = trace.provider }
+                update(assistantId) { $0.traceId = TraceID(trace.id); $0.provider = trace.provider }
                 applyExecution(assistantId, trace)
             case .activity(let activity):
                 update(assistantId) {
@@ -962,7 +964,7 @@ final class ConversationModel {
         guard activeRun == nil, !isSending else { return }
         let pending = await outbox.pending()
         guard let input = pending.first(where: {
-            if let threadId { return $0.threadId == threadId }
+            if let threadId { return $0.threadId == threadId.rawValue }
             return $0.threadId == nil
         }) else { return }
 
@@ -970,7 +972,7 @@ final class ConversationModel {
         if let clientId = input.clientId,
            let trace = try? await client.findInteraction(clientId: ClientID(clientId)),
            trace.trace.turnStatus.isTerminal,
-           bubbles.contains(where: { $0.traceId == trace.trace.id }) {
+           bubbles.contains(where: { $0.traceId == TraceID(trace.trace.id) }) {
             try? await outbox.remove(clientId: clientId)
             return
         }
@@ -1008,8 +1010,8 @@ final class ConversationModel {
         queuedMessages = await queueStore.messages(scope: queueScope)
     }
 
-    private func adoptQueueScope(threadId: String) async {
-        let canonicalScope = "thread:\(threadId)"
+    private func adoptQueueScope(threadId: ThreadID) async {
+        let canonicalScope = "thread:\(threadId.rawValue)"
         guard canonicalScope != queueScope else { return }
         do {
             try await queueStore.migrate(scope: queueScope, to: canonicalScope)

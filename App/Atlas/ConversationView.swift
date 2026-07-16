@@ -20,7 +20,7 @@ struct ConversationView: View {
     @State private var showQueueSheet = false
     @State private var reviewTrace: ReviewTraceRef?
 
-    struct ReviewTraceRef: Identifiable { let id: String }
+    struct ReviewTraceRef: Identifiable { let id: TraceID }
     @State private var showAttachmentSheet = false
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showFileImporter = false
@@ -68,7 +68,7 @@ struct ConversationView: View {
         self.emptyPrompt = emptyPrompt
         self.emptySuggestions = emptySuggestions
         self.onThread = onThread
-        let model = ConversationModel(client: client, threadId: threadId)
+        let model = ConversationModel(client: client, threadId: threadId.map { ThreadID($0) })
         model.turnFacts = turnFacts
         model.taskKind = taskKind
         if let workspace {
@@ -101,7 +101,7 @@ struct ConversationView: View {
             }
         }
         .onChange(of: model.threadId) { _, now in
-            if let now { onThread?(now) }
+            if let now { onThread?(now.rawValue) }
         }
         .onChange(of: model.isSending) { was, now in
             // Resposta terminou → haptic de sucesso (o toque que fecha o ciclo)
@@ -353,7 +353,7 @@ struct ConversationView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
         .sheet(item: $reviewTrace) { ref in
-            ChangeReviewSheet(model: model, traceId: TraceID(ref.id))
+            ChangeReviewSheet(model: model, traceId: ref.id)
         }
         .sheet(isPresented: $showQueueSheet) {
             SheetShell(title: "Fila · \(model.queuedMessages.count)") {

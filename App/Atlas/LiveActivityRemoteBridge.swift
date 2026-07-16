@@ -15,7 +15,7 @@ final class LiveActivityRemoteBridge {
     private init() {}
 
     private var tokenTasks: [String: Task<Void, Never>] = [:]
-    private var tracesByActivityID: [String: String] = [:]
+    private var tracesByActivityID: [String: TraceID] = [:]
     private var locallyManagedActivityIDs: Set<String> = []
     private var startTokenTask: Task<Void, Never>?
     private var remoteActivityTask: Task<Void, Never>?
@@ -75,7 +75,7 @@ final class LiveActivityRemoteBridge {
 
                 // Só guarda a associação após receipt do servidor. Isso evita
                 // tentar invalidar no fim um registro que nunca existiu.
-                self.tracesByActivityID[activity.id] = receipt.traceId
+                self.tracesByActivityID[activity.id] = TraceID(receipt.traceId)
             }
         }
     }
@@ -101,7 +101,7 @@ final class LiveActivityRemoteBridge {
                     frequentUpdatesEnabled: ActivityAuthorizationInfo().frequentPushesEnabled
                 ))
                 if receipt != nil {
-                    self.tracesByActivityID[activity.id] = traceId
+                    self.tracesByActivityID[activity.id] = TraceID(traceId)
                 }
             }
         }
@@ -121,7 +121,7 @@ final class LiveActivityRemoteBridge {
         }
     }
 
-    private func waitForTrace(_ model: ConversationModel) async -> String? {
+    private func waitForTrace(_ model: ConversationModel) async -> TraceID? {
         // O token APNs pode chegar antes da criação remota devolver o
         // trace. Esperamos pouco e somente enquanto aquele turno existe.
         for _ in 0..<30 {
