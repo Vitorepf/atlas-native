@@ -220,7 +220,8 @@ struct AtlasCodeView: View {
 
     private func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            // F2.9: LazyVStack — não materializa ~200 rows + dims de uma vez.
+            LazyVStack(alignment: .leading, spacing: 0) {
                 statusCapsule
                     .padding(.bottom, 14)
 
