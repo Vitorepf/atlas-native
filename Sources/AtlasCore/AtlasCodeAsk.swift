@@ -148,7 +148,7 @@ public enum AtlasCodeAskSuggestions {
     public static let all: [String] = [
         "tem algum problema?",
         "o que mudou hoje?",
-        "qual arquivo mais mexe?",
+        "o que você curou essa semana?",
         "revise os commits de hoje",
     ]
 }
