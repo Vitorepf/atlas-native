@@ -188,6 +188,7 @@ runAtlasCodeGraphChecks(check)
 runAtlasCodeFactsChecks(check)
 runAtlasTraceGovernanceChecks(check)
 runAtlasAutonomosChecks(check)
+await runAtlasDayRhythmChecks(check)
 runQualityChecks(check)
 runThreadsExtraChecks(check)
 
