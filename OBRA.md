@@ -130,8 +130,10 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ### Próximo Patamar (Grok 4.5 · spec `docs/spec-proximo-patamar.md`)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
-| P01 | **IN_PROGRESS** | **Grok 4.5** | `App/Atlas/TurnPresence.swift`; ConversationView | SOTA S34 + decisão §6 | V1.T1.1 liveSessions + threadId no watch | liveSessions espelha TurnPresence; zero rota nova | — |
-| P02–P20 | PENDING | — | conforme ORDEM MESTRA §E | P01 | commits 02–20 | DoD §F por vertical | — |
+| P01 | **DONE** | **Grok 4.5** | TurnPresence + ConversationView | decisão §6 | V1.T1.1 liveSessions + threadId | liveSessions tipado; zero rota nova | `11bb1bb` |
+| P02 | **DONE** | **Grok 4.5** | LiveNowSection + RootView + A11yID | P01 | V1.T1.2 seção VIVO AGORA | só com ≥1 sessão; atlasCard | `d86cf2c` |
+| P03 | **DONE** | **Grok 4.5** | AtlasLiveNowTests + evidence | P02 | V1.T1.3 prova XCUITest | idle sem seção; live com seção; some ao fim | 1/0 falhas; screenshots evidence |
+| P04–P20 | PENDING | — | conforme ORDEM MESTRA §E | P03 | commits 04–20 | DoD §F | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -813,6 +815,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-16 · Grok 4.5 · **V1 Cockpit postura FECHADA** · `11bb1bb`+`d86cf2c`+test · liveSessions + LiveNowSection; XCUITest AtlasLiveNowTests 1/0 falhas (idle sem seção → live com seção → some ao fim); screenshots `docs/evidence/2026-07-16-cockpit-v1/{01-idle,02-live-session,03-after-done}.png`. Zero rota nova. **Honesto:** prova de 2 sessões simultâneas no simulador fica pendente (teste cobre 1 sessão ponta a ponta); device físico device-pending.
 
 - 2026-07-16 · Grok 4.5 · **SOTA MISSÃO — registro final (S34)** · Ordem mestra 1–34 entregue na main local. **Saldo Swift** desde `8744eb6^`: ver medição no fechamento (~−700 a −900 líquido após tipagem/splits/F4/F6 — **abaixo do alvo −2.500**; a poda F0 sozinha foi −2.275 e as fases seguintes adicionaram linhas tipadas). **DoD por eixo:** Arquitetura ✓ (Model≤800, TurnStatus/IDs, TurnPayloadBuilder, F6.1); Qualidade ✓ (A11yID, schema, status tipado); Fluidez UI parcial (F2 memo/scroll/lazy/equatable ✓; Instruments 120Hz/launch = §5 pendência operador); Saúde evolutiva parcial (saldo < alvo; views>400 restantes: ConversationView/Chrome/Autonomos/Radar/ChangeReview); Eficiência ✓ (1 decoder/stream, poll O(T+N), Time fast-path, markdown throttle). F5.1/F5.4 DEVICE_PROVEN = pendência operador. Prova gates: checks+build verdes ao longo da missão.
 - 2026-07-16 · Grok 4.5 · SOTA S33/F5.3+F5.4 · N8 registrado em OBRA §2; sessão de prints U1–U6/DEVICE_PROVEN permanece pendência do operador (sem device Instruments nesta sessão) · prova: texto em §2/§5
