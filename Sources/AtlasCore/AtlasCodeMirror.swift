@@ -72,6 +72,14 @@ public struct AtlasCodeMirrorResponse: Decodable, Equatable, Sendable {
     }
 
     public var state: State {
+        // `remote_unreadable` é FALHA de git, não ausência de remote: o
+        // servidor os distingue, e o card não podia colapsá-los em "sem
+        // espelho configurado" — isso é a falha vestida de fato, mandando o
+        // operador configurar um remote que talvez já exista. Falha vira
+        // `.unknown` (cinza, "estado ainda desconhecido"), que não afirma nada.
+        if mirror == nil, reason == "remote_unreadable" {
+            return .unknown(reason: "remote_unreadable")
+        }
         guard mirror != nil else { return .noMirror(reason: reason ?? "no_remote_configured") }
         guard let pending else { return .unknown(reason: reason ?? "upstream_unknown") }
         if let scan, scan.blocked {

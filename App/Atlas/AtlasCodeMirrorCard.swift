@@ -82,9 +82,17 @@ struct AtlasCodeMirrorCard: View {
             label("tudo espelhado · a verdade fica no Mac", color: AtlasTheme.textSecondary, icon: "checkmark")
         case .pending(let commits):
             label(
-                commits == 1 ? "1 commit a espelhar · o Atlas envia sozinho" : "\(commits) commits a espelhar · o Atlas envia sozinho",
+                // A frase declara o FATO, não a promessa: nenhum código envia ao espelho
+                // hoje (o push governado ainda não existe). "o Atlas envia sozinho"
+                // afirmava um comportamento futuro como presente — e o operador
+                // confiava num backup que não acontece. Quando o envio governado
+                // existir (push + recibo + undo, a mecânica do veto já provada), a
+                // promessa volta. Até lá, dizer onde os commits ESTÃO é a verdade.
+                commits == 1 ? "1 commit ainda só no Mac" : "\(commits) commits ainda só no Mac",
                 color: AtlasTheme.textSecondary,
-                icon: "arrow.up"
+                // Ícone de local, não de envio: seta para cima prometia o push
+                // que não existe. O commit ESTÁ no Mac; isso é onde, não para onde.
+                icon: "internaldrive"
             )
         case .blocked:
             label("segredo detectado · nada sai da máquina", color: AtlasCodePalette.alert, icon: "exclamationmark.triangle")
@@ -118,10 +126,10 @@ struct AtlasCodeMirrorCard: View {
     private var accessibilityText: String {
         switch response.state {
         case .mirrored: return "Espelho: tudo espelhado"
-        case .pending(let commits): return "Espelho: \(commits) commits a espelhar, o Atlas envia sozinho"
+        case .pending(let commits): return "Espelho: \(commits) commits ainda só no Mac"
         case .blocked(let rules): return "Espelho bloqueado: segredo detectado, regras \(rules.joined(separator: ", "))"
         case .noMirror: return "Espelho: nenhum configurado"
-        case .unknown: return "Espelho: estado ainda desconhecido"
+        case .unknown: return "Espelho: não consegui ler o estado"
         }
     }
 }
