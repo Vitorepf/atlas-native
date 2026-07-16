@@ -229,6 +229,19 @@ struct AtlasCodeView: View {
                     }
                 }
 
+                // O grafo mostra os N mais recentes e PARA — o repo tem 8.700.
+                // `hasMore` chegava no contrato e ninguém lia: a tela cortava a
+                // história em silêncio, e corte silencioso lê como "é só isso".
+                // Não é paginação (isso é obra); é a confissão do teto.
+                if graph.pagination.hasMore {
+                    Text("\(graph.nodes.count) commits mais recentes — há mais história")
+                        .font(AtlasFont.serifItalic(12))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 16)
+                        .accessibilityIdentifier("code-graph-truncated")
+                }
+
                 if let mirror = mirrorModel.response {
                     AtlasCodeMirrorCard(response: mirror)
                         .padding(.top, 22)
