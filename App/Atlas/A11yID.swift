@@ -35,6 +35,12 @@ enum A11yID {
     static let nightlyProposalAccept = "nightly-proposal-accept"
     static let nightlyProposalDismiss = "nightly-proposal-dismiss"
 
+    // V4 · Artifacts & Proof
+    static let artifactsRow = "artifacts-row"
+    static let artifactsSheet = "artifacts-sheet"
+    static let artifactsItemPrefix = "artifacts-item-"
+    static func artifactsItem(_ index: Int) -> String { artifactsItemPrefix + String(index) }
+
     /// Prefixo para `NSPredicate` nos UITests (slug/hash variáveis).
     static let radarRepoPrefix = "radar-repo-"
     static let radarFolderPrefix = "radar-folder-"

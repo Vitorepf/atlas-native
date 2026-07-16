@@ -14,12 +14,14 @@ struct EditorialTurn: View, Equatable {
     let onStop: () -> Void
     let onExecutionChoice: (JobID, String) -> Void
     var onRetry: (JobID) -> Void = { _ in }
+    var artifactItems: [AtlasTraceArtifacts.Item] = []
+    var onOpenArtifacts: (TraceID) -> Void = { _ in }
     @State private var placed = false
 
     // F2.10: igualdade só no que a tela mostra — closures recriadas pelo pai
     // não invalidam o subtree (pare com `.equatable()` no call site).
     nonisolated static func == (lhs: EditorialTurn, rhs: EditorialTurn) -> Bool {
-        lhs.bubble == rhs.bubble && lhs.reduceMotion == rhs.reduceMotion
+        lhs.bubble == rhs.bubble && lhs.reduceMotion == rhs.reduceMotion && lhs.artifactItems == rhs.artifactItems
     }
 
     var body: some View {
@@ -51,7 +53,7 @@ struct EditorialTurn: View, Equatable {
                     }
                     let hasProof = !bubble.activities.isEmpty || bubble.decisionSummary != nil || bubble.qualitySummary != nil
                     if !bubble.streaming && hasProof {
-                        ExecutionProof(bubble: bubble)
+                        ExecutionProof(bubble: bubble, artifactItems: artifactItems, onOpenArtifacts: onOpenArtifacts)
                         Text("RESPOSTA FINAL")
                             .font(.system(.caption2, weight: .semibold)).tracking(1.6)
                             .foregroundStyle(AtlasTheme.accent.opacity(0.85))

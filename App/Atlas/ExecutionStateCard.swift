@@ -134,6 +134,8 @@ private struct ExecutionStateActionStyle: ButtonStyle {
 // e o quality gate (a auto-avaliação). Fechado = uma linha discreta.
 struct ExecutionProof: View {
     let bubble: ChatBubble
+    var artifactItems: [AtlasTraceArtifacts.Item] = []
+    var onOpenArtifacts: (TraceID) -> Void = { _ in }
     @State private var open = false
 
     var body: some View {
@@ -202,6 +204,30 @@ struct ExecutionProof: View {
                                  (q.flagCount > 0 ? " · \(q.flagCount) alertas" : ""))
                                 .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                         }
+                    }
+                    if !artifactItems.isEmpty, let traceId = bubble.traceId {
+                        Button {
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                            onOpenArtifacts(traceId)
+                        } label: {
+                            HStack(spacing: 6) {
+                                Text("⎘")
+                                    .font(AtlasFont.mono(12))
+                                    .foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                                    .frame(width: 15)
+                                Text("ARTEFATOS (\(artifactItems.count))")
+                                    .font(AtlasFont.mono(12))
+                                    .foregroundStyle(AtlasTheme.textSecondary)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 10, weight: .semibold))
+                                    .foregroundStyle(AtlasTheme.textTertiary)
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier(A11yID.artifactsRow)
+                        .accessibilityLabel("artefatos desta execução, \(artifactItems.count)")
                     }
                 }
                 .padding(.top, 8)

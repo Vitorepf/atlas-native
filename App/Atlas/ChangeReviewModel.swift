@@ -12,17 +12,22 @@ final class ChangeReviewModel {
     /// Provas de governança do turno (C18 diff_stats · C19 plan_revisions ·
     /// C21 council_review). Vêm do metadata do trace; ausência = nada a dizer.
     private(set) var governanceByTrace: [TraceID: AtlasAiTrace] = [:]
+    /// Manifestos de artefatos do turno. `unavailable` pode ser guardado, mas
+    /// a casca só renderiza quando o contrato vem `available` com itens reais.
+    private(set) var artifactsByTrace: [TraceID: AtlasTraceArtifacts] = [:]
     /// Conteúdo de diff só entra aqui depois de o patch ser confirmado na
     /// projeção do mesmo trace; a View nunca faz a requisição por conta própria.
     private(set) var changeReviewDiffsByKey: [String: AtlasTraceChangeReviewDiffResponse] = [:]
     var toast: String?
 
     @ObservationIgnored var onTraceUpdated: (@MainActor (TraceID, AtlasAiTrace) -> Void)?
+    @ObservationIgnored private let artifactContentCache = NSCache<NSString, CachedArtifactContent>()
 
     private let client: AtlasClient
 
     init(client: AtlasClient) {
         self.client = client
+        artifactContentCache.countLimit = 8
     }
 
     /// Carrega a superfície de artefatos/revisão do trace. A resposta que não
@@ -30,12 +35,17 @@ final class ChangeReviewModel {
     /// vazamento de evidência entre execuções.
     func refreshChangeReview(traceId: TraceID) async {
         do {
-            let response = try await client.getTraceChangeReview(traceId)
+            async let reviewResponse = client.getTraceChangeReview(traceId)
+            async let artifactsResponse = client.getTraceArtifacts(traceId: traceId)
+            let response = try await reviewResponse
             guard response.changeReview.traceId == traceId else {
                 toast = "A revisão recebida não corresponde a esta execução."
                 return
             }
             changeReviewsByTrace[traceId] = response.changeReview
+            if let artifacts = try? await artifactsResponse {
+                artifactsByTrace[traceId] = artifacts
+            }
             // O mesmo toque que abre a revisão traz as provas do turno.
             if let trace = try? await client.getAiInteraction(traceId).trace,
                trace.id == traceId.rawValue || trace.traceKey == traceId.rawValue {
@@ -43,6 +53,37 @@ final class ChangeReviewModel {
             }
         } catch {
             toast = atlasUserMessage(for: error)
+        }
+    }
+
+    func refreshArtifacts(traceId: TraceID) async {
+        do {
+            artifactsByTrace[traceId] = try await client.getTraceArtifacts(traceId: traceId)
+        } catch {
+            toast = atlasUserMessage(for: error)
+        }
+    }
+
+    func loadArtifactContent(traceId: TraceID, item: AtlasTraceArtifacts.Item) async throws -> AtlasArtifactContent {
+        guard artifactsByTrace[traceId]?.state == .available,
+              artifactsByTrace[traceId]?.items.contains(where: { $0.id == item.id && $0.sha256 == item.sha256 }) == true else {
+            let error = AtlasApiError(status: 0, path: "trace-artifacts", message: "Este artefato não pertence ao manifesto desta execução.")
+            toast = error.message
+            throw error
+        }
+
+        let key = NSString(string: item.sha256)
+        if let cached = artifactContentCache.object(forKey: key) {
+            return cached.content
+        }
+
+        do {
+            let content = try await client.getTraceArtifactContent(traceId: traceId, item: item)
+            artifactContentCache.setObject(CachedArtifactContent(content), forKey: key)
+            return content
+        } catch {
+            toast = atlasUserMessage(for: error)
+            throw error
         }
     }
 
@@ -151,6 +192,14 @@ final class ChangeReviewModel {
 
     private static func changeReviewDiffKey(traceId: TraceID, patchId: PatchID) -> String {
         "\(traceId.rawValue):\(patchId.rawValue)"
+    }
+}
+
+private final class CachedArtifactContent {
+    let content: AtlasArtifactContent
+
+    init(_ content: AtlasArtifactContent) {
+        self.content = content
     }
 }
 

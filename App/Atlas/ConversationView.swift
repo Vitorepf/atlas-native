@@ -19,6 +19,7 @@ struct ConversationView: View {
     @State private var showWorkspaceSheet = false
     @State private var showQueueSheet = false
     @State private var reviewTrace: ReviewTraceRef?
+    @State private var artifactTrace: ReviewTraceRef?
 
     struct ReviewTraceRef: Identifiable { let id: TraceID }
     @State private var showAttachmentSheet = false
@@ -178,6 +179,8 @@ struct ConversationView: View {
                 } else {
                     LazyVStack(alignment: .leading, spacing: 40) {
                         ForEach(model.bubbles) { bubble in
+                            let traceArtifacts = bubble.traceId.flatMap { model.reviews.artifactsByTrace[$0] }
+                            let artifactItems = traceArtifacts?.state == .available ? traceArtifacts?.items ?? [] : []
                             EditorialTurn(bubble: bubble, reduceMotion: reduceMotion,
                                           onFeedback: { kind in Task { await model.feedback(bubble.id, kind) } },
                                           onCopy: { copy(bubble.text, label: bubble.role == "user" ? "mensagem" : "resposta") },
@@ -187,9 +190,16 @@ struct ConversationView: View {
                                           },
                                           onRetry: { jobId in
                                               Task { await model.retryTurn(jobId: jobId) }
-                                          })
+                                          },
+                                          artifactItems: artifactItems,
+                                          onOpenArtifacts: { trace in artifactTrace = ReviewTraceRef(id: trace) })
                             .equatable()
                             .id(bubble.id)
+                            .task(id: bubble.traceId?.rawValue) {
+                                if bubble.role == "assistant", !bubble.streaming, let trace = bubble.traceId {
+                                    await model.reviews.refreshArtifacts(traceId: trace)
+                                }
+                            }
                             // C15: revisão só entra pela projeção canônica do
                             // trace (a folha diz "sem artefatos" quando não há).
                             if bubble.role == "assistant", !bubble.streaming,
@@ -379,6 +389,9 @@ struct ConversationView: View {
         .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
         .sheet(item: $reviewTrace) { ref in
             ChangeReviewSheet(reviews: model.reviews, traceId: ref.id)
+        }
+        .sheet(item: $artifactTrace) { ref in
+            ArtifactSheet(reviews: model.reviews, traceId: ref.id)
         }
         .sheet(isPresented: $showQueueSheet) {
             SheetShell(title: "Fila · \(model.queuedMessages.count)") {
