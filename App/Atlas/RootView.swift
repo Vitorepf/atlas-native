@@ -186,6 +186,13 @@ struct RootView: View {
         default:   // .loaded, ou refresh/erro com conteúdo já em tela
             ScrollView {
                 LazyVStack(spacing: 0) {
+                    // V1: cockpit só quando há sessão viva neste processo.
+                    if !TurnPresence.shared.liveSessions.isEmpty {
+                        LiveNowSection(
+                            sessions: TurnPresence.shared.liveSessions,
+                            onOpen: { id, title in path.append(Route.thread(id: id, title: title)) }
+                        )
+                    }
                     // A conversa é o centro — projeto é opcional. Aqui vivem as
                     // conversas SEM projeto: perguntas, pesquisas, pensamento
                     // livre (o uso GPT-no-iPhone). A pílula embaixo cria uma.

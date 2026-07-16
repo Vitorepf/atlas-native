@@ -25,6 +25,11 @@ enum A11yID {
     static let radarStatus = "radar-status"
     static let reviewGovernance = "review-governance"
 
+    // V1 · Cockpit postura
+    static let liveNowSection = "live-now-section"
+    static let liveNowRowPrefix = "live-now-row-"
+    static func liveNowRow(_ index: Int) -> String { liveNowRowPrefix + String(index) }
+
     /// Prefixo para `NSPredicate` nos UITests (slug/hash variáveis).
     static let radarRepoPrefix = "radar-repo-"
     static let radarFolderPrefix = "radar-folder-"
