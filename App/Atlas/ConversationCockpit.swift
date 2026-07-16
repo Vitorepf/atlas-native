@@ -77,10 +77,7 @@ struct ExecutionRibbon: View {
             }
         }
         .padding(.vertical, 10).padding(.horizontal, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface.opacity(0.5))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
-        )
+        .atlasCard(cornerRadius: 12, fillOpacity: 0.5)
     }
 }
 

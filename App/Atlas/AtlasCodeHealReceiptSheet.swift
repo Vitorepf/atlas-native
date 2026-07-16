@@ -67,11 +67,7 @@ struct AtlasCodeHealReceiptSheet: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                         .foregroundStyle(AtlasTheme.textSecondary)
-                        .background(AtlasTheme.surface, in: RoundedRectangle(cornerRadius: 13))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 13)
-                                .strokeBorder(AtlasTheme.separator, lineWidth: 0.5)
-                        )
+                        .atlasCard(cornerRadius: 13)
                     }
                     .accessibilityIdentifier(A11yID.codeHealUndo)
                 }

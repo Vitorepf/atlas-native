@@ -70,10 +70,7 @@ struct PlanCard: View {
                 }
             }
             .padding(12)
-            .background(
-                RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface.opacity(0.5))
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
-            )
+            .atlasCard(cornerRadius: 12, fillOpacity: 0.5)
             .accessibilityElement(children: .contain)
             .accessibilityLabel("plano da obra, \(plan.steps.count) passos")
         }

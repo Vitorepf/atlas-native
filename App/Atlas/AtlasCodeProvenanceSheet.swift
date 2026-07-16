@@ -84,8 +84,7 @@ extension AtlasCodeProvenanceSheet {
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 11)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface))
-            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(AtlasTheme.separator, lineWidth: 0.5))
+            .atlasCard(cornerRadius: 12)
             .contentShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)

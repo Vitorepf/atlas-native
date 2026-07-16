@@ -214,8 +214,7 @@ struct ChangeReviewSheet: View {
             if expandedDiffPatch == patch.id { diffView(patch) }
         }
         .padding(14)
-        .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.surface))
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        .atlasCard()
     }
 
     /// Estado por arquivo vem SÓ de patch.fileReviews; decidir chama o model

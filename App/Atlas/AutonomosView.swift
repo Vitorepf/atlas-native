@@ -217,8 +217,7 @@ struct AutonomosView: View {
                     }
                 }
                 .padding(12)
-                .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                .atlasCard(cornerRadius: 12)
             }
         }
     }
@@ -434,8 +433,7 @@ struct AutonomosView: View {
         Text(text)
             .font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
             .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            .atlasCard(cornerRadius: 12)
     }
 
     private func errorCard(_ message: String) -> some View {
@@ -497,7 +495,7 @@ private struct FleetMetric: View {
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary).lineLimit(2)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(11)
-        .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface))
+        .atlasCard(cornerRadius: 12)
     }
 }
 
