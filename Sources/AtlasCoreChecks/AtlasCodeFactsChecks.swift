@@ -121,4 +121,36 @@ public func runAtlasCodeFactsChecks(_ check: (String, Bool) -> Void) {
         "sem codigo, o bloco nao inventa uma secao vazia",
         response(commits: ["abc1234"]).flatMap(AtlasCodeFacts.block)?.contains("Codigo dos commits") == false
     )
+
+    // A LEI DA ÂNCORA (o par do guarda em AtlasCodeAskModel.facts):
+    // quem não leu o git não move o mapa. `answered` é o discriminador, não
+    // "tem commit" — os dois silêncios são diferentes e só um apaga a âncora.
+    check(
+        "julgamento nao lido do git nao afirma nada (o mapa fica como esta)",
+        response(answered: false, answer: "").flatMap(AtlasCodeFacts.block) == nil
+    )
+    check(
+        "leitura que ENGAJOU e nao achou nada continua sendo fato",
+        response(answer: "não há commit hoje.", commits: []).flatMap(AtlasCodeFacts.block) != nil
+    )
+
+    // A LEGENDA DO RECORTE: o servidor manda commits_total e truncated de
+    // proposito para esta frase. Sem ela, 3/4 do mapa apagado le como "e so
+    // isso" — mentira sobre o repositorio.
+    // 12 é o teto REAL do servidor (MAX_ANCHORS): ele já corta antes de mandar,
+    // então uma resposta com 20 âncoras não existe e testá-la seria testar
+    // uma fantasia.
+    let recortado = response(commits: (1...12).map { String(format: "%07xabc", $0) }, commitsTotal: 43, truncated: true)
+    check(
+        "a legenda diz o recorte com numero: '12 de 43'",
+        recortado?.anchorNote == "12 de 43 acesos no grafo"
+    )
+    check(
+        "sem recorte, a legenda nao inventa um 'de N'",
+        response(commits: ["abc1234"]).map { $0.anchorNote == "1 commit aceso no grafo" } == true
+    )
+    check(
+        "sem ancora nao ha legenda",
+        response(commits: []).map { $0.anchorNote == nil } == true
+    )
 }

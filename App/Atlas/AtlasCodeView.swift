@@ -271,10 +271,13 @@ struct AtlasCodeView: View {
             Text("✦")
                 .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.accent)
-            Text("pergunte sobre este repositório")
+            // Ancorado, a pílula deixa de convidar e passa a LEGENDAR: o mapa
+            // atrás está recortado, e recorte sem legenda lê como "é só isso".
+            Text(askModel.anchorNote ?? "pergunte sobre este repositório")
                 .font(AtlasFont.serifItalic(13))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(askModel.isAnchoring ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .lineLimit(1)
+                .accessibilityIdentifier("code-ask-anchor-note")
             Spacer(minLength: 0)
             if askModel.isAnchoring {
                 // A conversa anterior deixou o mapa aceso: dá para apagar sem

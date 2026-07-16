@@ -38,6 +38,18 @@ final class AtlasCodeAskModel {
     /// apaga o resto, porque a resposta é o assunto.
     var isAnchoring: Bool { !anchors.isEmpty }
 
+    /// A legenda do recorte: "12 de 43 acesos no grafo".
+    ///
+    /// Um mapa com 3/4 da história a 0.26 de opacidade e nenhuma frase dizendo
+    /// o porquê lê como "é só isso" — que é mentira sobre o repositório. O
+    /// servidor calcula `commits_total` e `truncated` exatamente para esta
+    /// frase existir, e ela estava escrita e morta: `anchorNote` não tinha um
+    /// único chamador no app inteiro. Contrato dos dois lados, faltando o Text.
+    var anchorNote: String? {
+        if case .answered(let response) = phase { return response.anchorNote }
+        return nil
+    }
+
     /// Limpar apaga a âncora: o grafo volta a mostrar tudo.
     func clear() {
         phase = .idle
@@ -52,8 +64,22 @@ final class AtlasCodeAskModel {
     /// `nil` quando o determinístico não sabe (julgamento não é filtro de git) e
     /// quando a rede cai: o agente responde sem muleta, e falha de rede nunca
     /// vira fato inventado com ar de autoridade.
+    ///
+    /// `answered` é o que decide se a topologia se move, e a distinção é fina:
+    /// - `answered == false` → o git NÃO foi lido (julgamento, ou git mudo).
+    ///   A leitura não tem opinião sobre o mapa, então o mapa fica como está.
+    ///   Sem esta guarda, "explica melhor" — a coisa mais natural do mundo num
+    ///   card de conversa — apagava em silêncio a resposta anterior, e a tese
+    ///   da tela sobrevivia a exatamente um turno.
+    /// - `answered == true` com zero commits → o git FOI lido e não há o que
+    ///   acender ("nada mudou hoje"). Aí a âncora morre mesmo: a leitura nova é
+    ///   a verdade nova, e segurar o mapa velho seria mentir com mapa.
+    ///
+    /// É a mesma guarda de `AtlasCodeFacts.block`: quem não leu não afirma.
     func facts(for question: String) async -> String? {
-        guard let response = try? await client.askCode(repo: repo, question: question, mode: .facts) else { return nil }
+        guard let response = try? await client.askCode(repo: repo, question: question, mode: .facts),
+              response.answered
+        else { return nil }
         phase = .answered(response)
         return AtlasCodeFacts.block(from: response)
     }
