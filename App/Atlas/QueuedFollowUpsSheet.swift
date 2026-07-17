@@ -35,5 +35,6 @@ struct QueuedFollowUpsSheet: View {
                 .padding(.vertical, 6)
             }
         }
+        .accessibilityIdentifier(A11yID.queueSheet)
     }
 }

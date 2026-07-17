@@ -60,14 +60,16 @@ struct EditorialTurn: View, Equatable {
                     }
                     if let state = bubble.executionPresentationState {
                         let steerTrace = bubble.executionPresence?.isOngoing == true ? bubble.traceId : nil
-                        ExecutionStateCard(
-                            state: state,
-                            jobId: bubble.executionChoiceJobId,
-                            onChoose: onExecutionChoice,
-                            retryableJobId: bubble.retryableJobId,
-                            onRetry: onRetry,
-                            onSteer: steerTrace.map { trace in { onSteer(trace) } }
-                        )
+                        if ExecutionStateCard.shouldDisplay(state: state) {
+                            ExecutionStateCard(
+                                state: state,
+                                jobId: bubble.executionChoiceJobId,
+                                onChoose: onExecutionChoice,
+                                retryableJobId: bubble.retryableJobId,
+                                onRetry: onRetry,
+                                onSteer: steerTrace.map { trace in { onSteer(trace) } }
+                            )
+                        }
                     }
                     let hasProof = !bubble.activities.isEmpty || bubble.decisionSummary != nil || bubble.qualitySummary != nil
                     if !bubble.streaming && hasProof {
@@ -268,5 +270,6 @@ struct ConversationLoadFailure: View {
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken)). \(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))")
+        .accessibilityIdentifier(A11yID.conversationLoadFailure)
     }
 }

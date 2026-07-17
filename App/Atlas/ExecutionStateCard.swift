@@ -16,6 +16,19 @@ struct ExecutionStateCard: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Cena 01/13: só renderiza quando o contrato traz informação além do
+    /// silêncio pós-prova. `.completed` vazio cede lugar à `ExecutionProof`.
+    static func shouldDisplay(state: AtlasExecutionPresentationState) -> Bool {
+        if state.kind == .completed,
+           state.actions.isEmpty,
+           state.detail == nil,
+           state.checkpoint == nil,
+           state.deadline == nil {
+            return false
+        }
+        return true
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
@@ -30,6 +43,7 @@ struct ExecutionStateCard: View {
                     Text(badge)
                         .font(AtlasFont.mono(10)).tracking(0.8)
                         .foregroundStyle(tint)
+                        .accessibilityHidden(true)
                 }
             }
             if let detail = state.detail {
@@ -46,6 +60,7 @@ struct ExecutionStateCard: View {
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
+                    .accessibilityLabel("checkpoint \(checkpoint)")
             }
             if state.kind == .recovering, let timer = state.timer {
                 Text("ativo \(Self.clock(timer.elapsedActiveMilliseconds))")
@@ -59,6 +74,7 @@ struct ExecutionStateCard: View {
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
+                    .accessibilityLabel("próxima mudança \(deadline)")
             }
             // Ações = somente `state.actions` declaradas pelo servidor (cena 01).
             // Falha (cena 13): resume/retry só quando há pills do contrato OU
@@ -77,6 +93,7 @@ struct ExecutionStateCard: View {
                             style: action.style,
                             reduceMotion: reduceMotion
                         ))
+                        .accessibilityHint("ação declarada pelo servidor")
                     }
                 }
             } else if state.kind == .failed, state.actions.isEmpty, let retryableJobId {
@@ -91,6 +108,8 @@ struct ExecutionStateCard: View {
                     style: .primary,
                     reduceMotion: reduceMotion
                 ))
+                .accessibilityLabel("retomar execução a partir do último checkpoint")
+                .accessibilityHint("reenfileira o job que falhou")
             }
             if let onSteer {
                 Button(action: onSteer) {
@@ -114,7 +133,28 @@ struct ExecutionStateCard: View {
                 .overlay(RoundedRectangle(cornerRadius: 14).stroke(tint.opacity(0.42), lineWidth: 1))
         )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(state.title)
+        .accessibilityLabel(spokenSummary)
+        .accessibilityIdentifier(A11yID.executionStateCard)
+    }
+
+    private var spokenSummary: String {
+        var parts: [String] = []
+        if let kind = spokenKind { parts.append(kind) }
+        parts.append(state.title)
+        if let detail = state.detail { parts.append(detail) }
+        if let checkpoint = state.checkpoint { parts.append("checkpoint \(checkpoint)") }
+        return parts.joined(separator: ". ")
+    }
+
+    private var spokenKind: String? {
+        switch state.kind {
+        case .attentionRequired: return "execução pausada, aguardando decisão"
+        case .awaitingExternal: return "aguardando sistema externo"
+        case .recovering: return "reconectando"
+        case .replanning: return "replanejando"
+        case .failed: return "execução falhou"
+        case .completed: return "execução concluída"
+        }
     }
 
     /// Selo 1:1 com `kind` — nunca copy inventada além do mapeamento canônico.

@@ -60,6 +60,8 @@ struct RootHomeSections: View {
                     }
                 }
                 .padding(.horizontal, 44)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(failureHeadline). \(failureHint)")
             }
 
         default:   // .loaded, ou refresh/erro com conteúdo já em tela

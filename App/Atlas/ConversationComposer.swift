@@ -36,7 +36,7 @@ struct ConversationComposer: View {
         VStack(alignment: .leading, spacing: 0) {
             composerCard
         }
-        .animation(.easeOut(duration: 0.25), value: model.isSending)
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.25), value: model.isSending)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
             LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
@@ -70,7 +70,7 @@ struct ConversationComposer: View {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     showQueueSheet = true
                 } label: {
-                    Text("Fila \(model.queuedMessages.count)")
+                    Text(queueChipLabel)
                         .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
                         .padding(.horizontal, 12).padding(.vertical, 5)
                         .background(Capsule().fill(AtlasTheme.goldVeil)
@@ -78,8 +78,10 @@ struct ConversationComposer: View {
                 }
                 .buttonStyle(PressableScale())
                 .padding(.bottom, expanded ? 0 : 8)
-                .transition(.opacity)
-                .accessibilityLabel("\(model.queuedMessages.count) mensagens na fila, toque para gerenciar")
+                .transition(reduceMotion ? .identity : .opacity)
+                .accessibilityLabel(queueAccessibilityLabel)
+                .accessibilityHint("abre a folha para enviar agora ou remover da fila")
+                .accessibilityIdentifier(A11yID.queueChip)
             }
             if focused.wrappedValue {
                 // Grabber → PUXE pra baixo (ou toque) para fechar o teclado.
@@ -121,8 +123,8 @@ struct ConversationComposer: View {
         .padding(expanded ? EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18)
                           : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
         .background(composerSurface)
-        .animation(.spring(response: 0.4, dampingFraction: 0.86), value: expanded)
-        .animation(.spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: expanded)
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .conversationComposerSheets(
             model: model,
             session: session,
@@ -192,5 +194,17 @@ struct ConversationComposer: View {
         receipt.isAccepted
             ? "na fila do próximo checkpoint"
             : "rejeitado · \(receipt.reason?.rawValue ?? "motivo_indisponivel")"
+    }
+
+    private var queueChipLabel: String {
+        let n = model.queuedMessages.count
+        return n == 1 ? "Fila · 1" : "Fila · \(n)"
+    }
+
+    private var queueAccessibilityLabel: String {
+        let n = model.queuedMessages.count
+        return n == 1
+            ? "1 mensagem na fila durante a execução"
+            : "\(n) mensagens na fila durante a execução"
     }
 }
