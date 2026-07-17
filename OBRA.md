@@ -966,7 +966,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXXV — CICLO B Radar/LiveNow/Execution/Council/Failure/Artifact/Receipt peels** ·  · CICLO B: Radar ; LiveNow ; Execution ; Council ; Failure ; Artifact ; Receipt . Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXXV — CICLO B Radar/LiveNow/Execution/Council/Failure/Artifact/Receipt peels** · `5781058` · CICLO B: Radar `+A11yRepoIssues`; LiveNow `+RowCell`; Execution `+ActionChoices`; Council `+BlockHeader`; Failure `+Hint`; Artifact `+DiffPreview`; Receipt `+Age`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXXIV — CICLO B Narrative/Thread/Failure/Lock/Fleet/Receipt peels** · `fb827cc` · CICLO B: Narrative `+Text`; Thread `+TrailingStatus`; Failure `+CopyText`; LockLive `+Content`; Fleet `+Healthy`; Receipt `+Start`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
