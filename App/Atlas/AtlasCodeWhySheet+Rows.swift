@@ -1,0 +1,61 @@
+import SwiftUI
+import AtlasCore
+
+// Linhas da timeline de commits — peel de AtlasCodeWhySheet (régua ~120).
+
+extension AtlasCodeWhySheet {
+    func whyRow(_ commit: AtlasCodeWhy.Commit, index: Int, isLast: Bool) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(spacing: 0) {
+                Circle()
+                    .fill(AtlasTheme.accent)
+                    .frame(width: 7, height: 7)
+                if !isLast {
+                    Rectangle()
+                        .fill(AtlasTheme.accent.opacity(0.35))
+                        .frame(width: 1)
+                        .frame(minHeight: 56)
+                        .accessibilityHidden(true)
+                }
+            }
+            .padding(.top, 7)
+
+            VStack(alignment: .leading, spacing: 5) {
+                if let quote = commit.provenance?.quote {
+                    Text("\u{201C}\(quote)\u{201D}")
+                        .font(AtlasFont.serifItalic(15))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                } else {
+                    Text("sem proveniência registrada")
+                        .font(AtlasFont.serifItalic(15))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                }
+                Text(meta(for: commit))
+                    .font(AtlasFont.mono(10.5))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                Text(commit.subject)
+                    .font(.system(size: 11))
+                    .foregroundStyle(AtlasTheme.textSecondary.opacity(0.75))
+                    .lineLimit(2)
+            }
+            .padding(.bottom, isLast ? 0 : 18)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityText(for: commit))
+        .accessibilityIdentifier(A11yID.whyRow(index))
+    }
+
+    func meta(for commit: AtlasCodeWhy.Commit) -> String {
+        var parts = [commit.agentLabel]
+        if let when = commit.when {
+            parts.append("há \(AtlasCodeRelativeTime.short(from: Int(when.timeIntervalSince1970)))")
+        }
+        parts.append(commit.shortHash)
+        return parts.joined(separator: " · ")
+    }
+
+    func accessibilityText(for commit: AtlasCodeWhy.Commit) -> String {
+        let quote = commit.provenance?.quote ?? "sem proveniência registrada"
+        return "\(quote), \(meta(for: commit))"
+    }
+}

@@ -1,37 +1,5 @@
 import SwiftUI
-import Observation
 import AtlasCore
-
-@MainActor
-@Observable
-final class AtlasCodeWhyModel {
-    private let client: AtlasClient
-    private(set) var phase: LoadPhase = .idle
-    private(set) var why: AtlasCodeWhy?
-    private(set) var message: String?
-    private var wanted: String?
-
-    init(client: AtlasClient) {
-        self.client = client
-    }
-
-    func load(repo: String, file: String) async {
-        let key = "\(repo)\n\(file)"
-        wanted = key
-        phase = .loading
-        message = nil
-        do {
-            let response = try await client.getCodeWhy(repo: repo, file: file)
-            guard wanted == key else { return }
-            why = response
-            phase = .loaded
-        } catch {
-            guard wanted == key else { return }
-            message = String(describing: error)
-            phase = .failed(message ?? "falha desconhecida")
-        }
-    }
-}
 
 struct AtlasCodeWhySheet: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -114,60 +82,5 @@ struct AtlasCodeWhySheet: View {
                 }
             }
         }
-    }
-
-    private func whyRow(_ commit: AtlasCodeWhy.Commit, index: Int, isLast: Bool) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            VStack(spacing: 0) {
-                Circle()
-                    .fill(AtlasTheme.accent)
-                    .frame(width: 7, height: 7)
-                if !isLast {
-                    Rectangle()
-                        .fill(AtlasTheme.accent.opacity(0.35))
-                        .frame(width: 1)
-                        .frame(minHeight: 56)
-                        .accessibilityHidden(true)
-                }
-            }
-            .padding(.top, 7)
-
-            VStack(alignment: .leading, spacing: 5) {
-                if let quote = commit.provenance?.quote {
-                    Text("\u{201C}\(quote)\u{201D}")
-                        .font(AtlasFont.serifItalic(15))
-                        .foregroundStyle(AtlasTheme.textPrimary)
-                } else {
-                    Text("sem proveniência registrada")
-                        .font(AtlasFont.serifItalic(15))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                }
-                Text(meta(for: commit))
-                    .font(AtlasFont.mono(10.5))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                Text(commit.subject)
-                    .font(.system(size: 11))
-                    .foregroundStyle(AtlasTheme.textSecondary.opacity(0.75))
-                    .lineLimit(2)
-            }
-            .padding(.bottom, isLast ? 0 : 18)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityText(for: commit))
-        .accessibilityIdentifier(A11yID.whyRow(index))
-    }
-
-    private func meta(for commit: AtlasCodeWhy.Commit) -> String {
-        var parts = [commit.agentLabel]
-        if let when = commit.when {
-            parts.append("há \(AtlasCodeRelativeTime.short(from: Int(when.timeIntervalSince1970)))")
-        }
-        parts.append(commit.shortHash)
-        return parts.joined(separator: " · ")
-    }
-
-    private func accessibilityText(for commit: AtlasCodeWhy.Commit) -> String {
-        let quote = commit.provenance?.quote ?? "sem proveniência registrada"
-        return "\(quote), \(meta(for: commit))"
     }
 }

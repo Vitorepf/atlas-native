@@ -21,41 +21,14 @@ public actor AtlasDayRhythm {
         }
     }
 
-    private struct Envelope: Codable {
-        var v: Int
-        var days: [DayRecord]
-    }
-
-    private struct DayRecord: Codable {
-        var date: String
-        var first: String?
-        var last: String?
-        var workspaces: [String]
-
-        init(date: String, first: String? = nil, last: String? = nil, workspaces: [String] = []) {
-            self.date = date
-            self.first = first
-            self.last = last
-            self.workspaces = workspaces
-        }
-
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            date = try container.decode(String.self, forKey: .date)
-            first = try container.decodeIfPresent(String.self, forKey: .first)
-            last = try container.decodeIfPresent(String.self, forKey: .last)
-            workspaces = try container.decodeIfPresent([String].self, forKey: .workspaces) ?? []
-        }
-    }
-
     private let storeURL: URL
-    private var days: [String: DayRecord]
+    private var days: [String: AtlasDayRhythmDayRecord]
 
     public init(storeURL: URL? = nil) {
         let resolvedURL = storeURL ?? Self.applicationSupportFileURL()
         self.storeURL = resolvedURL
         if let data = try? Data(contentsOf: resolvedURL),
-           let envelope = try? JSONDecoder().decode(Envelope.self, from: data),
+           let envelope = try? JSONDecoder().decode(AtlasDayRhythmEnvelope.self, from: data),
            envelope.v >= 1 {
             self.days = Dictionary(uniqueKeysWithValues: envelope.days.map { ($0.date, $0) })
         } else {
@@ -74,7 +47,7 @@ public actor AtlasDayRhythm {
     public func recordActivity(workspace: String?, now: Date = .init()) async {
         let key = Self.dateKey(for: now)
         let time = Self.timeKey(for: now)
-        var record = days[key] ?? DayRecord(date: key)
+        var record = days[key] ?? AtlasDayRhythmDayRecord(date: key)
         if record.first.flatMap(Self.minutes(from:)) ?? Int.max > Self.minutes(from: time)! {
             record.first = time
         }
@@ -128,52 +101,7 @@ public actor AtlasDayRhythm {
             .suffix(14)
         days = Dictionary(uniqueKeysWithValues: sortedDays.map { ($0.date, $0) })
         try FileManager.default.createDirectory(at: storeURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-        let data = try JSONEncoder().encode(Envelope(v: 1, days: Array(sortedDays)))
+        let data = try JSONEncoder().encode(AtlasDayRhythmEnvelope(v: 1, days: Array(sortedDays)))
         try data.write(to: storeURL, options: [.atomic])
-    }
-
-    private static func safeWorkspaceName(_ workspace: String?) -> String? {
-        guard let workspace else { return nil }
-        let trimmed = workspace.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return nil }
-        let name = (trimmed as NSString).lastPathComponent
-        guard !name.isEmpty, name != "/" else { return nil }
-        return name
-    }
-
-    private static func dateKey(for date: Date) -> String {
-        let components = Calendar.current.dateComponents([.year, .month, .day], from: date)
-        return String(format: "%04d-%02d-%02d", components.year ?? 0, components.month ?? 0, components.day ?? 0)
-    }
-
-    private static func timeKey(for date: Date) -> String {
-        let components = Calendar.current.dateComponents([.hour, .minute], from: date)
-        return String(format: "%02d:%02d", components.hour ?? 0, components.minute ?? 0)
-    }
-
-    private static func minutes(from value: String?) -> Int? {
-        guard let value else { return nil }
-        let parts = value.split(separator: ":", omittingEmptySubsequences: false)
-        guard parts.count == 2,
-              let hour = Int(parts[0]),
-              let minute = Int(parts[1]),
-              (0...23).contains(hour),
-              (0...59).contains(minute) else { return nil }
-        return hour * 60 + minute
-    }
-
-    private static func median(_ values: [Int]) -> Int? {
-        guard !values.isEmpty else { return nil }
-        let sorted = values.sorted()
-        let middle = sorted.count / 2
-        if sorted.count.isMultiple(of: 2) {
-            return (sorted[middle - 1] + sorted[middle]) / 2
-        }
-        return sorted[middle]
-    }
-
-    private static func components(from minutes: Int?) -> DateComponents? {
-        guard let minutes else { return nil }
-        return DateComponents(hour: minutes / 60, minute: minutes % 60)
     }
 }

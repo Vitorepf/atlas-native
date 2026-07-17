@@ -5,7 +5,7 @@ import AtlasCore
 @MainActor
 @Observable
 final class ArenaModel {
-    private let client: AtlasClient
+    let client: AtlasClient
 
     var phase: LoadPhase = .idle
     var composite: AtlasArenaComposite?
@@ -19,8 +19,8 @@ final class ArenaModel {
     /// 404 / domínio arena ausente — copy própria, não inventa scores.
     private(set) var isDomainUnavailable = false
     private(set) var lastLoadedAt: Date?
-    private var visible = false
-    private var livePollingTask: Task<Void, Never>?
+    var visible = false
+    var livePollingTask: Task<Void, Never>?
 
     /// Copy canónica quando o servidor ainda não publica medição (spec §E).
     static let domainUnavailableCopy = "medição ainda não publicada pelo servidor"
@@ -79,95 +79,8 @@ final class ArenaModel {
         }
     }
 
-    func refreshSummaryKeepingSnapshot() async {
-        controlError = nil
-        do {
-            async let compositeRequest = client.getArenaComposite()
-            async let scoreboardRequest = client.getArenaScoreboard()
-            let (nextComposite, nextScoreboard) = try await (compositeRequest, scoreboardRequest)
-            composite = nextComposite
-            scoreboard = nextScoreboard
-            lastLoadedAt = Date()
-            if case .idle = phase { phase = .loaded }
-        } catch {
-            controlError = Self.publicMessage(error)
-        }
-    }
-
     func setVisible(_ isVisible: Bool) {
         visible = isVisible
         updateLivePolling()
-    }
-
-    func refreshLiveRuns() async {
-        do {
-            liveRuns = try await client.getArenaLiveRuns()
-            updateLivePolling()
-        } catch {
-            controlError = Self.publicMessage(error)
-        }
-    }
-
-    func startRuns(input: AtlasArenaStartInput) async {
-        controlError = nil
-        guard input.isLocallyValidForSubmission else {
-            controlError = "ator e motivo obrigatórios"
-            return
-        }
-        do {
-            lastStartReceipt = try await client.startArenaRuns(input: input)
-            await refreshLiveRuns()
-        } catch {
-            controlError = Self.publicMessage(error)
-        }
-    }
-
-    private var shouldPollLiveRuns: Bool {
-        visible && !(liveRuns?.runs.isEmpty ?? true)
-    }
-
-    private func updateLivePolling() {
-        guard shouldPollLiveRuns else {
-            livePollingTask?.cancel()
-            livePollingTask = nil
-            return
-        }
-        guard livePollingTask == nil else { return }
-        livePollingTask = Task { @MainActor [weak self] in
-            while let self, !Task.isCancelled, self.shouldPollLiveRuns {
-                try? await Task.sleep(for: .seconds(10))
-                guard !Task.isCancelled, self.shouldPollLiveRuns else { break }
-                await self.refreshLiveRuns()
-            }
-        }
-    }
-
-    static func publicMessage(_ error: Error) -> String {
-        if isDomainUnavailableError(error) {
-            return domainUnavailableCopy
-        }
-        if let api = error as? AtlasApiError { return api.message }
-        return "não foi possível carregar a Arena"
-    }
-
-    static func isDomainUnavailableError(_ error: Error) -> Bool {
-        (error as? AtlasApiError)?.status == 404
-    }
-}
-
-enum ArenaFormat {
-    static func score(_ value: Double?) -> String {
-        guard let value else { return "não medido" }
-        return String(format: "%.2f", value)
-    }
-
-    static func signed(_ value: Double?) -> String {
-        guard let value else { return "—" }
-        return String(format: "%@%.2f", value >= 0 ? "+" : "", value)
-    }
-
-    static func multiplier(_ value: Double?) -> String {
-        guard let value else { return "—" }
-        return String(format: "×%.2f", value)
     }
 }
