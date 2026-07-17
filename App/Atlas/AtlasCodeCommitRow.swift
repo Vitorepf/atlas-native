@@ -3,6 +3,7 @@ import AtlasCore
 
 // MARK: - Linha do commit (mensagem é a manchete)
 // Label → AtlasCodeCommitRow+Label.swift · Spine → +Spine.swift
+// LongPress → AtlasCodeCommitRow+LongPress.swift
 
 struct AtlasCodeCommitRow: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -37,8 +38,6 @@ struct AtlasCodeCommitRow: View {
         )
         .accessibilityHint(commitAccessibilityHint)
         .accessibilityIdentifier(A11yID.codeCommit(hashPrefix: String(node.hash.prefix(8))))
-        .onLongPressGesture(minimumDuration: 0.45) {
-            onLongPress?()
-        }
+        .onLongPressGesture(minimumDuration: 0.45, perform: commitLongPress)
     }
 }

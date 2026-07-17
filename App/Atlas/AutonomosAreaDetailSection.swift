@@ -4,6 +4,7 @@ import AtlasCore
 /// Detalhe da área selecionada: métricas, placement, entregas, controles.
 /// Header/métricas → AutonomosAreaDetailSection+Header.swift
 /// Controls → AutonomosAreaDetailSection+Controls.swift
+/// Counts → AutonomosAreaDetailSection+Counts.swift
 struct AutonomosAreaDetailSection: View {
     let area: AtlasAutonomosArea
     let model: AutonomosModel
@@ -14,10 +15,6 @@ struct AutonomosAreaDetailSection: View {
     let onSelfConstructionReceipt: (SelfConstructionReceipt) -> Void
 
     @Environment(\.accessibilityReduceMotion) var reduceMotion
-
-    var cyclesCount: Int? { model.cycles?.ledgerRecordCountTotal }
-    var workOrderCount: Int? { model.backlog?.workOrders.count }
-    var inboxCount: Int? { model.backlog?.inboxItems.count }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {

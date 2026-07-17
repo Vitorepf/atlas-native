@@ -5,6 +5,7 @@ import AtlasCore
 
 // Compact trailing — peel de IslandCompact.
 // Minimal → AtlasTurnLiveActivity+IslandMinimal.swift
+// Timer → AtlasTurnLiveActivity+IslandCompact+Timer.swift
 
 struct AtlasTurnIslandCompactTrailing: View {
     let context: ActivityViewContext<AtlasTurnAttributes>
@@ -30,13 +31,7 @@ struct AtlasTurnIslandCompactTrailing: View {
                 .foregroundStyle(Ink.gold)
                 .accessibilityLabel(queued)
         } else {
-            AtlasTurnWidgetTimer(
-                startedAt: context.state.startedAt,
-                paused: context.state.paused,
-                pausedDisplay: context.state.pausedDisplay,
-                fontSize: 12,
-                frameWidth: 40
-            )
+            compactTimer
         }
     }
 }

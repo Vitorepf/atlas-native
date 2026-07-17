@@ -1,6 +1,7 @@
 import SwiftUI
 
 // Masthead overlay — peel de RootView+Chrome.
+// Audit → RootView+Chrome+MastheadAudit.swift
 
 extension RootView {
   @ViewBuilder
@@ -20,13 +21,7 @@ extension RootView {
         .fill(AtlasTheme.accent.opacity(0.6))
         .frame(width: 30, height: 1.5)
         .accessibilityHidden(true)
-      if session.auditModeEnabled {
-        Text("AUDITORIA")
-          .font(AtlasFont.mono(8))
-          .tracking(1.0)
-          .foregroundStyle(AtlasTheme.domOperacional)
-          .accessibilityHidden(true)
-      }
+      mastheadAuditBadge
     }
     .accessibilityElement(children: .ignore)
     .accessibilityLabel(mastheadSpokenLabel(auditModeEnabled: session.auditModeEnabled))

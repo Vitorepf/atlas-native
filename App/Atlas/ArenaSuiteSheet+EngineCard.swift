@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Engine card — peel de ArenaSuiteSheet.
+// Captions → ArenaSuiteSheet+EngineCaptions.swift
 
 extension ArenaSuiteSheet {
     func engineCard(_ engine: AtlasArenaSuiteEngine) -> some View {
@@ -17,22 +18,7 @@ extension ArenaSuiteSheet {
                     .foregroundStyle(engine.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
             }
-            if let cases = ArenaSuiteSheetA11yCaptions.casesCaption(for: engine) {
-                Text(cases)
-                    .font(AtlasFont.mono(12))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityHidden(true)
-            }
-            if let duration = ArenaSuiteSheetA11yCaptions.durationCaption(for: engine) {
-                Text(duration)
-                    .font(AtlasFont.mono(12))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
-            if !engine.history.isEmpty {
-                SuiteSparkline(engine: engine).frame(height: 90)
-                    .accessibilityHidden(true)
-            }
+            engineCardCaptions(engine)
         }
         .padding(14)
         .atlasCard()

@@ -3,6 +3,7 @@ import AtlasCore
 
 // Failure — peel de AtlasArenaView+States.
 // Exception → AtlasArenaView+Exception.swift
+// Retry → AtlasArenaView+FailureRetry.swift
 
 extension AtlasArenaView {
     var networkFailureCard: some View {
@@ -18,20 +19,7 @@ extension AtlasArenaView {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineSpacing(4)
                 .accessibilityHidden(true)
-            if hasToken {
-                Button {
-                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                    Task { await model.load() }
-                } label: {
-                    Text("Tentar de novo")
-                        .font(AtlasFont.serifItalic(15))
-                        .foregroundStyle(AtlasTheme.accent)
-                }
-                .buttonStyle(.plain)
-                .padding(.top, 4)
-                .accessibilityLabel("tentar de novo")
-                .accessibilityHint("reconecta ao servidor Atlas")
-            }
+            networkFailureRetry
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
