@@ -3,6 +3,7 @@ import SwiftUI
 // Card chrome — peel de AutonomosDetailSheet (régua ~120).
 // Field → AutonomosDetailChrome+Field.swift
 
+@MainActor
 enum AutonomosDetailChrome {
     static func card<Content: View>(
         _ title: String,

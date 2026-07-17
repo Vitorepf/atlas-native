@@ -6,7 +6,7 @@ import SwiftUI
 struct DigestChipBody: View {
     let value: String
     let label: String
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion  // interno: peels usam
 
     var body: some View {
         digestChipValueStack

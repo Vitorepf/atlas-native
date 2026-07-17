@@ -19,6 +19,9 @@ final class ArenaModel {
     /// 404 / domínio arena ausente — copy própria, não inventa scores.
     private(set) var isDomainUnavailable = false
     private(set) var lastLoadedAt: Date?
+
+    /// Único ponto de escrita do carimbo (peels em outros arquivos usam isto).
+    func markLoaded() { lastLoadedAt = Date() }
     var visible = false
     var livePollingTask: Task<Void, Never>?
 

@@ -4,7 +4,7 @@ import AtlasCore
 // Presentation chrome — peel de ConversationChrome SheetShell.
 
 extension SheetShell {
-    func sheetPresentationChrome<Content: View>(_ content: Content) -> some View {
+    func sheetPresentationChrome<Inner: View>(_ content: Inner) -> some View {
         content
             .frame(maxWidth: .infinity)
             .background(AtlasTheme.bg.ignoresSafeArea())

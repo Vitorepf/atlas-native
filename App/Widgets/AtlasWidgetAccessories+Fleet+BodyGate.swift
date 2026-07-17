@@ -7,10 +7,10 @@ import AtlasCore
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyGate(snapshot: AtlasNativeSnapshot?, at date: Date) -> some View {
-        guard let snapshot else {
-            InstallPromptView()
-        } else {
+        if let snapshot {
             fleetBody(snapshot: snapshot, stale: snapshot.isStale(at: date))
+        } else {
+            InstallPromptView()
         }
     }
 }

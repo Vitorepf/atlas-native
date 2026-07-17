@@ -13,4 +13,10 @@ struct AtlasCodeRadarView: View {
     var body: some View {
         radarContentShell
     }
+
+    init(client: AtlasClient, onOpenRepo: @escaping (String) -> Void) {
+        _model = State(initialValue: AtlasCodeWorkspaceModel(client: client))
+        self.onOpenRepo = onOpenRepo
+    }
+
 }

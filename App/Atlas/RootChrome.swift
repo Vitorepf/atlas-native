@@ -7,6 +7,7 @@ import AtlasCore
 // A11y: RootChrome+SectionA11y.swift
 
 /// Label de seção da home (CONVERSAS / OPERAÇÃO / WORKSPACES).
+@MainActor
 @ViewBuilder
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     Text(t)

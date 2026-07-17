@@ -11,8 +11,8 @@ extension ConversationView {
         reviewTrace: Binding<ConversationReviewTraceRef?>,
         artifactTrace: Binding<ConversationReviewTraceRef?>,
         steerTrace: Binding<ConversationSteerTraceRef?>,
-        onEditResend: () -> Void,
-        onCopy: () -> Void
+        onEditResend: (ChatBubble) -> Void,
+        onCopy: (String, String) -> Void
     ) {
         (
             awayFromBottom: $awayFromBottom,

@@ -5,8 +5,14 @@ import AtlasCore
 /// shell principal para ConversationModel ficar sob a régua (<200).
 extension ConversationModel {
     func cycleEffort() {
-        effort = effort.next
-        UserDefaults.standard.set(effort.rawValue, forKey: Self.effortPreferenceKey)
+        setEffort(effort.next)
+    }
+
+    /// Único ponto de persistência do esforço — a casca (EffortSheet) chama
+    /// isto; storage na View é violação de boundary.
+    func setEffort(_ newEffort: AtlasComputeEffort) {
+        effort = newEffort
+        UserDefaults.standard.set(newEffort.rawValue, forKey: Self.effortPreferenceKey)
     }
 
     func updateDraft(_ value: String) {

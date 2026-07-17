@@ -8,7 +8,8 @@ import AtlasCore
 
 extension AtlasArenaView {
     var networkFailureCard: some View {
-        let kind = model.loadFailureKind
+        // O card só é montado em falha; sem kind classificado, copy genérica.
+        let kind = model.loadFailureKind ?? .other
         let hasToken = session.hasToken
         return VStack(alignment: .leading, spacing: 10) {
             networkFailureCopy(kind: kind, hasToken: hasToken)

@@ -15,10 +15,10 @@ final class AtlasCodeWorkspaceModel {
     let client: AtlasClient
     private(set) var phase: LoadPhase = .idle
     private(set) var workspace: AtlasCodeWorkspaceResponse?
-    private(set) var issuesBySlug: [String: [AtlasCodeIssue]] = [:]
-    private(set) var trunkBySlug: [String: String] = [:]
-    private(set) var failedSlugs: Set<String> = []
-    private(set) var expandedFolders: Set<String> = []
+    var issuesBySlug: [String: [AtlasCodeIssue]] = [:]
+    var trunkBySlug: [String: String] = [:]
+    var failedSlugs: Set<String> = []
+    var expandedFolders: Set<String> = []
 
     init(client: AtlasClient) {
         self.client = client

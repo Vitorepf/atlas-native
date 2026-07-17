@@ -5,7 +5,7 @@ import AtlasCore
 
 struct DetailMetric: View {
     let label: String; let value: String
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {

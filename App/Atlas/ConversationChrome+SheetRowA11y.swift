@@ -14,7 +14,7 @@ extension SheetRow {
         )
         .accessibilityHint(accessibilityHint ?? "")
         .accessibilityAddTraits(selected ? .isSelected : [])
-        .modifier(OptionalAccessibilityIdentifier(accessibilityIdentifier))
+        .modifier(OptionalAccessibilityIdentifier(id: accessibilityIdentifier))
         .overlay(alignment: .bottom) { sheetRowDivider }
     }
 }

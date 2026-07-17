@@ -3,6 +3,7 @@ import AtlasCore
 
 // Work order fields — peel de AutonomosDetailWorkRows.
 
+@MainActor
 enum AutonomosDetailWorkOrderFields {
     @ViewBuilder
     static func fields(_ item: AtlasAutonomosWorkOrder) -> some View {

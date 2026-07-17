@@ -8,8 +8,8 @@ import UIKit
 
 struct ModeSheet: View {
     @Binding var selected: String
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dismiss) var dismiss  // interno: peels em outros arquivos usam
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         SheetShell(title: "Modo") {

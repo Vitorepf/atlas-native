@@ -12,7 +12,7 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     @ObservationIgnored var openAutonomos: (() -> Void)?
     @ObservationIgnored var immediateNightlyDateKey: String?
 
-    private(set) var pendingProposal: ProposalPayload?
+    var pendingProposal: ProposalPayload?  // set interno: família de peels
     private(set) var mutedUntil: Date?
 
     /// Casca: silêncio total enquanto mute ativo — sem card, sem placeholder, sem toast.

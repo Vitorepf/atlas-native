@@ -3,6 +3,7 @@ import AtlasCore
 
 // Budget fields — peel de AutonomosDetailLedgerRows+Budgets.
 
+@MainActor
 enum AutonomosDetailLedgerBudgetFields {
     @ViewBuilder
     static func fields(_ b: AtlasAutonomosBacklogBudgets) -> some View {

@@ -3,6 +3,7 @@ import AtlasCore
 
 // Core fields do inbox card — peel de AutonomosDetailWorkRows+Inbox.
 
+@MainActor
 enum AutonomosDetailInboxCoreFields {
     @ViewBuilder
     static func fields(_ item: AtlasAutonomosInboxItem) -> some View {

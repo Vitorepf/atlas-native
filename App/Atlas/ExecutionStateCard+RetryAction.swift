@@ -5,7 +5,7 @@ import AtlasCore
 
 extension ExecutionStateCard {
     @ViewBuilder
-    func retryFallbackAction(_ jobId: String) -> some View {
+    func retryFallbackAction(_ jobId: JobID) -> some View {
         retryFallbackA11y(
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)

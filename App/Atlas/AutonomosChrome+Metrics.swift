@@ -7,7 +7,7 @@ import AtlasCore
 
 struct FleetMetric: View {
     let value: String; let label: String
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         metricCardChrome

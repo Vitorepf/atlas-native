@@ -1,4 +1,5 @@
 import SwiftUI
+import AtlasCore
 
 // Layout → QueuedFollowUpRow+Layout.swift
 

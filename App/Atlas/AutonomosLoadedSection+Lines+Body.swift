@@ -8,6 +8,6 @@ extension AutonomosInfoLine {
         infoLineCard(text)
             .accessibilityLabel(spokenLabel)
             .accessibilityAddTraits(.isStaticText)
-            .modifier(OptionalA11yIdentifier(identifier))
+            .modifier(OptionalA11yIdentifier(identifier: identifier))
     }
 }

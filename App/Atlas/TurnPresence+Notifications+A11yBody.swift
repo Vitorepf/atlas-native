@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Corpo da notificação — peel de TurnPresence+Notifications+A11y.
 
+@MainActor
 enum TurnPresenceNotificationA11yBody {
     /// Corpo só com dado real: excerpt da bolha do trace ou `detail` do ledger.
     static func body(

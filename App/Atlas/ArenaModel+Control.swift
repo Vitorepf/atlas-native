@@ -1,4 +1,5 @@
 import Foundation
+import AtlasCore
 
 // Refresh/start sem polling — peel de ArenaModel (régua ~120).
 
@@ -11,7 +12,7 @@ extension ArenaModel {
             let (nextComposite, nextScoreboard) = try await (compositeRequest, scoreboardRequest)
             composite = nextComposite
             scoreboard = nextScoreboard
-            lastLoadedAt = Date()
+            markLoaded()
             if case .idle = phase { phase = .loaded }
         } catch {
             controlError = Self.publicMessage(error)

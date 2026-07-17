@@ -2,7 +2,7 @@ import SwiftUI
 
 // Botão com press-scale spring (tato físico). Reduce Motion = sem scale nem bounce.
 struct PressableScale: ButtonStyle {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

@@ -40,9 +40,13 @@ func runRichInputBoundaryChecks(_ check: (String, Bool) -> Void) {
     check("app não fala com /ai/uploads/* direto (só via AtlasRichInputEngine)", appViolations.isEmpty)
     for v in appViolations { print("    ✗ \(v)") }
 
+    // Os dois models donos foram fatiados em famílias de arquivos
+    // (ConversationModel+*.swift / AtlasSession+*.swift) pelos peels — a
+    // isenção segue a FAMÍLIA do dono, não o nome exato. A regra continua a
+    // mesma: só os models tocam rede/JSON/storage; toda View permanece varrida.
     let presentationFiles = appFiles.filter {
         let name = ($0 as NSString).lastPathComponent
-        return name != "ConversationModel.swift" && name != "AtlasSession.swift"
+        return !name.hasPrefix("ConversationModel") && !name.hasPrefix("AtlasSession")
     }
     let forbiddenViewEffects = [
         "URLSession", "URLRequest", "JSONDecoder", "JSONEncoder", "JSONSerialization",
@@ -58,10 +62,17 @@ func runRichInputBoundaryChecks(_ check: (String, Bool) -> Void) {
     check("casca não faz rede, JSON ou storage", presentationViolations.isEmpty)
     for violation in presentationViolations { print("    ✗ \(violation)") }
 
-    let conversationModel = try? String(
-        contentsOfFile: "App/Atlas/ConversationModel.swift",
-        encoding: .utf8
-    )
+    // O model virou família de arquivos — os checks estruturais leem a
+    // CONCATENAÇÃO de ConversationModel*.swift (a lógica pode morar em
+    // qualquer fatia, mas tem que existir na família).
+    let conversationModel: String? = {
+        let familyPaths = appFiles.filter {
+            ($0 as NSString).lastPathComponent.hasPrefix("ConversationModel")
+        }
+        guard !familyPaths.isEmpty else { return nil }
+        return familyPaths.compactMap { try? String(contentsOfFile: $0, encoding: .utf8) }
+            .joined(separator: "\n")
+    }()
     check("model prepara imagens fora da MainActor",
           conversationModel?.contains("AtlasImaging.normalize(") == false
           && conversationModel?.contains("AtlasImaging.prepareForComposer(") == true)

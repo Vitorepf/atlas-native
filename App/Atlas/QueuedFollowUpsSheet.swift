@@ -6,7 +6,7 @@ import SwiftUI
 /// EmptyBranch → QueuedFollowUpsSheet+EmptyBranch.swift · A11yShell → +A11yShell.swift
 struct QueuedFollowUpsSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) var dismiss
 
     var model: ConversationModel
 

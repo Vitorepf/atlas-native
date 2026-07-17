@@ -1,4 +1,5 @@
 import Foundation
+import AtlasCore
 
 // Polling de runs vivos — peel de ArenaModel (régua ~120).
 

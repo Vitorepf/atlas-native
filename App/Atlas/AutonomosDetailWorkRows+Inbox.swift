@@ -6,6 +6,7 @@ import AtlasCore
 // Core → AutonomosDetailWorkRows+InboxCore.swift
 // Decision → AutonomosDetailWorkRows+InboxDecision.swift
 
+@MainActor
 enum AutonomosDetailInboxRows {
     @ViewBuilder
     static func inbox(_ backlog: AtlasAutonomosBacklogResponse) -> some View {

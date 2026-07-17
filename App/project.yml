@@ -64,6 +64,7 @@ targets:
     sources:
       - path: Widgets
       - path: Atlas/AtlasActivityAttributes.swift
+      - path: Atlas/AtlasTurnAttributes+ContentState.swift
     dependencies:
       - package: AtlasCore
         product: AtlasCore

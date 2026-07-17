@@ -13,7 +13,7 @@ extension AtlasCodeRadarRowsA11y {
         showsFolder: Bool,
         issues: [AtlasCodeIssue]?,
         trunk: String?,
-        lastCommitAt: String?
+        lastCommitAt: Int?
     ) -> String {
         var parts = [name]
         parts.append(contentsOf: spokenRepoFolder(folder: folder, showsFolder: showsFolder))

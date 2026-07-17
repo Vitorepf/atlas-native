@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Título/corpo/spoken da notificação local — peel de TurnPresence+Notifications (CICLO C).
 
+@MainActor
 enum TurnPresenceNotificationA11y {
     static func isTerminal(_ presence: AtlasExecutionPresence) -> Bool {
         TurnPresenceNotificationA11yTerminal.isTerminal(presence)

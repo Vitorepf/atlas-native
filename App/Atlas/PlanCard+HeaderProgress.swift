@@ -5,7 +5,7 @@ import AtlasCore
 
 extension PlanCard {
     @ViewBuilder
-    func planHeaderProgress(_ progress: ChatBubble.ExecutionProgress) -> some View {
+    func planHeaderProgress(_ progress: AtlasExecutionPlan.Progress) -> some View {
         Text("\(progress.current)/\(progress.total)")
             .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
             .monospacedDigit()

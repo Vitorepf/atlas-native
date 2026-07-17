@@ -1,11 +1,5 @@
 import AtlasCore
 import SwiftUI
 
-// Init — peel de AtlasCodeRadarView.
-
-extension AtlasCodeRadarView {
-    init(client: AtlasClient, onOpenRepo: @escaping (String) -> Void) {
-        _model = State(initialValue: AtlasCodeWorkspaceModel(client: client))
-        self.onOpenRepo = onOpenRepo
-    }
-}
+// O init voltou para AtlasCodeRadarView.swift: backing `_model` de @State só é
+// acessível no mesmo arquivo.

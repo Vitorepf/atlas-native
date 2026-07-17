@@ -8,7 +8,7 @@ import AtlasCore
 // A11y → SearchView+A11yChrome.swift
 struct SearchView: View {
     @Environment(AtlasSession.self) var session
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var query = ""
     @FocusState var focused: Bool

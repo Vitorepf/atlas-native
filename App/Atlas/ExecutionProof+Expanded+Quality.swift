@@ -17,4 +17,12 @@ extension ExecutionProof {
             .accessibilityLabel(qualitySpoken(q))
         }
     }
+
+    /// Cor do selo de qualidade — RECONSTRUÍDO pós-merge (vivia private no
+    /// ExecutionStateCard original; o peel usa mas a definição se perdeu).
+    func qualityColor(_ q: AtlasQualitySummary) -> Color {
+        q.status.lowercased().contains("pass") || q.score >= 0.7
+            ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional
+    }
+
 }

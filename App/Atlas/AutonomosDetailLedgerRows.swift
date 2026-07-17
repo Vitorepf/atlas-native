@@ -6,6 +6,7 @@ import AtlasCore
 // Items → AutonomosDetailLedgerRows+Findings.swift
 // Summary → AutonomosDetailLedgerRows+Summary.swift
 
+@MainActor
 enum AutonomosDetailLedgerRows {
     @ViewBuilder
     static func findings(_ backlog: AtlasAutonomosBacklogResponse) -> some View {

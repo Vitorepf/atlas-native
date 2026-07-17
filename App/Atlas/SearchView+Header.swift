@@ -4,7 +4,7 @@ import AtlasCore
 struct SearchViewHeader: View {
     @Binding var query: String
     @FocusState.Binding var focused: Bool
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {

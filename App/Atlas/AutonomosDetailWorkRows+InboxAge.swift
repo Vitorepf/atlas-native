@@ -3,6 +3,7 @@ import AtlasCore
 
 // Campos de idade do inbox — peel de AutonomosDetailWorkRows+Inbox.
 
+@MainActor
 enum AutonomosDetailInboxAge {
     @ViewBuilder
     static func ageFields(_ item: AtlasAutonomosInboxItem) -> some View {

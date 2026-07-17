@@ -6,8 +6,8 @@ import AtlasCore
 
 extension EffortSheet {
     func pick(_ effort: AtlasComputeEffort) {
-        model.effort = effort
-        UserDefaults.standard.set(effort.rawValue, forKey: ConversationModel.effortPreferenceKey)
+        // Persistência é do MODEL (boundary): a View nunca toca storage.
+        model.setEffort(effort)
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
         dismiss()
     }

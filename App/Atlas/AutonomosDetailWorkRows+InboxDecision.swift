@@ -3,6 +3,7 @@ import AtlasCore
 
 // Decision fields — peel de AutonomosDetailWorkRows+Inbox.
 
+@MainActor
 enum AutonomosDetailInboxDecisionFields {
     @ViewBuilder
     static func fields(_ item: AtlasAutonomosInboxItem) -> some View {

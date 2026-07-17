@@ -14,7 +14,7 @@ final class AtlasSession {
     var phase: LoadPhase = .idle
     var failureKind: AtlasNetworkFailureKind?
     var threads: [AtlasAiThread] = []
-    private(set) var remoteLiveSessions: [LiveSessionSnapshot] = []
+    var remoteLiveSessions: [LiveSessionSnapshot] = []  // set interno: família de peels
     var auditModeEnabled: Bool {
         didSet { UserDefaults.standard.set(auditModeEnabled, forKey: Self.auditModeKey) }
     }

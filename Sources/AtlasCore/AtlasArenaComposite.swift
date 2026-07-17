@@ -36,6 +36,10 @@ public struct AtlasArenaCompositeEngine: Codable, Sendable, Equatable, Identifia
     public let withoutAtlasComposite: Double?
     public let atlasMultiplier: Double?
     public let coverage: Double
+
+    /// Cobertura < 1.0 = índice parcial — a UI DIZ "8/10", nunca veste de
+    /// completo (lei do M61). Restaurado pós-peel: o golden check o exige.
+    public var isPartialCoverage: Bool { coverage < 1.0 }
     public let history: [AtlasArenaCompositePoint]
 }
 

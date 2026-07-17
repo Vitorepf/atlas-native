@@ -11,7 +11,9 @@ public extension AtlasAiTrace {
     }
 }
 
-private extension JSONValue {
+// Interno ao módulo: AtlasExecutionPlan.swift também consome este helper
+// (o peel o havia deixado private, quebrando a compilação cross-file).
+extension JSONValue {
     var stringArray: [String]? {
         guard case .array(let values) = self else { return nil }
         let strings = values.compactMap(\.stringValue)

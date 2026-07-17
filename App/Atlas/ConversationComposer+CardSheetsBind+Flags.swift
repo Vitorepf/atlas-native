@@ -1,5 +1,6 @@
 import SwiftUI
 import AtlasCore
+import PhotosUI
 
 // Sheet flag args — peel de ConversationComposer+CardSheetsBind.
 

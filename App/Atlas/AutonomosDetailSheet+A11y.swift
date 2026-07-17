@@ -11,7 +11,7 @@ extension AutonomosPublicDetailSheet {
         guard let backlog else {
             return spokenNoProjectionLabel()
         }
-        let count = publicItemCount(kind: kind, backlog: backlog)
+        let count = AutonomosPublicDetailSheet.publicItemCount(kind: kind, backlog: backlog)
         return spokenSheetCountLabel(name: kind.title.lowercased(), count: count)
     }
 }

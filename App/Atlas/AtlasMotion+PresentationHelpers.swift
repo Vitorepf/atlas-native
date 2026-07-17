@@ -2,6 +2,7 @@ import SwiftUI
 
 // Motion presentation helpers — peel de AtlasMotion+Presentation.
 
+@MainActor
 enum AtlasMotionPresentation {
     /// Transição editorial condicional — nil com Reduce Motion.
     static func editorial(reduceMotion: Bool) -> Animation? {

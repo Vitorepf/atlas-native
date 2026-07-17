@@ -5,7 +5,7 @@ import AtlasCore
 
 extension AtlasCodeFolderRow {
     @ViewBuilder
-    func expandedRepoSeparator(after repo: AtlasCodeRadar.Repo) -> some View {
+    func expandedRepoSeparator(after repo: AtlasCodeRepoRef) -> some View {
         if repo.id != folder.repos.last?.id {
             Rectangle()
                 .fill(AtlasTheme.separator.opacity(0.4))
