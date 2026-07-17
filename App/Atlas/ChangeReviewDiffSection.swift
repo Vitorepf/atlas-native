@@ -3,16 +3,16 @@ import AtlasCore
 
 // MARK: - Patch / Diff (C15 · C16)
 // Extraído de ChangeReviewSections sem mudança de comportamento.
-// DiffView → ChangeReviewDiffView.swift.
+// DiffView → ChangeReviewDiffView.swift · Toggle → +Toggle.swift
 
 struct ChangeReviewPatchCard: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
     let patch: AtlasTraceChangeReview.Patch
     @Binding var expandedDiffPatch: String?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    private var diffExpanded: Bool { expandedDiffPatch == patch.id }
+    var diffExpanded: Bool { expandedDiffPatch == patch.id }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -30,18 +30,7 @@ struct ChangeReviewPatchCard: View {
             ForEach(patch.changedFiles + patch.createdFiles + patch.deletedFiles, id: \.self) { file in
                 ChangeReviewFileRow(reviews: reviews, traceId: traceId, patch: patch, file: file)
             }
-            if !patch.riskFlags.isEmpty {
-                HStack(spacing: 6) {
-                    ForEach(patch.riskFlags, id: \.self) { flag in
-                        Text(flag).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domOperacional)
-                            .padding(.horizontal, 7).padding(.vertical, 3)
-                            .background(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
-                            .accessibilityHidden(true)
-                    }
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(ChangeReviewPatchA11y.spokenRiskFlags(patch.riskFlags))
-            }
+            patchRiskFlags
             if diffExpanded {
                 ChangeReviewDiffView(reviews: reviews, traceId: traceId, patch: patch)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
@@ -53,14 +42,5 @@ struct ChangeReviewPatchCard: View {
         .accessibilityLabel(ChangeReviewPatchA11y.spokenCard(patch: patch, diffExpanded: diffExpanded))
         .accessibilityIdentifier(A11yID.reviewPatchCard(patch.id))
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: diffExpanded)
-    }
-
-    private func toggleDiff() {
-        if diffExpanded {
-            expandedDiffPatch = nil
-        } else {
-            expandedDiffPatch = patch.id
-            Task { await reviews.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID) }
-        }
     }
 }

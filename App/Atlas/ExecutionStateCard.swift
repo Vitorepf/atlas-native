@@ -3,7 +3,7 @@ import AtlasCore
 
 /// Cena operacional do Fable 5: o estado chega pronto do ledger e só então a
 /// conversa oferece uma ação. Não há botão, prazo ou risco criado pela casca.
-/// Meta → +Meta · ações → +ActionButtons · prova → ExecutionProof.
+/// Header → +Header · Meta → +Meta · ações → +ActionButtons · prova → ExecutionProof.
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: JobID?
@@ -27,23 +27,7 @@ struct ExecutionStateCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Image(systemName: icon)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(tint)
-                    .accessibilityHidden(true)
-                Text(state.title)
-                    .font(.system(.footnote, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
-                Spacer(minLength: 0)
-                if let badge = kindBadge {
-                    Text(badge)
-                        .font(AtlasFont.mono(10)).tracking(0.8)
-                        .foregroundStyle(tint)
-                        .accessibilityHidden(true)
-                }
-            }
+            stateHeader
             if let detail = state.detail {
                 Text(detail)
                     .font(.footnote)

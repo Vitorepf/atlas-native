@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **330+** | primeiro commit do plano: `ec931f2`; Elite CIII em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **332+** | primeiro commit do plano: `ec931f2`; Elite CV em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,19 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CIII (este tip)
+## Entrega Elite CV (este tip)
+
+- `refactor(ui)` CICLO B: Workspace+ChromeNewPill; StateCard+Header; Attachments+Paste; Provenance+Loaded; Composer+QueueGrabber; Patch+Toggle.
+- `polish(ui)` CICLO C: Provenance failed/block decorative silence sob spoken.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CIV (anterior)
+
+- `refactor(ui)` CICLO B: Home Conversas/Operacao; Transfer+Body; ArenaRun+FormGovernance; Search+HeaderField; Chrome+Toast; Finding+A11y; Messages+ScrollFAB.
+- `polish(ui)` CICLO C: Finding decorative silence sob spoken.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CIII (anterior)
 
 - `refactor(ui)` CICLO B: Review+Buttons; Graph+GraphListTail; Week+WeekHeal; TraceEvidence+Unavailable; Area+Cycle; Mount+MountChecks; Awaiting+Chips; Detail+Kind; CodeView+Init/+AskPillClear.
 - `polish(ui)` CICLO C: Week/TraceEvidence decorative silence sob spoken.
