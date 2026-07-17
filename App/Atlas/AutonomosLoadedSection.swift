@@ -44,6 +44,10 @@ struct AutonomosLoadedSection: View {
                     findingsByRisk: model.backlog?.findings.byRisk ?? [:]
                 )
                 AutonomosAwaitingYouSection(backlog: model.backlog) { detailSheet = $0 }
+                    .animation(
+                        reduceMotion ? nil : AtlasMotion.editorial,
+                        value: AutonomosAwaitingYouSection.decisionCount(in: model.backlog)
+                    )
                 AutonomosAreaPicker(
                     areas: model.areas,
                     selectedAreaID: model.selectedAreaID

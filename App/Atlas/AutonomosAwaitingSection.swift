@@ -1,54 +1,102 @@
 import SwiftUI
 import AtlasCore
 
-/// M139 — decisões públicas pendentes; só aparece com count > 0.
+/// M139 — decisões públicas pendentes; silêncio total quando count = 0.
 struct AutonomosAwaitingYouSection: View {
     let backlog: AtlasAutonomosBacklogResponse?
     let onOpenDetail: (AutonomosDetailSheet) -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var inboxDecisions: [AtlasAutonomosInboxItem] {
+        backlog?.inboxItems.filter(\.decisionRequired) ?? []
+    }
+
+    private var workOrderDecisions: [AtlasAutonomosWorkOrder] {
+        backlog?.workOrders.filter(\.operatorDecisionRequired) ?? []
+    }
+
+    private var decisionCount: Int {
+        inboxDecisions.count + workOrderDecisions.count
+    }
 
     var body: some View {
-        let inbox = backlog?.inboxItems.filter(\.decisionRequired) ?? []
-        let workOrders = backlog?.workOrders.filter(\.operatorDecisionRequired) ?? []
-        let count = inbox.count + workOrders.count
-        if count > 0 {
+        if decisionCount > 0 {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     AutonomosChrome.sectionCaption("AGUARDANDO VOCÊ")
+                        .accessibilityAddTraits(.isHeader)
                     Spacer()
-                    Text("\(count)")
+                    Text("\(decisionCount)")
                         .font(AtlasFont.mono(13))
                         .foregroundStyle(AtlasTheme.domOperacional)
-                        .contentTransition(.numericText())
+                        .modifier(NumericTextTransition(enabled: !reduceMotion))
                 }
                 Text("Há decisão pública pendente; nada aqui afirma execução antes do recibo do owner.")
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textSecondary)
                 HStack(spacing: 8) {
-                    if !inbox.isEmpty {
-                        AutonomosDetailChipButton(label: "inbox \(inbox.count)", kind: .inbox, action: { onOpenDetail(.inbox) })
+                    if !inboxDecisions.isEmpty {
+                        AutonomosDetailChipButton(
+                            label: "inbox \(inboxDecisions.count)",
+                            kind: .inbox,
+                            spokenLabel: inboxSpokenLabel(count: inboxDecisions.count),
+                            action: { onOpenDetail(.inbox) }
+                        )
                     }
-                    if !workOrders.isEmpty {
-                        AutonomosDetailChipButton(label: "ordens \(workOrders.count)", kind: .workOrders, action: { onOpenDetail(.workOrders) })
+                    if !workOrderDecisions.isEmpty {
+                        AutonomosDetailChipButton(
+                            label: "ordens \(workOrderDecisions.count)",
+                            kind: .workOrders,
+                            spokenLabel: workOrdersSpokenLabel(count: workOrderDecisions.count),
+                            action: { onOpenDetail(.workOrders) }
+                        )
                     }
-                    if backlog?.findings.returned ?? 0 > 0 {
-                        AutonomosDetailChipButton(label: "findings", kind: .findings, action: { onOpenDetail(.findings) })
-                    }
-                    AutonomosDetailChipButton(label: "budgets", kind: .budgets, action: { onOpenDetail(.budgets) })
                 }
             }
             .padding(14)
             .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.domOperacional.opacity(0.08)))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.domOperacional.opacity(0.38), lineWidth: 1))
             .accessibilityElement(children: .contain)
-            .accessibilityLabel("aguardando você, \(count) decisões")
+            .accessibilityLabel(sectionSpokenLabel)
             .accessibilityIdentifier(A11yID.autonomosAwaitingYou)
+            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: decisionCount)
         }
+    }
+
+    private var sectionSpokenLabel: String {
+        if decisionCount == 1 {
+            return "aguardando você, 1 decisão pendente"
+        }
+        return "aguardando você, \(decisionCount) decisões pendentes"
+    }
+
+    private func inboxSpokenLabel(count: Int) -> String {
+        count == 1
+            ? "abrir 1 decisão de inbox pendente"
+            : "abrir \(count) decisões de inbox pendentes"
+    }
+
+    private func workOrdersSpokenLabel(count: Int) -> String {
+        count == 1
+            ? "abrir 1 ordem aguardando sua decisão"
+            : "abrir \(count) ordens aguardando sua decisão"
+    }
+}
+
+extension AutonomosAwaitingYouSection {
+    /// Chave de animação para o pai (aparição/sumário editorial).
+    static func decisionCount(in backlog: AtlasAutonomosBacklogResponse?) -> Int {
+        guard let backlog else { return 0 }
+        return backlog.inboxItems.filter(\.decisionRequired).count
+            + backlog.workOrders.filter(\.operatorDecisionRequired).count
     }
 }
 
 struct AutonomosDetailChipButton: View {
     let label: String
     let kind: AutonomosDetailSheet
+    var spokenLabel: String? = nil
     let action: () -> Void
 
     var body: some View {
@@ -62,7 +110,8 @@ struct AutonomosDetailChipButton: View {
                 .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("abrir detalhes de \(label)")
+        .accessibilityLabel(spokenLabel ?? "abrir detalhes de \(label)")
+        .accessibilityHint("abre a lista pública de \(kind.title.lowercased())")
         .accessibilityIdentifier(A11yID.autonomosDetailButton(kind.id))
     }
 }
