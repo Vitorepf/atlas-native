@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXII — CICLO B Arena/Findings/Council/Timeline/Artifact/Plan/Nightly/Why/Search/Messages peels** · `55f1c9d` · CICLO B: Arena `+Stack`/`+FailureRetryLabel`; Findings `+AxisHeader`; Council `+MetaHash`; Timeline `+NarrativeDuration`; Artifact `+PreviewDecode`; Plan `+RevisionArchiveReason`; Nightly `+NightlyStart`; Why `+RowConnector`; Search `+ClearIcon`; Messages `+A11yReview`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXI — CICLO B Proof/LiveNow/Sheet/Arena/Empty/Nightly/Self/Messages/Provenance peels** · `1f43892` · CICLO B: Proof `+ArtifactsChevron`; LiveNow `+HeaderA11y`/`+SpokenTiming`; Sheet `+SheetRowDivider`; Arena `+A11yEngine`; Empty `+SuggestionDefaults`; Nightly `+Token`; Self `+Shell`; Messages `+ScrollFABChrome`; Provenance `+FilesHeader`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXX — CICLO B Reason/Detail/Header/Attachments/Suite/Transfer/Week/Plan/Council/Home peels** · `f3c569d` · CICLO B: Reason `+FormReason`; Detail `+InboxAge`; Header `+A11yRefresh`; Attachments `+Chrome`; Suite `+EngineScore`; Transfer `+Placement`; Week `+A11ySpokenQuiet`; Plan `+RevisionsArchive`; Council `+A11ySection`; Home `+WorkspaceFolderRow`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
