@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **470+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXVIII tip `4a717c1` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **472+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXIX tip `ce97eb7` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXXXVIII (este tip)
+## Entrega Elite CXXXXXXXIX (este tip)
+
+- `refactor(ui)` CICLO B: Review+ReviewPatch; Markdown+InlineMarkDecorated; Proof+ShouldDisplay (restaura hasDecisionSurface); Graph+GraphListScrollBody; Receipt+ReceiptChrome; Nightly+CopyBody; Header+HeaderOutline; Finding+Path; Commit+Hint; Arena+HeaderWeights; Fleet+QuietLine; Diff+RiskFlags; Live+A11yChrome; Digest+ScheduleTitle; Plan+RevisionArchiveA11y; Island+TrailingBadge. Tip `ce97eb7`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXXXVIII (anterior)
 
 - `refactor(ui)` CICLO B: Sheets `+Heal`; Provenance `+Failed`/`+LawBody`; Graph `+WorktreeMeta`; Lifecycle `+Presence`; Widgets `+LockLiveDefinitions`/`+Follow`; Toast `+Handoff`; Heal `+StepCopy`; Home `+ArenaEntry`; AskPill `+A11yTraits`; Review `+RunFields`.
 - Zero App/Widgets >100; zero Route nova; tip `4a717c1`.
