@@ -1,0 +1,86 @@
+<style>
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+  .state{border:1px solid #34373c;border-radius:24px;padding:16px;background:#151719}
+  .phone{height:620px;border-radius:32px;background:#1d2b34;border:1px solid #3b505d;overflow:hidden;display:flex;flex-direction:column;color:#d6dde2;position:relative}
+  .head{padding:20px;border-bottom:1px solid rgba(149,163,172,.12);text-align:center;font:600 16px Georgia,serif}
+  .body{flex:1;padding:20px;color:#95a3ac;font-size:12px}
+  .event{padding:10px 0;border-bottom:1px solid rgba(149,163,172,.08)}
+  .gold{color:#d4a85a}.plus{color:#7fbf91}.minus{color:#d48888}
+  .dock{padding:12px 14px 18px;background:linear-gradient(transparent,#1d2b34 12%)}
+  .status-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+  .pill{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid #405461;background:#243743;border-radius:999px;font-size:10px}
+  .queue-pill{color:#d6dde2}.queue-pill b{color:#d4a85a;font-weight:600}
+  .composer{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 10px;border:1px solid #405461;background:#243743;border-radius:22px}
+  .round{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#2d4351;color:#95a3ac;font-size:11px}
+  .field{flex:1;color:#788892;font:italic 13px Georgia,serif}.stop{background:#d6dde2;color:#1d2b34;font-weight:700}
+  .sheet-backdrop{position:absolute;inset:0;background:rgba(8,12,15,.68);display:flex;align-items:flex-end}
+  .sheet{width:100%;min-height:330px;border-radius:28px 28px 0 0;background:#20313b;border-top:1px solid #405461;padding:10px 18px 22px}
+  .grab{width:44px;height:4px;border-radius:99px;background:#657681;margin:0 auto 18px}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.sheet-title{font:600 18px Georgia,serif}.done{padding:8px 13px;border:1px solid #405461;border-radius:999px;font-size:11px}
+  .queued{display:grid;grid-template-columns:1fr auto;gap:14px;padding:14px 0;border-bottom:1px solid rgba(149,163,172,.12)}
+  .queued:last-child{border-bottom:0}.message{font-size:13px;line-height:1.45}.actions{display:flex;gap:7px}.action{padding:6px 8px;border:1px solid #405461;border-radius:10px;color:#95a3ac;font-size:9px}.action.now{border-color:rgba(212,168,90,.45);color:#d4a85a}
+  .state-label{margin:14px 4px 0;color:#95a3ac;font-size:11px;line-height:1.5}.state-label b{color:#d6dde2}
+  .decision{margin-top:24px;border:1px solid rgba(212,168,90,.35);border-radius:18px;padding:16px;background:rgba(212,168,90,.04)}
+  .approve{margin-top:12px;padding:12px 16px;border:1px solid #d4a85a;border-radius:14px;color:#d4a85a;cursor:pointer;display:inline-block}
+  .approve.selected{background:#d4a85a;color:#1d2b34}
+  @media(max-width:900px){.compare{grid-template-columns:1fr}.phone{height:590px}}
+</style>
+
+<h2>Direção escolhida · fila do Cursor na gramática Atlas</h2>
+<p class="subtitle">A fila fica invisível quando vazia. Depois do primeiro follow-up, surge o contador. O composer nunca desaparece durante a execução.</p>
+
+<div class="compare">
+  <div class="state">
+    <div class="phone">
+      <div class="head">Atlas Native</div>
+      <div class="body">
+        <div class="event">Explorou 4 arquivos e 3 buscas</div>
+        <div class="event"><span class="gold">agora</span> · Revisando o contrato de execução</div>
+        <div class="event">2 agentes ativos · 1 aguardando revisão</div>
+      </div>
+      <div class="dock">
+        <div class="status-row">
+          <div class="pill">Revisando <span class="plus">+24.170</span> <span class="minus">−345</span></div>
+          <div class="pill queue-pill">Na fila <b>1</b></div>
+        </div>
+        <div class="composer">
+          <div class="round">Anexar</div>
+          <div class="field">Escreva a próxima instrução…</div>
+          <div class="round">Voz</div>
+          <div class="round stop">Parar</div>
+        </div>
+      </div>
+    </div>
+    <p class="state-label"><b>Estado compacto.</b> Enviar durante a execução adiciona à fila. O badge só existe quando há mensagens esperando.</p>
+  </div>
+
+  <div class="state">
+    <div class="phone">
+      <div class="head">Atlas Native</div>
+      <div class="body">
+        <div class="event">A execução continua atrás da sheet.</div>
+      </div>
+      <div class="sheet-backdrop">
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="sheet-head"><div class="sheet-title">Mensagens na fila · 2</div><div class="done">Concluir</div></div>
+          <div class="queued">
+            <div class="message">Faça uma revisão final e garanta que não existem gaps.</div>
+            <div class="actions"><div class="action now">Enviar agora</div><div class="action">Remover</div></div>
+          </div>
+          <div class="queued">
+            <div class="message">Depois gere uma prova completa no iPhone físico.</div>
+            <div class="actions"><div class="action now">Enviar agora</div><div class="action">Remover</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="state-label"><b>Fila expandida.</b> A ordem é explícita. “Enviar agora” interrompe/redireciona o turno; “Remover” descarta apenas aquela mensagem.</p>
+  </div>
+</div>
+
+<div class="decision">
+  <h3>Contrato proposto</h3>
+  <p class="subtitle">Fila automática por padrão · badge sob demanda · bottom sheet consultável · interrupção sempre explícita · nenhuma mensagem perdida.</p>
+  <div class="approve" data-choice="approve-cursor-queue-atlas" onclick="toggleSelect(this)">Aprovar este comportamento</div>
+</div>

@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/vitorepf/develop/Atlas/atlas-native/.codex/hooks/atlas-pretooluse-guard.sh'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read|Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/vitorepf/develop/Atlas/atlas-native/.codex/hooks/atlas-postedit-context.sh'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/vitorepf/develop/Atlas/atlas-native/.codex/hooks/atlas-ctx.sh'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/vitorepf/develop/Atlas/atlas-native/.codex/hooks/atlas-session-capture.sh'"
+          }
+        ]
+      }
+    ]
+  }
+}

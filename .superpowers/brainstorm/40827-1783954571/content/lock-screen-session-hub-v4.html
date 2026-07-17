@@ -1,0 +1,93 @@
+<style>
+  .hub{--ink:#1d2b34;--surface:#243743;--surface2:#20313b;--line:#3b505d;--brass:#d4a85a;--text:#dce3e7;--muted:#8b9aa3;--quiet:#657681;max-width:1180px;margin:0 auto;padding:10px 4px 34px;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}.hub *{box-sizing:border-box}.hub .intro{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:24px}.hub .eyebrow{color:var(--brass);font-size:12px;font-weight:750;letter-spacing:.17em;text-transform:uppercase;margin-bottom:8px}.hub h2{margin:0;color:#f1f4f5;font:700 30px/1.12 Georgia,"Times New Roman",serif}.hub .intro p{margin:10px 0 0;max-width:830px;color:var(--muted);font-size:15px;line-height:1.5}.hub .version{color:var(--quiet);font-size:12px;white-space:nowrap}.hub .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:22px}.hub .label{margin:0 0 9px 8px;color:var(--muted);font-size:12px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}.hub .lock{background:linear-gradient(160deg,#17232a,#21333e);border:1px solid #344957;border-radius:34px;min-height:704px;padding:19px;box-shadow:0 24px 70px rgba(0,0,0,.35);position:relative;overflow:hidden}.hub .lock:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(212,168,90,.055);filter:blur(45px);right:-120px;top:-140px;animation:ambient 7s ease-in-out infinite}.hub .clock{position:relative;text-align:center;color:#eef2f4;font-size:52px;font-weight:250;letter-spacing:-.055em;margin:8px 0 7px}.hub .date{position:relative;text-align:center;color:#9ba7ae;font-size:12px;margin-bottom:54px}.hub .activity{position:relative;background:rgba(28,42,51,.92);border:1px solid rgba(149,163,172,.23);border-radius:22px;padding:14px}.hub .head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:11px;border-bottom:1px solid rgba(149,163,172,.12)}.hub .brand{display:flex;align-items:center;gap:9px}.hub .mark{width:10px;height:10px;border-radius:2px;background:var(--brass);transform:rotate(45deg);animation:mark 2.4s ease-in-out infinite}.hub .brand strong{font:700 14px Georgia,"Times New Roman",serif;color:#e6ebed}.hub .summary{color:var(--brass);font-size:11px}.hub .sessions{display:grid}.hub .session{display:grid;grid-template-columns:1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid rgba(149,163,172,.1)}.hub .session:last-child{border-bottom:0}.hub .session-title{color:#dbe2e6;font-size:12px;font-weight:650}.hub .session-phase{color:#80909a;font-size:10px;margin-top:4px}.hub .timer{color:#aeb9bf;font:500 12px ui-monospace,"SF Mono",monospace;font-variant-numeric:tabular-nums;align-self:center}.hub .progress{height:2px;background:#304651;border-radius:2px;margin-top:8px;overflow:hidden}.hub .progress span{display:block;height:100%;background:var(--brass)}.hub .more{display:flex;align-items:center;justify-content:space-between;padding-top:11px;color:#788892;font-size:10px}.hub .island-wrap{position:absolute;left:50%;transform:translateX(-50%);bottom:42px;text-align:center}.hub .island{min-width:186px;height:38px;border-radius:22px;background:#050606;display:flex;align-items:center;justify-content:space-between;padding:0 13px;box-shadow:0 9px 24px rgba(0,0,0,.42)}.hub .island-left{display:flex;align-items:center;gap:7px;color:#dbe2e6;font-size:10px}.hub .island-mark{width:8px;height:8px;border-radius:2px;background:var(--brass);transform:rotate(45deg)}.hub .island-time{color:#9ba7ae;font:500 10px ui-monospace,"SF Mono",monospace}.hub .island-note{color:#687983;font-size:9px;margin-top:8px}.hub .states{display:grid;gap:15px}.hub .state-card{background:var(--ink);border:1px solid #344957;border-radius:20px;padding:15px;box-shadow:0 18px 45px rgba(0,0,0,.24)}.hub .state-top{display:flex;align-items:start;justify-content:space-between;gap:12px}.hub .state-kicker{color:var(--brass);font-size:9px;font-weight:750;letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px}.hub .state-title{color:#e2e7ea;font:700 16px Georgia,"Times New Roman",serif}.hub .state-time{color:#97a5ad;font:500 12px ui-monospace,"SF Mono",monospace}.hub .state-body{color:#8998a1;font-size:11px;line-height:1.45;margin-top:8px}.hub .state-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.hub .chip{border:1px solid #3c515e;border-radius:12px;padding:5px 7px;color:#94a2aa;font-size:9px}.hub .state-card.plan{border-color:rgba(212,168,90,.35)}.hub .state-card.done{background:linear-gradient(160deg,#1d2b34,#233640)}.hub .done .state-title{color:#f0f3f4}.hub .attention{border-color:#765d3d}.hub .rule{border:1px solid #333f47;background:#202d35;border-radius:18px;padding:15px}.hub .rule-title{color:#d9e0e4;font:700 16px Georgia,"Times New Roman",serif;margin-bottom:11px}.hub .rule-row{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:8px 0;border-top:1px solid rgba(149,163,172,.11)}.hub .rule-row:first-of-type{border-top:0}.hub .rule-row b{color:#9cabb3;font-size:10px}.hub .rule-row span{color:#c5ced3;font-size:10px;line-height:1.4}.hub .voice-note{margin-top:16px;border-left:2px solid var(--brass);padding:8px 0 8px 11px;color:#9ba8af;font-size:10px;line-height:1.45}.hub .choice{margin-top:25px}.hub .choice h3{margin:0 0 5px;color:#edf1f3;font-size:17px}@keyframes ambient{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-30px,30px,0)}}@keyframes mark{0%,100%{transform:rotate(45deg) scale(.88);opacity:.72}50%{transform:rotate(45deg) scale(1);opacity:1}}@media(prefers-reduced-motion:reduce){.hub *{animation:none!important}}@media(max-width:900px){.hub .grid{grid-template-columns:1fr}.hub .intro{display:block}.hub .version{margin-top:9px}}
+</style>
+
+<div class="hub">
+  <div class="intro">
+    <div>
+      <div class="eyebrow">Atlas · session hub</div>
+      <h2>A tela bloqueada vira o cockpit de todas as obras.</h2>
+      <p>Uma única presença Atlas agrega as sessões ativas, mantém timers independentes e distingue claramente plano concluído, sessão concluída e atenção necessária.</p>
+    </div>
+    <div class="version">Correção estrutural · v4</div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="label">Tela bloqueada · múltiplas sessões</div>
+      <div class="lock">
+        <div class="clock">12:41</div>
+        <div class="date">segunda-feira, 13 de julho</div>
+
+        <div class="activity">
+          <div class="head">
+            <div class="brand"><span class="mark"></span><strong>Atlas</strong></div>
+            <div class="summary">3 sessões em execução</div>
+          </div>
+          <div class="sessions">
+            <div class="session">
+              <div><div class="session-title">Atlas Native</div><div class="session-phase">Implementando timeline viva · passo 3/5</div><div class="progress"><span style="width:60%"></span></div></div>
+              <div class="timer">12:48</div>
+            </div>
+            <div class="session">
+              <div><div class="session-title">Atlas Server</div><div class="session-phase">Verificando contrato de eventos · passo 4/6</div><div class="progress"><span style="width:67%"></span></div></div>
+              <div class="timer">08:31</div>
+            </div>
+            <div class="session">
+              <div><div class="session-title">Vitor EPF</div><div class="session-phase">Planejando revisão editorial · passo 1/4</div><div class="progress"><span style="width:25%"></span></div></div>
+              <div class="timer">02:07</div>
+            </div>
+          </div>
+          <div class="more"><span>Toque para abrir o cockpit</span><span>Mais detalhes no Atlas</span></div>
+        </div>
+
+        <div class="island-wrap">
+          <div class="island"><div class="island-left"><span class="island-mark"></span><span>3 sessões</span></div><span class="island-time">12:48</span></div>
+          <div class="island-note">A Dynamic Island mostra quantidade + maior tempo em execução</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="label">Estados que não podem ser confundidos</div>
+      <div class="states">
+        <div class="state-card plan">
+          <div class="state-top"><div><div class="state-kicker">Plano concluído</div><div class="state-title">5 de 5 passos entregues</div></div><div class="state-time">14:22</div></div>
+          <div class="state-body">A sessão continua ativa enquanto o Atlas verifica resultados, reúne provas e prepara a resposta final.</div>
+          <div class="state-meta"><span class="chip">Verificando</span><span class="chip">timer continua</span><span class="chip">não é conclusão ainda</span></div>
+        </div>
+
+        <div class="state-card done">
+          <div class="state-top"><div><div class="state-kicker">Sessão concluída</div><div class="state-title">Resposta e provas registradas</div></div><div class="state-time">16:03</div></div>
+          <div class="state-body">O timer congela, o estado final permanece consultável e um toque abre exatamente a resposta concluída.</div>
+          <div class="state-meta"><span class="chip">12 eventos</span><span class="chip">2 arquivos</span><span class="chip">3 checks aprovados</span></div>
+        </div>
+
+        <div class="state-card attention">
+          <div class="state-top"><div><div class="state-kicker">Atenção necessária</div><div class="state-title">Uma sessão aguarda você</div></div><div class="state-time">06:19</div></div>
+          <div class="state-body">Permissão, escolha ou falha recuperável nunca aparece como “trabalhando”. O motivo fica explícito e acionável.</div>
+          <div class="state-meta"><span class="chip">1 sessão pausada</span><span class="chip">abrir para resolver</span></div>
+        </div>
+
+        <div class="rule">
+          <div class="rule-title">Contrato de altíssimo nível</div>
+          <div class="rule-row"><b>Timer</b><span>Derivado de `startedAt`; continua no sistema sem pushes por segundo.</span></div>
+          <div class="rule-row"><b>Plano</b><span>Só mostra N/M quando o backend enviou passos reais.</span></div>
+          <div class="rule-row"><b>Privacidade</b><span>Modo discreto oculta títulos e conteúdo na tela bloqueada.</span></div>
+          <div class="rule-row"><b>Conclusão</b><span>Plano, sessão, falha, cancelamento e atenção são estados diferentes.</span></div>
+        </div>
+      </div>
+      <div class="voice-note">VoiceOver não será uma voz do Atlas. Apenas componentes semanticamente corretos quando o leitor de tela do próprio iOS estiver ativado pelo usuário.</div>
+    </div>
+  </div>
+
+  <div class="choice">
+    <h3>Essa correção representa exatamente o cockpit que você quer?</h3>
+    <p class="subtitle">A recomendação é um único Session Hub agregado; ele garante contagem, prioridade e clareza mesmo com muitas sessões.</p>
+    <div class="options">
+      <div class="option" data-choice="approve-session-hub" onclick="toggleSelect(this)"><div class="letter">A</div><div class="content"><h3>Aprovar Session Hub</h3><p>Múltiplas sessões, timers e estados terminais distintos.</p></div></div>
+      <div class="option" data-choice="separate-live-activities" onclick="toggleSelect(this)"><div class="letter">B</div><div class="content"><h3>Uma atividade por sessão</h3><p>O iOS empilha cartões separados; mais detalhe, menos controle do conjunto.</p></div></div>
+      <div class="option" data-choice="hub-more-dense" onclick="toggleSelect(this)"><div class="letter">C</div><div class="content"><h3>Session Hub mais denso</h3><p>Exibir até cinco sessões diretamente na tela bloqueada.</p></div></div>
+    </div>
+  </div>
+</div>

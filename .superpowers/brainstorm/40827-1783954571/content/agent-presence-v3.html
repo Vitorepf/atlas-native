@@ -1,0 +1,85 @@
+<style>
+  .presence{--ink:#1d2b34;--surface:#243743;--surface2:#20313b;--line:#3b505d;--brass:#d4a85a;--text:#dce3e7;--muted:#8b9aa3;--quiet:#657681;max-width:1180px;margin:0 auto;padding:10px 4px 34px;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}
+  .presence *{box-sizing:border-box}.presence .intro{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:24px}.presence .eyebrow{color:var(--brass);font-size:12px;font-weight:750;letter-spacing:.17em;text-transform:uppercase;margin-bottom:8px}.presence h2{margin:0;color:#f1f4f5;font:700 30px/1.12 Georgia,"Times New Roman",serif}.presence .intro p{margin:10px 0 0;max-width:810px;color:var(--muted);font-size:15px;line-height:1.5}.presence .version{color:var(--quiet);font-size:12px;white-space:nowrap}.presence .stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:22px;align-items:start}.presence .label{margin:0 0 9px 8px;color:var(--muted);font-size:12px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}.presence .phone{background:var(--ink);border:1px solid #344957;border-radius:34px;box-shadow:0 24px 70px rgba(0,0,0,.35);overflow:hidden;min-height:706px;position:relative}.presence .status{height:36px;padding:14px 24px 0;display:flex;justify-content:space-between;color:var(--muted);font-size:11px;font-weight:650}.presence .nav{height:54px;padding:0 22px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid rgba(149,163,172,.1)}.presence .nav span{color:var(--muted);font-size:12px}.presence .nav strong{font:700 17px Georgia,"Times New Roman",serif;color:#e4eaed}.presence .nav .live{text-align:right;color:var(--brass);font-size:10px}.presence .body{padding:19px 22px 106px}.presence .quote{border-left:2px solid var(--brass);padding:2px 0 2px 13px;margin-bottom:18px;color:#dce3e7;font:italic 16px/1.45 Georgia,"Times New Roman",serif}.presence .mission{border:1px solid rgba(212,168,90,.29);background:var(--surface);border-radius:14px;padding:11px 13px;margin-bottom:16px;box-shadow:0 0 0 0 rgba(212,168,90,0);animation:missionBreath 3.8s ease-in-out infinite}.presence .mission-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.presence .mission-title{color:#dbe2e6;font-size:13px;font-weight:650}.presence .counter{color:var(--brass);font-size:12px}.presence .track{height:3px;background:#334955;border-radius:2px;margin-top:10px;overflow:hidden}.presence .fill{height:100%;background:linear-gradient(90deg,#b88b3f,var(--brass),#e2c179);animation:progressTravel 5.8s cubic-bezier(.3,.7,.2,1) infinite}.presence .stage-meta{margin-top:7px;display:flex;justify-content:space-between;color:#788892;font-size:10px}.presence .timeline{position:relative;padding-left:18px}.presence .timeline:before{content:"";position:absolute;left:4px;top:7px;bottom:7px;width:1px;background:linear-gradient(var(--brass) 0 72%,#405461 72%)}.presence .event{position:relative;margin-bottom:15px;animation:eventArrive .55s cubic-bezier(.22,.9,.32,1) both}.presence .event:nth-child(2){animation-delay:.12s}.presence .event:nth-child(3){animation-delay:.24s}.presence .event:nth-child(4){animation-delay:.36s}.presence .event:before{content:"";position:absolute;left:-17px;top:7px;width:6px;height:6px;border-radius:50%;background:#607681}.presence .event.voice:before{width:7px;height:7px;background:var(--brass)}.presence .event.active:before{width:9px;height:9px;left:-18px;background:var(--brass);animation:activePulse 1.8s ease-out infinite}.presence .voice-text{color:#e1e7ea;font-size:14px;line-height:1.48}.presence .group{border:1px solid #334956;background:rgba(32,49,59,.72);border-radius:11px;padding:10px 11px;transition:border-color .2s ease,transform .2s ease}.presence .group:hover{border-color:#506672;transform:translateY(-1px)}.presence .group-top{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#b9c3c8;font-size:12px}.presence .group-sub{margin-top:5px;color:#70808a;font-size:10px}.presence .decision{border-left:2px solid rgba(212,168,90,.58);padding-left:10px}.presence .decision-label{color:var(--brass);font-size:9px;font-weight:750;letter-spacing:.13em;text-transform:uppercase;margin-bottom:4px}.presence .active-card{position:relative;overflow:hidden;border:1px solid rgba(212,168,90,.35);background:var(--surface);border-radius:11px;padding:10px 11px}.presence .active-card:after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(212,168,90,.07) 48%,transparent 66%);transform:translateX(-120%);animation:quietSweep 3.4s ease-in-out infinite}.presence .active-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;color:#d3dbe0;font-size:12px}.presence .active-sub{position:relative;z-index:1;margin-top:5px;color:#7f8e97;font-size:10px}.presence .next{display:flex;justify-content:space-between;color:#6f7f89;font-size:10px}.presence .livebar{position:absolute;left:15px;right:15px;bottom:15px;padding:11px 13px;background:rgba(36,55,67,.97);border:1px solid #405461;border-radius:18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -12px 40px rgba(29,43,52,.82)}.presence .live-title{display:flex;align-items:center;gap:8px;color:#d6dde2;font-size:12px}.presence .live-dot{width:6px;height:6px;border-radius:50%;background:var(--brass);animation:liveDot 1.6s ease-in-out infinite}.presence .live-sub{color:#758690;font-size:10px;margin-top:3px}.presence .stop{padding:7px 10px;border-radius:14px;background:#304754;color:#c7d0d5;font-size:10px}.presence .side{display:grid;gap:18px}.presence .lock{background:linear-gradient(160deg,#18242b,#21333e);border:1px solid #344957;border-radius:30px;min-height:350px;padding:19px;box-shadow:0 22px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}.presence .lock:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(212,168,90,.07);filter:blur(35px);right:-90px;top:-120px;animation:ambientDrift 6s ease-in-out infinite}.presence .clock{position:relative;text-align:center;color:#edf1f3;font-size:42px;font-weight:250;letter-spacing:-.04em;margin:8px 0 48px}.presence .activity{position:relative;background:rgba(28,42,51,.88);border:1px solid rgba(149,163,172,.22);border-radius:20px;padding:13px 14px}.presence .activity-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.presence .brand{display:flex;align-items:center;gap:8px;color:#dce3e7;font-size:11px;font-weight:700}.presence .brand-mark{width:9px;height:9px;border-radius:2px;background:var(--brass);transform:rotate(45deg);animation:markBreathe 2.4s ease-in-out infinite}.presence .elapsed{color:#7d8c95;font-size:10px}.presence .activity-title{color:#e0e6e9;font-size:13px;font-weight:650;margin-top:12px}.presence .activity-sub{color:#82919a;font-size:10px;margin-top:4px}.presence .mini-track{height:3px;background:#304651;border-radius:2px;margin-top:12px;overflow:hidden}.presence .mini-fill{height:100%;width:54%;background:var(--brass);animation:miniTravel 5.8s cubic-bezier(.3,.7,.2,1) infinite}.presence .outside-note{position:absolute;left:20px;right:20px;bottom:20px;color:#71818a;font-size:10px;line-height:1.5;text-align:center}.presence .score{border:1px solid #333f47;background:#202d35;border-radius:18px;padding:15px}.presence .score-title{color:#d9e0e4;font:700 16px Georgia,"Times New Roman",serif;margin-bottom:12px}.presence .beat{display:grid;grid-template-columns:76px 1fr;gap:11px;padding:9px 0;border-top:1px solid rgba(149,163,172,.11)}.presence .beat:first-of-type{border-top:0}.presence .beat b{color:#9cabb3;font-size:10px}.presence .beat span{color:#c5ced3;font-size:11px;line-height:1.4}.presence .beat small{display:block;color:#6e7f89;font-size:9px;margin-top:3px}.presence .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}.presence .principle{border:1px solid #33383d;background:#202023;border-radius:10px;padding:10px}.presence .principle b{display:block;color:#d8dde0;font-size:11px}.presence .principle span{display:block;color:#747d84;font-size:9px;line-height:1.4;margin-top:4px}.presence .choice{margin-top:25px}.presence .choice h3{margin:0 0 5px;color:#edf1f3;font-size:17px}
+  @keyframes eventArrive{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}@keyframes missionBreath{0%,100%{box-shadow:0 0 0 0 rgba(212,168,90,0)}50%{box-shadow:0 0 0 5px rgba(212,168,90,.035)}}@keyframes progressTravel{0%,12%{width:48%}55%,100%{width:66%}}@keyframes miniTravel{0%,12%{width:48%}55%,100%{width:66%}}@keyframes activePulse{0%{box-shadow:0 0 0 0 rgba(212,168,90,.34)}75%,100%{box-shadow:0 0 0 8px rgba(212,168,90,0)}}@keyframes quietSweep{0%,30%{transform:translateX(-120%)}75%,100%{transform:translateX(120%)}}@keyframes liveDot{0%,100%{opacity:.5;transform:scale(.82)}50%{opacity:1;transform:scale(1)}}@keyframes ambientDrift{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-24px,28px,0)}}@keyframes markBreathe{0%,100%{transform:rotate(45deg) scale(.88);opacity:.72}50%{transform:rotate(45deg) scale(1);opacity:1}}
+  @media(prefers-reduced-motion:reduce){.presence *{animation:none!important;transition:none!important}}@media(max-width:900px){.presence .stage{grid-template-columns:1fr}.presence .principles{grid-template-columns:1fr 1fr}.presence .intro{display:block}.presence .version{margin-top:9px}}
+</style>
+
+<div class="presence">
+  <div class="intro">
+    <div>
+      <div class="eyebrow">Atlas · presença contínua</div>
+      <h2>A execução agora tem ritmo, peso e continuidade.</h2>
+      <p>A V3 usa movimento editorial para comunicar mudança de estado. A atividade atual respira, eventos entram com suavidade, a fase progride e o Atlas continua presente quando o usuário sai da conversa.</p>
+    </div>
+    <div class="version">Proposta visual · v3</div>
+  </div>
+
+  <div class="stage">
+    <div>
+      <div class="label">Dentro da conversa · observe o movimento</div>
+      <div class="phone">
+        <div class="status"><span>10:42</span><span>Rede estável · 68%</span></div>
+        <div class="nav"><span>Voltar</span><strong>Nova conversa</strong><span class="live">AO VIVO</span></div>
+        <div class="body">
+          <div class="quote">“O relatório está ilegível. Corrija tudo em português.”</div>
+          <div class="mission">
+            <div class="mission-top"><span class="mission-title">Reescrever relatório em PT-BR</span><span class="counter">3/5</span></div>
+            <div class="track"><div class="fill"></div></div>
+            <div class="stage-meta"><span>Implementando</span><span>depois: verificar</span></div>
+          </div>
+
+          <div class="timeline">
+            <div class="event voice"><div class="voice-text">Entendi. Vou localizar o gerador, corrigir o idioma e remover métricas enganosas.</div></div>
+            <div class="event"><div class="group"><div class="group-top"><strong>Investigação concluída</strong><span>7 ações · Abrir</span></div><div class="group-sub">4 arquivos lidos · 3 buscas · Context Pack consultado</div></div></div>
+            <div class="event voice"><div class="decision"><div class="decision-label">Decisão</div><div class="voice-text">A causa está no builder. Vou separar ausência de custo de performance antes de refazer a apresentação.</div></div></div>
+            <div class="event active"><div class="active-card"><div class="active-top"><span>Editando EnterpriseReportDashboardHtml.php</span><span class="counter">agora</span></div><div class="active-sub">Reorganizando métricas, rótulos e hierarquia visual</div></div></div>
+            <div class="event"><div class="next"><span>Próximo passo</span><span>Validar idioma e números</span></div></div>
+          </div>
+        </div>
+        <div class="livebar"><div><div class="live-title"><span class="live-dot"></span><span>Seguindo a execução</span></div><div class="live-sub">9 eventos preservados · 54s</div></div><div class="stop">Parar</div></div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div>
+        <div class="label">Fora do app · continuidade nativa</div>
+        <div class="lock">
+          <div class="clock">10:43</div>
+          <div class="activity">
+            <div class="activity-top"><div class="brand"><span class="brand-mark"></span><span>Atlas</span></div><span class="elapsed">1m 08s</span></div>
+            <div class="activity-title">Editando o relatório</div>
+            <div class="activity-sub">Passo 3 de 5 · depois: verificar</div>
+            <div class="mini-track"><div class="mini-fill"></div></div>
+          </div>
+          <div class="outside-note">Live Activity e Dynamic Island aparecem somente em execuções longas. Um toque retorna ao ponto exato da conversa.</div>
+        </div>
+      </div>
+
+      <div class="score">
+        <div class="score-title">Coreografia de presença</div>
+        <div class="beat"><b>Nova ação</b><span>Entrada curta com mola suave.<small>Sem deslocar a leitura.</small></span></div>
+        <div class="beat"><b>Mudou a fase</b><span>Linha de progresso avança e haptic leve confirma.<small>Nunca vibra por token.</small></span></div>
+        <div class="beat"><b>Concluiu</b><span>Um único pulso de sucesso; a atividade vira histórico.<small>Sem confete ou espetáculo artificial.</small></span></div>
+        <div class="beat"><b>Usuário rolou</b><span>O Atlas não rouba o scroll; oferece “voltar ao vivo”.<small>Controle sempre com o operador.</small></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="principles">
+    <div class="principle"><b>Movimento sem ruído</b><span>Cada transição explica uma mudança real.</span></div>
+    <div class="principle"><b>Presença sem ansiedade</b><span>Nada pisca continuamente ou exige atenção.</span></div>
+    <div class="principle"><b>Continuidade nativa</b><span>A obra acompanha o usuário fora da tela.</span></div>
+    <div class="principle"><b>Acessível por padrão</b><span>Reduce Motion remove toda a coreografia.</span></div>
+  </div>
+
+  <div class="choice">
+    <h3>Até onde levamos essa presença?</h3>
+    <p class="subtitle">O núcleo visual é o mesmo. A diferença é quando ativamos a continuidade fora do app.</p>
+    <div class="options">
+      <div class="option" data-choice="v3-complete" onclick="toggleSelect(this)"><div class="letter">A</div><div class="content"><h3>V3 completa</h3><p>Movimento editorial + haptics + Live Activity/Dynamic Island.</p></div></div>
+      <div class="option" data-choice="v3-app-first" onclick="toggleSelect(this)"><div class="letter">B</div><div class="content"><h3>V3 dentro do app primeiro</h3><p>Entrega a coreografia na conversa; continuidade nativa entra na próxima vertical.</p></div></div>
+      <div class="option" data-choice="v3-quieter" onclick="toggleSelect(this)"><div class="letter">C</div><div class="content"><h3>V3 mais silenciosa</h3><p>Manter apenas entrada de eventos e transição de conclusão.</p></div></div>
+    </div>
+  </div>
+</div>

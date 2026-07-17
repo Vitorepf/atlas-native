@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "atlas-open-brain": {
+            "command": "/Users/vitorepf/develop/Atlas/atlas-server/bin/atlas",
+            "args": [
+                "open-brain",
+                "mcp"
+            ]
+        }
+    }
+}

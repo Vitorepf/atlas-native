@@ -1,0 +1,86 @@
+<style>
+  .atlas-grid{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:18px;margin-top:24px}
+  .atlas-option{border:1px solid #34373c;border-radius:22px;padding:14px;background:#17191c;cursor:pointer;transition:.2s ease}
+  .atlas-option:hover,.atlas-option.selected{border-color:#d4a85a;box-shadow:0 0 0 2px rgba(212,168,90,.1)}
+  .phone{height:520px;border-radius:28px;background:#1d2b34;border:1px solid #3b505d;overflow:hidden;display:flex;flex-direction:column;color:#d6dde2}
+  .phone-head{padding:17px 18px 13px;border-bottom:1px solid rgba(149,163,172,.12);font:600 15px Georgia,serif;text-align:center}
+  .timeline{flex:1;padding:18px;font-size:12px;color:#95a3ac}
+  .event{padding:9px 0;border-bottom:1px solid rgba(149,163,172,.09)}
+  .event.live{color:#d6dde2}.gold{color:#d4a85a}.muted{color:#677482}
+  .dock{padding:10px;background:linear-gradient(transparent,#1d2b34 12%)}
+  .runbar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid #405461;border-radius:15px;background:#243743;font-size:11px}
+  .stop{padding:7px 11px;border-radius:12px;background:#304754;color:#d6dde2}
+  .queue{margin-top:8px;padding:9px 11px;border-left:2px solid #d4a85a;background:#20313b;border-radius:10px;font-size:10px}
+  .queue-row{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid rgba(149,163,172,.09)}
+  .queue-row:last-child{border-bottom:0}
+  .composer{margin-top:8px;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #405461;border-radius:16px;background:#243743;font:italic 12px Georgia,serif;color:#95a3ac}
+  .send{margin-left:auto;padding:6px 9px;border-radius:10px;background:#d4a85a;color:#1d2b34;font:700 9px -apple-system,sans-serif}
+  .badge{margin-left:auto;border:1px solid rgba(212,168,90,.35);border-radius:999px;padding:3px 7px;color:#d4a85a;font:9px ui-monospace,monospace}
+  .sheet{margin-top:8px;border:1px solid #405461;border-radius:16px;background:#20313b;padding:10px}
+  .choice{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+  .choice span{padding:7px;border:1px solid #405461;border-radius:10px;text-align:center;font-size:9px}.choice .primary{border-color:#d4a85a;color:#d4a85a}
+  .meta{padding:14px 4px 3px}.meta h3{margin:0;color:#e2e7ea;font-size:15px}.meta p{margin:6px 0 0;color:#858d93;font-size:11px;line-height:1.45}
+  .rec{display:inline-block;margin-top:8px;color:#d4a85a;font:700 9px ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase}
+  @media(max-width:950px){.atlas-grid{grid-template-columns:1fr}}
+</style>
+
+<h2>Como continuar falando com o Atlas enquanto ele executa?</h2>
+<p class="subtitle">Em todas as opções, enviar adiciona automaticamente à fila. “Interromper e enviar agora” permanece uma ação explícita.</p>
+
+<div class="atlas-grid">
+  <div class="atlas-option" data-choice="a-inline-queue" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="phone-head">Nova conversa</div>
+      <div class="timeline">
+        <div class="event">Explorou 4 arquivos e 3 buscas</div>
+        <div class="event live"><span class="gold">agora</span> · Editando o dashboard</div>
+        <div class="event muted">depois · Validar idioma e métricas</div>
+      </div>
+      <div class="dock">
+        <div class="runbar"><span><span class="gold">●</span> Executando · passo 3/5</span><span class="stop">Parar</span></div>
+        <div class="queue">
+          <div class="queue-row"><span>1. Depois compare com a versão antiga</span><span>Editar</span></div>
+          <div class="queue-row"><span>2. Gere também uma prévia no iPhone</span><span>Remover</span></div>
+        </div>
+        <div class="composer"><span>Escreva a próxima mensagem…</span><span class="send">Adicionar</span></div>
+      </div>
+    </div>
+    <div class="meta"><h3>A · Fila sempre visível</h3><p>Execução, mensagens futuras e composer convivem. Permite editar, remover e reordenar sem abrir outra superfície.</p><span class="rec">Recomendado</span></div>
+  </div>
+
+  <div class="atlas-option" data-choice="b-collapsible-queue" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="phone-head">Nova conversa</div>
+      <div class="timeline">
+        <div class="event">Explorou 4 arquivos e 3 buscas</div>
+        <div class="event live"><span class="gold">agora</span> · Editando o dashboard</div>
+        <div class="event muted">depois · Validar idioma e métricas</div>
+      </div>
+      <div class="dock">
+        <div class="runbar"><span><span class="gold">●</span> Executando · passo 3/5</span><span class="stop">Parar</span></div>
+        <div class="composer"><span>Escreva a próxima mensagem…</span><span class="badge">2 na fila</span><span class="send">Adicionar</span></div>
+      </div>
+    </div>
+    <div class="meta"><h3>B · Fila recolhida</h3><p>Mais limpa, mas as mensagens ficam escondidas atrás do contador “2 na fila”. Um toque abre a lista.</p></div>
+  </div>
+
+  <div class="atlas-option" data-choice="c-send-menu" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="phone-head">Nova conversa</div>
+      <div class="timeline">
+        <div class="event">Explorou 4 arquivos e 3 buscas</div>
+        <div class="event live"><span class="gold">agora</span> · Editando o dashboard</div>
+        <div class="event muted">depois · Validar idioma e métricas</div>
+      </div>
+      <div class="dock">
+        <div class="runbar"><span><span class="gold">●</span> Executando · passo 3/5</span><span class="stop">Parar</span></div>
+        <div class="composer"><span>Inclua também o histórico…</span><span class="send">Enviar ▾</span></div>
+        <div class="sheet">
+          <div style="font-size:10px;color:#d6dde2">O Atlas ainda está executando</div>
+          <div class="choice"><span class="primary">Adicionar à fila</span><span>Interromper agora</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="meta"><h3>C · Escolha em cada envio</h3><p>Explicita as duas ações, mas adiciona fricção repetitiva e contradiz o padrão automático já escolhido.</p></div>
+  </div>
+</div>
