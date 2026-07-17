@@ -497,6 +497,11 @@ struct AtlasTurnLiveActivity: Widget {
                     if context.state.finished {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(Ink.healed).padding(.trailing, 6)
+                    } else if let badge = context.state.phaseBadge {
+                        Text(badge)
+                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Ink.alert)
+                            .padding(.trailing, 6)
                     } else if context.state.paused == true {
                         // C14: pausa do servidor congela o tempo ATIVO — a espera não conta
                         Text("‖ \(context.state.pausedDisplay ?? "—")")
@@ -520,15 +525,19 @@ struct AtlasTurnLiveActivity: Widget {
                         .foregroundStyle(context.state.atlasColor)
                 }
             } compactTrailing: {
+                // SD-2: ordem honesta — terminal → fase tipada (ATT/EXT/FAIL…)
+                // → pausa ‖ → N/M do plano → timer. Nunca inventa progresso.
                 if context.state.finished {
                     Image(systemName: "checkmark").font(.system(size: 11, weight: .bold))
                         .foregroundStyle(Ink.healed)
+                } else if let badge = context.state.phaseBadge {
+                    Text(badge)
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundStyle(Ink.alert)
                 } else if context.state.paused == true {
                     Text("‖").font(.system(size: 12, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Ink.ink2)
                 } else if let progress = context.state.progressLabel {
-                    // SD-2: compact trailing mostra N/M real quando o plano publicou
-                    // progresso — timer fica no expanded/lock.
                     Text(progress)
                         .font(.system(size: 11, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Ink.gold)
@@ -538,7 +547,11 @@ struct AtlasTurnLiveActivity: Widget {
                         .foregroundStyle(Ink.ink2).frame(width: 40)
                 }
             } minimal: {
-                if let progress = context.state.progressLabel, !context.state.finished {
+                if let badge = context.state.phaseBadge, !context.state.finished {
+                    Text(badge)
+                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .foregroundStyle(Ink.alert)
+                } else if let progress = context.state.progressLabel, !context.state.finished {
                     Text(progress)
                         .font(.system(size: 10, weight: .semibold, design: .monospaced))
                         .foregroundStyle(context.state.atlasColor)
@@ -585,10 +598,20 @@ private struct LockScreenView: View {
                             .accessibilityLabel(queued)
                     }
                 }
-                Text(context.state.phaseTitle)
-                    .font(.system(size: 13, design: .serif)).italic()
-                    .foregroundStyle(context.state.finished ? Ink.healed : context.state.atlasColor.opacity(0.88))
-                    .lineLimit(1)
+                HStack(spacing: 6) {
+                    if let badge = context.state.phaseBadge {
+                        Text(badge)
+                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Ink.alert)
+                            .padding(.horizontal, 6).padding(.vertical, 2)
+                            .background(Capsule().fill(Ink.alert.opacity(0.16)))
+                            .accessibilityLabel(context.state.phaseTitle)
+                    }
+                    Text(context.state.phaseTitle)
+                        .font(.system(size: 13, design: .serif)).italic()
+                        .foregroundStyle(context.state.finished ? Ink.healed : context.state.atlasColor.opacity(0.88))
+                        .lineLimit(1)
+                }
                 if let progress = context.state.progressLabel {
                     Text(progress)
                         .font(.system(size: 10, weight: .semibold, design: .monospaced))
@@ -645,5 +668,17 @@ private extension AtlasTurnAttributes.ContentState {
     var queueLabel: String? {
         guard let count = queuedCount, count > 0 else { return nil }
         return "fila \(count)"
+    }
+
+    /// SD-2: badge curto derivado só de `phaseTitle` canônico do Core
+    /// (`AtlasExecutionPresence`) — sem inventar kind paralelo no widget.
+    var phaseBadge: String? {
+        let p = phaseTitle.lowercased()
+        if p.contains("falhou") { return "FAIL" }
+        if p.contains("atenção") || p.contains("decisão") { return "ATT" }
+        if p.contains("sistema externo") || (p.contains("aguard") && p.contains("extern")) { return "EXT" }
+        if p.contains("reconect") { return "REC" }
+        if p.contains("replanej") { return "PLN" }
+        return nil
     }
 }
