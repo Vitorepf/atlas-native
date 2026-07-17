@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo XCVII — CICLO B Radar/Suite/Index/Empty/Lock peels + C Index header silence** · este commit · CICLO B: Radar `+Label`; Suite `+EngineCard`; Index `+Header`; Empty `+Suggestions`; Lock `+Spoken`. CICLO C: Index header textos sob spoken. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Radar 35 Suite 45 Index 43 Empty 48; find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XCVI — CICLO B Artifact/Engine/Handoff/Markdown/LiveNow peels** · este commit · CICLO B: Artifact `+Toast`; EngineIndex `+A11y`; Handoff `+Copy`; Markdown `+Parse`; LiveNow `+Clock`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Artifact 64 Engine 51 Handoff 45 Markdown 54 Timing 44; find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XCV — CICLO B Timeline/State/Area/Arena/Commit/Island peels + C Arena header silence** · este commit · CICLO B: LiveTimeline `+Surfaces`; ExecutionState `+Timers`; AreaDetail `+Header`; Arena `+Header`; CommitRow `+Label`; Island Expanded `+Center`. CICLO C: Arena header textos sob spoken. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Timeline 26 Arena 60 Commit 44 Island 25; find App >100=0; device-pending.

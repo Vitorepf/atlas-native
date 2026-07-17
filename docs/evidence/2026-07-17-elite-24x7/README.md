@@ -8,13 +8,13 @@ Blackboard: `OBRA.md` §4 Elite E0–E-D
 
 Execução **contínua e automática** por decisão do operador (plano Elite 24×7). O agente avança ondas desbloqueadas sem esperar checkpoint humano; bloqueios externos ficam registrados honestamente abaixo.
 
-Ondas **L–XCVI** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Review Fechar RM + LXX–XCVI — sem checkpoint humano entre ondas.
+Ondas **L–XCVII** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Review Fechar RM + LXX–XCVII — sem checkpoint humano entre ondas.
 
 ## Commit count (honest, this environment)
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **317+** | primeiro commit do plano: `ec931f2`; LVI–XCVI em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **318+** | primeiro commit do plano: `ec931f2`; LVI–XCVII em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
