@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **144** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 446 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 145 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **153** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 455 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 154 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -50,17 +50,20 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **XXVI** | **PARCIAL** | Artifact mount (`44bd389`) + ChangeReview file/run (`168a52e`) + Council (`41c9d21`) + LiveTimeline a11y (`717f2d0`) |
 | **XXVII** | **PARCIAL** | awaiting/failed peel `+AwaitingFailed` (`b41d880`) + Island expanded `queueLabel`/RM timer (`a45fe54`) |
 | **XXVIII** | **PARCIAL** | LiveNow hub a11y/timer (`e006511`) + CodeRadar status/rows (`81753f6`); fidelity matrix gaps refreshed |
+| **XXIX** | **PARCIAL** | Composer send-disabled honesty + Root home sections silence (`2312648`/`59494bf`) |
+| **XXX** | **PARCIAL** | Steer sheet receipt/`traceId` filter + disabled spoken (`ac2b599`) |
+| **XXXI** | **PARCIAL** | AutonomosView header/controls a11y + A11yID Home/Autonomos peel (`9e31e83`/`1571254`) |
+| **XXXII** | **PARCIAL** | ArenaView index/domain a11y + Mode/Effort/Workspace sheets (`42e51ef`/`73c6e8b`) |
 
-## Entrega recente (wave XXVII/XXVIII — HEAD)
+## Entrega recente (wave XXXII contínuo — Arena/Mode/Steer/Autonomos — HEAD)
 
-- `polish(ui)` CICLO C: cenas 04/13 awaiting/failed honesty — peel `ExecutionStateCard+AwaitingFailed` (`b41d880`).
-- `polish(ui)` CICLO C Island: expanded `queueLabel` gold + RM timer lock/Island (`a45fe54`).
-- `polish(ui)` CICLO C Session Hub: LiveNow spoken «sessão N de M» + timer honesto + RM (`e006511`).
-- `polish(ui)` CICLO C CodeRadar: status quieto/alarme + rows/sections a11y (`81753f6`).
-- `polish(ui)` CICLO C cena 07 Council: status verbatim + divergência só `councilDiverged` (`41c9d21`).
-- `polish(ui)` CICLO C cena 05 LiveTimeline: spoken orquestra/passo N/M + RM (`717f2d0`).
-- `docs`: fidelity matrix gap column refreshed (cenas 01–08/10–13 + Fleet/Island/LiveNow/Radar); este README.
-- Commit count honesto pré-docs: `git rev-list --count ec931f2..HEAD` = **144**.
+- `polish(ui)` CICLO C Mode/Workspace: `ModeSheet` rótulo local honesto; `EffortSheet` opções reais; `WorkspaceSheet` sem «· main» fabricado; peels `ComposerSheets+A11y`/`+EffortSheet`/`+AttachmentsSheet` (`73c6e8b`).
+- `polish(ui)` CICLO C Arena: índice silencia sem engines; domain unavailable spoken; peel `AtlasArenaView+A11y` (`42e51ef`).
+- `polish(ui)` CICLO B: A11yID peel `+Home`/`+Autonomos` — shell `A11yID` 39≤100 (`1571254`).
+- `polish(ui)` CICLO C Autônomos: masthead silencia healthy; controles disabled spoken; peels `AutonomosView+A11y` (`9e31e83`).
+- `polish(ui)` CICLO C Steer: recibo só `lastSteerReceipt`+`traceId`; peels `SteerInteractionSheet+A11y`/`+Receipt` (`ac2b599`).
+- `polish(ui)` CICLO C home/composer: Root sections silence + Composer send-disabled honesty (`59494bf`/`2312648`).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **153** (inclui este pin).
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ### Top 10 (App/Core/Widgets — all ≤100)
