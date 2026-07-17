@@ -41,7 +41,7 @@ struct ArenaIndexSection: View {
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: composite.engines.map(\.id))
     }
 
-    private var chartEngine: AtlasArenaCompositeEngine? {
+    var chartEngine: AtlasArenaCompositeEngine? {
         composite.engines.first { engine in
             engine.history.contains { point in
                 point.composite != nil || point.withAtlas != nil || point.withoutAtlas != nil
@@ -49,7 +49,7 @@ struct ArenaIndexSection: View {
         }
     }
 
-    private var coverageCaption: String {
+    var coverageCaption: String {
         let base = "cobertura \(composite.suitesMeasured)/\(composite.suitesTotal)"
         guard composite.suitesMeasured < composite.suitesTotal else { return base }
         return "\(base) · parcial"
@@ -62,7 +62,7 @@ struct ArenaIndexSection: View {
                     .font(.system(.caption, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityHidden(true)
                 Text(coverageCaption)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
@@ -76,24 +76,5 @@ struct ArenaIndexSection: View {
                     .accessibilityHidden(true)
             }
         }
-    }
-
-    private var sectionSpokenLabel: String {
-        var parts = ["índice composto, \(composite.engines.count) motores", coverageCaption]
-        if !composite.weightsPublic.isEmpty {
-            parts.append("\(composite.weightsPublic.count) pesos públicos")
-        }
-        if chartEngine != nil, let engine = chartEngine {
-            let chartSpoken = ArenaCompositeChartA11y.spokenChart(engine)
-            if !chartSpoken.isEmpty { parts.append(chartSpoken) }
-        }
-        return parts.joined(separator: ", ")
-    }
-
-    private func engineRowSpoken(_ engine: AtlasArenaCompositeEngine) -> String {
-        let delta = engine.delta.map { ", variação \(ArenaFormat.signed($0))" } ?? ""
-        let partial = engine.isPartialCoverage
-            ? ", cobertura parcial \(Int((engine.coverage * 100).rounded())) por cento" : ""
-        return "\(engine.engine), composto \(ArenaFormat.score(engine.composite))\(delta)\(partial)"
     }
 }

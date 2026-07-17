@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXXXIV — CICLO B ArenaIndex/Editorial/Execution peels + C silence** · este commit · CICLO B: ArenaIndex `+A11y`; EditorialTurnChrome → Signature/Feedback; ExecutionStateCard `+Meta` (67). CICLO C: índice header decorativo. Zero >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Index 80 Exec 67; find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXXIII — CICLO B DraftThumb + Reconnect peels** · este commit · CICLO B: DraftThumb → `+Cache`/`+Chrome` (54); Reconnect → `+Bubble` (43). Zero >100 App. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Draft 54 Reconnect 43; find App >100 = 0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXXII — CICLO B CloseToolbar + C Outline/Mode/Effort/Nightly** · este commit · CICLO B: `AtlasCloseToolbarButton` — Fechar/Cancelar canônicos (9 call sites). CICLO C: Outline row textos decorativos; Mode/Effort footnote silence; Nightly mute ForEach. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `rg Button\("Fechar"\) App/Atlas`=0; Nightly 78 Close 30; device-pending.

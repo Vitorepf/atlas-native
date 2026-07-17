@@ -3,7 +3,7 @@ import AtlasCore
 
 /// Cena operacional do Fable 5: o estado chega pronto do ledger e só então a
 /// conversa oferece uma ação. Não há botão, prazo ou risco criado pela casca.
-/// Ações → ExecutionStateCard+ActionButtons; prova → ExecutionProof.swift.
+/// Meta → +Meta · ações → +ActionButtons · prova → ExecutionProof.
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: JobID?
@@ -51,39 +51,7 @@ struct ExecutionStateCard: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityHidden(true)
             }
-            if let kicker = leaveScreenKicker {
-                Text(kicker)
-                    .font(.system(.caption, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityHidden(true)
-            }
-            if let checkpoint = state.checkpoint {
-                Text("checkpoint · \(checkpoint)")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1)
-                    .accessibilityHidden(true)
-            }
-            if let frozen = frozenTimerText {
-                Text(frozen)
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .monospacedDigit()
-                    .accessibilityHidden(true)
-            } else if let active = recoveringTimerText {
-                Text(active)
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .monospacedDigit()
-                    .accessibilityHidden(true)
-            }
-            if let deadline = publishedExternalDeadline {
-                Text("Próxima mudança: \(deadline)")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1)
-                    .accessibilityHidden(true)
-            }
+            metaLines
             actionButtons
         }
         .padding(14)
