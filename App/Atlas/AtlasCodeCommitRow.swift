@@ -33,18 +33,20 @@ struct AtlasCodeCommitRow: View {
                         .foregroundStyle(state == .violating ? color : AtlasTheme.textPrimary)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
+                        .accessibilityHidden(true)
                     HStack(spacing: 6) {
                         Text(node.authorName.isEmpty ? node.authorEmail : node.authorName)
+                            .accessibilityHidden(true)
                         Text("·")
+                            .accessibilityHidden(true)
                         Text(AtlasCodeRelativeTime.short(from: node.authoredAt))
+                            .accessibilityHidden(true)
                         if let ruleId {
                             Text("·")
-                            // A lei em português. `worktree_allowlist` é nome de
-                            // máquina e não sobe à tela em que o operador decide
-                            // se apaga trabalho — o tradutor já existia, e só o
-                            // grafo continuava falando snake_case.
+                                .accessibilityHidden(true)
                             Text(AtlasCodeIssue.law(ruleId, trunk: trunk))
                                 .foregroundStyle(color)
+                                .accessibilityHidden(true)
                         }
                     }
                     .font(AtlasFont.mono(9))
@@ -58,16 +60,22 @@ struct AtlasCodeCommitRow: View {
         .buttonStyle(.plain)
         .opacity(isDimmed ? 0.26 : 1)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.28), value: isDimmed)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            AtlasCodeGraphA11y.spokenCommitRow(
+            AtlasCodeCommitRowA11y.spokenCommitRow(
                 node: node, state: state, trunk: trunk, ruleId: ruleId, isDimmed: isDimmed
             )
         )
-        .accessibilityHint(isDimmed ? "" : "abre proveniência do commit")
+        .accessibilityHint(commitAccessibilityHint)
         .accessibilityIdentifier(A11yID.codeCommit(hashPrefix: String(node.hash.prefix(8))))
         .onLongPressGesture(minimumDuration: 0.45) {
             onLongPress?()
         }
+    }
+
+    private var commitAccessibilityHint: String {
+        guard !isDimmed else { return "" }
+        if onLongPress != nil { return "abre proveniência do commit; pressione e segure para opções" }
+        return "abre proveniência do commit"
     }
 }
