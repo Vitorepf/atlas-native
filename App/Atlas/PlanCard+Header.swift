@@ -10,6 +10,7 @@ extension PlanCard {
             Text(plan.title)
                 .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(plan.title)
             Spacer(minLength: 0)
             // C10 / cena 02: N/M só com checkpoint real — nunca 0/M fabricado.
             if let progress = bubble.executionProgress {
@@ -38,6 +39,7 @@ extension PlanCard {
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .monospacedDigit()
+                .accessibilityHidden(true)
             Spacer(minLength: 0)
             Text(progress.isTerminal ? "terminal" : "em curso")
                 .font(AtlasFont.mono(9))

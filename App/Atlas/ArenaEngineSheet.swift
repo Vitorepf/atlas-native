@@ -36,6 +36,8 @@ struct ArenaEngineSheet: View {
             }
         }
         .accessibilityIdentifier(A11yID.arenaEngineSheet)
+        .accessibilityLabel(ArenaEngineSheetA11y.spokenSheet(engine, capabilities: capabilities))
+        .accessibilityHint(ArenaEngineSheetA11y.sheetHint)
     }
 
     private var engineSummary: some View {
@@ -45,18 +47,23 @@ struct ArenaEngineSheet: View {
                     .font(.system(.caption, weight: .semibold))
                     .tracking(1.2)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
                 Spacer()
                 Text(ArenaFormat.score(engine.composite))
                     .font(AtlasFont.mono(20))
                     .foregroundStyle(engine.composite == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
+                    .accessibilityHidden(true)
             }
             HStack(spacing: 10) {
                 Text("c/Atlas \(ArenaFormat.score(engine.withAtlasComposite))")
                     .foregroundStyle(AtlasTheme.accent)
+                    .accessibilityHidden(true)
                 Text("sem \(ArenaFormat.score(engine.withoutAtlasComposite))")
                     .foregroundStyle(AtlasTheme.textSecondary)
+                    .accessibilityHidden(true)
                 Text(ArenaFormat.multiplier(engine.atlasMultiplier))
                     .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityHidden(true)
             }
             .font(AtlasFont.mono(11))
             if !engine.history.isEmpty {
@@ -74,7 +81,7 @@ struct ArenaEngineSheet: View {
         }
         .padding(16)
         .atlasCard()
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(ArenaEngineSheetA11y.spokenSummary(engine))
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: engine.history.count)
     }

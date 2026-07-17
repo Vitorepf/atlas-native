@@ -33,4 +33,15 @@ enum ArenaEngineSheetA11y {
 
     static let closeLabel = "fechar detalhes do motor"
     static let closeHint = "volta para a Arena"
+
+    static func spokenSheet(
+        _ engine: AtlasArenaCompositeEngine,
+        capabilities: AtlasArenaCapabilities?
+    ) -> String {
+        var parts = ["motor \(engine.engine)", spokenSummary(engine)]
+        parts.append(spokenCapabilities(capabilities))
+        return parts.joined(separator: ", ")
+    }
+
+    static let sheetHint = "composto e capacidades só com valores publicados pelo servidor"
 }
