@@ -16,13 +16,17 @@ struct AtlasCodeHealReceiptSheet: View {
                 HStack(spacing: 7) {
                     Image(systemName: hasCompletedHeal ? "checkmark" : "exclamationmark.triangle")
                         .font(.system(size: 10, weight: .bold))
+                        .accessibilityHidden(true)
                     Text(hasCompletedHeal
                          ? "CURADO SOZINHO · \(heal.mode.uppercased())"
                          : "CURA · \(heal.mode.uppercased())")
                         .font(.system(size: 9, weight: .bold))
                         .tracking(1.2)
+                        .accessibilityHidden(true)
                 }
                 .foregroundStyle(hasCompletedHeal ? AtlasCodePalette.healed : AtlasTheme.textTertiary)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(spokenMastheadLabel())
 
                 if hasCompletedHeal {
                     Text("você não foi necessário")
@@ -57,11 +61,13 @@ struct AtlasCodeHealReceiptSheet: View {
                 }
                 if canUndo {
                     Button {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                         onUndo()
                         dismiss()
                     } label: {
                         HStack(spacing: 7) {
                             Image(systemName: "arrow.uturn.backward")
+                                .accessibilityHidden(true)
                             Text("Desfazer — com recibo")
                         }
                         .font(.system(size: 14, weight: .medium))
@@ -70,6 +76,7 @@ struct AtlasCodeHealReceiptSheet: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .atlasCard(cornerRadius: 13)
                     }
+                    .buttonStyle(PressableScale())
                     .transition(reduceMotion ? .identity : .opacity)
                     .accessibilityIdentifier(A11yID.codeHealUndo)
                     .accessibilityLabel(spokenUndoButtonLabel())

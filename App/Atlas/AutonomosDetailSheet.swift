@@ -54,8 +54,12 @@ struct AutonomosPublicDetailSheet: View {
             .navigationTitle(kind.title)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Fechar") { dismiss() }
+                    Button("Fechar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
                         .accessibilityLabel(spokenCloseLabel())
+                        .accessibilityHint("fecha a projeção pública")
                         .accessibilityIdentifier(A11yID.autonomosDetailClose)
                 }
             }

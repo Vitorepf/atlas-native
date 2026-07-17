@@ -71,10 +71,16 @@ struct SteerInteractionSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") { dismiss() }
+                    Button("Cancelar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
+                    .accessibilityLabel("cancelar redirecionamento")
+                    .accessibilityHint("fecha sem enviar instrução")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Enviar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                         onSubmit(instruction, scope)
                     }
                     .disabled(!canSubmit)
