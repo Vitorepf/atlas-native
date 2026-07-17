@@ -7,9 +7,9 @@ Plano: `docs/plano-elite-agentica-24x7.md` · design: `docs/superpowers/specs/20
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits no tip (`git rev-list --count HEAD`) | **343** (era 338 no início desta entrega UI) | inclui histórico completo do repo; peels Core concorrentes incluídos |
-| Commits à frente de `origin/main` | **42** (era 37) | trabalho Elite + peels nesta branch |
-| `polish(ui)` / `feat(ui)` nesta branch | **21** (era 20) | casca Fable / Grok — SHA UI `a037aa7` |
+| Commits no tip (`git rev-list --count HEAD`) | ver `git rev-list --count HEAD` no tip | peels Core concorrentes podem avançar em paralelo |
+| Commits à frente de `origin/main` | ver `git rev-list --count origin/main..HEAD` | trabalho Elite + peels nesta branch |
+| `polish(ui)` / `feat(ui)` nesta branch | +1 Arena/Radar silence | casca Fable / Grok |
 
 Contagens capturadas no cloud agent Linux em 2026-07-17; revalidar com `git rev-list` no Mac se a branch avançar.
 
@@ -17,6 +17,7 @@ Contagens capturadas no cloud agent Linux em 2026-07-17; revalidar com `git rev-
 
 - `polish(ui)` SearchView: A11yID (`search-*`), query vazia → recentes + caption `RECENTES`, empty honesto sem recentes, Reduce Motion nas animações de lista; Dynamic Type via `AtlasFont`/`relativeTo` + `.system(.callout/.caption/.footnote)`.
 - `polish(ui)` WorkspaceView + peel `WorkspaceEmptyStates`: empty editorial engrossado; offline/failed distingue `AtlasFailureCopy` + retry; loading shell; A11yID (`workspace-*`); Reduce Motion no filtro de área / lista.
+- `polish(ui)` Arena/Code honest empty+silence: Arena 404→domínio copy / rede→`AtlasFailureCopy`; CodeRadar clean→caption quieta; hub badge só com exceção.
 
 ## BLOCKED (honesto — não inventar verde)
 

@@ -7,41 +7,44 @@ import SwiftUI
 struct AtlasCodeRadarStatusCapsule: View {
     let model: AtlasCodeWorkspaceModel
 
-    private var tone: Color {
-        switch model.scanState {
-        case .violating: return AtlasCodePalette.alert
-        case .clean: return AtlasCodePalette.healed
-        case .unknown: return AtlasTheme.textTertiary
-        }
-    }
-
-    private var simbolo: String {
-        switch model.scanState {
-        case .violating: return "exclamationmark.triangle"
-        case .clean: return "checkmark"
-        case .unknown: return "questionmark"
-        }
-    }
-
     var body: some View {
-        // Três estados, como no grafo: verde é AFIRMAÇÃO sobre a frota e só sai
-        // quando a conta fecha. "lendo o workspace…" com ✓ verde ao lado eram
-        // dois estados contraditórios ao mesmo tempo, nenhum deles verdadeiro.
+        // Silêncio = produto: saudável (sem violações) → caption quieta, sem
+        // chrome de alarme/afirmação verde. Barulho só com exceção real.
+        Group {
+            switch model.scanState {
+            case .clean, .unknown:
+                silentCaption
+            case .violating:
+                alarmCapsule
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
+        .accessibilityLabel(model.headline)
+        .accessibilityIdentifier(A11yID.radarStatus)
+    }
+
+    /// Caption baixa — mesmo padrão da frota («frota» / «fila») sem incidente.
+    private var silentCaption: some View {
+        Text(model.scanState == .clean ? "código" : model.headline)
+            .font(.system(size: 11, weight: .semibold))
+            .tracking(1.2)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .padding(.vertical, 7)
+    }
+
+    private var alarmCapsule: some View {
         HStack(spacing: 7) {
-            Image(systemName: simbolo)
+            Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 10, weight: .semibold))
             Text(model.headline)
                 .font(.system(size: 11, weight: .semibold))
                 .monospacedDigit()
         }
-        .foregroundStyle(tone)
+        .foregroundStyle(AtlasCodePalette.alert)
         .padding(.horizontal, 15)
         .padding(.vertical, 7)
-        .background(Capsule().fill(tone.opacity(0.09)))
-        .overlay(Capsule().strokeBorder(tone.opacity(0.35), lineWidth: 1))
-        .frame(maxWidth: .infinity, alignment: .center)
-        .accessibilityLabel(model.headline)
-        .accessibilityIdentifier(A11yID.radarStatus)
+        .background(Capsule().fill(AtlasCodePalette.alert.opacity(0.09)))
+        .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.35), lineWidth: 1))
     }
 }
 

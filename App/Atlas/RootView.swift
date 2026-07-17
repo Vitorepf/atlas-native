@@ -144,8 +144,8 @@ struct RootView: View {
                 .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
             // A ponte para o Atlas Código mora aqui: equilibra a barra (2 à
             // esquerda, 2 à direita) e é a única porta do domínio — o hub
-            // não repete a área. O ponto vermelho preserva a exceção: sem
-            // ele, uma violação real ficaria invisível no repouso.
+            // não repete a área. Silêncio quando saudável: badge SÓ com
+            // exceção real (nunca ponto verde/afirmação sem varredura).
             CircleButton(icon: "point.3.connected.trianglepath.dotted",
                          badge: codeHub?.exception != nil) { path.append(Route.code) }
                 .accessibilityLabel(codeHub?.exception == nil

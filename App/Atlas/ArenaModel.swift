@@ -14,9 +14,16 @@ final class ArenaModel {
     var liveRuns: AtlasArenaLiveRuns?
     var lastStartReceipt: AtlasArenaStartReceipt?
     var controlError: String?
+    /// Tipo de falha de rede (espelha ConversationModel) — casca usa AtlasFailureCopy.
+    private(set) var loadFailureKind: AtlasNetworkFailureKind?
+    /// 404 / domínio arena ausente — copy própria, não inventa scores.
+    private(set) var isDomainUnavailable = false
     private(set) var lastLoadedAt: Date?
     private var visible = false
     private var livePollingTask: Task<Void, Never>?
+
+    /// Copy canónica quando o servidor ainda não publica medição (spec §E).
+    static let domainUnavailableCopy = "medição ainda não publicada pelo servidor"
 
     init(client: AtlasClient) {
         self.client = client
@@ -49,6 +56,8 @@ final class ArenaModel {
     func load() async {
         phase = .loading
         controlError = nil
+        loadFailureKind = nil
+        isDomainUnavailable = false
         do {
             async let compositeRequest = client.getArenaComposite()
             async let scoreboardRequest = client.getArenaScoreboard()
@@ -63,6 +72,9 @@ final class ArenaModel {
             phase = .loaded
             updateLivePolling()
         } catch {
+            let domainMissing = Self.isDomainUnavailableError(error)
+            isDomainUnavailable = domainMissing
+            loadFailureKind = domainMissing ? nil : atlasNetworkFailureKind(for: error)
             phase = .failed(Self.publicMessage(error))
         }
     }
@@ -131,11 +143,15 @@ final class ArenaModel {
     }
 
     static func publicMessage(_ error: Error) -> String {
-        if let api = error as? AtlasApiError, api.status == 404 {
-            return "medição ainda não publicada pelo servidor"
+        if isDomainUnavailableError(error) {
+            return domainUnavailableCopy
         }
         if let api = error as? AtlasApiError { return api.message }
         return "não foi possível carregar a Arena"
+    }
+
+    static func isDomainUnavailableError(_ error: Error) -> Bool {
+        (error as? AtlasApiError)?.status == 404
     }
 }
 
