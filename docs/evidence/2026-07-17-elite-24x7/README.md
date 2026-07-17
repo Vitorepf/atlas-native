@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **559** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLII tip `0287131` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **561** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLIII tip `e0b6927` |
 | Commits no tip (`git rev-list --count HEAD`) | 554 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 242 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLII (este tip)
+## Entrega Elite CXXXXXLXLIII (este tip)
+
+- `polish(ui)` CICLO B: LiveNowRow TimingLine Stack `+Word/+Segments`; LiveNowSection Chrome Shell `+Body/+CardChrome`; CodeCommitRow Spine Column `+Connectors/+Frame`; AttachmentStripUpload ProgressStack `+Row/+A11y`; Receipt RowStack `+Leading/+Layout`; ArenaEngine ScrollBody `+Content`; ArenaIndex Content `+Stack`; RootChrome WorkspaceRow Content `+HBox`; ArenaCapabilities MeasuredBody `+Stack`; Digest LastChips `+HStack`; Provenance Failed Stack `+Body/+A11y`; CodeGraph Filters `+Section`; ExecutionState Spoken `+Summary` Detail `+Reason/+Meta` Timing `+Timer/+Deadline`; ComposerSheets WorkspaceRows `+RowBuild`; Widgets LiveSession Timer `+Branch/+Style` SnapshotGate `+Install` A11ySpoken `+Stale` LockCircular Gauge `+Symbol` Fleet Header StaleLine `+Style`. Tip `e0b6927`.
+- 24 peels · 51 arquivos · over100=0 · App/Atlas+Widgets swift=2290; App/Widgets swift=169; zero Route nova.
+
+## Entrega Elite CXXXXXLXLII (anterior)
 
 - `polish(ui)` CICLO B: ChangeReview Reject `+Button` Buttons `+AcceptButton`; LiveNowRow Content `+RowStack` TimingLine `+Stack`; Receipt `+RowStack` Seals `+TimelineGate`; SelfConstruction Body `+Title`; PlanCard RevisionList Items `+Bullet`; ArenaCapabilities MeasuredBody `+CardChrome`; CodeCommitRow Spine `+Column`; LiveNowSection RowCell `+Build` Chrome `+Shell`; FleetSection Row `+CardChrome`; AttachmentStripUpload `+ProgressStack`; Workspace ThreadRows `+Separator`; Digest LastChips `+Motion`; Provenance Failed `+Stack`; ExecutionState AwaitingFailed Spoken `+Detail/+Timing`; ComposerSheets WorkspaceRows `+Pick`; Markdown CodeBlock `+Shell`; Widgets LockCircular `+Gauge` Fleet Header `+StaleLine` Island LeadingSymbol `+Multi/+Single` LiveSession Bodies `+TimerRow` LiveSession `+SnapshotGate`. Tip `0287131`.
 - 27 peels · 52 arquivos · over100=0 · App/Atlas+Widgets swift=2260; App/Widgets swift=163; zero Route nova.
