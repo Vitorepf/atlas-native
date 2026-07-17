@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Status → ArenaRunSheet+Status.swift
+// Body → ArenaRunSheet+Body.swift
 struct ArenaRunSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -14,20 +15,7 @@ struct ArenaRunSheet: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    formSections
-                    statusBlocks
-                    submitButton
-                }
-                .padding(AtlasTheme.Space.screen)
-                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.lastStartReceipt?.receiptHash)
-                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.controlError)
-            }
-            .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Rodar medição")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { runToolbar }
+            runScrollBody
         }
         .onAppear { seedDefaultsIfNeeded() }
         .accessibilityIdentifier(A11yID.arenaRunSheet)

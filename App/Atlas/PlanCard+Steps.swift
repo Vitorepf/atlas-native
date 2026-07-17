@@ -3,6 +3,7 @@ import AtlasCore
 
 // Steps list — peel de PlanCard.
 // Detail chips → PlanCard+DetailChips.swift
+// State → PlanCard+StepState.swift
 
 extension PlanCard {
     enum StepState { case done, current, pending }
@@ -24,13 +25,5 @@ extension PlanCard {
             }
         }
         .accessibilityIdentifier(A11yID.planSteps)
-    }
-
-    func stepState(_ idx: Int) -> StepState {
-        guard let c = currentIndex else { return .pending }
-        if isTerminal { return .done }
-        if idx + 1 < c { return .done }
-        if idx + 1 == c { return .current }
-        return .pending
     }
 }

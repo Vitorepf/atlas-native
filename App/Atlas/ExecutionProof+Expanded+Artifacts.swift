@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Artefatos — peel de ExecutionProof+Expanded+Blocks.
+/// Label → ExecutionProof+Expanded+ArtifactsLabel.swift
 
 extension ExecutionProof {
     @ViewBuilder
@@ -11,22 +12,7 @@ extension ExecutionProof {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onOpenArtifacts(traceId)
             } label: {
-                HStack(spacing: 6) {
-                    Text("⎘")
-                        .font(AtlasFont.mono(12))
-                        .foregroundStyle(AtlasTheme.accent.opacity(0.8))
-                        .frame(width: 15)
-                        .accessibilityHidden(true)
-                    Text("ARTEFATOS (\(artifactItems.count))")
-                        .font(AtlasFont.mono(12))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityHidden(true)
-                }
-                .contentShape(Rectangle())
+                artifactsButtonLabel(count: artifactItems.count)
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier(A11yID.artifactsRow)

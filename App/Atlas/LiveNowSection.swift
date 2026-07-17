@@ -5,6 +5,7 @@ import AtlasCore
 /// processo. Sem sessões a seção não existe (lei V1: estado por exceção).
 /// Com 2+ sessões vira Session Hub na home (zero Route nova).
 /// Merge → +Merge · spoken → +A11y · Header → +Header · Rows → +Rows
+/// Chrome → LiveNowSection+Chrome.swift
 struct LiveNowSection: View {
     let localSessions: [LiveSessionSnapshot]
     let remoteSessions: [LiveSessionSnapshot]
@@ -19,18 +20,6 @@ struct LiveNowSection: View {
     var remoteCount: Int { sessions.filter(\.isRemote).count }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: isHub ? 0 : 12) {
-            header
-            liveNowRows
-        }
-        .padding(14)
-        .atlasCard()
-        .padding(.horizontal, AtlasTheme.Space.screen)
-        .padding(.bottom, 18)
-        .accessibilityIdentifier(A11yID.liveNowSection)
-        .accessibilityLabel(Self.spokenSectionLabel(
-            isHub: isHub, count: sessions.count, remoteCount: remoteCount
-        ))
-        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: sessions.map(\.id))
+        liveNowChrome
     }
 }
