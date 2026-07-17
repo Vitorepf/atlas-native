@@ -1,8 +1,9 @@
 import Foundation
 import AtlasCore
 
-/// Control receipt / error spoken — peel de AutonomosLoadedSection+A11y.
+/// Control receipt spoken — peel de AutonomosLoadedSection+A11y.
 /// Action → AutonomosLoadedSection+A11yControlAction.swift
+/// Error → AutonomosLoadedSection+A11yControlError.swift
 
 enum AutonomosLoadedSectionA11yControl {
     static func spokenControlReceipt(_ receipt: AtlasAutonomosRunControlResponse) -> String {
@@ -16,6 +17,6 @@ enum AutonomosLoadedSectionA11yControl {
     }
 
     static func spokenControlError(_ message: String) -> String {
-        "erro de controle, \(message)"
+        AutonomosLoadedSectionA11yControlError.spokenControlError(message)
     }
 }
