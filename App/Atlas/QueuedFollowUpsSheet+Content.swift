@@ -1,24 +1,14 @@
 import SwiftUI
 
 // Conteúdo da fila — peel de QueuedFollowUpsSheet.
+// Caption → QueuedFollowUpsSheet+Caption.swift
 
 extension QueuedFollowUpsSheet {
     var sheetContent: some View {
         let messages = model.queuedMessages
         let total = messages.count
         return SheetShell(title: sheetTitle(count: total)) {
-            if total > 1 {
-                Text("ordem da fila · a cabeça envia quando o turno terminar")
-                    .font(.system(size: 12))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 10)
-                    .accessibilityAddTraits(.isHeader)
-                    .accessibilityLabel(
-                        "fila ordenada; a primeira mensagem envia quando o turno atual terminar"
-                    )
-            }
+            queueOrderCaption(total: total)
             ForEach(Array(messages.enumerated()), id: \.element.id) { index, message in
                 QueuedFollowUpRow(
                     message: message,
@@ -31,15 +21,5 @@ extension QueuedFollowUpsSheet {
             }
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: messages.map(\.id))
         }
-    }
-
-    func sheetTitle(count: Int) -> String {
-        count == 1 ? "Fila · 1" : "Fila · \(count)"
-    }
-
-    func spokenQueueSheetLabel() -> String {
-        let n = model.queuedMessages.count
-        if n == 0 { return "fila vazia" }
-        return n == 1 ? "fila, 1 mensagem" : "fila, \(n) mensagens"
     }
 }

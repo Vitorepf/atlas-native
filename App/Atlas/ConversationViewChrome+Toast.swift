@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 // Toast + handoff — peel de ConversationViewChrome.
+// Edit/copy → ConversationViewChrome+EditCopy.swift
 
 extension ConversationView {
     @ViewBuilder var toast: some View {
@@ -27,19 +28,5 @@ extension ConversationView {
         if let handoff = model.latestSurfaceHandoff {
             ConversationHandoffReceipt(handoff: handoff)
         }
-    }
-
-    func editAndResend(_ bubble: ChatBubble) {
-        guard bubble.role == "user" else { return }
-        model.updateDraft(bubble.text)
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        focused = true
-        setToast("mensagem no composer para novo turno")
-    }
-
-    func copy(_ text: String, label: String) {
-        UIPasteboard.general.string = text
-        AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
-        setToast("\(label) copiada")
     }
 }
