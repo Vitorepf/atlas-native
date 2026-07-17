@@ -4,6 +4,7 @@ import AtlasCore
 
 /// Derivações visuais do lock screen — peel de `AtlasTurnLockScreen`.
 /// Badge → AtlasTurnLockScreen+Badge.swift
+/// Labels → AtlasTurnLockScreen+StateLabels.swift
 extension AtlasTurnAttributes.ContentState {
     var atlasColor: Color {
         if phaseTitle.localizedCaseInsensitiveContains("falhou") { return Ink.alert }
@@ -25,15 +26,5 @@ extension AtlasTurnAttributes.ContentState {
         }
         if paused == true { return "‖" }
         return "✦"
-    }
-
-    var progressLabel: String? {
-        guard let current = progressCurrent, let total = progressTotal, total > 0 else { return nil }
-        return "\(min(max(current, 0), total))/\(total)"
-    }
-
-    var queueLabel: String? {
-        guard let count = queuedCount, count > 0 else { return nil }
-        return "fila \(count)"
     }
 }

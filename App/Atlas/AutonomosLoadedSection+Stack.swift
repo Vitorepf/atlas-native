@@ -3,6 +3,7 @@ import AtlasCore
 
 // LazyVStack do corpo Autônomos — peel de AutonomosLoadedSection (régua ≤100).
 // Head → +StackHead.swift · Tail → +StackTail.swift
+// Area → AutonomosLoadedSection+StackArea.swift
 
 extension AutonomosLoadedSection {
     @ViewBuilder
@@ -20,17 +21,7 @@ extension AutonomosLoadedSection {
             ) { id in
                 Task { await model.selectArea(id) }
             }
-            if let area = model.selectedArea {
-                AutonomosAreaDetailSection(
-                    area: area,
-                    model: model,
-                    control: $control,
-                    startRunMode: $startRunMode,
-                    showTransferSheet: $showTransferSheet,
-                    onOpenDetail: { detailSheet = $0 },
-                    onSelfConstructionReceipt: { selfConstructionReceipt = $0 }
-                )
-            }
+            loadedAreaDetail
             loadedStackTail
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 10).padding(.bottom, 32)

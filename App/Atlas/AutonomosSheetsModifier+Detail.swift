@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Transfer + detail + self-construction sheets — peel de AutonomosSheetsModifier.
+// Self → AutonomosSheetsModifier+SelfConstruction.swift
 
 extension AutonomosSheetsModifier {
     @ViewBuilder
@@ -20,21 +21,7 @@ extension AutonomosSheetsModifier {
                 AutonomosPublicDetailSheet(kind: sheet, backlog: model.backlog)
             }
             .sheet(item: $selfConstructionReceipt) { receipt in
-                SelfConstructionReceiptSheet(
-                    receipt: receipt,
-                    canRevert: canRevert(receipt),
-                    revertReceipt: revertReceipt(receipt)
-                ) { actor, reason in
-                    Task {
-                        await model.revertCycle(
-                            cycle: String(receipt.cycle.cycleIndex),
-                            operatorActor: actor,
-                            reason: reason
-                        )
-                    }
-                }
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
+                selfConstructionSheet(receipt: receipt)
             }
     }
 }
