@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Submit — peel de ArenaRunSheet (régua ≤100).
 /// Defaults → ArenaRunSheet+Defaults.swift
+/// Label → ArenaRunSheet+Submit+Label.swift
 
 extension ArenaRunSheet {
     var submitButton: some View {
@@ -10,12 +11,7 @@ extension ArenaRunSheet {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task { await model.startRuns(input: input) }
         } label: {
-            Text("Rodar medição")
-                .font(.system(.body, weight: .semibold))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
-                .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+            submitButtonLabel
         }
         .buttonStyle(PressableScale())
         .foregroundStyle(input.isLocallyValidForSubmission ? AtlasTheme.accent : AtlasTheme.textTertiary)

@@ -2,16 +2,13 @@ import SwiftUI
 import AtlasCore
 
 // Suite sheet scroll body — peel de ArenaSuiteSheet.
+// Title → ArenaSuiteSheet+Body+TitleHeader.swift
 
 extension ArenaSuiteSheet {
     var suiteScrollBody: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text(suite.suite.uppercased())
-                    .font(AtlasFont.mono(18))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityAddTraits(.isHeader)
-                    .accessibilityLabel(ArenaSuiteSheetA11y.spokenSuiteTitle(suite.suite))
+                suiteBodyTitle
                 ForEach(suite.engines) { engine in
                     engineCard(engine)
                 }

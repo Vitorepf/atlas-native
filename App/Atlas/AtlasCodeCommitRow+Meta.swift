@@ -3,16 +3,12 @@ import AtlasCore
 
 // Meta author/time/law — peel de AtlasCodeCommitRow+Label.
 // Hint → AtlasCodeCommitRow+Hint.swift
+// Author/time → AtlasCodeCommitRow+Meta+AuthorTime.swift
 
 extension AtlasCodeCommitRow {
     var commitMetaLine: some View {
         HStack(spacing: 6) {
-            Text(node.authorName.isEmpty ? node.authorEmail : node.authorName)
-                .accessibilityHidden(true)
-            Text("·")
-                .accessibilityHidden(true)
-            Text(AtlasCodeRelativeTime.short(from: node.authoredAt))
-                .accessibilityHidden(true)
+            commitMetaAuthorTime
             if let ruleId {
                 Text("·")
                     .accessibilityHidden(true)

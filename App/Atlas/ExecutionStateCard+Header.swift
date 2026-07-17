@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Header title row — peel de ExecutionStateCard.
+// Badge → ExecutionStateCard+Header+Badge.swift
 
 extension ExecutionStateCard {
     var stateHeader: some View {
@@ -15,12 +16,7 @@ extension ExecutionStateCard {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
-            if let badge = kindBadge {
-                Text(badge)
-                    .font(AtlasFont.mono(10)).tracking(0.8)
-                    .foregroundStyle(tint)
-                    .accessibilityHidden(true)
-            }
+            stateHeaderBadge
         }
     }
 }

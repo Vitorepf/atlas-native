@@ -1,22 +1,12 @@
 import SwiftUI
 
 // Mount header counter — peel de ArtifactSheet+MountHeader.
+// Progress text → ArtifactSheet+MountCounter+ProgressText.swift
 
 extension ArtifactSheet {
     var mountHeaderCounter: some View {
         HStack(spacing: 8) {
-            Text("MONTAGEM")
-                .font(AtlasFont.mono(10)).tracking(1.0)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Text("·")
-                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Text("\(min(mountRevealed, deliveryChecks.count))/\(deliveryChecks.count)")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.accent)
-                .modifier(NumericTextTransition(enabled: !reduceMotion))
-                .accessibilityHidden(true)
+            mountCounterText
             if !mountComplete {
                 BreathingDiamond(size: 8, reduceMotion: reduceMotion)
                     .accessibilityHidden(true)

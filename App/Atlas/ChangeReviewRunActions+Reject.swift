@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Botão Rejeitar — peel de ChangeReviewRunActions+Buttons.
+// Label → ChangeReviewRunActions+Reject+Label.swift
 
 extension ChangeReviewRunActions {
     @ViewBuilder
@@ -12,11 +13,7 @@ extension ChangeReviewRunActions {
                 applying = true
                 Task { await reviews.applyChangeReview(traceId: traceId, action: .reject); applying = false }
             } label: {
-                Text("Rejeitar")
-                    .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.domOperacional)
-                    .padding(.horizontal, 18).padding(.vertical, 10)
-                    .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
-                    .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
+                rejectButtonLabel
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel("rejeitar revisão inteira")

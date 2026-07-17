@@ -2,26 +2,18 @@ import AtlasCore
 import SwiftUI
 
 // Folder toggle button — peel de AtlasCodeRadarFolderRow.
+// A11y → AtlasCodeRadarFolderRow+Toggle+A11y.swift
 
 extension AtlasCodeFolderRow {
     var folderToggleButton: some View {
-        Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            onToggle()
-        } label: {
-            folderHeaderLabel
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(
-            AtlasCodeFolderRowA11y.spokenFolder(
-                name: folder.name,
-                repositoryCount: folder.repositories,
-                verifiedExceptionCount: verifiedExceptionCount,
-                isExpanded: isExpanded
-            )
+        folderToggleA11y(
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onToggle()
+            } label: {
+                folderHeaderLabel
+            }
+            .buttonStyle(.plain)
         )
-        .accessibilityHint(AtlasCodeFolderRowA11y.spokenHint(isExpanded: isExpanded))
-        .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
     }
 }

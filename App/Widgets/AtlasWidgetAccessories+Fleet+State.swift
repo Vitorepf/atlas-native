@@ -4,20 +4,13 @@ import AtlasCore
 
 // Estado da frota no widget — peel de FleetWidgetView.
 // Healthy → AtlasWidgetAccessories+Fleet+Healthy.swift
+// Incident → AtlasWidgetAccessories+Fleet+State+Incident.swift
 
 extension FleetWidgetView {
     @ViewBuilder
     func fleetState(_ snapshot: AtlasNativeSnapshot) -> some View {
-        if let line = FleetWidgetA11y.incidentLine(snapshot.fleet?.incident) {
-            Text(line)
-                .font(.system(size: 16, weight: .semibold, design: .serif))
-                .foregroundStyle(Ink.alert)
-                .lineLimit(2)
-        } else if snapshot.fleet?.incident?.present == true {
-            Text("atenção na frota")
-                .font(.system(size: 16, weight: .semibold, design: .serif))
-                .foregroundStyle(Ink.alert)
-                .lineLimit(2)
+        if snapshot.fleet?.incident?.present == true || FleetWidgetA11y.incidentLine(snapshot.fleet?.incident) != nil {
+            fleetStateIncident(snapshot)
         } else {
             fleetHealthyOrUnread(snapshot)
         }
