@@ -3,22 +3,13 @@ import SwiftUI
 import AtlasCore
 
 // Week header — peel de AtlasWidgetAccessories+CodeWeek+Body.
+// Title → AtlasWidgetAccessories+CodeWeek+Header+TitleRow.swift
+// Stale → AtlasWidgetAccessories+CodeWeek+Header+StaleLine.swift
 
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekHeader(week: AtlasNativeSnapshot.Week, stale: Bool, age: String) -> some View {
-        HStack {
-            Text("✦ Semana")
-                .font(.system(size: 14, weight: .semibold, design: .serif))
-            Spacer()
-            Text(week.window)
-                .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Ink.ink2)
-        }
-        if stale {
-            Text("visto \(age)")
-                .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Ink.alert)
-        }
+        weekHeaderTitleRow(week: week)
+        weekHeaderStaleLine(stale: stale, age: age)
     }
 }

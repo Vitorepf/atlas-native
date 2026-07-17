@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Loaded body — peel de AtlasCodeProvenanceSections+Content.
+// Gates/Obra → AtlasCodeProvenanceSections+Loaded+GatesObra.swift
 // Block → AtlasCodeProvenanceSections+Block.swift
 // Prose → AtlasCodeProvenanceSections+LoadedProse.swift
 
@@ -11,14 +12,7 @@ extension AtlasCodeProvenanceSheet {
         if hasLoadedBody(provenance) {
             VStack(alignment: .leading, spacing: 18) {
                 provenanceProseBlocks(provenance)
-
-                if let gates = provenance.gates, !gates.isEmpty {
-                    block("Prova no ledger") { AtlasCodeChipRow(items: gates) }
-                }
-                if let obra = provenance.obra, !obra.isEmpty {
-                    block("Obra") { AtlasCodeChipRow(items: obra) }
-                }
-
+                provenanceGatesObra(provenance)
                 filesSection(provenance, whyTarget: whyTarget)
             }
         }

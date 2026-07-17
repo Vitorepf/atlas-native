@@ -2,19 +2,15 @@ import SwiftUI
 import AtlasCore
 
 // Capabilities measured body — peel de ArenaCapabilitiesSection.
+// Rows → ArenaCapabilitiesSection+MeasuredBody+Rows.swift
+// Chart → ArenaCapabilitiesSection+MeasuredBody+Chart.swift
 
 extension ArenaCapabilitiesSection {
     @ViewBuilder
     func capabilitiesMeasuredBody(_ capabilities: AtlasArenaCapabilities) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            capabilitiesHeader(capabilities)
-
-            ForEach(measuredCapabilities) { capability in
-                ArenaCapabilityRow(capability: capability)
-                    .transition(reduceMotion ? .identity : .opacity)
-            }
-            ArenaCapabilitiesChart(capabilities: measuredCapabilities)
-                .frame(height: 190)
+            capabilitiesMeasuredRows(capabilities)
+            capabilitiesMeasuredChart
         }
         .padding(16)
         .atlasCard()
