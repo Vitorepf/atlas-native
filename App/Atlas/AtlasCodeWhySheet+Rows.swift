@@ -41,7 +41,7 @@ extension AtlasCodeWhySheet {
             .padding(.bottom, isLast ? 0 : 18)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityText(for: commit))
+        .accessibilityLabel(spokenCommit(commit))
         .accessibilityIdentifier(A11yID.whyRow(index))
     }
 
@@ -51,11 +51,7 @@ extension AtlasCodeWhySheet {
             parts.append("há \(AtlasCodeRelativeTime.short(from: Int(when.timeIntervalSince1970)))")
         }
         parts.append(commit.shortHash)
+        if let obra = commit.provenance?.obra, !obra.isEmpty { parts.append(obra) }
         return parts.joined(separator: " · ")
-    }
-
-    func accessibilityText(for commit: AtlasCodeWhy.Commit) -> String {
-        let quote = commit.provenance?.quote ?? "sem proveniência registrada"
-        return "\(quote), \(meta(for: commit))"
     }
 }

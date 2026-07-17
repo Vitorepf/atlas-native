@@ -23,10 +23,13 @@ struct AtlasCodeWhySheet: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(22)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: whyContentPhaseID)
             }
         }
         .task { if model.phase == .idle { await model.load(repo: repo, file: file) } }
         .accessibilityIdentifier(A11yID.whySheet)
+        .accessibilityLabel(whySheetSpokenLabel)
+        .accessibilityHint(Self.sheetHint)
     }
 
     private var header: some View {
@@ -46,6 +49,9 @@ struct AtlasCodeWhySheet: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
+        .accessibilityLabel(whyHeaderSpokenLabel)
     }
 
     @ViewBuilder
@@ -59,21 +65,27 @@ struct AtlasCodeWhySheet: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             .padding(.top, 8)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(spokenLoading())
         case .failed:
             VStack(alignment: .leading, spacing: 6) {
                 Text("biografia indisponível")
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                Text(model.message ?? "não consegui carregar este arquivo")
-                    .font(AtlasFont.mono(9.5))
-                    .foregroundStyle(AtlasCodePalette.alert)
+                if let message = model.message, !message.isEmpty {
+                    Text(message)
+                        .font(AtlasFont.mono(9.5))
+                        .foregroundStyle(AtlasCodePalette.alert)
+                }
             }
+            .accessibilityLabel(spokenFailed())
         case .loaded:
             if let why = model.why, why.commits.isEmpty {
                 Text("este arquivo não tem história neste recorte")
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.top, 6)
+                    .accessibilityLabel(spokenEmptyHistory())
             } else if let why = model.why {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(why.commits.enumerated()), id: \.element.id) { index, commit in
