@@ -3,6 +3,7 @@ import AtlasCore
 
 // Copy — peel de ConversationHandoffReceipt.
 // A11y → ConversationChromeSheets+Receipt+A11y.swift
+// Age → ConversationChromeSheets+Receipt+Age.swift
 
 extension ConversationHandoffReceipt {
     var headline: String {
@@ -24,10 +25,5 @@ extension ConversationHandoffReceipt {
         var parts = [atlasHandoffStatusEditorial(handoff.status), route, "thread \(thread)"]
         if let age { parts.append("há \(age)") }
         return parts.joined(separator: " · ")
-    }
-
-    var handoffAgeFragment: String? {
-        guard let raw = handoff.createdAt, let date = AtlasTime.date(raw) else { return nil }
-        return atlasRelativeAgePT(since: date)
     }
 }

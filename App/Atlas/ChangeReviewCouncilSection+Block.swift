@@ -2,24 +2,14 @@ import SwiftUI
 import AtlasCore
 
 // Conselho C21 — peel de ChangeReviewCouncilSection.
+// Header → ChangeReviewCouncilSection+BlockHeader.swift
 
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func councilBlock(_ council: [AtlasTraceGovernance.CouncilMember]) -> some View {
         let diverged = AtlasTraceGovernance.councilDiverged(council)
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Text("Conselho")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityAddTraits(.isHeader)
-                if diverged {
-                    Text("divergência")
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(AtlasTheme.accent)
-                        .accessibilityLabel("divergência entre pareceres")
-                }
-            }
+            councilBlockHeader(diverged: diverged)
             ForEach(council) { member in
                 ChangeReviewCouncilMemberRow(member: member)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
