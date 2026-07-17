@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **569** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLVII tip `9772d6e` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **573** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLIX tip `f3e5ee7` |
 | Commits no tip (`git rev-list --count HEAD`) | 554 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 242 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLVIII (este tip)
+## Entrega Elite CXXXXXLXLIX (este tip)
+
+- `polish(ui)` CICLO B: ConversationSheets `+Sheets+ModifierForward/+ModifierWrap+Init`; PageComposerArgs Core `+ComposerInit` Bindings `+Aggregate`; AtlasCodeView Sheets `+Forward/+SheetsModifierWrap+Init` AskPillLeading `+Caption` GraphListScroll `+Refresh`; Autonomos Sheets `+Forward/+Wrap+Init` SelfConstruction `+RevertTask`; Motion Haptics `+Impact/+Notification`; CodeWeek A11y `+Quiet`; ArenaEngineIndexRow `+MetricColors`; RadarLoadedContent Sections `+Recents` FolderRow Header `+Leading/+Trailing`; QueuedFollowUps `+EmptyBranch/+A11yShell`; CardSheetsBind `+Flags/+Traces`; RowsTurn Assembly `+ExecTuple/+SteerTuple`; Widgets LockLive Spoken `+Branch/+Stale` CodeWeek Body `+Stack/+A11y`. Tip `f3e5ee7`.
+- 28 peels · 50 arquivos · over100=0 · App/Atlas+Widgets swift=2503; App/Widgets swift=192; zero Route nova.
+
+## Entrega Elite CXXXXXLXLVIII (anterior)
 
 - `polish(ui)` CICLO B: PageComposerArgs Bindings `+Sheets/+Trace` Core `+Session`; ModifierReview `+ChangeReview/+Queue`; AskWhy `+AskSheet/+WhySheet`; Digest SpokenSection `+Schedule/+Last`; OperationDigest SpokenSection `+Lead/+Counts`; Editorial Copy `+Headline/+Footnote`; Meta `+Kicker`; Hero `+Glyph/+Prompt`; ChangeReview `+Gate/+Button`; BannerChrome `+Row/+Frame`; DeepLinksSurface `+Hub/+CodeGraph`; ProvenanceBind `+Content/+Present`; QueuedFollowUps `+EmptyDismiss`; FeedbackChip `+Label/+A11y`; CameraCover `+Capture/+Fail`; OpenButton `+Label/+Action`; PageMessages `+Model/+Trace`; RowBuild `+Init/+Handlers`; Widgets Fleet PhaseBind `+Transaction/+Spoken` LiveSession SpokenBind `+Combine/+Label`. Tip `e232717`.
 - 21 peels · 60 arquivos · over100=0 · App/Atlas+Widgets swift=2475; App/Widgets swift=188; zero Route nova.
