@@ -3,7 +3,7 @@ import PhotosUI
 import UniformTypeIdentifiers
 import AtlasCore
 
-private struct ConversationComposerSheetsModifier: ViewModifier {
+struct ConversationComposerSheetsModifier: ViewModifier {
     var model: ConversationModel
     var session: AtlasSession
     @Binding var mode: String
@@ -21,7 +21,8 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
     let onSteerSubmit: (TraceID, String, AtlasInteractionSteerScope) -> Void
 
     func body(content: Content) -> some View {
-        content
+        attachmentModifiers(on:
+            content
             .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
             .sheet(isPresented: $showEffortSheet) { EffortSheet(model: model) }
             .sheet(item: $reviewTrace) { ref in
@@ -51,37 +52,6 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
                 let destino = atlasSurfaceLabel(h.toSurface)
                 model.toast = "Pronto no \(destino) — mesma conversa, mesma sessão."
             }
-            .sheet(isPresented: $showAttachmentSheet) {
-                ComposerAttachmentsSheet(
-                    pickedPhoto: $pickedPhoto,
-                    onChooseFile: { showFileImporter = true },
-                    onChooseCamera: { showCamera = true },
-                    onPaste: { model.addClipboard(text: $0) }
-                )
-            }
-            .sheet(isPresented: $showWorkspaceSheet) {
-                WorkspaceSheet(workspaces: session.workspaces, current: model.workspaceName) { ws in
-                    model.workspaceSlug = ws.id
-                    model.workspaceName = ws.name
-                    model.workspacePath = session.workspaceFullPath(forKey: ws.id)
-                }
-            }
-            .conversationCameraCover(model: model, showCamera: $showCamera)
-            .fileImporter(isPresented: $showFileImporter,
-                          allowedContentTypes: [.pdf, .text, .sourceCode, .json, .commaSeparatedText]) { result in
-                if case .success(let url) = result { model.addFile(url: url) }
-            }
-            .onChange(of: pickedPhoto) {
-                guard let item = pickedPhoto else { return }
-                pickedPhoto = nil
-                Task {
-                    guard let data = try? await item.loadTransferable(type: Data.self) else {
-                        model.toast = "não consegui ler a foto"; return
-                    }
-                    let mime = item.supportedContentTypes.first?.preferredMIMEType ?? "image/jpeg"
-                    model.addImage(data: data, suggestedName: nil, mimeType: mime,
-                                   identity: item.itemIdentifier ?? UUID().uuidString)
-                }
-            }
+        )
     }
 }
