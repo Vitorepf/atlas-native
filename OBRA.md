@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXXXVI — CICLO B RadarFolder header peel** · este commit · CICLO B: AtlasCodeFolderRow `+Header` (shell 46). Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Folder 46 Header 43 Expanded 28; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXXV — CICLO B RadarFolder expand peel** · este commit · CICLO B: AtlasCodeFolderRow `+Expanded` (shell 80). Zero >100 App. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Folder 80 Expanded 28; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXXIV — CICLO B ArenaIndex/Editorial/Execution peels + C silence** · este commit · CICLO B: ArenaIndex `+A11y`; EditorialTurnChrome → Signature/Feedback; ExecutionStateCard `+Meta` (67). CICLO C: índice header decorativo. Zero >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Index 80 Exec 67; find App >100=0; device-pending.
