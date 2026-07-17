@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXI — CICLO B Chrome/Thread/Timeline/Plan/Empty/Sheets/Ask/Fleet peels** · `82ff4ba`/`04ad0d1` · CICLO B: Chrome `+Trailing`; Thread `+Lead`; Timeline `+ScrollRows`; Plan `+DotFill`; Empty `+SuggestionButton`; Sheets `+Control`; Ask `+Chrome`; Fleet `+Delivery`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXX — CICLO B Chrome/Proof/Health/Suite/Run/File/Lock/LiveNow/Draft/Transfer/Plan/Composer peels** · `4159ea5` · CICLO B: Chrome `+A11yHome`; Proof `+ReplayQuality`/`+ArtifactsLabel`; Health `+A11yMetrics`; Suite `+Body`; Run `+Body`; File `+LeadName`; Lock `+A11yPhase`; LiveNow `+Chrome`; Draft `+Thumbs`; Transfer `+Predicates`; Plan `+StepState`; Composer `+Shell`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXIX — CICLO B Home/Timers/Attachments/Ribbon/Strip/Review/Autonomos/Arena/Island peels** · `e93b48b` · CICLO B: Home `+Loading`; Timers `+Recovering`; Attachments `+Importers`; Ribbon `+Lanes`; Strip `+Upload`; Review `+Load`; Autonomos `+ContentShell`; Arena `+Defaults`/`+Body`; Island `+TrailingProgress`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.

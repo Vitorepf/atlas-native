@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXX (este tip)
+## Entrega Elite CXXXXI (este tip)
+
+- `refactor(ui)` CICLO B: Chrome+Trailing; Thread+Lead; Timeline+ScrollRows; Plan+DotFill; Empty+SuggestionButton; Sheets+Control; Ask+Chrome; Fleet+Delivery. Tips `82ff4ba`/`04ad0d1`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXX (anterior)
 
 - `refactor(ui)` CICLO B: Chrome+A11yHome; Proof+ReplayQuality/+ArtifactsLabel; Health+A11yMetrics; Suite+Body; Run+Body; File+LeadName; Lock+A11yPhase; LiveNow+Chrome; Draft+Thumbs; Transfer+Predicates; Plan+StepState; Composer+Shell. Tip `4159ea5`.
 - Zero App/Widgets >100; zero Route nova.
