@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // MARK: - Governance / Conselho (C18 · C19 · C21)
-// Lines → ChangeReviewCouncilSection+Lines.swift · Council block → +Block.swift
+// Stats/Revisions → +StatsLine/+RevisionsLine · Council block → +Block.swift
 // Chrome → ChangeReviewCouncilSection+Chrome.swift
 // Content → ChangeReviewCouncilSection+Content.swift
 

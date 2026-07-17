@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Linhas de recibo — peel de AutonomosLoadedSection+Receipts (CICLO D: um só phase ID).
+// Transition → AutonomosLoadedSection+ReceiptTransition.swift
 
 struct AutonomosRunReceiptLines: View {
     let model: AutonomosModel
@@ -29,9 +30,5 @@ struct AutonomosRunReceiptLines: View {
             }
         }
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: AutonomosLoadedSection.receiptPhaseID(for: model))
-    }
-
-    private var receiptTransition: AnyTransition {
-        reduceMotion ? .identity : .opacity.combined(with: .offset(y: 6))
     }
 }
