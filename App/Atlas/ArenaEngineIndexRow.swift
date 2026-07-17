@@ -3,7 +3,7 @@ import Charts
 import AtlasCore
 
 // Linha de engine no índice composto — peel de ArenaIndexSection (régua ~120).
-// Metric/a11y → ArenaEngineIndexRow+A11y.swift
+// Metric/a11y → +A11y · Metrics → +Metrics.swift
 
 struct ArenaEngineIndexRow: View {
     let engine: AtlasArenaCompositeEngine
@@ -31,13 +31,7 @@ struct ArenaEngineIndexRow: View {
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
                     .accessibilityHidden(true)
             }
-            HStack(spacing: 10) {
-                metric("c/Atlas", ArenaFormat.score(engine.withAtlasComposite), color: metricColor(engine.withAtlasComposite))
-                metric("sem", ArenaFormat.score(engine.withoutAtlasComposite), color: metricColor(engine.withoutAtlasComposite, fallback: AtlasTheme.textSecondary))
-                if engine.atlasMultiplier != nil {
-                    metric("N×M", ArenaFormat.multiplier(engine.atlasMultiplier), color: AtlasTheme.textPrimary)
-                }
-            }
+            metricsRow
             if engine.isPartialCoverage {
                 Text("cobertura parcial \(Int((engine.coverage * 100).rounded()))%")
                     .font(AtlasFont.mono(10))

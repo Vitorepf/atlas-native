@@ -3,6 +3,7 @@ import SwiftUI
 import AtlasCore
 
 // Definições dos widgets de snapshot — peel de AtlasWidgets.
+// CodeWeek → AtlasWidgets+CodeWeek.swift
 
 struct AtlasFleetWidget: Widget {
     var body: some WidgetConfiguration {
@@ -34,17 +35,5 @@ struct AtlasLiveSessionWidget: Widget {
         .configurationDisplayName("Atlas · Sessão viva")
         .description("Acompanha uma execução viva pelo snapshot do App Group.")
         .supportedFamilies([.systemMedium])
-    }
-}
-
-/// M84 — A Semana do Código: lê só `snapshot.week` (já escrito pelo app).
-struct AtlasCodeWeekWidget: Widget {
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "atlas.code.week.snapshot", provider: SnapshotProvider()) { entry in
-            CodeWeekWidgetView(entry: entry)
-        }
-        .configurationDisplayName("Atlas · Semana do Código")
-        .description("Commits, curas e prevenções da semana — só do snapshot local.")
-        .supportedFamilies([.systemMedium, .systemLarge])
     }
 }

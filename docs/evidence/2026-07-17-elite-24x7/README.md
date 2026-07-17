@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **344+** | primeiro commit do plano: `ec931f2`; Elite CXVII em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **345+** | primeiro commit do plano: `ec931f2`; Elite CXVIII em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,9 +127,14 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXVII (este tip)
+## Entrega Elite CXVIII (este tip)
 
-- `refactor(ui)` CICLO B: Search+HeaderClear; State+Detail; Scrubber+Chrome; Feedback+Helpers; Detail+Inbox; Lock+Phase; NetworkFailure+FailureCopy.
+- `refactor(ui)` CICLO B: Engine+Metrics; Run+FormSuites; Graph+WeekBody; Composer+Surface; Capability+Contribution; Widgets+CodeWeek; Plan+Body.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXVII (anterior)
+
+- `refactor(ui)` CICLO B: Search+HeaderClear; State+Detail; Scrubber+Chrome; Feedback+Helpers; Detail+Inbox; Lock+Phase; NetworkFailure+FailureCopy. Tip `d7c6db4`.
 - Zero App/Widgets >100; zero Route nova.
 
 ## Entrega Elite CXVI (anterior)

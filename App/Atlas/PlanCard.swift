@@ -5,7 +5,7 @@ import AtlasCore
 // ferramentas, agentes, gates). Antes ficava invisível; agora cada passo
 // mostra done/atual/pendente a partir do checkpoint REAL (executionProgress).
 // Sem plano no trace, o card não existe. Nada é inventado.
-// Header → PlanCard+Header · Steps → +Steps · Revisions → +Revisions · Detail → +DetailToggle
+// Header → +Header · Steps → +Steps · Body → +Body · Revisions → +Revisions
 struct PlanCard: View {
     let bubble: ChatBubble
     @Environment(AtlasSession.self) var session
@@ -29,16 +29,7 @@ struct PlanCard: View {
     var body: some View {
         if let plan, !plan.steps.isEmpty {
             VStack(alignment: .leading, spacing: 9) {
-                planHeader(plan: plan)
-                planStepsList(plan: plan)
-                if session.auditModeEnabled, isTerminal, let progress = executionProgress {
-                    auditTerminalLine(plan: plan, progress: progress)
-                }
-                // C19 / cena 02: "comparar versões" só com planRevisions reais.
-                if !meaningfulRevisions.isEmpty {
-                    revisionToggle(plan: plan)
-                }
-                planDetailSection(plan: plan)
+                planBody(plan: plan)
             }
             .padding(12)
             .atlasCard(cornerRadius: 12, fillOpacity: 0.5)

@@ -3,7 +3,7 @@ import Charts
 import AtlasCore
 
 // Rows — peel de ArenaCapabilitiesSection.
-// DualBar → ArenaCapabilitiesSection+DualBar.swift
+// DualBar → +DualBar · Contribution → +Contribution.swift
 
 struct ArenaCapabilityRow: View {
     let capability: AtlasArenaCapability
@@ -35,16 +35,5 @@ struct ArenaCapabilityRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ArenaCapabilitiesSectionA11y.spokenCapability(capability))
         .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
-    }
-
-    var contributionLine: String {
-        var parts: [String] = []
-        if let cases = ArenaCapabilitiesSectionA11y.casesCaption(for: capability) {
-            parts.append(cases)
-        }
-        if !capability.suitesContributing.isEmpty {
-            parts.append(capability.suitesContributing.joined(separator: ", "))
-        }
-        return parts.joined(separator: " · ")
     }
 }
