@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXVII — CICLO B Widget/Island/Graph/Proof/Fleet/Provenance peels** · `cf7e513` · CICLO B: CodeWeek `+Header`; Island `+Chips`; Graph `+ChipLabel`; Replay `+Quality`; FleetHistory `+RowTags`; Provenance `+Dateline`/`+AskLabel`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXVI — CICLO B Banner/Control/Arena/Shortcuts/Seal peels** · `2dd0b75` · CICLO B: ExecutionBanner `+Chrome`; Control `+Label`; Arena `+DomainUnavailable`; AreaDetail `+ShortcutChips`; Seal `+Chrome`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXV — CICLO B Graph/Heal/Week/Why/Transfer/ArenaSuite peels** · `a501b79` · CICLO B: GraphList `+Scroll`; Heal `+UndoFooter`; WeekHeal `+Label`; Why `+A11yLabels`; Transfer `+Header`; ArenaSuite `+A11yEngine`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
