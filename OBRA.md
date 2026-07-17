@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Merge Elite 24×7 → `main`** · PR [#1](https://github.com/Vitorepf/atlas-native/pull/1) MERGED · merge commit `a804410` · tip Elite `6dffee4` (CXXXXXLXLXX) integrado em `main`. Prova: `gh pr view 1` state=MERGED; `main` @ `a804410`; App/Widgets over100=0; swift=2766; commits `ec931f2..main`=596. **BLOCKED permanece:** Swift/Mac checks+build; atlas-server M01/A12; device DEVICE_PROVEN.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXLXX — CICLO B view/sheet/chrome/widget peels** · `49d8a27` · CICLO B: Why Content `+Busy`; Replay Spoken `+Route`; Control Action `+Kill`; CodeView A11y `+Busy`; LiveNow Spoken `+Active`; Arena Screen `+Busy`; Home Route `+Keyed`; Widgets LockRect Quiet `+Stale` Island Compact Badge `+Chip`. Zero App/Widgets >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App/Atlas App/Widgets >100=0; App/Atlas+Widgets swift=2766; App/Widgets swift=222; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXLXIX — CICLO B view/sheet/chrome/widget peels** · `b7d4f84` · CICLO B: Failure Hint `+Offline`; TraceEvidence Known `+Missing`; Radar Capsule `+Quiet`; Provenance A11y `+LoadedPhaseID`; Transfer Spoken `+Hosts`; Home Counts `+Workspace`; FileRow Symbol `+Transform`; Mirror Quiet `+Mirrored`; Widgets CodeWeek Entry `+Published` LockScreen Phase Badge `+Chrome`. Zero App/Widgets >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App/Atlas App/Widgets >100=0; App/Atlas+Widgets swift=2757; App/Widgets swift=220; device-pending.
