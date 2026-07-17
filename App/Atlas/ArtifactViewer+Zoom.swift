@@ -21,8 +21,9 @@ struct ZoomableArtifactImage: View {
             .contentShape(Rectangle())
             .gesture(zoomGesture.simultaneously(with: dragGesture))
             .onTapGesture(count: 2) { resetZoom() }
-            .accessibilityLabel("imagem \(name)")
-            .accessibilityHint("pinça para aproximar, arraste quando ampliada, toque duas vezes para redefinir")
+            .accessibilityLabel(ArtifactViewerZoomA11y.spokenImage(name: name, scale: scale))
+            .accessibilityHint(ArtifactViewerZoomA11y.zoomHint)
+            .accessibilityIdentifier(A11yID.artifactsZoomImage)
             .accessibilityZoomAction { action in
                 switch action.direction {
                 case .zoomIn:
@@ -33,7 +34,7 @@ struct ZoomableArtifactImage: View {
                     break
                 }
             }
-            .accessibilityAction(named: "Redefinir zoom") { resetZoom() }
+            .accessibilityAction(named: ArtifactViewerZoomA11y.resetAction) { resetZoom() }
             .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: scale)
             .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: offset)
     }
