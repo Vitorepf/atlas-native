@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **512+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXIX tip `c505c6d` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **515+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXX tip `ca2dbf1` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXIX (este tip)
+## Entrega Elite CXXXXXLXX (este tip)
+
+- `polish(ui)` CICLO B: Nightly `+ScheduleMorning/+ScheduleTrigger/+ScheduleCalendar/+BackgroundContent/+DelegateHandle`; TurnPresence `+TickRunning/+TickFinished/+Notifications+Away/+LiveSessions+SnapshotPhase/+WatchRegister`; Bridge `+BridgeObserve/+BridgeEnd/+BridgeWait/+RemoteBootstrap/+RemoteObserve`; Snapshot `+ProjectionFleet/+ProjectionLiveSessions`; Theme `+Surfaces/+Ink`; Activity `+ContentState`; Digest `+ScheduleCopyNext/+ScheduleCopyFallback`; Widgets `+ProgressChip/+BodyLayoutLeading`. Tip `ca2dbf1`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLXIX (anterior)
 
 - `polish(ui)` CICLO B: TurnPresence+Notifications+A11yTerminal/+BuildContent/+LiveSessions+SnapshotLoop/+Broadcast+EndActivities; Radar+NavShell; Why+ContentCommits; Artifact+PreviewTooLarge/+PreviewMessage; AreaDetail+ChipsWorkOrders/+ChipsInbox/+ChipsFindings; Delivered+A11ySelf/+A11yEmpty; Fleet+SummaryMetrics; Loaded+StackTailFleet/+StackTailHistory; Arena+RowTrailingSparkline/+RowTrailingMeasured/+MarksComposite/+MarksSeries; Proof+DecisionRow; Root+A11yThreadMessage; Outline+LeadRole; Folder+A11yExceptions; Widgets+LockAttention/+LockIncident/+TimerActive. Tip `c505c6d`.
 - Zero App/Widgets >100; zero Route nova.
