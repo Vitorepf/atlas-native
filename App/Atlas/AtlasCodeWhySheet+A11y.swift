@@ -47,7 +47,11 @@ extension AtlasCodeWhySheet {
 
     func spokenCommit(_ commit: AtlasCodeWhy.Commit) -> String {
         var parts: [String] = []
-        if let quote = commit.provenance?.quote { parts.append(quote) }
+        if let quote = commit.provenance?.quote, !quote.isEmpty {
+            parts.append(quote)
+        } else {
+            parts.append("sem proveniência registrada")
+        }
         parts.append(commit.agentLabel)
         if let when = commit.when {
             parts.append("há \(AtlasCodeRelativeTime.short(from: Int(when.timeIntervalSince1970)))")

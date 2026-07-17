@@ -39,13 +39,16 @@ struct EmptyConversation: View {
                 .font(AtlasFont.serif(32)).foregroundStyle(AtlasTheme.accent)
                 .shadow(color: AtlasTheme.accent.opacity(0.30), radius: 4, y: 1)
                 .scaleEffect(breathe ? 1.06 : 1).opacity(breathe ? 0.85 : 1)
+                .accessibilityHidden(true)
             Spacer().frame(height: 40)
             Text(""\(prompt ?? "O que você quer pensar agora?")"")
                 .font(AtlasFont.serifItalic(22)).lineSpacing(10)
                 .multilineTextAlignment(.center).foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityLabel(EmptyConversationA11y.spokenPrompt(prompt))
+                .accessibilityAddTraits(.isHeader)
             Spacer().frame(height: 44)
             VStack(spacing: 10) {
-                ForEach(suggestions, id: \.self) { s in
+                ForEach(Array(suggestions.enumerated()), id: \.element) { index, s in
                     Button { onSuggestion(s) } label: {
                         Text(s)
                             .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
@@ -55,13 +58,23 @@ struct EmptyConversation: View {
                                 .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
                     }
                     .buttonStyle(PressableScale())
+                    .accessibilityLabel(
+                        EmptyConversationA11y.spokenSuggestion(s, index: index, total: suggestions.count)
+                    )
+                    .accessibilityHint(EmptyConversationA11y.suggestionHint)
                 }
             }
             .padding(.horizontal, 12)
         }
         .padding(.horizontal, 32).padding(.top, 120)
         .frame(maxWidth: .infinity)
-        .onAppear { if !reduceMotion { withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) { breathe = true } } }
+        .onAppear {
+            if !reduceMotion {
+                withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
+                    breathe = true
+                }
+            }
+        }
+        .accessibilityElement(children: .contain)
     }
 }
-

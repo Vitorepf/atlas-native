@@ -27,11 +27,13 @@ struct QueuedFollowUpRow: View {
                     Text(positionCaption)
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(index == 0 ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
                 }
                 Text(message.text)
                     .font(.system(.callout))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .lineLimit(2)
+                    .accessibilityHidden(true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .ignore)
@@ -66,6 +68,7 @@ struct QueuedFollowUpRow: View {
         .accessibilityIdentifier(A11yID.queueRow(index))
         .overlay(alignment: .bottom) {
             Divider().overlay(AtlasTheme.separator).padding(.leading, 24)
+                .accessibilityHidden(true)
         }
     }
 

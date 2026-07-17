@@ -13,18 +13,21 @@ extension AtlasCodeHealReceiptSheet {
             .font(.system(size: 10, weight: .semibold))
             .foregroundStyle(receipt.status == "completed" ? AtlasCodePalette.healed : AtlasCodePalette.alert)
             .padding(.top, 2)
+            .accessibilityHidden(true)
           VStack(alignment: .leading, spacing: 2) {
             Text(receipt.action)
               .font(.system(size: 13))
               .foregroundStyle(AtlasTheme.textPrimary)
+              .accessibilityHidden(true)
             if !receipt.result.isEmpty {
               Text(receipt.result)
                 .font(AtlasFont.mono(9))
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
             }
           }
         }
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenStepLabel(receipt))
         .accessibilityIdentifier(A11yID.codeHealStep(index))
       }
