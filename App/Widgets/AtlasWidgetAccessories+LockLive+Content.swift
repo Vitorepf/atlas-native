@@ -3,6 +3,7 @@ import SwiftUI
 import AtlasCore
 
 // Lock accessory family switch — peel de AtlasWidgetAccessories+LockLive.
+// Inline → AtlasWidgetAccessories+LockLive+ContentInline.swift
 
 extension LockAccessorySnapshotView {
     @ViewBuilder
@@ -11,8 +12,7 @@ extension LockAccessorySnapshotView {
         case .accessoryCircular:
             circular(snapshot)
         case .accessoryInline:
-            Text(LockAccessoryA11y.inlineText(snapshot))
-                .foregroundStyle(emphasisColor(snapshot))
+            lockAccessoryInlineContent(snapshot)
         default:
             rectangular(snapshot)
         }
