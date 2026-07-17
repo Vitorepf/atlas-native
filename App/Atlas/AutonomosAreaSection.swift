@@ -4,6 +4,7 @@ import SwiftUI
 /// governados) — nunca de live.readOnly, que descreve apenas o GET.
 /// Cycle → AutonomosAreaSection+Cycle.swift
 /// Primary → AutonomosAreaSection+Primary.swift
+/// A11y → AutonomosAreaSection+A11yChrome.swift
 struct AutonomosAreaControls: View {
     let areaName: String
     let isPaused: Bool
@@ -17,14 +18,11 @@ struct AutonomosAreaControls: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            primaryButtons
-            cycleButtons
-        }
-        .disabled(!canControl)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(spokenContainerLabel)
-        .accessibilityHint(spokenContainerHint)
-        .accessibilityIdentifier(A11yID.autonomosAreaControls)
+        areaControlsA11yChrome(
+            VStack(alignment: .leading, spacing: 10) {
+                primaryButtons
+                cycleButtons
+            }
+        )
     }
 }

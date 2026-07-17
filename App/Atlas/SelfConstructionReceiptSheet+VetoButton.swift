@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Botão veto — peel de SelfConstructionReceiptSheet+Veto.
+// Label → SelfConstructionReceiptSheet+VetoLabel.swift
 
 extension SelfConstructionReceiptSheet {
     var vetoSubmitButton: some View {
@@ -9,16 +10,7 @@ extension SelfConstructionReceiptSheet {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onRevert(actor, reason)
         } label: {
-            HStack(spacing: 7) {
-                Image(systemName: "arrow.uturn.backward")
-                    .accessibilityHidden(true)
-                Text("Desfazer — com recibo")
-            }
-            .font(.system(size: 14, weight: .medium))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .foregroundStyle(AtlasTheme.domOperacional)
-            .atlasCard(cornerRadius: 13)
+            vetoSubmitLabel
         }
         .buttonStyle(PressableScale())
         .disabled(!canSubmitRevert)
