@@ -57,7 +57,7 @@ struct RootView: View {
                 case .autonomos:
                     AutonomosView()
                 case .arena:
-                    AtlasArenaView()
+                    AtlasArenaView(model: session.arena)
                 case .code:
                     // A porta do domínio é o radar: a frota primeiro, o repo depois.
                     AtlasCodeRadarView(client: session.client) { repo in
@@ -84,6 +84,11 @@ struct RootView: View {
             let hub = codeHub ?? AtlasCodeHubModel(client: session.client)
             codeHub = hub
             await hub.refresh()
+        }
+        .task {
+            if case .idle = session.arena.phase {
+                await session.arena.refreshSummaryKeepingSnapshot()
+            }
         }
         .onOpenURL { url in
             guard url.scheme == "atlas", url.host == "execution",
@@ -224,7 +229,8 @@ struct RootView: View {
                         icon: "chart.line.uptrend.xyaxis",
                         name: "Arena",
                         count: nil,
-                        badge: false
+                        detail: session.arena.regressionException,
+                        badge: session.arena.regressionException != nil
                     ) {
                         path.append(Route.arena)
                     }
