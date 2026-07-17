@@ -37,8 +37,12 @@ struct AtlasCodeProvenanceSheet: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(22)
                 .padding(.bottom, 12)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: provenanceContentPhaseID)
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(provenanceSheetSpokenLabel)
+        .accessibilityHint(Self.sheetHint)
         .sheet(item: $whyTarget) { target in
             AtlasCodeWhySheet(client: client, repo: repo, file: target.path)
                 .presentationDetents([.large])

@@ -16,18 +16,27 @@ extension AtlasCodeProvenanceSheet {
                     .foregroundStyle(AtlasCodePalette.color(for: state))
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(stateLabel.lowercased())
+            .accessibilityLabel(spokenStateKicker())
             .accessibilityIdentifier(A11yID.codeProvenanceState)
 
-            Text(node.message ?? "Por que esta linha existe")
-                .font(AtlasFont.serif(22, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
+            Group {
+                if let message = node.message?.nonEmpty {
+                    Text(message)
+                        .font(AtlasFont.serif(22, .semibold))
+                } else {
+                    Text(String(node.hash.prefix(8)))
+                        .font(AtlasFont.mono(22, .semibold))
+                }
+            }
+            .foregroundStyle(AtlasTheme.textPrimary)
+            .fixedSize(horizontal: false, vertical: true)
+            .accessibilityLabel(spokenHeaderTitle())
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(dateline)
                     .font(AtlasFont.mono(9.5))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityLabel(spokenDateline())
                 // A magnitude do commit vem cedo: uma descrição longa não pode
                 // esconder o tamanho do que ele fez. A lista fica no fim.
                 if case .loaded(let provenance) = phase, let headline = provenance.diffHeadline {
@@ -38,6 +47,8 @@ extension AtlasCodeProvenanceSheet {
                 }
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityAddTraits(.isHeader)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -55,7 +66,9 @@ extension AtlasCodeProvenanceSheet {
     var dateline: String {
         let author = node.authorName.isEmpty ? node.authorEmail : node.authorName
         var parts = [author]
-        if case .loaded(let provenance) = phase { parts.append(provenance.agentLabel) }
+        if case .loaded(let provenance) = phase, !provenance.agent.isEmpty {
+            parts.append(provenance.agentLabel)
+        }
         parts.append("há \(AtlasCodeRelativeTime.short(from: node.authoredAt))")
         return parts.joined(separator: " · ")
     }

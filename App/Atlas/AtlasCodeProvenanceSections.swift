@@ -13,12 +13,12 @@ extension AtlasCodeProvenanceSheet {
     /// A lei que sustenta a acusação — e o documento que a prova.
     @ViewBuilder
     var lawCitation: some View {
-        if state == .violating, let ruleId {
+        if state == .violating, let ruleId, spokenLawCitation() != nil {
             VStack(alignment: .leading, spacing: 3) {
                 Text(AtlasCodeIssue.law(ruleId, trunk: trunk))
                     .font(AtlasFont.serif(14, .semibold))
                     .foregroundStyle(AtlasCodePalette.alert)
-                if let ruleCanon {
+                if let ruleCanon = ruleCanon?.nonEmpty {
                     Text(ruleCanon)
                         .font(AtlasFont.mono(8.5))
                         .foregroundStyle(AtlasTheme.textTertiary.opacity(0.85))
@@ -34,6 +34,7 @@ extension AtlasCodeProvenanceSheet {
                     .fill(AtlasCodePalette.alert.opacity(0.08))
             )
             .accessibilityElement(children: .combine)
+            .accessibilityLabel(spokenLawCitation() ?? "")
             .accessibilityIdentifier(A11yID.codeProvenanceLaw)
         }
     }
@@ -61,5 +62,6 @@ extension AtlasCodeProvenanceSheet {
         .buttonStyle(.plain)
         .accessibilityIdentifier(A11yID.codeProvenanceAsk)
         .accessibilityLabel("Perguntar ao Atlas sobre este commit")
+        .accessibilityHint(Self.askHint)
     }
 }

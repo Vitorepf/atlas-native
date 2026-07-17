@@ -23,29 +23,29 @@ extension AtlasCodeProvenanceSheet {
         .accessibilityLabel("sua frase: \(quote)")
     }
 
+    @ViewBuilder
     func filesSection(
         _ provenance: AtlasCodeProvenance,
         whyTarget: Binding<AtlasCodeProvenanceWhyTarget?>
     ) -> some View {
-        VStack(alignment: .leading, spacing: 9) {
-            Text("ARQUIVOS")
-                .font(.system(size: 8.5, weight: .semibold))
-                .tracking(1.2)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityIdentifier(A11yID.codeCommitFiles)
-
-            if provenance.files.isEmpty {
-                Text("nenhum arquivo mudou neste commit")
-                    .font(AtlasFont.serifItalic(14))
+        if !provenance.files.isEmpty {
+            VStack(alignment: .leading, spacing: 9) {
+                Text("ARQUIVOS")
+                    .font(.system(size: 8.5, weight: .semibold))
+                    .tracking(1.2)
                     .foregroundStyle(AtlasTheme.textTertiary)
-            } else {
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier(A11yID.codeCommitFiles)
+
                 VStack(spacing: 0) {
                     ForEach(Array(provenance.files.enumerated()), id: \.element.id) { index, file in
                         if index > 0 {
                             Divider().overlay(AtlasTheme.separator.opacity(0.5))
                         }
                         Button {
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                            if !reduceMotion {
+                                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                            }
                             whyTarget.wrappedValue = AtlasCodeProvenanceWhyTarget(path: file.path)
                         } label: {
                             AtlasCodeFileRow(file: file, accessibilityIdentifier: A11yID.whyFileRow(index))
