@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo XCV — CICLO B Timeline/State/Area/Arena/Commit/Island peels + C Arena header silence** · este commit · CICLO B: LiveTimeline `+Surfaces`; ExecutionState `+Timers`; AreaDetail `+Header`; Arena `+Header`; CommitRow `+Label`; Island Expanded `+Center`. CICLO C: Arena header textos sob spoken. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Timeline 26 Arena 60 Commit 44 Island 25; find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XCIV — CICLO B LiveNow/Mount/Suite/CodeBlock/ArenaA11y/Search peels + C silence** · este commit · CICLO B: LiveNowRow `+Content`; Mount `+Animation`; Suite `Sparkline` extract; CodeBlock `+Copy`; ArenaRun `+A11ySheet`; Search `+ThreadLink`. CICLO C: LiveNow remota glyph silence; Suite row decorative silence; CodeBlock lang silence. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` LiveNowRow 31 Mount 70 SuiteRow 64 CodeBlock 52; find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XCIII — CICLO B Artifact/Zoom/Strip/Narrative/Graph/Sheets peels** · este commit · CICLO B: Artifact `+Preview`; Zoom `+Gestures`; ExecutingStrip `+Status`; Narrative `+Body`; Code Graph `+GraphList`; Sheets `+Attachments`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Viewer 46 Zoom 41 Strip 23 Graph 23 Sheets 57; find App >100=0; device-pending.
