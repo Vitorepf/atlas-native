@@ -16,13 +16,12 @@ struct RootHomeSections: View {
         switch session.phase {
         case .idle where session.threads.isEmpty, .loading where session.threads.isEmpty:
             centered {
-                VStack(spacing: 18) {
-                    BreathingGlyph(reduceMotion: reduceMotion)
-                    Text("abrindo o Atlas…")
-                        .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textTertiary)
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("abrindo o Atlas")
+                WorkspaceLoadingEmpty(
+                    reduceMotion: reduceMotion,
+                    text: "abrindo o Atlas…",
+                    spoken: "abrindo o Atlas",
+                    topPadding: 0
+                )
                 .accessibilityIdentifier(A11yID.homeLoading)
             }
 

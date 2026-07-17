@@ -3,6 +3,33 @@ import AtlasCore
 
 // Estados editoriais — peel de WorkspaceEmptyStates.
 
+/// ✦ + headline editorial compartilhado — workspace vazio e search miss.
+struct AtlasEditorialGlyphEmpty: View {
+    let headline: String
+    var footnote: String? = nil
+    let accessibilityIdentifier: String
+    var spokenLabel: String? = nil
+
+    var body: some View {
+        VStack(spacing: 14) {
+            Text("✦")
+                .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
+            Text(headline)
+                .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
+                .multilineTextAlignment(.center)
+            if let footnote {
+                Text(footnote)
+                    .font(.system(.footnote)).foregroundStyle(AtlasTheme.textTertiary)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(spokenLabel ?? headline)
+        .accessibilityIdentifier(accessibilityIdentifier)
+    }
+}
+
 struct WorkspaceEditorialEmpty: View {
     let area: AtlasArea
     let freeOnly: Bool
@@ -38,19 +65,11 @@ struct WorkspaceEditorialEmpty: View {
     }
 
     var body: some View {
-        VStack(spacing: 14) {
-            Text("✦")
-                .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
-            Text(headline)
-                .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
-                .multilineTextAlignment(.center)
-            Text(footnote)
-                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textTertiary)
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(spokenLabel)
-        .accessibilityIdentifier(A11yID.workspaceEmpty)
+        AtlasEditorialGlyphEmpty(
+            headline: headline,
+            footnote: footnote,
+            accessibilityIdentifier: A11yID.workspaceEmpty,
+            spokenLabel: spokenLabel
+        )
     }
 }

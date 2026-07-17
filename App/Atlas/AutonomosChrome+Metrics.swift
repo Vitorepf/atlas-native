@@ -27,14 +27,15 @@ struct DetailMetric: View {
     }
 }
 
-struct AutonomosFleetEmptyState: View {
-    enum Kind { case noAgents, noHistory }
-
-    let kind: Kind
+/// Card vazio Autônomos — caption + copy editorial (frota, histórico, digest).
+struct AutonomosCardEmptyState: View {
+    let caption: String
+    let copy: String
+    let accessibilityIdentifier: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            AutonomosChrome.sectionCaption(kind == .noAgents ? "frota" : "histórico")
+            AutonomosChrome.sectionCaption(caption)
             Text(copy)
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -45,7 +46,21 @@ struct AutonomosFleetEmptyState: View {
         .atlasCard(cornerRadius: 12)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(copy)
-        .accessibilityIdentifier(kind == .noAgents ? A11yID.autonomosFleetEmpty : A11yID.autonomosFleetHistoryEmpty)
+        .accessibilityIdentifier(accessibilityIdentifier)
+    }
+}
+
+struct AutonomosFleetEmptyState: View {
+    enum Kind { case noAgents, noHistory }
+
+    let kind: Kind
+
+    var body: some View {
+        AutonomosCardEmptyState(
+            caption: kind == .noAgents ? "frota" : "histórico",
+            copy: copy,
+            accessibilityIdentifier: kind == .noAgents ? A11yID.autonomosFleetEmpty : A11yID.autonomosFleetHistoryEmpty
+        )
     }
 
     private var copy: String {
