@@ -1,0 +1,49 @@
+import SwiftUI
+import AtlasCore
+
+/// Spoken labels — peel de AtlasCodeRadarView (CICLO C residual honesty).
+/// Shell fala só fase real e contagens do payload; ausência não inventa repositórios.
+
+extension AtlasCodeRadarView {
+    var contentPhaseID: String {
+        switch model.phase {
+        case .idle: return "idle"
+        case .loading: return "loading"
+        case .failed: return "failed"
+        case .loaded:
+            guard let workspace = model.workspace else { return "loaded-nil" }
+            if workspace.repositoryCount == 0 { return "loaded-empty" }
+            return "loaded-\(workspace.repositoryCount)"
+        }
+    }
+
+    var radarShellSpokenLabel: String {
+        var parts = ["Código, workspace do operador"]
+        switch model.phase {
+        case .idle, .loading:
+            parts.append(spokenLoading())
+        case .failed(let message):
+            parts.append(spokenFailed(message))
+        case .loaded:
+            if let workspace = model.workspace, workspace.repositoryCount > 0 {
+                let n = workspace.repositoryCount
+                parts.append("\(n) repositório\(n == 1 ? "" : "s")")
+            } else {
+                parts.append(spokenEmptyWorkspace())
+            }
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    func spokenLoading() -> String { "lendo o workspace" }
+
+    func spokenFailed(_ message: String) -> String {
+        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return "workspace indisponível" }
+        return "workspace indisponível, \(trimmed)"
+    }
+
+    func spokenEmptyWorkspace() -> String { "nenhum repositório neste workspace" }
+
+    static let shellHint = "pastas, recentes e desvios verificados do seu código"
+}

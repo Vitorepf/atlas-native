@@ -18,11 +18,17 @@ struct AtlasCodeRadarView: View {
         ZStack {
             AtlasTheme.bg.ignoresSafeArea()
             content
+                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
         }
         .navigationTitle("Código")
         .navigationBarTitleDisplayMode(.inline)
         .task { if model.phase == .idle { await model.load() } }
         .refreshable { await model.load() }
+        .accessibilityIdentifier(A11yID.radarScreen)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(radarShellSpokenLabel)
+        .accessibilityHint(Self.shellHint)
     }
 
     @ViewBuilder
@@ -31,19 +37,23 @@ struct AtlasCodeRadarView: View {
         case .idle, .loading:
             TraceEvidenceLoading(text: "lendo o seu workspace…", reduceMotion: reduceMotion)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .accessibilityIdentifier(A11yID.radarLoading)
         case .failed(let message):
             AtlasCodeLoadFailureEmpty(
                 headline: "não consegui ler o workspace",
-                message: message,
+                message: message.trimmingCharacters(in: .whitespacesAndNewlines),
                 onRetry: { Task { await model.load() } }
             )
+            .accessibilityLabel(spokenFailed(message))
+            .accessibilityHint("reconecta ao servidor Atlas")
+            .accessibilityIdentifier(A11yID.radarFailure)
         case .loaded:
             if let workspace = model.workspace {
                 AtlasCodeRadarLoadedContent(workspace: workspace, model: model, onOpenRepo: onOpenRepo)
             } else {
-                Text("workspace vazio")
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                Color.clear
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .accessibilityLabel(spokenEmptyWorkspace())
             }
         }
     }
