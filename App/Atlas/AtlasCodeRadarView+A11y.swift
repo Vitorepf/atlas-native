@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels — peel de AtlasCodeRadarView (CICLO C residual honesty).
 /// Shell fala só fase real e contagens do payload; ausência não inventa repositórios.
+/// Spoken helpers → AtlasCodeRadarView+A11ySpoken.swift
 
 extension AtlasCodeRadarView {
     var contentPhaseID: String {
@@ -34,16 +35,4 @@ extension AtlasCodeRadarView {
         }
         return parts.joined(separator: ", ")
     }
-
-    func spokenLoading() -> String { "lendo o workspace" }
-
-    func spokenFailed(_ message: String) -> String {
-        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return "workspace indisponível" }
-        return "workspace indisponível, \(trimmed)"
-    }
-
-    func spokenEmptyWorkspace() -> String { "nenhum repositório neste workspace" }
-
-    static let shellHint = "pastas, recentes e desvios verificados do seu código"
 }

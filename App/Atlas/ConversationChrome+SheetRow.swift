@@ -39,10 +39,3 @@ struct SheetRow: View {
         .overlay(alignment: .bottom) { Divider().overlay(AtlasTheme.separator).padding(.leading, 24) }
     }
 }
-
-struct OptionalAccessibilityIdentifier: ViewModifier {
-    let id: String?
-    func body(content: Content) -> some View {
-        if let id { content.accessibilityIdentifier(id) } else { content }
-    }
-}

@@ -1,6 +1,7 @@
 import Foundation
 
 /// Spoken labels — peel de NightlyProposal (CICLO C residual honesty).
+/// Mute → NightlyProposal+A11yMute.swift
 
 extension NightlyProposalCard {
     static func spokenCardLabel(workspaceText: String) -> String {
@@ -36,15 +37,5 @@ extension NightlyProposalCard {
 
     static func spokenMuteOptionHint() -> String {
         "remove a proposta e pausa notificações, sem toast"
-    }
-}
-
-extension NightlyProposalController {
-    func spokenMuteStatus(now: Date = .init()) -> String? {
-        guard isMuted(now: now), let until = mutedUntil else { return nil }
-        let formatter = RelativeDateTimeFormatter()
-        formatter.locale = Locale(identifier: "pt_BR")
-        formatter.unitsStyle = .full
-        return "propostas noturnas silenciadas até \(formatter.localizedString(for: until, relativeTo: now))"
     }
 }

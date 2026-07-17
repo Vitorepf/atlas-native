@@ -17,13 +17,13 @@ extension ArenaSuiteSheet {
                     .foregroundStyle(engine.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
             }
-            if let cases = ArenaSuiteSheetA11y.casesCaption(for: engine) {
+            if let cases = ArenaSuiteSheetA11yCaptions.casesCaption(for: engine) {
                 Text(cases)
                     .font(AtlasFont.mono(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .accessibilityHidden(true)
             }
-            if let duration = ArenaSuiteSheetA11y.durationCaption(for: engine) {
+            if let duration = ArenaSuiteSheetA11yCaptions.durationCaption(for: engine) {
                 Text(duration)
                     .font(AtlasFont.mono(12))
                     .foregroundStyle(AtlasTheme.textTertiary)

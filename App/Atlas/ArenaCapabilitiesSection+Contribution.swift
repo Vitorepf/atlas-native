@@ -6,7 +6,7 @@ import AtlasCore
 extension ArenaCapabilityRow {
     var contributionLine: String {
         var parts: [String] = []
-        if let cases = ArenaCapabilitiesSectionA11y.casesCaption(for: capability) {
+        if let cases = ArenaCapabilitiesSectionA11yCaptions.casesCaption(for: capability) {
             parts.append(cases)
         }
         if !capability.suitesContributing.isEmpty {

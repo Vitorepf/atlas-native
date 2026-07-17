@@ -4,6 +4,7 @@ import AtlasCore
 
 // Corpo da semana — peel de CodeWeekWidgetView.
 // Metric → AtlasWidgetAccessories+CodeWeek+Metric.swift
+// Quiet → AtlasWidgetAccessories+CodeWeek+Quiet.swift
 
 extension CodeWeekWidgetView {
     @ViewBuilder
@@ -22,18 +23,7 @@ extension CodeWeekWidgetView {
                     .font(.system(size: 10, weight: .semibold, design: .monospaced))
                     .foregroundStyle(Ink.alert)
             }
-            if CodeWeekWidgetA11y.isQuiet(week) {
-                Text("semana quieta · sem commits nem curas")
-                    .font(.system(size: 16, weight: .semibold, design: .serif))
-                    .foregroundStyle(Ink.ink2)
-                    .lineLimit(2)
-            } else {
-                HStack(spacing: 14) {
-                    if week.commits > 0 { weekMetric("\(week.commits)", "commits") }
-                    if week.heals > 0 { weekMetric("\(week.heals)", "curas") }
-                    if week.prevented > 0 { weekMetric("\(week.prevented)", "prevenidos") }
-                }
-            }
+            weekMetricsOrQuiet(week)
             if family == .systemLarge {
                 Text(CodeWeekWidgetA11y.isQuiet(week)
                      ? "abra o radar do Código para ver o grafo"

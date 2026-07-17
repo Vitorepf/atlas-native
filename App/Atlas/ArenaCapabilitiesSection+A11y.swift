@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels — peel de ArenaCapabilitiesSection (CICLO C residual honesty).
 /// Casos/suites só quando o servidor publica; gráfico decorativo.
+/// Captions → ArenaCapabilitiesSection+A11yCaptions.swift
 
 enum ArenaCapabilitiesSectionA11y {
     static func spokenSection(_ capabilities: AtlasArenaCapabilities) -> String {
@@ -15,7 +16,7 @@ enum ArenaCapabilitiesSectionA11y {
         if let mapping = capabilities.mappingVersion.nonEmpty {
             parts.append("mapeamento \(mapping)")
         }
-        if hasChartPoints(capabilities.capabilities) {
+        if ArenaCapabilitiesSectionA11yCaptions.hasChartPoints(capabilities.capabilities) {
             parts.append("gráfico comparativo disponível")
         }
         return parts.joined(separator: ", ")
@@ -27,22 +28,8 @@ enum ArenaCapabilitiesSectionA11y {
             "score \(ArenaFormat.score(capability.score))",
             "com Atlas \(ArenaFormat.score(capability.withAtlas))",
         ]
-        if let cases = casesCaption(for: capability) { parts.append(cases) }
-        if let suites = suitesCaption(for: capability) { parts.append(suites) }
+        if let cases = ArenaCapabilitiesSectionA11yCaptions.casesCaption(for: capability) { parts.append(cases) }
+        if let suites = ArenaCapabilitiesSectionA11yCaptions.suitesCaption(for: capability) { parts.append(suites) }
         return parts.joined(separator: ", ")
-    }
-
-    static func casesCaption(for capability: AtlasArenaCapability) -> String? {
-        guard let total = capability.casesTotal, total > 0 else { return nil }
-        return "\(total) casos"
-    }
-
-    static func suitesCaption(for capability: AtlasArenaCapability) -> String? {
-        guard !capability.suitesContributing.isEmpty else { return nil }
-        return "suites \(capability.suitesContributing.joined(separator: ", "))"
-    }
-
-    static func hasChartPoints(_ capabilities: [AtlasArenaCapability]) -> Bool {
-        capabilities.contains { $0.score != nil || $0.withAtlas != nil }
     }
 }

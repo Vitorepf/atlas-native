@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// A11y e comparação — peel de PlanCard+RevisionHelpers.
+// A11y — peel de PlanCard+RevisionHelpers.
+// Compare → PlanCard+RevisionCompare.swift
 
 extension PlanRevisionCompare {
     func comparisonAccessibilityLabel(_ comparison: RevisionComparison) -> String {
@@ -27,23 +28,5 @@ extension PlanRevisionCompare {
             parts.append("\(rev.stepTitles.count) passos")
         }
         return parts.joined(separator: ", ")
-    }
-
-    var latestComparison: RevisionComparison? {
-        guard let revision = revisions.last(where: { !$0.stepTitles.isEmpty }) else { return nil }
-        let current = plan.steps.map(\.title)
-        let archived = revision.stepTitles
-        return RevisionComparison(
-            revision: revision,
-            left: archived.filter { !current.contains($0) },
-            entered: current.filter { !archived.contains($0) }
-        )
-    }
-
-    struct RevisionComparison {
-        let revision: AtlasTraceGovernance.PlanRevision
-        let left: [String]
-        let entered: [String]
-        var hasChanges: Bool { !left.isEmpty || !entered.isEmpty }
     }
 }

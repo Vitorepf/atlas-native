@@ -1,29 +1,27 @@
 import SwiftUI
 import AtlasCore
 
-// Steer — peel de ExecutionStateCard+ActionButtons.
-// Retry → ExecutionStateCard+Retry.swift
+// Retry fallback — peel de ExecutionStateCard+SteerRetry.
 
 extension ExecutionStateCard {
     @ViewBuilder
-    var steerButton: some View {
-        if let onSteer {
+    var retryFallbackButton: some View {
+        if showsRetryFallback, let retryableJobId {
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                onSteer()
+                onRetry(retryableJobId)
             } label: {
-                Text("Redirecionar")
+                Text("Retomar")
                     .font(.system(.caption, weight: .semibold))
-                    .lineLimit(1)
                     .padding(.horizontal, 11).padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(ExecutionStateActionStyle(
-                style: .secondary,
+                style: .primary,
                 reduceMotion: reduceMotion
             ))
-            .accessibilityLabel("redirecionar esta execução")
-            .accessibilityHint("abre instrução para o próximo checkpoint seguro")
+            .accessibilityLabel("retomar execução a partir do último checkpoint")
+            .accessibilityHint("reenfileira o job que falhou")
         }
     }
 }
