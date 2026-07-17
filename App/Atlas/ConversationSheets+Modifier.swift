@@ -5,6 +5,7 @@ import AtlasCore
 
 // Observers → ConversationSheets+ModifierObservers.swift
 // Review/steer → ConversationSheets+ModifierReview.swift
+// Mode/effort → ConversationSheets+ModifierMode.swift
 
 struct ConversationComposerSheetsModifier: ViewModifier {
     var model: ConversationModel
@@ -27,9 +28,7 @@ struct ConversationComposerSheetsModifier: ViewModifier {
         handoffAndQueueObservers(on:
             attachmentModifiers(on:
                 reviewSteerQueueSheets(on:
-                    content
-                    .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
-                    .sheet(isPresented: $showEffortSheet) { EffortSheet(model: model) }
+                    modeEffortSheets(on: content)
                 )
             )
         )

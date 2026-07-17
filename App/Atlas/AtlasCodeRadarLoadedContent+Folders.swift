@@ -1,7 +1,8 @@
 import AtlasCore
 import SwiftUI
 
-// Radar folders + loose — peel de AtlasCodeRadarLoadedContent+Sections.
+// Radar folders — peel de AtlasCodeRadarLoadedContent+Sections.
+// Loose → AtlasCodeRadarLoadedContent+Loose.swift
 
 extension AtlasCodeRadarLoadedContent {
     @ViewBuilder
@@ -21,16 +22,6 @@ extension AtlasCodeRadarLoadedContent {
                 if folder.id != workspace.folders.last?.id { AtlasCodeRadarRowDivider() }
             }
         }
-
-        if !workspace.loose.isEmpty {
-            AtlasCodeRadarSectionLabel(text: "AVULSOS", accessibilityID: A11yID.radarLoose)
-                .padding(.top, 22)
-            ForEach(workspace.loose) { repo in
-                AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), trunk: model.trunk(for: repo.slug), showsFolder: false) {
-                    onOpenRepo(repo.slug)
-                }
-                if repo.id != workspace.loose.last?.id { AtlasCodeRadarRowDivider() }
-            }
-        }
+        radarLooseSection
     }
 }

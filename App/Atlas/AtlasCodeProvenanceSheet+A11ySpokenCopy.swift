@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 // Provenance spoken helpers — peel de AtlasCodeProvenanceSheet+A11y.
+// Hints/fail → AtlasCodeProvenanceSheet+A11yHints.swift
 
 extension AtlasCodeProvenanceSheet {
     func spokenLawCitation() -> String? {
@@ -20,15 +21,4 @@ extension AtlasCodeProvenanceSheet {
         parts.append("há \(AtlasCodeRelativeTime.short(from: node.authoredAt))")
         return parts.joined(separator: ", ")
     }
-
-    func spokenLoading() -> String { "lendo proveniência do commit" }
-
-    func spokenFailed(_ message: String) -> String {
-        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return "proveniência indisponível" }
-        return "proveniência indisponível, \(trimmed)"
-    }
-
-    static let sheetHint = "estado do commit, lei aplicável e o que o ledger registrou"
-    static let askHint = "abre conversa com este commit no assunto"
 }

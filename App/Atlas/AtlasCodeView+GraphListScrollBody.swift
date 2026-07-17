@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Graph list scroll body — peel de AtlasCodeView+GraphListScroll.
+// Head → AtlasCodeView+GraphListScrollHead.swift
 
 extension AtlasCodeView {
     @ViewBuilder
@@ -11,19 +12,8 @@ extension AtlasCodeView {
         filterSilence: Bool
     ) -> some View {
         LazyVStack(alignment: .leading, spacing: 0) {
-            statusCapsule
-                .padding(.bottom, 14)
-
-            if !graph.worktrees.isEmpty {
-                worktreesSection(graph.worktrees)
-                    .padding(.bottom, 14)
-            }
-
-            graphStateChips(graph, filterSilence: filterSilence)
-                .padding(.bottom, 10)
-
+            graphListScrollHead(graph: graph, filterSilence: filterSilence)
             graphCommitRows(filteredNodes)
-
             graphListTail(graph: graph)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)

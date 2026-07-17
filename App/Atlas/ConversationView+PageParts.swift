@@ -3,6 +3,7 @@ import PhotosUI
 import AtlasCore
 
 // Conversation page messages stack — peel de ConversationView+Page.
+// Composer → ConversationView+PageComposer.swift
 
 extension ConversationView {
     var conversationMessagesStack: some View {
@@ -25,26 +26,5 @@ extension ConversationView {
                 onCopy: copy
             )
         }
-    }
-
-    var conversationComposerBind: some View {
-        ConversationComposer(
-            model: model,
-            session: session,
-            reduceMotion: reduceMotion,
-            focused: $focused,
-            mode: $mode,
-            showModeSheet: $showModeSheet,
-            showWorkspaceSheet: $showWorkspaceSheet,
-            showEffortSheet: $showEffortSheet,
-            showQueueSheet: $showQueueSheet,
-            showAttachmentSheet: $showAttachmentSheet,
-            pickedPhoto: $pickedPhoto,
-            showFileImporter: $showFileImporter,
-            showCamera: $showCamera,
-            reviewTrace: $reviewTrace,
-            artifactTrace: $artifactTrace,
-            steerTrace: $steerTrace
-        )
     }
 }

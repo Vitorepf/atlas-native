@@ -6,6 +6,7 @@ import AtlasCore
 /// global, saúde da fila e recibos governados. Nada é inferido; ausência de
 /// dado é ausência na tela (C13: estado só aparece com a prova correspondente).
 /// Content → AutonomosView+Content.swift · Lifecycle → AutonomosView+Lifecycle.swift
+/// Header → AutonomosView+HeaderStack.swift
 struct AutonomosView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
@@ -25,19 +26,7 @@ struct AutonomosView: View {
         autonomosLifecycleChrome(
             ZStack {
                 AtlasTheme.bg.ignoresSafeArea()
-                VStack(spacing: 0) {
-                    AutonomosViewHeader(
-                        auditModeEnabled: session.auditModeEnabled,
-                        canRefresh: model.selectedArea != nil,
-                        isHealthy: isHeaderHealthy,
-                        reduceMotion: reduceMotion,
-                        onBack: { dismiss() },
-                        onRefresh: { Task { await model.refreshSelected() } }
-                    )
-                    content
-                        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
-                        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-                }
+                autonomosHeaderStack
             }
         )
     }

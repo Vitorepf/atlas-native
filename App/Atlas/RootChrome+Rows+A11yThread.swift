@@ -1,6 +1,6 @@
 import Foundation
 
-// Thread spoken — peel de RootChrome+Rows+A11y.
+// Thread spoken body — peel de RootChrome+Rows+A11yThread.
 
 extension RootChromeRowA11y {
     static func threadSpoken(
@@ -11,19 +11,12 @@ extension RootChromeRowA11y {
         hasWorkspace: Bool
     ) -> String {
         var parts = [title]
-        if isRunning {
-            parts.append("Atlas executando")
-        } else if messageCount == 0 {
-            parts.append("nenhuma mensagem")
-        } else {
-            parts.append("\(messageCount) mensagem\(messageCount == 1 ? "" : "ns")")
-        }
-        if isNew && !isRunning {
-            parts.append("novo desde a última visita")
-        }
-        if hasWorkspace {
-            parts.append("com workspace")
-        }
+        parts.append(contentsOf: threadStatusParts(
+            messageCount: messageCount,
+            isRunning: isRunning,
+            isNew: isNew,
+            hasWorkspace: hasWorkspace
+        ))
         return parts.joined(separator: ", ")
     }
 
