@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // navigationDestination — peel de RootView (régua ≤100).
+// Code → RootView+DestinationsCode.swift
 
 extension RootView {
     @ViewBuilder
@@ -21,13 +22,8 @@ extension RootView {
             AutonomosView()
         case .arena:
             AtlasArenaView(model: session.arena)
-        case .code:
-            // A porta do domínio é o radar: a frota primeiro, o repo depois.
-            AtlasCodeRadarView(client: session.client) { repo in
-                path.append(Route.codeGraph(repo: repo))
-            }
-        case .codeGraph(let repo):
-            AtlasCodeView(client: session.client, repo: repo)
+        case .code, .codeGraph(_):
+            rootCodeDestination(for: route)
         }
     }
 }
