@@ -8,12 +8,7 @@ import AtlasCore
 extension WorkspaceView {
     var areaFilter: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(AtlasArea.allCases) { a in
-                    areaFilterChip(a, active: a == area)
-                }
-            }
-            .padding(.horizontal, AtlasTheme.Space.screen)
+            areaFilterChipRow
         }
         .padding(.vertical, 10)
         .accessibilityIdentifier(A11yID.workspaceAreaFilter)

@@ -8,13 +8,6 @@ import AtlasCore
 extension AutonomosView {
     @ViewBuilder
     var content: some View {
-        switch model.phase {
-        case .idle, .loading:
-            loadingContent
-        case .failed(let message):
-            failedContent(message: message)
-        case .loaded:
-            loadedContent
-        }
+        autonomosPhaseRouter
     }
 }

@@ -16,11 +16,6 @@ struct AutonomosAreaDetailSection: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        areaDetailBody
-            .padding(16)
-            .background(RoundedRectangle(cornerRadius: 18).fill(AtlasTheme.surface))
-            .overlay(RoundedRectangle(cornerRadius: 18).stroke(AtlasTheme.separator, lineWidth: 1))
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier(A11yID.autonomosAreaDetailSection)
+        areaDetailCardChrome(areaDetailBody)
     }
 }

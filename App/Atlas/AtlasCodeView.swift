@@ -30,13 +30,7 @@ struct AtlasCodeView: View {
 
     var body: some View {
         codeSheetsBind(
-            codeScreenChrome(
-                ZStack(alignment: .bottom) {
-                    AtlasTheme.bg.ignoresSafeArea()
-                    content
-                    askPill
-                }
-            )
+            codeScreenChrome(codeScreenZStack)
         )
     }
 }

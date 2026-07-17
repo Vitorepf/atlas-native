@@ -12,9 +12,7 @@ extension FleetWidgetView {
     ) -> some View {
         content
             .id(FleetWidgetA11y.contentPhaseID(snapshot: snapshot, stale: stale))
-            .transaction { transaction in
-                if reduceMotion { transaction.disablesAnimations = true }
-            }
+            .transaction { transaction in fleetA11yTransaction(&transaction) }
             .accessibilityElement(children: .combine)
             .accessibilityLabel(FleetWidgetA11y.spokenLabel(
                 snapshot: snapshot,

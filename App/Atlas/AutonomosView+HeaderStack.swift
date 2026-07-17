@@ -14,9 +14,7 @@ extension AutonomosView {
                 onBack: { dismiss() },
                 onRefresh: { Task { await model.refreshSelected() } }
             )
-            content
-                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
-                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
+            autonomosContentAnimated
         }
     }
 }

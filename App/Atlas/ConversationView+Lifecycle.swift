@@ -10,11 +10,10 @@ extension ConversationView {
     func conversationLifecycleModifiers<Content: View>(_ content: Content) -> some View {
         conversationOutlineSheet(
             conversationPresenceModifiers(
-                applyCacheLifecycleModifiers(content)
-                    .task { await model.load() }
-                    .onChange(of: model.isSending) { was, now in
-                        if was && !now { AtlasMotion.successNotification(reduceMotion: reduceMotion) }
-                    }
+                applySendHaptic(
+                    applyCacheLifecycleModifiers(content)
+                        .task { await model.load() }
+                )
             )
         )
     }
