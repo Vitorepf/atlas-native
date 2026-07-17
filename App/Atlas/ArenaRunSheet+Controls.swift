@@ -10,18 +10,21 @@ extension ArenaRunSheet {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.middle)
+                .accessibilityHidden(true)
             Text(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
                 .font(.system(.callout, weight: .semibold))
                 .foregroundStyle(AtlasTheme.accent)
+                .accessibilityHidden(true)
             if receipt.workerImplemented == false {
                 Text("worker de medição ainda não implementado")
                     .font(.system(.caption))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
             }
         }
         .padding(14)
         .atlasCard()
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenReceiptLabel(receipt))
         .accessibilityIdentifier(A11yID.arenaRunReceipt)
     }
@@ -32,6 +35,7 @@ extension ArenaRunSheet {
                 .font(.system(.caption, weight: .semibold))
                 .tracking(1.2)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
             content()
         }
     }
@@ -42,14 +46,17 @@ extension ArenaRunSheet {
                 Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(isOn ? AtlasTheme.accent : AtlasTheme.textTertiary)
                     .modifier(ArenaToggleSymbolBounce(enabled: !reduceMotion, isOn: isOn))
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
                         .font(.system(.callout, weight: .medium))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityHidden(true)
                     if let subtitle {
                         Text(subtitle)
                             .font(AtlasFont.mono(10))
                             .foregroundStyle(AtlasTheme.textTertiary)
+                            .accessibilityHidden(true)
                     }
                 }
                 Spacer()

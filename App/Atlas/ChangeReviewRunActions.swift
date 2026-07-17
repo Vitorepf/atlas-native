@@ -16,6 +16,7 @@ struct ChangeReviewRunActions: View {
             HStack(spacing: 10) {
                 if available.contains(.accept) {
                     Button {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                         applying = true
                         Task { await reviews.applyChangeReview(traceId: traceId, action: .accept); applying = false }
                     } label: {
@@ -31,6 +32,7 @@ struct ChangeReviewRunActions: View {
                 }
                 if available.contains(.reject) {
                     Button {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                         applying = true
                         Task { await reviews.applyChangeReview(traceId: traceId, action: .reject); applying = false }
                     } label: {
