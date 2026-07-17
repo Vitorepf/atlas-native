@@ -92,6 +92,11 @@ struct RootView: View {
             }
         }
         .onOpenURL { url in
+            if url.scheme == "atlas", url.host == "code",
+               let repo = url.pathComponents.dropFirst().first, !repo.isEmpty {
+                path.append(Route.codeGraph(repo: repo))
+                return
+            }
             guard url.scheme == "atlas", url.host == "execution",
                   let traceId = url.pathComponents.dropFirst().first, !traceId.isEmpty else { return }
             Task { @MainActor in
@@ -126,7 +131,9 @@ struct RootView: View {
                 .accessibilityIdentifier(A11yID.topbarCode)
             Spacer()
             CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
+                .keyboardShortcut("k", modifiers: .command)
             CircleButton(icon: "plus") { path.append(Route.new) }
+                .keyboardShortcut("n", modifiers: .command)
         }
         // Nameplate "Atlas" centralizado + filete dourado — a assinatura
         // editorial do masthead (mesma do ícone).
@@ -285,6 +292,7 @@ struct RootView: View {
         case .connectionRefused: return "O servidor do Atlas não está de pé."
         case .connectionLost: return "A conexão caiu no meio do caminho."
         case .unauthorized: return "A chave do Atlas foi recusada."
+        case .maintenance: return "Atlas está em manutenção."
         case .serverUnavailable: return "O servidor está indisponível."
         case .other, nil: return "O servidor está fora de alcance."
         }
@@ -298,6 +306,7 @@ struct RootView: View {
         case .connectionRefused: return "No Mac, suba o servidor: o container atlas-backend parou."
         case .connectionLost: return "Instabilidade momentânea — tentar de novo costuma resolver."
         case .unauthorized: return "O ATLAS_TOKEN mudou no servidor. Atualize o Secrets.xcconfig e reinstale."
+        case .maintenance: return "O servidor pediu uma pausa via Retry-After. O app aguarda você tentar de novo quando a janela terminar."
         case .serverUnavailable: return "O servidor respondeu, mas está fora do ar. Veja os logs no Mac."
         case .other, nil: return "Confira se o Mac está acordado e o Tailscale ligado — a conversa continua de onde parou."
         }
@@ -409,6 +418,7 @@ struct RootView: View {
             .background(Capsule().fill(AtlasTheme.surface).overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
         }
         .buttonStyle(.plain)
+        .keyboardShortcut("n", modifiers: .command)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
             LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
@@ -494,6 +504,7 @@ private struct WorkspaceRow: View {
                     Text("\(count)")
                         .font(.system(.callout))
                         .foregroundStyle(AtlasTheme.textTertiary)
+                        .monospacedDigit()
                         .contentTransition(.numericText())
                 }
                 Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
@@ -514,6 +525,7 @@ struct ThreadRow: View {
 
     private var isRunning: Bool { TurnPresence.shared.runningTitles.contains(thread.title) }
     private var isNew: Bool { ConversationModel.hasNewerContent(thread) }
+    private var workspaceTint: Color? { thread.workspace.map(threadWorkspaceColor) }
 
     var body: some View {
         HStack(spacing: 14) {
@@ -539,12 +551,27 @@ struct ThreadRow: View {
                 Text("\(thread.messageCount)")
                     .font(.system(size: 16))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .monospacedDigit()
                     .contentTransition(.numericText())
             }
             Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
+        .overlay(alignment: .leading) {
+            if let workspaceTint {
+                Rectangle()
+                    .fill(workspaceTint.opacity(0.85))
+                    .frame(width: 2)
+                    .padding(.vertical, 10)
+            }
+        }
         .contentShape(Rectangle())
         .accessibilityHint(isRunning ? "Atlas executando nesta conversa" : "")
     }
+}
+
+private func threadWorkspaceColor(_ workspace: String) -> Color {
+    let palette = [AtlasTheme.accent, AtlasTheme.prussian, AtlasTheme.domAutonomos, AtlasTheme.domOperacional]
+    let total = workspace.unicodeScalars.reduce(0) { $0 + Int($1.value) }
+    return palette[abs(total) % palette.count]
 }

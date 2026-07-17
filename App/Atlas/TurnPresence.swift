@@ -217,12 +217,12 @@ final class TurnPresence {
         let excerpt = model.bubbles.last(where: { $0.role == "assistant" })?.text ?? ""
         let content = UNMutableNotificationContent()
         content.title = failed ? "O turno falhou" : "Atlas respondeu"
-        content.subtitle = entry.threadTitle
+        content.subtitle = Self.lockScreenText(entry.threadTitle, limit: 48)
         // O texto SEM a sintaxe: este é o mesmo campo que a tela entrega ao
         // parser markdown, e ia cru para a Lock Screen — o operador longe do app
         // lia `**pronto**` e `## Resposta` em vez da resposta.
         content.body = failed ? "Toque para ver o motivo e retomar."
-                              : String(AtlasMarkdown.plainText(excerpt).prefix(140))
+                              : Self.lockScreenText(AtlasMarkdown.plainText(excerpt), limit: 140)
         content.sound = .default
         UNUserNotificationCenter.current().add(
             UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil))
@@ -247,7 +247,8 @@ final class TurnPresence {
     /// acumulado) e mostra exatamente o tempo ATIVO; pausado congela o
     /// acumulado em texto; trace legado cai na base local sem fingir pausas.
     private func contentState(_ entry: Entry, presence p: AtlasExecutionPresence?,
-                              finished: Bool, phaseOverride: String? = nil)
+                              finished: Bool, phaseOverride: String? = nil,
+                              progress: AtlasExecutionPlan.Progress? = nil)
         -> AtlasTurnAttributes.ContentState {
         var started = entry.startedAt
         var paused: Bool? = nil
@@ -263,13 +264,17 @@ final class TurnPresence {
                 pausedDisplay = Self.clock(ms)   // congela o total ativo no fim
             }
         }
+        if started > Date() { started = Date() }
         return AtlasTurnAttributes.ContentState(
             phaseTitle: phaseOverride ?? p?.phaseTitle ?? (finished ? "resposta pronta" : "Executando"),
             startedAt: started,
             finished: finished,
             activeSessions: max(finished ? 0 : 1, activeCount),
             paused: paused,
-            pausedDisplay: pausedDisplay)
+            pausedDisplay: pausedDisplay,
+            progressCurrent: progress?.current,
+            progressTotal: progress?.total,
+            queuedCount: entry.model?.queuedMessages.count)
     }
 
     private static func clock(_ ms: Int) -> String {
@@ -278,12 +283,21 @@ final class TurnPresence {
                          : String(format: "%d:%02d", s / 60, s % 60)
     }
 
+    private static func lockScreenText(_ value: String, limit: Int) -> String {
+        let collapsed = value
+            .replacingOccurrences(of: "\n", with: " ")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard collapsed.count > limit else { return collapsed }
+        return String(collapsed.prefix(max(0, limit - 1))) + "…"
+    }
+
     private func startActivity(_ entry: Entry, traceId: TraceID, presence: AtlasExecutionPresence,
                                phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         entry.activityKey = traceId
-        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride)
+        let progress = entry.model?.bubbles.last(where: { $0.traceId == traceId })?.executionProgress
+        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride, progress: progress)
         guard let activity = try? Activity.request(
             attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: traceId.rawValue),
             content: .init(state: state, staleDate: nil),
@@ -302,7 +316,8 @@ final class TurnPresence {
                                 phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
         guard let key = entry.activityKey else { return }
-        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride)
+        let progress = entry.model?.bubbles.last(where: { $0.traceId == key })?.executionProgress
+        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride, progress: progress)
         Task { @MainActor in
             for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key.rawValue {
                 await a.update(.init(state: state, staleDate: nil))
@@ -315,8 +330,9 @@ final class TurnPresence {
                                 phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
         guard let key = entry.activityKey else { return }
+        let progress = entry.model?.bubbles.last(where: { $0.traceId == key })?.executionProgress
         let state = contentState(entry, presence: presence, finished: true,
-                                 phaseOverride: phaseOverride)
+                                 phaseOverride: phaseOverride, progress: progress)
         let model = entry.model
         let closed = phaseOverride == "sessão encerrada"
         Task { @MainActor in

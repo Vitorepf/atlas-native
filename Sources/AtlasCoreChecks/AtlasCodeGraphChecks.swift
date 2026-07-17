@@ -10,6 +10,7 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
       "head":"9a06fd4c56",
       "default_branch":"main",
       "nodes":[{"hash":"9a06fd4c56","parents":["4b2b61f974","7c1e8d2a90"],"refs":["HEAD -> main","origin/main"],"author_name":"Vitor Freire","author_email":"vitor@example.test","authored_at":1784316000,"message":"feat(brain): council_review por membro"}],
+      "worktrees":[{"path_label":"atlas-native","branch":"main","head":"9a06fd4c56","state":"clean"}],
       "pagination":{"limit":200,"before":null,"has_more":false}
     }
     """
@@ -19,6 +20,7 @@ public func runAtlasCodeGraphChecks(_ check: (String, Bool) -> Void) {
 
     check("grafo C22 preserva o hash e os pais reais", decoded?.nodes.first?.hash == "9a06fd4c56" && decoded?.nodes.first?.parents.count == 2)
     check("grafo C22 preserva autor e refs", decoded?.nodes.first?.authorEmail == "vitor@example.test" && decoded?.nodes.first?.refs.first == "HEAD -> main")
+    check("grafo C22 preserva worktrees públicos", decoded?.worktrees.first?.branch == "main" && decoded?.worktrees.first?.pathLabel == "atlas-native")
 
     // A mensagem do commit é a manchete da tela: sem ela, a linha não existe.
     check("grafo C22 traz a mensagem do commit verbatim", decoded?.nodes.first?.message == "feat(brain): council_review por membro")

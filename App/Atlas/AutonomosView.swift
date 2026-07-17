@@ -8,6 +8,7 @@ import AtlasCore
 struct AutonomosView: View {
     @Environment(AtlasSession.self) private var session
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @State private var control: AtlasAutonomosRunAction?
     @State private var startRunMode: AtlasAutonomosStartRunMode?
     @State private var showTransferSheet = false
@@ -329,6 +330,12 @@ struct AutonomosView: View {
                     if pending > 0 { digestChip("\(pending)", "tarefas na fila") }
                     if inbox > 0 { digestChip("\(inbox)", "decisões aguardam") }
                 }
+                if let oldest = oldestBacklogCreatedAt() {
+                    Text("item mais antigo · \(Self.relativeAge(from: oldest))")
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.domOperacional)
+                        .monospacedDigit()
+                }
                 if let byRisk = model.backlog?.findings.byRisk, !byRisk.isEmpty {
                     HStack(spacing: 6) {
                         ForEach(byRisk.sorted(by: { $0.value > $1.value }), id: \.key) { risk, n in
@@ -354,11 +361,20 @@ struct AutonomosView: View {
     private func digestChip(_ value: String, _ label: String) -> some View {
         HStack(spacing: 5) {
             Text(value).font(AtlasFont.mono(14)).foregroundStyle(AtlasTheme.accent)
+                .monospacedDigit()
                 .contentTransition(.numericText())
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
         }
         .padding(.horizontal, 9).padding(.vertical, 6)
         .background(Capsule().fill(AtlasTheme.bgRecessed))
+    }
+
+    private func oldestBacklogCreatedAt() -> Date? {
+        guard let backlog = model.backlog else { return nil }
+        let values = backlog.workOrders.compactMap { AtlasTime.date($0.createdAt) }
+            + backlog.inboxItems.compactMap { AtlasTime.date($0.createdAt) }
+            + backlog.findings.items.compactMap { AtlasTime.date($0.createdAt) }
+        return values.min()
     }
 
     // MARK: - Aguarda operador (M139)
@@ -673,23 +689,45 @@ struct AutonomosView: View {
                         .buttonStyle(.plain)
                         .accessibilityLabel("recibo de auto-construção, ciclo \(cycle.cycleIndex), merge \(String(cycle.mergeHash.prefix(8)))")
                     } else {
-                        deliveredRow(cycle)
+                        if let repo = area.repositoryNames.first?.nonEmpty {
+                            Button {
+                                openCommit(cycle.mergeHash, repo: repo)
+                            } label: {
+                                deliveredRow(cycle, graphHint: true)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("abrir merge \(String(cycle.mergeHash.prefix(8))) no grafo de \(repo)")
+                        } else {
+                            deliveredRow(cycle)
+                        }
                     }
                 }
             }
         }
     }
 
-    private func deliveredRow(_ cycle: AtlasAutonomosCycle) -> some View {
+    private func deliveredRow(_ cycle: AtlasAutonomosCycle, graphHint: Bool = false) -> some View {
         HStack(spacing: 8) {
             Text("ciclo \(cycle.cycleIndex)").font(.caption).foregroundStyle(AtlasTheme.textSecondary)
             Text(String(cycle.mergeHash.prefix(8))).font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .monospacedDigit()
+            if graphHint {
+                Image(systemName: "point.3.connected.trianglepath.dotted")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.accent)
+            }
             Spacer()
             Text(cycle.recordedAt).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(1)
         }
         .contentShape(Rectangle())
+    }
+
+    private func openCommit(_ hash: String, repo: String) {
+        guard let url = URL(string: "atlas://code/\(repo)?commit=\(hash)") else { return }
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        openURL(url)
     }
 
     private func isSelfConstructionArea(_ area: AtlasAutonomosArea) -> Bool {
@@ -817,6 +855,15 @@ struct AutonomosView: View {
         if seconds >= 3600 { return "\(seconds / 3600)h \((seconds % 3600) / 60)m" }
         return "\(seconds / 60)m"
     }
+
+    fileprivate static func relativeAge(from date: Date, now: Date = Date()) -> String {
+        let seconds = max(0, Int(now.timeIntervalSince(date)))
+        let days = seconds / 86_400
+        if days > 0 { return days == 1 ? "1 dia" : "\(days) dias" }
+        let hours = seconds / 3_600
+        if hours > 0 { return "\(hours)h" }
+        return "\(max(1, seconds / 60))min"
+    }
 }
 
 extension AtlasAutonomosStartRunMode {
@@ -912,6 +959,12 @@ private struct AutonomosPublicDetailSheet: View {
                     detailField("risk", item.riskLevel)
                     detailField("priority", "\(item.priorityScore)")
                     detailField("status", item.status)
+                    if let createdAt = item.createdAt {
+                        detailField("criado", createdAt)
+                        if let date = AtlasTime.date(createdAt) {
+                            detailField("idade", AutonomosView.relativeAge(from: date))
+                        }
+                    }
                     detailField("branch isolation", item.requiresBranchIsolation ? "sim" : "não")
                     detailField("decisão do operador", item.operatorDecisionRequired ? "sim" : "não")
                     detailField("evidência exigida", item.evidenceRequired ? "sim" : "não")
@@ -925,6 +978,12 @@ private struct AutonomosPublicDetailSheet: View {
                     detailField("route", item.route)
                     detailField("risk", item.riskLevel)
                     detailField("priority", "\(item.priorityScore)")
+                    if let createdAt = item.createdAt {
+                        detailField("criado", createdAt)
+                        if let date = AtlasTime.date(createdAt) {
+                            detailField("idade", AutonomosView.relativeAge(from: date))
+                        }
+                    }
                     detailField("decisão exigida", item.decisionRequired ? "sim" : "não")
                     detailField("opções", item.decisionOptions.joined(separator: " · "))
                 }
@@ -947,6 +1006,12 @@ private struct AutonomosPublicDetailSheet: View {
                     detailField("priority", "\(item.priorityScore)")
                     detailField("route", item.route)
                     detailField("count", "\(item.count)")
+                    if let createdAt = item.createdAt {
+                        detailField("criado", createdAt)
+                        if let date = AtlasTime.date(createdAt) {
+                            detailField("idade", AutonomosView.relativeAge(from: date))
+                        }
+                    }
                     if let rule = item.ruleId { detailField("rule id", rule) }
                     if let text = item.ruleText { detailField("rule", text) }
                 }

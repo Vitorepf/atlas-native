@@ -24,10 +24,12 @@ public struct AtlasApiError: Error, CustomStringConvertible, Sendable {
     public let status: Int
     public let path: String
     public let message: String
-    public init(status: Int, path: String, message: String) {
+    public let retryAfterSeconds: Int?
+    public init(status: Int, path: String, message: String, retryAfterSeconds: Int? = nil) {
         self.status = status
         self.path = path
         self.message = message
+        self.retryAfterSeconds = retryAfterSeconds
     }
     public var description: String { "AtlasApiError(\(status), \(path)): \(message)" }
 }
@@ -39,6 +41,16 @@ public struct AtlasRawDataResponse: Sendable {
     public let atlasSha256: String?
 }
 
+public struct AtlasNetworkPathCost: Sendable, Equatable {
+    public let isExpensive: Bool
+    public let isConstrained: Bool
+
+    public init(isExpensive: Bool = false, isConstrained: Bool = false) {
+        self.isExpensive = isExpensive
+        self.isConstrained = isConstrained
+    }
+}
+
 /// The request engine — the Swift analog of `apiRequest<T>` (lib/api/core.ts).
 /// `URLSession` + async/await + `Codable`. Auth via `X-Atlas-Token` (the lane
 /// the /ai/* surface uses; the mobile Bearer lane ports with device pairing).
@@ -48,6 +60,7 @@ public actor AtlasClient: AtlasAiStreamSource {
     private let session: URLSession
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
+    private var pathCost = AtlasNetworkPathCost()
 
     public init(config: AtlasConfig, session: URLSession = .shared) {
         self.config = config
@@ -60,6 +73,25 @@ public actor AtlasClient: AtlasAiStreamSource {
         self.encoder = e
     }
 
+    public func setNetworkPathCost(_ cost: AtlasNetworkPathCost) {
+        pathCost = cost
+    }
+
+    private func adjustedTimeout(_ timeout: TimeInterval) -> TimeInterval {
+        Self.adaptiveTimeout(timeout, cost: pathCost)
+    }
+
+    public static func adaptiveTimeout(_ timeout: TimeInterval, cost: AtlasNetworkPathCost) -> TimeInterval {
+        let multiplier: TimeInterval
+        switch (cost.isExpensive, cost.isConstrained) {
+        case (true, true): multiplier = 2.0
+        case (_, true): multiplier = 1.75
+        case (true, false): multiplier = 1.35
+        case (false, false): multiplier = 1.0
+        }
+        return min(max(timeout * multiplier, timeout), 600)
+    }
+
     // MARK: - Verbs (mirror apiGet/apiPost/apiPatch/apiDelete)
 
     public func get<T: Decodable>(_ path: String, auth: Bool = true) async throws -> T {
@@ -67,6 +99,7 @@ public actor AtlasClient: AtlasAiStreamSource {
     }
 
     public func getData(_ path: String, auth: Bool = true, timeout: TimeInterval = 15) async throws -> AtlasRawDataResponse {
+        let timeout = adjustedTimeout(timeout)
         guard let url = URL(string: config.base + path) else {
             throw AtlasApiError(status: 0, path: path, message: "URL inválida")
         }
@@ -80,7 +113,12 @@ public actor AtlasClient: AtlasAiStreamSource {
         let http = response as? HTTPURLResponse
         let status = http?.statusCode ?? 0
         guard (200..<300).contains(status) else {
-            throw AtlasApiError(status: status, path: path, message: Self.errorMessage(data) ?? "HTTP \(status)")
+            throw AtlasApiError(
+                status: status,
+                path: path,
+                message: Self.errorMessage(data) ?? "HTTP \(status)",
+                retryAfterSeconds: Self.retryAfterSeconds(from: http)
+            )
         }
 
         return AtlasRawDataResponse(
@@ -109,6 +147,7 @@ public actor AtlasClient: AtlasAiStreamSource {
     }
 
     private func request<T: Decodable>(_ path: String, method: String, body: Data?, auth: Bool, timeout: TimeInterval = 15) async throws -> T {
+        let timeout = adjustedTimeout(timeout)
         guard let url = URL(string: config.base + path) else {
             throw AtlasApiError(status: 0, path: path, message: "URL inválida")
         }
@@ -123,9 +162,15 @@ public actor AtlasClient: AtlasAiStreamSource {
         }
 
         let (data, response) = try await session.data(for: req)
-        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        let http = response as? HTTPURLResponse
+        let status = http?.statusCode ?? 0
         guard (200..<300).contains(status) else {
-            throw AtlasApiError(status: status, path: path, message: Self.errorMessage(data) ?? "HTTP \(status)")
+            throw AtlasApiError(
+                status: status,
+                path: path,
+                message: Self.errorMessage(data) ?? "HTTP \(status)",
+                retryAfterSeconds: Self.retryAfterSeconds(from: http)
+            )
         }
         return try decoder.decode(T.self, from: data)
     }
@@ -138,6 +183,17 @@ public actor AtlasClient: AtlasAiStreamSource {
         if let errs = obj["errors"] as? [String: Any], let first = errs.values.first {
             if let arr = first as? [String], let m = arr.first { return m }
             if let s = first as? String { return s }
+        }
+        return nil
+    }
+
+    static func retryAfterSeconds(from response: HTTPURLResponse?) -> Int? {
+        guard let raw = response?.value(forHTTPHeaderField: "Retry-After")?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+              !raw.isEmpty else { return nil }
+        if let seconds = Int(raw), seconds >= 0 { return seconds }
+        if let date = HTTPDateParser.date(from: raw) {
+            return max(0, Int(ceil(date.timeIntervalSinceNow)))
         }
         return nil
     }
@@ -170,8 +226,9 @@ public actor AtlasClient: AtlasAiStreamSource {
         timeoutSeconds: Int
     ) async throws -> AsyncThrowingStream<AtlasAiStreamFrame, Error> {
         let cfg = config
+        let adjustedWindow = Int(adjustedTimeout(TimeInterval(timeoutSeconds)).rounded(.up))
         return AsyncThrowingStream { continuation in
-            let timeout = min(max(timeoutSeconds, 5), 600)
+            let timeout = min(max(adjustedWindow, 5), 600)
             let cursor = max(0, after)
             let path = AtlasRoute.aiInteractionStream(traceId, timeout: timeout, after: cursor)
             guard let url = URL(string: cfg.base + path) else {
@@ -430,6 +487,16 @@ public struct AtlasHealthResponse: Decodable, Sendable {
     public let version: String?
     public let overallOk: Bool?
     public let dbConnected: Bool?
+}
+
+private enum HTTPDateParser {
+    static func date(from value: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "EEE',' dd MMM yyyy HH':'mm':'ss zzz"
+        return formatter.date(from: value)
+    }
 }
 
 // MARK: - queryString (verbatim de core.ts)

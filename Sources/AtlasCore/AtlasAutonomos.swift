@@ -210,6 +210,7 @@ public struct AtlasAutonomosFinding: Codable, Sendable, Equatable, Identifiable 
     public let count: Int
     public let ruleId: String?
     public let ruleText: String?
+    public let createdAt: String?
 
     public var id: String { findingHash }
 }
@@ -227,6 +228,7 @@ public struct AtlasAutonomosWorkOrder: Codable, Sendable, Equatable, Identifiabl
     public let evidenceRequired: Bool
     public let executionExecuted: Bool
     public let status: String
+    public let createdAt: String?
 
     public var id: String { workOrderId }
 }
@@ -239,6 +241,7 @@ public struct AtlasAutonomosInboxItem: Codable, Sendable, Equatable, Identifiabl
     public let priorityScore: Int
     public let decisionRequired: Bool
     public let decisionOptions: [String]
+    public let createdAt: String?
 
     public var id: String { findingHash }
 }

@@ -8,38 +8,106 @@ import AtlasCore
 struct LiveTimeline: View {
     let activities: [AtlasAgentActivity]
     let reduceMotion: Bool
+    @State private var filter: TimelineReadFilter = .all
 
     // Agrega runs consecutivos de ferramenta do mesmo kind em UMA linha
     // narrada; intenções (understanding/planning/reasoning) passam íntegras.
-    private var rows: [NarrativeRow] { narrativeRows(from: activities) }
+    private var baseRows: [NarrativeRow] { narrativeRows(from: activities) }
+    private var rows: [NarrativeRow] { filter.apply(to: baseRows) }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(Array(rows.enumerated()), id: \.element.id) { idx, row in
-                        NarrativeRowView(row: row,
-                                         isCurrent: idx == rows.count - 1,
-                                         isLast: idx == rows.count - 1,
-                                         reduceMotion: reduceMotion)
-                            .id(row.id)
-                            .transition(reduceMotion ? .opacity
-                                        : .move(edge: .bottom).combined(with: .opacity))
+        VStack(alignment: .leading, spacing: 8) {
+            if baseRows.count > 2 {
+                timelineFilterChips
+            }
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(Array(rows.enumerated()), id: \.element.id) { idx, row in
+                            NarrativeRowView(row: row,
+                                             isCurrent: idx == rows.count - 1,
+                                             isLast: idx == rows.count - 1,
+                                             reduceMotion: reduceMotion)
+                                .id(row.id)
+                                .transition(reduceMotion ? .opacity
+                                            : .move(edge: .bottom).combined(with: .opacity))
+                        }
+                        if rows.isEmpty {
+                            Text("sem eventos neste filtro")
+                                .font(AtlasFont.serifItalic(13))
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .padding(.leading, 20)
+                                .padding(.vertical, 10)
+                        }
+                    }
+                    .padding(.trailing, 4)
+                }
+                .frame(maxHeight: min(CGFloat(max(rows.count, 1)) * 34 + 12, 232))
+                .scrollIndicators(.hidden)
+                .onChange(of: rows.count) {
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+                        proxy.scrollTo(rows.last?.id, anchor: .bottom)
                     }
                 }
-                .padding(.trailing, 4)
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: rows.count)
             }
-            .frame(maxHeight: min(CGFloat(rows.count) * 34 + 12, 232))
-            .scrollIndicators(.hidden)
-            .onChange(of: rows.count) {
-                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
-                    proxy.scrollTo(rows.last?.id, anchor: .bottom)
-                }
-            }
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: rows.count)
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("execução ao vivo, \(activities.count) eventos")
+    }
+
+    private var timelineFilterChips: some View {
+        HStack(spacing: 6) {
+            ForEach(TimelineReadFilter.allCases) { option in
+                let active = option == filter
+                Button {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    filter = option
+                } label: {
+                    Text(option.label)
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
+                        .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("filtrar timeline por \(option.label)")
+            }
+        }
+        .padding(.leading, 20)
+    }
+}
+
+private enum TimelineReadFilter: String, CaseIterable, Identifiable {
+    case all
+    case intent
+    case tools
+    case p90
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .all: return "todos"
+        case .intent: return "intenção"
+        case .tools: return "ferramentas"
+        case .p90: return "p90"
+        }
+    }
+
+    func apply(to rows: [NarrativeRow]) -> [NarrativeRow] {
+        switch self {
+        case .all:
+            return rows
+        case .intent:
+            return rows.filter { $0.style == .intent }
+        case .tools:
+            return rows.filter { $0.style == .tools || $0.style == .single }
+        case .p90:
+            return rows.filter(\.isP90)
+        }
     }
 }
 
@@ -178,6 +246,7 @@ struct NarrativeRowView: View {
                         Text("Δ \(humanDuration(duration))")
                             .font(AtlasFont.mono(10))
                             .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
+                            .monospacedDigit()
                             .contentTransition(.numericText())
                         if row.isP90 {
                             Text("p90")

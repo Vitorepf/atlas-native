@@ -25,6 +25,12 @@ struct AtlasTurnAttributes: ActivityAttributes {
         var paused: Bool? = nil
         /// Tempo ATIVO acumulado formatado ("m:ss"), congelado na pausa/fim.
         var pausedDisplay: String? = nil
+        /// M87 (aditivo): progresso discreto do plano quando o servidor publicou
+        /// checkpoint real. `nil` preserva payload antigo e trace legado.
+        var progressCurrent: Int? = nil
+        var progressTotal: Int? = nil
+        /// M25 (aditivo): follow-ups já enfileirados no model. Ausente = 0.
+        var queuedCount: Int? = nil
     }
 
     /// Título da conversa — fixo pela vida da activity.

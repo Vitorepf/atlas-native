@@ -11,6 +11,7 @@ struct EditorialTurn: View, Equatable {
     let reduceMotion: Bool
     let onFeedback: (FeedbackKind) -> Void
     let onCopy: () -> Void
+    var onEditResend: () -> Void = {}
     let onStop: () -> Void
     let onExecutionChoice: (JobID, String) -> Void
     var onRetry: (JobID) -> Void = { _ in }
@@ -28,13 +29,29 @@ struct EditorialTurn: View, Equatable {
     var body: some View {
         Group {
             if bubble.role == "user" {
-                Text("“\(bubble.text)”")
-                    .font(AtlasFont.serifItalic(18)).lineSpacing(8).foregroundStyle(AtlasTheme.textPrimary)
-                    .padding(.leading, 16)
-                    .overlay(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("“\(bubble.text)”")
+                        .font(AtlasFont.serifItalic(18)).lineSpacing(8).foregroundStyle(AtlasTheme.textPrimary)
+                        .padding(.leading, 16)
+                        .overlay(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
+                        }
+                    Button(action: onEditResend) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "arrow.turn.down.right")
+                                .font(.system(size: 10, weight: .semibold))
+                            Text("editar e reenviar")
+                                .font(AtlasFont.mono(10))
+                        }
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 5)
+                        .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .buttonStyle(PressableScale())
+                    .accessibilityLabel("editar esta mensagem e reenviar como novo turno")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(alignment: .leading, spacing: 12) {
                     // O PLANO da obra: durante a execução, o roteiro é percorrido

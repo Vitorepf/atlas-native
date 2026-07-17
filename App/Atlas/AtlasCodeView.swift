@@ -29,6 +29,7 @@ struct AtlasCodeView: View {
     /// Pergunta semeada por quem abriu o card (a folha do commit semeia o
     /// commit). Vazia = a pílula abrindo pelo caminho normal.
     @State var askDraft = ""
+    @State var graphStateFilter: AtlasCodeGraphStateFilter = .all
 
     struct WhyFileTarget: Identifiable {
         let path: String

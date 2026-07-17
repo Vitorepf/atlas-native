@@ -56,7 +56,7 @@ public actor AtlasDayRhythm {
         self.storeURL = resolvedURL
         if let data = try? Data(contentsOf: resolvedURL),
            let envelope = try? JSONDecoder().decode(Envelope.self, from: data),
-           envelope.v == 1 {
+           envelope.v >= 1 {
             self.days = Dictionary(uniqueKeysWithValues: envelope.days.map { ($0.date, $0) })
         } else {
             self.days = [:]

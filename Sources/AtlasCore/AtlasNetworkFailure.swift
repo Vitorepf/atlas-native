@@ -6,6 +6,7 @@ public enum AtlasNetworkFailureKind: String, Sendable, Equatable {
     case connectionRefused
     case connectionLost
     case unauthorized
+    case maintenance
     case serverUnavailable
     case other
 }
@@ -15,6 +16,7 @@ public func atlasNetworkFailureKind(for error: Error) -> AtlasNetworkFailureKind
         switch api.status {
         case 401, 403: return .unauthorized
         case 408: return .timedOut
+        case 503 where api.retryAfterSeconds != nil: return .maintenance
         case 429, 500...599: return .serverUnavailable
         default: return .other
         }

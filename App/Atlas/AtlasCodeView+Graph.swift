@@ -44,20 +44,37 @@ extension AtlasCodeView {
     }
 
     func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
-        ScrollView {
+        let filteredNodes = graphStateFilter.nodes(in: graph.nodes, model: model)
+        return ScrollView {
             // F2.9: LazyVStack — não materializa ~200 rows + dims de uma vez.
             LazyVStack(alignment: .leading, spacing: 0) {
                 statusCapsule
                     .padding(.bottom, 14)
 
-                ForEach(Array(graph.nodes.enumerated()), id: \.element.id) { index, node in
+                if !graph.worktrees.isEmpty {
+                    worktreesSection(graph.worktrees)
+                        .padding(.bottom, 14)
+                }
+
+                graphStateChips(graph)
+                    .padding(.bottom, 10)
+
+                if filteredNodes.isEmpty {
+                    Text("nenhum commit neste filtro")
+                        .font(AtlasFont.serifItalic(14))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 20)
+                }
+
+                ForEach(Array(filteredNodes.enumerated()), id: \.element.id) { index, node in
                     AtlasCodeCommitRow(
                         node: node,
                         state: model.state(for: node),
                         ruleId: model.ruleId(for: node),
                         trunk: model.violations?.trunk,
                         isFirst: index == 0,
-                        isLast: index == graph.nodes.count - 1,
+                        isLast: index == filteredNodes.count - 1,
                         // A resposta da pílula acende o que ela cita: o mapa é
                         // que responde. Sem resposta, ninguém está apagado.
                         isDimmed: !visibleAnchors.isEmpty && !visibleAnchors.contains(node.hash)
@@ -108,6 +125,70 @@ extension AtlasCodeView {
         .accessibilityRotor("Curados") {
             ForEach(nodes(in: graph, matching: .healed), id: \.id) { node in
                 AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
+            }
+        }
+    }
+
+    private func worktreesSection(_ worktrees: [AtlasCodeWorktree]) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("WORKTREES")
+                .font(AtlasFont.mono(10))
+                .tracking(1.1)
+                .foregroundStyle(AtlasTheme.textTertiary)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(worktrees) { worktree in
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(worktree.pathLabel)
+                                .font(.system(.caption, weight: .semibold))
+                                .foregroundStyle(AtlasTheme.textPrimary)
+                                .lineLimit(1)
+                            HStack(spacing: 5) {
+                                if let branch = worktree.branch?.nonEmpty {
+                                    Text(branch)
+                                }
+                                if let head = worktree.head?.nonEmpty {
+                                    Text(String(head.prefix(8)))
+                                        .monospacedDigit()
+                                }
+                                if let state = worktree.state?.nonEmpty {
+                                    Text(state)
+                                }
+                            }
+                            .font(AtlasFont.mono(9))
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 7)
+                        .background(Capsule().fill(AtlasTheme.bgRecessed))
+                        .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                    }
+                }
+            }
+        }
+    }
+
+    private func graphStateChips(_ graph: AtlasCodeGraphResponse) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 7) {
+                ForEach(AtlasCodeGraphStateFilter.allCases) { option in
+                    let active = graphStateFilter == option
+                    Button {
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                        graphStateFilter = option
+                    } label: {
+                        Text("\(option.label) \(option.count(in: graph.nodes, model: model))")
+                            .font(AtlasFont.mono(9))
+                            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                            .monospacedDigit()
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 5)
+                            .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface))
+                            .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("filtrar grafo por \(option.label)")
+                }
             }
         }
     }
@@ -266,5 +347,53 @@ extension AtlasCodeView {
         .accessibilityLabel("Conversar com o Atlas sobre este repositório")
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.codeAskPill)
+    }
+}
+
+enum AtlasCodeGraphStateFilter: String, CaseIterable, Identifiable {
+    case all
+    case onMain
+    case violating
+    case healed
+    case history
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .all: return "todos"
+        case .onMain: return "trunk"
+        case .violating: return "desvios"
+        case .healed: return "curados"
+        case .history: return "história"
+        }
+    }
+
+    @MainActor
+    func nodes(in nodes: [AtlasCodeGraphNode], model: AtlasCodeModel) -> [AtlasCodeGraphNode] {
+        guard self != .all else { return nodes }
+        let target = targetState
+        return nodes.filter { model.state(for: $0) == target }
+    }
+
+    @MainActor
+    func count(in nodes: [AtlasCodeGraphNode], model: AtlasCodeModel) -> Int {
+        self == .all ? nodes.count : self.nodes(in: nodes, model: model).count
+    }
+
+    private var targetState: AtlasCodeNodeState {
+        switch self {
+        case .all, .history: return .history
+        case .onMain: return .onMain
+        case .violating: return .violating
+        case .healed: return .healed
+        }
+    }
+}
+
+private extension String {
+    var nonEmpty: String? {
+        let trimmed = trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
     }
 }

@@ -95,6 +95,7 @@ struct ConversationView: View {
             VStack(spacing: 0) {
                 header
                 cacheAgeSeal
+                handoffReceipt
                 messages
             }
             composer
@@ -230,6 +231,7 @@ struct ConversationView: View {
                             EditorialTurn(bubble: bubble, reduceMotion: reduceMotion,
                                           onFeedback: { kind in Task { await model.feedback(bubble.id, kind) } },
                                           onCopy: { copy(bubble.text, label: bubble.role == "user" ? "mensagem" : "resposta") },
+                                          onEditResend: { editAndResend(bubble) },
                                           onStop: { model.cancel() },
                                           onExecutionChoice: { jobId, optionId in
                                               Task { await model.resolveExecutionChoice(jobId: jobId, optionId: optionId) }
@@ -575,6 +577,7 @@ struct ConversationView: View {
                     .frame(width: 32, height: 32)
             }
             .buttonStyle(.plain)
+            .keyboardShortcut(.return, modifiers: .command)
             .accessibilityLabel(model.isSending ? "adicionar à fila" : "enviar ao Atlas")
         } else if model.isSending {
             BreathingDiamond(size: 13, reduceMotion: reduceMotion)
@@ -628,6 +631,35 @@ struct ConversationView: View {
         }
     }
 
+    @ViewBuilder private var handoffReceipt: some View {
+        if let handoff = model.latestSurfaceHandoff {
+            HStack(spacing: 9) {
+                Image(systemName: "arrow.triangle.2.circlepath")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(handoff.status == "ready" ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Continuidade enviada para \(surfaceLabel(handoff.toSurface))")
+                        .font(.system(.footnote, weight: .medium))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    Text("\(handoff.status) · mesma thread \(String(handoff.threadId.prefix(8)))")
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .lineLimit(1)
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 9)
+            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.goldVeil))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.top, 2)
+            .padding(.bottom, 8)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("recibo de continuidade para \(surfaceLabel(handoff.toSurface)), status \(handoff.status)")
+        }
+    }
+
     private func dismissKeyboard() {
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused = false }
@@ -638,6 +670,16 @@ struct ConversationView: View {
         let text = model.draftText
         let effort = model.effort
         Task { await model.send(text, effort: effort) }
+    }
+
+    private func editAndResend(_ bubble: ChatBubble) {
+        guard bubble.role == "user" else { return }
+        model.updateDraft(bubble.text)
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        withAnimation(AtlasMotion.editorial) {
+            focused = true
+            model.toast = "mensagem no composer para novo turno"
+        }
     }
 
     private func submitSteer(
@@ -670,6 +712,14 @@ struct ConversationView: View {
         UIPasteboard.general.string = text
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         withAnimation(AtlasMotion.editorial) { model.toast = "\(label) copiada" }
+    }
+
+    private func surfaceLabel(_ raw: String) -> String {
+        switch raw {
+        case "atlas_desktop": return "Mac"
+        case "atlas_terminal": return "Terminal"
+        default: return raw
+        }
     }
 }
 

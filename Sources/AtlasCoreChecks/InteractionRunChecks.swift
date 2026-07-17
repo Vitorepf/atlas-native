@@ -427,6 +427,17 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
     check("falha tipada distingue auth/servidor",
           atlasNetworkFailureKind(for: AtlasApiError(status: 401, path: "/", message: "")) == .unauthorized &&
           atlasNetworkFailureKind(for: AtlasApiError(status: 503, path: "/", message: "")) == .serverUnavailable)
+    check("503 com Retry-After vira manutenção, não pane genérica",
+          atlasNetworkFailureKind(for: AtlasApiError(
+              status: 503,
+              path: "/ai/interactions",
+              message: "maintenance",
+              retryAfterSeconds: 120
+          )) == .maintenance)
+    check("timeout adapta em rede cara/restrita sem passar do teto",
+          AtlasClient.adaptiveTimeout(10, cost: .init(isExpensive: true, isConstrained: false)) == 13.5 &&
+          AtlasClient.adaptiveTimeout(10, cost: .init(isExpensive: false, isConstrained: true)) == 17.5 &&
+          AtlasClient.adaptiveTimeout(400, cost: .init(isExpensive: true, isConstrained: true)) == 600)
 
     let planning = AtlasAiStreamEvent(
         traceId: "trace-run", sequence: 21, type: "lifecycle", content: "",

@@ -334,6 +334,11 @@ struct AtlasTurnLiveActivity: Widget {
                         Text(context.state.phaseTitle)
                             .font(.system(size: 12, design: .serif)).italic()
                             .foregroundStyle(Ink.ink2).lineLimit(1)
+                        if let progress = context.state.progressLabel {
+                            Text(progress)
+                                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                                .foregroundStyle(Ink.gold)
+                        }
                     }
                 }
                 DynamicIslandExpandedRegion(.trailing) {
@@ -409,6 +414,16 @@ private struct LockScreenView: View {
                     .font(.system(size: 13, design: .serif)).italic()
                     .foregroundStyle(context.state.finished ? Ink.healed : context.state.atlasColor.opacity(0.88))
                     .lineLimit(1)
+                HStack(spacing: 6) {
+                    if let progress = context.state.progressLabel {
+                        Text(progress)
+                    }
+                    if let queued = context.state.queueLabel {
+                        Text(queued)
+                    }
+                }
+                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                .foregroundStyle(Ink.ink2)
             }
             Spacer()
             if context.state.finished {
@@ -442,5 +457,15 @@ private extension AtlasTurnAttributes.ContentState {
         if finished { return "✓" }
         if paused == true { return "‖" }
         return "✦"
+    }
+
+    var progressLabel: String? {
+        guard let current = progressCurrent, let total = progressTotal, total > 0 else { return nil }
+        return "\(min(max(current, 0), total))/\(total)"
+    }
+
+    var queueLabel: String? {
+        guard let count = queuedCount, count > 0 else { return nil }
+        return "fila \(count)"
     }
 }

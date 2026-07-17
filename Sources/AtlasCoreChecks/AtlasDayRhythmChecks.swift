@@ -7,6 +7,7 @@ public func runAtlasDayRhythmChecks(_ check: (String, Bool) -> Void) async {
     await checkIgnoresEmptyDays(check)
     await checkTodayWorkspacesDedup(check)
     await checkPersistenceRoundtrip(check)
+    await checkFutureVersionLoadKeepsKnownFields(check)
     await checkCap14Days(check)
     await checkTimezoneChangeSafe(check)
     await checkWindowsMinutesToComponents(check)
@@ -130,6 +131,31 @@ private func checkPersistenceRoundtrip(_ check: (String, Bool) -> Void) async {
             && windows.dayStart?.minute == 12
             && windows.dayEnd?.hour == 21
             && windows.dayEnd?.minute == 3
+    )
+}
+
+private func checkFutureVersionLoadKeepsKnownFields(_ check: (String, Bool) -> Void) async {
+    let file = makeRhythmURL()
+    try? FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+    let payload = Data("""
+    {"v":2,"extra":"ignored","days":[
+      {"date":"2026-07-13","first":"08:00","last":"20:00","workspaces":["atlas-native"],"new_field":true},
+      {"date":"2026-07-14","first":"09:00","last":"21:00","workspaces":["atlas-server"]},
+      {"date":"2026-07-15","first":"10:00","last":"22:00","workspaces":[]},
+      {"date":"2026-07-16","first":"11:00","last":"23:00","workspaces":[]}
+    ]}
+    """.utf8)
+    try? payload.write(to: file, options: .atomic)
+
+    let rhythm = AtlasDayRhythm(storeURL: file)
+    let summary = await rhythm.todaySummary(now: localDate(day: 13, hour: 12))
+    let windows = await rhythm.windows(now: localDate(day: 16, hour: 12))
+    check(
+        "rhythm_future_version_tolerant_load",
+        summary.workspaces == ["atlas-native"]
+            && windows.sampleDays == 4
+            && windows.dayStart?.hour == 9
+            && windows.dayStart?.minute == 30
     )
 }
 
