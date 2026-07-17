@@ -4,6 +4,7 @@ import ActivityKit
 import AtlasCore
 
 // Título + badges — peel de LockScreenView.
+// Phase → AtlasTurnLockScreen+Phase.swift
 
 extension LockScreenView {
     var titleBadges: some View {
@@ -28,23 +29,6 @@ extension LockScreenView {
                     .overlay(Capsule().stroke(Ink.gold.opacity(0.45), lineWidth: 0.5))
                     .accessibilityLabel(queued)
             }
-        }
-    }
-
-    var phaseLine: some View {
-        HStack(spacing: 6) {
-            if let badge = context.state.phaseBadge {
-                Text(badge)
-                    .font(.system(size: 10, weight: .bold, design: .monospaced))
-                    .foregroundStyle(Ink.alert)
-                    .padding(.horizontal, 6).padding(.vertical, 2)
-                    .background(Capsule().fill(Ink.alert.opacity(0.16)))
-                    .accessibilityLabel(context.state.phaseTitle)
-            }
-            Text(context.state.phaseTitle)
-                .font(.system(size: 13, design: .serif)).italic()
-                .foregroundStyle(context.state.finished ? Ink.healed : context.state.atlasColor.opacity(0.88))
-                .lineLimit(1)
         }
     }
 }

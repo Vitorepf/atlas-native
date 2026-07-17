@@ -966,7 +966,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXVI — CICLO B Suites/Run/Spine/Self/Awaiting/Why/Code/Engine peels** · este commit · CICLO B: Suites `+Header`; Run `+Toolbar`; Spine `+Parts`; Self `+Silence`; Awaiting `+Header`; Why `+Loading`; CodeBlock `+Toolbar`; Engine `+ScoreRow`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXVII — CICLO B Search/State/Scrubber/Feedback/Detail/Lock/Failure peels** · este commit · CICLO B: Search `+HeaderClear`; State `+Detail`; Scrubber `+Chrome`; Feedback `+Helpers`; Detail `+Inbox`; Lock `+Phase`; Failure `+FailureCopy`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXVI — CICLO B Suites/Run/Spine/Self/Awaiting/Why/Code/Engine peels** · `9e163f7` · CICLO B: Suites `+Header`; Run `+Toolbar`; Spine `+Parts`; Self `+Silence`; Awaiting `+Header`; Why `+Loading`; CodeBlock `+Toolbar`; Engine `+ScoreRow`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXV — CICLO B Timeline/Draft/Graph/Diff/Detail/Heal/Workspace/File peels** · `40a19fb` · CICLO B: Timeline `+Annotate`; DraftThumb `+Image`; Graph `+WeekMetric`; Diff `+Body`; Detail `+Toolbar`; Heal `+Status`; Composer `+WorkspaceList`; FileRow `+Trailing`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
