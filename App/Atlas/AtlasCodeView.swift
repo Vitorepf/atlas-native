@@ -4,7 +4,7 @@ import AtlasCore
 /// M0 · Grafo Governado — o mapa vem primeiro.
 ///
 /// Contrato visual: `docs/proposals/atlas-code-mobile.html` (tela M0).
-/// Ask seed → AtlasCodeView+Ask.swift
+/// Ask seed → AtlasCodeView+Ask.swift · Init → AtlasCodeView+Init.swift
 struct AtlasCodeView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -26,13 +26,6 @@ struct AtlasCodeView: View {
     /// commit). Vazia = a pílula abrindo pelo caminho normal.
     @State var askDraft = ""
     @State var graphStateFilter: AtlasCodeGraphStateFilter = .all
-
-    init(client: AtlasClient, repo: String = "atlas-server") {
-        _model = State(initialValue: AtlasCodeModel(client: client, repo: repo))
-        _provenanceModel = State(initialValue: AtlasCodeProvenanceModel(client: client, repo: repo))
-        _mirrorModel = State(initialValue: AtlasCodeMirrorModel(client: client, repo: repo))
-        _askModel = State(initialValue: AtlasCodeAskModel(client: client, repo: repo))
-    }
 
     var body: some View {
         ZStack(alignment: .bottom) {

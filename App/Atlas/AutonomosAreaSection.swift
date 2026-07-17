@@ -2,6 +2,7 @@ import SwiftUI
 
 /// C13: disponibilidade vem de canControlSelectedArea (POSTs existem e são
 /// governados) — nunca de live.readOnly, que descreve apenas o GET.
+/// Cycle → AutonomosAreaSection+Cycle.swift
 struct AutonomosAreaControls: View {
     let areaName: String
     let isPaused: Bool
@@ -12,7 +13,7 @@ struct AutonomosAreaControls: View {
     let onKill: () -> Void
     let onDryRun: () -> Void
     let onExecute: () -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -37,34 +38,12 @@ struct AutonomosAreaControls: View {
                     .accessibilityLabel(spoken("encerrar \(areaName)"))
                     .accessibilityHint(hint("encerra a instância com recibo"))
             }
-            HStack(spacing: 8) {
-                Button("Novo ciclo · ensaio") { tap(onDryRun) }
-                    .buttonStyle(AutonomosPrimaryButtonStyle())
-                    .accessibilityLabel(spoken("novo ciclo ensaio, \(areaName)"))
-                    .accessibilityHint(hint("inicia ciclo de ensaio sem efeito real"))
-                Button("Executar de verdade") { tap(onExecute) }
-                    .buttonStyle(AutonomosSecondaryButtonStyle())
-                    .accessibilityLabel(spoken("executar de verdade, \(areaName)"))
-                    .accessibilityHint(hint("inicia ciclo real com governança"))
-            }
+            cycleButtons
         }
         .disabled(!canControl)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(spokenContainerLabel)
         .accessibilityHint(spokenContainerHint)
         .accessibilityIdentifier(A11yID.autonomosAreaControls)
-    }
-
-    private func tap(_ action: () -> Void) {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        action()
-    }
-
-    private func spoken(_ label: String) -> String {
-        canControl ? label : "\(label), indisponível"
-    }
-
-    private func hint(_ text: String) -> String {
-        canControl ? text : spokenContainerHint
     }
 }

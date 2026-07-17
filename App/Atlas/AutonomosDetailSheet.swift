@@ -1,23 +1,6 @@
 import SwiftUI
 import AtlasCore
 
-enum AutonomosDetailSheet: String, Identifiable {
-    case workOrders
-    case inbox
-    case budgets
-    case findings
-
-    var id: String { rawValue }
-    var title: String {
-        switch self {
-        case .workOrders: return "Work orders"
-        case .inbox: return "Inbox"
-        case .budgets: return "Budgets"
-        case .findings: return "Findings"
-        }
-    }
-}
-
 struct AutonomosPublicDetailSheet: View {
     let kind: AutonomosDetailSheet
     let backlog: AtlasAutonomosBacklogResponse?

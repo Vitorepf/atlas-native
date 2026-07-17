@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Copy editorial para `reason` do contrato trace-scoped — nunca inventa motivo.
+/// Unavailable → ArtifactViewer+TraceEvidenceUnavailable.swift
 enum TraceEvidenceCopy {
     static func unavailableReason(_ reason: String?) -> String? {
         guard let reason, !reason.isEmpty else { return nil }
@@ -32,40 +33,9 @@ struct TraceEvidenceLoading: View {
             Text(text)
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textTertiary)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(text)
-    }
-}
-
-/// Empty/unavailable compartilhado por ArtifactSheet e ChangeReviewSheet.
-struct TraceEvidenceUnavailable: View {
-    let title: String
-    let subtitle: String?
-    let identifier: String
-    let spoken: String
-    var systemImage: String = "doc.text"
-
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: systemImage)
-                .font(.title2)
-                .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
-            Text(title)
-                .font(AtlasFont.serif(18, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .multilineTextAlignment(.center)
-            if let subtitle, !subtitle.isEmpty {
-                Text(subtitle)
-                    .font(.footnote)
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
         }
-        .padding(36)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(spoken)
-        .accessibilityIdentifier(identifier)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(text)
     }
 }

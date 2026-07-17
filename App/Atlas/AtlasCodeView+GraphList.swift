@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Lista filtrada do grafo — peel de AtlasCodeView+Graph.
+// Tail → AtlasCodeView+GraphListTail.swift
 
 extension AtlasCodeView {
     func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
@@ -39,24 +40,7 @@ extension AtlasCodeView {
                     .accessibilityRotorEntry(id: node.id, in: graphRotor)
                 }
 
-                if graph.pagination.hasMore {
-                    Text("\(graph.nodes.count) commits mais recentes — há mais história")
-                        .font(AtlasFont.serifItalic(12))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.top, 16)
-                        .accessibilityIdentifier(A11yID.codeGraphTruncated)
-                }
-
-                if let mirror = mirrorModel.response {
-                    AtlasCodeMirrorCard(response: mirror)
-                        .padding(.top, 22)
-                }
-
-                if model.week != nil || model.hasHealReceipt {
-                    weekSection
-                        .padding(.top, 22)
-                }
+                graphListTail(graph: graph)
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 10)

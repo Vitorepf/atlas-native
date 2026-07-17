@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// M139 — decisões públicas pendentes; silêncio total quando count = 0.
-/// Spoken → +A11y · chips/nightly → +Blocks.
+/// Spoken → +A11y · chips → +Chips · nightly → +Blocks.
 struct AutonomosAwaitingYouSection: View {
     let backlog: AtlasAutonomosBacklogResponse?
     let onOpenDetail: (AutonomosDetailSheet) -> Void
@@ -36,24 +36,7 @@ struct AutonomosAwaitingYouSection: View {
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .accessibilityHidden(true)
-                HStack(spacing: 8) {
-                    if !inboxDecisions.isEmpty {
-                        AutonomosDetailChipButton(
-                            label: "inbox \(inboxDecisions.count)",
-                            kind: .inbox,
-                            spokenLabel: inboxSpokenLabel(count: inboxDecisions.count),
-                            action: { onOpenDetail(.inbox) }
-                        )
-                    }
-                    if !workOrderDecisions.isEmpty {
-                        AutonomosDetailChipButton(
-                            label: "ordens \(workOrderDecisions.count)",
-                            kind: .workOrders,
-                            spokenLabel: workOrdersSpokenLabel(count: workOrderDecisions.count),
-                            action: { onOpenDetail(.workOrders) }
-                        )
-                    }
-                }
+                awaitingChips
             }
             .padding(14)
             .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.domOperacional.opacity(0.08)))
