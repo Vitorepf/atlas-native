@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXXIII — CICLO C Attachments + LoadFailure + AskPill** · este commit · CICLO C: ComposerAttachmentsSheet — RM haptic choose/paste. AtlasCodeLoadFailureEmpty — textos decorativos; retry RM+A11yID. AskPill — ✦/chevron/legend silenciados; clear RM. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Attach 99 Load 43 Ask 68; `rg Aprovar`=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXII — CICLO C Header + UserTurn + Veto + AreaControls + Provenance** · este commit · CICLO C: Conversation header — RM haptic back/outline; title header. EditorialTurn user — RM haptic editar. SelfConstruction veto — caption decorativo; RM+PressableScale. AutonomosAreaControls — labels por botão + RM + disabled honesty. Provenance law/ask — children ignore + RM. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Header 62 User 40 Veto 53 Controls 70 Prov 75; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXI — CICLO C SearchHeader + FileRow + QueueRow + ReasonSheet** · este commit · CICLO C: SearchViewHeader — RM haptic back/clear; placeholder decorativo; field spoken com query. ChangeReviewFileRow — textos decorativos; RM haptic aceitar/rejeitar; peels `+Actions`/`+A11y`. QueuedFollowUpRow — RM haptic promote/remove. AutonomosReasonSheet — cancel spoken+RM; confirm RM. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Header 68 FileRow 55 Actions 40 Queue 97 Reason 79; `rg Aprovar`=0; device-pending.
