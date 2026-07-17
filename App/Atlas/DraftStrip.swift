@@ -1,5 +1,4 @@
 import SwiftUI
-import PhotosUI
 import UIKit
 import AtlasCore
 
