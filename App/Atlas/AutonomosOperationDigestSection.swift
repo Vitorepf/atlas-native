@@ -14,6 +14,7 @@ struct AutonomosOperationDigestSection: View {
     let incidentPresent: Bool
     let oldestBacklogCreatedAt: Date?
     let findingsByRisk: [String: Int]
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let hasSignal = deliveredTotal > 0 || pendingCount > 0 || inboxCount > 0 || incidentPresent
@@ -21,24 +22,33 @@ struct AutonomosOperationDigestSection: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     AutonomosChrome.sectionCaption("RESUMO DA OPERAÇÃO")
+                        .accessibilityHidden(true)
                     Spacer()
                     Text(incidentPresent ? "requer você" : "por exceção")
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(incidentPresent ? AtlasTheme.domOperacional : AtlasTheme.domAutonomos)
+                        .accessibilityHidden(true)
                 }
-                Text(digestHeadline(delivered: deliveredTotal, pending: pendingCount, incident: incidentPresent))
+                Text(AutonomosOperationDigestA11y.displayHeadline(
+                    delivered: deliveredTotal, pending: pendingCount, incident: incidentPresent))
                     .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityHidden(true)
                 HStack(spacing: 8) {
                     if deliveredTotal > 0 { AutonomosChrome.digestChip("\(deliveredTotal)", "entregues · merge") }
                     if pendingCount > 0 { AutonomosChrome.digestChip("\(pendingCount)", "tarefas na fila") }
                     if inboxCount > 0 { AutonomosChrome.digestChip("\(inboxCount)", "decisões aguardam") }
                 }
+                .accessibilityHidden(true)
+                .animation(reduceMotion ? nil : .default, value: deliveredTotal)
+                .animation(reduceMotion ? nil : .default, value: pendingCount)
+                .animation(reduceMotion ? nil : .default, value: inboxCount)
                 if let oldest = oldestBacklogCreatedAt {
                     Text("item mais antigo · \(AutonomosChrome.relativeAge(from: oldest))")
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.domOperacional)
                         .monospacedDigit()
+                        .accessibilityHidden(true)
                 }
                 if !findingsByRisk.isEmpty {
                     HStack(spacing: 6) {
@@ -46,15 +56,27 @@ struct AutonomosOperationDigestSection: View {
                             AutonomosChrome.tag("\(risk): \(n)")
                         }
                     }
+                    .accessibilityHidden(true)
                 }
             }
             .padding(14)
             .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.surface))
             .overlay(RoundedRectangle(cornerRadius: 14)
                 .stroke(incidentPresent ? AtlasTheme.domOperacional.opacity(0.4) : AtlasTheme.goldBorder, lineWidth: 1))
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(AutonomosOperationDigestA11y.spokenSection(
+                deliveredTotal: deliveredTotal,
+                pendingCount: pendingCount,
+                inboxCount: inboxCount,
+                incidentPresent: incidentPresent,
+                oldestBacklogCreatedAt: oldestBacklogCreatedAt,
+                findingsByRisk: findingsByRisk
+            ))
+            .accessibilityIdentifier(A11yID.autonomosOperationDigest)
         } else {
             VStack(alignment: .leading, spacing: 6) {
                 AutonomosChrome.sectionCaption("operação")
+                    .accessibilityAddTraits(.isHeader)
                 Text("Quieta nesta janela — nenhuma entrega, pendência nem incidente publicado.")
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textTertiary)
@@ -62,19 +84,9 @@ struct AutonomosOperationDigestSection: View {
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilityLabel("operação quieta, nenhuma entrega pendência ou incidente")
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(AutonomosOperationDigestA11y.spokenQuiet())
             .accessibilityIdentifier(A11yID.autonomosOperationQuiet)
         }
-    }
-
-    private func digestHeadline(delivered: Int, pending: Int, incident: Bool) -> String {
-        if incident { return "Um incidente aguarda sua decisão; o resto da frota segue por exceção." }
-        if delivered > 0 && pending == 0 {
-            return "\(delivered) entrega\(delivered == 1 ? "" : "s") comprovada\(delivered == 1 ? "" : "s") — silêncio; nada pendente para você."
-        }
-        if delivered > 0 {
-            return "\(delivered) entregue\(delivered == 1 ? "" : "s"), \(pending) ainda na fila — segue sem portão; só exceção te chama."
-        }
-        return "\(pending) tarefa\(pending == 1 ? "" : "s") na fila; nenhuma entrega comprovada ainda nesta janela."
     }
 }

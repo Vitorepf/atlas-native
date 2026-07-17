@@ -14,9 +14,11 @@ extension A11yID {
     static func autonomosFleetHistoryRow(_ index: Int) -> String { autonomosFleetHistoryRowPrefix + String(index) }
     static let autonomosDigestSection = "autonomos-digest-section"
     static let autonomosDigestEmpty = "autonomos-digest-empty"
+    static let autonomosOperationDigest = "autonomos-operation-digest"
     static let autonomosOperationQuiet = "autonomos-operation-quiet"
     static let autonomosTransferSheet = "autonomos-transfer-sheet"
     static let autonomosTransferStatus = "autonomos-transfer-status"
+    static let autonomosTransferRefresh = "autonomos-transfer-refresh"
     static let autonomosTransferActor = "autonomos-transfer-actor"
     static let autonomosTransferReason = "autonomos-transfer-reason"
     static let autonomosTransferSubmit = "autonomos-transfer-submit"
