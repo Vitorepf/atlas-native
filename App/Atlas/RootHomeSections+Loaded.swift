@@ -3,28 +3,13 @@ import AtlasCore
 
 // Loaded home scroll — peel de RootHomeSections.
 // Conversas → +Conversas · Operação → +Operacao
+// Stack → RootHomeSections+LoadedStack.swift
 
 extension RootHomeSections {
     @ViewBuilder
     var loadedHome: some View {
         ScrollView {
-            LazyVStack(spacing: 0) {
-                if !TurnPresence.shared.liveSessions.isEmpty || !session.remoteLiveSessions.isEmpty {
-                    LiveNowSection(
-                        localSessions: TurnPresence.shared.liveSessions,
-                        remoteSessions: session.remoteLiveSessions,
-                        onOpen: onOpenThread
-                    )
-                }
-                conversasSection
-                rowDivider
-                operacaoSection
-                if showsWorkspacesSection {
-                    rowDivider
-                    workspacesSection
-                }
-            }
-            .padding(.bottom, 96)
+            loadedHomeStack
         }
         .scrollIndicators(.hidden)
         .refreshable { await session.loadThreads() }

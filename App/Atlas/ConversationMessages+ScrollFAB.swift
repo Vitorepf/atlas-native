@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 // FAB overlay — peel de ConversationMessages+Scroll.
+// Label → ConversationMessages+ScrollFABLabel.swift
 
 extension ConversationMessages {
     @ViewBuilder
@@ -14,13 +15,7 @@ extension ConversationMessages {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
             } label: {
-                Image(systemName: "arrow.down")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .frame(width: 40, height: 40)
-                    .background(Circle().fill(AtlasTheme.surfaceHi)
-                        .overlay(Circle().stroke(AtlasTheme.goldBorder, lineWidth: 1))
-                        .shadow(color: .black.opacity(0.25), radius: 8, y: 2))
+                scrollFABLabel
             }
             .buttonStyle(PressableScale())
             .padding(.trailing, AtlasTheme.Space.screen).padding(.bottom, 110)

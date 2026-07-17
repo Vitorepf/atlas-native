@@ -4,6 +4,7 @@ import AtlasCore
 // Spoken labels — peel de ArenaRunSheet (CICLO C residual honesty).
 // Receipt → ArenaRunSheet+A11yReceipt.swift · Sheet/close → +A11ySheet.swift
 // Empty → ArenaRunSheet+A11yEmpty.swift
+// Missing → ArenaRunSheet+A11yMissing.swift
 
 extension ArenaRunSheet {
     func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
@@ -13,14 +14,7 @@ extension ArenaRunSheet {
         if enginesEmpty {
             return "rodar medição indisponível, nenhum motor publicado"
         }
-        var missing: [String] = []
-        if input.operatorActor.isEmpty { missing.append("ator") }
-        if input.operatorReason.isEmpty { missing.append("motivo auditável") }
-        if input.suites.selectedValues.isEmpty { missing.append("suites") }
-        if input.engine.isEmpty { missing.append("motor") }
-        if input.arms.isEmpty { missing.append("braços") }
-        if missing.isEmpty { return "rodar medição indisponível" }
-        return "rodar medição indisponível, falta \(missing.joined(separator: ", "))"
+        return spokenSubmitMissing(input: input)
     }
 
     func spokenSubmitHint(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {

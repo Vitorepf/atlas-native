@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Lista / loading / offline / empty — peel de WorkspaceView (régua ≤100).
 /// Loaded → WorkspaceView+ScrollLoaded.swift
+/// Failure → WorkspaceView+ScrollFailure.swift
 
 extension WorkspaceView {
     var listView: some View {
@@ -12,15 +13,7 @@ extension WorkspaceView {
                     WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
                         .accessibilityIdentifier(A11yID.workspaceLoading)
                 } else if showsNetworkFailure {
-                    AtlasNetworkFailureEmpty(
-                        kind: session.failureKind,
-                        hasToken: session.hasToken,
-                        host: session.host,
-                        retryHint: "reconecta e recarrega conversas deste workspace",
-                        retryAccessibilityIdentifier: A11yID.workspaceRetry,
-                        accessibilityIdentifier: A11yID.workspaceOffline,
-                        onRetry: { Task { await session.loadThreads() } }
-                    )
+                    listNetworkFailure
                 } else {
                     listLoadedContent
                 }

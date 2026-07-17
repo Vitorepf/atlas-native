@@ -4,6 +4,7 @@ import AtlasCore
 // Linha de passo do plano — peel de PlanCard+Steps (cena 02 residual honesty).
 // Dot → PlanCard+StepRowDot.swift
 // Title → PlanCard+StepRowTitle.swift
+// Pulse → PlanCard+StepRowPulse.swift
 
 struct PlanStepRowView: View {
     let step: AtlasExecutionPlan.Step
@@ -16,20 +17,16 @@ struct PlanStepRowView: View {
     @State var pulse = false
 
     var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            stepDotColumn
-            stepTitleColumn
-            Spacer(minLength: 0)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(spokenLabel)
-        .accessibilityAddTraits(state == .current ? .isSelected : [])
-        .accessibilityIdentifier(A11yID.planStep(index))
-        .onAppear {
-            if state == .current && !reduceMotion {
-                withAnimation(AtlasMotion.breath(0.9)) { pulse = true }
+        applyStepPulse(
+            HStack(alignment: .top, spacing: 10) {
+                stepDotColumn
+                stepTitleColumn
+                Spacer(minLength: 0)
             }
-        }
-        .onChange(of: state == .current) { _, now in if !now { pulse = false } }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(spokenLabel)
+            .accessibilityAddTraits(state == .current ? .isSelected : [])
+            .accessibilityIdentifier(A11yID.planStep(index))
+        )
     }
 }

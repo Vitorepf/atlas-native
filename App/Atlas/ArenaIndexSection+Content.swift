@@ -2,23 +2,13 @@ import SwiftUI
 import AtlasCore
 
 // Conteúdo do índice — peel de ArenaIndexSection.
+// Rows → ArenaIndexSection+ContentRows.swift
 
 extension ArenaIndexSection {
     var indexContent: some View {
         VStack(alignment: .leading, spacing: 14) {
             sectionHeader
-            ForEach(composite.engines) { engine in
-                if let onEngineTap {
-                    Button { onEngineTap(engine) } label: {
-                        ArenaEngineIndexRow(engine: engine, reduceMotion: reduceMotion)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(engineRowSpoken(engine))
-                    .accessibilityHint("abre detalhe do motor")
-                } else {
-                    ArenaEngineIndexRow(engine: engine, reduceMotion: reduceMotion)
-                }
-            }
+            engineRows
             if let engine = chartEngine {
                 ArenaCompositeChart(engine: engine, reduceMotion: reduceMotion)
                     .frame(height: 170)
