@@ -20,7 +20,6 @@ struct ExecutingStrip: View {
                     .accessibilityHidden(true)
             } else {
                 BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-                    .accessibilityHidden(true)
             }
             if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
                 Text(line)

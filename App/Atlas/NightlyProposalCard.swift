@@ -12,7 +12,6 @@ struct NightlyProposalCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-                    .accessibilityHidden(true)
                 Text("MISSÃO NOTURNA · PROPOSTA DAS 21H")
                     .font(AtlasFont.mono(10))
                     .tracking(1.1)
