@@ -33,14 +33,17 @@ struct ArtifactSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Fechar") { dismiss() }
+                    Button("Fechar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
                         .accessibilityLabel("fechar artefatos")
                         .accessibilityHint("volta para a conversa")
                 }
             }
             .overlay(alignment: .top) { toast }
             .accessibilityIdentifier(A11yID.artifactsSheet)
-            .accessibilityLabel("artefatos da execução")
+            .accessibilityLabel(spokenArtifactsSheetLabel())
             .accessibilityHint("lista e preview só com itens publicados no contrato")
         }
         .task {
@@ -67,7 +70,7 @@ struct ArtifactSheet: View {
                 .padding(.horizontal, 16).padding(.vertical, 9)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
-                .accessibilityLabel(t)
+                .accessibilityLabel(ConversationViewA11y.spokenToast(t))
                 .accessibilityAddTraits(.isStaticText)
                 .task {
                     try? await Task.sleep(nanoseconds: 1_400_000_000)

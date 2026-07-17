@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXXVII — CICLO C ArtifactSheet + Transfer cancel** · este commit · CICLO C: ArtifactSheet — close RM; sheet spoken por estado/itens; toast «aviso,». TransferSheet — cancel RM+hint. Peel `ArtifactSheet+A11y` (24). Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Artifact 82 A11y 24 Transfer 91; `rg Aprovar`=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXVI — CICLO C Nightly + PlanCard RM haptic** · este commit · CICLO C: NightlyProposalCard — RM haptic accept/dismiss/mute. PlanCard — RM haptic detail/revisions toggle. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Nightly 86 Plan 86; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXV — CICLO C/D RM haptic residual (Network/Arena/Composer/LiveNow)** · este commit · CICLO C/D: AtlasNetworkFailureEmpty — ✦/textos decorativos; retry RM+label. ConversationMessages sugestão RM. Arena networkFailure retry RM+contain. Composer Actions send/steer/dismiss RM. LiveNow row open RM. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `rg 'UIImpactFeedbackGenerator' App/Atlas` sem RM só TurnPresence; `rg Aprovar`=0; device-pending.

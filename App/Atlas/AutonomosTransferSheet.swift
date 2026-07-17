@@ -49,8 +49,12 @@ struct AutonomosTransferSheet: View {
             .navigationTitle("Transferir missão")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") { dismiss() }
+                    Button("Cancelar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
                         .accessibilityLabel(AutonomosTransferSheetA11y.spokenCancel)
+                        .accessibilityHint("fecha sem transferir")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") {
