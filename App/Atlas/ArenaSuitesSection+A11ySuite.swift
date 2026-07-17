@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 // Spoken suite row — peel de ArenaSuitesSectionA11y.
+// Spark → ArenaSuitesSection+A11ySpark.swift
 
 extension ArenaSuitesSectionA11y {
     static func spokenSuite(_ suite: AtlasArenaSuite) -> String {
@@ -24,10 +25,5 @@ extension ArenaSuitesSectionA11y {
             parts.append("não medida")
         }
         return parts.joined(separator: ", ")
-    }
-
-    static func hasSparkline(for suite: AtlasArenaSuite) -> Bool {
-        guard let engine = suite.engines.first else { return false }
-        return engine.history.contains { $0.score != nil }
     }
 }

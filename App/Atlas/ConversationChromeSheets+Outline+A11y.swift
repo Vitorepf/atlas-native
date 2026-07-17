@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 /// Spoken labels do índice — peel de ConversationChromeSheets+Outline (CICLO C).
+/// Snippet → ConversationChromeSheets+Outline+A11ySnippet.swift
 
 enum ConversationOutlineA11y {
     static func spokenSheetLabel(turnCount: Int) -> String {
@@ -19,15 +20,10 @@ enum ConversationOutlineA11y {
     }
 
     static func spokenSnippet(from text: String) -> String {
-        let trimmed = AtlasMarkdown.plainText(text)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            return "sem texto visível neste turno"
-        }
-        return String(trimmed.prefix(140))
+        ConversationOutlineA11ySnippet.spokenSnippet(from: text)
     }
 
     static func spokenRow(index: Int, role: String, snippet: String) -> String {
-        "turno \(index), \(spokenRole(role)), \(snippet)"
+        ConversationOutlineA11ySnippet.spokenRow(index: index, role: role, snippet: snippet)
     }
 }
