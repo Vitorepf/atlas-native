@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **508+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXVII tip `e46e716` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **510+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXVIII tip `34c85b4` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXVII (este tip)
+## Entrega Elite CXXXXXLXVIII (este tip)
+
+- `polish(ui)` CICLO B: TurnPresence+LiveActivity+Update/+LiveActivityState+Timing/+Clock/+Broadcast+Count/+Watch+Observe/+Cleanup/+Notifications+Permission/+LockScreenText/+A11yBody/+Spoken; LiveSessionSnapshot; Delivered+DeliveredBody; Radar+ContentFailed; Init+SeedWorkspace/+SeedDraft; Markdown+ParseBoundary; Root+HomeStackSections; Digest+A11yLead; Loaded+ReceiptPhaseID; Awaiting+ChipsInbox/+ChipsOrders; Strip+IdleLine; Widgets+Timeline/+BodyLayout. Tip `34c85b4`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLXVII (anterior)
 
 - `polish(ui)` CICLO B: Composer+OptionsWorkspace/Mode; LiveNow+ClockPaused; Continuity+Surface/Handoff/ThreadPrefix; Plan+HeaderProgress; Lifecycle+Cache; Spoken+Actions; Ask+Trailing; Findings+Groups; Loaded+LiveNow; Reconnect+BubbleIcon; Fleet+RowAuditReason; Narrative+Detail; Bubbles+Bottom; Input+Background; Chrome+CodeButton; Query+Results; Widgets+Lock/LiveSession; Turn+TimerElapsed. Tip `e46e716`.
 - Zero App/Widgets >100; zero Route nova.
