@@ -14,8 +14,8 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **542** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXIV tip `07ca22d` |
-| Commits no tip (`git rev-list --count HEAD`) | 548 | inclui histórico pré-Elite |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **544** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXV tip `19dfaa1` |
+| Commits no tip (`git rev-list --count HEAD`) | 550 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXXIV (este tip)
+## Entrega Elite CXXXXXLXXXV (este tip)
+
+- `polish(ui)` CICLO B: ComposerToolbar Field `+Placeholder/+TextFieldInput`; AttachmentStrip `+DraftBranch`; AttachmentStripUpload `+ProgressBar/+PercentLabel`; ReconnectLines `+SecondaryLoop/+ActiveTimer`; ExecutingStrip StatusMeta `+EventTimer/+DiffStats` StatusProgress `+ReconnectLine/+ProgressLine`; FleetTaskHealth Bodies `+MetricRow`; DraftStrip Thumbs `+ThumbLoop`; Workspace List `+ThreadRows`; ConversationView LifecyclePresence `+Appear/+ThreadChange/+Disappear`; KeyboardGrabber `+Bar/+Gestures`; AutonomosView Failure `+Icon/+RetryButton`; AreaDelivered Row `+SelfRow`; DigestChipBody `+ValueStack`; Empty `+CopyStack`; CouncilRow Header `+ProviderGlyph`; LiveTimeline Scroll `+AutoScroll`; Widgets Fleet A11yChrome `+SpokenLabel` LiveSession A11yChrome `+PhaseID`. Tip `19dfaa1`.
+- 28 peels · 47 arquivos · over100=0 · App/Atlas+Widgets swift=2046; App/Widgets swift=136; zero Route nova.
+
+## Entrega Elite CXXXXXLXXXIV (anterior)
 
 - `polish(ui)` CICLO B: ChangeReviewDiff Body `+Loading/+Unavailable`; Transfer Operator `+Target/+Actor/+Reason`; RunFields `+TitleStack/+Score`; HealReceipt A11ySpoken `+Masthead/+Outcome`; ComposerToolbar A11yInput `+Effort/+Hints`; RootHome ArenaEntry `+A11y`; PlanCard DetailToggle `+Button`; LiveTimeline NarrativeDuration `+P90Badge`; ConversationMessages Scroll `+BubbleLifecycle`; Composer LiveStrip `+Separator` Actions `+Dismiss/+Send`; OperationDigest Aging `+Oldest/+Findings`; ExecutionStateCard SteerRetry `+Button`; Workspace Retry `+Identifier`; ArenaRun FormEngine `+Empty`; Markdown Blocks `+ListItem`; ConversationView Init `+ModelState`; Widgets Fleet Body `+Stack` IslandCompactChrome `+Leading/+Trailing/+Minimal`. Tip `07ca22d`.
 - 29 peels · 48 arquivos · over100=0 · App/Atlas+Widgets swift=2018; App/Widgets swift=134; zero Route nova.
