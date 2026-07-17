@@ -4,7 +4,7 @@ import AtlasCore
 struct AutonomosPublicDetailSheet: View {
     let kind: AutonomosDetailSheet
     let backlog: AtlasAutonomosBacklogResponse?
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var contentPhaseID: String {
@@ -35,16 +35,7 @@ struct AutonomosPublicDetailSheet: View {
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle(kind.title)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    AtlasCloseToolbarButton(
-                        spokenLabel: spokenCloseLabel(),
-                        spokenHint: "fecha a projeção pública",
-                        accessibilityID: A11yID.autonomosDetailClose,
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }
-                }
-            }
+            .toolbar { detailToolbar }
         }
         .presentationDetents([.medium, .large])
         .presentationBackground(AtlasTheme.bg)

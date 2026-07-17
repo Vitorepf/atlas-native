@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **341+** | primeiro commit do plano: `ec931f2`; Elite CXIV em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **342+** | primeiro commit do plano: `ec931f2`; Elite CXV em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,9 +127,14 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXIV (este tip)
+## Entrega Elite CXV (este tip)
 
-- `refactor(ui)` CICLO B: Workspace/Thread Trailing; Review+Tests; Arena+RunButton; Fleet+Header; Editorial+Closing; SealBody; Loaded+StackHead; Self+VetoButton; Plan+Audit; Capabilities+Header.
+- `refactor(ui)` CICLO B: Timeline+Annotate; DraftThumb+Image; Graph+WeekMetric; Diff+Body; Detail+Toolbar; Heal+Status; WorkspaceList; FileRow+Trailing.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXIV (anterior)
+
+- `refactor(ui)` CICLO B: Workspace/Thread Trailing; Review+Tests; Arena+RunButton; Fleet+Header; Editorial+Closing; SealBody; Loaded+StackHead; Self+VetoButton; Plan+Audit; Capabilities+Header. Tip `2905570`.
 - Zero App/Widgets >100; zero Route nova.
 
 ## Entrega Elite CXIII (anterior)

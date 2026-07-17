@@ -3,7 +3,7 @@ import UIKit
 import AtlasCore
 
 // Thumb de anexo do composer — peel de DraftStrip.
-// Cache → +Cache · remove/veil → +Chrome · spoken → +A11y.
+// Cache → +Cache · remove/veil → +Chrome · spoken → +A11y · Image → +Image.
 struct DraftThumb: View {
     let draft: LocalDraft
     let reduceMotion: Bool
@@ -22,7 +22,7 @@ struct DraftThumb: View {
         }
     }
 
-    private var thumbContent: some View {
+    var thumbContent: some View {
         thumb
             .frame(width: 64, height: 64)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -38,17 +38,5 @@ struct DraftThumb: View {
             .accessibilityAddTraits(failedMessage != nil ? .isButton : [])
             .accessibilityIdentifier(A11yID.draft(draft.id))
             .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: draft.state)
-    }
-
-    @ViewBuilder private var thumb: some View {
-        if draft.kind == .image, let ui = DraftThumbCache.image(for: draft) {
-            Image(uiImage: ui).resizable().scaledToFill()
-        } else {
-            VStack(spacing: 4) {
-                Image(systemName: "doc.fill").font(.system(size: 20)).foregroundStyle(AtlasTheme.textSecondary)
-                Text((draft.fileName as NSString).pathExtension.uppercased())
-                    .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
-            }.frame(maxWidth: .infinity, maxHeight: .infinity).background(AtlasTheme.surfaceHi)
-        }
     }
 }

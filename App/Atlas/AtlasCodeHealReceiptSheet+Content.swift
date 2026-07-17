@@ -2,28 +2,14 @@ import SwiftUI
 import AtlasCore
 
 // Conteúdo do recibo — peel de AtlasCodeHealReceiptSheet (régua ≤100).
-// Masthead/undo → AtlasCodeHealReceiptSheet+Chrome.swift
+// Masthead/undo → +Chrome · Status → +Status.swift
 
 extension AtlasCodeHealReceiptSheet {
     @ViewBuilder
     func receiptContent() -> some View {
         VStack(alignment: .leading, spacing: 12) {
             masthead
-
-            if hasCompletedHeal {
-                Text("você não foi necessário")
-                    .font(AtlasFont.serif(20, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityAddTraits(.isHeader)
-                    .accessibilityLabel(spokenSilenceLabel())
-            }
-
-            if let blocked = heal.blocked, !blocked.isEmpty {
-                Text("bloqueado · \(blocked)")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasCodePalette.alert)
-                    .accessibilityLabel(spokenBlockedLabel(blocked))
-            }
+            healStatusLines
 
             if heal.stepReceipts.isEmpty {
                 Text("sem passos registrados no recibo")

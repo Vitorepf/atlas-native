@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Linha de arquivo com aceite/rejeição por patch — peel de ChangeReviewDiffSection (C16).
-/// Ações: +Actions · a11y: +A11y.
+/// Ações: +Actions · a11y: +A11y · Trailing: +Trailing.
 struct ChangeReviewFileRow: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -33,15 +33,7 @@ struct ChangeReviewFileRow: View {
                     .accessibilityHidden(true)
             }
             Spacer()
-            if let decided {
-                Text(decided.action == .accept ? "aceito" : "rejeitado")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(decided.action == .accept ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
-                    .accessibilityHidden(true)
-            } else {
-                acceptButton
-                rejectButton
-            }
+            fileTrailing
         }
         .padding(.vertical, 3)
         .modifier(ChangeReviewFileRowA11y(

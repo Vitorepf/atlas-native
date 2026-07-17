@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Status capsule + semana/recibo — peel de AtlasCodeGraphChrome.
+// Status capsule — peel de AtlasCodeGraphChrome.
+// Week → AtlasCodeGraphChrome+WeekMetric.swift
 
 extension AtlasCodeView {
     /// Cápsula central e simétrica: a única voz do estado geral.
@@ -39,17 +40,5 @@ extension AtlasCodeView {
             scanState: model.scanState, headline: model.statusHeadline
         ))
         .accessibilityIdentifier(A11yID.codeStatus)
-    }
-
-    func weekMetric(_ label: String, value: Int) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(String(value))
-                .font(AtlasFont.serif(21, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .monospacedDigit()
-            Text(label)
-                .font(.system(size: 10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-        }
     }
 }
