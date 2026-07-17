@@ -12,6 +12,7 @@ extension RootView {
         .frame(width: 44, height: 44)
         .overlay(Image(systemName: "person.fill").font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary))
         .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
+        .accessibilityHidden(true)
       CircleButton(icon: "point.3.connected.trianglepath.dotted",
                    badge: codeHub?.exception != nil) { path.append(Route.code) }
         .accessibilityLabel(RootHomeSections.codeTopBarLabel(hub: codeHub))
@@ -20,8 +21,14 @@ extension RootView {
       Spacer()
       CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
         .keyboardShortcut("k", modifiers: .command)
+        .accessibilityLabel(searchSpokenLabel())
+        .accessibilityHint("abre busca nas conversas carregadas")
+        .accessibilityIdentifier(A11yID.topbarSearch)
       CircleButton(icon: "plus") { path.append(Route.new) }
         .keyboardShortcut("n", modifiers: .command)
+        .accessibilityLabel(newConversationSpokenLabel())
+        .accessibilityHint(newConversationSpokenHint())
+        .accessibilityIdentifier(A11yID.topbarNew)
     }
     .overlay {
       VStack(spacing: 5) {
@@ -44,11 +51,12 @@ extension RootView {
         }
       }
       .accessibilityElement(children: .combine)
-      .accessibilityLabel("Atlas")
+      .accessibilityLabel(mastheadSpokenLabel(auditModeEnabled: session.auditModeEnabled))
+      .accessibilityHint(mastheadSpokenHint())
       .accessibilityIdentifier(A11yID.auditMasthead)
       .accessibilityAddTraits(.isHeader)
       .onLongPressGesture(minimumDuration: 0.55) {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
         session.auditModeEnabled.toggle()
       }
       .dynamicTypeSize(...DynamicTypeSize.accessibility1)
@@ -70,6 +78,9 @@ extension RootView {
     }
     .buttonStyle(.plain)
     .keyboardShortcut("n", modifiers: .command)
+    .accessibilityLabel(inputPillSpokenLabel())
+    .accessibilityHint(newConversationSpokenHint())
+    .accessibilityIdentifier(A11yID.homeInputPill)
     .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
     .background(
       LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)

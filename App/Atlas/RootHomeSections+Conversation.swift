@@ -66,7 +66,7 @@ extension RootHomeSections {
     func homeFilterChip(_ label: String, key: String?) -> some View {
         let active = homeWorkspaceFilter == key
         return Button {
-            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
             homeWorkspaceFilter = key
         } label: {
             Text(label)
@@ -79,6 +79,7 @@ extension RootHomeSections {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("filtrar conversas por \(label)")
+        .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
         .accessibilityIdentifier(A11yID.homeWorkspaceChip(key ?? "__free"))
     }
 }
