@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **517+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXI tip `7fb8b3c` |
-| Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **519+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXII tip `a4caf76` |
+| Commits no tip (`git rev-list --count HEAD`) | 541 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXI (este tip)
+## Entrega Elite CXXXXXLXXII (este tip)
+
+- `polish(ui)` CICLO B: A11yID `+Search/+WorkspaceScreen/+CodeHeal/+CodeProvenance`; Transfer `+A11yMission/+PlacementHost/+PlacementRepo`; Loaded `+A11yStartRun`; RootHome `+A11yCodeBar/+A11yArena/+A11yWorkspaceLabel`; ComposerSheets `+A11yMode/+A11yWorkspace`; LiveTimeline `+A11yFilter`; PlanCard `+A11yChipRow`; Steer `+A11yScope/+A11yReceipt`; ChangeReview `+ToastLifecycle`; RootChrome `+A11yThreadHint`; Markdown `+ToolbarCopy`; ConversationView `+PageComposerCard`; Widgets Fleet `+A11yDelivery/+A11yPhase` LiveSession `+A11yTransaction`. Tip `a4caf76`.
+- 24 peels · 40 arquivos · over100=0; zero Route nova.
+
+## Entrega Elite CXXXXXLXXI (anterior)
 
 - `polish(ui)` CICLO B: Sheets `+AttachmentsWorkspace`; Reason `+ToolbarConfirm`; RootHome `+Conversation+A11yFilter/+ConversationRoute/+ConversationLabel`; ArenaRun `+A11yHints/+A11yError`; Awaiting `+A11yInbox/+A11yWorkOrders`; Radar `+LabelsDivider`; A11yID `+ComposerDraft/+ComposerAttachments`; Artifact `+ListRowMeta`; ArenaIndex `+HeaderTitle`; Loaded `+ReceiptControl`; Markdown `+ParseRefresh`; Search `+HeaderBack`; Council `+ContentCouncil`; Autonomos `+LifecycleRhythm`; LiveTimeline `+NarrativePulse`; Execution `+AwaitingFailed+Retry`; Toast `+ToastDismiss`; Widgets `+ContentActive/+ContentSilence`. Tip `7fb8b3c`.
 - Zero App/Widgets >100; zero Route nova.
