@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Relógio RM-safe do widget Sessão viva — peel de LiveSessionWidgetView.
 /// Helpers → AtlasWidgetAccessories+LiveSession+TimerHelpers.swift
+/// Fallback → AtlasWidgetAccessories+LiveSession+TimerFallback.swift
 
 struct LiveSessionWidgetTimer: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -10,9 +11,7 @@ struct LiveSessionWidgetTimer: View {
 
     var body: some View {
         Group {
-            if live.timing == .paused {
-                Text("‖ \(clock(live.elapsedActiveMs))")
-            } else if let since = live.runningSince.flatMap(AtlasTime.date) {
+            if live.timing != .paused, let since = live.runningSince.flatMap(AtlasTime.date) {
                 if reduceMotion {
                     TimelineView(.periodic(from: .now, by: 60)) { timeline in
                         Text(clock(elapsedMs(since: since, now: timeline.date)))
@@ -20,8 +19,8 @@ struct LiveSessionWidgetTimer: View {
                 } else {
                     Text(since, style: .timer)
                 }
-            } else if let ms = live.elapsedActiveMs {
-                Text(clock(ms))
+            } else {
+                timerFallbackBody
             }
         }
         .font(.system(size: 13, design: .monospaced))

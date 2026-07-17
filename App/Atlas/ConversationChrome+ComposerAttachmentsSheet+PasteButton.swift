@@ -3,6 +3,7 @@ import PhotosUI
 import UIKit
 
 // Paste button — peel de ComposerAttachmentsSheet+Paste.
+// Label → ConversationChrome+ComposerAttachmentsSheet+PasteLabel.swift
 
 extension ComposerAttachmentsSheet {
     @ViewBuilder var pasteButton: some View {
@@ -12,13 +13,7 @@ extension ComposerAttachmentsSheet {
             dismiss()
             Task { @MainActor in onPaste(text) }
         } label: {
-            ComposerAttachmentRow(
-                icon: "doc.on.clipboard",
-                title: "Colar contexto",
-                subtitle: pasteboardText == nil
-                    ? "Nada na área de transferência"
-                    : "Adicionar texto da área de transferência"
-            )
+            pasteButtonLabel
         }
         .buttonStyle(.plain)
         .disabled(pasteboardText == nil)

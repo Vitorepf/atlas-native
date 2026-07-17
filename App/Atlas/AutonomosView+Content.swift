@@ -3,6 +3,7 @@ import AtlasCore
 
 // Conteúdo por fase — peel de AutonomosView (régua ≤100).
 // Shell → AutonomosView+ContentShell.swift
+// Loaded → AutonomosView+ContentLoaded.swift
 
 extension AutonomosView {
     @ViewBuilder
@@ -13,20 +14,7 @@ extension AutonomosView {
         case .failed(let message):
             failedContent(message: message)
         case .loaded:
-            AutonomosLoadedSection(
-                model: model,
-                auditModeEnabled: session.auditModeEnabled,
-                nightly: nightly,
-                rhythmSampleDays: rhythmSampleDays,
-                oldestBacklogCreatedAt: oldestBacklogCreatedAt(),
-                nightlyStartProposal: $nightlyStartProposal,
-                control: $control,
-                startRunMode: $startRunMode,
-                showTransferSheet: $showTransferSheet,
-                detailSheet: $detailSheet,
-                selfConstructionReceipt: $selfConstructionReceipt,
-                onRefreshRhythm: { await refreshRhythmLearning() }
-            )
+            loadedContent
         }
     }
 }

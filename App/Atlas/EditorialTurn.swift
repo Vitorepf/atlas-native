@@ -6,6 +6,7 @@ import AtlasCore
 // Assistant stack → EditorialTurn+Assistant.swift
 // Arrival → EditorialTurn+Arrival.swift
 // Equatable → EditorialTurn+Equatable.swift
+// Body → EditorialTurn+Body.swift
 
 struct EditorialTurn: View, Equatable {
     let bubble: ChatBubble
@@ -22,14 +23,6 @@ struct EditorialTurn: View, Equatable {
     @State var placed = false
 
     var body: some View {
-        applyArrival(
-            Group {
-                if bubble.role == "user" {
-                    userTurn
-                } else {
-                    assistantTurn
-                }
-            }
-        )
+        applyArrival(turnBody)
     }
 }

@@ -4,6 +4,7 @@ import AtlasCore
 /// Decisão — peel de ExecutionProof+Expanded (régua ≤100).
 /// Artefatos → ExecutionProof+Expanded+Artifacts.swift
 /// Quality → ExecutionProof+Expanded+Quality.swift
+/// Reason → ExecutionProof+Expanded+Reason.swift
 
 extension ExecutionProof {
     @ViewBuilder
@@ -20,12 +21,7 @@ extension ExecutionProof {
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel(decisionSpoken(d))
-            if let r = d.reason, !r.isEmpty {
-                Text(""\(r)"")
-                    .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
-                    .padding(.leading, 23)
-                    .accessibilityLabel("motivo, \(r)")
-            }
+            decisionReason(d)
         }
     }
 }

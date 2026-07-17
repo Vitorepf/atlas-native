@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Veto fields — peel de SelfConstructionReceiptSheet+Veto.
+// Text → SelfConstructionReceiptSheet+VetoTextFields.swift
 
 extension SelfConstructionReceiptSheet {
     var vetoFields: some View {
@@ -11,20 +12,7 @@ extension SelfConstructionReceiptSheet {
                 .tracking(0.9)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
-            TextField("Quem autoriza", text: $actor)
-                .font(.system(.callout))
-                .textInputAutocapitalization(.never)
-                .padding(10)
-                .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.55)))
-                .accessibilityLabel("quem autoriza o veto")
-                .accessibilityHint(spokenActorHint())
-            TextField("Motivo auditável", text: $reason, axis: .vertical)
-                .font(.system(.callout))
-                .lineLimit(2...4)
-                .padding(10)
-                .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.55)))
-                .accessibilityLabel("motivo auditável do veto")
-                .accessibilityHint(spokenReasonHint())
+            vetoTextFields
             vetoSubmitButton
         }
     }
