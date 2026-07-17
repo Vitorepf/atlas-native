@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import AtlasCore
 
 // Copy helpers — peel de CodeBlockView.
