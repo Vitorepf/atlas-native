@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **575** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLX tip `d664ac4` |
-| Commits no tip (`git rev-list --count HEAD`) | 554 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 242 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **577** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXI tip `dd5220c` |
+| Commits no tip (`git rev-list --count HEAD`) | 879 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 578 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLX (este tip)
+## Entrega Elite CXXXXXLXLXI (este tip)
+
+- `polish(ui)` CICLO B: AreaPicker Phase `+Label/+Color`; Graph StatusTokens `+Color/+Symbol`; ListCaption `+Caption/+Spoken`; LiveNow Timing `+Running/+Paused` Merge `+RemoteFilter`; FileRow Meta `+Subtitle/+Symbol`; Workspace Predicates `+NetworkFailure/+LoadingShell`; Digest Predicates `+ShouldShow/+HasLast`; Reason Confirm `+Label/+Hint`; Markdown Emphasis `+Bold/+Italic`; Messages Assembly `+Built`; Radar Shell `+Loaded` Issues `+First/+More`; Provenance Spoken `+Phase`; Why Sheet `+History`; Mirror State `+Blocked/+Pending`; Filter Enum `+Label`; FlexWrap `+Measure` Place `+Step`; Fleet Summary `+Empty/+Health`; Agents `+Content` Watchdog `+Gate`; DetailChip `+Press/+A11y`; Timeline Rows `+Map`; Arena Chart `+Chrome`; CircleButton `+Label`; Widgets Island Minimal `+Body` LiveSession Spoken `+Core`. Tip `dd5220c`.
+- 41 peels · 69 arquivos · over100=0 · App/Atlas+Widgets swift=2595; App/Widgets swift=198; zero Route nova.
+
+## Entrega Elite CXXXXXLXLX (anterior)
 
 - `polish(ui)` CICLO B: PlanCard Progress `+Execution/+Revisions`; Arena DomainA11y `+Spoken/+IndexGate`; Provenance SpokenCopy `+Law/+Dateline`; HealReceipt A11y `+Steps/+UndoGate` Undo `+Summary/+StepDetail`; SelfConstruction A11y `+Sheet/+RuleProof` VetoA11y `+Submit/+FieldHints`; ChangeReview Meta `+Derived` Decided `+Test/+TestsSection`; Root A11yHome `+SearchNew/+InputPill`; ExecutionProof Replay `+Summary/+Activities`; Messages Scroll `+FABGate/+ChromeChain`; CodeView GraphRotors `+Filter/+WhyOpen`; Artifact EmptyGate `+View/+Predicate`; ActionColors `+Fill/+Border`; Autonomos ContentShell `+Prelude/+Loading` Awaiting Predicates `+Sources/+Count` Digest Headlines `+Merge/+RiskDecision` Area CycleHelpers `+Tap/+SpokenHint`; Nightly MuteMenu `+Menu/+Option`; Composer Upload `+ProgressRow/+Visibility`; ArenaSuites RowTrailing `+Branch/+Subtitle`; Radar Spoken `+LoadingFailed/+EmptyShell`; Search Query `+Trim/+Recent`; Widgets CodeWeek Quiet `+QuietBranch/+MetricsStack` Island TrailingBadge `+Finished/+BadgePaused`. Tip `d664ac4`.
 - 26 peels · 77 arquivos · over100=0 · App/Atlas+Widgets swift=2554; App/Widgets swift=196; zero Route nova.
