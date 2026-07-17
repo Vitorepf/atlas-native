@@ -2,22 +2,14 @@ import SwiftUI
 import AtlasCore
 
 /// Spoken sheet label — peel de ChangeReviewSheet (CICLO C residual honesty).
+/// Load → ChangeReviewView+A11y+Load.swift
+/// Available → ChangeReviewView+A11y+Available.swift
 
 extension ChangeReviewSheet {
     func spokenReviewSheetLabel() -> String {
-        if !loadFinished, review == nil { return "revisão de mudanças, consultando" }
-        if loadFinished, review == nil { return "revisão de mudanças, indisponível" }
+        if let load = spokenReviewSheetLoadLabel() { return load }
         guard let review else { return "revisão de mudanças" }
-        switch review.state {
-        case .available:
-            if Self.hasReviewSurface(review) {
-                let patches = review.patches.count
-                return "revisão de mudanças disponível, \(patches) patch\(patches == 1 ? "" : "es")"
-            }
-            return "revisão de mudanças ligada, sem patches nem provas publicadas"
-        case .unavailable:
-            return "revisão de mudanças indisponível"
-        }
+        return spokenReviewSheetAvailableLabel(review)
     }
 
     static let reviewSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"

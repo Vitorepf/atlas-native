@@ -1,16 +1,11 @@
 import Foundation
 
 // Feedback spoken — peel de EditorialTurn+A11y.
+// Base → EditorialTurn+A11yFeedback+Base.swift
 
 extension EditorialTurnA11y {
   static func spokenFeedbackLabel(kind: FeedbackKind, active: Bool) -> String {
-    let base: String
-    switch kind {
-    case .util: base = "marcar resposta como útil"
-    case .contexto: base = "marcar contexto errado"
-    case .longo: base = "marcar resposta longa demais"
-    case .fraco: base = "marcar resposta fraca"
-    }
+    let base = spokenFeedbackBase(kind: kind)
     return active ? "\(base), selecionado" : base
   }
 

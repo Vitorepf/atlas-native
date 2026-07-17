@@ -5,6 +5,7 @@ import AtlasCore
 /// Shell fala só fase real e contagens do payload; ausência não inventa repositórios.
 /// Spoken helpers → AtlasCodeRadarView+A11ySpoken.swift
 /// Shell → AtlasCodeRadarView+A11yShell.swift
+/// LoadedID → AtlasCodeRadarView+A11y+LoadedID.swift
 
 extension AtlasCodeRadarView {
     var contentPhaseID: String {
@@ -12,10 +13,7 @@ extension AtlasCodeRadarView {
         case .idle: return "idle"
         case .loading: return "loading"
         case .failed: return "failed"
-        case .loaded:
-            guard let workspace = model.workspace else { return "loaded-nil" }
-            if workspace.repositoryCount == 0 { return "loaded-empty" }
-            return "loaded-\(workspace.repositoryCount)"
+        case .loaded: return contentPhaseLoadedID
         }
     }
 }

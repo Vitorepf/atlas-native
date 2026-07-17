@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Kind enum da folha pública Autônomos — peel de AutonomosDetailSheet.
+/// Title → AutonomosDetailSheet+Kind+Title.swift
 
 enum AutonomosDetailSheet: String, Identifiable {
     case workOrders
@@ -10,12 +11,4 @@ enum AutonomosDetailSheet: String, Identifiable {
     case findings
 
     var id: String { rawValue }
-    var title: String {
-        switch self {
-        case .workOrders: return "Work orders"
-        case .inbox: return "Inbox"
-        case .budgets: return "Budgets"
-        case .findings: return "Findings"
-        }
-    }
 }

@@ -5,16 +5,11 @@ import AtlasCore
 // Timers → ExecutionStateCard+Timers.swift
 // Chrome → ExecutionStateCard+PresentationChrome.swift
 // Badge → ExecutionStateCard+KindBadge.swift
+// Attention → ExecutionStateCard+Presentation+Attention.swift
+// Terminal → ExecutionStateCard+Presentation+Terminal.swift
 
 extension ExecutionStateCard {
     var spokenKind: String? {
-        switch state.kind {
-        case .attentionRequired: return "execução pausada, aguardando decisão"
-        case .awaitingExternal: return "aguardando sistema externo"
-        case .recovering: return "reconectando"
-        case .replanning: return "replanejando"
-        case .failed: return "execução falhou"
-        case .completed: return "execução concluída"
-        }
+        spokenKindAttention ?? spokenKindTerminal
     }
 }
