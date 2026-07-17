@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Governance content — peel de ChangeReviewCouncilSection.
+// Council → ChangeReviewCouncilSection+ContentCouncil.swift
 
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
@@ -17,9 +18,7 @@ extension ChangeReviewGovernanceSection {
                         governanceStatsLine(stats)
                     }
                     governanceRevisionsLine(revisions)
-                    if !council.isEmpty {
-                        councilBlock(council)
-                    }
+                    governanceCouncilBlock(council)
                 }
             }
         }

@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Leave / retry helpers — peel de ExecutionStateCard+AwaitingFailed.
+// Leave helpers — peel de ExecutionStateCard+AwaitingFailed.
+// Retry → ExecutionStateCard+AwaitingFailed+Retry.swift
 
 extension ExecutionStateCard {
     /// «Pode sair» só quando o contrato pausa o timer ou o servidor já publicou essa copy.
@@ -12,16 +13,5 @@ extension ExecutionStateCard {
         }
         guard state.timer?.timing == .paused else { return nil }
         return "Você pode sair desta tela"
-    }
-
-    var showsRetryFallback: Bool {
-        state.kind == .failed
-            && state.actions.isEmpty
-            && retryableJobId != nil
-    }
-
-    static func copyMentionsCanLeave(_ text: String?) -> Bool {
-        guard let text = text?.lowercased() else { return false }
-        return text.contains("pode sair")
     }
 }

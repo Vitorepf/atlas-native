@@ -3,26 +3,22 @@ import PhotosUI
 import UniformTypeIdentifiers
 import AtlasCore
 
-// Sheets de attachment + workspace — peel de ConversationSheets+Attachments.
+// Attachment sheet — peel de ConversationSheets+Attachments.
+// Workspace → ConversationSheets+AttachmentsWorkspace.swift
 
 extension ConversationComposerSheetsModifier {
     @ViewBuilder
     func attachmentSheets<Content: View>(on content: Content) -> some View {
-        content
-            .sheet(isPresented: $showAttachmentSheet) {
-                ComposerAttachmentsSheet(
-                    pickedPhoto: $pickedPhoto,
-                    onChooseFile: { showFileImporter = true },
-                    onChooseCamera: { showCamera = true },
-                    onPaste: { model.addClipboard(text: $0) }
-                )
-            }
-            .sheet(isPresented: $showWorkspaceSheet) {
-                WorkspaceSheet(workspaces: session.workspaces, current: model.workspaceName) { ws in
-                    model.workspaceSlug = ws.id
-                    model.workspaceName = ws.name
-                    model.workspacePath = session.workspaceFullPath(forKey: ws.id)
+        workspacePickerSheet(on:
+            content
+                .sheet(isPresented: $showAttachmentSheet) {
+                    ComposerAttachmentsSheet(
+                        pickedPhoto: $pickedPhoto,
+                        onChooseFile: { showFileImporter = true },
+                        onChooseCamera: { showCamera = true },
+                        onPaste: { model.addClipboard(text: $0) }
+                    )
                 }
-            }
+        )
     }
 }

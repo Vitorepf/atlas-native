@@ -4,7 +4,7 @@ import AtlasCore
 
 // Toast — peel de ConversationViewChrome.
 // Edit/copy → ConversationViewChrome+EditCopy.swift
-// Handoff → ConversationViewChrome+Handoff.swift
+// Handoff → ConversationViewChrome+Handoff.swift · Dismiss → +ToastDismiss.swift
 
 extension ConversationView {
     @ViewBuilder var toast: some View {
@@ -18,10 +18,7 @@ extension ConversationView {
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel(ConversationViewA11y.spokenToast(t))
                 .accessibilityIdentifier(A11yID.conversationToast)
-                .task {
-                    try? await Task.sleep(nanoseconds: 1_400_000_000)
-                    clearToast()
-                }
+                .task { await dismissToastAfterDelay() }
         }
     }
 }

@@ -6,6 +6,7 @@ import AtlasCore
 // Bodies → AtlasWidgetAccessories+LiveSession+Bodies.swift
 // Header → AtlasWidgetAccessories+LiveSession+Header.swift
 // A11y → AtlasWidgetAccessories+LiveSession+A11yChrome.swift
+// Active → +ContentActive.swift · Silence → +ContentSilence.swift
 
 extension LiveSessionWidgetView {
     @ViewBuilder
@@ -14,9 +15,9 @@ extension LiveSessionWidgetView {
             VStack(alignment: .leading, spacing: 8) {
                 liveSessionHeader(stale: stale, age: snapshot.ageText(at: entry.date))
                 if let live {
-                    liveSessionActiveBody(live)
+                    liveSessionActiveBranch(live)
                 } else {
-                    liveSessionSilenceBody(snapshot)
+                    liveSessionSilenceBranch(snapshot)
                 }
             },
             snapshot: snapshot,

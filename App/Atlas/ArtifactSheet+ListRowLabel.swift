@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 // Artifact list row label — peel de ArtifactSheet+ListRow.
+// Meta → ArtifactSheet+ListRowMeta.swift
 
 extension ArtifactSheet {
     func artifactListRowLabel(item: AtlasTraceArtifacts.Item) -> some View {
@@ -17,10 +18,7 @@ extension ArtifactSheet {
                 .lineLimit(1)
                 .accessibilityHidden(true)
             Spacer()
-            Text("\(ArtifactViewer.byteLabel(item.byteSize))  \(ArtifactViewer.kindLabel(item.kind))")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+            artifactListRowMeta(item: item)
         }
         .padding(.vertical, 10)
         .contentShape(Rectangle())

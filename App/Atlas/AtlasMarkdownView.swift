@@ -3,7 +3,7 @@ import AtlasCore
 
 // Renderiza markdown na tipografia do Atlas — porte de EditorialMarkdown.tsx.
 // Parse → AtlasMarkdownView+Parse.swift · Rendering → +Rendering · Code → +CodeBlock
-// Block → AtlasMarkdownView+BlockView.swift
+// Block → AtlasMarkdownView+BlockView.swift · Refresh → +ParseRefresh.swift
 struct AtlasMarkdownView: View {
     let text: String
     var streaming: Bool = false
@@ -13,16 +13,13 @@ struct AtlasMarkdownView: View {
     @State var lastParseAt: CFAbsoluteTime = 0
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            ForEach(Array(blocks.enumerated()), id: \.offset) { index, block in
-                blockView(block, index: index)
+        parseRefreshLifecycle(
+            VStack(alignment: .leading, spacing: 14) {
+                ForEach(Array(blocks.enumerated()), id: \.offset) { index, block in
+                    blockView(block, index: index)
+                }
             }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .onAppear { refreshBlocks(force: true) }
-        .onChange(of: text) { _, _ in refreshBlocks(force: !streaming) }
-        .onChange(of: streaming) { _, isStreaming in
-            if !isStreaming { refreshBlocks(force: true) }
-        }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        )
     }
 }

@@ -1,7 +1,8 @@
 import Foundation
 import AtlasCore
 
-// Receipt/actor hints — peel de ArenaRunSheet+A11y.
+// Receipt spoken — peel de ArenaRunSheet+A11y.
+// Hints → ArenaRunSheet+A11yHints.swift · Error → ArenaRunSheet+A11yError.swift
 
 extension ArenaRunSheet {
     func spokenReceiptLabel(_ receipt: AtlasArenaStartReceipt) -> String {
@@ -11,17 +12,5 @@ extension ArenaRunSheet {
             parts.append("worker de medição ainda não implementado")
         }
         return parts.joined(separator: ", ")
-    }
-
-    func spokenActorHint() -> String {
-        "nome de quem autoriza a medição"
-    }
-
-    func spokenReasonHint() -> String {
-        "motivo auditável registrado no ledger"
-    }
-
-    func spokenErrorLabel(_ message: String) -> String {
-        "erro: \(message)"
     }
 }
