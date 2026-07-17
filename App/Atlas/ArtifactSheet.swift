@@ -4,6 +4,7 @@ import AtlasCore
 
 // Preview/zoom → ArtifactViewer.swift · conteúdo → ArtifactSheet+Content.swift · toast → +Toast
 // Selection → ArtifactSheet+Selection.swift · Chrome → ArtifactSheet+Chrome.swift
+// Lifecycle → ArtifactSheet+Lifecycle.swift
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -16,28 +17,15 @@ struct ArtifactSheet: View {
     @State var mountRevealed = 0
 
     var body: some View {
-        NavigationStack {
-            artifactSheetChrome(
-                ZStack {
-                    AtlasTheme.bg.ignoresSafeArea()
-                    content
-                }
-            )
-        }
-        .task {
-            await reviews.refreshChangeReview(traceId: traceId)
-            loadFinished = true
-            if hasDeliveryProof { await runMountAnimation() }
-            else { mountRevealed = deliveryChecks.count }
-        }
-        .onChange(of: items.map(\.id)) { _, ids in
-            if selectedID == nil || selectedID.map({ !ids.contains($0) }) == true {
-                selectedID = ids.first
+        artifactSheetLifecycle(
+            NavigationStack {
+                artifactSheetChrome(
+                    ZStack {
+                        AtlasTheme.bg.ignoresSafeArea()
+                        content
+                    }
+                )
             }
-        }
-        .task(id: selected?.id) {
-            guard mountComplete, let selected else { return }
-            await load(selected)
-        }
+        )
     }
 }

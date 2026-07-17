@@ -5,6 +5,7 @@ import AtlasCore
 ///
 /// Contrato visual: `docs/proposals/atlas-code-mobile.html` (tela M0).
 /// Ask seed → AtlasCodeView+Ask.swift · Init → +Init · Toolbar → +Toolbar
+/// Sheets → AtlasCodeView+SheetsBind.swift
 struct AtlasCodeView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -28,31 +29,20 @@ struct AtlasCodeView: View {
     @State var graphStateFilter: AtlasCodeGraphStateFilter = .all
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            AtlasTheme.bg.ignoresSafeArea()
-            content
-            askPill
-        }
-        .navigationTitle("Grafo")
-        .navigationBarTitleDisplayMode(.inline)
-        .accessibilityIdentifier(A11yID.codeScreen)
-        .accessibilityLabel(spokenCodeScreenLabel())
-        .accessibilityHint(Self.codeScreenHint)
-        .toolbar { codeToolbar }
-        .task { if model.phase == .idle { await model.load() } }
-        .task { await mirrorModel.refresh() }
-        .atlasCodeSheets(
-            session: session,
-            model: model,
-            provenanceModel: provenanceModel,
-            askModel: askModel,
-            selectedNode: $selectedNode,
-            showsHealReceipt: $showsHealReceipt,
-            showsAskCard: $showsAskCard,
-            whyFileTarget: $whyFileTarget,
-            askThreadId: $askThreadId,
-            askDraft: $askDraft,
-            onProvenanceAsk: openAskFromProvenance
+        codeSheetsBind(
+            ZStack(alignment: .bottom) {
+                AtlasTheme.bg.ignoresSafeArea()
+                content
+                askPill
+            }
+            .navigationTitle("Grafo")
+            .navigationBarTitleDisplayMode(.inline)
+            .accessibilityIdentifier(A11yID.codeScreen)
+            .accessibilityLabel(spokenCodeScreenLabel())
+            .accessibilityHint(Self.codeScreenHint)
+            .toolbar { codeToolbar }
+            .task { if model.phase == .idle { await model.load() } }
+            .task { await mirrorModel.refresh() }
         )
     }
 }

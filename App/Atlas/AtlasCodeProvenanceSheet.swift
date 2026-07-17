@@ -6,6 +6,7 @@ import AtlasCore
 /// A folha responde, em ordem, as perguntas de quem abre um commit: em que
 /// estado ele está, o que ele diz, por que existe, e o que ele tocou.
 /// O hash fecha a folha — máquina embaixo do vidro (lei 6).
+/// Chrome → AtlasCodeProvenanceSheet+Chrome.swift
 struct AtlasCodeProvenanceSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var whyTarget: AtlasCodeProvenanceWhyTarget?
@@ -24,29 +25,23 @@ struct AtlasCodeProvenanceSheet: View {
     let onAsk: () -> Void
 
     var body: some View {
-        ZStack {
-            AtlasTheme.bg.ignoresSafeArea()
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    header
-                    lawCitation
-                    askButton
-                    provenanceContent(whyTarget: $whyTarget)
-                    hashFooter
+        provenanceSheetChrome(
+            ZStack {
+                AtlasTheme.bg.ignoresSafeArea()
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 18) {
+                        header
+                        lawCitation
+                        askButton
+                        provenanceContent(whyTarget: $whyTarget)
+                        hashFooter
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(22)
+                    .padding(.bottom, 12)
+                    .animation(reduceMotion ? nil : AtlasMotion.editorial, value: provenanceContentPhaseID)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(22)
-                .padding(.bottom, 12)
-                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: provenanceContentPhaseID)
             }
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(provenanceSheetSpokenLabel)
-        .accessibilityHint(Self.sheetHint)
-        .sheet(item: $whyTarget) { target in
-            AtlasCodeWhySheet(client: client, repo: repo, file: target.path)
-                .presentationDetents([.large])
-                .presentationDragIndicator(.visible)
-        }
+        )
     }
 }

@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 import AtlasCore
 
 // Observers → ConversationSheets+ModifierObservers.swift
+// Review/steer → ConversationSheets+ModifierReview.swift
 
 struct ConversationComposerSheetsModifier: ViewModifier {
     var model: ConversationModel
@@ -25,28 +26,11 @@ struct ConversationComposerSheetsModifier: ViewModifier {
     func body(content: Content) -> some View {
         handoffAndQueueObservers(on:
             attachmentModifiers(on:
-                content
-                .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
-                .sheet(isPresented: $showEffortSheet) { EffortSheet(model: model) }
-                .sheet(item: $reviewTrace) { ref in
-                    ChangeReviewSheet(reviews: model.reviews, traceId: ref.id)
-                }
-                .sheet(item: $artifactTrace) { ref in
-                    ArtifactSheet(reviews: model.reviews, traceId: ref.id)
-                }
-                .sheet(item: $steerTrace) { ref in
-                    SteerInteractionSheet(
-                        traceId: ref.id,
-                        model: model
-                    ) { instruction, scope in
-                        onSteerSubmit(ref.id, instruction, scope)
-                    }
-                    .presentationDetents([.medium])
-                    .presentationDragIndicator(.visible)
-                }
-                .sheet(isPresented: $showQueueSheet) {
-                    QueuedFollowUpsSheet(model: model)
-                }
+                reviewSteerQueueSheets(on:
+                    content
+                    .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
+                    .sheet(isPresented: $showEffortSheet) { EffortSheet(model: model) }
+                )
             )
         )
     }

@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Arena — medição de regressão dos motores (canon).
 /// Content/header → AtlasArenaView+* · Sheets → AtlasArenaView+Sheets.swift
+/// Scroll → AtlasArenaView+ScrollBody.swift
 struct AtlasArenaView: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Environment(AtlasSession.self) var session
@@ -15,22 +16,7 @@ struct AtlasArenaView: View {
         arenaSheets(on:
             ZStack {
                 AtlasTheme.bg.ignoresSafeArea()
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
-                        header
-                        if let exception = model.regressionException {
-                            exceptionBanner(exception)
-                                .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: -6)))
-                        }
-                        content
-                            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
-                    }
-                    .padding(.horizontal, AtlasTheme.Space.screen)
-                    .padding(.vertical, 18)
-                    .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-                    .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.regressionException != nil)
-                }
-                .scrollIndicators(.hidden)
+                arenaScrollBody
             }
             .navigationTitle("Arena")
             .navigationBarTitleDisplayMode(.inline)

@@ -2,7 +2,7 @@ import Foundation
 
 /// Identifiers de acessibilidade canônicos — um único vocabulário entre a
 /// casca e os XCUITests. Home/Search: +Home · Autônomos: +Autonomos ·
-/// Code/radar: +Code · Arena/review: +Surfaces.
+/// Code/radar: +Code · Arena/review: +Surfaces · Queue/Live: +QueueLive.
 enum A11yID {
     static let topbarCode = "topbar-code"
     static let auditMasthead = "audit-masthead"
@@ -39,19 +39,4 @@ enum A11yID {
     static let planProgress = "plan-progress"
     static let planStepPrefix = "plan-step-"
     static func planStep(_ index: Int) -> String { planStepPrefix + String(index) }
-    static let queueChip = "queue-chip"
-    static let queueSheet = "queue-sheet"
-    static let queueRowPrefix = "queue-row-"
-    static let queuePromotePrefix = "queue-promote-"
-    static let queueRemovePrefix = "queue-remove-"
-    static func queueRow(_ index: Int) -> String { queueRowPrefix + String(index) }
-    static func queuePromote(_ id: String) -> String { queuePromotePrefix + id }
-    static func queueRemove(_ id: String) -> String { queueRemovePrefix + id }
-
-    static let liveNowSection = "live-now-section"
-    static let liveNowRowPrefix = "live-now-row-"
-    static let liveNowRemoteBadgePrefix = "live-now-remote-badge-"
-    static func liveNowRow(_ index: Int) -> String { liveNowRowPrefix + String(index) }
-    static func liveNowRemoteBadge(_ index: Int) -> String { liveNowRemoteBadgePrefix + String(index) }
-    static func conversationOutlineRow(_ index: Int) -> String { conversationOutlineRowPrefix + String(index) }
 }
