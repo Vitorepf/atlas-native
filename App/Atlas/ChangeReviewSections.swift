@@ -3,7 +3,7 @@ import AtlasCore
 
 // MARK: - Seções remanescentes da ChangeReviewSheet (C15 · C16)
 // Diff → ChangeReviewDiffSection · Conselho → ChangeReviewCouncilSection.
-// Toast/chrome → ChangeReviewSections+Chrome.swift
+// Toast/chrome → ChangeReviewSections+Chrome.swift · Decisões → ChangeReviewSections+Decided.swift
 
 struct ChangeReviewRunHeader: View {
     let run: AtlasTraceChangeReview.Run
@@ -25,6 +25,9 @@ struct ChangeReviewRunHeader: View {
         .padding(14)
         .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.surface))
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ChangeReviewSectionsA11y.spokenRunHeader(run: run))
+        .accessibilityIdentifier(A11yID.reviewRunHeader)
     }
 }
 
@@ -43,9 +46,12 @@ struct ChangeReviewControlsSection: View {
                     Text(c.signalSummary).font(.caption2).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("\(c.slug), status \(c.status), \(c.signalSummary)")
+                .accessibilityLabel(ChangeReviewSectionsA11y.spokenControl(c))
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(ChangeReviewSectionsA11y.spokenControlsSection(controls))
+        .accessibilityIdentifier(A11yID.reviewControlsSection)
     }
 }
 
@@ -64,29 +70,11 @@ struct ChangeReviewTestsSection: View {
                         .foregroundStyle(t.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("\(t.command ?? "teste"), status \(t.status)")
+                .accessibilityLabel(ChangeReviewSectionsA11y.spokenTest(t))
             }
         }
-    }
-}
-
-struct ChangeReviewDecidedSection: View {
-    let actions: [AtlasTraceChangeReview.OperatorAction]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            ChangeReviewCaption("DECISÕES REGISTRADAS")
-            ForEach(actions) { a in
-                HStack(spacing: 8) {
-                    Text(a.action == .accept ? "aceito" : "rejeitado")
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(a.action == .accept ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
-                    if let at = a.actedAt {
-                        Text(at).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    Spacer()
-                }
-            }
-        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(ChangeReviewSectionsA11y.spokenTestsSection(tests))
+        .accessibilityIdentifier(A11yID.reviewTestsSection)
     }
 }

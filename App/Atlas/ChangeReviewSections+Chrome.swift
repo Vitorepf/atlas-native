@@ -9,6 +9,8 @@ struct ChangeReviewCaption: View {
 
     var body: some View {
         Text(text).font(AtlasFont.mono(10)).tracking(1.0).foregroundStyle(AtlasTheme.textTertiary)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityLabel(ChangeReviewSectionsA11y.spokenCaption(text))
     }
 }
 
@@ -23,6 +25,8 @@ struct ChangeReviewToast: View {
                 .padding(.horizontal, 16).padding(.vertical, 9)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
+                .accessibilityLabel(ChangeReviewSectionsA11y.spokenToast(t))
+                .accessibilityIdentifier(A11yID.reviewToast)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .task {
                     try? await Task.sleep(nanoseconds: 1_400_000_000)
