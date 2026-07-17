@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **346+** | primeiro commit do plano: `ec931f2`; Elite CXIX em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **347+** | primeiro commit do plano: `ec931f2`; Elite CXX em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,9 +127,14 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXIX (este tip)
+## Entrega Elite CXX (este tip)
 
-- `refactor(ui)` CICLO B: Agent+Status; AreaDetail+Metrics; Mirror+Rules; Header+Buttons; Lock+Badge; A11yID+ReviewFiles.
+- `refactor(ui)` CICLO B: FleetEmpty+Copy; Markdown+Quote; Findings+Axis; Signature+Text; CircleButton; Composer+Fade.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXIX (anterior)
+
+- `refactor(ui)` CICLO B: Agent+Status; AreaDetail+Metrics; Mirror+Rules; Header+Buttons; Lock+Badge; A11yID+ReviewFiles. Tip `8352e3e`.
 - Zero App/Widgets >100; zero Route nova.
 
 ## Entrega Elite CXVIII (anterior)

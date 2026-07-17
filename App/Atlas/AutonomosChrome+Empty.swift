@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Card vazio Autônomos — caption + copy editorial (frota, histórico, digest).
+/// Fleet copy → AutonomosChrome+FleetEmptyCopy.swift
 struct AutonomosCardEmptyState: View {
     let caption: String
     let copy: String
@@ -36,14 +37,5 @@ struct AutonomosFleetEmptyState: View {
             copy: copy,
             accessibilityIdentifier: kind == .noAgents ? A11yID.autonomosFleetEmpty : A11yID.autonomosFleetHistoryEmpty
         )
-    }
-
-    private var copy: String {
-        switch kind {
-        case .noAgents:
-            return "Nenhum agente publicado neste recorte — o servidor ainda não registrou a frota."
-        case .noHistory:
-            return "Histórico vazio — nenhum evento de governança registrado ainda."
-        }
     }
 }

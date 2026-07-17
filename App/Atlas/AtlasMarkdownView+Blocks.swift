@@ -1,8 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// List + quote blocks — peel de AtlasMarkdownView.
-// Marcadores tipográficos (— / números / barra) são decorativos; VoiceOver lê conteúdo.
+// List blocks — peel de AtlasMarkdownView.
+// Quote → AtlasMarkdownView+Quote.swift
 
 extension AtlasMarkdownView {
     @ViewBuilder
@@ -30,20 +30,5 @@ extension AtlasMarkdownView {
                 .accessibilityLabel(MarkdownBlocksA11y.spokenListItem(ordered: ordered, index: idx, plain: plain(item)))
             }
         }
-    }
-
-    @ViewBuilder
-    func quoteBlock(_ spans: [InlineSpan]) -> some View {
-        HStack(alignment: .top, spacing: 14) {
-            RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
-                .accessibilityHidden(true)
-            Text(inline(spans, base: .init(font: AtlasFont.serifItalic(17), size: 17, color: AtlasTheme.textPrimary)))
-                .lineSpacing(5)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityHidden(true)
-        }
-        .fixedSize(horizontal: false, vertical: true)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(MarkdownBlocksA11y.spokenQuote(plain(spans)))
     }
 }

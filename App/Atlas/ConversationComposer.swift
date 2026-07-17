@@ -3,9 +3,7 @@ import PhotosUI
 import AtlasCore
 
 // Composer da conversa — peel de ConversationView (régua anti-inchaço).
-// Superfície de escrita + AttachmentStrip + ComposerToolbar + fila + execução.
-// Callbacks e A11yIDs idênticos; zero mudança de rota.
-// Card → ConversationComposer+Card.swift · LiveStrip → +LiveStrip · Actions → +Actions.
+// Card → +Card · LiveStrip → +LiveStrip · Actions → +Actions · Fade → +Fade.
 
 struct ConversationComposer: View {
     var model: ConversationModel
@@ -40,10 +38,6 @@ struct ConversationComposer: View {
         }
         .animation(reduceMotion ? nil : .easeOut(duration: 0.25), value: model.isSending)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
-        .background(
-            LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-                .accessibilityHidden(true)
-        )
+        .background(composerFadeBackground)
     }
 }
