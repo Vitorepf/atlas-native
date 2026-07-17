@@ -10,6 +10,10 @@ extension AutonomosViewHeader {
         return parts.joined(separator: ", ")
     }
 
+    func spokenBackLabel() -> String { "voltar" }
+
+    func spokenBackHint() -> String { "fecha a área Autônomos" }
+
     func spokenRefreshLabel(canRefresh: Bool) -> String {
         canRefresh
             ? "atualizar instância selecionada"
@@ -17,6 +21,6 @@ extension AutonomosViewHeader {
     }
 
     func spokenRefreshHint(canRefresh: Bool) -> String {
-        canRefresh ? "recarrega estado da área selecionada" : ""
+        canRefresh ? "recarrega estado da área selecionada" : "nenhuma instância selecionada"
     }
 }

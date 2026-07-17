@@ -11,14 +11,19 @@ struct AutonomosViewHeader: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Button(action: onBack) {
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onBack()
+            } label: {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(width: 40, height: 40)
                     .background(Circle().fill(AtlasTheme.surface))
             }
-            .accessibilityLabel("voltar")
+            .accessibilityLabel(spokenBackLabel())
+            .accessibilityHint(spokenBackHint())
+            .accessibilityIdentifier(A11yID.autonomosBack)
             VStack(alignment: .leading, spacing: 2) {
                 Text("Autônomos")
                     .font(AtlasFont.serif(21, .semibold))
@@ -33,6 +38,7 @@ struct AutonomosViewHeader: View {
                     Text("MODO AUDITORIA")
                         .font(AtlasFont.mono(9)).tracking(1.0)
                         .foregroundStyle(AtlasTheme.domOperacional)
+                        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
                 }
             }
             .accessibilityElement(children: .combine)
@@ -40,15 +46,21 @@ struct AutonomosViewHeader: View {
             .accessibilityLabel(spokenTitle(isHealthy: isHealthy, auditModeEnabled: auditModeEnabled))
             .accessibilityIdentifier(A11yID.autonomosHeader)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: isHealthy)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: auditModeEnabled)
             Spacer()
-            Button(action: onRefresh) {
+            Button {
+                if canRefresh, !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onRefresh()
+            } label: {
                 Image(systemName: "arrow.clockwise")
                     .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .foregroundStyle(canRefresh ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                     .frame(width: 40, height: 40)
                     .background(Circle().fill(AtlasTheme.surface))
             }
             .disabled(!canRefresh)
+            .opacity(canRefresh ? 1 : 0.45)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: canRefresh)
             .accessibilityLabel(spokenRefreshLabel(canRefresh: canRefresh))
             .accessibilityHint(spokenRefreshHint(canRefresh: canRefresh))
             .accessibilityIdentifier(A11yID.autonomosRefresh)
