@@ -11,16 +11,6 @@ struct SteerInteractionSheet: View {
     @State var instruction = ""
     @State var scope: AtlasInteractionSteerScope = .currentStep
 
-    var canSubmit: Bool {
-        !instruction.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    var matchedReceipt: AtlasInteractionSteerResponse? {
-        guard let receipt = model.lastSteerReceipt else { return nil }
-        if let receiptTrace = receipt.traceId, receiptTrace != traceId.rawValue { return nil }
-        return receipt
-    }
-
     var body: some View {
         NavigationStack {
             ZStack {

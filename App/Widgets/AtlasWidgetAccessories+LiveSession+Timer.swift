@@ -2,9 +2,10 @@ import SwiftUI
 import AtlasCore
 
 /// Relógio RM-safe do widget Sessão viva — peel de LiveSessionWidgetView.
+/// Helpers → AtlasWidgetAccessories+LiveSession+TimerHelpers.swift
 
 struct LiveSessionWidgetTimer: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     let live: AtlasNativeSnapshot.LiveSession
 
     var body: some View {
@@ -26,13 +27,5 @@ struct LiveSessionWidgetTimer: View {
         .font(.system(size: 13, design: .monospaced))
         .foregroundStyle(live.timing == .paused ? Ink.gold : Ink.ink2)
         .accessibilityHidden(true)
-    }
-
-    private func elapsedMs(since: Date, now: Date) -> Int {
-        Int(max(0, now.timeIntervalSince(since)) * 1000)
-    }
-
-    private func clock(_ ms: Int?) -> String {
-        AtlasTime.formatActiveDuration(milliseconds: ms ?? 0)
     }
 }

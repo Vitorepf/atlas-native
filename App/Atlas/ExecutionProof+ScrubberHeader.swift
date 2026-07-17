@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Scrubber header — peel de ExecutionProof+ScrubberChrome.
+// Meta → ExecutionProof+ScrubberMeta.swift
 
 extension ExecutionProof {
     func replayScrubberHeader(
@@ -23,16 +24,7 @@ extension ExecutionProof {
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
                     .accessibilityHidden(true)
             }
-            Text(selected.activity.title)
-                .font(.system(.caption, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .lineLimit(2)
-                .accessibilityHidden(true)
-            Text(selected.activity.occurredAt ?? "")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(1)
-                .accessibilityHidden(true)
+            replayScrubberMeta(selected: selected)
         }
     }
 }

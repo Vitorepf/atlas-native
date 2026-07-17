@@ -3,6 +3,7 @@ import AtlasCore
 
 // Estilo dos botões de ação do ExecutionStateCard.
 // Extraído para manter o card sob a régua (~250).
+// Colors → ExecutionStateCard+ActionColors.swift
 
 struct ExecutionStateActionStyle: ButtonStyle {
     let style: AtlasExecutionPresentationState.ActionStyle
@@ -18,21 +19,5 @@ struct ExecutionStateActionStyle: ButtonStyle {
                 reduceMotion ? nil : .easeOut(duration: 0.15),
                 value: configuration.isPressed
             )
-    }
-
-    private var background: Color {
-        switch style {
-        case .primary: return AtlasTheme.accent
-        case .secondary: return AtlasTheme.surfaceHi
-        case .destructive: return AtlasTheme.domOperacional.opacity(0.2)
-        }
-    }
-
-    private var foreground: Color {
-        style == .primary ? AtlasTheme.bg : AtlasTheme.textPrimary
-    }
-
-    private var border: Color {
-        style == .destructive ? AtlasTheme.domOperacional.opacity(0.55) : AtlasTheme.separator
     }
 }

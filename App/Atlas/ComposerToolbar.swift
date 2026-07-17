@@ -4,6 +4,7 @@ import AtlasCore
 // Toolbar do composer: paperclip + campo + trailing (enviar / processando / menu
 // de modo·esforço·workspace). Peel de ConversationComposer (régua <200).
 // Field → ComposerToolbar+Field.swift
+// CanSubmit → ComposerToolbar+CanSubmit.swift
 
 struct ComposerToolbar: View {
     var model: ConversationModel
@@ -17,14 +18,6 @@ struct ComposerToolbar: View {
     var onShowMode: () -> Void
     var onShowEffort: () -> Void
     var onSend: () -> Void
-
-    var canSubmit: Bool {
-        let hasText = !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        if model.isSending || liveBubble != nil {
-            return hasText
-        }
-        return hasText || !model.drafts.isEmpty
-    }
 
     var body: some View {
         HStack(spacing: 10) {

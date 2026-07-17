@@ -3,6 +3,7 @@ import AtlasCore
 
 // Stack do turno assistente — peel de EditorialTurn (régua ≤100).
 // Closing → EditorialTurn+Closing.swift
+// Execution → EditorialTurn+AssistantExecution.swift
 
 extension EditorialTurn {
     @ViewBuilder
@@ -14,19 +15,7 @@ extension EditorialTurn {
             if bubble.streaming, bubble.hasLiveExecutionSurface {
                 ExecutionRibbon(bubble: bubble, reduceMotion: reduceMotion, onStop: onStop)
             }
-            if let state = bubble.executionPresentationState {
-                let steerTrace = bubble.executionPresence?.isOngoing == true ? bubble.traceId : nil
-                if ExecutionStateCard.shouldDisplay(state: state) {
-                    ExecutionStateCard(
-                        state: state,
-                        jobId: bubble.executionChoiceJobId,
-                        onChoose: onExecutionChoice,
-                        retryableJobId: bubble.retryableJobId,
-                        onRetry: onRetry,
-                        onSteer: steerTrace.map { trace in { onSteer(trace) } }
-                    )
-                }
-            }
+            assistantExecutionBlock
             assistantClosing
         }
         .frame(maxWidth: .infinity, alignment: .leading)

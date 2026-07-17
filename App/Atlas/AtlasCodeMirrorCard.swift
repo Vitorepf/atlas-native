@@ -3,25 +3,14 @@ import SwiftUI
 
 /// M5 · Espelho — o que sairia do Mac, e o que a varredura encontrou.
 /// Rules → AtlasCodeMirrorCard+Rules.swift
+/// Header → AtlasCodeMirrorCard+Header.swift
 struct AtlasCodeMirrorCard: View {
     let response: AtlasCodeMirrorResponse
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text("Espelho")
-                    .font(AtlasFont.serif(18, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
-                Spacer()
-                if let host = response.mirror?.host {
-                    Text(host)
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityHidden(true)
-                }
-            }
+            mirrorHeader
             headline
             blockedRulesRow
         }

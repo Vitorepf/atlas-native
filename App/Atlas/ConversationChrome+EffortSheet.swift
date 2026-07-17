@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 // Pick → ConversationChrome+EffortSheet+Pick.swift
+// Rows → ConversationChrome+EffortSheet+Rows.swift
 struct EffortSheet: View {
     var model: ConversationModel
     @Environment(\.dismiss) var dismiss
@@ -17,18 +18,7 @@ struct EffortSheet: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 10)
                 .accessibilityHidden(true)
-            ForEach(AtlasComputeEffort.allCases, id: \.self) { effort in
-                let selected = effort == model.effort
-                SheetRow(
-                    label: effort.shortLabel.capitalized,
-                    sub: ComposerSheetA11y.effortSubtitle(effort),
-                    selected: selected,
-                    accessibilityLabel: ComposerSheetA11y.effortLabel(effort, selected: selected),
-                    accessibilityIdentifier: A11yID.effortRow(effort.rawValue)
-                ) {
-                    pick(effort)
-                }
-            }
+            effortRows
         }
         .accessibilityIdentifier(A11yID.effortSheet)
         .accessibilityLabel("esforço computacional")
