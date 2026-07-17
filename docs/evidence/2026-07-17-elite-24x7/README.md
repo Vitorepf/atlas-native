@@ -16,7 +16,7 @@ Contagens capturadas no cloud agent Linux em 2026-07-17; revalidar com `git rev-
 ## Entrega deste stub
 
 - `polish(ui)` SearchView: A11yID (`search-*`), query vazia → recentes + caption `RECENTES`, empty honesto sem recentes, Reduce Motion nas animações de lista; Dynamic Type via `AtlasFont`/`relativeTo` + `.system(.callout/.caption/.footnote)`.
-- `polish(ui)` WorkspaceView: empty editorial engrossado; offline/failed distingue `AtlasFailureCopy` + retry; loading shell; A11yID (`workspace-*`); Reduce Motion no filtro de área / lista.
+- `polish(ui)` WorkspaceView + peel `WorkspaceEmptyStates`: empty editorial engrossado; offline/failed distingue `AtlasFailureCopy` + retry; loading shell; A11yID (`workspace-*`); Reduce Motion no filtro de área / lista.
 
 ## BLOCKED (honesto — não inventar verde)
 
