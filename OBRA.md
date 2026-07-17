@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXV — CICLO B Search/Home/Proof peels** · `95fc59f` · CICLO B: Receipt `+A11ySilence`; Search `+HeaderFieldPlaceholder`; Home `+ChipLabel`; Plan `+AuditCaption`; LiveNow `+TimingPause`; Proof `+Stack`; Ribbon `+RibbonDecide`; Bubbles `+BubblesA11y`; Lifecycle `+LifecycleOutline`; Arena `+A11yMeasured`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXIV — CICLO B Composer/Arena/Workspace peels** · `b4fd125` · CICLO B: Composer `+CardAttach`; Autonomos `+Revert`; Digest `+A11yBacklog`; Suites `+FormSuitesRows`; Arena `+A11yHint`; Workspace `+ScrollChrome`; Empty `+Chrome`; Steer `+FormPicker`; Receipt `+Title`; CodeWeek `+Hint`; Sheets `+SheetsModifierAsk`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXIII — CICLO B Fleet/Strip/Proof peels** · `41b050c` · CICLO B: Sheets `+ModifierSteer`; Strip `+StatusActivityRow`/`+StatusProgress`; Fleet `+A11yChrome`; SelfConstruction `+Proof`; A11yID `+ReviewSections`; Execution `+Stack`/`+DecisionSurface`/`+ActionChoiceButton`; Root `+A11yCount`; Review `+A11yControls`; Delivered `+Silence`; Artifact `+MountCounter`; Loaded `+Refresh`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
