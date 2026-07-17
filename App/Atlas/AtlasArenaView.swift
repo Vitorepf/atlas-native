@@ -90,7 +90,6 @@ struct AtlasArenaView: View {
                     scoreboard: model.scoreboard,
                     onSuiteTap: { selectedSuite = $0 }
                 )
-                .accessibilityIdentifier(A11yID.arenaSuitesSection)
                 Button {
                     showingRunSheet = true
                 } label: {

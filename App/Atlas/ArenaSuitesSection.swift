@@ -13,6 +13,7 @@ struct ArenaSuitesSection: View {
                     .font(.system(.caption, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityIdentifier(A11yID.arenaSuitesSection)
                 Spacer()
                 Text("\(scoreboard?.suites.count ?? 0)")
                     .font(AtlasFont.mono(11))
@@ -25,6 +26,8 @@ struct ArenaSuitesSection: View {
                         ArenaSuiteRow(suite: suite)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("\(suite.suite), \(suite.arenaSubtitleText)")
                     .accessibilityIdentifier("arena-suite-\(suite.suite)")
                 }
             } else {
@@ -78,14 +81,18 @@ private struct ArenaSuiteRow: View {
         }
         .padding(.vertical, 10)
         .contentShape(Rectangle())
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(suite.suite), \(subtitle)")
     }
 
     private var subtitle: String {
-        guard suite.isMeasured else { return "não medido" }
-        let rounds = suite.runsTotal == 1 ? "1 rodada" : "\(suite.runsTotal) rodadas"
-        if let lastRunAt = suite.lastRunAt { return "\(rounds) · \(lastRunAt)" }
+        suite.arenaSubtitleText
+    }
+}
+
+private extension AtlasArenaSuite {
+    var arenaSubtitleText: String {
+        guard isMeasured else { return "não medido" }
+        let rounds = runsTotal == 1 ? "1 rodada" : "\(runsTotal) rodadas"
+        if let lastRunAt { return "\(rounds) · \(lastRunAt)" }
         return rounds
     }
 }
@@ -109,6 +116,7 @@ private struct SuiteSparkline: View {
 }
 
 struct ArenaSuiteSheet: View {
+    @Environment(\.dismiss) private var dismiss
     let suite: AtlasArenaSuite
 
     var body: some View {
@@ -148,12 +156,18 @@ struct ArenaSuiteSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Suite")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Fechar") { dismiss() }
+                }
+            }
         }
         .accessibilityIdentifier(A11yID.arenaSuiteSheet)
     }
 }
 
 struct ArenaEngineSheet: View {
+    @Environment(\.dismiss) private var dismiss
     let engine: AtlasArenaCompositeEngine
     let capabilities: AtlasArenaCapabilities?
 
@@ -172,6 +186,11 @@ struct ArenaEngineSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Motor")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Fechar") { dismiss() }
+                }
+            }
         }
         .accessibilityIdentifier(A11yID.arenaEngineSheet)
     }
