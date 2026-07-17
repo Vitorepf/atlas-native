@@ -12,11 +12,14 @@ extension EditorialTurn {
                 .padding(.leading, 16)
                 .overlay(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
+                        .accessibilityHidden(true)
                 }
+                .accessibilityLabel(EditorialTurnA11y.spokenUserMessage(bubble.text))
             Button(action: onEditResend) {
                 HStack(spacing: 5) {
                     Image(systemName: "arrow.turn.down.right")
                         .font(.system(size: 10, weight: .semibold))
+                        .accessibilityHidden(true)
                     Text("editar e reenviar")
                         .font(AtlasFont.mono(10))
                 }
@@ -27,6 +30,7 @@ extension EditorialTurn {
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel("editar esta mensagem e reenviar como novo turno")
+            .accessibilityHint("abre o compositor com este texto para um novo envio")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

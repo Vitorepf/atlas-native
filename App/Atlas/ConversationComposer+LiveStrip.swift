@@ -18,6 +18,7 @@ extension ConversationComposer {
                 .transition(.opacity)
             Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
                 .padding(.bottom, expanded ? 0 : 8)
+                .accessibilityHidden(true)
         }
     }
 
@@ -25,7 +26,7 @@ extension ConversationComposer {
     var queueChipSection: some View {
         if !model.queuedMessages.isEmpty {
             Button {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                 showQueueSheet = true
             } label: {
                 Text(queueChipLabel)
@@ -58,6 +59,7 @@ extension ConversationComposer {
                         .onEnded { if $0.translation.height > 8 { dismissKeyboard() } }
                 )
                 .accessibilityLabel("fechar teclado")
+                .accessibilityHint("toque ou arraste para baixo para dispensar o teclado")
                 .accessibilityAddTraits(.isButton)
         }
     }

@@ -55,6 +55,8 @@ struct EditorialTurn: View, Equatable {
                         Text("RESPOSTA FINAL")
                             .font(.system(.caption2, weight: .semibold)).tracking(1.6)
                             .foregroundStyle(AtlasTheme.accent.opacity(0.85))
+                            .accessibilityLabel(EditorialTurnA11y.spokenFinalAnswerKicker)
+                            .accessibilityAddTraits(.isHeader)
                     }
                     if !bubble.text.isEmpty {
                         AtlasMarkdownView(text: bubble.text, streaming: bubble.streaming)
@@ -71,6 +73,7 @@ struct EditorialTurn: View, Equatable {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
                 .onLongPressGesture(minimumDuration: 0.38) { onCopy() }
+                .accessibilityHint(EditorialTurnA11y.copyLongPressHint)
             }
         }
         .opacity(placed ? 1 : 0)

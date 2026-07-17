@@ -8,6 +8,7 @@ struct AutonomosTransferSheet: View {
     let placement: AtlasAutonomosRuntimePlacement?
     let onConfirm: (String, String) -> Void
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var actor = ""
     @State private var reason = ""
 
@@ -31,60 +32,56 @@ struct AutonomosTransferSheet: View {
                     Section("Alvo") {
                         Text("Desconhecido até target_claimed. A fila escolhe o worker; este app não promete host futuro.")
                             .font(.footnote).foregroundStyle(.secondary)
+                            .accessibilityLabel(AutonomosTransferSheetA11y.spokenTargetUnknown)
                     }
                     Section("Operador") {
                         TextField("Quem autoriza", text: $actor)
                             .accessibilityIdentifier(A11yID.autonomosTransferActor)
+                            .accessibilityHint("nome de quem autoriza a transferência")
                     }
                     Section("Motivo") {
                         TextField("Motivo auditável", text: $reason, axis: .vertical).lineLimit(3...6)
                             .accessibilityIdentifier(A11yID.autonomosTransferReason)
+                            .accessibilityHint("motivo público registrado no ledger")
                     }
                 }
             }
             .navigationTitle("Transferir missão")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancelar") { dismiss() }
+                        .accessibilityLabel(AutonomosTransferSheetA11y.spokenCancel)
+                }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Confirmar") { onConfirm(actor, reason); dismiss() }
-                        .disabled(!canConfirm)
-                        .accessibilityIdentifier(A11yID.autonomosTransferSubmit)
+                    Button("Confirmar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        onConfirm(actor, reason)
+                        dismiss()
+                    }
+                    .disabled(!canConfirm)
+                    .accessibilityIdentifier(A11yID.autonomosTransferSubmit)
+                    .accessibilityLabel(AutonomosTransferSheetA11y.spokenConfirm(canConfirm: canConfirm))
+                    .accessibilityHint(
+                        AutonomosTransferSheetA11y.spokenConfirmHint(
+                            canConfirm: canConfirm,
+                            hasPlacement: hasPlacement
+                        )
+                    )
                 }
             }
             .accessibilityIdentifier(A11yID.autonomosTransferSheet)
         }
+        .accessibilityLabel(
+            AutonomosTransferSheetA11y.spokenSheet(areaName: areaName, hasPlacement: hasPlacement)
+        )
+        .accessibilityHint(AutonomosTransferSheetA11y.sheetHint)
     }
 
-    private var hasPlacement: Bool { placement?.hasVerifiedPlacement == true }
+    var hasPlacement: Bool { placement?.hasVerifiedPlacement == true }
 
-    private var canConfirm: Bool {
+    var canConfirm: Bool {
         hasPlacement
             && !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    @ViewBuilder
-    private var placementFields: some View {
-        if let host = placement?.host?.nonEmpty {
-            LabeledContent("host", value: host)
-        }
-        if let env = placement?.environment?.nonEmpty {
-            LabeledContent("ambiente", value: env)
-        }
-        if let ws = placement?.workspace?.nonEmpty {
-            LabeledContent("workspace", value: ws)
-        }
-        if let repo = placement?.repository?.nonEmpty {
-            LabeledContent("repositório", value: repo)
-        }
-        if let branch = placement?.branch?.nonEmpty {
-            LabeledContent("branch", value: branch)
-        }
-        if let acquired = placement?.acquiredAt?.nonEmpty {
-            LabeledContent("adquirido", value: acquired)
-        }
-        if let ttl = placement?.leaseTTLSeconds {
-            LabeledContent("lease", value: "\(ttl)s")
-        }
     }
 }

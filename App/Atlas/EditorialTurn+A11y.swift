@@ -24,6 +24,15 @@ enum EditorialTurnA11y {
     "envia feedback ao roteamento do Atlas para este turno"
   }
 
+  static func spokenUserMessage(_ text: String) -> String {
+    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+    return trimmed.isEmpty ? "mensagem sua, vazia" : "mensagem sua, \(trimmed)"
+  }
+
+  static let spokenFinalAnswerKicker = "resposta final"
+
+  static let copyLongPressHint = "pressionar e segurar copia a resposta"
+
   private static func signatureWho(provider: String?, model: String?) -> String? {
     if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
     if let provider, !provider.isEmpty { return providerWord(provider) }
