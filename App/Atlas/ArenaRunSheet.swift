@@ -77,7 +77,10 @@ struct ArenaRunSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }
+                    Button("Fechar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
                         .accessibilityLabel(spokenCloseLabel())
                         .accessibilityHint(spokenCloseHint())
                 }

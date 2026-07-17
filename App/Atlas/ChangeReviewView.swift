@@ -24,8 +24,12 @@ struct ChangeReviewSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Fechar") { dismiss() }
+                    Button("Fechar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
                         .accessibilityLabel("fechar revisão de mudanças")
+                        .accessibilityHint("volta para a conversa")
                 }
             }
             .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }
