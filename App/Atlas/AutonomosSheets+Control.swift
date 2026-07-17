@@ -12,10 +12,6 @@ struct AutonomosControlSheet: View {
     var body: some View {
         AutonomosReasonSheet(title: label, explainer: "Ação governada — operador e motivo ficam no recibo auditável.", onConfirm: onConfirm)
     }
-
-    private var label: String {
-        switch action { case .pause: return "Pausar"; case .resume: return "Retomar"; case .kill: return "Encerrar"; case .clearKill: return "Liberar encerramento" }
-    }
 }
 
 /// C13: novo ciclo é governado — ensaio é o default; executar exige motivo.

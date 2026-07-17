@@ -3,6 +3,7 @@ import AtlasCore
 
 // Estados vazio/erro/carregando — peel de AtlasArenaView (régua ~160).
 // Failure/exception → AtlasArenaView+Failure.swift
+// Domain → AtlasArenaView+DomainUnavailable.swift
 
 extension AtlasArenaView {
     var loadingCard: some View {
@@ -20,17 +21,5 @@ extension AtlasArenaView {
             .padding(16)
             .atlasCard()
             .accessibilityLabel(message)
-    }
-
-    var domainUnavailableCard: some View {
-        Text(ArenaModel.domainUnavailableCopy)
-            .font(.system(.subheadline))
-            .foregroundStyle(AtlasTheme.textSecondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(16)
-            .atlasCard()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(domainUnavailableSpoken)
-            .accessibilityHint(domainUnavailableHint)
     }
 }
