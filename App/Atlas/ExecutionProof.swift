@@ -13,6 +13,17 @@ struct ExecutionProof: View {
     @State private var open = false
     @State private var replayIndex = 0
 
+    /// Passos, decide, quality ou artefatos reais — nunca card vazio pós-conclusão.
+    static func shouldDisplay(
+        bubble: ChatBubble,
+        artifactItems: [AtlasTraceArtifacts.Item] = []
+    ) -> Bool {
+        !bubble.activities.isEmpty
+            || bubble.decisionSummary.map(hasDecisionSurface) == true
+            || bubble.qualitySummary != nil
+            || (!artifactItems.isEmpty && bubble.traceId != nil)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
@@ -27,9 +38,11 @@ struct ExecutionProof: View {
                         Text("Obra concluída")
                             .font(.system(.subheadline, weight: .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        Text(summaryLine)
-                            .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
-                            .lineLimit(1)
+                        if !summaryLine.isEmpty {
+                            Text(summaryLine)
+                                .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
+                                .lineLimit(1)
+                        }
                     }
                     Spacer(minLength: 0)
                     Text(open ? "Fechar" : "Abrir")
@@ -38,28 +51,33 @@ struct ExecutionProof: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("prova da execução, \(bubble.activities.count) passos")
+            .accessibilityLabel(spokenCollapsed)
             .accessibilityHint(open ? "toque para fechar" : "toque para expandir")
+            .accessibilityIdentifier(A11yID.executionProof)
 
             if open {
                 VStack(alignment: .leading, spacing: 7) {
                     replayScrubber
-                    ForEach(bubble.activities) { act in
-                        HStack(alignment: .firstTextBaseline, spacing: 8) {
-                            Image(systemName: activityIcon(act.kind))
-                                .font(.system(size: 11)).foregroundStyle(AtlasTheme.accent.opacity(0.8))
-                                .frame(width: 15)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(act.title)
-                                    .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
-                                if let d = act.detail, !d.isEmpty {
-                                    Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                                        .lineLimit(2).truncationMode(.middle)
+                    if !bubble.activities.isEmpty {
+                        ForEach(bubble.activities) { act in
+                            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                                Image(systemName: activityIcon(act.kind))
+                                    .font(.system(size: 11)).foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                                    .frame(width: 15)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(act.title)
+                                        .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+                                    if let d = act.detail, !d.isEmpty {
+                                        Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                                            .lineLimit(2).truncationMode(.middle)
+                                    }
                                 }
                             }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel(activitySpoken(act))
                         }
                     }
-                    if let d = bubble.decisionSummary {
+                    if let d = bubble.decisionSummary, Self.hasDecisionSurface(d) {
                         Divider().overlay(AtlasTheme.separatorSoft)
                         HStack(spacing: 6) {
                             Image(systemName: "arrow.triangle.branch")
@@ -69,7 +87,7 @@ struct ExecutionProof: View {
                                 .lineLimit(2)
                         }
                         if let r = d.reason, !r.isEmpty {
-                            Text("“\(r)”")
+                            Text(""\(r)"")
                                 .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
                                 .padding(.leading, 23)
                         }
@@ -78,14 +96,16 @@ struct ExecutionProof: View {
                         HStack(spacing: 6) {
                             Image(systemName: "seal")
                                 .font(.system(size: 11)).foregroundStyle(qualityColor(q)).frame(width: 15)
-                            Text("quality \(String(format: "%.1f", q.score)) · \(q.status)" +
-                                 (q.flagCount > 0 ? " · \(q.flagCount) alertas" : ""))
+                            Text(qualityLine(q))
                                 .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                         }
+                        .accessibilityLabel(qualitySpoken(q))
                     }
                     if !artifactItems.isEmpty, let traceId = bubble.traceId {
                         Button {
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                            if !reduceMotion {
+                                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                            }
                             onOpenArtifacts(traceId)
                         } label: {
                             HStack(spacing: 6) {
@@ -128,7 +148,17 @@ struct ExecutionProof: View {
         if !bubble.activities.isEmpty { parts.append("\(bubble.activities.count) passos") }
         if let ms = bubble.elapsedMs, ms > 0 { parts.append(humanDuration(ms)) }
         if let q = bubble.qualitySummary { parts.append("quality \(String(format: "%.1f", q.score))") }
-        return parts.isEmpty ? "provas e histórico preservados" : parts.joined(separator: " · ")
+        if !artifactItems.isEmpty { parts.append("\(artifactItems.count) artefatos") }
+        return parts.joined(separator: " · ")
+    }
+
+    private var spokenCollapsed: String {
+        var parts = ["prova da execução"]
+        if !bubble.activities.isEmpty { parts.append("\(bubble.activities.count) passos") }
+        if bubble.decisionSummary.map(Self.hasDecisionSurface) == true { parts.append("decisão do atlas") }
+        if bubble.qualitySummary != nil { parts.append("avaliação de qualidade") }
+        if !artifactItems.isEmpty { parts.append("\(artifactItems.count) artefatos") }
+        return parts.joined(separator: ", ")
     }
 
     @ViewBuilder
@@ -202,8 +232,45 @@ struct ExecutionProof: View {
         return out
     }
 
+    private func qualityLine(_ q: AtlasQualitySummary) -> String {
+        var out = "quality \(String(format: "%.1f", q.score)) · \(q.status)"
+        if q.flagCount > 0 { out += " · \(q.flagCount) alertas" }
+        if q.actionCount > 0 { out += " · \(q.actionCount) ações" }
+        return out
+    }
+
+    private func qualitySpoken(_ q: AtlasQualitySummary) -> String {
+        var parts = ["qualidade \(String(format: "%.1f", q.score)), status \(q.status)"]
+        if q.flagCount > 0 { parts.append("\(q.flagCount) alertas") }
+        if q.actionCount > 0 { parts.append("\(q.actionCount) ações de correção") }
+        return parts.joined(separator: ", ")
+    }
+
+    private func activitySpoken(_ act: AtlasAgentActivity) -> String {
+        var parts = [act.title]
+        if let d = act.detail, !d.isEmpty { parts.append(d) }
+        return parts.joined(separator: ", ")
+    }
+
     private func qualityColor(_ q: AtlasQualitySummary) -> Color {
-        q.status.lowercased().contains("pass") || q.score >= 0.7
-            ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional
+        let status = q.status.lowercased()
+        if status.contains("pass") || status.contains("ok") || status.contains("success") {
+            return AtlasTheme.domAutonomos
+        }
+        if status.contains("fail") || status.contains("warn") || status.contains("flag") {
+            return AtlasTheme.domOperacional
+        }
+        return AtlasTheme.textSecondary
+    }
+
+    /// Campos publicados pelo ledger — nunca só o rótulo «atlas decide».
+    static func hasDecisionSurface(_ d: AtlasDecisionSummary) -> Bool {
+        d.selectedProvider != nil
+            || d.selectedModel != nil
+            || d.reason != nil
+            || d.confidenceScore != nil
+            || d.riskLevel != nil
+            || d.routeMode != nil
+            || d.wasOverridden
     }
 }

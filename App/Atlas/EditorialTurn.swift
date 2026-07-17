@@ -71,8 +71,8 @@ struct EditorialTurn: View, Equatable {
                             )
                         }
                     }
-                    let hasProof = !bubble.activities.isEmpty || bubble.decisionSummary != nil || bubble.qualitySummary != nil
-                    if !bubble.streaming && hasProof {
+                    if !bubble.streaming,
+                       ExecutionProof.shouldDisplay(bubble: bubble, artifactItems: artifactItems) {
                         ExecutionProof(bubble: bubble, artifactItems: artifactItems, onOpenArtifacts: onOpenArtifacts)
                         Text("RESPOSTA FINAL")
                             .font(.system(.caption2, weight: .semibold)).tracking(1.6)

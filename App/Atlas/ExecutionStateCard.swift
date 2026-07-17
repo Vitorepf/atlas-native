@@ -143,6 +143,13 @@ struct ExecutionStateCard: View {
         parts.append(state.title)
         if let detail = state.detail { parts.append(detail) }
         if let checkpoint = state.checkpoint { parts.append("checkpoint \(checkpoint)") }
+        if state.kind == .recovering, let timer = state.timer {
+            parts.append("tempo ativo \(Self.clock(timer.elapsedActiveMilliseconds))")
+        }
+        if let deadline = state.deadline { parts.append("próxima mudança \(deadline)") }
+        if !state.actions.isEmpty {
+            parts.append("\(state.actions.count) ação\(state.actions.count == 1 ? "" : "ões") disponíveis")
+        }
         return parts.joined(separator: ". ")
     }
 
