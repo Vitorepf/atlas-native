@@ -145,7 +145,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
 | PT0 | **PARCIAL** | **Grok 4.5** | evidence + OBRA | decisão §6 2026-07-17 | Onda 0 M01–M06 | M06 live DONE; M01 último passo+§5; M02–M05 roteiro operador | `docs/evidence/2026-07-17-onda0/`; M06 log |
-| PT1 | PENDING | — | server+core+casca contratos | PT0 | Onda 1 M07–M14 + casca sprint M15/M62/M11 | PHPUnit+checks+binding | — |
+| PT1 | **PARCIAL** | **GPT-5.5** | `App/Atlas/{A11yID,AutonomosView,ConversationChrome,ConversationCockpit,ConversationView,ExecutionStateCard,SelfConstructionReceiptSheet,SteerInteractionSheet}.swift`; `OBRA.md` | PT0 | Onda 1 M07–M14 + casca sprint M15/M62/M11 | M07–M09 casca ligadas; M15 aplicado; M62/M11 verificados | este commit; checks+build+diff verdes; device-pending |
 | PT-M61 | PENDING | — | server `config/atlas_arena.php`+`app/Services/Ai/Arena\|Rivals`+rotas+testes; native `AtlasArena.swift`+checks+`App/Atlas/Arena*`+RootView+A11yID | PT1 casca sprint | M61 Arena A1–A12 (única rota nova `.arena`) | DoD spec §G; +1 case Route | — |
 | PT2–8 | PENDING | — | conforme ondas 2–8 | PT-M61 | Ondas 2–8 (M16–M66 exceto M61); Onda 9 intocada | prova por item | — |
 | PT10 | PENDING | — | OBRA/Makefile/docs | contínuo | Onda 10 M76–M81 rituais | make verify; ledger §B | — |
@@ -892,6 +892,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · GPT-5.5 · **PT1 casca bindings PARCIAL** · este commit · M07 Redirecionar ligado na execução viva com sheet `current_step|replan`, recibo literal `na fila do próximo checkpoint`/reason; M08 Self-Construction mostra `Desfazer — com recibo` só com merge hash + controle disponível e recibo `na fila · ainda não desfeito`; M09 seção `PRÓXIMO RESUMO` usa somente digest tipado; M15 corrige faixa uma linha e composer/fila real; M11 diffStats já estava no `ExecutingStrip`; M62 Fila N + sheet promover/remover verificados e envio durante execução volta a enfileirar. Prova: `env -u ATLAS_LIVE swift run AtlasCoreChecks` exit 0 (live herdado do shell foi interrompido), `cd App && make build` exit 0, `git diff --check` exit 0. **Honesto:** sem screenshot/device nesta sessão; M10–M14 não foram afirmados como fechados aqui.
 - 2026-07-17 · Grok 4.5 · **Onda 0 PARCIAL** · este commit · M06 live-probe integral exit 0 (create→SSE→done, upload 3.2MB, C4); M01 parado no último passo real (`delivered_total=0`, heal≠merge) + §5 bridge; M02–M05 roteiros operador (`passcodeRequired`). Evidence: `docs/evidence/2026-07-17-onda0/`. Gates: checks+build verdes.
 - 2026-07-17 · Grok 4.5 · **Profundidade Total — bootstrap** · `0678f64` · autorização §6 + adendo M61 Arena; fila §4 PT0–PT19–22; P16–P20→DONE (§7 P19). Prova: checks+build exit 0; main nos dois repos.
 

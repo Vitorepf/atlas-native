@@ -48,6 +48,13 @@ enum A11yID {
     static let selfReceiptSheet = "self-receipt-sheet"
     static let selfReceiptVeto = "self-receipt-veto"
 
+    // M07 · Steering de execução
+    static let steerSheet = "steer-sheet"
+    static let steerInstruction = "steer-instruction"
+    static let steerScope = "steer-scope"
+    static let steerSubmit = "steer-submit"
+    static let steerReceipt = "steer-receipt"
+
     /// Prefixo para `NSPredicate` nos UITests (slug/hash variáveis).
     static let radarRepoPrefix = "radar-repo-"
     static let radarFolderPrefix = "radar-folder-"

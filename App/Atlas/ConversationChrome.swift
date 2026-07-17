@@ -14,6 +14,7 @@ struct EditorialTurn: View, Equatable {
     let onStop: () -> Void
     let onExecutionChoice: (JobID, String) -> Void
     var onRetry: (JobID) -> Void = { _ in }
+    var onSteer: (TraceID) -> Void = { _ in }
     var artifactItems: [AtlasTraceArtifacts.Item] = []
     var onOpenArtifacts: (TraceID) -> Void = { _ in }
     @State private var placed = false
@@ -43,12 +44,14 @@ struct EditorialTurn: View, Equatable {
                         ExecutionRibbon(bubble: bubble, reduceMotion: reduceMotion, onStop: onStop)
                     }
                     if let state = bubble.executionPresentationState {
+                        let steerTrace = bubble.executionPresence?.isOngoing == true ? bubble.traceId : nil
                         ExecutionStateCard(
                             state: state,
                             jobId: bubble.executionChoiceJobId,
                             onChoose: onExecutionChoice,
                             retryableJobId: bubble.retryableJobId,
-                            onRetry: onRetry
+                            onRetry: onRetry,
+                            onSteer: steerTrace.map { trace in { onSteer(trace) } }
                         )
                     }
                     let hasProof = !bubble.activities.isEmpty || bubble.decisionSummary != nil || bubble.qualitySummary != nil

@@ -11,6 +11,7 @@ struct ExecutionStateCard: View {
     /// "Retomar" (reenfileira o job real). Sem ele, a falha fica só informada.
     var retryableJobId: JobID? = nil
     var onRetry: (JobID) -> Void = { _ in }
+    var onSteer: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -67,6 +68,17 @@ struct ExecutionStateCard: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(ExecutionStateActionStyle(style: .primary))
+            }
+            if let onSteer {
+                Button(action: onSteer) {
+                    Text("Redirecionar")
+                        .font(.system(.caption, weight: .semibold))
+                        .lineLimit(1)
+                        .padding(.horizontal, 11).padding(.vertical, 8)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(ExecutionStateActionStyle(style: .secondary))
+                .accessibilityLabel("redirecionar esta execução")
             }
         }
         .padding(14)

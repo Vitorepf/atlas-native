@@ -20,8 +20,10 @@ struct ConversationView: View {
     @State private var showQueueSheet = false
     @State private var reviewTrace: ReviewTraceRef?
     @State private var artifactTrace: ReviewTraceRef?
+    @State private var steerTrace: SteerTraceRef?
 
     struct ReviewTraceRef: Identifiable { let id: TraceID }
+    struct SteerTraceRef: Identifiable { let id: TraceID }
     @State private var showAttachmentSheet = false
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showFileImporter = false
@@ -191,6 +193,7 @@ struct ConversationView: View {
                                           onRetry: { jobId in
                                               Task { await model.retryTurn(jobId: jobId) }
                                           },
+                                          onSteer: { trace in steerTrace = SteerTraceRef(id: trace) },
                                           artifactItems: artifactItems,
                                           onOpenArtifacts: { trace in artifactTrace = ReviewTraceRef(id: trace) })
                             .equatable()
@@ -296,7 +299,12 @@ struct ConversationView: View {
             // nunca um segundo elemento empilhado. O campo continua aberto:
             // escrever durante a execução é direito do operador.
             if let live = liveBubble {
-                ExecutingStrip(bubble: live, reduceMotion: reduceMotion) { model.cancel() }
+                ExecutingStrip(
+                    bubble: live,
+                    reduceMotion: reduceMotion,
+                    onStop: { model.cancel() },
+                    onSteer: live.traceId.map { trace in { steerTrace = SteerTraceRef(id: trace) } }
+                )
                     .padding(.top, expanded ? 0 : 4)
                     .padding(.bottom, expanded ? 0 : 8)
                     .transition(.opacity)
@@ -392,6 +400,16 @@ struct ConversationView: View {
         }
         .sheet(item: $artifactTrace) { ref in
             ArtifactSheet(reviews: model.reviews, traceId: ref.id)
+        }
+        .sheet(item: $steerTrace) { ref in
+            SteerInteractionSheet(
+                traceId: ref.id,
+                receipt: steerReceipt(for: ref.id)
+            ) { instruction, scope in
+                submitSteer(traceId: ref.id, instruction: instruction, scope: scope)
+            }
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showQueueSheet) {
             SheetShell(title: "Fila · \(model.queuedMessages.count)") {
@@ -492,18 +510,17 @@ struct ConversationView: View {
     }
 
     private var composerCanSubmit: Bool {
-        (!draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !model.drafts.isEmpty)
-            && !model.isSending
+        let hasText = !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        if model.isSending || liveBubble != nil {
+            return hasText
+        }
+        return hasText || !model.drafts.isEmpty
     }
 
     // Contexto fica atrás de uma única ação real. O modo, o esforço e o
     // workspace continuam disponíveis, sem disputar a atenção da escrita.
     @ViewBuilder private var composerTrailingControl: some View {
-        if model.isSending {
-            BreathingDiamond(size: 13, reduceMotion: reduceMotion)
-                .frame(width: 32, height: 32)
-                .accessibilityLabel("Atlas processando")
-        } else if composerCanSubmit {
+        if composerCanSubmit {
             Button(action: send) {
                 Image(systemName: "arrow.up.circle.fill")
                     .font(.system(size: 29))
@@ -511,7 +528,11 @@ struct ConversationView: View {
                     .frame(width: 32, height: 32)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("enviar ao Atlas")
+            .accessibilityLabel(model.isSending ? "adicionar à fila" : "enviar ao Atlas")
+        } else if model.isSending {
+            BreathingDiamond(size: 13, reduceMotion: reduceMotion)
+                .frame(width: 32, height: 32)
+                .accessibilityLabel("Atlas processando")
         } else {
             Menu {
                 Button {
@@ -571,6 +592,32 @@ struct ConversationView: View {
         draft = ""
         let effort = model.effort
         Task { await model.send(text, effort: effort) }
+    }
+
+    private func submitSteer(
+        traceId: TraceID,
+        instruction: String,
+        scope: AtlasInteractionSteerScope
+    ) {
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        Task {
+            await model.steerInteraction(traceId: traceId, instruction: instruction, scope: scope)
+            if let receipt = steerReceipt(for: traceId) {
+                model.toast = steerReceiptText(receipt)
+            }
+        }
+    }
+
+    private func steerReceipt(for traceId: TraceID) -> AtlasInteractionSteerResponse? {
+        guard let receipt = model.lastSteerReceipt else { return nil }
+        if let receiptTrace = receipt.traceId, receiptTrace != traceId.rawValue { return nil }
+        return receipt
+    }
+
+    private func steerReceiptText(_ receipt: AtlasInteractionSteerResponse) -> String {
+        receipt.isAccepted
+            ? "na fila do próximo checkpoint"
+            : "rejeitado · \(receipt.reason?.rawValue ?? "motivo_indisponivel")"
     }
 
     private func copy(_ text: String, label: String) {

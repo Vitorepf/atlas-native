@@ -61,7 +61,19 @@ struct AutonomosView: View {
             }
         }
         .sheet(item: $selfConstructionReceipt) { receipt in
-            SelfConstructionReceiptSheet(receipt: receipt)
+            SelfConstructionReceiptSheet(
+                receipt: receipt,
+                canRevert: canRevertSelfConstruction(receipt),
+                revertReceipt: revertReceipt(for: receipt)
+            ) { actor, reason in
+                Task {
+                    await model.revertCycle(
+                        cycle: String(receipt.cycle.cycleIndex),
+                        operatorActor: actor,
+                        reason: reason
+                    )
+                }
+            }
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
         }
@@ -140,6 +152,7 @@ struct AutonomosView: View {
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                     if let fleet = model.fleet { fleetSummary(fleet) }
+                    nextDigestSection
                     operationDigest
                     areaPicker
                     if let area = model.selectedArea { areaDetail(area) }
@@ -168,6 +181,82 @@ struct AutonomosView: View {
             onAccept: { nightlyStartProposal = proposal },
             onDismiss: { nightly.dismissProposal() }
         )
+    }
+
+    // MARK: - Próximo resumo (M09)
+
+    @ViewBuilder
+    private var nextDigestSection: some View {
+        if let digest = model.digest, shouldShowDigest(digest) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    sectionCaption("PRÓXIMO RESUMO")
+                    Spacer()
+                    Text(digest.nextDigestAt ?? "sem digest agendado")
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(digest.nextDigestAt == nil ? AtlasTheme.textTertiary : AtlasTheme.accent)
+                        .lineLimit(1)
+                }
+                if let next = digest.nextDigestAt {
+                    Text(next)
+                        .font(AtlasFont.serifItalic(15))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .textSelection(.enabled)
+                } else {
+                    Text(digest.schedule.reason?.nonEmpty ?? "sem digest agendado")
+                        .font(AtlasFont.serifItalic(15))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                if hasLastDigest(digest) {
+                    HStack(spacing: 8) {
+                        if digest.last.counts.delivered > 0 {
+                            digestChip("\(digest.last.counts.delivered)", "entregas")
+                        }
+                        if digest.last.counts.risks > 0 {
+                            digestChip("\(digest.last.counts.risks)", "riscos")
+                        }
+                        if digest.last.counts.pendingDecisions > 0 {
+                            digestChip("\(digest.last.counts.pendingDecisions)", "decisões")
+                        }
+                    }
+                    if let delivered = digest.last.delivered.first {
+                        tag("merge \(String(delivered.mergeHash.prefix(8)))")
+                    }
+                    if let risk = digest.last.risks.first {
+                        Text(risk.title?.nonEmpty ?? risk.reason?.nonEmpty ?? risk.severity)
+                            .font(.caption)
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                            .lineLimit(2)
+                    }
+                    if let decision = digest.last.pendingDecisions.first {
+                        Text(decision.title)
+                            .font(.caption)
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                            .lineLimit(2)
+                    }
+                }
+            }
+            .padding(14)
+            .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.surface))
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        }
+    }
+
+    private func shouldShowDigest(_ digest: AtlasAutonomosDigestResponse) -> Bool {
+        digest.nextDigestAt != nil
+            || digest.schedule.available
+            || digest.schedule.reason?.nonEmpty != nil
+            || hasLastDigest(digest)
+    }
+
+    private func hasLastDigest(_ digest: AtlasAutonomosDigestResponse) -> Bool {
+        digest.last.counts.delivered > 0
+            || digest.last.counts.risks > 0
+            || digest.last.counts.pendingDecisions > 0
+            || !digest.last.delivered.isEmpty
+            || !digest.last.risks.isEmpty
+            || !digest.last.pendingDecisions.isEmpty
     }
 
     // MARK: - Resumo da operação (C20: digest por agregação de dado REAL)
@@ -456,6 +545,17 @@ struct AutonomosView: View {
         }
     }
 
+    private func canRevertSelfConstruction(_ receipt: SelfConstructionReceipt) -> Bool {
+        model.canControlSelectedArea && receipt.cycle.mergeHash.nonEmpty != nil
+    }
+
+    private func revertReceipt(for receipt: SelfConstructionReceipt) -> AtlasAutonomosCycleRevertResponse? {
+        guard let revert = model.lastRevertReceipt else { return nil }
+        guard revert.revertOf.cycleIndex == receipt.cycle.cycleIndex,
+              revert.revertOf.mergeHash == receipt.cycle.mergeHash else { return nil }
+        return revert
+    }
+
     /// C13: disponibilidade vem de canControlSelectedArea (POSTs existem e são
     /// governados) — nunca de live.readOnly, que descreve apenas o GET.
     private func controls(for area: AtlasAutonomosArea) -> some View {
@@ -669,3 +769,10 @@ private struct AutonomosReasonSheet: View {
 private struct AutonomosPrimaryButtonStyle: ButtonStyle { func makeBody(configuration: Configuration) -> some View { configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg).padding(.horizontal, 14).padding(.vertical, 9).background(Capsule().fill(AtlasTheme.accent.opacity(configuration.isPressed ? 0.72 : 1))).scaleEffect(configuration.isPressed ? 0.97 : 1) } }
 private struct AutonomosSecondaryButtonStyle: ButtonStyle { func makeBody(configuration: Configuration) -> some View { configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary).padding(.horizontal, 14).padding(.vertical, 9).background(Capsule().fill(AtlasTheme.surfaceHi)).overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)) } }
 private struct AutonomosDestructiveButtonStyle: ButtonStyle { func makeBody(configuration: Configuration) -> some View { configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.domOperacional).padding(.horizontal, 14).padding(.vertical, 9).background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1))).overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1)) } }
+
+private extension String {
+    var nonEmpty: String? {
+        let trimmed = trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
+    }
+}
