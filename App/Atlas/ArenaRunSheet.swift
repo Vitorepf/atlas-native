@@ -3,6 +3,7 @@ import AtlasCore
 
 // Status → ArenaRunSheet+Status.swift
 // Body → ArenaRunSheet+Body.swift
+// Nav → ArenaRunSheet+NavShell.swift · A11y → ArenaRunSheet+SheetA11y.swift
 struct ArenaRunSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -14,12 +15,6 @@ struct ArenaRunSheet: View {
     @State var reason = ""
 
     var body: some View {
-        NavigationStack {
-            runScrollBody
-        }
-        .onAppear { seedDefaultsIfNeeded() }
-        .accessibilityIdentifier(A11yID.arenaRunSheet)
-        .accessibilityLabel(spokenSheetLabel())
-        .accessibilityHint(spokenSheetHint())
+        runSheetA11y(runNavShell)
     }
 }

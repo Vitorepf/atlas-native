@@ -7,6 +7,7 @@ import AtlasCore
 // Container → AtlasWidgetViews+Container.swift
 // Install → AtlasWidgetViews+Install.swift
 // Load → AtlasWidgetViews+Load.swift
+// GetSnapshot → AtlasWidgetViews+SnapshotProvider+GetSnapshot.swift
 
 struct SnapshotEntry: TimelineEntry {
     let date: Date
@@ -16,9 +17,5 @@ struct SnapshotEntry: TimelineEntry {
 struct SnapshotProvider: TimelineProvider {
     func placeholder(in context: Context) -> SnapshotEntry {
         SnapshotEntry(date: .now, snapshot: nil)
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (SnapshotEntry) -> Void) {
-        completion(SnapshotEntry(date: .now, snapshot: SnapshotProviderLoad.load()))
     }
 }

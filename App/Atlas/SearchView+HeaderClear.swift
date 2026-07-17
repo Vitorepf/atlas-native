@@ -5,16 +5,14 @@ import AtlasCore
 // Spoken → SearchView+HeaderSpoken.swift
 // Icon → SearchView+HeaderClearIcon.swift
 // A11y → SearchView+HeaderClearA11y.swift
+// Action → SearchView+HeaderClear+Action.swift
 
 extension SearchViewHeader {
     @ViewBuilder
     var searchClearButton: some View {
         if !query.isEmpty {
             searchClearA11y(
-                Button {
-                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                    query = ""
-                } label: {
+                Button(action: clearSearchQuery) {
                     searchClearIcon
                 }
             )

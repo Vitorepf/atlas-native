@@ -5,16 +5,13 @@ import AtlasCore
 // Applying → ChangeReviewRunActions+Applying.swift
 // Reject → ChangeReviewRunActions+Reject.swift
 // Label → ChangeReviewRunActions+AcceptLabel.swift
+// Action → ChangeReviewRunActions+Buttons+AcceptAction.swift
 
 extension ChangeReviewRunActions {
     @ViewBuilder
     func acceptButton(available: [AtlasTraceChangeReview.Action]) -> some View {
         if available.contains(.accept) {
-            Button {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                applying = true
-                Task { await reviews.applyChangeReview(traceId: traceId, action: .accept); applying = false }
-            } label: {
+            Button(action: performAccept) {
                 acceptButtonLabel
             }
             .buttonStyle(PressableScale())

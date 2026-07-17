@@ -14,13 +14,6 @@ struct AtlasCodeWhySheet: View {
     }
 
     var body: some View {
-        ZStack {
-            AtlasTheme.bg.ignoresSafeArea()
-            whyScrollBody
-        }
-        .task { if model.phase == .idle { await model.load(repo: repo, file: file) } }
-        .accessibilityIdentifier(A11yID.whySheet)
-        .accessibilityLabel(whySheetSpokenLabel)
-        .accessibilityHint(Self.sheetHint)
+        whyLifecycleA11y(whyBodyShell)
     }
 }
