@@ -76,6 +76,9 @@ enum A11yID {
     static let autonomosTransferSubmit = "autonomos-transfer-submit"
     static let autonomosLoadFailure = "autonomos-load-failure"
     static let autonomosRetry = "autonomos-retry"
+    static let autonomosHeader = "autonomos-header"
+    static let autonomosRefresh = "autonomos-refresh"
+    static let autonomosAreaControls = "autonomos-area-controls"
 
     static let liveNowSection = "live-now-section"
     static let liveNowRowPrefix = "live-now-row-"

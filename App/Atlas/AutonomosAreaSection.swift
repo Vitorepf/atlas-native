@@ -88,6 +88,8 @@ struct AutonomosAreaControls: View {
         }
         .disabled(!canControl)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("controles da instância \(areaName)")
+        .accessibilityLabel(spokenContainerLabel)
+        .accessibilityHint(spokenContainerHint)
+        .accessibilityIdentifier(A11yID.autonomosAreaControls)
     }
 }

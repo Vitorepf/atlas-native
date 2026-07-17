@@ -27,10 +27,14 @@ struct AutonomosView: View {
                 AutonomosViewHeader(
                     auditModeEnabled: session.auditModeEnabled,
                     canRefresh: model.selectedArea != nil,
+                    isHealthy: isHeaderHealthy,
+                    reduceMotion: reduceMotion,
                     onBack: { dismiss() },
                     onRefresh: { Task { await model.refreshSelected() } }
                 )
                 content
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
+                    .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
             }
         }
         .navigationBarHidden(true)
