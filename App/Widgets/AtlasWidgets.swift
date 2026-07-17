@@ -573,13 +573,16 @@ private struct LockScreenView: View {
                             .padding(.horizontal, 7).padding(.vertical, 2)
                             .background(Capsule().fill(Ink.gold.opacity(0.14)))
                     }
-                    // M87: fila N no banner da lock quando o ContentState publica queuedCount.
+                    // M87 / E-A5: fila N como cápsula gold distinta no título
+                    // (não só no HStack mono de progresso).
                     if let queued = context.state.queueLabel {
                         Text(queued)
-                            .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                            .font(.system(size: 11, weight: .bold, design: .monospaced))
                             .foregroundStyle(Ink.gold)
-                            .padding(.horizontal, 7).padding(.vertical, 2)
-                            .background(Capsule().fill(Ink.gold.opacity(0.14)))
+                            .padding(.horizontal, 8).padding(.vertical, 3)
+                            .background(Capsule().fill(Ink.gold.opacity(0.22)))
+                            .overlay(Capsule().stroke(Ink.gold.opacity(0.45), lineWidth: 0.5))
+                            .accessibilityLabel(queued)
                     }
                 }
                 Text(context.state.phaseTitle)

@@ -11,6 +11,8 @@ func runAtlasDeepLinkChecks(_ check: (String, Bool) -> Void) {
 
     check("autonomos", parse("atlas://autonomos") == .autonomos)
     check("autonomos ignora path extra", parse("atlas://autonomos/foo") == .autonomos)
+    check("arena", parse("atlas://arena") == .arena)
+    check("arena ignora path extra", parse("atlas://arena/run") == .arena)
     check("code bare → radar", parse("atlas://code") == .codeHome)
     check("code bare com slash", parse("atlas://code/") == .codeHome)
     check("code/repo", parse("atlas://code/atlas-native") == .code(repo: "atlas-native"))

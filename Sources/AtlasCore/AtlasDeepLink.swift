@@ -4,6 +4,8 @@ import Foundation
 /// Parsing puro (sem rede): a casca resolve trace→thread só no case `.execution`.
 public enum AtlasDeepLink: Equatable, Sendable {
     case autonomos
+    /// Arena de medição (rota `.arena`).
+    case arena
     /// Radar do Código (sem repo).
     case codeHome
     case code(repo: String)
@@ -17,6 +19,8 @@ public enum AtlasDeepLink: Equatable, Sendable {
         switch url.host {
         case "autonomos":
             return .autonomos
+        case "arena":
+            return .arena
         case "code":
             if let repo = firstPathComponent(url), !repo.isEmpty {
                 return .code(repo: repo)

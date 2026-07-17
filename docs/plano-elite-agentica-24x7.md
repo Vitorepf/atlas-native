@@ -324,6 +324,7 @@ atlas-server.
   | URL | Destino honesto |
   |---|---|
   | `atlas://autonomos` | `path.append(Route.autonomos)` |
+  | `atlas://arena` | `path.append(Route.arena)` |
   | `atlas://execution` (sem path) | Home + última sessão viva real com `threadId` — **sem** inventar thread |
   | `atlas://execution/<trace>` | existente: resolve trace→thread |
   | `atlas://code` | `Route.code` (radar) |
