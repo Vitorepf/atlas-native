@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **324+** | primeiro commit do plano: `ec931f2`; LVI–C em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **326+** | primeiro commit do plano: `ec931f2`; Elite CI em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,13 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega LXXXIX (este tip)
+## Entrega Elite CI (este tip)
+
+- `refactor(ui)` CICLO B: Digest+Quiet; AreaDetail+A11yPlacement; RootChrome+Controls; Composer+Steer; AreaPicker+Row; Provenance+Ask; Strip+StatusMeta; Empty+Retry; Proof+Artifacts; Seals+NewMarker; Delivered+Helpers; Loaded+StackTail; FleetHistory+Row; FileRow+Meta; ArenaNow+Indicator; Composer+Options; Timeline+ActivityIcon; LiveSession+Content.
+- `polish(ui)` CICLO C: AreaPicker/FleetHistory/LiveSession decorative silence sob spoken.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega LXXXIX (anterior)
 
 - `refactor(ui)` CICLO B: Nightly+Background; Messages+List; Markdown+Inline; Heal+Content; Detail Work/Ledger; ArenaEngine+Summary; Transfer+Form; TurnPresence+Watch; Loaded+Stack; Workspace+ChromeFilter.
 - `polish(ui)` CICLO C: Transfer spoken mission/focus/no-lock; Workspace newPill decorative silence.

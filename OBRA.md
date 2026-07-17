@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CI — CICLO B peels ≥70 + C silence AreaPicker/Fleet/Widget** · este commit · CICLO B: Digest `+Quiet`; AreaDetail `+A11yPlacement`; RootChrome `+Controls`; Composer `+Steer`; AreaPicker `+Row`; Provenance `+Ask`; Strip `+StatusMeta`; Empty `+Retry`; Proof `+Artifacts`; Seals `+NewMarker`; Delivered `+Helpers`; Loaded `+StackTail`; FleetHistory `+Row`; FileRow `+Meta`; ArenaNow `+Indicator`; Composer `+Options`; Timeline `+ActivityIcon`; LiveSession `+Content`. CICLO C: AreaPicker name/objective silence; FleetHistory row decorative silence; LiveSession textos sob spoken. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo C — CICLO B Timeline/Arena/Workspace/Lock/Island/Provenance/Heal peels + C Attachment silence** · este commit · CICLO B: Timeline `+FilterEnum`; Arena `+Toggle`; Workspace Row peel AttachmentRow; Lock `+Title`; Island Compact `+Trailing`; Provenance `+A11ySpoken`; Heal `+A11yUndo`. CICLO C: AttachmentRow decorative silence. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
