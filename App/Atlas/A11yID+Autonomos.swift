@@ -28,6 +28,9 @@ extension A11yID {
     static let autonomosRetry = "autonomos-retry"
     static let autonomosHeader = "autonomos-header"
     static let autonomosRefresh = "autonomos-refresh"
+    static let autonomosAreaPicker = "autonomos-area-picker"
+    static let autonomosAreaPickerRowPrefix = "autonomos-area-picker-row-"
+    static func autonomosAreaPickerRow(_ index: Int) -> String { autonomosAreaPickerRowPrefix + String(index) }
     static let autonomosAreaControls = "autonomos-area-controls"
     static let autonomosReasonSheet = "autonomos-reason-sheet"
     static let autonomosReasonActor = "autonomos-reason-actor"
