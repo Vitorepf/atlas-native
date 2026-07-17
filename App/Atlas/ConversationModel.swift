@@ -5,9 +5,9 @@ import AtlasImaging
 @MainActor
 @Observable
 final class ConversationModel {
-    private static let effortPreferenceKey = "atlas.composer.effort"
-    private static let draftPrefix = "atlas.conversation.draft."
-    private static let visitedPrefix = "atlas.conversation.lastVisit."
+    static let effortPreferenceKey = "atlas.composer.effort"
+    static let draftPrefix = "atlas.conversation.draft."
+    static let visitedPrefix = "atlas.conversation.lastVisit."
 
     /// Module-visible so `ConversationModel+Attachments` can own preparation.
     struct PendingAttachmentPreparation {
@@ -126,120 +126,9 @@ final class ConversationModel {
         }
     }
 
-    func cycleEffort() {
-        effort = effort.next
-        UserDefaults.standard.set(effort.rawValue, forKey: Self.effortPreferenceKey)
-    }
-
-    func updateDraft(_ value: String) {
-        draftText = value
-        Self.saveDraft(value, scope: draftScope)
-    }
-
-    func markThreadVisited() {
-        guard let threadId else { return }
-        Self.markVisited(threadId: threadId.rawValue)
-    }
-
-    static func lastVisitDate(threadId: String) -> Date? {
-        UserDefaults.standard.object(forKey: visitedPrefix + threadId) as? Date
-    }
-
-    static func hasNewerContent(_ thread: AtlasAiThread) -> Bool {
-        guard let last = AtlasTime.date(thread.lastMessageAt ?? thread.updatedAt) else { return false }
-        guard let visit = lastVisitDate(threadId: thread.id) else { return thread.messageCount > 0 }
-        return last > visit
-    }
-
-    static func loadDraft(scope: String) -> String {
-        UserDefaults.standard.string(forKey: draftPrefix + scope) ?? ""
-    }
-
-    static func saveDraft(_ value: String, scope: String) {
-        let key = draftPrefix + scope
-        if value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            UserDefaults.standard.removeObject(forKey: key)
-        } else {
-            UserDefaults.standard.set(value, forKey: key)
-        }
-    }
-
-    private static func markVisited(threadId: String) {
-        UserDefaults.standard.set(Date(), forKey: visitedPrefix + threadId)
-    }
-
-    func load() async {
-        await loadQueuedMessages()
-        if let threadId {
-            let hydratedFromCache = await hydrateFromCache(threadId: threadId)
-            do {
-                let response = try await client.getAiThread(threadId.rawValue)
-                applyWorkspace(response.thread.workspace)
-                let messages = (response.thread.messages ?? []).sorted { $0.position < $1.position }
-                let previousVisit = lastVisitAt
-                bubbles = Self.bubbles(from: messages)
-                firstNewBubbleId = Self.firstNewBubbleId(in: bubbles, after: previousVisit)
-                showingStaleCache = false
-                cacheCapturedAt = nil
-                loadError = nil
-                loadFailureKind = nil
-                try? await readCache.save(snapshot: Self.snapshot(
-                    threadId: threadId.rawValue,
-                    workspacePath: response.thread.workspace,
-                    messages: messages
-                ))
-                await loadExecutionHistory()
-            } catch {
-                if hydratedFromCache || showingStaleCache {
-                    toast = "Sem rede agora — mantendo a última leitura salva."
-                } else if bubbles.isEmpty {
-                    loadError = atlasUserMessage(for: error)
-                    loadFailureKind = atlasNetworkFailureKind(for: error)
-                }
-            }
-        }
-        await recoverPendingIfNeeded()
-    }
-
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
         updateDraft("")
         _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
-    }
-
-    func cancel() {
-        let run = activeRun
-        let activeTraces = bubbles.compactMap { bubble -> (id: String, traceId: TraceID)? in
-            guard bubble.streaming, let traceId = bubble.traceId else { return nil }
-            return (bubble.id, traceId)
-        }
-        for i in bubbles.indices where bubbles[i].streaming { bubbles[i].streaming = false }
-        isSending = false
-        toast = "encerrando sessão…"
-        Task {
-            await run?.cancel()
-
-            var confirmed = false
-            for activeTrace in activeTraces {
-                guard let refreshed = try? await client.getAiInteraction(activeTrace.traceId) else { continue }
-                applyExecution(activeTrace.id, refreshed.trace)
-                confirmed = confirmed || refreshed.trace.turnStatus == .cancelled
-            }
-
-            toast = confirmed ? "sessão encerrada" : "cancelamento solicitado"
-        }
-    }
-
-    func feedback(_ bubbleId: String, _ kind: FeedbackKind) async {
-        guard let i = bubbles.firstIndex(where: { $0.id == bubbleId }), let trace = bubbles[i].traceId else { return }
-        let previous = bubbles[i].feedbackAction
-        bubbles[i].feedbackAction = kind.activeAction
-        do {
-            _ = try await client.feedbackAiInteraction(trace.rawValue, feedback: kind.payload)
-            toast = "\(kind.label) registrado"
-        } catch {
-            bubbles[i].feedbackAction = previous
-            toast = "feedback falhou"
-        }
     }
 
     func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
