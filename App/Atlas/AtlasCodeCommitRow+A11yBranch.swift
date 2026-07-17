@@ -6,6 +6,7 @@ import AtlasCore
 // Healed → AtlasCodeCommitRow+A11yBranch+Healed.swift
 // OnMain → AtlasCodeCommitRow+A11yBranch+OnMain.swift
 // History → AtlasCodeCommitRow+A11yBranch+History.swift
+// Healthy → AtlasCodeCommitRow+A11yBranch+Healthy.swift
 
 extension AtlasCodeCommitRowA11yState {
     static func branchParts(
@@ -14,14 +15,15 @@ extension AtlasCodeCommitRowA11yState {
         linha: String,
         state: AtlasCodeNodeState
     ) -> [String] {
+        if let healthy = branchPartsHealthy(title: title, author: author, linha: linha, state: state) {
+            return healthy
+        }
         switch state {
-        case .healed:
-            return healedParts(title: title, author: author)
-        case .onMain:
-            return onMainParts(title: title, author: author, linha: linha)
         case .history:
             return historyParts(title: title, author: author)
         case .violating:
+            return []
+        default:
             return []
         }
     }

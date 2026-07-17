@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 /// Spoken screen label — peel de AtlasCodeView (CICLO C residual honesty).
+/// Loaded → AtlasCodeView+A11y+Loaded.swift
 
 extension AtlasCodeView {
     func spokenCodeScreenLabel() -> String {
@@ -11,9 +12,7 @@ extension AtlasCodeView {
         case .failed:
             return "grafo, \(model.repo), falha ao carregar"
         case .loaded:
-            let n = model.graph?.nodes.count ?? 0
-            if n == 0 { return "grafo, \(model.repo), sem commits neste recorte" }
-            return "grafo, \(model.repo), \(n) commit\(n == 1 ? "" : "s")"
+            return spokenCodeScreenLoadedLabel()
         }
     }
 

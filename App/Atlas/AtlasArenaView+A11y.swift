@@ -5,6 +5,7 @@ import AtlasCore
 /// Domain/run → AtlasArenaView+DomainA11y.swift
 /// Screen → AtlasArenaView+A11yScreen.swift
 /// Header → AtlasArenaView+A11yHeader.swift
+/// FailedID → AtlasArenaView+A11y+FailedID.swift
 
 extension AtlasArenaView {
     var contentPhaseID: String {
@@ -12,7 +13,7 @@ extension AtlasArenaView {
         case .idle: return "idle"
         case .loading: return "loading"
         case .loaded: return "loaded"
-        case .failed: return model.isDomainUnavailable ? "domain-unavailable" : "failed"
+        case .failed: return contentPhaseFailedID
         }
     }
 }
