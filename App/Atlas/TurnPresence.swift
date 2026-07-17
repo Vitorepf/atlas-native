@@ -1,9 +1,6 @@
 import SwiftUI
 import UserNotifications
 import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteira
-#if canImport(ActivityKit)
-import ActivityKit
-#endif
 
 // A presença dos turnos FORA do app — tela bloqueada e Dynamic Island
 // (paridade Cursor): UMA Live Activity POR SESSÃO em execução, cada uma com o
@@ -16,6 +13,8 @@ import ActivityKit
 // servidor (fase APNs, §5 C8), a atualização em background vive da janela de
 // execução do iOS (~30s) — cobre o turno típico; turnos longos concluem a
 // notificação quando o app volta.
+//
+// ActivityKit start/update/finish → TurnPresence+LiveActivity.swift.
 /// Snapshot de uma sessão viva observada neste processo — a home lê isto
 /// para virar cockpit (V1). Zero rede; só o que o TurnPresence já sabe.
 struct LiveSessionSnapshot: Identifiable, Equatable {
@@ -46,7 +45,8 @@ final class TurnPresence {
     private(set) var liveSessions: [LiveSessionSnapshot] = []
 
     /// Um turno observado. Classe (não struct) para `weak model` no registro.
-    private final class Entry {
+    /// Visível no módulo para `TurnPresence+LiveActivity`.
+    final class Entry {
         weak var model: ConversationModel?
         var threadTitle: String
         var threadId: ThreadID?
@@ -102,7 +102,8 @@ final class TurnPresence {
     }
 
     /// Quantas sessões vivem agora (running + paused — a verdade do contador).
-    private var activeCount: Int { entries.values.filter { $0.ongoing }.count }
+    /// Visível no módulo para `TurnPresence+LiveActivity`.
+    var activeCount: Int { entries.values.filter { $0.ongoing }.count }
 
     /// Chamado pela ConversationView no onAppear — registra/atualiza o alvo.
     /// Cada conversa aberta é observada de forma independente (multi-sessão).
@@ -238,133 +239,11 @@ final class TurnPresence {
         _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
     }
 
-    // MARK: - Live Activities (uma por sessão; contador compartilhado)
-    // Activity<T> não é Sendable no Swift 6 — nunca atravessa Task. Dentro das
-    // Tasks, enumeramos ESTATICAMENTE filtrando por attributes.threadKey.
-
-    /// ContentState a partir da presença tipada — o ÚNICO relógio permitido:
-    /// com timer do servidor, o timer nativo parte de (runningSince − ativo
-    /// acumulado) e mostra exatamente o tempo ATIVO; pausado congela o
-    /// acumulado em texto; trace legado cai na base local sem fingir pausas.
-    private func contentState(_ entry: Entry, presence p: AtlasExecutionPresence?,
-                              finished: Bool, phaseOverride: String? = nil,
-                              progress: AtlasExecutionPlan.Progress? = nil)
-        -> AtlasTurnAttributes.ContentState {
-        var started = entry.startedAt
-        var paused: Bool? = nil
-        var pausedDisplay: String? = nil
-        if let p {
-            if let since = p.runningSince {
-                started = since.addingTimeInterval(-Double(p.elapsedActiveMilliseconds ?? 0) / 1000)
-            } else if p.isTimerPaused {
-                paused = true
-                pausedDisplay = p.elapsedActiveMilliseconds.map(Self.clock)
-            }
-            if finished, let ms = p.elapsedActiveMilliseconds {
-                pausedDisplay = Self.clock(ms)   // congela o total ativo no fim
-            }
-        }
-        if started > Date() { started = Date() }
-        return AtlasTurnAttributes.ContentState(
-            phaseTitle: phaseOverride ?? p?.phaseTitle ?? (finished ? "resposta pronta" : "Executando"),
-            startedAt: started,
-            finished: finished,
-            activeSessions: max(finished ? 0 : 1, activeCount),
-            paused: paused,
-            pausedDisplay: pausedDisplay,
-            progressCurrent: progress?.current,
-            progressTotal: progress?.total,
-            queuedCount: entry.model?.queuedMessages.count)
-    }
-
-    private static func clock(_ ms: Int) -> String {
-        let s = ms / 1000
-        return s >= 3600 ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
-                         : String(format: "%d:%02d", s / 60, s % 60)
-    }
-
-    private static func lockScreenText(_ value: String, limit: Int) -> String {
+    static func lockScreenText(_ value: String, limit: Int) -> String {
         let collapsed = value
             .replacingOccurrences(of: "\n", with: " ")
             .trimmingCharacters(in: .whitespacesAndNewlines)
         guard collapsed.count > limit else { return collapsed }
         return String(collapsed.prefix(max(0, limit - 1))) + "…"
-    }
-
-    private func startActivity(_ entry: Entry, traceId: TraceID, presence: AtlasExecutionPresence,
-                               phaseOverride: String? = nil) {
-        #if canImport(ActivityKit)
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
-        entry.activityKey = traceId
-        let progress = entry.model?.bubbles.last(where: { $0.traceId == traceId })?.executionProgress
-        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride, progress: progress)
-        guard let activity = try? Activity.request(
-            attributes: AtlasTurnAttributes(threadTitle: entry.threadTitle, threadKey: traceId.rawValue),
-            content: .init(state: state, staleDate: nil),
-            pushType: .token
-        ) else { entry.activityKey = nil; return }
-        entry.activityStarted = true
-        LiveActivityRemoteBridge.shared.observePushTokens(
-            activity: activity,
-            model: entry.model!,
-            startedAt: entry.startedAt
-        )
-        #endif
-    }
-
-    private func updateActivity(_ entry: Entry, presence: AtlasExecutionPresence,
-                                phaseOverride: String? = nil) {
-        #if canImport(ActivityKit)
-        guard let key = entry.activityKey else { return }
-        let progress = entry.model?.bubbles.last(where: { $0.traceId == key })?.executionProgress
-        let state = contentState(entry, presence: presence, finished: false, phaseOverride: phaseOverride, progress: progress)
-        Task { @MainActor in
-            for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key.rawValue {
-                await a.update(.init(state: state, staleDate: nil))
-            }
-        }
-        #endif
-    }
-
-    private func finishActivity(_ entry: Entry, presence: AtlasExecutionPresence?,
-                                phaseOverride: String? = nil) {
-        #if canImport(ActivityKit)
-        guard let key = entry.activityKey else { return }
-        let progress = entry.model?.bubbles.last(where: { $0.traceId == key })?.executionProgress
-        let state = contentState(entry, presence: presence, finished: true,
-                                 phaseOverride: phaseOverride, progress: progress)
-        let model = entry.model
-        let closed = phaseOverride == "sessão encerrada"
-        Task { @MainActor in
-            for a in Activity<AtlasTurnAttributes>.activities where a.attributes.threadKey == key.rawValue {
-                LiveActivityRemoteBridge.shared.end(
-                    activityID: a.id,
-                    model: model,
-                    reason: closed ? "session_closed" : "completed"
-                )
-                await a.end(.init(state: state, staleDate: nil),
-                            dismissalPolicy: .after(.now + 4))
-            }
-        }
-        entry.activityStarted = false
-        entry.activityKey = nil
-        #endif
-    }
-
-    /// Propaga o contador novo para TODAS as activities vivas, preservando a
-    /// fase e o timer de cada uma (lê o estado atual e só troca o contador).
-    private func broadcastCount() {
-        #if canImport(ActivityKit)
-        let count = activeCount
-        Task { @MainActor in
-            for a in Activity<AtlasTurnAttributes>.activities {
-                let s = a.content.state
-                guard !s.finished, s.activeSessions != max(1, count) else { continue }
-                var next = s
-                next.activeSessions = max(1, count)   // preserva fase, timer e pausa
-                await a.update(.init(state: next, staleDate: nil))
-            }
-        }
-        #endif
     }
 }
