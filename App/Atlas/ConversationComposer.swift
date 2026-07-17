@@ -3,7 +3,7 @@ import PhotosUI
 import AtlasCore
 
 // Composer da conversa — peel de ConversationView (régua anti-inchaço).
-// Superfície de escrita + strip de anexos + fila + execução viva + folhas.
+// Superfície de escrita + AttachmentStrip + ComposerToolbar + fila + execução.
 // Callbacks e A11yIDs idênticos; zero mudança de rota.
 
 struct ConversationComposer: View {
@@ -98,50 +98,25 @@ struct ConversationComposer: View {
                     .accessibilityLabel("fechar teclado")
                     .accessibilityAddTraits(.isButton)
             }
-            // Strip de anexos (o contrato de UI é o LocalDraft, nada mais)
-            if !model.drafts.isEmpty {
-                DraftStrip(drafts: model.drafts, reduceMotion: reduceMotion,
-                           onRemove: { model.removeDraft($0) },
-                           onFailedTap: { model.toast = $0 })
-            }
-            if let p = model.uploadPercent {
-                HStack(spacing: 10) {
-                    ProgressView(value: p).tint(AtlasTheme.accent)
-                    Text("\(Int(p * 100))%")
-                        .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                        .monospacedDigit()
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("enviando anexos, \(Int(p * 100)) por cento")
-            }
-
-            HStack(spacing: 10) {
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    showAttachmentSheet = true
-                } label: {
-                    Image(systemName: "paperclip")
-                        .font(.system(size: 17, weight: .medium))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                        .frame(width: 32, height: 32)
-                }
-                .buttonStyle(PressableScale())
-                .accessibilityLabel("adicionar anexo")
-                ZStack(alignment: .topLeading) {
-                    Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
-                        .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
-                        .allowsHitTesting(false).opacity(model.draftText.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
-                        .animation(.easeOut(duration: 0.28), value: model.draftText.isEmpty)
-                    TextField("", text: Binding(
-                        get: { model.draftText },
-                        set: { model.updateDraft($0) }
-                    ), axis: .vertical)
-                        .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
-                        .tint(AtlasTheme.accent).lineLimit(1...6).focused(focused)
-                        .accessibilityIdentifier(A11yID.conversationInput)
-                }
-                composerTrailingControl
-            }
+            AttachmentStrip(
+                drafts: model.drafts,
+                reduceMotion: reduceMotion,
+                uploadPercent: model.uploadPercent,
+                onRemove: { model.removeDraft($0) },
+                onFailedTap: { model.toast = $0 }
+            )
+            ComposerToolbar(
+                model: model,
+                reduceMotion: reduceMotion,
+                focused: focused,
+                expanded: expanded,
+                mode: mode,
+                liveBubble: liveBubble,
+                onAttach: { showAttachmentSheet = true },
+                onShowWorkspace: { showWorkspaceSheet = true },
+                onShowMode: { showModeSheet = true },
+                onSend: send
+            )
         }
         .padding(expanded ? EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18)
                           : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
@@ -178,62 +153,6 @@ struct ConversationComposer: View {
         } else {
             Capsule(style: .continuous).fill(AtlasTheme.surface)
                 .overlay(Capsule(style: .continuous).stroke(AtlasTheme.separator, lineWidth: 1))
-        }
-    }
-
-    private var composerCanSubmit: Bool {
-        let hasText = !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        if model.isSending || liveBubble != nil {
-            return hasText
-        }
-        return hasText || !model.drafts.isEmpty
-    }
-
-    // Contexto fica atrás de uma única ação real. O modo, o esforço e o
-    // workspace continuam disponíveis, sem disputar a atenção da escrita.
-    @ViewBuilder private var composerTrailingControl: some View {
-        if composerCanSubmit {
-            Button(action: send) {
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.system(size: 29))
-                    .foregroundStyle(AtlasTheme.accent)
-                    .frame(width: 32, height: 32)
-            }
-            .buttonStyle(.plain)
-            .keyboardShortcut(.return, modifiers: .command)
-            .accessibilityLabel(model.isSending ? "adicionar à fila" : "enviar ao Atlas")
-        } else if model.isSending {
-            BreathingDiamond(size: 13, reduceMotion: reduceMotion)
-                .frame(width: 32, height: 32)
-                .accessibilityLabel("Atlas processando")
-        } else {
-            Menu {
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    showWorkspaceSheet = true
-                } label: {
-                    Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
-                }
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    showModeSheet = true
-                } label: {
-                    Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
-                }
-                Button {
-                    model.cycleEffort()
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                } label: {
-                    Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 32, height: 32)
-                    .contentShape(Circle())
-            }
-            .accessibilityLabel("opções da conversa")
         }
     }
 
