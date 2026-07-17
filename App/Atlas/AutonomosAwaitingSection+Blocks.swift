@@ -6,9 +6,15 @@ struct AutonomosDetailChipButton: View {
     let kind: AutonomosDetailSheet
     var spokenLabel: String? = nil
     let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            if !reduceMotion {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            }
+            action()
+        } label: {
             Text(label)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textPrimary)
@@ -16,10 +22,12 @@ struct AutonomosDetailChipButton: View {
                 .padding(.vertical, 6)
                 .background(Capsule().fill(AtlasTheme.surfaceHi))
                 .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                .accessibilityHidden(true)
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel(spokenLabel ?? "abrir detalhes de \(label)")
-        .accessibilityHint("abre a lista pública de \(kind.title.lowercased())")
+        .buttonStyle(PressableScale())
+        .accessibilityLabel(AutonomosDetailChipButtonA11y.spokenLabel(label: label, spoken: spokenLabel))
+        .accessibilityHint(AutonomosDetailChipButtonA11y.hint(kind: kind))
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.autonomosDetailButton(kind.id))
     }
 }
