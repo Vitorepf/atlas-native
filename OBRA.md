@@ -174,9 +174,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A4 | **PARCIAL** | **Grok 4.5** | deepen + fidelity matrix | E0 | Onda A4 casca deepen | A4.5 matrix DONE; A4.1 Session Hub DONE; Search/Workspace A11y+empty/offline DONE; Arena empty/404+AtlasFailureCopy + CodeRadar/hub silence DONE; demais cenas ainda pendente | LiveNow + Search/Workspace `a037aa7` + Arena/Radar silence este commit |
 | E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` + `AtlasDeepLink` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana + lock accessories; `atlas://arena`→`.arena`; lock `queueLabel` cápsula gold; Island SD-2 ATT/EXT/FAIL/REC/PLN + N/M + fila; LockScreen/WidgetViews peel; widgetURL Arena home entry opcional | `4191353` SD-2 + `953740d`/`0217603` peels + `e0bce46`+`183f01f`+`08f0dda`+`0ab1682`+`a702926` |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
-| E-B | **PARCIAL** | **Grok 4.5** | peels contínuos App+Core | E-A* | CICLO B compressão 1 | **Ledger HEAD:** ExecutionStateCard 139 · AiModels 128 · LockLive 114 · Digest 117 · AutonomosView 127 · CodeView 85 · Graph 147 · Arena 120 · CodeModel 71. Quase zero >160 (Route 194 skip). | peels + `wc -l`; build Mac-pending |
+| E-B | **PARCIAL** | **Grok 4.5** | peels contínuos App+Core | E-A* | CICLO B compressão 1 | **Ledger HEAD:** quase zero >160; Route split AI/Code/Stewardship (`c48612a`). | peels + `wc -l`; build Mac-pending |
 | E-C | **IN_PROGRESS** | **Grok 4.5** | silence + Island + Continuity + Artifact + Timeline + Autônomos | E-B PARCIAL | CICLO C patamares | Frota quieta; Island ATT/EXT/FAIL; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty; `rg Aprovar`=0 | `41efee4` + `98b35ff` + `00df89b` + `4191353` |
-| E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | dups motion + empty/evidence consolidados (`65ce3d3`+`d78a97b`); meta ≥60% linhas de C ainda PARCIAL | `d78a97b` |
+| E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | dups button style + breathing loading; peels ~180+; meta ≥60% linhas de C ainda PARCIAL | `d0e01d0`/`c48612a` |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -967,6 +967,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo XII — CICLO D dups + peels ~180+** · `d0e01d0`/`c48612a` · D: `NightlyPrimaryButtonStyle`→`AutonomosPrimaryButtonStyle`; diff loading→`TraceEvidenceLoading`. B: PresentationState/Plan/AgentActivity/Route AI+Code+Stewardship; ArtifactViewer/ConversationChrome/Provenance peels. Zero Route nova. **BLOCKED:** Swift/server/device. Prova: `rg`+`wc -l`.
 
 - 2026-07-17 · Grok 4.5 · **polish(ui)|polish(core) — ciclo D more dead deletes** · este commit · CICLO D: `ConversationLoadFailure`/`WorkspaceNetworkFailureEmpty` → `AtlasNetworkFailureEmpty` (`rg ConversationLoadFailure`=0, `rg WorkspaceNetworkFailureEmpty`=0). `TraceEvidenceLoading`/`TraceEvidenceUnavailable` substituem `loading`/`evidenceEmpty`/`unavailableBody` duplicados (`rg evidenceEmpty`=0, `rg unavailableBody`=0). 9× `private extension String { nonEmpty }` removidos — canônico em `AtlasCodeGraphStateFilter` (`rg 'private extension String'` App/Atlas=0). `NarrativeRow.icon` morto (zero leituras). `AtlasRoute` skip (split não natural). Prova: diff −210/+81; Swift toolchain ausente neste cloud Linux — re-rodar `AtlasCoreChecks` + `make build` no Mac.
 
