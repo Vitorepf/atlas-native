@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **380+** | primeiro commit do plano: `ec931f2`; Elite CXXXIX tip `e93b48b` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **383+** | primeiro commit do plano: `ec931f2`; Elite CXXXX tip `4159ea5` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXIX (este tip)
+## Entrega Elite CXXXX (este tip)
+
+- `refactor(ui)` CICLO B: Chrome+A11yHome; Proof+ReplayQuality/+ArtifactsLabel; Health+A11yMetrics; Suite+Body; Run+Body; File+LeadName; Lock+A11yPhase; LiveNow+Chrome; Draft+Thumbs; Transfer+Predicates; Plan+StepState; Composer+Shell. Tip `4159ea5`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXIX (anterior)
 
 - `refactor(ui)` CICLO B: Home+Loading; Timers+Recovering; Attachments+Importers; Ribbon+Lanes; Strip+Upload; Review+Load; Autonomos+ContentShell; Arena+Defaults/+Body; Island+TrailingProgress. Tip `e93b48b`.
 - Zero App/Widgets >100; zero Route nova.
