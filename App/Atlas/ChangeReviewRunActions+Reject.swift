@@ -3,6 +3,7 @@ import AtlasCore
 
 // Botão Rejeitar — peel de ChangeReviewRunActions+Buttons.
 // Label → ChangeReviewRunActions+Reject+Label.swift
+// Action → ChangeReviewRunActions+Reject+Action.swift
 
 extension ChangeReviewRunActions {
     @ViewBuilder
@@ -10,8 +11,7 @@ extension ChangeReviewRunActions {
         if available.contains(.reject) {
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                applying = true
-                Task { await reviews.applyChangeReview(traceId: traceId, action: .reject); applying = false }
+                rejectReviewAction()
             } label: {
                 rejectButtonLabel
             }

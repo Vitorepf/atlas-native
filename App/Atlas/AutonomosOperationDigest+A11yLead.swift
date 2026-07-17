@@ -1,6 +1,8 @@
 import Foundation
 
 // Section lead spoken — peel de AutonomosOperationDigest+A11y.
+// Incident → AutonomosOperationDigest+A11yLead+Incident.swift
+// Headline → AutonomosOperationDigest+A11yLead+Headline.swift
 
 extension AutonomosOperationDigestA11y {
     static func spokenSectionLead(
@@ -9,8 +11,12 @@ extension AutonomosOperationDigestA11y {
         pendingCount: Int
     ) -> [String] {
         var parts = ["resumo da operação"]
-        parts.append(incidentPresent ? "requer você, incidente aguarda decisão" : "por exceção")
-        parts.append(spokenHeadline(delivered: deliveredTotal, pending: pendingCount, incident: incidentPresent))
+        parts.append(spokenIncidentPhrase(incidentPresent: incidentPresent))
+        parts.append(spokenHeadlinePhrase(
+            deliveredTotal: deliveredTotal,
+            pendingCount: pendingCount,
+            incidentPresent: incidentPresent
+        ))
         return parts
     }
 }

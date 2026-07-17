@@ -2,21 +2,26 @@ import SwiftUI
 import AtlasCore
 
 // Structural blocks — peel de AtlasMarkdownView+BlockViewBody.
+// List → AtlasMarkdownView+BlockViewStructural+List.swift
+// Quote → AtlasMarkdownView+BlockViewStructural+Quote.swift
+// Code → AtlasMarkdownView+BlockViewStructural+Code.swift
+// Divider → AtlasMarkdownView+BlockViewStructural+Divider.swift
+// Table → AtlasMarkdownView+BlockViewStructural+Table.swift
 
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewStructural(_ block: MarkdownBlock, index: Int) -> some View {
         switch block {
-        case .list(let ordered, let items):
-            listBlock(ordered: ordered, items: items)
-        case .quote(let spans):
-            quoteBlock(spans)
-        case .code(let codeText, let lang):
-            CodeBlockView(code: codeText, lang: lang, blockIndex: index)
+        case .list:
+            blockViewListBlock(block)
+        case .quote:
+            blockViewQuoteBlock(block)
+        case .code:
+            blockViewCodeBlock(block, index: index)
         case .divider:
-            Rectangle().fill(AtlasTheme.separator).frame(height: 1).padding(.vertical, 2)
-        case .table(let headers, let rows):
-            tableView(headers, rows)
+            blockViewDividerBlock
+        case .table:
+            blockViewTableBlock(block)
         default:
             EmptyView()
         }

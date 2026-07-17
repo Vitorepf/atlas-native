@@ -2,23 +2,17 @@ import SwiftUI
 import AtlasCore
 
 // Digest card stack — peel de AutonomosDigestSection+Card.
+// WindowCaption → AutonomosDigestSection+CardStack+WindowCaption.swift
+// LastBody → AutonomosDigestSection+CardStack+LastBody.swift
 
 extension AutonomosNextDigestSection {
     @ViewBuilder
     func digestCardStack(last: Bool, window: String?) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             AutonomosChrome.sectionCaption(sectionTitle)
-            if last, let window {
-                Text(window)
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(2)
-                    .accessibilityHidden(true)
-            }
+            digestCardWindowCaption(last: last, window: window)
             digestScheduleCopy(last: last)
-            if last {
-                lastDigestBody(digest)
-            }
+            digestCardLastBody(last: last)
         }
     }
 }

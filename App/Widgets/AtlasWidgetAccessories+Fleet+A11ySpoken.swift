@@ -2,23 +2,20 @@ import AtlasCore
 import Foundation
 
 // Spoken label — peel de FleetWidgetA11y.
+// Incident → AtlasWidgetAccessories+Fleet+A11ySpoken+Incident.swift
+// Delivery → AtlasWidgetAccessories+Fleet+A11ySpoken+Delivery.swift
+// Stale → AtlasWidgetAccessories+Fleet+A11ySpoken+Stale.swift
 
 extension FleetWidgetA11y {
     static func spokenLabel(snapshot: AtlasNativeSnapshot, stale: Bool, at date: Date, age: String) -> String {
         var parts = ["Frota"]
-        if let line = incidentLine(snapshot.fleet?.incident) {
-            parts.append(line)
-        } else if snapshot.fleet?.incident?.present == true {
-            parts.append("atenção na frota")
-        } else if let scanned = snapshot.fleet?.scannedAt.flatMap(AtlasTime.date) {
-            parts.append("frota íntegra, varrida \(scanned.relativeShort(to: date))")
-        } else {
-            parts.append("frota não lida")
+        parts.append(contentsOf: spokenIncidentParts(snapshot: snapshot, at: date))
+        if let delivery = spokenDeliveryPart(snapshot: snapshot) {
+            parts.append(delivery)
         }
-        if let delivery = snapshot.fleet?.lastDelivery, let caption = deliveryCaption(delivery) {
-            parts.append(caption)
+        if let staleLine = spokenStaleSuffix(stale: stale, age: age) {
+            parts.append(staleLine)
         }
-        if stale { parts.append("visto \(age)") }
         return parts.joined(separator: ", ")
     }
 }

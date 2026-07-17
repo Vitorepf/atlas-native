@@ -3,6 +3,7 @@ import AtlasCore
 
 // Aggregate spoken — peel de AutonomosDigestSection+A11y.
 // LastBody → AutonomosDigestSection+A11yAggregate+LastBody.swift
+// ScheduleLead → AutonomosDigestSection+A11yAggregate+ScheduleLead.swift
 
 extension AutonomosDigestSectionA11y {
     static func spokenSection(
@@ -15,7 +16,7 @@ extension AutonomosDigestSectionA11y {
         riskHeadline: String?,
         decisionTitle: String?
     ) -> String {
-        var parts = spokenScheduleLead(
+        var parts = spokenScheduleLeadParts(
             nextDigestAt: nextDigestAt,
             scheduleReason: scheduleReason,
             hasLast: hasLast

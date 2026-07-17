@@ -1,6 +1,7 @@
 import Foundation
 
 // Aggregate spoken — peel de AutonomosOperationDigest+A11y.
+// SectionLead → AutonomosOperationDigest+A11yAggregate+SectionLead.swift
 
 extension AutonomosOperationDigestA11y {
     static func spokenSection(
@@ -11,7 +12,7 @@ extension AutonomosOperationDigestA11y {
         oldestBacklogCreatedAt: Date?,
         findingsByRisk: [String: Int]
     ) -> String {
-        var parts = spokenSectionLead(
+        var parts = spokenSectionLeadParts(
             incidentPresent: incidentPresent,
             deliveredTotal: deliveredTotal,
             pendingCount: pendingCount

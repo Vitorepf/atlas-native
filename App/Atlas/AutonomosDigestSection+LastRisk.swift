@@ -2,23 +2,17 @@ import SwiftUI
 import AtlasCore
 
 // Last digest risk/decision — peel de AutonomosDigestSection+Last.
+// RiskLine → AutonomosDigestSection+LastRisk+RiskLine.swift
+// DecisionLine → AutonomosDigestSection+LastRisk+DecisionLine.swift
 
 extension AutonomosNextDigestSection {
     @ViewBuilder
     func lastDigestRiskDecision(_ digest: AtlasAutonomosDigestResponse) -> some View {
         if let risk = digest.last.risks.first {
-            Text(risk.title?.nonEmpty ?? risk.reason?.nonEmpty ?? risk.severity)
-                .font(.caption)
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(2)
-                .accessibilityHidden(true)
+            lastDigestRiskLine(risk)
         }
         if let decision = digest.last.pendingDecisions.first {
-            Text(decision.title)
-                .font(.caption)
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(2)
-                .accessibilityHidden(true)
+            lastDigestDecisionLine(decision)
         }
     }
 }

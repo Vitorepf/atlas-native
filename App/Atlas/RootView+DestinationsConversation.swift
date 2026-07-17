@@ -2,21 +2,26 @@ import SwiftUI
 import AtlasCore
 
 // Conversation destinations — peel de RootView+Destinations.
+// Workspace → RootView+DestinationsConversation+Workspace.swift
+// Thread → RootView+DestinationsConversation+Thread.swift
+// New → RootView+DestinationsConversation+New.swift
+// Conversas → RootView+DestinationsConversation+Conversas.swift
+// Search → RootView+DestinationsConversation+Search.swift
 
 extension RootView {
     @ViewBuilder
     func rootConversationDestination(for route: Route) -> some View {
         switch route {
         case .workspace(let key, let title):
-            WorkspaceView(workspaceKey: key, title: title)
+            rootConversationWorkspaceDestination(key: key, title: title)
         case .thread(let id, let title):
-            ConversationView(client: session.client, threadId: id, title: title)
+            rootConversationThreadDestination(id: id, title: title)
         case .new:
-            ConversationView(client: session.client, threadId: nil, title: "Nova conversa")
+            rootConversationNewDestination
         case .conversas:
-            WorkspaceView(workspaceKey: nil, title: "Conversas", freeOnly: true)
+            rootConversationConversasDestination
         case .search:
-            SearchView()
+            rootConversationSearchDestination
         default:
             EmptyView()
         }
