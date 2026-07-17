@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **474+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXL tip `c4948c9` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **476+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLI tip `076008c` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXL (este tip)
+## Entrega Elite CXXXXXLI (este tip)
+
+- `refactor(ui)` CICLO B: Veto+VetoTextFields; Conversation+A11yChip; Queue+Titles; Proof+Reason; Seals+A11yCaption; Paste+PasteLabel; Steer+SteerReceipt; Mirror+A11ySpokenState; Execution+KindBadge; Timeline+NarrativeRow; Editorial+Body; Timer+TimerFallback; Autonomos+ContentLoaded. Tip `076008c`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXL (anterior)
 
 - `refactor(ui)` CICLO B: Composer+Steer; Theme+CardModifier; Review+ControlRow/+A11ySpoken; Area+A11yRow; Why+RowQuote; Zoom+ZoomDrag; Arena+FormSuitesEmpty/+FormGovernanceFields; Workspace+ListCaptionHeader; Root+SectionA11y; Execution+ActionChoicesStack; Messages+EmptyBody; Plan+StepRowA11y; Health+A11yIncident; Lock+A11yClock. Tip `c4948c9`.
 - Zero App/Widgets >100; zero Route nova.
