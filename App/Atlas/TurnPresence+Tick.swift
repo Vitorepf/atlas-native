@@ -38,10 +38,12 @@ extension TurnPresence {
             // Fase pública terminal (Concluído/Falhou) ou fim legado — nunca
             // "porque isSending virou falso": a presença é quem decide.
             entry.ongoing = false
-            let final = lastPresence(model, key: entry.activityKey)
+            let traceKey = entry.activityKey
+            let final = lastPresence(model, key: traceKey)
             finishActivity(entry, presence: final)
             broadcastCount()
-            if UIApplication.shared.applicationState == .active, !entry.visible {
+            if UIApplication.shared.applicationState == .active, !entry.visible,
+               !UIAccessibility.isReduceMotionEnabled {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             }
             // A permissão PRIMEIRO, e esperando o veredito: pedir depois de
@@ -51,7 +53,7 @@ extension TurnPresence {
             // momento de valor real), nunca no launch.
             Task { @MainActor in
                 await requestPermissionOnce()
-                notifyIfAway(entry, model: model, finalPresence: final)
+                notifyIfAway(entry, model: model, finalPresence: final, traceId: traceKey)
             }
             syncRunning()
         }

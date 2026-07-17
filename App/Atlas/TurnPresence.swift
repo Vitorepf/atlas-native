@@ -14,7 +14,7 @@ import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteir
 // notificação quando o app volta.
 //
 // ActivityKit start/update/finish → TurnPresence+LiveActivity.swift.
-// Notificações locais → TurnPresence+Notifications.swift.
+// Notificações locais → TurnPresence+Notifications.swift (+A11y).
 // LiveSessionSnapshot/publish → TurnPresence+LiveSessions.swift.
 // tick/lastPresence → TurnPresence+Tick.swift.
 // Entry → TurnPresence+Entry.swift.
