@@ -2,8 +2,8 @@ import SwiftUI
 import AtlasCore
 
 struct AtlasCodeWhySheet: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var model: AtlasCodeWhyModel
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var model: AtlasCodeWhyModel
     let repo: String
     let file: String
 
@@ -38,61 +38,22 @@ struct AtlasCodeWhySheet: View {
                 .font(.system(size: 9, weight: .semibold))
                 .tracking(1.5)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
             Text(file)
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(2)
                 .truncationMode(.middle)
+                .accessibilityHidden(true)
             if let why = model.why, why.truncated {
                 Text("mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
             }
         }
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isHeader)
         .accessibilityLabel(whyHeaderSpokenLabel)
-    }
-
-    @ViewBuilder
-    private var content: some View {
-        switch model.phase {
-        case .idle, .loading:
-            HStack(spacing: 10) {
-                BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-                Text("lendo a história do arquivo…")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-            }
-            .padding(.top, 8)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(spokenLoading())
-        case .failed:
-            VStack(alignment: .leading, spacing: 6) {
-                Text("biografia indisponível")
-                    .font(AtlasFont.serifItalic(16))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                if let message = model.message, !message.isEmpty {
-                    Text(message)
-                        .font(AtlasFont.mono(9.5))
-                        .foregroundStyle(AtlasCodePalette.alert)
-                }
-            }
-            .accessibilityLabel(spokenFailed())
-        case .loaded:
-            if let why = model.why, why.commits.isEmpty {
-                Text("este arquivo não tem história neste recorte")
-                    .font(AtlasFont.serifItalic(16))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .padding(.top, 6)
-                    .accessibilityLabel(spokenEmptyHistory())
-            } else if let why = model.why {
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(Array(why.commits.enumerated()), id: \.element.id) { index, commit in
-                        whyRow(commit, index: index, isLast: index == why.commits.count - 1)
-                    }
-                }
-            }
-        }
     }
 }
