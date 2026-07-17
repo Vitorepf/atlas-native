@@ -116,13 +116,13 @@ struct WorkspaceView: View {
                 if showsLoadingShell {
                     WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
                 } else if showsNetworkFailure {
-                    WorkspaceNetworkFailureEmpty(
+                    AtlasNetworkFailureEmpty(
                         kind: session.failureKind,
                         hasToken: session.hasToken,
-                        host: session.host
-                    ) {
-                        Task { await session.loadThreads() }
-                    }
+                        host: session.host,
+                        accessibilityIdentifier: A11yID.workspaceOffline,
+                        onRetry: { Task { await session.loadThreads() } }
+                    )
                 } else if threads.isEmpty {
                     WorkspaceEditorialEmpty(area: area, freeOnly: freeOnly)
                 } else {

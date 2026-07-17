@@ -19,10 +19,14 @@ struct WorkspaceLoadingEmpty: View {
     }
 }
 
-struct WorkspaceNetworkFailureEmpty: View {
+/// Falha de rede compartilhada — home, workspace e conversa (voz via `AtlasFailureCopy`).
+struct AtlasNetworkFailureEmpty: View {
     let kind: AtlasNetworkFailureKind?
     let hasToken: Bool
     let host: String
+    var topPadding: CGFloat = 56
+    var retryHint: String = "reconecta ao servidor Atlas"
+    let accessibilityIdentifier: String
     let onRetry: () -> Void
 
     var body: some View {
@@ -54,13 +58,13 @@ struct WorkspaceNetworkFailureEmpty: View {
                             .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 }
                 .buttonStyle(PressableScale())
-                .accessibilityHint("reconecta ao servidor Atlas")
+                .accessibilityHint(retryHint)
             }
         }
-        .padding(.horizontal, 44).padding(.top, 56)
+        .padding(.horizontal, 44).padding(.top, topPadding)
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
-        .accessibilityIdentifier(A11yID.workspaceOffline)
+        .accessibilityIdentifier(accessibilityIdentifier)
         .accessibilityLabel("\(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken)). \(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))")
     }
 }

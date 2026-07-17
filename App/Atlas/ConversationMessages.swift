@@ -23,10 +23,13 @@ struct ConversationMessages: View {
             ScrollView {
                 if model.bubbles.isEmpty {
                     if model.loadError != nil {
-                        ConversationLoadFailure(
+                        AtlasNetworkFailureEmpty(
                             kind: model.loadFailureKind,
                             hasToken: session.hasToken,
                             host: session.host,
+                            topPadding: 100,
+                            retryHint: "reconecta e recarrega esta conversa",
+                            accessibilityIdentifier: A11yID.conversationLoadFailure,
                             onRetry: { Task { await model.load() } }
                         )
                     } else {

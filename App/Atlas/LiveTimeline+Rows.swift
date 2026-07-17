@@ -8,7 +8,6 @@ struct NarrativeRow: Identifiable, Equatable {
     enum Style { case intent, single }
     let id: String
     let style: Style
-    let icon: String
     let title: String
     let detail: String?
     let occurredAt: Date?
@@ -22,7 +21,6 @@ func narrativeRows(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
         NarrativeRow(
             id: activity.id,
             style: isIntentKind(activity.kind) ? .intent : .single,
-            icon: activityIcon(activity.kind),
             title: activity.title,
             detail: activity.detail,
             occurredAt: AtlasTime.date(activity.occurredAt)

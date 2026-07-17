@@ -7,16 +7,16 @@ extension ArtifactSheet {
     @ViewBuilder
     var content: some View {
         if !loadFinished, artifacts == nil {
-            loading("consultando artefatos…")
+            TraceEvidenceLoading(text: "consultando artefatos…", reduceMotion: reduceMotion)
         } else if loadFinished, artifacts == nil {
-            evidenceEmpty(
+            TraceEvidenceUnavailable(
                 title: "Não foi possível consultar artefatos.",
                 subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
                 identifier: A11yID.artifactsLoadFailure,
                 spoken: "não foi possível consultar artefatos"
             )
         } else if artifacts?.state == .unavailable {
-            evidenceEmpty(
+            TraceEvidenceUnavailable(
                 title: "Sem artefatos nesta execução.",
                 subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
                 identifier: A11yID.artifactsUnavailable,
@@ -26,7 +26,7 @@ extension ArtifactSheet {
                 )
             )
         } else if items.isEmpty {
-            evidenceEmpty(
+            TraceEvidenceUnavailable(
                 title: "Sem artefatos visualizáveis nesta execução.",
                 subtitle: nil,
                 identifier: A11yID.artifactsEmpty,
@@ -90,7 +90,7 @@ extension ArtifactSheet {
         VStack(alignment: .leading, spacing: 10) {
             switch preview {
             case .idle, .loading:
-                loading("carregando preview…")
+                TraceEvidenceLoading(text: "carregando preview…", reduceMotion: reduceMotion)
                     .frame(maxWidth: .infinity, minHeight: 180)
             case .tooLarge(let bytes):
                 ArtifactFileFicha(
@@ -109,45 +109,6 @@ extension ArtifactSheet {
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .atlasCard()
-    }
-
-    func loading(_ text: String) -> some View {
-        VStack(spacing: 10) {
-            BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-            Text(text)
-                .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textTertiary)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(text)
-    }
-
-    func evidenceEmpty(
-        title: String,
-        subtitle: String?,
-        identifier: String,
-        spoken: String
-    ) -> some View {
-        VStack(spacing: 12) {
-            Image(systemName: "doc.text")
-                .font(.title2)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Text(title)
-                .font(AtlasFont.serif(18, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .multilineTextAlignment(.center)
-            if let subtitle, !subtitle.isEmpty {
-                Text(subtitle)
-                    .font(.footnote)
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .padding(36)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(spoken)
-        .accessibilityIdentifier(identifier)
     }
 
     func load(_ item: AtlasTraceArtifacts.Item) async {

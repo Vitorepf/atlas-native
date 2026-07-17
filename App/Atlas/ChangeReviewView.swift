@@ -42,35 +42,38 @@ struct ChangeReviewSheet: View {
     @ViewBuilder
     private var content: some View {
         if !loadFinished, review == nil {
-            loading("consultando a revisão…")
+            TraceEvidenceLoading(text: "consultando a revisão…", reduceMotion: reduceMotion)
         } else if loadFinished, review == nil {
-            unavailableBody(
+            TraceEvidenceUnavailable(
                 title: "Não foi possível consultar a revisão.",
                 subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
                 identifier: A11yID.reviewLoadFailure,
-                spoken: "não foi possível consultar a revisão"
+                spoken: "não foi possível consultar a revisão",
+                systemImage: "doc.text.magnifyingglass"
             )
         } else if let review {
             switch review.state {
             case .unavailable:
-                unavailableBody(
+                TraceEvidenceUnavailable(
                     title: "Sem revisão de mudanças nesta execução.",
                     subtitle: TraceEvidenceCopy.unavailableReason(review.reason),
                     identifier: A11yID.reviewUnavailable,
                     spoken: TraceEvidenceCopy.unavailableSpoken(
                         prefix: "sem revisão de mudanças nesta execução",
                         reason: review.reason
-                    )
+                    ),
+                    systemImage: "doc.text.magnifyingglass"
                 )
             case .available:
                 if Self.hasReviewSurface(review) {
                     available(review)
                 } else {
-                    unavailableBody(
+                    TraceEvidenceUnavailable(
                         title: "Revisão ligada, mas sem patches nem provas publicadas.",
                         subtitle: "o servidor confirmou o vínculo, porém não há diff, checks ou achados a mostrar.",
                         identifier: A11yID.reviewEmpty,
-                        spoken: "revisão ligada mas sem patches nem provas publicadas"
+                        spoken: "revisão ligada mas sem patches nem provas publicadas",
+                        systemImage: "doc.text.magnifyingglass"
                     )
                 }
             }
@@ -106,45 +109,6 @@ struct ChangeReviewSheet: View {
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, 14)
         }
         .scrollIndicators(.hidden)
-    }
-
-    private func loading(_ text: String) -> some View {
-        VStack(spacing: 14) {
-            BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-            Text(text)
-                .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textTertiary)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(text)
-    }
-
-    private func unavailableBody(
-        title: String,
-        subtitle: String?,
-        identifier: String,
-        spoken: String
-    ) -> some View {
-        VStack(spacing: 12) {
-            Image(systemName: "doc.text.magnifyingglass")
-                .font(.title2)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Text(title)
-                .font(AtlasFont.serif(18, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .multilineTextAlignment(.center)
-            if let subtitle, !subtitle.isEmpty {
-                Text(subtitle)
-                    .font(.footnote)
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .padding(36)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(spoken)
-        .accessibilityIdentifier(identifier)
     }
 
     /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.

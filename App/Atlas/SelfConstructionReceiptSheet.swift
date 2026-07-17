@@ -140,10 +140,3 @@ struct SelfConstructionReceiptSheet: View {
         .accessibilityIdentifier(A11yID.selfReceiptSheet)
     }
 }
-
-private extension String {
-    var nonEmpty: String? {
-        let trimmed = trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? nil : trimmed
-    }
-}

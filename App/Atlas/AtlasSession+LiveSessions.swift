@@ -64,9 +64,3 @@ private extension Optional where Wrapped == AtlasAiLiveSessionTiming {
         }
     }
 }
-
-private extension String {
-    var nonEmpty: String? {
-        isEmpty ? nil : self
-    }
-}
