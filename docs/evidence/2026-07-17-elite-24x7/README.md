@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **585** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXV tip `7dda110` |
-| Commits no tip (`git rev-list --count HEAD`) | 887 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 586 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **587** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXVI tip `d6806e9` |
+| Commits no tip (`git rev-list --count HEAD`) | 889 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 588 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLXV (este tip)
+## Entrega Elite CXXXXXLXLXVI (este tip)
+
+- `polish(ui)` CICLO B: GraphFilter Label `+Healthy`; Preview Document `+ImageMarkdown`; Autonomos Spoken/PhaseRouter `+Busy`; ActionColors Fill `+Background`; AgentStatus `+Active`; FileRow Verb `+RenameCopy`; Artifact Busy `+Loading`; Radar Shell/Content `+Busy`; LiveNow Clock `+Active`; Widgets LockRect `+Alert` LockScreen State `+Terminal`. Tip `d6806e9`.
+- 13 peels · 26 arquivos · over100=0 · App/Atlas+Widgets swift=2722; App/Widgets swift=214; zero Route nova.
+
+## Entrega Elite CXXXXXLXLXV (anterior)
 
 - `polish(ui)` CICLO B: FileRow Symbol `+Mutate`; TextPreview `+Document`; Reconnect `+Core`; Search A11y `+Shell/+Results`; Provenance Content `+Loading`; DeepLinks `+Surface/+ExecutionFamily`; Replay Spoken `+Metrics`; Fleet A11y `+Runtime`; Markdown CodeTable `+Code`; LiveNow Spoken `+Finished`; Why A11y `+LoadedID`; Home Route `+All`; DraftThumb State `+Ready`; Mirror Spoken `+Quiet`; Widgets CodeWeek Metrics `+Primary` Island Trailing `+Finished` Fleet Incident `+Present`. Tip `7dda110`.
 - 19 peels · 36 arquivos · over100=0 · App/Atlas+Widgets swift=2709; App/Widgets swift=212; zero Route nova.
