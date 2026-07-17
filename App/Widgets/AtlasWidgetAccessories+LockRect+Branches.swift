@@ -5,15 +5,13 @@ import AtlasCore
 // Branches do retângulo lock — peel de LockRect.
 // Quiet → AtlasWidgetAccessories+LockRect+Quiet.swift
 // Paused → AtlasWidgetAccessories+LockRect+Paused.swift
+// Incident → AtlasWidgetAccessories+LockRect+Branches+Incident.swift
 
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularBody(_ snapshot: AtlasNativeSnapshot, stale: Bool, incidentLine: String?) -> some View {
         if let incidentLine {
-            Text(incidentLine)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
-                .foregroundStyle(Ink.alert)
-                .lineLimit(2)
+            rectangularIncidentBody(incidentLine)
         } else if let paused = snapshot.liveSessions?.first(where: { $0.timing == .paused }) {
             rectangularPausedBody(paused, snapshot: snapshot)
         } else {

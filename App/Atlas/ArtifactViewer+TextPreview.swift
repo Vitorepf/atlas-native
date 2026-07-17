@@ -4,20 +4,19 @@ import AtlasCore
 
 // Diff/file preview — peel de ArtifactViewer+Preview.
 // Diff → ArtifactViewer+DiffPreview.swift
+// Markdown → ArtifactViewer+TextPreview+Markdown.swift
+// File → ArtifactViewer+TextPreview+File.swift
 
 extension ArtifactPreviewContent {
     @ViewBuilder
     var textishPreview: some View {
         switch item.kind {
         case .markdown, .text:
-            AtlasMarkdownView(text: String(decoding: content.data, as: UTF8.self), streaming: false)
+            textishMarkdownPreview(content.data)
         case .diff:
             diffPreview
         case .file:
-            ArtifactFileFicha(
-                name: item.name,
-                subtitle: "\(ArtifactViewer.byteLabel(item.byteSize)) · sha \(String(item.sha256.prefix(12)))"
-            )
+            textishFilePreview
         default:
             EmptyView()
         }

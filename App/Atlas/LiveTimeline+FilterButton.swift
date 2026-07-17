@@ -5,15 +5,13 @@ import AtlasCore
 // Enum → LiveTimeline+FilterEnum.swift
 // Chip label → LiveTimeline+FilterChip.swift
 // A11y → LiveTimeline+FilterButton+A11y.swift
+// Action → LiveTimeline+FilterButton+Action.swift
 
 extension TimelineFilterChips {
     func filterChipButton(_ option: TimelineReadFilter, active: Bool, count: Int) -> some View {
         filterChipA11y(
             Button {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
-                    filter = option
-                }
+                filterChipAction(option)
             } label: {
                 chipLabel(option, active: active)
             }

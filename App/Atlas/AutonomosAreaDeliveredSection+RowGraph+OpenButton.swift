@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Graph-open button — peel de AutonomosAreaDeliveredSection+RowGraph.
+// A11y → AutonomosAreaDeliveredSection+RowGraph+OpenButton+A11y.swift
 
 extension AutonomosAreaDeliveredSection {
     @ViewBuilder
@@ -11,16 +12,16 @@ extension AutonomosAreaDeliveredSection {
         visible: Int,
         repo: String
     ) -> some View {
-        Button {
-            openCommit(cycle.mergeHash, repo: repo)
-        } label: {
-            deliveredRow(cycle, graphHint: true)
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(AutonomosAreaDeliveredA11y.spokenRow(
-            cycle, index: index, visible: visible, isSelf: false, opensGraph: true))
-        .accessibilityHint(AutonomosAreaDeliveredA11y.spokenRowHint(isSelf: false))
-        .accessibilityIdentifier(A11yID.autonomosAreaDeliveredRow(index))
+        deliveredGraphOpenA11y(
+            Button {
+                openCommit(cycle.mergeHash, repo: repo)
+            } label: {
+                deliveredRow(cycle, graphHint: true)
+            }
+            .buttonStyle(.plain),
+            cycle: cycle,
+            index: index,
+            visible: visible
+        )
     }
 }
