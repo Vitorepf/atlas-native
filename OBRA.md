@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo C — CICLO B Timeline/Arena/Workspace/Lock/Island/Provenance/Heal peels + C Attachment silence** · este commit · CICLO B: Timeline `+FilterEnum`; Arena `+Toggle`; Workspace Row peel AttachmentRow; Lock `+Title`; Island Compact `+Trailing`; Provenance `+A11ySpoken`; Heal `+A11yUndo`. CICLO C: AttachmentRow decorative silence. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XCIX — CICLO B Messages/Chrome/Reason/Nightly/Review/Week/Fleet/Thread/Sheets/Widget/Empty peels + C silence** · este commit · CICLO B: Messages `+Rows`; Chrome `+SheetRow`; Reason `+Form`; Nightly `+Actions`; Review `+Checks`; CodeWeek `+Body`; Fleet `+Body`; Thread `+Content`; Sheets `+Detail`; Widget `+Age`; Empty `+Copy`. CICLO C: Review/Empty/Thread decorative silence sob spoken. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XCVIII — CICLO B CodeSheets/GraphFilters/Fleet peels** · este commit · CICLO B: CodeSheets `+Provenance`; GraphChrome `+Chips`; Fleet `+State`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
