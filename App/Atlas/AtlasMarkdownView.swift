@@ -20,8 +20,8 @@ struct AtlasMarkdownView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
-                blockView(block)
+            ForEach(Array(blocks.enumerated()), id: \.offset) { index, block in
+                blockView(block, index: index)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -55,7 +55,7 @@ struct AtlasMarkdownView: View {
     }
 
     @ViewBuilder
-    func blockView(_ block: MarkdownBlock) -> some View {
+    func blockView(_ block: MarkdownBlock, index: Int) -> some View {
         switch block {
         case .paragraph(let spans):
             Text(inline(spans, base: .init(font: .system(size: 16), size: 16, color: AtlasTheme.textPrimary)))
@@ -71,7 +71,7 @@ struct AtlasMarkdownView: View {
             quoteBlock(spans)
 
         case .code(let codeText, let lang):
-            CodeBlockView(code: codeText, lang: lang)
+            CodeBlockView(code: codeText, lang: lang, blockIndex: index)
 
         case .divider:
             Rectangle().fill(AtlasTheme.separator).frame(height: 1).padding(.vertical, 2)
