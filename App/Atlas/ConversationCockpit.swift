@@ -3,11 +3,8 @@ import AtlasCore
 
 // O cockpit da execução — faixa no composer, ribbon, narrativa viva e a
 // prova persistente. Extraído de ConversationView (mesma linguagem, arquivo próprio).
-// Agentes/banners → ConversationCockpit+Agents.swift.
+// Agentes/banners → ConversationCockpit+Agents.swift; ribbon → ConversationCockpit+Ribbon.swift.
 
-// A faixa de execução: UMA linha quieta dentro do card do composer —
-// "◆ Seguindo a execução · N eventos · Xs · Parar". Sem caixa própria,
-// sem segundo elemento; o campo de escrever permanece vivo logo abaixo.
 struct ExecutingStrip: View {
     let bubble: ChatBubble
     let reduceMotion: Bool
@@ -17,8 +14,6 @@ struct ExecutingStrip: View {
     var body: some View {
         HStack(spacing: 8) {
             BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-            // C10: com checkpoint REAL do plano, a faixa vira "N/M · etapa".
-            // Trace legado (progress nil) não inventa número nem barra.
             if let p = bubble.executionProgress {
                 Text("\(p.current)/\(p.total) · \(p.title)")
                     .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
@@ -52,7 +47,6 @@ struct ExecutingStrip: View {
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
                     .lineLimit(1)
             }
-            // C18: pílula +N −M só quando o servidor mediu shortstat no workspace.
             if let stats = bubble.diffStats {
                 Text("+\(stats.linesAdded) −\(stats.linesRemoved)")
                     .font(AtlasFont.mono(11))
@@ -95,50 +89,5 @@ struct ExecutingStrip: View {
             return "execução ao vivo, \(act.title), \(bubble.activities.count) eventos"
         }
         return "seguindo a execução, \(bubble.activities.count) eventos"
-    }
-}
-
-// A RIBBON DE EXECUÇÃO — o diferencial vs Cursor. Mostra AO VIVO: quanto tempo,
-// a ORQUESTRA (cada agente/provider/modelo + status), o estágio do Atlas Decide,
-// e um botão Stop. Cursor mostra 1 agente; o Atlas mostra a máquina inteira.
-struct ExecutionRibbon: View {
-    let bubble: ChatBubble
-    let reduceMotion: Bool
-    let onStop: () -> Void
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if let notice = bubble.reconnectNotice {
-                ExecutionBanner(
-                    text: notice,
-                    icon: "wifi.exclamationmark",
-                    tint: AtlasTheme.accent,
-                    accessibilityIdentifier: A11yID.executionReconnectBanner
-                )
-            }
-            SilenceWatchdog(bubble: bubble)
-            // A CONSTRUÇÃO AO VIVO — todos os passos empilham conforme chegam
-            // (contrato C5: projeção segura). O atual pulsa; os anteriores
-            // assentam. É a progressão do Cursor, na gramática do Atlas.
-            if !bubble.activities.isEmpty {
-                LiveTimeline(activities: bubble.activities, reduceMotion: reduceMotion)
-            }
-            if !bubble.agents.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    if bubble.agents.count >= 2 {
-                        Text("LANES")
-                            .font(AtlasFont.mono(10))
-                            .tracking(1.1)
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    ForEach(bubble.agents) { AgentRow(agent: $0, compactLane: bubble.agents.count >= 2) }
-                }.padding(.leading, 24)
-            }
-            if let strat = bubble.decideStrategy {
-                Text("atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
-            }
-        }
-        .padding(.vertical, 10).padding(.horizontal, 14)
-        .atlasCard(cornerRadius: 12, fillOpacity: 0.5)
     }
 }

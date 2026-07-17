@@ -3,21 +3,17 @@ import AtlasCore
 
 /// Cena operacional do Fable 5: o estado chega pronto do ledger e só então a
 /// conversa oferece uma ação. Não há botão, prazo ou risco criado pela casca.
-/// Ações → ExecutionStateCard+Actions; prova → ExecutionProof.swift.
+/// Ações → ExecutionStateCard+ActionButtons; prova → ExecutionProof.swift.
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: JobID?
     let onChoose: (JobID, String) -> Void
-    /// C17: job falho que aceita retry. Presente → o card de falha oferece
-    /// "Retomar" (reenfileira o job real). Sem ele, a falha fica só informada.
     var retryableJobId: JobID? = nil
     var onRetry: (JobID) -> Void = { _ in }
     var onSteer: (() -> Void)? = nil
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    /// Cena 01/13: só renderiza quando o contrato traz informação além do
-    /// silêncio pós-prova. `.completed` vazio cede lugar à `ExecutionProof`.
     static func shouldDisplay(state: AtlasExecutionPresentationState) -> Bool {
         if state.kind == .completed,
            state.actions.isEmpty,
@@ -52,9 +48,6 @@ struct ExecutionStateCard: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            // Checkpoint / timer / deadline: só campos tipados do contrato.
-            // recovering não tem retry_count no v1 — se o servidor publicar
-            // tentativas, elas vêm em `detail`; a casca não inventa contagem.
             if let checkpoint = state.checkpoint {
                 Text("checkpoint · \(checkpoint)")
                     .font(AtlasFont.mono(10))
@@ -76,55 +69,7 @@ struct ExecutionStateCard: View {
                     .lineLimit(1)
                     .accessibilityLabel("próxima mudança \(deadline)")
             }
-            // Ações = somente `state.actions` declaradas pelo servidor (cena 01).
-            // Falha (cena 13): resume/retry só quando há pills do contrato OU
-            // `retryableJobId` real no model — nunca um botão inventado sem ambos.
-            if let jobId, !state.actions.isEmpty {
-                HStack(spacing: 8) {
-                    ForEach(state.actions) { action in
-                        Button { onChoose(jobId, action.id) } label: {
-                            Text(action.title)
-                                .font(.system(.caption, weight: .semibold))
-                                .lineLimit(1)
-                                .padding(.horizontal, 11).padding(.vertical, 8)
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(ExecutionStateActionStyle(
-                            style: action.style,
-                            reduceMotion: reduceMotion
-                        ))
-                        .accessibilityHint("ação declarada pelo servidor")
-                    }
-                }
-            } else if state.kind == .failed, state.actions.isEmpty, let retryableJobId {
-                // C17: falha sem action no presentation state → retry do job real.
-                Button { onRetry(retryableJobId) } label: {
-                    Text("Retomar")
-                        .font(.system(.caption, weight: .semibold))
-                        .padding(.horizontal, 11).padding(.vertical, 8)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(ExecutionStateActionStyle(
-                    style: .primary,
-                    reduceMotion: reduceMotion
-                ))
-                .accessibilityLabel("retomar execução a partir do último checkpoint")
-                .accessibilityHint("reenfileira o job que falhou")
-            }
-            if let onSteer {
-                Button(action: onSteer) {
-                    Text("Redirecionar")
-                        .font(.system(.caption, weight: .semibold))
-                        .lineLimit(1)
-                        .padding(.horizontal, 11).padding(.vertical, 8)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(ExecutionStateActionStyle(
-                    style: .secondary,
-                    reduceMotion: reduceMotion
-                ))
-                .accessibilityLabel("redirecionar esta execução")
-            }
+            actionButtons
         }
         .padding(14)
         .background(

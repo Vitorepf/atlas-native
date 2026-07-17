@@ -9,23 +9,7 @@ extension AtlasCodeView {
             TraceEvidenceLoading(text: "lendo a topologia do repositório…", reduceMotion: reduceMotion)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         case .failed(let message):
-            VStack(spacing: 14) {
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.system(size: 24))
-                    .foregroundStyle(AtlasCodePalette.alert)
-                Text("não consegui ler este repositório")
-                    .font(AtlasFont.serif(20, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                Text(message)
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 28)
-                Button("Tentar de novo") { Task { await model.load() } }
-                    .buttonStyle(.borderedProminent)
-                    .tint(AtlasTheme.accent)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            graphFailure(message)
         case .loaded:
             if let graph = model.graph, !graph.nodes.isEmpty {
                 graphContent(graph)
@@ -40,8 +24,7 @@ extension AtlasCodeView {
 
     func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
         let filteredNodes = graphStateFilter.nodes(in: graph.nodes, model: model)
-        return ScrollView {
-            // F2.9: LazyVStack — não materializa ~200 rows + dims de uma vez.
+        let scroll = ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 statusCapsule
                     .padding(.bottom, 14)
@@ -70,8 +53,6 @@ extension AtlasCodeView {
                         trunk: model.violations?.trunk,
                         isFirst: index == 0,
                         isLast: index == filteredNodes.count - 1,
-                        // A resposta da pílula acende o que ela cita: o mapa é
-                        // que responde. Sem resposta, ninguém está apagado.
                         isDimmed: !visibleAnchors.isEmpty && !visibleAnchors.contains(node.hash)
                     ) {
                         selectedNode = node
@@ -83,8 +64,6 @@ extension AtlasCodeView {
                     .accessibilityRotorEntry(id: node.id, in: graphRotor)
                 }
 
-                // O grafo mostra os N mais recentes e PARA — o repo tem 8.700.
-                // Não é paginação (isso é obra); é a confissão do teto.
                 if graph.pagination.hasMore {
                     Text("\(graph.nodes.count) commits mais recentes — há mais história")
                         .font(AtlasFont.serifItalic(12))
@@ -106,37 +85,12 @@ extension AtlasCodeView {
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 10)
-            .padding(.bottom, 96)  // espaço da pílula
+            .padding(.bottom, 96)
         }
         .refreshable {
             await model.load()
             await mirrorModel.refresh()
         }
-        .accessibilityRotor("Violações") {
-            ForEach(nodes(in: graph, matching: .violating), id: \.id) { node in
-                AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
-            }
-        }
-        .accessibilityRotor("Curados") {
-            ForEach(nodes(in: graph, matching: .healed), id: \.id) { node in
-                AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
-            }
-        }
-    }
-
-    func nodes(in graph: AtlasCodeGraphResponse, matching state: AtlasCodeNodeState) -> [AtlasCodeGraphNode] {
-        graph.nodes.filter { model.state(for: $0) == state }
-    }
-
-    func rotorLabel(for node: AtlasCodeGraphNode) -> String {
-        node.message ?? String(node.hash.prefix(8))
-    }
-
-    func openWhyBiographyIfAvailable(for node: AtlasCodeGraphNode) async {
-        await provenanceModel.load(hash: node.hash)
-        guard case .loaded(let provenance) = provenanceModel.phase,
-              let path = provenance.files.first?.path else { return }
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        whyFileTarget = WhyFileTarget(path: path)
+        return graphAccessibilityRotors(graph: graph, content: scroll)
     }
 }

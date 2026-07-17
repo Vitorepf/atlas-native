@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **117** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 388 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 87 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **118** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 389 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 88 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -29,7 +29,7 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **E-A4** | **PARCIAL** | Fidelity matrix DONE; Session Hub DONE; Search/Workspace/Arena/CodeRadar silence DONE; demais cenas pendentes |
 | **E-A5** | **IN_PROGRESS** | `atlas://arena`; lock `queueLabel`; Island SD-2 **parcial** (ATT/EXT/FAIL/REC/PLN + N/M + fila); LockScreen/WidgetViews peels; M88/M91+ pendentes |
 | **E-A6** | **PENDING** | Device unlock + prints U1–U10 — **operador** |
-| **E-B** | **PARCIAL** | Peels contínuos App+Core; Model 250; Core zero >400; AutonomosView ~194; build Mac-pending |
+| **E-B** | **PARCIAL** | Peels contínuos App+Core; zero >145; max 139 (`ConversationModel`); 10 arquivos >130; build Mac-pending |
 | **E-C** | **IN_PROGRESS** | Frota quieta; Island ATT/EXT/FAIL; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty |
 | **E-D** | **PENDING** | Compressão 2 — aguarda E-C |
 
@@ -41,18 +41,16 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **atlas-server** | Repo server ausente neste workspace — M01 heal→merge e Arena A12 worker drain **BLOCKED** |
 | **Device / passcode** | `passcodeRequired` / operador — `make device`, prints U1–U10, DEVICE_PROVEN pendentes |
 
-## Entrega recente (wave XVI — HEAD)
+## Entrega recente (wave XVII — HEAD)
+
+- `polish(ui)|polish(core)` Elite B XVII: peels >130 → ≤110 nos alvos nomeados (`ConversationModel+Send`, `SearchView`, `ConversationCockpit`, `ChangeReviewDiffSection`, `ArenaRunSheet`, `AtlasAgentActivity+FromEvent`, `RootHomeSections`, `QueuedFollowUpsSheet`, `AtlasCodePalette`, `SelfConstructionReceiptSheet`) + peels adjacentes (Graph, ExecutionProof, AutonomosLoaded, ComposerSheets, ExecutionStateCard, AgentActivity Merge/FromTool).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **118** (após este commit).
+- Zero arquivos App/Core >145; 10 arquivos >130 restantes (max 139 `ConversationModel`).
+
+## Entrega anterior (wave XVI)
 
 - `polish(core)|polish(ui)` Elite B XVI: peels 141–150 → ≤120 (TraceGovernance+JSON, CodeAskTypes, NightlyProposal Payload/Delegate, RadarFolderRow, LiveActivityRemote+Remote, PlanCard Revisions/FlowChips, LiveTimeline+NarrativeView, ConversationComposer+LiveStrip, ExecutionProof+Expanded).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **117** (após este commit).
-- Zero arquivos App/Core 141–150; próxima onda B ataca faixa 121–140.
-
-## Entrega anterior (wave XV — `452f1b3`)
-
-- `polish(ui)` peels: `ConversationCockpit` 144 (+Agents), `AtlasMarkdownView` 106, `TurnPresence` 211 (+Notifications peel).
-- `polish(ui)` Autônomos: frota quieta + digest/transfer honesty (`41efee4`).
-- Island SD-2 parcial: badges ATT/EXT/FAIL/REC/PLN + `progressLabel` N/M + `queueLabel` fila em Island/lock (`4191353` + `AtlasTurnLockScreen`).
-- `docs(obra)` pin contínuo VI (`7209d34`).
+- Commit count: **117**.
 
 ## BLOCKED gates (não inventar verde)
 

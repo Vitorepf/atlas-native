@@ -54,51 +54,13 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
         return nil
     }
 
-    // CodexJsonlEventParser produz `tool`, porém AiStreamRecorder atualmente
-    // normaliza tipos fora de sua allowlist para `progress`. `name` + `phase`
-    // + `item_id` sobrevivem no ledger, então ambos os shapes projetam a mesma
-    // ferramenta segura e persistente. Nunca mostramos output_excerpt nem
-    // reasoning do provider.
-    if isToolProjection {
-        let status = metadata["status"]?.stringValue?.lowercased() ?? ""
-        let exitCode = metadata["exit_code"]?.doubleValue.map(Int.init)
-        let failed = exitCode.map { $0 != 0 } == true || ["failed", "error", "cancelled"].contains(status)
-        let finished = phase.contains("completed") || ["completed", "succeeded", "failed"].contains(status)
-
-        if name == "read" || name.contains("read_file") || name.contains("open_file") {
-            if failed { return activity(.warning, "Leitura terminou com falha", detail: safeFileSummary(event.content)) }
-            return finished
-                ? activity(.completed, "Leitura concluída", detail: safeFileSummary(event.content))
-                : activity(.reading, "Lendo arquivos", detail: safeFileSummary(event.content))
-        }
-        if name.contains("edit") || name.contains("write") || name.contains("patch") || name.contains("apply") {
-            if failed { return activity(.warning, "Edição terminou com falha", detail: safeFileSummary(event.content)) }
-            return finished
-                ? activity(.completed, "Edição concluída", detail: safeFileSummary(event.content))
-                : activity(.editing, "Editando arquivos", detail: safeFileSummary(event.content))
-        }
-        if name.contains("search") || name.contains("find") || name.contains("grep") {
-            if failed { return activity(.warning, "Busca terminou com falha", detail: safeActivityDetail(event.content)) }
-            return finished
-                ? activity(.completed, "Busca concluída", detail: safeActivityDetail(event.content))
-                : activity(.reading, "Buscando no projeto", detail: safeActivityDetail(event.content))
-        }
-        if name == "shell" || name.contains("bash") || name.contains("exec") || name == "run" {
-            if failed { return activity(.warning, "Comando terminou com falha", detail: safeCommandText(event.content)) }
-            if finished {
-                return activity(.completed, "Comando concluído", detail: safeCommandText(event.content))
-            }
-            return activity(.executing, "Executando comando", detail: safeCommandText(event.content))
-        }
-        if failed { return activity(.warning, "Ferramenta terminou com falha") }
-        return finished
-            ? activity(.completed, "Ferramenta concluída")
-            : activity(.executing, "Usando ferramenta")
+    if let toolActivity = atlasAgentActivityFromToolProjection(
+        event: event, metadata: metadata, name: name, phase: phase, id: id, isToolProjection: isToolProjection
+    ) {
+        return toolActivity
     }
 
     if name == "process_started" {
-        // Este é o processo do provider (Kimi/Codex/Claude), não uma tool do
-        // agente. Exibir argv aqui criava uma ferramenta falsa e vazava paths.
         return activity(.executing, "Iniciando o agente")
     }
     if name == "process_finished" {

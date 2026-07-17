@@ -1,26 +1,6 @@
 import SwiftUI
 import AtlasCore
 
-struct SelfConstructionReceipt: Identifiable {
-    let cycle: AtlasAutonomosCycle
-    let finding: AtlasAutonomosFinding?
-
-    var id: String { cycle.id }
-    var title: String { finding?.title.nonEmpty ?? "O Atlas melhorou o próprio app" }
-    var ruleLabel: String {
-        if let ruleId = finding?.ruleId?.nonEmpty, let text = finding?.ruleText?.nonEmpty {
-            return "\(ruleId) — \(text)"
-        }
-        if let ruleId = finding?.ruleId?.nonEmpty { return "\(ruleId) — regra publicada sem texto neste recorte." }
-        return "Regra não publicada no recorte deste recibo."
-    }
-    var proofLine: String {
-        let merge = String(cycle.mergeHash.prefix(8))
-        let integrity = cycle.loopReceiptIntegrity.nonEmpty ?? "integridade não publicada"
-        return "integridade \(integrity) · merge \(merge) · ciclo \(cycle.cycleIndex)"
-    }
-}
-
 struct SelfConstructionReceiptSheet: View {
     let receipt: SelfConstructionReceipt
     var canRevert: Bool = false
@@ -28,10 +8,10 @@ struct SelfConstructionReceiptSheet: View {
     var onRevert: (String, String) -> Void = { _, _ in }
 
     @Environment(\.dismiss) private var dismiss
-    @State private var actor = ""
-    @State private var reason = ""
+    @State var actor = ""
+    @State var reason = ""
 
-    private var canSubmitRevert: Bool {
+    var canSubmitRevert: Bool {
         !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
@@ -89,45 +69,7 @@ struct SelfConstructionReceiptSheet: View {
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.domOperacional.opacity(0.35), lineWidth: 1))
                 }
 
-                // Humano fora do fluxo: silêncio/sucesso. Único verbo = veto.
-                // Sem portão de aprovação em plumbing.
-                if canRevert {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("veto retroativo · com recibo")
-                            .font(AtlasFont.mono(10))
-                            .tracking(0.9)
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                        TextField("Quem autoriza", text: $actor)
-                            .font(.system(.callout))
-                            .textInputAutocapitalization(.never)
-                            .padding(10)
-                            .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.55)))
-                        TextField("Motivo auditável", text: $reason, axis: .vertical)
-                            .font(.system(.callout))
-                            .lineLimit(2...4)
-                            .padding(10)
-                            .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.55)))
-                        Button {
-                            onRevert(actor, reason)
-                        } label: {
-                            HStack(spacing: 7) {
-                                Image(systemName: "arrow.uturn.backward")
-                                Text("Desfazer — com recibo")
-                            }
-                            .font(.system(size: 14, weight: .medium))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .foregroundStyle(AtlasTheme.domOperacional)
-                            .atlasCard(cornerRadius: 13)
-                        }
-                        .disabled(!canSubmitRevert)
-                        .accessibilityIdentifier(A11yID.selfReceiptVeto)
-                    }
-                } else {
-                    Text("silêncio · desfazer indisponível neste recorte")
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                }
+                vetoSection
 
                 Text("você não foi necessário — entrega sem portão")
                     .font(AtlasFont.serifItalic(13))

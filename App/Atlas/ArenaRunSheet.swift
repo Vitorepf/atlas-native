@@ -5,23 +5,23 @@ struct ArenaRunSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Bindable var model: ArenaModel
-    @State private var selectedSuites: Set<String> = []
-    @State private var selectedEngine: String = ""
-    @State private var selectedArms: Set<AtlasArenaRunArm> = [.baseline, .withAtlas]
-    @State private var actor = ""
-    @State private var reason = ""
+    @State var selectedSuites: Set<String> = []
+    @State var selectedEngine: String = ""
+    @State var selectedArms: Set<AtlasArenaRunArm> = [.baseline, .withAtlas]
+    @State var actor = ""
+    @State var reason = ""
 
-    private var installedSuites: [AtlasArenaSuite] {
+    var installedSuites: [AtlasArenaSuite] {
         (model.scoreboard?.suites ?? []).filter(\.adapterInstalled)
     }
 
-    private var engines: [String] {
+    var engines: [String] {
         let composite = model.composite?.engines.map(\.engine) ?? []
         let suiteEngines = (model.scoreboard?.suites ?? []).flatMap { $0.engines.map(\.engine) }
         return Array(Set(composite + suiteEngines)).sorted()
     }
 
-    private var input: AtlasArenaStartInput {
+    var input: AtlasArenaStartInput {
         AtlasArenaStartInput(
             suites: .selected(Array(selectedSuites).sorted()),
             engine: selectedEngine,
@@ -35,63 +35,7 @@ struct ArenaRunSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    section("SUITES COM ADAPTER") {
-                        if installedSuites.isEmpty {
-                            Text("nenhuma suite com adapter instalado")
-                                .font(.system(.subheadline))
-                                .foregroundStyle(AtlasTheme.textTertiary)
-                                .accessibilityLabel("nenhuma suite com adapter instalado")
-                        } else {
-                            ForEach(installedSuites) { suite in
-                                toggleRow(
-                                    title: suite.suite,
-                                    subtitle: suite.isMeasured ? "\(suite.runsTotal) rodadas" : "não medido",
-                                    isOn: selectedSuites.contains(suite.suite)
-                                ) {
-                                    if selectedSuites.contains(suite.suite) { selectedSuites.remove(suite.suite) }
-                                    else { selectedSuites.insert(suite.suite) }
-                                }
-                                .accessibilityIdentifier("arena-run-suite-\(suite.suite)")
-                            }
-                        }
-                    }
-
-                    section("MOTOR") {
-                        if engines.isEmpty {
-                            Text("nenhum motor publicado")
-                                .font(.system(.subheadline))
-                                .foregroundStyle(AtlasTheme.textTertiary)
-                                .accessibilityLabel("nenhum motor publicado pelo servidor")
-                        } else {
-                            ForEach(engines, id: \.self) { engine in
-                                toggleRow(title: engine, subtitle: nil, isOn: selectedEngine == engine) {
-                                    selectedEngine = engine
-                                }
-                                .accessibilityIdentifier("arena-run-engine-\(engine)")
-                            }
-                        }
-                    }
-
-                    section("BRAÇOS") {
-                        ForEach(AtlasArenaRunArm.allCases) { arm in
-                            toggleRow(title: arm.labelPT, subtitle: arm.rawValue, isOn: selectedArms.contains(arm)) {
-                                if selectedArms.contains(arm), selectedArms.count > 1 { selectedArms.remove(arm) }
-                                else { selectedArms.insert(arm) }
-                            }
-                            .accessibilityIdentifier("arena-run-arm-\(arm.rawValue)")
-                        }
-                    }
-
-                    section("GOVERNANÇA") {
-                        TextField("ator", text: $actor)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .accessibilityIdentifier(A11yID.arenaRunActor)
-                        TextField("motivo auditável", text: $reason, axis: .vertical)
-                            .lineLimit(2...4)
-                            .accessibilityIdentifier(A11yID.arenaRunReason)
-                    }
-                    .textFieldStyle(.roundedBorder)
+                    formSections
 
                     if let error = model.controlError {
                         Text(error)
