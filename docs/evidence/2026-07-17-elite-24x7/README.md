@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXL (este tip)
+## Entrega Elite CXXXXXLXLI (este tip)
+
+- `polish(ui)` CICLO B: OutlineLeadMeta `+Index/+Snippet`; FleetTransfer Header `+Status/+Refresh`; AreaDelivered RowGraph OpenButton `+A11y` RowVisual `+CycleMeta/+GraphHint`; MirrorCard HeadlineHealthy `+Mirrored/+Pending/+Quiet`; DraftThumb Chrome `+Button/+A11y`; LiveTimeline FilterButton `+Action`; AreaPicker Row `+Button`; SheetRowLabel `+Leading/+Trailing`; Provenance PullQuote `+Bar/+QuoteStack`; CodeGraph Chips `+ChipLoop` Filters `+Header/+Scroll`; CommitRow A11yBranch `+Healed/+OnMain/+History`; ArtifactFileFicha `+NameStack/+A11yBind`; ArtifactSheet ContentLoaded `+Header/+Scroll`; ArtifactViewer TextPreview `+Markdown/+File`; ArenaEngine ScrollBody `+Title/+NavChrome`; ArenaIndex Content `+Chart/+CardChrome`; RootChrome WorkspaceRow Content `+Leading/+NameStack`; Widgets LockRect Branches `+Incident` Fleet Healthy `+Scanned/+Unread`. Tip `8c57ffe`.
+- 21 peels · 60 arquivos · over100=0 · App/Atlas+Widgets swift=2233; App/Widgets swift=157; zero Route nova.
+
+## Entrega Elite CXXXXXLXL (anterior)
 
 - `polish(ui)` CICLO B: Digest A11yAggregate `+ScheduleLead`; LastChips `+Delivered/+Risks/+Decisions`; LastRisk `+RiskLine/+DecisionLine`; CardStack `+WindowCaption/+LastBody`; OperationDigest A11yLead `+Incident/+Headline` A11yAggregate `+SectionLead`; Provenance LawBody `+Rule/+Canon` Failed `+Title/+Detail`; RootView DestinationsConversation `+Workspace/+Thread/+New/+Conversas/+Search`; CodeView GraphCommitRow `+RowBuild/+Rotor`; AreaDelivered Filled `+Caption/+CycleList`; ChangeReview Reject `+Action`; Markdown BlockViewStructural `+List/+Quote/+Code/+Divider/+Table`; Sheets Attachments `+Picker`; Widgets Fleet A11ySpoken `+Incident/+Delivery/+Stale` LockScreen QueueCapsule `+Label/+Chrome` LiveSession ContentStack `+Header/+Branch`. Tip `7885f51`.
 - 17 peels · 38 arquivos · over100=0 · App/Atlas+Widgets swift=2194; App/Widgets swift=154; zero Route nova.
