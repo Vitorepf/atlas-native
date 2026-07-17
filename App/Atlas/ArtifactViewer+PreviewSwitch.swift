@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 // Switch de preview por kind — peel de ArtifactViewer+Preview.
+// Decode → ArtifactViewer+PreviewDecode.swift
 
 extension ArtifactPreviewContent {
     @ViewBuilder
@@ -12,13 +13,7 @@ extension ArtifactPreviewContent {
             if let image = UIImage(data: content.data) {
                 ZoomableArtifactImage(image: image, name: item.name)
             } else {
-                ArtifactFileFicha(
-                    name: item.name,
-                    subtitle: "imagem não pôde ser decodificada · \(ArtifactViewer.byteLabel(item.byteSize))"
-                )
-                .accessibilityLabel(
-                    ArtifactViewerA11y.spokenDecodeFailure(name: item.name, bytes: item.byteSize)
-                )
+                imageDecodeFailure
             }
         default:
             textishPreview

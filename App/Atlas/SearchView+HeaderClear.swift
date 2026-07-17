@@ -3,6 +3,7 @@ import AtlasCore
 
 // Clear button — peel de SearchView+HeaderField.
 // Spoken → SearchView+HeaderSpoken.swift
+// Icon → SearchView+HeaderClearIcon.swift
 
 extension SearchViewHeader {
     @ViewBuilder
@@ -12,8 +13,7 @@ extension SearchViewHeader {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 query = ""
             } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 15)).foregroundStyle(AtlasTheme.textTertiary)
+                searchClearIcon
             }
             .buttonStyle(.plain)
             .accessibilityLabel("limpar busca")

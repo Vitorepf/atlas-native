@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 /// Spoken labels do feed de turnos — peel de ConversationMessages (CICLO C residual honesty).
+/// Review → ConversationMessages+A11yReview.swift
 
 enum ConversationMessagesA11y {
     static let scrollFABLabel = "ir para o fim da conversa"
@@ -13,12 +14,8 @@ enum ConversationMessagesA11y {
     }
 
     static func spokenChangeReview(patchCount: Int) -> String {
-        if patchCount > 0 {
-            let noun = patchCount == 1 ? "patch" : "patches"
-            return "revisar mudanças, \(patchCount) \(noun)"
-        }
-        return "revisar mudanças desta execução"
+        ConversationMessagesA11yReview.spokenChangeReview(patchCount: patchCount)
     }
 
-    static let changeReviewHint = "abre arquivos, diff e provas desta execução"
+    static let changeReviewHint = ConversationMessagesA11yReview.changeReviewHint
 }

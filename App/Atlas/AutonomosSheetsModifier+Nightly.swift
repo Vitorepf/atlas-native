@@ -3,6 +3,7 @@ import AtlasCore
 
 // Folha da missão noturna — peel de AutonomosSheetsModifier.
 // Accept → AutonomosSheetsModifier+NightlyAccept.swift
+// Start → AutonomosSheetsModifier+NightlyStart.swift
 
 extension AutonomosSheetsModifier {
     @ViewBuilder
@@ -15,11 +16,7 @@ extension AutonomosSheetsModifier {
                     reasonOptional: true,
                     initialReason: proposal.prefilledReason
                 ) { actor, reason in
-                    Task {
-                        let previous = model.lastStartRunReceipt
-                        await model.startRun(mode: .dryRun, operatorActor: actor, operatorReason: reason)
-                        await nightlyAcceptIfEnqueued(proposal: proposal, previous: previous)
-                    }
+                    nightlyStartDryRun(proposal: proposal, actor: actor, reason: reason)
                 }
             }
     }

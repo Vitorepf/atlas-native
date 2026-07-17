@@ -3,17 +3,12 @@ import AtlasCore
 
 // Archive meta lines — peel de PlanCard+RevisionArchiveRow.
 // Steps → PlanCard+RevisionArchiveSteps.swift
+// Reason → PlanCard+RevisionArchiveReason.swift
 
 extension PlanRevisionCompare {
     @ViewBuilder
     func revisionArchiveMeta(_ rev: AtlasTraceGovernance.PlanRevision) -> some View {
-        if let reason = rev.reason, !reason.isEmpty {
-            Text(rev.humanReason)
-                .font(.system(size: 12))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityHidden(true)
-        }
+        revisionArchiveReason(rev)
         if let archivedAt = rev.archivedAt {
             Text(editorialArchivedAt(archivedAt))
                 .font(AtlasFont.mono(9))

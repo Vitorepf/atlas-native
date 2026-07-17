@@ -3,6 +3,7 @@ import AtlasCore
 
 // Timeline rail — peel de AtlasCodeWhySheet+Rows.
 // Meta → AtlasCodeWhySheet+RowMetaText.swift
+// Connector → AtlasCodeWhySheet+RowConnector.swift
 
 extension AtlasCodeWhySheet {
     func whyRowRail(isLast: Bool) -> some View {
@@ -11,13 +12,7 @@ extension AtlasCodeWhySheet {
                 .fill(AtlasTheme.accent)
                 .frame(width: 7, height: 7)
                 .accessibilityHidden(true)
-            if !isLast {
-                Rectangle()
-                    .fill(AtlasTheme.accent.opacity(0.35))
-                    .frame(width: 1)
-                    .frame(minHeight: 56)
-                    .accessibilityHidden(true)
-            }
+            whyRowConnector(isLast: isLast)
         }
         .padding(.top, 7)
         .accessibilityHidden(true)

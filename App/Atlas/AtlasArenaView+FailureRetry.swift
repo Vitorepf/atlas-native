@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Retry button — peel de AtlasArenaView+Failure.
+// Label → AtlasArenaView+FailureRetryLabel.swift
 
 extension AtlasArenaView {
     @ViewBuilder
@@ -11,9 +12,7 @@ extension AtlasArenaView {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 Task { await model.load() }
             } label: {
-                Text("Tentar de novo")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.accent)
+                networkFailureRetryLabel
             }
             .buttonStyle(.plain)
             .padding(.top, 4)
