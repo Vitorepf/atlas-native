@@ -5,9 +5,9 @@ struct AtlasArenaView: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Environment(AtlasSession.self) var session
     @Bindable var model: ArenaModel
-    @State private var selectedSuite: AtlasArenaSuite?
-    @State private var selectedEngine: AtlasArenaCompositeEngine?
-    @State private var showingRunSheet = false
+    @State var selectedSuite: AtlasArenaSuite?
+    @State var selectedEngine: AtlasArenaCompositeEngine?
+    @State var showingRunSheet = false
 
     var body: some View {
         ZStack {
@@ -65,56 +65,5 @@ struct AtlasArenaView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Arena, medição dos motores")
-    }
-
-    @ViewBuilder
-    private var content: some View {
-        switch model.phase {
-        case .idle where model.composite == nil,
-             .loading where model.composite == nil:
-            loadingCard
-        case .failed where model.composite == nil:
-            // Sem composite: nunca inventar scores. 404 → domínio ausente;
-            // resto → AtlasFailureCopy (mesma voz da home/workspace).
-            if model.isDomainUnavailable {
-                stateCard(ArenaModel.domainUnavailableCopy)
-            } else {
-                networkFailureCard
-            }
-        default:
-            if let composite = model.composite {
-                ArenaNowSection(liveRuns: model.liveRuns, reduceMotion: reduceMotion)
-                ArenaIndexSection(
-                    composite: composite,
-                    reduceMotion: reduceMotion,
-                    onEngineTap: { selectedEngine = $0 }
-                )
-                    .accessibilityIdentifier(A11yID.arenaIndexSection)
-                ArenaCapabilitiesSection(capabilities: model.capabilities)
-                    .accessibilityIdentifier(A11yID.arenaCapabilitiesSection)
-                if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
-                    ArenaSuitesSection(
-                        scoreboard: scoreboard,
-                        onSuiteTap: { selectedSuite = $0 }
-                    )
-                }
-                Button {
-                    showingRunSheet = true
-                } label: {
-                    Label("Rodar medição", systemImage: "play.fill")
-                        .font(.system(.body, weight: .semibold))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Capsule().fill(AtlasTheme.goldVeil))
-                        .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(AtlasTheme.accent)
-                .accessibilityIdentifier(A11yID.arenaRunButton)
-            } else {
-                // Domínio ainda sem índice — copy canónica, zero scores inventados.
-                stateCard(ArenaModel.domainUnavailableCopy)
-            }
-        }
     }
 }

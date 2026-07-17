@@ -80,8 +80,6 @@ struct LiveSessionWidgetView: View {
     }
 
     private static func clock(_ ms: Int?) -> String {
-        let s = max(0, (ms ?? 0) / 1000)
-        return s >= 3600 ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
-                         : String(format: "%d:%02d", s / 60, s % 60)
+        AtlasTime.formatActiveDuration(milliseconds: ms ?? 0)
     }
 }

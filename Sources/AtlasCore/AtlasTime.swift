@@ -98,4 +98,13 @@ public enum AtlasTime {
         let dayOfEra = yearOfEra * 365 + yearOfEra / 4 - yearOfEra / 100 + dayOfYear
         return era * 146_097 + dayOfEra - 719_468
     }
+
+    /// Relógio canônico de duração ativa (ms → m:ss ou h:mm:ss). Usado em Lock
+    /// Screen, widgets, cockpit e handoff — uma voz, zero cópias locais.
+    public static func formatActiveDuration(milliseconds: Int) -> String {
+        let s = max(0, milliseconds / 1000)
+        return s >= 3600
+            ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
+            : String(format: "%d:%02d", s / 60, s % 60)
+    }
 }

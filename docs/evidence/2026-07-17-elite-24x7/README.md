@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **123** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 390 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 89 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **126** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 393 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 92 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -27,11 +27,11 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **E-A2** | **PENDING** | Arena LA + App Intents — depende A12 worker |
 | **E-A3** | **PENDING** | §5 contratos C9/M65/C18–C21/M98+/… |
 | **E-A4** | **PARCIAL** | Fidelity matrix DONE; Session Hub DONE; Search/Workspace/Arena/CodeRadar silence DONE; demais cenas pendentes |
-| **E-A5** | **IN_PROGRESS** | `atlas://arena`; lock `queueLabel`; Island SD-2 **parcial** (ATT/EXT/FAIL/REC/PLN + N/M + fila); LockScreen/WidgetViews peels; M88/M91+ pendentes |
+| **E-A5** | **IN_PROGRESS** | `atlas://arena`; lock `queueLabel`; Island SD-2 **parcial**; LockScreen/WidgetViews peels |
 | **E-A6** | **PENDING** | Device unlock + prints U1–U10 — **operador** |
-| **E-B** | **PARCIAL** | Peels contínuos App+Core; zero >130; max 120 (`AtlasArenaView`); zero ≥121 em App/Core/Widgets; build Mac-pending |
+| **E-B** | **PARCIAL** | Peels contínuos App+Core; **zero >110**; max 110 (8 empatados); build Mac-pending |
 | **E-C** | **IN_PROGRESS** | Frota quieta; Island ATT/EXT/FAIL; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty |
-| **E-D** | **PENDING** | Compressão 2 — aguarda E-C |
+| **E-D** | **IN_PROGRESS** | `AtlasTime.formatActiveDuration` canônico (5 dups removidos) |
 
 ### Blockers (honesto)
 
@@ -41,31 +41,31 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **atlas-server** | Repo server ausente neste workspace — M01 heal→merge e Arena A12 worker drain **BLOCKED** |
 | **Device / passcode** | `passcodeRequired` / operador — `make device`, prints U1–U10, DEVICE_PROVEN pendentes |
 
-## Entrega recente (wave XIX — HEAD)
+## Entrega recente (wave XX — HEAD)
 
-- `polish(ui)|polish(core)` Elite B XIX: peels faixa 121–128 → ≤120 nos 17 alvos + adjacentes (`AtlasAiModels+Trace`, `AtlasArenaStartTypes`, `AtlasClient+HTTP`, `InteractionRun+ExecuteTerminal`, `ChangeReviewModel+Refresh`, Autonomos transfer/reason/sheets, `LiveNowRow+Clock`, `ArenaEngineSheet`, `AtlasCodeRadarLoadedContent`, `ArenaSuitesSection+Rows`, `DraftThumb`, `ChangeReviewView+Available`, `AtlasMarkdown+Regex`, `AtlasQueuedMessage`, `AtlasTurnLockScreen+State`).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **123** (após este commit).
-- Zero arquivos App/Core/Widgets ≥121; max 120 (`AtlasArenaView`).
+- `polish(ui)|polish(core)` Elite B XX: peels faixa 111–120 → ≤110 nos 26 alvos + adjacentes; CICLO D clock dups → `AtlasTime.formatActiveDuration`.
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **126** (após este commit).
+- Zero arquivos App/Core/Widgets >110; max 110.
 
-### Top 10 (App/Core/Widgets, goal max ≤120)
+### Top 10 (App/Core/Widgets, goal max ≤110)
 
 | linhas | arquivo |
 |---:|---|
-| 120 | `App/Atlas/AtlasArenaView.swift` |
-| 119 | `App/Atlas/AtlasCodeProvenanceSections+Content.swift` |
-| 117 | `Sources/AtlasCore/AtlasAutonomosDigest.swift` |
-| 117 | `Sources/AtlasCore/AtlasAiJobs.swift` |
-| 117 | `App/Widgets/AtlasTurnLiveActivity.swift` |
-| 117 | `App/Atlas/AutonomosView.swift` |
-| 116 | `Sources/AtlasCore/InteractionRun+Polling.swift` |
-| 116 | `Sources/AtlasCore/AtlasAutonomosLedger.swift` |
-| 116 | `Sources/AtlasCore/AtlasAiQuality.swift` |
-| 116 | `App/Atlas/AtlasNativeSnapshotWriter.swift` |
+| 110 | `Sources/AtlasCore/AtlasTime.swift` |
+| 110 | `Sources/AtlasCore/AtlasCodeHeals.swift` |
+| 110 | `App/Atlas/ConversationTypes.swift` |
+| 110 | `App/Atlas/ConversationModel.swift` |
+| 110 | `App/Atlas/ConversationModel+ReadCache.swift` |
+| 110 | `App/Atlas/ConversationChromeSheets+Receipt.swift` |
+| 110 | `App/Atlas/AutonomosModel+Control.swift` |
+| 110 | `App/Atlas/AutonomosDigestSection.swift` |
+| 109 | `Sources/AtlasCore/AtlasNativeSnapshot+Nested.swift` |
+| 109 | `App/Atlas/TurnPresence.swift` |
 
-## Entrega anterior (wave XVIII)
+## Entrega anterior (wave XIX)
 
-- `polish(ui)|polish(core)` Elite B XVIII: peels >130 → ≤110 nos 9 alvos restantes + `ArenaCapabilitiesSection+Rows`.
-- Commit count: **122**.
+- `polish(ui)|polish(core)` Elite B XIX: peels faixa 121–128 → ≤120 nos 17 alvos + adjacentes.
+- Commit count: **125**.
 
 ## BLOCKED gates (não inventar verde)
 

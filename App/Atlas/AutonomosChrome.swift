@@ -46,30 +46,6 @@ enum AutonomosChrome {
     }
 }
 
-struct FleetMetric: View {
-    let value: String; let label: String
-    var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(value).font(AtlasFont.mono(18)).foregroundStyle(AtlasTheme.textPrimary)
-                .contentTransition(.numericText())
-            Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary).lineLimit(2)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(11)
-        .atlasCard(cornerRadius: 12)
-    }
-}
-
-struct DetailMetric: View {
-    let label: String; let value: String
-    var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(value).font(AtlasFont.mono(15)).foregroundStyle(AtlasTheme.textPrimary)
-                .contentTransition(.numericText())
-            Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
-        }.frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
 enum AutonomosFleetHealth {
     static func isQuiet(fleet: AtlasAutonomosFleetResponse, incidentPresent: Bool) -> Bool {
         !incidentPresent
@@ -79,36 +55,5 @@ enum AutonomosFleetHealth {
 
     static func agentNeedsAttention(_ agent: AtlasAutonomosFleetAgent) -> Bool {
         !agent.alive || !agent.desired || !agent.authorized
-    }
-}
-
-struct AutonomosFleetEmptyState: View {
-    enum Kind { case noAgents, noHistory }
-
-    let kind: Kind
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            AutonomosChrome.sectionCaption(kind == .noAgents ? "frota" : "histórico")
-            Text(copy)
-                .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .atlasCard(cornerRadius: 12)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(copy)
-        .accessibilityIdentifier(kind == .noAgents ? A11yID.autonomosFleetEmpty : A11yID.autonomosFleetHistoryEmpty)
-    }
-
-    private var copy: String {
-        switch kind {
-        case .noAgents:
-            return "Nenhum agente publicado neste recorte — o servidor ainda não registrou a frota."
-        case .noHistory:
-            return "Histórico vazio — nenhum evento de governança registrado ainda."
-        }
     }
 }

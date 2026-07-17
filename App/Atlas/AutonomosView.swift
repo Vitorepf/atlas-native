@@ -16,9 +16,9 @@ struct AutonomosView: View {
     @State private var nightly = NightlyProposalController.shared
     @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
     @State private var selfConstructionReceipt: SelfConstructionReceipt?
-    @State private var rhythmSampleDays: Int?
+    @State var rhythmSampleDays: Int?
 
-    private var model: AutonomosModel { session.autonomos }
+    var model: AutonomosModel { session.autonomos }
 
     var body: some View {
         ZStack {
@@ -89,29 +89,5 @@ struct AutonomosView: View {
                 onRefreshRhythm: { await refreshRhythmLearning() }
             )
         }
-    }
-
-    private func refreshRhythmLearning() async {
-        let windows = await AtlasSession.rhythm.windows(minimumDays: 4)
-        rhythmSampleDays = windows.sampleDays
-    }
-
-    private func oldestBacklogCreatedAt() -> Date? {
-        guard let backlog = model.backlog else { return nil }
-        let values = backlog.workOrders.compactMap { AtlasTime.date($0.createdAt) }
-            + backlog.inboxItems.compactMap { AtlasTime.date($0.createdAt) }
-            + backlog.findings.items.compactMap { AtlasTime.date($0.createdAt) }
-        return values.min()
-    }
-
-    private func canRevertSelfConstruction(_ receipt: SelfConstructionReceipt) -> Bool {
-        model.canControlSelectedArea && receipt.cycle.mergeHash.nonEmpty != nil
-    }
-
-    private func revertReceipt(for receipt: SelfConstructionReceipt) -> AtlasAutonomosCycleRevertResponse? {
-        guard let revert = model.lastRevertReceipt else { return nil }
-        guard revert.revertOf.cycleIndex == receipt.cycle.cycleIndex,
-              revert.revertOf.mergeHash == receipt.cycle.mergeHash else { return nil }
-        return revert
     }
 }

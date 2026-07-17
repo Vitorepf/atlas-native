@@ -4,44 +4,6 @@ import Foundation
 /// explícita; o cliente não infere atenção, falha ou replanejamento a partir de
 /// texto do modelo, logs ou animações.
 public struct AtlasExecutionPresentationState: Sendable, Equatable {
-    public enum Kind: String, Sendable, Equatable {
-        case attentionRequired = "attention_required"
-        case replanning
-        case awaitingExternal = "awaiting_external"
-        case recovering
-        case failed
-        case completed
-    }
-
-    public enum ActionStyle: String, Sendable, Equatable {
-        case primary
-        case secondary
-        case destructive
-    }
-
-    public struct Action: Sendable, Equatable, Identifiable {
-        public let id: String
-        public let title: String
-        public let style: ActionStyle
-    }
-
-    /// Relógio público da execução. O servidor acumula somente o tempo ativo
-    /// e declara cada marco de pausa/retomada; nenhuma superfície precisa
-    /// deduzir ou reconstruir pausas a partir de rede ou animação local.
-    public struct Timer: Sendable, Equatable {
-        public enum Timing: String, Sendable, Equatable {
-            case running
-            case paused
-            case finished
-        }
-
-        public let elapsedActiveMilliseconds: Int
-        public let timing: Timing
-        public let runningSince: Date?
-        public let pausedAt: Date?
-        public let finishedAt: Date?
-    }
-
     public let kind: Kind
     public let title: String
     public let detail: String?
@@ -92,11 +54,6 @@ public struct AtlasExecutionPresentationState: Sendable, Equatable {
             timer = nil
         }
 
-        // Um estado e seu relógio pertencem ao mesmo recibo público. Aceitar
-        // "aguardando decisão" com tempo correndo (ou "concluído" sem relógio
-        // congelado) faria app, Lock Screen e Dynamic Island discordarem. Os
-        // traces legados continuam válidos sem timer; contratos novos falham
-        // fechados quando os dois campos se contradizem.
         guard timer.map({ Self.isTimerCompatible($0, with: kind) }) ?? true else { return nil }
 
         self.kind = kind
