@@ -51,6 +51,7 @@ struct ArenaRunSheet: View {
                     }
 
                     Button {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                         Task { await model.startRuns(input: input) }
                     } label: {
                         Text("Rodar medição")
@@ -77,6 +78,8 @@ struct ArenaRunSheet: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Fechar") { dismiss() }
+                        .accessibilityLabel(spokenCloseLabel())
+                        .accessibilityHint(spokenCloseHint())
                 }
             }
         }
@@ -91,5 +94,7 @@ struct ArenaRunSheet: View {
             }
         }
         .accessibilityIdentifier(A11yID.arenaRunSheet)
+        .accessibilityLabel(spokenSheetLabel())
+        .accessibilityHint(spokenSheetHint())
     }
 }

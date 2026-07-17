@@ -36,4 +36,14 @@ enum ArenaSuiteSheetA11y {
 
     static let closeLabel = "fechar detalhes da suite"
     static let closeHint = "volta para a Arena"
+
+    static func spokenSheet(_ suite: AtlasArenaSuite) -> String {
+        let n = suite.engines.count
+        if n == 0 {
+            return "suite \(suite.suite), nenhum motor neste recorte"
+        }
+        return "suite \(suite.suite), \(n) motor\(n == 1 ? "" : "es")"
+    }
+
+    static let sheetHint = "scores, casos e duração só quando o servidor publica"
 }
