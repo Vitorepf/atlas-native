@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Masthead + input pill — peel de RootView (régua anti-inchaço).
+// Masthead — peel de RootView (régua anti-inchaço).
+// Input pill → RootView+InputBar.swift
 
 extension RootView {
   @ViewBuilder
@@ -35,22 +36,26 @@ extension RootView {
         HStack(spacing: 4) {
           Text("Atlas")
             .font(AtlasFont.serif(24, .semibold))
+            .accessibilityHidden(true)
           Text("✦")
             .font(AtlasFont.serif(15, .semibold))
             .foregroundStyle(session.auditModeEnabled ? AtlasTheme.domOperacional : AtlasTheme.accent)
+            .accessibilityHidden(true)
         }
         .foregroundStyle(AtlasTheme.textPrimary)
         Rectangle()
           .fill(AtlasTheme.accent.opacity(0.6))
           .frame(width: 30, height: 1.5)
+          .accessibilityHidden(true)
         if session.auditModeEnabled {
           Text("AUDITORIA")
             .font(AtlasFont.mono(8))
             .tracking(1.0)
             .foregroundStyle(AtlasTheme.domOperacional)
+            .accessibilityHidden(true)
         }
       }
-      .accessibilityElement(children: .combine)
+      .accessibilityElement(children: .ignore)
       .accessibilityLabel(mastheadSpokenLabel(auditModeEnabled: session.auditModeEnabled))
       .accessibilityHint(mastheadSpokenHint())
       .accessibilityIdentifier(A11yID.auditMasthead)
@@ -61,30 +66,5 @@ extension RootView {
       }
       .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
-  }
-
-  @ViewBuilder
-  var inputBar: some View {
-    Button { path.append(Route.new) } label: {
-      HStack(spacing: 10) {
-        Image(systemName: "plus").font(.system(size: 17, weight: .medium))
-          .foregroundStyle(AtlasTheme.textSecondary)
-          .frame(width: 30, height: 30).background(Circle().fill(AtlasTheme.surfaceHi))
-        Text("Escreva ao Atlas").font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
-        Spacer()
-      }
-      .padding(.horizontal, 12).padding(.vertical, 8)
-      .background(Capsule().fill(AtlasTheme.surface).overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
-    }
-    .buttonStyle(.plain)
-    .keyboardShortcut("n", modifiers: .command)
-    .accessibilityLabel(inputPillSpokenLabel())
-    .accessibilityHint(newConversationSpokenHint())
-    .accessibilityIdentifier(A11yID.homeInputPill)
-    .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
-    .background(
-      LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
-        .ignoresSafeArea()
-    )
   }
 }

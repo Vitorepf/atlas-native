@@ -14,7 +14,7 @@ final class LiveActivityRemoteBridge {
     static let shared = LiveActivityRemoteBridge()
     private init() {}
 
-    private var tokenTasks: [String: Task<Void, Never>] = [:]
+    var tokenTasks: [String: Task<Void, Never>] = [:]
     var tracesByActivityID: [String: TraceID] = [:]
     var locallyManagedActivityIDs: Set<String> = []
     var startTokenTask: Task<Void, Never>?
@@ -63,7 +63,7 @@ final class LiveActivityRemoteBridge {
         }
     }
 
-    private func waitForTrace(_ model: ConversationModel) async -> TraceID? {
+    func waitForTrace(_ model: ConversationModel) async -> TraceID? {
         // O token APNs pode chegar antes da criação remota devolver o
         // trace. Esperamos pouco e somente enquanto aquele turno existe.
         for _ in 0..<30 {
@@ -80,12 +80,6 @@ final class LiveActivityRemoteBridge {
         #else
         .production
         #endif
-    }
-}
-
-extension Data {
-    var atlasHex: String {
-        map { String(format: "%02x", $0) }.joined()
     }
 }
 #endif

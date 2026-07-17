@@ -4,13 +4,14 @@ import AtlasCore
 // Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
 // de repos reais (campo `workspace` das threads) + "Todas" + "Adicionar". Entrar
 // num workspace abre suas conversas com filtro de área.
+// Destinations → RootView+Destinations.swift
 struct RootView: View {
-    @Environment(AtlasSession.self) private var session
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(AtlasSession.self) var session
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var path = NavigationPath()
     @State var codeHub: AtlasCodeHubModel?
-    @State private var nightly = NightlyProposalController.shared
-    @State private var homeWorkspaceFilter: String?
+    @State var nightly = NightlyProposalController.shared
+    @State var homeWorkspaceFilter: String?
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -37,31 +38,7 @@ struct RootView: View {
             .accessibilityIdentifier(A11yID.homeScreen)
             .accessibilityLabel(homeScreenSpokenLabel())
             .accessibilityHint(homeScreenSpokenHint())
-            .navigationDestination(for: Route.self) { route in
-                switch route {
-                case .workspace(let key, let title):
-                    WorkspaceView(workspaceKey: key, title: title)
-                case .thread(let id, let title):
-                    ConversationView(client: session.client, threadId: id, title: title)
-                case .new:
-                    ConversationView(client: session.client, threadId: nil, title: "Nova conversa")
-                case .conversas:
-                    WorkspaceView(workspaceKey: nil, title: "Conversas", freeOnly: true)
-                case .search:
-                    SearchView()
-                case .autonomos:
-                    AutonomosView()
-                case .arena:
-                    AtlasArenaView(model: session.arena)
-                case .code:
-                    // A porta do domínio é o radar: a frota primeiro, o repo depois.
-                    AtlasCodeRadarView(client: session.client) { repo in
-                        path.append(Route.codeGraph(repo: repo))
-                    }
-                case .codeGraph(let repo):
-                    AtlasCodeView(client: session.client, repo: repo)
-                }
-            }
+            .navigationDestination(for: Route.self) { rootDestination(for: $0) }
         }
         .tint(AtlasTheme.accent)
         .onAppear {
