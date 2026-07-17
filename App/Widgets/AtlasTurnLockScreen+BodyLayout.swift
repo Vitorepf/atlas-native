@@ -4,20 +4,13 @@ import ActivityKit
 import AtlasCore
 
 // Lock screen layout — peel de AtlasTurnLockScreen.
+// Leading → AtlasTurnLockScreen+BodyLayoutLeading.swift
 
 extension LockScreenView {
     @ViewBuilder
     var lockScreenBody: some View {
         HStack(spacing: 14) {
-            Text(context.state.atlasSymbol)
-                .font(.system(size: 28, design: .serif))
-                .foregroundStyle(context.state.atlasColor)
-                .shadow(color: context.state.atlasColor.opacity(0.35), radius: 4)
-            VStack(alignment: .leading, spacing: 3) {
-                titleBadges
-                phaseLine
-                progressLine
-            }
+            lockScreenLeadingColumn
             Spacer()
             trailingStatus
         }

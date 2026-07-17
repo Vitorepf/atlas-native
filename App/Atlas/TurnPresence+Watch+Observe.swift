@@ -9,14 +9,13 @@ extension TurnPresence {
             cleanup(id); return
         }
         withObservationTracking {
-            // C14: o seam é a PRESENÇA tipada, nunca isSending/status cru.
             _ = model.currentExecutionPresenceTraceId
             _ = model.currentExecutionPresence?.phaseTitle
             _ = model.currentExecutionPresence?.timing
         } onChange: { [weak self] in
             Task { @MainActor [weak self] in
                 self?.tick(id)
-                self?.observe(id)   // re-arma (tracking é one-shot)
+                self?.observe(id)
             }
         }
     }

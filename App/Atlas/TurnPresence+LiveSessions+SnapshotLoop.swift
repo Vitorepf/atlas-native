@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Loop de snapshots — peel de TurnPresence+LiveSessions.
+// Phase → TurnPresence+LiveSessions+SnapshotPhase.swift
 
 @MainActor
 extension TurnPresence {
@@ -9,16 +10,11 @@ extension TurnPresence {
         guard let model = entry.model,
               let presence = model.currentExecutionPresence,
               let trace = model.currentExecutionPresenceTraceId else { return nil }
-        var phase = presence.phaseTitle
-        if presence.timing == .running,
-           let prog = model.bubbles.last(where: { $0.traceId == trace })?.executionProgress {
-            phase = "\(prog.current)/\(prog.total) · \(prog.title)"
-        }
         return LiveSessionSnapshot(
             id: trace.rawValue,
             threadId: entry.threadId ?? model.threadId,
             title: entry.threadTitle,
-            phaseTitle: phase,
+            phaseTitle: liveSessionPhaseTitle(model: model, trace: trace, presence: presence),
             timing: presence.timing,
             elapsedActiveMs: presence.elapsedActiveMilliseconds,
             runningSince: presence.runningSince,

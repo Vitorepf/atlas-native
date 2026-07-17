@@ -3,6 +3,8 @@ import UIKit
 import AtlasCore
 
 // tick/lastPresence — peel de TurnPresence (régua anti-inchaço).
+// Running → TurnPresence+TickRunning.swift
+// Finished → TurnPresence+TickFinished.swift
 
 @MainActor
 extension TurnPresence {
@@ -13,54 +15,14 @@ extension TurnPresence {
         let trace = model.currentExecutionPresenceTraceId
 
         if let p = presence, let trace {
-            // C10: rodando com checkpoint REAL do plano, a fase da Lock
-            // Screen é "N/M · etapa"; sem plano, a fase pública da presença.
             var phase: String? = nil
             if p.timing == .running,
                let prog = model.bubbles.last(where: { $0.traceId == trace })?.executionProgress {
                 phase = "\(prog.current)/\(prog.total) · \(prog.title)"
             }
-            // Sessão viva (running OU paused): a MESMA Activity atravessa
-            // stream fechado, pausa aguardando decisão e reconexão.
-            if entry.activityKey != nil && entry.activityKey != trace {
-                finishActivity(entry, presence: lastPresence(model, key: entry.activityKey))
-            }
-            if !entry.ongoing || !entry.activityStarted {
-                if !entry.ongoing { entry.startedAt = Date() }   // base legada
-                entry.ongoing = true
-                startActivity(entry, traceId: trace, presence: p, phaseOverride: phase)
-                broadcastCount()
-                syncRunning()
-            } else {
-                updateActivity(entry, presence: p, phaseOverride: phase)
-            }
+            tickRunning(entry, model: model, trace: trace, presence: p, phase: phase)
         } else if entry.ongoing {
-            // Fase pública terminal (Concluído/Falhou) ou fim legado — nunca
-            // "porque isSending virou falso": a presença é quem decide.
-            entry.ongoing = false
-            let traceKey = entry.activityKey
-            let final = lastPresence(model, key: traceKey)
-            finishActivity(entry, presence: final)
-            broadcastCount()
-            if UIApplication.shared.applicationState == .active, !entry.visible {
-                AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
-            }
-            // A permissão PRIMEIRO, e esperando o veredito: pedir depois de
-            // notificar fazia a primeira notificação da vida do app ser sempre
-            // descartada em silêncio — justamente a que prova ao operador que a
-            // presença funciona. Continua sendo no primeiro turno concluído (o
-            // momento de valor real), nunca no launch.
-            Task { @MainActor in
-                await requestPermissionOnce()
-                notifyIfAway(entry, model: model, finalPresence: final, traceId: traceKey)
-            }
-            syncRunning()
+            tickFinished(entry, model: model)
         }
-    }
-
-    /// A presença final da bolha dona da Activity (fase "Concluído"/"Falhou").
-    func lastPresence(_ model: ConversationModel, key: TraceID?) -> AtlasExecutionPresence? {
-        guard let key else { return nil }
-        return model.bubbles.last(where: { $0.traceId == key })?.executionPresence
     }
 }
