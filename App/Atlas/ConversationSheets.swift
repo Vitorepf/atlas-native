@@ -5,9 +5,7 @@ import AtlasCore
 
 // Folhas do composer — peels de ConversationView (régua anti-inchaço).
 // Modifier → ConversationSheets+Modifier.swift.
-
-struct ConversationReviewTraceRef: Identifiable { let id: TraceID }
-struct ConversationSteerTraceRef: Identifiable { let id: TraceID }
+// TraceRefs → ConversationSheets+TraceRefs.swift
 
 extension View {
     func conversationComposerSheets(

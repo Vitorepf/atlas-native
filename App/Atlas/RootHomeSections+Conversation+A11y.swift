@@ -3,6 +3,7 @@ import SwiftUI
 
 /// Spoken labels dos filtros CONVERSAS — peel de RootHomeSections+Conversation (CICLO C).
 /// Contagem zero = «nenhuma conversa»; auditoria só quando o modo está ligado.
+/// Entry → RootHomeSections+Conversation+A11yEntry.swift
 
 extension RootHomeSections {
     func activeWorkspaceFilterLabel() -> String {
@@ -26,19 +27,5 @@ extension RootHomeSections {
 
     func filterChipSpokenLabel(_ label: String, active: Bool) -> String {
         active ? "filtro \(label), selecionado" : "filtro \(label)"
-    }
-
-    func conversasEntrySpokenLabel() -> String {
-        var parts = [homeConversationLabel]
-        let n = homeConversationThreadCount
-        if n == 0 {
-            parts.append("nenhuma conversa")
-        } else {
-            parts.append("\(n) conversa\(n == 1 ? "" : "s")")
-        }
-        if session.auditModeEnabled {
-            parts.append(auditDetail)
-        }
-        return parts.joined(separator: ", ")
     }
 }

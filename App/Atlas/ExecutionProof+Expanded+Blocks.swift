@@ -1,8 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-/// Decisão / quality — peel de ExecutionProof+Expanded (régua ≤100).
+/// Decisão — peel de ExecutionProof+Expanded (régua ≤100).
 /// Artefatos → ExecutionProof+Expanded+Artifacts.swift
+/// Quality → ExecutionProof+Expanded+Quality.swift
 
 extension ExecutionProof {
     @ViewBuilder
@@ -25,20 +26,6 @@ extension ExecutionProof {
                     .padding(.leading, 23)
                     .accessibilityLabel("motivo, \(r)")
             }
-        }
-    }
-
-    @ViewBuilder
-    var qualityBlock: some View {
-        if let q = bubble.qualitySummary {
-            HStack(spacing: 6) {
-                Image(systemName: "seal")
-                    .font(.system(size: 11)).foregroundStyle(qualityColor(q)).frame(width: 15)
-                    .accessibilityHidden(true)
-                Text(qualityLine(q))
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-            }
-            .accessibilityLabel(qualitySpoken(q))
         }
     }
 }

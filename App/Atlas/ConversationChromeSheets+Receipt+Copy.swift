@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Copy + a11y — peel de ConversationHandoffReceipt.
+// Copy — peel de ConversationHandoffReceipt.
+// A11y → ConversationChromeSheets+Receipt+A11y.swift
 
 extension ConversationHandoffReceipt {
     var headline: String {
@@ -28,18 +29,5 @@ extension ConversationHandoffReceipt {
     var handoffAgeFragment: String? {
         guard let raw = handoff.createdAt, let date = AtlasTime.date(raw) else { return nil }
         return atlasRelativeAgePT(since: date)
-    }
-
-    var accessibilitySummary: String {
-        let dest = atlasSurfaceLabel(handoff.toSurface)
-        let thread = editorialThreadPrefix(handoff.threadId)
-        let age = handoffAgeFragment.map { ", há \($0)" } ?? ""
-        if isReady {
-            return "continuidade pronta no \(dest), mesma thread \(thread), sem prompt duplicado\(age)"
-        }
-        if isPending {
-            return "continuidade enviando para o \(dest), mesma thread \(thread)\(age)"
-        }
-        return "recibo de continuidade para \(dest), \(atlasHandoffStatusEditorial(handoff.status)), thread \(thread)\(age)"
     }
 }

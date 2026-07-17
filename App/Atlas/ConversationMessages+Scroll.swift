@@ -5,6 +5,7 @@ import AtlasCore
 // FAB + scroll coalescing — peel de ConversationMessages.
 // FAB → ConversationMessages+ScrollFAB.swift
 // Key → ConversationMessages+ScrollKey.swift
+// Auto → ConversationMessages+ScrollAuto.swift
 
 extension ConversationMessages {
     var showsScrollFAB: Bool { awayFromBottom && !model.bubbles.isEmpty }
@@ -29,16 +30,7 @@ extension ConversationMessages {
                 if empty { awayFromBottom = false }
             }
             .onChange(of: model.bubbles) {
-                guard !model.bubbles.isEmpty else { return }
-                let count = model.bubbles.count
-                let now = CFAbsoluteTimeGetCurrent()
-                let countChanged = count != lastScrollBubbleCount
-                guard countChanged || now - lastScrollAt >= 0.1 else { return }
-                lastScrollAt = now
-                lastScrollBubbleCount = count
-                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) {
-                    proxy.scrollTo("bottom", anchor: .bottom)
-                }
+                autoScrollToBottom(proxy: proxy)
             }
     }
 }

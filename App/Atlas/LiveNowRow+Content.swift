@@ -3,6 +3,7 @@ import AtlasCore
 
 // Conteúdo da linha — peel de LiveNowRow.
 // Remote badge → LiveNowRow+RemoteBadge.swift
+// Chevron → LiveNowRow+Chevron.swift
 
 extension LiveNowRow {
     var rowContent: some View {
@@ -31,12 +32,7 @@ extension LiveNowRow {
                     timingLine(now: context.date)
                 }
                 Spacer(minLength: 0)
-                if navigable {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityHidden(true)
-                }
+                rowChevron
             }
             .opacity(isLongPaused(now: context.date) ? 0.58 : 1)
         }

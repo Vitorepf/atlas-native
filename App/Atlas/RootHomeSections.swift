@@ -5,6 +5,7 @@ import AtlasCore
 // peel de RootView. Route e NavigationStack ficam no shell.
 // Failure → RootHomeSections+Failure.swift; chips → RootHomeSections+Conversation.swift (+Conversation+A11y);
 // loaded → RootHomeSections+Loaded.swift; a11y → RootHomeSections+A11y.swift.
+// Layout → RootHomeSections+Layout.swift
 
 struct RootHomeSections: View {
     @Environment(AtlasSession.self) private var session
@@ -32,13 +33,5 @@ struct RootHomeSections: View {
         default:
             loadedHome
         }
-    }
-
-    var rowDivider: some View {
-        Divider().overlay(AtlasTheme.separator).padding(.leading, AtlasTheme.Space.screen + 36)
-    }
-
-    func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
-        VStack { Spacer(); v(); Spacer() }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

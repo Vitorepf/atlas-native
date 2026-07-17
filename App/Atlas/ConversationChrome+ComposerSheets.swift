@@ -2,17 +2,13 @@ import SwiftUI
 import UIKit
 
 // Seletor de modo do composer — peel de ConversationChrome+ComposerSheets.
+// Modes → ConversationChrome+ComposerSheets+Modes.swift
 
 struct ModeSheet: View {
     @Binding var selected: String
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    private let modes = [
-        ("geral", "Geral"),
-        ("operacional", "Operacional"),
-        ("autônomos", "Autônomos"),
-        ("programação", "Programação"),
-    ]
+
     var body: some View {
         SheetShell(title: "Modo") {
             Text(ComposerSheetA11y.modeFootnote)
@@ -22,7 +18,7 @@ struct ModeSheet: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 10)
                 .accessibilityHidden(true)
-            ForEach(modes, id: \.0) { key, label in
+            ForEach(Self.modes, id: \.0) { key, label in
                 let isSelected = key == selected
                 SheetRow(
                     label: label,

@@ -1,6 +1,7 @@
 import Foundation
 
 // Spoken labels — peel de EditorialTurnChrome (CICLO C residual honesty).
+// Who → EditorialTurn+A11yWho.swift
 
 enum EditorialTurnA11y {
   static func spokenSignature(provider: String?, model: String?, elapsedMs: Int?) -> String {
@@ -32,13 +33,4 @@ enum EditorialTurnA11y {
   static let spokenFinalAnswerKicker = "resposta final"
 
   static let copyLongPressHint = "pressionar e segurar copia a resposta"
-
-  private static func signatureWho(provider: String?, model: String?) -> String? {
-    if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
-    if let provider, !provider.isEmpty {
-      let word = providerWord(provider)
-      return word.isEmpty ? provider : word
-    }
-    return nil
-  }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Spoken labels e saúde do cabeçalho — peel de AutonomosView (CICLO C residual honesty).
+/// Spoken → AutonomosView+A11ySpoken.swift
 
 extension AutonomosView {
     /// Silêncio no masthead quando frota+operação estão quietas (barulho só por exceção).
@@ -25,20 +26,4 @@ extension AutonomosView {
         case .failed: return "failed"
         }
     }
-
-    func spokenScreenLabel() -> String {
-        switch model.phase {
-        case .idle, .loading:
-            return "Autônomos, consultando a frota"
-        case .failed:
-            return "Autônomos, falha ao consultar a frota"
-        case .loaded:
-            if isHeaderHealthy {
-                return "Autônomos, frota quieta"
-            }
-            return "Autônomos, frota carregada"
-        }
-    }
-
-    static let screenHint = "frota, digest e áreas só com dados publicados pelo servidor"
 }
