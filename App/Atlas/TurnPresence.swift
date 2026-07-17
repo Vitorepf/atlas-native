@@ -1,5 +1,4 @@
 import SwiftUI
-import UserNotifications
 import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteira
 
 // A presença dos turnos FORA do app — tela bloqueada e Dynamic Island
