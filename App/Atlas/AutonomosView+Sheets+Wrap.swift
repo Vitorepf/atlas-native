@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Modifier wrap — peel de AutonomosView+Sheets.
+// Init → AutonomosView+Sheets+Wrap+Init.swift
 
 extension View {
     func autonomosSheetsModifierWrap(
@@ -16,7 +17,7 @@ extension View {
         canRevert: @escaping (SelfConstructionReceipt) -> Bool,
         revertReceipt: @escaping (SelfConstructionReceipt) -> AtlasAutonomosCycleRevertResponse?
     ) -> some View {
-        modifier(AutonomosSheetsModifier(
+        autonomosSheetsModifierInit(
             model: model,
             nightly: nightly,
             control: control,
@@ -27,6 +28,6 @@ extension View {
             selfConstructionReceipt: selfConstructionReceipt,
             canRevert: canRevert,
             revertReceipt: revertReceipt
-        ))
+        )
     }
 }

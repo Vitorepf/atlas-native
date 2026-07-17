@@ -8,11 +8,6 @@ import AtlasCore
 
 extension ConversationMessages {
     func editorialTurn(for bubble: ChatBubble, artifactItems: [AtlasTraceArtifacts.Item]) -> EditorialTurn {
-        editorialTurnAssembly(
-            bubble: bubble,
-            artifactItems: artifactItems,
-            exec: editorialTurnExecutionCallbacks(for: bubble),
-            steer: editorialTurnSteerArtifactsCallbacks()
-        )
+        editorialTurnAssemblyBuilt(bubble: bubble, artifactItems: artifactItems)
     }
 }

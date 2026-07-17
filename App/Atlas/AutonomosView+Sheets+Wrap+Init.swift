@@ -1,11 +1,10 @@
 import SwiftUI
 import AtlasCore
 
-// Folhas do AutonomosView — peel de régua ~160; callbacks idênticos.
-// Forward → AutonomosView+Sheets+Forward.swift
+// Modifier init — peel de AutonomosView+Sheets+Wrap.
 
 extension View {
-    func autonomosSheets(
+    func autonomosSheetsModifierInit(
         model: AutonomosModel,
         nightly: NightlyProposalController,
         control: Binding<AtlasAutonomosRunAction?>,
@@ -17,7 +16,7 @@ extension View {
         canRevert: @escaping (SelfConstructionReceipt) -> Bool,
         revertReceipt: @escaping (SelfConstructionReceipt) -> AtlasAutonomosCycleRevertResponse?
     ) -> some View {
-        autonomosSheetsForward(
+        modifier(AutonomosSheetsModifier(
             model: model,
             nightly: nightly,
             control: control,
@@ -28,6 +27,6 @@ extension View {
             selfConstructionReceipt: selfConstructionReceipt,
             canRevert: canRevert,
             revertReceipt: revertReceipt
-        )
+        ))
     }
 }

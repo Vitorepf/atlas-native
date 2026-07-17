@@ -5,7 +5,7 @@ import AtlasCore
 
 // Folhas do composer — peels de ConversationView (régua anti-inchaço).
 // Modifier → ConversationSheets+Modifier.swift.
-// TraceRefs → ConversationSheets+TraceRefs.swift
+// Forward → ConversationSheets+Sheets+ModifierForward.swift
 
 extension View {
     func conversationComposerSheets(
@@ -25,7 +25,7 @@ extension View {
         steerTrace: Binding<ConversationSteerTraceRef?>,
         onSteerSubmit: @escaping (TraceID, String, AtlasInteractionSteerScope) -> Void
     ) -> some View {
-        conversationComposerSheetsModifier(
+        conversationComposerSheetsModifierForward(
             model: model,
             session: session,
             mode: mode,

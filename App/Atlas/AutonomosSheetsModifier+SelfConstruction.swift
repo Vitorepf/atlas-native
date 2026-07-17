@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Self-construction receipt sheet — peel de AutonomosSheetsModifier+Detail.
-// Presentation → AutonomosSheetsModifier+SelfConstruction+Presentation.swift
+// RevertTask → AutonomosSheetsModifier+SelfConstruction+RevertTask.swift
 
 extension AutonomosSheetsModifier {
     @ViewBuilder
@@ -13,13 +13,7 @@ extension AutonomosSheetsModifier {
                 canRevert: canRevert(receipt),
                 revertReceipt: revertReceipt(receipt)
             ) { actor, reason in
-                Task {
-                    await model.revertCycle(
-                        cycle: String(receipt.cycle.cycleIndex),
-                        operatorActor: actor,
-                        reason: reason
-                    )
-                }
+                selfConstructionRevertTask(receipt: receipt, actor: actor, reason: reason)
             }
         )
     }

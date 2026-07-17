@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Graph list scroll stack — peel de AtlasCodeView+GraphList.
-// Body → AtlasCodeView+GraphListScrollBody.swift
+// Refresh → AtlasCodeView+GraphListScroll+Refresh.swift
 
 extension AtlasCodeView {
     func graphListScroll(
@@ -17,9 +17,6 @@ extension AtlasCodeView {
                 filterSilence: filterSilence
             )
         }
-        .refreshable {
-            await model.load()
-            await mirrorModel.refresh()
-        }
+        .refreshable { await graphListScrollRefresh() }
     }
 }

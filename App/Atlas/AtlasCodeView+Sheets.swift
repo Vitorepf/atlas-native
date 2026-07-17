@@ -2,8 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Folhas do grafo — peel de AtlasCodeView; zero mudança de rota.
-// Modifier → AtlasCodeView+SheetsModifier.swift
-// Ask/Why → +AskWhy · Provenance/Heal → +Sheets+Provenance
+// Forward → AtlasCodeView+Sheets+Forward.swift
 
 extension View {
   func atlasCodeSheets(
@@ -19,7 +18,7 @@ extension View {
     askDraft: Binding<String>,
     onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
   ) -> some View {
-    atlasCodeSheetsModifierWrap(
+    atlasCodeSheetsForward(
       session: session,
       model: model,
       provenanceModel: provenanceModel,

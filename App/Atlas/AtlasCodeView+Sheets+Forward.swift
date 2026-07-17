@@ -1,11 +1,10 @@
 import SwiftUI
 import AtlasCore
 
-// Modifier factory — peel de AtlasCodeView+Sheets.
-// Init → AtlasCodeView+SheetsModifierWrap+Init.swift
+// Sheets modifier forward — peel de AtlasCodeView+Sheets.
 
 extension View {
-    func atlasCodeSheetsModifierWrap(
+    func atlasCodeSheetsForward(
         session: AtlasSession,
         model: AtlasCodeModel,
         provenanceModel: AtlasCodeProvenanceModel,
@@ -18,7 +17,7 @@ extension View {
         askDraft: Binding<String>,
         onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
     ) -> some View {
-        atlasCodeSheetsModifierInit(
+        atlasCodeSheetsModifierWrap(
             session: session,
             model: model,
             provenanceModel: provenanceModel,
