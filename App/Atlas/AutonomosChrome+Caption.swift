@@ -2,6 +2,7 @@ import SwiftUI
 
 // Legenda de seção Autônomos — peel de AutonomosChrome (CICLO C residual honesty).
 // `.decorative`: spoken composto no container pai. `.header`: landmark em empty/quiet.
+// A11y → AutonomosChrome+CaptionA11y.swift
 
 extension AutonomosChrome {
     enum SectionCaptionRole {
@@ -16,18 +17,5 @@ extension AutonomosChrome {
             .tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
             .modifier(SectionCaptionA11y(role: role))
-    }
-}
-
-private struct SectionCaptionA11y: ViewModifier {
-    let role: AutonomosChrome.SectionCaptionRole
-
-    func body(content: Content) -> some View {
-        switch role {
-        case .decorative:
-            content.accessibilityHidden(true)
-        case .header:
-            content.accessibilityAddTraits(.isHeader)
-        }
     }
 }

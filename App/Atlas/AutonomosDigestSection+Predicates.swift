@@ -3,6 +3,7 @@ import AtlasCore
 
 // Predicados do digest — peel de AutonomosDigestSection+Last.
 // Headlines → AutonomosDigestSection+Headlines.swift
+// Window → AutonomosDigestSection+WindowCaption.swift
 
 extension AutonomosNextDigestSection {
     func shouldShowDigest(_ digest: AtlasAutonomosDigestResponse) -> Bool {
@@ -18,16 +19,5 @@ extension AutonomosNextDigestSection {
             || !digest.last.delivered.isEmpty
             || !digest.last.risks.isEmpty
             || !digest.last.pendingDecisions.isEmpty
-    }
-
-    /// Janela governada publicada pelo servidor — sem inventar horário de agenda.
-    func digestWindowCaption(_ digest: AtlasAutonomosDigestResponse) -> String? {
-        let window = digest.last.window
-        guard window.hours > 0 else { return nil }
-        var parts = ["janela \(window.hours)h"]
-        if let ended = AtlasTime.date(window.endedAt) {
-            parts.append("fechou há \(atlasRelativeAgePT(since: ended))")
-        }
-        return parts.joined(separator: " · ")
     }
 }
