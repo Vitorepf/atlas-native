@@ -4,6 +4,7 @@ import AtlasCore
 /// Spoken labels do digest governado — peel de AutonomosDigestSection (CICLO C).
 /// Agrega só contagens e textos publicados; silêncio/sem portão quando delivered>0.
 /// Counts → AutonomosDigestSection+A11yCounts.swift
+/// Last → AutonomosDigestSection+A11yLast.swift
 
 enum AutonomosDigestSectionA11y {
     static func spokenSection(
@@ -23,14 +24,14 @@ enum AutonomosDigestSectionA11y {
             parts.append("resumo governado")
         }
         if hasLast {
-            if let windowCaption { parts.append(windowCaption) }
-            appendCounts(&parts, counts: counts)
-            if let mergeHash { parts.append("merge \(mergeHash)") }
-            if let riskHeadline { parts.append(riskHeadline) }
-            if let decisionTitle { parts.append(decisionTitle) }
-            if counts.delivered > 0 && counts.risks == 0 && counts.pendingDecisions == 0 {
-                parts.append("silêncio, segue sem portão")
-            }
+            AutonomosDigestSectionA11yLast.appendLastBody(
+                &parts,
+                windowCaption: windowCaption,
+                counts: counts,
+                mergeHash: mergeHash,
+                riskHeadline: riskHeadline,
+                decisionTitle: decisionTitle
+            )
         } else if let reason = scheduleReason?.nonEmpty {
             parts.append(reason)
         } else if nextDigestAt?.nonEmpty == nil {

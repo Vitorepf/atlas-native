@@ -4,6 +4,7 @@ import AtlasCore
 // Conteúdo da linha — peel de LiveNowRow.
 // Remote badge → LiveNowRow+RemoteBadge.swift
 // Chevron → LiveNowRow+Chevron.swift
+// Title → LiveNowRow+ContentTitle.swift
 
 extension LiveNowRow {
     var rowContent: some View {
@@ -13,24 +14,7 @@ extension LiveNowRow {
                     size: 8,
                     reduceMotion: reduceMotion || session.timing != .running
                 )
-                VStack(alignment: .leading, spacing: hubMode ? 4 : 3) {
-                    Text(session.title)
-                        .font(AtlasFont.serif(16, .semibold))
-                        .foregroundStyle(AtlasTheme.textPrimary)
-                        .lineLimit(2)
-                        .layoutPriority(1)
-                    HStack(spacing: 6) {
-                        Text(session.phaseTitle)
-                            .font(AtlasFont.serifItalic(13))
-                            .foregroundStyle(AtlasTheme.textSecondary)
-                            .lineLimit(1)
-                        if session.isRemote {
-                            remoteBadge
-                        }
-                    }
-                    // Timing explícito (running/paused) + elapsed.
-                    timingLine(now: context.date)
-                }
+                rowTitleStack(now: context.date)
                 Spacer(minLength: 0)
                 rowChevron
             }

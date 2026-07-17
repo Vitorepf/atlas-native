@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Campo de texto do composer — peel de ComposerToolbar.
+// Attach → ComposerToolbar+FieldAttach.swift
 
 extension ComposerToolbar {
     var composerTextField: some View {
@@ -21,20 +22,5 @@ extension ComposerToolbar {
                 .accessibilityLabel(spokenInputLabel())
                 .accessibilityHint(spokenInputHint())
         }
-    }
-
-    var attachButton: some View {
-        Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            onAttach()
-        } label: {
-            Image(systemName: "paperclip")
-                .font(.system(size: 17, weight: .medium))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 32, height: 32)
-        }
-        .buttonStyle(PressableScale())
-        .accessibilityLabel("adicionar anexo")
-        .accessibilityHint("abre foto, arquivo ou colar")
     }
 }

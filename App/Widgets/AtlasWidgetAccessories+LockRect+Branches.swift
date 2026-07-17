@@ -3,6 +3,7 @@ import SwiftUI
 import AtlasCore
 
 // Branches do retângulo lock — peel de LockRect.
+// Quiet → AtlasWidgetAccessories+LockRect+Quiet.swift
 
 extension LockAccessorySnapshotView {
     @ViewBuilder
@@ -23,18 +24,7 @@ extension LockAccessorySnapshotView {
                     .foregroundStyle(Ink.alert)
             }
         } else {
-            Text(snapshot.liveSessions?.first?.phaseTitle ?? "silêncio na obra")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
-                .lineLimit(1)
-            if stale {
-                Text("visto \(snapshot.ageText(at: entry.date))")
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundStyle(Ink.alert)
-            } else if let sub = LockAccessoryA11y.rectangularSubtitle(snapshot) {
-                Text(sub)
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundStyle(Ink.ink2)
-            }
+            rectangularQuietBody(snapshot, stale: stale)
         }
     }
 }

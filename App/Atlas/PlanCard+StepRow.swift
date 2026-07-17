@@ -3,6 +3,7 @@ import AtlasCore
 
 // Linha de passo do plano — peel de PlanCard+Steps (cena 02 residual honesty).
 // Dot → PlanCard+StepRowDot.swift
+// Title → PlanCard+StepRowTitle.swift
 
 struct PlanStepRowView: View {
     let step: AtlasExecutionPlan.Step
@@ -17,13 +18,7 @@ struct PlanStepRowView: View {
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             stepDotColumn
-            Text(step.title)
-                .font(.system(.caption))
-                .foregroundStyle(state == .pending ? AtlasTheme.textTertiary
-                                 : state == .current ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
-                .lineLimit(2)
-                .accessibilityHidden(true)
-                .padding(.bottom, isLast ? 0 : 9)
+            stepTitleColumn
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .ignore)
