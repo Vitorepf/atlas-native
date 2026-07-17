@@ -5,14 +5,20 @@ import AtlasCore
 
 struct FleetMetric: View {
     let value: String; let label: String
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(value).font(AtlasFont.mono(18)).foregroundStyle(AtlasTheme.textPrimary)
-                .contentTransition(.numericText())
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
+                .accessibilityHidden(true)
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary).lineLimit(2)
+                .accessibilityHidden(true)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(11)
         .atlasCard(cornerRadius: 12)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label), \(value)")
     }
 }
 
@@ -24,9 +30,13 @@ struct DetailMetric: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value).font(AtlasFont.mono(15)).foregroundStyle(AtlasTheme.textPrimary)
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
+                .accessibilityHidden(true)
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
-        }.frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label), \(value)")
     }
 }
 
@@ -38,17 +48,18 @@ struct AutonomosCardEmptyState: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            AutonomosChrome.sectionCaption(caption)
+            AutonomosChrome.sectionCaption(caption, role: .decorative)
             Text(copy)
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .accessibilityHidden(true)
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .atlasCard(cornerRadius: 12)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(copy)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(caption), \(copy)")
         .accessibilityIdentifier(accessibilityIdentifier)
     }
 }
