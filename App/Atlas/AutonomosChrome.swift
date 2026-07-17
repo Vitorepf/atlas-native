@@ -10,15 +10,6 @@ enum AutonomosChrome {
     }
 
     @ViewBuilder
-    static func tag(_ t: String) -> some View {
-        Text(t)
-            .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
-            .padding(.horizontal, 7).padding(.vertical, 3)
-            .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
-            .lineLimit(1)
-    }
-
-    @ViewBuilder
     static func digestChip(_ value: String, _ label: String) -> some View {
         HStack(spacing: 5) {
             Text(value).font(AtlasFont.mono(14)).foregroundStyle(AtlasTheme.accent)

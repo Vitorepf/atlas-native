@@ -23,7 +23,6 @@ extension AutonomosNextDigestSection {
         .animation(reduceMotion ? nil : .default, value: digest.last.counts.pendingDecisions)
         if let delivered = digest.last.delivered.first {
             AutonomosChrome.tag("merge \(String(delivered.mergeHash.prefix(8)))")
-                .accessibilityHidden(true)
         }
         if let risk = digest.last.risks.first {
             Text(risk.title?.nonEmpty ?? risk.reason?.nonEmpty ?? risk.severity)
