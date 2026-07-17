@@ -14,14 +14,8 @@ struct LockAccessorySnapshotView: View {
     let entry: SnapshotEntry
 
     var body: some View {
-        Group {
-            if let snapshot = entry.snapshot {
-                lockAccessoryContent(snapshot)
-            } else {
-                lockAccessoryEmpty
-            }
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(spokenLabel)
+        Group { snapshotBranch }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(spokenLabel)
     }
 }

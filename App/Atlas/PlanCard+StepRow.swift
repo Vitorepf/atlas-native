@@ -19,13 +19,7 @@ struct PlanStepRowView: View {
 
     var body: some View {
         applyStepPulse(
-            stepRowA11yChrome(
-                HStack(alignment: .top, spacing: 10) {
-                    stepDotColumn
-                    stepTitleColumn
-                    Spacer(minLength: 0)
-                }
-            )
+            stepRowA11yChrome(stepRowLayout)
         )
     }
 }

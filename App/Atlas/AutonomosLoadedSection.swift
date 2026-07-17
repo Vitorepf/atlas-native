@@ -20,10 +20,6 @@ struct AutonomosLoadedSection: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        loadedRefreshChrome(
-            ScrollView {
-                loadedStack
-            }
-        )
+        loadedScrollShell
     }
 }

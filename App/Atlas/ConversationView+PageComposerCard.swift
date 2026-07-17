@@ -6,23 +6,6 @@ import AtlasCore
 
 extension ConversationView {
     var conversationComposerCard: some View {
-        ConversationComposer(
-            model: model,
-            session: session,
-            reduceMotion: reduceMotion,
-            focused: $focused,
-            mode: $mode,
-            showModeSheet: $showModeSheet,
-            showWorkspaceSheet: $showWorkspaceSheet,
-            showEffortSheet: $showEffortSheet,
-            showQueueSheet: $showQueueSheet,
-            showAttachmentSheet: $showAttachmentSheet,
-            pickedPhoto: $pickedPhoto,
-            showFileImporter: $showFileImporter,
-            showCamera: $showCamera,
-            reviewTrace: $reviewTrace,
-            artifactTrace: $artifactTrace,
-            steerTrace: $steerTrace
-        )
+        conversationComposerArgs
     }
 }

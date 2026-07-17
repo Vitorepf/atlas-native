@@ -10,19 +10,7 @@ struct AtlasCodeRadarView: View {
     @State var model: AtlasCodeWorkspaceModel
     let onOpenRepo: (String) -> Void
 
-    init(client: AtlasClient, onOpenRepo: @escaping (String) -> Void) {
-        _model = State(initialValue: AtlasCodeWorkspaceModel(client: client))
-        self.onOpenRepo = onOpenRepo
-    }
-
     var body: some View {
-        ZStack {
-            AtlasTheme.bg.ignoresSafeArea()
-            radarNavShell(
-                radarContent
-                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
-                    .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-            )
-        }
+        radarContentShell
     }
 }

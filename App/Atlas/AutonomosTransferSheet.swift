@@ -16,13 +16,6 @@ struct AutonomosTransferSheet: View {
     @State var reason = ""
 
     var body: some View {
-        transferA11yChrome(
-            NavigationStack {
-                transferForm
-                .navigationTitle("Transferir missão")
-                .toolbar { transferToolbar }
-                .accessibilityIdentifier(A11yID.autonomosTransferSheet)
-            }
-        )
+        transferA11yChrome(transferNavigationStack)
     }
 }

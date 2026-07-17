@@ -11,14 +11,7 @@ extension WorkspaceView {
         ScrollView {
             workspaceListChrome(
                 LazyVStack(spacing: 0) {
-                    if showsLoadingShell {
-                        WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
-                            .accessibilityIdentifier(A11yID.workspaceLoading)
-                    } else if showsNetworkFailure {
-                        listNetworkFailure
-                    } else {
-                        listLoadedContent
-                    }
+                    scrollPhaseContent
                 }
             )
         }

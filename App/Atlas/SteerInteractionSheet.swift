@@ -12,16 +12,6 @@ struct SteerInteractionSheet: View {
     @State var scope: AtlasInteractionSteerScope = .currentStep
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                AtlasTheme.bg.ignoresSafeArea()
-                formContent
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { steerToolbar }
-        }
-        .accessibilityIdentifier(A11yID.steerSheet)
-        .accessibilityLabel("redirecionar execução \(traceId.rawValue)")
-        .accessibilityHint(spokenSheetHint())
+        steerA11yShell(steerNavigationStack)
     }
 }

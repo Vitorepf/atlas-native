@@ -27,6 +27,6 @@ struct AtlasCodeProvenanceSheet: View {
     let onAsk: () -> Void
 
     var body: some View {
-        provenanceSheetChrome(provenanceSurface)
+        provenanceBodyShell
     }
 }

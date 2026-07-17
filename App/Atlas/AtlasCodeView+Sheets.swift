@@ -19,7 +19,7 @@ extension View {
     askDraft: Binding<String>,
     onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
   ) -> some View {
-    modifier(AtlasCodeSheetsModifier(
+    atlasCodeSheetsModifierWrap(
       session: session,
       model: model,
       provenanceModel: provenanceModel,
@@ -31,6 +31,6 @@ extension View {
       askThreadId: askThreadId,
       askDraft: askDraft,
       onProvenanceAsk: onProvenanceAsk
-    ))
+    )
   }
 }

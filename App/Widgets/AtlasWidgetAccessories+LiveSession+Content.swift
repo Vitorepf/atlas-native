@@ -15,11 +15,7 @@ extension LiveSessionWidgetView {
         liveSessionA11yChrome(
             VStack(alignment: .leading, spacing: 8) {
                 liveSessionContentHeader(snapshot: snapshot, stale: stale)
-                if let live {
-                    liveSessionActiveBranch(live)
-                } else {
-                    liveSessionSilenceBranch(snapshot)
-                }
+                liveSessionContentBranch(snapshot: snapshot, live: live)
             },
             snapshot: snapshot,
             live: live,

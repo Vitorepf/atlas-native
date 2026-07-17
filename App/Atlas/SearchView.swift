@@ -17,10 +17,7 @@ struct SearchView: View {
         searchA11yChrome(
             ZStack {
                 AtlasTheme.bg.ignoresSafeArea()
-                VStack(spacing: 0) {
-                    SearchViewHeader(query: $query, focused: $focused)
-                    list
-                }
+                searchLayout
             }
         )
     }

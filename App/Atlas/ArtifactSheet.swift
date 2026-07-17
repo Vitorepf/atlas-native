@@ -17,15 +17,6 @@ struct ArtifactSheet: View {
     @State var mountRevealed = 0
 
     var body: some View {
-        artifactSheetLifecycle(
-            NavigationStack {
-                artifactSheetChrome(
-                    ZStack {
-                        AtlasTheme.bg.ignoresSafeArea()
-                        content
-                    }
-                )
-            }
-        )
+        artifactSheetLifecycle(artifactNavigationShell)
     }
 }

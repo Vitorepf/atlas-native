@@ -11,20 +11,7 @@ extension ConversationView {
             header
             cacheAgeSeal
             handoffReceipt
-            ConversationMessages(
-                model: model,
-                reduceMotion: reduceMotion,
-                emptyPrompt: emptyPrompt,
-                emptySuggestions: emptySuggestions,
-                awayFromBottom: $awayFromBottom,
-                lastScrollAt: $lastScrollAt,
-                lastScrollBubbleCount: $lastScrollBubbleCount,
-                reviewTrace: $reviewTrace,
-                artifactTrace: $artifactTrace,
-                steerTrace: $steerTrace,
-                onEditResend: editAndResend,
-                onCopy: copy
-            )
+            conversationMessagesView
         }
     }
 }

@@ -17,10 +17,7 @@ struct AutonomosInfoLine: View {
     }
 
     var body: some View {
-        Text(text)
-            .font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
-            .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .atlasCard(cornerRadius: 12)
+        infoLineCard(text)
             .accessibilityLabel(spokenLabel)
             .accessibilityAddTraits(.isStaticText)
             .modifier(OptionalA11yIdentifier(identifier))

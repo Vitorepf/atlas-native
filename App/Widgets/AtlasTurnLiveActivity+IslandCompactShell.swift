@@ -19,11 +19,11 @@ extension AtlasTurnLiveActivity {
                 AtlasTurnIslandTrailing(context: context)
             }
         } compactLeading: {
-            AtlasTurnIslandCompactLeading(context: context)
+            islandCompactLeading(context: context)
         } compactTrailing: {
-            AtlasTurnIslandCompactTrailing(context: context)
+            islandCompactTrailing(context: context)
         } minimal: {
-            AtlasTurnIslandMinimal(context: context)
+            islandMinimal(context: context)
         }
     }
 }

@@ -25,12 +25,6 @@ struct ConversationComposerSheetsModifier: ViewModifier {
     let onSteerSubmit: (TraceID, String, AtlasInteractionSteerScope) -> Void
 
     func body(content: Content) -> some View {
-        handoffAndQueueObservers(on:
-            attachmentModifiers(on:
-                reviewSteerQueueSheets(on:
-                    modeEffortSheets(on: content)
-                )
-            )
-        )
+        modifierChain(on: content)
     }
 }

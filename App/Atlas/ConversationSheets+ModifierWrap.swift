@@ -3,10 +3,10 @@ import PhotosUI
 import UniformTypeIdentifiers
 import AtlasCore
 
-// View extension API — peel de ConversationSheets+Modifier.
+// Modifier factory — peel de ConversationSheets+ModifierAPI.
 
 extension View {
-    func conversationComposerSheetsModifier(
+    func conversationComposerSheetsModifierWrap(
         model: ConversationModel,
         session: AtlasSession,
         mode: Binding<String>,
@@ -23,7 +23,7 @@ extension View {
         steerTrace: Binding<ConversationSteerTraceRef?>,
         onSteerSubmit: @escaping (TraceID, String, AtlasInteractionSteerScope) -> Void
     ) -> some View {
-        conversationComposerSheetsModifierWrap(
+        modifier(ConversationComposerSheetsModifier(
             model: model,
             session: session,
             mode: mode,
@@ -39,6 +39,6 @@ extension View {
             artifactTrace: artifactTrace,
             steerTrace: steerTrace,
             onSteerSubmit: onSteerSubmit
-        )
+        ))
     }
 }

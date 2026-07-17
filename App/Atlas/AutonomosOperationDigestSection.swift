@@ -18,11 +18,6 @@ struct AutonomosOperationDigestSection: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        let hasSignal = deliveredTotal > 0 || pendingCount > 0 || inboxCount > 0 || incidentPresent
-        if hasSignal {
-            digestSignalBody
-        } else {
-            digestQuietBody
-        }
+        digestBody
     }
 }
