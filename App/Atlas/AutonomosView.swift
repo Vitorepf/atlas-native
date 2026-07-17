@@ -38,6 +38,9 @@ struct AutonomosView: View {
             }
         }
         .navigationBarHidden(true)
+        .accessibilityIdentifier(A11yID.autonomosScreen)
+        .accessibilityLabel(spokenScreenLabel())
+        .accessibilityHint(Self.screenHint)
         .task { if case .idle = model.phase { await model.load() } }
         .task { await refreshRhythmLearning() }
         .autonomosSheets(

@@ -35,6 +35,8 @@ struct RootView: View {
             }
             .navigationBarHidden(true)
             .accessibilityIdentifier(A11yID.homeScreen)
+            .accessibilityLabel(homeScreenSpokenLabel())
+            .accessibilityHint(homeScreenSpokenHint())
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .workspace(let key, let title):

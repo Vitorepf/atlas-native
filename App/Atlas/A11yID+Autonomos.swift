@@ -3,6 +3,7 @@ import Foundation
 // Autônomos + Nightly + Self-receipt A11yIDs — peel de A11yID.swift (régua ≤100).
 
 extension A11yID {
+    static let autonomosScreen = "autonomos-screen"
     static let autonomosAwaitingYou = "autonomos-awaiting-you"
     static let autonomosDetailSheet = "autonomos-detail-sheet"
     static let autonomosDetailButtonPrefix = "autonomos-detail-button-"

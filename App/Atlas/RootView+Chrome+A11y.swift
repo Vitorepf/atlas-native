@@ -26,4 +26,12 @@ extension RootView {
     func inputPillSpokenLabel() -> String {
         "Escreva ao Atlas, nova conversa"
     }
+
+    func homeScreenSpokenLabel() -> String {
+        "Atlas, início"
+    }
+
+    func homeScreenSpokenHint() -> String {
+        "workspaces, conversas e Autônomos; Live Now aparece quando há sessão viva"
+    }
 }
