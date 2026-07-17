@@ -14,8 +14,8 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **538** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXII tip `9912e70` |
-| Commits no tip (`git rev-list --count HEAD`) | 544 | inclui histórico pré-Elite |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **542** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXIV tip `07ca22d` |
+| Commits no tip (`git rev-list --count HEAD`) | 548 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXXIII (este tip)
+## Entrega Elite CXXXXXLXXXIV (este tip)
+
+- `polish(ui)` CICLO B: ChangeReviewDiff Body `+Loading/+Unavailable`; Transfer Operator `+Target/+Actor/+Reason`; RunFields `+TitleStack/+Score`; HealReceipt A11ySpoken `+Masthead/+Outcome`; ComposerToolbar A11yInput `+Effort/+Hints`; RootHome ArenaEntry `+A11y`; PlanCard DetailToggle `+Button`; LiveTimeline NarrativeDuration `+P90Badge`; ConversationMessages Scroll `+BubbleLifecycle`; Composer LiveStrip `+Separator` Actions `+Dismiss/+Send`; OperationDigest Aging `+Oldest/+Findings`; ExecutionStateCard SteerRetry `+Button`; Workspace Retry `+Identifier`; ArenaRun FormEngine `+Empty`; Markdown Blocks `+ListItem`; ConversationView Init `+ModelState`; Widgets Fleet Body `+Stack` IslandCompactChrome `+Leading/+Trailing/+Minimal`. Tip `07ca22d`.
+- 29 peels · 48 arquivos · over100=0 · App/Atlas+Widgets swift=2018; App/Widgets swift=134; zero Route nova.
+
+## Entrega Elite CXXXXXLXXXIII (anterior)
 
 - `polish(ui)` CICLO B: ConversationTypes `+ExecAgent/+ChatBubble+Activity/+LiveSurface/+Presence/+LocalDraft`; Reconnect Bubble `+PrimaryLine`; AreaPicker RowLabel `+NameStack`; WhySheet `+BodyShell/+LifecycleA11y`; ArenaRun `+NavShell/+SheetA11y`; DetailLedger Summary `+RiskRoute`; Provenance A11y `+LoadedBody` Header Kicker `+Glyph`; EditorialTurn A11y `+UserMessage/+Signature`; LiveTimeline Surfaces `+A11yBind`; RootChrome TrailingStatus `+Running/+Count`; CodeGraph WorktreeMeta `+BranchHead`; ChangeReview Buttons `+AcceptAction`; Search HeaderClear `+Action`; Widgets Fleet `+BodyGate` IslandCompact `+LeadingSymbol` LockScreen Trailing `+Finished/+Timer` LockLive Spoken `+Attention` SnapshotProvider `+GetSnapshot`. Tip `4ed4994`.
 - 28 peels · 47 arquivos · over100=0 · App/Atlas+Widgets swift=1989; App/Widgets swift=130; zero Route nova.
