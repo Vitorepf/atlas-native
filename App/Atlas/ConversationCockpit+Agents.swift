@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Agentes, banners e watchdog — peel de ConversationCockpit (régua anti-inchaço).
+// Agentes — peel de ConversationCockpit (régua anti-inchaço).
+// Status → ConversationCockpit+AgentStatus.swift
 
 struct AgentRow: View {
     let agent: ExecAgent
@@ -25,26 +26,4 @@ struct AgentRow: View {
             }
         }
     }
-    private var turnStatus: AtlasTurnStatus { AtlasTurnStatus(rawValue: agent.status) }
-    private var statusColor: Color {
-        switch turnStatus {
-        case .processing: return AtlasTheme.accent
-        case .succeeded: return AtlasTheme.domAutonomos
-        case .failed, .cancelled: return AtlasTheme.domOperacional
-        default: return AtlasTheme.textTertiary
-        }
-    }
-    private var statusWord: String {
-        switch turnStatus {
-        case .queued: return "na fila"
-        case .processing: return "processando"
-        case .succeeded: return "pronto"
-        case .failed: return "falhou"
-        case .cancelled: return "cancelado"
-        case .awaitingUserChoice: return "aguardando"
-        case .awaitingExternal: return "aguardando externo"
-        case .unknown(let raw): return raw
-        }
-    }
 }
-

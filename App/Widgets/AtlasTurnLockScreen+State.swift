@@ -3,6 +3,7 @@ import ActivityKit
 import AtlasCore
 
 /// Derivações visuais do lock screen — peel de `AtlasTurnLockScreen`.
+/// Badge → AtlasTurnLockScreen+Badge.swift
 extension AtlasTurnAttributes.ContentState {
     var atlasColor: Color {
         if phaseTitle.localizedCaseInsensitiveContains("falhou") { return Ink.alert }
@@ -34,17 +35,5 @@ extension AtlasTurnAttributes.ContentState {
     var queueLabel: String? {
         guard let count = queuedCount, count > 0 else { return nil }
         return "fila \(count)"
-    }
-
-    /// SD-2: badge curto derivado só de `phaseTitle` canônico do Core
-    /// (`AtlasExecutionPresence`) — sem inventar kind paralelo no widget.
-    var phaseBadge: String? {
-        let p = phaseTitle.lowercased()
-        if p.contains("falhou") { return "FAIL" }
-        if p.contains("atenção") || p.contains("decisão") { return "ATT" }
-        if p.contains("sistema externo") || (p.contains("aguard") && p.contains("extern")) { return "EXT" }
-        if p.contains("reconect") { return "REC" }
-        if p.contains("replanej") { return "PLN" }
-        return nil
     }
 }

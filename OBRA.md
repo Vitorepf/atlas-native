@@ -966,7 +966,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXVIII — CICLO B Engine/Run/Week/Composer/Capability/Widget/Plan peels** · este commit · CICLO B: Engine `+Metrics`; Run `+FormSuites`; Graph `+WeekBody`; Composer `+Surface`; Capability `+Contribution`; Widgets `+CodeWeek`; Plan `+Body`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXIX — CICLO B Agent/Area/Mirror/Header/Lock/A11y peels** · este commit · CICLO B: Agent `+Status`; AreaDetail `+Metrics`; Mirror `+Rules`; Header `+Buttons`; Lock `+Badge`; A11y `+ReviewFiles`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXVIII — CICLO B Engine/Run/Week/Composer/Capability/Widget/Plan peels** · `2295b2e` · CICLO B: Engine `+Metrics`; Run `+FormSuites`; Graph `+WeekBody`; Composer `+Surface`; Capability `+Contribution`; Widgets `+CodeWeek`; Plan `+Body`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXVII — CICLO B Search/State/Scrubber/Feedback/Detail/Lock/Failure peels** · `d7c6db4` · CICLO B: Search `+HeaderClear`; State `+Detail`; Scrubber `+Chrome`; Feedback `+Helpers`; Detail `+Inbox`; Lock `+Phase`; Failure `+FailureCopy`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
