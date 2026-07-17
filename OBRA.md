@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **polish(core) — split AtlasAutonomos DTO modules** · este commit · `AtlasAutonomos.swift` 1010→436 (areas/live/cycles/backlog/delivered + `AtlasClient` extension + `AtlasAutonomosClientError`); extrai `AtlasAutonomosFleet.swift` (105) · `AtlasAutonomosControl.swift` (362) · `AtlasAutonomosDigest.swift` (117). 59 `public struct|enum` preservados; zero mudança de API. Checks: `import AtlasCore` (mesmo módulo). Prova: `wc -l` 1010→436+105+362+117 (=1020 c/ headers); Swift toolchain ausente neste cloud — re-rodar `swift run AtlasCoreChecks` + `make build` no Mac.
+
 - 2026-07-17 · Grok 4.5 · **CICLO B — split AtlasCodeRadarView sections** · este commit · `AtlasCodeRadarView.swift` 470→66; extrai `AtlasCodeRadarSections.swift` (267) — status capsule / loaded content / RepoRow / FolderRow; `AtlasCodeWorkspaceModel.swift` (164) — model+ISO; zero Route; comportamento idêntico. §4 E-B atualizado. Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
 
 - 2026-07-17 · Grok 4.5 · **CICLO B — split ChangeReviewView sections** · este commit · `ChangeReviewView.swift` 453→95; extrai `ChangeReviewSections.swift` (448) — governance/run header/patch/file/diff/controls/tests/findings/decided/actions/toast; zero Route; comportamento idêntico. §4 E-B atualizado. Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
