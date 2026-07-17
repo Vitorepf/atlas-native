@@ -3,22 +3,13 @@ import AtlasCore
 
 // Week body — peel de AtlasCodeGraphChrome+Week.
 // Quiet → AtlasCodeGraphChrome+WeekQuiet.swift
+// Title → AtlasCodeGraphChrome+WeekTitle.swift
 
 extension AtlasCodeView {
     @ViewBuilder
     func weekBody(_ week: AtlasCodeWeek) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline) {
-                Text("A semana")
-                    .font(AtlasFont.serif(18, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
-                Spacer()
-                Text(week.window)
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
+            weekTitleRow(week)
             weekMetricsOrQuiet(week)
         }
         .accessibilityElement(children: .ignore)

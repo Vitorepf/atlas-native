@@ -3,6 +3,7 @@ import AtlasCore
 
 // Empty / unavailable — peel de ArtifactSheet+Content.
 // Gate → ArtifactSheet+EmptyGate.swift
+// Unavailable → ArtifactSheet+Unavailable.swift
 
 extension ArtifactSheet {
     @ViewBuilder
@@ -16,18 +17,8 @@ extension ArtifactSheet {
                 identifier: A11yID.artifactsLoadFailure,
                 spoken: "não foi possível consultar artefatos"
             )
-        } else if artifacts?.state == .unavailable {
-            TraceEvidenceUnavailable(
-                title: "Sem artefatos nesta execução.",
-                subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
-                identifier: A11yID.artifactsUnavailable,
-                spoken: TraceEvidenceCopy.unavailableSpoken(
-                    prefix: "sem artefatos nesta execução",
-                    reason: artifacts?.reason
-                )
-            )
-        } else if items.isEmpty {
-            emptyVisualizable
+        } else {
+            artifactsUnavailable
         }
     }
 }

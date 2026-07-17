@@ -5,22 +5,12 @@ import AtlasCore
 // Resumo composto do motor — peel de ArenaEngineSheet (régua ≤100).
 // Scores → ArenaEngineSheet+ScoreRow.swift
 // History → ArenaEngineSheet+History.swift
+// Header → ArenaEngineSheet+SummaryHeader.swift
 
 extension ArenaEngineSheet {
     var engineSummary: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text("composto")
-                    .font(.system(.caption, weight: .semibold))
-                    .tracking(1.2)
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-                Spacer()
-                Text(ArenaFormat.score(engine.composite))
-                    .font(AtlasFont.mono(20))
-                    .foregroundStyle(engine.composite == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
-            }
+            engineSummaryHeader
             engineScoreRow
             engineHistoryChart
         }
