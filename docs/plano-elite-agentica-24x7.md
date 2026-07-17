@@ -107,58 +107,276 @@ prova e zero mentira de “DONE” sem evidência.
 
 Fecha mentiras estruturais antes de polir.
 
+**Branch:** `cursor/plano-elite-agentica-24x7-a7af`
+
+**Gates (antes de cada commit de implementação):**
+```bash
+env -u ATLAS_LIVE swift run AtlasCoreChecks
+cd App && make build
+git diff --check
+```
+
+**Regra atlas-server:** se `../atlas-server` (ou equivalente) **não** estiver
+neste workspace → marcar leafs server como **BLOCKED**, atualizar `OBRA.md`
+§5 com honestidade (sem fingir FEITO), e **continuar** com leafs native-only
+(A1.3 completo; A1.1/A1.2 só inventário + casca fail-closed).
+
+---
+
 ### Task A1.1: M01 heal → merge (ou heal-receipt)
 
-**Files:**
-- Server: stewardship heal/merge path (descobrir em `atlas-server`)
-- Modify: `Sources/AtlasCore/AtlasAutonomos.swift` (ou DTO delivered)
-- Modify: `App/Atlas/SelfConstructionReceiptSheet.swift`
-- Test: PHPUnit + `AtlasAutonomosChecks` / Core checks
-- Evidence: `docs/evidence/2026-07-17-onda0/` (append)
+**Fato conhecido:** heal ≠ merge; probe `GET …/atlas-native/done` →
+`delivered_total=0` (ledger >0). Healer R2: `merge_performed=false` por
+design. Opções: (a) bridge real heal→commit→merge→AP-790, **ou** (b)
+contrato `heal-receipt` separado de `/done`. NUNCA fabricar merge fields.
+
+**Files (known):**
+- Evidence (read/append): `docs/evidence/2026-07-17-onda0/README.md`
+- Blackboard: `OBRA.md` §5 (M01 / V3 DoD)
+- Core DTO: `Sources/AtlasCore/AtlasAutonomos.swift`
+  (`AtlasAutonomosDeliveredResponse`, `AtlasAutonomosCycle`, merge fields)
+- Core checks: `Sources/AtlasCoreChecks/AtlasAutonomosChecks.swift`
+- Routes: `Sources/AtlasCore/AtlasRoute.swift` (autonomos done/delivered)
+- Model: `App/Atlas/AutonomosModel.swift` (`delivered`, refresh)
+- Casca: `App/Atlas/AutonomosView.swift` (header / `deliveredTotal`)
+- Casca: `App/Atlas/SelfConstructionReceiptSheet.swift`
+- Server (**may be absent**): `../atlas-server` heal/merge / AP-790 path
 
 **Interfaces:**
 - Consumes: healer R2 resultado real
-- Produces: ciclo com `outcome=merged` + `merge_hash` **ou** contrato
-  `heal-receipt` separado de `/done` — NUNCA fabricar merge fields
+- Produces: ciclo `outcome=merged` + `merge_hash` **ou** heal-receipt tipado
+  com `merge_performed=false` explícito — nunca mentir delivered
 
-- [ ] **Step 1:** Probe atual `GET …/atlas-native/done` → documentar
-  `delivered_total` e ledger.
-- [ ] **Step 2:** TDD server: pós-heal governado grava merge real **ou**
-  emite heal-receipt tipado com `merge_performed=false` explícito + campos
-  públicos.
-- [ ] **Step 3:** Decode Core fail-closed + casca mostra recibo só com dados
-  reais (“O ATLAS MELHOROU…” somente se merge/ledger existir).
-- [ ] **Step 4:** Gates + §7 + fechar §5 M01/V3 ou deixar ABERTO honesto se
-  server bloqueado.
+#### A1.1a — Inventário e prova do gap (native-only, sempre)
+
+- [ ] **A1.1a.1** Confirmar presença de `atlas-server` no workspace
+  (`ls ../atlas-server` ou path documentado). Se ausente → anotar
+  **BLOCKED(server)** e seguir A1.1a.* + A1.1d (casca); pular A1.1b/c
+  implementação.
+- [ ] **A1.1a.2** Re-ler evidência existente
+  `docs/evidence/2026-07-17-onda0/README.md` (M01: `delivered_total=0`).
+- [ ] **A1.1a.3** Se token/live disponível: re-probe
+  `GET …/loop/atlas-native/done?focus=dev_forge` e append resultado em
+  `docs/evidence/2026-07-17-onda0/` (não inventar números). Sem token →
+  registrar “probe skip + evidence prévia” em §7.
+- [ ] **A1.1a.4** Grep Core: `merge_performed` / `delivered_total` /
+  `mergeHash` em `Sources/AtlasCore/AtlasAutonomos.swift` +
+  `Sources/AtlasCoreChecks/AtlasAutonomosChecks.swift` — confirmar fail-closed
+  já exige merge real para “delivered”.
+- [ ] **A1.1a.5** Grep casca: `model.delivered` /
+  `SelfConstructionReceiptSheet` / copy “O ATLAS MELHOROU” em
+  `App/Atlas/AutonomosView.swift` — confirmar UI só aparece com
+  `deliveredTotal > 0` + merge hash (sem fabricar).
+- [ ] **A1.1a.6** Atualizar `OBRA.md` §5 item M01: status ABERTO honesto +
+  nota **BLOCKED se atlas-server ausente neste workspace**; path do pedido
+  (a) bridge merge **ou** (b) heal-receipt. Commit message se só docs:
+  `docs(obra): A1.1a M01 gap inventory + §5 honesty`
+
+#### A1.1b — Server bridge OU heal-receipt (**BLOCKED** se server ausente)
+
+- [ ] **A1.1b.1** **BLOCKED(server)?** Se `atlas-server` ausente: marcar
+  checkbox como BLOCKED, não implementar stub, ir para A1.1d. Se presente:
+  localizar comando/heal path (`atlas:native:constitution-heal` / AP-790).
+- [ ] **A1.1b.2** Decisão registrada em `OBRA.md` §6 ou §5: caminho **(a)**
+  merge real pós-heal **ou** **(b)** contrato heal-receipt separado de
+  `/done`.
+- [ ] **A1.1b.3** TDD PHPUnit (server): red → green para (a) ou (b);
+  `merge_performed=false` explícito se (b); nunca popular `delivered` sem
+  merge.
+- [ ] **A1.1b.4** Probe live pós-heal: `delivered_total≥1` **ou** endpoint
+  heal-receipt com campos públicos tipados. Evidence append
+  `docs/evidence/2026-07-17-onda0/`.
+- [ ] **A1.1b.5** Commit server (repo server):
+  `feat(core): M01 heal→merge bridge` **ou**
+  `feat(core): M01 heal-receipt contract (no fake merge)`
+
+#### A1.1c — Core decode (só após contrato server existir)
+
+- [ ] **A1.1c.1** **BLOCKED** se A1.1b BLOCKED. Senão: golden em
+  `Sources/AtlasCoreChecks/AtlasAutonomosChecks.swift` para payload novo
+  (delivered com merge **ou** heal-receipt tipado).
+- [ ] **A1.1c.2** Decode fail-closed em
+  `Sources/AtlasCore/AtlasAutonomos.swift` (+ `AtlasRoute.swift` se path novo).
+- [ ] **A1.1c.3** Wire `App/Atlas/AutonomosModel.swift` refresh sem inventar
+  campos.
+- [ ] **A1.1c.4** Gates + commit:
+  `feat(core): decode M01 delivered/heal-receipt fail-closed`
+
+#### A1.1d — Casca honestidade (native-only; pode correr em paralelo a BLOCKED)
+
+- [ ] **A1.1d.1** Auditar `App/Atlas/AutonomosView.swift`: header
+  “O ATLAS MELHOROU…” / self-construction **somente** se
+  `model.delivered?.deliveredTotal > 0` com ciclo merged real.
+- [ ] **A1.1d.2** Auditar `App/Atlas/SelfConstructionReceiptSheet.swift`:
+  `proofLine` não inventa merge; se heal-receipt existir no futuro, sheet
+  separado ou modo explícito `merge_performed=false` (sem copy de merge).
+- [ ] **A1.1d.3** Se server ainda BLOCKED: **não** adicionar UI de merge
+  falso; opcional copy honesta de “cura mecânica sem merge no ledger”
+  **só** se já houver campo público no model — senão silêncio.
+- [ ] **A1.1d.4** Gates + commit se houver diff de casca:
+  `polish(ui): M01 receipt only when merge/ledger real`
+- [ ] **A1.1d.5** Fechar ou manter §5 M01: FEITO só com prova server+Core;
+  senão permanece ABERTO + BLOCKED(server). Append `OBRA.md` §7.
+
+---
 
 ### Task A1.2: Arena worker → scoreboard (M61/A12)
 
-**Files:**
-- Server: worker de medição / queue rivals→arena
-- Modify: recibo `worker_implemented` path
-- Evidence: `docs/evidence/2026-07-17-arena/`
+**Fato conhecido:** A12 POST app → `runs/live` queued;
+recibo `worker_implemented=false`. Falta drenagem real
+`queued→running→done` → scoreboard/composite **sem** progresso simulado.
 
-- [ ] **Step 1:** Reproduzir POST app → `runs/live` queued +
-  `worker_implemented=false`.
-- [ ] **Step 2:** Implementar drenagem real `queued→running→done` sem
-  progresso simulado.
-- [ ] **Step 3:** Provar scoreboard/composite atualizam após run do app.
-- [ ] **Step 4:** Atualizar §5 M61/A12 → FEITO com prova; PT-M61 evidence.
+**Files (known):**
+- Evidence: `docs/evidence/2026-07-17-arena/` (`probe-after-app-run.json`,
+  `AtlasArenaFlow.log`, README)
+- Blackboard: `OBRA.md` §5 `M61/A12`
+- Core: `Sources/AtlasCore/AtlasArena.swift`
+  (`AtlasArenaStartReceipt.workerImplemented`, live runs, scoreboard)
+- Core checks: `Sources/AtlasCoreChecks/AtlasArenaChecks.swift`
+- Routes: `Sources/AtlasCore/AtlasRoute.swift`
+  (`/arena/runs`, `/arena/runs/live`, `/arena/scoreboard`, `/arena/composite`)
+- Model: `App/Atlas/ArenaModel.swift` (`startRuns`, `refreshLiveRuns`,
+  scoreboard)
+- Casca: `App/Atlas/ArenaRunSheet.swift`, `App/Atlas/ArenaNowSection.swift`,
+  `App/Atlas/AtlasArenaView.swift`
+- XCUITest: `App/UITests/AtlasArenaFlowTests.swift`
+- Server (**may be absent**): worker/queue drain em `../atlas-server`
+
+#### A1.2a — Inventário do gap (native-only)
+
+- [ ] **A1.2a.1** Confirmar `atlas-server` presente; senão
+  **BLOCKED(server)** + §5 update (abaixo).
+- [ ] **A1.2a.2** Re-ler `docs/evidence/2026-07-17-arena/probe-after-app-run.json`
+  + README: confirmar `worker_implemented=false` / queued.
+- [ ] **A1.2a.3** Confirmar decode nativo já tipa
+  `workerImplemented` em `Sources/AtlasCore/AtlasArena.swift` + check em
+  `Sources/AtlasCoreChecks/AtlasArenaChecks.swift`.
+- [ ] **A1.2a.4** Confirmar UI de recibo em `App/Atlas/ArenaRunSheet.swift`
+  (ou Now) mostra `worker_implemented=false` sem fingir running/done.
+- [ ] **A1.2a.5** Atualizar `OBRA.md` §5 `M61/A12`: ABERTO +
+  **BLOCKED se server ausente**; aceitação = drain real + scoreboard.
+  Commit docs se só isso: `docs(obra): A1.2a Arena A12 worker gap honesty`
+
+#### A1.2b — Server worker drain (**BLOCKED** se server ausente)
+
+- [ ] **A1.2b.1** **BLOCKED(server)?** Se ausente: parar aqui; não simular
+  progresso no app. Se presente: localizar worker/queue de medição Arena.
+- [ ] **A1.2b.2** TDD PHPUnit: job `terminal_bench/mockllm` (ou suite do
+  evidence) drena `queued→running→done` sem fake progress ticks na UI.
+- [ ] **A1.2b.3** Após drain: `worker_implemented=true` (ou equivalente
+  honesto) no recibo de start **e** `runs/live` terminal.
+- [ ] **A1.2b.4** Provar `GET /arena/scoreboard` + `/arena/composite`
+  mudam após run iniciado pelo app; append evidence
+  `docs/evidence/2026-07-17-arena/`.
+- [ ] **A1.2b.5** Commit server:
+  `feat(core): Arena A12 worker drain queued→done`
+
+#### A1.2c — Native binding pós-worker (só após A1.2b)
+
+- [ ] **A1.2c.1** **BLOCKED** se A1.2b BLOCKED. Senão: golden/checks se
+  schema do recibo/live mudar.
+- [ ] **A1.2c.2** `App/Atlas/ArenaModel.swift`: polling `refreshLiveRuns`
+  até terminal; refresh scoreboard/composite sem inventar pontos.
+- [ ] **A1.2c.3** Casca `ArenaRunSheet` / `ArenaNowSection` / Index charts:
+  estados loading/queued/running/done só de payload real.
+- [ ] **A1.2c.4** Re-rodar `App/UITests/AtlasArenaFlowTests.swift` (sim);
+  append log em `docs/evidence/2026-07-17-arena/`.
+- [ ] **A1.2c.5** Gates + commit:
+  `feat(core): Arena live drain binding after A12 worker`
+- [ ] **A1.2c.6** `OBRA.md` §5 M61/A12 → FEITO com prova; §4 PT-M61 /
+  E-A1 evidence; §7 append.
+
+#### A1.2d — Enquanto BLOCKED (native-only honesty)
+
+- [ ] **A1.2d.1** Garantir zero UI de progresso simulado enquanto
+  `workerImplemented == false` (grep casca Arena*).
+- [ ] **A1.2d.2** Se necessário, polish copy do recibo para “enfileirado ·
+  worker ainda não implementado” **somente** se o bool/note já vêm do
+  recibo tipado — sem inventar ETA.
+- [ ] **A1.2d.3** Gates + commit se diff:
+  `polish(ui): Arena receipt honest while worker_implemented=false`
+
+---
 
 ### Task A1.3: Deep links honestos (widgets não mentem)
 
-**Files:**
-- Modify: `App/Atlas/RootView.swift` (`onOpenURL`)
-- Modify: `App/Widgets/AtlasWidgets.swift` (URLs emitidas)
-- Test: XCUITest ou unit de parsing de URL
+**Fato conhecido:** `RootView.onOpenURL` trata `atlas://code/<repo>` e
+`atlas://execution/<trace>`; widgets emitem `atlas://autonomos` e bare
+`atlas://execution` — **faltam handlers**. Native-only; **não** depende de
+atlas-server.
 
-- [ ] **Step 1:** Handler `atlas://autonomos` → `Route.autonomos`.
-- [ ] **Step 2:** Handler `atlas://execution` (sem path) → Home LiveNow /
-  última sessão viva (sem inventar thread).
-- [ ] **Step 3:** Manter `atlas://execution/<trace>` e `atlas://code/<repo>`.
-- [ ] **Step 4:** Gates + evidência.
+**Files (known):**
+- Modify: `App/Atlas/RootView.swift` (`onOpenURL` ~L94–110; `Route` enum;
+  `LiveNowSection` na home)
+- Modify: `App/Widgets/AtlasWidgets.swift`
+  (`atlas://autonomos` ~L120; bare `atlas://execution` ~L232;
+  `atlas://execution/<threadKey>` ~L313/L386)
+- Related: `App/Atlas/LiveNowSection.swift` (destino bare execution)
+- Related: `App/Atlas/AtlasSession.swift` / `TurnPresence` (sessões vivas,
+  se necessário para resolver bare execution)
+- Test: criar ou estender unit/XCUITest de parsing URL (ex.
+  `App/UITests/` ou helper testável extraído de `RootView`)
+- Evidence (opcional): `docs/evidence/` append curto pós-prova
+
+#### A1.3a — Mapa URL → Route (spec leaf)
+
+- [ ] **A1.3a.1** Documentar na task (comentário curto no PR/§7) a matriz:
+  | URL | Destino honesto |
+  |---|---|
+  | `atlas://autonomos` | `path.append(Route.autonomos)` |
+  | `atlas://execution` (sem path) | Home + foco `LiveNowSection` / última sessão viva real — **sem** inventar thread |
+  | `atlas://execution/<trace>` | existente: resolve trace→thread |
+  | `atlas://code/<repo>` | existente: `Route.codeGraph(repo:)` |
+- [ ] **A1.3a.2** Confirmar widgets ainda emitem as URLs acima em
+  `App/Widgets/AtlasWidgets.swift` (não “consertar” URL sem handler).
+
+#### A1.3b — Implementar handlers em RootView
+
+- [ ] **A1.3b.1** Em `App/Atlas/RootView.swift` `onOpenURL`: branch
+  `host == "autonomos"` → reset/navegação para `Route.autonomos` (sem path
+  extra).
+- [ ] **A1.3b.2** Branch `host == "execution"` **sem** path component:
+  `path = NavigationPath()` (home); se existir sessão viva em
+  `TurnPresence` / `session` live sessions, opcionalmente abrir
+  `Route.thread` da **última viva real**; se zero sessões → ficar na home
+  com LiveNow (silêncio, sem toast falso).
+- [ ] **A1.3b.3** Preservar branch existente `execution/<trace>`
+  (`getAiInteraction` → thread) e `code/<repo>`.
+- [ ] **A1.3b.4** Ordem de matching explícita (autonomos → code →
+  execution bare → execution+trace) para não shadowing.
+- [ ] **A1.3b.5** Commit:
+  `fix(ui): handle atlas://autonomos and bare atlas://execution`
+
+#### A1.3c — Prova + gates
+
+- [ ] **A1.3c.1** Teste de parsing (unit preferível: função pura
+  `AtlasDeepLink` / switch testável) cobrindo autonomos, execution bare,
+  execution+trace, code+repo, URL lixo → no-op.
+- [ ] **A1.3c.2** Se XCUITest viável: abrir URL e assert destination
+  a11y (senão unit + nota device-pending).
+- [ ] **A1.3c.3** Rodar gates:
+  `env -u ATLAS_LIVE swift run AtlasCoreChecks` · `cd App && make build` ·
+  `git diff --check`
+- [ ] **A1.3c.4** Append `OBRA.md` §7 com prova; marcar A1.3 checkboxes;
+  se A1.1/A1.2 ainda BLOCKED, E-A1 fica **PARCIAL** (deep links DONE,
+  server gaps ABERTO).
 
 ---
+
+### Task A1.4: Fechamento de onda E-A1 (blackboard)
+
+- [ ] **A1.4.1** Atualizar `OBRA.md` §4 Elite: E-A1 →
+  `DONE` | `PARCIAL` | `BLOCKED` conforme leafs (nunca DONE se M01/A12
+  sem prova).
+- [ ] **A1.4.2** §5: M01 e M61/A12 FEITO ou ABERTO+BLOCKED(server)
+  explícito com path do próximo dono (Codex/server).
+- [ ] **A1.4.3** §7 append único da onda com matriz leaf → status →
+  commit SHAs.
+- [ ] **A1.4.4** Commit blackboard:
+  `docs(obra): E-A1 onda closeout (honest PARCIAL/DONE)`
+
+---
+
 
 ## Onda A2 — Arena Continuity (fora do app)
 

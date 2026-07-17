@@ -168,13 +168,13 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
 | E0 | **DONE** | **Grok 4.5** | `docs/plano-elite-agentica-24x7.md`; design; `OBRA.md` | decisão operador 2026-07-17 | Canon + plano mestre A→B→C→D | zero Route nova; fora-do-app livre; humano fora do fluxo ops | este commit |
-| E-A1 | **PENDING** | — | server+Core+casca M01/Arena worker/deep links | E0 | Onda A1 honestidade P0 | heal→merge ou heal-receipt; Arena drain→scoreboard; deep links widgets | — |
+| E-A1 | **IN_PROGRESS** | **Grok 4.5** | server+Core+casca M01/Arena worker/deep links; plano leafs A1.1–A1.4 | E0 | Onda A1 honestidade P0 | heal→merge ou heal-receipt; Arena drain→scoreboard; deep links widgets | `docs/plano-elite-agentica-24x7.md` Onda A1 leafs; atlas-server ausente → BLOCKED server leafs |
 | E-A2 | **PENDING** | — | Arena LA + App Intents | E-A1 A12 | Onda A2 Arena Continuity | LA `suite·engine·braço·N/M`; botões só ações reais | — |
 | E-A3 | **PENDING** | — | §5 contratos C9/M65/C18–C21/M98+/… | E0 | Onda A3 contratos | TDD + decode; UI só depois | — |
 | E-A4 | **PENDING** | — | deepen Conversation/Autonomos/Code/Arena/LiveNow | E-A3 onde bloquear | Onda A4 casca deepen | zero Route; fidelity matrix | — |
 | E-A5 | **PENDING** | — | Widgets/Island/lock/notif/StandBy/Controls | E-A1 deep links | Onda A5 fora-do-app | variantes honestas; silêncio se saudável | — |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
-| E-B | **PENDING** | — | splits AutonomosView/Model/Core + dedup | E-A* mínimo | CICLO B compressão 1 | Model&lt;800; views~200; saldo negativo | — |
+| E-B | **PENDING** | — | splits AutonomosView/Model/Core + dedup | E-A* mínimo | CICLO B compressão 1 | Model <800; views~200; saldo negativo | — |
 | E-C | **PENDING** | — | aprofundar 9 rotas + presença | E-B | CICLO C patamares | profundidade sem largura de telas | — |
 | E-D | **PENDING** | — | compressão 2 | E-C | CICLO D | delete ≥60% linhas de C ou ADR | — |
 
@@ -270,7 +270,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
 > Formato: `- [ABERTO|FEITO] <quem pede>→<quem entrega>: <o que> — <por quê>`
 
 - [ABERTO · M61/A10 · GPT-5.5→Fable/Codex] Live Activity dedicada da Arena — `AtlasTurnAttributes`/Widgets atuais são específicos de turnos de conversa; para "Seguir medição" na lock screen sem mentira, falta contrato/widget `suite · engine · braço · casos N/M` ligado a `AtlasArenaLiveRun` e encerramento terminal por `runs/live`.
-- [ABERTO · M61/A12 · GPT-5.5→Codex/Server] Worker de medição da Arena para runs iniciados pelo app — A12 provou `POST /api/arena/runs` real pelo app e aparição em `runs/live`, mas o recibo declara `worker_implemented=false`; falta drenar `terminal_bench/mockllm` queued → running/done → scoreboard/composto sem simular progresso.
+- [ABERTO · M61/A12 · GPT-5.5→Codex/Server] Worker de medição da Arena para runs iniciados pelo app — A12 provou `POST /api/arena/runs` real pelo app e aparição em `runs/live`, mas o recibo declara `worker_implemented=false`; falta drenar `terminal_bench/mockllm` queued → running/done → scoreboard/composto sem simular progresso. **2026-07-17 · Grok 4.5:** neste workspace `atlas-server` **ausente** → leafs A1.2b **BLOCKED(server)**; native segue A1.2a/d (recibo honesto) + A1.3 deep links.
 - [ABERTO · M49 · GPT-5.5→Codex/Native] Host pinning por perfil — precisa ADR/config de hosts não-locais + `URLSession` delegate opcional por host. Não foi implementado aqui para não introduzir pinning falso nem quebrar localhost/Tailscale.
 - [ABERTO · M89 · GPT-5.5→Codex/Fable] Live Activity App Intents mecânicos — alvo atual não depende de `AppIntents.framework` e não há `AppIntent/LiveActivityIntent` no código; quando existir, mapear somente ações reais (`state.actions`/cancel/retry/choice) para Parar/Retomar/Escolher.
 - [ABERTO · M35 · GPT-5.5→Codex/Server] TreeSitter `grammar_missing:<lang>` fail-closed — `atlas-server` já documenta o follow-up, mas o patch toca `CodeGraphTreeSitterExtractor`/indexer e deve vir com PHPUnit de grammar fake ausente; não foi seguro mexer no server sujo desta sessão.
@@ -281,7 +281,7 @@ a casca não inventa número, progresso, status, prompt ou prova.
 - [FEITO] GPT-5.5→Codex/Autônomos: worker `software_company_loop` — `php artisan queue:work database --queue=software_company_loop` no host (Docker `atlas-queue` só ouve `transcription,default`). Prova: job dry_run RUNNING→DONE; ciclo 54 `dry_run_planned`.
 - [FEITO] Grok 4.5→Codex: healer mecânico R2 `atlas:native:constitution-heal` — AP-786/senior-loop é ferramenta errada p/ dead_symbol (TDD/BDD + factory_max rouba seleção). Canário `sha1:19fc7482…` dry_run→healed; re-scan ausente. start-run passa `repo_root` / `allow_canonical_worktree_write` / `injected_finding`.
 - [ABERTO] Grok 4.5→Codex/Fable: V3 DoD restante — heal mecânico ainda **não** grava ciclo `outcome=merged` em `model.delivered`; casca sem recibo "O ATLAS MELHOROU O PRÓPRIO APP" até haver merge/ledger real **ou** contrato de heal-receipt (sem fabricar delivered). Device screenshots: `passcodeRequired=true`.
-- [ABERTO · M01 · 2026-07-17 · Grok→Codex/server] Bridge heal→merge ausente: probe `GET …/atlas-native/done` → `delivered_total=0` (59 ledger). Healer R2 prova `merge_performed=false` por design. Pedido: (a) pós-heal governado commit+merge+append AP-790 com `merge_hash` real, OU (b) contrato heal-receipt separado de `/done` + seam na casca — NUNCA fabricar merge fields. Evidence: `docs/evidence/2026-07-17-onda0/`.
+- [ABERTO · M01 · 2026-07-17 · Grok→Codex/server] Bridge heal→merge ausente: probe `GET …/atlas-native/done` → `delivered_total=0` (59 ledger). Healer R2 prova `merge_performed=false` por design. Pedido: (a) pós-heal governado commit+merge+append AP-790 com `merge_hash` real, OU (b) contrato heal-receipt separado de `/done` + seam na casca — NUNCA fabricar merge fields. Evidence: `docs/evidence/2026-07-17-onda0/`. **2026-07-17 · Grok 4.5:** neste workspace `atlas-server` **ausente** → leafs A1.1b/c **BLOCKED(server)**; native A1.1a/d (inventário + casca fail-closed, sem fabricar delivered).
 - [ABERTO · Onda0 · operador] M02 DEVICE_PROVEN / M03 Instruments / M04 APNs / M05 verticais-device — roteiros em `docs/evidence/2026-07-17-onda0/README.md`. Device `passcodeRequired=true`.
 - [FEITO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — `AtlasSession.failureKind` + `AtlasNetworkFailureKind` entregues em `da9399a`.
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
@@ -959,14 +959,16 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   (composto, capacidades, live, start) é parte do item. Segue pendente
   apenas o NOME no código.
 
-- **2026-07-17 · Defaults de §B mantidos nesta entrega:** M27 (paisagem), M41
-  (SwiftFormat/lint), M53 (biometria), M60 (arquivar §7 antigo) e M82
-  (commitar docs de plano/spec/roadmap) permanecem nos defaults do plano:
-  não implementar/arquivar/commitar enquanto não houver decisão explícita do operador.
+- **2026-07-17 · Defaults de §B:** M27/M41/M53/M60 permanecem SKIP. **M82
+  parcial:** autorizado commitar `docs/plano-elite-agentica-24x7.md` + design
+  elite; demais `docs/plano-*`/`roadmap-*`/`spec-*` seguem untracked até nova
+  decisão.
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **Elite E-A1 claim + A1 leaf tasks** · este commit · `docs/plano-elite-agentica-24x7.md` Onda A1 expandida em leafs bite-sized (A1.1a–d M01, A1.2a–d Arena A12, A1.3a–c deep links, A1.4 closeout) com paths exatos, checkboxes, gates e commit messages. §4 E-A1 → **IN_PROGRESS** (Grok 4.5). §5 M01 + M61/A12: **BLOCKED(server)** honesto — `atlas-server` ausente neste workspace; native-only segue (A1.3 handlers). Sem mudança de runtime. Prova: docs + blackboard.
 
 - 2026-07-17 · Grok 4.5 · **Elite 24×7 — plano mestre + canon** · este commit · Design `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md` + plano `docs/plano-elite-agentica-24x7.md` (ciclos A implementar → B comprimir → C aprofundar → D comprimir; zero Route nova; fora-do-app livre ≈130 variantes; humano fora do fluxo ops). OBRA §0/§4 Elite E0–E-D / §6 decisão / §B M82 parcial. Inventário via 5 subagentes (rotas, doutrina, gaps, fora-do-app, saúde de código). **Próximo:** E-A1 (M01, Arena worker, deep links). Prova: docs + blackboard; sem mudança de runtime neste commit.
 
