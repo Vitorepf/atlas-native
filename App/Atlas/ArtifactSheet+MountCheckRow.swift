@@ -4,7 +4,7 @@ import AtlasCore
 // Mount check row — peel de ArtifactSheet+MountChecks.
 
 extension ArtifactSheet {
-    func mountCheckRow(index: Int, check: ArtifactDeliveryProof.Check) -> some View {
+    func mountCheckRow(index: Int, check: ArtifactDeliveryCheck) -> some View {
         HStack(spacing: 8) {
             Text(check.label)
                 .font(AtlasFont.mono(10))
