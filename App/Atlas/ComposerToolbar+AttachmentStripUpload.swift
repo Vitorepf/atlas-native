@@ -2,17 +2,16 @@ import SwiftUI
 import AtlasCore
 
 // Upload percent row — peel de ComposerToolbar+AttachmentStrip.
+// ProgressBar → ComposerToolbar+AttachmentStripUpload+ProgressBar.swift
+// PercentLabel → ComposerToolbar+AttachmentStripUpload+PercentLabel.swift
 
 extension AttachmentStrip {
     @ViewBuilder
     var uploadProgressRow: some View {
         if let p = uploadPercent {
             HStack(spacing: 10) {
-                ProgressView(value: p).tint(AtlasTheme.accent)
-                Text("\(Int(p * 100))%")
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                    .monospacedDigit()
-                    .modifier(NumericTextTransition(enabled: !reduceMotion))
+                uploadProgressBar(p)
+                uploadPercentLabel(p)
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("enviando anexos, \(Int(p * 100)) por cento")

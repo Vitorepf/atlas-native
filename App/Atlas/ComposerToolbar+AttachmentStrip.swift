@@ -3,6 +3,7 @@ import AtlasCore
 
 // Faixa de anexos + progresso de upload — peel de ComposerToolbar.
 // Upload → ComposerToolbar+AttachmentStripUpload.swift
+// Draft → ComposerToolbar+AttachmentStrip+DraftBranch.swift
 
 struct AttachmentStrip: View {
     let drafts: [LocalDraft]
@@ -14,10 +15,7 @@ struct AttachmentStrip: View {
     var body: some View {
         if isVisible {
             Group {
-                if !drafts.isEmpty {
-                    DraftStrip(drafts: drafts, reduceMotion: reduceMotion,
-                               onRemove: onRemove, onFailedTap: onFailedTap)
-                }
+                attachmentDraftBranch
                 uploadProgressRow
             }
             .accessibilityIdentifier(A11yID.composerAttachmentStrip)

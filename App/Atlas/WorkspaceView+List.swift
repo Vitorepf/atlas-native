@@ -4,6 +4,7 @@ import AtlasCore
 // Peel anti-inchaço — lista e links honestos do WorkspaceView (só threads reais).
 // Link → WorkspaceView+ThreadLink.swift
 // Caption → WorkspaceView+ListCaption.swift
+// Rows → WorkspaceView+List+ThreadRows.swift
 
 struct WorkspaceThreadsSection: View {
     let threads: [AtlasAiThread]
@@ -14,13 +15,7 @@ struct WorkspaceThreadsSection: View {
     var body: some View {
         Group {
             captionHeader
-            ForEach(threads) { t in
-                WorkspaceThreadLink(thread: t, reduceMotion: reduceMotion)
-                if t.id != threads.last?.id {
-                    Divider().overlay(AtlasTheme.separator)
-                        .padding(.leading, AtlasTheme.Space.screen + 36)
-                }
-            }
+            threadRows
         }
     }
 }

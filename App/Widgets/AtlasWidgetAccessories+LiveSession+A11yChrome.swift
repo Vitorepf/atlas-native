@@ -4,6 +4,7 @@ import AtlasCore
 
 // Live content a11y — peel de AtlasWidgetAccessories+LiveSession+Content.
 // Transaction → AtlasWidgetAccessories+LiveSession+A11yTransaction.swift
+// PhaseID → AtlasWidgetAccessories+LiveSession+A11yChrome+PhaseID.swift
 
 extension LiveSessionWidgetView {
     func liveSessionA11yChrome<Content: View>(
@@ -13,9 +14,12 @@ extension LiveSessionWidgetView {
         stale: Bool
     ) -> some View {
         liveSessionSpokenLabelBind(
-            content
-                .id(LiveSessionWidgetA11y.contentPhaseID(snapshot: snapshot, live: live, stale: stale))
-                .transaction { transaction in liveSessionA11yTransaction(&transaction) },
+            liveSessionA11yPhaseID(
+                content.transaction { transaction in liveSessionA11yTransaction(&transaction) },
+                snapshot: snapshot,
+                live: live,
+                stale: stale
+            ),
             snapshot: snapshot,
             live: live,
             stale: stale

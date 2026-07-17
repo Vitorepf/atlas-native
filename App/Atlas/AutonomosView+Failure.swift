@@ -2,21 +2,17 @@ import SwiftUI
 
 /// Falha de carregamento da frota — canônico (substitui VStack inline em AutonomosView).
 /// Copy → AutonomosView+FailureCopy.swift
+/// Icon → AutonomosView+Failure+Icon.swift
+/// Retry → AutonomosView+Failure+RetryButton.swift
 struct AutonomosFleetFailureEmpty: View {
     let message: String
     let onRetry: () -> Void
 
     var body: some View {
         VStack(spacing: 14) {
-            Image(systemName: "exclamationmark.triangle")
-                .font(.title2)
-                .foregroundStyle(AtlasTheme.domOperacional)
-                .accessibilityHidden(true)
+            failureIcon
             failureCopy
-            Button("Tentar de novo", action: onRetry)
-                .buttonStyle(AutonomosPrimaryButtonStyle())
-                .accessibilityIdentifier(A11yID.autonomosRetry)
-                .accessibilityHint("reconecta à frota Autônomos")
+            failureRetryButton
         }
         .padding(32)
         .accessibilityElement(children: .combine)
