@@ -3,13 +3,13 @@ import SwiftUI
 import AtlasCore
 
 // Metrics stack — peel de CodeWeek+Quiet.
+// Primary → AtlasWidgetAccessories+CodeWeek+Quiet+MetricsStack+Primary.swift
 
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekMetricsStack(_ week: AtlasNativeSnapshot.Week) -> some View {
         HStack(spacing: 14) {
-            if week.commits > 0 { weekMetric("\(week.commits)", "commits") }
-            if week.heals > 0 { weekMetric("\(week.heals)", "curas") }
+            weekMetricsPrimary(week)
             if week.prevented > 0 { weekMetric("\(week.prevented)", "prevenidos") }
         }
     }

@@ -4,13 +4,13 @@ import ActivityKit
 import AtlasCore
 
 // Finished/badge trailing — peel de IslandExpanded+Trailing.
+// Finished → AtlasTurnLiveActivity+IslandExpanded+TrailingBadge+Finished.swift
 
 extension AtlasTurnIslandTrailing {
     @ViewBuilder
     func finishedOrBadgeTrailing(context: ActivityViewContext<AtlasTurnAttributes>) -> some View {
         if context.state.finished {
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(Ink.healed).padding(.trailing, 6)
+            finishedTrailing()
         } else if let badge = context.state.phaseBadge {
             Text(badge)
                 .font(.system(size: 11, weight: .bold, design: .monospaced))
