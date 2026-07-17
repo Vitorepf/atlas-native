@@ -6,6 +6,7 @@ import AtlasCore
 // Title → PlanCard+StepRowTitle.swift
 // Pulse → PlanCard+StepRowPulse.swift
 // A11y → PlanCard+StepRowA11y.swift
+// Body → PlanCard+StepRow+Body.swift
 
 struct PlanStepRowView: View {
     let step: AtlasExecutionPlan.Step
@@ -18,8 +19,6 @@ struct PlanStepRowView: View {
     @State var pulse = false
 
     var body: some View {
-        applyStepPulse(
-            stepRowA11yChrome(stepRowLayout)
-        )
+        stepRowBody
     }
 }

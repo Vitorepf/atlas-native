@@ -4,6 +4,8 @@ import Foundation
 // Findings → AutonomosOperationDigest+A11yFindings.swift
 // Backlog → AutonomosOperationDigest+A11yBacklog.swift
 // Delivered → AutonomosOperationDigest+A11yDelivered.swift
+// Delivered append → AutonomosOperationDigest+A11yCounts+Delivered.swift
+// BacklogFindings → AutonomosOperationDigest+A11yCounts+BacklogFindings.swift
 
 extension AutonomosOperationDigestA11y {
     static func spokenCounts(
@@ -14,15 +16,14 @@ extension AutonomosOperationDigestA11y {
         findingsByRisk: [String: Int]
     ) -> [String] {
         var parts: [String] = []
-        if let delivered = spokenDeliveredCount(deliveredTotal) {
-            parts.append(delivered)
-        }
-        parts.append(contentsOf: spokenBacklogParts(
+        spokenCountsDelivered(&parts, deliveredTotal: deliveredTotal)
+        spokenCountsBacklogFindings(
+            &parts,
             pendingCount: pendingCount,
             inboxCount: inboxCount,
-            oldestBacklogCreatedAt: oldestBacklogCreatedAt
-        ))
-        parts.append(contentsOf: spokenCountFindings(findingsByRisk))
+            oldestBacklogCreatedAt: oldestBacklogCreatedAt,
+            findingsByRisk: findingsByRisk
+        )
         return parts
     }
 }

@@ -5,6 +5,7 @@ import AtlasCore
 /// Detail/transfer → AutonomosSheetsModifier+Detail.swift
 /// Nightly → AutonomosSheetsModifier+Nightly.swift
 /// Control → AutonomosSheetsModifier+Control.swift
+/// BodyChain → AutonomosSheetsModifier+BodyChain.swift
 struct AutonomosSheetsModifier: ViewModifier {
     @Bindable var model: AutonomosModel
     let nightly: NightlyProposalController
@@ -18,10 +19,6 @@ struct AutonomosSheetsModifier: ViewModifier {
     let revertReceipt: (SelfConstructionReceipt) -> AtlasAutonomosCycleRevertResponse?
 
     func body(content: Content) -> some View {
-        detailSheets(on:
-            nightlyStartSheet(on:
-                controlSheets(on: content)
-            )
-        )
+        autonomosSheetsBody(on: content)
     }
 }
