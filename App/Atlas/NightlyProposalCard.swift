@@ -31,27 +31,31 @@ struct NightlyProposalCard: View {
                 Button("Preparar missão noturna", action: onAccept)
                     .buttonStyle(AutonomosPrimaryButtonStyle())
                     .accessibilityIdentifier(A11yID.nightlyProposalAccept)
-                    .accessibilityLabel("preparar missão noturna")
-                    .accessibilityHint("abre o ensaio governado da missão noturna")
+                    .accessibilityLabel(Self.spokenAcceptLabel())
+                    .accessibilityHint(Self.spokenAcceptHint())
                 Button("hoje não", action: onDismiss)
                     .font(.system(.footnote, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .buttonStyle(PressableScale())
                     .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
-                    .accessibilityHint("descarta em silêncio")
+                    .accessibilityLabel(Self.spokenDismissLabel())
+                    .accessibilityHint(Self.spokenDismissHint())
                 Menu("silenciar") {
                     Button("1 dia") { onMute(1) }
-                        .accessibilityLabel("silenciar por 1 dia")
+                        .accessibilityLabel(Self.spokenMuteOption(days: 1))
+                        .accessibilityHint(Self.spokenMuteOptionHint())
                     Button("3 dias") { onMute(3) }
-                        .accessibilityLabel("silenciar por 3 dias")
+                        .accessibilityLabel(Self.spokenMuteOption(days: 3))
+                        .accessibilityHint(Self.spokenMuteOptionHint())
                     Button("7 dias") { onMute(7) }
-                        .accessibilityLabel("silenciar por 7 dias")
+                        .accessibilityLabel(Self.spokenMuteOption(days: 7))
+                        .accessibilityHint(Self.spokenMuteOptionHint())
                 }
                 .font(.system(.footnote, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityIdentifier(A11yID.nightlyProposalMute)
-                .accessibilityLabel("silenciar propostas noturnas")
-                .accessibilityHint("oculta propostas por 1, 3 ou 7 dias, em silêncio")
+                .accessibilityLabel(Self.spokenMuteMenuLabel())
+                .accessibilityHint(Self.spokenMuteMenuHint())
             }
         }
         .padding(14)
@@ -59,9 +63,6 @@ struct NightlyProposalCard: View {
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.nightlyProposalCard)
-        .accessibilityLabel(
-            "missão noturna proposta. Hoje você trabalhou em \(proposal.workspaceText). "
-            + "A frota pode continuar enquanto você descansa."
-        )
+        .accessibilityLabel(Self.spokenCardLabel(workspaceText: proposal.workspaceText))
     }
 }

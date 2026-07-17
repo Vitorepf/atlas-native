@@ -10,8 +10,8 @@ extension NightlyProposalController {
               await canScheduleNotifications() else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "A frota trabalhou esta noite"
-        content.body = "Veja as entregas comprovadas."
+        content.title = NotificationCopy.morningTitle
+        content.body = NotificationCopy.morningBody
         content.sound = .default
         content.userInfo = ["atlas.route": "autonomos"]
 

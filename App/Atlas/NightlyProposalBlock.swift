@@ -21,6 +21,11 @@ struct AutonomosNightlyProposalBlock: View {
                     onMute: { nightly.muteProposal(days: $0) }
                 )
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+            } else if let spoken = nightly.spokenMuteStatus() {
+                Color.clear
+                    .frame(height: 0)
+                    .accessibilityLabel(spoken)
+                    .accessibilityAddTraits(.isStaticText)
             }
         }
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: visibilityToken)

@@ -48,8 +48,8 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
         guard await canScheduleNotifications() else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "A frota pode trabalhar esta noite"
-        content.body = "Hoje você mexeu em \(summary.workspaces.joined(separator: ", ")). Quer pôr os Autônomos nisso enquanto descansa?"
+        content.title = NotificationCopy.nightlyTitle
+        content.body = NotificationCopy.nightlyBody(workspaces: summary.workspaces)
         content.sound = .default
         content.userInfo = [
             "atlas.route": "autonomos-nightly",
