@@ -67,13 +67,16 @@ struct ConversationMessages: View {
                             .id(bubble.id)
                             .task(id: bubble.traceId?.rawValue) {
                                 if bubble.role == "assistant", !bubble.streaming, let trace = bubble.traceId {
-                                    await model.reviews.refreshArtifacts(traceId: trace)
+                                    await model.reviews.refreshChangeReview(traceId: trace)
                                 }
                             }
-                            // C15: revisão só entra pela projeção canônica do
-                            // trace (a folha diz "sem artefatos" quando não há).
+                            // C15: entrada só quando a projeção canônica prova
+                            // patches/checks/achados — silêncio se unavailable ou vazio.
                             if bubble.role == "assistant", !bubble.streaming,
-                               !bubble.activities.isEmpty, let trace = bubble.traceId {
+                               let trace = bubble.traceId,
+                               let review = model.reviews.changeReviewsByTrace[trace],
+                               review.state == .available,
+                               ChangeReviewSheet.hasReviewSurface(review) {
                                 Button { reviewTrace = ConversationReviewTraceRef(id: trace) } label: {
                                     HStack(spacing: 6) {
                                         Image(systemName: "plus.forwardslash.minus").font(.system(size: 11))

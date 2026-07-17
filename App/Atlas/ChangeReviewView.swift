@@ -12,8 +12,10 @@ struct ChangeReviewSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var expandedDiffPatch: String?
     @State private var applying = false
+    @State private var loadFinished = false
 
     private var review: AtlasTraceChangeReview? { reviews.changeReviewsByTrace[traceId] }
 
@@ -28,36 +30,46 @@ struct ChangeReviewSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Fechar") { dismiss() } }
             }
-            .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews) }
+            .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }
+            .accessibilityIdentifier(A11yID.reviewSheet)
         }
-        .task { await reviews.refreshChangeReview(traceId: traceId) }
+        .task {
+            await reviews.refreshChangeReview(traceId: traceId)
+            loadFinished = true
+        }
     }
 
     @ViewBuilder
     private var content: some View {
-        if let review {
+        if !loadFinished, review == nil {
+            loading("consultando a revisão…")
+        } else if loadFinished, review == nil {
+            unavailableBody(
+                title: "Não foi possível consultar a revisão.",
+                subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
+                identifier: A11yID.reviewLoadFailure,
+                spoken: "não foi possível consultar a revisão"
+            )
+        } else if let review {
             switch review.state {
             case .unavailable:
-                VStack(spacing: 12) {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .font(.title2).foregroundStyle(AtlasTheme.textTertiary)
-                    Text("Sem artefatos de revisão nesta execução.")
-                        .font(AtlasFont.serif(18, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
-                        .multilineTextAlignment(.center)
-                    if let reason = review.reason {
-                        Text(reason).font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
-                            .multilineTextAlignment(.center)
-                    }
-                }
-                .padding(36)
+                unavailableBody(
+                    title: "Sem revisão de mudanças nesta execução.",
+                    subtitle: TraceEvidenceCopy.unavailableReason(review.reason),
+                    identifier: A11yID.reviewUnavailable,
+                    spoken: unavailableSpoken(review)
+                )
             case .available:
-                available(review)
-            }
-        } else {
-            VStack(spacing: 14) {
-                ProgressView().tint(AtlasTheme.accent)
-                Text("consultando a revisão…")
-                    .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textTertiary)
+                if Self.hasReviewSurface(review) {
+                    available(review)
+                } else {
+                    unavailableBody(
+                        title: "Revisão ligada, mas sem patches nem provas publicadas.",
+                        subtitle: "o servidor confirmou o vínculo, porém não há diff, checks ou achados a mostrar.",
+                        identifier: A11yID.reviewEmpty,
+                        spoken: "revisão ligada mas sem patches nem provas publicadas"
+                    )
+                }
             }
         }
     }
@@ -91,5 +103,62 @@ struct ChangeReviewSheet: View {
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, 14)
         }
         .scrollIndicators(.hidden)
+    }
+
+    private func loading(_ text: String) -> some View {
+        VStack(spacing: 14) {
+            BreathingDiamond(size: 10, reduceMotion: reduceMotion)
+            Text(text)
+                .font(AtlasFont.serifItalic(15))
+                .foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(text)
+    }
+
+    private func unavailableBody(
+        title: String,
+        subtitle: String?,
+        identifier: String,
+        spoken: String
+    ) -> some View {
+        VStack(spacing: 12) {
+            Image(systemName: "doc.text.magnifyingglass")
+                .font(.title2)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            Text(title)
+                .font(AtlasFont.serif(18, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .multilineTextAlignment(.center)
+            if let subtitle, !subtitle.isEmpty {
+                Text(subtitle)
+                    .font(.footnote)
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .padding(36)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(spoken)
+        .accessibilityIdentifier(identifier)
+    }
+
+    private func unavailableSpoken(_ review: AtlasTraceChangeReview) -> String {
+        var parts = ["sem revisão de mudanças nesta execução"]
+        if let reason = TraceEvidenceCopy.unavailableReason(review.reason) {
+            parts.append(reason)
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.
+    static func hasReviewSurface(_ review: AtlasTraceChangeReview) -> Bool {
+        !review.patches.isEmpty
+            || !review.controls.isEmpty
+            || !review.testRuns.isEmpty
+            || !review.review.findings.isEmpty
+            || !review.review.operatorActions.isEmpty
+            || !review.review.availableActions.isEmpty
     }
 }

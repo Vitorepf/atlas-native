@@ -11,6 +11,7 @@ struct ArtifactSheet: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var selectedID: String?
     @State private var preview: PreviewState = .idle
+    @State private var loadFinished = false
 
     private var artifacts: AtlasTraceArtifacts? { reviews.artifactsByTrace[traceId] }
     private var items: [AtlasTraceArtifacts.Item] {
@@ -35,7 +36,10 @@ struct ArtifactSheet: View {
             .overlay(alignment: .top) { toast }
             .accessibilityIdentifier(A11yID.artifactsSheet)
         }
-        .task { await reviews.refreshArtifacts(traceId: traceId) }
+        .task {
+            await reviews.refreshArtifacts(traceId: traceId)
+            loadFinished = true
+        }
         .onChange(of: items.map(\.id)) { _, ids in
             if selectedID == nil || selectedID.map({ !ids.contains($0) }) == true {
                 selectedID = ids.first
@@ -49,17 +53,29 @@ struct ArtifactSheet: View {
 
     @ViewBuilder
     private var content: some View {
-        if artifacts == nil {
+        if !loadFinished, artifacts == nil {
             loading("consultando artefatos…")
+        } else if loadFinished, artifacts == nil {
+            evidenceEmpty(
+                title: "Não foi possível consultar artefatos.",
+                subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
+                identifier: A11yID.artifactsLoadFailure,
+                spoken: "não foi possível consultar artefatos"
+            )
+        } else if artifacts?.state == .unavailable {
+            evidenceEmpty(
+                title: "Sem artefatos nesta execução.",
+                subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
+                identifier: A11yID.artifactsUnavailable,
+                spoken: unavailableSpokenLabel
+            )
         } else if items.isEmpty {
-            VStack(spacing: 12) {
-                BreathingDiamond(size: 10, reduceMotion: true)
-                Text("Sem artefatos visualizáveis nesta execução.")
-                    .font(AtlasFont.serif(18, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(36)
+            evidenceEmpty(
+                title: "Sem artefatos visualizáveis nesta execução.",
+                subtitle: nil,
+                identifier: A11yID.artifactsEmpty,
+                spoken: "sem artefatos visualizáveis nesta execução"
+            )
         } else {
             VStack(alignment: .leading, spacing: 12) {
                 Text("ARTEFATOS DO TURNO · \(artifacts?.workspaceLabel ?? "workspace")")
@@ -146,6 +162,44 @@ struct ArtifactSheet: View {
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(text)
+    }
+
+    private func evidenceEmpty(
+        title: String,
+        subtitle: String?,
+        identifier: String,
+        spoken: String
+    ) -> some View {
+        VStack(spacing: 12) {
+            Image(systemName: "doc.text")
+                .font(.title2)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            Text(title)
+                .font(AtlasFont.serif(18, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .multilineTextAlignment(.center)
+            if let subtitle, !subtitle.isEmpty {
+                Text(subtitle)
+                    .font(.footnote)
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .padding(36)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(spoken)
+        .accessibilityIdentifier(identifier)
+    }
+
+    private var unavailableSpokenLabel: String {
+        var parts = ["sem artefatos nesta execução"]
+        if let reason = TraceEvidenceCopy.unavailableReason(artifacts?.reason) {
+            parts.append(reason)
+        }
+        return parts.joined(separator: ", ")
     }
 
     private func load(_ item: AtlasTraceArtifacts.Item) async {
@@ -169,7 +223,8 @@ struct ArtifactSheet: View {
                 .padding(.top, 8)
                 .task {
                     try? await Task.sleep(nanoseconds: 1_400_000_000)
-                    withAnimation(AtlasMotion.editorial) { reviews.toast = nil }
+                    if reduceMotion { reviews.toast = nil }
+                    else { withAnimation(AtlasMotion.editorial) { reviews.toast = nil } }
                 }
         }
     }

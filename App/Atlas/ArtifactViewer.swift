@@ -4,6 +4,21 @@ import AtlasCore
 
 // Preview + zoom helpers do ArtifactSheet — fora do shell para a régua (~200).
 
+/// Copy editorial para `reason` do contrato trace-scoped — nunca inventa motivo.
+enum TraceEvidenceCopy {
+    static func unavailableReason(_ reason: String?) -> String? {
+        guard let reason, !reason.isEmpty else { return nil }
+        switch reason {
+        case "no_workspace": return "sem workspace ligado a esta execução"
+        case "no_run": return "nenhum run de engenharia vinculado"
+        case "multiple_runs": return "mais de um run — evidência indisponível"
+        case "ambiguous_linked_runs": return "vínculo ambíguo entre runs"
+        default:
+            return reason.replacingOccurrences(of: "_", with: " ")
+        }
+    }
+}
+
 enum ArtifactViewer {
     static func kindLabel(_ kind: AtlasTraceArtifacts.Item.Kind) -> String {
         switch kind {
@@ -77,6 +92,7 @@ struct ArtifactPreviewContent: View {
 struct ZoomableArtifactImage: View {
     let image: UIImage
     let name: String
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var scale: CGFloat = 1
     @State private var lastScale: CGFloat = 1
     @State private var offset: CGSize = .zero
@@ -106,8 +122,8 @@ struct ZoomableArtifactImage: View {
                 }
             }
             .accessibilityAction(named: "Redefinir zoom") { resetZoom() }
-            .animation(.easeOut(duration: 0.18), value: scale)
-            .animation(.easeOut(duration: 0.18), value: offset)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: scale)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: offset)
     }
 
     private var zoomGesture: some Gesture {

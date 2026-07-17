@@ -78,8 +78,18 @@ enum A11yID {
     // V4 · Artifacts & Proof
     static let artifactsRow = "artifacts-row"
     static let artifactsSheet = "artifacts-sheet"
+    static let artifactsEmpty = "artifacts-empty"
+    static let artifactsUnavailable = "artifacts-unavailable"
+    static let artifactsLoadFailure = "artifacts-load-failure"
     static let artifactsItemPrefix = "artifacts-item-"
     static func artifactsItem(_ index: Int) -> String { artifactsItemPrefix + String(index) }
+
+    // C15 · Change review (cena 12)
+    static let reviewSheet = "review-sheet"
+    static let reviewUnavailable = "review-unavailable"
+    static let reviewEmpty = "review-empty"
+    static let reviewLoadFailure = "review-load-failure"
+    static let reviewDiffUnavailable = "review-diff-unavailable"
 
     // V3 · Self-Construction
     static let selfReceiptSheet = "self-receipt-sheet"

@@ -33,15 +33,17 @@ struct ChangeReviewControlsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            ChangeReviewCaption("CONTROLES")
+            ChangeReviewCaption("CONTROLES · \(controls.count)")
             ForEach(controls) { c in
                 HStack(spacing: 8) {
                     Text(c.slug).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textPrimary)
                     Text(c.status).font(AtlasFont.mono(10))
-                        .foregroundStyle(c.status == "pass" ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
+                        .foregroundStyle(c.status == "pass" || c.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
                     Spacer()
                     Text(c.signalSummary).font(.caption2).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(c.slug), status \(c.status), \(c.signalSummary)")
             }
         }
     }
@@ -52,7 +54,7 @@ struct ChangeReviewTestsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            ChangeReviewCaption("TESTES")
+            ChangeReviewCaption("TESTES · \(tests.count)")
             ForEach(tests) { t in
                 HStack(spacing: 8) {
                     Text(t.command ?? "teste").font(AtlasFont.mono(10))
@@ -61,6 +63,8 @@ struct ChangeReviewTestsSection: View {
                     Text(t.status).font(AtlasFont.mono(10))
                         .foregroundStyle(t.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(t.command ?? "teste"), status \(t.status)")
             }
         }
     }
@@ -207,6 +211,7 @@ struct ChangeReviewCaption: View {
 
 struct ChangeReviewToast: View {
     let reviews: ChangeReviewModel
+    var reduceMotion: Bool = false
 
     var body: some View {
         if let t = reviews.toast {
@@ -215,10 +220,11 @@ struct ChangeReviewToast: View {
                 .padding(.horizontal, 16).padding(.vertical, 9)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
-                .transition(.move(edge: .top).combined(with: .opacity))
+                .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .task {
                     try? await Task.sleep(nanoseconds: 1_400_000_000)
-                    withAnimation(AtlasMotion.editorial) { reviews.toast = nil }
+                    if reduceMotion { reviews.toast = nil }
+                    else { withAnimation(AtlasMotion.editorial) { reviews.toast = nil } }
                 }
         }
     }
