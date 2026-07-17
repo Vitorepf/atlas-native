@@ -21,7 +21,9 @@ extension ConversationMessages {
                 .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
             }
             .buttonStyle(PressableScale())
-            .accessibilityHint("abre arquivos, diff e provas desta execução")
+            .accessibilityLabel(ConversationMessagesA11y.spokenChangeReview(patchCount: review.patches.count))
+            .accessibilityHint(ConversationMessagesA11y.changeReviewHint)
+            .accessibilityIdentifier(A11yID.reviewChip(trace.rawValue))
         }
     }
 }

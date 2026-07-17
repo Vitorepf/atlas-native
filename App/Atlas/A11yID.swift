@@ -16,6 +16,7 @@ enum A11yID {
     static let conversationNewMarker = "conversation-new-marker"
     static let conversationOutlineRowPrefix = "conversation-outline-row-"
     static let conversationLoadFailure = "conversation-load-failure"
+    static let conversationScrollFAB = "conversation-scroll-fab"
     static let continuityHandoffReceipt = "continuity-handoff-receipt"
 
     static let executionReconnectBanner = "execution-reconnect-banner"

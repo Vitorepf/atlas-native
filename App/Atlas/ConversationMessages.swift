@@ -85,6 +85,8 @@ struct ConversationMessages: View {
                         }
                         .padding(.horizontal, AtlasTheme.Space.screen)
                         .padding(.top, 16)
+                        .accessibilityElement(children: .contain)
+                        .accessibilityLabel(ConversationMessagesA11y.spokenMessages(turnCount: model.bubbles.count))
                     }
                 }
             }

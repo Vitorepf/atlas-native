@@ -25,6 +25,8 @@ extension A11yID {
         reviewCouncilMemberPrefix + provider.lowercased()
     }
     static let reviewSheet = "review-sheet"
+    static let reviewChipPrefix = "review-chip-"
+    static func reviewChip(_ traceId: String) -> String { reviewChipPrefix + traceId }
     static let reviewUnavailable = "review-unavailable"
     static let reviewEmpty = "review-empty"
     static let reviewLoadFailure = "review-load-failure"
