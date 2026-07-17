@@ -18,6 +18,8 @@ struct QueuedFollowUpsSheet: View {
             }
         }
         .accessibilityIdentifier(A11yID.queueSheet)
+        .accessibilityLabel(spokenQueueSheetLabel())
+        .accessibilityHint("promover ou remover só mensagens reais da fila do model")
     }
 
     private var sheetContent: some View {
@@ -52,5 +54,11 @@ struct QueuedFollowUpsSheet: View {
 
     private func sheetTitle(count: Int) -> String {
         count == 1 ? "Fila · 1" : "Fila · \(count)"
+    }
+
+    private func spokenQueueSheetLabel() -> String {
+        let n = model.queuedMessages.count
+        if n == 0 { return "fila vazia" }
+        return n == 1 ? "fila, 1 mensagem" : "fila, \(n) mensagens"
     }
 }

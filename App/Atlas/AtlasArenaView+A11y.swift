@@ -26,6 +26,20 @@ extension AtlasArenaView {
         return parts.joined(separator: ", ")
     }
 
+    func spokenArenaScreenLabel() -> String {
+        switch model.phase {
+        case .idle, .loading:
+            return "Arena, carregando índice medido"
+        case .failed:
+            if model.isDomainUnavailable, model.composite == nil {
+                return domainUnavailableSpoken
+            }
+            return "Arena, falha ao carregar medição"
+        case .loaded:
+            return headerSpokenLabel
+        }
+    }
+
     var domainUnavailableSpoken: String {
         "Arena, \(ArenaModel.domainUnavailableCopy)"
     }
