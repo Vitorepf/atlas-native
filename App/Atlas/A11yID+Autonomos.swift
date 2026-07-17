@@ -18,6 +18,8 @@ extension A11yID {
     static let autonomosOperationQuiet = "autonomos-operation-quiet"
     static let autonomosTransferSheet = "autonomos-transfer-sheet"
     static let autonomosTransferStatus = "autonomos-transfer-status"
+    static let autonomosTaskHealthQuiet = "autonomos-task-health-quiet"
+    static let autonomosTaskHealthIncident = "autonomos-task-health-incident"
     static let autonomosTransferRefresh = "autonomos-transfer-refresh"
     static let autonomosTransferActor = "autonomos-transfer-actor"
     static let autonomosTransferReason = "autonomos-transfer-reason"
