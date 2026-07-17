@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Corpo da linha narrativa — peel de NarrativeRowView.
+// Meta → LiveTimeline+NarrativeMeta.swift
 
 extension NarrativeRowView {
     var narrativeBody: some View {
@@ -37,29 +38,10 @@ extension NarrativeRowView {
                         .truncationMode(.middle)
                         .accessibilityHidden(true)
                 }
-                if let duration = row.durationMs {
-                    HStack(spacing: 5) {
-                        Text("Δ \(humanDuration(duration))")
-                            .font(AtlasFont.mono(10))
-                            .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
-                            .monospacedDigit()
-                            .modifier(NumericTextTransition(enabled: !reduceMotion))
-                        if row.isP90 {
-                            Text("p90")
-                                .font(AtlasFont.mono(9))
-                                .foregroundStyle(AtlasTheme.domOperacional)
-                        }
-                    }
-                    .accessibilityHidden(true)
-                }
+                narrativeDurationMeta
             }
             .padding(.bottom, 10)
             Spacer(minLength: 0)
         }
-    }
-
-    var currentTraits: AccessibilityTraits {
-        guard isCurrent else { return [] }
-        return reduceMotion ? .isSelected : [.isSelected, .updatesFrequently]
     }
 }

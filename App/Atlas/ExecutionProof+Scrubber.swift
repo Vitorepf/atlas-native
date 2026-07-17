@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Scrubber de replay — peel de ExecutionProof+Replay (régua ≤100).
+// Controls → ExecutionProof+ScrubberControls.swift
 
 extension ExecutionProof {
     @ViewBuilder
@@ -34,22 +35,7 @@ extension ExecutionProof {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .accessibilityHidden(true)
-                if reduceMotion {
-                    Stepper("passo \(index + 1)", value: Binding(
-                        get: { replayIndex },
-                        set: { replayIndex = min(max(0, $0), stamped.count - 1) }
-                    ), in: 0...(stamped.count - 1))
-                    .labelsHidden()
-                    .accessibilityLabel("replay da execução, passo \(index + 1) de \(stamped.count)")
-                } else {
-                    Slider(value: Binding(
-                        get: { Double(replayIndex) },
-                        set: { replayIndex = min(max(0, Int($0.rounded())), stamped.count - 1) }
-                    ), in: 0...Double(stamped.count - 1), step: 1)
-                    .tint(AtlasTheme.accent)
-                    .accessibilityLabel("scrubber de replay da execução")
-                    .accessibilityValue("passo \(index + 1) de \(stamped.count)")
-                }
+                replayControls(stampedCount: stamped.count)
             }
             .padding(10)
             .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.bgRecessed))

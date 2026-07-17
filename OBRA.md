@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CVI — CICLO B/D Receipts Plan Timeline Scrubber Health Workspace Island peels + C silence** · este commit · CICLO B/D: Receipts `+ReceiptLines` (phase ID canônico único); Plan `+StepRowDot`; Timeline `+Scroll`/`+NarrativeMeta`; Scrubber `+Controls`; Health `+Bodies`; Workspace `+ThreadLink`; Island Expanded `+Trailing`. CICLO C: Plan step title / Health quiet decorative silence. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CV — CICLO B Workspace/State/Attach/Provenance/Composer/Patch peels + C Provenance silence** · este commit · CICLO B: Workspace `+ChromeNewPill`; StateCard `+Header`; Attachments `+Paste`; Provenance `+Loaded`; Composer `+QueueGrabber`; Patch `+Toggle`. CICLO C: Provenance failed/block decorative silence sob spoken. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CIV — CICLO B Home/Transfer/Arena/Search/Chrome/Finding/Scroll peels + C Finding silence** · este commit · CICLO B: Home `+Conversas`/`+Operacao`; Transfer `+Body`; ArenaRun `+FormGovernance`; Search `+HeaderField`; Chrome `+Toast`; Finding `+A11y`; Messages `+ScrollFAB`. CICLO C: Finding row decorative silence sob spoken. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.

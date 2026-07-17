@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Peel anti-inchaço — lista e links honestos do WorkspaceView (só threads reais).
+// Link → WorkspaceView+ThreadLink.swift
 
 struct WorkspaceThreadsSection: View {
     let threads: [AtlasAiThread]
@@ -9,14 +10,14 @@ struct WorkspaceThreadsSection: View {
     let screenTitle: String
     let reduceMotion: Bool
 
-    private var caption: String {
+    var caption: String {
         if area == .tudo {
             return "\(threads.count) conversa\(threads.count == 1 ? "" : "s")"
         }
         return "\(threads.count) em \(area.label)"
     }
 
-    private var spokenCaption: String {
+    var spokenCaption: String {
         if area == .tudo {
             return "\(threads.count) conversa\(threads.count == 1 ? "" : "s") em \(screenTitle)"
         }
@@ -41,24 +42,5 @@ struct WorkspaceThreadsSection: View {
                 }
             }
         }
-    }
-}
-
-struct WorkspaceThreadLink: View {
-    let thread: AtlasAiThread
-    let reduceMotion: Bool
-
-    var body: some View {
-        NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
-            ThreadRow(thread: thread)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
-        .accessibilityHint("abre a conversa")
-        .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
-        .transition(reduceMotion ? .opacity : .asymmetric(
-            insertion: .opacity.combined(with: .offset(y: 6)),
-            removal: .opacity
-        ))
     }
 }

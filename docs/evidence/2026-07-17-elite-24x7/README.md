@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **332+** | primeiro commit do plano: `ec931f2`; Elite CV em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **333+** | primeiro commit do plano: `ec931f2`; Elite CVI em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,13 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CV (este tip)
+## Entrega Elite CVI (este tip)
+
+- `refactor(ui)` CICLO B/D: Receipts+ReceiptLines (phase ID canônico); Plan+StepRowDot; Timeline+Scroll/+NarrativeMeta; Scrubber+Controls; Health+Bodies; Workspace+ThreadLink; Island Expanded+Trailing.
+- `polish(ui)` CICLO C: Plan step / Health quiet decorative silence sob spoken.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CV (anterior)
 
 - `refactor(ui)` CICLO B: Workspace+ChromeNewPill; StateCard+Header; Attachments+Paste; Provenance+Loaded; Composer+QueueGrabber; Patch+Toggle.
 - `polish(ui)` CICLO C: Provenance failed/block decorative silence sob spoken.
