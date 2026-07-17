@@ -15,6 +15,10 @@ public enum AtlasRoute {
     public static let liveActivities = "/ai/live-activities"
     public static let liveActivityStartTokens = "/ai/live-activities/start-tokens"
     public static let uploadChunksStart = "/ai/uploads/chunks/start"
+    public static let arenaComposite = "/arena/composite"
+    public static let arenaScoreboard = "/arena/scoreboard"
+    public static let arenaLiveRuns = "/arena/runs/live"
+    public static let arenaRuns = "/arena/runs"
     public static let autonomosAreas = "/ai/software-company-stewardship/loop/areas"
     public static let autonomosDigest = "/ai/software-company-stewardship/autonomos/digest"
     public static let agentsStatus = "/agents/status"
@@ -68,6 +72,10 @@ public enum AtlasRoute {
     public static func aiInteractionArtifactContent(traceId: String, artifactId: String, maxBytes: Int) -> String {
         let capped = min(max(maxBytes, 1), 10_485_760)
         return "\(aiInteractionArtifacts(traceId))/\(component(artifactId))/content?max_bytes=\(capped)"
+    }
+
+    public static func arenaCapabilities(engine: String) -> String {
+        "\(arenaCapabilitiesBase)\(atlasQueryString([("engine", .string(engine))]))"
     }
 
     public static func codeProvenance(_ hash: String) -> String {
@@ -150,6 +158,8 @@ public enum AtlasRoute {
         "/ai/software-company-stewardship/loop/\(component(area))"
     }
 
+    private static let arenaCapabilitiesBase = "/arena/capabilities"
+
     private static func component(_ value: String) -> String {
         value.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? value
     }
@@ -167,6 +177,8 @@ public func runAtlasRouteChecks(_ check: (String, Bool) -> Void) {
           AtlasRoute.aiInteractionChangeReviewDiff(traceId: "tr 1", patchId: "patch/2") == "/ai/interactions/tr%201/change-review/patches/patch%2F2/diff")
     check("route artifact content encodes ids and max bytes",
           AtlasRoute.aiInteractionArtifactContent(traceId: "tr/1", artifactId: "art 2", maxBytes: 9) == "/ai/interactions/tr%2F1/artifacts/art%202/content?max_bytes=9")
+    check("route Arena capabilities encodes engine",
+          AtlasRoute.arenaCapabilities(engine: "codex/cli") == "/arena/capabilities?engine=codex%2Fcli")
     check("route upload chunk uses canonical chunks path",
           AtlasRoute.uploadChunk("up/7") == "/ai/uploads/chunks/up%2F7/chunk")
     check("route autonomos transfer status keeps area and handoff encoded",
