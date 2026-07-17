@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **173** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 475 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 174 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **179** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 481 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 180 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -61,16 +61,18 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **XXXVII** | **PARCIAL** | RadarView shell honesty + ConversationView toast/outline/header (`a884787`/`a83fd5d`) |
 | **XXXVIII** | **PARCIAL** | CodeView hub AskPill/week + ConversationMessages FAB/scroll (`76b8ef3`/`91d9ab7`) |
 | **XXXIX** | **PARCIAL** | ArenaRunSheet submit/engines + AutonomosSheets reason/detail (`7f204da`/`f58dcbe`) |
+| **XL** | **PARCIAL** | Lock accessories incident/timer só snapshot publicado; peels `LockLive+A11y`/`LockRect` (`70aec79`) |
+| **XLI** | **PARCIAL** | Root chrome spoken/RM + Fleet/Live widget honesty; peels `RootView+Chrome+A11y`/`Fleet+A11y`/`LiveSession+A11y` (`c6ca757`/`0986e25`) |
+| **XLII** | **PARCIAL** | TurnPresence notificação terminal + Nightly spoken/mute/copy; peels `+Notifications+A11y`/`NightlyProposal+A11y` (`51e019c`/`74d47f1`) |
 
-## Entrega recente (wave XXXIX contínuo — Radar/Conversation/CodeView/Messages/ArenaRun/AutonomosSheets — HEAD)
+## Entrega recente (wave XLII contínuo — Lock/Root/Widgets/TurnPresence/Nightly — HEAD)
 
-- `polish(ui)` CICLO C ArenaRun: submit spoken campos faltantes; bloqueio sem motores; `worker_implemented=false` no recibo; peel `ArenaRunSheet+A11y` (`7f204da`).
-- `polish(ui)` CICLO C AutonomosSheets: reason confirm disabled spoken; detail contagens reais; peels `AutonomosReasonSheet+A11y`/`AutonomosDetailSheet+A11y` (`f58dcbe`).
-- `polish(ui)` CICLO C Messages: FAB silencia sem turnos; auto-scroll só com bolhas; chip revisão spoken patches reais; peel `ConversationMessages+A11y` (`91d9ab7`).
-- `polish(ui)` CICLO C CodeView hub: AskPill spoken recorte/âncora real; week zeros quiet; peel `AtlasCodeView+AskPill+A11y` (`76b8ef3`).
-- `polish(ui)` CICLO C ConversationView: toast spoken; outline só com turnos; continuidade separada; peel `ConversationView+A11y` (`a83fd5d`).
-- `polish(ui)` CICLO C Radar: spoken fase/contagem real; falha trimada; vazio silêncio visual; peel `AtlasCodeRadarView+A11y` (`a884787`).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **173** (inclui este pin).
+- `polish(ui)` CICLO C Nightly: spoken card/accept/mute; `NightlyProposal+Copy`/`+A11y`; block fala mute ativo (`74d47f1`).
+- `polish(ui)` CICLO C TurnPresence: notificação só fase terminal; título `phaseTitle`; corpo excerpt/detail real; peel `TurnPresence+Notifications+A11y` (`51e019c`).
+- `polish(ui)` CICLO C Fleet/Live widgets: incidente só texto publicado; timer RM live session; peels `Fleet+A11y`/`LiveSession+A11y`/`+Timer` (`0986e25`).
+- `polish(ui)` CICLO C Root chrome: avatar silenciado; topbar/home spoken; chips `.isSelected`; peel `RootView+Chrome+A11y` (`c6ca757`).
+- `polish(ui)` CICLO C Lock accessories: `LockAccessoryA11y` incident/timer/inline/rectangular honestos; peel `LockLive+A11y` (`70aec79`).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **179** (inclui este pin).
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ### Top 10 (App/Core/Widgets — all ≤100)
