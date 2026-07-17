@@ -28,7 +28,7 @@ struct ComposerToolbar: View {
     var body: some View {
         HStack(spacing: 10) {
             Button {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                 onAttach()
             } label: {
                 Image(systemName: "paperclip")
@@ -38,11 +38,13 @@ struct ComposerToolbar: View {
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel("adicionar anexo")
+            .accessibilityHint("abre foto, arquivo ou colar")
             ZStack(alignment: .topLeading) {
                 Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
                     .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
                     .allowsHitTesting(false).opacity(model.draftText.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
                     .animation(reduceMotion ? nil : .easeOut(duration: 0.28), value: model.draftText.isEmpty)
+                    .accessibilityHidden(true)
                 TextField("", text: Binding(
                     get: { model.draftText },
                     set: { model.updateDraft($0) }
@@ -50,8 +52,11 @@ struct ComposerToolbar: View {
                     .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
                     .tint(AtlasTheme.accent).lineLimit(1...6).focused(focused)
                     .accessibilityIdentifier(A11yID.conversationInput)
+                    .accessibilityLabel(spokenInputLabel())
+                    .accessibilityHint(spokenInputHint())
             }
             trailingControl
         }
+        .accessibilityElement(children: .contain)
     }
 }

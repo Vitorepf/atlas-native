@@ -22,9 +22,11 @@ extension ComposerToolbar {
         } else if isExecuting {
             ZStack {
                 BreathingDiamond(size: 13, reduceMotion: reduceMotion)
+                    .accessibilityHidden(true)
                 Image(systemName: "arrow.up.circle.fill")
                     .font(.system(size: 29))
                     .foregroundStyle(AtlasTheme.textTertiary.opacity(0.38))
+                    .accessibilityHidden(true)
             }
             .frame(width: 32, height: 32)
             .accessibilityElement(children: .ignore)
@@ -34,25 +36,27 @@ extension ComposerToolbar {
         } else {
             Menu {
                 Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                     onShowWorkspace()
                 } label: {
                     Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
                 }
+                .accessibilityLabel("workspace, \(model.workspaceName ?? "Atlas")")
                 Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                     onShowMode()
                 } label: {
                     Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
                 }
+                .accessibilityLabel("modo, \(mode)")
                 Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                     onShowEffort()
                 } label: {
                     Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
                 }
                 .accessibilityLabel(spokenEffortLabel(model.effort))
-                .accessibilityHint("abre opções de esforço computacional")
+                .accessibilityHint(spokenEffortHint())
             } label: {
                 Image(systemName: "ellipsis")
                     .font(.system(size: 17, weight: .semibold))
