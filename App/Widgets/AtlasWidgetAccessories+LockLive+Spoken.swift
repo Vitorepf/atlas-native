@@ -2,6 +2,7 @@ import AtlasCore
 import Foundation
 
 /// Spoken label do lock — peel de LockAccessoryA11y.
+/// Sessions → AtlasWidgetAccessories+LockLive+SpokenSessions.swift
 
 extension LockAccessoryA11y {
     static func spokenLabel(snapshot: AtlasNativeSnapshot, stale: Bool, age: String) -> String {
@@ -13,14 +14,7 @@ extension LockAccessoryA11y {
             parts.append("\(paused.title), pausado")
             if let clock = frozenClock(paused) { parts.append("tempo congelado \(clock)") }
         } else if let sessions = snapshot.liveSessions, !sessions.isEmpty {
-            let n = sessions.count
-            if let first = sessions.first {
-                parts.append(n == 1
-                    ? "\(first.title), \(first.phaseTitle), em execução"
-                    : "\(n) sessões vivas, \(first.phaseTitle)")
-            } else {
-                parts.append("\(n) sessões vivas")
-            }
+            parts.append(contentsOf: spokenLiveSessions(sessions))
         } else {
             parts.append("silêncio na obra")
         }

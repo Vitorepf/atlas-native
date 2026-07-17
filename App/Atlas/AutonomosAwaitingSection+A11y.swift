@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 /// Spoken labels — peel de AutonomosAwaitingYouSection (régua ≤100).
+/// Count → AutonomosAwaitingSection+A11yCount.swift
 
 extension AutonomosAwaitingYouSection {
     var sectionSpokenLabel: String {
@@ -21,11 +22,5 @@ extension AutonomosAwaitingYouSection {
         count == 1
             ? "abrir 1 ordem aguardando sua decisão"
             : "abrir \(count) ordens aguardando sua decisão"
-    }
-
-    static func decisionCount(in backlog: AtlasAutonomosBacklogResponse?) -> Int {
-        guard let backlog else { return 0 }
-        return backlog.inboxItems.filter(\.decisionRequired).count
-            + backlog.workOrders.filter(\.operatorDecisionRequired).count
     }
 }

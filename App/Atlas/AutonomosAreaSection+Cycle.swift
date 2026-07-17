@@ -1,6 +1,7 @@
 import SwiftUI
 
 // Helpers + ciclo HStack — peel de AutonomosAreaControls.
+// Helpers → AutonomosAreaSection+CycleHelpers.swift
 
 extension AutonomosAreaControls {
     var cycleButtons: some View {
@@ -14,18 +15,5 @@ extension AutonomosAreaControls {
                 .accessibilityLabel(spoken("executar de verdade, \(areaName)"))
                 .accessibilityHint(hint("inicia ciclo real com governança"))
         }
-    }
-
-    func tap(_ action: () -> Void) {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        action()
-    }
-
-    func spoken(_ label: String) -> String {
-        canControl ? label : "\(label), indisponível"
-    }
-
-    func hint(_ text: String) -> String {
-        canControl ? text : spokenContainerHint
     }
 }

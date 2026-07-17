@@ -2,6 +2,7 @@ import AtlasCore
 import SwiftUI
 
 /// Spoken labels da home — peel de RootHomeSections (CICLO C residual honesty).
+/// Visibility → RootHomeSections+A11yVisibility.swift
 
 extension RootHomeSections {
     static func codeTopBarLabel(hub: AtlasCodeHubModel?) -> String {
@@ -22,10 +23,4 @@ extension RootHomeSections {
         guard let count else { return name }
         return "\(name), \(count) conversa\(count == 1 ? "" : "s")"
     }
-
-    /// Chips só quando há workspaces reais — Livres/Todas ficam na linha CONVERSAS.
-    var showsWorkspaceChips: Bool { !session.workspaces.isEmpty }
-
-    /// WORKSPACES some quando não há pastas — "Todas" já vive nos chips.
-    var showsWorkspacesSection: Bool { !session.workspaces.isEmpty }
 }

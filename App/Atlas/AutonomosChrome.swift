@@ -17,15 +17,3 @@ enum AutonomosChrome {
         return "\(max(1, seconds / 60))min"
     }
 }
-
-enum AutonomosFleetHealth {
-    static func isQuiet(fleet: AtlasAutonomosFleetResponse, incidentPresent: Bool) -> Bool {
-        !incidentPresent
-            && !fleet.agents.isEmpty
-            && fleet.agents.allSatisfy { $0.alive && $0.desired && $0.authorized }
-    }
-
-    static func agentNeedsAttention(_ agent: AtlasAutonomosFleetAgent) -> Bool {
-        !agent.alive || !agent.desired || !agent.authorized
-    }
-}

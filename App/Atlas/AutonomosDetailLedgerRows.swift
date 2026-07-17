@@ -4,23 +4,12 @@ import AtlasCore
 // Findings — peel de AutonomosDetailContent (régua ≤100).
 // Budgets → AutonomosDetailLedgerRows+Budgets.swift
 // Items → AutonomosDetailLedgerRows+Findings.swift
+// Summary → AutonomosDetailLedgerRows+Summary.swift
 
 enum AutonomosDetailLedgerRows {
     @ViewBuilder
     static func findings(_ backlog: AtlasAutonomosBacklogResponse) -> some View {
-        AutonomosDetailChrome.card("Resumo") {
-            AutonomosDetailChrome.field("total", "\(backlog.findings.total)")
-            AutonomosDetailChrome.field("distintos", "\(backlog.findings.distinctTotal)")
-            AutonomosDetailChrome.field("retornados", "\(backlog.findings.returned)")
-            AutonomosDetailChrome.field(
-                "por risco",
-                backlog.findings.byRisk.sorted { $0.key < $1.key }.map { "\($0.key): \($0.value)" }.joined(separator: " · ")
-            )
-            AutonomosDetailChrome.field(
-                "por rota",
-                backlog.findings.byRoute.sorted { $0.key < $1.key }.map { "\($0.key): \($0.value)" }.joined(separator: " · ")
-            )
-        }
+        findingsSummary(backlog)
         AutonomosDetailLedgerFindings.findingCards(backlog)
     }
 

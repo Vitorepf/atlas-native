@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 // Undo + step spoken — peel de AtlasCodeHealReceiptSheet+A11y.
+// Button → AtlasCodeHealReceiptSheet+A11yUndoButton.swift
 
 extension AtlasCodeHealReceiptSheet {
     func spokenStepsSummaryLabel() -> String {
@@ -17,15 +18,5 @@ extension AtlasCodeHealReceiptSheet {
 
     func spokenUndoWindowLabel(_ note: String) -> String {
         "janela de veto, \(note)"
-    }
-
-    func spokenUndoButtonLabel() -> String {
-        canUndo ? "desfazer cura com recibo" : "desfazer indisponível"
-    }
-
-    func spokenUndoButtonHint() -> String {
-        canUndo
-            ? "envia veto retroativo auditável para esta cura"
-            : "prazo de veto encerrado ou recibo sem identificador"
     }
 }

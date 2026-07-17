@@ -13,14 +13,7 @@ struct AutonomosDetailChipButton: View {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         } label: {
-            Text(label)
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .padding(.horizontal, 9)
-                .padding(.vertical, 6)
-                .background(Capsule().fill(AtlasTheme.surfaceHi))
-                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
-                .accessibilityHidden(true)
+            chipLabel
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel(AutonomosDetailChipButtonA11y.spokenLabel(label: label, spoken: spokenLabel))
