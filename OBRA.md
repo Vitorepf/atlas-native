@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLVI — CICLO B Arena/Now/Fleet/History/Widgets peels** · `8a0d2b0` · CICLO B: Arena `+A11yHeader`/`+A11ySheetLabel`; Now `+RowCopy`; Area `+A11yChrome`; History `+Loaded`; Live `+A11yPhase`; Findings `+FindingFields`; Self `+VetoLabel`/`+ProofChrome`; Fleet `+A11yChrome`; Workspace `+ChromeFilterLabel`; Island `+TrailingBadge`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLV — CICLO B Review/Fleet/History/Anchors/Heal/Arena peels** · `c809952` · CICLO B: Review `+SectionsAfter`/`+TestRow`/`+DecidedRow`; Health `+SecondaryMetrics`; Fleet `+RowA11y`; History `+RowMeta`; Anchors `+AnchorsPartial`; Provenance `+FileButton`; Heal `+UndoLabel`; Status `+StatusChrome`; Arena `+FailureCopy`; Toggle `+ToggleSubtitle`; Suites `+Rows`; Digest `+LastRisk`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLIV — CICLO B Search/Thread/Circle/Proof/Cockpit peels** · `278aa88` · CICLO B: Search `+ListCaption`; Thread `+A11y`; Circle `+CircleButtonBadge`; Audit `+AuditStatus`; Execution `+Icon`; Scrubber `+ScrubberTitle`; Header `+HeaderSummary`; Strip `+SteerButton`; Watchdog `+WatchdogSeconds`; Agent `+AgentStatusWord`; Sheet `+SheetChrome`; Live `+A11ySpokenLive`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
