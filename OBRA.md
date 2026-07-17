@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXII — CICLO B Markdown/Council/Receipt/Arena/Artifact/Draft/Messages/Search/Editorial/Diff peels** · `59231b8` · CICLO B: Markdown `+InlineMark`; Council `+StatsLine`/`+RevisionsLine`; Receipt `+ReceiptTransition`; ArenaEngine `+ScrollBody`; Artifact `+A11yPreview`; DraftThumb `+A11yThumb`; Messages `+ScrollPreference`; Search `+ScrollShell`; Editorial `+A11yFeedback`; EngineIndex `+A11ySpoken`; Diff `+A11yCard`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXXI — CICLO B Code/Inbox/Diff/Digest/Arena/Council/LiveNow/Steer/Loaded/Fleet/Composer peels** · `3be7b48` · CICLO B: CodeLoadFailure `+A11y`; Inbox `+Decision`; Diff `+Shell`; Digest `+BodyStack`/`+A11yQuiet`; Arena `+RowHeader`; Council `+Content`; LiveNow `+RowSeparator`; Steer `+A11ySubmit`; Loaded `+OptionalA11y`; Fleet `+A11yAgent`; Composer `+OptionsEffort`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXX — CICLO B Digest/Artifact/Transfer/Markdown/Control/Workspace peels** · `cd512dd` · CICLO B: Digest `+Body`; Artifact `+MountStack`; Transfer `+BodyA11y`; Markdown `+A11yQuote`; Control `+ControlOnly`; Workspace `+ThreadLinkA11y`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
