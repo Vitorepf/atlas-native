@@ -4,21 +4,14 @@ import AtlasCore
 // Failure — peel de AtlasArenaView+States.
 // Exception → AtlasArenaView+Exception.swift
 // Retry → AtlasArenaView+FailureRetry.swift
+// Copy → AtlasArenaView+FailureCopy.swift
 
 extension AtlasArenaView {
     var networkFailureCard: some View {
         let kind = model.loadFailureKind
         let hasToken = session.hasToken
         return VStack(alignment: .leading, spacing: 10) {
-            Text(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken))
-                .font(AtlasFont.serif(18, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .accessibilityHidden(true)
-            Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
-                .font(.system(.subheadline))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .lineSpacing(4)
-                .accessibilityHidden(true)
+            networkFailureCopy(kind: kind, hasToken: hasToken)
             networkFailureRetry
         }
         .frame(maxWidth: .infinity, alignment: .leading)

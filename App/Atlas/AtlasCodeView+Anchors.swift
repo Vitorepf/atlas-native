@@ -3,6 +3,7 @@ import AtlasCore
 
 // Legenda da pílula — peel de AtlasCodeView+Anchors.
 // Visible → AtlasCodeView+AnchorsVisible.swift
+// Partial → AtlasCodeView+AnchorsPartial.swift
 
 extension AtlasCodeView {
     /// O que a pílula diz sobre o mapa — contado no que ACENDEU.
@@ -17,13 +18,8 @@ extension AtlasCodeView {
         guard askModel.isAnchoring else { return nil }
         let acesas = visibleAnchors.count
         let citadas = askModel.anchors.count
-        if acesas == 0 {
-            return citadas == 1
-                ? "o commit da resposta está fora desta janela"
-                : "os \(citadas) commits da resposta estão fora desta janela"
-        }
         if acesas < citadas {
-            return "\(acesas) de \(citadas) acesos aqui — o resto está fora desta janela"
+            return anchorLegendPartial(acesas: acesas, citadas: citadas)
         }
         return askModel.anchorNote
     }

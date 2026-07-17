@@ -4,6 +4,7 @@ import AtlasCore
 // Agent row chrome — peel de AutonomosFleetSection.
 // Tags → AutonomosFleetSection+RowTags.swift
 // Header → AutonomosFleetSection+RowHeader.swift
+// A11y → AutonomosFleetSection+RowA11y.swift
 
 extension AutonomosFleetSection {
     @ViewBuilder
@@ -15,16 +16,12 @@ extension AutonomosFleetSection {
         }
         .padding(12)
         .atlasCard(cornerRadius: 12)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(
-            AutonomosFleetSectionA11y.spokenAgent(
-                agent,
-                index: index,
-                total: fleet.agents.count,
-                compact: compact,
-                auditModeEnabled: auditModeEnabled
-            )
+        .autonomosFleetAgentA11y(
+            agent: agent,
+            index: index,
+            total: fleet.agents.count,
+            compact: compact,
+            auditModeEnabled: auditModeEnabled
         )
-        .accessibilityIdentifier(A11yID.autonomosFleetAgentRow(index))
     }
 }

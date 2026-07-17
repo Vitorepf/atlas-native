@@ -4,6 +4,7 @@ import AtlasCore
 // Incident body — peel de AutonomosTaskHealthSection.
 // Quiet → AutonomosFleetTaskHealth+QuietBody.swift
 // Incident card → AutonomosFleetTaskHealth+IncidentCard.swift
+// Secondary → AutonomosFleetTaskHealth+SecondaryMetrics.swift
 
 extension AutonomosTaskHealthSection {
     var incidentBody: some View {
@@ -18,12 +19,7 @@ extension AutonomosTaskHealthSection {
             .accessibilityHidden(true)
             .animation(reduceMotion ? nil : .default, value: health.tasks.servableNow)
             .animation(reduceMotion ? nil : .default, value: health.tasks.claimed)
-            HStack(spacing: 8) {
-                FleetMetric(value: "\(health.tasks.completed)", label: "completas")
-                FleetMetric(value: "\(health.tasks.recoverable)", label: "recuperáveis")
-            }
-            .accessibilityHidden(true)
-            .animation(reduceMotion ? nil : .default, value: health.tasks.completed)
+            incidentSecondaryMetrics
             incidentCard
         }
     }

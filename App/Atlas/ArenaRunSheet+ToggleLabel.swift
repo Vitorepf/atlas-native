@@ -3,6 +3,7 @@ import AtlasCore
 
 // Toggle label content — peel de ArenaRunSheet+Toggle.
 // A11y → ArenaRunSheet+ToggleA11y.swift
+// Subtitle → ArenaRunSheet+ToggleSubtitle.swift
 
 extension ArenaRunSheet {
     func toggleLabel(title: String, subtitle: String?, isOn: Bool) -> some View {
@@ -16,12 +17,7 @@ extension ArenaRunSheet {
                     .font(.system(.callout, weight: .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
-                if let subtitle {
-                    Text(subtitle)
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityHidden(true)
-                }
+                toggleSubtitle(subtitle)
             }
             Spacer()
         }

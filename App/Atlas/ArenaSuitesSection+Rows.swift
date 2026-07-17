@@ -1,24 +1,20 @@
 import SwiftUI
+import Charts
 import AtlasCore
 
-// MARK: - Arena suite rows (peel de ArenaSuitesSection)
-// Sparkline → ArenaSuiteSparkline.swift · Trailing → +RowTrailing · Leading → +RowLeading
+// Suite rows — peel de ArenaSuitesSection+List.
 
-struct ArenaSuiteRow: View {
-    let suite: AtlasArenaSuite
-
-    var body: some View {
-        HStack(spacing: 12) {
-            suiteLeading
-            Spacer(minLength: 8)
-            suiteTrailing
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+extension ArenaSuitesSection {
+    var suiteRows: some View {
+        ForEach(suites) { suite in
+            Button { onSuiteTap(suite) } label: {
+                ArenaSuiteRow(suite: suite)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(ArenaSuitesSectionA11y.spokenSuite(suite))
+            .accessibilityHint("abre detalhes da suite")
+            .accessibilityIdentifier("arena-suite-\(suite.suite)")
+            .transition(reduceMotion ? .identity : .opacity)
         }
-        .padding(.vertical, 10)
-        .contentShape(Rectangle())
-        .accessibilityHidden(true)
     }
 }

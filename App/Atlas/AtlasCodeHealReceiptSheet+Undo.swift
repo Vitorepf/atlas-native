@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Undo button — peel de AtlasCodeHealReceiptSheet+Chrome.
+// Label → AtlasCodeHealReceiptSheet+UndoLabel.swift
 
 extension AtlasCodeHealReceiptSheet {
     var undoButton: some View {
@@ -10,16 +11,7 @@ extension AtlasCodeHealReceiptSheet {
             onUndo()
             dismiss()
         } label: {
-            HStack(spacing: 7) {
-                Image(systemName: "arrow.uturn.backward")
-                    .accessibilityHidden(true)
-                Text("Desfazer — com recibo")
-            }
-            .font(.system(size: 14, weight: .medium))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .foregroundStyle(AtlasTheme.textSecondary)
-            .atlasCard(cornerRadius: 13)
+            undoButtonLabel
         }
         .buttonStyle(PressableScale())
         .transition(reduceMotion ? .identity : .opacity)

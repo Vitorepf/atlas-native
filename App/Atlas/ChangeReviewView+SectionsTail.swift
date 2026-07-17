@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Patch cards + actions do review — peel de ChangeReviewView+Sections.
+// After → ChangeReviewView+SectionsAfter.swift
 
 extension ChangeReviewAvailableContent {
     @ViewBuilder
@@ -14,17 +15,6 @@ extension ChangeReviewAvailableContent {
                 expandedDiffPatch: $expandedDiffPatch
             )
         }
-        if !review.controls.isEmpty { ChangeReviewControlsSection(controls: review.controls) }
-        if !review.testRuns.isEmpty { ChangeReviewTestsSection(tests: review.testRuns) }
-        if !review.review.findings.isEmpty { ChangeReviewFindingsSection(findings: review.review.findings) }
-        if !review.review.operatorActions.isEmpty {
-            ChangeReviewDecidedSection(actions: review.review.operatorActions)
-        }
-        ChangeReviewRunActions(
-            review: review,
-            reviews: reviews,
-            traceId: traceId,
-            applying: $applying
-        )
+        reviewSectionsAfterPatches
     }
 }
