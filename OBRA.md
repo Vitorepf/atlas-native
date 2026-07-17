@@ -171,7 +171,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A1 | **PARCIAL** | **Grok 4.5** | Core `AtlasDeepLink` + RootView + Widgets M84; server M01/A12 | E0 | Onda A1 honestidade P0 | A1.3 deep links DONE; M84 Semana widget; M01/A12 **BLOCKED(server)** neste ambiente | deep link + week widget neste commit; gates Swift BLOCKED(cloud Linux) |
 | E-A2 | **PENDING** | — | Arena LA + App Intents | E-A1 A12 | Onda A2 Arena Continuity | LA `suite·engine·braço·N/M`; botões só ações reais | — |
 | E-A3 | **PENDING** | — | §5 contratos C9/M65/C18–C21/M98+/… | E0 | Onda A3 contratos | TDD + decode; UI só depois | — |
-| E-A4 | **PARCIAL** | **Grok 4.5** | deepen + fidelity matrix | E0 | Onda A4 casca deepen | A4.5 matrix DONE; deepen cenas ainda pendente | `14585d7` + `docs/fable-5-fidelity-matrix.md` |
+| E-A4 | **PARCIAL** | **Grok 4.5** | deepen + fidelity matrix | E0 | Onda A4 casca deepen | A4.5 matrix DONE; A4.1 Session Hub=`LiveNowSection` multi-row deepen DONE; demais cenas ainda pendente | `14585d7` + este commit LiveNow hub |
 | E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana + lock accessories atenção/incidente; Island SD-2 ainda parcial | `183f01f`+`08f0dda` |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
 | E-B | **PARCIAL** | **Grok 4.5** | AutonomosView + ConversationView + ConversationModel + RootChrome peel | E-A* | CICLO B compressão 1 | AutonomosView 1153→565; ConversationView 823→795; ConversationModel 885→642; RootView 592→433 (`RootChrome`) | peels + `wc -l`; build Mac-pending |
@@ -969,6 +969,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
 - 2026-07-17 · Grok 4.5 · **CICLO B — extract RootChrome from RootView** · este commit · `RootView.swift` 592→433; extrai `RootChrome.swift` (BreathingGlyph, CircleButton, WorkspaceRow, ThreadRow, `sectionLabel`; OperationRow ausente); Route + navegação ficam em RootView; zero mudança de comportamento. §4 E-B atualizado. Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
+
+- 2026-07-17 · Grok 4.5 · **Elite A4.1 Session Hub deepen** · este commit · `LiveNowSection` hub 2+: header `× N`, divisores, cada row title + phaseTitle + timing (`em execução`/`pausado`/`concluído`) + elapsed; split `LiveNowRow.swift` (anti-inchaço); `onOpen` + Reduce Motion + `atlasCard`; zero Route. `LockScreenView` eleva `queueLabel` (`fila N`) no banner. Prova: diff casca/widget; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac; device-pending multi-session.
 
 - 2026-07-17 · Grok 4.5 · **CICLO B — peel ConversationModel queue/execution** · este commit · `ConversationModel.swift` 885→642; extrai `ConversationModel+Queue` (106) + `ConversationModel+Execution` (152); API pública das views intacta (`queue`/`promote`/`removeQueued`/`currentExecutionPresence`/`resolveExecutionChoice`/`retryTurn`); members de store/scope/activeRun/sendTurn/update/draft helpers internos ao módulo para as extensions. §4 E-B atualizado. Prova: `wc -l`; Swift toolchain ausente neste cloud — re-rodar `AtlasCoreChecks` + `make build` no Mac.
 

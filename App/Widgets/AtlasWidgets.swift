@@ -573,21 +573,24 @@ private struct LockScreenView: View {
                             .padding(.horizontal, 7).padding(.vertical, 2)
                             .background(Capsule().fill(Ink.gold.opacity(0.14)))
                     }
+                    // M87: fila N no banner da lock quando o ContentState publica queuedCount.
+                    if let queued = context.state.queueLabel {
+                        Text(queued)
+                            .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(Ink.gold)
+                            .padding(.horizontal, 7).padding(.vertical, 2)
+                            .background(Capsule().fill(Ink.gold.opacity(0.14)))
+                    }
                 }
                 Text(context.state.phaseTitle)
                     .font(.system(size: 13, design: .serif)).italic()
                     .foregroundStyle(context.state.finished ? Ink.healed : context.state.atlasColor.opacity(0.88))
                     .lineLimit(1)
-                HStack(spacing: 6) {
-                    if let progress = context.state.progressLabel {
-                        Text(progress)
-                    }
-                    if let queued = context.state.queueLabel {
-                        Text(queued)
-                    }
+                if let progress = context.state.progressLabel {
+                    Text(progress)
+                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(Ink.ink2)
                 }
-                .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Ink.ink2)
             }
             Spacer()
             if context.state.finished {

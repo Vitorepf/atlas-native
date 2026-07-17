@@ -461,8 +461,9 @@ server → Core decode → **zero UI inventada** até payload existir.
 - [ ] Cena 11 fila: prova XCUITest promote/remove/FIFO
 - [ ] Cena 08 Continuity: `ConversationModel+Continuity` + recibo visual +
   deep link (sem Session Hub route)
-- [ ] Session Hub = expandir `LiveNowSection` (multi-session, timers,
-  phase, plan) — **não** criar `SessionHubView` route
+- [x] Session Hub = expandir `LiveNowSection` (multi-session, timers,
+  phase, plan) — **não** criar `SessionHubView` route — DONE 2026-07-17
+  (hub 2+: `× N`, timing + elapsed por row; lock `fila N`)
 
 ### Task A4.2: Autônomos Command Center fidelity
 

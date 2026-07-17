@@ -51,7 +51,7 @@ Deepen de fidelidade por superfície continua em A4.1–A4.4 / E-A4 — esta mat
 
 | Alias Fable | Intent | Runtime | Owner | Proof | Gap |
 |---|---|---|---|---|---|
-| **Session Hub** | Agregar sessões vivas, timers, fase, plano — cockpit na home | `TurnPresence.liveSessions` + `AtlasSession` remote `sessions/live` → `LiveSessionSnapshot` | **`LiveNowSection`** em `RootView` (**deepen**, zero rota) | `AtlasLiveNowTests` + `docs/evidence/2026-07-16-cockpit-v1/` | Multi-session timers/plan N/M/fase ricos = A4.1; **proibido** `SessionHubView` |
+| **Session Hub** | Agregar sessões vivas, timers, fase, plano — cockpit na home | `TurnPresence.liveSessions` + `AtlasSession` remote `sessions/live` → `LiveSessionSnapshot` | **`LiveNowSection`** em `RootView` (**deepen**, zero rota) | `AtlasLiveNowTests` + `docs/evidence/2026-07-16-cockpit-v1/` | A4.1 hub 2+ rows (title/phase/timing/elapsed) DONE; plan N/M já via `phaseTitle` do TurnPresence; prova device multi-session ainda pendente; **proibido** `SessionHubView` |
 
 ### Arena (fora do teatro 01–13; rota separada)
 
