@@ -2,11 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Spoken timing — peel de ExecutionStateCard+AwaitingFailed+Spoken.
+// Timer → ExecutionStateCard+AwaitingFailed+Spoken+Timing+Timer.swift
+// Deadline → ExecutionStateCard+AwaitingFailed+Spoken+Timing+Deadline.swift
 
 extension ExecutionStateCard {
     func spokenTimingParts(into parts: inout [String]) {
-        if let fragment = spokenTimerFragment { parts.append(fragment) }
-        if let deadline = publishedExternalDeadline { parts.append("próxima mudança \(deadline)") }
-        if let action = spokenActionFragment { parts.append(action) }
+        spokenTimerPart(into: &parts)
+        spokenDeadlineParts(into: &parts)
     }
 }

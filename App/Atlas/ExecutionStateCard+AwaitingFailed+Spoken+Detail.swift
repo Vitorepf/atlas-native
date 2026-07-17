@@ -2,15 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Spoken detail — peel de ExecutionStateCard+AwaitingFailed+Spoken.
+// Reason → ExecutionStateCard+AwaitingFailed+Spoken+Detail+Reason.swift
+// Meta → ExecutionStateCard+AwaitingFailed+Spoken+Detail+Meta.swift
 
 extension ExecutionStateCard {
     func spokenDetailParts(into parts: inout [String]) {
-        if let reason = spokenFailureReason {
-            parts.append(reason)
-        } else if let detail = state.detail {
-            parts.append(detail)
-        }
-        if let kicker = leaveScreenKicker { parts.append(kicker) }
-        if let checkpoint = state.checkpoint { parts.append("checkpoint \(checkpoint)") }
+        spokenReasonParts(into: &parts)
+        spokenMetaParts(into: &parts)
     }
 }

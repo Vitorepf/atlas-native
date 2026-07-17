@@ -3,19 +3,18 @@ import SwiftUI
 import AtlasCore
 
 // Snapshot gate — peel de AtlasWidgetAccessories+LiveSession.
+// Install → AtlasWidgetAccessories+LiveSession+SnapshotGate+Install.swift
 
 extension LiveSessionWidgetView {
-    @ViewBuilder
     func liveSessionSnapshotGate<Content: View>(
-        @ViewBuilder content: (AtlasNativeSnapshot, AtlasNativeSnapshot.LiveSession?, Bool) -> Content
+        @ViewBuilder content: @escaping (AtlasNativeSnapshot, AtlasNativeSnapshot.LiveSession?, Bool) -> Content
     ) -> some View {
         SnapshotContainer {
-            guard let snapshot = entry.snapshot else {
-                return AnyView(InstallPromptView())
+            liveSessionInstallGate(snapshot: entry.snapshot) { snapshot in
+                let stale = snapshot.isStale(at: entry.date)
+                let live = snapshot.liveSessions?.first
+                content(snapshot, live, stale)
             }
-            let stale = snapshot.isStale(at: entry.date)
-            let live = snapshot.liveSessions?.first
-            return AnyView(content(snapshot, live, stale))
         }
     }
 }

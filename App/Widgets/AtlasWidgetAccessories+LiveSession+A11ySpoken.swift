@@ -2,7 +2,7 @@ import AtlasCore
 import Foundation
 
 // Spoken label da sessão viva — peel de LiveSessionWidgetA11y.
-// Live → AtlasWidgetAccessories+LiveSession+A11ySpokenLive.swift
+// Stale → AtlasWidgetAccessories+LiveSession+A11ySpoken+Stale.swift
 
 extension LiveSessionWidgetA11y {
     static func spokenLabel(
@@ -18,7 +18,7 @@ extension LiveSessionWidgetA11y {
             parts.append("silêncio na obra")
             parts.append(silenceDetail(snapshot))
         }
-        if stale { parts.append("visto \(age)") }
+        parts.append(contentsOf: spokenStaleParts(stale: stale, age: age))
         return parts.joined(separator: ", ")
     }
 }

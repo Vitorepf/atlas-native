@@ -2,15 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Progress stack — peel de ComposerToolbar+AttachmentStripUpload.
+// Row → ComposerToolbar+AttachmentStripUpload+ProgressStack+Row.swift
+// A11y → ComposerToolbar+AttachmentStripUpload+ProgressStack+A11y.swift
 
 extension AttachmentStrip {
     @ViewBuilder
     func uploadProgressStack(_ p: Double) -> some View {
-        HStack(spacing: 10) {
-            uploadProgressBar(p)
-            uploadPercentLabel(p)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("enviando anexos, \(Int(p * 100)) por cento")
+        uploadProgressA11y(uploadProgressRow(p), percent: p)
     }
 }

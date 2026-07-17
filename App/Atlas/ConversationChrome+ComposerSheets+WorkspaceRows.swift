@@ -3,22 +3,11 @@ import UIKit
 import AtlasCore
 
 // Workspace row loop — peel de ConversationChrome+ComposerSheets+WorkspaceList.
-// Pick → ConversationChrome+ComposerSheets+WorkspaceRows+Pick.swift
+// RowBuild → ConversationChrome+ComposerSheets+WorkspaceRows+RowBuild.swift
 
 extension WorkspaceSheet {
     @ViewBuilder
     func workspaceRow(_ ws: Workspace) -> some View {
-        let isSelected = ws.name == current
-        SheetRow(
-            label: ws.name,
-            sub: workspaceCountLine(ws.count),
-            selected: isSelected,
-            accessibilityLabel: ComposerSheetA11y.workspaceLabel(
-                name: ws.name, count: ws.count, selected: isSelected
-            ),
-            accessibilityIdentifier: A11yID.workspaceRow(ws.id)
-        ) {
-            workspaceRowPick(ws)
-        }
+        workspaceRowBuild(ws, isSelected: ws.name == current)
     }
 }
