@@ -6,6 +6,7 @@ import AtlasCore
 /// Header → +Header · Meta → +Meta · Detail → +Detail · ações → +ActionButtons.
 /// Display → +Display.swift
 /// Chrome → ExecutionStateCard+Chrome.swift
+/// Stack → ExecutionStateCard+Stack.swift
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: JobID?
@@ -17,13 +18,6 @@ struct ExecutionStateCard: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        stateCardChrome {
-            VStack(alignment: .leading, spacing: 10) {
-                stateHeader
-                detailLine
-                metaLines
-                actionButtons
-            }
-        }
+        stateCardChrome { stateCardStack }
     }
 }

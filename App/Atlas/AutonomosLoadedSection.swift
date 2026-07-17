@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Corpo carregado da área Autônomos — scroll com frota, digest, área e histórico.
 /// Stack → AutonomosLoadedSection+Stack.swift
+/// Refresh → AutonomosLoadedSection+Refresh.swift
 struct AutonomosLoadedSection: View {
     let model: AutonomosModel
     let auditModeEnabled: Bool
@@ -19,13 +20,10 @@ struct AutonomosLoadedSection: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        ScrollView {
-            loadedStack
-        }
-        .refreshable {
-            await model.load()
-            await onRefreshRhythm()
-        }
-        .scrollIndicators(.hidden)
+        loadedRefreshChrome(
+            ScrollView {
+                loadedStack
+            }
+        )
     }
 }

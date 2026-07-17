@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Self-construction copy — peel de SelfConstructionReceipt.
+// Proof → SelfConstructionReceipt+Proof.swift
 
 extension SelfConstructionReceipt {
     var title: String {
@@ -16,16 +17,5 @@ extension SelfConstructionReceipt {
         }
         if let ruleId = finding?.ruleId?.nonEmpty { return "\(ruleId) — regra publicada sem texto neste recorte." }
         return "Regra não publicada no recorte deste recibo."
-    }
-
-    var proofLine: String {
-        let integrity = cycle.loopReceiptIntegrity.nonEmpty ?? "integridade não publicada"
-        var parts = ["integridade \(integrity)", "ciclo \(cycle.cycleIndex)"]
-        if hasMergeProof, let hash = cycle.mergeHash.nonEmpty {
-            parts.insert("merge \(String(hash.prefix(8)))", at: 1)
-        } else {
-            parts.append("merge não publicado")
-        }
-        return parts.joined(separator: " · ")
     }
 }

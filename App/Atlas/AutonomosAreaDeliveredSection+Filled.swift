@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Delivered filled stack — peel de AutonomosAreaDeliveredSection.
+// Silence → AutonomosAreaDeliveredSection+Silence.swift
 
 extension AutonomosAreaDeliveredSection {
     @ViewBuilder
@@ -11,13 +12,7 @@ extension AutonomosAreaDeliveredSection {
             AutonomosChrome.sectionCaption(
                 AutonomosAreaDeliveredA11y.sectionCaption(isSelf: isSelf, total: deliveredTotal, visible: visible)
             )
-            if isSelf {
-                Text("silêncio · você não foi necessário — só veto com recibo")
-                    .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityHidden(true)
-            }
+            if isSelf { deliveredSelfSilence }
             ForEach(Array(delivered.delivered.prefix(AutonomosAreaDeliveredA11y.visibleCap).enumerated()), id: \.element.id) { index, cycle in
                 deliveredCycleRow(cycle: cycle, index: index, visible: visible, isSelf: isSelf)
             }

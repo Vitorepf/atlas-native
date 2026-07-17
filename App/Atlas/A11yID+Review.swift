@@ -5,6 +5,7 @@ extension A11yID {
     // File helpers → A11yID+ReviewFiles.swift
     // Patch/file → A11yID+ReviewPatch.swift
     // Findings → A11yID+ReviewFindings.swift
+    // Sections → A11yID+ReviewSections.swift
     static let reviewGovernance = "review-governance"
     static let reviewCouncil = "review-council"
     static let reviewCouncilMemberPrefix = "review-council-member-"
@@ -21,9 +22,4 @@ extension A11yID {
     static let reviewHashWarning = "review-hash-warning"
     static let reviewRunHeader = "review-run-header"
     static let reviewToast = "review-toast"
-    static let reviewControlsSection = "review-controls-section"
-    static let reviewTestsSection = "review-tests-section"
-    static let reviewDecidedSection = "review-decided-section"
-    static let reviewRunAccept = "review-run-accept"
-    static let reviewRunReject = "review-run-reject"
 }
