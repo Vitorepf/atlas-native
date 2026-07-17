@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **581** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXIII tip `47e346b` |
-| Commits no tip (`git rev-list --count HEAD`) | 883 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 582 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **583** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXIV tip `cb11d9a` |
+| Commits no tip (`git rev-list --count HEAD`) | 885 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 584 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLXIII (este tip)
+## Entrega Elite CXXXXXLXLXIV (este tip)
+
+- `polish(ui)` CICLO B: KindLabel `+Document`; PlacementTags `+HostEnv/+Workspace`; FleetHistory Event `+Identity/+Detail`; ArenaRun Missing `+Operator/+Suite`; Severity `+High`; Autonomos Phase/Control/Count Soft/Work/Busy; GraphFilter Target `+Healthy`; Digest Last `+Headlines`; Exec Tint `+Attention`; Provenance StateLabel `+Violating` Phase `+Loaded`; Destinations `+ThreadRoutes/+HubRoutes`; Placement Spoken `+HostEnv/+Workspace`; Widgets Fleet Spoken `+Core` Lock Symbol `+Terminal` Incident `+Action/+Flag` LockLive `+Alert` Timer `+PausedRM`. Tip `cb11d9a`.
+- 29 peels · 52 arquivos · over100=0 · App/Atlas+Widgets swift=2690; App/Widgets swift=209; zero Route nova.
+
+## Entrega Elite CXXXXXLXLXIII (anterior)
 
 - `polish(ui)` CICLO B: AreaLabel; TraceEvidence `+Known`; Artifact Preview `+Document/+File` States `+Busy/+Loaded`; Mirror A11y `+Counted` Headline `+Active/+QuietBranch`; Effort Spoken/Subtitle `+Light`; Toolbar Effort `+Light`; AtlasType Anchor `+Large/+Small`; CommitRow Branch `+Healthy`; CodeView Graph `+Loading/+Loaded` A11y `+Loaded`; Root Destinations `+ConversationRoutes/+DomainRoutes` Hub `+Autonomos/+ArenaCode`; DetailContent `+Work/+Ledger`; Arena A11y `+Failed/+FailedID`; FilterApply `+Style`; Provenance Kickers `+State`; Markdown Inline `+Fallback`. Tip `47e346b`.
 - 29 peels · 50 arquivos · over100=0 · App/Atlas+Widgets swift=2661; App/Widgets swift=203; zero Route nova.
