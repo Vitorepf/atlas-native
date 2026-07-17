@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **348+** | primeiro commit do plano: `ec931f2`; Elite CXXI em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **349+** | primeiro commit do plano: `ec931f2`; Elite CXXII em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,9 +127,14 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXI (este tip)
+## Entrega Elite CXXII (este tip)
 
-- `refactor(ui)` CICLO B: Composer+KeyboardGrabber; Reason+Toolbar; Commit+Meta; LiveNow+Spoken; Graph+WorktreeChip; Plan+RevisionArchiveMeta.
+- `refactor(ui)` CICLO B: Steer+Instruction; Home+Chip; Timeline+NarrativeSpine; A11y+SearchWorkspace/+CodeHelpers; Suite+RowLeading.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXI (anterior)
+
+- `refactor(ui)` CICLO B: Composer+KeyboardGrabber; Reason+Toolbar; Commit+Meta; LiveNow+Spoken; Graph+WorktreeChip; Plan+RevisionArchiveMeta. Tip `3473127`.
 - Zero App/Widgets >100; zero Route nova.
 
 ## Entrega Elite CXX (anterior)
