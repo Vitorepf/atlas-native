@@ -175,7 +175,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` + `AtlasDeepLink` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana + lock accessories; `atlas://arena`→`.arena`; lock `queueLabel` cápsula gold; Island SD-2 ATT/EXT/FAIL/REC/PLN + N/M + fila expanded; LockScreen/WidgetViews peel; widgetURL Arena home entry opcional | `4191353` SD-2 + peels + `e0bce46`+…+`a702926` + este commit |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
 | E-B | **PARCIAL** | **Grok 4.5** | peels contínuos App+Core | E-A* | CICLO B compressão 1 | **Milestone:** zero arquivos App/Core/Widgets >100; max 100 (3 empatados); patamar ≤100 atingido — **PARCIAL** até `AtlasCoreChecks`+`make build` no Mac provarem compile | peels + `wc -l`; `488cd9c`+`d5ac0ef`; build Mac-pending |
-| E-C | **IN_PROGRESS** | **Grok 4.5** | silence + Island + Continuity + Artifact + Timeline + Autônomos | E-B PARCIAL | CICLO C patamares | Frota quieta; Island ATT/EXT/FAIL + fila expanded + RM timer; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty; deepens recentes: Mode/Effort/Workspace sheets; AutonomosView/CodeRadar/LiveNow/PlanCard/Nightly; Markdown lista/citação + code block; WorkspaceRow/ThreadRow home/search; PlanFlowChips silence; ArtifactViewer ficha/preview; ArenaEngineIndexRow; ChangeReview available A11yID; Provenance; Search/Workspace/ChangeReview/Conversation screen spoken; `rg Aprovar`=0 | Elite LXX + peels contínuos; Swift/server/device BLOCKED |
+| E-C | **IN_PROGRESS** | **Grok 4.5** | silence + Island + Continuity + Artifact + Timeline + Autônomos | E-B PARCIAL | CICLO C patamares | Frota quieta; Island ATT/EXT/FAIL + fila; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline; Autônomos honesty; screen spoken Search/Workspace/Review/Conversation; RM residual Network/Arena/Composer/LiveNow/Nightly/Plan/sheets Fechar; `rg Aprovar`=0 | Elite LXXVII+ peels contínuos; Swift/server/device BLOCKED |
 | E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | clock `AtlasTime.formatActiveDuration` canônico; empty/loading → `AtlasNetworkFailureEmpty`/`AtlasEditorialGlyphEmpty`/`AutonomosCardEmptyState`/`WorkspaceLoadingEmpty` (**consolidado**); failure dups → `AutonomosFleetFailureEmpty`/`AtlasCodeLoadFailureEmpty`; `TraceEvidenceLoading` canônico; meta ≥60% linhas de C ainda PARCIAL | `217a848` + `72c1c12` + `b27294b` |
 
 ### Codex (funciona)
@@ -967,6 +967,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXXVIII — CICLO C Arena/Review Fechar RM** · este commit · CICLO C: ChangeReviewSheet + ArenaSuite/Run/Engine Fechar — RM haptic + hint. Zero Route. **BLOCKED:** Swift/server/device. Prova: `rg 'Button\("Fechar"\)' App/Atlas` com RM; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXVII — CICLO C ArtifactSheet + Transfer cancel** · este commit · CICLO C: ArtifactSheet — close RM; sheet spoken por estado/itens; toast «aviso,». TransferSheet — cancel RM+hint. Peel `ArtifactSheet+A11y` (24). Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Artifact 82 A11y 24 Transfer 91; `rg Aprovar`=0; device-pending.
 
