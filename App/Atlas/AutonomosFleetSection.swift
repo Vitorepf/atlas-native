@@ -48,8 +48,6 @@ struct AutonomosFleetSection: View {
                 AutonomosFleetEmptyState(kind: .noAgents)
             } else {
                 AutonomosChrome.sectionCaption(incidentPresent ? "FROTA · ATENÇÃO" : "frota")
-                    .accessibilityHidden(true)
-                    .accessibilityAddTraits(.isHeader)
                 if isQuiet && !auditModeEnabled {
                     Text("todos vivos · desejados · autorizados")
                         .font(AtlasFont.mono(11))

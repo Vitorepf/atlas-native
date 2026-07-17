@@ -24,8 +24,7 @@ struct AutonomosAwaitingYouSection: View {
         if decisionCount > 0 {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    AutonomosChrome.sectionCaption("AGUARDANDO VOCÊ")
-                        .accessibilityAddTraits(.isHeader)
+                    AutonomosChrome.sectionCaption("AGUARDANDO VOCÊ", role: .header)
                     Spacer()
                     Text("\(decisionCount)")
                         .font(AtlasFont.mono(13))

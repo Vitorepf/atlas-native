@@ -11,7 +11,6 @@ struct AutonomosAreaPicker: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             AutonomosChrome.sectionCaption("INSTÂNCIAS")
-                .accessibilityHidden(true)
             ForEach(Array(areas.enumerated()), id: \.element.id) { index, area in
                 areaRow(area: area, index: index)
             }

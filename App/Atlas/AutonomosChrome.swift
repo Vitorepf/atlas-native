@@ -3,13 +3,6 @@ import AtlasCore
 
 enum AutonomosChrome {
     @ViewBuilder
-    static func sectionCaption(_ t: String) -> some View {
-        Text(t)
-            .font(.system(.caption, weight: .semibold)).tracking(1.2)
-            .foregroundStyle(AtlasTheme.textTertiary)
-    }
-
-    @ViewBuilder
     static func digestChip(_ value: String, _ label: String) -> some View {
         HStack(spacing: 5) {
             Text(value).font(AtlasFont.mono(14)).foregroundStyle(AtlasTheme.accent)

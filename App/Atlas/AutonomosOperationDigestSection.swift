@@ -22,7 +22,6 @@ struct AutonomosOperationDigestSection: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     AutonomosChrome.sectionCaption("RESUMO DA OPERAÇÃO")
-                        .accessibilityHidden(true)
                     Spacer()
                     Text(incidentPresent ? "requer você" : "por exceção")
                         .font(AtlasFont.mono(9))
@@ -75,8 +74,7 @@ struct AutonomosOperationDigestSection: View {
             .accessibilityIdentifier(A11yID.autonomosOperationDigest)
         } else {
             VStack(alignment: .leading, spacing: 6) {
-                AutonomosChrome.sectionCaption("operação")
-                    .accessibilityAddTraits(.isHeader)
+                AutonomosChrome.sectionCaption("operação", role: .header)
                 Text("Quieta nesta janela — nenhuma entrega, pendência nem incidente publicado.")
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textTertiary)

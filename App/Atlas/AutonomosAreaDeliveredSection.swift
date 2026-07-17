@@ -27,7 +27,6 @@ struct AutonomosAreaDeliveredSection: View {
                 AutonomosChrome.sectionCaption(
                     AutonomosAreaDeliveredA11y.sectionCaption(isSelf: isSelf, total: deliveredTotal, visible: visible)
                 )
-                .accessibilityHidden(true)
                 if isSelf {
                     Text("silêncio · você não foi necessário — só veto com recibo")
                         .font(AtlasFont.serifItalic(13))
@@ -45,8 +44,7 @@ struct AutonomosAreaDeliveredSection: View {
             .accessibilityIdentifier(isSelf ? A11yID.autonomosAreaDeliveredSelf : A11yID.autonomosAreaDeliveredSection)
         } else if isSelf {
             VStack(alignment: .leading, spacing: 6) {
-                AutonomosChrome.sectionCaption("AUTO-CONSTRUÇÃO")
-                    .accessibilityAddTraits(.isHeader)
+                AutonomosChrome.sectionCaption("AUTO-CONSTRUÇÃO", role: .header)
                 Text("Trabalho ainda não mergeado — aguardando o ledger. Sem entrega comprovada neste recorte.")
                     .font(AtlasFont.serifItalic(13))
                     .foregroundStyle(AtlasTheme.textSecondary)

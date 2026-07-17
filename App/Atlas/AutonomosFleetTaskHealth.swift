@@ -11,7 +11,6 @@ struct AutonomosTaskHealthSection: View {
         VStack(alignment: .leading, spacing: 8) {
             if health.incidents.present {
                 AutonomosChrome.sectionCaption("SAÚDE DA FILA")
-                    .accessibilityHidden(true)
                 HStack(spacing: 8) {
                     FleetMetric(value: "\(health.tasks.servableNow)", label: "servíveis agora")
                     FleetMetric(value: "\(health.tasks.claimed)", label: "reivindicadas")
@@ -47,8 +46,7 @@ struct AutonomosTaskHealthSection: View {
             } else {
                 // Silêncio quando saudável: sem grade de métricas, sem "SAÚDE".
                 VStack(alignment: .leading, spacing: 6) {
-                    AutonomosChrome.sectionCaption("fila")
-                        .accessibilityAddTraits(.isHeader)
+                    AutonomosChrome.sectionCaption("fila", role: .header)
                     Text("estável · \(health.tasks.servableNow) servíveis · \(health.leases.active) leases")
                         .font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textTertiary)

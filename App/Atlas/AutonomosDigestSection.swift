@@ -20,7 +20,6 @@ struct AutonomosNextDigestSection: View {
         let window = digestWindowCaption(digest)
         return VStack(alignment: .leading, spacing: 10) {
             AutonomosChrome.sectionCaption(sectionTitle)
-                .accessibilityHidden(true)
             if last, let window {
                 Text(window)
                     .font(AtlasFont.mono(10))

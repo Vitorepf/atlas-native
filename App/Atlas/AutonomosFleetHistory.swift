@@ -18,7 +18,6 @@ struct AutonomosFleetHistorySection: View {
                 AutonomosChrome.sectionCaption(history.events.count > AutonomosFleetHistoryA11y.visibleCap
                                ? "HISTÓRICO DA FROTA · 6 DE \(history.events.count)"
                                : "HISTÓRICO DA FROTA")
-                    .accessibilityHidden(true)
                 ForEach(Array(visibleEvents.enumerated()), id: \.element.id) { index, event in
                     HStack(alignment: .top, spacing: 10) {
                         VStack(spacing: 0) {
