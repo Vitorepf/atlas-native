@@ -6,9 +6,8 @@
 	     build configuration, nunca de um segredo do app. -->
 	<key>aps-environment</key>
 	<string>$(APS_ENVIRONMENT)</string>
-	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.com.vitor.atlas.native</string>
-	</array>
+	<!-- App Group (snapshot dos widgets, M118) REMOVIDO do build até ser
+	     provisionado no Apple Developer portal. O writer/reader do snapshot
+	     é fail-open: sem o grupo, os widgets mostram "abra o Atlas". -->
 </dict>
 </plist>
