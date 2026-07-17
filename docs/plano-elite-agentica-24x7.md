@@ -470,10 +470,11 @@ server → Core decode → **zero UI inventada** até payload existir.
 
 **Files:** split `AutonomosView.swift` (1153) **antes** de adicionar UI
 
-- [ ] Extrair `AutonomosFleetSection`, `AutonomosAreaDetail`,
+- [x] Extrair `AutonomosFleetSection`, `AutonomosAreaDetail`,
   `AutonomosTaskHealth`, sheets
-- [ ] Transfer UI + frota global + digest (dados reais)
-- [ ] Silêncio quando saudável; alerta só por exceção
+- [x] Transfer UI + frota global + digest (dados reais)
+- [x] Silêncio quando saudável; alerta só por exceção — frota caption
+  quieta + fila one-liner sem incidente (2026-07-17)
 
 ### Task A4.3: Código deepen (contratos existentes)
 

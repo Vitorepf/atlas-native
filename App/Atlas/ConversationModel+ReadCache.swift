@@ -15,6 +15,7 @@ extension ConversationModel {
         cacheCapturedAt = snapshot.capturedAt
         showingStaleCache = true
         loadError = nil
+        loadFailureKind = nil
         return true
     }
 

@@ -18,6 +18,9 @@ final class ConversationModel {
     var bubbles: [ChatBubble] = []
     var isSending = false
     var loadError: String?
+    /// Tipo de falha do load da thread (espelha `AtlasSession.failureKind`).
+    /// A casca distingue offline × timeout × recusada — não só a string genérica.
+    var loadFailureKind: AtlasNetworkFailureKind?
     var toast: String?
     var cacheCapturedAt: Date?
     var showingStaleCache = false
@@ -315,6 +318,7 @@ final class ConversationModel {
                 showingStaleCache = false
                 cacheCapturedAt = nil
                 loadError = nil
+                loadFailureKind = nil
                 try? await readCache.save(snapshot: Self.snapshot(
                     threadId: threadId.rawValue,
                     workspacePath: response.thread.workspace,
@@ -326,6 +330,7 @@ final class ConversationModel {
                     toast = "Sem rede agora — mantendo a última leitura salva."
                 } else if bubbles.isEmpty {
                     loadError = atlasUserMessage(for: error)
+                    loadFailureKind = atlasNetworkFailureKind(for: error)
                 }
             }
         }

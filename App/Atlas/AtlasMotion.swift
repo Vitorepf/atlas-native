@@ -34,11 +34,20 @@ struct BreathingDiamond: View {
     }
 }
 
-// Botão com press-scale spring (tato físico).
+// Botão com press-scale spring (tato físico). Reduce Motion = sem pulse/scale.
 struct PressableScale: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.96 : 1)
-            .animation(configuration.isPressed ? .easeOut(duration: 0.12) : .spring(response: 0.25, dampingFraction: 0.6), value: configuration.isPressed)
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.96 : 1))
+            .animation(
+                reduceMotion
+                    ? nil
+                    : (configuration.isPressed
+                        ? .easeOut(duration: 0.12)
+                        : .spring(response: 0.25, dampingFraction: 0.6)),
+                value: configuration.isPressed
+            )
     }
 }

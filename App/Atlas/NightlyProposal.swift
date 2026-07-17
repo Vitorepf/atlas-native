@@ -216,6 +216,7 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
 struct NightlyProposalCard: View {
     let proposal: NightlyProposalController.ProposalPayload
     let onAccept: () -> Void
+    /// Silêncio: some o card sem toast, sem confirmação, sem fila.
     let onDismiss: () -> Void
     let onMute: (Int) -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -247,6 +248,7 @@ struct NightlyProposalCard: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .buttonStyle(PressableScale())
                     .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
+                    .accessibilityHint("descarta em silêncio")
                 Menu("silenciar") {
                     Button("1 dia") { onMute(1) }
                     Button("3 dias") { onMute(3) }
@@ -262,10 +264,13 @@ struct NightlyProposalCard: View {
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.nightlyProposalCard)
         .animation(reduceMotion ? nil : AtlasMotion.arrival, value: proposal.id)
+        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
     }
 }
 
 private struct NightlyPrimaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(.footnote, weight: .semibold))
@@ -273,7 +278,7 @@ private struct NightlyPrimaryButtonStyle: ButtonStyle {
             .padding(.horizontal, 13)
             .padding(.vertical, 9)
             .background(Capsule().fill(AtlasTheme.accent.opacity(configuration.isPressed ? 0.72 : 1)))
-            .scaleEffect(configuration.isPressed ? 0.97 : 1)
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }

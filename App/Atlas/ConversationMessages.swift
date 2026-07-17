@@ -8,6 +8,7 @@ struct ConversationMessages: View {
     var reduceMotion: Bool
     var emptyPrompt: String?
     var emptySuggestions: [String]?
+    @Environment(AtlasSession.self) private var session
     @Binding var awayFromBottom: Bool
     @Binding var lastScrollAt: CFAbsoluteTime
     @Binding var lastScrollBubbleCount: Int
@@ -21,14 +22,23 @@ struct ConversationMessages: View {
         ScrollViewReader { proxy in
             ScrollView {
                 if model.bubbles.isEmpty {
-                    EmptyConversation(
-                        reduceMotion: reduceMotion,
-                        prompt: emptyPrompt,
-                        suggestions: emptySuggestions
-                    ) { suggestion in
-                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        let effort = model.effort
-                        Task { await model.send(suggestion, effort: effort) }
+                    if model.loadError != nil {
+                        ConversationLoadFailure(
+                            kind: model.loadFailureKind,
+                            hasToken: session.hasToken,
+                            host: session.host,
+                            onRetry: { Task { await model.load() } }
+                        )
+                    } else {
+                        EmptyConversation(
+                            reduceMotion: reduceMotion,
+                            prompt: emptyPrompt,
+                            suggestions: emptySuggestions
+                        ) { suggestion in
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            let effort = model.effort
+                            Task { await model.send(suggestion, effort: effort) }
+                        }
                     }
                 } else {
                     LazyVStack(alignment: .leading, spacing: 40) {

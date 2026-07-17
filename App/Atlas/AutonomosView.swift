@@ -224,7 +224,11 @@ struct AutonomosView: View {
                     }
                     if let receipt = model.lastControlReceipt { controlReceipt(receipt) }
                     if let fleet = model.fleet {
-                        AutonomosFleetSection(fleet: fleet, auditModeEnabled: session.auditModeEnabled)
+                        AutonomosFleetSection(
+                            fleet: fleet,
+                            incidentPresent: model.taskHealth?.incidents.present == true,
+                            auditModeEnabled: session.auditModeEnabled
+                        )
                     }
                     if let health = model.taskHealth {
                         AutonomosTaskHealthSection(health: health)
