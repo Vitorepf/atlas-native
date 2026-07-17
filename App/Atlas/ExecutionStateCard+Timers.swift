@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Timers congelados/recuperando — peel de ExecutionStateCard+Presentation.
+// Timers congelados — peel de ExecutionStateCard+Presentation.
+// Recovering → ExecutionStateCard+TimersRecovering.swift
 
 extension ExecutionStateCard {
     /// Timer congelado (‖) — paridade Island/Lock para `.attentionRequired` e
@@ -24,14 +25,5 @@ extension ExecutionStateCard {
         default:
             return nil
         }
-    }
-
-    var recoveringTimerText: String? {
-        guard state.kind == .recovering, let timer = state.timer else { return nil }
-        return "ativo \(Self.clock(timer.elapsedActiveMilliseconds))"
-    }
-
-    var spokenTimerFragment: String? {
-        frozenTimerA11y ?? recoveringTimerText
     }
 }

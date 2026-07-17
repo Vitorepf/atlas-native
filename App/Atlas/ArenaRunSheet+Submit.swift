@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-/// Submit + defaults onAppear — peel de ArenaRunSheet (régua ≤100).
+/// Submit — peel de ArenaRunSheet (régua ≤100).
+/// Defaults → ArenaRunSheet+Defaults.swift
 
 extension ArenaRunSheet {
     var submitButton: some View {
@@ -22,16 +23,5 @@ extension ArenaRunSheet {
         .accessibilityIdentifier(A11yID.arenaRunSubmit)
         .accessibilityLabel(spokenSubmitLabel(input: input, enginesEmpty: engines.isEmpty))
         .accessibilityHint(spokenSubmitHint(input: input, enginesEmpty: engines.isEmpty))
-    }
-
-    func seedDefaultsIfNeeded() {
-        if selectedSuites.isEmpty, let first = installedSuites.first?.suite {
-            selectedSuites.insert(first)
-        }
-        if engines.isEmpty {
-            selectedEngine = ""
-        } else if selectedEngine.isEmpty {
-            selectedEngine = engines.first ?? ""
-        }
     }
 }

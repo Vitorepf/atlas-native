@@ -6,9 +6,10 @@ import AtlasCore
 // Failure → RootHomeSections+Failure.swift; chips → RootHomeSections+Conversation.swift (+Conversation+A11y);
 // loaded → RootHomeSections+Loaded.swift; a11y → RootHomeSections+A11y.swift.
 // Layout → RootHomeSections+Layout.swift
+// Loading → RootHomeSections+Loading.swift
 
 struct RootHomeSections: View {
-    @Environment(AtlasSession.self) private var session
+    @Environment(AtlasSession.self) var session
     var reduceMotion: Bool
     @Binding var homeWorkspaceFilter: String?
     var onNavigate: (Route) -> Void
@@ -17,19 +18,9 @@ struct RootHomeSections: View {
     var body: some View {
         switch session.phase {
         case .idle where session.threads.isEmpty, .loading where session.threads.isEmpty:
-            centered {
-                WorkspaceLoadingEmpty(
-                    reduceMotion: reduceMotion,
-                    text: "abrindo o Atlas…",
-                    spoken: "abrindo o Atlas",
-                    topPadding: 0
-                )
-                .accessibilityIdentifier(A11yID.homeLoading)
-            }
-
+            loadingHome
         case .failed where session.threads.isEmpty:
             failureSection
-
         default:
             loadedHome
         }

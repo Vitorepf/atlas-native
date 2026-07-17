@@ -2,21 +2,16 @@ import SwiftUI
 import AtlasCore
 
 // Conteúdo por fase — peel de AutonomosView (régua ≤100).
+// Shell → AutonomosView+ContentShell.swift
 
 extension AutonomosView {
     @ViewBuilder
     var content: some View {
         switch model.phase {
         case .idle, .loading:
-            AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }
-            Spacer()
-            TraceEvidenceLoading(text: "consultando a frota…", reduceMotion: reduceMotion)
-            Spacer()
+            loadingContent
         case .failed(let message):
-            AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }
-            Spacer()
-            AutonomosFleetFailureEmpty(message: message) { Task { await model.load() } }
-            Spacer()
+            failedContent(message: message)
         case .loaded:
             AutonomosLoadedSection(
                 model: model,

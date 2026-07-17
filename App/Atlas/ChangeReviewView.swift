@@ -4,6 +4,7 @@ import AtlasCore
 // C15 — Revisar mudanças de uma execução (o "Review" da cena 12, real).
 // Conteúdo: ChangeReviewView+Content · spoken: +A11y · available: +Available.
 // Toolbar → ChangeReviewView+Toolbar.swift
+// Load → ChangeReviewView+Load.swift
 struct ChangeReviewSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -29,9 +30,6 @@ struct ChangeReviewSheet: View {
             .accessibilityLabel(spokenReviewSheetLabel())
             .accessibilityHint(Self.reviewSheetHint)
         }
-        .task {
-            await reviews.refreshChangeReview(traceId: traceId)
-            loadFinished = true
-        }
+        .task { await refreshReviewTask() }
     }
 }
