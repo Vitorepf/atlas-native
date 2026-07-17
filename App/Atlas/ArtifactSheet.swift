@@ -2,23 +2,23 @@ import SwiftUI
 import UIKit
 import AtlasCore
 
-// Preview/zoom → ArtifactViewer.swift.
+// Preview/zoom → ArtifactViewer.swift · conteúdo → ArtifactSheet+Content.swift.
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var selectedID: String?
-    @State private var preview: PreviewState = .idle
-    @State private var loadFinished = false
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var selectedID: String?
+    @State var preview: ArtifactPreviewState = .idle
+    @State var loadFinished = false
 
-    private var artifacts: AtlasTraceArtifacts? { reviews.artifactsByTrace[traceId] }
-    private var items: [AtlasTraceArtifacts.Item] {
+    var artifacts: AtlasTraceArtifacts? { reviews.artifactsByTrace[traceId] }
+    var items: [AtlasTraceArtifacts.Item] {
         guard artifacts?.state == .available else { return [] }
         return artifacts?.items ?? []
     }
-    private var selected: AtlasTraceArtifacts.Item? {
+    var selected: AtlasTraceArtifacts.Item? {
         items.first { $0.id == selectedID } ?? items.first
     }
 
@@ -51,170 +51,7 @@ struct ArtifactSheet: View {
         }
     }
 
-    @ViewBuilder
-    private var content: some View {
-        if !loadFinished, artifacts == nil {
-            loading("consultando artefatos…")
-        } else if loadFinished, artifacts == nil {
-            evidenceEmpty(
-                title: "Não foi possível consultar artefatos.",
-                subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
-                identifier: A11yID.artifactsLoadFailure,
-                spoken: "não foi possível consultar artefatos"
-            )
-        } else if artifacts?.state == .unavailable {
-            evidenceEmpty(
-                title: "Sem artefatos nesta execução.",
-                subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
-                identifier: A11yID.artifactsUnavailable,
-                spoken: unavailableSpokenLabel
-            )
-        } else if items.isEmpty {
-            evidenceEmpty(
-                title: "Sem artefatos visualizáveis nesta execução.",
-                subtitle: nil,
-                identifier: A11yID.artifactsEmpty,
-                spoken: "sem artefatos visualizáveis nesta execução"
-            )
-        } else {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("ARTEFATOS DO TURNO · \(artifacts?.workspaceLabel ?? "workspace")")
-                    .font(AtlasFont.mono(10)).tracking(1.0)
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .padding(.horizontal, AtlasTheme.Space.screen)
-                    .padding(.top, 14)
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 12) {
-                        artifactList
-                        previewPane
-                    }
-                    .padding(.horizontal, AtlasTheme.Space.screen)
-                    .padding(.bottom, 24)
-                }
-                .scrollIndicators(.hidden)
-            }
-        }
-    }
-
-    private var artifactList: some View {
-        VStack(spacing: 0) {
-            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    selectedID = item.id
-                } label: {
-                    HStack(spacing: 10) {
-                        Text("▸")
-                            .font(AtlasFont.mono(11))
-                            .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.textTertiary)
-                        Text(item.name)
-                            .font(AtlasFont.serif(15, .semibold))
-                            .foregroundStyle(AtlasTheme.textPrimary)
-                            .lineLimit(1)
-                        Spacer()
-                        Text("\(ArtifactViewer.byteLabel(item.byteSize))  \(ArtifactViewer.kindLabel(item.kind))")
-                            .font(AtlasFont.mono(10))
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    .padding(.vertical, 10)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier(A11yID.artifactsItem(index))
-                .accessibilityLabel("\(item.name), \(ArtifactViewer.byteLabel(item.byteSize)), \(ArtifactViewer.kindLabel(item.kind))")
-                if index < items.count - 1 { Divider().overlay(AtlasTheme.separatorSoft) }
-            }
-        }
-        .padding(.horizontal, 12)
-        .atlasCard()
-    }
-
-    @ViewBuilder
-    private var previewPane: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            switch preview {
-            case .idle, .loading:
-                loading("carregando preview…")
-                    .frame(maxWidth: .infinity, minHeight: 180)
-            case .tooLarge(let bytes):
-                ArtifactFileFicha(
-                    name: selected?.name ?? "artefato",
-                    subtitle: "grande demais para visualizar aqui · \(ArtifactViewer.byteLabel(bytes))"
-                )
-            case .failed(let message):
-                Text(message)
-                    .font(AtlasFont.serifItalic(14))
-                    .foregroundStyle(AtlasTheme.domOperacional)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            case .loaded(let item, let content):
-                ArtifactPreviewContent(item: item, content: content)
-            }
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .atlasCard()
-    }
-
-    private func loading(_ text: String) -> some View {
-        VStack(spacing: 10) {
-            BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-            Text(text)
-                .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textTertiary)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(text)
-    }
-
-    private func evidenceEmpty(
-        title: String,
-        subtitle: String?,
-        identifier: String,
-        spoken: String
-    ) -> some View {
-        VStack(spacing: 12) {
-            Image(systemName: "doc.text")
-                .font(.title2)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Text(title)
-                .font(AtlasFont.serif(18, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .multilineTextAlignment(.center)
-            if let subtitle, !subtitle.isEmpty {
-                Text(subtitle)
-                    .font(.footnote)
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .padding(36)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(spoken)
-        .accessibilityIdentifier(identifier)
-    }
-
-    private var unavailableSpokenLabel: String {
-        var parts = ["sem artefatos nesta execução"]
-        if let reason = TraceEvidenceCopy.unavailableReason(artifacts?.reason) {
-            parts.append(reason)
-        }
-        return parts.joined(separator: ", ")
-    }
-
-    private func load(_ item: AtlasTraceArtifacts.Item) async {
-        preview = .loading
-        do {
-            let content = try await reviews.loadArtifactContent(traceId: traceId, item: item)
-            preview = .loaded(item, content)
-        } catch let api as AtlasApiError where api.status == 413 {
-            preview = .tooLarge(item.byteSize)
-        } catch {
-            preview = .failed(atlasUserMessage(for: error))
-        }
-    }
-
-    @ViewBuilder private var toast: some View {
+    @ViewBuilder var toast: some View {
         if let t = reviews.toast {
             Text(t)
                 .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
@@ -227,13 +64,5 @@ struct ArtifactSheet: View {
                     else { withAnimation(AtlasMotion.editorial) { reviews.toast = nil } }
                 }
         }
-    }
-
-    private enum PreviewState {
-        case idle
-        case loading
-        case loaded(AtlasTraceArtifacts.Item, AtlasArtifactContent)
-        case tooLarge(Int)
-        case failed(String)
     }
 }
