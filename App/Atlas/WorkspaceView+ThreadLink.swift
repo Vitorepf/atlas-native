@@ -13,9 +13,6 @@ struct WorkspaceThreadLink: View {
         .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
         .accessibilityHint("abre a conversa")
         .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
-        .transition(reduceMotion ? .opacity : .asymmetric(
-            insertion: .opacity.combined(with: .offset(y: 6)),
-            removal: .opacity
-        ))
+        .transition(threadTransition)
     }
 }
