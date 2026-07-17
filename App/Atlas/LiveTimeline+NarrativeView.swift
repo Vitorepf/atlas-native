@@ -5,6 +5,8 @@ import AtlasCore
 
 struct NarrativeRowView: View {
     let row: NarrativeRow
+    let index: Int
+    let total: Int
     let isCurrent: Bool
     let isLast: Bool
     let reduceMotion: Bool
@@ -16,7 +18,7 @@ struct NarrativeRowView: View {
                 Circle()
                     .fill(isCurrent ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.4))
                     .frame(width: 7, height: 7)
-                    .opacity(isCurrent && pulse ? 0.4 : 1)
+                    .opacity(isCurrent && pulse && !reduceMotion ? 0.4 : 1)
                     .padding(.top, 5)
                 if !isLast {
                     Rectangle()
@@ -26,6 +28,7 @@ struct NarrativeRowView: View {
                 }
             }
             .frame(width: 10)
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(row.title)
@@ -53,14 +56,19 @@ struct NarrativeRowView: View {
                                 .foregroundStyle(AtlasTheme.domOperacional)
                         }
                     }
-                    .accessibilityLabel("duração do passo \(humanDuration(duration))\(row.isP90 ? ", acima do p90" : "")")
+                    .accessibilityHidden(true)
                 }
             }
             .padding(.bottom, 10)
             Spacer(minLength: 0)
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(rowAccessibilityLabel)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(LiveTimelineA11y.spokenRow(row: row,
+                                                       index: index,
+                                                       total: total,
+                                                       isCurrent: isCurrent))
+        .accessibilityValue(LiveTimelineA11y.rowValue(index: index, total: total, isCurrent: isCurrent))
+        .accessibilityAddTraits(currentTraits)
         .onAppear {
             if isCurrent && !reduceMotion {
                 withAnimation(AtlasMotion.breath(0.9)) { pulse = true }
@@ -69,10 +77,8 @@ struct NarrativeRowView: View {
         .onChange(of: isCurrent) { _, now in if !now { pulse = false } }
     }
 
-    private var rowAccessibilityLabel: String {
-        var parts = [row.title]
-        if let detail = row.detail, !detail.isEmpty { parts.append(detail) }
-        if isCurrent { parts.append("passo atual") }
-        return parts.joined(separator: ", ")
+    private var currentTraits: AccessibilityTraits {
+        guard isCurrent else { return [] }
+        return reduceMotion ? .isSelected : [.isSelected, .updatesFrequently]
     }
 }

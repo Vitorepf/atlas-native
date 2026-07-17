@@ -37,6 +37,7 @@ enum TimelineReadFilter: String, CaseIterable, Identifiable {
 struct TimelineFilterChips: View {
     @Binding var filter: TimelineReadFilter
     var reduceMotion: Bool = false
+    var filterSilence: Bool = false
 
     var body: some View {
         HStack(spacing: 6) {
@@ -59,9 +60,13 @@ struct TimelineFilterChips: View {
                         .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("filtrar timeline por \(option.label)")
+                .accessibilityLabel(LiveTimelineA11y.spokenFilterChip(option,
+                                                                      active: active,
+                                                                      silent: active && filterSilence))
+                .accessibilityAddTraits(active ? .isSelected : [])
             }
         }
         .padding(.leading, 20)
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: filter)
     }
 }

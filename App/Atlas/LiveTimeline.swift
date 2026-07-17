@@ -10,22 +10,39 @@ struct LiveTimeline: View {
 
     private var baseRows: [NarrativeRow] { narrativeRows(from: activities) }
     private var rows: [NarrativeRow] { filter.apply(to: baseRows) }
+    private var showsFilterChips: Bool { baseRows.count > 2 }
+    private var filterSilence: Bool { showsFilterChips && filter != .all && rows.isEmpty }
 
     var body: some View {
         if baseRows.isEmpty {
             EmptyView()
+        } else if rows.isEmpty {
+            filterSilenceSurface
         } else {
-            VStack(alignment: .leading, spacing: 8) {
-                if baseRows.count > 2 {
-                    TimelineFilterChips(filter: $filter, reduceMotion: reduceMotion)
-                }
-                if !rows.isEmpty {
-                    timelineScroll
-                }
-            }
-            .accessibilityElement(children: .contain)
-            .accessibilityLabel("execução ao vivo, \(activities.count) passos")
+            timelineSurface
         }
+    }
+
+    @ViewBuilder
+    private var filterSilenceSurface: some View {
+        if showsFilterChips {
+            TimelineFilterChips(filter: $filter,
+                                reduceMotion: reduceMotion,
+                                filterSilence: filterSilence)
+        }
+    }
+
+    private var timelineSurface: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if showsFilterChips {
+                TimelineFilterChips(filter: $filter,
+                                    reduceMotion: reduceMotion,
+                                    filterSilence: false)
+            }
+            timelineScroll
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(LiveTimelineA11y.spokenSectionLabel(stepCount: rows.count))
     }
 
     private var timelineScroll: some View {
@@ -34,6 +51,8 @@ struct LiveTimeline: View {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(rows.enumerated()), id: \.element.id) { idx, row in
                         NarrativeRowView(row: row,
+                                         index: idx,
+                                         total: rows.count,
                                          isCurrent: idx == rows.count - 1,
                                          isLast: idx == rows.count - 1,
                                          reduceMotion: reduceMotion)
