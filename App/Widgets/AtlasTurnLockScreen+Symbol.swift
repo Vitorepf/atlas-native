@@ -3,11 +3,11 @@ import ActivityKit
 import AtlasCore
 
 /// Lock symbol — peel de AtlasTurnLockScreen+State.
+/// Terminal → AtlasTurnLockScreen+Symbol+Terminal.swift
 
 extension AtlasTurnAttributes.ContentState {
     var atlasSymbol: String {
-        if phaseTitle.localizedCaseInsensitiveContains("falhou") { return "✕" }
-        if finished { return "✓" }
+        if let terminal = atlasSymbolTerminal { return terminal }
         if phaseTitle.localizedCaseInsensitiveContains("atenção")
             || phaseTitle.localizedCaseInsensitiveContains("aguard") {
             return "⚠"

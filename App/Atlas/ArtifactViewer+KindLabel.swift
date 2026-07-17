@@ -1,15 +1,10 @@
 import AtlasCore
 
 // Kind label — peel de ArtifactViewer.
+// Document → ArtifactViewer+KindLabel+Document.swift
 
 extension ArtifactViewer {
     static func kindLabel(_ kind: AtlasTraceArtifacts.Item.Kind) -> String {
-        switch kind {
-        case .image: "imagem"
-        case .markdown: "markdown"
-        case .text: "texto"
-        case .diff: "diff"
-        case .file: "arquivo"
-        }
+        kindLabelDocument(kind) ?? "arquivo"
     }
 }

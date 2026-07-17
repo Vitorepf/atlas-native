@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 // Provenance phase spoken — peel de AtlasCodeProvenanceSheet+A11ySpoken.
+// Loaded → AtlasCodeProvenanceSheet+A11ySpoken+Phase+Loaded.swift
 
 extension AtlasCodeProvenanceSheet {
     func provenanceSheetPhaseParts() -> [String] {
@@ -11,9 +12,7 @@ extension AtlasCodeProvenanceSheet {
         case .failed(let message):
             return [spokenFailed(message)]
         case .loaded(let provenance):
-            if let headline = provenance.diffHeadline { return [headline] }
-            if !hasLoadedBody(provenance) { return ["ledger sem detalhe neste recorte"] }
-            return []
+            return provenanceSheetLoadedParts(provenance)
         }
     }
 }

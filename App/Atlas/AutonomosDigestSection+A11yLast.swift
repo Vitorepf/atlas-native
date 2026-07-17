@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 /// Last-digest spoken body — peel de AutonomosDigestSection+A11y.
+/// Headlines → AutonomosDigestSection+A11yLast+Headlines.swift
 
 enum AutonomosDigestSectionA11yLast {
     static func appendLastBody(
@@ -12,11 +13,14 @@ enum AutonomosDigestSectionA11yLast {
         riskHeadline: String?,
         decisionTitle: String?
     ) {
-        if let windowCaption { parts.append(windowCaption) }
-        AutonomosDigestSectionA11y.appendCounts(&parts, counts: counts)
-        if let mergeHash { parts.append("merge \(mergeHash)") }
-        if let riskHeadline { parts.append(riskHeadline) }
-        if let decisionTitle { parts.append(decisionTitle) }
+        AutonomosDigestSectionA11yLastHeadlines.appendHeadlines(
+            &parts,
+            windowCaption: windowCaption,
+            counts: counts,
+            mergeHash: mergeHash,
+            riskHeadline: riskHeadline,
+            decisionTitle: decisionTitle
+        )
         if counts.delivered > 0 && counts.risks == 0 && counts.pendingDecisions == 0 {
             parts.append("silêncio, segue sem portão")
         }
