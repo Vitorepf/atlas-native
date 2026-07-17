@@ -40,6 +40,10 @@ public enum AtlasRoute {
         "\(aiInteraction(id))/feedback"
     }
 
+    public static func aiInteractionSteer(_ id: String) -> String {
+        "\(aiInteraction(id))/steer"
+    }
+
     public static func aiInteractionChangeReview(_ traceId: String) -> String {
         "\(aiInteraction(traceId))/change-review"
     }
@@ -152,6 +156,8 @@ public func runAtlasRouteChecks(_ check: (String, Bool) -> Void) {
           AtlasRoute.aiThread("th/a b") == "/ai/threads/th%2Fa%20b")
     check("route stream preserves timeout/after query",
           AtlasRoute.aiInteractionStream("trace/1", timeout: 120, after: 9) == "/ai/interactions/trace%2F1/stream?timeout=120&after=9")
+    check("route steer encodes trace id",
+          AtlasRoute.aiInteractionSteer("trace/1") == "/ai/interactions/trace%2F1/steer")
     check("route change review diff encodes both ids",
           AtlasRoute.aiInteractionChangeReviewDiff(traceId: "tr 1", patchId: "patch/2") == "/ai/interactions/tr%201/change-review/patches/patch%2F2/diff")
     check("route artifact content encodes ids and max bytes",

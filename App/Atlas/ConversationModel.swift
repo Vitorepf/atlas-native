@@ -38,6 +38,9 @@ final class ConversationModel {
     /// Último recibo de continuidade. A View pode projetá-lo, mas nunca cria
     /// sessão/local history por conta própria para simular o handoff.
     var latestSurfaceHandoff: AtlasAiSurfaceHandoff?
+    /// Último recibo de steering da execução. Aceite e rejeição vêm do servidor;
+    /// a casca não infere se uma instrução entrou na fila do checkpoint seguro.
+    var lastSteerReceipt: AtlasInteractionSteerResponse?
 
     /// Fatos determinísticos coletados por turno e prefixados à pergunta NO FIO.
     /// A bolha do operador continua sendo o que ele escreveu — mesma lei do

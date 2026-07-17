@@ -55,6 +55,106 @@ public struct FeedbackAiInteractionInput: Encodable, Sendable {
     }
 }
 
+public enum AtlasInteractionSteerScope: String, Codable, Sendable, Equatable, CaseIterable {
+    case currentStep = "current_step"
+    case replan
+}
+
+public struct AtlasInteractionSteerInput: Encodable, Sendable, Equatable {
+    public let instruction: String
+    public let scope: AtlasInteractionSteerScope
+
+    public init(instruction: String, scope: AtlasInteractionSteerScope) {
+        self.instruction = instruction.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.scope = scope
+    }
+}
+
+public enum AtlasInteractionSteerStatus: String, Codable, Sendable, Equatable {
+    case accepted
+    case rejected
+}
+
+public enum AtlasInteractionSteerEvent: String, Codable, Sendable, Equatable {
+    case accepted = "steering_accepted"
+    case rejected = "steering_rejected"
+}
+
+public enum AtlasInteractionSteerDeliveryStatus: String, Codable, Sendable, Equatable {
+    case queuedForNextSafeCheckpoint = "queued_for_next_safe_checkpoint"
+    case notQueued = "not_queued"
+}
+
+public struct AtlasInteractionSteerDelivery: Codable, Sendable, Equatable {
+    public let status: AtlasInteractionSteerDeliveryStatus
+}
+
+public enum AtlasInteractionSteerRejectionReason: String, Codable, Sendable, Equatable, CaseIterable {
+    case instructionRequired = "instruction_required"
+    case invalidScope = "invalid_scope"
+    case traceWithoutThread = "trace_without_thread"
+    case noActiveJob = "no_active_job"
+}
+
+public struct AtlasInteractionSteerResponse: Decodable, Sendable, Equatable {
+    public static let schemaVersion = "atlas.ai.interaction_steer.v1"
+
+    public let schemaVersion: String
+    public let status: AtlasInteractionSteerStatus
+    public let event: AtlasInteractionSteerEvent
+    public let traceId: String?
+    public let delivery: AtlasInteractionSteerDelivery?
+    public let reason: AtlasInteractionSteerRejectionReason?
+
+    enum CodingKeys: String, CodingKey {
+        case schemaVersion, status, event, traceId, delivery, reason
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let schemaVersion = try values.requireSchema(
+            Self.schemaVersion,
+            forKey: .schemaVersion,
+            message: "Unsupported interaction steer schema."
+        )
+        let status = try values.decode(AtlasInteractionSteerStatus.self, forKey: .status)
+        let event = try values.decode(AtlasInteractionSteerEvent.self, forKey: .event)
+        let traceId = try values.decodeIfPresent(String.self, forKey: .traceId)
+        let delivery = try values.decodeIfPresent(AtlasInteractionSteerDelivery.self, forKey: .delivery)
+        let reason = try values.decodeIfPresent(AtlasInteractionSteerRejectionReason.self, forKey: .reason)
+
+        switch status {
+        case .accepted:
+            guard event == .accepted,
+                  delivery?.status == .queuedForNextSafeCheckpoint,
+                  reason == nil else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .status,
+                    in: values,
+                    debugDescription: "Accepted steer response must be queued for next safe checkpoint."
+                )
+            }
+        case .rejected:
+            guard event == .rejected, reason != nil else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .reason,
+                    in: values,
+                    debugDescription: "Rejected steer response must include a public reason."
+                )
+            }
+        }
+
+        self.schemaVersion = schemaVersion
+        self.status = status
+        self.event = event
+        self.traceId = traceId
+        self.delivery = delivery
+        self.reason = reason
+    }
+
+    public var isAccepted: Bool { status == .accepted }
+}
+
 public extension AtlasClient {
     /// Cria um recibo provider-safe para outra superfície abrir a mesma thread
     /// e sessão canônicas; não cria conversa, sessão ou provider novo.

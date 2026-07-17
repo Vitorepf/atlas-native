@@ -359,6 +359,33 @@ public actor AtlasClient: AtlasAiStreamSource {
         return try await post(AtlasRoute.aiInteractions, body: input, timeout: hasDocuments ? 120 : 90)
     }
 
+    /// M07 · Steer de uma execução viva. O contrato publica tanto o aceite 202
+    /// quanto a rejeição governada 422 no mesmo schema, então este caminho
+    /// decodifica ambos e só transforma outros HTTP em `AtlasApiError`.
+    public func steerAiInteraction(
+        _ id: String,
+        input: AtlasInteractionSteerInput
+    ) async throws -> AtlasInteractionSteerResponse {
+        let path = AtlasRoute.aiInteractionSteer(id)
+        guard let url = URL(string: config.base + path) else {
+            throw AtlasApiError(status: 0, path: path, message: "URL inválida")
+        }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.timeoutInterval = 15
+        req.setValue("application/json", forHTTPHeaderField: "Accept")
+        req.setValue(config.token, forHTTPHeaderField: "X-Atlas-Token")
+        req.httpBody = try encoder.encode(input)
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let (data, response) = try await session.data(for: req)
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        guard status == 202 || status == 422 else {
+            throw AtlasApiError(status: status, path: path, message: Self.errorMessage(data) ?? "HTTP \(status)")
+        }
+        return try decoder.decode(AtlasInteractionSteerResponse.self, from: data)
+    }
+
     // MARK: - Live Activities remotas (APNs)
 
     /// Registra o token ROTATIVO de uma ActivityKit Live Activity para o trace
