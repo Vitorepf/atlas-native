@@ -12,7 +12,7 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **118** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **120** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
 | Commits no tip (`git rev-list --count HEAD`) | 389 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 88 | trabalho Elite + peels nesta branch |
 
@@ -44,7 +44,7 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 ## Entrega recente (wave XVII — HEAD)
 
 - `polish(ui)|polish(core)` Elite B XVII: peels >130 → ≤110 nos alvos nomeados (`ConversationModel+Send`, `SearchView`, `ConversationCockpit`, `ChangeReviewDiffSection`, `ArenaRunSheet`, `AtlasAgentActivity+FromEvent`, `RootHomeSections`, `QueuedFollowUpsSheet`, `AtlasCodePalette`, `SelfConstructionReceiptSheet`) + peels adjacentes (Graph, ExecutionProof, AutonomosLoaded, ComposerSheets, ExecutionStateCard, AgentActivity Merge/FromTool).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **118** (após este commit).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **120** (após este commit).
 - Zero arquivos App/Core >145; 10 arquivos >130 restantes (max 139 `ConversationModel`).
 
 ## Entrega anterior (wave XVI)
