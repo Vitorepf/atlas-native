@@ -24,7 +24,6 @@ extension View {
         reviewTrace: Binding<ConversationReviewTraceRef?>,
         artifactTrace: Binding<ConversationReviewTraceRef?>,
         steerTrace: Binding<ConversationSteerTraceRef?>,
-        steerReceipt: @escaping (TraceID) -> AtlasInteractionSteerResponse?,
         onSteerSubmit: @escaping (TraceID, String, AtlasInteractionSteerScope) -> Void
     ) -> some View {
         conversationComposerSheetsModifier(
@@ -41,7 +40,6 @@ extension View {
             reviewTrace: reviewTrace,
             artifactTrace: artifactTrace,
             steerTrace: steerTrace,
-            steerReceipt: steerReceipt,
             onSteerSubmit: onSteerSubmit
         )
     }

@@ -88,7 +88,6 @@ struct ConversationComposer: View {
             reviewTrace: $reviewTrace,
             artifactTrace: $artifactTrace,
             steerTrace: $steerTrace,
-            steerReceipt: steerReceipt(for:),
             onSteerSubmit: submitSteer
         )
     }

@@ -17,7 +17,6 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
     @Binding var reviewTrace: ConversationReviewTraceRef?
     @Binding var artifactTrace: ConversationReviewTraceRef?
     @Binding var steerTrace: ConversationSteerTraceRef?
-    let steerReceipt: (TraceID) -> AtlasInteractionSteerResponse?
     let onSteerSubmit: (TraceID, String, AtlasInteractionSteerScope) -> Void
 
     func body(content: Content) -> some View {
@@ -32,7 +31,7 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
             .sheet(item: $steerTrace) { ref in
                 SteerInteractionSheet(
                     traceId: ref.id,
-                    receipt: steerReceipt(ref.id)
+                    model: model
                 ) { instruction, scope in
                     onSteerSubmit(ref.id, instruction, scope)
                 }

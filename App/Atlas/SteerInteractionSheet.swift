@@ -3,15 +3,22 @@ import AtlasCore
 
 struct SteerInteractionSheet: View {
     let traceId: TraceID
-    let receipt: AtlasInteractionSteerResponse?
+    var model: ConversationModel
     let onSubmit: (String, AtlasInteractionSteerScope) -> Void
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var instruction = ""
     @State private var scope: AtlasInteractionSteerScope = .currentStep
 
     private var canSubmit: Bool {
         !instruction.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private var matchedReceipt: AtlasInteractionSteerResponse? {
+        guard let receipt = model.lastSteerReceipt else { return nil }
+        if let receiptTrace = receipt.traceId, receiptTrace != traceId.rawValue { return nil }
+        return receipt
     }
 
     var body: some View {
@@ -22,6 +29,7 @@ struct SteerInteractionSheet: View {
                     Text("Redirecionar")
                         .font(AtlasFont.serif(24, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
 
                     Text("A instrução entra no próximo checkpoint seguro desta execução. O Atlas pode recusar e devolver o motivo público.")
                         .font(.footnote)
@@ -35,6 +43,7 @@ struct SteerInteractionSheet: View {
                     }
                     .pickerStyle(.segmented)
                     .accessibilityIdentifier(A11yID.steerScope)
+                    .accessibilityLabel(spokenScopeLabel(scope))
 
                     TextField("O que muda a partir daqui?", text: $instruction, axis: .vertical)
                         .font(.system(.callout))
@@ -45,15 +54,19 @@ struct SteerInteractionSheet: View {
                         .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface))
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separator, lineWidth: 1))
                         .accessibilityIdentifier(A11yID.steerInstruction)
+                        .accessibilityHint("descreve o que deve mudar na execução")
 
-                    if let receipt {
+                    if let receipt = matchedReceipt {
                         receiptLine(receipt)
+                            .transition(reduceMotion ? .identity : .opacity)
                             .accessibilityIdentifier(A11yID.steerReceipt)
+                            .accessibilityLabel(spokenReceiptLabel(receipt))
                     }
 
                     Spacer(minLength: 0)
                 }
                 .padding(22)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: matchedReceipt)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -66,24 +79,13 @@ struct SteerInteractionSheet: View {
                     }
                     .disabled(!canSubmit)
                     .accessibilityIdentifier(A11yID.steerSubmit)
+                    .accessibilityLabel(spokenSubmitLabel(canSubmit: canSubmit))
+                    .accessibilityHint(spokenSubmitHint(canSubmit: canSubmit))
                 }
             }
         }
         .accessibilityIdentifier(A11yID.steerSheet)
         .accessibilityLabel("redirecionar execução \(traceId.rawValue)")
-    }
-
-    private func receiptLine(_ receipt: AtlasInteractionSteerResponse) -> some View {
-        let text = receipt.isAccepted
-            ? "na fila do próximo checkpoint"
-            : "rejeitado · \(receipt.reason?.rawValue ?? "motivo_indisponivel")"
-
-        return Text(text)
-            .font(AtlasFont.mono(11))
-            .foregroundStyle(receipt.isAccepted ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
-            .padding(12)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface.opacity(0.65)))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        .accessibilityHint(spokenSheetHint())
     }
 }
