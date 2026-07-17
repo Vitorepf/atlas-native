@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXVI — CICLO B Nightly/Composer/Review/Workspace/Editorial/Arena/Ribbon/Control peels** · `6fdfbaf` · CICLO B: Nightly `+Content`; Composer `+CardSpoken`; Review `+DiffExpanded`; Workspace `+ThreadLinkTransition`; Editorial `+ClosingMeta`; Arena `+A11yRun`/`+Presentation`; Ribbon `+LanesCaption`; Control `+ControlStart`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXV — CICLO B Fleet/Detail/Effort/Artifact/Provenance/Nightly/Proof/Search peels** · `c5dfce6` · CICLO B: Fleet `+A11ySection`; Detail `+InboxCore`; Effort `+Subtitle`; Artifact `+PreviewImage`; Provenance `+FilesBody`; Nightly `+NightlyReason`; Proof `+ArtifactsLead`; Search `+ClearA11y`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXIV — CICLO B Reason/Area/Execution/Home/Code/Zoom/Plan/Sheet peels** · `4340a47` · CICLO B: Reason `+FormOperator`; Area `+PrimaryPause`; Execution `+RetryA11y`; Home `+ConversationFree`; Code `+Stack`; Zoom `+Offset`; Plan `+StepsRowFactory`; Sheet `+SheetRowA11y`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
