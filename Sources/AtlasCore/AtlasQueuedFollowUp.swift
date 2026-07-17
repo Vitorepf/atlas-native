@@ -1,20 +1,5 @@
 import Foundation
 
-/// Uma instrução enviada enquanto um turno ainda executa. Ela nunca interrompe
-/// o turno atual: o operador pode promovê-la para ser a próxima, removê-la, ou
-/// deixá-la drenar em FIFO quando a execução concluir.
-public struct QueuedMessage: Codable, Sendable, Equatable, Identifiable {
-    public let id: String
-    public let text: String
-    public let createdAt: Date
-
-    public init(id: String = UUID().uuidString.lowercased(), text: String, createdAt: Date = Date()) {
-        self.id = id
-        self.text = text
-        self.createdAt = createdAt
-    }
-}
-
 /// Persistência pequena e atômica da fila por conversa. O escopo provisório
 /// permite enfileirar antes de o servidor devolver a thread; depois o model
 /// migra para o id canônico sem perder a ordem. Foundation-only e reutilizável

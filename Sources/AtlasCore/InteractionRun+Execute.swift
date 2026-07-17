@@ -69,40 +69,13 @@ extension InteractionRun {
                 updateActiveJobs(from: final.trace)
                 continuation.yield(.execution(projectedExecution(from: final.trace)))
             }
-            if let finalTrace = final?.trace, Self.isSuspended(finalTrace) {
-                activeJobIds.removeAll()
-                if let clientId = preparedInput.clientId {
-                    try? await outbox?.remove(clientId: clientId)
-                }
-                continuation.yield(.suspended(finalTrace))
-                continuation.finish()
-            } else if let completed, Self.isSuspensionStatus(completed.status) {
-                activeJobIds.removeAll()
-                if let clientId = preparedInput.clientId {
-                    try? await outbox?.remove(clientId: clientId)
-                }
-                continuation.yield(.suspended(final?.trace))
-                continuation.finish()
-            } else if let completed, Self.isTerminal(completed.status) {
-                activeJobIds.removeAll()
-                if let clientId = preparedInput.clientId {
-                    try? await outbox?.remove(clientId: clientId)
-                }
-                continuation.yield(.completed(done: completed, finalTrace: final?.trace))
-                continuation.finish()
-            } else if let finalTrace = final?.trace, Self.isTerminal(finalTrace.status) {
-                activeJobIds.removeAll()
-                if let clientId = preparedInput.clientId {
-                    try? await outbox?.remove(clientId: clientId)
-                }
-                continuation.yield(.completed(
-                    done: AtlasAiStreamDone(traceId: finalTrace.id, status: finalTrace.status, lastSequence: nil),
-                    finalTrace: finalTrace
-                ))
-                continuation.finish()
-            } else {
-                throw AtlasInteractionStreamError.reconnectsExhausted(traceId: traceId.rawValue, lastSequence: 0)
-            }
+            try await resolveInteractionTerminal(
+                preparedInput: preparedInput,
+                continuation: continuation,
+                completed: completed,
+                final: final,
+                traceId: traceId
+            )
         } catch is CancellationError {
             await cancelActiveJobs()
             if let clientId = preparedInput.clientId {

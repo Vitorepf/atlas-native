@@ -2,12 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // C15 — Revisar mudanças de uma execução (o "Review" da cena 12, real).
-// A casca renderiza SOMENTE reviews.changeReviewsByTrace[traceId]:
-// `unavailable` é um estado explícito com motivo (sem arquivos/botões);
-// `available` traz patches, controles, testes e findings persistidos.
-// Aceitar/rejeitar só muda a tela depois do recibo do servidor (o model
-// garante); diff vem por refreshChangeReviewDiff — nunca rede na View.
-// Seções → ChangeReviewSections / DiffSection / CouncilSection (idêntico).
+// Conteúdo disponível → ChangeReviewView+Available.swift
 struct ChangeReviewSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -66,7 +61,13 @@ struct ChangeReviewSheet: View {
                 )
             case .available:
                 if Self.hasReviewSurface(review) {
-                    available(review)
+                    ChangeReviewAvailableContent(
+                        reviews: reviews,
+                        traceId: traceId,
+                        review: review,
+                        expandedDiffPatch: $expandedDiffPatch,
+                        applying: $applying
+                    )
                 } else {
                     TraceEvidenceUnavailable(
                         title: "Revisão ligada, mas sem patches nem provas publicadas.",
@@ -78,37 +79,6 @@ struct ChangeReviewSheet: View {
                 }
             }
         }
-    }
-
-    private func available(_ review: AtlasTraceChangeReview) -> some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 16) {
-                if let run = review.run { ChangeReviewRunHeader(run: run) }
-                ChangeReviewGovernanceSection(reviews: reviews, traceId: traceId)
-                ForEach(review.patches) { patch in
-                    ChangeReviewPatchCard(
-                        reviews: reviews,
-                        traceId: traceId,
-                        patch: patch,
-                        expandedDiffPatch: $expandedDiffPatch
-                    )
-                }
-                if !review.controls.isEmpty { ChangeReviewControlsSection(controls: review.controls) }
-                if !review.testRuns.isEmpty { ChangeReviewTestsSection(tests: review.testRuns) }
-                if !review.review.findings.isEmpty { ChangeReviewFindingsSection(findings: review.review.findings) }
-                if !review.review.operatorActions.isEmpty {
-                    ChangeReviewDecidedSection(actions: review.review.operatorActions)
-                }
-                ChangeReviewRunActions(
-                    review: review,
-                    reviews: reviews,
-                    traceId: traceId,
-                    applying: $applying
-                )
-            }
-            .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, 14)
-        }
-        .scrollIndicators(.hidden)
     }
 
     /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.
