@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Spoken awaiting/failed — peel de ExecutionStateCard+AwaitingFailed.
+// Failure → ExecutionStateCard+AwaitingFailed+Failure.swift
 
 extension ExecutionStateCard {
     var spokenSummary: String {
@@ -23,16 +24,5 @@ extension ExecutionStateCard {
             parts.append("retomar disponível")
         }
         return parts.joined(separator: ". ")
-    }
-
-    /// Cena 13: o motivo falado vem do `detail` publicado pelo servidor.
-    var spokenFailureReason: String? {
-        guard state.kind == .failed, let detail = state.detail else { return nil }
-        return "motivo: \(detail)"
-    }
-
-    var failureReasonA11y: String? {
-        guard state.kind == .failed, let detail = state.detail else { return nil }
-        return "motivo da falha: \(detail)"
     }
 }
