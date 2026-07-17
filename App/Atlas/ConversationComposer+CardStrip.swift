@@ -2,17 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Strip + toolbar do composer — peel de ConversationComposer+CardBody.
+// Attach → ConversationComposer+CardAttach.swift
 
 extension ConversationComposer {
     @ViewBuilder
     var composerStripToolbar: some View {
-        AttachmentStrip(
-            drafts: model.drafts,
-            reduceMotion: reduceMotion,
-            uploadPercent: model.uploadPercent,
-            onRemove: { model.removeDraft($0) },
-            onFailedTap: { model.toast = $0 }
-        )
+        composerAttachmentStrip
         ComposerToolbar(
             model: model,
             reduceMotion: reduceMotion,

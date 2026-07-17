@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Ritmo e helpers de reversão — peel de AutonomosView.
+// Ritmo — peel de AutonomosView.
+// Revert → AutonomosView+Revert.swift
 
 extension AutonomosView {
     func refreshRhythmLearning() async {
@@ -15,16 +16,5 @@ extension AutonomosView {
             + backlog.inboxItems.compactMap { AtlasTime.date($0.createdAt) }
             + backlog.findings.items.compactMap { AtlasTime.date($0.createdAt) }
         return values.min()
-    }
-
-    func canRevertSelfConstruction(_ receipt: SelfConstructionReceipt) -> Bool {
-        model.canControlSelectedArea && receipt.cycle.mergeHash.nonEmpty != nil
-    }
-
-    func revertReceipt(for receipt: SelfConstructionReceipt) -> AtlasAutonomosCycleRevertResponse? {
-        guard let revert = model.lastRevertReceipt else { return nil }
-        guard revert.revertOf.cycleIndex == receipt.cycle.cycleIndex,
-              revert.revertOf.mergeHash == receipt.cycle.mergeHash else { return nil }
-        return revert
     }
 }

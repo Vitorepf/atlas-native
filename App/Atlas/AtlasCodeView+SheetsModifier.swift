@@ -2,7 +2,8 @@ import SwiftUI
 import AtlasCore
 
 // Sheets modifier — peel de AtlasCodeView+Sheets.
-// Ask/Why → +AskWhy · Provenance/Heal → +Sheets+Provenance
+// Ask/Why → AtlasCodeView+SheetsModifierAsk.swift
+// Provenance/Heal → +Sheets+Provenance
 
 struct AtlasCodeSheetsModifier: ViewModifier {
   let session: AtlasSession
@@ -18,15 +19,6 @@ struct AtlasCodeSheetsModifier: ViewModifier {
   let onProvenanceAsk: (AtlasCodeGraphNode) -> Void
 
   func body(content: Content) -> some View {
-    provenanceAndHealSheets(on: content)
-      .modifier(AtlasCodeAskWhySheetsModifier(
-        session: session,
-        model: model,
-        askModel: askModel,
-        showsAskCard: $showsAskCard,
-        whyFileTarget: $whyFileTarget,
-        askThreadId: $askThreadId,
-        askDraft: $askDraft
-      ))
+    askWhySheetsBind(provenanceAndHealSheets(on: content))
   }
 }

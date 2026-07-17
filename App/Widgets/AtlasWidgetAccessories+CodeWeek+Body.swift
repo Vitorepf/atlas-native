@@ -6,6 +6,7 @@ import AtlasCore
 // Metric → AtlasWidgetAccessories+CodeWeek+Metric.swift
 // Quiet → AtlasWidgetAccessories+CodeWeek+Quiet.swift
 // Header → AtlasWidgetAccessories+CodeWeek+Header.swift
+// Hint → AtlasWidgetAccessories+CodeWeek+Hint.swift
 
 extension CodeWeekWidgetView {
     @ViewBuilder
@@ -13,13 +14,7 @@ extension CodeWeekWidgetView {
         VStack(alignment: .leading, spacing: 8) {
             weekHeader(week: week, stale: stale, age: age)
             weekMetricsOrQuiet(week)
-            if family == .systemLarge {
-                Text(CodeWeekWidgetA11y.isQuiet(week)
-                     ? "abra o radar do Código para ver o grafo"
-                     : "abra o radar do Código para o grafo")
-                    .font(.system(size: 12, design: .serif))
-                    .foregroundStyle(Ink.ink2)
-            }
+            weekLargeHint(week)
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)

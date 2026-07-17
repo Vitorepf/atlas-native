@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Steer form header — peel de SteerInteractionSheet+Form.
+// Picker → SteerInteractionSheet+FormPicker.swift
 
 extension SteerInteractionSheet {
     var formHeader: some View {
@@ -15,14 +16,7 @@ extension SteerInteractionSheet {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
-            Picker("Escopo", selection: $scope) {
-                ForEach(AtlasInteractionSteerScope.allCases, id: \.self) { scope in
-                    Text(scope.rawValue).tag(scope)
-                }
-            }
-            .pickerStyle(.segmented)
-            .accessibilityIdentifier(A11yID.steerScope)
-            .accessibilityLabel(spokenScopeLabel(scope))
+            formScopePicker
         }
     }
 }
