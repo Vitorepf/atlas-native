@@ -36,7 +36,10 @@ struct ChangeReviewAvailableContent: View {
                 )
             }
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, 14)
+            .accessibilityElement(children: .contain)
         }
         .scrollIndicators(.hidden)
+        .accessibilityLabel("revisão de mudanças")
+        .accessibilityIdentifier(A11yID.reviewAvailableContent)
     }
 }

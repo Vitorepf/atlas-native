@@ -24,4 +24,11 @@ extension A11yID {
     static let attachmentPhoto = "composer-attachment-photo"
     static let attachmentFile = "composer-attachment-file"
     static let attachmentPaste = "composer-attachment-paste"
+
+    // M07 · Steering
+    static let steerSheet = "steer-sheet"
+    static let steerInstruction = "steer-instruction"
+    static let steerScope = "steer-scope"
+    static let steerSubmit = "steer-submit"
+    static let steerReceipt = "steer-receipt"
 }

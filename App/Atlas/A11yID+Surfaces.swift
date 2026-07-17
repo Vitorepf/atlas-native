@@ -51,6 +51,7 @@ extension A11yID {
     static let reviewRunReject = "review-run-reject"
     static let reviewPatchCardPrefix = "review-patch-card-"
     static let reviewPatchDiffPrefix = "review-patch-diff-"
+    static let reviewAvailableContent = "review-available-content"
     static let reviewFileRowPrefix = "review-file-row-"
     static let reviewFileAcceptPrefix = "review-file-accept-"
     static let reviewFileRejectPrefix = "review-file-reject-"
@@ -90,11 +91,4 @@ extension A11yID {
     static let liveTimelineFilterSilence = "live-timeline-filter-silence"
     static let liveTimelineFilterPrefix = "live-timeline-filter-"
     static func liveTimelineFilter(_ raw: String) -> String { liveTimelineFilterPrefix + raw }
-
-    // M07 · Steering
-    static let steerSheet = "steer-sheet"
-    static let steerInstruction = "steer-instruction"
-    static let steerScope = "steer-scope"
-    static let steerSubmit = "steer-submit"
-    static let steerReceipt = "steer-receipt"
 }

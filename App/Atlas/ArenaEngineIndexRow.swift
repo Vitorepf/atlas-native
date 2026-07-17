@@ -15,17 +15,20 @@ struct ArenaEngineIndexRow: View {
                     .font(.system(.body, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .lineLimit(1)
+                    .accessibilityHidden(true)
                 Spacer(minLength: 8)
                 Text(ArenaFormat.score(engine.composite))
                     .font(AtlasFont.mono(18))
                     .foregroundStyle(engine.composite == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
                     .monospacedDigit()
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
+                    .accessibilityHidden(true)
                 Text(ArenaFormat.signed(engine.delta))
                     .font(AtlasFont.mono(12))
                     .foregroundStyle(deltaColor(engine.delta))
                     .monospacedDigit()
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
+                    .accessibilityHidden(true)
             }
             HStack(spacing: 10) {
                 metric("c/Atlas", ArenaFormat.score(engine.withAtlasComposite), color: metricColor(engine.withAtlasComposite))
@@ -38,9 +41,10 @@ struct ArenaEngineIndexRow: View {
                 Text("cobertura parcial \(Int((engine.coverage * 100).rounded()))%")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
             }
         }
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityText)
     }
 
@@ -49,6 +53,7 @@ struct ArenaEngineIndexRow: View {
             .font(AtlasFont.mono(11))
             .foregroundStyle(color)
             .monospacedDigit()
+            .accessibilityHidden(true)
     }
 
     private func metricColor(_ value: Double?, fallback: Color = AtlasTheme.accent) -> Color {
