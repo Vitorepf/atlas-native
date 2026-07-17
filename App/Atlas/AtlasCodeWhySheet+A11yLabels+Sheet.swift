@@ -1,7 +1,7 @@
 import Foundation
 import AtlasCore
 
-// Why sheet spoken — peel de AtlasCodeWhySheet+A11y.
+// Sheet spoken — peel de AtlasCodeWhySheet+A11yLabels.
 
 extension AtlasCodeWhySheet {
     var whySheetSpokenLabel: String {
@@ -16,10 +16,5 @@ extension AtlasCodeWhySheet {
             }
         }
         return parts.joined(separator: ", ")
-    }
-
-    var whyHeaderSpokenLabel: String {
-        guard let why = model.why, why.truncated else { return file }
-        return "\(file), mostrando \(why.commits.count) de \(why.commitsTotal)"
     }
 }

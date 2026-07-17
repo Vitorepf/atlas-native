@@ -3,6 +3,7 @@ import AtlasCore
 
 // Timing line — peel de LiveNowRow+Timing.
 // Pause → LiveNowRow+TimingPause.swift
+// Clock → LiveNowRow+TimingLine+Clock.swift
 
 extension LiveNowRow {
     func timingLine(now: Date) -> some View {
@@ -11,14 +12,7 @@ extension LiveNowRow {
                 .font(AtlasFont.mono(10))
                 .tracking(0.3)
                 .foregroundStyle(timingColor)
-            if session.timing != .finished {
-                Text("·")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-                clockView(now: now)
-                    .accessibilityLabel(clockAccessibilityLabel(now: now))
-            }
+            timingClockSegment(now: now)
             timingPauseAge(now: now)
         }
     }

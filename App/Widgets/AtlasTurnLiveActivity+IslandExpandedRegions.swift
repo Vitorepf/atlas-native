@@ -4,18 +4,15 @@ import ActivityKit
 import AtlasCore
 
 // Expanded island regions — peel de AtlasTurnLiveActivity+IslandCompactShell.
+// Leading → AtlasTurnLiveActivity+IslandExpandedRegions+Leading.swift
+// Center → AtlasTurnLiveActivity+IslandExpandedRegions+Center.swift
+// Trailing → AtlasTurnLiveActivity+IslandExpandedRegions+Trailing.swift
 
 extension AtlasTurnLiveActivity {
     @DynamicIslandExpandedContentBuilder
     func islandExpandedLayout(context: ActivityViewContext<AtlasTurnAttributes>) -> some DynamicIslandExpandedContent {
-        DynamicIslandExpandedRegion(.leading) {
-            AtlasTurnIslandLeading(context: context)
-        }
-        DynamicIslandExpandedRegion(.center) {
-            AtlasTurnIslandCenter(context: context)
-        }
-        DynamicIslandExpandedRegion(.trailing) {
-            AtlasTurnIslandTrailing(context: context)
-        }
+        islandExpandedLeading(context: context)
+        islandExpandedCenter(context: context)
+        islandExpandedTrailing(context: context)
     }
 }

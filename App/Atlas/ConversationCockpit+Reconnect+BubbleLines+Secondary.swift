@@ -1,7 +1,7 @@
 import Foundation
 import AtlasCore
 
-// Reconnect secondary lines + timer — peel de ConversationCockpit+Reconnect+Bubble.
+// Secondary lines — peel de ConversationCockpit+Reconnect+BubbleLines.
 
 extension ChatBubble {
     /// Detalhe/checkpoint só do contrato de apresentação — nunca retry inventado.
@@ -15,13 +15,5 @@ extension ChatBubble {
             lines.append("checkpoint · \(checkpoint)")
         }
         return lines
-    }
-
-    var reconnectActiveTimerMs: Int? {
-        guard streaming,
-              executionPresentationState?.kind == .recovering,
-              let timer = executionPresentationState?.timer
-        else { return nil }
-        return timer.elapsedActiveMilliseconds
     }
 }
