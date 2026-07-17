@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **510+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXVIII tip `34c85b4` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **512+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXIX tip `c505c6d` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXVIII (este tip)
+## Entrega Elite CXXXXXLXIX (este tip)
+
+- `polish(ui)` CICLO B: TurnPresence+Notifications+A11yTerminal/+BuildContent/+LiveSessions+SnapshotLoop/+Broadcast+EndActivities; Radar+NavShell; Why+ContentCommits; Artifact+PreviewTooLarge/+PreviewMessage; AreaDetail+ChipsWorkOrders/+ChipsInbox/+ChipsFindings; Delivered+A11ySelf/+A11yEmpty; Fleet+SummaryMetrics; Loaded+StackTailFleet/+StackTailHistory; Arena+RowTrailingSparkline/+RowTrailingMeasured/+MarksComposite/+MarksSeries; Proof+DecisionRow; Root+A11yThreadMessage; Outline+LeadRole; Folder+A11yExceptions; Widgets+LockAttention/+LockIncident/+TimerActive. Tip `c505c6d`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLXVIII (anterior)
 
 - `polish(ui)` CICLO B: TurnPresence+LiveActivity+Update/+LiveActivityState+Timing/+Clock/+Broadcast+Count/+Watch+Observe/+Cleanup/+Notifications+Permission/+LockScreenText/+A11yBody/+Spoken; LiveSessionSnapshot; Delivered+DeliveredBody; Radar+ContentFailed; Init+SeedWorkspace/+SeedDraft; Markdown+ParseBoundary; Root+HomeStackSections; Digest+A11yLead; Loaded+ReceiptPhaseID; Awaiting+ChipsInbox/+ChipsOrders; Strip+IdleLine; Widgets+Timeline/+BodyLayout. Tip `34c85b4`.
 - Zero App/Widgets >100; zero Route nova.
