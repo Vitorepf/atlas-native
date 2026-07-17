@@ -199,7 +199,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | U1 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | F5 | Provar foto → strip → progresso → envio e polir strip | Fluxo real legível no device, inclusive erro e remoção | `ed10c81` instalado+aberto no iPhone 23:55; falta print do operador p/ DEVICE_PROVEN |
 | U2 | **IN_PROGRESS** | **Fable** | `App/Atlas/ConversationView.swift` | U1 | Composer supremo em todos os estados | Nenhum controle falso; estados e motion aprovados no device | `a59003f` slot 3-estados honesto instalado; falta aprovação visual |
 | U3 | **IN_PROGRESS** | **Fable** | execution views | C5 | Cockpit v2 para tools/receipt/quality | Substitui `ExecutionRibbon` estático; mostra atividade atual e timeline registrada/expansível em cada resposta, incluindo tools, comandos sanitizados, receipt e quality | `97c9fdc` + C8; Simulator Hermes/Kimi mostra tool live e timeline persistida de 9 passos alcançável; falta aprovação/prova no físico |
-| U4 | **IN_PROGRESS** | **Fable** | `RootView.swift`, `WorkspaceView.swift` | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | `c9adefb` loading/falha/vazio editoriais instalados; distinção offline×timeout precisa de contrato (§5) |
+| U4 | DONE (falta print) | **Fable** | `RootView.swift`, `WorkspaceView.swift` | C1 | Vazio, rede, offline e servidor fora | Toda falha tem explicação e recuperação acionável | `c9adefb`+`da9399a`; `RootView.failureHeadline`/`failureHint` ligam `session.failureKind` (offline×timeout×refused×lost×401×maintenance×503); print device-pending |
 | U5 | **IN_PROGRESS** | **Fable** | `AtlasType.swift` + views | U2–U4 | Dynamic Type, VoiceOver, Reduce Motion, 120Hz/startup | Auditorias e métricas no device registradas | `a582dac` Dynamic Type em TODA tipografia (relativeTo) + VoiceOver labels; falta auditoria visual no device |
 | U6 | **IN_PROGRESS** | **Fable** | Assets.xcassets | U2 | Ícone, splash e masthead final | `5aa6245` ícone ✦ Ink & Brass no bundle e instalado; falta aprovação do operador na home | — |
 
@@ -207,7 +207,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ### bloqueada como o Cursor + polimento extraordinário)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance |
 |---|---|---|---|---|---|---|
-| U7 | **IN_PROGRESS** | **Fable** | RootView/SearchView (casca) | — | Busca REAL na home (o botão hoje é morto — viola constituição) | busca filtra threads reais e navega |
+| U7 | DONE (falta print) | **Fable** | RootView/SearchView (casca) | — | Busca REAL na home (o botão hoje é morto — viola constituição) | `SearchView` existe: filtra `session.threads` (título case/diacritic-insensitive) + `NavigationLink`→`.thread`; home→`.search`; print device-pending |
 | U8 | DONE (falta print) | Fable | ConversationView | — | Conversa suprema r2 + TIMELINE VIVA (passos empilham, atual pulsa — a progressão do Cursor) | `ca59dc2`+`c3eda84` |
 | U9 | DONE (falta print) | Fable | TurnPresence (casca, withObservationTracking — C9 dispensado: zero edição no model) | — | Notificação local na tela bloqueada ao concluir fora do app; permissão no 1º turno | `c3eda84` |
 | U10 | DONE (falta print) | Fable | Widgets/ + AtlasActivityAttributes + project.yml (TRAVESSIA ADITIVA autorizada pelo goal do operador; AtlasDeviceProof intacto) | — | Live Activity + Dynamic Island: ✦ + fase + timer; 'resposta pronta ✓' | `c3eda84` |
@@ -967,6 +967,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **docs(obra) — close U7 search + U4 offline distinction** · este commit · §4 U7 **IN_PROGRESS→DONE (falta print)**: `App/Atlas/SearchView.swift` filtra threads reais e navega; home abre `.search`. §4 U4 **IN_PROGRESS→DONE (falta print)**: `RootView` já liga `session.failureKind` em copy distinta offline×timeout×etc (contrato §5 `da9399a`). Sem DEVICE_PROVEN — print ainda device-pending. Prova: leitura de `SearchView.swift` + `RootView.failureHeadline`/`failureHint`; sem runtime neste cloud.
 
 - 2026-07-17 · Grok 4.5 · **CICLO B — peel Autonomos area/controls from shell** · `a4ad96e` · `AutonomosView.swift` 565→297; extrai `AutonomosAreaSection` (277) — picker/detail/placement/delivered/controls; `AutonomosAwaitingSection` (100) — aguardando você + nightly/rhythm blocks + detail chips; zero Route; comportamento idêntico. §4 E-B atualizado. Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
 
