@@ -1,32 +1,47 @@
 import SwiftUI
 import AtlasCore
 
-/// Relógio canônico e pausa longa — peel de `LiveNowRow+Timing`.
+// Clock view — peel de LiveNowRow+Timing.
+
 extension LiveNowRow {
-    func isLongPaused(now: Date) -> Bool {
-        pauseAgeHours(now: now) != nil
-    }
-
-    func pauseAgeHours(now: Date) -> Int? {
-        guard session.timing == .paused, let pauseTimestamp = session.pauseTimestamp else { return nil }
-        let seconds = max(0, now.timeIntervalSince(pauseTimestamp))
-        guard seconds >= 30 * 60 else { return nil }
-        return max(1, Int(seconds / 3600))
-    }
-
-    /// Relógio canônico: `elapsedActiveMs` + (now − runningSince) quando running.
-    /// Paused congela o acumulado. Sem timer do servidor → "—" (ausência ≠ zero).
-    static func formatClock(
-        elapsedMs: Int?,
-        runningSince: Date?,
-        now: Date,
-        paused: Bool
-    ) -> String {
-        guard let base = elapsedMs else { return "—" }
-        var ms = base
-        if !paused, let since = runningSince {
-            ms += max(0, Int(now.timeIntervalSince(since) * 1000))
+    @ViewBuilder
+    func clockView(now: Date) -> some View {
+        switch session.timing {
+        case .running:
+            TimelineView(.periodic(from: .now, by: reduceMotion ? 60 : 1)) { context in
+                Text(Self.formatClock(
+                    elapsedMs: session.elapsedActiveMs,
+                    runningSince: session.runningSince,
+                    now: context.date,
+                    paused: false
+                ))
+                .font(AtlasFont.serifItalic(13))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .monospacedDigit()
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
+            }
+        case .paused:
+            Text(Self.formatClock(
+                elapsedMs: session.elapsedActiveMs,
+                runningSince: nil,
+                now: now,
+                paused: true
+            ))
+            .font(AtlasFont.serifItalic(13))
+            .foregroundStyle(AtlasTheme.textSecondary)
+            .monospacedDigit()
+            .modifier(NumericTextTransition(enabled: !reduceMotion))
+        case .finished:
+            EmptyView()
         }
-        return AtlasTime.formatActiveDuration(milliseconds: ms)
+    }
+
+    func clockAccessibilityLabel(now: Date) -> String {
+        guard let clock = spokenClock(now: now) else {
+            return "tempo ativo indisponível"
+        }
+        return session.timing == .paused
+            ? "tempo ativo congelado em \(clock)"
+            : "tempo ativo \(clock)"
     }
 }

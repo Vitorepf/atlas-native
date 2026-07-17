@@ -2,12 +2,12 @@ import SwiftUI
 import UIKit
 import AtlasCore
 
-// Preview/zoom → ArtifactViewer.swift · conteúdo → ArtifactSheet+Content.swift.
+// Preview/zoom → ArtifactViewer.swift · conteúdo → ArtifactSheet+Content.swift · toast → +Toast
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
 
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var selectedID: String?
     @State var preview: ArtifactPreviewState = .idle
@@ -59,23 +59,6 @@ struct ArtifactSheet: View {
         .task(id: selected?.id) {
             guard mountComplete, let selected else { return }
             await load(selected)
-        }
-    }
-
-    @ViewBuilder var toast: some View {
-        if let t = reviews.toast {
-            Text(t)
-                .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
-                .padding(.horizontal, 16).padding(.vertical, 9)
-                .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
-                .padding(.top, 8)
-                .accessibilityLabel(ConversationViewA11y.spokenToast(t))
-                .accessibilityAddTraits(.isStaticText)
-                .task {
-                    try? await Task.sleep(nanoseconds: 1_400_000_000)
-                    if reduceMotion { reviews.toast = nil }
-                    else { withAnimation(AtlasMotion.editorial) { reviews.toast = nil } }
-                }
         }
     }
 }
