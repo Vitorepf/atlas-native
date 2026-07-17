@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **422+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXVI tip `6fdfbaf` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **424+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXVII tip `f1c2321` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXVI (este tip)
+## Entrega Elite CXXXXXVII (este tip)
+
+- `refactor(ui)` CICLO B: Plan+RevisionArchiveWhen; Messages+A11yFAB; Loaded+A11yControlError; Arena+FailureRetryA11y; Fleet+QuietA11y. Tip `f1c2321`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXVI (anterior)
 
 - `refactor(ui)` CICLO B: Nightly+Content; Composer+CardSpoken; Review+DiffExpanded; Workspace+ThreadLinkTransition; Editorial+ClosingMeta; Arena+A11yRun/+Presentation; Ribbon+LanesCaption; Control+ControlStart. Tip `6fdfbaf`.
 - Zero App/Widgets >100; zero Route nova.
