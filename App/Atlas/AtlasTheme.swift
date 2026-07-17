@@ -24,6 +24,7 @@ enum AtlasTheme {
     static let goldVeil = Color(hex: 0xD4A85A, alpha: 0.10)  // fill sutil (pill ativa)
     static let goldBorder = Color(hex: 0xD4A85A, alpha: 0.34)
     static let prussian = Color(hex: 0x7FA7C4)      // info / azul (vivo em AtlasMarkdownView)
+    static let alert = Color(hex: 0xE08C8C)         // exceção/regressão
 
     // Cores de domínio com uso real na casca
     static let domOperacional = Color(hex: 0x9B7A3F) // bronze

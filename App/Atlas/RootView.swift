@@ -11,6 +11,7 @@ enum Route: Hashable {
     case conversas
     case search
     case autonomos
+    case arena
     case code
 }
 
@@ -55,6 +56,8 @@ struct RootView: View {
                     SearchView()
                 case .autonomos:
                     AutonomosView()
+                case .arena:
+                    AtlasArenaView()
                 case .code:
                     // A porta do domínio é o radar: a frota primeiro, o repo depois.
                     AtlasCodeRadarView(client: session.client) { repo in
@@ -217,6 +220,16 @@ struct RootView: View {
                         path.append(Route.autonomos)
                     }
                     rowDivider
+                    WorkspaceRow(
+                        icon: "chart.line.uptrend.xyaxis",
+                        name: "Arena",
+                        count: nil,
+                        badge: false
+                    ) {
+                        path.append(Route.arena)
+                    }
+                    .accessibilityIdentifier(A11yID.arenaHomeEntry)
+                    rowDivider
                     sectionLabel("WORKSPACES")
 
                     WorkspaceRow(icon: "tray.full", name: "Todas as conversas", count: session.threads.count) {
@@ -360,13 +373,29 @@ private struct WorkspaceRow: View {
     let icon: String
     let name: String
     let count: Int?
+    var detail: String?
+    var badge: Bool = false
     let action: () -> Void
     var body: some View {
         Button(action: action) {
             HStack(spacing: 14) {
                 Image(systemName: icon).font(.system(size: 18)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
-                Text(name).font(.system(.body)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(name).font(.system(.body)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                    if let detail, !detail.isEmpty {
+                        Text(detail)
+                            .font(.system(.caption))
+                            .foregroundStyle(AtlasTheme.alert)
+                            .lineLimit(1)
+                    }
+                }
                 Spacer(minLength: 8)
+                if badge {
+                    Circle()
+                        .fill(AtlasTheme.alert)
+                        .frame(width: 8, height: 8)
+                        .accessibilityHidden(true)
+                }
                 if let count { Text("\(count)").font(.system(.callout)).foregroundStyle(AtlasTheme.textTertiary) }
                 Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
             }
