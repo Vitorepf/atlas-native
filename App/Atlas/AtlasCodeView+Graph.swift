@@ -6,13 +6,8 @@ extension AtlasCodeView {
     var content: some View {
         switch model.phase {
         case .idle, .loading:
-            VStack(spacing: 12) {
-                ProgressView().tint(AtlasTheme.accent)
-                Text("lendo a topologia do repositório…")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            TraceEvidenceLoading(text: "lendo a topologia do repositório…", reduceMotion: reduceMotion)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         case .failed(let message):
             VStack(spacing: 14) {
                 Image(systemName: "exclamationmark.triangle")

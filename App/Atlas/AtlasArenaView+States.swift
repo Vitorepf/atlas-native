@@ -5,15 +5,10 @@ import AtlasCore
 
 extension AtlasArenaView {
     var loadingCard: some View {
-        HStack(spacing: 12) {
-            BreathingDiamond(size: 9, reduceMotion: reduceMotion)
-            Text("carregando índice medido…")
-                .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .atlasCard()
+        TraceEvidenceLoading(text: "carregando índice medido…", reduceMotion: reduceMotion)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .atlasCard()
     }
 
     func stateCard(_ message: String) -> some View {

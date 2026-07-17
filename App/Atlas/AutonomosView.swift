@@ -8,6 +8,7 @@ import AtlasCore
 struct AutonomosView: View {
     @Environment(AtlasSession.self) private var session
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var control: AtlasAutonomosRunAction?
     @State private var startRunMode: AtlasAutonomosStartRunMode?
     @State private var showTransferSheet = false
@@ -55,11 +56,7 @@ struct AutonomosView: View {
         case .idle, .loading:
             AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }
             Spacer()
-            VStack(spacing: 14) {
-                ProgressView().tint(AtlasTheme.accent)
-                Text("consultando a frota…")
-                    .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textTertiary)
-            }
+            TraceEvidenceLoading(text: "consultando a frota…", reduceMotion: reduceMotion)
             Spacer()
         case .failed(let message):
             AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }

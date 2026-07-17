@@ -5,6 +5,7 @@ import SwiftUI
 /// Seções / linhas → AtlasCodeRadarSections.swift; model → AtlasCodeWorkspaceModel.swift.
 struct AtlasCodeRadarView: View {
     @Environment(AtlasSession.self) private var session
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var model: AtlasCodeWorkspaceModel
     let onOpenRepo: (String) -> Void
 
@@ -28,13 +29,8 @@ struct AtlasCodeRadarView: View {
     private var content: some View {
         switch model.phase {
         case .idle, .loading:
-            VStack(spacing: 12) {
-                ProgressView().tint(AtlasTheme.accent)
-                Text("lendo o seu workspace…")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            TraceEvidenceLoading(text: "lendo o seu workspace…", reduceMotion: reduceMotion)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         case .failed(let message):
             VStack(spacing: 12) {
                 Image(systemName: "exclamationmark.triangle")

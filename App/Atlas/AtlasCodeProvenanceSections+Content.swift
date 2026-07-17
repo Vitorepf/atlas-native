@@ -8,13 +8,8 @@ extension AtlasCodeProvenanceSheet {
     func provenanceContent(whyTarget: Binding<AtlasCodeProvenanceWhyTarget?>) -> some View {
         switch phase {
         case .idle, .loading:
-            HStack(spacing: 10) {
-                ProgressView().tint(AtlasTheme.accent)
-                Text("lendo o ledger…")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-            }
-            .padding(.top, 2)
+            TraceEvidenceLoading(text: "lendo o ledger…", reduceMotion: reduceMotion)
+                .padding(.top, 2)
         case .failed(let message):
             VStack(alignment: .leading, spacing: 6) {
                 Text("não consegui ler a proveniência")
