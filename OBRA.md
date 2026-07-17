@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLIII — CICLO B Home/Fleet/Awaiting/Heal/Search/Lock peels** · `e042249` · CICLO B: Home `+A11yVisibility`; Fleet `+FleetHealth`; Awaiting `+ChipLabel`/`+A11yCount`; Cycle `+CycleHelpers`; Placement `+PlacementTags`; Heal `+A11yUndoButton`; Week `+WeekHealChrome`; Search `+ResultsCaption`; Thread `+NewBadge`; Lock `+Paused`/`+SpokenSessions`/`+Symbol`; Ledger `+Summary`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLII — CICLO B Failure/Transfer/Heal/Chip/DualBar peels** · `2665fae` · CICLO B: Review `+ReviewFindings`; Failure `+FailureCopy`; Transfer `+PlacementLease`/`+FormLock`; Digest `+A11yFindings`; Loaded `+ErrorCard`; Fleet `+A11yAudit`; Heal `+StepsOrEmpty`; Graph `+ChipA11y`; File `+A11yVerb`; Suite `+Subtitle`; DualBar `+DualBarTrack`; Proof `+ActivityRowCopy`; Sheets `+StartRun`; Camera `+ReduceMotion`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLI — CICLO B Veto/Queue/Proof/Seals/Steer/Mirror peels** · `076008c` · CICLO B: Veto `+VetoTextFields`; Conversation `+A11yChip`; Queue `+Titles`; Proof `+Reason`; Seals `+A11yCaption`; Paste `+PasteLabel`; Steer `+SteerReceipt`; Mirror `+A11ySpokenState`; Execution `+KindBadge`; Timeline `+NarrativeRow`; Editorial `+Body`; Timer `+TimerFallback`; Autonomos `+ContentLoaded`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
