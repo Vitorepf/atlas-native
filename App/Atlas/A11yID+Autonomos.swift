@@ -31,6 +31,11 @@ extension A11yID {
     static let autonomosAreaPicker = "autonomos-area-picker"
     static let autonomosAreaPickerRowPrefix = "autonomos-area-picker-row-"
     static func autonomosAreaPickerRow(_ index: Int) -> String { autonomosAreaPickerRowPrefix + String(index) }
+    static let autonomosAreaDeliveredSection = "autonomos-area-delivered-section"
+    static let autonomosAreaDeliveredSelf = "autonomos-area-delivered-self"
+    static let autonomosAreaDeliveredEmpty = "autonomos-area-delivered-empty"
+    static let autonomosAreaDeliveredRowPrefix = "autonomos-area-delivered-row-"
+    static func autonomosAreaDeliveredRow(_ index: Int) -> String { autonomosAreaDeliveredRowPrefix + String(index) }
     static let autonomosAreaControls = "autonomos-area-controls"
     static let autonomosReasonSheet = "autonomos-reason-sheet"
     static let autonomosReasonActor = "autonomos-reason-actor"

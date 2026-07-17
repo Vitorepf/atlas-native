@@ -9,6 +9,7 @@ struct AutonomosAreaDeliveredSection: View {
     let onSelfConstructionReceipt: (SelfConstructionReceipt) -> Void
 
     @Environment(\.openURL) private var openURL
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         deliveredSection
@@ -21,54 +22,39 @@ struct AutonomosAreaDeliveredSection: View {
         let isSelf = isSelfConstructionArea(area)
         let deliveredTotal = model.delivered?.deliveredTotal ?? 0
         if let delivered = model.delivered, deliveredTotal > 0 {
+            let visible = min(delivered.delivered.count, AutonomosAreaDeliveredA11y.visibleCap)
             VStack(alignment: .leading, spacing: 6) {
-                Text(isSelf ? "O ATLAS MELHOROU O PRÓPRIO APP" : "ENTREGAS COMPROVADAS · \(delivered.deliveredTotal)")
-                    .font(AtlasFont.mono(10)).tracking(0.9)
-                    .foregroundStyle(isSelf ? AtlasTheme.domAutonomos : AtlasTheme.accent)
+                AutonomosChrome.sectionCaption(
+                    AutonomosAreaDeliveredA11y.sectionCaption(isSelf: isSelf, total: deliveredTotal, visible: visible)
+                )
+                .accessibilityHidden(true)
                 if isSelf {
                     Text("silêncio · você não foi necessário — só veto com recibo")
                         .font(AtlasFont.serifItalic(13))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityHidden(true)
                 }
-                ForEach(delivered.delivered.prefix(3)) { cycle in
-                    if isSelf {
-                        Button {
-                            onSelfConstructionReceipt(SelfConstructionReceipt(
-                                cycle: cycle,
-                                finding: selfConstructionFinding
-                            ))
-                        } label: {
-                            deliveredRow(cycle)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("recibo de auto-construção, ciclo \(cycle.cycleIndex), merge \(String(cycle.mergeHash.prefix(8)))")
-                    } else {
-                        if let repo = area.repositoryNames.first?.nonEmpty {
-                            Button {
-                                openCommit(cycle.mergeHash, repo: repo)
-                            } label: {
-                                deliveredRow(cycle, graphHint: true)
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel("abrir merge \(String(cycle.mergeHash.prefix(8))) no grafo de \(repo)")
-                        } else {
-                            deliveredRow(cycle)
-                        }
-                    }
+                ForEach(Array(delivered.delivered.prefix(AutonomosAreaDeliveredA11y.visibleCap).enumerated()), id: \.element.id) { index, cycle in
+                    deliveredCycleRow(cycle: cycle, index: index, visible: visible, isSelf: isSelf)
                 }
             }
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: deliveredTotal)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(AutonomosAreaDeliveredA11y.spokenSection(isSelf: isSelf, total: deliveredTotal, visible: visible))
+            .accessibilityIdentifier(isSelf ? A11yID.autonomosAreaDeliveredSelf : A11yID.autonomosAreaDeliveredSection)
         } else if isSelf {
             VStack(alignment: .leading, spacing: 6) {
-                Text("AUTO-CONSTRUÇÃO")
-                    .font(AtlasFont.mono(10)).tracking(0.9)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                AutonomosChrome.sectionCaption("AUTO-CONSTRUÇÃO")
+                    .accessibilityAddTraits(.isHeader)
                 Text("Trabalho ainda não mergeado — aguardando o ledger. Sem entrega comprovada neste recorte.")
                     .font(AtlasFont.serifItalic(13))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .accessibilityLabel("auto-construção, aguardando ledger, nenhuma entrega comprovada")
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(AutonomosAreaDeliveredA11y.spokenEmptySelf())
+            .accessibilityIdentifier(A11yID.autonomosAreaDeliveredEmpty)
         }
     }
 }
