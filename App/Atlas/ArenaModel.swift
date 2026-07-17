@@ -15,6 +15,8 @@ final class ArenaModel {
     var lastStartReceipt: AtlasArenaStartReceipt?
     var controlError: String?
     private(set) var lastLoadedAt: Date?
+    private var visible = false
+    private var livePollingTask: Task<Void, Never>?
 
     init(client: AtlasClient) {
         self.client = client
@@ -59,6 +61,7 @@ final class ArenaModel {
             liveRuns = try? await client.getArenaLiveRuns()
             lastLoadedAt = Date()
             phase = .loaded
+            updateLivePolling()
         } catch {
             phase = .failed(Self.publicMessage(error))
         }
@@ -76,6 +79,54 @@ final class ArenaModel {
             if case .idle = phase { phase = .loaded }
         } catch {
             controlError = Self.publicMessage(error)
+        }
+    }
+
+    func setVisible(_ isVisible: Bool) {
+        visible = isVisible
+        updateLivePolling()
+    }
+
+    func refreshLiveRuns() async {
+        do {
+            liveRuns = try await client.getArenaLiveRuns()
+            updateLivePolling()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    func startRuns(input: AtlasArenaStartInput) async {
+        controlError = nil
+        guard input.isLocallyValidForSubmission else {
+            controlError = "ator e motivo obrigatórios"
+            return
+        }
+        do {
+            lastStartReceipt = try await client.startArenaRuns(input: input)
+            await refreshLiveRuns()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    private var shouldPollLiveRuns: Bool {
+        visible && !(liveRuns?.runs.isEmpty ?? true)
+    }
+
+    private func updateLivePolling() {
+        guard shouldPollLiveRuns else {
+            livePollingTask?.cancel()
+            livePollingTask = nil
+            return
+        }
+        guard livePollingTask == nil else { return }
+        livePollingTask = Task { @MainActor [weak self] in
+            while let self, !Task.isCancelled, self.shouldPollLiveRuns {
+                try? await Task.sleep(for: .seconds(10))
+                guard !Task.isCancelled, self.shouldPollLiveRuns else { break }
+                await self.refreshLiveRuns()
+            }
         }
     }
 

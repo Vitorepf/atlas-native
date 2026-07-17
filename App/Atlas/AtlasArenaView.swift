@@ -6,6 +6,7 @@ struct AtlasArenaView: View {
     @Bindable var model: ArenaModel
     @State private var selectedSuite: AtlasArenaSuite?
     @State private var selectedEngine: AtlasArenaCompositeEngine?
+    @State private var showingRunSheet = false
 
     var body: some View {
         ZStack {
@@ -33,11 +34,16 @@ struct AtlasArenaView: View {
         .sheet(item: $selectedEngine) { engine in
             ArenaEngineSheet(engine: engine, capabilities: model.capabilities)
         }
+        .sheet(isPresented: $showingRunSheet) {
+            ArenaRunSheet(model: model)
+        }
         .task {
             if case .idle = model.phase {
                 await model.load()
             }
         }
+        .onAppear { model.setVisible(true) }
+        .onDisappear { model.setVisible(false) }
         .refreshable { await model.load() }
     }
 
@@ -70,6 +76,8 @@ struct AtlasArenaView: View {
             stateCard(message)
         default:
             if let composite = model.composite {
+                ArenaNowSection(liveRuns: model.liveRuns)
+                    .accessibilityIdentifier(A11yID.arenaNowSection)
                 ArenaIndexSection(
                     composite: composite,
                     reduceMotion: reduceMotion,
@@ -83,6 +91,19 @@ struct AtlasArenaView: View {
                     onSuiteTap: { selectedSuite = $0 }
                 )
                 .accessibilityIdentifier(A11yID.arenaSuitesSection)
+                Button {
+                    showingRunSheet = true
+                } label: {
+                    Label("Rodar medição", systemImage: "play.fill")
+                        .font(.system(.body, weight: .semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Capsule().fill(AtlasTheme.goldVeil))
+                        .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(AtlasTheme.accent)
+                .accessibilityIdentifier(A11yID.arenaRunButton)
             } else {
                 stateCard("medição ainda não publicada pelo servidor")
             }
