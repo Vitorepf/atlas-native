@@ -15,6 +15,7 @@ struct PlanRevisionCompare: View {
                     Text("v\(comparison.revision.revision) arquivado → plano atual")
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
                     if !comparison.left.isEmpty {
                         revisionList(label: "saíram", items: comparison.left, tone: .removed)
                     }
@@ -22,7 +23,7 @@ struct PlanRevisionCompare: View {
                         revisionList(label: "entraram", items: comparison.entered, tone: .added)
                     }
                 }
-                .accessibilityElement(children: .combine)
+                .accessibilityElement(children: .ignore)
                 .accessibilityLabel(comparisonAccessibilityLabel(comparison))
             }
             if revisions.contains(where: hasArchiveMetadata) {

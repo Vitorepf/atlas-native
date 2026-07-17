@@ -30,10 +30,12 @@ struct AutonomosAwaitingYouSection: View {
                         .font(AtlasFont.mono(13))
                         .foregroundStyle(AtlasTheme.domOperacional)
                         .modifier(NumericTextTransition(enabled: !reduceMotion))
+                        .accessibilityHidden(true)
                 }
                 Text("Há decisão pública pendente; nada aqui afirma execução antes do recibo do owner.")
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textSecondary)
+                    .accessibilityHidden(true)
                 HStack(spacing: 8) {
                     if !inboxDecisions.isEmpty {
                         AutonomosDetailChipButton(
@@ -58,6 +60,7 @@ struct AutonomosAwaitingYouSection: View {
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.domOperacional.opacity(0.38), lineWidth: 1))
             .accessibilityElement(children: .contain)
             .accessibilityLabel(sectionSpokenLabel)
+            .accessibilityHint("abre inbox ou ordens com decisão pública pendente")
             .accessibilityIdentifier(A11yID.autonomosAwaitingYou)
             .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: decisionCount)

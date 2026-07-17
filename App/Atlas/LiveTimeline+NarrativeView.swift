@@ -37,11 +37,13 @@ struct NarrativeRowView: View {
                         ? (isCurrent ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
                         : AtlasTheme.textTertiary)
                     .lineLimit(row.style == .intent ? 3 : 2)
+                    .accessibilityHidden(true)
                 if let detail = row.detail, !detail.isEmpty {
                     Text(detail).font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .lineLimit(row.style == .intent ? 2 : 1)
                         .truncationMode(.middle)
+                        .accessibilityHidden(true)
                 }
                 if let duration = row.durationMs {
                     HStack(spacing: 5) {
