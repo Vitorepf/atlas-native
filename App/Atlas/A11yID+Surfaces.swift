@@ -17,8 +17,13 @@ extension A11yID {
     static let arenaSuiteSheet = "arena-suite-sheet"
     static let arenaEngineSheet = "arena-engine-sheet"
 
-    // C15 · Change review (cena 12)
+    // C15/C21 · Change review (cenas 07 + 12)
     static let reviewGovernance = "review-governance"
+    static let reviewCouncil = "review-council"
+    static let reviewCouncilMemberPrefix = "review-council-member-"
+    static func reviewCouncilMember(_ provider: String) -> String {
+        reviewCouncilMemberPrefix + provider.lowercased()
+    }
     static let reviewSheet = "review-sheet"
     static let reviewUnavailable = "review-unavailable"
     static let reviewEmpty = "review-empty"

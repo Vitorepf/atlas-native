@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-/// Linha de membro do conselho — peel de ChangeReviewCouncilSection.
+/// Linha de membro do conselho — peel de ChangeReviewCouncilSection (cena 07).
 
 struct ChangeReviewCouncilMemberRow: View {
     let member: AtlasTraceGovernance.CouncilMember
@@ -12,6 +12,7 @@ struct ChangeReviewCouncilMemberRow: View {
                 Image(systemName: member.succeeded ? "checkmark" : "xmark")
                     .font(.system(size: 9, weight: .semibold))
                     .foregroundStyle(member.succeeded ? Color(hex: 0x83B46D) : Color(hex: 0xE08C8C))
+                    .accessibilityHidden(true)
                 Text(member.provider)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
@@ -31,7 +32,6 @@ struct ChangeReviewCouncilMemberRow: View {
                     Text("hash \(String(hash.prefix(12)))")
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityLabel("hash de resposta, \(String(hash.prefix(12)))")
                 }
                 if let code = member.errorCode {
                     Text(code)
@@ -46,19 +46,8 @@ struct ChangeReviewCouncilMemberRow: View {
                 }
             }
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(councilSpoken)
-    }
-
-    private var councilSpoken: String {
-        var parts = [member.provider]
-        if let model = member.model { parts.append(model) }
-        parts.append(member.succeeded ? "concluído" : "falhou")
-        if let hash = member.responseHash {
-            parts.append("hash de resposta \(String(hash.prefix(12)))")
-        }
-        if let code = member.errorCode { parts.append("erro \(code)") }
-        if let latency = member.latencyMs { parts.append("\(latency) milissegundos") }
-        return parts.joined(separator: ", ")
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(member.spokenCouncilLine)
+        .accessibilityIdentifier(A11yID.reviewCouncilMember(member.provider))
     }
 }
