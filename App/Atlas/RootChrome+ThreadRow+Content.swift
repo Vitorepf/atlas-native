@@ -3,18 +3,12 @@ import AtlasCore
 
 // Conteúdo da linha — peel de ThreadRow.
 // Trailing → RootChrome+ThreadRow+Trailing.swift
+// Lead → RootChrome+ThreadRow+Lead.swift
 
 extension ThreadRow {
     var rowContent: some View {
         HStack(spacing: 14) {
-            if isRunning {
-                BreathingDiamond(size: 9, reduceMotion: reduceMotion).frame(width: 22)
-                    .accessibilityHidden(true)
-            } else {
-                Image(systemName: "bubble.left")
-                    .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
-                    .accessibilityHidden(true)
-            }
+            rowLead
             Text(thread.title).font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1).truncationMode(.tail)
                 .accessibilityHidden(true)

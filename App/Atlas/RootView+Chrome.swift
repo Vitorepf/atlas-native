@@ -3,6 +3,7 @@ import AtlasCore
 
 // Masthead — peel de RootView (régua anti-inchaço).
 // Overlay → RootView+Chrome+Masthead.swift · Input pill → RootView+InputBar.swift
+// Trailing → RootView+Chrome+Trailing.swift
 
 extension RootView {
   @ViewBuilder
@@ -20,16 +21,7 @@ extension RootView {
         .accessibilityHint("abre radar de repositórios")
         .accessibilityIdentifier(A11yID.topbarCode)
       Spacer()
-      CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
-        .keyboardShortcut("k", modifiers: .command)
-        .accessibilityLabel(searchSpokenLabel())
-        .accessibilityHint("abre busca nas conversas carregadas")
-        .accessibilityIdentifier(A11yID.topbarSearch)
-      CircleButton(icon: "plus") { path.append(Route.new) }
-        .keyboardShortcut("n", modifiers: .command)
-        .accessibilityLabel(newConversationSpokenLabel())
-        .accessibilityHint(newConversationSpokenHint())
-        .accessibilityIdentifier(A11yID.topbarNew)
+      topBarTrailing
     }
     .overlay { mastheadOverlay }
   }

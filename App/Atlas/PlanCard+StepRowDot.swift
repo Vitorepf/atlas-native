@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Dot column — peel de PlanStepRowView.
+// Fill → PlanCard+StepRowDotFill.swift
 
 extension PlanStepRowView {
     var stepDotColumn: some View {
@@ -24,13 +25,5 @@ extension PlanStepRowView {
         }
         .frame(width: 13)
         .accessibilityHidden(true)
-    }
-
-    func dotFill(_ s: PlanCard.StepState) -> Color {
-        switch s {
-        case .done: return AtlasTheme.accent
-        case .current: return AtlasTheme.accent
-        case .pending: return AtlasTheme.separator
-        }
     }
 }
