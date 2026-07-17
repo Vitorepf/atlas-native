@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXVII — CICLO B Composer/Root/Widget peels** · `e46e716` · CICLO B: Composer `+OptionsWorkspace/+OptionsMode`; LiveNow `+ClockPaused`; Continuity `+Surface/+Handoff/+ThreadPrefix`; Plan `+HeaderProgress`; Lifecycle `+Cache`; Spoken `+Actions`; Ask `+Trailing`; Findings `+Groups`; Loaded `+LiveNow`; Reconnect `+BubbleIcon`; Fleet `+RowAuditReason`; Narrative `+Detail`; Bubbles `+Bottom`; Input `+Background`; Chrome `+CodeButton`; Query `+Results`; Widgets `+Lock/+LiveSession`; Turn `+TimerElapsed`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXVI — CICLO B Arena/Workspace/Edit peels** · `910711c` · CICLO B: Capabilities `+A11yLead`; Workspace `+Threads`; Edit `+UserEditLabel`; Composer `+Row`; Provenance `+Surface`; Camera `+Make`; Review `+AcceptLabel`; Agent `+AgentChrome`; Receipt `+CopyStack`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLXV — CICLO B Search/Home/Proof peels** · `95fc59f` · CICLO B: Receipt `+A11ySilence`; Search `+HeaderFieldPlaceholder`; Home `+ChipLabel`; Plan `+AuditCaption`; LiveNow `+TimingPause`; Proof `+Stack`; Ribbon `+RibbonDecide`; Bubbles `+BubblesA11y`; Lifecycle `+LifecycleOutline`; Arena `+A11yMeasured`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.

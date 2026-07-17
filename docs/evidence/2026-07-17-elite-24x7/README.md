@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **506+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXVI tip `910711c` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **508+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXVII tip `e46e716` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXVI (este tip)
+## Entrega Elite CXXXXXLXVII (este tip)
+
+- `polish(ui)` CICLO B: Composer+OptionsWorkspace/Mode; LiveNow+ClockPaused; Continuity+Surface/Handoff/ThreadPrefix; Plan+HeaderProgress; Lifecycle+Cache; Spoken+Actions; Ask+Trailing; Findings+Groups; Loaded+LiveNow; Reconnect+BubbleIcon; Fleet+RowAuditReason; Narrative+Detail; Bubbles+Bottom; Input+Background; Chrome+CodeButton; Query+Results; Widgets+Lock/LiveSession; Turn+TimerElapsed. Tip `e46e716`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLXVI (anterior)
 
 - `polish(ui)` CICLO B: Capabilities+A11yLead; Workspace+Threads; Edit+UserEditLabel; Composer+Row; Provenance+Surface; Camera+Make; Review+AcceptLabel; Agent+AgentChrome; Receipt+CopyStack. Tip `910711c`.
 - Zero App/Widgets >100; zero Route nova.
