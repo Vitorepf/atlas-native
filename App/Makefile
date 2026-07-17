@@ -11,8 +11,9 @@
 SCHEME  := Atlas
 PROJECT := Atlas.xcodeproj
 BUNDLE  := com.vitor.atlas.native
+SIMULATOR ?= iPhone 17 Pro
 
-.PHONY: generate build sim device device-proof open clean
+.PHONY: generate build verify sim device device-proof open clean
 
 # Regenera o .xcodeproj a partir do project.yml (texto → projeto).
 generate:
@@ -25,6 +26,15 @@ build: generate
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) \
 	  -destination 'generic/platform=iOS Simulator' -configuration Debug \
 	  -quiet build CODE_SIGNING_ALLOWED=NO
+
+# Gate agregado local: CoreChecks offline + build + XCUITests no simulador.
+# HONESTO: cada comando roda direto; qualquer falha encerra o make com exit != 0.
+verify:
+	cd .. && env -u ATLAS_LIVE swift run AtlasCoreChecks
+	$(MAKE) build
+	xcodebuild -project $(PROJECT) -scheme $(SCHEME) \
+	  -destination 'platform=iOS Simulator,name=$(SIMULATOR)' -configuration Debug \
+	  test
 
 # Roda no simulador (precisa do runtime iOS uma vez: make runtime).
 sim: generate
