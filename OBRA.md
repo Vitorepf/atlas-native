@@ -176,7 +176,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
 | E-B | **PARCIAL** | **Grok 4.5** | peels contínuos App+Core | E-A* | CICLO B compressão 1 | **Ledger HEAD:** quase zero >160; Route split AI/Code/Stewardship (`c48612a`). | peels + `wc -l`; build Mac-pending |
 | E-C | **IN_PROGRESS** | **Grok 4.5** | silence + Island + Continuity + Artifact + Timeline + Autônomos | E-B PARCIAL | CICLO C patamares | Frota quieta; Island ATT/EXT/FAIL; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty; `rg Aprovar`=0 | `41efee4` + `98b35ff` + `00df89b` + `4191353` |
-| E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | dups button style + breathing loading; peels ~180+; meta ≥60% linhas de C ainda PARCIAL | `9ed96dd` + `d0e01d0`/`c48612a` |
+| E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | dups button style + breathing loading; peels ~180+; meta ≥60% linhas de C ainda PARCIAL | `b27294b` + `d0e01d0`/`c48612a` |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -968,7 +968,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
-- 2026-07-17 · Grok 4.5 · **polish(ui)|polish(core) — ciclo D loading dups + TraceArtifacts peel** · `9ed96dd` · CICLO D: 5× `ProgressView`+caption loading duplicados → `TraceEvidenceLoading` canônico (Autonomos/Arena/CodeGraph/CodeRadar/Provenance; `rg 'ProgressView().tint(AtlasTheme.accent)'` App/Atlas=1 só `ChangeReviewRunActions` applying). Peel `AtlasTraceArtifacts.swift` 179→113 — `AtlasArtifactContent`+client → `AtlasClient+TraceArtifacts.swift` (67). Zero Route. Prova: diff −102/+15; `wc -l` TraceArtifacts 113; Swift toolchain ausente neste cloud Linux — re-rodar `AtlasCoreChecks` + `make build` no Mac.
+- 2026-07-17 · Grok 4.5 · **polish(ui)|polish(core) — ciclo D loading dups + TraceArtifacts peel** · `b27294b` · CICLO D: 5× `ProgressView`+caption loading duplicados → `TraceEvidenceLoading` canônico (Autonomos/Arena/CodeGraph/CodeRadar/Provenance; `rg 'ProgressView().tint(AtlasTheme.accent)'` App/Atlas=1 só `ChangeReviewRunActions` applying). Peel `AtlasTraceArtifacts.swift` 179→113 — `AtlasArtifactContent`+client → `AtlasClient+TraceArtifacts.swift` (67). Zero Route. Prova: diff −102/+15; `wc -l` TraceArtifacts 113; Swift toolchain ausente neste cloud Linux — re-rodar `AtlasCoreChecks` + `make build` no Mac.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo XIII — Findings a11y + TraceArtifacts peel + D loading** · `807d4c7`/`2b3e9c7` · ChangeReviewFindings VoiceOver; TraceEvidenceLoading consolidado em loads; AtlasTraceArtifacts 179→113. Zero Route. **BLOCKED:** Swift/server/device. Prova: diffs + `rg`.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XII — CICLO D dups + peels ~180+** · `d0e01d0`/`c48612a` · D: `NightlyPrimaryButtonStyle`→`AutonomosPrimaryButtonStyle`; diff loading→`TraceEvidenceLoading`. B: PresentationState/Plan/AgentActivity/Route AI+Code+Stewardship; ArtifactViewer/ConversationChrome/Provenance peels. Zero Route nova. **BLOCKED:** Swift/server/device. Prova: `rg`+`wc -l`.
 
