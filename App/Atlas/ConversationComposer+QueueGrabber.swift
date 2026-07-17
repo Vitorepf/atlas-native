@@ -3,6 +3,7 @@ import AtlasCore
 
 // Queue chip — peel de ConversationComposer+LiveStrip.
 // Grabber → ConversationComposer+KeyboardGrabber.swift
+// Label → ConversationComposer+QueueChipLabel.swift
 
 extension ConversationComposer {
     @ViewBuilder
@@ -12,11 +13,7 @@ extension ConversationComposer {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 showQueueSheet = true
             } label: {
-                Text(queueChipLabel)
-                    .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
-                    .padding(.horizontal, 12).padding(.vertical, 5)
-                    .background(Capsule().fill(AtlasTheme.goldVeil)
-                        .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+                queueChipLabelView
             }
             .buttonStyle(PressableScale())
             .padding(.bottom, expanded ? 0 : 8)

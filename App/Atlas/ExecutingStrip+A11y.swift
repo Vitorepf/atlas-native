@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // A11y label — peel de ExecutingStrip (régua ≤100).
+// Extras → ExecutingStrip+A11yExtras.swift
 
 extension ExecutingStrip {
     var stripAccessibilityLabel: String {
@@ -15,15 +16,7 @@ extension ExecutingStrip {
         } else {
             parts.append("seguindo a execução")
         }
-        let events = bubble.activities.count
-        parts.append("\(events) evento\(events == 1 ? "" : "s")")
-        if let started = bubble.startedAt {
-            let secs = max(0, Int(Date().timeIntervalSince(started)))
-            parts.append("\(secs) segundos decorridos")
-        }
-        if let stats = bubble.diffStats {
-            parts.append("mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
-        }
+        parts.append(contentsOf: stripAccessibilityExtras())
         return parts.joined(separator: ", ")
     }
 }

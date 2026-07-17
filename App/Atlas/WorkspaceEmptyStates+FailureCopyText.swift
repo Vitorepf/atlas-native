@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Failure copy text — peel de WorkspaceEmptyStates+FailureCopy.
+// Host → WorkspaceEmptyStates+FailureHost.swift
 
 extension AtlasNetworkFailureEmpty {
     var failureCopyText: some View {
@@ -15,15 +16,7 @@ extension AtlasNetworkFailureEmpty {
                 .multilineTextAlignment(.center)
                 .accessibilityHidden(true)
             Spacer().frame(height: 12)
-            Text(hasToken ? "\(host):3737" : "ATLAS_TOKEN · Secrets.xcconfig")
-                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Spacer().frame(height: 16)
-            Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
-                .font(.system(.subheadline)).lineSpacing(5)
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .multilineTextAlignment(.center)
-                .accessibilityHidden(true)
+            failureHostAndHint
         }
     }
 }

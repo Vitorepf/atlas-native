@@ -4,6 +4,7 @@ import ActivityKit
 import AtlasCore
 
 // Island progress/queue chips — peel de AtlasTurnLiveActivity+IslandExpanded+Center.
+// Queue → AtlasTurnLiveActivity+IslandExpanded+QueueChip.swift
 
 extension AtlasTurnIslandCenter {
     @ViewBuilder
@@ -15,14 +16,7 @@ extension AtlasTurnIslandCenter {
                         .font(.system(size: 10, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Ink.gold)
                 }
-                if let queued = context.state.queueLabel {
-                    Text(queued)
-                        .font(.system(size: 10, weight: .bold, design: .monospaced))
-                        .foregroundStyle(Ink.gold)
-                        .padding(.horizontal, 6).padding(.vertical, 2)
-                        .background(Capsule().fill(Ink.gold.opacity(0.18)))
-                        .accessibilityLabel(queued)
-                }
+                queueChip
             }
         }
     }

@@ -3,6 +3,7 @@ import AtlasCore
 
 // Dot column — peel de PlanStepRowView.
 // Fill → PlanCard+StepRowDotFill.swift
+// Spine → PlanCard+StepRowDotSpine.swift
 
 extension PlanStepRowView {
     var stepDotColumn: some View {
@@ -18,10 +19,7 @@ extension PlanStepRowView {
                 }
             }
             .padding(.top, 2)
-            if !isLast {
-                Rectangle().fill(AtlasTheme.accent.opacity(state == .pending ? 0.15 : 0.35))
-                    .frame(width: 1.5).frame(maxHeight: .infinity)
-            }
+            stepDotSpine
         }
         .frame(width: 13)
         .accessibilityHidden(true)

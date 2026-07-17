@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Conversation chrome spoken — peel de RootView+Chrome+A11y.
+/// Home → RootView+Chrome+A11yHomeScreen.swift
 
 extension RootView {
     func searchSpokenLabel() -> String {
@@ -17,13 +18,5 @@ extension RootView {
 
     func inputPillSpokenLabel() -> String {
         "Escreva ao Atlas, nova conversa"
-    }
-
-    func homeScreenSpokenLabel() -> String {
-        "Atlas, início"
-    }
-
-    func homeScreenSpokenHint() -> String {
-        "workspaces, conversas e Autônomos; Live Now aparece quando há sessão viva"
     }
 }

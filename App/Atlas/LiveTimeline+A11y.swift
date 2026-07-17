@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels da orquestra ao vivo — peel de LiveTimeline (cena 05 residual honesty).
 /// Row → LiveTimeline+A11yRow.swift
+/// Silence → LiveTimeline+A11ySilence.swift
 
 enum LiveTimelineA11y {
     static func spokenSectionLabel(stepCount: Int) -> String {
@@ -21,9 +22,5 @@ enum LiveTimelineA11y {
 
     static func spokenFilterHint() -> String {
         "altera quais passos da orquestra são exibidos"
-    }
-
-    static func spokenFilterSilenceSurface(filter: TimelineReadFilter, totalSteps: Int) -> String {
-        "orquestra ao vivo, filtro \(filter.label), nenhum dos \(totalSteps) passos corresponde"
     }
 }
