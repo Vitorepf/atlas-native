@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Faixa de execução viva — peel de ConversationComposer.
-// Queue/grabber → ConversationComposer+QueueGrabber.swift
+// Separator → ConversationComposer+LiveStrip+Separator.swift
 
 extension ConversationComposer {
     @ViewBuilder
@@ -17,9 +17,7 @@ extension ConversationComposer {
                 .padding(.top, expanded ? 0 : 4)
                 .padding(.bottom, expanded ? 0 : 8)
                 .transition(.opacity)
-            Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
-                .padding(.bottom, expanded ? 0 : 8)
-                .accessibilityHidden(true)
+            liveExecutionSeparator
         }
     }
 }

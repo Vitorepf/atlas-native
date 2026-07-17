@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Duration chip — peel de LiveTimeline+NarrativeMeta.
+// P90 → LiveTimeline+NarrativeDuration+P90Badge.swift
 
 extension NarrativeRowView {
     @ViewBuilder
@@ -13,11 +14,7 @@ extension NarrativeRowView {
                     .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
                     .monospacedDigit()
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
-                if row.isP90 {
-                    Text("p90")
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(AtlasTheme.domOperacional)
-                }
+                narrativeP90Badge
             }
             .accessibilityHidden(true)
         }

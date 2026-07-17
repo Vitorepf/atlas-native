@@ -3,6 +3,8 @@ import AtlasCore
 
 // Diff loaded/unavailable — peel de ChangeReviewDiffView.
 // Loaded → ChangeReviewDiffView+Loaded.swift
+// Loading → ChangeReviewDiffView+Body+Loading.swift
+// Unavailable → ChangeReviewDiffView+Body+Unavailable.swift
 
 extension ChangeReviewDiffView {
     @ViewBuilder
@@ -10,17 +12,9 @@ extension ChangeReviewDiffView {
         if let response {
             loadedDiff(response)
         } else if !loadSettled {
-            TraceEvidenceLoading(text: "carregando diff…", reduceMotion: reduceMotion)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+            diffBodyLoading
         } else {
-            Text("diff indisponível para este patch")
-                .font(AtlasFont.serifItalic(13))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 8)
-                .accessibilityLabel("diff indisponível para este patch")
-                .accessibilityIdentifier(A11yID.reviewDiffUnavailable)
+            diffBodyUnavailable
         }
     }
 }

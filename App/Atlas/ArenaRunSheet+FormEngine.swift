@@ -2,17 +2,14 @@ import SwiftUI
 import AtlasCore
 
 // Motor form — peel de ArenaRunSheet+FormSuites.
+// Empty → ArenaRunSheet+FormEngine+Empty.swift
 
 extension ArenaRunSheet {
     @ViewBuilder
     var engineFormSection: some View {
         section("MOTOR") {
             if engines.isEmpty {
-                Text("nenhum motor publicado")
-                    .font(.system(.subheadline))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
-                    .accessibilityLabel(spokenEmptyEngines())
+                engineFormEmpty
             } else {
                 ForEach(engines, id: \.self) { engine in
                     toggleRow(title: engine, subtitle: nil, isOn: selectedEngine == engine) {
