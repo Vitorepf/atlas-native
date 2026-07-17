@@ -966,7 +966,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXX — CICLO B Fleet/Markdown/Findings/Signature/Chrome/Composer peels** · este commit · CICLO B: FleetEmpty `+Copy`; Markdown `+Quote`; Findings `+Axis`; Signature `+Text`; CircleButton peel; Composer `+Fade`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXI — CICLO B Grabber/Reason/Commit/LiveNow/Worktree/Archive peels** · este commit · CICLO B: Composer `+KeyboardGrabber`; Reason `+Toolbar`; Commit `+Meta`; LiveNow `+Spoken`; Graph `+WorktreeChip`; Plan `+RevisionArchiveMeta`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXX — CICLO B Fleet/Markdown/Findings/Signature/Chrome/Composer peels** · `706ea05` · CICLO B: FleetEmpty `+Copy`; Markdown `+Quote`; Findings `+Axis`; Signature `+Text`; CircleButton peel; Composer `+Fade`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXIX — CICLO B Agent/Area/Mirror/Header/Lock/A11y peels** · `8352e3e` · CICLO B: Agent `+Status`; AreaDetail `+Metrics`; Mirror `+Rules`; Header `+Buttons`; Lock `+Badge`; A11y `+ReviewFiles`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
