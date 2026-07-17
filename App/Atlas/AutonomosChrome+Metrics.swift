@@ -18,11 +18,14 @@ struct FleetMetric: View {
 
 struct DetailMetric: View {
     let label: String; let value: String
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value).font(AtlasFont.mono(15)).foregroundStyle(AtlasTheme.textPrimary)
-                .contentTransition(.numericText())
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
 }

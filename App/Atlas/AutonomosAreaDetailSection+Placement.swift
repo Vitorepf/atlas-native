@@ -13,6 +13,7 @@ extension AutonomosAreaDetailSection {
             VStack(alignment: .leading, spacing: 5) {
                 Text("ONDE ESTÁ RODANDO").font(AtlasFont.mono(10)).tracking(0.9)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
                 HStack(spacing: 8) {
                     if let host = p.host { AutonomosChrome.tag(host) }
                     if let env = p.environment { AutonomosChrome.tag(env) }
@@ -21,7 +22,10 @@ extension AutonomosAreaDetailSection {
                     if let branch = p.branch { AutonomosChrome.tag(branch) }
                     if let ttl = p.leaseTTLSeconds { AutonomosChrome.tag("lease \(ttl)s") }
                 }
+                .accessibilityHidden(true)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(AutonomosAreaDetailA11y.spokenPlacement(p))
         }
     }
 }

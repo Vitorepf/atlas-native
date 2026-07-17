@@ -31,6 +31,7 @@ extension A11yID {
     static let autonomosAreaPicker = "autonomos-area-picker"
     static let autonomosAreaPickerRowPrefix = "autonomos-area-picker-row-"
     static func autonomosAreaPickerRow(_ index: Int) -> String { autonomosAreaPickerRowPrefix + String(index) }
+    static let autonomosAreaDetailSection = "autonomos-area-detail-section"
     static let autonomosAreaDeliveredSection = "autonomos-area-delivered-section"
     static let autonomosAreaDeliveredSelf = "autonomos-area-delivered-self"
     static let autonomosAreaDeliveredEmpty = "autonomos-area-delivered-empty"
