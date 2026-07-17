@@ -59,8 +59,14 @@ repo_paths:
   - App/Atlas
   - App/Widgets
 related_paths:
+  - docs/canto-canonico.md
+  - docs/arquitetura.md
   - OBRA.md
   - docs/rich-input-shared-core.md
+  - docs/atlas-native-gates.md
+  - docs/atlas-native-rich-input.md
+  - docs/atlas-native-codigo.md
+  - docs/atlas-native-autonomos.md
   - docs/atlas-codigo-evolucao.md
   - docs/plano-sota-10-de-10.md
   - docs/spec-proximo-patamar.md
@@ -168,5 +174,5 @@ colaterais (o boundary check é a defesa executável).
 
 ## Proximas Acoes
 
-Ampliar o canto com um doc canônico por domínio quando a F2 da rede
-(ingestão federada) estiver entregue no atlas-server.
+Manter `docs/canto-canonico.md` como porta curta do repo e atualizar os docs
+de domínio quando OBRA.md §6 mudar arquitetura, gates ou superfície.
