@@ -1,6 +1,7 @@
 import SwiftUI
 
 // Montagem animada da entrega — só quando o contrato publica provas reais.
+// Animation → ArtifactSheet+MountAnimation.swift
 
 extension ArtifactSheet {
     var changeReview: AtlasTraceChangeReview? { reviews.changeReviewsByTrace[traceId] }
@@ -65,22 +66,5 @@ extension ArtifactSheet {
         let n = min(mountRevealed, deliveryChecks.count)
         let tail = mountComplete ? "entrega liberada" : "montando provas"
         return "montagem da entrega, prova \(n) de \(deliveryChecks.count), \(tail)"
-    }
-
-    func runMountAnimation() async {
-        guard hasDeliveryProof else {
-            mountRevealed = deliveryChecks.count
-            return
-        }
-        if reduceMotion {
-            mountRevealed = deliveryChecks.count
-            return
-        }
-        mountRevealed = 0
-        for step in 1...deliveryChecks.count {
-            try? await Task.sleep(nanoseconds: 280_000_000)
-            guard !Task.isCancelled else { return }
-            withAnimation(AtlasMotion.editorial) { mountRevealed = step }
-        }
     }
 }

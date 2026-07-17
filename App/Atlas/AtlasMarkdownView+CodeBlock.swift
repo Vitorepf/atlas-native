@@ -2,22 +2,14 @@ import SwiftUI
 import AtlasCore
 
 // Code block "carved in slate" com label de linguagem + botão copiar (gap do RN).
-// Scroll horizontal pra linhas longas; JetBrains Mono; copia SÓ este bloco.
-// Peel de AtlasMarkdownView (régua anti-inchaço).
+// Copy → AtlasMarkdownView+CodeBlock+Copy.swift
 struct CodeBlockView: View {
     let code: String
     let lang: String?
     var blockIndex: Int = 0
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var copied = false
-
-    private var lineCount: Int {
-        guard !code.isEmpty else { return 0 }
-        return code.split(separator: "\n", omittingEmptySubsequences: false).count
-    }
-
-    private var canCopy: Bool { !code.isEmpty }
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var copied = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -25,6 +17,7 @@ struct CodeBlockView: View {
                 if let langLabel = MarkdownCodeBlockA11y.langLabel(lang: lang) {
                     Text(langLabel)
                         .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
                 }
                 Spacer()
                 Button(action: copyCode) {
@@ -55,32 +48,5 @@ struct CodeBlockView: View {
         )
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.markdownCodeBlock(blockIndex))
-    }
-
-    private var copyButtonTitle: String {
-        guard canCopy else { return "copiar" }
-        return copied ? "copiado" : "copiar"
-    }
-
-    private var copyForeground: Color {
-        guard canCopy else { return AtlasTheme.textTertiary.opacity(0.5) }
-        return copied ? AtlasTheme.accent : AtlasTheme.textSecondary
-    }
-
-    private func copyCode() {
-        guard canCopy else { return }
-        UIPasteboard.general.string = code
-        guard UIPasteboard.general.string == code else { return }
-        AtlasMotion.lightImpact(reduceMotion: reduceMotion)
-        setCopied(true)
-        Task {
-            try? await Task.sleep(nanoseconds: 1_200_000_000)
-            setCopied(false)
-        }
-    }
-
-    private func setCopied(_ value: Bool) {
-        if reduceMotion { copied = value }
-        else { withAnimation(AtlasMotion.editorial) { copied = value } }
     }
 }
