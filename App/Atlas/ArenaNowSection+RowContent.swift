@@ -4,7 +4,7 @@ import AtlasCore
 // Now run row content — peel de ArenaNowSection+Rows.
 
 extension ArenaNowSection {
-    func nowRunRow(_ run: AtlasArenaRun) -> some View {
+    func nowRunRow(_ run: AtlasArenaLiveRun) -> some View {
         HStack(spacing: 10) {
             statusIndicator(for: run)
             VStack(alignment: .leading, spacing: 3) {
