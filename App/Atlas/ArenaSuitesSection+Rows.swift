@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // MARK: - Arena suite rows (peel de ArenaSuitesSection)
-// Sparkline → ArenaSuiteSparkline.swift
+// Sparkline → ArenaSuiteSparkline.swift · Trailing → +RowTrailing.swift
 
 struct ArenaSuiteRow: View {
     let suite: AtlasArenaSuite
@@ -34,20 +34,7 @@ struct ArenaSuiteRow: View {
                     .accessibilityHidden(true)
             }
             Spacer(minLength: 8)
-            if let engine = suite.engines.first,
-               ArenaSuitesSectionA11y.hasSparkline(for: suite) {
-                SuiteSparkline(engine: engine).frame(width: 64, height: 30)
-            } else if suite.isMeasured {
-                Text("medido")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            } else {
-                Text("não medido")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
+            suiteTrailing
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
@@ -56,9 +43,5 @@ struct ArenaSuiteRow: View {
         .padding(.vertical, 10)
         .contentShape(Rectangle())
         .accessibilityHidden(true)
-    }
-
-    private var subtitle: String {
-        suite.arenaSubtitleText
     }
 }

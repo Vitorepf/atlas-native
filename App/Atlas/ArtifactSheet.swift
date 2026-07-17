@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 // Preview/zoom → ArtifactViewer.swift · conteúdo → ArtifactSheet+Content.swift · toast → +Toast
+// Selection → ArtifactSheet+Selection.swift
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -13,15 +14,6 @@ struct ArtifactSheet: View {
     @State var preview: ArtifactPreviewState = .idle
     @State var loadFinished = false
     @State var mountRevealed = 0
-
-    var artifacts: AtlasTraceArtifacts? { reviews.artifactsByTrace[traceId] }
-    var items: [AtlasTraceArtifacts.Item] {
-        guard artifacts?.state == .available else { return [] }
-        return artifacts?.items ?? []
-    }
-    var selected: AtlasTraceArtifacts.Item? {
-        items.first { $0.id == selectedID } ?? items.first
-    }
 
     var body: some View {
         NavigationStack {

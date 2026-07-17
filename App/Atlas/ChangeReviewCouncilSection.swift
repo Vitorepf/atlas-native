@@ -2,8 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // MARK: - Governance / Conselho (C18 · C19 · C21)
-// Extraído de ChangeReviewSections sem mudança de comportamento.
-// Council block → ChangeReviewCouncilSection+Block.swift
+// Lines → ChangeReviewCouncilSection+Lines.swift · Council block → +Block.swift
 
 /// C18 · C19 · C21 — as provas que o servidor emite. Cada bloco só existe
 /// se a fonte existir: sem diff medido, sem replanejamento e sem conselho,
@@ -23,32 +22,9 @@ struct ChangeReviewGovernanceSection: View {
             if stats != nil || !revisions.isEmpty || !council.isEmpty {
                 VStack(alignment: .leading, spacing: 10) {
                     if let stats {
-                        HStack(spacing: 8) {
-                            Image(systemName: "plusminus")
-                                .font(.system(size: 11))
-                                .foregroundStyle(AtlasTheme.textTertiary)
-                                .accessibilityHidden(true)
-                            Text(stats.headline)
-                                .font(AtlasFont.mono(11))
-                                .foregroundStyle(AtlasTheme.textSecondary)
-                                .accessibilityLabel("\(stats.filesTouched) arquivos, mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
-                        }
+                        governanceStatsLine(stats)
                     }
-
-                    if let last = revisions.last {
-                        HStack(spacing: 8) {
-                            Image(systemName: "clock.arrow.circlepath")
-                                .font(.system(size: 11))
-                                .foregroundStyle(AtlasTheme.textTertiary)
-                                .accessibilityHidden(true)
-                            Text(revisions.count == 1
-                                 ? "plano v1 arquivado — \(last.humanReason)"
-                                 : "\(revisions.count) versões de plano arquivadas — \(last.humanReason)")
-                                .font(.system(size: 12))
-                                .foregroundStyle(AtlasTheme.textSecondary)
-                        }
-                    }
-
+                    governanceRevisionsLine(revisions)
                     if !council.isEmpty {
                         councilBlock(council)
                     }
