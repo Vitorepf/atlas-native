@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Artifacts button label — peel de ExecutionProof+Expanded+Artifacts.
+// Chevron → ExecutionProof+Expanded+ArtifactsChevron.swift
 
 extension ExecutionProof {
     func artifactsButtonLabel(count: Int) -> some View {
@@ -15,10 +16,7 @@ extension ExecutionProof {
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
             Spacer()
-            Image(systemName: "chevron.right")
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+            artifactsChevron
         }
         .contentShape(Rectangle())
     }

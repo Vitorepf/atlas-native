@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 /// Spoken labels do índice Arena — peel de ArenaIndexSection (régua ≤100).
+/// Engine → ArenaIndexSection+A11yEngine.swift
 
 extension ArenaIndexSection {
     var sectionSpokenLabel: String {
@@ -14,12 +15,5 @@ extension ArenaIndexSection {
             if !chartSpoken.isEmpty { parts.append(chartSpoken) }
         }
         return parts.joined(separator: ", ")
-    }
-
-    func engineRowSpoken(_ engine: AtlasArenaCompositeEngine) -> String {
-        let delta = engine.delta.map { ", variação \(ArenaFormat.signed($0))" } ?? ""
-        let partial = engine.isPartialCoverage
-            ? ", cobertura parcial \(Int((engine.coverage * 100).rounded())) por cento" : ""
-        return "\(engine.engine), composto \(ArenaFormat.score(engine.composite))\(delta)\(partial)"
     }
 }

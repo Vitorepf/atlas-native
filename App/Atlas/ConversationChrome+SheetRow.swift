@@ -20,6 +20,6 @@ struct SheetRow: View {
         .accessibilityHint(accessibilityHint ?? "")
         .accessibilityAddTraits(selected ? .isSelected : [])
         .modifier(OptionalAccessibilityIdentifier(accessibilityIdentifier))
-        .overlay(alignment: .bottom) { Divider().overlay(AtlasTheme.separator).padding(.leading, 24) }
+        .overlay(alignment: .bottom) { sheetRowDivider }
     }
 }

@@ -4,14 +4,11 @@ import AtlasCore
 // Sugestões — peel de EmptyConversation.
 // Breathe → ConversationEmptyStates+Breathe.swift
 // Button → ConversationEmptyStates+SuggestionButton.swift
+// Defaults → ConversationEmptyStates+SuggestionDefaults.swift
 
 extension EmptyConversation {
     var suggestions: [String] {
-        suggestionsOverride ?? [
-            "O que está rodando no Atlas agora?",
-            "Resuma meu dia até aqui",
-            "Qual o status dos meus projetos?",
-        ]
+        suggestionsOverride ?? defaultSuggestions
     }
 
     var suggestionStack: some View {

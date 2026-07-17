@@ -3,6 +3,7 @@ import AtlasCore
 
 // Stack → SelfConstructionReceiptSheet+Stack.swift
 // Predicates → SelfConstructionReceiptSheet+Predicates.swift
+// Shell → SelfConstructionReceiptSheet+Shell.swift
 struct SelfConstructionReceiptSheet: View {
     let receipt: SelfConstructionReceipt
     var canRevert: Bool = false
@@ -15,11 +16,6 @@ struct SelfConstructionReceiptSheet: View {
     @State var reason = ""
 
     var body: some View {
-        ZStack {
-            AtlasTheme.bg.ignoresSafeArea()
-            receiptBody
-        }
-        .accessibilityIdentifier(A11yID.selfReceiptSheet)
-        .accessibilityLabel(spokenSheetLabel())
+        receiptShell
     }
 }
