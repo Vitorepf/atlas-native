@@ -30,10 +30,10 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     static let shared = NightlyProposalController()
 
     private let nightlyIdentifier = "atlas.nightly"
-    private let morningIdentifier = "atlas.morning"
-    @ObservationIgnored private let center = UNUserNotificationCenter.current()
+    let morningIdentifier = "atlas.morning"
+    @ObservationIgnored let center = UNUserNotificationCenter.current()
     @ObservationIgnored private var openAutonomos: (() -> Void)?
-    @ObservationIgnored private var immediateNightlyDateKey: String?
+    @ObservationIgnored var immediateNightlyDateKey: String?
 
     private(set) var pendingProposal: ProposalPayload?
     private(set) var mutedUntil: Date?
@@ -140,75 +140,7 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
         }
     }
 
-    private func scheduleMorning(after proposal: ProposalPayload) async {
-        let windows = await AtlasSession.rhythm.windows(minimumDays: 4)
-        guard let dayStart = windows.dayStart,
-              let date = nextDayDate(matching: dayStart, after: proposal.proposedAt),
-              await canScheduleNotifications() else { return }
-
-        let content = UNMutableNotificationContent()
-        content.title = "A frota trabalhou esta noite"
-        content.body = "Veja as entregas comprovadas."
-        content.sound = .default
-        content.userInfo = ["atlas.route": "autonomos"]
-
-        center.removePendingNotificationRequests(withIdentifiers: [morningIdentifier])
-        try? await center.add(UNNotificationRequest(
-            identifier: morningIdentifier,
-            content: content,
-            trigger: Self.calendarTrigger(for: date)
-        ))
-    }
-
-    private func canScheduleNotifications() async -> Bool {
-        let status = await center.notificationSettings().authorizationStatus
-        switch status {
-        case .authorized, .provisional, .ephemeral:
-            return true
-        case .denied, .notDetermined:
-            return false
-        @unknown default:
-            return false
-        }
-    }
-
-    private func nightlyTrigger(dayEnd: DateComponents, now: Date) -> UNNotificationTrigger {
-        guard let target = Self.date(matching: dayEnd, on: now) else {
-            return Self.calendarTrigger(for: now.addingTimeInterval(60))
-        }
-        if target <= now {
-            let today = Self.dateKey(now)
-            if immediateNightlyDateKey != today {
-                immediateNightlyDateKey = today
-                return Self.calendarTrigger(for: now.addingTimeInterval(60))
-            }
-            return Self.calendarTrigger(for: Calendar.current.date(byAdding: .day, value: 1, to: target) ?? target)
-        }
-        return Self.calendarTrigger(for: target)
-    }
-
-    private func nextDayDate(matching components: DateComponents, after date: Date) -> Date? {
-        Calendar.current.date(byAdding: .day, value: 1, to: date).flatMap { Self.date(matching: components, on: $0) }
-    }
-
-    private static func date(matching time: DateComponents, on date: Date) -> Date? {
-        var components = Calendar.current.dateComponents([.year, .month, .day], from: date)
-        components.hour = time.hour
-        components.minute = time.minute
-        return Calendar.current.date(from: components)
-    }
-
-    private static func calendarTrigger(for date: Date) -> UNCalendarNotificationTrigger {
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-        return UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-    }
-
-    private static func dateKey(_ date: Date) -> String {
-        let components = Calendar.current.dateComponents([.year, .month, .day], from: date)
-        return String(format: "%04d-%02d-%02d", components.year ?? 0, components.month ?? 0, components.day ?? 0)
-    }
-
-    private func isMuted(now: Date = .init()) -> Bool {
+    func isMuted(now: Date = .init()) -> Bool {
         guard let mutedUntil else { return false }
         if mutedUntil > now { return true }
         self.mutedUntil = AtlasSession.clearExpiredNightlyProposalMute(now: now)
