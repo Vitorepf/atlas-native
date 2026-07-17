@@ -25,7 +25,7 @@ struct AutonomosAreaPicker: View {
     private func areaRow(area: AtlasAutonomosArea, index: Int) -> some View {
         let isSelected = area.id == selectedAreaID
         Button {
-            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onSelect(area.id)
         } label: {
             HStack(spacing: 10) {

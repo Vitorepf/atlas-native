@@ -14,9 +14,7 @@ extension AtlasCodeView {
         await provenanceModel.load(hash: node.hash)
         guard case .loaded(let provenance) = provenanceModel.phase,
               let path = provenance.files.first?.path else { return }
-        if !reduceMotion {
-            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         whyFileTarget = WhyFileTarget(path: path)
     }
 

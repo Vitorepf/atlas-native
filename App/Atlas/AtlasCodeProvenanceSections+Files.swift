@@ -43,9 +43,7 @@ extension AtlasCodeProvenanceSheet {
                             Divider().overlay(AtlasTheme.separator.opacity(0.5))
                         }
                         Button {
-                            if !reduceMotion {
-                                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                            }
+                            AtlasMotion.softImpact(reduceMotion: reduceMotion)
                             whyTarget.wrappedValue = AtlasCodeProvenanceWhyTarget(path: file.path)
                         } label: {
                             AtlasCodeFileRow(file: file, accessibilityIdentifier: A11yID.whyFileRow(index))

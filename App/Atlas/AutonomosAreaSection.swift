@@ -56,7 +56,7 @@ struct AutonomosAreaControls: View {
     }
 
     private func tap(_ action: () -> Void) {
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         action()
     }
 

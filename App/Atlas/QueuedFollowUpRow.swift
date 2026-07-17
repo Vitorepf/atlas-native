@@ -41,7 +41,7 @@ struct QueuedFollowUpRow: View {
             .accessibilityLabel(rowSpokenLabel)
 
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onPromote()
             } label: {
                 Image(systemName: "arrow.up")
@@ -56,7 +56,7 @@ struct QueuedFollowUpRow: View {
             .accessibilityIdentifier(A11yID.queuePromote(message.id))
 
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRemove()
             } label: {
                 Image(systemName: "trash")

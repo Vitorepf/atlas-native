@@ -36,7 +36,6 @@ struct ArenaRunSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     formSections
-
                     if let error = model.controlError {
                         Text(error)
                             .font(.system(.callout))
@@ -44,29 +43,11 @@ struct ArenaRunSheet: View {
                             .accessibilityLabel(spokenErrorLabel(error))
                             .transition(reduceMotion ? .identity : .opacity)
                     }
-
                     if let receipt = model.lastStartReceipt {
                         receiptCard(receipt)
                             .transition(reduceMotion ? .identity : .opacity.combined(with: .offset(y: 8)))
                     }
-
-                    Button {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
-                        Task { await model.startRuns(input: input) }
-                    } label: {
-                        Text("Rodar medição")
-                            .font(.system(.body, weight: .semibold))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
-                            .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
-                    }
-                    .buttonStyle(PressableScale())
-                    .foregroundStyle(input.isLocallyValidForSubmission ? AtlasTheme.accent : AtlasTheme.textTertiary)
-                    .disabled(!input.isLocallyValidForSubmission)
-                    .accessibilityIdentifier(A11yID.arenaRunSubmit)
-                    .accessibilityLabel(spokenSubmitLabel(input: input, enginesEmpty: engines.isEmpty))
-                    .accessibilityHint(spokenSubmitHint(input: input, enginesEmpty: engines.isEmpty))
+                    submitButton
                 }
                 .padding(AtlasTheme.Space.screen)
                 .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.lastStartReceipt?.receiptHash)
@@ -78,24 +59,15 @@ struct ArenaRunSheet: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Fechar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         dismiss()
                     }
-                        .accessibilityLabel(spokenCloseLabel())
-                        .accessibilityHint(spokenCloseHint())
+                    .accessibilityLabel(spokenCloseLabel())
+                    .accessibilityHint(spokenCloseHint())
                 }
             }
         }
-        .onAppear {
-            if selectedSuites.isEmpty, let first = installedSuites.first?.suite {
-                selectedSuites.insert(first)
-            }
-            if engines.isEmpty {
-                selectedEngine = ""
-            } else if selectedEngine.isEmpty {
-                selectedEngine = engines.first ?? ""
-            }
-        }
+        .onAppear { seedDefaultsIfNeeded() }
         .accessibilityIdentifier(A11yID.arenaRunSheet)
         .accessibilityLabel(spokenSheetLabel())
         .accessibilityHint(spokenSheetHint())

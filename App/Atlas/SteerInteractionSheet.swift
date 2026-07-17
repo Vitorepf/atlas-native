@@ -72,7 +72,7 @@ struct SteerInteractionSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancelar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         dismiss()
                     }
                     .accessibilityLabel("cancelar redirecionamento")
@@ -80,7 +80,7 @@ struct SteerInteractionSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Enviar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onSubmit(instruction, scope)
                     }
                     .disabled(!canSubmit)

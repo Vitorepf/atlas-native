@@ -46,9 +46,7 @@ struct TimelineFilterChips: View {
                 let active = option == filter
                 let count = option.apply(to: baseRows).count
                 Button {
-                    if !reduceMotion {
-                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
                         filter = option
                     }

@@ -65,7 +65,7 @@ struct FeedbackRow: View {
             ForEach(FeedbackKind.allCases) { kind in
                 let isActive = active == kind.activeAction
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onFeedback(kind)
                 } label: {
                     Text(isActive ? "\(kind.label) ✓" : kind.label)

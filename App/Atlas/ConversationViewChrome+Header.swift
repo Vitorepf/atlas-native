@@ -7,7 +7,7 @@ extension ConversationView {
     var header: some View {
         HStack(spacing: 12) {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 dismiss()
             } label: {
                 Image(systemName: "chevron.left")
@@ -25,7 +25,7 @@ extension ConversationView {
                 HStack(spacing: 8) {
                     if !model.bubbles.isEmpty {
                         Button {
-                            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                            AtlasMotion.softImpact(reduceMotion: reduceMotion)
                             showOutline = true
                         } label: {
                             Image(systemName: "list.bullet.rectangle")

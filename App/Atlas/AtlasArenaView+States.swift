@@ -48,7 +48,7 @@ extension AtlasArenaView {
                 .accessibilityHidden(true)
             if hasToken {
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     Task { await model.load() }
                 } label: {
                     Text("Tentar de novo")

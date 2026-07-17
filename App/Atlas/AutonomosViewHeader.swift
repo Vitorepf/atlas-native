@@ -12,7 +12,7 @@ struct AutonomosViewHeader: View {
     var body: some View {
         HStack(spacing: 12) {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onBack()
             } label: {
                 Image(systemName: "chevron.left")
@@ -49,7 +49,7 @@ struct AutonomosViewHeader: View {
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: auditModeEnabled)
             Spacer()
             Button {
-                if canRefresh, !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                if canRefresh { AtlasMotion.softImpact(reduceMotion: reduceMotion) }
                 onRefresh()
             } label: {
                 Image(systemName: "arrow.clockwise")

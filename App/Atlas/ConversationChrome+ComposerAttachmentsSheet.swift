@@ -62,7 +62,7 @@ struct ComposerAttachmentsSheet: View {
 
             Button {
                 guard let text = pasteboardText else { return }
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 dismiss()
                 Task { @MainActor in onPaste(text) }
             } label: {
@@ -91,7 +91,7 @@ struct ComposerAttachmentsSheet: View {
     }
 
     private func choose(_ action: @escaping @MainActor () -> Void) {
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         dismiss()
         Task { @MainActor in action() }
     }

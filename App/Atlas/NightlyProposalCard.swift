@@ -31,7 +31,7 @@ struct NightlyProposalCard: View {
                 .accessibilityHidden(true)
             HStack(spacing: 10) {
                 Button("Preparar missão noturna") {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onAccept()
                 }
                     .buttonStyle(AutonomosPrimaryButtonStyle())
@@ -39,7 +39,7 @@ struct NightlyProposalCard: View {
                     .accessibilityLabel(Self.spokenAcceptLabel())
                     .accessibilityHint(Self.spokenAcceptHint())
                 Button("hoje não") {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onDismiss()
                 }
                     .font(.system(.footnote, weight: .semibold))
@@ -50,19 +50,19 @@ struct NightlyProposalCard: View {
                     .accessibilityHint(Self.spokenDismissHint())
                 Menu("silenciar") {
                     Button("1 dia") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onMute(1)
                     }
                         .accessibilityLabel(Self.spokenMuteOption(days: 1))
                         .accessibilityHint(Self.spokenMuteOptionHint())
                     Button("3 dias") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onMute(3)
                     }
                         .accessibilityLabel(Self.spokenMuteOption(days: 3))
                         .accessibilityHint(Self.spokenMuteOptionHint())
                     Button("7 dias") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onMute(7)
                     }
                         .accessibilityLabel(Self.spokenMuteOption(days: 7))

@@ -44,7 +44,7 @@ extension AtlasCodeProvenanceSheet {
     /// A porta para o agente, com o commit já no assunto.
     var askButton: some View {
         Button {
-            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onAsk()
         } label: {
             HStack(spacing: 8) {

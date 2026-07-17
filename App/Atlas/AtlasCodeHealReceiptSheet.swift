@@ -61,7 +61,7 @@ struct AtlasCodeHealReceiptSheet: View {
                 }
                 if canUndo {
                     Button {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onUndo()
                         dismiss()
                     } label: {

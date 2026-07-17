@@ -69,7 +69,7 @@ extension RootHomeSections {
     func homeFilterChip(_ label: String, key: String?) -> some View {
         let active = homeWorkspaceFilter == key
         return Button {
-            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             homeWorkspaceFilter = key
         } label: {
             Text(label)

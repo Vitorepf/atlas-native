@@ -52,9 +52,7 @@ extension AtlasCodeView {
                     let active = graphStateFilter == option
                     let count = option.count(in: graph.nodes, model: model)
                     Button {
-                        if !reduceMotion {
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                        }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
                             graphStateFilter = option
                         }

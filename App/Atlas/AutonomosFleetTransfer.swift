@@ -15,7 +15,7 @@ struct AutonomosTransferStatus: View {
                     .accessibilityHidden(true)
                 Spacer()
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onRefresh()
                 } label: {
                     Image(systemName: "arrow.clockwise").font(.system(size: 12, weight: .medium))

@@ -61,9 +61,7 @@ extension ExecutionProof {
             }
             if !artifactItems.isEmpty, let traceId = bubble.traceId {
                 Button {
-                    if !reduceMotion {
-                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onOpenArtifacts(traceId)
                 } label: {
                     HStack(spacing: 6) {

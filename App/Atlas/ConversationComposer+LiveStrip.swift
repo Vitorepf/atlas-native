@@ -26,7 +26,7 @@ extension ConversationComposer {
     var queueChipSection: some View {
         if !model.queuedMessages.isEmpty {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 showQueueSheet = true
             } label: {
                 Text(queueChipLabel)

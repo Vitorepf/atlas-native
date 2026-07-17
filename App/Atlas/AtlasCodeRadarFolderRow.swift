@@ -23,7 +23,7 @@ struct AtlasCodeFolderRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onToggle()
             } label: {
                 HStack(spacing: 12) {

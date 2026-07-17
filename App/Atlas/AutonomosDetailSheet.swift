@@ -55,7 +55,7 @@ struct AutonomosPublicDetailSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Fechar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         dismiss()
                     }
                         .accessibilityLabel(spokenCloseLabel())

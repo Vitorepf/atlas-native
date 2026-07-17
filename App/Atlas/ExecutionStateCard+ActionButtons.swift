@@ -24,7 +24,7 @@ extension ExecutionStateCard {
             }
         } else if showsRetryFallback, let retryableJobId {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRetry(retryableJobId)
             } label: {
                 Text("Retomar")
@@ -41,7 +41,7 @@ extension ExecutionStateCard {
         }
         if let onSteer {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onSteer()
             } label: {
                 Text("Redirecionar")

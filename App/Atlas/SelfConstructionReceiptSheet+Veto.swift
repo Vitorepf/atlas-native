@@ -26,7 +26,7 @@ extension SelfConstructionReceiptSheet {
                     .accessibilityLabel("motivo auditável do veto")
                     .accessibilityHint(spokenReasonHint())
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onRevert(actor, reason)
                 } label: {
                     HStack(spacing: 7) {

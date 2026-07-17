@@ -10,9 +10,7 @@ struct AutonomosDetailChipButton: View {
 
     var body: some View {
         Button {
-            if !reduceMotion {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         } label: {
             Text(label)

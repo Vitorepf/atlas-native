@@ -9,7 +9,7 @@ extension ArtifactSheet {
         VStack(spacing: 0) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     selectedID = item.id
                 } label: {
                     HStack(spacing: 10) {

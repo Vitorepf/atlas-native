@@ -55,14 +55,14 @@ extension ConversationView {
     func editAndResend(_ bubble: ChatBubble) {
         guard bubble.role == "user" else { return }
         model.updateDraft(bubble.text)
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         focused = true
         setToast("mensagem no composer para novo turno")
     }
 
     func copy(_ text: String, label: String) {
         UIPasteboard.general.string = text
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
+        AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
         setToast("\(label) copiada")
     }
 }

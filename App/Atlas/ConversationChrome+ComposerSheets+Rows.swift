@@ -61,7 +61,7 @@ struct WorkspaceSheet: View {
                         accessibilityIdentifier: A11yID.workspaceRow(ws.id)
                     ) {
                         onPick(ws)
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         dismiss()
                     }
                 }

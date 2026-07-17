@@ -36,21 +36,21 @@ extension ComposerToolbar {
         } else {
             Menu {
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onShowWorkspace()
                 } label: {
                     Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
                 }
                 .accessibilityLabel("workspace, \(model.workspaceName ?? "Atlas")")
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onShowMode()
                 } label: {
                     Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
                 }
                 .accessibilityLabel("modo, \(mode)")
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onShowEffort()
                 } label: {
                     Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")

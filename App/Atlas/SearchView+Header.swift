@@ -10,7 +10,7 @@ struct SearchViewHeader: View {
     var body: some View {
         HStack(spacing: 12) {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 dismiss()
             } label: {
                 Image(systemName: "chevron.left")
@@ -39,7 +39,7 @@ struct SearchViewHeader: View {
                 }
                 if !query.isEmpty {
                     Button {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         query = ""
                     } label: {
                         Image(systemName: "xmark.circle.fill")

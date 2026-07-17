@@ -6,7 +6,7 @@ import AtlasCore
 extension ChangeReviewFileRow {
     var acceptButton: some View {
         Button("aceitar") {
-            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(
                     traceId: traceId, patchId: patch.patchID,
@@ -23,7 +23,7 @@ extension ChangeReviewFileRow {
 
     var rejectButton: some View {
         Button("rejeitar") {
-            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(
                     traceId: traceId, patchId: patch.patchID,

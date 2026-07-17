@@ -56,7 +56,7 @@ extension RootView {
       .accessibilityIdentifier(A11yID.auditMasthead)
       .accessibilityAddTraits(.isHeader)
       .onLongPressGesture(minimumDuration: 0.55) {
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         session.auditModeEnabled.toggle()
       }
       .dynamicTypeSize(...DynamicTypeSize.accessibility1)

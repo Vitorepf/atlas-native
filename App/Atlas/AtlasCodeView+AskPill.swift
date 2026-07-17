@@ -20,7 +20,7 @@ extension AtlasCodeView {
             Spacer(minLength: 0)
             if askModel.isAnchoring {
                 Button {
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     askModel.clear()
                 } label: {
                     Text("mostrar tudo")
@@ -43,7 +43,7 @@ extension AtlasCodeView {
         .overlay(Capsule().strokeBorder(AtlasTheme.separator, lineWidth: 0.5))
         .contentShape(Capsule())
         .onTapGesture {
-            if !reduceMotion { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             askDraft = ""
             showsAskCard = true
         }

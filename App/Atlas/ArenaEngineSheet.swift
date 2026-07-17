@@ -30,7 +30,7 @@ struct ArenaEngineSheet: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Fechar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         dismiss()
                     }
                         .accessibilityLabel(ArenaEngineSheetA11y.closeLabel)

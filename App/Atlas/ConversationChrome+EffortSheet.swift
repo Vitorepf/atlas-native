@@ -38,7 +38,7 @@ struct EffortSheet: View {
     private func pick(_ effort: AtlasComputeEffort) {
         model.effort = effort
         UserDefaults.standard.set(effort.rawValue, forKey: ConversationModel.effortPreferenceKey)
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         dismiss()
     }
 }

@@ -24,7 +24,7 @@ struct AtlasCodeLoadFailureEmpty: View {
                 .padding(.horizontal, 28)
                 .accessibilityHidden(true)
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRetry()
             } label: {
                 Text("Tentar de novo")

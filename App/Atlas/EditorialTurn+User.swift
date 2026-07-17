@@ -16,7 +16,7 @@ extension EditorialTurn {
                 }
                 .accessibilityLabel(EditorialTurnA11y.spokenUserMessage(bubble.text))
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onEditResend()
             } label: {
                 HStack(spacing: 5) {

@@ -176,7 +176,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
 | E-B | **PARCIAL** | **Grok 4.5** | peels contínuos App+Core | E-A* | CICLO B compressão 1 | **Milestone:** zero arquivos App/Core/Widgets >100; max 100 (3 empatados); patamar ≤100 atingido — **PARCIAL** até `AtlasCoreChecks`+`make build` no Mac provarem compile | peels + `wc -l`; `488cd9c`+`d5ac0ef`; build Mac-pending |
 | E-C | **IN_PROGRESS** | **Grok 4.5** | silence + Island + Continuity + Artifact + Timeline + Autônomos | E-B PARCIAL | CICLO C patamares | Frota quieta; Island ATT/EXT/FAIL + fila; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline; Autônomos honesty; screen spoken Search/Workspace/Review/Conversation; RM residual Network/Arena/Composer/LiveNow/Nightly/Plan/sheets Fechar; `rg Aprovar`=0 | Elite LXXVII+ peels contínuos; Swift/server/device BLOCKED |
-| E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | clock `AtlasTime.formatActiveDuration` canônico; empty/loading → `AtlasNetworkFailureEmpty`/`AtlasEditorialGlyphEmpty`/`AutonomosCardEmptyState`/`WorkspaceLoadingEmpty` (**consolidado**); failure dups → `AutonomosFleetFailureEmpty`/`AtlasCodeLoadFailureEmpty`; `TraceEvidenceLoading` canônico; meta ≥60% linhas de C ainda PARCIAL | `217a848` + `72c1c12` + `b27294b` |
+| E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | haptics → `AtlasMotion+Haptics` canônico; clock `AtlasTime.formatActiveDuration` canônico; empty/loading → `AtlasNetworkFailureEmpty`/`AtlasEditorialGlyphEmpty`/`AutonomosCardEmptyState`/`WorkspaceLoadingEmpty` (**consolidado**); failure dups → `AutonomosFleetFailureEmpty`/`AtlasCodeLoadFailureEmpty`; `TraceEvidenceLoading` canônico; meta ≥60% linhas de C ainda PARCIAL | `217a848` + `72c1c12` + `b27294b` |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -967,6 +967,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXXXI — CICLO B/D AtlasMotion haptics canônicos** · este commit · CICLO B/D: `AtlasMotion+Haptics` — soft/medium/light/success únicos; **80** call sites dedup (−17 líquidos + peels); ArenaRunSheet `+Submit` (75); LiveNow `+Merge` (85). Zero `UIImpactFeedbackGenerator` fora do helper. Zero Route. **BLOCKED:** Swift/server/device. Prova: `rg UIImpactFeedbackGenerator App` só Haptics; Arena 75 LiveNow 85; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXX — CICLO C AtlasCodeView screen** · este commit · CICLO C: AtlasCodeView — `code-screen` spoken por fase/repo/N commits; toolbar repo decorativo sob screen. Peel `+A11y` (22). Shell ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Code 90 A11y 22; `rg Aprovar`=0; device-pending.
 

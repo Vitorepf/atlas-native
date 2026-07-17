@@ -50,7 +50,7 @@ struct AutonomosTransferSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancelar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         dismiss()
                     }
                         .accessibilityLabel(AutonomosTransferSheetA11y.spokenCancel)
@@ -58,7 +58,7 @@ struct AutonomosTransferSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onConfirm(actor, reason)
                         dismiss()
                     }

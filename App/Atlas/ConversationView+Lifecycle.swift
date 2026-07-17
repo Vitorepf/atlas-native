@@ -22,7 +22,7 @@ extension ConversationView {
                 model.markThreadVisited()
             }
             .onChange(of: model.isSending) { was, now in
-                if was && !now { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+                if was && !now { AtlasMotion.successNotification(reduceMotion: reduceMotion) }
             }
             .onChange(of: model.cacheCapturedAt) { _, capturedAt in
                 if let capturedAt { lastCacheCapturedAt = capturedAt }

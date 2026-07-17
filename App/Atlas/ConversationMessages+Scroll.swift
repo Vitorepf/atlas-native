@@ -22,7 +22,7 @@ extension ConversationMessages {
             .overlay(alignment: .bottomTrailing) {
                 if showsScrollFAB {
                     Button {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) {
                             proxy.scrollTo("bottom", anchor: .bottom)
                         }

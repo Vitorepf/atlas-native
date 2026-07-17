@@ -40,9 +40,7 @@ struct ConversationMessages: View {
                                 prompt: emptyPrompt,
                                 suggestions: emptySuggestions
                             ) { suggestion in
-                                if !reduceMotion {
-                                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                                }
+                                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
                                 let effort = model.effort
                                 Task { await model.send(suggestion, effort: effort) }
                             }

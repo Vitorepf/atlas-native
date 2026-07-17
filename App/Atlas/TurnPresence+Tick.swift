@@ -42,9 +42,8 @@ extension TurnPresence {
             let final = lastPresence(model, key: traceKey)
             finishActivity(entry, presence: final)
             broadcastCount()
-            if UIApplication.shared.applicationState == .active, !entry.visible,
-               !UIAccessibility.isReduceMotionEnabled {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            if UIApplication.shared.applicationState == .active, !entry.visible {
+                AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
             }
             // A permissão PRIMEIRO, e esperando o veredito: pedir depois de
             // notificar fazia a primeira notificação da vida do app ser sempre

@@ -53,7 +53,7 @@ struct DraftThumb: View {
     @ViewBuilder private var removeButton: some View {
         if draft.state != .subindo {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRemove(draft.id)
             } label: {
                 Image(systemName: "xmark.circle.fill")

@@ -71,7 +71,7 @@ struct CodeBlockView: View {
         guard canCopy else { return }
         UIPasteboard.general.string = code
         guard UIPasteboard.general.string == code else { return }
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .light).impactOccurred() }
+        AtlasMotion.lightImpact(reduceMotion: reduceMotion)
         setCopied(true)
         Task {
             try? await Task.sleep(nanoseconds: 1_200_000_000)

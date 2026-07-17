@@ -52,7 +52,7 @@ struct AtlasNetworkFailureEmpty: View {
     @ViewBuilder
     private var retryButton: some View {
         let button = Button {
-            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onRetry()
         } label: {
             Text("Tentar de novo")

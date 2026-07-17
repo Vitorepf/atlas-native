@@ -32,7 +32,7 @@ struct ModeSheet: View {
                     accessibilityIdentifier: A11yID.modeRow(key)
                 ) {
                     selected = key
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     dismiss()
                 }
             }

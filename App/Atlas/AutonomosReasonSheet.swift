@@ -53,7 +53,7 @@ struct AutonomosReasonSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancelar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         dismiss()
                     }
                     .accessibilityLabel("cancelar ação governada")
@@ -61,7 +61,7 @@ struct AutonomosReasonSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") {
-                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onConfirm(actor, reason)
                         dismiss()
                     }

@@ -28,7 +28,7 @@ struct ComposerToolbar: View {
     var body: some View {
         HStack(spacing: 10) {
             Button {
-                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onAttach()
             } label: {
                 Image(systemName: "paperclip")

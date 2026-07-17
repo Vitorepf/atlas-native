@@ -4,6 +4,7 @@ import AtlasCore
 /// "VIVO AGORA" — a home vira cockpit quando há sessão observada neste
 /// processo. Sem sessões a seção não existe (lei V1: estado por exceção).
 /// Com 2+ sessões vira Session Hub na home (zero Route nova).
+/// Merge → LiveNowSection+Merge · spoken → LiveNowSection+A11y.
 struct LiveNowSection: View {
     let localSessions: [LiveSessionSnapshot]
     let remoteSessions: [LiveSessionSnapshot]
@@ -20,7 +21,6 @@ struct LiveNowSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: isHub ? 0 : 12) {
             header
-
             ForEach(Array(sessions.enumerated()), id: \.element.id) { index, session in
                 if isHub, index > 0 {
                     Rectangle()
@@ -29,7 +29,6 @@ struct LiveNowSection: View {
                         .padding(.vertical, 10)
                         .accessibilityHidden(true)
                 }
-
                 LiveNowRow(
                     session: session,
                     hubMode: isHub,
@@ -39,7 +38,7 @@ struct LiveNowSection: View {
                     remoteBadgeID: session.isRemote ? A11yID.liveNowRemoteBadge(index) : nil
                 ) {
                     guard let threadId = session.threadId else { return }
-                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onOpen(threadId, session.title)
                 }
                 .accessibilityIdentifier(A11yID.liveNowRow(index))
@@ -82,19 +81,5 @@ struct LiveNowSection: View {
             Spacer(minLength: 0)
         }
         .padding(.bottom, isHub ? 12 : 0)
-    }
-
-    static func merged(local: [LiveSessionSnapshot], remote: [LiveSessionSnapshot]) -> [LiveSessionSnapshot] {
-        var seenThreads = Set(local.compactMap { $0.threadId?.rawValue })
-        var seenRemoteIDs: Set<String> = []
-        let filteredRemote = remote.filter { session in
-            if let thread = session.threadId?.rawValue {
-                guard !seenThreads.contains(thread) else { return false }
-                seenThreads.insert(thread)
-                return true
-            }
-            return seenRemoteIDs.insert(session.id).inserted
-        }
-        return local + filteredRemote
     }
 }

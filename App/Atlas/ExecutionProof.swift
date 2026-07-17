@@ -27,9 +27,7 @@ struct ExecutionProof: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
-                if !reduceMotion {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                }
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 withAnimation(reduceMotion ? nil : .easeOut(duration: 0.22)) { open.toggle() }
             } label: {
                 HStack(spacing: 10) {

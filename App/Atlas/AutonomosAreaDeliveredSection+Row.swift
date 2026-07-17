@@ -57,7 +57,7 @@ extension AutonomosAreaDeliveredSection {
 
     func openCommit(_ hash: String, repo: String) {
         guard let url = URL(string: "atlas://code/\(repo)?commit=\(hash)") else { return }
-        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         openURL(url)
     }
 
