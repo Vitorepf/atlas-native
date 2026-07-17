@@ -26,7 +26,7 @@ extension AtlasArenaView {
                         onEngineTap: { selectedEngine = $0 }
                     )
                 }
-                ArenaCapabilitiesSection(capabilities: model.capabilities)
+                ArenaCapabilitiesSection(capabilities: model.capabilities, reduceMotion: reduceMotion)
                 if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
                     ArenaSuitesSection(
                         scoreboard: scoreboard,

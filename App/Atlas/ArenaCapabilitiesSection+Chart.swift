@@ -34,7 +34,7 @@ struct ArenaCapabilitiesChart: View {
             .chartLegend(.visible)
             .chartXAxis { AxisMarks(values: [0, 0.5, 1]) }
             .chartYAxis(.hidden)
-            .accessibilityLabel("barras de capacidades medidas")
+            .accessibilityHidden(true)
         }
     }
 }

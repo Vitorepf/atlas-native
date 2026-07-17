@@ -6,6 +6,8 @@ extension A11yID {
     static let arenaScreen = "arena-screen"
     static let arenaIndexSection = "arena-index-section"
     static let arenaCapabilitiesSection = "arena-capabilities-section"
+    static let arenaCapabilityRowPrefix = "arena-capability-row-"
+    static func arenaCapabilityRow(_ capability: String) -> String { arenaCapabilityRowPrefix + capability }
     static let arenaSuitesSection = "arena-suites-section"
     static let arenaNowSection = "arena-now-section"
     static let arenaNowLiveActivityNote = "arena-now-live-activity-note"

@@ -29,13 +29,14 @@ struct ArenaCapabilityRow: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(capability.labelPt), score \(ArenaFormat.score(capability.score)), com Atlas \(ArenaFormat.score(capability.withAtlas))")
+        .accessibilityLabel(ArenaCapabilitiesSectionA11y.spokenCapability(capability))
+        .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
     }
 
     private var contributionLine: String {
         var parts: [String] = []
-        if let total = capability.casesTotal {
-            parts.append("\(total) casos")
+        if let cases = ArenaCapabilitiesSectionA11y.casesCaption(for: capability) {
+            parts.append(cases)
         }
         if !capability.suitesContributing.isEmpty {
             parts.append(capability.suitesContributing.joined(separator: ", "))

@@ -20,8 +20,7 @@ struct ArenaEngineSheet: View {
                         .accessibilityAddTraits(.isHeader)
                         .accessibilityLabel(ArenaEngineSheetA11y.spokenEngineTitle(engine.engine))
                     engineSummary
-                    ArenaCapabilitiesSection(capabilities: capabilities)
-                        .accessibilityLabel(ArenaEngineSheetA11y.spokenCapabilities(capabilities))
+                    ArenaCapabilitiesSection(capabilities: capabilities, reduceMotion: reduceMotion)
                 }
                 .padding(AtlasTheme.Space.screen)
             }
