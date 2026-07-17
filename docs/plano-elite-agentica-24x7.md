@@ -488,9 +488,9 @@ server → Core decode → **zero UI inventada** até payload existir.
 **Files:**
 - Create: `docs/fable-5-fidelity-matrix.md`
 
-- [ ] Mapear cenas 01–08, 10–13 + Fleet + Island → model → view → teste →
-  evidência → gap
-- [ ] Voice marcada EXCLUÍDA
+- [x] Mapear cenas 01–08, 10–13 + Fleet + Island → model → view → teste →
+  evidência → gap — **DONE** `docs/fable-5-fidelity-matrix.md` (2026-07-17)
+- [x] Voice marcada EXCLUÍDA — cena 09 EXCLUDED na matrix
 
 ---
 

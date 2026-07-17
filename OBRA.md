@@ -169,6 +169,9 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 |---|---|---|---|---|---|---|---|
 | E0 | **DONE** | **Grok 4.5** | `docs/plano-elite-agentica-24x7.md`; design; `OBRA.md` | decisão operador 2026-07-17 | Canon + plano mestre A→B→C→D | zero Route nova; fora-do-app livre; humano fora do fluxo ops | este commit |
 | E-A1 | **PARCIAL** | **Grok 4.5** | Core `AtlasDeepLink` + RootView + Widgets M84; server M01/A12 | E0 | Onda A1 honestidade P0 | A1.3 deep links DONE; M84 Semana widget; M01/A12 **BLOCKED(server)** neste ambiente | deep link + week widget neste commit; gates Swift BLOCKED(cloud Linux) |
+| E-A2 | **PENDING** | — | Arena LA + App Intents | E-A1 A12 | Onda A2 Arena Continuity | LA `suite·engine·braço·N/M`; botões só ações reais | — |
+| E-A3 | **PENDING** | — | §5 contratos C9/M65/C18–C21/M98+/… | E0 | Onda A3 contratos | TDD + decode; UI só depois | — |
+| E-A4 | **PENDING** | — | deepen Conversation/Autonomos/Code/Arena/LiveNow | E-A3 onde bloquear | Onda A4 casca deepen | zero Route; fidelity matrix | — |
 | E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana lê `snapshot.week`; demais variantes pendentes | este commit |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
 | E-B | **PENDING** | — | splits AutonomosView/Model/Core + dedup | E-A* mínimo | CICLO B compressão 1 | Model <800; views~200; saldo negativo | — |
@@ -964,6 +967,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **Elite A4.5 fidelity matrix baseline** · este commit · `docs/fable-5-fidelity-matrix.md` mapeia cenas 01–08/10–13 + Fleet + Island → Core/model → SwiftUI → prova → gap; Voice/09 EXCLUDED; Session Hub=`LiveNowSection` deepen; Arena=rota `.arena` separada; A4.5 checkboxes ✓ em `plano-elite-agentica-24x7.md`. Prova: docs + blackboard; sem runtime.
 
 - 2026-07-17 · Grok 4.5 · **Elite E-A1 claim + A1 leaf tasks** · este commit · `docs/plano-elite-agentica-24x7.md` Onda A1 expandida em leafs bite-sized (A1.1a–d M01, A1.2a–d Arena A12, A1.3a–c deep links, A1.4 closeout) com paths exatos, checkboxes, gates e commit messages. §4 E-A1 → **IN_PROGRESS** (Grok 4.5). §5 M01 + M61/A12: **BLOCKED(server)** honesto — `atlas-server` ausente neste workspace; native-only segue (A1.3 handlers). Sem mudança de runtime. Prova: docs + blackboard.
 
