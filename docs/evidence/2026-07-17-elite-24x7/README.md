@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **467+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXVII tip `320784c` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **470+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXVIII tip `4a717c1` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXXXVII (este tip)
+## Entrega Elite CXXXXXXXVIII (este tip)
+
+- `refactor(ui)` CICLO B: Sheets `+Heal`; Provenance `+Failed`/`+LawBody`; Graph `+WorktreeMeta`; Lifecycle `+Presence`; Widgets `+LockLiveDefinitions`/`+Follow`; Toast `+Handoff`; Heal `+StepCopy`; Home `+ArenaEntry`; AskPill `+A11yTraits`; Review `+RunFields`.
+- Zero App/Widgets >100; zero Route nova; tip `4a717c1`.
+
+## Entrega Elite CXXXXXXXVII (anterior)
 
 - `refactor(ui)` CICLO B: ArenaNow+RowContent; Engine+SummaryHeader; Suite+RowBadges; Artifact+Unavailable; Week+Title; Provenance+StateKicker. Tip `320784c`.
 - Zero App/Widgets >100; zero Route nova.
