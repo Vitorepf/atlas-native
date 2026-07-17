@@ -84,6 +84,7 @@ struct ConversationView: View {
             }
             .navigationBarHidden(true)
             .overlay(alignment: .top) { toast }
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.toast)
         )
     }
 }

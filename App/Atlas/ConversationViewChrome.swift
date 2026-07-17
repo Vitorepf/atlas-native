@@ -1,9 +1,12 @@
 import SwiftUI
+import UIKit
 import AtlasCore
 
 // Chrome extraído de ConversationView (Elite compressão).
 extension ConversationView {
     // MARK: - Cache seal
+
+    @ViewBuilder var cacheAgeSeal: some View {
         if model.showingStaleCache, let capturedAt = model.cacheCapturedAt {
             StaleReadSeal(capturedAt: capturedAt, confirming: false, reduceMotion: reduceMotion)
                 .padding(.horizontal, AtlasTheme.Space.screen)
@@ -17,7 +20,7 @@ extension ConversationView {
                 .padding(.bottom, 8)
                 .transition(.opacity)
                 .task {
-                    try? await Task.sleep(nanoseconds: 320_000_000)
+                    if !reduceMotion { try? await Task.sleep(nanoseconds: 320_000_000) }
                     readSealConfirming = false
                 }
         }
@@ -32,10 +35,13 @@ extension ConversationView {
                 .padding(.horizontal, 16).padding(.vertical, 9)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
-                .transition(.move(edge: .top).combined(with: .opacity))
+                .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(ConversationViewA11y.spokenToast(t))
+                .accessibilityIdentifier(A11yID.conversationToast)
                 .task {
                     try? await Task.sleep(nanoseconds: 1_400_000_000)
-                    withAnimation(AtlasMotion.editorial) { model.toast = nil }
+                    clearToast()
                 }
         }
     }
@@ -49,16 +55,14 @@ extension ConversationView {
     func editAndResend(_ bubble: ChatBubble) {
         guard bubble.role == "user" else { return }
         model.updateDraft(bubble.text)
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        withAnimation(AtlasMotion.editorial) {
-            focused = true
-            model.toast = "mensagem no composer para novo turno"
-        }
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        focused = true
+        setToast("mensagem no composer para novo turno")
     }
 
     func copy(_ text: String, label: String) {
         UIPasteboard.general.string = text
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        withAnimation(AtlasMotion.editorial) { model.toast = "\(label) copiada" }
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
+        setToast("\(label) copiada")
     }
 }

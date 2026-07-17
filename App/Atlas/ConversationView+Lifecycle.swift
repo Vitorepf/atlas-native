@@ -28,7 +28,7 @@ extension ConversationView {
                 if let capturedAt { lastCacheCapturedAt = capturedAt }
             }
             .sheet(isPresented: $showOutline) {
-                ConversationOutlineSheet(bubbles: model.bubbles)
+                ConversationOutlineSheet(bubbles: model.bubbles, reduceMotion: reduceMotion)
             }
             .onChange(of: model.showingStaleCache) { was, now in
                 if now, let capturedAt = model.cacheCapturedAt {

@@ -5,11 +5,12 @@ import AtlasCore
 
 struct ConversationOutlineSheet: View {
     let bubbles: [ChatBubble]
+    var reduceMotion: Bool = false
 
     var body: some View {
         SheetShell(title: "Índice da conversa") {
             ForEach(Array(bubbles.enumerated()), id: \.element.id) { index, bubble in
-                ConversationOutlineRow(index: index + 1, bubble: bubble)
+                ConversationOutlineRow(index: index + 1, bubble: bubble, reduceMotion: reduceMotion)
             }
         }
     }
@@ -18,13 +19,14 @@ struct ConversationOutlineSheet: View {
 struct ConversationOutlineRow: View {
     let index: Int
     let bubble: ChatBubble
+    var reduceMotion: Bool = false
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 12) {
             Text(String(format: "%02d", index))
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.accent)
-                .contentTransition(.numericText())
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
             VStack(alignment: .leading, spacing: 3) {
                 Text(bubble.role == "user" ? "Você" : "Atlas")
                     .font(.system(.caption, weight: .semibold))
