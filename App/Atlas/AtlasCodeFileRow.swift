@@ -15,6 +15,7 @@ struct AtlasCodeFileRow: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 17, height: 17)
                 .background(AtlasTheme.surfaceHi, in: RoundedRectangle(cornerRadius: 5))
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(file.fileName)
@@ -30,6 +31,7 @@ struct AtlasCodeFileRow: View {
                         .truncationMode(.head)
                 }
             }
+            .accessibilityHidden(true)
 
             Spacer(minLength: 8)
 
@@ -38,15 +40,17 @@ struct AtlasCodeFileRow: View {
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
+                    .accessibilityHidden(true)
             } else {
                 Text("binário")
                     .font(AtlasFont.mono(8.5))
                     .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+                    .accessibilityHidden(true)
             }
         }
         .padding(.vertical, 9)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityText)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
         .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 
@@ -65,28 +69,5 @@ struct AtlasCodeFileRow: View {
         case .typeChanged: return "arrow.triangle.2.circlepath"
         case .unknown: return "questionmark"
         }
-    }
-
-    private var verb: String {
-        switch file.status {
-        case .added: return "adicionado"
-        case .modified: return "alterado"
-        case .deleted: return "removido"
-        case .renamed: return "renomeado"
-        case .copied: return "copiado"
-        case .typeChanged: return "tipo alterado"
-        case .unknown: return "mudança desconhecida"
-        }
-    }
-
-    private var accessibilityText: String {
-        var text = "\(file.path), \(verb)"
-        if let from = file.renamedFrom { text += ", de \(from)" }
-        if let additions = file.additions, let deletions = file.deletions {
-            text += ", \(additions) linhas adicionadas, \(deletions) removidas"
-        } else {
-            text += ", arquivo binário"
-        }
-        return text
     }
 }
