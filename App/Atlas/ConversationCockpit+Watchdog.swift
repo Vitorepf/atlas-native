@@ -7,18 +7,25 @@ struct SilenceWatchdog: View {
     let bubble: ChatBubble
     let reduceMotion: Bool
 
+    private var tickInterval: TimeInterval { reduceMotion ? 30 : 15 }
+
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 15)) { context in
-            if let silence = silenceSeconds(now: context.date), silence > 90 {
-                ExecutionBanner(
-                    text: "Sem novos eventos há \(silence)s",
-                    icon: "timer",
-                    tint: AtlasTheme.domOperacional,
-                    reduceMotion: reduceMotion,
-                    accessibilityIdentifier: A11yID.executionSilenceWatchdog
-                )
-                .modifier(NumericTextTransition(enabled: !reduceMotion))
-                .accessibilityLabel("sem novos eventos há \(silence) segundos")
+        TimelineView(.periodic(from: .now, by: tickInterval)) { context in
+            if bubble.streaming,
+               let silence = silenceSeconds(now: context.date),
+               silence > 90 {
+                Group {
+                    ExecutionBanner(
+                        text: "Sem novos eventos há \(silence)s",
+                        icon: "timer",
+                        tint: AtlasTheme.domOperacional,
+                        reduceMotion: reduceMotion
+                    )
+                    .modifier(NumericTextTransition(enabled: !reduceMotion))
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(SilenceWatchdogA11y.spoken(seconds: silence))
+                .accessibilityIdentifier(A11yID.executionSilenceWatchdog)
             }
         }
     }
