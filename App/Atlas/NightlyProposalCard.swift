@@ -12,25 +12,8 @@ struct NightlyProposalCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-                    .accessibilityHidden(true)
-                Text("MISSÃO NOTURNA · PROPOSTA DAS 21H")
-                    .font(AtlasFont.mono(10))
-                    .tracking(1.1)
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
-            Text("Hoje você trabalhou em \(proposal.workspaceText).")
-                .font(AtlasFont.serif(16, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityHidden(true)
-            Text("A frota pode continuar enquanto você descansa.")
-                .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityHidden(true)
+            masthead
+            copyBlock
             actionRow
         }
         .padding(14)

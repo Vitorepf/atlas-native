@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Inline spans + plain text — peel de AtlasMarkdownView+Rendering (régua ≤100).
+// Inline spans — peel de AtlasMarkdownView+Rendering (régua ≤100).
+// Plain → AtlasMarkdownView+Plain.swift
 
 extension AtlasMarkdownView {
     func inline(_ spans: [InlineSpan], base: InlineBase) -> AttributedString {
@@ -34,14 +35,5 @@ extension AtlasMarkdownView {
             out.append(piece)
         }
         return out
-    }
-
-    func plain(_ spans: [InlineSpan]) -> String {
-        spans.map {
-            switch $0 {
-            case .text(let t), .bold(let t), .italic(let t), .code(let t): return t
-            case .link(let t, _): return t
-            }
-        }.joined()
     }
 }

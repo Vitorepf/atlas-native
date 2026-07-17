@@ -3,11 +3,7 @@ import AtlasCore
 
 // MARK: - Seções da folha de proveniência (C23)
 // Ask → AtlasCodeProvenanceSections+Ask.swift
-
-struct AtlasCodeProvenanceWhyTarget: Identifiable {
-    let path: String
-    var id: String { path }
-}
+// WhyTarget → AtlasCodeProvenanceWhyTarget.swift
 
 extension AtlasCodeProvenanceSheet {
     /// A lei que sustenta a acusação — e o documento que a prova.

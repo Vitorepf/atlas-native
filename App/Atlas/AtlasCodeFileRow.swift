@@ -5,42 +5,16 @@ import AtlasCore
 /// é reservada ao estado do commit (main/fora/curado) e mentiria se pintasse
 /// tipo de mudança de vermelho dentro de um commit saudável.
 /// Meta → AtlasCodeFileRow+Meta.swift · Stats → +Stats.swift
+/// Lead → AtlasCodeFileRow+Lead.swift
 struct AtlasCodeFileRow: View {
     let file: AtlasCodeFileChange
     var accessibilityIdentifier: String?
 
     var body: some View {
-        HStack(alignment: .center, spacing: 10) {
-            Image(systemName: symbol)
-                .font(.system(size: 8.5, weight: .bold))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 17, height: 17)
-                .background(AtlasTheme.surfaceHi, in: RoundedRectangle(cornerRadius: 5))
-                .accessibilityHidden(true)
-
-            VStack(alignment: .leading, spacing: 1) {
-                Text(file.fileName)
-                    .font(.system(size: 12.5, weight: .medium))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                if let subtitle {
-                    Text(subtitle)
-                        .font(AtlasFont.mono(8.5))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .lineLimit(1)
-                        .truncationMode(.head)
-                }
-            }
-            .accessibilityHidden(true)
-
-            Spacer(minLength: 8)
-
-            diffStats
-        }
-        .padding(.vertical, 9)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
-        .accessibilityIdentifier(accessibilityIdentifier ?? "")
+        lead
+            .padding(.vertical, 9)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
+            .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 }

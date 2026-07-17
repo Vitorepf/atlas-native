@@ -3,7 +3,7 @@ import Charts
 import AtlasCore
 
 // Linha de engine no índice composto — peel de ArenaIndexSection (régua ~120).
-// Metric/a11y → +A11y · Metrics → +Metrics.swift
+// Metric/a11y → +A11y · Metrics → +Metrics.swift · Title → +Title.swift
 
 struct ArenaEngineIndexRow: View {
     let engine: AtlasArenaCompositeEngine
@@ -11,33 +11,9 @@ struct ArenaEngineIndexRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .firstTextBaseline, spacing: 10) {
-                Text(engine.engine)
-                    .font(.system(.body, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .lineLimit(1)
-                    .accessibilityHidden(true)
-                Spacer(minLength: 8)
-                Text(ArenaFormat.score(engine.composite))
-                    .font(AtlasFont.mono(18))
-                    .foregroundStyle(engine.composite == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
-                    .monospacedDigit()
-                    .modifier(NumericTextTransition(enabled: !reduceMotion))
-                    .accessibilityHidden(true)
-                Text(ArenaFormat.signed(engine.delta))
-                    .font(AtlasFont.mono(12))
-                    .foregroundStyle(deltaColor(engine.delta))
-                    .monospacedDigit()
-                    .modifier(NumericTextTransition(enabled: !reduceMotion))
-                    .accessibilityHidden(true)
-            }
+            titleRow
             metricsRow
-            if engine.isPartialCoverage {
-                Text("cobertura parcial \(Int((engine.coverage * 100).rounded()))%")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
+            partialCoverageLine
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityText)

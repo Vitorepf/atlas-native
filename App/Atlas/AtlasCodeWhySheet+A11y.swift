@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels — peel de AtlasCodeWhySheet (CICLO C residual honesty).
 /// Commit → AtlasCodeWhySheet+A11yCommit.swift
+/// Spoken → AtlasCodeWhySheet+A11ySpoken.swift
 
 extension AtlasCodeWhySheet {
     var whyContentPhaseID: String {
@@ -33,15 +34,4 @@ extension AtlasCodeWhySheet {
         guard let why = model.why, why.truncated else { return file }
         return "\(file), mostrando \(why.commits.count) de \(why.commitsTotal)"
     }
-
-    func spokenLoading() -> String { "lendo a história do arquivo" }
-
-    func spokenFailed() -> String {
-        if let message = model.message, !message.isEmpty {
-            return "biografia indisponível, \(message)"
-        }
-        return "biografia indisponível"
-    }
-
-    func spokenEmptyHistory() -> String { "este arquivo não tem história neste recorte" }
 }

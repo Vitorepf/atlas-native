@@ -3,6 +3,7 @@ import AtlasCore
 
 // Chips de filtro da timeline — peel de LiveTimeline (régua anti-inchaço).
 // Enum → LiveTimeline+FilterEnum.swift
+// Chip → LiveTimeline+FilterChip.swift
 
 struct TimelineFilterChips: View {
     @Binding var filter: TimelineReadFilter
@@ -21,13 +22,7 @@ struct TimelineFilterChips: View {
                         filter = option
                     }
                 } label: {
-                    Text(option.label)
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
-                        .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+                    chipLabel(option, active: active)
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(LiveTimelineA11y.spokenFilterChip(option,

@@ -3,22 +3,11 @@ import AtlasCore
 
 /// M139 — decisões públicas pendentes; silêncio total quando count = 0.
 /// Spoken → +A11y · chips → +Chips · nightly → +Blocks · Header → +Header.
+/// Predicates → +Predicates.swift
 struct AutonomosAwaitingYouSection: View {
     let backlog: AtlasAutonomosBacklogResponse?
     let onOpenDetail: (AutonomosDetailSheet) -> Void
     @Environment(\.accessibilityReduceMotion) var reduceMotion
-
-    var inboxDecisions: [AtlasAutonomosInboxItem] {
-        backlog?.inboxItems.filter(\.decisionRequired) ?? []
-    }
-
-    var workOrderDecisions: [AtlasAutonomosWorkOrder] {
-        backlog?.workOrders.filter(\.operatorDecisionRequired) ?? []
-    }
-
-    var decisionCount: Int {
-        inboxDecisions.count + workOrderDecisions.count
-    }
 
     var body: some View {
         if decisionCount > 0 {
