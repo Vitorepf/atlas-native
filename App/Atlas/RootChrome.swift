@@ -7,7 +7,7 @@ import AtlasCore
 
 /// Label de seção da home (CONVERSAS / OPERAÇÃO / WORKSPACES).
 @ViewBuilder
-func sectionLabel(_ t: String) -> some View {
+func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     Text(t)
         .font(.system(.caption, weight: .semibold))
         .tracking(1.4)
@@ -15,6 +15,19 @@ func sectionLabel(_ t: String) -> some View {
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 6)
         .padding(.bottom, 12)
+        .accessibilityAddTraits(.isHeader)
+        .modifier(HomeSectionA11yID(accessibilityID))
+}
+
+private struct HomeSectionA11yID: ViewModifier {
+    let id: String?
+    func body(content: Content) -> some View {
+        if let id {
+            content.accessibilityIdentifier(id)
+        } else {
+            content
+        }
+    }
 }
 
 /// O ✦ respirando — a marca viva do Atlas nos estados de espera.

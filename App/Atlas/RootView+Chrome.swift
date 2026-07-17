@@ -14,9 +14,8 @@ extension RootView {
         .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
       CircleButton(icon: "point.3.connected.trianglepath.dotted",
                    badge: codeHub?.exception != nil) { path.append(Route.code) }
-        .accessibilityLabel(codeHub?.exception == nil
-                            ? "Atlas Código"
-                            : "Atlas Código, \(codeHub?.exception?.count ?? 0) exceções")
+        .accessibilityLabel(RootHomeSections.codeTopBarLabel(hub: codeHub))
+        .accessibilityHint("abre radar de repositórios")
         .accessibilityIdentifier(A11yID.topbarCode)
       Spacer()
       CircleButton(icon: "magnifyingglass") { path.append(Route.search) }

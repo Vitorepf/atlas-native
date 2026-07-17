@@ -3,7 +3,8 @@ import AtlasCore
 
 // Conteúdo da home (estados + listas CONVERSAS/OPERAÇÃO/WORKSPACES) —
 // peel de RootView. Route e NavigationStack ficam no shell.
-// Failure → RootHomeSections+Failure.swift; chips → RootHomeSections+Conversation.swift.
+// Failure → RootHomeSections+Failure.swift; chips → RootHomeSections+Conversation.swift;
+// loaded → RootHomeSections+Loaded.swift; a11y → RootHomeSections+A11y.swift.
 
 struct RootHomeSections: View {
     @Environment(AtlasSession.self) private var session
@@ -29,55 +30,7 @@ struct RootHomeSections: View {
             failureSection
 
         default:
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    if !TurnPresence.shared.liveSessions.isEmpty || !session.remoteLiveSessions.isEmpty {
-                        LiveNowSection(
-                            localSessions: TurnPresence.shared.liveSessions,
-                            remoteSessions: session.remoteLiveSessions,
-                            onOpen: onOpenThread
-                        )
-                    }
-                    sectionLabel("CONVERSAS")
-                    homeWorkspaceChips
-                    WorkspaceRow(icon: "bubble.left.and.bubble.right", name: homeConversationLabel,
-                                 count: homeConversationCount,
-                                 detail: session.auditModeEnabled ? auditDetail : nil) {
-                        onNavigate(homeConversationRoute)
-                    }
-                    rowDivider
-                    sectionLabel("OPERAÇÃO")
-                    WorkspaceRow(icon: "bolt.horizontal.circle", name: "Autônomos", count: nil) {
-                        onNavigate(.autonomos)
-                    }
-                    rowDivider
-                    WorkspaceRow(
-                        icon: "chart.line.uptrend.xyaxis",
-                        name: "Arena",
-                        count: nil,
-                        detail: session.arena.regressionException,
-                        badge: session.arena.regressionException != nil
-                    ) {
-                        onNavigate(.arena)
-                    }
-                    .accessibilityIdentifier(A11yID.arenaHomeEntry)
-                    rowDivider
-                    sectionLabel("WORKSPACES")
-
-                    WorkspaceRow(icon: "tray.full", name: "Todas as conversas", count: session.threads.count) {
-                        onNavigate(.workspace(key: nil, title: "Todas"))
-                    }
-                    ForEach(session.workspaces) { ws in
-                        rowDivider
-                        WorkspaceRow(icon: "folder", name: ws.name, count: ws.count) {
-                            onNavigate(.workspace(key: ws.id, title: ws.name))
-                        }
-                    }
-                }
-                .padding(.bottom, 96)
-            }
-            .scrollIndicators(.hidden)
-            .refreshable { await session.loadThreads() }
+            loadedHome
         }
     }
 

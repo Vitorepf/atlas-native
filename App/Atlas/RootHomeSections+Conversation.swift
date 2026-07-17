@@ -28,33 +28,39 @@ extension RootHomeSections {
         }
     }
 
-    var homeConversationCount: Int {
+    var homeConversationCount: Int? {
+        let n: Int
         switch homeWorkspaceFilter {
-        case .some("__all"): return session.threads.count
-        case .some(let key): return session.threads(inWorkspace: key).count
-        case .none: return freeThreadCount
+        case .some("__all"): n = session.threads.count
+        case .some(let key): n = session.threads(inWorkspace: key).count
+        case .none: n = freeThreadCount
         }
+        return n > 0 ? n : nil
     }
 
     var auditDetail: String {
         let key = homeWorkspaceFilter ?? "livres"
-        return "auditoria · filtro \(key) · \(homeConversationCount) threads"
+        let n = homeConversationCount ?? 0
+        return "auditoria · filtro \(key) · \(n) threads"
     }
 
+    @ViewBuilder
     var homeWorkspaceChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                homeFilterChip("Livres", key: nil)
-                homeFilterChip("Todas", key: "__all")
-                ForEach(session.workspaces) { workspace in
-                    homeFilterChip(workspace.name, key: workspace.id)
+        if showsWorkspaceChips {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    homeFilterChip("Livres", key: nil)
+                    homeFilterChip("Todas", key: "__all")
+                    ForEach(session.workspaces) { workspace in
+                        homeFilterChip(workspace.name, key: workspace.id)
+                    }
                 }
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.bottom, 10)
             }
-            .padding(.horizontal, AtlasTheme.Space.screen)
-            .padding(.bottom, 10)
+            .accessibilityLabel("filtros de workspace das conversas")
+            .accessibilityIdentifier(A11yID.homeWorkspaceChips)
         }
-        .accessibilityLabel("filtros de workspace das conversas")
-        .accessibilityIdentifier(A11yID.homeWorkspaceChips)
     }
 
     func homeFilterChip(_ label: String, key: String?) -> some View {
