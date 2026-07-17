@@ -120,15 +120,9 @@ struct ChangeReviewDiffView: View {
                     }
                 }
             } else if !loadSettled {
-                VStack(spacing: 8) {
-                    BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-                    Text("carregando diff…")
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
-                .accessibilityLabel("carregando diff")
+                TraceEvidenceLoading(text: "carregando diff…", reduceMotion: reduceMotion)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
             } else {
                 Text("diff indisponível para este patch")
                     .font(AtlasFont.serifItalic(13))

@@ -28,7 +28,7 @@ struct NightlyProposalCard: View {
                 .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 10) {
                 Button("Preparar missão noturna", action: onAccept)
-                    .buttonStyle(NightlyPrimaryButtonStyle())
+                    .buttonStyle(AutonomosPrimaryButtonStyle())
                     .accessibilityIdentifier(A11yID.nightlyProposalAccept)
                     .accessibilityHint("abre o ensaio governado da missão noturna")
                 Button("hoje não", action: onDismiss)
@@ -60,20 +60,5 @@ struct NightlyProposalCard: View {
         )
         .animation(reduceMotion ? nil : AtlasMotion.arrival, value: proposal.id)
         .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-    }
-}
-
-struct NightlyPrimaryButtonStyle: ButtonStyle {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.system(.footnote, weight: .semibold))
-            .foregroundStyle(AtlasTheme.bg)
-            .padding(.horizontal, 13)
-            .padding(.vertical, 9)
-            .background(Capsule().fill(AtlasTheme.accent.opacity(configuration.isPressed ? 0.72 : 1)))
-            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
