@@ -4,6 +4,7 @@ import AtlasCore
 /// Spoken labels da linha de commit — peel de AtlasCodeCommitRow (CICLO C).
 /// Trunk/lei só quando publicados; tempo relativo honesto; dimmed explícito.
 /// State → AtlasCodeCommitRow+A11yState.swift
+/// Tail → AtlasCodeCommitRow+A11yCommitTail.swift
 
 enum AtlasCodeCommitRowA11y {
     static func spokenCommitRow(
@@ -19,9 +20,7 @@ enum AtlasCodeCommitRowA11y {
         var parts = AtlasCodeCommitRowA11yState.stateParts(
             title: title, author: author, linha: linha, state: state, ruleId: ruleId, trunk: trunk
         )
-        let when = AtlasCodeRelativeTime.short(from: node.authoredAt)
-        if !when.isEmpty { parts.append("há \(when)") }
-        if isDimmed { parts.append("fora da resposta") }
+        parts.append(contentsOf: spokenCommitTail(authoredAt: node.authoredAt, isDimmed: isDimmed))
         return parts.joined(separator: ", ")
     }
 }

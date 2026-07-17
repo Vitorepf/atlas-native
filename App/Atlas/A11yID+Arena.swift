@@ -4,6 +4,8 @@ extension A11yID {
     // M61 · Arena
     // Capability → A11yID+ArenaCapability.swift
     // NowRun → A11yID+ArenaNowRun.swift
+    // Run → A11yID+ArenaRun.swift
+    // Sheets → A11yID+ArenaSheets.swift
     static let arenaHomeEntry = "arena-home-entry"
     static let arenaScreen = "arena-screen"
     static let arenaIndexSection = "arena-index-section"
@@ -11,14 +13,4 @@ extension A11yID {
     static let arenaSuitesSection = "arena-suites-section"
     static let arenaNowSection = "arena-now-section"
     static let arenaNowLiveActivityNote = "arena-now-live-activity-note"
-    static let arenaRunButton = "arena-run-button"
-    static let arenaRunSheet = "arena-run-sheet"
-    static let arenaRunActor = "arena-run-actor"
-    static let arenaRunReason = "arena-run-reason"
-    static let arenaRunSubmit = "arena-run-submit"
-    static let arenaRunReceipt = "arena-run-receipt"
-    static let arenaRunEnginesEmpty = "arena-run-engines-empty"
-    static let arenaRunSuitesEmpty = "arena-run-suites-empty"
-    static let arenaSuiteSheet = "arena-suite-sheet"
-    static let arenaEngineSheet = "arena-engine-sheet"
 }

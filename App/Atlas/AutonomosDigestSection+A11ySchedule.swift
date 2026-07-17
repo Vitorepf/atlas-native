@@ -2,6 +2,8 @@ import Foundation
 import AtlasCore
 
 // Schedule lead spoken — peel de AutonomosDigestSection+A11y.
+// Next → AutonomosDigestSection+A11yScheduleNext.swift
+// Reason → AutonomosDigestSection+A11yScheduleReason.swift
 
 extension AutonomosDigestSectionA11y {
     static func spokenScheduleLead(
@@ -9,19 +11,12 @@ extension AutonomosDigestSectionA11y {
         scheduleReason: String?,
         hasLast: Bool
     ) -> [String] {
-        var parts: [String] = []
-        if let next = nextDigestAt?.nonEmpty {
-            parts.append("próximo resumo, agendado para \(next)")
-        } else {
-            parts.append("resumo governado")
-        }
-        if !hasLast {
-            if let reason = scheduleReason?.nonEmpty {
-                parts.append(reason)
-            } else if nextDigestAt?.nonEmpty == nil {
-                parts.append("sem agenda publicada")
-            }
-        }
+        var parts = [spokenScheduleNextLead(nextDigestAt)]
+        parts.append(contentsOf: spokenScheduleReasonParts(
+            nextDigestAt: nextDigestAt,
+            scheduleReason: scheduleReason,
+            hasLast: hasLast
+        ))
         return parts
     }
 }

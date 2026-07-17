@@ -6,14 +6,15 @@ import AtlasCore
 // Empty → ArenaRunSheet+A11yEmpty.swift
 // Missing → ArenaRunSheet+A11yMissing.swift
 // Hint → ArenaRunSheet+A11yHint.swift
+// Valid → ArenaRunSheet+A11ySubmitValid.swift · Empty → +A11ySubmitEmpty.swift
 
 extension ArenaRunSheet {
     func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
         if input.isLocallyValidForSubmission {
-            return "rodar medição"
+            return spokenSubmitValid()
         }
         if enginesEmpty {
-            return "rodar medição indisponível, nenhum motor publicado"
+            return spokenSubmitEnginesEmpty()
         }
         return spokenSubmitMissing(input: input)
     }

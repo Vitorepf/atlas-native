@@ -7,13 +7,14 @@ import AtlasCore
 // Header → AtlasWidgetAccessories+LiveSession+Header.swift
 // A11y → AtlasWidgetAccessories+LiveSession+A11yChrome.swift
 // Active → +ContentActive.swift · Silence → +ContentSilence.swift
+// ContentHeader → AtlasWidgetAccessories+LiveSession+ContentHeader.swift
 
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContent(snapshot: AtlasNativeSnapshot, live: AtlasNativeSnapshot.LiveSession?, stale: Bool) -> some View {
         liveSessionA11yChrome(
             VStack(alignment: .leading, spacing: 8) {
-                liveSessionHeader(stale: stale, age: snapshot.ageText(at: entry.date))
+                liveSessionContentHeader(snapshot: snapshot, stale: stale)
                 if let live {
                     liveSessionActiveBranch(live)
                 } else {
