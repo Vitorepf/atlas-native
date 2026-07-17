@@ -4,6 +4,7 @@ import AtlasCore
 
 // MARK: - Code week snapshot widget
 // Body → AtlasWidgetAccessories+CodeWeek+Body.swift
+// Unpublished → AtlasWidgetAccessories+CodeWeek+Unpublished.swift
 
 struct CodeWeekWidgetView: View {
     @Environment(\.widgetFamily) var family
@@ -15,16 +16,7 @@ struct CodeWeekWidgetView: View {
                 return AnyView(InstallPromptView())
             }
             guard let week = snapshot.week else {
-                return AnyView(VStack(alignment: .leading, spacing: 6) {
-                    Text("✦ Semana")
-                        .font(.system(size: 14, weight: .semibold, design: .serif))
-                    Text("semana ainda não publicada")
-                        .font(.system(size: 16, weight: .semibold, design: .serif))
-                        .foregroundStyle(Ink.ink2)
-                    Spacer(minLength: 0)
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("semana ainda não publicada"))
+                return AnyView(unpublishedWeek)
             }
             let stale = snapshot.isStale(at: entry.date)
             return AnyView(weekBody(week: week, stale: stale, age: snapshot.ageText(at: entry.date)))
