@@ -1,0 +1,614 @@
+[0/1] Planning build
+Building for debugging...
+[0/3] Write swift-version--58304C5D6DBC2206.txt
+Build of product 'AtlasCoreChecks' complete! (0.09s)
+AtlasTime (parsing ISO8601 tolerante — gotcha #1):
+  ✓ plain ISO parses
+  ✓ fractional seconds parses (não NaN)
+  ✓ fractional delta = 500ms
+  ✓ nil → NaN
+  ✓ empty → NaN
+  ✓ garbage → NaN
+  ✓ mês inválido → NaN
+  ✓ NaN >= real é false (semântica JS)
+  ✓ real >= NaN é false
+  ✓ NaN >= NaN é false
+
+Atlas AI · SSE dispatch (núcleo de correção, verbatim de atlasAiStreamRuntime.ts):
+  ✓ event decodou trace_id/sequence
+  ✓ event type/content preservados
+  ✓ type cai pro eventName quando payload não tem type
+  ✓ done decodou status + last_sequence
+  ✓ done sem status → .ignored
+  ✓ error emite payload cru
+  ✓ heartbeat → .ignored
+  ✓ frame sem data: → .ignored
+  ✓ JSON inválido → .ignored
+  ✓ event sem trace_id → .ignored
+  ✓ event sem sequence → .ignored
+  ✓ data: multi-linha junta com \n
+  ✓ parseFrames split por linha-em-branco + drop vazios
+
+Atlas AI · SSE frame bytes equivalem ao caminho String:
+  ✓ dispatch Data == dispatch String no corpus existente
+
+queryString (gotchas de core.ts — limit clamp + boolean 1/0):
+  ✓ vazio → ""
+  ✓ pula nil e string vazia
+  ✓ limit clampa 500→200
+  ✓ limit clampa 0→1 e -5→1
+  ✓ boolean vira 1/0
+  ✓ encoda valores (espaço/&)
+  ✓ ordem de inserção preservada
+
+AtlasRoute (constantes de path e segmentos codificados):
+  ✓ route threads collection
+  ✓ route path component encodes slash and space
+  ✓ route stream preserves timeout/after query
+  ✓ route change review diff encodes both ids
+  ✓ route artifact content encodes ids and max bytes
+  ✓ route upload chunk uses canonical chunks path
+  ✓ route autonomos transfer status keeps area and handoff encoded
+  ✓ route code why uses canonical H1 path
+
+JSONValue (ponte JSONSerialization sem alterar contrato Codable):
+  ✓ JSONValue preserva objeto/array/escalares
+  ✓ JSONValue direto preserva chaves cruas
+  ✓ JSONObject aninhado preserva chaves cruas
+  ✓ JSONObject decoda objeto
+  ✓ JSONObject mantém [] Laravel como bag vazio
+  ✓ JSONObject mantém não-objeto como bag vazio
+
+Atlas AI · Codable DTOs (snake_case → camelCase, o loop de conversa):
+  ✓ thread snake→camel (last_trace_id, message_count)
+  ✓ metadata JSONValue bool
+  ✓ message aninhada decodou
+  ✓ null → optional nil (summary/activeSession)
+
+Atlas AI · CreateAiInteractionInput (Encodable → snake_case, omite nil):
+  ✓ inputText → input_text
+  ✓ newThread → new_thread
+  ✓ nil omitido (sem thread_id/session_id)
+
+Atlas AI · TurnPayloadBuilder (equivalência do payload do turno):
+  ✓ turn payload builder reproduz payload manual completo
+  ✓ turn payload continua aceitando política mobile existente
+  ✓ turn payload mínimo só declara permissão read
+
+AtlasClient (engine de rede — check AO VIVO contra 127.0.0.1:3737, sem CORS):
+  ✓ GET /health decodou e status == ok
+    service=atlas-server · version=1.0.0 · db=connected
+
+Atlas AI · superfície completa (golden decode por cluster):
+  ✓ jobs snake->camel: agentSlug
+  ✓ jobs snake->camel: inputText
+  ✓ jobs Int count: attempts
+  ✓ jobs Int: timeoutSeconds
+  ✓ jobs null->nil: traceId
+  ✓ jobs metadata JSONValue
+  ✓ jobs open-union action String
+  ✓ jobs nested attempt durationMs Int
+  ✓ jobs nested execution state
+
+Atlas Live Activity · contrato de token remoto:
+  ✓ registro usa o trace e a atividade reais
+  ✓ token é exclusivo e frequencia é declarada
+  ✓ ambiente APNs é explícito
+  ✓ receipt nunca devolve o push token
+  ✓ token de início remoto não devolve segredo
+
+Atlas AI · plano de execução público (C10):
+  ✓ plano nasce apenas de execution_plan do trace
+  ✓ plano mantém papéis reais do servidor
+  ✓ plano mantém ferramentas autorizadas
+  ✓ plano expõe gates de qualidade
+  ✓ plano declara seis etapas do ledger
+  ✓ plano não promove contador sem checkpoint real
+  ✓ plano só expõe a superfície pública
+  ✓ progresso vem do último checkpoint real
+  ✓ plano sem etapas continua sem progresso
+  ✓ plano incompleto não é apresentado
+
+Atlas AI · estados públicos da execução (Fable 5):
+  ✓ estado tipado preserva uma decisão pública
+  ✓ estado tipado conserva intenção e checkpoint
+  ✓ estado tipado preserva prazo declarado pelo servidor
+  ✓ estado tipado preserva o instante canônico da pausa
+  ✓ estado tipado entrega somente ações declaradas
+  ✓ atenção pausa o timer da presença
+  ✓ atenção nomeia a fase sem texto genérico
+  ✓ atenção continua presente depois do stream
+  ✓ presença entrega o instante exato para congelar o timer
+  ✓ estado público decodifica o tempo ativo acumulado
+  ✓ estado público conserva o marco real da retomada
+  ✓ timer contraditório não cria presença impossível
+  ✓ presença retomada expõe o relógio público sem contar a pausa
+  ✓ presença usa a atividade real quando não há estado especial
+  ✓ atividade real mantém timer correndo
+  ✓ fallback de presença é executando, nunca pensando
+  ✓ kind desconhecido não vira estado visual inventado
+  ✓ ação malformada invalida o estado inteiro
+  ✓ título fora do limite não chega à casca
+  ✓ último evento público vence snapshot antigo
+  ✓ estado do ledger preserva seu título público
+
+Atlas AI · revisão de mudança vinculada ao trace (C15):
+  ✓ review disponível preserva o trace canônico
+  ✓ review não vaza engineering_run_id
+  ✓ patch expõe PatchID tipado
+  ✓ patch preserva somente a rota trace-scoped do diff
+  ✓ decisão por arquivo fica ligada ao patch canônico
+  ✓ checks e testes são recebidos como evidência real
+  ✓ ações permitidas são somente as declaradas
+  ✓ vínculo ambíguo falha fechado no app
+  ✓ schema desconhecido não vira revisão visual inventada
+
+Atlas AI · artefatos do trace (V4):
+  ✓ artifacts_decode_available
+  ✓ artifacts_schema_unknown_fails_closed
+  ✓ artifacts_invariant_unavailable_no_items
+  ✓ artifacts_kind_unknown_maps_file
+  ✓ artifacts_sha_mismatch_throws
+  ✓ artifacts_maxbytes_in_query
+  ✓ grafo C22 preserva o hash e os pais reais
+  ✓ grafo C22 preserva autor e refs
+  ✓ grafo C22 traz a mensagem do commit verbatim
+  ✓ grafo sem mensagem decodifica com ausência honesta
+  ✓ nó com ref da default branch é 'na main'
+  ✓ nó não é 'na main' quando a default branch é outra
+  ✓ gramática: sem violação e na main → onMain
+  ✓ gramática: hash em violação → violating
+  ✓ gramática: curado vence violação
+  ✓ gramática: fora da main sem regra → history
+  ✓ grafo C22 preserva paginação
+  ✓ curva do grafo usa midpoint com tangentes verticais
+  ✓ schema de grafo desconhecido falha fechado
+  ✓ proveniência C23 decodifica identidade real
+  ✓ proveniência C23 mantém ausência de trace
+  ✓ proveniência C23 carrega a descrição do commit
+  ✓ proveniência C23 lista os arquivos com verbo
+  ✓ proveniência C23 preserva rename com origem
+  ✓ proveniência C23 diz ausência de contagem em binário
+  ✓ proveniência C23 soma o diff sem inventar binário
+  ✓ proveniência C23 separa nome e pasta do arquivo
+  ✓ proveniência C23 sobrevive a verbo de arquivo desconhecido
+  ✓ proveniência C23 fala português no singular
+  ✓ proveniência C23 admite commit sem descrição
+  ✓ proveniência C23 cala quando não há arquivo
+  ✓ schema de proveniência antigo falha fechado
+  ✓ corpo do commit reflui a quebra de 72 colunas em prosa
+  ✓ corpo do commit preserva o parágrafo em branco
+  ✓ corpo do commit preserva item de lista em linha própria
+  ✓ corpo do commit não vaza trailer do Git
+  ✓ corpo do commit termina na prosa, não no encanamento
+  ✓ corpo do commit não inventa texto quando está vazio
+  ✓ corpo só de trailer some inteiro
+  ✓ corpo do commit não confunde travessão com lista
+  ✓ corpo do commit não confunde frase com trailer
+  ✓ corpo do commit preserva código indentado
+  ✓ proveniência C23 traduz o agente para português
+  ✓ pílula H6 decodifica a resposta ancorada
+  ✓ pílula H6 entrega as âncoras que o grafo acende
+  ✓ pílula H6 diz o recorte de tempo que usou
+  ✓ pílula H6 sobrevive a intenção desconhecida
+  ✓ pílula H6 admite quando não sabe, sem âncora falsa
+  ✓ schema de pergunta desconhecido falha fechado
+  ✓ pílula H6 tem sugestão para ensinar o próprio poder
+  ✓ scanner C24 preserva regra e alvo
+  ✓ scanner C24 preserva plan executável
+  ✓ schema de violações desconhecido falha fechado
+  ✓ cura C25 preserva recibo e undo
+  ✓ cura C25 não oferece aprovação
+  ✓ workspace v2 decodifica pastas de produto
+  ✓ workspace v2 separa recentes
+  ✓ workspace v2 preserva repo solto
+  ✓ pasta guarda seus repositórios sem remover os recentes
+  ✓ contagem real de repositórios
+  ✓ repo sem história mantém ausência
+  ✓ sem data, nenhuma idade é inventada
+  ✓ frase humana: branch abandonada
+  ✓ frase humana: obra que não voltou
+  ✓ singular resolvido
+  ✓ idade medida vira nota humana
+  ✓ sem idade medida, nenhuma nota
+  ✓ nenhum id de regra vaza para a tela
+  ✓ semana E5 preserva números reais e buckets
+  ✓ semana E5 mantém notificações off
+  ✓ a espinha alcança o ancestral sem ref — o git decora só a ponta
+  ✓ commit fora do alcance do head não entra na espinha
+  ✓ o pai sem ref é DOURADO: ele está na main
+  ✓ o commit fora da main continua história
+  ✓ violação vence a espinha: a exceção é o que o operador precisa ver
+  ✓ merge: os dois caminhos chegam na base sem loop
+  ✓ sem head, a espinha é vazia — nunca um chute
+  ✓ sem espinha, a tela volta à ref: pinta menos, nunca pinta errado
+  ✓ pai fora da janela não quebra a travessia
+  ✓ o contrato traz a ponta da trunk, separada do head
+  ✓ a espinha da trunk NÃO inclui o commit da obra
+  ✓ traçar do head pintaria a obra de dourado — o defeito que isto trava
+  ✓ commit de obra é história, nunca 'na main'
+  ✓ sem trunk_head a espinha é vazia, não um chute
+  ✓ a lei de um caso vem no singular e em português
+  ✓ main_only em português
+  ✓ obra_return_deadline em português
+  ✓ regra nova do canon não vira mentira nem snake_case
+  ✓ a trunk real chega ao app — a tela não chuta 'main'
+  ✓ o doc que sustenta a acusação chega ao app
+  ✓ regra sem lei escrita (e servidor sem trunk) decodificam com ausência honesta
+  ✓ varreu e achou exceção → vermelho
+  ✓ varreu e está são → verde (a única alta legítima)
+  ✓ não varreu → nem verde nem vermelho
+  ✓ os três estados são distintos — nenhum colapsa no outro
+  ✓ dentro do prazo, o veto vale
+  ✓ vencido, o veto NÃO vale — o botão cala em vez de falhar no toque
+  ✓ recibo sem prazo declarado não inventa prazo: o servidor é a autoridade
+  ✓ o prazo é DITO em português
+  ✓ vencido, a frase diz que venceu
+  ✓ data que não parseia não vira prazo inventado
+  ✓ negrito e itálico somem, o texto fica
+  ✓ título vira frase
+  ✓ o link vira o texto dele — a URL não cabe numa linha de aviso
+  ✓ item de lista ganha marcador legível
+  ✓ código fica o código, sem as crases
+  ✓ texto sem markdown atravessa intacto
+  ✓ com trunk production, a lei fala production
+  ✓ a obra que não voltou também fala o nome da linha
+  ✓ sem trunk dita, a frase fica no canon: main
+  ✓ trunk main não duplica nem quebra a frase
+  ✓ regra sem a palavra main atravessa intacta
+
+Atlas Código · biografia do arquivo (H1):
+  ✓ why_decode_full
+  ✓ why_schema_unknown_fails_closed
+  ✓ why_provenance_null_preserved
+  ✓ why_truncated_flag
+  ✓ why_empty_commits_ok
+  ✓ fatos citam a resposta determinística verbatim
+  ✓ fatos dizem ao agente que são do git e proíbem invenção
+  ✓ determinístico sem resposta não produz bloco de fatos
+  ✓ resposta vazia não vira bloco
+  ✓ recorte de commits é dito com número, nunca cortado em silêncio
+  ✓ o teto de fio é 12 hashes, não o repositório inteiro
+  ✓ sem recorte, o bloco não inventa um 'de N'
+  ✓ a lei chega ao agente com alvo e documento canônico
+  ✓ evidência que não é lei não vira lei
+  ✓ o codigo dos commits chega ao agente
+  ✓ o codigo vem DEPOIS do fato, nao no lugar dele
+  ✓ sem codigo, o bloco nao inventa uma secao vazia
+  ✓ julgamento nao lido do git nao afirma nada (o mapa fica como esta)
+  ✓ leitura que ENGAJOU e nao achou nada continua sendo fato
+  ✓ a legenda diz o recorte com numero: '12 de 43'
+  ✓ sem recorte, a legenda nao inventa um 'de N'
+  ✓ sem ancora nao ha legenda
+  ✓ C18 diff_stats decodifica o shortstat real
+  ✓ C18 vira frase humana
+  ✓ C18 ausente é nil, nunca zero
+  ✓ C18 incompleto não fabrica número
+  ✓ C19 plan_revisions preserva as versões
+  ✓ C19 traduz o motivo sem reclassificar
+  ✓ C19 sem replanejamento é lista vazia
+  ✓ C21 council_review preserva cada membro
+  ✓ C21 preserva falha com código real
+  ✓ C21 sem conselho é lista vazia
+  ✓ C21 um membro concluído não é divergência
+  ✓ C21 hashes distintos = divergência real
+  ✓ C21 hashes iguais = sem divergência
+
+Atlas Autônomos · contrato 24/7 separado:
+  ✓ áreas Autônomos decodificam sem depender da conversa
+  ✓ área preserva tier, repo público e lock reais
+  ✓ live separa lock, pausa e kill switch
+  ✓ live projeta fase tipada sem a casca ler JSON
+  ✓ placement runtime só expõe host e lease realmente publicados
+  ✓ placement preserva ambiente, workspace, repo e branch sem caminho absoluto
+  ✓ pausa vence lease para a fase apresentada
+  ✓ histórico de ciclos é tipado e não carrega ledger bruto
+  ✓ histórico Autônomos mantém somente entrega comprovada e tipada
+  ✓ backlog Autônomos é tipado sem payload interno
+  ✓ finding Autônomos preserva regra citada quando servidor publica
+  ✓ recibo de controle só confirma ação aplicada pelo servidor
+  ✓ comando exige actor e ação explícita
+  ✓ início Autônomos preserva fila sem fingir execução
+  ✓ execução Autônomos exige motivo auditável
+  ✓ transferência Autônomos preserva fonte real sem inventar target
+  ✓ transferência envia comando auditável em snake_case
+  ✓ decisão Autônomos preserva recibo e nunca finge execução
+  ✓ aceite de alto risco exige justificativa local
+  ✓ decisão Autônomos envia contrato snake_case esperado pelo servidor
+  ✓ frota global preserva agente vivo e uptime real
+  ✓ histórico da frota é append-only tipado e provider-safe
+  ✓ saúde da fila Autônomos é tipada sem expor pacote ou prompt
+  ✓ incidente da fila é explícito e não vira progresso inventado
+  ✓ rhythm_median_7days
+  ✓ rhythm_cold_start_nil
+  ✓ rhythm_ignores_empty_days
+  ✓ rhythm_today_workspaces_dedup
+  ✓ rhythm_persistence_roundtrip
+  ✓ rhythm_cap_14_days
+  ✓ rhythm_timezone_change_safe
+  ✓ rhythm_windows_minutes_to_components
+  ✓ quality: trace_id -> traceId
+  ✓ quality: agent_slug -> agentSlug
+  ✓ quality: metadata JSONValue reads
+  ✓ quality: score is Double
+  ✓ quality: model null -> nil
+  ✓ quality: nested action priority is Int
+  ✓ surface handoff preserva thread e sessão canônicas
+  ✓ surface handoff só projeta superfícies e status público
+  ✓ surface handoff só codifica o destino permitido
+
+AtlasMarkdown (parser editorial, verbatim de markdown/parse.ts):
+  ✓ inline: text+bold+code+italic
+  ✓ inline: link
+  ✓ inline: ***bold-italic*** vira italic
+  ✓ inline: escape \* fica literal
+  ✓ blocos: heading H1
+  ✓ blocos: lista não-ordenada 2 itens
+  ✓ blocos: code fence com lang
+  ✓ blocos: parágrafo com bold
+  ✓ blocos: divider ---
+  ✓ blocos: heading H3
+
+AtlasComputeEffort (dial de esforço · canon computeEffort.ts):
+  ✓ ciclo auto→fast→balanced→deep→max→auto
+  ✓ auto não vai no payload (Atlas Decide escolhe)
+  ✓ deep vai como 'deep' no payload
+  ✓ label PT-BR
+
+Atlas AI · loop de conversa AO VIVO (só roda com ATLAS_TOKEN no env — sem segredo no arquivo):
+  ✓ GET /ai/threads decodou (DTO real do servidor)
+    2 thread(s):
+      · [Mensagem longa preservada como anexo textua — 2 msgs · atlas_app
+      · Responda somente com a palavra ATLAS. — 2 msgs · atlas_app
+  ✓ GET /ai/jobs decodou (fila real)
+    3 job(s) recentes
+
+AtlasTurnStatus (lifecycle tipado do turno):
+  ✓ queued
+  ✓ processing
+  ✓ awaiting_user_choice
+  ✓ awaiting_external
+  ✓ succeeded terminal
+  ✓ failed terminal
+  ✓ cancelled terminal
+  ✓ suspensão awaiting*
+  ✓ activeWork só fila/processamento
+  ✓ unknown nunca terminal
+  ✓ unknown preserva raw
+
+AtlasIDs (single-value Codable):
+  ✓ TraceID codifica como string única
+  ✓ TraceID roundtrip preserva rawValue
+  ✓ PatchID codifica como string única
+  ✓ PatchID roundtrip preserva rawValue
+
+Rich Input L1 (fixture canônica TS ↔ Swift — anti-drift):
+  ✓ limites idênticos ao canon (8/4/8/16 · 20MB · 4MB · chunk 1.5MB)
+  ✓ fnv36(file:///tmp/a.png|screenshot)
+  ✓ fnv36(file:///var/mobile/x.jpg|fot)
+  ✓ fnv36(https://example.com/page?a=1)
+  ✓ fnv36(https://www.youtube.com/watc)
+  ✓ fnv36(ação|çãé|42)
+  ✓ fnv36(<vazio>)
+  ✓ classify https://youtu.be/dQw4w9WgXcQ?t=42s
+  ✓ normalizeYT https://youtu.be/dQw4w9WgXcQ?t=42s
+  ✓ classify https://www.youtube.com/watch?v=dQw4w9WgXcQ
+  ✓ normalizeYT https://www.youtube.com/watch?v=dQw4w9Wg
+  ✓ classify https://www.youtube.com/shorts/abcDEF12345
+  ✓ normalizeYT https://www.youtube.com/shorts/abcDEF123
+  ✓ classify https://youtube.com/live/abcDEF12345
+  ✓ normalizeYT https://youtube.com/live/abcDEF12345
+  ✓ classify https://vimeo.com/123456789
+  ✓ normalizeYT https://vimeo.com/123456789
+  ✓ classify https://vimeo.com/channels/staff/123456789
+  ✓ normalizeYT https://vimeo.com/channels/staff/1234567
+  ✓ classify https://github.com/vitor/atlas.git
+  ✓ normalizeYT https://github.com/vitor/atlas.git
+  ✓ classify https://github.com/owner/repo/issues/42
+  ✓ normalizeYT https://github.com/owner/repo/issues/42
+  ✓ classify https://example.com/page?a=1
+  ✓ normalizeYT https://example.com/page?a=1
+  ✓ kind a.png [image/png] → image
+  ✓ kind a.heic [image/heic] → text
+  ✓ kind doc.pdf [application/pdf] → pdf
+  ✓ kind notes.txt [text/plain] → text
+  ✓ kind readme.md [text/markdown] → text
+  ✓ kind main.swift [text/plain] → code
+  ✓ kind main.rs [application/octet-stream] → code
+  ✓ kind data.json [application/json] → code
+  ✓ kind Dockerfile [application/octet-stream] → code
+  ✓ kind unknown.bin [sem-mime] → text
+  ✓ payload v1 Swift ≡ payload v1 do canon TS (fixture, estrutural)
+  ✓ compact: manifest sozinho → nil
+  ✓ compact: 1 url → payload vive
+
+Rich Input L2 (engine offline — InMemoryUploadTransport):
+  ✓ chunks(1) = 1 (último 1B)
+  ✓ chunks(1572863) = 1 (último 1572863B)
+  ✓ chunks(1572864) = 1 (último 1572864B)
+  ✓ chunks(1572865) = 2 (último 1B)
+  ✓ chunks(5242880) = 4 (último 524288B)
+  ✓ chunks(20971520) = 14 (último 524288B)
+  ✓ stableUploadKey determinística
+  ✓ stableUploadKey muda com o installSalt (anti-colisão de staging)
+  ✓ retry: 2 falhas → sucesso na 3ª tentativa
+  ✓ retry: 3 falhas → propaga o erro
+  ✓ upload: bytes remontados == original
+  ✓ upload: sha256 streaming == sha256 do arquivo (e do servidor)
+  ✓ progresso: starting → uploading… → finalizing
+  ✓ progresso monotônico 0…1
+  ✓ 3 chunks postados em ordem
+  ✓ resume: só os chunks ausentes postados [1,3]
+  ✓ resume: TODOS os 4 chunks lidos (hash íntegro)
+  ✓ resume: sha256 confere com o arquivo inteiro
+  ✓ HEIC rejeitado localmente ANTES do start
+  ✓ fields: uploaded_images raiz = [id]
+  ✓ fields: payload espelho vive (1 imagem)
+  ✓ fields: source_hash PREENCHIDO no manifest (melhoria vs RN/desktop)
+  ✓ fields: sem anexo nem url → payload nil (compact)
+
+Rich Input · fronteiras (o segundo uploader não pode nascer):
+  ✓ Sources/AtlasCore visível do cwd (rode da raiz do repo)
+  ✓ AtlasCore é Foundation-only (sem UIKit/AppKit/SwiftUI/PhotosUI)
+  ✓ app não fala com /ai/uploads/* direto (só via AtlasRichInputEngine)
+  ✓ casca não faz rede, JSON ou storage
+  ✓ model prepara imagens fora da MainActor
+  ✓ envio aguarda todos os anexos ainda em preparação
+  ✓ fileImporter usa FileByteSource fora da MainActor
+
+Atlas AI · resumable stream (C1):
+  ✓ reconnect retoma com after=lastSequence
+  ✓ reconnect não duplica sequência já entregue
+  ✓ done encerra sem nova conexão
+  ✓ maxReconnects limita tentativas totais
+  ✓ reconnect esgotado produz erro tipado
+  ✓ InteractionRun possui create → stream → done
+  ✓ InteractionRun sem outbox não finge persistência
+  ✓ InteractionRun usa janela SSE longa para agentes reais
+  ✓ pausa durável não vira erro de reconnect
+  ✓ pausa durável remove o turno já confirmado da outbox
+  ✓ InteractionRun emite created antes do stream
+  ✓ cancel encerra o stream consumidor
+  ✓ cancel remoto atinge jobs ativos
+  ✓ -1005 recupera create aceito via clientId
+  ✓ recovery consulta exatamente o clientId estável
+  ✓ done remove turno da outbox
+  ✓ recibo de persistência carrega vínculo da fila
+  ✓ 422 terminal não fica em loop na outbox
+  ✓ shouldKeep mantém erro de rede
+  ✓ erro público de reconnect não expõe trace interno
+  ✓ shouldKeep mantém 408/429/5xx
+  ✓ shouldKeep descarta 4xx terminal
+  ✓ falha tipada distingue offline/timeout/recusada
+  ✓ falha tipada distingue auth/servidor
+  ✓ activity tipa checkpoint de planejamento
+  ✓ processo do provider não finge ser ferramenta do agente
+  ✓ activity de raciocínio não vaza conteúdo interno
+  ✓ stdout cru não vira ruído no cockpit
+  ✓ tool receipt atual do servidor decodifica sem campos legados
+  ✓ processo do provider nunca expõe comando ou segredo
+  ✓ tool shell Codex vira comando visível e sanitizado
+  ✓ started→completed do mesmo tool vira uma linha viva
+  ✓ merge live substitui fase do mesmo tool sem id duplicado
+  ✓ poll incremental projeta cada evento do ledger no máximo uma vez
+  ✓ tool edit Codex concluída não permanece falsamente ativa
+  ✓ tool search Codex vira busca real
+  ✓ tool search concluída não permanece falsamente ativa
+  ✓ tool shell Codex nunca vaza argumento secreto
+  ✓ tool shell com falha preserva comando sanitizado no replay
+  ✓ thinking Codex vira atividade sem chain-of-thought
+  ✓ ACP read tool vira leitura real com arquivo sanitizado
+  ✓ ACP read completion preserva identidade da linha viva
+  ✓ progress|shell real do ledger continua sendo comando visível
+  ✓ progress|shell persistido mantém identidade started→completed
+  ✓ progress|reasoning real não vaza chain-of-thought
+  ✓ snapshot preserva metadata item_id verbatim
+  ✓ snapshot com item_id projeta tool persistida em uma linha
+  ✓ tool aberta continua atividade atual sobre reasoning intercalado
+  ✓ tool concluída libera a atividade atual
+  ✓ receipt tipado expõe escolha e razão
+  ✓ quality tipada expõe score/status
+  ✓ tool event vira atividade de edição real
+  ✓ falha de tool receipt vence sua categoria visual
+
+Atlas AI · outbox durável (C2):
+  ✓ prepare gera UUID estável
+  ✓ primeiro prepare não era pending
+  ✓ outbox guarda vínculo da fila local
+  ✓ pending sobrevive a nova instância/relaunch
+  ✓ relaunch recupera vínculo da fila
+  ✓ relaunch preserva payload e rich input
+  ✓ prepare preserva clientId no retry
+  ✓ retry preserva vínculo da fila
+  ✓ sucesso remove outbox de forma durável
+  ✓ outbox v1 migra sem perder turno pendente
+
+Atlas AI · cache de leitura de thread (F6.1):
+  ✓ save cria arquivo JSON atômico
+  ✓ save→load preserva snapshot completo
+  ✓ load de outra thread não mistura histórico
+
+Atlas AI · fila FIFO durável (C11):
+  ✓ fila ignora follow-up vazio
+  ✓ fila preserva ordem FIFO
+  ✓ promover define o próximo turno sem remover
+  ✓ fila sobrevive ao relaunch
+  ✓ cabeça pode ser preparada sem sair da fila
+  ✓ dequeue drena somente a cabeça FIFO
+  ✓ remoção é durável
+  ✓ migração de conversa nova preserva ordem temporal
+  ✓ migração remove o escopo provisório
+
+Rich Input · adapters nativos (C3):
+  ✓ fileImporter → FileByteSource pdf com leitura por offset
+  ✓ câmera → mesmo AttachmentInput
+  ✓ clipboard → texto no engine único
+
+Rich Input · mensagem longa C4:
+  ✓ 40k exatos permanecem inline
+  ✓ inline preserva input byte a byte
+  ✓ texto >40k é externalizado
+  ✓ prompt compacto fica abaixo do limiar
+  ✓ gera exatamente um anexo Markdown
+  ✓ anexo usa origem long_message
+  ✓ metadata segue atlas.long_message.v1
+  ✓ metadata registra tamanho original
+  ✓ artefato preserva conteúdo integral uma vez
+  ✓ wire anexa Markdown uma única vez
+  ✓ manifest registra um único documento
+  ✓ upload usa kind file
+  ✓ limite de anexos bloqueia externalização
+
+Atlas AI · assistant presentation:
+  ✓ stdout_chunk nunca vira resposta visível
+  ✓ stdout_chunk vira atividade segura
+  ✓ token estruturado continua visível
+  ✓ bloco de reasoning é rejeitado por defesa
+  ✓ resposta comum passa verbatim
+  ✓ delta só com espaço não vira texto
+  ✓ streaming preserva o espaço de fronteira entre deltas
+  ✓ delta preserva espaço à esquerda
+  ✓ mobile força Hermes one-shot sem raciocínio
+  ✓ mobile exige transporte Hermes estruturado
+  ✓ política preserva payload existente
+  ✓ mobile se identifica como superfície interativa
+  ✓ ledger REST decodifica event_type
+  ✓ ledger REST reconstrói atividade
+  ✓ replay colapsa chunks consecutivos equivalentes
+
+AtlasImaging (ImageIO compartilhado iOS+macOS — HEIC/resize/alpha):
+  ✓ jpeg 600×400 → intacto (bytes idênticos, fast path)
+  ✓ jpeg 3000×1000 → ≤2048 no lado maior, mime jpeg
+  ✓ preview do composer → ≤256px e menor que o upload
+  ✓ prepareForComposer → upload canônico + preview pequeno
+  ✓ png+alpha 2600px → resize e PERMANECE png
+  ✓ heic 900×600 → vira JPEG (whitelist do servidor)
+  ✓ heic normalizado passa na whitelist local do engine
+  ✓ bytes aleatórios → undecodable (falha local clara)
+
+Atlas iOS · DeviceProof harness (C7):
+  ✓ device bloqueado falha antes de apagar evidência ou iniciar Xcode
+  ✓ device pareado alcança o lock probe mesmo com túnel sob demanda
+  ✓ target desta vertical é iPhone-only e não gera warning de orientação iPad
+
+Atlas AI · InteractionRun AO VIVO (C1):
+  ✓ live create foi aceito pelo servidor
+  ✓ live SSE entregou conteúdo
+  ✓ live Hermes não vazou Reasoning
+  ✓ live SSE recebeu done
+  ✓ live done drenou outbox
+  ✓ live resposta final é apresentável
+  ✓ live snapshot preserva ledger de atividades
+
+Rich Input · LIVE-PROBE (atlas-server real, só staging):
+  ✓ upload 3.2MB real: sha256 do servidor == local
+  ✓ adapter câmera produz payload real do create
+  ✓ fileImporter real: upload chunked preserva sha256
+  ✓ resume real: re-start devolve os 3 chunks já recebidos
+
+Rich Input · mensagem longa AO VIVO (C4):
+  ✓ live C4 create anexou um único Markdown
+  ✓ live C4 input_text ficou compacto
+  ✓ live provider leu conteúdo fora do prompt compacto
+
+AtlasCore: todos os checks passaram ✓

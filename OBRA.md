@@ -144,7 +144,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 ### Profundidade Total (Grok 4.5 · `docs/plano-profundidade-total.md` + M61 `docs/spec-arena-medicao.md`)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
-| PT0 | **IN_PROGRESS** | **Grok 4.5** | server SCL/heal/merge; evidence; OBRA | decisão §6 2026-07-17 | Onda 0 M01–M06 (prova antes de código) | M01 delivered real ou último passo + §5; M02–M06 prova ou roteiro | — |
+| PT0 | **PARCIAL** | **Grok 4.5** | evidence + OBRA | decisão §6 2026-07-17 | Onda 0 M01–M06 | M06 live DONE; M01 último passo+§5; M02–M05 roteiro operador | `docs/evidence/2026-07-17-onda0/`; M06 log |
 | PT1 | PENDING | — | server+core+casca contratos | PT0 | Onda 1 M07–M14 + casca sprint M15/M62/M11 | PHPUnit+checks+binding | — |
 | PT-M61 | PENDING | — | server `config/atlas_arena.php`+`app/Services/Ai/Arena\|Rivals`+rotas+testes; native `AtlasArena.swift`+checks+`App/Atlas/Arena*`+RootView+A11yID | PT1 casca sprint | M61 Arena A1–A12 (única rota nova `.arena`) | DoD spec §G; +1 case Route | — |
 | PT2–8 | PENDING | — | conforme ondas 2–8 | PT-M61 | Ondas 2–8 (M16–M66 exceto M61); Onda 9 intocada | prova por item | — |
@@ -246,6 +246,8 @@ a casca não inventa número, progresso, status, prompt ou prova.
 - [FEITO] GPT-5.5→Codex/Autônomos: worker `software_company_loop` — `php artisan queue:work database --queue=software_company_loop` no host (Docker `atlas-queue` só ouve `transcription,default`). Prova: job dry_run RUNNING→DONE; ciclo 54 `dry_run_planned`.
 - [FEITO] Grok 4.5→Codex: healer mecânico R2 `atlas:native:constitution-heal` — AP-786/senior-loop é ferramenta errada p/ dead_symbol (TDD/BDD + factory_max rouba seleção). Canário `sha1:19fc7482…` dry_run→healed; re-scan ausente. start-run passa `repo_root` / `allow_canonical_worktree_write` / `injected_finding`.
 - [ABERTO] Grok 4.5→Codex/Fable: V3 DoD restante — heal mecânico ainda **não** grava ciclo `outcome=merged` em `model.delivered`; casca sem recibo "O ATLAS MELHOROU O PRÓPRIO APP" até haver merge/ledger real **ou** contrato de heal-receipt (sem fabricar delivered). Device screenshots: `passcodeRequired=true`.
+- [ABERTO · M01 · 2026-07-17 · Grok→Codex/server] Bridge heal→merge ausente: probe `GET …/atlas-native/done` → `delivered_total=0` (59 ledger). Healer R2 prova `merge_performed=false` por design. Pedido: (a) pós-heal governado commit+merge+append AP-790 com `merge_hash` real, OU (b) contrato heal-receipt separado de `/done` + seam na casca — NUNCA fabricar merge fields. Evidence: `docs/evidence/2026-07-17-onda0/`.
+- [ABERTO · Onda0 · operador] M02 DEVICE_PROVEN / M03 Instruments / M04 APNs / M05 verticais-device — roteiros em `docs/evidence/2026-07-17-onda0/README.md`. Device `passcodeRequired=true`.
 - [FEITO] Fable→Codex: AtlasSession expor o TIPO da falha de rede (offline do device × timeout × conexão recusada × 401) — `AtlasSession.failureKind` + `AtlasNetworkFailureKind` entregues em `da9399a`.
 - [FEITO] Codex→Fable: concluir a nova assinatura de `DraftStrip` (`reduceMotion` + `onFailedTap`) — fechado em `ed10c81`; `make build` verde.
 - [FEITO] Codex→Fable: U3 executado em `97c9fdc` — Ribbon com atividade AO VIVO (ícone por kind + título + detail, transição por passo, Reduce Motion ok) + ExecutionProof persistente/expansível (passos + decide c/ razão + quality colorido). Zero parsing de wire na View. Acceptance no device pendente da sessão de prints.
@@ -889,6 +891,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **Onda 0 PARCIAL** · este commit · M06 live-probe integral exit 0 (create→SSE→done, upload 3.2MB, C4); M01 parado no último passo real (`delivered_total=0`, heal≠merge) + §5 bridge; M02–M05 roteiros operador (`passcodeRequired`). Evidence: `docs/evidence/2026-07-17-onda0/`. Gates: checks+build verdes.
+- 2026-07-17 · Grok 4.5 · **Profundidade Total — bootstrap** · `0678f64` · autorização §6 + adendo M61 Arena; fila §4 PT0–PT19–22; P16–P20→DONE (§7 P19). Prova: checks+build exit 0; main nos dois repos.
 
 - 2026-07-16 · GPT-5.5 · **V5 H1 Biografia do arquivo — prova (P19)** · este commit · fluxo real hub → radar → grafo → commit → arquivo → biografia sem nova rota; `AtlasCodeFlowTests.testHubToRadarToGraphAndProvenance` abre `AtlasCodeWhySheet` a partir da `FileRow` da folha de proveniência. Probe real `/api/code/why` em `atlas-native`/`App/Atlas/RootView.swift`: schema `atlas.code.why.v1`, `commits_total=24`, `commit_count=20`, `truncated=true`, `null_provenance=20`, `provenance_quotes=0` — ausência preservada, sem inventar ledger. Prova: `docs/evidence/2026-07-16-h1-why/probe-rootview.json`, `probe-summary.json`, `AtlasCodeFlowWhy.log` com `** TEST SUCCEEDED **`, `.xcresult` e screenshots exportados (`01-hub-codigo.png` … `06-biografia-arquivo.png`).
 
