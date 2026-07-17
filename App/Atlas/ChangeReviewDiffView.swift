@@ -1,6 +1,8 @@
 import SwiftUI
 import AtlasCore
 
+// LoadTask → ChangeReviewDiffView+LoadTask.swift
+
 struct ChangeReviewDiffView: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -13,11 +15,7 @@ struct ChangeReviewDiffView: View {
             diffBody(response: reviews.changeReviewDiff(traceId: traceId, patchId: patch.patchID))
         }
         .task(id: patch.id) {
-            loadSettled = false
-            if reviews.changeReviewDiff(traceId: traceId, patchId: patch.patchID) == nil {
-                await reviews.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID)
-            }
-            loadSettled = true
+            await diffLoadTask()
         }
     }
 }

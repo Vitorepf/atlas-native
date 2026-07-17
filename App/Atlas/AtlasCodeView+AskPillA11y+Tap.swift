@@ -1,0 +1,14 @@
+import SwiftUI
+import AtlasCore
+
+// Ask pill tap — peel de AtlasCodeView+AskPillA11y.
+
+extension AtlasCodeView {
+    func askPillTapGesture<V: View>(_ content: V) -> some View {
+        content.onTapGesture {
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            askDraft = ""
+            showsAskCard = true
+        }
+    }
+}

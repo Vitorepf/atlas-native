@@ -3,25 +3,15 @@ import AtlasCore
 
 // Ask pill a11y chrome — peel de AtlasCodeView+AskPillChrome.
 // Traits → AtlasCodeView+AskPillA11yTraits.swift
+// Tap → AtlasCodeView+AskPillA11y+Tap.swift
+// PaddingAnimation → AtlasCodeView+AskPillA11y+PaddingAnimation.swift
 
 extension AtlasCodeView {
     var askPillA11yChrome: some View {
         askPillA11yTraits(
-            askPillContent
-                .onTapGesture {
-                    AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
-                    askDraft = ""
-                    showsAskCard = true
-                }
-                .padding(.horizontal, AtlasTheme.Space.screen)
-                .padding(.bottom, 10)
-                .animation(
-                    reduceMotion ? nil : .easeInOut(duration: 0.22),
-                    value: AtlasCodeAskPillA11y.pillPhaseID(
-                        isAnchoring: askModel.isAnchoring,
-                        anchorLegend: anchorLegend
-                    )
-                )
+            askPillPaddingAnimation(
+                askPillTapGesture(askPillContent)
+            )
         )
     }
 }
