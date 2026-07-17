@@ -3,8 +3,9 @@ import ActivityKit
 import AtlasCore
 
 /// Relógio RM-safe compartilhado por Island/lock — paridade `LiveNowRow+Timing`.
+/// A11y → AtlasTurnWidget+TimerA11y.swift
 struct AtlasTurnWidgetTimer: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     let startedAt: Date
     let paused: Bool?
     let pausedDisplay: String?
@@ -31,14 +32,7 @@ struct AtlasTurnWidgetTimer: View {
         .accessibilityLabel(timerA11y)
     }
 
-    private func elapsedMs(now: Date) -> Int {
+    func elapsedMs(now: Date) -> Int {
         Int(max(0, now.timeIntervalSince(startedAt)) * 1000)
-    }
-
-    private var timerA11y: String {
-        if paused == true {
-            return "tempo ativo congelado em \(pausedDisplay ?? "indisponível")"
-        }
-        return "tempo ativo"
     }
 }

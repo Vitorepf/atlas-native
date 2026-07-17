@@ -966,7 +966,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXIV — CICLO B Queue/Proof/Chrome/Self peels** · este commit · CICLO B: Queue `+Caption`; Proof `+ActivityRows`; Chrome `+EditCopy`; Self `+VetoA11y`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXV — CICLO B Transfer/Suite/Timer/Rhythm/Index/Review peels** · este commit · CICLO B: Transfer `+Operator`; Suite `+Toolbar`; Timer `+A11y`; Awaiting `+Rhythm`; Index `+Captions`; Review `+Sections`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXIV — CICLO B Queue/Proof/Chrome/Self peels** · `fbfa235` · CICLO B: Queue `+Caption`; Proof `+ActivityRows`; Chrome `+EditCopy`; Self `+VetoA11y`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXIII — CICLO B Heal/Autonomos/Patch/Clock/Artifact peels** · `da2ed36` · CICLO B: Heal `+Undo`; Autonomos `+Destructive`; Patch `+Header`; LiveNow `+ClockA11y`; Artifact `+TextPreview`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 

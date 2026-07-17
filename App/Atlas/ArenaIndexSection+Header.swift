@@ -1,23 +1,10 @@
 import SwiftUI
 import AtlasCore
 
-// Header + captions — peel de ArenaIndexSection.
+// Header — peel de ArenaIndexSection.
+// Captions → ArenaIndexSection+Captions.swift
 
 extension ArenaIndexSection {
-    var chartEngine: AtlasArenaCompositeEngine? {
-        composite.engines.first { engine in
-            engine.history.contains { point in
-                point.composite != nil || point.withAtlas != nil || point.withoutAtlas != nil
-            }
-        }
-    }
-
-    var coverageCaption: String {
-        let base = "cobertura \(composite.suitesMeasured)/\(composite.suitesTotal)"
-        guard composite.suitesMeasured < composite.suitesTotal else { return base }
-        return "\(base) · parcial"
-    }
-
     var sectionHeader: some View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: 3) {

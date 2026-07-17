@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Scroll de revisão disponível — peel de ChangeReviewView.
+/// Sections → ChangeReviewView+Sections.swift
 struct ChangeReviewAvailableContent: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -12,28 +13,7 @@ struct ChangeReviewAvailableContent: View {
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 16) {
-                if let run = review.run { ChangeReviewRunHeader(run: run) }
-                ChangeReviewGovernanceSection(reviews: reviews, traceId: traceId)
-                ForEach(review.patches) { patch in
-                    ChangeReviewPatchCard(
-                        reviews: reviews,
-                        traceId: traceId,
-                        patch: patch,
-                        expandedDiffPatch: $expandedDiffPatch
-                    )
-                }
-                if !review.controls.isEmpty { ChangeReviewControlsSection(controls: review.controls) }
-                if !review.testRuns.isEmpty { ChangeReviewTestsSection(tests: review.testRuns) }
-                if !review.review.findings.isEmpty { ChangeReviewFindingsSection(findings: review.review.findings) }
-                if !review.review.operatorActions.isEmpty {
-                    ChangeReviewDecidedSection(actions: review.review.operatorActions)
-                }
-                ChangeReviewRunActions(
-                    review: review,
-                    reviews: reviews,
-                    traceId: traceId,
-                    applying: $applying
-                )
+                reviewSections
             }
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, 14)
             .accessibilityElement(children: .contain)

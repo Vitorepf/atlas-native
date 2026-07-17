@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // MARK: - Arena suite sheet
-// Engine card → ArenaSuiteSheet+EngineCard.swift
+// Engine card → +EngineCard · Toolbar → +Toolbar.swift
 
 struct ArenaSuiteSheet: View {
     @Environment(\.dismiss) var dismiss
@@ -28,15 +28,7 @@ struct ArenaSuiteSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Suite")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    AtlasCloseToolbarButton(
-                        spokenLabel: ArenaSuiteSheetA11y.closeLabel,
-                        spokenHint: ArenaSuiteSheetA11y.closeHint,
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }
-                }
-            }
+            .toolbar { suiteToolbar }
         }
         .accessibilityIdentifier(A11yID.arenaSuiteSheet)
         .accessibilityLabel(ArenaSuiteSheetA11y.spokenSheet(suite))
