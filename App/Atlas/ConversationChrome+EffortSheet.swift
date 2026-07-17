@@ -2,10 +2,11 @@ import SwiftUI
 import UIKit
 import AtlasCore
 
+// Pick → ConversationChrome+EffortSheet+Pick.swift
 struct EffortSheet: View {
     var model: ConversationModel
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         SheetShell(title: "Esforço") {
@@ -32,12 +33,5 @@ struct EffortSheet: View {
         .accessibilityIdentifier(A11yID.effortSheet)
         .accessibilityLabel("esforço computacional")
         .accessibilityHint(ComposerSheetA11y.effortSheetHint)
-    }
-
-    private func pick(_ effort: AtlasComputeEffort) {
-        model.effort = effort
-        UserDefaults.standard.set(effort.rawValue, forKey: ConversationModel.effortPreferenceKey)
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        dismiss()
     }
 }

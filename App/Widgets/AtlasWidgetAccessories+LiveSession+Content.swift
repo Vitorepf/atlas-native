@@ -4,23 +4,13 @@ import AtlasCore
 
 // Conteúdo live/silêncio — peel de LiveSessionWidgetView.
 // Bodies → AtlasWidgetAccessories+LiveSession+Bodies.swift
+// Header → AtlasWidgetAccessories+LiveSession+Header.swift
 
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContent(snapshot: AtlasNativeSnapshot, live: AtlasNativeSnapshot.LiveSession?, stale: Bool) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("✦ Sessão viva")
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
-                    .accessibilityHidden(true)
-                Spacer()
-                if stale {
-                    Text("visto \(snapshot.ageText(at: entry.date))")
-                        .font(.system(size: 10, design: .monospaced))
-                        .foregroundStyle(Ink.alert)
-                        .accessibilityHidden(true)
-                }
-            }
+            liveSessionHeader(stale: stale, age: snapshot.ageText(at: entry.date))
             if let live {
                 liveSessionActiveBody(live)
             } else {

@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels e gates de silêncio — peel de AtlasArenaView (CICLO C residual honesty).
 /// Domain/run → AtlasArenaView+DomainA11y.swift
+/// Screen → AtlasArenaView+A11yScreen.swift
 
 extension AtlasArenaView {
     var contentPhaseID: String {
@@ -25,19 +26,5 @@ extension AtlasArenaView {
             parts.append("snapshot \(age)")
         }
         return parts.joined(separator: ", ")
-    }
-
-    func spokenArenaScreenLabel() -> String {
-        switch model.phase {
-        case .idle, .loading:
-            return "Arena, carregando índice medido"
-        case .failed:
-            if model.isDomainUnavailable, model.composite == nil {
-                return domainUnavailableSpoken
-            }
-            return "Arena, falha ao carregar medição"
-        case .loaded:
-            return headerSpokenLabel
-        }
     }
 }

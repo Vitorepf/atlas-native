@@ -3,6 +3,7 @@ import AtlasCore
 
 // Spoken labels — peel de AutonomosPublicDetailSheet (CICLO C residual honesty).
 // Contagens só do payload público; silêncio total sem backlog.
+// Count → AutonomosDetailSheet+A11yCount.swift
 
 extension AutonomosPublicDetailSheet {
     func spokenSheetLabel(backlog: AtlasAutonomosBacklogResponse?) -> String {
@@ -30,14 +31,5 @@ extension AutonomosPublicDetailSheet {
 
     func spokenEmptyLabel() -> String {
         "sem projeção pública disponível agora"
-    }
-
-    static func publicItemCount(kind: AutonomosDetailSheet, backlog: AtlasAutonomosBacklogResponse) -> Int {
-        switch kind {
-        case .workOrders: return backlog.workOrders.count
-        case .inbox: return backlog.inboxItems.count
-        case .findings: return backlog.findings.items.count
-        case .budgets: return 1
-        }
     }
 }

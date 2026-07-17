@@ -3,6 +3,7 @@ import AtlasCore
 
 // Banner de reconexão — só `reconnectNotice` (transporte) e
 // `executionPresentationState` `.recovering` (ledger). Helpers → +Bubble.
+// Lines → ConversationCockpit+ReconnectLines.swift
 
 struct ReconnectBanner: View {
     let bubble: ChatBubble
@@ -18,22 +19,7 @@ struct ReconnectBanner: View {
                     reduceMotion: reduceMotion,
                     embedInParent: true
                 )
-                ForEach(Array(bubble.reconnectSecondaryLines.enumerated()), id: \.offset) { _, line in
-                    Text(line)
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityHidden(true)
-                }
-                if let ms = bubble.reconnectActiveTimerMs {
-                    Text("ativo \(ExecutionStateCard.clock(ms))")
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .monospacedDigit()
-                        .modifier(NumericTextTransition(enabled: !reduceMotion))
-                        .accessibilityHidden(true)
-                }
+                secondaryLines
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(bubble.reconnectSpokenLabel)

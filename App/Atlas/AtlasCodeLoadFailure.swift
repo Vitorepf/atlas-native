@@ -1,11 +1,12 @@
 import SwiftUI
 
 /// Falha de carregamento Código — canônico (radar + grafo).
+/// Retry → AtlasCodeLoadFailure+Retry.swift
 struct AtlasCodeLoadFailureEmpty: View {
     let headline: String
     let message: String
     let onRetry: () -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         VStack(spacing: 14) {
@@ -23,17 +24,7 @@ struct AtlasCodeLoadFailureEmpty: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 28)
                 .accessibilityHidden(true)
-            Button {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                onRetry()
-            } label: {
-                Text("Tentar de novo")
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(AtlasTheme.accent)
-            .accessibilityLabel("tentar de novo")
-            .accessibilityHint("recarrega o grafo ou radar deste repositório")
-            .accessibilityIdentifier(A11yID.codeLoadRetry)
+            retryButton
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityElement(children: .contain)

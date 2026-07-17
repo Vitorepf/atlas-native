@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Controles reutilizáveis do sheet de medição Arena — peel de ArenaRunSheet.
 /// Toggle → ArenaRunSheet+Toggle.swift
+/// Section → ArenaRunSheet+Section.swift
 extension ArenaRunSheet {
     func receiptCard(_ receipt: AtlasArenaStartReceipt) -> some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -28,16 +29,5 @@ extension ArenaRunSheet {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenReceiptLabel(receipt))
         .accessibilityIdentifier(A11yID.arenaRunReceipt)
-    }
-
-    func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(title)
-                .font(.system(.caption, weight: .semibold))
-                .tracking(1.2)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityAddTraits(.isHeader)
-            content()
-        }
     }
 }
