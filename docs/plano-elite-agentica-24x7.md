@@ -577,13 +577,13 @@ nenhum arquivo Codex/Fable >400 sem justificativa §7.
 
 ### Task B1.1: Split AutonomosView (1153)
 
-- [ ] Extrair seções/sheets em arquivos ≤250
-- [ ] Build verde; comportamento idêntico (XCUITest Autônomos se existir)
+- [x] Extrair seções/sheets em arquivos ≤250 — **DONE** `d1b3e0f`→`a4ad96e` (1153→565→297; Fleet/Digest/Chrome/Sheets/Area/Awaiting)
+- [ ] Build verde; comportamento idêntico (XCUITest Autônomos se existir) — Mac-pending (cloud Linux sem Swift)
 
 ### Task B1.2: Split AtlasAutonomos Core (1010)
 
-- [ ] Módulos por superfície (fleet/backlog/digest/control/…)
-- [ ] Goldens intactos
+- [x] Módulos por superfície (fleet/backlog/digest/control/…) — **DONE** `50b1197` (`AtlasAutonomos.swift`~436 + Fleet/Digest/Control)
+- [ ] Goldens intactos — Mac-pending (`AtlasCoreChecks`)
 
 ### Task B1.3: ConversationModel <800
 
@@ -592,7 +592,7 @@ nenhum arquivo Codex/Fable >400 sem justificativa §7.
 
 ### Task B1.4: ConversationView / Chrome / RootView / Radar / ChangeReview
 
-- [ ] Cada um ≤ alvo §3; zero mudança visual intencional
+- [ ] Cada um ≤ alvo §3; zero mudança visual intencional — **PARCIAL:** View~262 Chrome~181 Radar~66 ChangeReview shell~95 DONE; RootView~436 e ChangeReviewSections~448 ainda >400 sem ADR
 
 ### Task B1.5: Dedup chrome
 
