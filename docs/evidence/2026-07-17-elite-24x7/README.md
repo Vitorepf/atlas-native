@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **434+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXII tip `59231b8` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **436+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXIII tip `dbe3b0d` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXXII (este tip)
+## Entrega Elite CXXXXXXIII (este tip)
+
+- `refactor(ui)` CICLO B: CommitRow+A11yChrome; Digest+CardStack; Heal+StepRow; Execution+Failure; Review+Toast; ArenaEngine+A11ySummary; Radar+A11yShell. Tip `dbe3b0d`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXXII (anterior)
 
 - `refactor(ui)` CICLO B: Markdown+InlineMark; Council+StatsLine/+RevisionsLine; Receipt+ReceiptTransition; ArenaEngine+ScrollBody; Artifact+A11yPreview; DraftThumb+A11yThumb; Messages+ScrollPreference; Search+ScrollShell; Editorial+A11yFeedback; EngineIndex+A11ySpoken; Diff+A11yCard. Tip `59231b8`.
 - Zero App/Widgets >100; zero Route nova.
