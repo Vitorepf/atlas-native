@@ -29,7 +29,10 @@ struct ArenaEngineSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }
+                    Button("Fechar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
                         .accessibilityLabel(ArenaEngineSheetA11y.closeLabel)
                         .accessibilityHint(ArenaEngineSheetA11y.closeHint)
                 }

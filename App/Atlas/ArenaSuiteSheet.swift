@@ -30,7 +30,10 @@ struct ArenaSuiteSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }
+                    Button("Fechar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
                         .accessibilityLabel(ArenaSuiteSheetA11y.closeLabel)
                         .accessibilityHint(ArenaSuiteSheetA11y.closeHint)
                 }
