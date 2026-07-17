@@ -18,7 +18,10 @@ enum A11yID {
     static let searchField = "search-field"
     static let searchClear = "search-clear"
     static let searchRecentCaption = "search-recent-caption"
+    static let searchResultsCaption = "search-results-caption"
     static let searchEmpty = "search-empty"
+    static let searchLoading = "search-loading"
+    static let searchOffline = "search-offline"
     static let searchResultPrefix = "search-result-"
 
     static let workspaceScreen = "workspace-screen"
