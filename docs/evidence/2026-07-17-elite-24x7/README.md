@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **354+** | primeiro commit do plano: `ec931f2`; Elite CXXVII em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **356+** | primeiro commit do plano: `ec931f2`; Elite CXXVIII tip `965a9d2` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,9 +127,14 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXVII (este tip)
+## Entrega Elite CXXVIII (este tip)
 
-- `refactor(ui)` CICLO B: Lock+LockRectEmphasis; Graph+GraphListRows; LiveSession+A11ySpoken; State+PresentationChrome; Area+Controls; Markdown+BlockView/+Table; Sheets+A11yEffort; Heal+A11ySpoken; Zoom+ZoomReset; Suites+A11ySuite; Camera+Coordinator; Run+FormEngine; Transfer+UISpoken; Scroll+ScrollKey; Review+Unavailable.
+- `refactor(ui)` CICLO B: ArtifactFileFicha; Empty+Hero; Nightly+Copy; Arena+Content; File+Lead/+Meta; Awaiting+Predicates; Engine+Title; Timeline+FilterChip; Workspace+ListCaption; Fleet+Body; Suites+List; Markdown+Plain; ProvenanceWhyTarget; Digest+A11yCounts; Why+A11ySpoken; Lock+Branches. Tip `965a9d2`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXVII (anterior)
+
+- `refactor(ui)` CICLO B: Lock+LockRectEmphasis; Graph+GraphListRows; LiveSession+A11ySpoken; State+PresentationChrome; Area+Controls; Markdown+BlockView/+Table; Sheets+A11yEffort; Heal+A11ySpoken; Zoom+ZoomReset; Suites+A11ySuite; Camera+Coordinator; Run+FormEngine; Transfer+UISpoken; Scroll+ScrollKey; Review+Unavailable. Tip `bb39529`.
 - Zero App/Widgets >100; zero Route nova.
 
 ## Entrega Elite CXXVI (anterior)
