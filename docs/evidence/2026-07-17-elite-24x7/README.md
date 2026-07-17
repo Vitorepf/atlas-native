@@ -14,8 +14,8 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **537** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXI tip `f38132c` |
-| Commits no tip (`git rev-list --count HEAD`) | 543 | inclui histórico pré-Elite |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **538** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXII tip `9912e70` |
+| Commits no tip (`git rev-list --count HEAD`) | 544 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXXI (este tip)
+## Entrega Elite CXXXXXLXXXII (este tip)
+
+- `polish(ui)` CICLO B: AreaPicker Row `+A11y/+RowLabel+Chrome`; CodeCommitRow Label `+TextStack` Meta `+AuthorTime`; Search HeaderField `+FieldInput`; LiveNow RemoteBadge `+Capsule`; ExecutionStateCard Header `+Badge`; ChangeReview Reject `+Label`; LiveTimeline FilterButton `+A11y`; ArenaRun Submit `+Label`; PlanCard RevisionList `+Items`; ExecutionProof ActivityRows `+RowCell` Scrubber `+Stepper/+Slider`; MirrorCard `+CardChrome`; ArenaSuite Body `+TitleHeader`; LiveNow RowCell `+Transition`; WhySheet Header `+TitleBlock`; RadarFolder Toggle `+A11y`; Artifact MountCounter `+ProgressText`; Widgets LockScreen Phase `+Badge` Title `+SessionsBadge` Island Trailing `+Timer` Fleet State `+Incident` Age `+Relative` Timer `+Frame`. Tip `9912e70`.
+- 26 peels · 51 arquivos · over100=0 · App/Atlas+Widgets swift=1961; App/Widgets swift=124; zero Route nova.
+
+## Entrega Elite CXXXXXLXXXI (anterior)
 
 - `polish(ui)` CICLO B: ExecutionRibbon `+StackBody`; SearchView `+BackgroundShell`; Outline `+SheetContent`; AreaDetail Body `+UpperStack/+LowerStack`; Fleet Row `+InnerStack`; PlanCard `+FlowChipCell/+RevisionToggleControl/+StepRowDotMark/+PlanBodyStack`; ChangeReview `+ButtonRow/+AvailableBranch`; BreathingDiamond `+AnimatedShape`; SelfConstruction `+ProofCopy`; Markdown `+BlockViewInline/+BlockViewStructural`; CodeView CommitRow `+Handlers`; AutonomosView `+LifecycleScreenA11y`; SheetsModifier `+TransferSheetBind/+DetailItemSheetsBind`; ConversationMessages `+ReaderBody/+ScrollDistancePref`; EffortSheet `+SheetContent`; LiveTimeline `+FilterChipLoop`; DetailWorkRows `+OrderFieldsFlags`; Widgets CodeWeek `+EntryGate` LiveSession `+A11ySpokenBind`. Tip `f38132c`.
 - 27 peels · 51 arquivos · over100=0 · App/Atlas+Widgets swift=1935; App/Widgets swift=118; zero Route nova.
