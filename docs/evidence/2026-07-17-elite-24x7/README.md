@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **531** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXVIII tip `9488fc6` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **535** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXX tip `3f581cf` |
 | Commits no tip (`git rev-list --count HEAD`) | 543 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXIX (este tip)
+## Entrega Elite CXXXXXLXXX (este tip)
+
+- `polish(ui)` CICLO B: SheetShell `+ScrollBody/+Presentation`; AreaDetail `+CardChrome`; OperationDigest BodyStack `+CaptionRow/+HeadlineText`; ArenaCapabilities Header `+TitleColumn`; Outline `+RowList/+A11yBind`; Governance `+TraceGate`; Fleet Body `+AgentRows/+EmptyBranch`; EffortSheet `+FootnoteCopy/+A11yBind`; RadarSections `+StatusSwitch`; Workspace `+ChipRow`; AutonomosView `+PhaseRouter/+ContentAnim`; PlanCard `+PlanGate`; AtlasCodeView `+ScreenZStack`; Lifecycle `+SendHaptic`; RootHome PhaseBody `+LoadingGate`; Delivered RowGraph `+OpenButton`; Widgets IslandCenter `+TitleStack` Fleet `+A11yTransaction`. Tip `3f581cf`.
+- 24 peels · 43 arquivos · over100=0 · App/Atlas+Widgets swift=1908; App/Widgets swift=116; zero Route nova.
+
+## Entrega Elite CXXXXXLXXIX (anterior)
 
 - `polish(ui)` CICLO B: LiveTimeline `+RowPipeline/+BodyGate`; AtlasCodeView GraphList `+Tail+Truncation/+Mirror/+WeekTail/+Rows+CommitRow`; Sheets `+ProvenanceBind/+HealReceiptWrap`; Markdown `+HeadingOne/+HeadingTwo/+HeadingDefault`; EditorialTurn `+AssistantPlan/+AssistantRibbon`; ExecutionRibbon `+BannerStack/+ActivitiesBlock/+CardChrome`; RootHome `+ChipsRow`; Search `+ScrollShell+Loading/+Offline`; AutonomosArea `+ControlsStack`; PlanCard `+RevisionsCompare+Left/+Entered`; Steer `+FormReceipt`; RadarFolder `+HeaderChevron`; Widgets Island `+ExpandedRegions` LiveSession `+ContentStack`. Tip `e9c6e59`.
 - 26 peels · 41 arquivos · over100=0 · App/Atlas+Widgets swift=1884; App/Widgets swift=114; zero Route nova.
