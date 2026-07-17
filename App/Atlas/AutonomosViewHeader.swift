@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Cabeçalho da área Autônomos — voltar, título, refresh da área selecionada.
+/// Title → AutonomosViewHeader+Title.swift
 struct AutonomosViewHeader: View {
     let auditModeEnabled: Bool
     let canRefresh: Bool
@@ -24,29 +25,7 @@ struct AutonomosViewHeader: View {
             .accessibilityLabel(spokenBackLabel())
             .accessibilityHint(spokenBackHint())
             .accessibilityIdentifier(A11yID.autonomosBack)
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Autônomos")
-                    .font(AtlasFont.serif(21, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                if !isHealthy {
-                    Text("ÁREA PRÓPRIA · 24/7")
-                        .font(AtlasFont.mono(10)).tracking(1.2)
-                        .foregroundStyle(AtlasTheme.accent)
-                        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-                }
-                if auditModeEnabled {
-                    Text("MODO AUDITORIA")
-                        .font(AtlasFont.mono(9)).tracking(1.0)
-                        .foregroundStyle(AtlasTheme.domOperacional)
-                        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-                }
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityAddTraits(.isHeader)
-            .accessibilityLabel(spokenTitle(isHealthy: isHealthy, auditModeEnabled: auditModeEnabled))
-            .accessibilityIdentifier(A11yID.autonomosHeader)
-            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: isHealthy)
-            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: auditModeEnabled)
+            titleBlock
             Spacer()
             Button {
                 if canRefresh { AtlasMotion.softImpact(reduceMotion: reduceMotion) }

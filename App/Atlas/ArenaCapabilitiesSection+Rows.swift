@@ -2,7 +2,8 @@ import SwiftUI
 import Charts
 import AtlasCore
 
-// Rows + chart — peel de ArenaCapabilitiesSection.
+// Rows — peel de ArenaCapabilitiesSection.
+// DualBar → ArenaCapabilitiesSection+DualBar.swift
 
 struct ArenaCapabilityRow: View {
     let capability: AtlasArenaCapability
@@ -14,11 +15,13 @@ struct ArenaCapabilityRow: View {
                     .font(.system(.callout, weight: .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .lineLimit(1)
+                    .accessibilityHidden(true)
                 Spacer()
                 Text("\(ArenaFormat.score(capability.score)) · c/A \(ArenaFormat.score(capability.withAtlas))")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(capability.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
                     .monospacedDigit()
+                    .accessibilityHidden(true)
             }
             DualBar(score: capability.score, withAtlas: capability.withAtlas)
             if !contributionLine.isEmpty {
@@ -26,14 +29,15 @@ struct ArenaCapabilityRow: View {
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
+                    .accessibilityHidden(true)
             }
         }
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(ArenaCapabilitiesSectionA11y.spokenCapability(capability))
         .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
     }
 
-    private var contributionLine: String {
+    var contributionLine: String {
         var parts: [String] = []
         if let cases = ArenaCapabilitiesSectionA11y.casesCaption(for: capability) {
             parts.append(cases)
@@ -42,31 +46,5 @@ struct ArenaCapabilityRow: View {
             parts.append(capability.suitesContributing.joined(separator: ", "))
         }
         return parts.joined(separator: " · ")
-    }
-}
-
-struct DualBar: View {
-    let score: Double?
-    let withAtlas: Double?
-
-    var body: some View {
-        VStack(spacing: 4) {
-            bar(score, color: AtlasTheme.textSecondary)
-            bar(withAtlas, color: AtlasTheme.accent)
-        }
-        .accessibilityHidden(true)
-    }
-
-    private func bar(_ value: Double?, color: Color) -> some View {
-        GeometryReader { proxy in
-            let width = proxy.size.width * min(max(value ?? 0, 0), 1)
-            ZStack(alignment: .leading) {
-                Capsule().fill(AtlasTheme.surfaceHi.opacity(0.8))
-                Capsule()
-                    .fill(value == nil ? AtlasTheme.textTertiary.opacity(0.25) : color.opacity(0.85))
-                    .frame(width: width)
-            }
-        }
-        .frame(height: 5)
     }
 }

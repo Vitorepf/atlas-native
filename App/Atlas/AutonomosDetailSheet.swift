@@ -22,9 +22,9 @@ struct AutonomosPublicDetailSheet: View {
     let kind: AutonomosDetailSheet
     let backlog: AtlasAutonomosBacklogResponse?
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    private var contentPhaseID: String {
+    var contentPhaseID: String {
         guard let backlog else { return "unavailable" }
         return "\(kind.id)-\(AutonomosPublicDetailSheet.publicItemCount(kind: kind, backlog: backlog))"
     }
