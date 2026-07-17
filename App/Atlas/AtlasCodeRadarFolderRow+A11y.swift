@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels da pasta do radar — peel de AtlasCodeFolderRow (CICLO C).
 /// Desvios só de repos já varridos; nil de issues = silêncio, nunca conta limpo.
+/// Hint → AtlasCodeRadarFolderRow+A11yHint.swift
 
 enum AtlasCodeFolderRowA11y {
     static func spokenFolder(
@@ -18,9 +19,5 @@ enum AtlasCodeFolderRowA11y {
         }
         if isExpanded { parts.append("expandida") }
         return parts.joined(separator: ", ")
-    }
-
-    static func spokenHint(isExpanded: Bool) -> String {
-        isExpanded ? "recolhe a pasta" : "expande a pasta"
     }
 }

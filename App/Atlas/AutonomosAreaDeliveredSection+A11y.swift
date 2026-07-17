@@ -5,6 +5,7 @@ import AtlasCore
 /// Merge só quando `mergePerformed` e hash publicados; nunca «melhorou» fabricado.
 /// Caption/hint → AutonomosAreaDeliveredSection+A11yCaption.swift
 /// Row → AutonomosAreaDeliveredSection+A11yRow.swift
+/// Peer → AutonomosAreaDeliveredSection+A11yPeer.swift
 
 enum AutonomosAreaDeliveredA11y {
     static let visibleCap = 3
@@ -13,10 +14,7 @@ enum AutonomosAreaDeliveredA11y {
         if isSelf {
             return AutonomosAreaDeliveredA11ySelf.spokenSection(total: total, visible: visible)
         }
-        if visible < total {
-            return "entregas comprovadas, \(visible) de \(total) merges recentes"
-        }
-        return "entregas comprovadas, \(total) merge\(total == 1 ? "" : "s")"
+        return spokenPeerSection(total: total, visible: visible)
     }
 
     static func spokenEmptySelf() -> String {

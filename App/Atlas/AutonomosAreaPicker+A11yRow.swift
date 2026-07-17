@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken row — peel de AutonomosAreaPicker+A11y.
 /// Phase → AutonomosAreaPicker+A11yPhase.swift
+/// Hint → AutonomosAreaPicker+A11yRowHint.swift
 
 extension AutonomosAreaPickerA11y {
     static func spokenRow(
@@ -18,9 +19,5 @@ extension AutonomosAreaPickerA11y {
         if !area.registered { parts.append("não registrada no servidor") }
         if isSelected { parts.append("selecionada") }
         return parts.joined(separator: ", ")
-    }
-
-    static func spokenRowHint() -> String {
-        "seleciona esta instância para ver detalhes e controles"
     }
 }
