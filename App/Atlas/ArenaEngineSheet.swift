@@ -6,6 +6,7 @@ import AtlasCore
 
 struct ArenaEngineSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let engine: AtlasArenaCompositeEngine
     let capabilities: AtlasArenaCapabilities?
 
@@ -16,8 +17,11 @@ struct ArenaEngineSheet: View {
                     Text(engine.engine)
                         .font(.system(.title2, weight: .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
+                        .accessibilityLabel(ArenaEngineSheetA11y.spokenEngineTitle(engine.engine))
                     engineSummary
                     ArenaCapabilitiesSection(capabilities: capabilities)
+                        .accessibilityLabel(ArenaEngineSheetA11y.spokenCapabilities(capabilities))
                 }
                 .padding(AtlasTheme.Space.screen)
             }
@@ -27,6 +31,8 @@ struct ArenaEngineSheet: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Fechar") { dismiss() }
+                        .accessibilityLabel(ArenaEngineSheetA11y.closeLabel)
+                        .accessibilityHint(ArenaEngineSheetA11y.closeHint)
                 }
             }
         }
@@ -64,9 +70,13 @@ struct ArenaEngineSheet: View {
                 .chartXAxis(.hidden)
                 .chartYAxis { AxisMarks(position: .leading) }
                 .frame(height: 150)
+                .accessibilityHidden(true)
             }
         }
         .padding(16)
         .atlasCard()
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(ArenaEngineSheetA11y.spokenSummary(engine))
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: engine.history.count)
     }
 }
