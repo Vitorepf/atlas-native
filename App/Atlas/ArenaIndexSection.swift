@@ -21,6 +21,8 @@ struct ArenaIndexSection: View {
                         ArenaEngineIndexRow(engine: engine, reduceMotion: reduceMotion)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(engineRowSpoken(engine))
+                    .accessibilityHint("abre detalhe do motor")
                 } else {
                     ArenaEngineIndexRow(engine: engine, reduceMotion: reduceMotion)
                 }
@@ -33,6 +35,10 @@ struct ArenaIndexSection: View {
         }
         .padding(16)
         .atlasCard()
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(sectionSpokenLabel)
+        .accessibilityIdentifier(A11yID.arenaIndexSection)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: composite.engines.map(\.id))
     }
 
     private var chartEngine: AtlasArenaCompositeEngine? {
@@ -56,17 +62,37 @@ struct ArenaIndexSection: View {
                     .font(.system(.caption, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityAddTraits(.isHeader)
                 Text(coverageCaption)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
             }
             Spacer()
             if !composite.weightsPublic.isEmpty {
                 Text("\(composite.weightsPublic.count) pesos")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityLabel("\(composite.weightsPublic.count) pesos públicos")
+                    .accessibilityHidden(true)
             }
         }
+    }
+
+    private var sectionSpokenLabel: String {
+        var parts = ["índice composto, \(composite.engines.count) motores", coverageCaption]
+        if !composite.weightsPublic.isEmpty {
+            parts.append("\(composite.weightsPublic.count) pesos públicos")
+        }
+        if chartEngine != nil {
+            parts.append("gráfico de histórico disponível")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    private func engineRowSpoken(_ engine: AtlasArenaCompositeEngine) -> String {
+        let delta = engine.delta.map { ", variação \(ArenaFormat.signed($0))" } ?? ""
+        let partial = engine.isPartialCoverage
+            ? ", cobertura parcial \(Int((engine.coverage * 100).rounded())) por cento" : ""
+        return "\(engine.engine), composto \(ArenaFormat.score(engine.composite))\(delta)\(partial)"
     }
 }

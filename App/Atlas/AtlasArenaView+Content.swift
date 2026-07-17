@@ -25,7 +25,6 @@ extension AtlasArenaView {
                         reduceMotion: reduceMotion,
                         onEngineTap: { selectedEngine = $0 }
                     )
-                    .accessibilityIdentifier(A11yID.arenaIndexSection)
                 }
                 ArenaCapabilitiesSection(capabilities: model.capabilities)
                 if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
