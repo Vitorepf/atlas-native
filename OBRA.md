@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXX — CICLO B Reason/Detail/Header/Attachments/Suite/Transfer/Week/Plan/Council/Home peels** · `f3c569d` · CICLO B: Reason `+FormReason`; Detail `+InboxAge`; Header `+A11yRefresh`; Attachments `+Chrome`; Suite `+EngineScore`; Transfer `+Placement`; Week `+A11ySpokenQuiet`; Plan `+RevisionsArchive`; Council `+A11ySection`; Home `+WorkspaceFolderRow`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXIX — CICLO B Nightly/Artifact/Transfer/LiveNow/Execution/Camera/Reason/Detail/Arena peels** · `2af33e9` · CICLO B: Nightly `+NightlyAccept`/`+Chrome`; Artifact `+ZoomClamp`; Transfer `+Notes`; LiveNow `+ContentPhase`; Execution `+RetryLabel`; Camera `+CoordinatorCancel`; Reason `+Navigation`; Detail `+Presentation`; Arena `+LoadedTail`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXVIII — CICLO B Arena/Root/Fleet/Nightly/Steer/Radar/Artifact/Loaded/Composer peels** · `73f250d` · CICLO B: Arena `+LiveNote`; Root `+DeepLinksSurface`/`+ChromeAvatar`; Fleet `+A11yEvent`; Nightly `+A11yActions`; Steer `+ToolbarSubmit`; Radar `+Separator`; Artifact `+DeliveryCheck`; Loaded `+StackMid`; Composer `+AttachmentCopy`/`+A11yEffortSpoken`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
