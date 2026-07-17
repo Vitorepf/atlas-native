@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Toggle label content — peel de ArenaRunSheet+Toggle.
+// A11y → ArenaRunSheet+ToggleA11y.swift
 
 extension ArenaRunSheet {
     func toggleLabel(title: String, subtitle: String?, isOn: Bool) -> some View {
@@ -25,11 +26,5 @@ extension ArenaRunSheet {
             Spacer()
         }
         .contentShape(Rectangle())
-    }
-
-    func toggleAccessibilityLabel(title: String, subtitle: String?, isOn: Bool) -> String {
-        let state = isOn ? "selecionado" : "não selecionado"
-        if let subtitle { return "\(title), \(subtitle), \(state)" }
-        return "\(title), \(state)"
     }
 }
