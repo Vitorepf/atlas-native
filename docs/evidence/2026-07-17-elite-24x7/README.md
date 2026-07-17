@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **134** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 437 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 136 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **144** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 446 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 145 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -26,11 +26,11 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **E-A1** | **PARCIAL** | A1.3 deep links DONE; M84 Semana widget; **M01/A12 BLOCKED(server)** neste workspace |
 | **E-A2** | **PENDING** | Arena LA + App Intents — depende A12 worker |
 | **E-A3** | **PENDING** | §5 contratos C9/M65/C18–C21/M98+/… |
-| **E-A4** | **PARCIAL** | Fidelity matrix DONE; Session Hub DONE; Search/Workspace/Arena/CodeRadar silence DONE; demais cenas pendentes |
-| **E-A5** | **IN_PROGRESS** | `atlas://arena`; lock `queueLabel`; Island SD-2 **parcial**; LockScreen/WidgetViews peels |
+| **E-A4** | **PARCIAL** | Fidelity matrix DONE; Session Hub/LiveNow deepen **PARCIAL** (`e006511`); CodeRadar silence **PARCIAL** (`81753f6`); cenas 01–08/10–13 gaps honestos na matriz; Search/Workspace/Arena silence DONE |
+| **E-A5** | **IN_PROGRESS** | `atlas://arena`; lock `queueLabel`; Island SD-2 + expanded fila **PARCIAL** (`a45fe54`); LockScreen/WidgetViews peels |
 | **E-A6** | **PENDING** | Device unlock + prints U1–U10 — **operador** |
 | **E-B** | **PARCIAL** | Peels contínuos App+Core; **zero >100**; max 100 (3 empatados); patamar ≤100 atingido |
-| **E-C** | **IN_PROGRESS** | Frota quieta; Island ATT/EXT/FAIL; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty |
+| **E-C** | **IN_PROGRESS** | Frota quieta; Island ATT/EXT/FAIL + fila; awaiting/failed (`b41d880`); Council/LiveTimeline a11y (`41c9d21`/`717f2d0`); Artifact/ChangeReview; LiveNow/Radar residual |
 | **E-D** | **IN_PROGRESS** | `AtlasTime.formatActiveDuration` canônico; empty/loading dups → `AtlasNetworkFailureEmpty`/`AtlasEditorialGlyphEmpty`/`AutonomosCardEmptyState`/`WorkspaceLoadingEmpty` |
 
 ### Blockers (honesto)
@@ -41,11 +41,26 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **atlas-server** | Repo server ausente neste workspace — M01 heal→merge e Arena A12 worker drain **BLOCKED** |
 | **Device / passcode** | `passcodeRequired` / operador — `make device`, prints U1–U10, DEVICE_PROVEN pendentes |
 
-## Entrega recente (CICLO D — HEAD)
+## Milestones (continuous waves)
 
-- `polish(ui)` CICLO D: dups empty/loading — `RootHomeSections+Failure` → `AtlasNetworkFailureEmpty` (`rg failureHeadline`=0); home loading → `WorkspaceLoadingEmpty` parametrizado; `AtlasEditorialGlyphEmpty` canônico (workspace vazio + search miss); `AutonomosCardEmptyState` (digest + frota/histórico).
-- `TraceEvidenceLoading` já canônico — `rg 'ProgressView().tint(AtlasTheme.accent)'` App/Atlas=1 (`ChangeReviewRunActions` applying).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **135** (após este commit).
+| Wave | Status | Resumo |
+|---|---|---|
+| **XXIV** | **PARCIAL** | Zero arquivos App/Core/Widgets >100; max 100 (3 empatados) — build Mac-pending |
+| **XXV** | **PARCIAL** | PlanCard/Nightly deepens + CICLO D empty/failure consolidations |
+| **XXVI** | **PARCIAL** | Artifact mount (`44bd389`) + ChangeReview file/run (`168a52e`) + Council (`41c9d21`) + LiveTimeline a11y (`717f2d0`) |
+| **XXVII** | **PARCIAL** | awaiting/failed peel `+AwaitingFailed` (`b41d880`) + Island expanded `queueLabel`/RM timer (`a45fe54`) |
+| **XXVIII** | **PARCIAL** | LiveNow hub a11y/timer (`e006511`) + CodeRadar status/rows (`81753f6`); fidelity matrix gaps refreshed |
+
+## Entrega recente (wave XXVII/XXVIII — HEAD)
+
+- `polish(ui)` CICLO C: cenas 04/13 awaiting/failed honesty — peel `ExecutionStateCard+AwaitingFailed` (`b41d880`).
+- `polish(ui)` CICLO C Island: expanded `queueLabel` gold + RM timer lock/Island (`a45fe54`).
+- `polish(ui)` CICLO C Session Hub: LiveNow spoken «sessão N de M» + timer honesto + RM (`e006511`).
+- `polish(ui)` CICLO C CodeRadar: status quieto/alarme + rows/sections a11y (`81753f6`).
+- `polish(ui)` CICLO C cena 07 Council: status verbatim + divergência só `councilDiverged` (`41c9d21`).
+- `polish(ui)` CICLO C cena 05 LiveTimeline: spoken orquestra/passo N/M + RM (`717f2d0`).
+- `docs`: fidelity matrix gap column refreshed (cenas 01–08/10–13 + Fleet/Island/LiveNow/Radar); este README.
+- Commit count honesto pré-docs: `git rev-list --count ec931f2..HEAD` = **144**.
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ### Top 10 (App/Core/Widgets — all ≤100)
@@ -55,18 +70,19 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 100 | `Sources/AtlasCore/LongMessageArtifact.swift` |
 | 100 | `Sources/AtlasCore/AtlasClient+InteractionStream.swift` |
 | 100 | `Sources/AtlasCore/AtlasAutonomosDecisions.swift` |
+| 100 | `App/Atlas/LiveNowSection.swift` |
 | 99 | `Sources/AtlasCore/AtlasAutonomosTypes.swift` |
 | 99 | `Sources/AtlasCore/AtlasAiSessionsLive.swift` |
 | 99 | `App/Atlas/RootChrome+Rows.swift` |
 | 99 | `App/Atlas/ConversationCockpit+Reconnect.swift` |
 | 98 | `Sources/AtlasCore/ThreadReadCache.swift` |
 | 98 | `Sources/AtlasCore/AtlasTurnStatus.swift` |
-| 98 | `Sources/AtlasCore/AtlasCodeGraph.swift` |
 
-## Entrega anterior (wave XXII)
+## Entrega anterior (wave XXV)
 
 - `polish(ui)|polish(core)` Elite B XXII: peels faixa 101–109 → ≤100 nos 33 alvos restantes; zero arquivos App/Core/Widgets >100.
-- Commit count: **129**.
+- CICLO C: PlanCard/Nightly/Artifact/ChangeReview deepens; CICLO D empty/failure consolidations.
+- Commit count: **135** (pré-XXVI).
 
 ## BLOCKED gates (não inventar verde)
 
