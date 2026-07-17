@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **504+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXV tip `95fc59f` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **506+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXVI tip `910711c` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXV (este tip)
+## Entrega Elite CXXXXXLXVI (este tip)
+
+- `polish(ui)` CICLO B: Capabilities+A11yLead; Workspace+Threads; Edit+UserEditLabel; Composer+Row; Provenance+Surface; Camera+Make; Review+AcceptLabel; Agent+AgentChrome; Receipt+CopyStack. Tip `910711c`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLXV (anterior)
 
 - `polish(ui)` CICLO B: Receipt+A11ySilence; Search+HeaderFieldPlaceholder; Home+ChipLabel; Plan+AuditCaption; LiveNow+TimingPause; Proof+Stack; Ribbon+RibbonDecide; Bubbles+BubblesA11y; Lifecycle+LifecycleOutline; Arena+A11yMeasured. Tip `95fc59f`.
 - Zero App/Widgets >100; zero Route nova.
