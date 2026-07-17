@@ -4,6 +4,7 @@ import AtlasCore
 // Inbox cards — peel de AutonomosDetailWorkRows.
 // Age → AutonomosDetailWorkRows+InboxAge.swift
 // Core → AutonomosDetailWorkRows+InboxCore.swift
+// Decision → AutonomosDetailWorkRows+InboxDecision.swift
 
 enum AutonomosDetailInboxRows {
     @ViewBuilder
@@ -12,8 +13,7 @@ enum AutonomosDetailInboxRows {
             AutonomosDetailChrome.card(item.title) {
                 AutonomosDetailInboxCoreFields.fields(item)
                 AutonomosDetailInboxAge.ageFields(item)
-                AutonomosDetailChrome.field("decisão exigida", item.decisionRequired ? "sim" : "não")
-                AutonomosDetailChrome.field("opções", item.decisionOptions.joined(separator: " · "))
+                AutonomosDetailInboxDecisionFields.fields(item)
             }
         }
     }

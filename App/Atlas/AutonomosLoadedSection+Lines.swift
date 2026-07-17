@@ -3,6 +3,7 @@ import AtlasCore
 
 // Info line — peel de AutonomosLoadedSection.
 // Receipt/error → AutonomosLoadedSection+ReceiptCards.swift
+// Optional a11y → AutonomosLoadedSection+OptionalA11y.swift
 
 struct AutonomosInfoLine: View {
     let text: String
@@ -23,17 +24,5 @@ struct AutonomosInfoLine: View {
             .accessibilityLabel(spokenLabel)
             .accessibilityAddTraits(.isStaticText)
             .modifier(OptionalA11yIdentifier(identifier))
-    }
-}
-
-private struct OptionalA11yIdentifier: ViewModifier {
-    let identifier: String?
-
-    func body(content: Content) -> some View {
-        if let identifier {
-            content.accessibilityIdentifier(identifier)
-        } else {
-            content
-        }
     }
 }

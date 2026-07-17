@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Botões individuais do menu options — peel de ComposerToolbar+OptionsButtons.
+// Effort → ComposerToolbar+OptionsEffort.swift
 
 extension ComposerToolbar {
     var optionsWorkspaceButton: some View {
@@ -22,16 +23,5 @@ extension ComposerToolbar {
             Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
         }
         .accessibilityLabel("modo, \(mode)")
-    }
-
-    var optionsEffortButton: some View {
-        Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            onShowEffort()
-        } label: {
-            Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
-        }
-        .accessibilityLabel(spokenEffortLabel(model.effort))
-        .accessibilityHint(spokenEffortHint())
     }
 }

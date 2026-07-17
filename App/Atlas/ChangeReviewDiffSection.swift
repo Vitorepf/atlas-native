@@ -6,6 +6,7 @@ import AtlasCore
 // Chrome → ChangeReviewDiffSection+Chrome.swift
 // Body → ChangeReviewDiffSection+Body.swift
 // Expanded → ChangeReviewDiffSection+Expanded.swift
+// Shell → ChangeReviewDiffSection+Shell.swift
 
 struct ChangeReviewPatchCard: View {
     let reviews: ChangeReviewModel
@@ -15,6 +16,6 @@ struct ChangeReviewPatchCard: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        patchCardChrome { patchCardBody }
+        patchCardShell
     }
 }

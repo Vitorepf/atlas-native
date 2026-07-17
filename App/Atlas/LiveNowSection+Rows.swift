@@ -2,17 +2,14 @@ import SwiftUI
 import AtlasCore
 
 // Session rows — peel de LiveNowSection.
+// Separator → LiveNowSection+RowSeparator.swift
 
 extension LiveNowSection {
     @ViewBuilder
     var liveNowRows: some View {
         ForEach(Array(sessions.enumerated()), id: \.element.id) { index, session in
             if isHub, index > 0 {
-                Rectangle()
-                    .fill(AtlasTheme.separator.opacity(0.55))
-                    .frame(height: 1)
-                    .padding(.vertical, 10)
-                    .accessibilityHidden(true)
+                LiveNowRowSeparator.hub
             }
             LiveNowRow(
                 session: session,

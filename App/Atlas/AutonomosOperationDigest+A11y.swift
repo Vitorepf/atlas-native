@@ -2,6 +2,7 @@ import Foundation
 
 /// Spoken labels do resumo da operação — peel de AutonomosOperationDigestSection (CICLO C).
 /// Headlines → AutonomosOperationDigest+A11yHeadlines.swift
+/// Quiet → AutonomosOperationDigest+A11yQuiet.swift
 
 enum AutonomosOperationDigestA11y {
     static func spokenSection(
@@ -31,9 +32,5 @@ enum AutonomosOperationDigestA11y {
             parts.append(spokenFindings(findingsByRisk))
         }
         return parts.joined(separator: ", ")
-    }
-
-    static func spokenQuiet() -> String {
-        "operação quieta, nenhuma entrega pendência ou incidente publicado nesta janela"
     }
 }
