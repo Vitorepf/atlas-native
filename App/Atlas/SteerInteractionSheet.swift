@@ -28,26 +28,7 @@ struct SteerInteractionSheet: View {
                 formContent
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    AtlasCloseToolbarButton(
-                        title: "Cancelar",
-                        spokenLabel: "cancelar redirecionamento",
-                        spokenHint: "fecha sem enviar instrução",
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Enviar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        onSubmit(instruction, scope)
-                    }
-                    .disabled(!canSubmit)
-                    .accessibilityIdentifier(A11yID.steerSubmit)
-                    .accessibilityLabel(spokenSubmitLabel(canSubmit: canSubmit))
-                    .accessibilityHint(spokenSubmitHint(canSubmit: canSubmit))
-                }
-            }
+            .toolbar { steerToolbar }
         }
         .accessibilityIdentifier(A11yID.steerSheet)
         .accessibilityLabel("redirecionar execução \(traceId.rawValue)")

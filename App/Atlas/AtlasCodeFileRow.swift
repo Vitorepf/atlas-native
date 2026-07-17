@@ -4,7 +4,7 @@ import AtlasCore
 /// Uma linha por arquivo. O VERBO é a forma do símbolo, não a cor: cor aqui
 /// é reservada ao estado do commit (main/fora/curado) e mentiria se pintasse
 /// tipo de mudança de vermelho dentro de um commit saudável.
-/// Meta → AtlasCodeFileRow+Meta.swift
+/// Meta → AtlasCodeFileRow+Meta.swift · Stats → +Stats.swift
 struct AtlasCodeFileRow: View {
     let file: AtlasCodeFileChange
     var accessibilityIdentifier: String?
@@ -36,18 +36,7 @@ struct AtlasCodeFileRow: View {
 
             Spacer(minLength: 8)
 
-            if let additions = file.additions, let deletions = file.deletions {
-                Text("+\(additions) \u{2212}\(deletions)")
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .monospacedDigit()
-                    .accessibilityHidden(true)
-            } else {
-                Text("binário")
-                    .font(AtlasFont.mono(8.5))
-                    .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
-                    .accessibilityHidden(true)
-            }
+            diffStats
         }
         .padding(.vertical, 9)
         .accessibilityElement(children: .ignore)

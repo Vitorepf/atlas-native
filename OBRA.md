@@ -966,7 +966,11 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXI — CICLO B Plan/Fleet/Strip/Review/Provenance/Self/Transfer/Ledger/Arena/A11y/Widget peels** · este commit · CICLO B: Plan `+RevisionArchiveRow`/`+FlexWrap`; Fleet `+QuietBody`; Strip `+StatusLines`; Review `+Applying`; Provenance `+PullQuote`; Self `+RevertBanner`; Transfer `+Toolbar`; Ledger `+Budgets`; Arena `+Exception`; A11y `+NightlySelf`; CodeWeek `+Metric`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXIII — CICLO B Provenance/Arena/Artifact/Queue/Fleet/File/Lock/Steer/Search peels** · este commit · CICLO B: Provenance `+Dateline`; Arena `+DomainA11y`; Artifact `+Empty`; Queue `+Buttons`; FleetHistory `+RowBody`; FileRow `+Stats`; Lock `+Circular`; Steer `+Toolbar`; Search `+Results`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXII — CICLO B Area/Council/Fleet/Artifact/Arena/Island/Messages/Ask/Why/Plan/Delivered peels** · `c574160` · CICLO B: AreaPicker `+Phase`; Council `+Meta`; Fleet `+Summary`; Artifact `+PreviewLoad`; ArenaNow `+Rows`; Island `+Minimal`; Messages `+Empty`; AskPill `+Content`; Why `+Header`; Plan `+A11yDetail`; Delivered `+RowVisual`/`+A11yCaption`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXI — CICLO B Plan/Fleet/Strip/Review/Provenance/Self/Transfer/Ledger/Arena/A11y/Widget peels** · `23962a6` · CICLO B: Plan `+RevisionArchiveRow`/`+FlexWrap`; Fleet `+QuietBody`; Strip `+StatusLines`; Review `+Applying`; Provenance `+PullQuote`; Self `+RevertBanner`; Transfer `+Toolbar`; Ledger `+Budgets`; Arena `+Exception`; A11y `+NightlySelf`; CodeWeek `+Metric`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CX — CICLO B Code/Header/Composer/Digest/Self/Plan/LiveNow/State peels** · `b8c46b2` · CICLO B: Code `+Toolbar`; Header `+HeaderTrailing`; Composer `+Field`; Digest `+ScheduleCopy`; Self `+Header`; Plan `+DetailChips`; LiveNow `+Rows`; State `+SteerRetry`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 

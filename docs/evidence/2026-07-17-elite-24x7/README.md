@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **338+** | primeiro commit do plano: `ec931f2`; Elite CXI em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **340+** | primeiro commit do plano: `ec931f2`; Elite CXIII em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,9 +127,19 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXI (este tip)
+## Entrega Elite CXIII (este tip)
 
-- `refactor(ui)` CICLO B: Plan+RevisionArchiveRow/+FlexWrap; FleetHealth+QuietBody; Strip+StatusLines; Review+Applying; Provenance+PullQuote; Self+RevertBanner; Transfer+Toolbar; Ledger+Budgets; Arena+Exception; A11yID+NightlySelf; CodeWeek+Metric.
+- `refactor(ui)` CICLO B: Provenance+Dateline; Arena+DomainA11y; Artifact+Empty; Queue+Buttons; FleetHistory+RowBody; FileRow+Stats; Lock+Circular; Steer+Toolbar; Search+Results.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXII (anterior)
+
+- `refactor(ui)` CICLO B: AreaPicker+Phase; Council+Meta; Fleet+Summary; Artifact+PreviewLoad; ArenaNow+Rows; IslandMinimal; Messages+Empty; AskPill+Content; Why+Header; Plan+A11yDetail; Delivered+RowVisual/+A11yCaption. Tip `c574160`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXI (anterior)
+
+- `refactor(ui)` CICLO B: Plan+RevisionArchiveRow/+FlexWrap; FleetHealth+QuietBody; Strip+StatusLines; Review+Applying; Provenance+PullQuote; Self+RevertBanner; Transfer+Toolbar; Ledger+Budgets; Arena+Exception; A11yID+NightlySelf; CodeWeek+Metric. Tip `23962a6`.
 - Zero App/Widgets >100; zero Route nova.
 
 ## Entrega Elite CX (anterior)

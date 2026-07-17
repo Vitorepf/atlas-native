@@ -1,26 +1,26 @@
 import SwiftUI
 import AtlasCore
 
-// Peel anti-inchaço — recentes do SearchView.
-// Results → SearchView+Results.swift · ThreadLink → SearchView+ThreadLink.swift
+// Resultados da busca — peel de SearchView+List.
 
-struct SearchRecentSection: View {
-    let threads: [AtlasAiThread]
+struct SearchResultsSection: View {
+    let results: [AtlasAiThread]
+    let query: String
     let reduceMotion: Bool
 
     var body: some View {
         Group {
-            Text("RECENTES")
-                .font(.system(.caption, weight: .semibold)).tracking(1.4)
+            Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
+                .font(.system(.caption, weight: .semibold)).tracking(1.2)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
                 .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel("recentes, \(threads.count) conversa\(threads.count == 1 ? "" : "s") carregada\(threads.count == 1 ? "" : "s")")
-                .accessibilityIdentifier(A11yID.searchRecentCaption)
-            ForEach(threads) { t in
+                .accessibilityLabel("\(results.count) conversa\(results.count == 1 ? "" : "s") com ‘\(query)’")
+                .accessibilityIdentifier(A11yID.searchResultsCaption)
+            ForEach(results) { t in
                 SearchThreadLink(thread: t, reduceMotion: reduceMotion)
-                if t.id != threads.last?.id {
+                if t.id != results.last?.id {
                     Divider().overlay(AtlasTheme.separator)
                         .padding(.leading, AtlasTheme.Space.screen + 36)
                 }

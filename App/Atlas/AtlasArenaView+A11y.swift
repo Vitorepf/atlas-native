@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Spoken labels e gates de silêncio — peel de AtlasArenaView (CICLO C residual honesty).
+/// Domain/run → AtlasArenaView+DomainA11y.swift
 
 extension AtlasArenaView {
     var contentPhaseID: String {
@@ -38,21 +39,5 @@ extension AtlasArenaView {
         case .loaded:
             return headerSpokenLabel
         }
-    }
-
-    var domainUnavailableSpoken: String {
-        "Arena, \(ArenaModel.domainUnavailableCopy)"
-    }
-
-    var domainUnavailableHint: String {
-        "medição indisponível no servidor, sem scores publicados"
-    }
-
-    var runButtonSpoken: String { "Rodar medição" }
-
-    var runButtonHint: String { "inicia nova rodada de medição governada" }
-
-    func showsIndexSection(_ composite: AtlasArenaComposite) -> Bool {
-        !composite.engines.isEmpty
     }
 }
