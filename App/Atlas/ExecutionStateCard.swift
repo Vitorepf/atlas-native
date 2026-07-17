@@ -47,6 +47,13 @@ struct ExecutionStateCard: View {
                     .font(.footnote)
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityLabel(failureReasonA11y ?? detail)
+            }
+            if let kicker = leaveScreenKicker {
+                Text(kicker)
+                    .font(.system(.caption, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .accessibilityLabel(kicker)
             }
             if let checkpoint = state.checkpoint {
                 Text("checkpoint · \(checkpoint)")
@@ -68,7 +75,7 @@ struct ExecutionStateCard: View {
                     .monospacedDigit()
                     .accessibilityLabel("tempo ativo \(active.replacingOccurrences(of: "ativo ", with: ""))")
             }
-            if let deadline = state.deadline {
+            if let deadline = publishedExternalDeadline {
                 Text("Próxima mudança: \(deadline)")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)

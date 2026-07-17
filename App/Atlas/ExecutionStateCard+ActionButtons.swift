@@ -4,10 +4,10 @@ import AtlasCore
 extension ExecutionStateCard {
     @ViewBuilder
     var actionButtons: some View {
-        if let jobId, !state.actions.isEmpty {
+        if let choiceJobId = effectiveChoiceJobId, !state.actions.isEmpty {
             HStack(spacing: 8) {
                 ForEach(state.actions) { action in
-                    Button { onChoose(jobId, action.id) } label: {
+                    Button { onChoose(choiceJobId, action.id) } label: {
                         Text(action.title)
                             .font(.system(.caption, weight: .semibold))
                             .lineLimit(1)
@@ -21,7 +21,7 @@ extension ExecutionStateCard {
                     .accessibilityHint("ação declarada pelo servidor")
                 }
             }
-        } else if state.kind == .failed, state.actions.isEmpty, let retryableJobId {
+        } else if showsRetryFallback, let retryableJobId {
             Button { onRetry(retryableJobId) } label: {
                 Text("Retomar")
                     .font(.system(.caption, weight: .semibold))

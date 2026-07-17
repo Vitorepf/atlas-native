@@ -4,20 +4,6 @@ import AtlasCore
 // Selo, ícone, tint e resumo falado — peel de ExecutionStateCard (régua ~160).
 
 extension ExecutionStateCard {
-    var spokenSummary: String {
-        var parts: [String] = []
-        if let kind = spokenKind { parts.append(kind) }
-        parts.append(state.title)
-        if let detail = state.detail { parts.append(detail) }
-        if let checkpoint = state.checkpoint { parts.append("checkpoint \(checkpoint)") }
-        if let fragment = spokenTimerFragment { parts.append(fragment) }
-        if let deadline = state.deadline { parts.append("próxima mudança \(deadline)") }
-        if !state.actions.isEmpty {
-            parts.append("\(state.actions.count) ação\(state.actions.count == 1 ? "" : "ões") disponíveis")
-        }
-        return parts.joined(separator: ". ")
-    }
-
     var spokenKind: String? {
         switch state.kind {
         case .attentionRequired: return "execução pausada, aguardando decisão"
