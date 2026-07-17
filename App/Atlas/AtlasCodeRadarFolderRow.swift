@@ -12,8 +12,12 @@ struct AtlasCodeFolderRow: View {
     let onOpenRepo: (String) -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var exceptionCount: Int {
-        folder.repos.reduce(0) { $0 + (issuesFor($1.slug)?.reduce(0) { $0 + $1.count } ?? 0) }
+    /// Só violações de repos já varridos — nil = ainda não medido, nunca conta.
+    private var verifiedExceptionCount: Int {
+        folder.repos.reduce(0) { total, repo in
+            guard let issues = issuesFor(repo.slug), !issues.isEmpty else { return total }
+            return total + issues.reduce(0) { $0 + $1.count }
+        }
     }
 
     var body: some View {
@@ -33,15 +37,16 @@ struct AtlasCodeFolderRow: View {
                             .foregroundStyle(AtlasTheme.textTertiary)
                     }
                     Spacer(minLength: 6)
-                    if exceptionCount > 0 {
+                    if verifiedExceptionCount > 0 {
                         HStack(spacing: 4) {
                             Image(systemName: "exclamationmark.triangle")
                                 .font(.system(size: 9, weight: .semibold))
-                            Text("\(exceptionCount)")
+                            Text("\(verifiedExceptionCount)")
                                 .font(.system(size: 11, weight: .semibold))
                                 .monospacedDigit()
                         }
                         .foregroundStyle(AtlasCodePalette.alert)
+                        .accessibilityHidden(true)
                     }
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
@@ -52,7 +57,8 @@ struct AtlasCodeFolderRow: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("\(folder.name), \(folder.repositories) repositórios\(exceptionCount > 0 ? ", \(exceptionCount) problemas" : "")")
+            .accessibilityLabel(spokenFolderLabel)
+            .accessibilityHint(isExpanded ? "recolhe a pasta" : "expande a pasta")
             .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
 
             if isExpanded {
@@ -75,5 +81,13 @@ struct AtlasCodeFolderRow: View {
             }
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: isExpanded)
+    }
+
+    private var spokenFolderLabel: String {
+        let repos = folder.repositories == 1 ? "1 repositório" : "\(folder.repositories) repositórios"
+        if verifiedExceptionCount > 0 {
+            return "\(folder.name), \(repos), \(verifiedExceptionCount) desvio\(verifiedExceptionCount == 1 ? "" : "s") verificado\(verifiedExceptionCount == 1 ? "" : "s")"
+        }
+        return "\(folder.name), \(repos)"
     }
 }

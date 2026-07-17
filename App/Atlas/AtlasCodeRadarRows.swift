@@ -60,14 +60,15 @@ struct AtlasCodeRepoRow: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityText)
+        .accessibilityLabel(
+            spokenRepoLabel(
+                name: repo.name,
+                issues: issues,
+                trunk: trunk,
+                lastCommitAt: repo.lastCommitAt
+            )
+        )
+        .accessibilityHint("abre o grafo do repositório")
         .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
-    }
-
-    private var accessibilityText: String {
-        var parts = [repo.name]
-        if let issues, !issues.isEmpty { parts.append(issues.map { $0.headline(trunk: trunk) }.joined(separator: ", ")) }
-        if let age = AtlasCodeAge.short(from: repo.lastCommitAt) { parts.append("último commit \(age)") }
-        return parts.joined(separator: ", ")
     }
 }

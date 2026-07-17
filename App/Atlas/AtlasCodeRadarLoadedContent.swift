@@ -14,7 +14,7 @@ struct AtlasCodeRadarLoadedContent: View {
                     .padding(.bottom, 18)
 
                 if !workspace.recents.isEmpty {
-                    AtlasCodeRadarSectionLabel(text: "RECENTES")
+                    AtlasCodeRadarSectionLabel(text: "RECENTES", accessibilityID: A11yID.radarRecents)
                     ForEach(workspace.recents) { repo in
                         AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), trunk: model.trunk(for: repo.slug), showsFolder: true) {
                             onOpenRepo(repo.slug)
@@ -24,7 +24,7 @@ struct AtlasCodeRadarLoadedContent: View {
                 }
 
                 if !workspace.folders.isEmpty {
-                    AtlasCodeRadarSectionLabel(text: "PASTAS")
+                    AtlasCodeRadarSectionLabel(text: "PASTAS", accessibilityID: A11yID.radarFolders)
                         .padding(.top, 22)
                     ForEach(workspace.folders) { folder in
                         AtlasCodeFolderRow(
@@ -40,7 +40,7 @@ struct AtlasCodeRadarLoadedContent: View {
                 }
 
                 if !workspace.loose.isEmpty {
-                    AtlasCodeRadarSectionLabel(text: "AVULSOS")
+                    AtlasCodeRadarSectionLabel(text: "AVULSOS", accessibilityID: A11yID.radarLoose)
                         .padding(.top, 22)
                     ForEach(workspace.loose) { repo in
                         AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), trunk: model.trunk(for: repo.slug), showsFolder: false) {

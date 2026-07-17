@@ -5,6 +5,7 @@ import SwiftUI
 
 struct AtlasCodeRadarStatusCapsule: View {
     let model: AtlasCodeWorkspaceModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         // Silêncio = produto: saudável (sem violações) → caption quieta, sem
@@ -17,8 +18,9 @@ struct AtlasCodeRadarStatusCapsule: View {
                 alarmCapsule
             }
         }
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: model.scanState)
         .frame(maxWidth: .infinity, alignment: .center)
-        .accessibilityLabel(model.headline)
+        .accessibilityLabel(spokenStatus(model: model))
         .accessibilityIdentifier(A11yID.radarStatus)
     }
 
@@ -49,6 +51,7 @@ struct AtlasCodeRadarStatusCapsule: View {
 
 struct AtlasCodeRadarSectionLabel: View {
     let text: String
+    var accessibilityID: String? = nil
 
     var body: some View {
         Text(text)
@@ -56,6 +59,8 @@ struct AtlasCodeRadarSectionLabel: View {
             .tracking(1.3)
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.bottom, 8)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier(accessibilityID ?? text)
     }
 }
 
