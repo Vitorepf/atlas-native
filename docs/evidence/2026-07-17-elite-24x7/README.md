@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **490+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLVIII tip `e3d7195` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **492+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLIX tip `6de4d81` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLVIII (este tip)
+## Entrega Elite CXXXXXLIX (este tip)
+
+- `polish(ui)` CICLO B: Sheets+SheetsModifier; Workspace+Predicates; Radar+Content/+Sections; Arena+Sheets; Widget+Container/+Install; Page+PageChrome; Review+A11yDecided; Root+A11yThread; Strip+StatusTitle; Delivered+Empty; Artifact+Chrome; Receipt/Outline/Composer/Transfer/Zoom/Digest leftovers. Tip `6de4d81`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLVIII (anterior)
 
 - `refactor(ui)` CICLO B: Lock+Progress; Search+A11yChrome; Root+DestinationsConversation/+DeepLinksExecutionHome; Plan+Chrome/+RevisionArchiveHeader; Steer+SteerLabel; Chrome+ConfirmingSeal; Camera+CameraCoverA11y; Review+ChangeReviewLabel/+AvailableEmptySurface; Reconnect+ReconnectBody; Agent+AgentModel; Autonomos/Arena+ContentFailed. Tip `e3d7195`.
 - Zero App/Widgets >100; zero Route nova.
