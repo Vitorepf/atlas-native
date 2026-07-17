@@ -139,7 +139,18 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | P07 | **DONE** | **GPT-5.5** | `App/Atlas/AutonomosView.swift`; `App/UITests/AtlasNightlyProposalTests.swift`; `docs/evidence/2026-07-16-proposta-21h/`; `OBRA.md` | P06 | V2.T2.4 prova + registro | XCUITest card→sheet→dismiss; card independe do carregamento; screenshots; device físico honesto | este commit; sim verde; device-pending |
 | P08–P11 | **DONE** | **GPT-5.5** | `../atlas-server` artifacts; `Sources/AtlasCore*`; `App/Atlas/{ChangeReviewModel,ConversationChrome,ExecutionStateCard,ArtifactSheet,A11yID}.swift`; `docs/evidence/2026-07-16-artifacts/`; `OBRA.md` | P07 | V4 Artifacts & Proof commits 08–11 | manifesto+content trace-scoped; Core fail-closed; linha/sheet; prova §V4.6 | server `99ba5abd3`; core `5396b21`; ui `d6732ea`; prova neste commit; device/live token pendentes |
 | P12–P15 | **PARCIAL** | **GPT-5.5→Grok 4.5** | scanner+healer server; área/backlog; UI recibo; `docs/evidence/2026-07-16-selfconstruction/` | P11 | V3 Self-Construction scanner→backlog→cura mecânica R2 + UI | Scanner R1–R5 + healer R2 PHPUnit verde; worker SCL drenou dry_run; canário plant→scan→heal→ausente; falta delivered/merge no app | healer+worker unlock nesta sessão; evidência atualizada; bloqueios restantes §5 |
-| P16–P20 | PENDING | — | conforme ORDEM MESTRA §E | P15 | V5 H1 Biografia do arquivo + fechamento global | DoD §F | — |
+| P16–P20 | **DONE** | **GPT-5.5** | AtlasCodeWhy + sheet + XCUITest | P15 | V5 H1 Biografia do arquivo | DoD §F / prova §7 P19 | §7 2026-07-16 P19; `docs/evidence/2026-07-16-h1-why/` |
+
+### Profundidade Total (Grok 4.5 · `docs/plano-profundidade-total.md` + M61 `docs/spec-arena-medicao.md`)
+| # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
+|---|---|---|---|---|---|---|---|
+| PT0 | **IN_PROGRESS** | **Grok 4.5** | server SCL/heal/merge; evidence; OBRA | decisão §6 2026-07-17 | Onda 0 M01–M06 (prova antes de código) | M01 delivered real ou último passo + §5; M02–M06 prova ou roteiro | — |
+| PT1 | PENDING | — | server+core+casca contratos | PT0 | Onda 1 M07–M14 + casca sprint M15/M62/M11 | PHPUnit+checks+binding | — |
+| PT-M61 | PENDING | — | server `config/atlas_arena.php`+`app/Services/Ai/Arena\|Rivals`+rotas+testes; native `AtlasArena.swift`+checks+`App/Atlas/Arena*`+RootView+A11yID | PT1 casca sprint | M61 Arena A1–A12 (única rota nova `.arena`) | DoD spec §G; +1 case Route | — |
+| PT2–8 | PENDING | — | conforme ondas 2–8 | PT-M61 | Ondas 2–8 (M16–M66 exceto M61); Onda 9 intocada | prova por item | — |
+| PT10 | PENDING | — | OBRA/Makefile/docs | contínuo | Onda 10 M76–M81 rituais | make verify; ledger §B | — |
+| PT11–18 | PENDING | — | widgets/AX/Code/Autônomos | M118 antes widgets | Patamar Supremo M83–M140 | SD-1..SD-9; anti-padrões | — |
+| PT19–22 | PENDING | — | conversa/runtime/craft/workspace | PT11–18 | Ondas 19–22 M141–M160 | KPIs frente | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -718,6 +729,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 6. Decisões registradas
 
+- **2026-07-17 · Grok 4.5 executa Profundidade Total** (`docs/plano-profundidade-total.md`, 155 itens ativos) com autorização do operador para atravessar as lanes (casca + engine + atlas-server quando o contrato exigir) nesta missão, sem ownership permanente. Write-scope: `App/Atlas/*`, `Sources/*`, `App/UITests/*`, `App/Widgets/*`, `docs/evidence/*` (append), `OBRA.md` (append §4/§5/§6/§7), e no atlas-server os caminhos exigidos pelos contratos das ondas. Gates §2/§3 invioláveis. Baseline 2026-07-17: `swift run AtlasCoreChecks` exit 0; `cd App && make build` exit 0; ambos repos em `main`.
+
+- **2026-07-17 · Adendo M61 Arena DESTRAVADO (operador):** nome no código `AtlasArena*`, rota `.arena`, título "Arena" (Criação≠Medição — proibido "Rivals"/"benchmark" no código da Criação; servidor pode manter namespace Rivals; API pública `arena`). Escopo pleno já em §6 (índice composto, AGORA, rodar governado, capacidades, gráficos). Spec executável: `docs/spec-arena-medicao.md` (A1–A12). Posição: após contratos/casca sprint 1 (M07–M09, M15/M62/M11), antes das Ondas 2–8. Única rota nova autorizada (+1 em RootView).
 
 - **2026-07-16 · F6.2 Multi-host: NÃO construir (YAGNI).** Seam futuro:
   `AtlasConfig` → coleção de hosts; outbox/fila re-escopadas por conta. Um host
@@ -820,6 +834,57 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   SOTA), Memória de critério. Única tela nova autorizada: superfície de
   medição dos motores ("Rivals") — aguardando decisão de nome (vocabulário
   proibido em código pela regra Criação≠Medição) e escopo do operador.
+
+- **2026-07-17 · Canon refinado (operador) — profundidade absoluta, zero
+  superfícies novas de QUALQUER tipo:** removidos EM DEFINITIVO do plano (não
+  são congelados; só voltam por decisão nova e explícita): **Voz** (inclusive
+  App Intents/Siri), **iPad**, **Widget de Home**, **Atlas-wide** (N domínios
+  = N telas). A única superfície nova autorizada do app é a de medição dos
+  motores ("Rivals" — nome no código e escopo pendentes do operador; propósito
+  declarado: acompanhar como os motores pontuam nas suites, por exceção).
+  Todo o investimento vai para PROFUNDIDADE das telas existentes — plano
+  canônico das 77 melhorias em `docs/plano-profundidade-total.md` (M63/M67/
+  M73/M74/M75 removidos por este canon). Sheets/seções dentro das telas
+  atuais não são telas — são profundidade da tela dona. Live Activity/
+  Dynamic Island/notificações permanecem (presença já shipada).
+
+- **2026-07-17 · Canon v2 (operador) — fora do app LIBERADO; dentro,
+  profundidade absoluta:** a regra "zero superfícies novas" vale para DENTRO
+  do app (6 rotas existentes + Rivals, nada mais). **FORA do app, tudo
+  liberado e incentivado**: widgets de Home, lock screen accessories, Live
+  Activity interativa com botões, todas as variações da Dynamic Island,
+  StandBy, Controls, notificações ricas. **Voz segue fora EM DEFINITIVO** —
+  App Intents permitidos SOMENTE como encanamento mecânico de botões, nunca
+  como interface de voz. Tese-alvo declarada: o app supremo de programação
+  agêntica de altíssimo nível — a elite vê, audita, entende e rege os
+  agentes de qualquer superfície do iPhone. Frentes nomeadas: Dynamic
+  Island/lock screen, home, Atlas Code, qualidade agêntica (AX), Autônomos.
+  Plano canônico: `docs/plano-profundidade-total.md` (112 melhorias; Ondas
+  11–14 = Patamar Supremo; M67 restaurado como M83/M84; M63/M73/M74/M75
+  seguem removidos).
+
+- **2026-07-17 · Escopo da tela de medição DECIDIDO (operador):** a única
+  tela nova do app mostra **TODAS as métricas e resultados** das medições
+  dos motores — suites externas, score por motor, série por rodada, casos
+  ✓/✗ (contagens), e o braço comparativo com Atlas × sem Atlas (o
+  multiplicador N×M medido, em destaque). Regressão é a exceção que acende.
+  Allowlist absoluta (nunca prompt/caso/log/stdout). Spec completa no M61 de
+  `docs/plano-profundidade-total.md`. **Pendente somente o NOME no código**
+  (regra Criação≠Medição proíbe "Rivals"/"benchmark" no código da Criação;
+  recomendação registrada: `AtlasArena*`, rota `.arena` — aguarda a palavra
+  do operador).
+
+- **2026-07-17 · Escopo da medição AMPLIADO AO PLENO (operador, v2):** a
+  tela é o COCKPIT completo — (1) o índice CONSOLIDADO das ~10 suites com
+  pesos públicos e cobertura dita ("o maior e mais completo"), (2) medições
+  rodando AGORA com o braço visível (baseline × com Atlas), (3) ação de
+  RODAR medição pela liturgia governada (ator+motivo, recibo `enqueued`,
+  execução provada só pelo runs/live), (4) perfil de CAPACIDADES/habilidades
+  (mapeamento público suíte→capacidade), (5) todas as métricas com gráficos
+  (Swift Charts — framework Apple, zero dependência externa). 5 contratos
+  `atlas.arena.*.v1` especificados no M61; o que faltar no servidor
+  (composto, capacidades, live, start) é parte do item. Segue pendente
+  apenas o NOME no código.
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
