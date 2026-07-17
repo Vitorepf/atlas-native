@@ -6,6 +6,7 @@ import AtlasCore
 // CodeHub → RootView+Lifecycle+CodeHub.swift
 // Arena → RootView+Lifecycle+Arena.swift
 // DeepLink → RootView+Lifecycle+DeepLink.swift
+// TintAppear → RootView+Lifecycle+TintAppear.swift
 
 extension RootView {
     func rootLifecycleChrome<Content: View>(_ content: Content) -> some View {
@@ -13,9 +14,7 @@ extension RootView {
             rootLifecycleArena(
                 rootLifecycleCodeHub(
                     rootLifecycleThreads(
-                        content
-                            .tint(AtlasTheme.accent)
-                            .onAppear { registerNightlyOpen() }
+                        rootLifecycleTintAppear(content)
                     )
                 )
             )

@@ -2,6 +2,8 @@ import SwiftUI
 import AtlasCore
 
 // Execution callbacks — peel de ConversationMessages+RowsTurn.
+// Feedback → ConversationMessages+RowsTurn+Execution+Feedback.swift
+// Run → ConversationMessages+RowsTurn+Execution+Run.swift
 
 extension ConversationMessages {
     func editorialTurnExecutionCallbacks(for bubble: ChatBubble) -> (
@@ -12,15 +14,15 @@ extension ConversationMessages {
         onExecutionChoice: (JobID, String) -> Void,
         onRetry: (JobID) -> Void
     ) {
-        (
-            onFeedback: { kind in Task { await model.feedback(bubble.id, kind) } },
-            onCopy: { onCopy(bubble.text, bubble.role == "user" ? "mensagem" : "resposta") },
-            onEditResend: { onEditResend(bubble) },
-            onStop: { model.cancel() },
-            onExecutionChoice: { jobId, optionId in
-                Task { await model.resolveExecutionChoice(jobId: jobId, optionId: optionId) }
-            },
-            onRetry: { jobId in Task { await model.retryTurn(jobId: jobId) } }
+        let feedback = editorialTurnFeedbackCallbacks(for: bubble)
+        let run = editorialTurnRunCallbacks()
+        return (
+            onFeedback: feedback.onFeedback,
+            onCopy: feedback.onCopy,
+            onEditResend: feedback.onEditResend,
+            onStop: run.onStop,
+            onExecutionChoice: run.onExecutionChoice,
+            onRetry: run.onRetry
         )
     }
 }
