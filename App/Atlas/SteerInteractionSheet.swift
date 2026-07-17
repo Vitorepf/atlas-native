@@ -71,12 +71,12 @@ struct SteerInteractionSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                    .accessibilityLabel("cancelar redirecionamento")
-                    .accessibilityHint("fecha sem enviar instrução")
+                    AtlasCloseToolbarButton(
+                        title: "Cancelar",
+                        spokenLabel: "cancelar redirecionamento",
+                        spokenHint: "fecha sem enviar instrução",
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Enviar") {

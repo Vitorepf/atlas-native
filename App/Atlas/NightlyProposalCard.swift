@@ -8,6 +8,8 @@ struct NightlyProposalCard: View {
     let onMute: (Int) -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    private static let muteDays = [1, 3, 7]
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
@@ -34,39 +36,29 @@ struct NightlyProposalCard: View {
                     AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onAccept()
                 }
-                    .buttonStyle(AutonomosPrimaryButtonStyle())
-                    .accessibilityIdentifier(A11yID.nightlyProposalAccept)
-                    .accessibilityLabel(Self.spokenAcceptLabel())
-                    .accessibilityHint(Self.spokenAcceptHint())
+                .buttonStyle(AutonomosPrimaryButtonStyle())
+                .accessibilityIdentifier(A11yID.nightlyProposalAccept)
+                .accessibilityLabel(Self.spokenAcceptLabel())
+                .accessibilityHint(Self.spokenAcceptHint())
                 Button("hoje não") {
                     AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onDismiss()
                 }
-                    .font(.system(.footnote, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .buttonStyle(PressableScale())
-                    .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
-                    .accessibilityLabel(Self.spokenDismissLabel())
-                    .accessibilityHint(Self.spokenDismissHint())
+                .font(.system(.footnote, weight: .semibold))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .buttonStyle(PressableScale())
+                .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
+                .accessibilityLabel(Self.spokenDismissLabel())
+                .accessibilityHint(Self.spokenDismissHint())
                 Menu("silenciar") {
-                    Button("1 dia") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        onMute(1)
-                    }
-                        .accessibilityLabel(Self.spokenMuteOption(days: 1))
+                    ForEach(Self.muteDays, id: \.self) { days in
+                        Button("\(days) dia\(days == 1 ? "" : "s")") {
+                            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                            onMute(days)
+                        }
+                        .accessibilityLabel(Self.spokenMuteOption(days: days))
                         .accessibilityHint(Self.spokenMuteOptionHint())
-                    Button("3 dias") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        onMute(3)
                     }
-                        .accessibilityLabel(Self.spokenMuteOption(days: 3))
-                        .accessibilityHint(Self.spokenMuteOptionHint())
-                    Button("7 dias") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        onMute(7)
-                    }
-                        .accessibilityLabel(Self.spokenMuteOption(days: 7))
-                        .accessibilityHint(Self.spokenMuteOptionHint())
                 }
                 .font(.system(.footnote, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)

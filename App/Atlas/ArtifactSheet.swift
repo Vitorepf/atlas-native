@@ -33,12 +33,11 @@ struct ArtifactSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Fechar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                        .accessibilityLabel("fechar artefatos")
-                        .accessibilityHint("volta para a conversa")
+                    AtlasCloseToolbarButton(
+                        spokenLabel: "fechar artefatos",
+                        spokenHint: "volta para a conversa",
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
             }
             .overlay(alignment: .top) { toast }

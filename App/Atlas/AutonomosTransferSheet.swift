@@ -49,12 +49,12 @@ struct AutonomosTransferSheet: View {
             .navigationTitle("Transferir missão")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                        .accessibilityLabel(AutonomosTransferSheetA11y.spokenCancel)
-                        .accessibilityHint("fecha sem transferir")
+                    AtlasCloseToolbarButton(
+                        title: "Cancelar",
+                        spokenLabel: AutonomosTransferSheetA11y.spokenCancel,
+                        spokenHint: "fecha sem transferir",
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") {

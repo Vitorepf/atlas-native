@@ -52,12 +52,12 @@ struct AutonomosReasonSheet: View {
             .navigationTitle("Confirmar ação")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                    .accessibilityLabel("cancelar ação governada")
-                    .accessibilityHint("fecha sem registrar recibo")
+                    AtlasCloseToolbarButton(
+                        title: "Cancelar",
+                        spokenLabel: "cancelar ação governada",
+                        spokenHint: "fecha sem registrar recibo",
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") {

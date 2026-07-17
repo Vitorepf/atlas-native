@@ -21,7 +21,7 @@ struct ModeSheet: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 10)
-                .accessibilityAddTraits(.isHeader)
+                .accessibilityHidden(true)
             ForEach(modes, id: \.0) { key, label in
                 let isSelected = key == selected
                 SheetRow(

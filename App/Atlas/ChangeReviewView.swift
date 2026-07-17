@@ -24,12 +24,11 @@ struct ChangeReviewSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Fechar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                        .accessibilityLabel("fechar revisão de mudanças")
-                        .accessibilityHint("volta para a conversa")
+                    AtlasCloseToolbarButton(
+                        spokenLabel: "fechar revisão de mudanças",
+                        spokenHint: "volta para a conversa",
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
             }
             .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }

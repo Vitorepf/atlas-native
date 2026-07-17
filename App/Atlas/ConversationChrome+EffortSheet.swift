@@ -15,8 +15,7 @@ struct EffortSheet: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 10)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel("esforço vale para o próximo envio; automático deixa o Atlas Decide escolher")
+                .accessibilityHidden(true)
             ForEach(AtlasComputeEffort.allCases, id: \.self) { effort in
                 let selected = effort == model.effort
                 SheetRow(

@@ -30,12 +30,11 @@ struct ArenaSuiteSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                        .accessibilityLabel(ArenaSuiteSheetA11y.closeLabel)
-                        .accessibilityHint(ArenaSuiteSheetA11y.closeHint)
+                    AtlasCloseToolbarButton(
+                        spokenLabel: ArenaSuiteSheetA11y.closeLabel,
+                        spokenHint: ArenaSuiteSheetA11y.closeHint,
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
             }
         }

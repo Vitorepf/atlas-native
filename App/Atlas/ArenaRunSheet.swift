@@ -58,13 +58,11 @@ struct ArenaRunSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                    .accessibilityLabel(spokenCloseLabel())
-                    .accessibilityHint(spokenCloseHint())
-                }
+                    AtlasCloseToolbarButton(
+                        spokenLabel: spokenCloseLabel(),
+                        spokenHint: spokenCloseHint(),
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }                }
             }
         }
         .onAppear { seedDefaultsIfNeeded() }

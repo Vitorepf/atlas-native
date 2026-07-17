@@ -51,10 +51,12 @@ struct ConversationOutlineRow: View {
                 Text(bubble.role == "user" ? "Você" : "Atlas")
                     .font(.system(.caption, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityHidden(true)
                 Text(snippet)
                     .font(.system(.footnote))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(2)
+                    .accessibilityHidden(true)
             }
             Spacer(minLength: 0)
         }

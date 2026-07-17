@@ -54,13 +54,12 @@ struct AutonomosPublicDetailSheet: View {
             .navigationTitle(kind.title)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Fechar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        dismiss()
-                    }
-                        .accessibilityLabel(spokenCloseLabel())
-                        .accessibilityHint("fecha a projeção pública")
-                        .accessibilityIdentifier(A11yID.autonomosDetailClose)
+                    AtlasCloseToolbarButton(
+                        spokenLabel: spokenCloseLabel(),
+                        spokenHint: "fecha a projeção pública",
+                        accessibilityID: A11yID.autonomosDetailClose,
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
             }
         }
