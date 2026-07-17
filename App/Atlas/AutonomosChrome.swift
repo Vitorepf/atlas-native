@@ -2,18 +2,6 @@ import SwiftUI
 import AtlasCore
 
 enum AutonomosChrome {
-    @ViewBuilder
-    static func digestChip(_ value: String, _ label: String) -> some View {
-        HStack(spacing: 5) {
-            Text(value).font(AtlasFont.mono(14)).foregroundStyle(AtlasTheme.accent)
-                .monospacedDigit()
-                .contentTransition(.numericText())
-            Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
-        }
-        .padding(.horizontal, 9).padding(.vertical, 6)
-        .background(Capsule().fill(AtlasTheme.bgRecessed))
-    }
-
     static func uptime(_ seconds: Int) -> String {
         if seconds >= 86_400 { return "\(seconds / 86_400)d \((seconds % 86_400) / 3600)h" }
         if seconds >= 3600 { return "\(seconds / 3600)h \((seconds % 3600) / 60)m" }

@@ -17,7 +17,6 @@ extension AutonomosNextDigestSection {
                 AutonomosChrome.digestChip("\(digest.last.counts.pendingDecisions)", "decisões")
             }
         }
-        .accessibilityHidden(true)
         .animation(reduceMotion ? nil : .default, value: digest.last.counts.delivered)
         .animation(reduceMotion ? nil : .default, value: digest.last.counts.risks)
         .animation(reduceMotion ? nil : .default, value: digest.last.counts.pendingDecisions)

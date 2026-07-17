@@ -38,7 +38,6 @@ struct AutonomosOperationDigestSection: View {
                     if pendingCount > 0 { AutonomosChrome.digestChip("\(pendingCount)", "tarefas na fila") }
                     if inboxCount > 0 { AutonomosChrome.digestChip("\(inboxCount)", "decisões aguardam") }
                 }
-                .accessibilityHidden(true)
                 .animation(reduceMotion ? nil : .default, value: deliveredTotal)
                 .animation(reduceMotion ? nil : .default, value: pendingCount)
                 .animation(reduceMotion ? nil : .default, value: inboxCount)

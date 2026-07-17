@@ -14,9 +14,9 @@ Ondas **L–LV** (pós-XLIX): peels CICLO C residuais de a11y/honestidade em Aut
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **236** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 538 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 237 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **237** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -87,7 +87,7 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 - `polish(ui)` CICLO C ExecutionBanner: ícone decorativo silenciado; `embedInParent` quando reconexão/watchdog; peel `ExecutionBanner+A11y` (`e1f3264`).
 - `polish(ui)` CICLO C motion: `BreathingDiamond`/`PressableScale`/`AtlasMotion+Presentation` RM honesty (`0302bf1`); `AutonomosChrome+Tag` visual silenciado (`8ea49b6`).
 - `polish(ui)` CICLO C CommitRow + Watchdog: spoken trunk/silêncio real; peels `AtlasCodeCommitRow+A11y`/`Watchdog+A11y` (`b5185f0`/`bd04ef4`).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **236** (inclui este pin).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **237** (inclui este pin).
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ## Entrega anterior (wave XLIX contínuo — AreaDetail/ArenaSuites)
