@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **457+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXIII tip `e3a95fb` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **459+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXIV tip `fb827cc` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXXXIII (este tip)
+## Entrega Elite CXXXXXXXIV (este tip)
+
+- `refactor(ui)` CICLO B: Narrative+Text; Thread+TrailingStatus; Failure+CopyText; LockLive+Content; Fleet+Healthy; Receipt+Start. Tip `fb827cc`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXXXIII (anterior)
 
 - `refactor(ui)` CICLO B: Arena+MeasuredBody; AskPill+A11y; Search+ThreadLinkSpoken; Workspace+ChromeBack; Root+DestinationsCode. Tip `e3a95fb`.
 - Zero App/Widgets >100; zero Route nova.
