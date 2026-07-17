@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **593** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXIX tip `b7d4f84` |
-| Commits no tip (`git rev-list --count HEAD`) | 895 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 594 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **595** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXX tip `49d8a27` |
+| Commits no tip (`git rev-list --count HEAD`) | 897 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 596 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLXIX (este tip)
+## Entrega Elite CXXXXXLXLXX (este tip)
+
+- `polish(ui)` CICLO B: Why Content `+Busy`; Replay Spoken `+Route`; Control Action `+Kill`; CodeView A11y `+Busy`; LiveNow Spoken `+Active`; Arena Screen `+Busy`; Home Route `+Keyed`; Widgets LockRect Quiet `+Stale` Island Compact Badge `+Chip`. Tip `49d8a27`.
+- 9 peels · 18 arquivos · over100=0 · App/Atlas+Widgets swift=2766; App/Widgets swift=222; zero Route nova.
+
+## Entrega Elite CXXXXXLXLXIX (anterior)
 
 - `polish(ui)` CICLO B: Failure Hint `+Offline`; TraceEvidence Known `+Missing`; Radar Capsule `+Quiet`; Provenance A11y `+LoadedPhaseID`; Transfer Spoken `+Hosts`; Home Counts `+Workspace`; FileRow Symbol `+Transform`; Mirror Quiet `+Mirrored`; Widgets CodeWeek Entry `+Published` LockScreen Phase Badge `+Chrome`. Tip `b7d4f84`.
 - 10 peels · 20 arquivos · over100=0 · App/Atlas+Widgets swift=2757; App/Widgets swift=220; zero Route nova.
