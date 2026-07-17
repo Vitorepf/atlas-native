@@ -61,31 +61,31 @@ struct WorkspaceView: View {
             LazyVStack(spacing: 0) {
                 if showsLoadingShell {
                     WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
+                        .accessibilityIdentifier(A11yID.workspaceLoading)
                 } else if showsNetworkFailure {
                     AtlasNetworkFailureEmpty(
                         kind: session.failureKind,
                         hasToken: session.hasToken,
                         host: session.host,
+                        retryHint: "reconecta e recarrega conversas deste workspace",
+                        retryAccessibilityIdentifier: A11yID.workspaceRetry,
                         accessibilityIdentifier: A11yID.workspaceOffline,
                         onRetry: { Task { await session.loadThreads() } }
                     )
                 } else if threads.isEmpty {
-                    WorkspaceEditorialEmpty(area: area, freeOnly: freeOnly)
+                    WorkspaceEditorialEmpty(area: area, freeOnly: freeOnly, screenTitle: title)
                 } else {
-                    ForEach(threads) { t in
-                        NavigationLink(value: Route.thread(id: ThreadID(t.id), title: t.title)) {
-                            ThreadRow(thread: t)
-                        }
-                        .buttonStyle(.plain)
-                        if t.id != threads.last?.id {
-                            Divider().overlay(AtlasTheme.separator).padding(.leading, AtlasTheme.Space.screen + 36)
-                        }
-                    }
+                    WorkspaceThreadsSection(
+                        threads: threads,
+                        area: area,
+                        screenTitle: title,
+                        reduceMotion: reduceMotion
+                    )
                 }
             }
             .padding(.bottom, 96)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: area)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: threads.map(\.id))
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: area)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: threads.map(\.id))
         }
         .scrollIndicators(.hidden)
         .refreshable { await session.loadThreads() }

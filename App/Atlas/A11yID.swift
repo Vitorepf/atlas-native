@@ -26,7 +26,11 @@ enum A11yID {
 
     static let workspaceScreen = "workspace-screen"
     static let workspaceEmpty = "workspace-empty"
+    static let workspaceLoading = "workspace-loading"
     static let workspaceOffline = "workspace-offline"
+    static let workspaceRetry = "workspace-retry"
+    static let workspaceThreadsCaption = "workspace-threads-caption"
+    static let workspaceThreadPrefix = "workspace-thread-"
     static let workspaceAreaFilter = "workspace-area-filter"
     static let workspaceNewPill = "workspace-new-pill"
 
@@ -64,6 +68,7 @@ enum A11yID {
     static func homeWorkspaceChip(_ key: String) -> String { homeWorkspaceChipPrefix + key }
     static func autonomosDetailButton(_ key: String) -> String { autonomosDetailButtonPrefix + key }
     static func searchResult(_ threadId: String) -> String { searchResultPrefix + threadId }
+    static func workspaceThread(_ threadId: String) -> String { workspaceThreadPrefix + threadId }
 
     static let nightlyProposalCard = "nightly-proposal-card"
     static let nightlyProposalAccept = "nightly-proposal-accept"

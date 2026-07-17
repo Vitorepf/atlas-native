@@ -13,7 +13,12 @@ extension WorkspaceView {
             }
             .accessibilityLabel("voltar")
             Spacer()
-            Text(title).font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+            Text(title)
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(1)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(headerSpokenTitle)
             Spacer()
             Color.clear.frame(width: 40, height: 40)
         }
@@ -29,7 +34,7 @@ extension WorkspaceView {
                         if reduceMotion {
                             area = a
                         } else {
-                            withAnimation(.easeInOut(duration: 0.18)) { area = a }
+                            withAnimation(AtlasMotion.editorial) { area = a }
                         }
                     } label: {
                         Text(a.label)
@@ -43,6 +48,7 @@ extension WorkspaceView {
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("área \(a.label)")
+                    .accessibilityHint("filtra conversas já carregadas")
                     .accessibilityAddTraits(active ? .isSelected : [])
                 }
             }
@@ -50,7 +56,12 @@ extension WorkspaceView {
         }
         .padding(.vertical, 10)
         .accessibilityIdentifier(A11yID.workspaceAreaFilter)
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: area)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: area)
+    }
+
+    var headerSpokenTitle: String {
+        if freeOnly { return "conversas sem projeto" }
+        return title
     }
 
     var newPill: some View {
@@ -69,6 +80,7 @@ extension WorkspaceView {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("nova conversa")
+        .accessibilityHint("abre o compositor para escrever ao Atlas")
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
