@@ -3,6 +3,7 @@ import AtlasCore
 
 // Conteúdo da linha — peel de WorkspaceRow.
 // Trailing → RootChrome+WorkspaceRow+Trailing.swift
+// Detail → RootChrome+WorkspaceRow+Detail.swift
 
 extension WorkspaceRow {
     var rowContent: some View {
@@ -13,13 +14,7 @@ extension WorkspaceRow {
             VStack(alignment: .leading, spacing: 3) {
                 Text(name).font(.system(.body)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
                     .accessibilityHidden(true)
-                if let detail, !detail.isEmpty {
-                    Text(detail)
-                        .font(.system(.caption))
-                        .foregroundStyle(AtlasTheme.alert)
-                        .lineLimit(1)
-                        .accessibilityHidden(true)
-                }
+                rowDetail
             }
             Spacer(minLength: 8)
             rowTrailing

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Timer lines — peel de ExecutionStateCard+Meta.
+// Deadline → ExecutionStateCard+MetaDeadline.swift
 
 extension ExecutionStateCard {
     @ViewBuilder
@@ -19,12 +20,6 @@ extension ExecutionStateCard {
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }
-        if let deadline = publishedExternalDeadline {
-            Text("Próxima mudança: \(deadline)")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(1)
-                .accessibilityHidden(true)
-        }
+        deadlineMetaLine
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Retry CTA — peel de WorkspaceEmptyStates / AtlasNetworkFailureEmpty.
+// Label → WorkspaceEmptyStates+RetryLabel.swift
 
 extension AtlasNetworkFailureEmpty {
     @ViewBuilder
@@ -10,11 +11,7 @@ extension AtlasNetworkFailureEmpty {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onRetry()
         } label: {
-            Text("Tentar de novo")
-                .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.accent)
-                .padding(.horizontal, 22).padding(.vertical, 10)
-                .background(Capsule().fill(AtlasTheme.goldVeil)
-                    .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+            retryLabel
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel("tentar de novo")

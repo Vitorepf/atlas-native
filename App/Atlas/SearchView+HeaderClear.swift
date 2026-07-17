@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Clear button — peel de SearchView+HeaderField.
+// Spoken → SearchView+HeaderSpoken.swift
 
 extension SearchViewHeader {
     @ViewBuilder
@@ -19,11 +20,5 @@ extension SearchViewHeader {
             .accessibilityHint("remove o texto e volta aos recentes")
             .accessibilityIdentifier(A11yID.searchClear)
         }
-    }
-
-    var spokenFieldLabel: String {
-        let trimmed = query.trimmingCharacters(in: .whitespaces)
-        if trimmed.isEmpty { return "buscar conversas" }
-        return "buscar conversas, \(trimmed)"
     }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 // Botões pausar/retomar/transferir/encerrar — peel de AutonomosAreaControls.
+// Secondary → AutonomosAreaSection+PrimarySecondary.swift
 
 extension AutonomosAreaControls {
     var primaryButtons: some View {
@@ -16,14 +17,7 @@ extension AutonomosAreaControls {
                     .accessibilityLabel(spoken("pausar \(areaName)"))
                     .accessibilityHint(hint("pausa a instância sem encerrar"))
             }
-            Button("Transferir") { tap(onTransfer) }
-                .buttonStyle(AutonomosSecondaryButtonStyle())
-                .accessibilityLabel(spoken("transferir \(areaName)"))
-                .accessibilityHint(hint("abre a transferência governada"))
-            Button("Encerrar") { tap(onKill) }
-                .buttonStyle(AutonomosDestructiveButtonStyle())
-                .accessibilityLabel(spoken("encerrar \(areaName)"))
-                .accessibilityHint(hint("encerra a instância com recibo"))
+            secondaryActionButtons
         }
     }
 }

@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Contagens + auditoria — peel de RootHomeSections+Conversation.
+// Contagens — peel de RootHomeSections+Conversation.
+// Audit → RootHomeSections+ConversationAudit.swift
 
 extension RootHomeSections {
     var freeThreadCount: Int {
@@ -19,11 +20,5 @@ extension RootHomeSections {
     var homeConversationCount: Int? {
         let n = homeConversationThreadCount
         return n > 0 ? n : nil
-    }
-
-    var auditDetail: String {
-        let key = homeWorkspaceFilter ?? "livres"
-        let n = homeConversationCount ?? 0
-        return "auditoria · filtro \(key) · \(n) threads"
     }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Botão canônico Fechar/Cancelar com RM haptic — peel CICLO B (elimina dups).
+/// A11yID → AtlasCloseToolbarButton+A11yID.swift
 
 struct AtlasCloseToolbarButton: View {
     var title: String = "Fechar"
@@ -18,13 +19,5 @@ struct AtlasCloseToolbarButton: View {
         .accessibilityLabel(spokenLabel)
         .accessibilityHint(spokenHint)
         .modifier(CloseToolbarA11yID(accessibilityID))
-    }
-}
-
-private struct CloseToolbarA11yID: ViewModifier {
-    let id: String?
-    init(_ id: String?) { self.id = id }
-    func body(content: Content) -> some View {
-        if let id { content.accessibilityIdentifier(id) } else { content }
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Corpo da seção frota — peel de AutonomosFleetSection.
+// Quiet → AutonomosFleetSection+Quiet.swift
 
 extension AutonomosFleetSection {
     @ViewBuilder
@@ -11,12 +12,7 @@ extension AutonomosFleetSection {
                 AutonomosFleetEmptyState(kind: .noAgents)
             } else {
                 AutonomosChrome.sectionCaption(incidentPresent ? "FROTA · ATENÇÃO" : "frota")
-                if isQuiet && !auditModeEnabled {
-                    Text("todos vivos · desejados · autorizados")
-                        .font(AtlasFont.mono(11))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityHidden(true)
-                }
+                fleetQuietCaption
                 ForEach(Array(fleet.agents.enumerated()), id: \.element.id) { index, agent in
                     agentRow(
                         agent,

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Header ARENA — peel de AtlasArenaView.
+// Age → AtlasArenaView+HeaderAge.swift
 
 extension AtlasArenaView {
     var header: some View {
@@ -15,12 +16,7 @@ extension AtlasArenaView {
                 .font(AtlasFont.serif(28, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
-            if let age = model.snapshotAgeText, model.composite != nil {
-                Text("snapshot \(age)")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
+            headerAge
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(headerSpokenLabel)

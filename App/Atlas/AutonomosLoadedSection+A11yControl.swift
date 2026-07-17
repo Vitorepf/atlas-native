@@ -2,10 +2,11 @@ import Foundation
 import AtlasCore
 
 /// Control receipt / error spoken — peel de AutonomosLoadedSection+A11y.
+/// Action → AutonomosLoadedSection+A11yControlAction.swift
 
 enum AutonomosLoadedSectionA11yControl {
     static func spokenControlReceipt(_ receipt: AtlasAutonomosRunControlResponse) -> String {
-        var parts = ["recibo de controle", spokenAction(receipt.action)]
+        var parts = ["recibo de controle", AutonomosLoadedSectionA11yControlAction.spokenAction(receipt.action)]
         parts.append(receipt.applied ? "sinal aplicado" : "sinal registrado, ainda não aplicado")
         if receipt.isPaused { parts.append("pausa ativa") }
         if receipt.isKilled { parts.append("encerramento ativo") }
@@ -16,14 +17,5 @@ enum AutonomosLoadedSectionA11yControl {
 
     static func spokenControlError(_ message: String) -> String {
         "erro de controle, \(message)"
-    }
-
-    private static func spokenAction(_ action: AtlasAutonomosRunAction) -> String {
-        switch action {
-        case .pause: return "pausar"
-        case .resume: return "retomar"
-        case .kill: return "encerrar"
-        case .clearKill: return "limpar encerramento"
-        }
     }
 }

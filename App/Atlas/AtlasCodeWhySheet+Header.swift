@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Header Why — peel de AtlasCodeWhySheet.
+// Truncation → AtlasCodeWhySheet+HeaderTruncation.swift
 
 extension AtlasCodeWhySheet {
     var header: some View {
@@ -17,12 +18,7 @@ extension AtlasCodeWhySheet {
                 .lineLimit(2)
                 .truncationMode(.middle)
                 .accessibilityHidden(true)
-            if let why = model.why, why.truncated {
-                Text("mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
+            headerTruncation
         }
         .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isHeader)
