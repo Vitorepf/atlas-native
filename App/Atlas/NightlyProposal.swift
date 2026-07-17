@@ -4,35 +4,12 @@ import UserNotifications
 @MainActor
 @Observable
 final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegate {
-    struct ProposalPayload: Identifiable, Equatable {
-        let id: String
-        let workspaces: [String]
-        let proposedAt: Date
-
-        init(workspaces: [String], proposedAt: Date = .init()) {
-            self.workspaces = workspaces
-            self.proposedAt = proposedAt
-            self.id = workspaces.joined(separator: "|") + "-\(Int(proposedAt.timeIntervalSince1970))"
-        }
-
-        var workspaceText: String { workspaces.joined(separator: ", ") }
-
-        var prefilledReason: String {
-            "missão noturna proposta às \(Self.hourMinute(proposedAt)) — foco: \(workspaceText)"
-        }
-
-        private static func hourMinute(_ date: Date) -> String {
-            let components = Calendar.current.dateComponents([.hour, .minute], from: date)
-            return String(format: "%02d:%02d", components.hour ?? 0, components.minute ?? 0)
-        }
-    }
-
     static let shared = NightlyProposalController()
 
     private let nightlyIdentifier = "atlas.nightly"
     let morningIdentifier = "atlas.morning"
     @ObservationIgnored let center = UNUserNotificationCenter.current()
-    @ObservationIgnored private var openAutonomos: (() -> Void)?
+    @ObservationIgnored var openAutonomos: (() -> Void)?
     @ObservationIgnored var immediateNightlyDateKey: String?
 
     private(set) var pendingProposal: ProposalPayload?
@@ -109,36 +86,6 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
         pendingProposal = ProposalPayload(workspaces: ["atlas-native"])
     }
     #endif
-
-    nonisolated func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse
-    ) async {
-        let userInfo = response.notification.request.content.userInfo
-        let route = userInfo["atlas.route"] as? String
-        let workspaces = userInfo["atlas.workspaces"] as? [String]
-        await MainActor.run {
-            NightlyProposalController.shared.handle(route: route, workspaces: workspaces)
-        }
-    }
-
-    private func handle(route: String?, workspaces: [String]?) {
-        guard let route else { return }
-        if route == "autonomos-nightly" {
-            guard !isMuted() else {
-                openAutonomos?()
-                return
-            }
-            guard let workspaces, !workspaces.isEmpty else {
-                openAutonomos?()
-                return
-            }
-            pendingProposal = ProposalPayload(workspaces: workspaces)
-            openAutonomos?()
-        } else if route == "autonomos" {
-            openAutonomos?()
-        }
-    }
 
     func isMuted(now: Date = .init()) -> Bool {
         guard let mutedUntil else { return false }

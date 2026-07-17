@@ -46,60 +46,9 @@ struct ConversationComposer: View {
 
     private var composerCard: some View {
         VStack(alignment: .leading, spacing: expanded ? 12 : 0) {
-            // Execução em curso: UMA linha discreta dentro do próprio card —
-            // nunca um segundo elemento empilhado. O campo continua aberto:
-            // escrever durante a execução é direito do operador.
-            if let live = liveBubble {
-                ExecutingStrip(
-                    bubble: live,
-                    reduceMotion: reduceMotion,
-                    onStop: { model.cancel() },
-                    onSteer: live.traceId.map { trace in { steerTrace = ConversationSteerTraceRef(id: trace) } }
-                )
-                    .padding(.top, expanded ? 0 : 4)
-                    .padding(.bottom, expanded ? 0 : 8)
-                    .transition(.opacity)
-                Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
-                    .padding(.bottom, expanded ? 0 : 8)
-            }
-            // C11: mensagens mandadas durante a execução viram FILA (o model
-            // enfileira sozinho). O chip só existe quando a fila existe —
-            // nada inventado; tocar abre a folha com enviar-agora e remover.
-            if !model.queuedMessages.isEmpty {
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    showQueueSheet = true
-                } label: {
-                    Text(queueChipLabel)
-                        .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
-                        .padding(.horizontal, 12).padding(.vertical, 5)
-                        .background(Capsule().fill(AtlasTheme.goldVeil)
-                            .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
-                }
-                .buttonStyle(PressableScale())
-                .padding(.bottom, expanded ? 0 : 8)
-                .transition(reduceMotion ? .identity : .opacity)
-                .accessibilityLabel(queueAccessibilityLabel)
-                .accessibilityHint("abre a folha para enviar agora ou remover da fila")
-                .accessibilityIdentifier(A11yID.queueChip)
-            }
-            if focused.wrappedValue {
-                // Grabber → PUXE pra baixo (ou toque) para fechar o teclado.
-                // Área de toque generosa (padding antes do contentShape) + drag.
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(AtlasTheme.textTertiary.opacity(0.55))
-                    .frame(width: 42, height: 5)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 9)
-                    .contentShape(Rectangle())
-                    .onTapGesture { dismissKeyboard() }
-                    .gesture(
-                        DragGesture(minimumDistance: 6)
-                            .onEnded { if $0.translation.height > 8 { dismissKeyboard() } }
-                    )
-                    .accessibilityLabel("fechar teclado")
-                    .accessibilityAddTraits(.isButton)
-            }
+            liveExecutionSection
+            queueChipSection
+            keyboardGrabber
             AttachmentStrip(
                 drafts: model.drafts,
                 reduceMotion: reduceMotion,
