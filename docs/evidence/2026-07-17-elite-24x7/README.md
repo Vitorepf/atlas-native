@@ -7,9 +7,9 @@ Plano: `docs/plano-elite-agentica-24x7.md` · design: `docs/superpowers/specs/20
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits no tip (`git rev-list --count HEAD`) | **339** após este push (era 338) | inclui histórico completo do repo |
-| Commits à frente de `origin/main` | **38** após este push (era 37) | trabalho Elite + peels nesta branch |
-| `polish(ui)` / `feat(ui)` nesta branch | **21** após este push (era 20) | casca Fable / Grok |
+| Commits no tip (`git rev-list --count HEAD`) | **343** (era 338 no início desta entrega UI) | inclui histórico completo do repo; peels Core concorrentes incluídos |
+| Commits à frente de `origin/main` | **42** (era 37) | trabalho Elite + peels nesta branch |
+| `polish(ui)` / `feat(ui)` nesta branch | **21** (era 20) | casca Fable / Grok — SHA UI `a037aa7` |
 
 Contagens capturadas no cloud agent Linux em 2026-07-17; revalidar com `git rev-list` no Mac se a branch avançar.
 
