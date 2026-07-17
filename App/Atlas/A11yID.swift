@@ -37,6 +37,13 @@ enum A11yID {
     static let autonomosAwaitingYou = "autonomos-awaiting-you"
     static let autonomosDetailSheet = "autonomos-detail-sheet"
     static let autonomosDetailButtonPrefix = "autonomos-detail-button-"
+    static let autonomosFleetEmpty = "autonomos-fleet-empty"
+    static let autonomosFleetQuiet = "autonomos-fleet-quiet"
+    static let autonomosFleetHistoryEmpty = "autonomos-fleet-history-empty"
+    static let autonomosDigestSection = "autonomos-digest-section"
+    static let autonomosDigestEmpty = "autonomos-digest-empty"
+    static let autonomosOperationQuiet = "autonomos-operation-quiet"
+    static let autonomosTransferSheet = "autonomos-transfer-sheet"
 
     static let codeStatus = "code-status"
     static let codeGraphTruncated = "code-graph-truncated"

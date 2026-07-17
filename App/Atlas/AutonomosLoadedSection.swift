@@ -29,7 +29,12 @@ struct AutonomosLoadedSection: View {
                     .transition(.opacity.combined(with: .move(edge: .top)))
                 }
                 AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
-                if let fleet = model.fleet { AutonomosFleetSummary(fleet: fleet) }
+                if let fleet = model.fleet {
+                    AutonomosFleetSummary(
+                        fleet: fleet,
+                        incidentPresent: model.taskHealth?.incidents.present == true
+                    )
+                }
                 if let digest = model.digest {
                     AutonomosNextDigestSection(digest: digest)
                 }
@@ -80,7 +85,7 @@ struct AutonomosLoadedSection: View {
                 if let health = model.taskHealth {
                     AutonomosTaskHealthSection(health: health)
                 }
-                if let history = model.fleetHistory, !history.events.isEmpty {
+                if let history = model.fleetHistory {
                     AutonomosFleetHistorySection(history: history)
                 }
                 if let error = model.controlError {

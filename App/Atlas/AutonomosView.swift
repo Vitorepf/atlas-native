@@ -63,8 +63,11 @@ struct AutonomosView: View {
             }
         }
         .sheet(isPresented: $showTransferSheet) {
-            AutonomosReasonSheet(title: "Transferir missão",
-                                 explainer: "A fonte entrega a MESMA missão no próximo limite seguro; o alvo só existe quando reivindicar o lock.") { actor, reason in
+            AutonomosTransferSheet(
+                areaName: model.selectedArea?.areaName ?? "",
+                focus: model.selectedArea?.focus ?? "",
+                placement: model.live?.runtimePlacement
+            ) { actor, reason in
                 Task { await model.transfer(operatorActor: actor, reason: reason) }
             }
         }

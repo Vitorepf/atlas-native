@@ -4,12 +4,28 @@ import AtlasCore
 /// Frota global — agentes reais, saúde da fila, histórico e handoff (C13).
 struct AutonomosFleetSummary: View {
     let fleet: AtlasAutonomosFleetResponse
+    var incidentPresent: Bool = false
+
+    private var isQuiet: Bool {
+        AutonomosFleetHealth.isQuiet(fleet: fleet, incidentPresent: incidentPresent)
+    }
 
     var body: some View {
-        HStack(spacing: 8) {
-            FleetMetric(value: "\(fleet.agents.count)", label: "agentes registrados")
-            FleetMetric(value: "\(fleet.agents.filter(\.alive).count)", label: "vivos agora")
-            FleetMetric(value: "\(fleet.activeCount)", label: "ativos")
+        if fleet.agents.isEmpty {
+            AutonomosFleetEmptyState(kind: .noAgents)
+        } else if isQuiet {
+            Text("\(fleet.agents.count) agente\(fleet.agents.count == 1 ? "" : "s") · \(fleet.activeCount) ativo\(fleet.activeCount == 1 ? "" : "s") · silêncio")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityLabel("frota quieta, \(fleet.agents.count) agentes, \(fleet.activeCount) ativos")
+                .accessibilityIdentifier(A11yID.autonomosFleetQuiet)
+        } else {
+            HStack(spacing: 8) {
+                FleetMetric(value: "\(fleet.agents.count)", label: "agentes registrados")
+                FleetMetric(value: "\(fleet.agents.filter(\.alive).count)", label: "vivos agora")
+                FleetMetric(value: "\(fleet.activeCount)", label: "ativos")
+            }
         }
     }
 }
@@ -20,47 +36,67 @@ struct AutonomosFleetSection: View {
     var incidentPresent: Bool = false
     var auditModeEnabled: Bool = false
 
+    private var isQuiet: Bool {
+        AutonomosFleetHealth.isQuiet(fleet: fleet, incidentPresent: incidentPresent)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Silêncio = produto: sem incidente, caption baixa; alerta só quando a fila declara.
-            AutonomosChrome.sectionCaption(incidentPresent ? "FROTA · ATENÇÃO" : "frota")
-            ForEach(fleet.agents) { agent in
-                VStack(alignment: .leading, spacing: 5) {
-                    HStack(spacing: 8) {
-                        Circle().fill(agent.alive ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
-                            .frame(width: 7, height: 7)
-                        Text(agent.label).font(.system(.footnote, weight: .semibold))
-                            .foregroundStyle(AtlasTheme.textPrimary)
-                        Spacer()
-                        Text(agent.status).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    HStack(spacing: 10) {
-                        if let up = agent.uptimeSeconds { AutonomosChrome.tag("↑ " + AutonomosChrome.uptime(up)) }
-                        if !agent.pids.isEmpty { AutonomosChrome.tag("\(agent.pids.count) pid\(agent.pids.count == 1 ? "" : "s")") }
-                        if let spent = agent.spentUsd { AutonomosChrome.tag(String(format: "US$ %.2f", spent)) }
-                        AutonomosChrome.tag(agent.desired ? "desejado" : "não desejado")
-                        AutonomosChrome.tag(agent.authorized ? "autorizado" : "não autorizado")
-                    }
-                    if auditModeEnabled {
-                        HStack(spacing: 6) {
-                            AutonomosChrome.tag(agent.account)
-                            AutonomosChrome.tag(agent.kind)
-                            if let ttl = agent.ttlRemainingSeconds { AutonomosChrome.tag("ttl \(ttl)s") }
-                            if let budget = agent.budgetLimitUsd { AutonomosChrome.tag(String(format: "limite %.2f", budget)) }
-                            if let target = agent.targetRef?.nonEmpty { AutonomosChrome.tag(target) }
-                        }
-                        if let reason = agent.reason?.nonEmpty {
-                            Text(reason)
-                                .font(.caption2)
-                                .foregroundStyle(AtlasTheme.textTertiary)
-                                .lineLimit(2)
-                        }
-                    }
+            if fleet.agents.isEmpty {
+                AutonomosFleetEmptyState(kind: .noAgents)
+            } else {
+                AutonomosChrome.sectionCaption(incidentPresent ? "FROTA · ATENÇÃO" : "frota")
+                if isQuiet && !auditModeEnabled {
+                    Text("todos vivos · desejados · autorizados")
+                        .font(AtlasFont.mono(11))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityLabel("frota saudável, todos vivos desejados e autorizados")
                 }
-                .padding(12)
-                .atlasCard(cornerRadius: 12)
+                ForEach(fleet.agents) { agent in
+                    agentRow(agent, compact: isQuiet && !auditModeEnabled && !AutonomosFleetHealth.agentNeedsAttention(agent))
+                }
             }
         }
+    }
+
+    @ViewBuilder
+    private func agentRow(_ agent: AtlasAutonomosFleetAgent, compact: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            HStack(spacing: 8) {
+                Circle().fill(agent.alive ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
+                    .frame(width: 7, height: 7)
+                Text(agent.label).font(.system(.footnote, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Spacer()
+                Text(agent.status).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+            }
+            if !compact {
+                HStack(spacing: 10) {
+                    if let up = agent.uptimeSeconds { AutonomosChrome.tag("↑ " + AutonomosChrome.uptime(up)) }
+                    if !agent.pids.isEmpty { AutonomosChrome.tag("\(agent.pids.count) pid\(agent.pids.count == 1 ? "" : "s")") }
+                    if let spent = agent.spentUsd { AutonomosChrome.tag(String(format: "US$ %.2f", spent)) }
+                    AutonomosChrome.tag(agent.desired ? "desejado" : "não desejado")
+                    AutonomosChrome.tag(agent.authorized ? "autorizado" : "não autorizado")
+                }
+            }
+            if auditModeEnabled {
+                HStack(spacing: 6) {
+                    AutonomosChrome.tag(agent.account)
+                    AutonomosChrome.tag(agent.kind)
+                    if let ttl = agent.ttlRemainingSeconds { AutonomosChrome.tag("ttl \(ttl)s") }
+                    if let budget = agent.budgetLimitUsd { AutonomosChrome.tag(String(format: "limite %.2f", budget)) }
+                    if let target = agent.targetRef?.nonEmpty { AutonomosChrome.tag(target) }
+                }
+                if let reason = agent.reason?.nonEmpty {
+                    Text(reason)
+                        .font(.caption2)
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .lineLimit(2)
+                }
+            }
+        }
+        .padding(12)
+        .atlasCard(cornerRadius: 12)
     }
 }
 
@@ -110,13 +146,16 @@ struct AutonomosFleetHistorySection: View {
     let history: AtlasAutonomosFleetHistoryResponse
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // A legenda conta o total: mostrar 6 de N sem dizer N faz o operador
-            // ler "6" como "tudo". Nada cortado em silêncio.
-            AutonomosChrome.sectionCaption(history.events.count > 6
-                           ? "HISTÓRICO DA FROTA · 6 DE \(history.events.count)"
-                           : "HISTÓRICO DA FROTA")
-            ForEach(Array(history.events.prefix(6).enumerated()), id: \.element.id) { index, event in
+        if history.events.isEmpty {
+            AutonomosFleetEmptyState(kind: .noHistory)
+        } else {
+            VStack(alignment: .leading, spacing: 8) {
+                // A legenda conta o total: mostrar 6 de N sem dizer N faz o operador
+                // ler "6" como "tudo". Nada cortado em silêncio.
+                AutonomosChrome.sectionCaption(history.events.count > 6
+                               ? "HISTÓRICO DA FROTA · 6 DE \(history.events.count)"
+                               : "HISTÓRICO DA FROTA")
+                ForEach(Array(history.events.prefix(6).enumerated()), id: \.element.id) { index, event in
                 HStack(alignment: .top, spacing: 10) {
                     VStack(spacing: 0) {
                         Circle()
@@ -155,6 +194,7 @@ struct AutonomosFleetHistorySection: View {
                 }
                 .padding(.vertical, 4)
             }
+            }
         }
     }
 }
@@ -165,21 +205,41 @@ struct AutonomosTransferStatus: View {
     let onRefresh: () -> Void
 
     var body: some View {
-        HStack(spacing: 10) {
-            Text(transfer.handoff.status)
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
-            if let note = transfer.note {
-                Text(note).font(.caption).foregroundStyle(AtlasTheme.textSecondary).lineLimit(2)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                Text(transfer.handoff.status)
+                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
+                Spacer()
+                Button(action: onRefresh) {
+                    Image(systemName: "arrow.clockwise").font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                }
+                .accessibilityLabel("atualizar status da transferência")
             }
-            Spacer()
-            Button(action: onRefresh) {
-                Image(systemName: "arrow.clockwise").font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+            HStack(spacing: 6) {
+                AutonomosChrome.tag(transfer.handoff.focus)
+                if let host = transfer.handoff.source.host?.nonEmpty {
+                    AutonomosChrome.tag("fonte \(host)")
+                }
+                if transfer.isTargetClaimed, let host = transfer.handoff.target.host?.nonEmpty {
+                    AutonomosChrome.tag("alvo \(host)")
+                }
+            }
+            if let note = transfer.note {
+                Text(note).font(.caption).foregroundStyle(AtlasTheme.textSecondary).lineLimit(3)
+            }
+            if !transfer.isTargetClaimed {
+                Text("Alvo ainda desconhecido — só aparece após target_claimed.")
+                    .font(AtlasFont.serifItalic(12))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .padding(12)
         .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.goldVeil))
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("transferência \(transfer.handoff.status)")
     }
 }
 
