@@ -5,7 +5,7 @@ import AtlasCore
 ///
 /// Contrato visual: `docs/proposals/atlas-code-mobile.html` (tela M0).
 /// Ask seed → AtlasCodeView+Ask.swift · Init → +Init · Toolbar → +Toolbar
-/// Sheets → AtlasCodeView+SheetsBind.swift
+/// Sheets → AtlasCodeView+SheetsBind.swift · Chrome → AtlasCodeView+Chrome.swift
 struct AtlasCodeView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -30,19 +30,13 @@ struct AtlasCodeView: View {
 
     var body: some View {
         codeSheetsBind(
-            ZStack(alignment: .bottom) {
-                AtlasTheme.bg.ignoresSafeArea()
-                content
-                askPill
-            }
-            .navigationTitle("Grafo")
-            .navigationBarTitleDisplayMode(.inline)
-            .accessibilityIdentifier(A11yID.codeScreen)
-            .accessibilityLabel(spokenCodeScreenLabel())
-            .accessibilityHint(Self.codeScreenHint)
-            .toolbar { codeToolbar }
-            .task { if model.phase == .idle { await model.load() } }
-            .task { await mirrorModel.refresh() }
+            codeScreenChrome(
+                ZStack(alignment: .bottom) {
+                    AtlasTheme.bg.ignoresSafeArea()
+                    content
+                    askPill
+                }
+            )
         )
     }
 }

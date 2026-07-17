@@ -3,7 +3,7 @@ import SwiftUI
 // Design system CANÔNICO do Atlas (dark) — slate teal warm "Codex canon" + atlas
 // gold. Portado 1:1 dos tokens do app original (atlas-app/design/tokens.ts).
 // NÃO é preto: o canvas é #1d2b34 (slate teal), o acento é #d4a85a (atlas gold).
-// Card/Color → AtlasTheme+Card.swift
+// Card/Color → AtlasTheme+Card.swift · Domain/Space → AtlasTheme+Domain.swift
 enum AtlasTheme {
     // Superfícies (z-axis por profundidade de slate teal)
     static let bg = Color(hex: 0x1D2B34)          // canvas principal
@@ -26,13 +26,4 @@ enum AtlasTheme {
     static let goldBorder = Color(hex: 0xD4A85A, alpha: 0.34)
     static let prussian = Color(hex: 0x7FA7C4)      // info / azul (vivo em AtlasMarkdownView)
     static let alert = Color(hex: 0xE08C8C)         // exceção/regressão
-
-    // Cores de domínio com uso real na casca
-    static let domOperacional = Color(hex: 0x9B7A3F) // bronze
-    static let domAutonomos = Color(hex: 0x6FA06A)   // verde (moss clareado p/ dark)
-
-    enum Space {
-        static let screen: CGFloat = 20
-        static let row: CGFloat = 16
-    }
 }

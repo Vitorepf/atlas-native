@@ -6,6 +6,7 @@ import AtlasCore
 // Age helpers → AtlasWidgetViews+Age.swift
 // Container → AtlasWidgetViews+Container.swift
 // Install → AtlasWidgetViews+Install.swift
+// Load → AtlasWidgetViews+Load.swift
 
 struct SnapshotEntry: TimelineEntry {
     let date: Date
@@ -18,17 +19,11 @@ struct SnapshotProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SnapshotEntry) -> Void) {
-        completion(SnapshotEntry(date: .now, snapshot: Self.load()))
+        completion(SnapshotEntry(date: .now, snapshot: SnapshotProviderLoad.load()))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<SnapshotEntry>) -> Void) {
-        let entry = SnapshotEntry(date: .now, snapshot: Self.load())
+        let entry = SnapshotEntry(date: .now, snapshot: SnapshotProviderLoad.load())
         completion(Timeline(entries: [entry], policy: .after(.now.addingTimeInterval(30 * 60))))
-    }
-
-    private static func load() -> AtlasNativeSnapshot? {
-        guard let file = AtlasNativeSnapshotStore.appGroupFileURL() else { return nil }
-        guard let data = try? Data(contentsOf: file) else { return nil }
-        return try? JSONDecoder.atlasNativeSnapshotDecoder().decode(AtlasNativeSnapshot.self, from: data)
     }
 }

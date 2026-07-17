@@ -1,7 +1,7 @@
 import Foundation
 
 extension A11yID {
-    // Helpers → A11yID+CodeHelpers.swift
+    // Helpers → A11yID+CodeHelpers.swift · Radar → A11yID+CodeRadar.swift
     static let codeStatus = "code-status"
     static let codeGraphTruncated = "code-graph-truncated"
     static let codeGraphFilters = "code-graph-filters"
@@ -25,17 +25,4 @@ extension A11yID {
     static let codeHealUndo = "code-heal-undo"
     static let codeMirror = "code-mirror"
     static let codeWeek = "code-week"
-    static let radarScreen = "code-radar"
-    static let codeScreen = "code-screen"
-    static let radarLoading = "code-radar-loading"
-    static let radarFailure = "code-radar-failure"
-    static let codeLoadFailure = "code-load-failure"
-    static let codeLoadRetry = "code-load-retry"
-    static let radarStatus = "radar-status"
-    static let radarRecents = "radar-recents"
-    static let radarFolders = "radar-folders"
-    static let radarLoose = "radar-loose"
-    static let radarRepoPrefix = "radar-repo-"
-    static let radarFolderPrefix = "radar-folder-"
-    static let codeCommitPrefix = "code-commit-"
 }

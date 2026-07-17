@@ -5,7 +5,7 @@ import AtlasCore
 // (Tudo / Operacional / Autônomos / Programação). Título em Fraunces serif.
 // Vazio ≠ offline: falha de rede usa a mesma voz da home (`AtlasFailureCopy`).
 // Chrome: +Chrome · lista: +Scroll · spoken: +A11y · empty: WorkspaceEmptyStates
-// Predicates → WorkspaceView+Predicates.swift
+// Predicates → WorkspaceView+Predicates.swift · Screen chrome → WorkspaceView+Chrome.swift
 struct WorkspaceView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
@@ -18,22 +18,20 @@ struct WorkspaceView: View {
     @State var area: AtlasArea = .tudo
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            AtlasTheme.bg.ignoresSafeArea()
-            VStack(spacing: 0) {
-                header
-                if !showsNetworkFailure && !showsLoadingShell {
-                    areaFilter
+        workspaceScreenChrome(
+            ZStack(alignment: .bottom) {
+                AtlasTheme.bg.ignoresSafeArea()
+                VStack(spacing: 0) {
+                    header
+                    if !showsNetworkFailure && !showsLoadingShell {
+                        areaFilter
+                    }
+                    listView
                 }
-                listView
+                if !showsNetworkFailure && !showsLoadingShell {
+                    newPill
+                }
             }
-            if !showsNetworkFailure && !showsLoadingShell {
-                newPill
-            }
-        }
-        .navigationBarHidden(true)
-        .accessibilityIdentifier(A11yID.workspaceScreen)
-        .accessibilityLabel(spokenWorkspaceScreenLabel())
-        .accessibilityHint(workspaceScreenHint)
+        )
     }
 }

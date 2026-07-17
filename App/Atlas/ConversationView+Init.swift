@@ -2,6 +2,8 @@ import SwiftUI
 import PhotosUI
 import AtlasCore
 
+// Seed → ConversationView+InitSeed.swift
+
 extension ConversationView {
     init(
         client: AtlasClient,
@@ -23,16 +25,13 @@ extension ConversationView {
         self.emptyPrompt = emptyPrompt
         self.emptySuggestions = emptySuggestions
         self.onThread = onThread
-        let model = ConversationModel(client: client, threadId: threadId)
-        model.turnFacts = turnFacts
-        model.taskKind = taskKind
-        if let workspace {
-            model.workspaceSlug = workspace
-            model.workspaceName = workspace
-        }
-        if !draft.isEmpty {
-            model.updateDraft(draft)
-        }
-        _model = State(initialValue: model)
+        _model = State(initialValue: Self.seededModel(
+            client: client,
+            threadId: threadId,
+            taskKind: taskKind,
+            workspace: workspace,
+            draft: draft,
+            turnFacts: turnFacts
+        ))
     }
 }
