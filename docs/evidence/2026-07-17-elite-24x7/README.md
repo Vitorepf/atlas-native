@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **486+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLVI tip `8a0d2b0` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **488+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLVII tip `dcb90af` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLVI (este tip)
+## Entrega Elite CXXXXXLVII (este tip)
+
+- `refactor(ui)` CICLO B: Island+QueueChip; Failure+FailureHost; Plan+StepRowDotSpine; Timeline+A11ySilence; Timers+TimersA11y; Signature+SignatureGate; Header+HeaderBack; Queue+QueueChipLabel; Seal+SealCaption; Home+A11yHomeScreen; Live+Titles; Strip+A11yExtras. Tip `dcb90af`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLVI (anterior)
 
 - `refactor(ui)` CICLO B: Arena+A11yHeader/+A11ySheetLabel; Now+RowCopy; Area+A11yChrome; History+Loaded; Live+A11yPhase; Findings+FindingFields; Self+VetoLabel/+ProofChrome; Fleet+A11yChrome; Workspace+ChromeFilterLabel; Island+TrailingBadge. Tip `8a0d2b0`.
 - Zero App/Widgets >100; zero Route nova.
