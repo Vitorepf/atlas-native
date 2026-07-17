@@ -63,15 +63,21 @@ struct LiveNowRow: View {
     }
 
     private var remoteBadge: some View {
-        Text("em outra superfície")
-            .font(AtlasFont.mono(9))
-            .tracking(0.4)
-            .foregroundStyle(AtlasTheme.accent)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 3)
-            .background(Capsule().fill(AtlasTheme.goldVeil))
-            .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
-            .accessibilityIdentifier(remoteBadgeID ?? "")
+        HStack(spacing: 4) {
+            Image(systemName: "arrow.triangle.branch")
+                .font(.system(size: 8, weight: .semibold))
+            Text("remota")
+                .font(AtlasFont.mono(9))
+                .tracking(0.4)
+        }
+        .foregroundStyle(AtlasTheme.accent)
+        .padding(.horizontal, 6)
+        .padding(.vertical, 3)
+        .background(Capsule().fill(AtlasTheme.goldVeil))
+        .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("sessão remota em outra superfície")
+        .accessibilityIdentifier(remoteBadgeID ?? "")
     }
 
     private var timingWord: String {
@@ -125,7 +131,7 @@ struct LiveNowRow: View {
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .monospacedDigit()
-                .contentTransition(.numericText())
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
             }
         case .paused:
             Text(Self.formatClock(
@@ -137,7 +143,7 @@ struct LiveNowRow: View {
             .font(AtlasFont.serifItalic(13))
             .foregroundStyle(AtlasTheme.textSecondary)
             .monospacedDigit()
-            .contentTransition(.numericText())
+            .modifier(NumericTextTransition(enabled: !reduceMotion))
         case .finished:
             EmptyView()
         }
@@ -162,7 +168,7 @@ struct LiveNowRow: View {
     }
 
     private var remoteSuffix: String {
-        session.isRemote ? ", em outra superfície" : ""
+        session.isRemote ? ", sessão remota em outra superfície" : ""
     }
 
     private func isLongPaused(now: Date) -> Bool {
@@ -193,5 +199,18 @@ struct LiveNowRow: View {
         return s >= 3600
             ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
             : String(format: "%d:%02d", s / 60, s % 60)
+    }
+}
+
+/// Numeric text morph só quando Reduce Motion está desligado.
+private struct NumericTextTransition: ViewModifier {
+    let enabled: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.contentTransition(.numericText())
+        } else {
+            content
+        }
     }
 }

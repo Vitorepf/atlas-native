@@ -57,7 +57,7 @@ struct LockAccessorySnapshotView: View {
                     .font(.system(size: 11, design: .monospaced))
                     .foregroundStyle(Ink.alert)
             } else {
-                Text(snapshot.liveSessions?.first?.phaseTitle ?? "Atlas em silêncio")
+                Text(snapshot.liveSessions?.first?.phaseTitle ?? "silêncio na obra")
                     .font(.system(size: 13, weight: .semibold, design: .serif))
                     .lineLimit(1)
                 Text(stale ? "visto \(snapshot.ageText(at: entry.date))" : rectangularSubtitle(snapshot))
@@ -69,7 +69,7 @@ struct LockAccessorySnapshotView: View {
 
     private func rectangularSubtitle(_ snapshot: AtlasNativeSnapshot) -> String {
         guard let sessions = snapshot.liveSessions, let first = sessions.first else {
-            return "0 sessões vivas"
+            return "nenhuma sessão viva agora"
         }
         if first.timing == .paused { return "‖ pausado" }
         if let ms = first.elapsedActiveMs {
@@ -154,15 +154,15 @@ struct LiveSessionWidgetView: View {
                             .background(Capsule().fill(Ink.gold))
                     }
                 } else if let delivery = snapshot.fleet?.lastDelivery {
-                    Text("nada executando")
+                    Text("silêncio na obra")
                         .font(.system(size: 17, weight: .semibold, design: .serif))
                     Text("última concluída \(delivery.mergeHash.prefix(7))")
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundStyle(Ink.ink2)
                 } else {
-                    Text("nada executando")
+                    Text("silêncio na obra")
                         .font(.system(size: 17, weight: .semibold, design: .serif))
-                    Text("abra o Atlas para atualizar")
+                    Text("nenhuma sessão viva agora")
                         .font(.system(size: 12, design: .serif))
                         .foregroundStyle(Ink.ink2)
                 }
