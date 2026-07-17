@@ -12,18 +12,27 @@ extension AtlasCodeView {
                     Text("A semana")
                         .font(AtlasFont.serif(18, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
                     Spacer()
                     Text(week.window)
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
                 }
-                HStack(spacing: 18) {
-                    weekMetric("commits", value: week.commits)
-                    weekMetric("curas", value: week.heals)
-                    weekMetric("prevenidas", value: week.prevented)
+                if AtlasCodeWeekUI.isQuiet(week) {
+                    Text("semana quieta · sem commits nem curas")
+                        .font(AtlasFont.serifItalic(13))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                } else {
+                    HStack(spacing: 18) {
+                        if week.commits > 0 { weekMetric("commits", value: week.commits) }
+                        if week.heals > 0 { weekMetric("curas", value: week.heals) }
+                        if week.prevented > 0 { weekMetric("prevenidas", value: week.prevented) }
+                    }
                 }
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel("A semana: \(week.commits) commits, \(week.heals) curas, \(week.prevented) prevenidas")
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.28), value: week.commits + week.heals + week.prevented)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(AtlasCodeWeekUI.spokenLabel(week))
+                .accessibilityIdentifier(A11yID.codeWeek)
             }
 
             if model.hasHealReceipt {
@@ -49,6 +58,8 @@ extension AtlasCodeView {
                     )
                 }
                 .accessibilityIdentifier(A11yID.codeHealReceipt)
+                .accessibilityLabel("curado sozinho, ver recibo de cura")
+                .accessibilityHint("abre os passos registrados pelo servidor")
             }
         }
     }

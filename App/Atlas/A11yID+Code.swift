@@ -7,6 +7,8 @@ extension A11yID {
     static let codeGraphWorktrees = "code-graph-worktrees"
     static let codeGraphFilterPrefix = "code-graph-filter-"
     static let codeHealReceipt = "code-heal-receipt"
+    static let codeHealReceiptSheet = "code-heal-receipt-sheet"
+    static let codeHealStepPrefix = "code-heal-step-"
     static let codeAskAnchorNote = "code-ask-anchor-note"
     static let codeAskClear = "code-ask-clear"
     static let codeAskPill = "code-ask-pill"
@@ -21,6 +23,7 @@ extension A11yID {
     static let codeHealUndoWindow = "code-heal-undo-window"
     static let codeHealUndo = "code-heal-undo"
     static let codeMirror = "code-mirror"
+    static let codeWeek = "code-week"
     static let radarStatus = "radar-status"
     static let radarRecents = "radar-recents"
     static let radarFolders = "radar-folders"
@@ -33,6 +36,7 @@ extension A11yID {
     static func radarFolder(_ slug: String) -> String { radarFolderPrefix + slug }
     static func codeCommit(hashPrefix: String) -> String { codeCommitPrefix + hashPrefix }
     static func codeGraphFilter(_ raw: String) -> String { codeGraphFilterPrefix + raw }
+    static func codeHealStep(_ index: Int) -> String { codeHealStepPrefix + String(index) }
     static func whyRow(_ index: Int) -> String { whyRowPrefix + String(index) }
     static func whyFileRow(_ index: Int) -> String { whyFileRowPrefix + String(index) }
 }
