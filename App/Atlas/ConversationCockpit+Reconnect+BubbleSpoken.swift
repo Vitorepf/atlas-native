@@ -1,7 +1,8 @@
 import Foundation
 import AtlasCore
 
-// Reconnect spoken + icon — peel de ConversationCockpit+Reconnect+Bubble.
+// Reconnect spoken — peel de ConversationCockpit+Reconnect+Bubble.
+// Icon → ConversationCockpit+Reconnect+BubbleIcon.swift
 
 extension ChatBubble {
     var reconnectSpokenLabel: String {
@@ -17,11 +18,5 @@ extension ChatBubble {
             parts.append("tempo ativo \(ExecutionStateCard.clock(ms))")
         }
         return parts.isEmpty ? "reconectando" : parts.joined(separator: ". ")
-    }
-
-    var reconnectBannerIcon: String {
-        executionPresentationState?.kind == .recovering
-            ? "arrow.triangle.2.circlepath"
-            : "wifi.exclamationmark"
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Narrative text stack — peel de LiveTimeline+NarrativeBody.
+// Detail → LiveTimeline+NarrativeDetail.swift
 
 extension NarrativeRowView {
     var narrativeTextStack: some View {
@@ -13,13 +14,7 @@ extension NarrativeRowView {
                     : AtlasTheme.textTertiary)
                 .lineLimit(row.style == .intent ? 3 : 2)
                 .accessibilityHidden(true)
-            if let detail = row.detail, !detail.isEmpty {
-                Text(detail).font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(row.style == .intent ? 2 : 1)
-                    .truncationMode(.middle)
-                    .accessibilityHidden(true)
-            }
+            narrativeDetailLine
             narrativeDurationMeta
         }
         .padding(.bottom, 10)

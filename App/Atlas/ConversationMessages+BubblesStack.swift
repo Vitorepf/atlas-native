@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Messages LazyVStack — peel de ConversationMessages+List.
+// Bottom → ConversationMessages+BubblesBottom.swift
 // A11y → ConversationMessages+BubblesA11y.swift
 
 extension ConversationMessages {
@@ -16,11 +17,7 @@ extension ConversationMessages {
                     bubbleRow(bubble)
                     changeReviewChip(for: bubble)
                 }
-                Color.clear.frame(height: 96).id("bottom")
-                    .background(GeometryReader { geo in
-                        Color.clear.preference(key: BottomDistanceKey.self,
-                                               value: geo.frame(in: .global).minY)
-                    })
+                bubblesBottomAnchor
             }
         )
     }

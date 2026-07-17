@@ -12,14 +12,8 @@ extension PlanCard {
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(plan.title)
             Spacer(minLength: 0)
-            // C10 / cena 02: N/M só com checkpoint real — nunca 0/M fabricado.
             if let progress = bubble.executionProgress {
-                Text("\(progress.current)/\(progress.total)")
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
-                    .monospacedDigit()
-                    .modifier(NumericTextTransition(enabled: !reduceMotion))
-                    .accessibilityLabel(spokenProgressBadge(progress))
-                    .accessibilityIdentifier(A11yID.planProgress)
+                planHeaderProgress(progress)
             }
         }
         .accessibilityElement(children: .contain)

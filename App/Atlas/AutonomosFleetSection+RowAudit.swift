@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Audit tags — peel de AutonomosFleetSection+RowTags.
+// Reason → AutonomosFleetSection+RowAuditReason.swift
 
 extension AutonomosFleetSection {
     @ViewBuilder
@@ -15,13 +16,7 @@ extension AutonomosFleetSection {
                 if let target = agent.targetRef?.nonEmpty { AutonomosChrome.tag(target) }
             }
             .accessibilityHidden(true)
-            if let reason = agent.reason?.nonEmpty {
-                Text(reason)
-                    .font(.caption2)
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(2)
-                    .accessibilityHidden(true)
-            }
+            agentAuditReason(agent)
         }
     }
 }

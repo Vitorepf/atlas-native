@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Ask pill leading content — peel de AtlasCodeView+AskPillContent.
+// Trailing → AtlasCodeView+AskPillTrailing.swift
 
 extension AtlasCodeView {
     var askPillLeading: some View {
@@ -18,10 +19,7 @@ extension AtlasCodeView {
                 .accessibilityIdentifier(A11yID.codeAskAnchorNote)
             Spacer(minLength: 0)
             askPillClearButton
-            Image(systemName: "chevron.up")
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .accessibilityHidden(true)
+            askPillTrailingChevron
         }
     }
 }

@@ -3,6 +3,7 @@ import ActivityKit
 import AtlasCore
 
 // Timer text branches — peel de AtlasTurnWidget+Timer.
+// Elapsed → AtlasTurnWidget+TimerElapsed.swift
 
 extension AtlasTurnWidgetTimer {
     @ViewBuilder
@@ -16,9 +17,5 @@ extension AtlasTurnWidgetTimer {
         } else {
             Text(startedAt, style: .timer)
         }
-    }
-
-    func elapsedMs(now: Date) -> Int {
-        Int(max(0, now.timeIntervalSince(startedAt)) * 1000)
     }
 }

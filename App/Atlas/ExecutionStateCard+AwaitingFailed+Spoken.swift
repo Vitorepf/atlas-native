@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Spoken awaiting/failed — peel de ExecutionStateCard+AwaitingFailed.
+// Actions → ExecutionStateCard+AwaitingFailed+SpokenActions.swift
 // Failure → ExecutionStateCard+AwaitingFailed+Failure.swift
 
 extension ExecutionStateCard {
@@ -18,11 +19,7 @@ extension ExecutionStateCard {
         if let checkpoint = state.checkpoint { parts.append("checkpoint \(checkpoint)") }
         if let fragment = spokenTimerFragment { parts.append(fragment) }
         if let deadline = publishedExternalDeadline { parts.append("próxima mudança \(deadline)") }
-        if !state.actions.isEmpty {
-            parts.append("\(state.actions.count) ação\(state.actions.count == 1 ? "" : "ões") disponíveis")
-        } else if showsRetryFallback {
-            parts.append("retomar disponível")
-        }
+        if let action = spokenActionFragment { parts.append(action) }
         return parts.joined(separator: ". ")
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Running clock — peel de LiveNowRow+Clock.
+// Paused → LiveNowRow+ClockPaused.swift
 // Style → LiveNowRow+ClockStyle.swift
 
 extension LiveNowRow {
@@ -14,14 +15,5 @@ extension LiveNowRow {
                 paused: false
             ))
         }
-    }
-
-    func pausedClock(now: Date) -> some View {
-        clockText(Self.formatClock(
-            elapsedMs: session.elapsedActiveMs,
-            runningSince: nil,
-            now: now,
-            paused: true
-        ))
     }
 }
