@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Search field leading — peel de SearchView+HeaderField.
+// Placeholder → SearchView+HeaderFieldPlaceholder.swift
 
 extension SearchViewHeader {
     var searchFieldLeading: some View {
@@ -10,10 +11,7 @@ extension SearchViewHeader {
                 .font(.system(size: 15)).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             ZStack(alignment: .leading) {
-                Text("Buscar conversas")
-                    .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
-                    .opacity(query.isEmpty ? 1 : 0).allowsHitTesting(false)
-                    .accessibilityHidden(true)
+                searchFieldPlaceholder
                 TextField("", text: $query)
                     .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
                     .tint(AtlasTheme.accent).focused($focused)

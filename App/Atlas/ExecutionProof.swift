@@ -7,6 +7,7 @@ import AtlasCore
 // Header → ExecutionProof+Header.swift
 // Chrome → ExecutionProof+Chrome.swift
 // Gate → ExecutionProof+ShouldDisplay.swift
+// Stack → ExecutionProof+Stack.swift
 struct ExecutionProof: View {
     let bubble: ChatBubble
     var artifactItems: [AtlasTraceArtifacts.Item] = []
@@ -16,13 +17,6 @@ struct ExecutionProof: View {
     @State var replayIndex = 0
 
     var body: some View {
-        proofChrome {
-            VStack(alignment: .leading, spacing: 0) {
-                collapsedHeader
-                if open {
-                    expandedProofContent
-                }
-            }
-        }
+        proofChrome { proofStack }
     }
 }

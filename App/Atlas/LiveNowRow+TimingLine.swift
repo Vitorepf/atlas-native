@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Timing line — peel de LiveNowRow+Timing.
+// Pause → LiveNowRow+TimingPause.swift
 
 extension LiveNowRow {
     func timingLine(now: Date) -> some View {
@@ -18,11 +19,7 @@ extension LiveNowRow {
                 clockView(now: now)
                     .accessibilityLabel(clockAccessibilityLabel(now: now))
             }
-            if session.timing == .paused, let age = pauseAgeHours(now: now) {
-                Text("· há \(age)h")
-                    .font(AtlasFont.serifItalic(12))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-            }
+            timingPauseAge(now: now)
         }
     }
 }

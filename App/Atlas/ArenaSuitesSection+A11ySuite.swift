@@ -3,6 +3,7 @@ import AtlasCore
 
 // Spoken suite row — peel de ArenaSuitesSectionA11y.
 // Spark → ArenaSuitesSection+A11ySpark.swift
+// Measured → ArenaSuitesSection+A11yMeasured.swift
 
 extension ArenaSuitesSectionA11y {
     static func spokenSuite(_ suite: AtlasArenaSuite) -> String {
@@ -14,13 +15,7 @@ extension ArenaSuitesSectionA11y {
             parts.append("regressão detectada")
         }
         if suite.isMeasured {
-            parts.append(suite.arenaSubtitleText)
-            if let engine = suite.engines.first, let score = engine.score {
-                parts.append("score \(ArenaFormat.score(score))")
-            }
-            if hasSparkline(for: suite) {
-                parts.append("histórico com pontos medidos")
-            }
+            parts.append(contentsOf: spokenMeasuredParts(suite))
         } else {
             parts.append("não medida")
         }

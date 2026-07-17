@@ -3,6 +3,7 @@ import AtlasCore
 
 // Linha visual da auditoria — peel de PlanCard+Audit.
 // Status → PlanCard+AuditStatus.swift
+// Caption → PlanCard+AuditCaption.swift
 
 extension PlanCard {
     func auditTerminalCopy(
@@ -10,11 +11,7 @@ extension PlanCard {
         progress: AtlasExecutionPlan.Progress
     ) -> some View {
         HStack(spacing: 6) {
-            Text("AUDITORIA")
-                .font(AtlasFont.mono(9))
-                .tracking(0.8)
-                .foregroundStyle(AtlasTheme.domOperacional)
-                .accessibilityHidden(true)
+            auditCaption
             Text("planejado \(plan.steps.count) · executado \(min(progress.current, progress.total))/\(progress.total)")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)

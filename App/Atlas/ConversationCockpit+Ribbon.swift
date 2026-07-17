@@ -5,6 +5,7 @@ import AtlasCore
 // a ORQUESTRA (cada agente/provider/modelo + status), o estágio do Atlas Decide,
 // e um botão Stop. Cursor mostra 1 agente; o Atlas mostra a máquina inteira.
 // Lanes → ConversationCockpit+RibbonLanes.swift
+// Decide → ConversationCockpit+RibbonDecide.swift
 struct ExecutionRibbon: View {
     let bubble: ChatBubble
     let reduceMotion: Bool
@@ -17,10 +18,7 @@ struct ExecutionRibbon: View {
                 LiveTimeline(activities: bubble.activities, reduceMotion: reduceMotion)
             }
             agentLanes
-            if let strat = bubble.decideStrategy {
-                Text("atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
-            }
+            decideStrategyLine
         }
         .padding(.vertical, 10).padding(.horizontal, 14)
         .atlasCard(cornerRadius: 12, fillOpacity: 0.5)
