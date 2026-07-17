@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXVII — CICLO C AwaitingYou + NarrativeRow + PlanRevisions** · este commit · CICLO C: AutonomosAwaitingYou — contagem/copy decorativos; hint chips. NarrativeRow — título/detail silenciados sob spoken. PlanRevisionCompare — comparison `children: .ignore`. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Awaiting 96 Narrative 86 Revisions 40; `rg Aprovar`=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXVI — CICLO C ComposerToolbar residual honesty** · este commit · CICLO C: attach RM haptic+hint; placeholder decorativo; input spoken; processing diamond silenciado; menu workspace/modo/esforço RM+spoken. Shells Toolbar 62 Trailing 72 A11y 63≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Toolbar 62 Trailing 72 A11y 63; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXV — CICLO C Composer + ArenaRun Controls + ReviewRunActions** · este commit · CICLO C: ConversationComposer — spoken card expandido/anexos/fila/enviando; peel `+Card` (66) `+A11y` (20); shell 49≤100. ArenaRun Controls — receipt/toggle textos silenciados; section header. ChangeReviewRunActions — RM haptic accept/reject. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Composer 49 Card 66 Controls 89 RunActions 71; `rg Aprovar`=0; device-pending.

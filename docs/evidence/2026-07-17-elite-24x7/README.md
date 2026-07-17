@@ -14,7 +14,7 @@ Ondas **L–LXVI** (pós-XLIX): peels CICLO C/D residuais contínuos — Compose
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **268+** | primeiro commit do plano: `ec931f2`; LVI–LXVI em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **271+** | primeiro commit do plano: `ec931f2`; LVI–LXVII em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
