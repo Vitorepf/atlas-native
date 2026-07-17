@@ -26,10 +26,10 @@ struct ChangeReviewDiffView: View {
                             .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
                     }
                     if response.patch.hashMatches == false {
-                        Text("atenção: o hash do diff não confere com o artefato registrado")
-                            .font(.caption).foregroundStyle(AtlasTheme.domOperacional)
+                        ChangeReviewHashWarning()
                     }
                 }
+                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             } else if !loadSettled {
                 TraceEvidenceLoading(text: "carregando diff…", reduceMotion: reduceMotion)
                     .frame(maxWidth: .infinity)

@@ -27,8 +27,28 @@ extension A11yID {
     static let reviewFindingsSection = "review-findings-section"
     static let reviewFindingAxisPrefix = "review-finding-axis-"
     static let reviewFindingRowPrefix = "review-finding-row-"
+    static let reviewHashWarning = "review-hash-warning"
+    static let reviewRunAccept = "review-run-accept"
+    static let reviewRunReject = "review-run-reject"
+    static let reviewPatchDiffPrefix = "review-patch-diff-"
+    static let reviewFileRowPrefix = "review-file-row-"
+    static let reviewFileAcceptPrefix = "review-file-accept-"
+    static let reviewFileRejectPrefix = "review-file-reject-"
     static func reviewFindingAxis(_ axis: String) -> String { reviewFindingAxisPrefix + axis.lowercased() }
     static func reviewFindingRow(_ id: String) -> String { reviewFindingRowPrefix + id }
+    static func reviewPatchDiff(_ patchId: String) -> String { reviewPatchDiffPrefix + patchId }
+    private static func reviewFileKey(patchId: String, filePath: String) -> String {
+        patchId + "-" + filePath.replacingOccurrences(of: "/", with: "--")
+    }
+    static func reviewFileRow(patchId: String, filePath: String) -> String {
+        reviewFileRowPrefix + reviewFileKey(patchId: patchId, filePath: filePath)
+    }
+    static func reviewFileAccept(patchId: String, filePath: String) -> String {
+        reviewFileAcceptPrefix + reviewFileKey(patchId: patchId, filePath: filePath)
+    }
+    static func reviewFileReject(patchId: String, filePath: String) -> String {
+        reviewFileRejectPrefix + reviewFileKey(patchId: patchId, filePath: filePath)
+    }
 
     // V4 · Artifacts & Proof
     static let artifactsRow = "artifacts-row"
@@ -36,6 +56,9 @@ extension A11yID {
     static let artifactsEmpty = "artifacts-empty"
     static let artifactsUnavailable = "artifacts-unavailable"
     static let artifactsLoadFailure = "artifacts-load-failure"
+    static let artifactsMount = "artifacts-mount"
+    static let artifactsMountCheckPrefix = "artifacts-mount-check-"
+    static func artifactsMountCheck(_ index: Int) -> String { artifactsMountCheckPrefix + String(index) }
     static let artifactsItemPrefix = "artifacts-item-"
     static func artifactsItem(_ index: Int) -> String { artifactsItemPrefix + String(index) }
 

@@ -10,6 +10,9 @@ struct ChangeReviewPatchCard: View {
     let traceId: TraceID
     let patch: AtlasTraceChangeReview.Patch
     @Binding var expandedDiffPatch: String?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var diffExpanded: Bool { expandedDiffPatch == patch.id }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -17,15 +20,11 @@ struct ChangeReviewPatchCard: View {
                 Text("PATCH \(String(patch.id.prefix(8)))")
                     .font(AtlasFont.mono(10)).tracking(0.8).foregroundStyle(AtlasTheme.textTertiary)
                 Spacer()
-                Button(expandedDiffPatch == patch.id ? "Fechar diff" : "Ver diff") {
-                    if expandedDiffPatch == patch.id {
-                        expandedDiffPatch = nil
-                    } else {
-                        expandedDiffPatch = patch.id
-                        Task { await reviews.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID) }
-                    }
-                }
-                .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.accent)
+                Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
+                    .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.accent)
+                    .accessibilityLabel(diffExpanded ? "fechar diff do patch" : "ver diff do patch")
+                    .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
+                    .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
             }
             ForEach(patch.changedFiles + patch.createdFiles + patch.deletedFiles, id: \.self) { file in
                 ChangeReviewFileRow(reviews: reviews, traceId: traceId, patch: patch, file: file)
@@ -39,52 +38,22 @@ struct ChangeReviewPatchCard: View {
                     }
                 }
             }
-            if expandedDiffPatch == patch.id {
+            if diffExpanded {
                 ChangeReviewDiffView(reviews: reviews, traceId: traceId, patch: patch)
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         }
         .padding(14)
         .atlasCard()
-    }
-}
-
-struct ChangeReviewFileRow: View {
-    let reviews: ChangeReviewModel
-    let traceId: TraceID
-    let patch: AtlasTraceChangeReview.Patch
-    let file: String
-
-    private var decided: AtlasTraceChangeReview.FileReview? {
-        patch.fileReviews.first { $0.filePath == file }
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: diffExpanded)
     }
 
-    var body: some View {
-        HStack(spacing: 8) {
-            Text((file as NSString).lastPathComponent)
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
-            if patch.createdFiles.contains(file) {
-                Text("novo").font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domAutonomos)
-            } else if patch.deletedFiles.contains(file) {
-                Text("removido").font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domOperacional)
-            }
-            Spacer()
-            if let decided {
-                Text(decided.action == .accept ? "aceito" : "rejeitado")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(decided.action == .accept ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
-            } else {
-                Button("aceitar") {
-                    Task { await reviews.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
-                                                             filePath: file, action: .accept) }
-                }
-                .font(.system(.caption, weight: .medium)).foregroundStyle(AtlasTheme.accent)
-                Button("rejeitar") {
-                    Task { await reviews.applyChangeReviewFile(traceId: traceId, patchId: patch.patchID,
-                                                             filePath: file, action: .reject) }
-                }
-                .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
-            }
+    private func toggleDiff() {
+        if diffExpanded {
+            expandedDiffPatch = nil
+        } else {
+            expandedDiffPatch = patch.id
+            Task { await reviews.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID) }
         }
-        .padding(.vertical, 3)
     }
 }

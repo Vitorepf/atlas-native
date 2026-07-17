@@ -31,6 +31,7 @@ struct ChangeReviewCouncilMemberRow: View {
                     Text("hash \(String(hash.prefix(12)))")
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityLabel("hash de resposta, \(String(hash.prefix(12)))")
                 }
                 if let code = member.errorCode {
                     Text(code)
@@ -45,5 +46,19 @@ struct ChangeReviewCouncilMemberRow: View {
                 }
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(councilSpoken)
+    }
+
+    private var councilSpoken: String {
+        var parts = [member.provider]
+        if let model = member.model { parts.append(model) }
+        parts.append(member.succeeded ? "concluído" : "falhou")
+        if let hash = member.responseHash {
+            parts.append("hash de resposta \(String(hash.prefix(12)))")
+        }
+        if let code = member.errorCode { parts.append("erro \(code)") }
+        if let latency = member.latencyMs { parts.append("\(latency) milissegundos") }
+        return parts.joined(separator: ", ")
     }
 }

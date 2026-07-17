@@ -8,6 +8,7 @@ struct ChangeReviewRunActions: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
     @Binding var applying: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let available = review.review.availableActions
@@ -23,6 +24,10 @@ struct ChangeReviewRunActions: View {
                             .padding(.horizontal, 18).padding(.vertical, 10)
                             .background(Capsule().fill(AtlasTheme.accent))
                     }
+                    .buttonStyle(PressableScale())
+                    .accessibilityLabel("aceitar todos os arquivos e concluir revisão")
+                    .accessibilityHint("aceita cada arquivo capturado e depois conclui o run")
+                    .accessibilityIdentifier(A11yID.reviewRunAccept)
                 }
                 if available.contains(.reject) {
                     Button {
@@ -35,11 +40,30 @@ struct ChangeReviewRunActions: View {
                             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
                             .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
                     }
+                    .buttonStyle(PressableScale())
+                    .accessibilityLabel("rejeitar revisão inteira")
+                    .accessibilityHint("rejeita o run de engenharia desta execução")
+                    .accessibilityIdentifier(A11yID.reviewRunReject)
                 }
-                if applying { ProgressView().tint(AtlasTheme.accent) }
+                if applying { applyingIndicator }
             }
             .disabled(applying)
             .padding(.top, 4)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: applying)
+        }
+    }
+
+    @ViewBuilder
+    private var applyingIndicator: some View {
+        if reduceMotion {
+            Text("registrando…")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityLabel("registrando decisão")
+        } else {
+            ProgressView()
+                .tint(AtlasTheme.accent)
+                .accessibilityLabel("registrando decisão")
         }
     }
 }
