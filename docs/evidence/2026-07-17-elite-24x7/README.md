@@ -8,13 +8,13 @@ Blackboard: `OBRA.md` §4 Elite E0–E-D
 
 Execução **contínua e automática** por decisão do operador (plano Elite 24×7). O agente avança ondas desbloqueadas sem esperar checkpoint humano; bloqueios externos ficam registrados honestamente abaixo.
 
-Ondas **L–LV** (pós-XLIX): peels CICLO C residuais de a11y/honestidade em Autônomos carregado, radar Code, composer/cockpit, primitivos motion e Arena índice — sem checkpoint humano entre ondas.
+Ondas **L–LVI** (pós-XLIX): peels CICLO C residuais de a11y/honestidade em Autônomos carregado, radar Code, composer/cockpit, primitivos motion, Arena índice, WorkspaceRow/ThreadRow, Markdown lista/citação, Artifact preview — sem checkpoint humano entre ondas.
 
 ## Commit count (honest, this environment)
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **237** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **239+** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7`; LVI em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -32,7 +32,7 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **E-A5** | **IN_PROGRESS** | `atlas://arena`; lock `queueLabel`; Island SD-2 + expanded fila **PARCIAL** (`a45fe54`); LockScreen/WidgetViews peels |
 | **E-A6** | **PENDING** | Device unlock + prints U1–U10 — **operador** |
 | **E-B** | **PARCIAL** | Peels contínuos App+Core; **zero >100**; max 100 (3 empatados); patamar ≤100 atingido |
-| **E-C** | **IN_PROGRESS** | Frota quieta; Island ATT/EXT/FAIL + fila; awaiting/failed (`b41d880`); Council/LiveTimeline a11y (`41c9d21`/`717f2d0`); Artifact/ChangeReview; LiveNow/Radar residual |
+| **E-C** | **IN_PROGRESS** | Frota quieta; Island ATT/EXT/FAIL + fila; awaiting/failed; Council/LiveTimeline; Artifact/ChangeReview; LiveNow/Radar; **LVI** WorkspaceRow/ThreadRow + Markdown blocks + FlowChips + Artifact/ArenaEngine |
 | **E-D** | **IN_PROGRESS** | `AtlasTime.formatActiveDuration` canônico; empty/loading dups → `AtlasNetworkFailureEmpty`/`AtlasEditorialGlyphEmpty`/`AutonomosCardEmptyState`/`WorkspaceLoadingEmpty` |
 
 ### Blockers (honesto)
