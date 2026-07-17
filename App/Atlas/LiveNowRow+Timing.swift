@@ -124,16 +124,3 @@ extension LiveNowRow {
             : String(format: "%d:%02d", s / 60, s % 60)
     }
 }
-
-/// Numeric text morph só quando Reduce Motion está desligado.
-struct NumericTextTransition: ViewModifier {
-    let enabled: Bool
-
-    func body(content: Content) -> some View {
-        if enabled {
-            content.contentTransition(.numericText())
-        } else {
-            content
-        }
-    }
-}

@@ -17,6 +17,12 @@ enum TraceEvidenceCopy {
             return reason.replacingOccurrences(of: "_", with: " ")
         }
     }
+
+    static func unavailableSpoken(prefix: String, reason: String?) -> String {
+        var parts = [prefix]
+        if let reason = unavailableReason(reason) { parts.append(reason) }
+        return parts.joined(separator: ", ")
+    }
 }
 
 enum ArtifactViewer {

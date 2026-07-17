@@ -97,7 +97,7 @@ struct NarrativeRowView: View {
                             .font(AtlasFont.mono(10))
                             .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
                             .monospacedDigit()
-                            .modifier(LiveTimelineNumericTransition(enabled: !reduceMotion))
+                            .modifier(NumericTextTransition(enabled: !reduceMotion))
                         if row.isP90 {
                             Text("p90")
                                 .font(AtlasFont.mono(9))
@@ -125,19 +125,6 @@ struct NarrativeRowView: View {
         if let detail = row.detail, !detail.isEmpty { parts.append(detail) }
         if isCurrent { parts.append("passo atual") }
         return parts.joined(separator: ", ")
-    }
-}
-
-/// Numeric text morph só quando Reduce Motion está desligado.
-struct LiveTimelineNumericTransition: ViewModifier {
-    let enabled: Bool
-
-    func body(content: Content) -> some View {
-        if enabled {
-            content.contentTransition(.numericText())
-        } else {
-            content
-        }
     }
 }
 

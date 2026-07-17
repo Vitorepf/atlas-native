@@ -20,7 +20,10 @@ extension ArtifactSheet {
                 title: "Sem artefatos nesta execução.",
                 subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
                 identifier: A11yID.artifactsUnavailable,
-                spoken: unavailableSpokenLabel
+                spoken: TraceEvidenceCopy.unavailableSpoken(
+                    prefix: "sem artefatos nesta execução",
+                    reason: artifacts?.reason
+                )
             )
         } else if items.isEmpty {
             evidenceEmpty(
@@ -145,14 +148,6 @@ extension ArtifactSheet {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spoken)
         .accessibilityIdentifier(identifier)
-    }
-
-    var unavailableSpokenLabel: String {
-        var parts = ["sem artefatos nesta execução"]
-        if let reason = TraceEvidenceCopy.unavailableReason(artifacts?.reason) {
-            parts.append(reason)
-        }
-        return parts.joined(separator: ", ")
     }
 
     func load(_ item: AtlasTraceArtifacts.Item) async {

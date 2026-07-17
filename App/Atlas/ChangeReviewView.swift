@@ -57,7 +57,10 @@ struct ChangeReviewSheet: View {
                     title: "Sem revisão de mudanças nesta execução.",
                     subtitle: TraceEvidenceCopy.unavailableReason(review.reason),
                     identifier: A11yID.reviewUnavailable,
-                    spoken: unavailableSpoken(review)
+                    spoken: TraceEvidenceCopy.unavailableSpoken(
+                        prefix: "sem revisão de mudanças nesta execução",
+                        reason: review.reason
+                    )
                 )
             case .available:
                 if Self.hasReviewSurface(review) {
@@ -142,14 +145,6 @@ struct ChangeReviewSheet: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spoken)
         .accessibilityIdentifier(identifier)
-    }
-
-    private func unavailableSpoken(_ review: AtlasTraceChangeReview) -> String {
-        var parts = ["sem revisão de mudanças nesta execução"]
-        if let reason = TraceEvidenceCopy.unavailableReason(review.reason) {
-            parts.append(reason)
-        }
-        return parts.joined(separator: ", ")
     }
 
     /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.

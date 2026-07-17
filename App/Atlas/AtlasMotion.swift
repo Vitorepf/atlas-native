@@ -35,6 +35,19 @@ struct BreathingDiamond: View {
 }
 
 // Botão com press-scale spring (tato físico). Reduce Motion = sem pulse/scale.
+/// Numeric text morph só quando Reduce Motion está desligado.
+struct NumericTextTransition: ViewModifier {
+    let enabled: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.contentTransition(.numericText())
+        } else {
+            content
+        }
+    }
+}
+
 struct PressableScale: ButtonStyle {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 

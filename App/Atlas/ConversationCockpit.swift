@@ -49,7 +49,7 @@ struct ExecutingStrip: View {
                 Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
-                    .modifier(LiveTimelineNumericTransition(enabled: !reduceMotion))
+                    .modifier(NumericTextTransition(enabled: !reduceMotion))
                     .lineLimit(1)
             }
             // C18: pílula +N −M só quando o servidor mediu shortstat no workspace.

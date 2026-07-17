@@ -82,12 +82,12 @@ private struct ArenaEngineIndexRow: View {
                     .font(AtlasFont.mono(18))
                     .foregroundStyle(engine.composite == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
                     .monospacedDigit()
-                    .modifier(ArenaNumericTransition(enabled: !reduceMotion))
+                    .modifier(NumericTextTransition(enabled: !reduceMotion))
                 Text(ArenaFormat.signed(engine.delta))
                     .font(AtlasFont.mono(12))
                     .foregroundStyle(deltaColor(engine.delta))
                     .monospacedDigit()
-                    .modifier(ArenaNumericTransition(enabled: !reduceMotion))
+                    .modifier(NumericTextTransition(enabled: !reduceMotion))
             }
             HStack(spacing: 10) {
                 metric("c/Atlas", ArenaFormat.score(engine.withAtlasComposite), color: metricColor(engine.withAtlasComposite))
@@ -166,17 +166,5 @@ private struct ArenaCompositeChart: View {
         .chartXAxis(.hidden)
         .chartYAxis { AxisMarks(position: .leading) }
         .accessibilityLabel("histórico do índice \(engine.engine)")
-    }
-}
-
-private struct ArenaNumericTransition: ViewModifier {
-    let enabled: Bool
-
-    func body(content: Content) -> some View {
-        if enabled {
-            content.contentTransition(.numericText())
-        } else {
-            content
-        }
     }
 }

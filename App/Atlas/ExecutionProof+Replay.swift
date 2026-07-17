@@ -38,7 +38,7 @@ extension ExecutionProof {
                     Text("\(index + 1)/\(stamped.count)")
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
-                        .modifier(LiveTimelineNumericTransition(enabled: !reduceMotion))
+                        .modifier(NumericTextTransition(enabled: !reduceMotion))
                 }
                 Text(selected.activity.title)
                     .font(.system(.caption, weight: .semibold))
