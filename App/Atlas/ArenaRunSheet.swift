@@ -41,11 +41,13 @@ struct ArenaRunSheet: View {
                         Text(error)
                             .font(.system(.callout))
                             .foregroundStyle(AtlasTheme.alert)
-                            .accessibilityLabel("erro: \(error)")
+                            .accessibilityLabel(spokenErrorLabel(error))
+                            .transition(reduceMotion ? .identity : .opacity)
                     }
 
                     if let receipt = model.lastStartReceipt {
                         receiptCard(receipt)
+                            .transition(reduceMotion ? .identity : .opacity.combined(with: .offset(y: 8)))
                     }
 
                     Button {
@@ -62,9 +64,12 @@ struct ArenaRunSheet: View {
                     .foregroundStyle(input.isLocallyValidForSubmission ? AtlasTheme.accent : AtlasTheme.textTertiary)
                     .disabled(!input.isLocallyValidForSubmission)
                     .accessibilityIdentifier(A11yID.arenaRunSubmit)
-                    .accessibilityHint(input.isLocallyValidForSubmission ? "envia medição governada" : "preencha ator, motivo, suites, motor e braços")
+                    .accessibilityLabel(spokenSubmitLabel(input: input, enginesEmpty: engines.isEmpty))
+                    .accessibilityHint(spokenSubmitHint(input: input, enginesEmpty: engines.isEmpty))
                 }
                 .padding(AtlasTheme.Space.screen)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.lastStartReceipt?.receiptHash)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.controlError)
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Rodar medição")
@@ -79,7 +84,9 @@ struct ArenaRunSheet: View {
             if selectedSuites.isEmpty, let first = installedSuites.first?.suite {
                 selectedSuites.insert(first)
             }
-            if selectedEngine.isEmpty {
+            if engines.isEmpty {
+                selectedEngine = ""
+            } else if selectedEngine.isEmpty {
                 selectedEngine = engines.first ?? ""
             }
         }

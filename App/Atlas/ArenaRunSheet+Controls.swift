@@ -22,17 +22,8 @@ extension ArenaRunSheet {
         .padding(14)
         .atlasCard()
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(receiptAccessibilityLabel(receipt))
+        .accessibilityLabel(spokenReceiptLabel(receipt))
         .accessibilityIdentifier(A11yID.arenaRunReceipt)
-    }
-
-    func receiptAccessibilityLabel(_ receipt: AtlasArenaStartReceipt) -> String {
-        var parts = ["recibo \(receipt.receiptHash)"]
-        parts.append(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
-        if receipt.workerImplemented == false {
-            parts.append("worker de medição ainda não implementado")
-        }
-        return parts.joined(separator: ", ")
     }
 
     func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
@@ -67,6 +58,7 @@ extension ArenaRunSheet {
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel(toggleAccessibilityLabel(title: title, subtitle: subtitle, isOn: isOn))
+        .accessibilityAddTraits(isOn ? .isSelected : [])
     }
 
     func toggleAccessibilityLabel(title: String, subtitle: String?, isOn: Bool) -> String {

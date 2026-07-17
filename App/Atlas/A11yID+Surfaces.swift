@@ -14,6 +14,8 @@ extension A11yID {
     static let arenaRunReason = "arena-run-reason"
     static let arenaRunSubmit = "arena-run-submit"
     static let arenaRunReceipt = "arena-run-receipt"
+    static let arenaRunEnginesEmpty = "arena-run-engines-empty"
+    static let arenaRunSuitesEmpty = "arena-run-suites-empty"
     static let arenaSuiteSheet = "arena-suite-sheet"
     static let arenaEngineSheet = "arena-engine-sheet"
 

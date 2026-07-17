@@ -9,7 +9,8 @@ extension ArenaRunSheet {
                 Text("nenhuma suite com adapter instalado")
                     .font(.system(.subheadline))
                     .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityLabel("nenhuma suite com adapter instalado")
+                    .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)
+                    .accessibilityLabel(spokenEmptySuites())
             } else {
                 ForEach(installedSuites) { suite in
                     toggleRow(
@@ -30,7 +31,8 @@ extension ArenaRunSheet {
                 Text("nenhum motor publicado")
                     .font(.system(.subheadline))
                     .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityLabel("nenhum motor publicado pelo servidor")
+                    .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
+                    .accessibilityLabel(spokenEmptyEngines())
             } else {
                 ForEach(engines, id: \.self) { engine in
                     toggleRow(title: engine, subtitle: nil, isOn: selectedEngine == engine) {
@@ -56,9 +58,11 @@ extension ArenaRunSheet {
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .accessibilityIdentifier(A11yID.arenaRunActor)
+                .accessibilityHint(spokenActorHint())
             TextField("motivo auditável", text: $reason, axis: .vertical)
                 .lineLimit(2...4)
                 .accessibilityIdentifier(A11yID.arenaRunReason)
+                .accessibilityHint(spokenReasonHint())
         }
         .textFieldStyle(.roundedBorder)
     }
