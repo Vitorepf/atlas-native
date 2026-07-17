@@ -12,20 +12,26 @@ struct PlanRevisionCompare: View {
         VStack(alignment: .leading, spacing: 10) {
             if let comparison = latestComparison, comparison.hasChanges {
                 VStack(alignment: .leading, spacing: 7) {
-                    Text("plano v\(comparison.revision.revision) arquivado → atual")
+                    Text("v\(comparison.revision.revision) arquivado → plano atual")
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
                     if !comparison.left.isEmpty {
-                        revisionList(label: "saíram", items: comparison.left)
+                        revisionList(label: "saíram", items: comparison.left, tone: .removed)
                     }
                     if !comparison.entered.isEmpty {
-                        revisionList(label: "entraram", items: comparison.entered)
+                        revisionList(label: "entraram", items: comparison.entered, tone: .added)
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(comparisonAccessibilityLabel(comparison))
             }
-            VStack(alignment: .leading, spacing: 8) {
-                ForEach(revisions) { rev in
-                    revisionArchiveRow(rev)
+            if revisions.contains(where: hasArchiveMetadata) {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(revisions) { rev in
+                        if hasArchiveMetadata(rev) {
+                            revisionArchiveRow(rev)
+                        }
+                    }
                 }
             }
         }
@@ -34,7 +40,7 @@ struct PlanRevisionCompare: View {
     private func revisionArchiveRow(_ rev: AtlasTraceGovernance.PlanRevision) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 6) {
-                Text("plano v\(rev.revision) arquivado")
+                Text("v\(rev.revision) arquivado")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
                 if let iteration = rev.iteration {
@@ -45,12 +51,14 @@ struct PlanRevisionCompare: View {
                 }
                 Spacer(minLength: 0)
             }
-            Text(rev.humanReason)
-                .font(.system(size: 12))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
+            if let reason = rev.reason, !reason.isEmpty {
+                Text(rev.humanReason)
+                    .font(.system(size: 12))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             if let archivedAt = rev.archivedAt {
-                Text(archivedAt)
+                Text(editorialArchivedAt(archivedAt))
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
@@ -63,10 +71,12 @@ struct PlanRevisionCompare: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("plano versão \(rev.revision) arquivado, \(rev.humanReason)")
+        .accessibilityLabel(revisionArchiveAccessibilityLabel(rev))
     }
 
-    private func revisionList(label: String, items: [String]) -> some View {
+    private enum RevisionTone { case removed, added }
+
+    private func revisionList(label: String, items: [String], tone: RevisionTone) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label.uppercased())
                 .font(AtlasFont.mono(9))
@@ -75,10 +85,47 @@ struct PlanRevisionCompare: View {
             ForEach(items, id: \.self) { item in
                 Text("• \(item)")
                     .font(.system(size: 12))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .foregroundStyle(tone == .removed ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
+                    .strikethrough(tone == .removed, color: AtlasTheme.textTertiary.opacity(0.7))
                     .lineLimit(2)
             }
         }
+    }
+
+    private func hasArchiveMetadata(_ rev: AtlasTraceGovernance.PlanRevision) -> Bool {
+        rev.reason?.isEmpty == false || rev.archivedAt != nil || !rev.stepTitles.isEmpty
+    }
+
+    private func editorialArchivedAt(_ raw: String) -> String {
+        if let tIndex = raw.firstIndex(of: "T") {
+            return String(raw[..<tIndex])
+        }
+        return raw
+    }
+
+    private func comparisonAccessibilityLabel(_ comparison: RevisionComparison) -> String {
+        var parts = ["comparação do plano, versão \(comparison.revision.revision) arquivada"]
+        if !comparison.left.isEmpty {
+            parts.append("\(comparison.left.count) passos saíram")
+        }
+        if !comparison.entered.isEmpty {
+            parts.append("\(comparison.entered.count) passos entraram")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    private func revisionArchiveAccessibilityLabel(_ rev: AtlasTraceGovernance.PlanRevision) -> String {
+        var parts = ["plano versão \(rev.revision) arquivado"]
+        if let reason = rev.reason, !reason.isEmpty {
+            parts.append(rev.humanReason)
+        }
+        if let archivedAt = rev.archivedAt {
+            parts.append("em \(editorialArchivedAt(archivedAt))")
+        }
+        if !rev.stepTitles.isEmpty {
+            parts.append("\(rev.stepTitles.count) passos")
+        }
+        return parts.joined(separator: ", ")
     }
 
     private var latestComparison: RevisionComparison? {

@@ -57,20 +57,25 @@ struct ConversationOutlineRow: View {
 
 struct ConversationHandoffReceipt: View {
     let handoff: AtlasAiSurfaceHandoff
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var isReady: Bool { handoff.status == "ready" }
+    private var isPending: Bool { handoff.status == "pending" }
 
     var body: some View {
         HStack(spacing: 9) {
-            Image(systemName: "arrow.triangle.2.circlepath")
+            Image(systemName: isReady ? "checkmark.circle.fill" : "arrow.triangle.2.circlepath")
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(handoff.status == "ready" ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                .foregroundStyle(isReady ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                .symbolEffect(.rotate, isActive: isPending && !reduceMotion)
             VStack(alignment: .leading, spacing: 2) {
-                Text("Continuidade enviada para \(surfaceLabel(handoff.toSurface))")
+                Text(headline)
                     .font(.system(.footnote, weight: .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text("\(handoff.status) · mesma thread \(String(handoff.threadId.prefix(8)))")
+                Text(subline)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1)
+                    .lineLimit(2)
             }
             Spacer(minLength: 0)
         }
@@ -82,15 +87,35 @@ struct ConversationHandoffReceipt: View {
         .padding(.top, 2)
         .padding(.bottom, 8)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("recibo de continuidade para \(surfaceLabel(handoff.toSurface)), status \(handoff.status)")
+        .accessibilityLabel(accessibilitySummary)
     }
 
-    private func surfaceLabel(_ raw: String) -> String {
-        switch raw {
-        case "atlas_desktop": return "Mac"
-        case "atlas_terminal": return "Terminal"
-        default: return raw
+    private var headline: String {
+        let dest = atlasSurfaceLabel(handoff.toSurface)
+        if isReady { return "Pronto no \(dest)" }
+        if isPending { return "Enviando para o \(dest)…" }
+        return "Continuidade para \(dest)"
+    }
+
+    private var subline: String {
+        let route = "\(atlasSurfaceLabel(handoff.fromSurface)) → \(atlasSurfaceLabel(handoff.toSurface))"
+        let thread = editorialThreadPrefix(handoff.threadId)
+        if isReady {
+            return "\(route) · mesma thread \(thread)"
         }
+        return "\(atlasHandoffStatusEditorial(handoff.status)) · \(route) · thread \(thread)"
+    }
+
+    private var accessibilitySummary: String {
+        let dest = atlasSurfaceLabel(handoff.toSurface)
+        let thread = editorialThreadPrefix(handoff.threadId)
+        if isReady {
+            return "continuidade pronta no \(dest), mesma thread \(thread)"
+        }
+        if isPending {
+            return "continuidade enviando para o \(dest), mesma thread \(thread)"
+        }
+        return "recibo de continuidade para \(dest), \(atlasHandoffStatusEditorial(handoff.status)), thread \(thread)"
     }
 }
 
@@ -134,6 +159,31 @@ struct NewSinceLastVisitMarker: View {
         .accessibilityIdentifier(A11yID.conversationNewMarker)
         .accessibilityLabel("novo desde a última visita")
     }
+}
+
+// MARK: - Continuity copy (presentation-only; sem contrato novo)
+
+func atlasSurfaceLabel(_ raw: String) -> String {
+    switch raw {
+    case "atlas_mobile": return "iPhone"
+    case "atlas_desktop": return "Mac"
+    case "atlas_terminal": return "Terminal"
+    default: return raw
+    }
+}
+
+func atlasHandoffStatusEditorial(_ status: String) -> String {
+    switch status {
+    case "ready": return "pronto"
+    case "pending": return "enviando"
+    default: return status
+    }
+}
+
+func editorialThreadPrefix(_ threadId: String) -> String {
+    let trimmed = threadId.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard trimmed.count > 12 else { return trimmed }
+    return String(trimmed.prefix(12)) + "…"
 }
 
 func atlasRelativeAgePT(since date: Date, now: Date = Date()) -> String {

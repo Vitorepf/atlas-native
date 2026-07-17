@@ -94,9 +94,8 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
             }
             .onChange(of: model.latestSurfaceHandoff?.id) {
                 guard let h = model.latestSurfaceHandoff, h.status == "ready" else { return }
-                let destino = h.toSurface == "atlas_desktop" ? "Mac"
-                            : h.toSurface == "atlas_terminal" ? "Terminal" : h.toSurface
-                model.toast = "Pronto para abrir no \(destino) — mesma conversa, mesma sessão."
+                let destino = atlasSurfaceLabel(h.toSurface)
+                model.toast = "Pronto no \(destino) — mesma conversa, mesma sessão."
             }
             .sheet(isPresented: $showAttachmentSheet) {
                 ComposerAttachmentsSheet(

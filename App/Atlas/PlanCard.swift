@@ -18,6 +18,12 @@ struct PlanCard: View {
     private var currentIndex: Int? { bubble.executionProgress?.current }
     private var isTerminal: Bool { bubble.executionProgress?.isTerminal == true }
     private var revisions: [AtlasTraceGovernance.PlanRevision] { bubble.planRevisions }
+    /// Só revisões com metadata real do servidor — ausência não vira “v1” nem motivo genérico.
+    private var meaningfulRevisions: [AtlasTraceGovernance.PlanRevision] {
+        revisions.filter { rev in
+            rev.reason?.isEmpty == false || rev.archivedAt != nil || !rev.stepTitles.isEmpty
+        }
+    }
 
     var body: some View {
         if let plan, !plan.steps.isEmpty {
@@ -43,7 +49,7 @@ struct PlanCard: View {
                     auditTerminalLine(plan: plan, progress: progress)
                 }
                 // C19 / cena 02: "comparar versões" só com planRevisions reais.
-                if !revisions.isEmpty {
+                if !meaningfulRevisions.isEmpty {
                     Button {
                         withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
                             showRevisions.toggle()
@@ -51,13 +57,13 @@ struct PlanCard: View {
                     } label: {
                         Text(showRevisions
                              ? "ocultar versões"
-                             : "comparar versões · \(revisions.count)")
+                             : "comparar versões · \(meaningfulRevisions.count)")
                             .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("comparar versões do plano")
                     if showRevisions {
-                        PlanRevisionCompare(plan: plan, revisions: revisions)
+                        PlanRevisionCompare(plan: plan, revisions: meaningfulRevisions)
                             .transition(reduceMotion ? .identity : .opacity)
                     }
                 }
