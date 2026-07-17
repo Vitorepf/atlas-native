@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **548** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXVII tip `0030f45` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **550** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXVIII tip `0811e16` |
 | Commits no tip (`git rev-list --count HEAD`) | 552 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXXVII (este tip)
+## Entrega Elite CXXXXXLXXXVIII (este tip)
+
+- `polish(ui)` CICLO B: Markdown Table `+DataRows`; InlineMark `+Text`; ArtifactPreviewState; ArtifactSheet Lifecycle `+InitialTask/+SelectionSync/+PreviewTask`; MountCheckRow `+Texts`; ListRowLabel `+Leading`; ArenaRun ToggleLabel `+Symbol/+TitleStack`; ArenaSuite EngineCard `+Header`; CodeRadar A11yRepo `+Folder/+CommitAge`; CodeCommitRow A11y `+RowIdentity`; SpineNode `+ViolatingRing/+CoreDot`; GraphStateFilter Nodes `+TargetState`; PlanCard AuditCopy `+ProgressLine`; RootView MastheadTitle `+BrandRow/+AccentRule`; ComposerAttachments Paste `+FileOption`; AttachmentCopy `+Icon/+TextStack`; QueuedFollowUps Content `+MessageRows`; ArtifactViewer TraceEvidenceStack `+IconTitle/+Subtitle`; SelfConstruction VetoTextFields `+Actor/+Reason`; Widgets LiveSession A11yChrome `+SpokenBind`. Tip `0811e16`.
+- 29 peels · 49 arquivos · over100=0 · App/Atlas+Widgets swift=2130; App/Widgets swift=144; zero Route nova.
+
+## Entrega Elite CXXXXXLXXXVII (anterior)
 
 - `polish(ui)` CICLO B: ArenaRun Input `+InstalledSuites/+Engines/+Payload`; Markdown InlineMarkDecorated `+Code/+Link`; ArenaSuite EngineCaptions `+Cases/+Duration/+Sparkline`; MirrorCard Headline `+Healthy/+Blocked`; TaskHealth IncidentCard `+Texts/+Frame`; Provenance AskLabel `+Lead/+Trailing`; CodeGraph WeekHealLabel `+Lead/+Chevron`; AtlasArena Lifecycle `+A11y/+Tasks`; ArenaSuites RowBadges `+Title/+Regression`; ArtifactSheet Chrome `+Toolbar/+A11y`; OperationDigest Body `+Spoken/+Identifier`; Council Content `+Stack`; Digest A11yAggregate `+LastBody`; Widgets IslandMinimal `+Badge/+Progress/+Symbol`. Tip `0030f45`.
 - 29 peels · 43 arquivos · over100=0 · App/Atlas+Widgets swift=2101; App/Widgets swift=143; zero Route nova.
