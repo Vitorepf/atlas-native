@@ -27,22 +27,6 @@ public enum AtlasInteractionSteerEvent: String, Codable, Sendable, Equatable {
     case rejected = "steering_rejected"
 }
 
-public enum AtlasInteractionSteerDeliveryStatus: String, Codable, Sendable, Equatable {
-    case queuedForNextSafeCheckpoint = "queued_for_next_safe_checkpoint"
-    case notQueued = "not_queued"
-}
-
-public struct AtlasInteractionSteerDelivery: Codable, Sendable, Equatable {
-    public let status: AtlasInteractionSteerDeliveryStatus
-}
-
-public enum AtlasInteractionSteerRejectionReason: String, Codable, Sendable, Equatable, CaseIterable {
-    case instructionRequired = "instruction_required"
-    case invalidScope = "invalid_scope"
-    case traceWithoutThread = "trace_without_thread"
-    case noActiveJob = "no_active_job"
-}
-
 public struct AtlasInteractionSteerResponse: Decodable, Sendable, Equatable {
     public static let schemaVersion = "atlas.ai.interaction_steer.v1"
 

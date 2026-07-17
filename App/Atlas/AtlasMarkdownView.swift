@@ -65,33 +65,10 @@ struct AtlasMarkdownView: View {
             heading(level, spans)
 
         case .list(let ordered, let items):
-            VStack(alignment: .leading, spacing: 6) {
-                ForEach(Array(items.enumerated()), id: \.offset) { idx, item in
-                    HStack(alignment: .top, spacing: 0) {
-                        if ordered {
-                            Text("\(idx + 1).")
-                                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textSecondary)
-                                .frame(width: 26, alignment: .leading).padding(.top, 3)
-                        } else {
-                            Text("—")
-                                .font(.system(size: 16)).foregroundStyle(AtlasTheme.accent)
-                                .frame(width: 22, alignment: .leading)
-                        }
-                        Text(inline(item, base: .init(font: .system(size: 16), size: 16, color: AtlasTheme.textPrimary)))
-                            .lineSpacing(6)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-            }
+            listBlock(ordered: ordered, items: items)
 
         case .quote(let spans):
-            HStack(alignment: .top, spacing: 14) {
-                RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
-                Text(inline(spans, base: .init(font: AtlasFont.serifItalic(17), size: 17, color: AtlasTheme.textPrimary)))
-                    .lineSpacing(5)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .fixedSize(horizontal: false, vertical: true)
+            quoteBlock(spans)
 
         case .code(let codeText, let lang):
             CodeBlockView(code: codeText, lang: lang)

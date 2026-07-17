@@ -71,18 +71,10 @@ public func atlasAgentActivity(from event: AtlasAiStreamEvent) -> AtlasAgentActi
                         succeeded ? "Comando concluído" : "Comando terminou com falha")
     }
 
-    let classifier = "\(name) \(checkpoint)"
-    if classifier.contains("edit") || classifier.contains("write") || classifier.contains("patch") || classifier.contains("apply") {
-        return activity(.editing, "Editando arquivos", detail: pathDetail(metadata))
-    }
-    if classifier.contains("read") || classifier.contains("inspect") || classifier.contains("open") {
-        return activity(.reading, "Lendo arquivos", detail: pathDetail(metadata))
-    }
-    if classifier.contains("search") || classifier.contains("grep") || classifier.contains("find") {
-        return activity(.reading, "Buscando no projeto", detail: pathDetail(metadata))
-    }
-    if classifier.contains("verify") || classifier.contains("test") || classifier.contains("check") || classifier.contains("gate") {
-        return activity(.verifying, "Verificando o resultado")
+    if let classified = AtlasAgentActivity.classifierActivity(
+        from: event, metadata: metadata, name: name, checkpoint: checkpoint, id: id
+    ) {
+        return classified
     }
 
     switch checkpoint {

@@ -93,17 +93,4 @@ struct ExecutingStrip: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(stripAccessibilityLabel)
     }
-
-    private var stripAccessibilityLabel: String {
-        if bubble.showsReconnectSurface {
-            return bubble.reconnectSpokenLabel
-        }
-        if let p = bubble.executionProgress {
-            return "execução ao vivo, passo \(p.current) de \(p.total), \(p.title)"
-        }
-        if let act = bubble.currentActivity {
-            return "execução ao vivo, \(act.title), \(bubble.activities.count) eventos"
-        }
-        return "seguindo a execução, \(bubble.activities.count) eventos"
-    }
 }

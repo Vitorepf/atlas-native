@@ -2,6 +2,7 @@ import AtlasCore
 import SwiftUI
 
 /// M5 · Espelho — o que sairia do Mac, e o que a varredura encontrou.
+struct AtlasCodeMirrorCard: View {
     let response: AtlasCodeMirrorResponse
 
     var body: some View {
@@ -12,7 +13,6 @@ import SwiftUI
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Spacer()
                 if let host = response.mirror?.host {
-                    // Adaptador, não fundação: o host é uma nota de rodapé.
                     Text(host)
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
@@ -39,63 +39,5 @@ import SwiftUI
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
         .accessibilityIdentifier(A11yID.codeMirror)
-    }
-
-    @ViewBuilder
-    private var headline: some View {
-        switch response.state {
-        case .mirrored:
-            label("tudo espelhado · a verdade fica no Mac", color: AtlasTheme.textSecondary, icon: "checkmark")
-        case .pending(let commits):
-            label(
-                // A frase declara o FATO, não a promessa: nenhum código envia ao espelho
-                // hoje (o push governado ainda não existe). "o Atlas envia sozinho"
-                // afirmava um comportamento futuro como presente — e o operador
-                // confiava num backup que não acontece. Quando o envio governado
-                // existir (push + recibo + undo, a mecânica do veto já provada), a
-                // promessa volta. Até lá, dizer onde os commits ESTÃO é a verdade.
-                commits == 1 ? "1 commit ainda só no Mac" : "\(commits) commits ainda só no Mac",
-                color: AtlasTheme.textSecondary,
-                // Ícone de local, não de envio: seta para cima prometia o push
-                // que não existe. O commit ESTÁ no Mac; isso é onde, não para onde.
-                icon: "internaldrive"
-            )
-        case .blocked:
-            label("segredo detectado · nada sai da máquina", color: AtlasCodePalette.alert, icon: "exclamationmark.triangle")
-        case .noMirror:
-            label("sem espelho configurado", color: AtlasTheme.textTertiary, icon: "circle.dashed")
-        case .unknown:
-            label("espelho ainda não conhecido", color: AtlasTheme.textTertiary, icon: "questionmark.circle")
-        }
-    }
-
-    private func label(_ text: String, color: Color, icon: String) -> some View {
-        HStack(spacing: 7) {
-            Image(systemName: icon)
-                .font(.system(size: 10, weight: .semibold))
-            Text(text)
-                .font(.system(size: 12.5))
-        }
-        .foregroundStyle(color)
-    }
-
-    private var background: Color {
-        if case .blocked = response.state { return AtlasCodePalette.alert.opacity(0.05) }
-        return AtlasTheme.surface.opacity(0.4)
-    }
-
-    private var borderColor: Color {
-        if case .blocked = response.state { return AtlasCodePalette.alert.opacity(0.35) }
-        return AtlasTheme.separator
-    }
-
-    private var accessibilityText: String {
-        switch response.state {
-        case .mirrored: return "Espelho: tudo espelhado"
-        case .pending(let commits): return "Espelho: \(commits) commits ainda só no Mac"
-        case .blocked(let rules): return "Espelho bloqueado: segredo detectado, regras \(rules.joined(separator: ", "))"
-        case .noMirror: return "Espelho: nenhum configurado"
-        case .unknown: return "Espelho: não consegui ler o estado"
-        }
     }
 }
