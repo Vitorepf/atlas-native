@@ -11,6 +11,22 @@ enum A11yID {
     static let conversationOutlineRowPrefix = "conversation-outline-row-"
     static let homeWorkspaceChips = "home-workspace-chips"
     static let homeWorkspaceChipPrefix = "home-workspace-chip-"
+
+    // Busca (U7)
+    static let searchScreen = "search-screen"
+    static let searchField = "search-field"
+    static let searchClear = "search-clear"
+    static let searchRecentCaption = "search-recent-caption"
+    static let searchEmpty = "search-empty"
+    static let searchResultPrefix = "search-result-"
+
+    // Workspace (U4)
+    static let workspaceScreen = "workspace-screen"
+    static let workspaceEmpty = "workspace-empty"
+    static let workspaceOffline = "workspace-offline"
+    static let workspaceAreaFilter = "workspace-area-filter"
+    static let workspaceNewPill = "workspace-new-pill"
+
     static let executionReconnectBanner = "execution-reconnect-banner"
     static let executionSilenceWatchdog = "execution-silence-watchdog"
     static let executionReplayScrubber = "execution-replay-scrubber"
@@ -48,6 +64,7 @@ enum A11yID {
     static func conversationOutlineRow(_ index: Int) -> String { conversationOutlineRowPrefix + String(index) }
     static func homeWorkspaceChip(_ key: String) -> String { homeWorkspaceChipPrefix + key }
     static func autonomosDetailButton(_ key: String) -> String { autonomosDetailButtonPrefix + key }
+    static func searchResult(_ threadId: String) -> String { searchResultPrefix + threadId }
 
     // V2 · Proposta das 21h
     static let nightlyProposalCard = "nightly-proposal-card"

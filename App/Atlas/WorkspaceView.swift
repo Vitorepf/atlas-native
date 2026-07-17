@@ -3,9 +3,11 @@ import AtlasCore
 
 // Dentro de um workspace (repo): as conversas dele, com filtro de área no topo
 // (Tudo / Operacional / Autônomos / Programação). Título em Fraunces serif.
+// Vazio ≠ offline: falha de rede usa a mesma voz da home (`AtlasFailureCopy`).
 struct WorkspaceView: View {
     @Environment(AtlasSession.self) private var session
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let workspaceKey: String?
     let title: String
     /// Modo sem projeto: só conversas com workspace nulo (perguntas, pesquisas,
@@ -20,17 +22,37 @@ struct WorkspaceView: View {
         return area == .tudo ? base : base.filter { AtlasArea.of($0) == area }
     }
 
+    /// Sessão sem threads e load falhou → offline/rede, não "vazio editorial".
+    private var showsNetworkFailure: Bool {
+        guard session.threads.isEmpty else { return false }
+        if case .failed = session.phase { return true }
+        return false
+    }
+
+    private var showsLoadingShell: Bool {
+        guard session.threads.isEmpty else { return false }
+        switch session.phase {
+        case .idle, .loading: return true
+        default: return false
+        }
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             AtlasTheme.bg.ignoresSafeArea()
             VStack(spacing: 0) {
                 header
-                areaFilter
+                if !showsNetworkFailure && !showsLoadingShell {
+                    areaFilter
+                }
                 listView
             }
-            newPill
+            if !showsNetworkFailure && !showsLoadingShell {
+                newPill
+            }
         }
         .navigationBarHidden(true)
+        .accessibilityIdentifier(A11yID.workspaceScreen)
     }
 
     // MARK: - Header
@@ -42,6 +64,7 @@ struct WorkspaceView: View {
                     .font(.system(size: 17, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary)
                     .frame(width: 40, height: 40).background(Circle().fill(AtlasTheme.surface))
             }
+            .accessibilityLabel("voltar")
             Spacer()
             Text(title).font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
             Spacer()
@@ -57,7 +80,13 @@ struct WorkspaceView: View {
             HStack(spacing: 8) {
                 ForEach(AtlasArea.allCases) { a in
                     let active = a == area
-                    Button { area = a } label: {
+                    Button {
+                        if reduceMotion {
+                            area = a
+                        } else {
+                            withAnimation(.easeInOut(duration: 0.18)) { area = a }
+                        }
+                    } label: {
                         Text(a.label)
                             .font(.system(.subheadline, weight: .medium))
                             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
@@ -68,11 +97,15 @@ struct WorkspaceView: View {
                             )
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("área \(a.label)")
+                    .accessibilityAddTraits(active ? .isSelected : [])
                 }
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
         }
         .padding(.vertical, 10)
+        .accessibilityIdentifier(A11yID.workspaceAreaFilter)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: area)
     }
 
     // MARK: - Lista
@@ -80,20 +113,18 @@ struct WorkspaceView: View {
     private var listView: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                if threads.isEmpty {
-                    // Vazio editorial: convite, não aviso de sistema.
-                    VStack(spacing: 14) {
-                        Text("✦")
-                            .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
-                        Text(area == .tudo
-                             ? "“Nenhuma conversa aqui ainda.”"
-                             : "“Nada em \(area.label) — por enquanto.”")
-                            .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
-                            .multilineTextAlignment(.center)
-                        Text("comece uma abaixo")
-                            .font(.system(.footnote)).foregroundStyle(AtlasTheme.textTertiary)
+                if showsLoadingShell {
+                    WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
+                } else if showsNetworkFailure {
+                    WorkspaceNetworkFailureEmpty(
+                        kind: session.failureKind,
+                        hasToken: session.hasToken,
+                        host: session.host
+                    ) {
+                        Task { await session.loadThreads() }
                     }
-                    .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
+                } else if threads.isEmpty {
+                    WorkspaceEditorialEmpty(area: area, freeOnly: freeOnly)
                 } else {
                     ForEach(threads) { t in
                         NavigationLink(value: Route.thread(id: ThreadID(t.id), title: t.title)) {
@@ -107,6 +138,8 @@ struct WorkspaceView: View {
                 }
             }
             .padding(.bottom, 96)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: area)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: threads.map(\.id))
         }
         .scrollIndicators(.hidden)
         .refreshable { await session.loadThreads() }
@@ -129,6 +162,8 @@ struct WorkspaceView: View {
             .background(Capsule().fill(AtlasTheme.surface).overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("nova conversa")
+        .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
             LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
