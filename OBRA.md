@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXIV — CICLO D/C FleetMetric NumericText + empty honesty** · este commit · CICLO D+C: `FleetMetric`/`DetailMetric` — `NumericTextTransition`+RM (remove `contentTransition(.numericText)` cru); spoken composto label/value; empty card `children: .ignore`+caption decorative. Shell Metrics 88≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Metrics 88; `rg contentTransition\.numericText App/Atlas` só em AtlasMotion; `rg Aprovar`=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXIII — CICLO C ArenaEngineSheet + PlanCard header** · este commit · CICLO C: ArenaEngineSheet — summary `children: .ignore`; métricas/gráfico silenciados; sheet spoken+capabilities; A11y 47. PlanCard header — progress badge ID preservado; auditoria textos silenciados. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` EngineSheet 88 EngineA11y 47 PlanHeader 54; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXII — CICLO C ArenaRunSheet + ArenaSuiteSheet** · este commit · CICLO C: ArenaRunSheet — close/sheet spoken; submit RM haptic; motores/suites honestos no sheet label; shell 100≤100. ArenaSuiteSheet — engine cards `children: .ignore`; sparkline decorativo; sheet spoken N motores; RM editorial. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` RunSheet 100 RunA11y 87 SuiteSheet 79 SuiteA11y 49; `rg Aprovar`=0; device-pending.
