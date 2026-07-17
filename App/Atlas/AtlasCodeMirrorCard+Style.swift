@@ -14,16 +14,6 @@ extension AtlasCodeMirrorCard {
         return AtlasTheme.separator
     }
 
-    var accessibilityText: String {
-        switch response.state {
-        case .mirrored: return "Espelho: tudo espelhado"
-        case .pending(let commits): return "Espelho: \(commits) commits ainda só no Mac"
-        case .blocked(let rules): return "Espelho bloqueado: segredo detectado, regras \(rules.joined(separator: ", "))"
-        case .noMirror: return "Espelho: nenhum configurado"
-        case .unknown: return "Espelho: não consegui ler o estado"
-        }
-    }
-
     func label(_ text: String, color: Color, icon: String) -> some View {
         HStack(spacing: 7) {
             Image(systemName: icon)

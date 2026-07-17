@@ -38,34 +38,33 @@ struct CodeWeekWidgetView: View {
                         .font(.system(size: 10, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Ink.alert)
                 }
-                if Self.weekIsQuiet(week) {
+                if CodeWeekWidgetA11y.isQuiet(week) {
                     Text("semana quieta · sem commits nem curas")
                         .font(.system(size: 16, weight: .semibold, design: .serif))
                         .foregroundStyle(Ink.ink2)
                         .lineLimit(2)
                 } else {
                     HStack(spacing: 14) {
-                        weekMetric("\(week.commits)", "commits")
-                        weekMetric("\(week.heals)", "curas")
-                        weekMetric("\(week.prevented)", "prevenidos")
+                        if week.commits > 0 { weekMetric("\(week.commits)", "commits") }
+                        if week.heals > 0 { weekMetric("\(week.heals)", "curas") }
+                        if week.prevented > 0 { weekMetric("\(week.prevented)", "prevenidos") }
                     }
                 }
                 if family == .systemLarge {
-                    Text(Self.weekIsQuiet(week)
+                    Text(CodeWeekWidgetA11y.isQuiet(week)
                          ? "abra o radar do Código para ver o grafo"
                          : "abra o radar do Código para o grafo")
                         .font(.system(size: 12, design: .serif))
                         .foregroundStyle(Ink.ink2)
                 }
                 Spacer(minLength: 0)
-            })
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(CodeWeekWidgetA11y.spokenLabel(
+                week: week, stale: stale, age: snapshot.ageText(at: entry.date)
+            )))
         }
         .widgetURL(URL(string: "atlas://code"))
-    }
-
-    /// Semana publicada com contadores reais todos zero — caption honesta, não três «0».
-    private static func weekIsQuiet(_ week: AtlasNativeSnapshot.Week) -> Bool {
-        week.commits == 0 && week.heals == 0 && week.prevented == 0
     }
 
     private func weekMetric(_ value: String, _ label: String) -> some View {
