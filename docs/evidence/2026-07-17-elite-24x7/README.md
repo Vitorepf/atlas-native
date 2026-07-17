@@ -8,13 +8,13 @@ Blackboard: `OBRA.md` §4 Elite E0–E-D
 
 Execução **contínua e automática** por decisão do operador (plano Elite 24×7). O agente avança ondas desbloqueadas sem esperar checkpoint humano; bloqueios externos ficam registrados honestamente abaixo.
 
-Ondas **L–LXXXVIII** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Review Fechar RM + LXX–LXXVII — sem checkpoint humano entre ondas.
+Ondas **L–LXXXIX** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Review Fechar RM + LXX–LXXXIX — sem checkpoint humano entre ondas.
 
 ## Commit count (honest, this environment)
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **307+** | primeiro commit do plano: `ec931f2`; LVI–LXXXVIII em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **308+** | primeiro commit do plano: `ec931f2`; LVI–LXXXIX em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -119,13 +119,19 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 100 | `Sources/AtlasCore/LongMessageArtifact.swift` |
 | 100 | `Sources/AtlasCore/AtlasClient+InteractionStream.swift` |
 | 100 | `Sources/AtlasCore/AtlasAutonomosDecisions.swift` |
-| 100 | `App/Atlas/LiveNowSection.swift` |
-| 99 | `Sources/AtlasCore/AtlasAutonomosTypes.swift` |
-| 99 | `Sources/AtlasCore/AtlasAiSessionsLive.swift` |
-| 99 | `App/Atlas/RootChrome+Rows.swift` |
-| 99 | `App/Atlas/ConversationCockpit+Reconnect.swift` |
-| 98 | `Sources/AtlasCore/ThreadReadCache.swift` |
-| 98 | `Sources/AtlasCore/AtlasTurnStatus.swift` |
+| 97 | `App/Atlas/ConversationModel+Send.swift` |
+| 94 | `App/Atlas/A11yID+Surfaces.swift` |
+| 93 | `App/Atlas/ConversationView.swift` |
+| 93 | `App/Atlas/ConversationModel+Queue.swift` |
+| 93 | `App/Atlas/AtlasCodeHealReceiptSheet+Content.swift` |
+| 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
+| 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
+
+## Entrega LXXXIX (este tip)
+
+- `refactor(ui)` CICLO B: Nightly+Background; Messages+List; Markdown+Inline; Heal+Content; Detail Work/Ledger; ArenaEngine+Summary; Transfer+Form; TurnPresence+Watch; Loaded+Stack; Workspace+ChromeFilter.
+- `polish(ui)` CICLO C: Transfer spoken mission/focus/no-lock; Workspace newPill decorative silence.
+- Zero App/Widgets >100; zero Route nova.
 
 ## Entrega anterior (wave XXV)
 

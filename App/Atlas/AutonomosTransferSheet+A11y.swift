@@ -28,4 +28,14 @@ enum AutonomosTransferSheetA11y {
 
     static let spokenCancel = "cancelar transferência"
     static let spokenTargetUnknown = "alvo desconhecido até target_claimed, a fila escolhe o worker"
+    static let targetHint = "este app não promete host futuro"
+    static let spokenNoLock = "nenhum lock publicado neste recorte, a transferência exige lease vivo"
+
+    static func spokenMission(_ areaName: String) -> String {
+        "missão preservada, \(areaName)"
+    }
+
+    static func spokenFocus(_ focus: String) -> String {
+        "foco, \(focus)"
+    }
 }

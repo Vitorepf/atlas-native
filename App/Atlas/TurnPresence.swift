@@ -13,11 +13,8 @@ import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteir
 // execução do iOS (~30s) — cobre o turno típico; turnos longos concluem a
 // notificação quando o app volta.
 //
-// ActivityKit start/update/finish → TurnPresence+LiveActivity.swift.
-// Notificações locais → TurnPresence+Notifications.swift (+A11y).
-// LiveSessionSnapshot/publish → TurnPresence+LiveSessions.swift.
-// tick/lastPresence → TurnPresence+Tick.swift.
-// Entry → TurnPresence+Entry.swift.
+// ActivityKit → +LiveActivity · Notificações → +Notifications
+// LiveSessions → +LiveSessions · tick → +Tick · Entry → +Entry · Watch → +Watch
 
 @Observable @MainActor
 final class TurnPresence {
@@ -43,50 +40,4 @@ final class TurnPresence {
 
     /// Quantas sessões vivem agora (running + paused — a verdade do contador).
     var activeCount: Int { entries.values.filter { $0.ongoing }.count }
-
-    /// Chamado pela ConversationView no onAppear — registra/atualiza o alvo.
-    /// Cada conversa aberta é observada de forma independente (multi-sessão).
-    /// `threadId` nil = conversa nova local (linha viva sem navegação até o
-    /// servidor confirmar a thread canônica).
-    func watch(_ model: ConversationModel, threadTitle: String, threadId: ThreadID? = nil) {
-        let id = ObjectIdentifier(model)
-        if let existing = entries[id] {
-            existing.threadTitle = threadTitle
-            existing.threadId = threadId ?? model.threadId
-            publishLiveSessions()
-            return
-        }
-        let entry = Entry(model: model, threadTitle: threadTitle, threadId: threadId ?? model.threadId)
-        entries[id] = entry
-        observe(id)
-    }
-
-    func setVisible(_ model: ConversationModel, visible: Bool) {
-        entries[ObjectIdentifier(model)]?.visible = visible
-    }
-
-    private func observe(_ id: ObjectIdentifier) {
-        guard let entry = entries[id], let model = entry.model else {
-            cleanup(id); return
-        }
-        withObservationTracking {
-            // C14: o seam é a PRESENÇA tipada, nunca isSending/status cru.
-            _ = model.currentExecutionPresenceTraceId
-            _ = model.currentExecutionPresence?.phaseTitle
-            _ = model.currentExecutionPresence?.timing
-        } onChange: { [weak self] in
-            Task { @MainActor [weak self] in
-                self?.tick(id)
-                self?.observe(id)   // re-arma (tracking é one-shot)
-            }
-        }
-    }
-
-    /// Model desalocado (conversa fechada): encerra a activity órfã com honestidade.
-    func cleanup(_ id: ObjectIdentifier) {
-        guard let entry = entries.removeValue(forKey: id) else { return }
-        if entry.ongoing { finishActivity(entry, presence: nil, phaseOverride: "sessão encerrada") }
-        broadcastCount()
-        syncRunning()
-    }
 }
