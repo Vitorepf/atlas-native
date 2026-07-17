@@ -4,6 +4,7 @@ import AtlasCore
 
 // Live branch — peel de LiveSessionWidgetView+Content.
 // Silence → AtlasWidgetAccessories+LiveSession+Silence.swift
+// Follow → AtlasWidgetAccessories+LiveSession+Follow.swift
 
 extension LiveSessionWidgetView {
     @ViewBuilder
@@ -22,13 +23,7 @@ extension LiveSessionWidgetView {
         HStack {
             LiveSessionWidgetTimer(live: live)
             Spacer()
-            Text("Seguir")
-                .font(.system(size: 12, weight: .semibold, design: .serif))
-                .foregroundStyle(Ink.bg)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Capsule().fill(Ink.gold))
-                .accessibilityHidden(true)
+            liveSessionFollowChip
         }
     }
 }

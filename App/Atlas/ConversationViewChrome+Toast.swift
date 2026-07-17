@@ -2,8 +2,9 @@ import SwiftUI
 import UIKit
 import AtlasCore
 
-// Toast + handoff — peel de ConversationViewChrome.
+// Toast — peel de ConversationViewChrome.
 // Edit/copy → ConversationViewChrome+EditCopy.swift
+// Handoff → ConversationViewChrome+Handoff.swift
 
 extension ConversationView {
     @ViewBuilder var toast: some View {
@@ -21,12 +22,6 @@ extension ConversationView {
                     try? await Task.sleep(nanoseconds: 1_400_000_000)
                     clearToast()
                 }
-        }
-    }
-
-    @ViewBuilder var handoffReceipt: some View {
-        if let handoff = model.latestSurfaceHandoff {
-            ConversationHandoffReceipt(handoff: handoff)
         }
     }
 }

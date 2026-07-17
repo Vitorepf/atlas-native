@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Heal step row — peel de AtlasCodeHealReceiptSheet+Steps.
+// Copy → AtlasCodeHealReceiptSheet+StepCopy.swift
 
 extension AtlasCodeHealReceiptSheet {
   @ViewBuilder
@@ -12,18 +13,7 @@ extension AtlasCodeHealReceiptSheet {
         .foregroundStyle(receipt.status == "completed" ? AtlasCodePalette.healed : AtlasCodePalette.alert)
         .padding(.top, 2)
         .accessibilityHidden(true)
-      VStack(alignment: .leading, spacing: 2) {
-        Text(receipt.action)
-          .font(.system(size: 13))
-          .foregroundStyle(AtlasTheme.textPrimary)
-          .accessibilityHidden(true)
-        if !receipt.result.isEmpty {
-          Text(receipt.result)
-            .font(AtlasFont.mono(9))
-            .foregroundStyle(AtlasTheme.textTertiary)
-            .accessibilityHidden(true)
-        }
-      }
+      stepCopy(receipt)
     }
     .accessibilityElement(children: .ignore)
     .accessibilityLabel(spokenStepLabel(receipt))

@@ -5,28 +5,14 @@ import AtlasCore
 // Diff → ChangeReviewDiffSection · Conselho → ChangeReviewCouncilSection.
 // Checks → ChangeReviewSections+Checks.swift
 // Chrome → ChangeReviewSections+RunChrome.swift
+// Fields → ChangeReviewSections+RunFields.swift
 
 struct ChangeReviewRunHeader: View {
     let run: AtlasTraceChangeReview.Run
 
     var body: some View {
         runHeaderChrome {
-            HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(run.decision ?? run.status ?? "revisão")
-                        .font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
-                        .accessibilityHidden(true)
-                    if let finished = run.finishedAt {
-                        Text(finished).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                            .accessibilityHidden(true)
-                    }
-                }
-                Spacer()
-                if let score = run.score {
-                    Text("\(score)").font(AtlasFont.mono(20)).foregroundStyle(AtlasTheme.accent)
-                        .accessibilityHidden(true)
-                }
-            }
+            runHeaderFields
         }
     }
 }
