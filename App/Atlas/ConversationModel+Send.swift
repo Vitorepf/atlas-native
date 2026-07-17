@@ -78,4 +78,20 @@ extension ConversationModel {
         }
         return completedSuccessfully
     }
+
+    /// Identidade da execução atual exposta à ponte ActivityKit, nunca à View.
+    /// `nil` até o servidor confirmar o trace continua sendo um estado normal.
+    var currentStreamingTraceId: TraceID? {
+        bubbles.last(where: { $0.streaming && $0.traceId != nil })?.traceId
+    }
+
+    func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
+        updateDraft("")
+        _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
+    }
+
+    func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
+        guard let i = bubbles.firstIndex(where: { $0.id == id }) else { return }
+        mutate(&bubbles[i])
+    }
 }

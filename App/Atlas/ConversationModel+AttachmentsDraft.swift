@@ -4,6 +4,12 @@ import AtlasCore
 /// Draft/capacity helpers — peel de ConversationModel+Attachments.
 @MainActor
 extension ConversationModel {
+    /// Module-visible so `ConversationModel+AttachmentsAdd` can own preparation.
+    struct PendingAttachmentPreparation {
+        let kind: AtlasAttachmentKind
+        let task: Task<Void, Never>
+    }
+
     func removeDraft(_ id: String) {
         drafts.removeAll { $0.id == id }
         attachmentInputs.removeValue(forKey: id)

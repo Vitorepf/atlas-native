@@ -9,12 +9,6 @@ final class ConversationModel {
     static let draftPrefix = "atlas.conversation.draft."
     static let visitedPrefix = "atlas.conversation.lastVisit."
 
-    /// Module-visible so `ConversationModel+Attachments` can own preparation.
-    struct PendingAttachmentPreparation {
-        let kind: AtlasAttachmentKind
-        let task: Task<Void, Never>
-    }
-
     var bubbles: [ChatBubble] = []
     var isSending = false
     var loadError: String?
@@ -90,21 +84,4 @@ final class ConversationModel {
     @ObservationIgnored let readCache: ThreadReadCache
     @ObservationIgnored var queueScope: String
     @ObservationIgnored var draftScope: String
-
-    /// Identidade da execução atual exposta à ponte ActivityKit, nunca à View.
-    /// `nil` até o servidor confirmar o trace continua sendo um estado normal.
-    var currentStreamingTraceId: TraceID? {
-        bubbles.last(where: { $0.streaming && $0.traceId != nil })?.traceId
-    }
-
-    func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
-        updateDraft("")
-        _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
-    }
-
-    func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
-        guard let i = bubbles.firstIndex(where: { $0.id == id }) else { return }
-        mutate(&bubbles[i])
-    }
-
 }

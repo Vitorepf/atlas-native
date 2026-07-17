@@ -17,6 +17,7 @@ import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteir
 // Notificações locais → TurnPresence+Notifications.swift.
 // LiveSessionSnapshot/publish → TurnPresence+LiveSessions.swift.
 // tick/lastPresence → TurnPresence+Tick.swift.
+// Entry → TurnPresence+Entry.swift.
 
 @Observable @MainActor
 final class TurnPresence {
@@ -30,24 +31,6 @@ final class TurnPresence {
     /// Sessões vivas ordenadas por `startedAt` — a home materializa "VIVO AGORA"
     /// só quando este array não está vazio (lei V1.1). Mutar só via `publishLiveSessions`.
     var liveSessions: [LiveSessionSnapshot] = []
-
-    /// Um turno observado. Classe (não struct) para `weak model` no registro.
-    /// Visível no módulo para extensions de presença.
-    final class Entry {
-        weak var model: ConversationModel?
-        var threadTitle: String
-        var threadId: ThreadID?
-        var activityKey: TraceID?   // trace real que liga Activity ↔ conversa
-        var activityStarted = false
-        var ongoing = false        // C14: running OU paused — a sessão vive
-        var visible = false
-        var startedAt = Date()     // base local só para trace legado (timer nil)
-        init(model: ConversationModel, threadTitle: String, threadId: ThreadID?) {
-            self.model = model
-            self.threadTitle = threadTitle
-            self.threadId = threadId
-        }
-    }
 
     @ObservationIgnored var entries: [ObjectIdentifier: Entry] = [:]
     @ObservationIgnored var askedPermission = false
