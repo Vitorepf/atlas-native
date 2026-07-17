@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **131** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 433 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 132 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **134** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 437 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 136 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -45,7 +45,7 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
 - `polish(ui)` CICLO D: dups empty/loading — `RootHomeSections+Failure` → `AtlasNetworkFailureEmpty` (`rg failureHeadline`=0); home loading → `WorkspaceLoadingEmpty` parametrizado; `AtlasEditorialGlyphEmpty` canônico (workspace vazio + search miss); `AutonomosCardEmptyState` (digest + frota/histórico).
 - `TraceEvidenceLoading` já canônico — `rg 'ProgressView().tint(AtlasTheme.accent)'` App/Atlas=1 (`ChangeReviewRunActions` applying).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **131** (após este commit).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **135** (após este commit).
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ### Top 10 (App/Core/Widgets — all ≤100)
