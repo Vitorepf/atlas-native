@@ -33,21 +33,4 @@ extension TurnPresence {
             UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil))
     }
 
-    /// Pede permissão no PRIMEIRO turno concluído (momento de valor real),
-    /// nunca no launch — UX de permissão digna.
-    func requestPermissionOnce() async {
-        guard !askedPermission else { return }
-        askedPermission = true
-        // `await` de propósito: sem esperar o veredito, a notificação sai antes
-        // de existir permissão e o iOS a descarta calada.
-        _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
-    }
-
-    static func lockScreenText(_ value: String, limit: Int) -> String {
-        let collapsed = value
-            .replacingOccurrences(of: "\n", with: " ")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard collapsed.count > limit else { return collapsed }
-        return String(collapsed.prefix(max(0, limit - 1))) + "…"
-    }
 }

@@ -20,9 +20,4 @@ extension AtlasMarkdownView {
         cachedCount = count
         blocks = AtlasMarkdown.parse(text)
     }
-
-    /// Fronteira barata: parágrafo novo ou fence fechando — re-parse imediato.
-    static func isBlockBoundary(_ text: String) -> Bool {
-        text.hasSuffix("\n\n") || text.hasSuffix("```\n") || text.hasSuffix("```")
-    }
 }

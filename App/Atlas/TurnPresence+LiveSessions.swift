@@ -3,21 +3,7 @@ import AtlasCore
 
 // LiveSessionSnapshot + publishLiveSessions — peel de TurnPresence.
 
-/// Snapshot de uma sessão viva observada neste processo — a home lê isto
-/// para virar cockpit (V1). Zero rede; só o que o TurnPresence já sabe.
-struct LiveSessionSnapshot: Identifiable, Equatable {
-    let id: String            // traceId corrente (estável por execução)
-    let threadId: ThreadID?   // para Route.thread; nil se conversa nova local
-    let title: String
-    let phaseTitle: String
-    let timing: AtlasExecutionPresence.Timing
-    let elapsedActiveMs: Int?
-    let runningSince: Date?
-    let pauseTimestamp: Date?
-    /// 1ª observação local — só ordenação; nunca exibido como duração.
-    let startedAt: Date
-    let isRemote: Bool
-}
+// LiveSessionSnapshot → LiveSessionSnapshot.swift
 
 @MainActor
 extension TurnPresence {

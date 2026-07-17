@@ -20,22 +20,14 @@ enum TurnPresenceNotificationA11y {
         assistantExcerpt: String?,
         presentationDetail: String?
     ) -> String? {
-        switch presence.phaseTitle {
-        case "Falhou":
-            guard let detail = presentationDetail?
-                .trimmingCharacters(in: .whitespacesAndNewlines), !detail.isEmpty else { return nil }
-            return TurnPresence.lockScreenText(detail, limit: 140)
-        case "Concluído":
-            guard let excerpt = assistantExcerpt?
-                .trimmingCharacters(in: .whitespacesAndNewlines), !excerpt.isEmpty else { return nil }
-            return TurnPresence.lockScreenText(AtlasMarkdown.plainText(excerpt), limit: 140)
-        default:
-            return nil
-        }
+        TurnPresenceNotificationA11yBody.body(
+            presence: presence,
+            assistantExcerpt: assistantExcerpt,
+            presentationDetail: presentationDetail
+        )
     }
 
     static func spoken(title: String, subtitle: String, body: String?) -> String {
-        guard let body, !body.isEmpty else { return "\(title), \(subtitle)" }
-        return "\(title), \(subtitle). \(body)"
+        TurnPresenceNotificationA11ySpoken.spoken(title: title, subtitle: subtitle, body: body)
     }
 }

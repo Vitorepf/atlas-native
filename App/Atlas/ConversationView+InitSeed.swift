@@ -16,13 +16,8 @@ extension ConversationView {
         let model = ConversationModel(client: client, threadId: threadId)
         model.turnFacts = turnFacts
         model.taskKind = taskKind
-        if let workspace {
-            model.workspaceSlug = workspace
-            model.workspaceName = workspace
-        }
-        if !draft.isEmpty {
-            model.updateDraft(draft)
-        }
+        Self.seedWorkspace(on: model, workspace: workspace)
+        Self.seedDraft(on: model, draft: draft)
         return model
     }
 }

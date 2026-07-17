@@ -21,9 +21,4 @@ struct SnapshotProvider: TimelineProvider {
     func getSnapshot(in context: Context, completion: @escaping (SnapshotEntry) -> Void) {
         completion(SnapshotEntry(date: .now, snapshot: SnapshotProviderLoad.load()))
     }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SnapshotEntry>) -> Void) {
-        let entry = SnapshotEntry(date: .now, snapshot: SnapshotProviderLoad.load())
-        completion(Timeline(entries: [entry], policy: .after(.now.addingTimeInterval(30 * 60))))
-    }
 }

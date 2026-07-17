@@ -25,28 +25,4 @@ extension TurnPresence {
         entries[ObjectIdentifier(model)]?.visible = visible
     }
 
-    func observe(_ id: ObjectIdentifier) {
-        guard let entry = entries[id], let model = entry.model else {
-            cleanup(id); return
-        }
-        withObservationTracking {
-            // C14: o seam é a PRESENÇA tipada, nunca isSending/status cru.
-            _ = model.currentExecutionPresenceTraceId
-            _ = model.currentExecutionPresence?.phaseTitle
-            _ = model.currentExecutionPresence?.timing
-        } onChange: { [weak self] in
-            Task { @MainActor [weak self] in
-                self?.tick(id)
-                self?.observe(id)   // re-arma (tracking é one-shot)
-            }
-        }
-    }
-
-    /// Model desalocado (conversa fechada): encerra a activity órfã com honestidade.
-    func cleanup(_ id: ObjectIdentifier) {
-        guard let entry = entries.removeValue(forKey: id) else { return }
-        if entry.ongoing { finishActivity(entry, presence: nil, phaseOverride: "sessão encerrada") }
-        broadcastCount()
-        syncRunning()
-    }
 }

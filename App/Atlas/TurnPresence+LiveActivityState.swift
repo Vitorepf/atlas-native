@@ -16,34 +16,16 @@ extension TurnPresence {
                       finished: Bool, phaseOverride: String? = nil,
                       progress: AtlasExecutionPlan.Progress? = nil)
         -> AtlasTurnAttributes.ContentState {
-        var started = entry.startedAt
-        var paused: Bool? = nil
-        var pausedDisplay: String? = nil
-        if let p {
-            if let since = p.runningSince {
-                started = since.addingTimeInterval(-Double(p.elapsedActiveMilliseconds ?? 0) / 1000)
-            } else if p.isTimerPaused {
-                paused = true
-                pausedDisplay = p.elapsedActiveMilliseconds.map(Self.clock)
-            }
-            if finished, let ms = p.elapsedActiveMilliseconds {
-                pausedDisplay = Self.clock(ms)   // congela o total ativo no fim
-            }
-        }
-        if started > Date() { started = Date() }
+        let timing = Self.timingAnchor(entry: entry, presence: p, finished: finished)
         return AtlasTurnAttributes.ContentState(
             phaseTitle: phaseOverride ?? p?.phaseTitle ?? (finished ? "resposta pronta" : "Executando"),
-            startedAt: started,
+            startedAt: timing.started,
             finished: finished,
             activeSessions: max(finished ? 0 : 1, activeCount),
-            paused: paused,
-            pausedDisplay: pausedDisplay,
+            paused: timing.paused,
+            pausedDisplay: timing.pausedDisplay,
             progressCurrent: progress?.current,
             progressTotal: progress?.total,
             queuedCount: entry.model?.queuedMessages.count)
-    }
-
-    static func clock(_ ms: Int) -> String {
-        AtlasTime.formatActiveDuration(milliseconds: ms)
     }
 }

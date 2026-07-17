@@ -14,9 +14,11 @@ enum AutonomosOperationDigestA11y {
         oldestBacklogCreatedAt: Date?,
         findingsByRisk: [String: Int]
     ) -> String {
-        var parts = ["resumo da operação"]
-        parts.append(incidentPresent ? "requer você, incidente aguarda decisão" : "por exceção")
-        parts.append(spokenHeadline(delivered: deliveredTotal, pending: pendingCount, incident: incidentPresent))
+        var parts = spokenSectionLead(
+            incidentPresent: incidentPresent,
+            deliveredTotal: deliveredTotal,
+            pendingCount: pendingCount
+        )
         parts.append(contentsOf: spokenCounts(
             deliveredTotal: deliveredTotal,
             pendingCount: pendingCount,
