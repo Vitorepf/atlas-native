@@ -8,7 +8,7 @@ import AtlasCore
 // Content → AtlasWidgetAccessories+LockLive+Content.swift
 
 struct LockAccessorySnapshotView: View {
-    @Environment(\.widgetFamily) private var family
+    @Environment(\.widgetFamily) var family
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     let entry: SnapshotEntry
 
