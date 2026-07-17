@@ -3,12 +3,9 @@ import AtlasCore
 
 // Contagens — peel de RootHomeSections+Conversation.
 // Audit → RootHomeSections+ConversationAudit.swift
+// Free → RootHomeSections+ConversationFree.swift
 
 extension RootHomeSections {
-    var freeThreadCount: Int {
-        session.threads.filter { $0.workspace == nil }.count
-    }
-
     var homeConversationThreadCount: Int {
         switch homeWorkspaceFilter {
         case .some("__all"): return session.threads.count
