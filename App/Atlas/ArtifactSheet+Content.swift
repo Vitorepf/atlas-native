@@ -1,8 +1,8 @@
 import SwiftUI
-import UIKit
 import AtlasCore
 
-// Lista, preview e estados vazios — extraídos do shell da sheet.
+// Estados vazios + shell de conteúdo — peel de ArtifactSheet+Content.
+
 extension ArtifactSheet {
     @ViewBuilder
     var content: some View {
@@ -51,83 +51,4 @@ extension ArtifactSheet {
             }
         }
     }
-
-    var artifactList: some View {
-        VStack(spacing: 0) {
-            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    selectedID = item.id
-                } label: {
-                    HStack(spacing: 10) {
-                        Text("▸")
-                            .font(AtlasFont.mono(11))
-                            .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.textTertiary)
-                        Text(item.name)
-                            .font(AtlasFont.serif(15, .semibold))
-                            .foregroundStyle(AtlasTheme.textPrimary)
-                            .lineLimit(1)
-                        Spacer()
-                        Text("\(ArtifactViewer.byteLabel(item.byteSize))  \(ArtifactViewer.kindLabel(item.kind))")
-                            .font(AtlasFont.mono(10))
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    .padding(.vertical, 10)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier(A11yID.artifactsItem(index))
-                .accessibilityLabel("\(item.name), \(ArtifactViewer.byteLabel(item.byteSize)), \(ArtifactViewer.kindLabel(item.kind))")
-                if index < items.count - 1 { Divider().overlay(AtlasTheme.separatorSoft) }
-            }
-        }
-        .padding(.horizontal, 12)
-        .atlasCard()
-    }
-
-    @ViewBuilder
-    var previewPane: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            switch preview {
-            case .idle, .loading:
-                TraceEvidenceLoading(text: "carregando preview…", reduceMotion: reduceMotion)
-                    .frame(maxWidth: .infinity, minHeight: 180)
-            case .tooLarge(let bytes):
-                ArtifactFileFicha(
-                    name: selected?.name ?? "artefato",
-                    subtitle: "grande demais para visualizar aqui · \(ArtifactViewer.byteLabel(bytes))"
-                )
-            case .failed(let message):
-                Text(message)
-                    .font(AtlasFont.serifItalic(14))
-                    .foregroundStyle(AtlasTheme.domOperacional)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            case .loaded(let item, let content):
-                ArtifactPreviewContent(item: item, content: content)
-            }
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .atlasCard()
-    }
-
-    func load(_ item: AtlasTraceArtifacts.Item) async {
-        preview = .loading
-        do {
-            let content = try await reviews.loadArtifactContent(traceId: traceId, item: item)
-            preview = .loaded(item, content)
-        } catch let api as AtlasApiError where api.status == 413 {
-            preview = .tooLarge(item.byteSize)
-        } catch {
-            preview = .failed(atlasUserMessage(for: error))
-        }
-    }
-}
-
-enum ArtifactPreviewState {
-    case idle
-    case loading
-    case loaded(AtlasTraceArtifacts.Item, AtlasArtifactContent)
-    case tooLarge(Int)
-    case failed(String)
 }

@@ -16,7 +16,7 @@ struct ComposerToolbar: View {
     var onShowMode: () -> Void
     var onSend: () -> Void
 
-    private var canSubmit: Bool {
+    var canSubmit: Bool {
         let hasText = !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         if model.isSending || liveBubble != nil {
             return hasText
@@ -51,82 +51,6 @@ struct ComposerToolbar: View {
                     .accessibilityIdentifier(A11yID.conversationInput)
             }
             trailingControl
-        }
-    }
-
-    // Contexto fica atrás de uma única ação real. O modo, o esforço e o
-    // workspace continuam disponíveis, sem disputar a atenção da escrita.
-    @ViewBuilder private var trailingControl: some View {
-        if canSubmit {
-            Button(action: onSend) {
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.system(size: 29))
-                    .foregroundStyle(AtlasTheme.accent)
-                    .frame(width: 32, height: 32)
-            }
-            .buttonStyle(.plain)
-            .keyboardShortcut(.return, modifiers: .command)
-            .accessibilityLabel(model.isSending ? "adicionar à fila" : "enviar ao Atlas")
-        } else if model.isSending {
-            BreathingDiamond(size: 13, reduceMotion: reduceMotion)
-                .frame(width: 32, height: 32)
-                .accessibilityLabel("Atlas processando")
-        } else {
-            Menu {
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    onShowWorkspace()
-                } label: {
-                    Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
-                }
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    onShowMode()
-                } label: {
-                    Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
-                }
-                Button {
-                    model.cycleEffort()
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                } label: {
-                    Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 32, height: 32)
-                    .contentShape(Circle())
-            }
-            .accessibilityLabel("opções da conversa")
-        }
-    }
-}
-
-// Faixa de anexos + progresso de upload — contrato LocalDraft / uploadPercent.
-struct AttachmentStrip: View {
-    let drafts: [LocalDraft]
-    let reduceMotion: Bool
-    let uploadPercent: Double?
-    let onRemove: (String) -> Void
-    let onFailedTap: (String) -> Void
-
-    var body: some View {
-        Group {
-            if !drafts.isEmpty {
-                DraftStrip(drafts: drafts, reduceMotion: reduceMotion,
-                           onRemove: onRemove, onFailedTap: onFailedTap)
-            }
-            if let p = uploadPercent {
-                HStack(spacing: 10) {
-                    ProgressView(value: p).tint(AtlasTheme.accent)
-                    Text("\(Int(p * 100))%")
-                        .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                        .monospacedDigit()
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("enviando anexos, \(Int(p * 100)) por cento")
-            }
         }
     }
 }
