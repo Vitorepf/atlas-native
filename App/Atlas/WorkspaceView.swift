@@ -4,9 +4,9 @@ import AtlasCore
 // Dentro de um workspace (repo): as conversas dele, com filtro de área no topo
 // (Tudo / Operacional / Autônomos / Programação). Título em Fraunces serif.
 // Vazio ≠ offline: falha de rede usa a mesma voz da home (`AtlasFailureCopy`).
-// Chrome em WorkspaceView+Chrome.swift; empty states em WorkspaceEmptyStates.swift.
+// Chrome: +Chrome · lista: +Scroll · spoken: +A11y · empty: WorkspaceEmptyStates.
 struct WorkspaceView: View {
-    @Environment(AtlasSession.self) private var session
+    @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     let workspaceKey: String?
@@ -54,40 +54,7 @@ struct WorkspaceView: View {
         }
         .navigationBarHidden(true)
         .accessibilityIdentifier(A11yID.workspaceScreen)
-    }
-
-    var listView: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                if showsLoadingShell {
-                    WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
-                        .accessibilityIdentifier(A11yID.workspaceLoading)
-                } else if showsNetworkFailure {
-                    AtlasNetworkFailureEmpty(
-                        kind: session.failureKind,
-                        hasToken: session.hasToken,
-                        host: session.host,
-                        retryHint: "reconecta e recarrega conversas deste workspace",
-                        retryAccessibilityIdentifier: A11yID.workspaceRetry,
-                        accessibilityIdentifier: A11yID.workspaceOffline,
-                        onRetry: { Task { await session.loadThreads() } }
-                    )
-                } else if threads.isEmpty {
-                    WorkspaceEditorialEmpty(area: area, freeOnly: freeOnly, screenTitle: title)
-                } else {
-                    WorkspaceThreadsSection(
-                        threads: threads,
-                        area: area,
-                        screenTitle: title,
-                        reduceMotion: reduceMotion
-                    )
-                }
-            }
-            .padding(.bottom, 96)
-            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: area)
-            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: threads.map(\.id))
-        }
-        .scrollIndicators(.hidden)
-        .refreshable { await session.loadThreads() }
+        .accessibilityLabel(spokenWorkspaceScreenLabel())
+        .accessibilityHint(workspaceScreenHint)
     }
 }

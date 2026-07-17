@@ -83,6 +83,9 @@ struct ConversationView: View {
                 )
             }
             .navigationBarHidden(true)
+            .accessibilityIdentifier(A11yID.conversationScreen)
+            .accessibilityLabel(spokenConversationScreenLabel())
+            .accessibilityHint(ConversationViewA11y.screenHint)
             .overlay(alignment: .top) { toast }
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.toast)
         )
