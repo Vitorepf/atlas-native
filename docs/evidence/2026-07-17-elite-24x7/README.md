@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **500+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXIII tip `41b050c` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **502+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXIV tip `b4fd125` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXIII (este tip)
+## Entrega Elite CXXXXXLXIV (este tip)
+
+- `polish(ui)` CICLO B: Composer+CardAttach; Autonomos+Revert; Digest+A11yBacklog; Suites+FormSuitesRows; Arena+A11yHint; Workspace+ScrollChrome; Empty+Chrome; Steer+FormPicker; Receipt+Title; CodeWeek+Hint; Sheets+SheetsModifierAsk. Tip `b4fd125`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLXIII (anterior)
 
 - `polish(ui)` CICLO B: Sheets+ModifierSteer; Strip+StatusActivityRow/+StatusProgress; Fleet+A11yChrome; SelfConstruction+Proof; A11yID+ReviewSections; Execution+Stack/+DecisionSurface/+ActionChoiceButton; Root+A11yCount; Review+A11yControls; Delivered+Silence; Artifact+MountCounter; Loaded+Refresh. Tip `41b050c`.
 - Zero App/Widgets >100; zero Route nova.
