@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **496+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXI tip `776736c` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **498+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXII tip `f4c2a60` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXI (este tip)
+## Entrega Elite CXXXXXLXII (este tip)
+
+- `polish(ui)` CICLO B: Page+PageComposer; Area+Of; Thread+A11yThreadStatus; Graph+ScrollHead; Autonomos+HeaderStack; Inline+Emphasis; Radar+Loose/+ContentBranches/+LabelBadge; Provenance+A11yHints; Root+HomeChrome; SheetFlags; Workspace+Body; Sheets+ModifierMode. Tip `f4c2a60`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLXI (anterior)
 
 - `polish(ui)` CICLO B: Page+PageParts; A11yID+CodeRadar/+AutonomosReason/+Execution; SelfConstruction+Copy; Reconnect+BubbleLines; Theme+Domain; Workspace/Arena/Code chrome; Init+InitSeed; Provenance+Scroll; Widget+Load; Root+HomeStack; Review+A11yToast; AtlasApp+Lifecycle; Radar+LabelTrailing; Law+LawChromePad. Tip `776736c`.
 - Zero App/Widgets >100; zero Route nova.
