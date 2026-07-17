@@ -5,6 +5,7 @@ import AtlasCore
 // Quote → AtlasCodeProvenanceSections+PullQuote.swift
 // List → AtlasCodeProvenanceSections+FilesList.swift
 // Header → AtlasCodeProvenanceSections+FilesHeader.swift
+// Body → AtlasCodeProvenanceSections+FilesBody.swift
 
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
@@ -13,10 +14,7 @@ extension AtlasCodeProvenanceSheet {
         whyTarget: Binding<AtlasCodeProvenanceWhyTarget?>
     ) -> some View {
         if !provenance.files.isEmpty {
-            VStack(alignment: .leading, spacing: 9) {
-                filesSectionHeader
-                provenanceFilesList(provenance, whyTarget: whyTarget)
-            }
+            filesSectionBody(provenance, whyTarget: whyTarget)
         }
     }
 }
