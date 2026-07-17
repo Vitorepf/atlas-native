@@ -2,7 +2,7 @@ import Foundation
 import AtlasCore
 
 // Spoken labels — peel de AtlasCodeHealReceiptSheet (CICLO C residual honesty).
-// Só fala passos reais do contrato heal; silêncio sem conclusão; veto só com healId.
+// Undo/steps → AtlasCodeHealReceiptSheet+A11yUndo.swift
 
 extension AtlasCodeHealReceiptSheet {
     var completedStepCount: Int {
@@ -49,30 +49,5 @@ extension AtlasCodeHealReceiptSheet {
 
     func spokenEmptyStepsLabel() -> String {
         "recibo sem passos registrados pelo servidor"
-    }
-
-    func spokenStepsSummaryLabel() -> String {
-        "\(heal.stepReceipts.count) passo\(heal.stepReceipts.count == 1 ? "" : "s") no recibo"
-    }
-
-    func spokenStepLabel(_ receipt: AtlasCodeHealStepReceipt) -> String {
-        let outcome = receipt.status == "completed" ? "concluído" : "falhou"
-        var parts = ["passo \(receipt.step)", receipt.action, outcome]
-        if !receipt.result.isEmpty { parts.append(receipt.result) }
-        return parts.joined(separator: ", ")
-    }
-
-    func spokenUndoWindowLabel(_ note: String) -> String {
-        "janela de veto, \(note)"
-    }
-
-    func spokenUndoButtonLabel() -> String {
-        canUndo ? "desfazer cura com recibo" : "desfazer indisponível"
-    }
-
-    func spokenUndoButtonHint() -> String {
-        canUndo
-            ? "envia veto retroativo auditável para esta cura"
-            : "prazo de veto encerrado ou recibo sem identificador"
     }
 }

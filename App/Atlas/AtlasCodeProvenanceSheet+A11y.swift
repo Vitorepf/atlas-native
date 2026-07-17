@@ -2,7 +2,7 @@ import Foundation
 import AtlasCore
 
 /// Spoken labels — peel de AtlasCodeProvenanceSheet (CICLO C residual honesty).
-/// Só fala payload real do ledger; ausência não inventa citação, arquivo nem frase.
+/// Sheet/header spoken → AtlasCodeProvenanceSheet+A11ySpoken.swift
 
 extension AtlasCodeProvenanceSheet {
     var provenanceContentPhaseID: String {
@@ -20,33 +20,6 @@ extension AtlasCodeProvenanceSheet {
             || !(provenance.gates?.isEmpty ?? true)
             || !(provenance.obra?.isEmpty ?? true)
             || !provenance.files.isEmpty
-    }
-
-    var provenanceSheetSpokenLabel: String {
-        var parts = ["proveniência do commit", spokenHeaderTitle(), spokenStateKicker()]
-        switch phase {
-        case .idle, .loading:
-            parts.append(spokenLoading())
-        case .failed(let message):
-            parts.append(spokenFailed(message))
-        case .loaded(let provenance):
-            if let headline = provenance.diffHeadline { parts.append(headline) }
-            else if !hasLoadedBody(provenance) { parts.append("ledger sem detalhe neste recorte") }
-        }
-        return parts.joined(separator: ", ")
-    }
-
-    func spokenHeaderTitle() -> String {
-        node.message?.nonEmpty ?? String(node.hash.prefix(8))
-    }
-
-    func spokenStateKicker() -> String {
-        switch state {
-        case .onMain: return "na \(trunk?.nonEmpty ?? "main")"
-        case .violating: return "fora da \(trunk?.nonEmpty ?? "main")"
-        case .healed: return "curado"
-        case .history: return "história"
-        }
     }
 
     func spokenLawCitation() -> String? {
