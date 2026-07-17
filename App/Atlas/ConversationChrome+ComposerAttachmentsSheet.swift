@@ -33,6 +33,8 @@ struct ComposerAttachmentsSheet: View {
                 )
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(CameraPickerA11y.spokenChooseCamera)
+            .accessibilityHint(CameraPickerA11y.spokenChooseCameraHint)
 
             Button {
                 choose(onChooseFile)

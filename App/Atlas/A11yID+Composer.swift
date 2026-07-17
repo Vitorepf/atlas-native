@@ -18,4 +18,6 @@ extension A11yID {
     static let draftRemovePrefix = "composer-draft-remove-"
     static func draft(_ id: String) -> String { draftPrefix + id }
     static func draftRemove(_ id: String) -> String { draftRemovePrefix + id }
+
+    static let cameraPicker = "composer-camera-picker"
 }

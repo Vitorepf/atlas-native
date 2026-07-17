@@ -66,14 +66,7 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
                     model.workspacePath = session.workspaceFullPath(forKey: ws.id)
                 }
             }
-            .fullScreenCover(isPresented: $showCamera) {
-                CameraPicker { data in
-                    model.addImage(data: data, suggestedName: nil,
-                                   mimeType: "image/jpeg",
-                                   identity: UUID().uuidString, source: "camera")
-                }
-                .ignoresSafeArea()
-            }
+            .conversationCameraCover(model: model, showCamera: $showCamera)
             .fileImporter(isPresented: $showFileImporter,
                           allowedContentTypes: [.pdf, .text, .sourceCode, .json, .commaSeparatedText]) { result in
                 if case .success(let url) = result { model.addFile(url: url) }
