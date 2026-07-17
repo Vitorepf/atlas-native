@@ -2,21 +2,21 @@ import SwiftUI
 import AtlasCore
 
 /// M139 — decisões públicas pendentes; silêncio total quando count = 0.
-/// Chips/nightly/rhythm: AutonomosAwaitingSection+Blocks.swift
+/// Spoken → +A11y · chips/nightly → +Blocks.
 struct AutonomosAwaitingYouSection: View {
     let backlog: AtlasAutonomosBacklogResponse?
     let onOpenDetail: (AutonomosDetailSheet) -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    private var inboxDecisions: [AtlasAutonomosInboxItem] {
+    var inboxDecisions: [AtlasAutonomosInboxItem] {
         backlog?.inboxItems.filter(\.decisionRequired) ?? []
     }
 
-    private var workOrderDecisions: [AtlasAutonomosWorkOrder] {
+    var workOrderDecisions: [AtlasAutonomosWorkOrder] {
         backlog?.workOrders.filter(\.operatorDecisionRequired) ?? []
     }
 
-    private var decisionCount: Int {
+    var decisionCount: Int {
         inboxDecisions.count + workOrderDecisions.count
     }
 
@@ -65,32 +65,5 @@ struct AutonomosAwaitingYouSection: View {
             .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: decisionCount)
         }
-    }
-
-    private var sectionSpokenLabel: String {
-        if decisionCount == 1 {
-            return "aguardando você, 1 decisão pendente"
-        }
-        return "aguardando você, \(decisionCount) decisões pendentes"
-    }
-
-    private func inboxSpokenLabel(count: Int) -> String {
-        count == 1
-            ? "abrir 1 decisão de inbox pendente"
-            : "abrir \(count) decisões de inbox pendentes"
-    }
-
-    private func workOrdersSpokenLabel(count: Int) -> String {
-        count == 1
-            ? "abrir 1 ordem aguardando sua decisão"
-            : "abrir \(count) ordens aguardando sua decisão"
-    }
-}
-
-extension AutonomosAwaitingYouSection {
-    static func decisionCount(in backlog: AtlasAutonomosBacklogResponse?) -> Int {
-        guard let backlog else { return 0 }
-        return backlog.inboxItems.filter(\.decisionRequired).count
-            + backlog.workOrders.filter(\.operatorDecisionRequired).count
     }
 }

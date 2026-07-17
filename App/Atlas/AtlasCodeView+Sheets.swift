@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Folhas do grafo — peel de AtlasCodeView (régua ~160); zero mudança de rota.
+// Folhas do grafo — peel de AtlasCodeView; zero mudança de rota.
+// Ask/Why → +AskWhy.
 
 extension View {
   func atlasCodeSheets(
@@ -33,7 +34,7 @@ extension View {
   }
 }
 
-private struct AtlasCodeSheetsModifier: ViewModifier {
+struct AtlasCodeSheetsModifier: ViewModifier {
   let session: AtlasSession
   let model: AtlasCodeModel
   let provenanceModel: AtlasCodeProvenanceModel
@@ -70,27 +71,14 @@ private struct AtlasCodeSheetsModifier: ViewModifier {
             .presentationDragIndicator(.visible)
         }
       }
-      .sheet(isPresented: $showsAskCard) {
-        ConversationView(
-          client: session.client,
-          threadId: askThreadId,
-          title: "Código · \(model.repo)",
-          emptyPrompt: "O que você quer saber deste repositório?",
-          emptySuggestions: AtlasCodeAskSuggestions.all,
-          taskKind: "code",
-          workspace: model.repo,
-          draft: askDraft,
-          turnFacts: { [askModel] question in await askModel.facts(for: question) },
-          onThread: { askThreadId = $0 }
-        )
-        .presentationDetents([.medium, .large])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(.ultraThinMaterial)
-      }
-      .sheet(item: $whyFileTarget) { target in
-        AtlasCodeWhySheet(client: session.client, repo: model.repo, file: target.path)
-          .presentationDetents([.large])
-          .presentationDragIndicator(.visible)
-      }
+      .modifier(AtlasCodeAskWhySheetsModifier(
+        session: session,
+        model: model,
+        askModel: askModel,
+        showsAskCard: $showsAskCard,
+        whyFileTarget: $whyFileTarget,
+        askThreadId: $askThreadId,
+        askDraft: $askDraft
+      ))
   }
 }
