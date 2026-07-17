@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **550** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXVIII tip `0811e16` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **553** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXIX tip `TBD` |
 | Commits no tip (`git rev-list --count HEAD`) | 552 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXXVIII (este tip)
+## Entrega Elite CXXXXXLXXXIX (este tip)
+
+- `polish(ui)` CICLO B: ProvenanceHeader Dateline `+StateLabel`; AutonomosTransfer `+MilestoneTags/+Summary`; Reconnect BubbleLines `+Secondary/+Timer`; QueuedFollowUp Actions `+Position/+ButtonLabels`; PlanCard A11yDetail `+Plan/+Audit/+Revision`; WhySheet A11yLabels `+Sheet/+Header`; SignatureText `+Reveal/+Body`; RootView Lifecycle `+Threads/+CodeHub/+Arena/+DeepLink`; AtlasApp Lifecycle `+Bootstrap/+ScenePhase`; UserMessage `+Stream/+URL/+API`; Receipt Subline `+Ready/+Pending`; PhotoOptions `+Photo/+Camera`; LiveNowRow Timing `+Word/+Color`, TimingLine `+Clock`; Widgets IslandExpanded `+Leading/+Center/+Trailing`. Tip `TBD`.
+- 24 peels · 33 arquivos · over100=0 · App/Atlas+Widgets swift=2156; App/Widgets swift=147; zero Route nova.
+
+## Entrega Elite CXXXXXLXXXVIII (anterior)
 
 - `polish(ui)` CICLO B: Markdown Table `+DataRows`; InlineMark `+Text`; ArtifactPreviewState; ArtifactSheet Lifecycle `+InitialTask/+SelectionSync/+PreviewTask`; MountCheckRow `+Texts`; ListRowLabel `+Leading`; ArenaRun ToggleLabel `+Symbol/+TitleStack`; ArenaSuite EngineCard `+Header`; CodeRadar A11yRepo `+Folder/+CommitAge`; CodeCommitRow A11y `+RowIdentity`; SpineNode `+ViolatingRing/+CoreDot`; GraphStateFilter Nodes `+TargetState`; PlanCard AuditCopy `+ProgressLine`; RootView MastheadTitle `+BrandRow/+AccentRule`; ComposerAttachments Paste `+FileOption`; AttachmentCopy `+Icon/+TextStack`; QueuedFollowUps Content `+MessageRows`; ArtifactViewer TraceEvidenceStack `+IconTitle/+Subtitle`; SelfConstruction VetoTextFields `+Actor/+Reason`; Widgets LiveSession A11yChrome `+SpokenBind`. Tip `0811e16`.
 - 29 peels · 49 arquivos · over100=0 · App/Atlas+Widgets swift=2130; App/Widgets swift=144; zero Route nova.
