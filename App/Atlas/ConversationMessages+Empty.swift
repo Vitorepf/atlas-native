@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Empty state — peel de ConversationMessages+Rows.
+// Body → ConversationMessages+EmptyBody.swift
 
 extension ConversationMessages {
     @ViewBuilder
@@ -17,15 +18,7 @@ extension ConversationMessages {
                 onRetry: { Task { await model.load() } }
             )
         } else {
-            EmptyConversation(
-                reduceMotion: reduceMotion,
-                prompt: emptyPrompt,
-                suggestions: emptySuggestions
-            ) { suggestion in
-                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
-                let effort = model.effort
-                Task { await model.send(suggestion, effort: effort) }
-            }
+            emptyConversationBody
         }
     }
 }

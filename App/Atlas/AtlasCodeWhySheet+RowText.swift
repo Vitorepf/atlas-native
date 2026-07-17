@@ -2,21 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Why row text stack — peel de AtlasCodeWhySheet+Rows.
+// Quote → AtlasCodeWhySheet+RowQuote.swift
 
 extension AtlasCodeWhySheet {
     func whyRowText(_ commit: AtlasCodeWhy.Commit, isLast: Bool) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            if let quote = commit.provenance?.quote {
-                Text("\u{201C}\(quote)\u{201D}")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
-            } else {
-                Text("sem proveniência registrada")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
+            whyRowQuote(commit)
             Text(meta(for: commit))
                 .font(AtlasFont.mono(10.5))
                 .foregroundStyle(AtlasTheme.textTertiary)

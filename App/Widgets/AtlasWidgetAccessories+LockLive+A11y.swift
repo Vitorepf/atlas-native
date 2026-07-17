@@ -3,6 +3,7 @@ import Foundation
 
 /// Spoken labels do lock accessory — peel de LockAccessorySnapshotView (CICLO C residual).
 /// Spoken label → +Spoken.swift · Inline → +A11yInline.swift
+/// Clock → +A11yClock.swift
 
 enum LockAccessoryA11y {
     static func hasAttention(_ snapshot: AtlasNativeSnapshot) -> Bool {
@@ -22,10 +23,5 @@ enum LockAccessoryA11y {
             return flag
         }
         return nil
-    }
-
-    static func frozenClock(_ session: AtlasNativeSnapshot.LiveSession) -> String? {
-        guard session.timing == .paused, let ms = session.elapsedActiveMs else { return nil }
-        return AtlasTime.formatActiveDuration(milliseconds: ms)
     }
 }

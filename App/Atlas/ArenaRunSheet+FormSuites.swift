@@ -3,17 +3,14 @@ import AtlasCore
 
 // Suites form — peel de ArenaRunSheet+Form.
 // Engine → ArenaRunSheet+FormEngine.swift
+// Empty → ArenaRunSheet+FormSuitesEmpty.swift
 
 extension ArenaRunSheet {
     @ViewBuilder
     var suitesFormSection: some View {
         section("SUITES COM ADAPTER") {
             if installedSuites.isEmpty {
-                Text("nenhuma suite com adapter instalado")
-                    .font(.system(.subheadline))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)
-                    .accessibilityLabel(spokenEmptySuites())
+                suitesEmptyLabel
             } else {
                 ForEach(installedSuites) { suite in
                     toggleRow(

@@ -4,6 +4,7 @@ import AtlasCore
 /// Spoken labels da saúde da fila — peel de AutonomosTaskHealthSection (CICLO C).
 /// Saudável = uma linha quieta; incidente só com `incidents.present` e contagens publicadas.
 /// Metrics → AutonomosFleetTaskHealth+A11yMetrics.swift
+/// Incident → AutonomosFleetTaskHealth+A11yIncident.swift
 
 enum AutonomosTaskHealthA11y {
     static func spokenQuiet(servableNow: Int, activeLeases: Int) -> String {
@@ -13,20 +14,7 @@ enum AutonomosTaskHealthA11y {
     static func spokenIncident(_ health: AtlasAutonomosTaskHealthResponse) -> String {
         var parts = ["saúde da fila, incidente ativo"]
         parts.append(AutonomosTaskHealthA11yMetrics.spokenMetrics(health))
-        if !health.leases.matchesClaimed {
-            parts.append("leases não batem com tarefas reivindicadas")
-        }
-        if !health.incidents.flags.isEmpty {
-            parts.append(health.incidents.flags.joined(separator: ", "))
-        }
-        let pressure = health.operating.queuePressure.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !pressure.isEmpty {
-            parts.append("pressão \(pressure)")
-        }
-        let action = health.operating.recommendedAction.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !action.isEmpty {
-            parts.append(action)
-        }
+        parts.append(contentsOf: spokenIncidentExtras(health))
         return parts.joined(separator: ", ")
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Pending = contain (botões focáveis); decided = ignore + rótulo composto.
+/// Spoken → ChangeReviewFileRow+A11ySpoken.swift
 struct ChangeReviewFileRowA11y: ViewModifier {
     let decidedLabel: String?
     let identifier: String
@@ -17,16 +18,5 @@ struct ChangeReviewFileRowA11y: ViewModifier {
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(identifier)
         }
-    }
-
-    static func spoken(
-        displayName: String,
-        kind: String?,
-        review: AtlasTraceChangeReview.FileReview
-    ) -> String {
-        var parts = [displayName]
-        if let kind { parts.append("arquivo \(kind)") }
-        parts.append(review.action == .accept ? "aceito" : "rejeitado")
-        return parts.joined(separator: ", ")
     }
 }

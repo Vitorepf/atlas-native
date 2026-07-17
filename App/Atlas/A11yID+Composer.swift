@@ -1,6 +1,7 @@
 import Foundation
 
 // Composer sheet A11yIDs — peel de A11yID.swift (régua ≤100).
+// Steer → A11yID+ComposerSteer.swift
 
 extension A11yID {
     static let modeSheet = "composer-mode-sheet"
@@ -24,11 +25,4 @@ extension A11yID {
     static let attachmentPhoto = "composer-attachment-photo"
     static let attachmentFile = "composer-attachment-file"
     static let attachmentPaste = "composer-attachment-paste"
-
-    // M07 · Steering
-    static let steerSheet = "steer-sheet"
-    static let steerInstruction = "steer-instruction"
-    static let steerScope = "steer-scope"
-    static let steerSubmit = "steer-submit"
-    static let steerReceipt = "steer-receipt"
 }

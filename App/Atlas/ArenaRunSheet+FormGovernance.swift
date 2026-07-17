@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Governança + braços — peel de ArenaRunSheet+Form.
+// Fields → ArenaRunSheet+FormGovernanceFields.swift
 
 extension ArenaRunSheet {
     @ViewBuilder
@@ -16,17 +17,6 @@ extension ArenaRunSheet {
             }
         }
 
-        section("GOVERNANÇA") {
-            TextField("ator", text: $actor)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .accessibilityIdentifier(A11yID.arenaRunActor)
-                .accessibilityHint(spokenActorHint())
-            TextField("motivo auditável", text: $reason, axis: .vertical)
-                .lineLimit(2...4)
-                .accessibilityIdentifier(A11yID.arenaRunReason)
-                .accessibilityHint(spokenReasonHint())
-        }
-        .textFieldStyle(.roundedBorder)
+        governanceFields
     }
 }

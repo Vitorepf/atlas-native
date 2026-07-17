@@ -5,6 +5,7 @@ import AtlasCore
 // Dot → PlanCard+StepRowDot.swift
 // Title → PlanCard+StepRowTitle.swift
 // Pulse → PlanCard+StepRowPulse.swift
+// A11y → PlanCard+StepRowA11y.swift
 
 struct PlanStepRowView: View {
     let step: AtlasExecutionPlan.Step
@@ -18,15 +19,13 @@ struct PlanStepRowView: View {
 
     var body: some View {
         applyStepPulse(
-            HStack(alignment: .top, spacing: 10) {
-                stepDotColumn
-                stepTitleColumn
-                Spacer(minLength: 0)
-            }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(spokenLabel)
-            .accessibilityAddTraits(state == .current ? .isSelected : [])
-            .accessibilityIdentifier(A11yID.planStep(index))
+            stepRowA11yChrome(
+                HStack(alignment: .top, spacing: 10) {
+                    stepDotColumn
+                    stepTitleColumn
+                    Spacer(minLength: 0)
+                }
+            )
         )
     }
 }
