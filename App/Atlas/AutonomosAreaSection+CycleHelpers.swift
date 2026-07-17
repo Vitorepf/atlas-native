@@ -1,18 +1,7 @@
 import SwiftUI
 
 // Cycle helpers — peel de AutonomosAreaSection+Cycle.
+// Tap → AutonomosAreaSection+CycleHelpers+Tap.swift
+// SpokenHint → AutonomosAreaSection+CycleHelpers+SpokenHint.swift
 
-extension AutonomosAreaControls {
-    func tap(_ action: () -> Void) {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        action()
-    }
-
-    func spoken(_ label: String) -> String {
-        canControl ? label : "\(label), indisponível"
-    }
-
-    func hint(_ text: String) -> String {
-        canControl ? text : spokenContainerHint
-    }
-}
+extension AutonomosAreaControls {}

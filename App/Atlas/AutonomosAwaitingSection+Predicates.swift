@@ -2,17 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Predicados de decisão — peel de AutonomosAwaitingYouSection.
+// Sources → AutonomosAwaitingSection+Predicates+Sources.swift
+// Count → AutonomosAwaitingSection+Predicates+Count.swift
 
-extension AutonomosAwaitingYouSection {
-    var inboxDecisions: [AtlasAutonomosInboxItem] {
-        backlog?.inboxItems.filter(\.decisionRequired) ?? []
-    }
-
-    var workOrderDecisions: [AtlasAutonomosWorkOrder] {
-        backlog?.workOrders.filter(\.operatorDecisionRequired) ?? []
-    }
-
-    var decisionCount: Int {
-        inboxDecisions.count + workOrderDecisions.count
-    }
-}
+extension AutonomosAwaitingYouSection {}
