@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Spoken + severity — peel de ChangeReviewFindingRow.
+// Spoken — peel de ChangeReviewFindingRow.
+// Severity → ChangeReviewFindingRow+Severity.swift
 
 extension ChangeReviewFindingRow {
     var rowAccessibilityLabel: String {
@@ -18,23 +19,5 @@ extension ChangeReviewFindingRow {
             parts.append("recomendação: \(rec)")
         }
         return parts.joined(separator: ", ")
-    }
-
-    static func severityColor(_ s: String) -> Color {
-        switch s.lowercased() {
-        case "critical", "high": return AtlasTheme.domOperacional
-        case "medium": return AtlasTheme.accent
-        default: return AtlasTheme.textTertiary
-        }
-    }
-
-    static func severitySpoken(_ s: String) -> String {
-        switch s.lowercased() {
-        case "critical": return "crítica"
-        case "high": return "alta"
-        case "medium": return "média"
-        case "low": return "baixa"
-        default: return s
-        }
     }
 }

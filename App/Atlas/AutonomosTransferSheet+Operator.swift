@@ -9,8 +9,8 @@ extension AutonomosTransferSheet {
         Section("Alvo") {
             Text("Desconhecido até target_claimed. A fila escolhe o worker; este app não promete host futuro.")
                 .font(.footnote).foregroundStyle(.secondary)
-                .accessibilityLabel(AutonomosTransferSheetA11y.spokenTargetUnknown)
-                .accessibilityHint(AutonomosTransferSheetA11y.targetHint)
+                .accessibilityLabel(AutonomosTransferSheetA11yConfirm.spokenTargetUnknown)
+                .accessibilityHint(AutonomosTransferSheetA11yConfirm.targetHint)
         }
         Section("Operador") {
             TextField("Quem autoriza", text: $actor)

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Lista / loading / offline / miss — peel de SearchView (régua ≤100).
+/// Query content → SearchView+ScrollQuery.swift
 
 extension SearchView {
     var list: some View {
@@ -20,14 +21,8 @@ extension SearchView {
                         accessibilityIdentifier: A11yID.searchOffline,
                         onRetry: { Task { await session.loadThreads() } }
                     )
-                } else if isBrowsingRecent {
-                    if !recentThreads.isEmpty {
-                        SearchRecentSection(threads: recentThreads, reduceMotion: reduceMotion)
-                    }
-                } else if searchResults.isEmpty {
-                    SearchMissEmpty(query: trimmedQuery, loadedThreadCount: session.threads.count)
                 } else {
-                    SearchResultsSection(results: searchResults, query: trimmedQuery, reduceMotion: reduceMotion)
+                    listQueryContent
                 }
             }
             .padding(.bottom, 40)

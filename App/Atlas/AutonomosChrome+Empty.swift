@@ -2,7 +2,9 @@ import SwiftUI
 import AtlasCore
 
 /// Card vazio Autônomos — caption + copy editorial (frota, histórico, digest).
+/// Fleet → AutonomosChrome+FleetEmpty.swift
 /// Fleet copy → AutonomosChrome+FleetEmptyCopy.swift
+
 struct AutonomosCardEmptyState: View {
     let caption: String
     let copy: String
@@ -23,19 +25,5 @@ struct AutonomosCardEmptyState: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(caption), \(copy)")
         .accessibilityIdentifier(accessibilityIdentifier)
-    }
-}
-
-struct AutonomosFleetEmptyState: View {
-    enum Kind { case noAgents, noHistory }
-
-    let kind: Kind
-
-    var body: some View {
-        AutonomosCardEmptyState(
-            caption: kind == .noAgents ? "frota" : "histórico",
-            copy: copy,
-            accessibilityIdentifier: kind == .noAgents ? A11yID.autonomosFleetEmpty : A11yID.autonomosFleetHistoryEmpty
-        )
     }
 }

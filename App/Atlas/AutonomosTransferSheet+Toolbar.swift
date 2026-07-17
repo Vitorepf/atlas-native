@@ -9,7 +9,7 @@ extension AutonomosTransferSheet {
         ToolbarItem(placement: .cancellationAction) {
             AtlasCloseToolbarButton(
                 title: "Cancelar",
-                spokenLabel: AutonomosTransferSheetA11y.spokenCancel,
+                spokenLabel: AutonomosTransferSheetA11yConfirm.spokenCancel,
                 spokenHint: "fecha sem transferir",
                 reduceMotion: reduceMotion
             ) { dismiss() }
@@ -22,9 +22,9 @@ extension AutonomosTransferSheet {
             }
             .disabled(!canConfirm)
             .accessibilityIdentifier(A11yID.autonomosTransferSubmit)
-            .accessibilityLabel(AutonomosTransferSheetA11y.spokenConfirm(canConfirm: canConfirm))
+            .accessibilityLabel(AutonomosTransferSheetA11yConfirm.spokenConfirm(canConfirm: canConfirm))
             .accessibilityHint(
-                AutonomosTransferSheetA11y.spokenConfirmHint(
+                AutonomosTransferSheetA11yConfirm.spokenConfirmHint(
                     canConfirm: canConfirm,
                     hasPlacement: hasPlacement
                 )

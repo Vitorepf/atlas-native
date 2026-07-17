@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Lista / loading / offline / empty — peel de WorkspaceView (régua ≤100).
+/// Loaded → WorkspaceView+ScrollLoaded.swift
 
 extension WorkspaceView {
     var listView: some View {
@@ -20,15 +21,8 @@ extension WorkspaceView {
                         accessibilityIdentifier: A11yID.workspaceOffline,
                         onRetry: { Task { await session.loadThreads() } }
                     )
-                } else if threads.isEmpty {
-                    WorkspaceEditorialEmpty(area: area, freeOnly: freeOnly, screenTitle: title)
                 } else {
-                    WorkspaceThreadsSection(
-                        threads: threads,
-                        area: area,
-                        screenTitle: title,
-                        reduceMotion: reduceMotion
-                    )
+                    listLoadedContent
                 }
             }
             .padding(.bottom, 96)

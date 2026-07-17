@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Query / phase helpers — peel de SearchView.
+// Query / results helpers — peel de SearchView.
+// Phase → SearchView+QueryPhase.swift
 
 extension SearchView {
     var trimmedQuery: String {
@@ -9,21 +10,6 @@ extension SearchView {
     }
 
     var isBrowsingRecent: Bool { trimmedQuery.isEmpty }
-
-    /// Sessão sem threads e load falhou → offline/rede, não silêncio nem «sem recentes».
-    var showsNetworkFailure: Bool {
-        guard session.threads.isEmpty else { return false }
-        if case .failed = session.phase { return true }
-        return false
-    }
-
-    var showsLoadingShell: Bool {
-        guard session.threads.isEmpty else { return false }
-        switch session.phase {
-        case .idle, .loading: return true
-        default: return false
-        }
-    }
 
     /// Só threads já carregadas na sessão — zero placeholder ou sugestão inventada.
     var recentThreads: [AtlasAiThread] {

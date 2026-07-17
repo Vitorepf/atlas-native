@@ -3,6 +3,7 @@ import AtlasCore
 
 // A11y e spoken labels — peel de PlanCard (cena 02 residual honesty).
 // Detail/audit → PlanCard+A11yDetail.swift
+// Step/chip → PlanCard+A11yStep.swift
 
 extension PlanCard {
     func spokenCardLabel(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress?) -> String {
@@ -18,24 +19,5 @@ extension PlanCard {
 
     func spokenProgressBadge(_ progress: AtlasExecutionPlan.Progress) -> String {
         "\(progress.current) de \(progress.total) passos, \(progress.title)"
-    }
-
-    func spokenStep(
-        step: AtlasExecutionPlan.Step,
-        state: StepState,
-        index: Int,
-        total: Int
-    ) -> String {
-        var parts = ["passo \(index + 1) de \(total)", step.title]
-        switch state {
-        case .done: parts.append("concluído")
-        case .current: parts.append("em curso")
-        case .pending: parts.append("pendente")
-        }
-        return parts.joined(separator: ", ")
-    }
-
-    func spokenChipRow(label: String, items: [String]) -> String {
-        "\(label), \(items.count) itens, \(items.joined(separator: ", "))"
     }
 }

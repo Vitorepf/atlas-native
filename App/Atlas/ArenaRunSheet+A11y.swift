@@ -3,6 +3,7 @@ import AtlasCore
 
 // Spoken labels — peel de ArenaRunSheet (CICLO C residual honesty).
 // Receipt → ArenaRunSheet+A11yReceipt.swift · Sheet/close → +A11ySheet.swift
+// Empty → ArenaRunSheet+A11yEmpty.swift
 
 extension ArenaRunSheet {
     func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
@@ -30,13 +31,5 @@ extension ArenaRunSheet {
             return "aguarde o servidor publicar pelo menos um motor"
         }
         return "preencha ator, motivo, suites, motor e braços"
-    }
-
-    func spokenEmptyEngines() -> String {
-        "nenhum motor publicado pelo servidor, rodar medição indisponível"
-    }
-
-    func spokenEmptySuites() -> String {
-        "nenhuma suite com adapter instalado, rodar medição indisponível"
     }
 }

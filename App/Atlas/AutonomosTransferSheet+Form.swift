@@ -20,7 +20,7 @@ extension AutonomosTransferSheet {
                 } else {
                     Text("Nenhum lock publicado neste recorte — a transferência exige lease vivo.")
                         .font(.footnote).foregroundStyle(.secondary)
-                        .accessibilityLabel(AutonomosTransferSheetA11y.spokenNoLock)
+                        .accessibilityLabel(AutonomosTransferSheetA11yConfirm.spokenNoLock)
                 }
             }
             if hasPlacement {
