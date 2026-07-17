@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **polish(ui) — deepen queue sheet honesty** · este commit · CICLO C cena 11: `QueuedFollowUpsSheet` — posição FIFO só do índice em `queuedMessages` («próxima»/«Nª na fila»); promote/remove com label+hint explícitos; folha fecha em silêncio quando vazia; Reduce Motion na lista; A11yID `queue-row-*`/`queue-promote-*`/`queue-remove-*`. Zero Route. Prova: `wc -l` Sheet 145 A11yID 154; `rg Aprovar App/Atlas`=0; Swift toolchain ausente neste cloud Linux — re-rodar `AtlasCoreChecks` + `make build` no Mac; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **polish(ui)|polish(core) — ciclo D loading dups + TraceArtifacts peel** · `b27294b` · CICLO D: 5× `ProgressView`+caption loading duplicados → `TraceEvidenceLoading` canônico (Autonomos/Arena/CodeGraph/CodeRadar/Provenance; `rg 'ProgressView().tint(AtlasTheme.accent)'` App/Atlas=1 só `ChangeReviewRunActions` applying). Peel `AtlasTraceArtifacts.swift` 179→113 — `AtlasArtifactContent`+client → `AtlasClient+TraceArtifacts.swift` (67). Zero Route. Prova: diff −102/+15; `wc -l` TraceArtifacts 113; Swift toolchain ausente neste cloud Linux — re-rodar `AtlasCoreChecks` + `make build` no Mac.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo XIII — Findings a11y + TraceArtifacts peel + D loading** · `807d4c7`/`2b3e9c7` · ChangeReviewFindings VoiceOver; TraceEvidenceLoading consolidado em loads; AtlasTraceArtifacts 179→113. Zero Route. **BLOCKED:** Swift/server/device. Prova: diffs + `rg`.

@@ -37,6 +37,12 @@ enum A11yID {
     static let executionStateCard = "execution-state-card"
     static let queueChip = "queue-chip"
     static let queueSheet = "queue-sheet"
+    static let queueRowPrefix = "queue-row-"
+    static let queuePromotePrefix = "queue-promote-"
+    static let queueRemovePrefix = "queue-remove-"
+    static func queueRow(_ index: Int) -> String { queueRowPrefix + String(index) }
+    static func queuePromote(_ id: String) -> String { queuePromotePrefix + id }
+    static func queueRemove(_ id: String) -> String { queueRemovePrefix + id }
     static let conversationLoadFailure = "conversation-load-failure"
     static let autonomosAwaitingYou = "autonomos-awaiting-you"
     static let autonomosDetailSheet = "autonomos-detail-sheet"
