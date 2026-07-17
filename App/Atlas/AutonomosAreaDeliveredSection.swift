@@ -8,8 +8,8 @@ struct AutonomosAreaDeliveredSection: View {
     let model: AutonomosModel
     let onSelfConstructionReceipt: (SelfConstructionReceipt) -> Void
 
-    @Environment(\.openURL) private var openURL
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.openURL) var openURL
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         deliveredSection

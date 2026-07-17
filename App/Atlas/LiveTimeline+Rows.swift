@@ -3,6 +3,7 @@ import AtlasCore
 
 // Linhas da timeline — peel de LiveTimeline (régua anti-inchaço).
 // Cada passo espelha um `AtlasAgentActivity` real; a casca não inventa títulos.
+// Ícones → LiveTimeline+ActivityIcon.swift
 
 struct NarrativeRow: Identifiable, Equatable {
     enum Style { case intent, single }
@@ -49,24 +50,5 @@ private func annotateDurations(_ rows: inout [NarrativeRow]) {
     guard threshold > 0 else { return }
     for index in rows.indices {
         rows[index].isP90 = (rows[index].durationMs ?? 0) >= threshold
-    }
-}
-
-/// Ícone por kind de atividade (vocabulário estável do contrato C5).
-func activityIcon(_ kind: AtlasAgentActivity.Kind) -> String {
-    switch kind {
-    case .understanding: return "text.magnifyingglass"
-    case .context: return "square.stack.3d.up"
-    case .planning: return "list.bullet.rectangle"
-    case .permission: return "lock.shield"
-    case .reasoning: return "brain"
-    case .executing: return "chevron.left.forwardslash.chevron.right"
-    case .reading: return "doc.text"
-    case .editing: return "pencil.line"
-    case .verifying: return "checkmark.seal"
-    case .evidence: return "tray.full"
-    case .completed: return "checkmark.circle.fill"
-    case .warning: return "exclamationmark.triangle.fill"
-    case .progress: return "ellipsis.circle"
     }
 }

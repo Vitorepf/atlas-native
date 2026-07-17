@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Status text do strip — peel de ExecutingStrip.
+// Meta (timer/diff) → ConversationCockpit+ExecutingStrip+StatusMeta.swift
 
 extension ExecutingStrip {
     @ViewBuilder
@@ -52,22 +53,7 @@ extension ExecutingStrip {
                     .layoutPriority(2)
                     .accessibilityHidden(true)
             }
-            TimelineView(.periodic(from: .now, by: 1)) { ctx in
-                let secs = bubble.startedAt.map { max(0, Int(ctx.date.timeIntervalSince($0))) } ?? 0
-                Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                    .monospacedDigit()
-                    .modifier(NumericTextTransition(enabled: !reduceMotion))
-                    .lineLimit(1)
-                    .accessibilityHidden(true)
-            }
-            if let stats = bubble.diffStats {
-                Text("+\(stats.linesAdded) −\(stats.linesRemoved)")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.accent)
-                    .lineLimit(1)
-                    .accessibilityHidden(true)
-            }
+            stripStatusMeta
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(stripAccessibilityLabel)

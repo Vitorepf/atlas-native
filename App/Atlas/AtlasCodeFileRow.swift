@@ -4,6 +4,7 @@ import AtlasCore
 /// Uma linha por arquivo. O VERBO é a forma do símbolo, não a cor: cor aqui
 /// é reservada ao estado do commit (main/fora/curado) e mentiria se pintasse
 /// tipo de mudança de vermelho dentro de um commit saudável.
+/// Meta → AtlasCodeFileRow+Meta.swift
 struct AtlasCodeFileRow: View {
     let file: AtlasCodeFileChange
     var accessibilityIdentifier: String?
@@ -52,22 +53,5 @@ struct AtlasCodeFileRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
         .accessibilityIdentifier(accessibilityIdentifier ?? "")
-    }
-
-    private var subtitle: String? {
-        if let from = file.renamedFrom { return "de \(from)" }
-        return file.directory
-    }
-
-    private var symbol: String {
-        switch file.status {
-        case .added: return "plus"
-        case .modified: return "pencil"
-        case .deleted: return "minus"
-        case .renamed: return "arrow.right"
-        case .copied: return "doc.on.doc"
-        case .typeChanged: return "arrow.triangle.2.circlepath"
-        case .unknown: return "questionmark"
-        }
     }
 }

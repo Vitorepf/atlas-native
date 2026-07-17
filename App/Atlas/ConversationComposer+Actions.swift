@@ -3,6 +3,7 @@ import PhotosUI
 import AtlasCore
 
 // Ações do composer — peel de ConversationComposer (régua anti-inchaço).
+// Steer → ConversationComposer+Steer.swift
 
 extension ConversationComposer {
     @ViewBuilder var composerSurface: some View {
@@ -33,32 +34,6 @@ extension ConversationComposer {
         let text = model.draftText
         let effort = model.effort
         Task { await model.send(text, effort: effort) }
-    }
-
-    func submitSteer(
-        traceId: TraceID,
-        instruction: String,
-        scope: AtlasInteractionSteerScope
-    ) {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        Task {
-            await model.steerInteraction(traceId: traceId, instruction: instruction, scope: scope)
-            if let receipt = steerReceipt(for: traceId) {
-                model.toast = steerReceiptText(receipt)
-            }
-        }
-    }
-
-    func steerReceipt(for traceId: TraceID) -> AtlasInteractionSteerResponse? {
-        guard let receipt = model.lastSteerReceipt else { return nil }
-        if let receiptTrace = receipt.traceId, receiptTrace != traceId.rawValue { return nil }
-        return receipt
-    }
-
-    func steerReceiptText(_ receipt: AtlasInteractionSteerResponse) -> String {
-        receipt.isAccepted
-            ? "na fila do próximo checkpoint"
-            : "rejeitado · \(receipt.reason?.rawValue ?? "motivo_indisponivel")"
     }
 
     var queueChipLabel: String {

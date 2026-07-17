@@ -3,7 +3,7 @@ import AtlasCore
 
 // Estados vazios do WorkspaceView (offline) —
 // peel anti-inchaço; voz partilhada com a home via AtlasFailureCopy.
-// Loading → WorkspaceEmptyStates+Loading · Editorial → +Editorial.
+// Loading → WorkspaceEmptyStates+Loading · Editorial → +Editorial · Retry → +Retry.
 
 /// Falha de rede compartilhada — home, workspace e conversa (voz via `AtlasFailureCopy`).
 struct AtlasNetworkFailureEmpty: View {
@@ -15,7 +15,7 @@ struct AtlasNetworkFailureEmpty: View {
     var retryAccessibilityIdentifier: String?
     let accessibilityIdentifier: String
     let onRetry: () -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         VStack(spacing: 0) {
@@ -47,28 +47,5 @@ struct AtlasNetworkFailureEmpty: View {
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(accessibilityIdentifier)
         .accessibilityLabel("\(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken)). \(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))")
-    }
-
-    @ViewBuilder
-    private var retryButton: some View {
-        let button = Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            onRetry()
-        } label: {
-            Text("Tentar de novo")
-                .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.accent)
-                .padding(.horizontal, 22).padding(.vertical, 10)
-                .background(Capsule().fill(AtlasTheme.goldVeil)
-                    .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
-        }
-        .buttonStyle(PressableScale())
-        .accessibilityLabel("tentar de novo")
-        .accessibilityHint(retryHint)
-
-        if let retryAccessibilityIdentifier {
-            button.accessibilityIdentifier(retryAccessibilityIdentifier)
-        } else {
-            button
-        }
     }
 }

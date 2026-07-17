@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-/// Selos de leitura e marcador de novidade — peel de ConversationChromeSheets+Receipt.
+/// Selos de leitura — peel de ConversationChromeSheets+Receipt.
+/// New marker → ConversationChromeSheets+NewMarker.swift
 
 struct StaleReadSeal: View {
     let capturedAt: Date
@@ -50,25 +51,5 @@ struct StaleReadSeal: View {
             confirming: confirming,
             reduceMotion: reduceMotion
         ))
-    }
-}
-
-struct NewSinceLastVisitMarker: View {
-    var body: some View {
-        HStack(spacing: 8) {
-            Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
-                .accessibilityHidden(true)
-            Text("NOVO DESDE ÚLTIMA VISITA")
-                .font(AtlasFont.mono(10))
-                .tracking(1.1)
-                .foregroundStyle(AtlasTheme.accent)
-                .accessibilityHidden(true)
-            Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
-                .accessibilityHidden(true)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityIdentifier(A11yID.conversationNewMarker)
-        .accessibilityLabel("novo desde a última visita")
-        .accessibilityAddTraits(.isStaticText)
     }
 }

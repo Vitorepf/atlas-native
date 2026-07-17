@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // LazyVStack do corpo Autônomos — peel de AutonomosLoadedSection (régua ≤100).
+// Tail → AutonomosLoadedSection+StackTail.swift
 
 extension AutonomosLoadedSection {
     @ViewBuilder
@@ -48,24 +49,7 @@ extension AutonomosLoadedSection {
                     onSelfConstructionReceipt: { selfConstructionReceipt = $0 }
                 )
             }
-            runReceiptLines
-            if let fleet = model.fleet {
-                AutonomosFleetSection(
-                    fleet: fleet,
-                    incidentPresent: model.taskHealth?.incidents.present == true,
-                    auditModeEnabled: auditModeEnabled
-                )
-            }
-            if let health = model.taskHealth {
-                AutonomosTaskHealthSection(health: health)
-            }
-            if let history = model.fleetHistory {
-                AutonomosFleetHistorySection(history: history)
-            }
-            if let error = model.controlError {
-                AutonomosErrorCard(message: error)
-                    .transition(reduceMotion ? .identity : .opacity.combined(with: .offset(y: 6)))
-            }
+            loadedStackTail
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 10).padding(.bottom, 32)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: receiptPhaseID)

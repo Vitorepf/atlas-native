@@ -2,11 +2,12 @@ import SwiftUI
 import AtlasCore
 
 /// AGORA — só existe com run vivo (spec §E). Sem runs = silêncio total (lei V1).
+/// Indicator → ArenaNowSection+Indicator.swift
 struct ArenaNowSection: View {
     let liveRuns: AtlasArenaLiveRuns?
     let reduceMotion: Bool
 
-    private var runs: [AtlasArenaLiveRun] {
+    var runs: [AtlasArenaLiveRun] {
         liveRuns?.runs ?? []
     }
 
@@ -54,19 +55,5 @@ struct ArenaNowSection: View {
             .accessibilityIdentifier(A11yID.arenaNowSection)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: runs.map(\.id))
         }
-    }
-
-    @ViewBuilder
-    private func statusIndicator(for run: AtlasArenaLiveRun) -> some View {
-        Group {
-            if case .running = run.status {
-                BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-            } else {
-                Circle()
-                    .fill(AtlasTheme.textTertiary)
-            }
-        }
-        .frame(width: 8, height: 8)
-        .accessibilityHidden(true)
     }
 }
