@@ -14,8 +14,4 @@ extension LiveTimelineA11y {
         if isCurrent { parts.append("passo atual da orquestra") }
         return parts.joined(separator: ", ")
     }
-
-    static func rowValue(index: Int, total: Int, isCurrent: Bool) -> String {
-        isCurrent ? "passo \(index + 1) de \(total), em andamento" : "passo \(index + 1) de \(total)"
-    }
 }

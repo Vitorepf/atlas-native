@@ -16,8 +16,4 @@ extension PlanCard {
         }
         return parts.joined(separator: ", ")
     }
-
-    func spokenProgressBadge(_ progress: AtlasExecutionPlan.Progress) -> String {
-        "\(progress.current) de \(progress.total) passos, \(progress.title)"
-    }
 }

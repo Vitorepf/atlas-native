@@ -9,7 +9,7 @@ import AtlasCore
 extension AutonomosPublicDetailSheet {
     func spokenSheetLabel(backlog: AtlasAutonomosBacklogResponse?) -> String {
         guard let backlog else {
-            return "sem projeção pública disponível agora"
+            return spokenNoProjectionLabel()
         }
         let count = publicItemCount(kind: kind, backlog: backlog)
         return spokenSheetCountLabel(name: kind.title.lowercased(), count: count)

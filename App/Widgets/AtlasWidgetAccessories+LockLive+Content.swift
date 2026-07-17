@@ -15,7 +15,7 @@ extension LockAccessorySnapshotView {
         case .accessoryInline:
             lockAccessoryInlineContent(snapshot)
         default:
-            rectangular(snapshot)
+            lockAccessoryRectangularContent(snapshot)
         }
     }
 }

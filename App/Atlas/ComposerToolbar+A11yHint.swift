@@ -9,6 +9,4 @@ extension ComposerToolbar {
     func spokenSendHint(canSubmit: Bool) -> String {
         canSubmit ? spokenSendHintReady() : spokenSendHintBlocked()
     }
-
-    func spokenProcessingLabel() -> String { "Atlas processando" }
 }

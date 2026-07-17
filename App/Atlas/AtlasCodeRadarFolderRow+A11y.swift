@@ -13,8 +13,7 @@ enum AtlasCodeFolderRowA11y {
         verifiedExceptionCount: Int,
         isExpanded: Bool
     ) -> String {
-        let repos = repositoryCount == 1 ? "1 repositório" : "\(repositoryCount) repositórios"
-        var parts = [name, repos]
+        var parts = [name, spokenRepoCount(repositoryCount)]
         if verifiedExceptionCount > 0, let phrase = AtlasCodeFolderRowA11yExceptions.exceptionPhrase(verifiedExceptionCount) {
             parts.append(phrase)
         }
