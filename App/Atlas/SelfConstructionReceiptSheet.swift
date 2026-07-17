@@ -8,6 +8,7 @@ struct SelfConstructionReceiptSheet: View {
     var onRevert: (String, String) -> Void = { _, _ in }
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State var actor = ""
     @State var reason = ""
 
@@ -33,6 +34,7 @@ struct SelfConstructionReceiptSheet: View {
                     .font(AtlasFont.serif(18, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Regra citada")
@@ -44,6 +46,8 @@ struct SelfConstructionReceiptSheet: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(spokenRuleLabel())
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Prova")
@@ -58,6 +62,8 @@ struct SelfConstructionReceiptSheet: View {
                 .padding(12)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(spokenProofLabel())
 
                 if revertReceipt != nil {
                     Text("na fila · ainda não desfeito")
@@ -67,18 +73,25 @@ struct SelfConstructionReceiptSheet: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.domOperacional.opacity(0.08)))
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.domOperacional.opacity(0.35), lineWidth: 1))
+                        .transition(reduceMotion ? .identity : .opacity)
+                        .accessibilityLabel(spokenRevertQueueLabel())
                 }
 
                 vetoSection
 
-                Text("você não foi necessário — entrega sem portão")
-                    .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                if receipt.hasMergeProof {
+                    Text("você não foi necessário — entrega sem portão")
+                        .font(AtlasFont.serifItalic(13))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityLabel(spokenHumanSilenceLabel())
+                }
 
                 Spacer(minLength: 0)
             }
             .padding(22)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: revertReceipt != nil)
         }
         .accessibilityIdentifier(A11yID.selfReceiptSheet)
+        .accessibilityLabel(spokenSheetLabel())
     }
 }

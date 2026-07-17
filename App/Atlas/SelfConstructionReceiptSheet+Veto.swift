@@ -15,11 +15,15 @@ extension SelfConstructionReceiptSheet {
                     .textInputAutocapitalization(.never)
                     .padding(10)
                     .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.55)))
+                    .accessibilityLabel("quem autoriza o veto")
+                    .accessibilityHint(spokenActorHint())
                 TextField("Motivo auditável", text: $reason, axis: .vertical)
                     .font(.system(.callout))
                     .lineLimit(2...4)
                     .padding(10)
                     .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.55)))
+                    .accessibilityLabel("motivo auditável do veto")
+                    .accessibilityHint(spokenReasonHint())
                 Button {
                     onRevert(actor, reason)
                 } label: {
@@ -35,11 +39,9 @@ extension SelfConstructionReceiptSheet {
                 }
                 .disabled(!canSubmitRevert)
                 .accessibilityIdentifier(A11yID.selfReceiptVeto)
+                .accessibilityLabel(spokenVetoSubmitLabel(canSubmit: canSubmitRevert))
+                .accessibilityHint(spokenVetoSubmitHint(canSubmit: canSubmitRevert))
             }
-        } else {
-            Text("silêncio · desfazer indisponível neste recorte")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
         }
     }
 }
