@@ -3,6 +3,7 @@ import AtlasCore
 
 // Toolbar do composer: paperclip + campo + trailing (enviar / processando / menu
 // de modo·esforço·workspace). Peel de ConversationComposer (régua <200).
+// Field → ComposerToolbar+Field.swift
 
 struct ComposerToolbar: View {
     var model: ConversationModel
@@ -27,34 +28,8 @@ struct ComposerToolbar: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            Button {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                onAttach()
-            } label: {
-                Image(systemName: "paperclip")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 32, height: 32)
-            }
-            .buttonStyle(PressableScale())
-            .accessibilityLabel("adicionar anexo")
-            .accessibilityHint("abre foto, arquivo ou colar")
-            ZStack(alignment: .topLeading) {
-                Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
-                    .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
-                    .allowsHitTesting(false).opacity(model.draftText.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
-                    .animation(reduceMotion ? nil : .easeOut(duration: 0.28), value: model.draftText.isEmpty)
-                    .accessibilityHidden(true)
-                TextField("", text: Binding(
-                    get: { model.draftText },
-                    set: { model.updateDraft($0) }
-                ), axis: .vertical)
-                    .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
-                    .tint(AtlasTheme.accent).lineLimit(1...6).focused(focused)
-                    .accessibilityIdentifier(A11yID.conversationInput)
-                    .accessibilityLabel(spokenInputLabel())
-                    .accessibilityHint(spokenInputHint())
-            }
+            attachButton
+            composerTextField
             trailingControl
         }
         .accessibilityElement(children: .contain)

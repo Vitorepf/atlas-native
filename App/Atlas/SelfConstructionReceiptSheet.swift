@@ -21,16 +21,7 @@ struct SelfConstructionReceiptSheet: View {
         ZStack {
             AtlasTheme.bg.ignoresSafeArea()
             VStack(alignment: .leading, spacing: 14) {
-                HStack(spacing: 7) {
-                    Image(systemName: "checkmark.seal")
-                        .font(.system(size: 11, weight: .bold))
-                        .accessibilityHidden(true)
-                    Text("RECIBO DE AUTO-CONSTRUÇÃO")
-                        .font(AtlasFont.mono(11))
-                        .tracking(1.0)
-                        .accessibilityHidden(true)
-                }
-                .foregroundStyle(AtlasTheme.textTertiary)
+                receiptSealHeader
 
                 Text(receipt.title)
                     .font(AtlasFont.serif(18, .semibold))

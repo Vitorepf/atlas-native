@@ -4,7 +4,7 @@ import AtlasCore
 /// M0 · Grafo Governado — o mapa vem primeiro.
 ///
 /// Contrato visual: `docs/proposals/atlas-code-mobile.html` (tela M0).
-/// Ask seed → AtlasCodeView+Ask.swift · Init → AtlasCodeView+Init.swift
+/// Ask seed → AtlasCodeView+Ask.swift · Init → +Init · Toolbar → +Toolbar
 struct AtlasCodeView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -38,14 +38,7 @@ struct AtlasCodeView: View {
         .accessibilityIdentifier(A11yID.codeScreen)
         .accessibilityLabel(spokenCodeScreenLabel())
         .accessibilityHint(Self.codeScreenHint)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Text(model.repo)
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
-        }
+        .toolbar { codeToolbar }
         .task { if model.phase == .idle { await model.load() } }
         .task { await mirrorModel.refresh() }
         .atlasCodeSheets(

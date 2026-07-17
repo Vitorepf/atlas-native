@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Card do digest — peel de AutonomosDigestSection.
+// Schedule → AutonomosDigestSection+ScheduleCopy.swift
 
 extension AutonomosNextDigestSection {
     var digestCard: some View {
@@ -16,25 +17,7 @@ extension AutonomosNextDigestSection {
                     .lineLimit(2)
                     .accessibilityHidden(true)
             }
-            if let next = digest.nextDigestAt?.nonEmpty {
-                Text(next)
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .textSelection(.enabled)
-                    .accessibilityHidden(true)
-            } else if last {
-                Text("sem agenda publicada — último resumo abaixo")
-                    .font(AtlasFont.serifItalic(14))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityHidden(true)
-            } else if let reason = digest.schedule.reason?.nonEmpty {
-                Text(reason)
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityHidden(true)
-            }
+            digestScheduleCopy(last: last)
             if last {
                 lastDigestBody(digest)
             }
@@ -54,9 +37,5 @@ extension AutonomosNextDigestSection {
             decisionTitle: digestDecisionHeadline(digest)
         ))
         .accessibilityIdentifier(A11yID.autonomosDigestSection)
-    }
-
-    var sectionTitle: String {
-        digest.nextDigestAt?.nonEmpty != nil ? "PRÓXIMO RESUMO" : "RESUMO GOVERNADO"
     }
 }
