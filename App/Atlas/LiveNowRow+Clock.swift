@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Clock view — peel de LiveNowRow+Timing.
+// A11y → LiveNowRow+ClockA11y.swift
 
 extension LiveNowRow {
     @ViewBuilder
@@ -34,14 +35,5 @@ extension LiveNowRow {
         case .finished:
             EmptyView()
         }
-    }
-
-    func clockAccessibilityLabel(now: Date) -> String {
-        guard let clock = spokenClock(now: now) else {
-            return "tempo ativo indisponível"
-        }
-        return session.timing == .paused
-            ? "tempo ativo congelado em \(clock)"
-            : "tempo ativo \(clock)"
     }
 }

@@ -966,7 +966,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXII — CICLO B Steer/Home/Timeline/A11y/Suite peels** · este commit · CICLO B: Steer `+Instruction`; Home `+Chip`; Timeline `+NarrativeSpine`; A11y `+SearchWorkspace`/`+CodeHelpers`; Suite `+RowLeading`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXIII — CICLO B Heal/Autonomos/Patch/Clock/Artifact peels** · este commit · CICLO B: Heal `+Undo`; Autonomos `+Destructive`; Patch `+Header`; LiveNow `+ClockA11y`; Artifact `+TextPreview`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXII — CICLO B Steer/Home/Timeline/A11y/Suite peels** · `352055f` · CICLO B: Steer `+Instruction`; Home `+Chip`; Timeline `+NarrativeSpine`; A11y `+SearchWorkspace`/`+CodeHelpers`; Suite `+RowLeading`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXI — CICLO B Grabber/Reason/Commit/LiveNow/Worktree/Archive peels** · `3473127` · CICLO B: Composer `+KeyboardGrabber`; Reason `+Toolbar`; Commit `+Meta`; LiveNow `+Spoken`; Graph `+WorktreeChip`; Plan `+RevisionArchiveMeta`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 

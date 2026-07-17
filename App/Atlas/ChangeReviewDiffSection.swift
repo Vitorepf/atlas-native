@@ -2,8 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // MARK: - Patch / Diff (C15 · C16)
-// Extraído de ChangeReviewSections sem mudança de comportamento.
-// DiffView → ChangeReviewDiffView.swift · Toggle → +Toggle.swift
+// DiffView → ChangeReviewDiffView.swift · Toggle → +Toggle · Header → +Header
 
 struct ChangeReviewPatchCard: View {
     let reviews: ChangeReviewModel
@@ -16,17 +15,7 @@ struct ChangeReviewPatchCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text("PATCH \(String(patch.id.prefix(8)))")
-                    .font(AtlasFont.mono(10)).tracking(0.8).foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-                Spacer()
-                Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
-                    .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.accent)
-                    .accessibilityLabel(ChangeReviewPatchA11y.spokenDiffToggle(expanded: diffExpanded))
-                    .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
-                    .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
-            }
+            patchHeader
             ForEach(patch.changedFiles + patch.createdFiles + patch.deletedFiles, id: \.self) { file in
                 ChangeReviewFileRow(reviews: reviews, traceId: traceId, patch: patch, file: file)
             }
