@@ -1,6 +1,7 @@
 import Foundation
 
 // Thread spoken body — peel de RootChrome+Rows+A11yThread.
+// Hint → RootChrome+Rows+A11yThreadHint.swift
 
 extension RootChromeRowA11y {
     static func threadSpoken(
@@ -18,9 +19,5 @@ extension RootChromeRowA11y {
             hasWorkspace: hasWorkspace
         ))
         return parts.joined(separator: ", ")
-    }
-
-    static func threadHint(isRunning: Bool) -> String {
-        isRunning ? "Atlas executando nesta conversa" : "abre a conversa"
     }
 }

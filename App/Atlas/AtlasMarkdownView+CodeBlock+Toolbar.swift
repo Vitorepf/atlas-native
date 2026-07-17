@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Toolbar do code block — peel de AtlasMarkdownView+CodeBlock.
+// Copy → AtlasMarkdownView+CodeBlock+ToolbarCopy.swift
 
 extension CodeBlockView {
     var codeBlockToolbar: some View {
@@ -12,16 +13,7 @@ extension CodeBlockView {
                     .accessibilityHidden(true)
             }
             Spacer()
-            Button(action: copyCode) {
-                Text(copyButtonTitle)
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(copyForeground)
-            }
-            .buttonStyle(.plain)
-            .disabled(!canCopy)
-            .accessibilityLabel(MarkdownCodeBlockA11y.spokenCopyButton(copied: copied, canCopy: canCopy))
-            .accessibilityHint(MarkdownCodeBlockA11y.copyHint(canCopy: canCopy))
-            .accessibilityIdentifier(A11yID.markdownCodeCopy(blockIndex))
+            codeBlockCopyButton
         }
         .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 8)
     }

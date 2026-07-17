@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Spoken step / chip — peel de PlanCard+A11y.
+// Spoken step — peel de PlanCard+A11y.
+// ChipRow → PlanCard+A11yChipRow.swift
 
 extension PlanCard {
     func spokenStep(
@@ -17,9 +18,5 @@ extension PlanCard {
         case .pending: parts.append("pendente")
         }
         return parts.joined(separator: ", ")
-    }
-
-    func spokenChipRow(label: String, items: [String]) -> String {
-        "\(label), \(items.count) itens, \(items.joined(separator: ", "))"
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // ChangeReview toast — peel de ChangeReviewSections+Chrome.
+// Lifecycle → ChangeReviewSections+ToastLifecycle.swift
 
 struct ChangeReviewToast: View {
     let reviews: ChangeReviewModel
@@ -17,11 +18,7 @@ struct ChangeReviewToast: View {
                 .accessibilityLabel(ChangeReviewSectionsA11y.spokenToast(t))
                 .accessibilityIdentifier(A11yID.reviewToast)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
-                .task {
-                    try? await Task.sleep(nanoseconds: 1_400_000_000)
-                    if reduceMotion { reviews.toast = nil }
-                    else { withAnimation(AtlasMotion.editorial) { reviews.toast = nil } }
-                }
+                .task { await dismissToastAfterDelay() }
         }
     }
 }

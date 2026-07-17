@@ -2,6 +2,7 @@ import Foundation
 
 /// Spoken labels da folha de transferência — peel de AutonomosTransferSheet (CICLO C).
 /// Confirmar → AutonomosTransferSheet+A11yConfirm.swift
+/// Mission → AutonomosTransferSheet+A11yMission.swift
 /// Confirmar só com placement verificado + ator/motivo; alvo nunca inventado.
 
 enum AutonomosTransferSheetA11y {
@@ -16,12 +17,4 @@ enum AutonomosTransferSheetA11y {
     }
 
     static let sheetHint = "transfere a missão só com lease vivo; o alvo aparece após target_claimed"
-
-    static func spokenMission(_ areaName: String) -> String {
-        "missão preservada, \(areaName)"
-    }
-
-    static func spokenFocus(_ focus: String) -> String {
-        "foco, \(focus)"
-    }
 }
