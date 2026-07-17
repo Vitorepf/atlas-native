@@ -1,28 +1,11 @@
 import SwiftUI
 import AtlasCore
 
-// Corpo regra/prova — peel de SelfConstructionReceiptSheet (régua ≤100).
+// Prova — peel de SelfConstructionReceiptSheet (régua ≤100).
 // Revert → SelfConstructionReceiptSheet+RevertBanner.swift
+// Rule → SelfConstructionReceiptSheet+Rule.swift
 
 extension SelfConstructionReceiptSheet {
-    @ViewBuilder
-    var ruleBlock: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Regra citada")
-                .font(AtlasFont.mono(10))
-                .tracking(0.9)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Text("“\(receipt.ruleLabel)”")
-                .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityHidden(true)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(spokenRuleLabel())
-    }
-
     @ViewBuilder
     var proofBlock: some View {
         VStack(alignment: .leading, spacing: 8) {

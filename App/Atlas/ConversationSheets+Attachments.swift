@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 import AtlasCore
 
 // Attachments + photo importer — peel de ConversationSheets+Modifier.
+// Photo → ConversationSheets+AttachmentsPhoto.swift
 
 extension ConversationComposerSheetsModifier {
     @ViewBuilder
@@ -30,16 +31,7 @@ extension ConversationComposerSheetsModifier {
                 if case .success(let url) = result { model.addFile(url: url) }
             }
             .onChange(of: pickedPhoto) {
-                guard let item = pickedPhoto else { return }
-                pickedPhoto = nil
-                Task {
-                    guard let data = try? await item.loadTransferable(type: Data.self) else {
-                        model.toast = "não consegui ler a foto"; return
-                    }
-                    let mime = item.supportedContentTypes.first?.preferredMIMEType ?? "image/jpeg"
-                    model.addImage(data: data, suggestedName: nil, mimeType: mime,
-                                   identity: item.itemIdentifier ?? UUID().uuidString)
-                }
+                handlePickedPhotoChange()
             }
     }
 }

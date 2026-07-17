@@ -4,6 +4,7 @@ import AtlasCore
 /// Cena operacional do Fable 5: o estado chega pronto do ledger e só então a
 /// conversa oferece uma ação. Não há botão, prazo ou risco criado pela casca.
 /// Header → +Header · Meta → +Meta · Detail → +Detail · ações → +ActionButtons.
+/// Display → +Display.swift
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: JobID?
@@ -13,17 +14,6 @@ struct ExecutionStateCard: View {
     var onSteer: (() -> Void)? = nil
 
     @Environment(\.accessibilityReduceMotion) var reduceMotion
-
-    static func shouldDisplay(state: AtlasExecutionPresentationState) -> Bool {
-        if state.kind == .completed,
-           state.actions.isEmpty,
-           state.detail == nil,
-           state.checkpoint == nil,
-           state.deadline == nil {
-            return false
-        }
-        return true
-    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {

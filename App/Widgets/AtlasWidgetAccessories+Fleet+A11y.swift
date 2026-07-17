@@ -2,6 +2,7 @@ import AtlasCore
 import Foundation
 
 /// Spoken labels do widget Frota — peel de FleetWidgetView (CICLO C residual).
+/// Spoken → AtlasWidgetAccessories+Fleet+A11ySpoken.swift
 
 enum FleetWidgetA11y {
     static func incidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
@@ -22,23 +23,5 @@ enum FleetWidgetA11y {
         let scanned = snapshot.fleet?.scannedAt ?? ""
         let delivery = snapshot.fleet?.lastDelivery?.mergeHash ?? ""
         return "\(incident)|\(present)|\(scanned)|\(delivery)|\(stale)"
-    }
-
-    static func spokenLabel(snapshot: AtlasNativeSnapshot, stale: Bool, at date: Date, age: String) -> String {
-        var parts = ["Frota"]
-        if let line = incidentLine(snapshot.fleet?.incident) {
-            parts.append(line)
-        } else if snapshot.fleet?.incident?.present == true {
-            parts.append("atenção na frota")
-        } else if let scanned = snapshot.fleet?.scannedAt.flatMap(AtlasTime.date) {
-            parts.append("frota íntegra, varrida \(scanned.relativeShort(to: date))")
-        } else {
-            parts.append("frota não lida")
-        }
-        if let delivery = snapshot.fleet?.lastDelivery, let caption = deliveryCaption(delivery) {
-            parts.append(caption)
-        }
-        if stale { parts.append("visto \(age)") }
-        return parts.joined(separator: ", ")
     }
 }

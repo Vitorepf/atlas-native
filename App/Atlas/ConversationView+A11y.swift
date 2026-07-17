@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 /// Spoken labels e helpers de toast — peel de ConversationView (CICLO C residual honesty).
+/// Toast → ConversationView+A11yToast.swift
 
 enum ConversationViewA11y {
     static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
@@ -30,16 +31,5 @@ extension ConversationView {
         if model.isSending { parts.append("enviando") }
         if model.showingStaleCache { parts.append("cache desatualizado") }
         return parts.joined(separator: ", ")
-    }
-
-    func setToast(_ message: String) {
-        if reduceMotion { model.toast = message }
-        else { withAnimation(AtlasMotion.editorial) { model.toast = message } }
-        UIAccessibility.post(notification: .announcement, argument: ConversationViewA11y.spokenToast(message))
-    }
-
-    func clearToast() {
-        if reduceMotion { model.toast = nil }
-        else { withAnimation(AtlasMotion.editorial) { model.toast = nil } }
     }
 }

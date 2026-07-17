@@ -1,6 +1,7 @@
 import SwiftUI
 import AtlasCore
 
+// Empty → AutonomosDetailSheet+Empty.swift
 struct AutonomosPublicDetailSheet: View {
     let kind: AutonomosDetailSheet
     let backlog: AtlasAutonomosBacklogResponse?
@@ -20,14 +21,7 @@ struct AutonomosPublicDetailSheet: View {
                         AutonomosDetailContent.rows(kind: kind, backlog: backlog)
                             .transition(reduceMotion ? .identity : .opacity)
                     } else {
-                        Text("Sem projeção pública disponível agora.")
-                            .font(.footnote)
-                            .foregroundStyle(AtlasTheme.textSecondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(14)
-                            .atlasCard(cornerRadius: 12)
-                            .accessibilityLabel(spokenEmptyLabel())
-                            .accessibilityIdentifier(A11yID.autonomosDetailEmpty)
+                        emptyProjection
                     }
                 }
                 .padding(AtlasTheme.Space.screen)

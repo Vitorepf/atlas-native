@@ -4,6 +4,7 @@ import AtlasCore
 /// Spoken labels das entregas comprovadas — peel de AutonomosAreaDeliveredSection (CICLO C).
 /// Merge só quando `mergePerformed` e hash publicados; nunca «melhorou» fabricado.
 /// Caption/hint → AutonomosAreaDeliveredSection+A11yCaption.swift
+/// Row → AutonomosAreaDeliveredSection+A11yRow.swift
 
 enum AutonomosAreaDeliveredA11y {
     static let visibleCap = 3
@@ -23,24 +24,5 @@ enum AutonomosAreaDeliveredA11y {
 
     static func spokenEmptySelf() -> String {
         "auto-construção, aguardando ledger, nenhuma entrega comprovada neste recorte"
-    }
-
-    static func spokenRow(
-        _ cycle: AtlasAutonomosCycle,
-        index: Int,
-        visible: Int,
-        isSelf: Bool,
-        opensGraph: Bool
-    ) -> String {
-        var parts = ["entrega \(index + 1) de \(visible)", "ciclo \(cycle.cycleIndex)"]
-        if cycle.mergePerformed, let hash = cycle.mergeHash.nonEmpty {
-            parts.append("merge comprovado \(String(hash.prefix(8)))")
-        } else {
-            parts.append("merge não publicado")
-        }
-        if let at = cycle.recordedAt.nonEmpty { parts.append("em \(at)") }
-        if isSelf { parts.append("abre recibo de auto-construção") }
-        else if opensGraph { parts.append("abre merge no grafo") }
-        return parts.joined(separator: ", ")
     }
 }

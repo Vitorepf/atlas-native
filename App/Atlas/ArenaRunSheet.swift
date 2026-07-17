@@ -1,6 +1,7 @@
 import SwiftUI
 import AtlasCore
 
+// Status → ArenaRunSheet+Status.swift
 struct ArenaRunSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -16,17 +17,7 @@ struct ArenaRunSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     formSections
-                    if let error = model.controlError {
-                        Text(error)
-                            .font(.system(.callout))
-                            .foregroundStyle(AtlasTheme.alert)
-                            .accessibilityLabel(spokenErrorLabel(error))
-                            .transition(reduceMotion ? .identity : .opacity)
-                    }
-                    if let receipt = model.lastStartReceipt {
-                        receiptCard(receipt)
-                            .transition(reduceMotion ? .identity : .opacity.combined(with: .offset(y: 8)))
-                    }
+                    statusBlocks
                     submitButton
                 }
                 .padding(AtlasTheme.Space.screen)
