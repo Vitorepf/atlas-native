@@ -5,8 +5,8 @@ import AtlasCore
 
 // Superfícies externas do Atlas. Widgets/accessories leem somente o snapshot
 // SD-1 no App Group; a Live Activity recebe estado via ActivityKit/APNs.
-// Paleta em WidgetsInk.swift; views em AtlasWidgetViews.swift;
-// lock screen em AtlasTurnLockScreen.swift.
+// Paleta em WidgetsInk.swift; provider/container em AtlasWidgetViews.swift;
+// superfícies em AtlasWidgetAccessories.swift; lock screen em AtlasTurnLockScreen.swift.
 
 @main
 struct AtlasWidgetsBundle: WidgetBundle {
