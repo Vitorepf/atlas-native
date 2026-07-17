@@ -14,21 +14,36 @@ struct ChangeReviewFindingsSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ChangeReviewCaption("ACHADOS · \(findings.count)")
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel("achados, \(findings.count) no total")
             ForEach(groups.keys.sorted(), id: \.self) { axis in
+                let axisFindings = groups[axis] ?? []
                 VStack(alignment: .leading, spacing: 5) {
                     HStack(spacing: 8) {
                         Text(axis).font(AtlasFont.mono(9)).tracking(0.8)
                             .foregroundStyle(AtlasTheme.accent)
                         Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
-                        Text("\(groups[axis]?.count ?? 0)")
+                        Text("\(axisFindings.count)")
                             .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
                     }
-                    ForEach(groups[axis] ?? []) { f in
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel(axisHeaderLabel(axis: axis, count: axisFindings.count))
+                    .accessibilityIdentifier(A11yID.reviewFindingAxis(axis))
+                    ForEach(axisFindings) { f in
                         ChangeReviewFindingRow(finding: f)
                     }
                 }
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(A11yID.reviewFindingsSection)
+    }
+
+    private func axisHeaderLabel(axis: String, count: Int) -> String {
+        let name = axis == "GERAIS" ? "gerais" : axis.lowercased()
+        let noun = count == 1 ? "achado" : "achados"
+        return "eixo \(name), \(count) \(noun)"
     }
 }
 
@@ -41,6 +56,7 @@ struct ChangeReviewFindingRow: View {
                 if let severity = finding.severity {
                     Text(severity).font(AtlasFont.mono(9))
                         .foregroundStyle(Self.severityColor(severity))
+                        .accessibilityHidden(true)
                 }
                 Text(finding.title ?? "finding").font(.footnote).foregroundStyle(AtlasTheme.textPrimary)
                     .lineLimit(2)
@@ -55,6 +71,25 @@ struct ChangeReviewFindingRow: View {
             }
         }
         .padding(.vertical, 3)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(rowAccessibilityLabel)
+        .accessibilityIdentifier(A11yID.reviewFindingRow(finding.id))
+    }
+
+    private var rowAccessibilityLabel: String {
+        var parts: [String] = []
+        if let severity = finding.severity {
+            parts.append("severidade \(Self.severitySpoken(severity))")
+        }
+        parts.append(finding.title ?? "achado sem título")
+        if let path = finding.filePath {
+            let line = finding.startLine.map { ", linha \($0)" } ?? ""
+            parts.append("\(path)\(line)")
+        }
+        if let rec = finding.recommendation {
+            parts.append("recomendação: \(rec)")
+        }
+        return parts.joined(separator: ", ")
     }
 
     /// A severidade é do servidor; a cor só traduz — nunca reclassifica.
@@ -63,6 +98,16 @@ struct ChangeReviewFindingRow: View {
         case "critical", "high": return AtlasTheme.domOperacional
         case "medium": return AtlasTheme.accent
         default: return AtlasTheme.textTertiary
+        }
+    }
+
+    private static func severitySpoken(_ s: String) -> String {
+        switch s.lowercased() {
+        case "critical": return "crítica"
+        case "high": return "alta"
+        case "medium": return "média"
+        case "low": return "baixa"
+        default: return s
         }
     }
 }

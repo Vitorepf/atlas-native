@@ -102,6 +102,11 @@ enum A11yID {
     static let reviewEmpty = "review-empty"
     static let reviewLoadFailure = "review-load-failure"
     static let reviewDiffUnavailable = "review-diff-unavailable"
+    static let reviewFindingsSection = "review-findings-section"
+    static let reviewFindingAxisPrefix = "review-finding-axis-"
+    static let reviewFindingRowPrefix = "review-finding-row-"
+    static func reviewFindingAxis(_ axis: String) -> String { reviewFindingAxisPrefix + axis.lowercased() }
+    static func reviewFindingRow(_ id: String) -> String { reviewFindingRowPrefix + id }
 
     // V3 · Self-Construction
     static let selfReceiptSheet = "self-receipt-sheet"
