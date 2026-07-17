@@ -52,15 +52,18 @@ struct ExecutionBanner: View {
     let text: String
     let icon: String
     let tint: Color
+    var reduceMotion = false
     var accessibilityIdentifier: String?
 
     var body: some View {
         HStack(spacing: 7) {
             Image(systemName: icon)
                 .font(.system(size: 11, weight: .semibold))
+                .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
             Text(text)
                 .font(AtlasFont.mono(10))
-                .lineLimit(2)
+                .lineLimit(3)
+                .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
         }
         .foregroundStyle(tint)
@@ -76,6 +79,7 @@ struct ExecutionBanner: View {
 
 struct SilenceWatchdog: View {
     let bubble: ChatBubble
+    let reduceMotion: Bool
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 15)) { context in
@@ -84,9 +88,11 @@ struct SilenceWatchdog: View {
                     text: "Sem novos eventos há \(silence)s",
                     icon: "timer",
                     tint: AtlasTheme.domOperacional,
+                    reduceMotion: reduceMotion,
                     accessibilityIdentifier: A11yID.executionSilenceWatchdog
                 )
-                .contentTransition(.numericText())
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
+                .accessibilityLabel("sem novos eventos há \(silence) segundos")
             }
         }
     }

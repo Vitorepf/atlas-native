@@ -13,8 +13,23 @@ struct ExecutingStrip: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-            if let p = bubble.executionProgress {
+            if bubble.showsReconnectSurface {
+                Image(systemName: bubble.reconnectBannerIcon)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
+                    .accessibilityHidden(true)
+            } else {
+                BreathingDiamond(size: 8, reduceMotion: reduceMotion)
+            }
+            if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
+                Text(line)
+                    .font(.system(.footnote))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .layoutPriority(2)
+            } else if let p = bubble.executionProgress {
                 Text("\(p.current)/\(p.total) · \(p.title)")
                     .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(1)
@@ -82,6 +97,9 @@ struct ExecutingStrip: View {
     }
 
     private var stripAccessibilityLabel: String {
+        if bubble.showsReconnectSurface {
+            return bubble.reconnectSpokenLabel
+        }
         if let p = bubble.executionProgress {
             return "execução ao vivo, passo \(p.current) de \(p.total), \(p.title)"
         }

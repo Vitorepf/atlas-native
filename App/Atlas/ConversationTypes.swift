@@ -29,7 +29,7 @@ struct ChatBubble: Identifiable, Equatable {
     var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
     /// Superfície viva do cockpit: só renderiza ribbon quando há dado real.
     var hasLiveExecutionSurface: Bool {
-        reconnectNotice != nil
+        showsReconnectSurface
             || !activities.isEmpty
             || !agents.isEmpty
             || decideStrategy != nil

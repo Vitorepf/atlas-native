@@ -10,15 +10,8 @@ struct ExecutionRibbon: View {
     let onStop: () -> Void
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let notice = bubble.reconnectNotice {
-                ExecutionBanner(
-                    text: notice,
-                    icon: "wifi.exclamationmark",
-                    tint: AtlasTheme.accent,
-                    accessibilityIdentifier: A11yID.executionReconnectBanner
-                )
-            }
-            SilenceWatchdog(bubble: bubble)
+            ReconnectBanner(bubble: bubble, reduceMotion: reduceMotion)
+            SilenceWatchdog(bubble: bubble, reduceMotion: reduceMotion)
             if !bubble.activities.isEmpty {
                 LiveTimeline(activities: bubble.activities, reduceMotion: reduceMotion)
             }
