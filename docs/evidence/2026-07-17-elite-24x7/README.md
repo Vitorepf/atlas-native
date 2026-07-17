@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **521+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXIII tip `093b7e9` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **522+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXIV tip `8844d20` |
 | Commits no tip (`git rev-list --count HEAD`) | 543 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
@@ -127,10 +127,15 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXIII (este tip)
+## Entrega Elite CXXXXXLXXIV (este tip)
+
+- `polish(ui)` CICLO B: Transfer `+A11yFocus`; RadarFolder `+A11yHint`; AreaDelivered `+A11yPeer`; ChangeReview `+A11yDecidedAction/+A11yDecidedSection/+A11yToastLabel`; AreaDetail `+A11yOwnedSystems/+A11yMetric/+A11yPhase`; ArtifactViewer `+A11yDecodeFailure/+A11yTooLarge`; ArenaCapabilities `+A11yCasesCaption/+A11ySuitesCaption/+A11yChartPoints`; Outline `+A11yRoleLabel/+A11yRowLabel`; AreaPicker `+A11yRowHint`; ArenaSuite `+A11yClose/+A11ySheetBody`; Finding `+SeverityColor/+SeveritySpoken`; AskPill `+A11yPill/+A11yPhase`; WorkspaceRow `+TrailingBadge/+TrailingCount`; Patch `+DiffState`; Widgets LockLive `+A11yInlineText/+A11yContentPhaseID` CodeWeek `+A11yQuiet/+A11ySpokenLabel`. Tip `8844d20`.
+- 30 peels · 46 arquivos · over100=0 · App/Atlas+Widgets swift=1740 (`find App/Atlas App/Widgets -name '*.swift' | wc -l`); zero Route nova.
+
+## Entrega Elite CXXXXXLXXIII (anterior)
 
 - `polish(ui)` CICLO B: ArtifactViewer `+KindLabel/+ByteLabel`; ChangeReviewPatch `+Files/+Risk`; ArenaSuites `+A11yRegressions/+A11yMeasuredSummary`; RootChrome `+A11yDetail`; Digest `+A11yAggregate`; OperationDigest `+A11yAggregate/+A11yDelivered`; ModeSheet `+ModeFootnote`; CodeCommitRow `+A11yViolating/+A11yBranch`; Markdown `+CodeBlock+Background`; AreaDetail `+Objective`; Workspace `+WorkspaceRows`; ComposerAttachments `+A11yPaste/+A11yCapture`; LiveTimeline `+A11yFilterChip/+A11yFilterHint`; PlanCard `+A11yStepState`; Execution `+CopyLeave`; Transfer `+A11ySheetLead/+A11yHint`; ArenaCapabilities `+RowContributionView`; Widgets Island `+IslandExpandedShell` LockLive `+Empty`. Tip `093b7e9`.
-- 27 peels · 46 arquivos · over100=0 · App/Widgets swift=100; zero Route nova.
+- 27 peels · 46 arquivos · over100=0 · App/Widgets swift=1710; zero Route nova.
 
 ## Entrega Elite CXXXXXLXXII (anterior)
 
