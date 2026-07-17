@@ -6,14 +6,10 @@ import AtlasCore
 /// Spoken helpers → AtlasCodeRadarView+A11ySpoken.swift
 /// Shell → AtlasCodeRadarView+A11yShell.swift
 /// LoadedID → AtlasCodeRadarView+A11y+LoadedID.swift
+/// BusyID → AtlasCodeRadarView+A11y+BusyID.swift
 
 extension AtlasCodeRadarView {
     var contentPhaseID: String {
-        switch model.phase {
-        case .idle: return "idle"
-        case .loading: return "loading"
-        case .failed: return "failed"
-        case .loaded: return contentPhaseLoadedID
-        }
+        contentPhaseBusyID ?? contentPhaseLoadedID
     }
 }

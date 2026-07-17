@@ -2,12 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Active/queued status words — peel de ConversationCockpit+AgentStatusWord.
+// Queued → ConversationCockpit+AgentStatusWord+Active+Queued.swift
 
 extension AgentRow {
     var statusWordActive: String? {
+        if let queued = statusWordQueued { return queued }
         switch turnStatus {
-        case .queued: return "na fila"
-        case .processing: return "processando"
         case .awaitingUserChoice: return "aguardando"
         case .awaitingExternal: return "aguardando externo"
         default: return nil

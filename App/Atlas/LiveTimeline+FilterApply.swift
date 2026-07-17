@@ -3,17 +3,11 @@ import AtlasCore
 
 // Filter apply — peel de LiveTimeline+FilterEnum.
 // Style → LiveTimeline+FilterApply+Style.swift
+// AllP90 → LiveTimeline+FilterApply+AllP90.swift
 
 extension TimelineReadFilter {
     func apply(to rows: [NarrativeRow]) -> [NarrativeRow] {
         if let styled = applyStyleFilter(to: rows) { return styled }
-        switch self {
-        case .all:
-            return rows
-        case .p90:
-            return rows.filter(\.isP90)
-        default:
-            return rows
-        }
+        return applyAllOrP90(to: rows)
     }
 }
