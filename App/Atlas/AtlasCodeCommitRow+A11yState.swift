@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 /// State phrase — peel de AtlasCodeCommitRow+A11y.
+// Violating → AtlasCodeCommitRow+A11yViolating.swift · Branch → +A11yBranch.swift
 
 enum AtlasCodeCommitRowA11yState {
     static func stateParts(
@@ -14,15 +15,15 @@ enum AtlasCodeCommitRowA11yState {
     ) -> [String] {
         switch state {
         case .violating:
-            var parts = [title, "por \(author)", "fora da \(linha)"]
-            if let ruleId { parts.append(AtlasCodeIssue.law(ruleId, trunk: trunk)) }
-            return parts
-        case .healed:
-            return [title, "por \(author)", "curado"]
-        case .onMain:
-            return [title, "por \(author)", "na \(linha)"]
-        case .history:
-            return [title, "por \(author)", "história"]
+            return violatingParts(
+                title: title,
+                author: author,
+                linha: linha,
+                ruleId: ruleId,
+                trunk: trunk
+            )
+        default:
+            return branchParts(title: title, author: author, linha: linha, state: state)
         }
     }
 }

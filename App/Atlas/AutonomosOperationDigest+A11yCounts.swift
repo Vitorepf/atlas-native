@@ -3,6 +3,7 @@ import Foundation
 // Operation digest counts spoken — peel de AutonomosOperationDigest+A11y.
 // Findings → AutonomosOperationDigest+A11yFindings.swift
 // Backlog → AutonomosOperationDigest+A11yBacklog.swift
+// Delivered → AutonomosOperationDigest+A11yDelivered.swift
 
 extension AutonomosOperationDigestA11y {
     static func spokenCounts(
@@ -13,8 +14,8 @@ extension AutonomosOperationDigestA11y {
         findingsByRisk: [String: Int]
     ) -> [String] {
         var parts: [String] = []
-        if deliveredTotal > 0 {
-            parts.append("\(deliveredTotal) entregue\(deliveredTotal == 1 ? "" : "s") comprovada\(deliveredTotal == 1 ? "" : "s")")
+        if let delivered = spokenDeliveredCount(deliveredTotal) {
+            parts.append(delivered)
         }
         parts.append(contentsOf: spokenBacklogParts(
             pendingCount: pendingCount,

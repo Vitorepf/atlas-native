@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Spoken step — peel de PlanCard+A11y.
-// ChipRow → PlanCard+A11yChipRow.swift
+// ChipRow → PlanCard+A11yChipRow.swift · State → PlanCard+A11yStepState.swift
 
 extension PlanCard {
     func spokenStep(
@@ -12,11 +12,7 @@ extension PlanCard {
         total: Int
     ) -> String {
         var parts = ["passo \(index + 1) de \(total)", step.title]
-        switch state {
-        case .done: parts.append("concluído")
-        case .current: parts.append("em curso")
-        case .pending: parts.append("pendente")
-        }
+        parts.append(Self.spokenStepState(state))
         return parts.joined(separator: ", ")
     }
 }

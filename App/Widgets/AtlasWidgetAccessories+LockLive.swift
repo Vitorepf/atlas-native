@@ -6,6 +6,7 @@ import AtlasCore
 // Circular → AtlasWidgetAccessories+LockCircular.swift
 // Spoken → AtlasWidgetAccessories+LockLive+SpokenLabel.swift
 // Content → AtlasWidgetAccessories+LockLive+Content.swift
+// Empty → AtlasWidgetAccessories+LockLive+Empty.swift
 
 struct LockAccessorySnapshotView: View {
     @Environment(\.widgetFamily) var family
@@ -17,7 +18,7 @@ struct LockAccessorySnapshotView: View {
             if let snapshot = entry.snapshot {
                 lockAccessoryContent(snapshot)
             } else {
-                Text("abra o Atlas")
+                lockAccessoryEmpty
             }
         }
         .accessibilityElement(children: .combine)
