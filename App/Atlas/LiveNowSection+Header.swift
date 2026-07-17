@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Header VIVO AGORA — peel de LiveNowSection.
+// Badges → LiveNowSection+HeaderBadges.swift
 
 extension LiveNowSection {
     var header: some View {
@@ -12,18 +13,7 @@ extension LiveNowSection {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityHidden(true)
-            if isHub {
-                Text("× \(sessions.count)")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.accent)
-                    .accessibilityHidden(true)
-                if remoteCount > 0 {
-                    Text("· \(remoteCount) remota\(remoteCount == 1 ? "" : "s")")
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityHidden(true)
-                }
-            }
+            hubCountBadges
             Spacer(minLength: 0)
         }
         .padding(.bottom, isHub ? 12 : 0)

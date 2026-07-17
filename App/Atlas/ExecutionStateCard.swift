@@ -5,6 +5,7 @@ import AtlasCore
 /// conversa oferece uma ação. Não há botão, prazo ou risco criado pela casca.
 /// Header → +Header · Meta → +Meta · Detail → +Detail · ações → +ActionButtons.
 /// Display → +Display.swift
+/// Chrome → ExecutionStateCard+Chrome.swift
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: JobID?
@@ -16,20 +17,13 @@ struct ExecutionStateCard: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            stateHeader
-            detailLine
-            metaLines
-            actionButtons
+        stateCardChrome {
+            VStack(alignment: .leading, spacing: 10) {
+                stateHeader
+                detailLine
+                metaLines
+                actionButtons
+            }
         }
-        .padding(14)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(AtlasTheme.surface.opacity(0.68))
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(tint.opacity(0.42), lineWidth: 1))
-        )
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(spokenSummary)
-        .accessibilityIdentifier(A11yID.executionStateCard)
     }
 }

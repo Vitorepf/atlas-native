@@ -3,6 +3,7 @@ import AtlasCore
 
 // Spoken labels do composer — peel de ComposerToolbar (CICLO C residual honesty).
 // Input → ComposerToolbar+A11yInput.swift
+// Hint → ComposerToolbar+A11yHint.swift
 
 extension ComposerToolbar {
     var isExecuting: Bool { model.isSending || liveBubble != nil }
@@ -15,21 +16,4 @@ extension ComposerToolbar {
             ? "enviar indisponível, Atlas processando"
             : "enviar indisponível, sem mensagem nem anexo"
     }
-
-    func spokenSendHint(canSubmit: Bool) -> String {
-        if canSubmit {
-            return isExecuting
-                ? "envia esta mensagem na fila do próximo turno"
-                : "envia mensagem e anexos ao Atlas"
-        }
-        if isExecuting {
-            return "escreva uma mensagem para adicionar à fila durante a execução"
-        }
-        if !model.drafts.isEmpty {
-            return "adicione texto ou envie os anexos prontos"
-        }
-        return "escreva uma mensagem ou adicione um anexo para enviar"
-    }
-
-    func spokenProcessingLabel() -> String { "Atlas processando" }
 }

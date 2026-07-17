@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels do thumb de anexo — peel de DraftThumb (CICLO C).
 /// Tamanho só quando bytes publicados; tipo imagem/arquivo honesto.
+/// Hints → DraftThumb+A11yHints.swift
 
 enum DraftThumbA11y {
     static func spokenThumb(_ draft: LocalDraft) -> String {
@@ -23,13 +24,13 @@ enum DraftThumbA11y {
     }
 
     static func spokenRemove(_ draft: LocalDraft) -> String {
-        "remover anexo \(draft.fileName)"
+        DraftThumbA11yHints.spokenRemove(draft)
     }
 
-    static let removeHint = "remove este anexo antes do envio"
-    static let failedHint = "toque para ver o erro completo no aviso"
+    static let removeHint = DraftThumbA11yHints.removeHint
+    static let failedHint = DraftThumbA11yHints.failedHint
 
     static func spokenFailedValue(_ message: String) -> String {
-        message.isEmpty ? "erro no envio" : message
+        DraftThumbA11yHints.spokenFailedValue(message)
     }
 }
