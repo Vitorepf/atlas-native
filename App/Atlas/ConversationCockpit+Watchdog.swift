@@ -3,6 +3,7 @@ import AtlasCore
 
 // Silence watchdog — peel de ConversationCockpit+Agents.
 // Banner → ConversationCockpit+WatchdogBanner.swift
+// Seconds → ConversationCockpit+WatchdogSeconds.swift
 
 struct SilenceWatchdog: View {
     let bubble: ChatBubble
@@ -18,13 +19,5 @@ struct SilenceWatchdog: View {
                 silenceBanner(seconds: silence)
             }
         }
-    }
-
-    func silenceSeconds(now: Date) -> Int? {
-        guard bubble.streaming else { return nil }
-        let last = bubble.activities.reversed().compactMap { AtlasTime.date($0.occurredAt) }.first
-            ?? bubble.startedAt
-        guard let last else { return nil }
-        return max(0, Int(now.timeIntervalSince(last)))
     }
 }

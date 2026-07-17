@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Linha visual da auditoria — peel de PlanCard+Audit.
+// Status → PlanCard+AuditStatus.swift
 
 extension PlanCard {
     func auditTerminalCopy(
@@ -20,10 +21,7 @@ extension PlanCard {
                 .monospacedDigit()
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
-            Text(progress.isTerminal ? "terminal" : "em curso")
-                .font(AtlasFont.mono(9))
-                .foregroundStyle(progress.isTerminal ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+            auditStatusWord(progress: progress)
         }
         .padding(.top, 2)
     }

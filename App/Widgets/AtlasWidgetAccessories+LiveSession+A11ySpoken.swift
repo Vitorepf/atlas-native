@@ -2,6 +2,7 @@ import AtlasCore
 import Foundation
 
 // Spoken label da sessão viva — peel de LiveSessionWidgetA11y.
+// Live → AtlasWidgetAccessories+LiveSession+A11ySpokenLive.swift
 
 extension LiveSessionWidgetA11y {
     static func spokenLabel(
@@ -12,15 +13,7 @@ extension LiveSessionWidgetA11y {
     ) -> String {
         var parts = ["Sessão viva"]
         if let live {
-            parts.append("\(live.title), \(live.phaseTitle)")
-            if live.timing == .paused {
-                parts.append("pausado")
-                if let clock = LockAccessoryA11y.frozenClock(live) {
-                    parts.append("tempo congelado \(clock)")
-                }
-            } else {
-                parts.append("em execução")
-            }
+            parts.append(contentsOf: spokenLiveParts(live))
         } else {
             parts.append("silêncio na obra")
             parts.append(silenceDetail(snapshot))

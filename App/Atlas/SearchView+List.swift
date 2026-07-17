@@ -3,6 +3,7 @@ import AtlasCore
 
 // Peel anti-inchaço — recentes do SearchView.
 // Results → SearchView+Results.swift · ThreadLink → SearchView+ThreadLink.swift
+// Caption → SearchView+ListCaption.swift
 
 struct SearchRecentSection: View {
     let threads: [AtlasAiThread]
@@ -10,14 +11,7 @@ struct SearchRecentSection: View {
 
     var body: some View {
         Group {
-            Text("RECENTES")
-                .font(.system(.caption, weight: .semibold)).tracking(1.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel("recentes, \(threads.count) conversa\(threads.count == 1 ? "" : "s") carregada\(threads.count == 1 ? "" : "s")")
-                .accessibilityIdentifier(A11yID.searchRecentCaption)
+            recentCaption
             ForEach(threads) { t in
                 SearchThreadLink(thread: t, reduceMotion: reduceMotion)
                 if t.id != threads.last?.id {

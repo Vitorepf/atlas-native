@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // CircleButton — peel de RootChrome+Controls.
+// Badge → RootChrome+CircleButtonBadge.swift
 
 struct CircleButton: View {
     let icon: String
@@ -15,14 +16,7 @@ struct CircleButton: View {
                 .font(.system(size: 17, weight: .medium)).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 44, height: 44).background(Circle().fill(AtlasTheme.surface))
                 .overlay(alignment: .topTrailing) {
-                    if badge {
-                        Circle()
-                            .fill(AtlasCodePalette.alert)
-                            .frame(width: 9, height: 9)
-                            .overlay(Circle().strokeBorder(AtlasTheme.bg, lineWidth: 1.5))
-                            .offset(x: 1, y: -1)
-                            .accessibilityHidden(true)
-                    }
+                    badgeOverlay
                 }
         }
         .accessibilityAddTraits(.isButton)
