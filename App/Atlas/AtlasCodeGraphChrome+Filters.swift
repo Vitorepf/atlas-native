@@ -10,6 +10,8 @@ extension AtlasCodeView {
                 .font(AtlasFont.mono(10))
                 .tracking(1.1)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier(A11yID.codeGraphWorktrees)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     ForEach(worktrees) { worktree in
@@ -43,16 +45,21 @@ extension AtlasCodeView {
         }
     }
 
-    func graphStateChips(_ graph: AtlasCodeGraphResponse) -> some View {
+    func graphStateChips(_ graph: AtlasCodeGraphResponse, filterSilence: Bool) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 7) {
                 ForEach(AtlasCodeGraphStateFilter.allCases) { option in
                     let active = graphStateFilter == option
+                    let count = option.count(in: graph.nodes, model: model)
                     Button {
-                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                        graphStateFilter = option
+                        if !reduceMotion {
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                        }
+                        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
+                            graphStateFilter = option
+                        }
                     } label: {
-                        Text("\(option.label) \(option.count(in: graph.nodes, model: model))")
+                        Text("\(option.label) \(count)")
                             .font(AtlasFont.mono(9))
                             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
                             .monospacedDigit()
@@ -62,9 +69,17 @@ extension AtlasCodeView {
                             .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("filtrar grafo por \(option.label)")
+                    .accessibilityLabel(
+                        AtlasCodeGraphA11y.spokenFilterChip(
+                            option, count: count, active: active, silent: active && filterSilence
+                        )
+                    )
+                    .accessibilityAddTraits(active ? .isSelected : [])
+                    .accessibilityIdentifier(A11yID.codeGraphFilter(option.rawValue))
                 }
             }
         }
+        .accessibilityIdentifier(A11yID.codeGraphFilters)
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: graphStateFilter)
     }
 }

@@ -30,7 +30,7 @@ struct AtlasCodeCommitRow: View {
                     // último recurso honesto — nunca inventamos um título.
                     Text(node.message ?? String(node.hash.prefix(8)))
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(state == .violating ? AtlasCodePalette.alert : AtlasTheme.textPrimary)
+                        .foregroundStyle(state == .violating ? color : AtlasTheme.textPrimary)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
                     HStack(spacing: 6) {
@@ -44,7 +44,7 @@ struct AtlasCodeCommitRow: View {
                             // se apaga trabalho — o tradutor já existia, e só o
                             // grafo continuava falando snake_case.
                             Text(AtlasCodeIssue.law(ruleId, trunk: trunk))
-                                .foregroundStyle(AtlasCodePalette.alert)
+                                .foregroundStyle(color)
                         }
                     }
                     .font(AtlasFont.mono(9))
@@ -59,9 +59,12 @@ struct AtlasCodeCommitRow: View {
         .opacity(isDimmed ? 0.26 : 1)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.28), value: isDimmed)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityText)
-        // O leitor de tela precisa do mesmo sinal que o olho recebe.
-        .accessibilityHint(isDimmed ? "fora da resposta" : "")
+        .accessibilityLabel(
+            AtlasCodeGraphA11y.spokenCommitRow(
+                node: node, state: state, trunk: trunk, ruleId: ruleId, isDimmed: isDimmed
+            )
+        )
+        .accessibilityHint(isDimmed ? "" : "abre proveniência do commit")
         .accessibilityIdentifier(A11yID.codeCommit(hashPrefix: String(node.hash.prefix(8))))
         .onLongPressGesture(minimumDuration: 0.45) {
             onLongPress?()

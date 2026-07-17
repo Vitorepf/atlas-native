@@ -14,16 +14,16 @@ extension AtlasCodeView {
             if let graph = model.graph, !graph.nodes.isEmpty {
                 graphContent(graph)
             } else {
-                Text("nenhum commit para mostrar")
-                    .font(AtlasFont.serifItalic(16))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                Color.clear
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .accessibilityLabel(AtlasCodeGraphA11y.emptyGraph)
             }
         }
     }
 
     func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
         let filteredNodes = graphStateFilter.nodes(in: graph.nodes, model: model)
+        let filterSilence = graphStateFilter != .all && filteredNodes.isEmpty
         let scroll = ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 statusCapsule
@@ -34,16 +34,8 @@ extension AtlasCodeView {
                         .padding(.bottom, 14)
                 }
 
-                graphStateChips(graph)
+                graphStateChips(graph, filterSilence: filterSilence)
                     .padding(.bottom, 10)
-
-                if filteredNodes.isEmpty {
-                    Text("nenhum commit neste filtro")
-                        .font(AtlasFont.serifItalic(14))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.vertical, 20)
-                }
 
                 ForEach(Array(filteredNodes.enumerated()), id: \.element.id) { index, node in
                     AtlasCodeCommitRow(
