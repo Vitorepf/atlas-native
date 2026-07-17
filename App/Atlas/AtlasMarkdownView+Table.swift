@@ -2,21 +2,13 @@ import SwiftUI
 import AtlasCore
 
 // Tabelas — peel de AtlasMarkdownView+Rendering.
+// Header → AtlasMarkdownView+TableHeader.swift
 
 extension AtlasMarkdownView {
     func tableView(_ headers: [[InlineSpan]], _ rows: [[[InlineSpan]]]) -> some View {
         let colCount = max(headers.count, rows.map { $0.count }.max() ?? 0)
         return VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                ForEach(0..<colCount, id: \.self) { ci in
-                    Text(plain(ci < headers.count ? headers[ci] : []).uppercased())
-                        .font(AtlasFont.mono(10, .medium)).tracking(1.4)
-                        .foregroundStyle(AtlasTheme.accent)
-                        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 8)
-                }
-            }
-            .padding(.vertical, 10)
-            .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.separator).frame(height: 1) }
+            tableHeaderRow(headers, colCount: colCount)
 
             ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
                 HStack(spacing: 0) {

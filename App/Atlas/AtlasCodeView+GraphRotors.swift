@@ -1,6 +1,9 @@
 import SwiftUI
 import AtlasCore
 
+// Graph rotor helpers — peel de AtlasCodeView.
+// Rotors → AtlasCodeView+GraphRotorsA11y.swift
+
 extension AtlasCodeView {
     func nodes(in graph: AtlasCodeGraphResponse, matching state: AtlasCodeNodeState) -> [AtlasCodeGraphNode] {
         graph.nodes.filter { model.state(for: $0) == state }
@@ -16,20 +19,5 @@ extension AtlasCodeView {
               let path = provenance.files.first?.path else { return }
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
         whyFileTarget = WhyFileTarget(path: path)
-    }
-
-    @ViewBuilder
-    func graphAccessibilityRotors(graph: AtlasCodeGraphResponse, content: some View) -> some View {
-        content
-            .accessibilityRotor("Violações") {
-                ForEach(nodes(in: graph, matching: .violating), id: \.id) { node in
-                    AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
-                }
-            }
-            .accessibilityRotor("Curados") {
-                ForEach(nodes(in: graph, matching: .healed), id: \.id) { node in
-                    AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
-                }
-            }
     }
 }

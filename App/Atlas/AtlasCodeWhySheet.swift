@@ -16,15 +16,7 @@ struct AtlasCodeWhySheet: View {
     var body: some View {
         ZStack {
             AtlasTheme.bg.ignoresSafeArea()
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    header
-                    content
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(22)
-                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: whyContentPhaseID)
-            }
+            whyScrollBody
         }
         .task { if model.phase == .idle { await model.load(repo: repo, file: file) } }
         .accessibilityIdentifier(A11yID.whySheet)
