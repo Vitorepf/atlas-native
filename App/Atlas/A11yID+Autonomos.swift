@@ -1,6 +1,7 @@
 import Foundation
 
-// Autônomos + Nightly + Self-receipt A11yIDs — peel de A11yID.swift (régua ≤100).
+// Autônomos A11yIDs — peel de A11yID.swift (régua ≤100).
+// Nightly/Self → A11yID+NightlySelf.swift
 
 extension A11yID {
     static let autonomosScreen = "autonomos-screen"
@@ -52,14 +53,6 @@ extension A11yID {
     static let autonomosReasonSubmit = "autonomos-reason-submit"
     static let autonomosDetailClose = "autonomos-detail-close"
     static let autonomosDetailEmpty = "autonomos-detail-empty"
-
-    static let nightlyProposalCard = "nightly-proposal-card"
-    static let nightlyProposalAccept = "nightly-proposal-accept"
-    static let nightlyProposalDismiss = "nightly-proposal-dismiss"
-    static let nightlyProposalMute = "nightly-proposal-mute"
-
-    static let selfReceiptSheet = "self-receipt-sheet"
-    static let selfReceiptVeto = "self-receipt-veto"
 
     static func autonomosDetailButton(_ key: String) -> String { autonomosDetailButtonPrefix + key }
 }

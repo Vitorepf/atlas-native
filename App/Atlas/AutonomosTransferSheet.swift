@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Folha de transferência — só placement verificado do lock; alvo nunca inventado.
-/// Form → AutonomosTransferSheet+Form.swift · Placement → +Placement.swift
+/// Form → AutonomosTransferSheet+Form.swift · Placement → +Placement.swift · Toolbar → +Toolbar.swift
 struct AutonomosTransferSheet: View {
     let areaName: String
     let focus: String
@@ -17,32 +17,7 @@ struct AutonomosTransferSheet: View {
         NavigationStack {
             transferForm
             .navigationTitle("Transferir missão")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    AtlasCloseToolbarButton(
-                        title: "Cancelar",
-                        spokenLabel: AutonomosTransferSheetA11y.spokenCancel,
-                        spokenHint: "fecha sem transferir",
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Confirmar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        onConfirm(actor, reason)
-                        dismiss()
-                    }
-                    .disabled(!canConfirm)
-                    .accessibilityIdentifier(A11yID.autonomosTransferSubmit)
-                    .accessibilityLabel(AutonomosTransferSheetA11y.spokenConfirm(canConfirm: canConfirm))
-                    .accessibilityHint(
-                        AutonomosTransferSheetA11y.spokenConfirmHint(
-                            canConfirm: canConfirm,
-                            hasPlacement: hasPlacement
-                        )
-                    )
-                }
-            }
+            .toolbar { transferToolbar }
             .accessibilityIdentifier(A11yID.autonomosTransferSheet)
         }
         .accessibilityLabel(

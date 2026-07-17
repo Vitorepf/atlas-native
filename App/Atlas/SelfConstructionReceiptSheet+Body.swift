@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Corpo regra/prova/fila — peel de SelfConstructionReceiptSheet (régua ≤100).
+// Corpo regra/prova — peel de SelfConstructionReceiptSheet (régua ≤100).
+// Revert → SelfConstructionReceiptSheet+RevertBanner.swift
 
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
@@ -41,20 +42,5 @@ extension SelfConstructionReceiptSheet {
         .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenProofLabel())
-    }
-
-    @ViewBuilder
-    var revertQueueBanner: some View {
-        if revertReceipt != nil {
-            Text("na fila · ainda não desfeito")
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.domOperacional)
-                .padding(12)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.domOperacional.opacity(0.08)))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.domOperacional.opacity(0.35), lineWidth: 1))
-                .transition(reduceMotion ? .identity : .opacity)
-                .accessibilityLabel(spokenRevertQueueLabel())
-        }
     }
 }

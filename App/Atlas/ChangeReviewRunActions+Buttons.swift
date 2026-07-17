@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Botões Aceitar/Rejeitar — peel de ChangeReviewRunActions.
+// Applying → ChangeReviewRunActions+Applying.swift
 
 extension ChangeReviewRunActions {
     @ViewBuilder
@@ -42,20 +43,6 @@ extension ChangeReviewRunActions {
             .accessibilityLabel("rejeitar revisão inteira")
             .accessibilityHint("rejeita o run de engenharia desta execução")
             .accessibilityIdentifier(A11yID.reviewRunReject)
-        }
-    }
-
-    @ViewBuilder
-    var applyingIndicator: some View {
-        if reduceMotion {
-            Text("registrando…")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityLabel("registrando decisão")
-        } else {
-            ProgressView()
-                .tint(AtlasTheme.accent)
-                .accessibilityLabel("registrando decisão")
         }
     }
 }

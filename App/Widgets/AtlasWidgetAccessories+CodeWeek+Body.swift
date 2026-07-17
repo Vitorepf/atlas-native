@@ -2,20 +2,10 @@ import WidgetKit
 import SwiftUI
 import AtlasCore
 
-// Métricas da semana — peel de CodeWeekWidgetView.
+// Corpo da semana — peel de CodeWeekWidgetView.
+// Metric → AtlasWidgetAccessories+CodeWeek+Metric.swift
 
 extension CodeWeekWidgetView {
-    func weekMetric(_ value: String, _ label: String) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(value)
-                .font(.system(size: 22, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Ink.ink)
-            Text(label)
-                .font(.system(size: 10, design: .serif))
-                .foregroundStyle(Ink.ink2)
-        }
-    }
-
     @ViewBuilder
     func weekBody(week: AtlasNativeSnapshot.Week, stale: Bool, age: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
