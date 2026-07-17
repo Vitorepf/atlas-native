@@ -21,6 +21,10 @@ GET …/loop/atlas-native/done?focus=dev_forge
 **Próximo (dono: Codex/server):** bridge governado pós-heal OU contrato
 heal-receipt separado de `/done` — ver OBRA §5.
 
+**2026-07-17 cloud agent:** `atlas-server` **ausente** neste workspace Linux
+→ A1.1b/c **BLOCKED(server)**. Casca nativa já só mostra
+“O ATLAS MELHOROU…” quando `deliveredTotal > 0` (fail-closed).
+
 ## M02 · DEVICE_PROVEN prints — PENDENTE OPERADOR
 
 Roteiro (iPhone desbloqueado, `passcodeRequired=false`):

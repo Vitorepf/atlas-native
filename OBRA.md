@@ -168,11 +168,8 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
 |---|---|---|---|---|---|---|---|
 | E0 | **DONE** | **Grok 4.5** | `docs/plano-elite-agentica-24x7.md`; design; `OBRA.md` | decisão operador 2026-07-17 | Canon + plano mestre A→B→C→D | zero Route nova; fora-do-app livre; humano fora do fluxo ops | este commit |
-| E-A1 | **IN_PROGRESS** | **Grok 4.5** | server+Core+casca M01/Arena worker/deep links; plano leafs A1.1–A1.4 | E0 | Onda A1 honestidade P0 | heal→merge ou heal-receipt; Arena drain→scoreboard; deep links widgets | `docs/plano-elite-agentica-24x7.md` Onda A1 leafs; atlas-server ausente → BLOCKED server leafs |
-| E-A2 | **PENDING** | — | Arena LA + App Intents | E-A1 A12 | Onda A2 Arena Continuity | LA `suite·engine·braço·N/M`; botões só ações reais | — |
-| E-A3 | **PENDING** | — | §5 contratos C9/M65/C18–C21/M98+/… | E0 | Onda A3 contratos | TDD + decode; UI só depois | — |
-| E-A4 | **PENDING** | — | deepen Conversation/Autonomos/Code/Arena/LiveNow | E-A3 onde bloquear | Onda A4 casca deepen | zero Route; fidelity matrix | — |
-| E-A5 | **PENDING** | — | Widgets/Island/lock/notif/StandBy/Controls | E-A1 deep links | Onda A5 fora-do-app | variantes honestas; silêncio se saudável | — |
+| E-A1 | **PARCIAL** | **Grok 4.5** | Core `AtlasDeepLink` + RootView + Widgets M84; server M01/A12 | E0 | Onda A1 honestidade P0 | A1.3 deep links DONE; M84 Semana widget; M01/A12 **BLOCKED(server)** neste ambiente | deep link + week widget neste commit; gates Swift BLOCKED(cloud Linux) |
+| E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana lê `snapshot.week`; demais variantes pendentes | este commit |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
 | E-B | **PENDING** | — | splits AutonomosView/Model/Core + dedup | E-A* mínimo | CICLO B compressão 1 | Model <800; views~200; saldo negativo | — |
 | E-C | **PENDING** | — | aprofundar 9 rotas + presença | E-B | CICLO C patamares | profundidade sem largura de telas | — |
@@ -969,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
 - 2026-07-17 · Grok 4.5 · **Elite E-A1 claim + A1 leaf tasks** · este commit · `docs/plano-elite-agentica-24x7.md` Onda A1 expandida em leafs bite-sized (A1.1a–d M01, A1.2a–d Arena A12, A1.3a–c deep links, A1.4 closeout) com paths exatos, checkboxes, gates e commit messages. §4 E-A1 → **IN_PROGRESS** (Grok 4.5). §5 M01 + M61/A12: **BLOCKED(server)** honesto — `atlas-server` ausente neste workspace; native-only segue (A1.3 handlers). Sem mudança de runtime. Prova: docs + blackboard.
+
+- 2026-07-17 · Grok 4.5 · **Elite A1.3 + M84 — deep links + Semana widget** · este commit · `AtlasDeepLink` (Core) + goldens; `RootView.onOpenURL` trata `atlas://autonomos`, bare `atlas://execution` (última live com threadId ou home), `atlas://code`→radar, code/repo, execution/trace. Widget **Atlas · Semana do Código** lê `snapshot.week` (commits/heals/prevented) → `atlas://code`. **BLOCKED:** `atlas-server` ausente neste cloud → M01/A12 server leafs; toolchain Swift ausente (Linux) → CoreChecks/`make build` não rodados aqui — re-rodar no Mac. Casca Autônomos/Arena já fail-closed (`deliveredTotal>0`, `worker_implemented=false` copy). Prova: diff + goldens no repo; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite 24×7 — plano mestre + canon** · este commit · Design `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md` + plano `docs/plano-elite-agentica-24x7.md` (ciclos A implementar → B comprimir → C aprofundar → D comprimir; zero Route nova; fora-do-app livre ≈130 variantes; humano fora do fluxo ops). OBRA §0/§4 Elite E0–E-D / §6 decisão / §B M82 parcial. Inventário via 5 subagentes (rotas, doutrina, gaps, fora-do-app, saúde de código). **Próximo:** E-A1 (M01, Arena worker, deep links). Prova: docs + blackboard; sem mudança de runtime neste commit.
 

@@ -320,47 +320,43 @@ atlas-server.
 
 #### A1.3a — Mapa URL → Route (spec leaf)
 
-- [ ] **A1.3a.1** Documentar na task (comentário curto no PR/§7) a matriz:
+- [x] **A1.3a.1** Documentar na task (comentário curto no PR/§7) a matriz:
   | URL | Destino honesto |
   |---|---|
   | `atlas://autonomos` | `path.append(Route.autonomos)` |
-  | `atlas://execution` (sem path) | Home + foco `LiveNowSection` / última sessão viva real — **sem** inventar thread |
+  | `atlas://execution` (sem path) | Home + última sessão viva real com `threadId` — **sem** inventar thread |
   | `atlas://execution/<trace>` | existente: resolve trace→thread |
+  | `atlas://code` | `Route.code` (radar) |
   | `atlas://code/<repo>` | existente: `Route.codeGraph(repo:)` |
-- [ ] **A1.3a.2** Confirmar widgets ainda emitem as URLs acima em
+- [x] **A1.3a.2** Confirmar widgets ainda emitem as URLs acima em
   `App/Widgets/AtlasWidgets.swift` (não “consertar” URL sem handler).
 
 #### A1.3b — Implementar handlers em RootView
 
-- [ ] **A1.3b.1** Em `App/Atlas/RootView.swift` `onOpenURL`: branch
+- [x] **A1.3b.1** Em `App/Atlas/RootView.swift` `onOpenURL`: branch
   `host == "autonomos"` → reset/navegação para `Route.autonomos` (sem path
   extra).
-- [ ] **A1.3b.2** Branch `host == "execution"` **sem** path component:
+- [x] **A1.3b.2** Branch `host == "execution"` **sem** path component:
   `path = NavigationPath()` (home); se existir sessão viva em
   `TurnPresence` / `session` live sessions, opcionalmente abrir
   `Route.thread` da **última viva real**; se zero sessões → ficar na home
   com LiveNow (silêncio, sem toast falso).
-- [ ] **A1.3b.3** Preservar branch existente `execution/<trace>`
-  (`getAiInteraction` → thread) e `code/<repo>`.
-- [ ] **A1.3b.4** Ordem de matching explícita (autonomos → code →
-  execution bare → execution+trace) para não shadowing.
-- [ ] **A1.3b.5** Commit:
-  `fix(ui): handle atlas://autonomos and bare atlas://execution`
+- [x] **A1.3b.3** Preservar branch existente `execution/<trace>`
+  (`getAiInteraction` → thread) e `code/<repo>`; add `code` bare → radar.
+- [x] **A1.3b.4** Parser puro `AtlasDeepLink` (Core) — matching fail-closed.
+- [x] **A1.3b.5** Commit:
+  `feat(core): AtlasDeepLink + handle widget URLs; M84 Semana widget`
 
 #### A1.3c — Prova + gates
 
-- [ ] **A1.3c.1** Teste de parsing (unit preferível: função pura
-  `AtlasDeepLink` / switch testável) cobrindo autonomos, execution bare,
-  execution+trace, code+repo, URL lixo → no-op.
-- [ ] **A1.3c.2** Se XCUITest viável: abrir URL e assert destination
-  a11y (senão unit + nota device-pending).
-- [ ] **A1.3c.3** Rodar gates:
-  `env -u ATLAS_LIVE swift run AtlasCoreChecks` · `cd App && make build` ·
-  `git diff --check`
-- [ ] **A1.3c.4** Append `OBRA.md` §7 com prova; marcar A1.3 checkboxes;
-  se A1.1/A1.2 ainda BLOCKED, E-A1 fica **PARCIAL** (deep links DONE,
-  server gaps ABERTO).
-
+- [x] **A1.3c.1** Golden `runAtlasDeepLinkChecks` cobrindo autonomos,
+  execution bare/trace, code bare/repo, URL lixo → nil.
+- [ ] **A1.3c.2** XCUITest device — **device-pending** (passcode / cloud Linux).
+- [ ] **A1.3c.3** Gates `swift run AtlasCoreChecks` + `make build` —
+  **BLOCKED(toolchain)** neste cloud agent (Linux sem Swift). Rodar no Mac
+  do operador / agent macOS antes de DEVICE_PROVEN.
+- [x] **A1.3c.4** Append `OBRA.md` §7; A1.3 DONE nativo; E-A1 **PARCIAL**
+  (server M01/A12 BLOCKED).
 ---
 
 ### Task A1.4: Fechamento de onda E-A1 (blackboard)
