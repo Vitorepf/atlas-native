@@ -15,6 +15,7 @@ import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteir
 // notificação quando o app volta.
 //
 // ActivityKit start/update/finish → TurnPresence+LiveActivity.swift.
+// Notificações locais → TurnPresence+Notifications.swift.
 /// Snapshot de uma sessão viva observada neste processo — a home lê isto
 /// para virar cockpit (V1). Zero rede; só o que o TurnPresence já sabe.
 struct LiveSessionSnapshot: Identifiable, Equatable {
@@ -63,7 +64,7 @@ final class TurnPresence {
     }
 
     @ObservationIgnored private var entries: [ObjectIdentifier: Entry] = [:]
-    @ObservationIgnored private var askedPermission = false
+    @ObservationIgnored var askedPermission = false
 
     private func syncRunning() {
         runningTitles = Set(entries.values.filter { $0.ongoing }.map { $0.threadTitle })
@@ -208,42 +209,4 @@ final class TurnPresence {
         syncRunning()
     }
 
-    // MARK: - Notificação local (tela bloqueada)
-
-    /// Avisa SÓ pela fase pública terminal — nunca por isSending virar falso.
-    private func notifyIfAway(_ entry: Entry, model: ConversationModel,
-                              finalPresence: AtlasExecutionPresence?) {
-        guard UIApplication.shared.applicationState != .active else { return }
-        let failed = finalPresence?.phaseTitle == "Falhou"
-        let excerpt = model.bubbles.last(where: { $0.role == "assistant" })?.text ?? ""
-        let content = UNMutableNotificationContent()
-        content.title = failed ? "O turno falhou" : "Atlas respondeu"
-        content.subtitle = Self.lockScreenText(entry.threadTitle, limit: 48)
-        // O texto SEM a sintaxe: este é o mesmo campo que a tela entrega ao
-        // parser markdown, e ia cru para a Lock Screen — o operador longe do app
-        // lia `**pronto**` e `## Resposta` em vez da resposta.
-        content.body = failed ? "Toque para ver o motivo e retomar."
-                              : Self.lockScreenText(AtlasMarkdown.plainText(excerpt), limit: 140)
-        content.sound = .default
-        UNUserNotificationCenter.current().add(
-            UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil))
-    }
-
-    /// Pede permissão no PRIMEIRO turno concluído (momento de valor real),
-    /// nunca no launch — UX de permissão digna.
-    private func requestPermissionOnce() async {
-        guard !askedPermission else { return }
-        askedPermission = true
-        // `await` de propósito: sem esperar o veredito, a notificação sai antes
-        // de existir permissão e o iOS a descarta calada.
-        _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
-    }
-
-    static func lockScreenText(_ value: String, limit: Int) -> String {
-        let collapsed = value
-            .replacingOccurrences(of: "\n", with: " ")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard collapsed.count > limit else { return collapsed }
-        return String(collapsed.prefix(max(0, limit - 1))) + "…"
-    }
 }
