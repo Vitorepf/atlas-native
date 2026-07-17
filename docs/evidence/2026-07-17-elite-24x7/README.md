@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXVIII (este tip)
+## Entrega Elite CXXXXXLXXIX (este tip)
+
+- `polish(ui)` CICLO B: LiveTimeline `+RowPipeline/+BodyGate`; AtlasCodeView GraphList `+Tail+Truncation/+Mirror/+WeekTail/+Rows+CommitRow`; Sheets `+ProvenanceBind/+HealReceiptWrap`; Markdown `+HeadingOne/+HeadingTwo/+HeadingDefault`; EditorialTurn `+AssistantPlan/+AssistantRibbon`; ExecutionRibbon `+BannerStack/+ActivitiesBlock/+CardChrome`; RootHome `+ChipsRow`; Search `+ScrollShell+Loading/+Offline`; AutonomosArea `+ControlsStack`; PlanCard `+RevisionsCompare+Left/+Entered`; Steer `+FormReceipt`; RadarFolder `+HeaderChevron`; Widgets Island `+ExpandedRegions` LiveSession `+ContentStack`. Tip `e9c6e59`.
+- 26 peels · 41 arquivos · over100=0 · App/Atlas+Widgets swift=1884; App/Widgets swift=114; zero Route nova.
+
+## Entrega Elite CXXXXXLXXVIII (anterior)
 
 - `polish(ui)` CICLO B: ConversationView `+PageComposerArgs/+PageMessages`; ConversationComposer `+CardSheetsBind`; ConversationSheets `+ModifierWrap/+ModifierChain`; AutonomosView `+LifecycleSheetsBind`; AtlasCodeView `+SheetsModifierWrap`; Steer `+Navigation/+AccessibilityShell`; Transfer `+Navigation`; RadarView `+Init/+ContentShell`; OperationDigest `+SignalRouter`; RootHome `+PhaseBody`; PlanCard `+StepRowLayout`; Artifact `+NavigationShell`; Search `+SearchLayout`; ChangeReviewToast `+CapsuleChrome`; InfoLine `+CardChrome`; Workspace `+ScrollPhases`; Provenance `+BodyShell`; LoadedSection `+ScrollShell`; Widgets LockLive `+SnapshotBranch` LiveSession `+ContentBranch` Island `+CompactChrome`. Tip `9488fc6`.
 - 25 peels · 48 arquivos · over100=0 · App/Atlas+Widgets swift=1858; App/Widgets swift=112; zero Route nova.
