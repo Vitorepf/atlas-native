@@ -77,9 +77,11 @@ struct AutonomosLoadedSection: View {
                 }
                 if let error = model.controlError {
                     AutonomosErrorCard(message: error)
+                        .transition(reduceMotion ? .identity : .opacity.combined(with: .offset(y: 6)))
                 }
             }
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 10).padding(.bottom, 32)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: receiptPhaseID)
         }
         .refreshable {
             await model.load()
