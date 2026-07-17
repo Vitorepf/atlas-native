@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **360+** | primeiro commit do plano: `ec931f2`; Elite CXXX tip `ce45330` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **362+** | primeiro commit do plano: `ec931f2`; Elite CXXXI tip `78a1347` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXX (este tip)
+## Entrega Elite CXXXI (este tip)
+
+- `refactor(ui)` CICLO B: Reason+Submit; Folder+Badge; Provenance+Title; Week+Quiet; Status+Tokens; Arena+Loaded; Artifact+EmptyGate; Engine+Toolbar; Nightly+Mute; Timeline+A11yRow; Scrubber+Header; Editorial+Arrival; Empty+Breathe; Composer+Helpers. Tip `78a1347`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXX (anterior)
 
 - `refactor(ui)` CICLO B: Sheets+TraceRefs; Receipt+A11y; Paste+PasteButton; Health+IncidentCard; LiveSession+Silence; Home+Layout/+A11yEntry; LiveNow+TimingLine/+Chevron; Proof+Quality; Editorial+A11yWho; Mode+Modes; Review+Toolbar; Autonomos+A11ySpoken; Scroll+ScrollAuto. Tip `ce45330`.
 - Zero App/Widgets >100; zero Route nova.

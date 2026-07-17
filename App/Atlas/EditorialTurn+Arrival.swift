@@ -4,10 +4,6 @@ import AtlasCore
 // Arrival animation — peel de EditorialTurn.
 
 extension EditorialTurn {
-    var arrivalModifiers: some View {
-        EmptyView()
-    }
-
     func applyArrival<Content: View>(_ content: Content) -> some View {
         content
             .opacity(placed ? 1 : 0)
