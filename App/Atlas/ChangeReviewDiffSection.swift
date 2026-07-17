@@ -19,10 +19,11 @@ struct ChangeReviewPatchCard: View {
             HStack {
                 Text("PATCH \(String(patch.id.prefix(8)))")
                     .font(AtlasFont.mono(10)).tracking(0.8).foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
                 Spacer()
                 Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
                     .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.accent)
-                    .accessibilityLabel(diffExpanded ? "fechar diff do patch" : "ver diff do patch")
+                    .accessibilityLabel(ChangeReviewPatchA11y.spokenDiffToggle(expanded: diffExpanded))
                     .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
                     .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
             }
@@ -35,8 +36,11 @@ struct ChangeReviewPatchCard: View {
                         Text(flag).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domOperacional)
                             .padding(.horizontal, 7).padding(.vertical, 3)
                             .background(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
+                            .accessibilityHidden(true)
                     }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(ChangeReviewPatchA11y.spokenRiskFlags(patch.riskFlags))
             }
             if diffExpanded {
                 ChangeReviewDiffView(reviews: reviews, traceId: traceId, patch: patch)
@@ -45,6 +49,9 @@ struct ChangeReviewPatchCard: View {
         }
         .padding(14)
         .atlasCard()
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(ChangeReviewPatchA11y.spokenCard(patch: patch, diffExpanded: diffExpanded))
+        .accessibilityIdentifier(A11yID.reviewPatchCard(patch.id))
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: diffExpanded)
     }
 

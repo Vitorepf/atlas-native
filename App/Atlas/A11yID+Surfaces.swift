@@ -39,12 +39,14 @@ extension A11yID {
     static let reviewHashWarning = "review-hash-warning"
     static let reviewRunAccept = "review-run-accept"
     static let reviewRunReject = "review-run-reject"
+    static let reviewPatchCardPrefix = "review-patch-card-"
     static let reviewPatchDiffPrefix = "review-patch-diff-"
     static let reviewFileRowPrefix = "review-file-row-"
     static let reviewFileAcceptPrefix = "review-file-accept-"
     static let reviewFileRejectPrefix = "review-file-reject-"
     static func reviewFindingAxis(_ axis: String) -> String { reviewFindingAxisPrefix + axis.lowercased() }
     static func reviewFindingRow(_ id: String) -> String { reviewFindingRowPrefix + id }
+    static func reviewPatchCard(_ patchId: String) -> String { reviewPatchCardPrefix + patchId }
     static func reviewPatchDiff(_ patchId: String) -> String { reviewPatchDiffPrefix + patchId }
     private static func reviewFileKey(patchId: String, filePath: String) -> String {
         patchId + "-" + filePath.replacingOccurrences(of: "/", with: "--")
