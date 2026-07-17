@@ -6,6 +6,9 @@ enum A11yID {
     static let topbarCode = "topbar-code"
     static let auditMasthead = "audit-masthead"
     static let conversationInput = "conversation-input"
+    static let conversationSend = "conversation-send"
+    static let conversationOptions = "conversation-options"
+    static let composerAttachmentStrip = "composer-attachment-strip"
     static let conversationNewMarker = "conversation-new-marker"
     static let conversationOutlineRowPrefix = "conversation-outline-row-"
     static let homeWorkspaceChips = "home-workspace-chips"
@@ -13,6 +16,13 @@ enum A11yID {
     static let homeLoading = "home-loading"
     static let homeOffline = "home-offline"
     static let homeRetry = "home-retry"
+    static let homeConversasSection = "home-conversas-section"
+    static let homeOperacaoSection = "home-operacao-section"
+    static let homeWorkspacesSection = "home-workspaces-section"
+    static let homeConversasEntry = "home-conversas-entry"
+    static let homeAutonomosEntry = "home-autonomos-entry"
+    static let homeWorkspaceAll = "home-workspace-all"
+    static let homeWorkspacePrefix = "home-workspace-"
 
     static let searchScreen = "search-screen"
     static let searchField = "search-field"
@@ -74,6 +84,7 @@ enum A11yID {
     static func liveNowRemoteBadge(_ index: Int) -> String { liveNowRemoteBadgePrefix + String(index) }
     static func conversationOutlineRow(_ index: Int) -> String { conversationOutlineRowPrefix + String(index) }
     static func homeWorkspaceChip(_ key: String) -> String { homeWorkspaceChipPrefix + key }
+    static func homeWorkspace(_ key: String) -> String { homeWorkspacePrefix + key }
     static func autonomosDetailButton(_ key: String) -> String { autonomosDetailButtonPrefix + key }
     static func searchResult(_ threadId: String) -> String { searchResultPrefix + threadId }
     static func workspaceThread(_ threadId: String) -> String { workspaceThreadPrefix + threadId }

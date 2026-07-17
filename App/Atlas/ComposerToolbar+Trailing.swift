@@ -16,11 +16,21 @@ extension ComposerToolbar {
             }
             .buttonStyle(.plain)
             .keyboardShortcut(.return, modifiers: .command)
-            .accessibilityLabel(model.isSending ? "adicionar à fila" : "enviar ao Atlas")
-        } else if model.isSending {
-            BreathingDiamond(size: 13, reduceMotion: reduceMotion)
-                .frame(width: 32, height: 32)
-                .accessibilityLabel("Atlas processando")
+            .accessibilityLabel(spokenSendLabel(canSubmit: true))
+            .accessibilityHint(spokenSendHint(canSubmit: true))
+            .accessibilityIdentifier(A11yID.conversationSend)
+        } else if isExecuting {
+            ZStack {
+                BreathingDiamond(size: 13, reduceMotion: reduceMotion)
+                Image(systemName: "arrow.up.circle.fill")
+                    .font(.system(size: 29))
+                    .foregroundStyle(AtlasTheme.textTertiary.opacity(0.38))
+            }
+            .frame(width: 32, height: 32)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(spokenProcessingLabel()), \(spokenSendLabel(canSubmit: false))")
+            .accessibilityHint(spokenSendHint(canSubmit: false))
+            .accessibilityIdentifier(A11yID.conversationSend)
         } else {
             Menu {
                 Button {
@@ -41,6 +51,8 @@ extension ComposerToolbar {
                 } label: {
                     Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
                 }
+                .accessibilityLabel(spokenEffortLabel(model.effort))
+                .accessibilityHint(spokenEffortHint())
             } label: {
                 Image(systemName: "ellipsis")
                     .font(.system(size: 17, weight: .semibold))
@@ -49,6 +61,8 @@ extension ComposerToolbar {
                     .contentShape(Circle())
             }
             .accessibilityLabel("opções da conversa")
+            .accessibilityHint(spokenOptionsHint())
+            .accessibilityIdentifier(A11yID.conversationOptions)
         }
     }
 }

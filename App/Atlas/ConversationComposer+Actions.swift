@@ -21,7 +21,11 @@ extension ConversationComposer {
 
     func dismissKeyboard() {
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused.wrappedValue = false }
+        if reduceMotion {
+            focused.wrappedValue = false
+        } else {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused.wrappedValue = false }
+        }
     }
 
     func send() {
