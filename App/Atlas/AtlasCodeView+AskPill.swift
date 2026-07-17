@@ -10,14 +10,19 @@ extension AtlasCodeView {
             Text("✦")
                 .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.accent)
+                .accessibilityHidden(true)
             Text(anchorLegend ?? "pergunte sobre este repositório")
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(anchorLegend != nil ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .lineLimit(1)
+                .accessibilityHidden(true)
                 .accessibilityIdentifier(A11yID.codeAskAnchorNote)
             Spacer(minLength: 0)
             if askModel.isAnchoring {
-                Button { askModel.clear() } label: {
+                Button {
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    askModel.clear()
+                } label: {
                     Text("mostrar tudo")
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textSecondary)
@@ -30,6 +35,7 @@ extension AtlasCodeView {
             Image(systemName: "chevron.up")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textSecondary)
+                .accessibilityHidden(true)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 11)

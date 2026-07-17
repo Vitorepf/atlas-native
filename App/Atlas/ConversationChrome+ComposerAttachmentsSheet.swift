@@ -10,6 +10,7 @@ struct ComposerAttachmentsSheet: View {
     let onChooseCamera: @MainActor () -> Void
     let onPaste: @MainActor (String) -> Void
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var pasteboardText: String? {
         UIPasteboard.general.string?
@@ -61,6 +62,7 @@ struct ComposerAttachmentsSheet: View {
 
             Button {
                 guard let text = pasteboardText else { return }
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                 dismiss()
                 Task { @MainActor in onPaste(text) }
             } label: {
@@ -89,6 +91,7 @@ struct ComposerAttachmentsSheet: View {
     }
 
     private func choose(_ action: @escaping @MainActor () -> Void) {
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
         dismiss()
         Task { @MainActor in action() }
     }

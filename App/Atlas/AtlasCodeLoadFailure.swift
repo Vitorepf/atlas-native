@@ -5,6 +5,7 @@ struct AtlasCodeLoadFailureEmpty: View {
     let headline: String
     let message: String
     let onRetry: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 14) {
@@ -15,17 +16,28 @@ struct AtlasCodeLoadFailureEmpty: View {
             Text(headline)
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityHidden(true)
             Text(message)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 28)
-            Button("Tentar de novo", action: onRetry)
-                .buttonStyle(.borderedProminent)
-                .tint(AtlasTheme.accent)
+                .accessibilityHidden(true)
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onRetry()
+            } label: {
+                Text("Tentar de novo")
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(AtlasTheme.accent)
+            .accessibilityLabel("tentar de novo")
+            .accessibilityHint("recarrega o grafo ou radar deste repositório")
+            .accessibilityIdentifier(A11yID.codeLoadRetry)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
         .accessibilityLabel("\(headline). \(message)")
+        .accessibilityIdentifier(A11yID.codeLoadFailure)
     }
 }
