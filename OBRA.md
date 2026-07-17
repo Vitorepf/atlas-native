@@ -966,6 +966,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLV — CICLO B Review/Fleet/History/Anchors/Heal/Arena peels** · `c809952` · CICLO B: Review `+SectionsAfter`/`+TestRow`/`+DecidedRow`; Health `+SecondaryMetrics`; Fleet `+RowA11y`; History `+RowMeta`; Anchors `+AnchorsPartial`; Provenance `+FileButton`; Heal `+UndoLabel`; Status `+StatusChrome`; Arena `+FailureCopy`; Toggle `+ToggleSubtitle`; Suites `+Rows`; Digest `+LastRisk`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLIV — CICLO B Search/Thread/Circle/Proof/Cockpit peels** · `278aa88` · CICLO B: Search `+ListCaption`; Thread `+A11y`; Circle `+CircleButtonBadge`; Audit `+AuditStatus`; Execution `+Icon`; Scrubber `+ScrubberTitle`; Header `+HeaderSummary`; Strip `+SteerButton`; Watchdog `+WatchdogSeconds`; Agent `+AgentStatusWord`; Sheet `+SheetChrome`; Live `+A11ySpokenLive`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXXXXXLIII — CICLO B Home/Fleet/Awaiting/Heal/Search/Lock peels** · `e042249` · CICLO B: Home `+A11yVisibility`; Fleet `+FleetHealth`; Awaiting `+ChipLabel`/`+A11yCount`; Cycle `+CycleHelpers`; Placement `+PlacementTags`; Heal `+A11yUndoButton`; Week `+WeekHealChrome`; Search `+ResultsCaption`; Thread `+NewBadge`; Lock `+Paused`/`+SpokenSessions`/`+Symbol`; Ledger `+Summary`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
