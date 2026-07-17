@@ -11,6 +11,7 @@ struct ExecutingStrip: View {
 
     var body: some View {
         HStack(spacing: 8) {
+            HStack(spacing: 8) {
             if bubble.showsReconnectSurface {
                 Image(systemName: bubble.reconnectBannerIcon)
                     .font(.system(size: 10, weight: .semibold))
@@ -19,6 +20,7 @@ struct ExecutingStrip: View {
                     .accessibilityHidden(true)
             } else {
                 BreathingDiamond(size: 8, reduceMotion: reduceMotion)
+                    .accessibilityHidden(true)
             }
             if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
                 Text(line)
@@ -59,38 +61,23 @@ struct ExecutingStrip: View {
                     .monospacedDigit()
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
                     .lineLimit(1)
+                    .accessibilityHidden(true)
             }
             if let stats = bubble.diffStats {
                 Text("+\(stats.linesAdded) −\(stats.linesRemoved)")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.accent)
                     .lineLimit(1)
-                    .accessibilityLabel("mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
+                    .accessibilityHidden(true)
             }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(stripAccessibilityLabel)
             Spacer(minLength: 0)
-            if let onSteer {
-                Button(action: onSteer) {
-                    Text("Redirecionar")
-                        .font(.system(.footnote, weight: .medium))
-                        .foregroundStyle(AtlasTheme.accent)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.82)
-                }
-                .buttonStyle(PressableScale())
-                .accessibilityLabel("redirecionar execução")
-            }
-            Button(action: onStop) {
-                Text("Parar")
-                    .font(.system(.footnote, weight: .medium))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .lineLimit(1)
-            }
-            .buttonStyle(PressableScale())
-            .accessibilityLabel("parar execução")
+            stripActionButtons
         }
         .padding(.horizontal, 6)
         .lineLimit(1)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(stripAccessibilityLabel)
+        .accessibilityElement(children: .contain)
     }
 }

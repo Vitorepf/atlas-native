@@ -5,15 +5,25 @@ import AtlasCore
 
 extension ExecutingStrip {
     var stripAccessibilityLabel: String {
+        var parts: [String] = []
         if bubble.showsReconnectSurface {
-            return bubble.reconnectSpokenLabel
+            parts.append(bubble.reconnectSpokenLabel)
+        } else if let p = bubble.executionProgress {
+            parts.append("execução ao vivo, passo \(p.current) de \(p.total), \(p.title)")
+        } else if let act = bubble.currentActivity {
+            parts.append("execução ao vivo, \(act.title)")
+        } else {
+            parts.append("seguindo a execução")
         }
-        if let p = bubble.executionProgress {
-            return "execução ao vivo, passo \(p.current) de \(p.total), \(p.title)"
+        let events = bubble.activities.count
+        parts.append("\(events) evento\(events == 1 ? "" : "s")")
+        if let started = bubble.startedAt {
+            let secs = max(0, Int(Date().timeIntervalSince(started)))
+            parts.append("\(secs) segundos decorridos")
         }
-        if let act = bubble.currentActivity {
-            return "execução ao vivo, \(act.title), \(bubble.activities.count) eventos"
+        if let stats = bubble.diffStats {
+            parts.append("mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
         }
-        return "seguindo a execução, \(bubble.activities.count) eventos"
+        return parts.joined(separator: ", ")
     }
 }
