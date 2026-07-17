@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **CICLO B — split AutonomosView** · este commit · `AutonomosView.swift` 1153→565; extrai `AutonomosFleetSection` (181), `AutonomosDigestSection` (151), `AutonomosChrome` (98), `AutonomosSheets` (253); folder glob `App/project.yml` path Atlas; sem mudança de copy/lógica. Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
+
 - 2026-07-17 · Grok 4.5 · **Elite A4.5 fidelity matrix baseline** · este commit · `docs/fable-5-fidelity-matrix.md` mapeia cenas 01–08/10–13 + Fleet + Island → Core/model → SwiftUI → prova → gap; Voice/09 EXCLUDED; Session Hub=`LiveNowSection` deepen; Arena=rota `.arena` separada; A4.5 checkboxes ✓ em `plano-elite-agentica-24x7.md`. Prova: docs + blackboard; sem runtime.
 
 - 2026-07-17 · Grok 4.5 · **Elite E-A1 claim + A1 leaf tasks** · este commit · `docs/plano-elite-agentica-24x7.md` Onda A1 expandida em leafs bite-sized (A1.1a–d M01, A1.2a–d Arena A12, A1.3a–c deep links, A1.4 closeout) com paths exatos, checkboxes, gates e commit messages. §4 E-A1 → **IN_PROGRESS** (Grok 4.5). §5 M01 + M61/A12: **BLOCKED(server)** honesto — `atlas-server` ausente neste workspace; native-only segue (A1.3 handlers). Sem mudança de runtime. Prova: docs + blackboard.
