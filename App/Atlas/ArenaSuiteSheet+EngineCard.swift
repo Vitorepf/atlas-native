@@ -3,6 +3,7 @@ import AtlasCore
 
 // Engine card — peel de ArenaSuiteSheet.
 // Captions → ArenaSuiteSheet+EngineCaptions.swift
+// Score → ArenaSuiteSheet+EngineScore.swift
 
 extension ArenaSuiteSheet {
     func engineCard(_ engine: AtlasArenaSuiteEngine) -> some View {
@@ -13,10 +14,7 @@ extension ArenaSuiteSheet {
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
                 Spacer()
-                Text(ArenaFormat.score(engine.score))
-                    .font(AtlasFont.mono(16))
-                    .foregroundStyle(engine.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
+                engineCardScore(engine)
             }
             engineCardCaptions(engine)
         }

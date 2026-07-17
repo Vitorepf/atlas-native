@@ -2,6 +2,7 @@ import SwiftUI
 
 // Form — peel de AutonomosReasonSheet.
 // Toolbar → AutonomosReasonSheet+Toolbar.swift
+// Reason → AutonomosReasonSheet+FormReason.swift
 
 extension AutonomosReasonSheet {
     var reasonForm: some View {
@@ -16,11 +17,7 @@ extension AutonomosReasonSheet {
                     .accessibilityIdentifier(A11yID.autonomosReasonActor)
                     .accessibilityHint(spokenActorHint())
             }
-            Section(reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo") {
-                TextField("Motivo auditável", text: $reason, axis: .vertical).lineLimit(3...6)
-                    .accessibilityIdentifier(A11yID.autonomosReasonField)
-                    .accessibilityHint(spokenReasonHint())
-            }
+            reasonSection
         }
     }
 }

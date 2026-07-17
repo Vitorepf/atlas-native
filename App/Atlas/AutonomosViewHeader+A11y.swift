@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Spoken labels do cabeçalho Autônomos — peel de AutonomosViewHeader.
+/// Refresh → AutonomosViewHeader+A11yRefresh.swift
 
 extension AutonomosViewHeader {
     func spokenTitle(isHealthy: Bool, auditModeEnabled: Bool) -> String {
@@ -13,14 +14,4 @@ extension AutonomosViewHeader {
     func spokenBackLabel() -> String { "voltar" }
 
     func spokenBackHint() -> String { "fecha a área Autônomos" }
-
-    func spokenRefreshLabel(canRefresh: Bool) -> String {
-        canRefresh
-            ? "atualizar instância selecionada"
-            : "atualizar indisponível, selecione uma instância"
-    }
-
-    func spokenRefreshHint(canRefresh: Bool) -> String {
-        canRefresh ? "recarrega estado da área selecionada" : "nenhuma instância selecionada"
-    }
 }

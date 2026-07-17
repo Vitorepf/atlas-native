@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Inbox cards — peel de AutonomosDetailWorkRows.
+// Age → AutonomosDetailWorkRows+InboxAge.swift
 
 enum AutonomosDetailInboxRows {
     @ViewBuilder
@@ -12,12 +13,7 @@ enum AutonomosDetailInboxRows {
                 AutonomosDetailChrome.field("route", item.route)
                 AutonomosDetailChrome.field("risk", item.riskLevel)
                 AutonomosDetailChrome.field("priority", "\(item.priorityScore)")
-                if let createdAt = item.createdAt {
-                    AutonomosDetailChrome.field("criado", createdAt)
-                    if let date = AtlasTime.date(createdAt) {
-                        AutonomosDetailChrome.field("idade", AutonomosChrome.relativeAge(from: date))
-                    }
-                }
+                AutonomosDetailInboxAge.ageFields(item)
                 AutonomosDetailChrome.field("decisão exigida", item.decisionRequired ? "sim" : "não")
                 AutonomosDetailChrome.field("opções", item.decisionOptions.joined(separator: " · "))
             }
