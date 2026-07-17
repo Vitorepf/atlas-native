@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **526+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXVI tip `1f370ba` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **528** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXVII tip `e2e24bc` |
 | Commits no tip (`git rev-list --count HEAD`) | 543 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
@@ -127,12 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXVI (este tip)
+## Entrega Elite CXXXXXLXXVII (este tip)
 
-- `polish(ui)` CICLO B: A11yID `+ArenaRun/+ArenaSheets/+ReviewCouncil/+ReviewSurface/+AutonomosTransfer/+AutonomosControl`; Digest `+A11yScheduleNext/+A11yScheduleReason`; OperationDigest `+A11yHeadlineIncident/+A11yHeadlineQueue/+A11yBacklogPending/+A11yBacklogInbox/+A11yBacklogOldest`; ComposerToolbar `+A11ySendHintReady/+A11ySendHintBlocked`; Detail `+A11ySheetCount`; ChangeReview `+A11yRunHeader`; ArenaSuites `+A11ySectionCount`; LiveTimeline `+A11yFilterChipSuffix/+AnnotateP90`; AreaPicker `+A11yRowIdentity/+A11yRowRegistration`; RadarFolder `+A11yFolderExpanded`; CommitRow `+A11yCommitTail`; RootChrome `+A11yThreadRunning/+A11yThreadCount`; ArenaRun `+A11ySubmitValid/+A11ySubmitEmpty`; ExecutionProof `+ReplayQualityFlags`; Widgets Island `+IslandCompactShell` LiveSession `+ContentHeader` LockLive `+ContentCircular`. Tip `1f370ba`.
-- 32 peels · 53 arquivos · over100=0 · App/Atlas+Widgets swift=1798; App/Widgets swift=108; zero Route nova.
+- `polish(ui)` CICLO B: A11yID Surfaces `+Artifacts/+LiveTimelineSurface`; Execution `+ExecutionControls/+EditorialTurn/+MarkdownBlocks/+PlanCardIDs`; QueueLive `+QueueChip/+LiveNowIDs/+ConversationOutlineRow`; CodeHelpers `+CodeRadarHelpers/+CodeGraphHelpers/+CodeHealWhyHelpers`; Autonomos `+AutonomosFleet/+AutonomosDigestIDs`; Composer `+ComposerModeEffort/+ComposerWorkspaceRows`; ReviewFiles `+ReviewFileKey/+ReviewFileRow/+ReviewFileActions`; ReviewSurface `+ReviewGovernance/+ReviewSurfaceStates`; HomeWorkspace `+HomeWorkspaceChip/+HomeWorkspaceRow`; AutonomosControl `+AutonomosTaskHealth/+AutonomosHeaderControl/+AutonomosAreaPickerIDs`; Arena `+ArenaSections`; ComposerToolbar `+A11yProcessingLabel`; PlanCard `+A11yProgressBadge`; AreaDelivered `+A11ySectionRouter/+A11yEmptySelfBridge`; LiveTimeline `+A11yRowValue`; Detail `+A11yNoProjection`; RadarFolder `+A11yRepoCount`; Widgets LockLive `+ContentRectangular`. Tip `e2e24bc`.
+- 35 peels · 53 arquivos · over100=0 · App/Atlas+Widgets swift=1833; App/Widgets swift=109; zero Route nova.
 
-## Entrega Elite CXXXXXLXXV (anterior)
+## Entrega Elite CXXXXXLXXVI (anterior)
 
 - `polish(ui)` CICLO B: ArenaRun `+A11ySheetHint/+A11yEnginesCount/+A11ySuitesCount`; Steer `+A11ySheetHint/+A11ySubmitHint`; Reason `+A11yHint`; Detail `+A11yCloseLabel/+A11yEmptyLabel`; ExecutionProof `+ReplayQualityLine/+ReplayQualitySpoken/+ReplayActivitySpoken`; LiveTimeline `+AnnotateDurations/+AnnotateIntentKind`; LoadFailure `+Headline/+Message`; Digest `+A11yDeliveredCount/+A11yRiskCount/+A11yDecisionCount`; OperationDigest `+A11yFindingsRisk`; A11yID `+HomeSections/+HomeWorkspace/+ArenaCapability/+ArenaNowRun`; FleetTransfer `+TagsHandoff/+TagsMilestone`; Widgets LockLive `+ContentInline`. Tip `53ad75a`.
 - 26 peels · 39 arquivos · over100=0 · App/Atlas+Widgets swift=1766 (`find App/Atlas App/Widgets -name '*.swift' | wc -l`); zero Route nova.
