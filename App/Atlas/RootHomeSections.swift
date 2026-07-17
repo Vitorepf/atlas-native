@@ -22,6 +22,7 @@ struct RootHomeSections: View {
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("abrindo o Atlas")
+                .accessibilityIdentifier(A11yID.homeLoading)
             }
 
         case .failed where session.threads.isEmpty:
@@ -57,10 +58,12 @@ struct RootHomeSections: View {
                         }
                         .buttonStyle(PressableScale())
                         .accessibilityHint("reconecta ao servidor Atlas")
+                        .accessibilityIdentifier(A11yID.homeRetry)
                     }
                 }
                 .padding(.horizontal, 44)
                 .accessibilityElement(children: .combine)
+                .accessibilityIdentifier(A11yID.homeOffline)
                 .accessibilityLabel("\(failureHeadline). \(failureHint)")
             }
 

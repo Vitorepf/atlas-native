@@ -67,20 +67,22 @@ struct AutonomosDetailChipButton: View {
     }
 }
 
-/// Proposta das 21h — mesmo card em idle/loading/failed/loaded.
+/// Proposta das 21h — silêncio quando mute ativo ou sem proposta pendente.
 struct AutonomosNightlyProposalBlock: View {
-    let proposal: NightlyProposalController.ProposalPayload
-    let onAccept: () -> Void
-    let onDismiss: () -> Void
-    let onMute: (Int) -> Void
+    let nightly: NightlyProposalController
+    let onAccept: (NightlyProposalController.ProposalPayload) -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        NightlyProposalCard(
-            proposal: proposal,
-            onAccept: onAccept,
-            onDismiss: onDismiss,
-            onMute: onMute
-        )
+        if let proposal = nightly.pendingProposal, !nightly.isProposalMuted {
+            NightlyProposalCard(
+                proposal: proposal,
+                onAccept: { onAccept(proposal) },
+                onDismiss: { nightly.dismissProposal() },
+                onMute: { nightly.muteProposal(days: $0) }
+            )
+            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+        }
     }
 }
 

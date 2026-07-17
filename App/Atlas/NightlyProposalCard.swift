@@ -30,6 +30,7 @@ struct NightlyProposalCard: View {
                 Button("Preparar missão noturna", action: onAccept)
                     .buttonStyle(NightlyPrimaryButtonStyle())
                     .accessibilityIdentifier(A11yID.nightlyProposalAccept)
+                    .accessibilityHint("abre o ensaio governado da missão noturna")
                 Button("hoje não", action: onDismiss)
                     .font(.system(.footnote, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary)
@@ -43,6 +44,9 @@ struct NightlyProposalCard: View {
                 }
                 .font(.system(.footnote, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityIdentifier(A11yID.nightlyProposalMute)
+                .accessibilityLabel("silenciar propostas noturnas")
+                .accessibilityHint("oculta propostas por 1, 3 ou 7 dias, em silêncio")
             }
         }
         .padding(14)
@@ -50,6 +54,10 @@ struct NightlyProposalCard: View {
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.nightlyProposalCard)
+        .accessibilityLabel(
+            "missão noturna proposta. Hoje você trabalhou em \(proposal.workspaceText). "
+            + "A frota pode continuar enquanto você descansa."
+        )
         .animation(reduceMotion ? nil : AtlasMotion.arrival, value: proposal.id)
         .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
     }

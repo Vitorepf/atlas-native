@@ -38,6 +38,9 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     private(set) var pendingProposal: ProposalPayload?
     private(set) var mutedUntil: Date?
 
+    /// Casca: silêncio total enquanto mute ativo — sem card, sem placeholder, sem toast.
+    var isProposalMuted: Bool { isMuted() }
+
     private override init() {
         super.init()
         mutedUntil = AtlasSession.nightlyProposalMutedUntil()

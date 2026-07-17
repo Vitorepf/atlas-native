@@ -15,19 +15,16 @@ struct AutonomosLoadedSection: View {
     @Binding var detailSheet: AutonomosDetailSheet?
     @Binding var selfConstructionReceipt: SelfConstructionReceipt?
     let onRefreshRhythm: () async -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 16) {
-                if let proposal = nightly.pendingProposal {
-                    AutonomosNightlyProposalBlock(
-                        proposal: proposal,
-                        onAccept: { nightlyStartProposal = proposal },
-                        onDismiss: { nightly.dismissProposal() },
-                        onMute: { nightly.muteProposal(days: $0) }
+                AutonomosNightlyProposalBlock(nightly: nightly) { nightlyStartProposal = $0 }
+                    .animation(
+                        reduceMotion ? nil : AtlasMotion.editorial,
+                        value: nightly.pendingProposal?.id
                     )
-                    .transition(.opacity.combined(with: .move(edge: .top)))
-                }
                 AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
                 if let fleet = model.fleet {
                     AutonomosFleetSummary(

@@ -168,18 +168,16 @@ private struct AutonomosPreludeBlocks: View {
     let nightly: NightlyProposalController
     let rhythmSampleDays: Int?
     let onAcceptProposal: (NightlyProposalController.ProposalPayload) -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        if let proposal = nightly.pendingProposal {
-            AutonomosNightlyProposalBlock(
-                proposal: proposal,
-                onAccept: { onAcceptProposal(proposal) },
-                onDismiss: { nightly.dismissProposal() },
-                onMute: { nightly.muteProposal(days: $0) }
-            )
+        AutonomosNightlyProposalBlock(nightly: nightly, onAccept: onAcceptProposal)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 10)
-        }
+            .animation(
+                reduceMotion ? nil : AtlasMotion.editorial,
+                value: nightly.pendingProposal?.id
+            )
         AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 10)

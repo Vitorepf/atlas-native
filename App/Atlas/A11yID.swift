@@ -11,6 +11,9 @@ enum A11yID {
     static let conversationOutlineRowPrefix = "conversation-outline-row-"
     static let homeWorkspaceChips = "home-workspace-chips"
     static let homeWorkspaceChipPrefix = "home-workspace-chip-"
+    static let homeLoading = "home-loading"
+    static let homeOffline = "home-offline"
+    static let homeRetry = "home-retry"
 
     // Busca (U7)
     static let searchScreen = "search-screen"
@@ -81,6 +84,7 @@ enum A11yID {
     static let nightlyProposalCard = "nightly-proposal-card"
     static let nightlyProposalAccept = "nightly-proposal-accept"
     static let nightlyProposalDismiss = "nightly-proposal-dismiss"
+    static let nightlyProposalMute = "nightly-proposal-mute"
 
     // V4 · Artifacts & Proof
     static let artifactsRow = "artifacts-row"
