@@ -7,7 +7,7 @@ struct SelfConstructionReceiptSheet: View {
     var revertReceipt: AtlasAutonomosCycleRevertResponse? = nil
     var onRevert: (String, String) -> Void = { _, _ in }
 
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var actor = ""
     @State var reason = ""
@@ -33,13 +33,7 @@ struct SelfConstructionReceiptSheet: View {
                 proofBlock
                 revertQueueBanner
                 vetoSection
-
-                if receipt.hasMergeProof {
-                    Text("você não foi necessário — entrega sem portão")
-                        .font(AtlasFont.serifItalic(13))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityLabel(spokenHumanSilenceLabel())
-                }
+                humanSilenceLine
 
                 Spacer(minLength: 0)
             }

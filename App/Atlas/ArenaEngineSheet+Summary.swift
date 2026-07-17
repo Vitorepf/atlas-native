@@ -3,6 +3,7 @@ import Charts
 import AtlasCore
 
 // Resumo composto do motor — peel de ArenaEngineSheet (régua ≤100).
+// Scores → ArenaEngineSheet+ScoreRow.swift
 
 extension ArenaEngineSheet {
     var engineSummary: some View {
@@ -19,18 +20,7 @@ extension ArenaEngineSheet {
                     .foregroundStyle(engine.composite == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
             }
-            HStack(spacing: 10) {
-                Text("c/Atlas \(ArenaFormat.score(engine.withAtlasComposite))")
-                    .foregroundStyle(AtlasTheme.accent)
-                    .accessibilityHidden(true)
-                Text("sem \(ArenaFormat.score(engine.withoutAtlasComposite))")
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityHidden(true)
-                Text(ArenaFormat.multiplier(engine.atlasMultiplier))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
-            }
-            .font(AtlasFont.mono(11))
+            engineScoreRow
             if !engine.history.isEmpty {
                 Chart(engine.history) { point in
                     if let composite = point.composite {

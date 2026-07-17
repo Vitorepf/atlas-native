@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 struct ArenaRunSheet: View {
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Bindable var model: ArenaModel
     @State var selectedSuites: Set<String> = []
@@ -36,14 +36,7 @@ struct ArenaRunSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Rodar medição")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    AtlasCloseToolbarButton(
-                        spokenLabel: spokenCloseLabel(),
-                        spokenHint: spokenCloseHint(),
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }                }
-            }
+            .toolbar { runToolbar }
         }
         .onAppear { seedDefaultsIfNeeded() }
         .accessibilityIdentifier(A11yID.arenaRunSheet)

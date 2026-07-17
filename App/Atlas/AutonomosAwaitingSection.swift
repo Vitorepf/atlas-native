@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// M139 — decisões públicas pendentes; silêncio total quando count = 0.
-/// Spoken → +A11y · chips → +Chips · nightly → +Blocks.
+/// Spoken → +A11y · chips → +Chips · nightly → +Blocks · Header → +Header.
 struct AutonomosAwaitingYouSection: View {
     let backlog: AtlasAutonomosBacklogResponse?
     let onOpenDetail: (AutonomosDetailSheet) -> Void
@@ -23,15 +23,7 @@ struct AutonomosAwaitingYouSection: View {
     var body: some View {
         if decisionCount > 0 {
             VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    AutonomosChrome.sectionCaption("AGUARDANDO VOCÊ", role: .header)
-                    Spacer()
-                    Text("\(decisionCount)")
-                        .font(AtlasFont.mono(13))
-                        .foregroundStyle(AtlasTheme.domOperacional)
-                        .modifier(NumericTextTransition(enabled: !reduceMotion))
-                        .accessibilityHidden(true)
-                }
+                awaitingHeader
                 Text("Há decisão pública pendente; nada aqui afirma execução antes do recibo do owner.")
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textSecondary)
