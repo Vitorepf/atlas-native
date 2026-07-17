@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **573** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLIX tip `f3e5ee7` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **575** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLX tip `d664ac4` |
 | Commits no tip (`git rev-list --count HEAD`) | 554 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 242 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLIX (este tip)
+## Entrega Elite CXXXXXLXLX (este tip)
+
+- `polish(ui)` CICLO B: PlanCard Progress `+Execution/+Revisions`; Arena DomainA11y `+Spoken/+IndexGate`; Provenance SpokenCopy `+Law/+Dateline`; HealReceipt A11y `+Steps/+UndoGate` Undo `+Summary/+StepDetail`; SelfConstruction A11y `+Sheet/+RuleProof` VetoA11y `+Submit/+FieldHints`; ChangeReview Meta `+Derived` Decided `+Test/+TestsSection`; Root A11yHome `+SearchNew/+InputPill`; ExecutionProof Replay `+Summary/+Activities`; Messages Scroll `+FABGate/+ChromeChain`; CodeView GraphRotors `+Filter/+WhyOpen`; Artifact EmptyGate `+View/+Predicate`; ActionColors `+Fill/+Border`; Autonomos ContentShell `+Prelude/+Loading` Awaiting Predicates `+Sources/+Count` Digest Headlines `+Merge/+RiskDecision` Area CycleHelpers `+Tap/+SpokenHint`; Nightly MuteMenu `+Menu/+Option`; Composer Upload `+ProgressRow/+Visibility`; ArenaSuites RowTrailing `+Branch/+Subtitle`; Radar Spoken `+LoadingFailed/+EmptyShell`; Search Query `+Trim/+Recent`; Widgets CodeWeek Quiet `+QuietBranch/+MetricsStack` Island TrailingBadge `+Finished/+BadgePaused`. Tip `d664ac4`.
+- 26 peels · 77 arquivos · over100=0 · App/Atlas+Widgets swift=2554; App/Widgets swift=196; zero Route nova.
+
+## Entrega Elite CXXXXXLXLIX (anterior)
 
 - `polish(ui)` CICLO B: ConversationSheets `+Sheets+ModifierForward/+ModifierWrap+Init`; PageComposerArgs Core `+ComposerInit` Bindings `+Aggregate`; AtlasCodeView Sheets `+Forward/+SheetsModifierWrap+Init` AskPillLeading `+Caption` GraphListScroll `+Refresh`; Autonomos Sheets `+Forward/+Wrap+Init` SelfConstruction `+RevertTask`; Motion Haptics `+Impact/+Notification`; CodeWeek A11y `+Quiet`; ArenaEngineIndexRow `+MetricColors`; RadarLoadedContent Sections `+Recents` FolderRow Header `+Leading/+Trailing`; QueuedFollowUps `+EmptyBranch/+A11yShell`; CardSheetsBind `+Flags/+Traces`; RowsTurn Assembly `+ExecTuple/+SteerTuple`; Widgets LockLive Spoken `+Branch/+Stale` CodeWeek Body `+Stack/+A11y`. Tip `f3e5ee7`.
 - 28 peels · 50 arquivos · over100=0 · App/Atlas+Widgets swift=2503; App/Widgets swift=192; zero Route nova.
