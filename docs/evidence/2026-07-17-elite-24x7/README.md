@@ -12,7 +12,7 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **116** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **117** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
 | Commits no tip (`git rev-list --count HEAD`) | 388 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 87 | trabalho Elite + peels nesta branch |
 
@@ -44,7 +44,7 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 ## Entrega recente (wave XVI — HEAD)
 
 - `polish(core)|polish(ui)` Elite B XVI: peels 141–150 → ≤120 (TraceGovernance+JSON, CodeAskTypes, NightlyProposal Payload/Delegate, RadarFolderRow, LiveActivityRemote+Remote, PlanCard Revisions/FlowChips, LiveTimeline+NarrativeView, ConversationComposer+LiveStrip, ExecutionProof+Expanded).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **116** (após este commit).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **117** (após este commit).
 - Zero arquivos App/Core 141–150; próxima onda B ataca faixa 121–140.
 
 ## Entrega anterior (wave XV — `452f1b3`)
