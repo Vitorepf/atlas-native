@@ -48,6 +48,7 @@ enum A11yID {
     static func queuePromote(_ id: String) -> String { queuePromotePrefix + id }
     static func queueRemove(_ id: String) -> String { queueRemovePrefix + id }
     static let conversationLoadFailure = "conversation-load-failure"
+    static let continuityHandoffReceipt = "continuity-handoff-receipt"
     static let autonomosAwaitingYou = "autonomos-awaiting-you"
     static let autonomosDetailSheet = "autonomos-detail-sheet"
     static let autonomosDetailButtonPrefix = "autonomos-detail-button-"

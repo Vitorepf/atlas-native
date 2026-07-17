@@ -10,9 +10,7 @@ extension ExecutionStateCard {
         parts.append(state.title)
         if let detail = state.detail { parts.append(detail) }
         if let checkpoint = state.checkpoint { parts.append("checkpoint \(checkpoint)") }
-        if state.kind == .recovering, let timer = state.timer {
-            parts.append("tempo ativo \(Self.clock(timer.elapsedActiveMilliseconds))")
-        }
+        if let fragment = spokenTimerFragment { parts.append(fragment) }
         if let deadline = state.deadline { parts.append("próxima mudança \(deadline)") }
         if !state.actions.isEmpty {
             parts.append("\(state.actions.count) ação\(state.actions.count == 1 ? "" : "ões") disponíveis")
@@ -65,5 +63,36 @@ extension ExecutionStateCard {
 
     static func clock(_ ms: Int) -> String {
         AtlasTime.formatActiveDuration(milliseconds: ms)
+    }
+
+    /// Timer congelado (‖) — paridade Island/Lock para `.attentionRequired` e
+    /// `.awaitingExternal` quando o servidor publica `timing: paused`.
+    var frozenTimerText: String? {
+        guard let timer = state.timer, timer.timing == .paused else { return nil }
+        switch state.kind {
+        case .attentionRequired, .awaitingExternal:
+            return "‖ \(Self.clock(timer.elapsedActiveMilliseconds))"
+        default:
+            return nil
+        }
+    }
+
+    var frozenTimerA11y: String? {
+        guard let timer = state.timer, timer.timing == .paused else { return nil }
+        switch state.kind {
+        case .attentionRequired, .awaitingExternal:
+            return "tempo ativo congelado em \(Self.clock(timer.elapsedActiveMilliseconds))"
+        default:
+            return nil
+        }
+    }
+
+    var recoveringTimerText: String? {
+        guard state.kind == .recovering, let timer = state.timer else { return nil }
+        return "ativo \(Self.clock(timer.elapsedActiveMilliseconds))"
+    }
+
+    var spokenTimerFragment: String? {
+        frozenTimerA11y ?? recoveringTimerText
     }
 }

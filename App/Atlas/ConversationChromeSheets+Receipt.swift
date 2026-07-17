@@ -36,6 +36,7 @@ struct ConversationHandoffReceipt: View {
         .padding(.bottom, 8)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilitySummary)
+        .accessibilityIdentifier(A11yID.continuityHandoffReceipt)
     }
 
     private var headline: String {
@@ -48,21 +49,32 @@ struct ConversationHandoffReceipt: View {
     private var subline: String {
         let route = "\(atlasSurfaceLabel(handoff.fromSurface)) → \(atlasSurfaceLabel(handoff.toSurface))"
         let thread = editorialThreadPrefix(handoff.threadId)
+        let age = handoffAgeFragment
         if isReady {
-            return "\(route) · mesma thread \(thread)"
+            var parts = ["\(route)", "mesma thread \(thread)", "sem prompt duplicado"]
+            if let age { parts.append("há \(age)") }
+            return parts.joined(separator: " · ")
         }
-        return "\(atlasHandoffStatusEditorial(handoff.status)) · \(route) · thread \(thread)"
+        var parts = [atlasHandoffStatusEditorial(handoff.status), route, "thread \(thread)"]
+        if let age { parts.append("há \(age)") }
+        return parts.joined(separator: " · ")
+    }
+
+    private var handoffAgeFragment: String? {
+        guard let raw = handoff.createdAt, let date = AtlasTime.date(raw) else { return nil }
+        return atlasRelativeAgePT(since: date)
     }
 
     private var accessibilitySummary: String {
         let dest = atlasSurfaceLabel(handoff.toSurface)
         let thread = editorialThreadPrefix(handoff.threadId)
+        let age = handoffAgeFragment.map { ", há \($0)" } ?? ""
         if isReady {
-            return "continuidade pronta no \(dest), mesma thread \(thread)"
+            return "continuidade pronta no \(dest), mesma thread \(thread), sem prompt duplicado\(age)"
         }
         if isPending {
-            return "continuidade enviando para o \(dest), mesma thread \(thread)"
+            return "continuidade enviando para o \(dest), mesma thread \(thread)\(age)"
         }
-        return "recibo de continuidade para \(dest), \(atlasHandoffStatusEditorial(handoff.status)), thread \(thread)"
+        return "recibo de continuidade para \(dest), \(atlasHandoffStatusEditorial(handoff.status)), thread \(thread)\(age)"
     }
 }

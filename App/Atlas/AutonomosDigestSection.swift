@@ -10,6 +10,13 @@ struct AutonomosNextDigestSection: View {
         if shouldShowDigest(digest) {
             VStack(alignment: .leading, spacing: 10) {
                 AutonomosChrome.sectionCaption(sectionTitle)
+                if hasLastDigest(digest), let window = digestWindowCaption(digest) {
+                    Text(window)
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .lineLimit(2)
+                        .accessibilityLabel("último resumo, \(window)")
+                }
                 if let next = digest.nextDigestAt?.nonEmpty {
                     Text(next)
                         .font(AtlasFont.serifItalic(15))
@@ -87,5 +94,16 @@ struct AutonomosNextDigestSection: View {
             || !digest.last.delivered.isEmpty
             || !digest.last.risks.isEmpty
             || !digest.last.pendingDecisions.isEmpty
+    }
+
+    /// Janela governada publicada pelo servidor — sem inventar horário de agenda.
+    private func digestWindowCaption(_ digest: AtlasAutonomosDigestResponse) -> String? {
+        let window = digest.last.window
+        guard window.hours > 0 else { return nil }
+        var parts = ["janela \(window.hours)h"]
+        if let ended = AtlasTime.date(window.endedAt) {
+            parts.append("fechou há \(atlasRelativeAgePT(since: ended))")
+        }
+        return parts.joined(separator: " · ")
     }
 }

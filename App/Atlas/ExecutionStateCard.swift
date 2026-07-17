@@ -55,12 +55,18 @@ struct ExecutionStateCard: View {
                     .lineLimit(1)
                     .accessibilityLabel("checkpoint \(checkpoint)")
             }
-            if state.kind == .recovering, let timer = state.timer {
-                Text("ativo \(Self.clock(timer.elapsedActiveMilliseconds))")
+            if let frozen = frozenTimerText, let a11y = frozenTimerA11y {
+                Text(frozen)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
-                    .accessibilityLabel("tempo ativo \(Self.clock(timer.elapsedActiveMilliseconds))")
+                    .accessibilityLabel(a11y)
+            } else if let active = recoveringTimerText {
+                Text(active)
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .monospacedDigit()
+                    .accessibilityLabel("tempo ativo \(active.replacingOccurrences(of: "ativo ", with: ""))")
             }
             if let deadline = state.deadline {
                 Text("Próxima mudança: \(deadline)")
