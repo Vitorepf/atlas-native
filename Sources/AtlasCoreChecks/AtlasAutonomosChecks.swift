@@ -128,6 +128,58 @@ public func runAtlasAutonomosChecks(_ check: (String, Bool) -> Void) {
     let transferPayload = (try? JSONSerialization.jsonObject(with: transferEncoder.encode(transferInput))) as? [String: Any]
     check("transferência envia comando auditável em snake_case", transferInput.isLocallyValidForSubmission && transferPayload?["operator_actor"] as? String == "vitor" && transferPayload?["reason"] as? String == "trocar no próximo limite seguro")
 
+    check("rota M08 revert usa superfície Autônomos sem /loop",
+          AtlasRoute.autonomosCycleRevert(area: "agentic/engineering", cycle: "7") == "/ai/software-company-stewardship/autonomos/agentic%2Fengineering/cycles/7/revert")
+    check("rota M09 digest usa endpoint global do Autônomos",
+          AtlasRoute.autonomosDigest == "/ai/software-company-stewardship/autonomos/digest")
+
+    let revertJSON = """
+    {"schema_version":"atlas.software_company_stewardship.loop_cycle_revert.v1",
+     "status":"enqueued","area_id":"agentic_engineering_os","focus":"dev_forge",
+     "cycle_index":7,"cycle_id":"aesc_test_7","merge_hash":"abc123def456",
+     "revert_of":{"cycle_index":7,"cycle_id":"aesc_test_7","merge_hash":"abc123def456"},
+     "receipt_id":"m08rev_123","queue":"software_company_loop","operator_actor":"vitor",
+     "git_revert_performed":false,"worker_implemented":false,
+     "mission":{"type":"governed_git_revert","status":"enqueued","target_merge_hash":"abc123def456",
+       "command_intent":"git revert abc123def456","worker_implemented":false,
+       "worker_gap":"executor pending"},
+     "note":"queued"}
+    """
+    let revert = try? decoder.decode(AtlasAutonomosCycleRevertResponse.self, from: Data(revertJSON.utf8))
+    check("M08 revert decodifica recibo enfileirado sem alegar git revert", revert?.status == .enqueued && revert?.revertOf.mergeHash == "abc123def456" && revert?.gitRevertPerformed == false && revert?.workerImplemented == false)
+    check("M08 revert preserva missão governada sem executar no app", revert?.mission.type == "governed_git_revert" && revert?.mission.workerImplemented == false)
+    let revertInput = AtlasAutonomosCycleRevertInput(operatorActor: "vitor", reason: "rollback requested after operator inspection")
+    let revertEncoder = JSONEncoder(); revertEncoder.keyEncodingStrategy = .convertToSnakeCase
+    let revertPayload = (try? JSONSerialization.jsonObject(with: revertEncoder.encode(revertInput))) as? [String: Any]
+    check("M08 input envia operator_actor + reason", revertInput.isLocallyValidForSubmission && revertPayload?["operator_actor"] as? String == "vitor" && revertPayload?["reason"] as? String == "rollback requested after operator inspection")
+
+    let digestJSON = """
+    {"schema_version":"atlas.autonomos.digest.v1","read_only":true,"provider_safe":true,
+     "next_digest_at":null,
+     "schedule":{"available":false,"source":null,"reason":"no_active_autonomos_digest_schedule_found"},
+     "last":{"window":{"kind":"rolling","hours":24,"started_at":"2026-07-16T00:00:00+00:00",
+       "ended_at":"2026-07-17T00:00:00+00:00","timezone":"UTC",
+       "areas":["agentic_engineering_os"],"focus":"dev_forge"},
+       "counts":{"delivered":1,"risks":2,"pending_decisions":1},
+       "delivered":[{"source":"cycle_ledger","area_id":"agentic_engineering_os","focus":"dev_forge",
+         "cycle_index":1,"cycle_id":"aesc_delivered_recent","outcome":"merged",
+         "cycle_final_status":"merged","merge_performed":true,"merge_hash":"abc1234",
+         "recorded_at":"2026-07-16T22:00:00+00:00"}],
+       "risks":[{"source":"cycle_ledger","area_id":"agentic_engineering_os","focus":"dev_forge",
+         "cycle_index":2,"cycle_id":"aesc_blocked_recent","severity":"high",
+         "reason":"provider_quota_exhausted","blockers":["provider_quota_exhausted","operator_decision_required"],
+         "quarantined":false,"recorded_at":"2026-07-16T23:00:00+00:00"}],
+       "pending_decisions":[{"source":"area_focus_read_model","area_id":"agentic_engineering_os",
+         "focus":"dev_forge","finding_id":"nsf_digest_pending_decision",
+         "title":"Decisão pendente","severity":"high","route":"operator_review",
+         "route_reason":"needs_owner","priority_score":90,"operator_decision_required":true}],
+       "source_statuses":{"agentic_engineering_os":{"area_focus_read_model":"available"}}}}
+    """
+    let digest = try? decoder.decode(AtlasAutonomosDigestResponse.self, from: Data(digestJSON.utf8))
+    check("M09 digest falha fechado no schema e preserva agenda ausente", digest?.schemaVersion == AtlasAutonomosDigestResponse.schemaVersion && digest?.nextDigestAt == nil && digest?.schedule.available == false)
+    check("M09 digest preserva janela e contagens governadas", digest?.last.window.hours == 24 && digest?.last.counts.delivered == 1 && digest?.last.counts.risks == 2 && digest?.last.counts.pendingDecisions == 1)
+    check("M09 digest entrega, risco e decisão pendente são tipados", digest?.last.delivered.first?.mergeHash == "abc1234" && digest?.last.risks.first?.reason == "provider_quota_exhausted" && digest?.last.pendingDecisions.first?.findingId == "nsf_digest_pending_decision")
+
     let decisionJSON = """
     {"schema_version":"atlas.software_company_stewardship.area_focus_operator_decision_receipt.v1",
      "ap_contract":"AP-724","decision_id":"afod_123","area_id":"agentic_engineering_os",

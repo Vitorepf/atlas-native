@@ -630,6 +630,215 @@ public struct AtlasAutonomosTransferResponse: Codable, Sendable, Equatable {
     }
 }
 
+public struct AtlasAutonomosCycleRevertInput: Codable, Sendable, Equatable {
+    public let operatorActor: String
+    public let reason: String
+    public let focus: String?
+
+    public init(operatorActor: String, reason: String, focus: String? = nil) {
+        self.operatorActor = operatorActor.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.reason = reason.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.focus = focus?.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    public var isLocallyValidForSubmission: Bool { !operatorActor.isEmpty && !reason.isEmpty }
+}
+
+public enum AtlasAutonomosCycleRevertStatus: String, Codable, Sendable, Equatable {
+    case enqueued
+    case blocked
+}
+
+public struct AtlasAutonomosCycleRevertTarget: Codable, Sendable, Equatable {
+    public let cycleIndex: Int
+    public let cycleId: String
+    public let mergeHash: String
+}
+
+public struct AtlasAutonomosCycleRevertMission: Codable, Sendable, Equatable {
+    public let type: String
+    public let status: String
+    public let targetMergeHash: String
+    public let commandIntent: String
+    public let workerImplemented: Bool
+    public let workerGap: String?
+}
+
+public struct AtlasAutonomosCycleRevertResponse: Decodable, Sendable, Equatable {
+    public static let schemaVersion = "atlas.software_company_stewardship.loop_cycle_revert.v1"
+
+    public let schemaVersion: String
+    public let status: AtlasAutonomosCycleRevertStatus
+    public let areaId: String
+    public let focus: String
+    public let cycleIndex: Int
+    public let cycleId: String
+    public let mergeHash: String
+    public let revertOf: AtlasAutonomosCycleRevertTarget
+    public let receiptId: String
+    public let queue: String
+    public let operatorActor: String
+    public let gitRevertPerformed: Bool
+    public let workerImplemented: Bool
+    public let mission: AtlasAutonomosCycleRevertMission
+    public let note: String?
+
+    enum CodingKeys: String, CodingKey {
+        case schemaVersion, status, areaId, focus, cycleIndex, cycleId, mergeHash,
+             revertOf, receiptId, queue, operatorActor, gitRevertPerformed,
+             workerImplemented, mission, note
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let schemaVersion = try values.requireSchema(
+            Self.schemaVersion,
+            forKey: .schemaVersion,
+            message: "Unsupported Autonomos cycle revert schema."
+        )
+        let status = try values.decode(AtlasAutonomosCycleRevertStatus.self, forKey: .status)
+        let gitRevertPerformed = try values.decode(Bool.self, forKey: .gitRevertPerformed)
+        let workerImplemented = try values.decode(Bool.self, forKey: .workerImplemented)
+        guard status == .enqueued, gitRevertPerformed == false, workerImplemented == false else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .status,
+                in: values,
+                debugDescription: "M08 only represents an enqueued request; no git revert is claimed by the endpoint."
+            )
+        }
+
+        self.schemaVersion = schemaVersion
+        self.status = status
+        self.areaId = try values.decode(String.self, forKey: .areaId)
+        self.focus = try values.decode(String.self, forKey: .focus)
+        self.cycleIndex = try values.decode(Int.self, forKey: .cycleIndex)
+        self.cycleId = try values.decode(String.self, forKey: .cycleId)
+        self.mergeHash = try values.decode(String.self, forKey: .mergeHash)
+        self.revertOf = try values.decode(AtlasAutonomosCycleRevertTarget.self, forKey: .revertOf)
+        self.receiptId = try values.decode(String.self, forKey: .receiptId)
+        self.queue = try values.decode(String.self, forKey: .queue)
+        self.operatorActor = try values.decode(String.self, forKey: .operatorActor)
+        self.gitRevertPerformed = gitRevertPerformed
+        self.workerImplemented = workerImplemented
+        self.mission = try values.decode(AtlasAutonomosCycleRevertMission.self, forKey: .mission)
+        self.note = try values.decodeIfPresent(String.self, forKey: .note)
+    }
+}
+
+public struct AtlasAutonomosDigestResponse: Decodable, Sendable, Equatable {
+    public static let schemaVersion = "atlas.autonomos.digest.v1"
+
+    public let schemaVersion: String
+    public let readOnly: Bool
+    public let providerSafe: Bool
+    public let nextDigestAt: String?
+    public let schedule: AtlasAutonomosDigestSchedule
+    public let last: AtlasAutonomosDigestLast
+
+    enum CodingKeys: String, CodingKey {
+        case schemaVersion, readOnly, providerSafe, nextDigestAt, schedule, last
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        schemaVersion = try values.requireSchema(
+            Self.schemaVersion,
+            forKey: .schemaVersion,
+            message: "Unsupported Autonomos digest schema."
+        )
+        readOnly = try values.decode(Bool.self, forKey: .readOnly)
+        providerSafe = try values.decode(Bool.self, forKey: .providerSafe)
+        nextDigestAt = try values.decodeIfPresent(String.self, forKey: .nextDigestAt)
+        schedule = try values.decode(AtlasAutonomosDigestSchedule.self, forKey: .schedule)
+        last = try values.decode(AtlasAutonomosDigestLast.self, forKey: .last)
+    }
+}
+
+public struct AtlasAutonomosDigestSchedule: Codable, Sendable, Equatable {
+    public let available: Bool
+    public let source: String?
+    public let reason: String?
+}
+
+public struct AtlasAutonomosDigestLast: Codable, Sendable, Equatable {
+    public let window: AtlasAutonomosDigestWindow
+    public let counts: AtlasAutonomosDigestCounts
+    public let delivered: [AtlasAutonomosDigestDelivered]
+    public let risks: [AtlasAutonomosDigestRisk]
+    public let pendingDecisions: [AtlasAutonomosDigestPendingDecision]
+    public let sourceStatuses: JSONObject
+}
+
+public struct AtlasAutonomosDigestWindow: Codable, Sendable, Equatable {
+    public let kind: String
+    public let hours: Int
+    public let startedAt: String
+    public let endedAt: String
+    public let timezone: String
+    public let areas: [String]
+    public let focus: String
+}
+
+public struct AtlasAutonomosDigestCounts: Codable, Sendable, Equatable {
+    public let delivered: Int
+    public let risks: Int
+    public let pendingDecisions: Int
+}
+
+public struct AtlasAutonomosDigestDelivered: Codable, Sendable, Equatable, Identifiable {
+    public let source: String
+    public let areaId: String
+    public let focus: String
+    public let cycleIndex: Int
+    public let cycleId: String
+    public let outcome: String
+    public let cycleFinalStatus: String
+    public let mergePerformed: Bool
+    public let mergeHash: String
+    public let recordedAt: String
+
+    public var id: String { "\(areaId):\(cycleIndex):\(cycleId)" }
+}
+
+public struct AtlasAutonomosDigestRisk: Codable, Sendable, Equatable, Identifiable {
+    public let source: String
+    public let areaId: String
+    public let focus: String
+    public let cycleIndex: Int?
+    public let cycleId: String?
+    public let findingId: String?
+    public let title: String?
+    public let severity: String
+    public let reason: String?
+    public let blockers: [String]?
+    public let quarantined: Bool?
+    public let route: String?
+    public let routeReason: String?
+    public let priorityScore: Int?
+    public let evidenceRefs: [String]?
+    public let recordedAt: String?
+
+    public var id: String {
+        if let findingId { return "\(areaId):finding:\(findingId)" }
+        return "\(areaId):cycle:\(cycleIndex.map(String.init) ?? "none"):\(cycleId ?? "none")"
+    }
+}
+
+public struct AtlasAutonomosDigestPendingDecision: Codable, Sendable, Equatable, Identifiable {
+    public let source: String
+    public let areaId: String
+    public let focus: String
+    public let findingId: String
+    public let title: String
+    public let severity: String
+    public let route: String
+    public let routeReason: String?
+    public let priorityScore: Int
+    public let operatorDecisionRequired: Bool
+
+    public var id: String { "\(areaId):\(findingId)" }
+}
+
 public extension AtlasClient {
     func listAutonomosAreas() async throws -> AtlasAutonomosAreasResponse {
         try await get(AtlasRoute.autonomosAreas)
@@ -679,6 +888,37 @@ public extension AtlasClient {
     /// área selecionada porque o servidor não publica essa relação.
     func autonomosTaskHealth() async throws -> AtlasAutonomosTaskHealthResponse {
         try await get(AtlasRoute.agentsTaskHealth)
+    }
+
+    func revertAutonomosCycle(
+        area: String,
+        cycle: String,
+        input: AtlasAutonomosCycleRevertInput
+    ) async throws -> AtlasAutonomosCycleRevertResponse {
+        guard !input.operatorActor.isEmpty else {
+            throw AtlasAutonomosClientError.missingOperatorActor
+        }
+        guard !input.reason.isEmpty else {
+            throw AtlasAutonomosClientError.missingRevertReason
+        }
+        return try await post(
+            AtlasRoute.autonomosCycleRevert(area: area, cycle: cycle),
+            body: input,
+            timeout: 30
+        )
+    }
+
+    func autonomosDigest(
+        hours: Int? = nil,
+        area: String? = nil,
+        limit: Int? = nil
+    ) async throws -> AtlasAutonomosDigestResponse {
+        let query = atlasQueryString([
+            ("hours", hours.map { .int($0) }),
+            ("area", area.map { .string($0) }),
+            ("limit", limit.map { .int($0) }),
+        ])
+        return try await get("\(AtlasRoute.autonomosDigest)\(query)")
     }
 
     func controlAutonomosRun(
@@ -763,4 +1003,5 @@ public enum AtlasAutonomosClientError: Error, Sendable, Equatable {
     case missingFindingHash
     case missingRationaleForHighRiskAccept
     case missingTransferReason
+    case missingRevertReason
 }

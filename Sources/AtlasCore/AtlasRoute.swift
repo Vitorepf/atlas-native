@@ -16,6 +16,7 @@ public enum AtlasRoute {
     public static let liveActivityStartTokens = "/ai/live-activities/start-tokens"
     public static let uploadChunksStart = "/ai/uploads/chunks/start"
     public static let autonomosAreas = "/ai/software-company-stewardship/loop/areas"
+    public static let autonomosDigest = "/ai/software-company-stewardship/autonomos/digest"
     public static let agentsStatus = "/agents/status"
     public static let agentsHistory = "/agents/history"
     public static let agentsTaskHealth = "/agents/task-health"
@@ -111,6 +112,10 @@ public enum AtlasRoute {
 
     public static func autonomosCycles(area: String) -> String {
         "\(autonomosLoop(area: area))/cycles"
+    }
+
+    public static func autonomosCycleRevert(area: String, cycle: String) -> String {
+        "/ai/software-company-stewardship/autonomos/\(component(area))/cycles/\(component(cycle))/revert"
     }
 
     public static func autonomosDone(area: String) -> String {

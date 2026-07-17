@@ -23,8 +23,11 @@ final class AutonomosModel {
     /// Saúde global da fila do músculo externo; não é um progresso estimado
     /// nem é atribuída artificialmente à área selecionada.
     var taskHealth: AtlasAutonomosTaskHealthResponse?
+    /// Digest global governado do Autônomos; agenda ausente permanece ausente.
+    var digest: AtlasAutonomosDigestResponse?
     var lastStartRunReceipt: AtlasAutonomosStartRunResponse?
     var lastTransferReceipt: AtlasAutonomosTransferResponse?
+    var lastRevertReceipt: AtlasAutonomosCycleRevertResponse?
     var lastControlReceipt: AtlasAutonomosRunControlResponse?
     var lastDecisionReceipt: AtlasAutonomosOperatorDecisionReceipt?
     var controlError: String?
@@ -161,6 +164,41 @@ final class AutonomosModel {
         }
     }
 
+    /// Enfileira um revert governado para um ciclo já entregue. O endpoint M08
+    /// registra o pedido; `gitRevertPerformed == false` continua sendo a verdade
+    /// até existir executor/recibo posterior.
+    func revertCycle(
+        cycle: String,
+        operatorActor: String,
+        reason: String
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosCycleRevertInput(
+                operatorActor: operatorActor,
+                reason: reason,
+                focus: area.focus
+            )
+            lastRevertReceipt = try await client.revertAutonomosCycle(
+                area: area.id,
+                cycle: cycle,
+                input: input
+            )
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    func refreshDigest() async {
+        do {
+            digest = try await client.autonomosDigest()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
     /// A decisão é só um recibo governado: mesmo um aceite não aciona owner,
     /// provider ou branch neste caminho. A casca deve mostrá-la como decisão
     /// registrada, nunca como trabalho já executado.
@@ -196,7 +234,7 @@ final class AutonomosModel {
 
     private func loadSelectedDetails() async throws {
         guard let area = selectedArea else {
-            live = nil; cycles = nil; delivered = nil; backlog = nil; fleet = nil; fleetHistory = nil; taskHealth = nil
+            live = nil; cycles = nil; delivered = nil; backlog = nil; fleet = nil; fleetHistory = nil; taskHealth = nil; digest = nil
             return
         }
         async let liveRequest = client.autonomosLive(area: area.id, focus: area.focus)
@@ -206,6 +244,7 @@ final class AutonomosModel {
         async let fleetRequest = client.autonomosFleet()
         async let fleetHistoryRequest = client.autonomosFleetHistory()
         async let taskHealthRequest = client.autonomosTaskHealth()
+        async let digestRequest = client.autonomosDigest()
         let (nextLive, nextCycles, nextDelivered, nextBacklog) = try await (liveRequest, cyclesRequest, deliveredRequest, backlogRequest)
         live = nextLive
         cycles = nextCycles
@@ -217,6 +256,7 @@ final class AutonomosModel {
         fleet = try? await fleetRequest
         fleetHistory = try? await fleetHistoryRequest
         taskHealth = try? await taskHealthRequest
+        digest = try? await digestRequest
     }
 
     private static func publicMessage(_ error: Error) -> String {
@@ -232,6 +272,8 @@ final class AutonomosModel {
                 return "Aceites de risco alto exigem uma justificativa auditável."
             case .missingTransferReason:
                 return "Informe o motivo auditável antes de transferir a missão."
+            case .missingRevertReason:
+                return "Informe o motivo auditável antes de reverter um ciclo."
             }
         }
         if let api = error as? AtlasApiError { return api.message }
