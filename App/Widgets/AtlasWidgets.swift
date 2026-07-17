@@ -225,27 +225,104 @@ private struct LockAccessorySnapshotView: View {
         if let snapshot = entry.snapshot {
             switch family {
             case .accessoryCircular:
-                Gauge(value: Double(snapshot.liveSessions?.count ?? 0), in: 0...5) {
-                    Text("◆")
-                } currentValueLabel: {
-                    Text("\(snapshot.liveSessions?.count ?? 0)")
-                }
-                .gaugeStyle(.accessoryCircular)
+                circular(snapshot)
             case .accessoryInline:
-                Text("Atlas · \(snapshot.liveSessions?.count ?? 0) executando")
+                Text(inlineText(snapshot))
+                    .foregroundStyle(emphasisColor(snapshot))
             default:
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(snapshot.liveSessions?.first?.phaseTitle ?? "Atlas em silêncio")
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
-                        .lineLimit(1)
-                    Text(snapshot.isStale(at: entry.date) ? "visto \(snapshot.ageText(at: entry.date))" : "\(snapshot.liveSessions?.count ?? 0) sessões vivas")
-                        .font(.system(size: 11, design: .monospaced))
-                        .foregroundStyle(snapshot.isStale(at: entry.date) ? Ink.alert : Ink.ink2)
-                }
+                rectangular(snapshot)
             }
         } else {
             Text("abra o Atlas")
         }
+    }
+
+    private func circular(_ snapshot: AtlasNativeSnapshot) -> some View {
+        let count = snapshot.liveSessions?.count ?? 0
+        let attention = hasAttention(snapshot)
+        let incident = snapshot.fleet?.incident?.present == true
+        return Gauge(value: Double(min(count, 5)), in: 0...5) {
+            Text(incident ? "!" : (attention ? "⚠" : "◆"))
+        } currentValueLabel: {
+            Text(incident ? "!" : "\(count)")
+                .foregroundStyle(incident || attention ? Ink.alert : Ink.ink)
+        }
+        .gaugeStyle(.accessoryCircular)
+        .tint(incident || attention ? Ink.alert : Ink.gold)
+    }
+
+    private func rectangular(_ snapshot: AtlasNativeSnapshot) -> some View {
+        let stale = snapshot.isStale(at: entry.date)
+        let attention = hasAttention(snapshot)
+        let incident = snapshot.fleet?.incident
+        return VStack(alignment: .leading, spacing: 2) {
+            if let incident, incident.present {
+                Text(incident.recommendedAction ?? incident.flags.first ?? "incidente na frota")
+                    .font(.system(size: 13, weight: .semibold, design: .serif))
+                    .foregroundStyle(Ink.alert)
+                    .lineLimit(2)
+            } else if attention, let paused = snapshot.liveSessions?.first(where: { $0.timing == .paused }) {
+                Text(paused.phaseTitle)
+                    .font(.system(size: 13, weight: .semibold, design: .serif))
+                    .foregroundStyle(Ink.alert)
+                    .lineLimit(1)
+                Text("‖ atenção")
+                    .font(.system(size: 11, design: .monospaced))
+                    .foregroundStyle(Ink.alert)
+            } else {
+                Text(snapshot.liveSessions?.first?.phaseTitle ?? "Atlas em silêncio")
+                    .font(.system(size: 13, weight: .semibold, design: .serif))
+                    .lineLimit(1)
+                Text(stale ? "visto \(snapshot.ageText(at: entry.date))" : rectangularSubtitle(snapshot))
+                    .font(.system(size: 11, design: .monospaced))
+                    .foregroundStyle(stale ? Ink.alert : Ink.ink2)
+            }
+        }
+    }
+
+    private func rectangularSubtitle(_ snapshot: AtlasNativeSnapshot) -> String {
+        guard let sessions = snapshot.liveSessions, let first = sessions.first else {
+            return "0 sessões vivas"
+        }
+        if first.timing == .paused { return "‖ pausado" }
+        if let ms = first.elapsedActiveMs {
+            return "\(sessions.count) · \(Self.formatElapsed(ms))"
+        }
+        return "\(sessions.count) sessões vivas"
+    }
+
+    private func inlineText(_ snapshot: AtlasNativeSnapshot) -> String {
+        if snapshot.fleet?.incident?.present == true {
+            return "Atlas · frota · incidente"
+        }
+        if hasAttention(snapshot) {
+            return "Atlas · atenção"
+        }
+        let n = snapshot.liveSessions?.count ?? 0
+        if n == 0 { return "Atlas · silêncio" }
+        return "Atlas · \(n) executando"
+    }
+
+    private func emphasisColor(_ snapshot: AtlasNativeSnapshot) -> Color {
+        if snapshot.fleet?.incident?.present == true || hasAttention(snapshot) {
+            return Ink.alert
+        }
+        return Ink.ink
+    }
+
+    private func hasAttention(_ snapshot: AtlasNativeSnapshot) -> Bool {
+        snapshot.liveSessions?.contains {
+            $0.timing == .paused
+                || $0.phaseTitle.localizedCaseInsensitiveContains("atenção")
+                || $0.phaseTitle.localizedCaseInsensitiveContains("aguard")
+        } == true
+    }
+
+    private static func formatElapsed(_ ms: Int) -> String {
+        let total = max(0, ms / 1000)
+        let m = total / 60
+        let s = total % 60
+        return String(format: "%d:%02d", m, s)
     }
 }
 
