@@ -5,22 +5,22 @@ import AtlasCore
 // ferramentas, agentes, gates). Antes ficava invisível; agora cada passo
 // mostra done/atual/pendente a partir do checkpoint REAL (executionProgress).
 // Sem plano no trace, o card não existe. Nada é inventado.
-// Header → PlanCard+Header.swift · passos → PlanCard+Steps.swift · revisões → PlanCard+Revisions.swift.
+// Header → PlanCard+Header · Steps → +Steps · Revisions → +Revisions · Toggle → +RevisionToggle
 struct PlanCard: View {
     let bubble: ChatBubble
-    @Environment(AtlasSession.self) private var session
+    @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
-    @State private var showDetail = false
-    @State private var showRevisions = false
+    @State var showDetail = false
+    @State var showRevisions = false
 
     var plan: AtlasExecutionPlan? { bubble.executionPlan }
     /// Checkpoint observado no stream; nil = nenhum passo marcado ainda (tudo pendente).
     var executionProgress: AtlasExecutionPlan.Progress? { bubble.executionProgress }
     var currentIndex: Int? { executionProgress?.current }
     var isTerminal: Bool { executionProgress?.isTerminal == true }
-    private var revisions: [AtlasTraceGovernance.PlanRevision] { bubble.planRevisions }
+    var revisions: [AtlasTraceGovernance.PlanRevision] { bubble.planRevisions }
     /// Só revisões com metadata real do servidor — ausência não vira “v1” nem motivo genérico.
-    private var meaningfulRevisions: [AtlasTraceGovernance.PlanRevision] {
+    var meaningfulRevisions: [AtlasTraceGovernance.PlanRevision] {
         revisions.filter { rev in
             rev.reason?.isEmpty == false || rev.archivedAt != nil || !rev.stepTitles.isEmpty
         }
@@ -59,27 +59,6 @@ struct PlanCard: View {
             .accessibilityElement(children: .contain)
             .accessibilityLabel(spokenCardLabel(plan: plan, progress: executionProgress))
             .accessibilityIdentifier(A11yID.planCard)
-        }
-    }
-
-    @ViewBuilder
-    private func revisionToggle(plan: AtlasExecutionPlan) -> some View {
-        let count = meaningfulRevisions.count
-        Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
-                showRevisions.toggle()
-            }
-        } label: {
-            Text(showRevisions ? "ocultar versões" : "comparar versões · \(count)")
-                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(spokenRevisionToggle(expanded: showRevisions, count: count))
-        .accessibilityHint(showRevisions ? "toque para ocultar" : "toque para expandir")
-        if showRevisions {
-            PlanRevisionCompare(plan: plan, revisions: meaningfulRevisions)
-                .transition(reduceMotion ? .identity : .opacity)
         }
     }
 }

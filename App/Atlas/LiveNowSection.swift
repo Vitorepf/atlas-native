@@ -4,19 +4,19 @@ import AtlasCore
 /// "VIVO AGORA" — a home vira cockpit quando há sessão observada neste
 /// processo. Sem sessões a seção não existe (lei V1: estado por exceção).
 /// Com 2+ sessões vira Session Hub na home (zero Route nova).
-/// Merge → LiveNowSection+Merge · spoken → LiveNowSection+A11y.
+/// Merge → +Merge · spoken → +A11y · Header → +Header
 struct LiveNowSection: View {
     let localSessions: [LiveSessionSnapshot]
     let remoteSessions: [LiveSessionSnapshot]
     let onOpen: (ThreadID, String) -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    private var sessions: [LiveSessionSnapshot] {
+    var sessions: [LiveSessionSnapshot] {
         Self.merged(local: localSessions, remote: remoteSessions)
     }
 
-    private var isHub: Bool { sessions.count >= 2 }
-    private var remoteCount: Int { sessions.filter(\.isRemote).count }
+    var isHub: Bool { sessions.count >= 2 }
+    var remoteCount: Int { sessions.filter(\.isRemote).count }
 
     var body: some View {
         VStack(alignment: .leading, spacing: isHub ? 0 : 12) {
@@ -57,29 +57,5 @@ struct LiveNowSection: View {
             isHub: isHub, count: sessions.count, remoteCount: remoteCount
         ))
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: sessions.map(\.id))
-    }
-
-    private var header: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text("VIVO AGORA")
-                .font(AtlasFont.mono(11))
-                .tracking(1.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityAddTraits(.isHeader)
-            if isHub {
-                Text("× \(sessions.count)")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.accent)
-                    .accessibilityLabel("\(sessions.count) sessões vivas")
-                if remoteCount > 0 {
-                    Text("· \(remoteCount) remota\(remoteCount == 1 ? "" : "s")")
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityLabel("\(remoteCount) sessão\(remoteCount == 1 ? "" : "ões") remota\(remoteCount == 1 ? "" : "s") em outra superfície")
-                }
-            }
-            Spacer(minLength: 0)
-        }
-        .padding(.bottom, isHub ? 12 : 0)
     }
 }

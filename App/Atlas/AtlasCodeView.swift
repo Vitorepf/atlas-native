@@ -4,11 +4,7 @@ import AtlasCore
 /// M0 · Grafo Governado — o mapa vem primeiro.
 ///
 /// Contrato visual: `docs/proposals/atlas-code-mobile.html` (tela M0).
-/// Leis aplicadas aqui: mapa primeiro (3), estado por exceção (4), um sinal
-/// primário por violação (5), linguagem humana em cima e máquina embaixo do
-/// vidro (6), a pílula nunca some (7), autonomia > aprovação (1: só veto).
-/// Gramática de cor (AtlasCore): dourado = na main · vermelho = fora ·
-/// verde = curado. Cor é estado; autor e tipo já são texto.
+/// Ask seed → AtlasCodeView+Ask.swift
 struct AtlasCodeView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -72,17 +68,5 @@ struct AtlasCodeView: View {
             askDraft: $askDraft,
             onProvenanceAsk: openAskFromProvenance
         )
-    }
-
-    private func openAskFromProvenance(_ node: AtlasCodeGraphNode) {
-        selectedNode = nil
-        var citado = String(node.hash.prefix(10))
-        var tamanho = 10
-        while !citado.contains(where: \.isNumber), tamanho < node.hash.count {
-            tamanho += 4
-            citado = String(node.hash.prefix(tamanho))
-        }
-        askDraft = "o que o commit \(citado) fez, e por quê?"
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { showsAskCard = true }
     }
 }
