@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Load preview — peel de ArtifactSheet+Preview.
+// State → ArtifactPreviewState.swift
 
 extension ArtifactSheet {
     func load(_ item: AtlasTraceArtifacts.Item) async {
@@ -15,12 +16,4 @@ extension ArtifactSheet {
             preview = .failed(atlasUserMessage(for: error))
         }
     }
-}
-
-enum ArtifactPreviewState {
-    case idle
-    case loading
-    case loaded(AtlasTraceArtifacts.Item, AtlasArtifactContent)
-    case tooLarge(Int)
-    case failed(String)
 }

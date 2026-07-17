@@ -3,24 +3,15 @@ import UIKit
 import AtlasCore
 
 // Artifact sheet lifecycle — peel de ArtifactSheet.
+// InitialTask → ArtifactSheet+Lifecycle+InitialTask.swift
+// SelectionSync → ArtifactSheet+Lifecycle+SelectionSync.swift
+// PreviewTask → ArtifactSheet+Lifecycle+PreviewTask.swift
 
 extension ArtifactSheet {
     func artifactSheetLifecycle<Content: View>(_ content: Content) -> some View {
         content
-            .task {
-                await reviews.refreshChangeReview(traceId: traceId)
-                loadFinished = true
-                if hasDeliveryProof { await runMountAnimation() }
-                else { mountRevealed = deliveryChecks.count }
-            }
-            .onChange(of: items.map(\.id)) { _, ids in
-                if selectedID == nil || selectedID.map({ !ids.contains($0) }) == true {
-                    selectedID = ids.first
-                }
-            }
-            .task(id: selected?.id) {
-                guard mountComplete, let selected else { return }
-                await load(selected)
-            }
+            .task { await artifactSheetInitialTask() }
+            .onChange(of: items.map(\.id)) { _, ids in artifactSheetSyncSelection(ids: ids) }
+            .task(id: selected?.id) { await artifactSheetPreviewTask(for: selected) }
     }
 }

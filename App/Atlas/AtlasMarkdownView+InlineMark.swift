@@ -4,6 +4,7 @@ import AtlasCore
 // Inline mark styles — peel de AtlasMarkdownView+Inline.
 // Code/link → AtlasMarkdownView+InlineMarkDecorated.swift
 // Emphasis → AtlasMarkdownView+InlineMarkEmphasis.swift
+// Text → AtlasMarkdownView+InlineMark+Text.swift
 
 extension AtlasMarkdownView {
     func inlineMark(_ span: InlineSpan, base: InlineBase) -> AttributedString {
@@ -15,10 +16,7 @@ extension AtlasMarkdownView {
         }
         switch span {
         case .text(let t):
-            var piece = AttributedString(t)
-            piece.font = base.font
-            piece.foregroundColor = base.color
-            return piece
+            return inlineTextMark(t, base: base)
         default:
             return AttributedString()
         }

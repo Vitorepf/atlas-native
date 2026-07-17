@@ -4,19 +4,12 @@ import AtlasCore
 
 // Artifact list row label — peel de ArtifactSheet+ListRow.
 // Meta → ArtifactSheet+ListRowMeta.swift
+// Leading → ArtifactSheet+ListRowLabel+Leading.swift
 
 extension ArtifactSheet {
     func artifactListRowLabel(item: AtlasTraceArtifacts.Item) -> some View {
         HStack(spacing: 10) {
-            Text("▸")
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Text(item.name)
-                .font(AtlasFont.serif(15, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .lineLimit(1)
-                .accessibilityHidden(true)
+            artifactListRowLeading(item: item)
             Spacer()
             artifactListRowMeta(item: item)
         }
