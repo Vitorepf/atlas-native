@@ -6,15 +6,22 @@
 
 ## 0. Missão e a lição que não se repete
 
-**Missão:** o melhor sistema móvel de inteligência, execução e coordenação de
-agentes possível — Conversation Supremacy → Voice Supremacy → Agent Cockpit →
-Artifacts & Proof → Continuity → Atlas-wide Intelligence. Ambição máxima de
-produto; zero cerimônia arquitetural que o operador não vê.
+**Missão:** o aplicativo nº 1 — e disparado — de programação agêntica de
+altíssimo nível. Dois pilares: Atlas AI (conversa, execução viva, presença) +
+Atlas Código (grafo, cure 24/7). Autônomos é frota própria. Continuity fora do
+app (Island / lock / widgets) é território livre. Voice / Atlas-wide permanecem
+verticais futuras congeladas.
+
+**Papel do humano (canon):** Intenção · Julgamento (produto/preço/risco) ·
+Assinatura (publicação/destruição) · Veto retroativo com recibo. **Operação
+nunca espera humano** — Autonomia > aprovação; silêncio é o produto; atenção
+é o recurso mais caro. Plano vivo: `docs/plano-elite-agentica-24x7.md`.
 
 **A lição (o app RN morreu disso):** grande demais, nada funcionava, código
 inchado e bagunçado. O antídoto NÃO é prudência tímida — é disciplina:
 verticais completas e demonstráveis no device, gates que não mentem,
-fronteiras executáveis por check, deletar > adicionar. O atlas-server já é
+fronteiras executáveis por check, deletar > adicionar. Ciclo obrigatório:
+Implementar → Comprimir → Aprofundar → Comprimir. O atlas-server já é
 excepcional; este app é a casca que encaixa nele — a inteligência mora no
 servidor, o app entrega experiência.
 
@@ -156,6 +163,20 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | PT11–18 | **PARCIAL** | **GPT-5.5** | `Sources/AtlasCore/AtlasNativeSnapshot.swift`; `Sources/AtlasCoreChecks/AtlasNativeSnapshotChecks.swift`; `App/Atlas/{AtlasNativeSnapshotWriter,AtlasSession,ConversationModel,AutonomosModel,AtlasCodeModel,TurnPresence}.swift`; `App/Widgets/*`; entitlements/project | M118 antes widgets | Patamar Supremo M83/M85/M86/M121 | SD-1 App Group entregue; widgets leem snapshot fail-closed; staleness >6h visível; M87 deferido sem campos discretos | este commit; checks+build+diff em §7 |
 | PT19–22 | **PARCIAL** | **GPT-5.5** | `App/Atlas/{A11yID,AtlasSession,RootView,ConversationModel,ConversationModel+ReadCache,ConversationTypes,ConversationView,ConversationCockpit,ExecutionStateCard,LiveNowSection,LiveTimeline,AutonomosView}.swift`; `Sources/AtlasCore/{InteractionRun,ThreadReadCache}.swift`; `Sources/AtlasCoreChecks/InteractionRunChecks.swift` | PT11–18 | Ondas 19–22 M94/M95/M99/M113/M114/M125/M139/M141/M145/M146/M148/M149/M153/M158 | Profundidade sem nova Route; dados só dos models/Core | este commit; checks+build+diff em §7 |
 | PT-priority-robustez | **PARCIAL** | **GPT-5.5** | `Sources/AtlasCore*`; `App/Atlas/*`; `App/Widgets/*`; `docs/motion-haptics-map.md`; `OBRA.md` | PT19–22 | Priority batch M43–M51/M87/M96/M102/M105/M132/M137/M142/M147/M154/M157/M159/M14/M22/M25 | Robustez Core + bindings UI sem nova Route; sem Onda 9; sem §B SKIP; dependências sem contrato em §5 | este commit; gates finais em §7 |
+
+### Elite 24×7 (Grok 4.5 · `docs/plano-elite-agentica-24x7.md` + design `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md`)
+| # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
+|---|---|---|---|---|---|---|---|
+| E0 | **DONE** | **Grok 4.5** | `docs/plano-elite-agentica-24x7.md`; design; `OBRA.md` | decisão operador 2026-07-17 | Canon + plano mestre A→B→C→D | zero Route nova; fora-do-app livre; humano fora do fluxo ops | este commit |
+| E-A1 | **PENDING** | — | server+Core+casca M01/Arena worker/deep links | E0 | Onda A1 honestidade P0 | heal→merge ou heal-receipt; Arena drain→scoreboard; deep links widgets | — |
+| E-A2 | **PENDING** | — | Arena LA + App Intents | E-A1 A12 | Onda A2 Arena Continuity | LA `suite·engine·braço·N/M`; botões só ações reais | — |
+| E-A3 | **PENDING** | — | §5 contratos C9/M65/C18–C21/M98+/… | E0 | Onda A3 contratos | TDD + decode; UI só depois | — |
+| E-A4 | **PENDING** | — | deepen Conversation/Autonomos/Code/Arena/LiveNow | E-A3 onde bloquear | Onda A4 casca deepen | zero Route; fidelity matrix | — |
+| E-A5 | **PENDING** | — | Widgets/Island/lock/notif/StandBy/Controls | E-A1 deep links | Onda A5 fora-do-app | variantes honestas; silêncio se saudável | — |
+| E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
+| E-B | **PENDING** | — | splits AutonomosView/Model/Core + dedup | E-A* mínimo | CICLO B compressão 1 | Model&lt;800; views~200; saldo negativo | — |
+| E-C | **PENDING** | — | aprofundar 9 rotas + presença | E-B | CICLO C patamares | profundidade sem largura de telas | — |
+| E-D | **PENDING** | — | compressão 2 | E-C | CICLO D | delete ≥60% linhas de C ou ADR | — |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -755,12 +776,24 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 |---|---|---|---|
 | Nome da tela de medição no código | **DECIDIDO 2026-07-17: `AtlasArena*`, rota `.arena`, título "Arena"** | M61 | — |
 | Arquivar OBRA §7 pré-15/07 em `OBRA-ARCHIVE.md` | PENDENTE | M60 | não arquivar |
-| Commitar docs de planejamento (`docs/plano-*`, `docs/roadmap-*`, `docs/spec-*`) | PENDENTE | M82 | permanecem untracked |
+| Commitar docs de planejamento (`docs/plano-*`, `docs/roadmap-*`, `docs/spec-*`) | **PARCIAL 2026-07-17:** autorizado `plano-elite-agentica-24x7` + design; resto permanece default untracked | M82 | só o que o operador autorizar |
 | Paisagem para telas de leitura (hoje Portrait-only deliberado) | PENDENTE | M27 | manter Portrait |
 | Adotar SwiftFormat/lint como gate | PENDENTE | M41 | não adotar |
 | Biometria em ações destrutivas | PENDENTE | M53 | não implementar |
 
 ## 6. Decisões registradas
+
+- **2026-07-17 · Plano Elite Agêntica 24×7 (operador):** missão contínua
+  documentada em `docs/plano-elite-agentica-24x7.md` + design
+  `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md`.
+  **Leis:** (1) zero `Route` novas (9 cases; Arena já existe — deepen only);
+  (2) fora do app (Island/lock/widgets/notif/StandBy/Controls) = liberdade
+  total de variantes honestas; (3) ciclo A Implementar → B Comprimir →
+  C Aprofundar → D Comprimir (repete C↔D); (4) **humano fora do fluxo
+  operacional** — Autonomia > aprovação; ator+motivo só no start governado;
+  veto com recibo; silêncio = produto; (5) Criação ≠ Medição (Arena, nunca
+  Rivals no nativo); (6) Voice/Onda9/§B SKIP intocados sem nova decisão.
+  Fila §4 Elite E0–E-D. Começar por A0/A1 (honestidade P0).
 
 - **2026-07-17 · ADR M118 App Group SD-1:** superfícies externas do app nativo
   compartilham somente o arquivo `snapshot/atlas.native.snapshot.v1.json` no
@@ -934,6 +967,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **Elite 24×7 — plano mestre + canon** · este commit · Design `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md` + plano `docs/plano-elite-agentica-24x7.md` (ciclos A implementar → B comprimir → C aprofundar → D comprimir; zero Route nova; fora-do-app livre ≈130 variantes; humano fora do fluxo ops). OBRA §0/§4 Elite E0–E-D / §6 decisão / §B M82 parcial. Inventário via 5 subagentes (rotas, doutrina, gaps, fora-do-app, saúde de código). **Próximo:** E-A1 (M01, Arena worker, deep links). Prova: docs + blackboard; sem mudança de runtime neste commit.
 
 - 2026-07-17 · Grok 4.5 · **Profundidade Total — fechamento de sessão PARCIAL honesto** · este commit · Missão avançou na Ordem Mestra com provas por frente (não 155/155 absolutos). **Entregue com gate:** Onda 0 parcial (M06 live integral; M01 último passo+§5; M02–M05 roteiro operador); M07–M09 server+Core+casca; M55/M56/M78/M80/M81; casca sprint M11/M15/M62; M61 Arena A1–A12 (rota `.arena` única nova; enqueue real; worker drain §5); M118 SD-1 + M83/M85/M121/M86; M13 sessions/live; batches AX/Autônomos/conversa/runtime/craft/workspace + robustez (M10/M14/M16–M22/M24–M26/M43–M52/M64/M66/M87/M94–M96/M99/M102/M105*/M113–M114/M125/M132/M137/M139/M141–M149/M153–M154/M157–M159…). **Onda 9 intocada.** **Route cases:** 9 no enum (8 + `.arena`). **Gates finais sessão:** `env -u ATLAS_LIVE swift run AtlasCoreChecks` exit 0; `cd App && make build` exit 0; `git diff --check` limpo; ambos repos `main`. **Follow-ups §5 (dono):** M01 heal→merge bridge; M02–M05/M03/M04 operador+device/APNs; M61 worker medição; M12 instances; M65/M89 intents; contratos §5 M35/M49/M98/M100/M106+/M126/M134/M140/M160; M28–M34 após M03; M36–M38 triagem; M90–M93/M122 após M04. KPI device (ilha 0 taps / 0 hitches) = pendência operador com roteiros em evidence.
 
