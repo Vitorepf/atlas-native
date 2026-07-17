@@ -8,7 +8,7 @@ struct WorkspaceRow: View {
     var detail: String?
     var badge: Bool = false
     let action: () -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         Button(action: action) {
@@ -28,23 +28,7 @@ struct WorkspaceRow: View {
                     }
                 }
                 Spacer(minLength: 8)
-                if badge {
-                    Circle()
-                        .fill(AtlasTheme.alert)
-                        .frame(width: 8, height: 8)
-                        .accessibilityHidden(true)
-                }
-                if let count {
-                    Text("\(count)")
-                        .font(.system(.callout))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .monospacedDigit()
-                        .modifier(NumericTextTransition(enabled: !reduceMotion))
-                        .accessibilityHidden(true)
-                }
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
+                rowTrailing
             }
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
             .contentShape(Rectangle())

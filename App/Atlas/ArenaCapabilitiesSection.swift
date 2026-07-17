@@ -2,39 +2,19 @@ import SwiftUI
 import AtlasCore
 
 /// Capacidades medidas — sem dados reais = silêncio total (lei V1, paridade AGORA/SUITES).
+/// Header → ArenaCapabilitiesSection+Header.swift
 struct ArenaCapabilitiesSection: View {
     let capabilities: AtlasArenaCapabilities?
     let reduceMotion: Bool
 
-    private var measuredCapabilities: [AtlasArenaCapability] {
+    var measuredCapabilities: [AtlasArenaCapability] {
         capabilities?.capabilities ?? []
     }
 
     var body: some View {
         if !measuredCapabilities.isEmpty, let capabilities {
             VStack(alignment: .leading, spacing: 14) {
-                HStack {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("CAPACIDADES")
-                            .font(.system(.caption, weight: .semibold))
-                            .tracking(1.4)
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                            .accessibilityAddTraits(.isHeader)
-                        if let engine = capabilities.engine?.nonEmpty {
-                            Text(engine)
-                                .font(AtlasFont.mono(11))
-                                .foregroundStyle(AtlasTheme.textTertiary)
-                                .accessibilityHidden(true)
-                        }
-                    }
-                    Spacer()
-                    if let mapping = capabilities.mappingVersion.nonEmpty {
-                        Text(mapping)
-                            .font(AtlasFont.mono(10))
-                            .foregroundStyle(AtlasTheme.textSecondary)
-                            .accessibilityHidden(true)
-                    }
-                }
+                capabilitiesHeader(capabilities)
 
                 ForEach(measuredCapabilities) { capability in
                     ArenaCapabilityRow(capability: capability)

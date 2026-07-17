@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Conteúdo carregado da Arena — peel de AtlasArenaView (régua ≤110).
+// Run → AtlasArenaView+RunButton.swift
 
 extension AtlasArenaView {
     @ViewBuilder
@@ -34,21 +35,7 @@ extension AtlasArenaView {
                         onSuiteTap: { selectedSuite = $0 }
                     )
                 }
-                Button {
-                    showingRunSheet = true
-                } label: {
-                    Label("Rodar medição", systemImage: "play.fill")
-                        .font(.system(.body, weight: .semibold))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Capsule().fill(AtlasTheme.goldVeil))
-                        .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(AtlasTheme.accent)
-                .accessibilityLabel(runButtonSpoken)
-                .accessibilityHint(runButtonHint)
-                .accessibilityIdentifier(A11yID.arenaRunButton)
+                runMeasurementButton
             } else {
                 domainUnavailableCard
             }

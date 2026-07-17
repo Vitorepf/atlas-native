@@ -966,7 +966,9 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
-- 2026-07-17 · Grok 4.5 · **Elite contínuo CXIII — CICLO B Provenance/Arena/Artifact/Queue/Fleet/File/Lock/Steer/Search peels** · este commit · CICLO B: Provenance `+Dateline`; Arena `+DomainA11y`; Artifact `+Empty`; Queue `+Buttons`; FleetHistory `+RowBody`; FileRow `+Stats`; Lock `+Circular`; Steer `+Toolbar`; Search `+Results`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXIV — CICLO B Root/Review/Arena/Fleet/Editorial/Seal/Loaded/Self/Plan/Capabilities peels** · este commit · CICLO B: Workspace/Thread `+Trailing`; Review `+Tests`; Arena `+RunButton`; Fleet `+Header`; Editorial `+Closing`; Seal `+SealBody`; Loaded `+StackHead`; Self `+VetoButton`; Plan `+Audit`; Capabilities `+Header`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo CXIII — CICLO B Provenance/Arena/Artifact/Queue/Fleet/File/Lock/Steer/Search peels** · `706ccdb` · CICLO B: Provenance `+Dateline`; Arena `+DomainA11y`; Artifact `+Empty`; Queue `+Buttons`; FleetHistory `+RowBody`; FileRow `+Stats`; Lock `+Circular`; Steer `+Toolbar`; Search `+Results`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo CXII — CICLO B Area/Council/Fleet/Artifact/Arena/Island/Messages/Ask/Why/Plan/Delivered peels** · `c574160` · CICLO B: AreaPicker `+Phase`; Council `+Meta`; Fleet `+Summary`; Artifact `+PreviewLoad`; ArenaNow `+Rows`; Island `+Minimal`; Messages `+Empty`; AskPill `+Content`; Why `+Header`; Plan `+A11yDetail`; Delivered `+RowVisual`/`+A11yCaption`. Zero App >100. Zero Route. **BLOCKED:** Swift/server/device. Prova: find App >100=0; device-pending.
 

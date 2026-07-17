@@ -2,31 +2,13 @@ import SwiftUI
 import AtlasCore
 
 // LazyVStack do corpo Autônomos — peel de AutonomosLoadedSection (régua ≤100).
-// Tail → AutonomosLoadedSection+StackTail.swift
+// Head → +StackHead.swift · Tail → +StackTail.swift
 
 extension AutonomosLoadedSection {
     @ViewBuilder
     var loadedStack: some View {
         LazyVStack(alignment: .leading, spacing: 16) {
-            AutonomosNightlyProposalBlock(nightly: nightly) { nightlyStartProposal = $0 }
-            AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
-            if let fleet = model.fleet {
-                AutonomosFleetSummary(
-                    fleet: fleet,
-                    incidentPresent: model.taskHealth?.incidents.present == true
-                )
-            }
-            if let digest = model.digest {
-                AutonomosNextDigestSection(digest: digest)
-            }
-            AutonomosOperationDigestSection(
-                deliveredTotal: model.delivered?.deliveredTotal ?? 0,
-                pendingCount: model.backlog?.workOrders.count ?? 0,
-                inboxCount: model.backlog?.inboxItems.count ?? 0,
-                incidentPresent: model.taskHealth?.incidents.present == true,
-                oldestBacklogCreatedAt: oldestBacklogCreatedAt,
-                findingsByRisk: model.backlog?.findings.byRisk ?? [:]
-            )
+            loadedStackHead
             AutonomosAwaitingYouSection(backlog: model.backlog) { detailSheet = $0 }
                 .animation(
                     reduceMotion ? nil : AtlasMotion.editorial,

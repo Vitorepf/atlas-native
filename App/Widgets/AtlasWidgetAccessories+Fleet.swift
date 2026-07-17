@@ -3,7 +3,7 @@ import SwiftUI
 import AtlasCore
 
 // MARK: - Fleet snapshot widget
-// State → AtlasWidgetAccessories+Fleet+State.swift
+// State → AtlasWidgetAccessories+Fleet+State.swift · Header → +Header.swift
 
 struct FleetWidgetView: View {
     @Environment(\.widgetFamily) var family
@@ -17,16 +17,7 @@ struct FleetWidgetView: View {
             }
             let stale = snapshot.isStale(at: entry.date)
             return AnyView(VStack(alignment: .leading, spacing: 7) {
-                HStack {
-                    Text("✦ Frota")
-                        .font(.system(size: 14, weight: .semibold, design: .serif))
-                    Spacer()
-                    if stale {
-                        Text("visto \(snapshot.ageText(at: entry.date))")
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                            .foregroundStyle(Ink.alert)
-                    }
-                }
+                fleetHeader(stale: stale, age: snapshot.ageText(at: entry.date))
                 fleetState(snapshot)
                 if family != .systemSmall,
                    let delivery = snapshot.fleet?.lastDelivery,
