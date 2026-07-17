@@ -10,6 +10,7 @@ extension SelfConstructionReceiptSheet {
                     .font(AtlasFont.mono(10))
                     .tracking(0.9)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
                 TextField("Quem autoriza", text: $actor)
                     .font(.system(.callout))
                     .textInputAutocapitalization(.never)
@@ -25,10 +26,12 @@ extension SelfConstructionReceiptSheet {
                     .accessibilityLabel("motivo auditável do veto")
                     .accessibilityHint(spokenReasonHint())
                 Button {
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                     onRevert(actor, reason)
                 } label: {
                     HStack(spacing: 7) {
                         Image(systemName: "arrow.uturn.backward")
+                            .accessibilityHidden(true)
                         Text("Desfazer — com recibo")
                     }
                     .font(.system(size: 14, weight: .medium))
@@ -37,11 +40,14 @@ extension SelfConstructionReceiptSheet {
                     .foregroundStyle(AtlasTheme.domOperacional)
                     .atlasCard(cornerRadius: 13)
                 }
+                .buttonStyle(PressableScale())
                 .disabled(!canSubmitRevert)
                 .accessibilityIdentifier(A11yID.selfReceiptVeto)
                 .accessibilityLabel(spokenVetoSubmitLabel(canSubmit: canSubmitRevert))
                 .accessibilityHint(spokenVetoSubmitHint(canSubmit: canSubmitRevert))
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("veto retroativo com recibo")
         }
     }
 }

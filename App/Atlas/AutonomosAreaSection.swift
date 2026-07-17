@@ -12,23 +12,40 @@ struct AutonomosAreaControls: View {
     let onKill: () -> Void
     let onDryRun: () -> Void
     let onExecute: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 if isPaused {
-                    Button("Retomar", action: onResume).buttonStyle(AutonomosPrimaryButtonStyle())
+                    Button("Retomar") { tap(onResume) }
+                        .buttonStyle(AutonomosPrimaryButtonStyle())
+                        .accessibilityLabel(spoken("retomar \(areaName)"))
+                        .accessibilityHint(hint("retoma a instância pausada"))
                 } else {
-                    Button("Pausar", action: onPause).buttonStyle(AutonomosSecondaryButtonStyle())
+                    Button("Pausar") { tap(onPause) }
+                        .buttonStyle(AutonomosSecondaryButtonStyle())
+                        .accessibilityLabel(spoken("pausar \(areaName)"))
+                        .accessibilityHint(hint("pausa a instância sem encerrar"))
                 }
-                Button("Transferir", action: onTransfer).buttonStyle(AutonomosSecondaryButtonStyle())
-                Button("Encerrar", action: onKill).buttonStyle(AutonomosDestructiveButtonStyle())
+                Button("Transferir") { tap(onTransfer) }
+                    .buttonStyle(AutonomosSecondaryButtonStyle())
+                    .accessibilityLabel(spoken("transferir \(areaName)"))
+                    .accessibilityHint(hint("abre a transferência governada"))
+                Button("Encerrar") { tap(onKill) }
+                    .buttonStyle(AutonomosDestructiveButtonStyle())
+                    .accessibilityLabel(spoken("encerrar \(areaName)"))
+                    .accessibilityHint(hint("encerra a instância com recibo"))
             }
             HStack(spacing: 8) {
-                Button("Novo ciclo · ensaio", action: onDryRun)
+                Button("Novo ciclo · ensaio") { tap(onDryRun) }
                     .buttonStyle(AutonomosPrimaryButtonStyle())
-                Button("Executar de verdade", action: onExecute)
+                    .accessibilityLabel(spoken("novo ciclo ensaio, \(areaName)"))
+                    .accessibilityHint(hint("inicia ciclo de ensaio sem efeito real"))
+                Button("Executar de verdade") { tap(onExecute) }
                     .buttonStyle(AutonomosSecondaryButtonStyle())
+                    .accessibilityLabel(spoken("executar de verdade, \(areaName)"))
+                    .accessibilityHint(hint("inicia ciclo real com governança"))
             }
         }
         .disabled(!canControl)
@@ -36,5 +53,18 @@ struct AutonomosAreaControls: View {
         .accessibilityLabel(spokenContainerLabel)
         .accessibilityHint(spokenContainerHint)
         .accessibilityIdentifier(A11yID.autonomosAreaControls)
+    }
+
+    private func tap(_ action: () -> Void) {
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+        action()
+    }
+
+    private func spoken(_ label: String) -> String {
+        canControl ? label : "\(label), indisponível"
+    }
+
+    private func hint(_ text: String) -> String {
+        canControl ? text : spokenContainerHint
     }
 }

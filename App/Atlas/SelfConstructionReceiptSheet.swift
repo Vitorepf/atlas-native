@@ -8,7 +8,7 @@ struct SelfConstructionReceiptSheet: View {
     var onRevert: (String, String) -> Void = { _, _ in }
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var actor = ""
     @State var reason = ""
 

@@ -15,7 +15,10 @@ extension EditorialTurn {
                         .accessibilityHidden(true)
                 }
                 .accessibilityLabel(EditorialTurnA11y.spokenUserMessage(bubble.text))
-            Button(action: onEditResend) {
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onEditResend()
+            } label: {
                 HStack(spacing: 5) {
                     Image(systemName: "arrow.turn.down.right")
                         .font(.system(size: 10, weight: .semibold))
