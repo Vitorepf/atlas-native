@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **197** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 499 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 198 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **205** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 507 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 206 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -68,8 +68,21 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **XLIV** | **PARCIAL** | FleetHistory + OperationDigest + ComposerAttachments; spoken contagens publicadas; clipboard vazia honesta; peels `FleetHistory+A11y`/`OperationDigest+A11y`/`ComposerAttachmentsSheet+A11y` (`5197fd3`/`1c29173`/`4429810`) |
 | **XLV** | **PARCIAL** | FleetTransfer + ExecutionProof expanded + LiveTimeline filters; marcos só publicados; replay/format honesty; filtros com contagens reais; peels `FleetTransfer`/`ExecutionProof+ReplayFormat`/`LiveTimeline+A11y` (`fcd7b7e`/`dcc6ae5`/`066b837`) |
 | **XLVI** | **PARCIAL** | TaskHealth + ArtifactZoom + AreaPicker + PlanCard steps; saúde fila spoken; zoom escala real; picker instâncias; passos N/M honestos; peels `FleetTaskHealth+A11y`/`ArtifactViewer+Zoom+A11y`/`AutonomosAreaPicker+A11y`/`PlanCard+StepRow+A11y` (`935ab15`/`655fff7`/`b57a418`/`c8d11cb`) |
+| **XLVII** | **PARCIAL** | ArenaNow AGORA + AreaDelivered entregas; silêncio lei V1 sem runs/suites; spoken contagens publicadas; peels `ArenaNowSection+A11y`/`AutonomosAreaDeliveredSection+A11y` (`d49c971`/`f45058c`) |
+| **XLVIII** | **PARCIAL** | ArenaCapabilities motor/mapeamento/gráfico; rows casos>0 e suites publicadas; peel `ArenaCapabilitiesSection+A11y` (`756cbea`) |
+| **XLIX** | **PARCIAL** | AreaDetail métricas `—` sem payload + ArenaSuites regressões; spoken tier/fase/runtime e N suites; peels `AutonomosAreaDetailSection+A11y`/`ArenaSuitesSection+A11y` (`cd48a71`/`d5e1458`) |
 
-## Entrega recente (wave XLVI contínuo — TaskHealth/ArtifactZoom/AreaPicker/PlanCard — HEAD)
+## Entrega recente (wave XLIX contínuo — AreaDetail/ArenaSuites — HEAD)
+
+- `polish(ui)` CICLO C AreaDetail: métricas `—` sem payload; spoken header tier/fase/runtime; peel `AutonomosAreaDetailSection+A11y`/`+Shortcuts` (`cd48a71`).
+- `polish(ui)` CICLO C ArenaSuites: silêncio total sem suites; spoken N suites/medidas/regressões; peel `ArenaSuitesSection+A11y` (`d5e1458`).
+- `polish(ui)` CICLO C ArenaCapabilities: spoken motor/mapeamento/N capacidades; peel `ArenaCapabilitiesSection+A11y` (`756cbea`).
+- `polish(ui)` CICLO C AreaDelivered: título auto-construção honesto; spoken merge só com prova; peel `AutonomosAreaDeliveredSection+A11y` (`f45058c`).
+- `polish(ui)` CICLO C ArenaNow: silêncio total sem runs vivos; spoken N medições + Live Activity; peel `ArenaNowSection+A11y` (`d49c971`).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **205** (inclui este pin).
+- Zero arquivos App/Core/Widgets >100; max 100.
+
+## Entrega anterior (wave XLVI contínuo — TaskHealth/ArtifactZoom/AreaPicker/PlanCard)
 
 - `polish(ui)` CICLO C PlanCard: passos N/M reais; spine silenciada; trait `.isSelected` no passo corrente; peels `PlanCard+StepRow+A11y`/`PlanCard+A11y` (`c8d11cb`).
 - `polish(ui)` CICLO C AreaPicker: spoken seção N áreas/quiet; linha nome/objetivo/fase/`registered`; peel `AutonomosAreaPicker+A11y` (`b57a418`).
@@ -81,8 +94,6 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 - `polish(ui)` CICLO C ComposerAttachments: clipboard vazia disabled; foto/arquivo spoken (`4429810`).
 - `polish(ui)` CICLO C OperationDigest + FleetHistory: contagens publicadas; histórico editorial honesto (`1c29173`/`5197fd3`).
 - `polish(ui)` CICLO C ChangeReviewDiff + Outline + StaleReadSeal + Arena sheets (`1ffeb59`/`4ecc1ca`/`78524c8`/`faad2f1`/`a017922`).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **197** (inclui este pin).
-- Zero arquivos App/Core/Widgets >100; max 100.
 
 ### Top 10 (App/Core/Widgets — all ≤100)
 
