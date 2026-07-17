@@ -171,10 +171,10 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A1 | **PARCIAL** | **Grok 4.5** | Core `AtlasDeepLink` + RootView + Widgets M84; server M01/A12 | E0 | Onda A1 honestidade P0 | A1.3 deep links DONE; M84 Semana widget; M01/A12 **BLOCKED(server)** neste ambiente | deep link + week widget neste commit; gates Swift BLOCKED(cloud Linux) |
 | E-A2 | **PENDING** | — | Arena LA + App Intents | E-A1 A12 | Onda A2 Arena Continuity | LA `suite·engine·braço·N/M`; botões só ações reais | — |
 | E-A3 | **PENDING** | — | §5 contratos C9/M65/C18–C21/M98+/… | E0 | Onda A3 contratos | TDD + decode; UI só depois | — |
-| E-A4 | **PENDING** | — | deepen Conversation/Autonomos/Code/Arena/LiveNow | E-A3 onde bloquear | Onda A4 casca deepen | zero Route; fidelity matrix | — |
-| E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana lê `snapshot.week`; demais variantes pendentes | este commit |
+| E-A4 | **PARCIAL** | **Grok 4.5** | deepen + fidelity matrix | E0 | Onda A4 casca deepen | A4.5 matrix DONE; deepen cenas ainda pendente | `14585d7` + `docs/fable-5-fidelity-matrix.md` |
+| E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana + lock accessories atenção/incidente; Island SD-2 ainda parcial | `183f01f`+`08f0dda` |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
-| E-B | **PENDING** | — | splits AutonomosView/Model/Core + dedup | E-A* mínimo | CICLO B compressão 1 | Model <800; views~200; saldo negativo | — |
+| E-B | **PARCIAL** | **Grok 4.5** | AutonomosView + ConversationView peel | E-A* | CICLO B compressão 1 | AutonomosView 1153→565; ConversationView 823→795 (`QueuedFollowUpsSheet`); ainda >200; Model pendente | `d1b3e0f`+este |
 | E-C | **PENDING** | — | aprofundar 9 rotas + presença | E-B | CICLO C patamares | profundidade sem largura de telas | — |
 | E-D | **PENDING** | — | compressão 2 | E-C | CICLO D | delete ≥60% linhas de C ou ADR | — |
 
@@ -968,7 +968,11 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
-- 2026-07-17 · Grok 4.5 · **CICLO B — split AutonomosView** · este commit · `AutonomosView.swift` 1153→565; extrai `AutonomosFleetSection` (181), `AutonomosDigestSection` (151), `AutonomosChrome` (98), `AutonomosSheets` (253); folder glob `App/project.yml` path Atlas; sem mudança de copy/lógica. Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
+- 2026-07-17 · Grok 4.5 · **CICLO B — peel queue sheet from ConversationView** · este commit · `ConversationView.swift` 823→795; extrai `QueuedFollowUpsSheet` (39) — promote/remove da fila C11; composer NÃO extraído (acoplado a `@State`/sheets locais); zero Route; `App/project.yml` path Atlas (glob). Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
+
+- 2026-07-17 · Grok 4.5 · **Elite A5 lock accessories** · `08f0dda` · Circular/rectangular/inline: atenção (timing.paused / copy), incidente frota, timer elapsed, silêncio honesto. Prova: diff Widgets; device-pending.
+
+- 2026-07-17 · Grok 4.5 · **CICLO B — split AutonomosView** · `d1b3e0f` · `AutonomosView.swift` 1153→565; extrai `AutonomosFleetSection` (181), `AutonomosDigestSection` (151), `AutonomosChrome` (98), `AutonomosSheets` (253); folder glob `App/project.yml` path Atlas; sem mudança de copy/lógica. Prova: `wc -l` before/after; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
 
 - 2026-07-17 · Grok 4.5 · **Elite A4.5 fidelity matrix baseline** · este commit · `docs/fable-5-fidelity-matrix.md` mapeia cenas 01–08/10–13 + Fleet + Island → Core/model → SwiftUI → prova → gap; Voice/09 EXCLUDED; Session Hub=`LiveNowSection` deepen; Arena=rota `.arena` separada; A4.5 checkboxes ✓ em `plano-elite-agentica-24x7.md`. Prova: docs + blackboard; sem runtime.
 

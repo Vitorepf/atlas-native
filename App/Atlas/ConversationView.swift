@@ -461,35 +461,7 @@ struct ConversationView: View {
             .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showQueueSheet) {
-            SheetShell(title: "Fila · \(model.queuedMessages.count)") {
-                ForEach(model.queuedMessages) { m in
-                    HStack(spacing: 12) {
-                        Text(m.text)
-                            .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
-                            .lineLimit(2)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Button { Task { await model.promote(id: m.id) } } label: {
-                            Image(systemName: "arrow.up")
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundStyle(AtlasTheme.accent)
-                                .frame(width: 38, height: 38)
-                                .background(Circle().fill(AtlasTheme.goldVeil))
-                        }
-                        .buttonStyle(PressableScale())
-                        .accessibilityLabel("enviar agora: \(m.text)")
-                        Button { Task { await model.removeQueued(id: m.id) } } label: {
-                            Image(systemName: "trash")
-                                .font(.system(size: 14))
-                                .foregroundStyle(AtlasTheme.textSecondary)
-                                .frame(width: 38, height: 38)
-                                .background(Circle().fill(AtlasTheme.surfaceHi))
-                        }
-                        .buttonStyle(PressableScale())
-                        .accessibilityLabel("remover da fila: \(m.text)")
-                    }
-                    .padding(.vertical, 6)
-                }
-            }
+            QueuedFollowUpsSheet(model: model)
         }
         .onChange(of: model.queuedMessages.isEmpty) { _, empty in
             if empty { showQueueSheet = false }
