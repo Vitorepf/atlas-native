@@ -68,6 +68,7 @@ final class TurnPresence {
     private func syncRunning() {
         runningTitles = Set(entries.values.filter { $0.ongoing }.map { $0.threadTitle })
         publishLiveSessions()
+        Task { await AtlasNativeSnapshotWriter.shared.write() }
     }
 
     /// Reconstrói `liveSessions` a partir das entries ongoing. Dedup por

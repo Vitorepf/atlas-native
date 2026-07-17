@@ -64,9 +64,13 @@ targets:
     sources:
       - path: Widgets
       - path: Atlas/AtlasActivityAttributes.swift
+    dependencies:
+      - package: AtlasCore
+        product: AtlasCore
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.vitor.atlas.native.widgets
+        CODE_SIGN_ENTITLEMENTS: Widgets/AtlasWidgets.entitlements
         INFOPLIST_FILE: Widgets/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         SWIFT_STRICT_CONCURRENCY: complete

@@ -362,6 +362,7 @@ final class ConversationModel {
         do {
             guard let message = try await queueStore.enqueue(text: text, scope: queueScope) else { return }
             queuedMessages.append(message)
+            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
             toast = "Adicionada à fila"
         } catch {
             toast = "Não foi possível guardar esta instrução na fila."
@@ -374,6 +375,7 @@ final class ConversationModel {
         do {
             try await queueStore.promote(id: id, scope: queueScope)
             queuedMessages = await queueStore.messages(scope: queueScope)
+            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
         } catch {
             toast = "Não foi possível reordenar a fila."
         }
@@ -383,6 +385,7 @@ final class ConversationModel {
         do {
             try await queueStore.remove(id: id, scope: queueScope)
             queuedMessages = await queueStore.messages(scope: queueScope)
+            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
         } catch {
             toast = "Não foi possível remover esta instrução."
         }
@@ -742,12 +745,14 @@ final class ConversationModel {
                 }
             case .suspended(let trace):
                 complete(assistantId, trace: trace)
+                AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
             case .remoteError(let payload):
                 let message = payload["message"]?.stringValue ?? "erro no stream"
                 update(assistantId) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
             case .completed(let done, let finalTrace):
                 complete(assistantId, trace: finalTrace)
                 completedSuccessfully = done.turnStatus == .succeeded
+                AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
             }
         }
         activeRun = nil
@@ -802,6 +807,7 @@ final class ConversationModel {
 
     private func loadQueuedMessages() async {
         queuedMessages = await queueStore.messages(scope: queueScope)
+        AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
     }
 
     private func adoptQueueScope(threadId: ThreadID) async {
@@ -855,6 +861,7 @@ final class ConversationModel {
         do {
             try await queueStore.remove(id: id, scope: queueScope)
             queuedMessages = await queueStore.messages(scope: queueScope)
+            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
         } catch {
             // Erro na limpeza é conservador: a instrução segue visível e
             // recuperável, em vez de sumir sem um turno durável correspondente.

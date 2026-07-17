@@ -62,6 +62,7 @@ final class AtlasSession {
             liveSessionsPollingTask?.cancel()
             liveSessionsPollingTask = nil
             remoteLiveSessions = []
+            AtlasNativeSnapshotWriter.shared.recordRemoteLiveSessions([])
             return
         }
         guard liveSessionsPollingTask == nil else { return }
@@ -83,8 +84,10 @@ final class AtlasSession {
             remoteLiveSessions = response.sessions.enumerated().map { index, session in
                 LiveSessionSnapshot(remote: session, index: index)
             }
+            AtlasNativeSnapshotWriter.shared.recordRemoteLiveSessions(remoteLiveSessions)
         } catch {
             remoteLiveSessions = []
+            AtlasNativeSnapshotWriter.shared.recordRemoteLiveSessions([])
         }
     }
 

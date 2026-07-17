@@ -35,6 +35,7 @@ final class AtlasCodeModel {
             violations = try? await client.getCodeViolations(repo: repo)
             heal = try? await client.getCodeHealTick(repo: repo)
             week = try? await client.getCodeWeek(repo: repo)
+            AtlasNativeSnapshotWriter.shared.recordCodeWeek(week)
             phase = .loaded
         } catch {
             phase = .failed(String(describing: error))

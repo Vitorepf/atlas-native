@@ -235,6 +235,7 @@ final class AutonomosModel {
     private func loadSelectedDetails() async throws {
         guard let area = selectedArea else {
             live = nil; cycles = nil; delivered = nil; backlog = nil; fleet = nil; fleetHistory = nil; taskHealth = nil; digest = nil
+            AtlasNativeSnapshotWriter.shared.recordAutonomos(self)
             return
         }
         async let liveRequest = client.autonomosLive(area: area.id, focus: area.focus)
@@ -257,6 +258,7 @@ final class AutonomosModel {
         fleetHistory = try? await fleetHistoryRequest
         taskHealth = try? await taskHealthRequest
         digest = try? await digestRequest
+        AtlasNativeSnapshotWriter.shared.recordAutonomos(self)
     }
 
     private static func publicMessage(_ error: Error) -> String {
