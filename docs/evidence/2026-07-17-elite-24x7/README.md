@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **567** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLVI tip `10dfb5e` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **569** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLVII tip `9772d6e` |
 | Commits no tip (`git rev-list --count HEAD`) | 554 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 242 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLVI (este tip)
+## Entrega Elite CXXXXXLXLVII (este tip)
+
+- `polish(ui)` CICLO B: Feedback `+Label/+Payload/+ActiveAction`; DraftThumb Content `+Frame/+A11y`; Messages RowsTurn Execution `+Feedback/+Run`; Autonomos Sheets `+Wrap` SelfConstruction `+Presentation`; AreaDelivered A11yRow `+Merge/+Open`; TaskHealth Incident `+Leases/+Operating`; Radar Label `+Leading/+Layout`; Search List `+RecentLoop`; Markdown Copy `+Metrics/+Style`; Workspace Editorial Stack `+Glyph/+CopyStack`; Root Lifecycle `+TintAppear`; FleetMetric `+ValueStack/+CardChrome`; Graph ChipButton `+Action/+LabelBind`; PageComposerArgs `+Core`; CardStrip `+Attach/+Toolbar`; Widgets Fleet A11yChrome `+PhaseBind` LiveSession `+TransactionBind`. Tip `9772d6e`.
+- 22 peels · 48 arquivos · over100=0 · App/Atlas+Widgets swift=2436; App/Widgets swift=184; zero Route nova.
+
+## Entrega Elite CXXXXXLXLVI (anterior)
 
 - `polish(ui)` CICLO B: LiveNowSection `+Derived`; Digest/OperationDigest A11yAggregate `+SpokenSection`; CodeCommitRow A11y `+SpokenRow`; Arena ScrollBody `+Stack/+Animation` Header `+TitleColumn/+A11yBind` Exception `+Row/+Chrome`; Search Results `+ThreadLoop` ThreadLink `+Nav/+Transition`; Markdown BlockStructural `+ListQuote/+CodeTable`; Capabilities Chart `+BarMark/+Axes`; Conversation SheetFlags `+Trace/+Composer` PageComposerArgs `+Bindings`; Autonomos SheetsModifier `+BodyChain` Loaded Lines `+Init/+Body` OperationDigest A11yCounts `+Delivered/+BacklogFindings`; Messages RowsTurn `+Assembly`; PlanCard StepRow `+Body`; Widgets Fleet Incident `+Line/+Present` LockRect Quiet `+Title/+Subtitle`. Tip `10dfb5e`.
 - 31 peels · 51 arquivos · over100=0 · App/Atlas+Widgets swift=2406; App/Widgets swift=182; zero Route nova.
