@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **528** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXVII tip `e2e24bc` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **531** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXVIII tip `9488fc6` |
 | Commits no tip (`git rev-list --count HEAD`) | 543 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXVII (este tip)
+## Entrega Elite CXXXXXLXXVIII (este tip)
+
+- `polish(ui)` CICLO B: ConversationView `+PageComposerArgs/+PageMessages`; ConversationComposer `+CardSheetsBind`; ConversationSheets `+ModifierWrap/+ModifierChain`; AutonomosView `+LifecycleSheetsBind`; AtlasCodeView `+SheetsModifierWrap`; Steer `+Navigation/+AccessibilityShell`; Transfer `+Navigation`; RadarView `+Init/+ContentShell`; OperationDigest `+SignalRouter`; RootHome `+PhaseBody`; PlanCard `+StepRowLayout`; Artifact `+NavigationShell`; Search `+SearchLayout`; ChangeReviewToast `+CapsuleChrome`; InfoLine `+CardChrome`; Workspace `+ScrollPhases`; Provenance `+BodyShell`; LoadedSection `+ScrollShell`; Widgets LockLive `+SnapshotBranch` LiveSession `+ContentBranch` Island `+CompactChrome`. Tip `9488fc6`.
+- 25 peels · 48 arquivos · over100=0 · App/Atlas+Widgets swift=1858; App/Widgets swift=112; zero Route nova.
+
+## Entrega Elite CXXXXXLXXVII (anterior)
 
 - `polish(ui)` CICLO B: A11yID Surfaces `+Artifacts/+LiveTimelineSurface`; Execution `+ExecutionControls/+EditorialTurn/+MarkdownBlocks/+PlanCardIDs`; QueueLive `+QueueChip/+LiveNowIDs/+ConversationOutlineRow`; CodeHelpers `+CodeRadarHelpers/+CodeGraphHelpers/+CodeHealWhyHelpers`; Autonomos `+AutonomosFleet/+AutonomosDigestIDs`; Composer `+ComposerModeEffort/+ComposerWorkspaceRows`; ReviewFiles `+ReviewFileKey/+ReviewFileRow/+ReviewFileActions`; ReviewSurface `+ReviewGovernance/+ReviewSurfaceStates`; HomeWorkspace `+HomeWorkspaceChip/+HomeWorkspaceRow`; AutonomosControl `+AutonomosTaskHealth/+AutonomosHeaderControl/+AutonomosAreaPickerIDs`; Arena `+ArenaSections`; ComposerToolbar `+A11yProcessingLabel`; PlanCard `+A11yProgressBadge`; AreaDelivered `+A11ySectionRouter/+A11yEmptySelfBridge`; LiveTimeline `+A11yRowValue`; Detail `+A11yNoProjection`; RadarFolder `+A11yRepoCount`; Widgets LockLive `+ContentRectangular`. Tip `e2e24bc`.
 - 35 peels · 53 arquivos · over100=0 · App/Atlas+Widgets swift=1833; App/Widgets swift=109; zero Route nova.
