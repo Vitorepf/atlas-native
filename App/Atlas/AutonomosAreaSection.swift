@@ -5,6 +5,7 @@ import SwiftUI
 /// Cycle → AutonomosAreaSection+Cycle.swift
 /// Primary → AutonomosAreaSection+Primary.swift
 /// A11y → AutonomosAreaSection+A11yChrome.swift
+/// Stack → AutonomosAreaSection+ControlsStack.swift
 struct AutonomosAreaControls: View {
     let areaName: String
     let isPaused: Bool
@@ -18,11 +19,6 @@ struct AutonomosAreaControls: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        areaControlsA11yChrome(
-            VStack(alignment: .leading, spacing: 10) {
-                primaryButtons
-                cycleButtons
-            }
-        )
+        areaControlsA11yChrome(areaControlsStack)
     }
 }

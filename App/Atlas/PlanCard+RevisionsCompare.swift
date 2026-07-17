@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Diff comparison body — peel de PlanCard+Revisions.
+// Left → PlanCard+RevisionsCompare+Left.swift · Entered → +RevisionsCompare+Entered.swift
 
 extension PlanRevisionCompare {
     @ViewBuilder
@@ -12,12 +13,8 @@ extension PlanRevisionCompare {
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
-                if !comparison.left.isEmpty {
-                    revisionList(label: "saíram", items: comparison.left, tone: .removed)
-                }
-                if !comparison.entered.isEmpty {
-                    revisionList(label: "entraram", items: comparison.entered, tone: .added)
-                }
+                comparisonLeftList
+                comparisonEnteredList
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(comparisonAccessibilityLabel(comparison))

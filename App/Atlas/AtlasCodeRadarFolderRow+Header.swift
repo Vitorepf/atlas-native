@@ -4,6 +4,7 @@ import AtlasCore
 /// Cabeçalho da pasta — peel de AtlasCodeFolderRow (régua ≤100).
 /// Badge → AtlasCodeRadarFolderRow+Badge.swift
 /// Title → AtlasCodeRadarFolderRow+HeaderTitle.swift
+/// Chevron → AtlasCodeRadarFolderRow+HeaderChevron.swift
 
 extension AtlasCodeFolderRow {
     var folderHeaderLabel: some View {
@@ -16,11 +17,7 @@ extension AtlasCodeFolderRow {
             folderTitleStack
             Spacer(minLength: 6)
             exceptionBadge
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
-                .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                .accessibilityHidden(true)
+            folderHeaderChevron
         }
         .padding(.vertical, 14)
         .contentShape(Rectangle())
