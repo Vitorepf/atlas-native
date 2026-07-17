@@ -5,24 +5,13 @@ import AtlasCore
 // Corpo da semana — peel de CodeWeekWidgetView.
 // Metric → AtlasWidgetAccessories+CodeWeek+Metric.swift
 // Quiet → AtlasWidgetAccessories+CodeWeek+Quiet.swift
+// Header → AtlasWidgetAccessories+CodeWeek+Header.swift
 
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekBody(week: AtlasNativeSnapshot.Week, stale: Bool, age: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("✦ Semana")
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
-                Spacer()
-                Text(week.window)
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(Ink.ink2)
-            }
-            if stale {
-                Text("visto \(age)")
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(Ink.alert)
-            }
+            weekHeader(week: week, stale: stale, age: age)
             weekMetricsOrQuiet(week)
             if family == .systemLarge {
                 Text(CodeWeekWidgetA11y.isQuiet(week)

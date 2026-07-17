@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Event body text — peel de AutonomosFleetHistory+Row.
+// Tags → AutonomosFleetHistory+RowTags.swift
 
 extension AutonomosFleetHistorySection {
     @ViewBuilder
@@ -11,14 +12,7 @@ extension AutonomosFleetHistorySection {
                 .font(.system(.caption, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
-            HStack(spacing: 6) {
-                AutonomosChrome.tag(event.agentKey)
-                if let by = event.by?.nonEmpty { AutonomosChrome.tag(by) }
-                if let account = event.account?.nonEmpty { AutonomosChrome.tag(account) }
-                if let pid = event.pid { AutonomosChrome.tag("pid \(pid)") }
-                if let duration = event.durationSeconds { AutonomosChrome.tag(AutonomosChrome.uptime(duration)) }
-            }
-            .accessibilityHidden(true)
+            historyEventTags(event: event)
             if let reason = event.reason?.nonEmpty {
                 Text(reason)
                     .font(.caption2)

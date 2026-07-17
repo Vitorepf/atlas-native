@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Chip button label — peel de AtlasCodeGraphChrome+Chips.
+// Label → AtlasCodeGraphChrome+ChipLabel.swift
 
 extension AtlasCodeView {
     func graphStateChipButton(
@@ -16,14 +17,7 @@ extension AtlasCodeView {
                 graphStateFilter = option
             }
         } label: {
-            Text("\(option.label) \(count)")
-                .font(AtlasFont.mono(9))
-                .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
-                .monospacedDigit()
-                .padding(.horizontal, 9)
-                .padding(.vertical, 5)
-                .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface))
-                .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+            graphStateChipLabel(option, count: count, active: active)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(

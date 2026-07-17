@@ -1,24 +1,27 @@
 import SwiftUI
 import AtlasCore
 
-// Dateline + magnitude — peel de AtlasCodeProvenanceHeader.
+// Provenance state/dateline — peel de AtlasCodeProvenanceHeader+Meta.
 
 extension AtlasCodeProvenanceSheet {
-    var headerDatelineBlock: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(dateline)
-                .font(AtlasFont.mono(9.5))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityLabel(spokenDateline())
-            // A magnitude do commit vem cedo: uma descrição longa não pode
-            // esconder o tamanho do que ele fez. A lista fica no fim.
-            if case .loaded(let provenance) = phase, let headline = provenance.diffHeadline {
-                Text(headline)
-                    .font(AtlasFont.mono(9.5))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .monospacedDigit()
-                    .accessibilityLabel("magnitude, \(headline)")
-            }
+    var stateLabel: String {
+        switch state {
+        case .onMain: return "NA MAIN"
+        // A lei em português e em caixa alta de manchete — nunca o id cru.
+        case .violating: return ruleId.map { "FORA DA LINHA · \(AtlasCodeIssue.law($0, trunk: trunk).uppercased())" } ?? "FORA DA LINHA"
+        case .healed: return "CURADO"
+        case .history: return "HISTÓRIA"
         }
+    }
+
+    /// Autor · agente · quando. O agente só aparece quando o ledger respondeu.
+    var dateline: String {
+        let author = node.authorName.isEmpty ? node.authorEmail : node.authorName
+        var parts = [author]
+        if case .loaded(let provenance) = phase, !provenance.agent.isEmpty {
+            parts.append(provenance.agentLabel)
+        }
+        parts.append("há \(AtlasCodeRelativeTime.short(from: node.authoredAt))")
+        return parts.joined(separator: " · ")
     }
 }
