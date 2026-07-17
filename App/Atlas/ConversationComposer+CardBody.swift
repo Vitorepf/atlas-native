@@ -7,9 +7,9 @@ import AtlasCore
 extension ConversationComposer {
     @ViewBuilder
     var composerCardBody: some View {
-        liveExecutionSection
-        queueChipSection
-        keyboardGrabber
-        composerStripToolbar
+        composerCardBodyLive
+        composerCardBodyQueue
+        composerCardBodyGrabber
+        composerCardBodyStrip
     }
 }

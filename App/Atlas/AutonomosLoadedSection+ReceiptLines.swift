@@ -12,12 +12,7 @@ struct AutonomosRunReceiptLines: View {
     var body: some View {
         Group {
             startRunReceiptLine
-            if let transfer = model.lastTransferReceipt, transfer.shouldDisplayTransferStatus {
-                AutonomosTransferStatus(transfer: transfer) {
-                    Task { await model.refreshTransferStatus() }
-                }
-                .transition(receiptTransition)
-            }
+            transferReceiptLine
             controlReceiptLine
         }
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: AutonomosLoadedSection.receiptPhaseID(for: model))

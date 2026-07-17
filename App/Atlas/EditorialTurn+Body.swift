@@ -7,9 +7,9 @@ extension EditorialTurn {
     var turnBody: some View {
         Group {
             if bubble.role == "user" {
-                userTurn
+                turnBodyUserBranch
             } else {
-                assistantTurn
+                turnBodyAssistantBranch
             }
         }
     }

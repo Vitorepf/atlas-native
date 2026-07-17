@@ -12,12 +12,12 @@ struct AtlasTurnIslandMinimal: View {
     let context: ActivityViewContext<AtlasTurnAttributes>
 
     var body: some View {
-        if let badge = context.state.phaseBadge, !context.state.finished {
-            islandMinimalBadge(badge)
-        } else if let progress = context.state.progressLabel, !context.state.finished {
-            islandMinimalProgress(progress)
+        if context.state.phaseBadge != nil, !context.state.finished {
+            islandMinimalBadgeBranch
+        } else if context.state.progressLabel != nil, !context.state.finished {
+            islandMinimalProgressBranch
         } else {
-            islandMinimalSymbol
+            islandMinimalSymbolBranch
         }
     }
 }

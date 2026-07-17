@@ -12,15 +12,11 @@ extension AtlasArenaView {
         switch model.phase {
         case .idle where model.composite == nil,
              .loading where model.composite == nil:
-            loadingCard
+            contentLoadingBranch
         case .failed where model.composite == nil:
             failedOrUnavailableCard
         default:
-            if let composite = model.composite {
-                loadedArenaContent(composite)
-            } else {
-                domainUnavailableCard
-            }
+            contentDefaultBranch
         }
     }
 }

@@ -15,8 +15,7 @@ extension LiveSessionWidgetA11y {
         if let live {
             parts.append(contentsOf: spokenLiveParts(live))
         } else {
-            parts.append("silêncio na obra")
-            parts.append(silenceDetail(snapshot))
+            parts.append(contentsOf: spokenSilenceParts(snapshot))
         }
         parts.append(contentsOf: spokenStaleParts(stale: stale, age: age))
         return parts.joined(separator: ", ")

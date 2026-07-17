@@ -3,13 +3,7 @@ import UIKit
 import AtlasCore
 
 // Bubble lifecycle — peel de ConversationMessages+Scroll.
+// EmptyChange → ConversationMessages+Scroll+BubbleLifecycle+EmptyChange.swift
+// ListChange → ConversationMessages+Scroll+BubbleLifecycle+ListChange.swift
 
-extension ConversationMessages {
-    func scrollBubbleEmptyChange(_ empty: Bool) {
-        if empty { awayFromBottom = false }
-    }
-
-    func scrollBubbleListChange(proxy: ScrollViewProxy) {
-        autoScrollToBottom(proxy: proxy)
-    }
-}
+extension ConversationMessages {}

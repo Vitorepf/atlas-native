@@ -6,9 +6,9 @@ import AtlasCore
 extension ComposerToolbar {
     var toolbarRow: some View {
         HStack(spacing: 10) {
-            attachButton
-            composerTextField
-            trailingControl
+            toolbarRowAttach
+            toolbarRowField
+            toolbarRowTrailing
         }
         .accessibilityElement(children: .contain)
     }

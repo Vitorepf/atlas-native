@@ -7,14 +7,9 @@ import AtlasCore
 extension AutonomosLoadedSection {
     @ViewBuilder
     var loadedStackHead: some View {
-        AutonomosNightlyProposalBlock(nightly: nightly) { nightlyStartProposal = $0 }
-        AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
-        if let fleet = model.fleet {
-            AutonomosFleetSummary(
-                fleet: fleet,
-                incidentPresent: model.taskHealth?.incidents.present == true
-            )
-        }
+        loadedStackHeadNightly
+        loadedStackHeadRhythm
+        loadedStackHeadFleetSummary
         loadedStackDigest
     }
 }

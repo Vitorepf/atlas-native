@@ -10,16 +10,7 @@ extension ConversationMessages {
     @ViewBuilder
     func scrollFAB(proxy: ScrollViewProxy) -> some View {
         if showsScrollFAB {
-            scrollFABChrome(
-                Button {
-                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) {
-                        proxy.scrollTo("bottom", anchor: .bottom)
-                    }
-                } label: {
-                    scrollFABLabel
-                }
-            )
+            scrollFABChrome(scrollFABButton(proxy: proxy))
         }
     }
 }

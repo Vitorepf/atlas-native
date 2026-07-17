@@ -9,12 +9,6 @@ extension ComposerToolbar {
     // Contexto fica atrás de uma única ação real. O modo, o esforço e o
     // workspace continuam disponíveis, sem disputar a atenção da escrita.
     @ViewBuilder var trailingControl: some View {
-        if canSubmit {
-            trailingSendButton
-        } else if isExecuting {
-            trailingProcessing
-        } else {
-            trailingOptionsMenu
-        }
+        trailingControlBranch
     }
 }

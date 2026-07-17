@@ -5,10 +5,9 @@ import AtlasCore
 
 extension ComposerToolbar {
     var canSubmit: Bool {
-        let hasText = !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         if model.isSending || liveBubble != nil {
-            return hasText
+            return canSubmitWhileSending
         }
-        return hasText || !model.drafts.isEmpty
+        return canSubmitFromDraft
     }
 }
