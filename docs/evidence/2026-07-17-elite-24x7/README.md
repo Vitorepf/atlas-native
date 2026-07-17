@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **583** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXIV tip `cb11d9a` |
-| Commits no tip (`git rev-list --count HEAD`) | 885 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 584 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **585** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXV tip `7dda110` |
+| Commits no tip (`git rev-list --count HEAD`) | 887 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 586 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLXIV (este tip)
+## Entrega Elite CXXXXXLXLXV (este tip)
+
+- `polish(ui)` CICLO B: FileRow Symbol `+Mutate`; TextPreview `+Document`; Reconnect `+Core`; Search A11y `+Shell/+Results`; Provenance Content `+Loading`; DeepLinks `+Surface/+ExecutionFamily`; Replay Spoken `+Metrics`; Fleet A11y `+Runtime`; Markdown CodeTable `+Code`; LiveNow Spoken `+Finished`; Why A11y `+LoadedID`; Home Route `+All`; DraftThumb State `+Ready`; Mirror Spoken `+Quiet`; Widgets CodeWeek Metrics `+Primary` Island Trailing `+Finished` Fleet Incident `+Present`. Tip `7dda110`.
+- 19 peels · 36 arquivos · over100=0 · App/Atlas+Widgets swift=2709; App/Widgets swift=212; zero Route nova.
+
+## Entrega Elite CXXXXXLXLXIV (anterior)
 
 - `polish(ui)` CICLO B: KindLabel `+Document`; PlacementTags `+HostEnv/+Workspace`; FleetHistory Event `+Identity/+Detail`; ArenaRun Missing `+Operator/+Suite`; Severity `+High`; Autonomos Phase/Control/Count Soft/Work/Busy; GraphFilter Target `+Healthy`; Digest Last `+Headlines`; Exec Tint `+Attention`; Provenance StateLabel `+Violating` Phase `+Loaded`; Destinations `+ThreadRoutes/+HubRoutes`; Placement Spoken `+HostEnv/+Workspace`; Widgets Fleet Spoken `+Core` Lock Symbol `+Terminal` Incident `+Action/+Flag` LockLive `+Alert` Timer `+PausedRM`. Tip `cb11d9a`.
 - 29 peels · 52 arquivos · over100=0 · App/Atlas+Widgets swift=2690; App/Widgets swift=209; zero Route nova.
