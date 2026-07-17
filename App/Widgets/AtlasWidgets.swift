@@ -526,13 +526,25 @@ struct AtlasTurnLiveActivity: Widget {
                 } else if context.state.paused == true {
                     Text("‖").font(.system(size: 12, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Ink.ink2)
+                } else if let progress = context.state.progressLabel {
+                    // SD-2: compact trailing mostra N/M real quando o plano publicou
+                    // progresso — timer fica no expanded/lock.
+                    Text(progress)
+                        .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(Ink.gold)
                 } else {
                     Text(context.state.startedAt, style: .timer)
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundStyle(Ink.ink2).frame(width: 40)
                 }
             } minimal: {
-                Text(context.state.atlasSymbol).font(.system(size: 14, design: .serif)).foregroundStyle(context.state.atlasColor)
+                if let progress = context.state.progressLabel, !context.state.finished {
+                    Text(progress)
+                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(context.state.atlasColor)
+                } else {
+                    Text(context.state.atlasSymbol).font(.system(size: 14, design: .serif)).foregroundStyle(context.state.atlasColor)
+                }
             }
             .keylineTint(context.state.atlasColor)
             .widgetURL(URL(string: "atlas://execution/\(context.attributes.threadKey)"))
@@ -600,13 +612,21 @@ private extension AtlasTurnAttributes.ContentState {
     var atlasColor: Color {
         if phaseTitle.localizedCaseInsensitiveContains("falhou") { return Ink.alert }
         if finished { return Ink.healed }
-        if paused == true { return Ink.gold }
+        if paused == true
+            || phaseTitle.localizedCaseInsensitiveContains("atenção")
+            || phaseTitle.localizedCaseInsensitiveContains("aguard") {
+            return Ink.alert
+        }
         return Ink.gold
     }
 
     var atlasSymbol: String {
         if phaseTitle.localizedCaseInsensitiveContains("falhou") { return "✕" }
         if finished { return "✓" }
+        if phaseTitle.localizedCaseInsensitiveContains("atenção")
+            || phaseTitle.localizedCaseInsensitiveContains("aguard") {
+            return "⚠"
+        }
         if paused == true { return "‖" }
         return "✦"
     }
