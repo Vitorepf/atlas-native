@@ -26,7 +26,6 @@ extension AtlasArenaView {
                 )
                     .accessibilityIdentifier(A11yID.arenaIndexSection)
                 ArenaCapabilitiesSection(capabilities: model.capabilities)
-                    .accessibilityIdentifier(A11yID.arenaCapabilitiesSection)
                 if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
                     ArenaSuitesSection(
                         scoreboard: scoreboard,

@@ -24,15 +24,22 @@ struct AutonomosTransferSheet: View {
                     } else {
                         Text("Nenhum lock publicado neste recorte — a transferência exige lease vivo.")
                             .font(.footnote).foregroundStyle(.secondary)
+                            .accessibilityLabel("Nenhum lock publicado neste recorte. A transferência exige lease vivo.")
                     }
                 }
-                Section("Alvo") {
-                    Text("Desconhecido até target_claimed. A fila escolhe o worker; este app não promete host futuro.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                }
-                Section("Operador") { TextField("Quem autoriza", text: $actor) }
-                Section("Motivo") {
-                    TextField("Motivo auditável", text: $reason, axis: .vertical).lineLimit(3...6)
+                if hasPlacement {
+                    Section("Alvo") {
+                        Text("Desconhecido até target_claimed. A fila escolhe o worker; este app não promete host futuro.")
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }
+                    Section("Operador") {
+                        TextField("Quem autoriza", text: $actor)
+                            .accessibilityIdentifier(A11yID.autonomosTransferActor)
+                    }
+                    Section("Motivo") {
+                        TextField("Motivo auditável", text: $reason, axis: .vertical).lineLimit(3...6)
+                            .accessibilityIdentifier(A11yID.autonomosTransferReason)
+                    }
                 }
             }
             .navigationTitle("Transferir missão")
@@ -40,18 +47,20 @@ struct AutonomosTransferSheet: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") { onConfirm(actor, reason); dismiss() }
-                        .disabled(actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                                  || reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        .disabled(!canConfirm)
+                        .accessibilityIdentifier(A11yID.autonomosTransferSubmit)
                 }
             }
             .accessibilityIdentifier(A11yID.autonomosTransferSheet)
         }
     }
 
-    private var hasPlacement: Bool {
-        guard let p = placement else { return false }
-        return p.host != nil || p.environment != nil || p.workspace != nil
-            || p.repository != nil || p.branch != nil || p.leaseTTLSeconds != nil
+    private var hasPlacement: Bool { placement?.hasVerifiedPlacement == true }
+
+    private var canConfirm: Bool {
+        hasPlacement
+            && !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     @ViewBuilder
@@ -70,6 +79,9 @@ struct AutonomosTransferSheet: View {
         }
         if let branch = placement?.branch?.nonEmpty {
             LabeledContent("branch", value: branch)
+        }
+        if let acquired = placement?.acquiredAt?.nonEmpty {
+            LabeledContent("adquirido", value: acquired)
         }
         if let ttl = placement?.leaseTTLSeconds {
             LabeledContent("lease", value: "\(ttl)s")

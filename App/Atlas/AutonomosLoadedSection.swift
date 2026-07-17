@@ -68,7 +68,7 @@ struct AutonomosLoadedSection: View {
                 if let receipt = model.lastStartRunReceipt, receipt.isEnqueued {
                     AutonomosInfoLine("Novo ciclo NA FILA — ainda não iniciado. A execução só é real quando o lease aparecer no vivo.")
                 }
-                if let transfer = model.lastTransferReceipt {
+                if let transfer = model.lastTransferReceipt, transfer.shouldDisplayTransferStatus {
                     AutonomosTransferStatus(transfer: transfer) {
                         Task { await model.refreshTransferStatus() }
                     }

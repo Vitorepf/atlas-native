@@ -58,6 +58,10 @@ enum A11yID {
     static let autonomosDigestEmpty = "autonomos-digest-empty"
     static let autonomosOperationQuiet = "autonomos-operation-quiet"
     static let autonomosTransferSheet = "autonomos-transfer-sheet"
+    static let autonomosTransferStatus = "autonomos-transfer-status"
+    static let autonomosTransferActor = "autonomos-transfer-actor"
+    static let autonomosTransferReason = "autonomos-transfer-reason"
+    static let autonomosTransferSubmit = "autonomos-transfer-submit"
 
     static let liveNowSection = "live-now-section"
     static let liveNowRowPrefix = "live-now-row-"

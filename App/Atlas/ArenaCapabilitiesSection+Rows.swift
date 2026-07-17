@@ -21,13 +21,26 @@ struct ArenaCapabilityRow: View {
                     .monospacedDigit()
             }
             DualBar(score: capability.score, withAtlas: capability.withAtlas)
-            Text("\(capability.casesTotal ?? 0) casos · \(capability.suitesContributing.joined(separator: ", "))")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(1)
+            if !contributionLine.isEmpty {
+                Text(contributionLine)
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+            }
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(capability.labelPt), score \(ArenaFormat.score(capability.score)), com Atlas \(ArenaFormat.score(capability.withAtlas))")
+    }
+
+    private var contributionLine: String {
+        var parts: [String] = []
+        if let total = capability.casesTotal {
+            parts.append("\(total) casos")
+        }
+        if !capability.suitesContributing.isEmpty {
+            parts.append(capability.suitesContributing.joined(separator: ", "))
+        }
+        return parts.joined(separator: " · ")
     }
 }
 
@@ -77,15 +90,17 @@ struct ArenaCapabilitiesChart: View {
     }
 
     var body: some View {
-        Chart(points) { point in
-            BarMark(x: .value("score", point.value), y: .value("capacidade", point.label))
-                .position(by: .value("série", point.series))
-                .foregroundStyle(point.series == "com Atlas" ? AtlasTheme.accent : AtlasTheme.textSecondary)
+        if !points.isEmpty {
+            Chart(points) { point in
+                BarMark(x: .value("score", point.value), y: .value("capacidade", point.label))
+                    .position(by: .value("série", point.series))
+                    .foregroundStyle(point.series == "com Atlas" ? AtlasTheme.accent : AtlasTheme.textSecondary)
+            }
+            .chartXScale(domain: 0...1)
+            .chartLegend(.visible)
+            .chartXAxis { AxisMarks(values: [0, 0.5, 1]) }
+            .chartYAxis(.hidden)
+            .accessibilityLabel("barras de capacidades medidas")
         }
-        .chartXScale(domain: 0...1)
-        .chartLegend(.visible)
-        .chartXAxis { AxisMarks(values: [0, 0.5, 1]) }
-        .chartYAxis(.hidden)
-        .accessibilityLabel("barras de capacidades medidas")
     }
 }

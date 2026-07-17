@@ -27,10 +27,17 @@ struct AutonomosTransferStatus: View {
                     AutonomosChrome.tag("alvo \(host)")
                 }
             }
-            if let note = transfer.note {
+            if !milestoneTags.isEmpty {
+                HStack(spacing: 6) {
+                    ForEach(milestoneTags, id: \.self) { tag in
+                        AutonomosChrome.tag(tag)
+                    }
+                }
+            }
+            if let note = transfer.note?.nonEmpty {
                 Text(note).font(.caption).foregroundStyle(AtlasTheme.textSecondary).lineLimit(3)
             }
-            if !transfer.isTargetClaimed {
+            if transfer.isHandoffInFlight {
                 Text("Alvo ainda desconhecido — só aparece após target_claimed.")
                     .font(AtlasFont.serifItalic(12))
                     .foregroundStyle(AtlasTheme.textTertiary)
@@ -41,6 +48,34 @@ struct AutonomosTransferStatus: View {
         .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.goldVeil))
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("transferência \(transfer.handoff.status)")
+        .accessibilityLabel(spokenSummary)
+        .accessibilityIdentifier(A11yID.autonomosTransferStatus)
+    }
+
+    private var milestoneTags: [String] {
+        var tags: [String] = []
+        if let requested = transfer.handoff.requestedAt?.nonEmpty {
+            tags.append("pedido \(requested)")
+        }
+        if let released = transfer.handoff.sourceReleasedAt?.nonEmpty {
+            tags.append("fonte liberada \(released)")
+        }
+        if let enqueued = transfer.handoff.successorEnqueuedAt?.nonEmpty {
+            tags.append("sucessor enfileirado \(enqueued)")
+        }
+        return tags
+    }
+
+    private var spokenSummary: String {
+        var parts = ["transferência", transfer.handoff.status]
+        if let host = transfer.handoff.source.host?.nonEmpty {
+            parts.append("fonte \(host)")
+        }
+        if transfer.isTargetClaimed, let host = transfer.handoff.target.host?.nonEmpty {
+            parts.append("alvo \(host)")
+        } else if transfer.isHandoffInFlight {
+            parts.append("alvo ainda desconhecido")
+        }
+        return parts.joined(separator: ", ")
     }
 }
