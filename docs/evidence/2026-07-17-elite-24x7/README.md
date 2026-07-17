@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **480+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLIII tip `e042249` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **482+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLIV tip `278aa88` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLIII (este tip)
+## Entrega Elite CXXXXXLIV (este tip)
+
+- `refactor(ui)` CICLO B: Search+ListCaption; Thread+A11y; Circle+CircleButtonBadge; Audit+AuditStatus; Execution+Icon; Scrubber+ScrubberTitle; Header+HeaderSummary; Strip+SteerButton; Watchdog+WatchdogSeconds; Agent+AgentStatusWord; Sheet+SheetChrome; Live+A11ySpokenLive. Tip `278aa88`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXLIII (anterior)
 
 - `refactor(ui)` CICLO B: Home+A11yVisibility; Fleet+FleetHealth; Awaiting+ChipLabel/+A11yCount; Cycle+CycleHelpers; Placement+PlacementTags; Heal+A11yUndoButton; Week+WeekHealChrome; Search+ResultsCaption; Thread+NewBadge; Lock+Paused/+SpokenSessions/+Symbol; Ledger+Summary. Tip `e042249`.
 - Zero App/Widgets >100; zero Route nova.
