@@ -60,15 +60,14 @@ struct LockScreenView: View {
             if context.state.finished {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 22)).foregroundStyle(Ink.healed)
-            } else if context.state.paused == true {
-                Text("‖ \(context.state.pausedDisplay ?? "—")")
-                    .font(.system(size: 13, design: .monospaced))
-                    .foregroundStyle(Ink.ink2)
             } else {
-                Text(context.state.startedAt, style: .timer)
-                    .font(.system(size: 15, design: .monospaced))
-                    .foregroundStyle(Ink.ink2)
-                    .frame(width: 52)
+                AtlasTurnWidgetTimer(
+                    startedAt: context.state.startedAt,
+                    paused: context.state.paused,
+                    pausedDisplay: context.state.pausedDisplay,
+                    fontSize: 15,
+                    frameWidth: 52
+                )
             }
         }
         .padding(.horizontal, 18).padding(.vertical, 14)

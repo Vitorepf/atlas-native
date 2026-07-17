@@ -39,10 +39,19 @@ struct AtlasTurnIslandCompactTrailing: View {
             Text(progress)
                 .font(.system(size: 11, weight: .semibold, design: .monospaced))
                 .foregroundStyle(Ink.gold)
+        } else if let queued = context.state.queueLabel {
+            Text(queued)
+                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .foregroundStyle(Ink.gold)
+                .accessibilityLabel(queued)
         } else {
-            Text(context.state.startedAt, style: .timer)
-                .font(.system(size: 12, design: .monospaced))
-                .foregroundStyle(Ink.ink2).frame(width: 40)
+            AtlasTurnWidgetTimer(
+                startedAt: context.state.startedAt,
+                paused: context.state.paused,
+                pausedDisplay: context.state.pausedDisplay,
+                fontSize: 12,
+                frameWidth: 40
+            )
         }
     }
 }
