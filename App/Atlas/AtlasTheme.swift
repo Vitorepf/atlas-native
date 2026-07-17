@@ -3,6 +3,7 @@ import SwiftUI
 // Design system CANÔNICO do Atlas (dark) — slate teal warm "Codex canon" + atlas
 // gold. Portado 1:1 dos tokens do app original (atlas-app/design/tokens.ts).
 // NÃO é preto: o canvas é #1d2b34 (slate teal), o acento é #d4a85a (atlas gold).
+// Card/Color → AtlasTheme+Card.swift
 enum AtlasTheme {
     // Superfícies (z-axis por profundidade de slate teal)
     static let bg = Color(hex: 0x1D2B34)          // canvas principal
@@ -33,35 +34,5 @@ enum AtlasTheme {
     enum Space {
         static let screen: CGFloat = 20
         static let row: CGFloat = 16
-    }
-}
-
-extension Color {
-    init(hex: UInt, alpha: Double = 1) {
-        self.init(
-            .sRGB,
-            red: Double((hex >> 16) & 0xFF) / 255,
-            green: Double((hex >> 8) & 0xFF) / 255,
-            blue: Double(hex & 0xFF) / 255,
-            opacity: alpha
-        )
-    }
-}
-
-private struct AtlasCardModifier: ViewModifier {
-    let cornerRadius: CGFloat
-    let fillOpacity: Double
-
-    func body(content: Content) -> some View {
-        content
-            .background(RoundedRectangle(cornerRadius: cornerRadius).fill(AtlasTheme.surface.opacity(fillOpacity)))
-            .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(AtlasTheme.separator, lineWidth: 1))
-    }
-}
-
-extension View {
-    /// Chrome canônico de card: surface + borda separator + cantos 14.
-    func atlasCard(cornerRadius: CGFloat = 14, fillOpacity: Double = 1) -> some View {
-        modifier(AtlasCardModifier(cornerRadius: cornerRadius, fillOpacity: fillOpacity))
     }
 }

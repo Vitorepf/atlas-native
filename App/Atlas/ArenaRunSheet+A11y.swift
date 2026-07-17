@@ -2,7 +2,7 @@ import Foundation
 import AtlasCore
 
 // Spoken labels — peel de ArenaRunSheet (CICLO C residual honesty).
-// Sheet/close → ArenaRunSheet+A11ySheet.swift
+// Receipt → ArenaRunSheet+A11yReceipt.swift · Sheet/close → +A11ySheet.swift
 
 extension ArenaRunSheet {
     func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
@@ -38,26 +38,5 @@ extension ArenaRunSheet {
 
     func spokenEmptySuites() -> String {
         "nenhuma suite com adapter instalado, rodar medição indisponível"
-    }
-
-    func spokenReceiptLabel(_ receipt: AtlasArenaStartReceipt) -> String {
-        var parts = ["recibo \(receipt.receiptHash)"]
-        parts.append(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
-        if receipt.workerImplemented == false {
-            parts.append("worker de medição ainda não implementado")
-        }
-        return parts.joined(separator: ", ")
-    }
-
-    func spokenActorHint() -> String {
-        "nome de quem autoriza a medição"
-    }
-
-    func spokenReasonHint() -> String {
-        "motivo auditável registrado no ledger"
-    }
-
-    func spokenErrorLabel(_ message: String) -> String {
-        "erro: \(message)"
     }
 }
