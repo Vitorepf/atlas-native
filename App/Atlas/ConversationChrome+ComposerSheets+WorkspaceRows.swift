@@ -3,6 +3,7 @@ import UIKit
 import AtlasCore
 
 // Workspace row loop — peel de ConversationChrome+ComposerSheets+WorkspaceList.
+// Pick → ConversationChrome+ComposerSheets+WorkspaceRows+Pick.swift
 
 extension WorkspaceSheet {
     @ViewBuilder
@@ -17,9 +18,7 @@ extension WorkspaceSheet {
             ),
             accessibilityIdentifier: A11yID.workspaceRow(ws.id)
         ) {
-            onPick(ws)
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            dismiss()
+            workspaceRowPick(ws)
         }
     }
 }

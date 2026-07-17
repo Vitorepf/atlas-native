@@ -3,6 +3,7 @@ import SwiftUI
 import AtlasCore
 
 // Header Frota widget — peel de FleetWidgetView.
+// StaleLine → AtlasWidgetAccessories+Fleet+Header+StaleLine.swift
 
 extension FleetWidgetView {
     @ViewBuilder
@@ -11,11 +12,7 @@ extension FleetWidgetView {
             Text("✦ Frota")
                 .font(.system(size: 14, weight: .semibold, design: .serif))
             Spacer()
-            if stale {
-                Text("visto \(age)")
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(Ink.alert)
-            }
+            fleetHeaderStaleLine(stale: stale, age: age)
         }
     }
 }

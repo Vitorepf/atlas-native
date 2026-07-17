@@ -4,22 +4,16 @@ import AtlasCore
 // Spoken awaiting/failed — peel de ExecutionStateCard+AwaitingFailed.
 // Actions → ExecutionStateCard+AwaitingFailed+SpokenActions.swift
 // Failure → ExecutionStateCard+AwaitingFailed+Failure.swift
+// Detail → ExecutionStateCard+AwaitingFailed+Spoken+Detail.swift
+// Timing → ExecutionStateCard+AwaitingFailed+Spoken+Timing.swift
 
 extension ExecutionStateCard {
     var spokenSummary: String {
         var parts: [String] = []
         if let kind = spokenKind { parts.append(kind) }
         parts.append(state.title)
-        if let reason = spokenFailureReason {
-            parts.append(reason)
-        } else if let detail = state.detail {
-            parts.append(detail)
-        }
-        if let kicker = leaveScreenKicker { parts.append(kicker) }
-        if let checkpoint = state.checkpoint { parts.append("checkpoint \(checkpoint)") }
-        if let fragment = spokenTimerFragment { parts.append(fragment) }
-        if let deadline = publishedExternalDeadline { parts.append("próxima mudança \(deadline)") }
-        if let action = spokenActionFragment { parts.append(action) }
+        spokenDetailParts(into: &parts)
+        spokenTimingParts(into: &parts)
         return parts.joined(separator: ". ")
     }
 }

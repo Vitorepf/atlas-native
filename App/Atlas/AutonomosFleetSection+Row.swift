@@ -5,19 +5,16 @@ import AtlasCore
 // Tags → AutonomosFleetSection+RowTags.swift
 // Header → AutonomosFleetSection+RowHeader.swift
 // A11y → AutonomosFleetSection+RowA11y.swift
+// CardChrome → AutonomosFleetSection+Row+CardChrome.swift
 
 extension AutonomosFleetSection {
     @ViewBuilder
     func agentRow(_ agent: AtlasAutonomosFleetAgent, index: Int, compact: Bool) -> some View {
-        agentRowInnerStack(agent, compact: compact)
-        .padding(12)
-        .atlasCard(cornerRadius: 12)
-        .autonomosFleetAgentA11y(
+        agentRowCardChrome(
+            agentRowInnerStack(agent, compact: compact),
             agent: agent,
             index: index,
-            total: fleet.agents.count,
-            compact: compact,
-            auditModeEnabled: auditModeEnabled
+            compact: compact
         )
     }
 }

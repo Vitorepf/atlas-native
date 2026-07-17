@@ -5,6 +5,7 @@ import AtlasCore
 // Copy → ConversationChromeSheets+Receipt+Copy.swift
 // Lead → ConversationChromeSheets+Receipt+Lead.swift
 // Chrome → ConversationChromeSheets+ReceiptChrome.swift
+// RowStack → ConversationChromeSheets+Receipt+RowStack.swift
 
 struct ConversationHandoffReceipt: View {
     let handoff: AtlasAiSurfaceHandoff
@@ -14,12 +15,6 @@ struct ConversationHandoffReceipt: View {
     var isPending: Bool { handoff.status == "pending" }
 
     var body: some View {
-        receiptChrome(
-            HStack(spacing: 9) {
-                receiptIcon
-                receiptCopy
-                Spacer(minLength: 0)
-            }
-        )
+        receiptChrome(receiptRowStack)
     }
 }
