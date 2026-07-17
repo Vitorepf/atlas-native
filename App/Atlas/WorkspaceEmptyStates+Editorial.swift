@@ -4,6 +4,7 @@ import AtlasCore
 // Estados editoriais — peel de WorkspaceEmptyStates.
 // Copy → WorkspaceEmptyStates+Editorial+Copy.swift
 // Glyph → WorkspaceEmptyStates+Editorial+Glyph.swift
+// Body → WorkspaceEmptyStates+EditorialGlyph.swift
 
 struct WorkspaceEditorialEmpty: View {
     let area: AtlasArea
@@ -11,11 +12,6 @@ struct WorkspaceEditorialEmpty: View {
     let screenTitle: String
 
     var body: some View {
-        AtlasEditorialGlyphEmpty(
-            headline: headline,
-            footnote: footnote,
-            accessibilityIdentifier: A11yID.workspaceEmpty,
-            spokenLabel: spokenLabel
-        )
+        editorialGlyph
     }
 }

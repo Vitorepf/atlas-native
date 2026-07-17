@@ -3,15 +3,12 @@ import AtlasCore
 
 // Title / phase stack — peel de LiveNowRow+Content.
 // Phase → LiveNowRow+ContentPhase.swift
+// Title → LiveNowRow+ContentTitleText.swift
 
 extension LiveNowRow {
     func rowTitleStack(now: Date) -> some View {
         VStack(alignment: .leading, spacing: hubMode ? 4 : 3) {
-            Text(session.title)
-                .font(AtlasFont.serif(16, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .lineLimit(2)
-                .layoutPriority(1)
+            rowTitleText
             rowPhaseLine
             // Timing explícito (running/paused) + elapsed.
             timingLine(now: now)

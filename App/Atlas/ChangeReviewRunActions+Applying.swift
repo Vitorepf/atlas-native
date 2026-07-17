@@ -2,15 +2,13 @@ import SwiftUI
 import AtlasCore
 
 // Indicador applying — peel de ChangeReviewRunActions+Buttons.
+// Static → ChangeReviewRunActions+ApplyingStatic.swift
 
 extension ChangeReviewRunActions {
     @ViewBuilder
     var applyingIndicator: some View {
         if reduceMotion {
-            Text("registrando…")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityLabel("registrando decisão")
+            applyingStaticLabel
         } else {
             ProgressView()
                 .tint(AtlasTheme.accent)

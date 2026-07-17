@@ -11,10 +11,6 @@ struct NightlyProposalCard: View {
     static let muteDays = [1, 3, 7]
 
     var body: some View {
-        cardChrome
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier(A11yID.nightlyProposalCard)
-            .accessibilityLabel(Self.spokenCardLabel(workspaceText: proposal.workspaceText))
-            .accessibilityHint(Self.spokenCardHint())
+        cardA11y
     }
 }
