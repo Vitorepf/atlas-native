@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **577** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXI tip `dd5220c` |
-| Commits no tip (`git rev-list --count HEAD`) | 879 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 578 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **579** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXII tip `4da9b49` |
+| Commits no tip (`git rev-list --count HEAD`) | 881 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 580 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLXI (este tip)
+## Entrega Elite CXXXXXLXLXII (este tip)
+
+- `polish(ui)` CICLO B: ActivityIcon `+Intent/+Tool/+Terminal`; GraphFilter `+Label`; DetailSheet `+Title`; FailureCopy `+Network/+AuthServer` Hint `+Network/+AuthServer`; AgentStatus `+Active/+Terminal`; Exec Icon/Presentation/KindBadge Attention/Terminal; FileRow Verb `+Mutate/+Transform`; ChangeReview/Artifact A11y `+Load/+Available`; DraftThumb `+Size/+State`; Radar Content `+Loading` A11y `+LoadedID`; Autonomos Spoken `+Phase`; Palette `+Color`; Search QueryPhase `+NetworkFailure/+LoadingShell`; LiveNow Clock `+Branch`; Editorial Feedback `+Base`; Widgets LockLive `+Family` CodeWeek `+Quiet/+Active` LockScreen Badge `+FailAtt/+ExtRecPln`. Tip `4da9b49`.
+- 37 peels · 60 arquivos · over100=0 · App/Atlas+Widgets swift=2632; App/Widgets swift=203; zero Route nova.
+
+## Entrega Elite CXXXXXLXLXI (anterior)
 
 - `polish(ui)` CICLO B: AreaPicker Phase `+Label/+Color`; Graph StatusTokens `+Color/+Symbol`; ListCaption `+Caption/+Spoken`; LiveNow Timing `+Running/+Paused` Merge `+RemoteFilter`; FileRow Meta `+Subtitle/+Symbol`; Workspace Predicates `+NetworkFailure/+LoadingShell`; Digest Predicates `+ShouldShow/+HasLast`; Reason Confirm `+Label/+Hint`; Markdown Emphasis `+Bold/+Italic`; Messages Assembly `+Built`; Radar Shell `+Loaded` Issues `+First/+More`; Provenance Spoken `+Phase`; Why Sheet `+History`; Mirror State `+Blocked/+Pending`; Filter Enum `+Label`; FlexWrap `+Measure` Place `+Step`; Fleet Summary `+Empty/+Health`; Agents `+Content` Watchdog `+Gate`; DetailChip `+Press/+A11y`; Timeline Rows `+Map`; Arena Chart `+Chrome`; CircleButton `+Label`; Widgets Island Minimal `+Body` LiveSession Spoken `+Core`. Tip `dd5220c`.
 - 41 peels · 69 arquivos · over100=0 · App/Atlas+Widgets swift=2595; App/Widgets swift=198; zero Route nova.
