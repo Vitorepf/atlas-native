@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **400+** | primeiro commit do plano: `ec931f2`; Elite CXXXXVI tip `4321ead` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **402+** | primeiro commit do plano: `ec931f2`; Elite CXXXXVII tip `042791c` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXVI (este tip)
+## Entrega Elite CXXXXVII (este tip)
+
+- `refactor(ui)` CICLO B: Search+HeaderSpoken; Self+Predicates; Area+PrimarySecondary; Arena+HeaderAge; Workspace+Detail; Plan+StepsRows; Close+A11yID; Retry+RetryLabel; Loaded+A11yControlAction; Home+ConversationAudit; LiveNow+A11yClock; Fleet+Quiet; Execution+MetaDeadline; Why+HeaderTruncation. Tip `042791c`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXVI (anterior)
 
 - `refactor(ui)` CICLO B: Plan+RevisionArchiveSteps; Findings+AxisLabel; Council+MetaLatency/+HeaderStatus; Timeline+NarrativeTraits; LiveNow+A11yShell; Editorial+ClosingTail; Nightly+Dismiss; Thread+Tint; Artifact+MountSpoken; Engine+TitleTrailing; Capabilities+HeaderMapping. Tip `4321ead`.
 - Zero App/Widgets >100; zero Route nova.
