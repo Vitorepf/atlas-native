@@ -585,8 +585,8 @@ nenhum arquivo Codex/Fable >400 sem justificativa §7.
 
 ### Task B1.3: ConversationModel <800
 
-- [ ] Peels adicionais (`+Execution`, `+Queue`, …)
-- [ ] Medir linhas; §7
+- [x] Peels adicionais (`+Execution`, `+Queue`, …)
+- [x] Medir linhas; §7 — 885→642
 
 ### Task B1.4: ConversationView / Chrome / RootView / Radar / ChangeReview
 

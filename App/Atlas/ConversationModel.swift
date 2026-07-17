@@ -73,40 +73,21 @@ final class ConversationModel {
 
     let client: AtlasClient
     private(set) var threadId: ThreadID?
-    private var activeRun: InteractionRun?
+    /// Visível às extensions `+Queue` / `+Execution` (mesmo módulo).
+    var activeRun: InteractionRun?
     private var attachmentInputs: [String: AttachmentInput] = [:]
     @ObservationIgnored private var pendingAttachmentPreparations: [String: PendingAttachmentPreparation] = [:]
     @ObservationIgnored private let engine: AtlasRichInputEngine
     @ObservationIgnored private let outbox: InteractionOutbox
-    @ObservationIgnored private let queueStore: QueuedFollowUpStore
+    @ObservationIgnored let queueStore: QueuedFollowUpStore
     @ObservationIgnored let readCache: ThreadReadCache
-    @ObservationIgnored private var queueScope: String
-    @ObservationIgnored private var draftScope: String
+    @ObservationIgnored var queueScope: String
+    @ObservationIgnored var draftScope: String
 
     /// Identidade da execução atual exposta à ponte ActivityKit, nunca à View.
     /// `nil` até o servidor confirmar o trace continua sendo um estado normal.
     var currentStreamingTraceId: TraceID? {
         bubbles.last(where: { $0.streaming && $0.traceId != nil })?.traceId
-    }
-
-    /// Fonte única para Lock Screen e Dynamic Island. Inclui espera durável
-    /// confirmada pelo servidor mesmo depois que a conexão SSE da tentativa
-    /// fechou; a casca não deve inventar uma fase nesse intervalo.
-    var currentExecutionPresence: AtlasExecutionPresence? {
-        currentPresenceBubble?.executionPresence
-    }
-
-    /// Identidade canônica da mesma presença. A casca usa-a como chave da Live
-    /// Activity para não criar uma sessão nova ao transitar de stream para uma
-    /// pausa aguardando decisão ou sistema externo.
-    var currentExecutionPresenceTraceId: TraceID? {
-        currentPresenceBubble?.traceId
-    }
-
-    private var currentPresenceBubble: ChatBubble? {
-        bubbles.reversed().first { bubble in
-            bubble.traceId != nil && bubble.executionPresence?.isOngoing == true
-        }
     }
 
     init(
@@ -163,11 +144,11 @@ final class ConversationModel {
         return last > visit
     }
 
-    private static func loadDraft(scope: String) -> String {
+    static func loadDraft(scope: String) -> String {
         UserDefaults.standard.string(forKey: draftPrefix + scope) ?? ""
     }
 
-    private static func saveDraft(_ value: String, scope: String) {
+    static func saveDraft(_ value: String, scope: String) {
         let key = draftPrefix + scope
         if value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             UserDefaults.standard.removeObject(forKey: key)
@@ -356,43 +337,8 @@ final class ConversationModel {
         _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
     }
 
-    /// Enfileira uma instrução como próximo turno. É deliberadamente assíncrono:
-    /// a confirmação visual só acontece depois do JSON atômico do Core.
-    func queue(text: String) async {
-        do {
-            guard let message = try await queueStore.enqueue(text: text, scope: queueScope) else { return }
-            queuedMessages.append(message)
-            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
-            toast = "Adicionada à fila"
-        } catch {
-            toast = "Não foi possível guardar esta instrução na fila."
-        }
-    }
-
-    /// “Enviar agora” no Fable/Cursor significa enviar no PRÓXIMO turno. Nunca
-    /// cancela a execução ou substitui o stream que está em andamento.
-    func promote(id: QueuedMessage.ID) async {
-        do {
-            try await queueStore.promote(id: id, scope: queueScope)
-            queuedMessages = await queueStore.messages(scope: queueScope)
-            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
-        } catch {
-            toast = "Não foi possível reordenar a fila."
-        }
-    }
-
-    func removeQueued(id: QueuedMessage.ID) async {
-        do {
-            try await queueStore.remove(id: id, scope: queueScope)
-            queuedMessages = await queueStore.messages(scope: queueScope)
-            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
-        } catch {
-            toast = "Não foi possível remover esta instrução."
-        }
-    }
-
     @discardableResult
-    private func sendTurn(
+    func sendTurn(
         _ text: String,
         effort: AtlasComputeEffort,
         drainQueueOnSuccess: Bool,
@@ -572,131 +518,6 @@ final class ConversationModel {
         }
     }
 
-    // MARK: - Execução
-
-    /// O endpoint de lista é deliberadamente leve e não inclui `stream_events`.
-    /// Busca os snapshots completos em paralelo para que cada resposta reabra
-    /// com sua timeline registrada, inclusive depois de relaunch.
-    private func loadExecutionHistory() async {
-        let refs = bubbles.compactMap { bubble -> (String, TraceID)? in
-            guard bubble.role == "assistant", let traceId = bubble.traceId else { return nil }
-            return (bubble.id, traceId)
-        }
-        let client = self.client
-        var snapshots: [(String, AtlasAiTrace?)] = []
-        // Bounded fan-out: restaura todo o histórico sem disparar dezenas de
-        // requests simultâneos contra o servidor ao abrir uma thread longa.
-        var cursor = refs.startIndex
-        while cursor < refs.endIndex {
-            let end = refs.index(cursor, offsetBy: 6, limitedBy: refs.endIndex) ?? refs.endIndex
-            let batch = refs[cursor..<end]
-            let values = await withTaskGroup(of: (String, AtlasAiTrace?).self) { group in
-                for (bubbleId, traceId) in batch {
-                    group.addTask {
-                        let trace = try? await client.getAiInteraction(traceId)
-                        return (bubbleId, trace?.trace)
-                    }
-                }
-                var values: [(String, AtlasAiTrace?)] = []
-                for await value in group { values.append(value) }
-                return values
-            }
-            snapshots.append(contentsOf: values)
-            cursor = end
-        }
-        for (bubbleId, trace) in snapshots {
-            if let trace { applyExecution(bubbleId, trace) }
-        }
-    }
-
-    private func applyExecution(
-        _ id: String,
-        _ trace: AtlasAiTrace,
-        projectedStreamActivities: [AtlasAgentActivity]? = nil
-    ) {
-        let agents = (trace.jobs ?? []).map {
-            ExecAgent(id: $0.id, agent: $0.agentSlug, provider: $0.provider, model: $0.model, status: $0.status)
-        }
-        let choiceJob = trace.jobs?.first { $0.turnStatus == .awaitingUserChoice }
-        let failedJob = trace.jobs?.first { $0.turnStatus == .failed }
-        update(id) {
-            $0.agents = agents
-            $0.decideStrategy = trace.atlasDecideExecution?.strategy
-            $0.decideStage = trace.atlasDecideExecution?.atlasDecideStage
-            $0.decisionSummary = trace.decisionSummary
-            $0.qualitySummary = trace.qualitySummary
-            $0.executionPlan = trace.executionPlan
-            $0.diffStats = AtlasTraceGovernance.diffStats(from: trace.metadata)
-            $0.planRevisions = AtlasTraceGovernance.planRevisions(from: trace.metadata)
-            $0.executionProgress = trace.executionProgress
-            $0.executionPresentationState = trace.executionPresentationState
-            $0.executionChoiceJobId = choiceJob.map { JobID($0.id) }
-            $0.retryableJobId = failedJob.map { JobID($0.id) }
-            $0.reconnectNotice = nil
-            let fromStream = projectedStreamActivities ?? atlasAgentTimeline(from: trace.streamEvents ?? [])
-            let recovered = fromStream + trace.toolActivities
-            $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)
-        }
-    }
-
-    /// Executa uma opção que o próprio servidor declarou para um job pausado.
-    /// A View fornece somente ids públicos; o recibo canônico é relido antes de
-    /// qualquer mudança visual para não antecipar estado nem duplicar ação.
-    func resolveExecutionChoice(jobId: JobID, optionId: String) async {
-        do {
-            let receipt = try await client.resumeAiJobChoice(jobId.rawValue, optionId: optionId)
-            guard let traceId = receipt.job.traceId else {
-                toast = "A decisão foi registrada, mas a conversa ainda não está disponível."
-                return
-            }
-            let typedTraceId = TraceID(traceId)
-            let refreshed = try await client.getAiInteraction(typedTraceId)
-            for bubble in bubbles where bubble.traceId == typedTraceId {
-                applyExecution(bubble.id, refreshed.trace)
-            }
-        } catch {
-            toast = atlasUserMessage(for: error)
-        }
-    }
-
-    /// C17: retoma um turno que FALHOU reenfileirando o job real
-    /// (`/ai/jobs/{id}/retry`). Não fabrica estado: relê o trace pelo job
-    /// devolvido e reaplica a execução, exatamente como `resolveExecutionChoice`.
-    func retryTurn(jobId: JobID) async {
-        do {
-            let receipt = try await client.retryAiJob(jobId.rawValue)
-            guard let traceId = receipt.job.traceId else {
-                toast = "O turno foi reenfileirado."
-                return
-            }
-            let typedTraceId = TraceID(traceId)
-            let refreshed = try await client.getAiInteraction(typedTraceId)
-            for bubble in bubbles where bubble.traceId == typedTraceId {
-                applyExecution(bubble.id, refreshed.trace)
-            }
-        } catch {
-            toast = atlasUserMessage(for: error)
-        }
-    }
-
-    private func complete(_ id: String, trace: AtlasAiTrace?) {
-        update(id) {
-            $0.streaming = false
-            $0.agents = []
-            $0.decideStage = nil
-            $0.reconnectNotice = nil
-            if let trace {
-                if $0.text.isEmpty, let response = trace.responseText,
-                   let visible = atlasVisibleAssistantText(response) { $0.text = visible }
-                if $0.text.isEmpty {
-                    $0.text = "A execução terminou, mas a resposta continha saída interna e foi ocultada. Tente novamente."
-                }
-                $0.model = trace.model ?? $0.model
-                $0.elapsedMs = trace.latencyMs ?? $0.startedAt.map { Int(Date().timeIntervalSince($0) * 1000) }
-            }
-        }
-    }
-
     private func execute(
         _ input: CreateAiInteractionInput,
         assistantId: String,
@@ -805,70 +626,6 @@ final class ConversationModel {
         isSending = false
     }
 
-    private func loadQueuedMessages() async {
-        queuedMessages = await queueStore.messages(scope: queueScope)
-        AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
-    }
-
-    private func adoptQueueScope(threadId: ThreadID) async {
-        let canonicalScope = "thread:\(threadId.rawValue)"
-        adoptDraftScope(canonicalScope)
-        guard canonicalScope != queueScope else { return }
-        do {
-            try await queueStore.migrate(scope: queueScope, to: canonicalScope)
-            queueScope = canonicalScope
-            await loadQueuedMessages()
-        } catch {
-            // Mantém o escopo provisório em memória para não abandonar follow-up
-            // algum; a próxima abertura pode tentar a migração de novo.
-            toast = "A fila continua segura neste aparelho; a conversa ainda está sincronizando."
-        }
-    }
-
-    private func adoptDraftScope(_ canonicalScope: String) {
-        guard canonicalScope != draftScope else { return }
-        let current = draftText
-        Self.saveDraft("", scope: draftScope)
-        draftScope = canonicalScope
-        if current.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            draftText = Self.loadDraft(scope: canonicalScope)
-        } else {
-            Self.saveDraft(current, scope: canonicalScope)
-        }
-        if let threadId { lastVisitAt = Self.lastVisitDate(threadId: threadId.rawValue) }
-    }
-
-    private func drainQueuedMessages() async {
-        while !isSending && activeRun == nil {
-            let next = await queueStore.peek(scope: queueScope)
-            guard let next else { return }
-            let completedSuccessfully = await sendTurn(
-                next.text,
-                effort: effort,
-                drainQueueOnSuccess: false,
-                queuedMessageId: next.id
-            )
-            // Uma falha/atenção pede decisão do operador; a fila restante fica
-            // intacta e visível, nunca dispara trabalho em cascata às cegas.
-            guard completedSuccessfully else { return }
-        }
-    }
-
-    /// Uma instrução só sai da fila após o `InteractionRun` persistir o mesmo
-    /// turno na outbox. Se o processo morrer entre estas operações, o vínculo
-    /// followUpId salvo na outbox faz a recuperação repetir esta reconciliação.
-    private func consumeQueuedMessageAfterPersistence(id: QueuedMessage.ID) async {
-        do {
-            try await queueStore.remove(id: id, scope: queueScope)
-            queuedMessages = await queueStore.messages(scope: queueScope)
-            AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
-        } catch {
-            // Erro na limpeza é conservador: a instrução segue visível e
-            // recuperável, em vez de sumir sem um turno durável correspondente.
-            toast = "A próxima instrução continua guardada e será reconciliada."
-        }
-    }
-
     private func apply(_ error: Error, to id: String) {
         update(id) {
             if $0.text.isEmpty { $0.text = "⚠️ \(atlasUserMessage(for: error))" }
@@ -877,7 +634,7 @@ final class ConversationModel {
         toast = atlasUserMessage(for: error)
     }
 
-    private func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
+    func update(_ id: String, _ mutate: (inout ChatBubble) -> Void) {
         guard let i = bubbles.firstIndex(where: { $0.id == id }) else { return }
         mutate(&bubbles[i])
     }
