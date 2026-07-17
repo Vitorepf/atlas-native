@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **153** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 455 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 154 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **163** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 465 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 164 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -54,16 +54,22 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **XXX** | **PARCIAL** | Steer sheet receipt/`traceId` filter + disabled spoken (`ac2b599`) |
 | **XXXI** | **PARCIAL** | AutonomosView header/controls a11y + A11yID Home/Autonomos peel (`9e31e83`/`1571254`) |
 | **XXXII** | **PARCIAL** | ArenaView index/domain a11y + Mode/Effort/Workspace sheets (`42e51ef`/`73c6e8b`) |
+| **XXXIII** | **PARCIAL** | EditorialTurn signature/feedback silence + Markdown code-block honesty (`db77b7f`/`2abb22a`) |
+| **XXXIV** | **PARCIAL** | DraftStrip/DraftThumb attachment honesty + CodeGraph filter/status a11y (`0ff2eec`/`11cdf0f`) |
+| **XXXV** | **PARCIAL** | Camera cover honesty + SelfConstruction receipt/veto + CodeWhy biografia (`abd623a`/`4eae5c1`/`2ecc809`) |
+| **XXXVI** | **PARCIAL** | HealReceipt step/undo honesty + Mirror/Week zeros quiet (`01098b3`/`4808cc8`) |
 
-## Entrega recente (wave XXXII contínuo — Arena/Mode/Steer/Autonomos — HEAD)
+## Entrega recente (wave XXXVI contínuo — Heal/Mirror/CodeWhy/Camera — HEAD)
 
-- `polish(ui)` CICLO C Mode/Workspace: `ModeSheet` rótulo local honesto; `EffortSheet` opções reais; `WorkspaceSheet` sem «· main» fabricado; peels `ComposerSheets+A11y`/`+EffortSheet`/`+AttachmentsSheet` (`73c6e8b`).
-- `polish(ui)` CICLO C Arena: índice silencia sem engines; domain unavailable spoken; peel `AtlasArenaView+A11y` (`42e51ef`).
-- `polish(ui)` CICLO B: A11yID peel `+Home`/`+Autonomos` — shell `A11yID` 39≤100 (`1571254`).
-- `polish(ui)` CICLO C Autônomos: masthead silencia healthy; controles disabled spoken; peels `AutonomosView+A11y` (`9e31e83`).
-- `polish(ui)` CICLO C Steer: recibo só `lastSteerReceipt`+`traceId`; peels `SteerInteractionSheet+A11y`/`+Receipt` (`ac2b599`).
-- `polish(ui)` CICLO C home/composer: Root sections silence + Composer send-disabled honesty (`59494bf`/`2312648`).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **153** (inclui este pin).
+- `polish(ui)` CICLO C Mirror/Week: `AtlasCodeMirrorCard` spoken host/contagens reais; week zeros quiet; widget stale spoken; peels `AtlasCodeMirrorCard+A11y`/`AtlasCodeWeek+A11y`/`AtlasWidgetAccessories+CodeWeek+A11y` (`4808cc8`).
+- `polish(ui)` CICLO C HealReceipt: passos só do contrato; silêncio sem conclusão; veto só `healId`+undo window; peels `AtlasCodeHealReceiptSheet+A11y`/`+Steps` (`01098b3`).
+- `polish(ui)` CICLO C CodeWhy: truncação/falha/spoken só payload real; peel `AtlasCodeWhySheet+A11y` (`2ecc809`).
+- `polish(ui)` CICLO C SelfConstruction: `hasMergeProof` real; veto só `canRevert`; peel `SelfConstructionReceiptSheet+A11y` (`4eae5c1`).
+- `polish(ui)` CICLO C Camera: cancel silencioso; falha JPEG honesta; peel `CameraPicker+A11y`/`ConversationSheets+CameraCover` (`abd623a`).
+- `polish(ui)` CICLO C CodeGraph: grafo/filtro vazio silencia; status «atenção» só `.violating`; peel `AtlasCodeView+Graph+A11y` (`11cdf0f`).
+- `polish(ui)` CICLO C DraftStrip: strip silêncio vazio; thumb falhou spoken real; peel `DraftStrip+A11y` (`0ff2eec`).
+- `polish(ui)` CICLO C Markdown/EditorialTurn: code-block lang só fence real; signature silencia sem provider; peels `AtlasMarkdownView+CodeBlock+A11y`/`EditorialTurn+A11y` (`2abb22a`/`db77b7f`).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **163** (inclui este pin).
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ### Top 10 (App/Core/Widgets — all ≤100)
