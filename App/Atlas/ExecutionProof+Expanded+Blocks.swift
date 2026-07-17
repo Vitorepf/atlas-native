@@ -11,16 +11,7 @@ extension ExecutionProof {
     var decisionBlock: some View {
         if let d = bubble.decisionSummary, Self.hasDecisionSurface(d) {
             Divider().overlay(AtlasTheme.separatorSoft).accessibilityHidden(true)
-            HStack(spacing: 6) {
-                Image(systemName: "arrow.triangle.branch")
-                    .font(.system(size: 11)).foregroundStyle(AtlasTheme.accent.opacity(0.8)).frame(width: 15)
-                    .accessibilityHidden(true)
-                Text(decideLine(d))
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(2)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(decisionSpoken(d))
+            decisionSummaryRow(d)
             decisionReason(d)
         }
     }

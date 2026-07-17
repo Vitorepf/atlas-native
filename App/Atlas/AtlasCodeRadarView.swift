@@ -18,17 +18,11 @@ struct AtlasCodeRadarView: View {
     var body: some View {
         ZStack {
             AtlasTheme.bg.ignoresSafeArea()
-            radarContent
-                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
-                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
+            radarNavShell(
+                radarContent
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
+                    .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
+            )
         }
-        .navigationTitle("Código")
-        .navigationBarTitleDisplayMode(.inline)
-        .task { if model.phase == .idle { await model.load() } }
-        .refreshable { await model.load() }
-        .accessibilityIdentifier(A11yID.radarScreen)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(radarShellSpokenLabel)
-        .accessibilityHint(Self.shellHint)
     }
 }

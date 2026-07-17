@@ -12,10 +12,7 @@ extension ConversationOutlineRow {
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 3) {
-                Text(bubble.role == "user" ? "Você" : "Atlas")
-                    .font(.system(.caption, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
+                outlineLeadRole
                 Text(snippet)
                     .font(.system(.footnote))
                     .foregroundStyle(AtlasTheme.textSecondary)

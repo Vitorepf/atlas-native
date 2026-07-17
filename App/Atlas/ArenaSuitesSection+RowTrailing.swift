@@ -6,19 +6,11 @@ import AtlasCore
 extension ArenaSuiteRow {
     @ViewBuilder
     var suiteTrailing: some View {
-        if let engine = suite.engines.first,
+        if suite.engines.first != nil,
            ArenaSuitesSectionA11y.hasSparkline(for: suite) {
-            SuiteSparkline(engine: engine).frame(width: 64, height: 30)
-        } else if suite.isMeasured {
-            Text("medido")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+            suiteTrailingSparkline
         } else {
-            Text("não medido")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+            suiteTrailingMeasuredLabel
         }
     }
 

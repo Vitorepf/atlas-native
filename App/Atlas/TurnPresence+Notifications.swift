@@ -18,17 +18,11 @@ extension TurnPresence {
         let bubble = traceId.flatMap { key in
             model.bubbles.last(where: { $0.traceId == key })
         }
-        let content = UNMutableNotificationContent()
-        content.title = TurnPresenceNotificationA11y.title(from: presence)
-        content.subtitle = Self.lockScreenText(entry.threadTitle, limit: 48)
-        if let body = TurnPresenceNotificationA11y.body(
+        let content = buildAwayNotificationContent(
+            entry: entry,
             presence: presence,
-            assistantExcerpt: bubble?.text,
-            presentationDetail: bubble?.executionPresentationState?.detail
-        ) {
-            content.body = body
-        }
-        if !UIAccessibility.isReduceMotionEnabled { content.sound = .default }
+            bubble: bubble
+        )
         UNUserNotificationCenter.current().add(
             UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil))
     }

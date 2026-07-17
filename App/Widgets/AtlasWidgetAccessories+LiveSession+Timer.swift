@@ -12,13 +12,7 @@ struct LiveSessionWidgetTimer: View {
     var body: some View {
         Group {
             if live.timing != .paused, let since = live.runningSince.flatMap(AtlasTime.date) {
-                if reduceMotion {
-                    TimelineView(.periodic(from: .now, by: 60)) { timeline in
-                        Text(clock(elapsedMs(since: since, now: timeline.date)))
-                    }
-                } else {
-                    Text(since, style: .timer)
-                }
+                activeClock(since: since)
             } else {
                 timerFallbackBody
             }

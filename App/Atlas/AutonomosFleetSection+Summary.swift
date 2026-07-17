@@ -18,11 +18,7 @@ struct AutonomosFleetSummary: View {
         } else if isQuiet {
             quietSummaryLine
         } else {
-            HStack(spacing: 8) {
-                FleetMetric(value: "\(fleet.agents.count)", label: "agentes registrados")
-                FleetMetric(value: "\(fleet.agents.filter(\.alive).count)", label: "vivos agora")
-                FleetMetric(value: "\(fleet.activeCount)", label: "ativos")
-            }
+            metricsSummaryRow
         }
     }
 }

@@ -4,14 +4,12 @@ import AtlasCore
 /// Título/corpo/spoken da notificação local — peel de TurnPresence+Notifications (CICLO C).
 
 enum TurnPresenceNotificationA11y {
-    /// Só fases terminais publicadas pelo contrato de presença.
     static func isTerminal(_ presence: AtlasExecutionPresence) -> Bool {
-        presence.timing == .finished
-            && (presence.phaseTitle == "Concluído" || presence.phaseTitle == "Falhou")
+        TurnPresenceNotificationA11yTerminal.isTerminal(presence)
     }
 
     static func title(from presence: AtlasExecutionPresence) -> String {
-        presence.phaseTitle
+        TurnPresenceNotificationA11yTerminal.title(from: presence)
     }
 
     /// Corpo só com dado real: excerpt da bolha do trace ou `detail` do ledger.
