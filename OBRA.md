@@ -176,7 +176,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
 | E-B | **PARCIAL** | **Grok 4.5** | peels contínuos App+Core | E-A* | CICLO B compressão 1 | **Ledger HEAD:** ExecutionStateCard 139 · AiModels 128 · LockLive 114 · Digest 117 · AutonomosView 127 · CodeView 85 · Graph 147 · Arena 120 · CodeModel 71. Quase zero >160 (Route 194 skip). | peels + `wc -l`; build Mac-pending |
 | E-C | **IN_PROGRESS** | **Grok 4.5** | silence + Island + Continuity + Artifact + Timeline + Autônomos | E-B PARCIAL | CICLO C patamares | Frota quieta; Island ATT/EXT/FAIL; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty; `rg Aprovar`=0 | `41efee4` + `98b35ff` + `00df89b` + `4191353` |
-| E-D | **IN_PROGRESS** | **Grok 4.5** | compressão 2 | E-C | CICLO D | delete duplicados C (`NumericTextTransition`, `TraceEvidenceCopy.unavailableSpoken`) | este commit |
+| E-D | **IN_PROGRESS** | **Grok 4.5** | delete dead from C | E-C | CICLO D | dups motion + empty/evidence consolidados (`65ce3d3`+`d78a97b`); meta ≥60% linhas de C ainda PARCIAL | `d78a97b` |
 
 ### Codex (funciona)
 | # | Status | Claimed by | Write scope | Depends on | Tarefa | Acceptance | Evidence |
@@ -1009,6 +1009,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 - 2026-07-17 · Grok 4.5 · **docs(obra) — E-B compression ledger + E-C start** · este commit · §4: E-B ledger com SHAs + `wc -l` HEAD (View~262 Autonomos~297 Model~642 Chrome~181 Client~473); PARCIAL enquanto view >400 sem ADR (RootView/ChangeReviewSections/…). E-A5 evidence pin `e0bce46` (arena deep link + lock queue capsule). E-C → **IN_PROGRESS** (`dc787be` humano-fora-do-fluxo Autonomos). Plano CICLO B: B1.1/B1.2 peels `[x]`; B1.4 PARCIAL. Prova: diff `OBRA.md` + `docs/plano-elite-agentica-24x7.md`; `wc -l` nos monólitos.
 
 - 2026-07-17 · Grok 4.5 · **polish(ui) — peel ComposerToolbar + ConversationMessages** · `ae0c8e7` · `ConversationComposer.swift` 277→196; extrai `ComposerToolbar.swift` (132) — paperclip/campo/enviar/menu modo·esforço·workspace + `AttachmentStrip` (DraftStrip+upload%); `ConversationView.swift` 370→262; extrai `ConversationMessages.swift` (138) — scroll/FAB/empty/revisão; zero Route; comportamento idêntico. §4 E-B atualizado. Prova: `wc -l` Composer 196 View 262 Toolbar 132 Messages 138; Swift toolchain ausente neste cloud Linux — re-rodar `make build` no Mac.
+
+- 2026-07-17 · Grok 4.5 · **Elite contínuo XI — CICLO D consolidação empty/evidence** · `d78a97b` · −210 linhas: AtlasNetworkFailureEmpty + TraceEvidenceLoading/Unavailable; 9× String.nonEmpty dups; NarrativeRow.icon morto. E-D avança. Zero Route. **BLOCKED:** Swift/server/device. Prova: `rg` + diff.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo X — peels ≤160 + CICLO D start** · `65ce3d3`/`c5fc73d`/`fe7f535` · StateCard/Code/Arena/Autonomos/Models peels; CICLO D delete NumericTextTransition dups + TraceEvidenceCopy supersession (~63 del). E-D IN_PROGRESS. Zero Route. **BLOCKED:** Swift/server/device. Prova: `rg` + `wc -l` + diffs.
 
