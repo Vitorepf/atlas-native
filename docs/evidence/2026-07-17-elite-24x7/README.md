@@ -14,7 +14,7 @@ Ondas **L–LVIII** (pós-XLIX): peels CICLO C residuais — Autônomos, Code, c
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **245+** | primeiro commit do plano: `ec931f2`; LVI–LVIII em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **248+** | primeiro commit do plano: `ec931f2`; LVI–LIX em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
