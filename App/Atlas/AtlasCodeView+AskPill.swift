@@ -23,6 +23,8 @@ extension AtlasCodeView {
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(AtlasCodeAskPillA11y.clearLabel)
+                .accessibilityHint(AtlasCodeAskPillA11y.clearHint)
                 .accessibilityIdentifier(A11yID.codeAskClear)
             }
             Image(systemName: "chevron.up")
@@ -35,14 +37,27 @@ extension AtlasCodeView {
         .overlay(Capsule().strokeBorder(AtlasTheme.separator, lineWidth: 0.5))
         .contentShape(Capsule())
         .onTapGesture {
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            if !reduceMotion { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
             askDraft = ""
             showsAskCard = true
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.bottom, 10)
+        .animation(
+            reduceMotion ? nil : .easeInOut(duration: 0.22),
+            value: AtlasCodeAskPillA11y.pillPhaseID(
+                isAnchoring: askModel.isAnchoring,
+                anchorLegend: anchorLegend
+            )
+        )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Conversar com o Atlas sobre este repositório")
+        .accessibilityLabel(
+            AtlasCodeAskPillA11y.spokenPill(
+                isAnchoring: askModel.isAnchoring,
+                anchorLegend: anchorLegend
+            )
+        )
+        .accessibilityHint(AtlasCodeAskPillA11y.pillHint)
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.codeAskPill)
     }

@@ -32,4 +32,9 @@ enum AtlasCodeWeekUI {
             prevented: week.prevented
         )
     }
+
+    static func weekPhaseID(_ week: AtlasCodeWeek) -> String {
+        if isQuiet(week) { return "quiet-\(week.window)" }
+        return "active-\(week.window)-\(week.commits)-\(week.heals)-\(week.prevented)"
+    }
 }
