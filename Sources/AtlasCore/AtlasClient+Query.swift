@@ -54,3 +54,30 @@ let encodeURIComponentAllowed: CharacterSet = {
 private func uriEncode(_ s: String) -> String {
     s.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? s
 }
+
+// MARK: - Error envelope (mirror lib/api/core.ts)
+
+extension AtlasClient {
+    /// Lenient error-envelope reader: `.message` → `.error.message` → first of `.errors`.
+    static func errorMessage(_ data: Data) -> String? {
+        guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
+        if let m = obj["message"] as? String { return m }
+        if let e = obj["error"] as? [String: Any], let m = e["message"] as? String { return m }
+        if let errs = obj["errors"] as? [String: Any], let first = errs.values.first {
+            if let arr = first as? [String], let m = arr.first { return m }
+            if let s = first as? String { return s }
+        }
+        return nil
+    }
+
+    static func retryAfterSeconds(from response: HTTPURLResponse?) -> Int? {
+        guard let raw = response?.value(forHTTPHeaderField: "Retry-After")?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+              !raw.isEmpty else { return nil }
+        if let seconds = Int(raw), seconds >= 0 { return seconds }
+        if let date = HTTPDateParser.date(from: raw) {
+            return max(0, Int(ceil(date.timeIntervalSinceNow)))
+        }
+        return nil
+    }
+}

@@ -1,56 +1,5 @@
 import Foundation
 
-/// Config resolved from the same sources the RN app uses (expo `extra.atlas` /
-/// env / Keychain). Base URL logic mirrors `getApiBase()` in lib/api/core.ts.
-public struct AtlasConfig: Sendable {
-    public var host: String
-    public var port: Int
-    public var token: String
-
-    public init(host: String = "127.0.0.1", port: Int = 3737, token: String = "") {
-        self.host = host; self.port = port; self.token = token
-    }
-
-    public var base: String {
-        let h = host.hasSuffix("/") ? String(host.dropLast()) : host
-        if h.hasPrefix("http://") || h.hasPrefix("https://") { return h }
-        return "http://\(h):\(port)"
-    }
-}
-
-/// Mirrors `AtlasApiError` (lib/api/core.ts): status + path + a message pulled
-/// from the server's `.message` / `.error.message` / `.errors{}` envelope.
-public struct AtlasApiError: Error, CustomStringConvertible, Sendable {
-    public let status: Int
-    public let path: String
-    public let message: String
-    public let retryAfterSeconds: Int?
-    public init(status: Int, path: String, message: String, retryAfterSeconds: Int? = nil) {
-        self.status = status
-        self.path = path
-        self.message = message
-        self.retryAfterSeconds = retryAfterSeconds
-    }
-    public var description: String { "AtlasApiError(\(status), \(path)): \(message)" }
-}
-
-public struct AtlasRawDataResponse: Sendable {
-    public let data: Data
-    public let status: Int
-    public let contentType: String
-    public let atlasSha256: String?
-}
-
-public struct AtlasNetworkPathCost: Sendable, Equatable {
-    public let isExpensive: Bool
-    public let isConstrained: Bool
-
-    public init(isExpensive: Bool = false, isConstrained: Bool = false) {
-        self.isExpensive = isExpensive
-        self.isConstrained = isConstrained
-    }
-}
-
 /// The request engine — the Swift analog of `apiRequest<T>` (lib/api/core.ts).
 /// `URLSession` + async/await + `Codable`. Auth via `X-Atlas-Token` (the lane
 /// the /ai/* surface uses; the mobile Bearer lane ports with device pairing).
@@ -175,29 +124,6 @@ public actor AtlasClient: AtlasAiStreamSource {
         return try decoder.decode(T.self, from: data)
     }
 
-    /// Lenient error-envelope reader: `.message` → `.error.message` → first of `.errors`.
-    static func errorMessage(_ data: Data) -> String? {
-        guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
-        if let m = obj["message"] as? String { return m }
-        if let e = obj["error"] as? [String: Any], let m = e["message"] as? String { return m }
-        if let errs = obj["errors"] as? [String: Any], let first = errs.values.first {
-            if let arr = first as? [String], let m = arr.first { return m }
-            if let s = first as? String { return s }
-        }
-        return nil
-    }
-
-    static func retryAfterSeconds(from response: HTTPURLResponse?) -> Int? {
-        guard let raw = response?.value(forHTTPHeaderField: "Retry-After")?
-            .trimmingCharacters(in: .whitespacesAndNewlines),
-              !raw.isEmpty else { return nil }
-        if let seconds = Int(raw), seconds >= 0 { return seconds }
-        if let date = HTTPDateParser.date(from: raw) {
-            return max(0, Int(ceil(date.timeIntervalSinceNow)))
-        }
-        return nil
-    }
-
     // MARK: - Live SSE stream (transporte de `streamAiInteraction`)
 
     /// Abre o stream de uma interação e emite frames tipados conforme chegam.
@@ -293,13 +219,4 @@ public actor AtlasClient: AtlasAiStreamSource {
         }
         return try decoder.decode(AtlasInteractionSteerResponse.self, from: data)
     }
-}
-
-/// Slice of the `/health` envelope — enough to prove the engine end-to-end.
-public struct AtlasHealthResponse: Decodable, Sendable {
-    public let status: String
-    public let service: String?
-    public let version: String?
-    public let overallOk: Bool?
-    public let dbConnected: Bool?
 }
