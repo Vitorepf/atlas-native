@@ -22,12 +22,16 @@ struct AtlasCodeFolderRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Button(action: onToggle) {
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onToggle()
+            } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "folder")
                         .font(.system(size: 15))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .frame(width: 20)
+                        .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(folder.name)
                             .font(AtlasFont.serif(16, .semibold))
@@ -36,6 +40,7 @@ struct AtlasCodeFolderRow: View {
                             .font(.system(size: 11.5))
                             .foregroundStyle(AtlasTheme.textTertiary)
                     }
+                    .accessibilityHidden(true)
                     Spacer(minLength: 6)
                     if verifiedExceptionCount > 0 {
                         HStack(spacing: 4) {
@@ -52,13 +57,22 @@ struct AtlasCodeFolderRow: View {
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
                         .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                        .accessibilityHidden(true)
                 }
                 .padding(.vertical, 14)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(spokenFolderLabel)
-            .accessibilityHint(isExpanded ? "recolhe a pasta" : "expande a pasta")
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(
+                AtlasCodeFolderRowA11y.spokenFolder(
+                    name: folder.name,
+                    repositoryCount: folder.repositories,
+                    verifiedExceptionCount: verifiedExceptionCount,
+                    isExpanded: isExpanded
+                )
+            )
+            .accessibilityHint(AtlasCodeFolderRowA11y.spokenHint(isExpanded: isExpanded))
             .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
 
             if isExpanded {
@@ -73,21 +87,14 @@ struct AtlasCodeFolderRow: View {
                                 .fill(AtlasTheme.separator.opacity(0.4))
                                 .frame(height: 0.5)
                                 .padding(.leading, 32)
+                                .accessibilityHidden(true)
                         }
                     }
                 }
                 .padding(.bottom, 6)
-                .transition(.opacity)
+                .transition(reduceMotion ? .identity : .opacity)
             }
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: isExpanded)
-    }
-
-    private var spokenFolderLabel: String {
-        let repos = folder.repositories == 1 ? "1 repositório" : "\(folder.repositories) repositórios"
-        if verifiedExceptionCount > 0 {
-            return "\(folder.name), \(repos), \(verifiedExceptionCount) desvio\(verifiedExceptionCount == 1 ? "" : "s") verificado\(verifiedExceptionCount == 1 ? "" : "s")"
-        }
-        return "\(folder.name), \(repos)"
     }
 }
