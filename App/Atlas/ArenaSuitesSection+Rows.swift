@@ -22,7 +22,6 @@ struct ArenaSuiteRow: View {
                     }
                     if suite.hasRegression {
                         Circle().fill(AtlasTheme.alert).frame(width: 7, height: 7)
-                            .accessibilityLabel("regressão")
                     }
                 }
                 Text(subtitle)
@@ -32,7 +31,7 @@ struct ArenaSuiteRow: View {
             }
             Spacer(minLength: 8)
             if let engine = suite.engines.first,
-               engine.history.contains(where: { $0.score != nil }) {
+               ArenaSuitesSectionA11y.hasSparkline(for: suite) {
                 SuiteSparkline(engine: engine).frame(width: 64, height: 30)
             } else if suite.isMeasured {
                 Text("medido")
@@ -46,10 +45,10 @@ struct ArenaSuiteRow: View {
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
         }
         .padding(.vertical, 10)
         .contentShape(Rectangle())
+        .accessibilityHidden(true)
     }
 
     private var subtitle: String {

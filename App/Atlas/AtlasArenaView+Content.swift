@@ -30,6 +30,7 @@ extension AtlasArenaView {
                 if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
                     ArenaSuitesSection(
                         scoreboard: scoreboard,
+                        reduceMotion: reduceMotion,
                         onSuiteTap: { selectedSuite = $0 }
                     )
                 }
