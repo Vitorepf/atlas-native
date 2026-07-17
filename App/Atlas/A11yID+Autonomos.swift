@@ -9,6 +9,9 @@ extension A11yID {
     static let autonomosFleetEmpty = "autonomos-fleet-empty"
     static let autonomosFleetQuiet = "autonomos-fleet-quiet"
     static let autonomosFleetHistoryEmpty = "autonomos-fleet-history-empty"
+    static let autonomosFleetHistorySection = "autonomos-fleet-history-section"
+    static let autonomosFleetHistoryRowPrefix = "autonomos-fleet-history-row-"
+    static func autonomosFleetHistoryRow(_ index: Int) -> String { autonomosFleetHistoryRowPrefix + String(index) }
     static let autonomosDigestSection = "autonomos-digest-section"
     static let autonomosDigestEmpty = "autonomos-digest-empty"
     static let autonomosOperationQuiet = "autonomos-operation-quiet"
