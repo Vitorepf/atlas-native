@@ -6,14 +6,10 @@ import AtlasCore
 /// Screen → AtlasArenaView+A11yScreen.swift
 /// Header → AtlasArenaView+A11yHeader.swift
 /// FailedID → AtlasArenaView+A11y+FailedID.swift
+/// BusyID → AtlasArenaView+A11y+BusyID.swift
 
 extension AtlasArenaView {
     var contentPhaseID: String {
-        switch model.phase {
-        case .idle: return "idle"
-        case .loading: return "loading"
-        case .loaded: return "loaded"
-        case .failed: return contentPhaseFailedID
-        }
+        contentPhaseBusyID ?? contentPhaseFailedID
     }
 }

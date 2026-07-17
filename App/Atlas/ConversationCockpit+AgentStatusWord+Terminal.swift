@@ -2,15 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Terminal status words — peel de ConversationCockpit+AgentStatusWord.
+// Done → ConversationCockpit+AgentStatusWord+Terminal+Done.swift
 
 extension AgentRow {
     var statusWordTerminal: String {
-        switch turnStatus {
-        case .succeeded: return "pronto"
-        case .failed: return "falhou"
-        case .cancelled: return "cancelado"
-        case .unknown(let raw): return raw
-        default: return statusWordActive ?? "—"
-        }
+        if let done = statusWordDone { return done }
+        if case .unknown(let raw) = turnStatus { return raw }
+        return statusWordActive ?? "—"
     }
 }

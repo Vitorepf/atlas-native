@@ -6,13 +6,13 @@ import AtlasCore
 // Header → AtlasWidgetAccessories+Fleet+Body+Stack+Header.swift
 // State → AtlasWidgetAccessories+Fleet+Body+Stack+State.swift
 // Delivery → AtlasWidgetAccessories+Fleet+Body+Stack+Delivery.swift
+// Lead → AtlasWidgetAccessories+Fleet+Body+Stack+Lead.swift
 
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyStack(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
         VStack(alignment: .leading, spacing: 7) {
-            fleetBodyHeaderRow(snapshot: snapshot, stale: stale)
-            fleetBodyStateRow(snapshot)
+            fleetBodyLeadRows(snapshot: snapshot, stale: stale)
             fleetBodyDeliveryRow(snapshot)
             Spacer(minLength: 0)
         }
