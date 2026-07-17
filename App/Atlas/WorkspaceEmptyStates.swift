@@ -15,23 +15,28 @@ struct AtlasNetworkFailureEmpty: View {
     var retryAccessibilityIdentifier: String?
     let accessibilityIdentifier: String
     let onRetry: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 0) {
             Text("✦")
                 .font(AtlasFont.serif(28)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
+                .accessibilityHidden(true)
             Spacer().frame(height: 28)
             Text(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken))
                 .font(AtlasFont.serif(22, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
                 .multilineTextAlignment(.center)
+                .accessibilityHidden(true)
             Spacer().frame(height: 12)
             Text(hasToken ? "\(host):3737" : "ATLAS_TOKEN · Secrets.xcconfig")
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
             Spacer().frame(height: 16)
             Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
                 .font(.system(.subheadline)).lineSpacing(5)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
+                .accessibilityHidden(true)
             if hasToken {
                 Spacer().frame(height: 28)
                 retryButton
@@ -39,7 +44,7 @@ struct AtlasNetworkFailureEmpty: View {
         }
         .padding(.horizontal, 44).padding(.top, topPadding)
         .frame(maxWidth: .infinity)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier(accessibilityIdentifier)
         .accessibilityLabel("\(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken)). \(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))")
     }
@@ -47,7 +52,7 @@ struct AtlasNetworkFailureEmpty: View {
     @ViewBuilder
     private var retryButton: some View {
         let button = Button {
-            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
             onRetry()
         } label: {
             Text("Tentar de novo")
@@ -57,6 +62,7 @@ struct AtlasNetworkFailureEmpty: View {
                     .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
         }
         .buttonStyle(PressableScale())
+        .accessibilityLabel("tentar de novo")
         .accessibilityHint(retryHint)
 
         if let retryAccessibilityIdentifier {

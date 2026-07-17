@@ -39,7 +39,7 @@ struct LiveNowSection: View {
                     remoteBadgeID: session.isRemote ? A11yID.liveNowRemoteBadge(index) : nil
                 ) {
                     guard let threadId = session.threadId else { return }
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                     onOpen(threadId, session.title)
                 }
                 .accessibilityIdentifier(A11yID.liveNowRow(index))

@@ -20,7 +20,7 @@ extension ConversationComposer {
     }
 
     func dismissKeyboard() {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
         if reduceMotion {
             focused.wrappedValue = false
         } else {
@@ -29,7 +29,7 @@ extension ConversationComposer {
     }
 
     func send() {
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
         let text = model.draftText
         let effort = model.effort
         Task { await model.send(text, effort: effort) }
@@ -40,7 +40,7 @@ extension ConversationComposer {
         instruction: String,
         scope: AtlasInteractionSteerScope
     ) {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
         Task {
             await model.steerInteraction(traceId: traceId, instruction: instruction, scope: scope)
             if let receipt = steerReceipt(for: traceId) {
