@@ -26,12 +26,16 @@ extension ArtifactSheet {
                 )
             )
         } else if items.isEmpty {
-            TraceEvidenceUnavailable(
-                title: "Sem artefatos visualizáveis nesta execução.",
-                subtitle: nil,
-                identifier: A11yID.artifactsEmpty,
-                spoken: "sem artefatos visualizáveis nesta execução"
-            )
+            Text("nenhum artefato visualizável")
+                .font(AtlasFont.serifItalic(15))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .accessibilityIdentifier(A11yID.artifactsEmpty)
+                .accessibilityLabel("sem artefatos visualizáveis nesta execução")
+        } else if hasDeliveryProof, !mountComplete {
+            artifactMount
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.top, 14)
         } else {
             VStack(alignment: .leading, spacing: 12) {
                 Text("ARTEFATOS DO TURNO · \(artifacts?.workspaceLabel ?? "workspace")")

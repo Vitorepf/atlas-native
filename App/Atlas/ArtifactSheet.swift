@@ -12,6 +12,7 @@ struct ArtifactSheet: View {
     @State var selectedID: String?
     @State var preview: ArtifactPreviewState = .idle
     @State var loadFinished = false
+    @State var mountRevealed = 0
 
     var artifacts: AtlasTraceArtifacts? { reviews.artifactsByTrace[traceId] }
     var items: [AtlasTraceArtifacts.Item] {
@@ -37,8 +38,10 @@ struct ArtifactSheet: View {
             .accessibilityIdentifier(A11yID.artifactsSheet)
         }
         .task {
-            await reviews.refreshArtifacts(traceId: traceId)
+            await reviews.refreshChangeReview(traceId: traceId)
             loadFinished = true
+            if hasDeliveryProof { await runMountAnimation() }
+            else { mountRevealed = deliveryChecks.count }
         }
         .onChange(of: items.map(\.id)) { _, ids in
             if selectedID == nil || selectedID.map({ !ids.contains($0) }) == true {
@@ -46,7 +49,7 @@ struct ArtifactSheet: View {
             }
         }
         .task(id: selected?.id) {
-            guard let selected else { return }
+            guard mountComplete, let selected else { return }
             await load(selected)
         }
     }
