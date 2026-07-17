@@ -12,9 +12,9 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **179** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 481 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 180 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **197** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 499 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 198 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -64,15 +64,24 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **XL** | **PARCIAL** | Lock accessories incident/timer só snapshot publicado; peels `LockLive+A11y`/`LockRect` (`70aec79`) |
 | **XLI** | **PARCIAL** | Root chrome spoken/RM + Fleet/Live widget honesty; peels `RootView+Chrome+A11y`/`Fleet+A11y`/`LiveSession+A11y` (`c6ca757`/`0986e25`) |
 | **XLII** | **PARCIAL** | TurnPresence notificação terminal + Nightly spoken/mute/copy; peels `+Notifications+A11y`/`NightlyProposal+A11y` (`51e019c`/`74d47f1`) |
+| **XLIII** | **PARCIAL** | Arena Suite/Engine sheets + ConversationOutline + StaleReadSeal + ChangeReviewDiff; peels `ArenaSuiteSheet+A11y`/`ArenaEngineSheet+A11y`/`Outline+A11y`/`Seals+A11y`/`ChangeReviewDiffSection+A11y` (`faad2f1`/`a017922`/`4ecc1ca`/`78524c8`/`1ffeb59`) |
+| **XLIV** | **PARCIAL** | FleetHistory + OperationDigest + ComposerAttachments; spoken contagens publicadas; clipboard vazia honesta; peels `FleetHistory+A11y`/`OperationDigest+A11y`/`ComposerAttachmentsSheet+A11y` (`5197fd3`/`1c29173`/`4429810`) |
+| **XLV** | **PARCIAL** | FleetTransfer + ExecutionProof expanded + LiveTimeline filters; marcos só publicados; replay/format honesty; filtros com contagens reais; peels `FleetTransfer`/`ExecutionProof+ReplayFormat`/`LiveTimeline+A11y` (`fcd7b7e`/`dcc6ae5`/`066b837`) |
+| **XLVI** | **PARCIAL** | TaskHealth + ArtifactZoom + AreaPicker + PlanCard steps; saúde fila spoken; zoom escala real; picker instâncias; passos N/M honestos; peels `FleetTaskHealth+A11y`/`ArtifactViewer+Zoom+A11y`/`AutonomosAreaPicker+A11y`/`PlanCard+StepRow+A11y` (`935ab15`/`655fff7`/`b57a418`/`c8d11cb`) |
 
-## Entrega recente (wave XLII contínuo — Lock/Root/Widgets/TurnPresence/Nightly — HEAD)
+## Entrega recente (wave XLVI contínuo — TaskHealth/ArtifactZoom/AreaPicker/PlanCard — HEAD)
 
-- `polish(ui)` CICLO C Nightly: spoken card/accept/mute; `NightlyProposal+Copy`/`+A11y`; block fala mute ativo (`74d47f1`).
-- `polish(ui)` CICLO C TurnPresence: notificação só fase terminal; título `phaseTitle`; corpo excerpt/detail real; peel `TurnPresence+Notifications+A11y` (`51e019c`).
-- `polish(ui)` CICLO C Fleet/Live widgets: incidente só texto publicado; timer RM live session; peels `Fleet+A11y`/`LiveSession+A11y`/`+Timer` (`0986e25`).
-- `polish(ui)` CICLO C Root chrome: avatar silenciado; topbar/home spoken; chips `.isSelected`; peel `RootView+Chrome+A11y` (`c6ca757`).
-- `polish(ui)` CICLO C Lock accessories: `LockAccessoryA11y` incident/timer/inline/rectangular honestos; peel `LockLive+A11y` (`70aec79`).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **179** (inclui este pin).
+- `polish(ui)` CICLO C PlanCard: passos N/M reais; spine silenciada; trait `.isSelected` no passo corrente; peels `PlanCard+StepRow+A11y`/`PlanCard+A11y` (`c8d11cb`).
+- `polish(ui)` CICLO C AreaPicker: spoken seção N áreas/quiet; linha nome/objetivo/fase/`registered`; peel `AutonomosAreaPicker+A11y` (`b57a418`).
+- `polish(ui)` CICLO C ArtifactZoom: spoken escala real; hint redefinir; peel `ArtifactViewer+Zoom+A11y` (`655fff7`).
+- `polish(ui)` CICLO C TaskHealth: spoken contagens publicadas; incidente flags/ação; peel `AutonomosFleetTaskHealth+A11y` (`935ab15`).
+- `polish(ui)` CICLO C LiveTimeline: filtros com contagens reais; silêncio de filtro vazio; peel `LiveTimeline+A11y` (`066b837`).
+- `polish(ui)` CICLO C ExecutionProof: expanded/replay honesty; shell 99≤100 (`dcc6ae5`).
+- `polish(ui)` CICLO C FleetTransfer: marcos só publicados; placement verificado (`fcd7b7e`).
+- `polish(ui)` CICLO C ComposerAttachments: clipboard vazia disabled; foto/arquivo spoken (`4429810`).
+- `polish(ui)` CICLO C OperationDigest + FleetHistory: contagens publicadas; histórico editorial honesto (`1c29173`/`5197fd3`).
+- `polish(ui)` CICLO C ChangeReviewDiff + Outline + StaleReadSeal + Arena sheets (`1ffeb59`/`4ecc1ca`/`78524c8`/`faad2f1`/`a017922`).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **197** (inclui este pin).
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ### Top 10 (App/Core/Widgets — all ≤100)
