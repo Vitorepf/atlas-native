@@ -31,7 +31,9 @@ enum A11yID {
     // V1 · Cockpit postura
     static let liveNowSection = "live-now-section"
     static let liveNowRowPrefix = "live-now-row-"
+    static let liveNowRemoteBadgePrefix = "live-now-remote-badge-"
     static func liveNowRow(_ index: Int) -> String { liveNowRowPrefix + String(index) }
+    static func liveNowRemoteBadge(_ index: Int) -> String { liveNowRemoteBadgePrefix + String(index) }
 
     // V2 · Proposta das 21h
     static let nightlyProposalCard = "nightly-proposal-card"

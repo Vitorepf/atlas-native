@@ -29,6 +29,7 @@ struct LiveSessionSnapshot: Identifiable, Equatable {
     let pauseTimestamp: Date?
     /// 1ª observação local — só ordenação; nunca exibido como duração.
     let startedAt: Date
+    let isRemote: Bool
 }
 
 @Observable @MainActor
@@ -91,7 +92,8 @@ final class TurnPresence {
                 elapsedActiveMs: presence.elapsedActiveMilliseconds,
                 runningSince: presence.runningSince,
                 pauseTimestamp: presence.pauseTimestamp,
-                startedAt: entry.startedAt
+                startedAt: entry.startedAt,
+                isRemote: false
             )
             byTrace[snap.id] = snap
         }

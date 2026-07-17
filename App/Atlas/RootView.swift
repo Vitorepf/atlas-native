@@ -204,10 +204,11 @@ struct RootView: View {
         default:   // .loaded, ou refresh/erro com conteúdo já em tela
             ScrollView {
                 LazyVStack(spacing: 0) {
-                    // V1: cockpit só quando há sessão viva neste processo.
-                    if !TurnPresence.shared.liveSessions.isEmpty {
+                    // M13: cockpit aparece para sessões locais ou vindas de outra superfície.
+                    if !TurnPresence.shared.liveSessions.isEmpty || !session.remoteLiveSessions.isEmpty {
                         LiveNowSection(
-                            sessions: TurnPresence.shared.liveSessions,
+                            localSessions: TurnPresence.shared.liveSessions,
+                            remoteSessions: session.remoteLiveSessions,
                             onOpen: { id, title in path.append(Route.thread(id: id, title: title)) }
                         )
                     }

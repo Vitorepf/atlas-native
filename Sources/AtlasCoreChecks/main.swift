@@ -91,6 +91,7 @@ check("ordem de inserção preservada", atlasQueryString([("status", .string("ac
 
 print("\nAtlasRoute (constantes de path e segmentos codificados):")
 runAtlasRouteChecks(check)
+runAtlasAiSessionsLiveChecks(check)
 
 print("\nJSONValue (ponte JSONSerialization sem alterar contrato Codable):")
 do {

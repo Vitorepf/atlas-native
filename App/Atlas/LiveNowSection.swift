@@ -4,9 +4,14 @@ import AtlasCore
 /// "VIVO AGORA" — a home vira cockpit quando há sessão observada neste
 /// processo. Sem sessões a seção não existe (lei V1: estado por exceção).
 struct LiveNowSection: View {
-    let sessions: [LiveSessionSnapshot]
+    let localSessions: [LiveSessionSnapshot]
+    let remoteSessions: [LiveSessionSnapshot]
     let onOpen: (ThreadID, String) -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var sessions: [LiveSessionSnapshot] {
+        Self.merged(local: localSessions, remote: remoteSessions)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -16,7 +21,11 @@ struct LiveNowSection: View {
                 .foregroundStyle(AtlasTheme.textTertiary)
 
             ForEach(Array(sessions.enumerated()), id: \.element.id) { index, session in
-                LiveNowRow(session: session, reduceMotion: reduceMotion) {
+                LiveNowRow(
+                    session: session,
+                    reduceMotion: reduceMotion,
+                    remoteBadgeID: session.isRemote ? A11yID.liveNowRemoteBadge(index) : nil
+                ) {
                     guard let threadId = session.threadId else { return }
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     onOpen(threadId, session.title)
@@ -35,11 +44,26 @@ struct LiveNowSection: View {
         .accessibilityIdentifier(A11yID.liveNowSection)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: sessions.map(\.id))
     }
+
+    static func merged(local: [LiveSessionSnapshot], remote: [LiveSessionSnapshot]) -> [LiveSessionSnapshot] {
+        var seenThreads = Set(local.compactMap { $0.threadId?.rawValue })
+        var seenRemoteIDs: Set<String> = []
+        let filteredRemote = remote.filter { session in
+            if let thread = session.threadId?.rawValue {
+                guard !seenThreads.contains(thread) else { return false }
+                seenThreads.insert(thread)
+                return true
+            }
+            return seenRemoteIDs.insert(session.id).inserted
+        }
+        return local + filteredRemote
+    }
 }
 
 private struct LiveNowRow: View {
     let session: LiveSessionSnapshot
     let reduceMotion: Bool
+    let remoteBadgeID: String?
     let onTap: () -> Void
 
     private var navigable: Bool { session.threadId != nil }
@@ -76,6 +100,9 @@ private struct LiveNowRow: View {
                             .font(AtlasFont.serifItalic(13))
                             .foregroundStyle(AtlasTheme.textSecondary)
                             .lineLimit(1)
+                        if session.isRemote {
+                            remoteBadge
+                        }
                         clockView(now: context.date)
                     }
                 }
@@ -89,6 +116,18 @@ private struct LiveNowRow: View {
             }
             .opacity(isLongPaused(now: context.date) ? 0.58 : 1)
         }
+    }
+
+    private var remoteBadge: some View {
+        Text("em outra superfície")
+            .font(AtlasFont.mono(9))
+            .tracking(0.4)
+            .foregroundStyle(AtlasTheme.accent)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 3)
+            .background(Capsule().fill(AtlasTheme.goldVeil))
+            .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+            .accessibilityIdentifier(remoteBadgeID ?? "")
     }
 
     @ViewBuilder
@@ -133,13 +172,17 @@ private struct LiveNowRow: View {
         )
         switch session.timing {
         case .running:
-            return "\(session.title), \(session.phaseTitle), em execução há \(clock)"
+            return "\(session.title), \(session.phaseTitle)\(remoteSuffix), em execução há \(clock)"
         case .paused:
             let age = pauseAgeHours(now: .now).map { ", há \($0) horas" } ?? ""
-            return "\(session.title), \(session.phaseTitle), pausado em \(clock)\(age)"
+            return "\(session.title), \(session.phaseTitle)\(remoteSuffix), pausado em \(clock)\(age)"
         case .finished:
-            return "\(session.title), concluído"
+            return "\(session.title)\(remoteSuffix), concluído"
         }
+    }
+
+    private var remoteSuffix: String {
+        session.isRemote ? ", em outra superfície" : ""
     }
 
     private func isLongPaused(now: Date) -> Bool {

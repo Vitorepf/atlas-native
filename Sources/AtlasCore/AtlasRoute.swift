@@ -29,6 +29,10 @@ public enum AtlasRoute {
         "\(aiThreads)/\(component(id))"
     }
 
+    public static func aiSessionsLive(installation: String) -> String {
+        "\(aiSessionsLiveBase)\(atlasQueryString([("installation", .string(installation))]))"
+    }
+
     public static func aiThreadHandoffSurface(_ id: String) -> String {
         "\(aiThread(id))/handoff-surface"
     }
@@ -159,6 +163,7 @@ public enum AtlasRoute {
     }
 
     private static let arenaCapabilitiesBase = "/arena/capabilities"
+    private static let aiSessionsLiveBase = "/ai/sessions/live"
 
     private static func component(_ value: String) -> String {
         value.addingPercentEncoding(withAllowedCharacters: encodeURIComponentAllowed) ?? value
@@ -175,6 +180,8 @@ public func runAtlasRouteChecks(_ check: (String, Bool) -> Void) {
           AtlasRoute.aiInteractionSteer("trace/1") == "/ai/interactions/trace%2F1/steer")
     check("route change review diff encodes both ids",
           AtlasRoute.aiInteractionChangeReviewDiff(traceId: "tr 1", patchId: "patch/2") == "/ai/interactions/tr%201/change-review/patches/patch%2F2/diff")
+    check("route live sessions encodes installation",
+          AtlasRoute.aiSessionsLive(installation: "install/1 234567890") == "/ai/sessions/live?installation=install%2F1%20234567890")
     check("route artifact content encodes ids and max bytes",
           AtlasRoute.aiInteractionArtifactContent(traceId: "tr/1", artifactId: "art 2", maxBytes: 9) == "/ai/interactions/tr%2F1/artifacts/art%202/content?max_bytes=9")
     check("route Arena capabilities encodes engine",

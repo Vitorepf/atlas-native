@@ -14,6 +14,7 @@ final class AtlasSession {
     var phase: LoadPhase = .idle
     var failureKind: AtlasNetworkFailureKind?
     var threads: [AtlasAiThread] = []
+    private(set) var remoteLiveSessions: [LiveSessionSnapshot] = []
 
     let host: String
     let hasToken: Bool
@@ -22,6 +23,7 @@ final class AtlasSession {
     /// sem usar threads como fonte falsa de estado.
     let autonomos: AutonomosModel
     let arena: ArenaModel
+    @ObservationIgnored private var liveSessionsPollingTask: Task<Void, Never>?
 
     init() {
         let info = Bundle.main.infoDictionary ?? [:]
@@ -47,6 +49,37 @@ final class AtlasSession {
         } catch {
             failureKind = atlasNetworkFailureKind(for: error)
             phase = .failed(String(describing: error))
+        }
+    }
+
+    func setLiveSessionsPollingActive(_ active: Bool) {
+        guard active, hasToken else {
+            liveSessionsPollingTask?.cancel()
+            liveSessionsPollingTask = nil
+            remoteLiveSessions = []
+            return
+        }
+        guard liveSessionsPollingTask == nil else { return }
+        liveSessionsPollingTask = Task { @MainActor [weak self] in
+            while !Task.isCancelled {
+                await self?.refreshRemoteLiveSessions()
+                do {
+                    try await Task.sleep(nanoseconds: 30_000_000_000)
+                } catch {
+                    break
+                }
+            }
+        }
+    }
+
+    private func refreshRemoteLiveSessions() async {
+        do {
+            let response = try await client.getAiSessionsLive(installation: AtlasInstallationIdentity.id)
+            remoteLiveSessions = response.sessions.enumerated().map { index, session in
+                LiveSessionSnapshot(remote: session, index: index)
+            }
+        } catch {
+            remoteLiveSessions = []
         }
     }
 
@@ -107,6 +140,40 @@ final class AtlasSession {
             guard let w = $0.workspace, !w.isEmpty else { return false }
             return (w as NSString).lastPathComponent.lowercased() == key
         }
+    }
+}
+
+private extension LiveSessionSnapshot {
+    init(remote session: AtlasAiLiveSession, index: Int) {
+        let threadId = session.threadId
+        self.init(
+            id: threadId.map { "remote-thread:\($0.rawValue)" } ?? "remote-session:\(index)",
+            threadId: threadId,
+            title: session.title?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty ?? "Sessão Atlas",
+            phaseTitle: session.phaseTitle?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty ?? "Executando",
+            timing: session.timing.presenceTiming,
+            elapsedActiveMs: session.elapsedActiveMs,
+            runningSince: session.runningSinceDate,
+            pauseTimestamp: nil,
+            startedAt: .now,
+            isRemote: true
+        )
+    }
+}
+
+private extension Optional where Wrapped == AtlasAiLiveSessionTiming {
+    var presenceTiming: AtlasExecutionPresence.Timing {
+        switch self {
+        case .running, nil: return .running
+        case .paused: return .paused
+        case .finished: return .finished
+        }
+    }
+}
+
+private extension String {
+    var nonEmpty: String? {
+        isEmpty ? nil : self
     }
 }
 

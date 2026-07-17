@@ -18,10 +18,13 @@ struct AtlasApp: App {
                         client: session.client,
                         installationId: AtlasInstallationIdentity.id
                     )
+                    session.setLiveSessionsPollingActive(scenePhase == .active)
                 }
                 .onChange(of: scenePhase) { _, phase in
-                    guard phase == .background else { return }
-                    Task { await NightlyProposalController.shared.scheduleForBackground() }
+                    session.setLiveSessionsPollingActive(phase == .active)
+                    if phase == .background {
+                        Task { await NightlyProposalController.shared.scheduleForBackground() }
+                    }
                 }
         }
     }
