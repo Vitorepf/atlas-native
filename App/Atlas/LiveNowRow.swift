@@ -5,6 +5,8 @@ import AtlasCore
 struct LiveNowRow: View {
     let session: LiveSessionSnapshot
     let hubMode: Bool
+    let hubIndex: Int?
+    let hubCount: Int?
     let reduceMotion: Bool
     let remoteBadgeID: String?
     let onTap: () -> Void
@@ -21,7 +23,8 @@ struct LiveNowRow: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(a11yLabel)
+        .accessibilityLabel(spokenLabel(hubIndex: hubIndex, hubCount: hubCount))
+        .accessibilityHint(navigable ? "abre conversa desta sessão" : "")
         .accessibilityAddTraits(navigable ? .isButton : [])
     }
 

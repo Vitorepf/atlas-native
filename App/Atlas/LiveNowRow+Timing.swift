@@ -31,6 +31,7 @@ extension LiveNowRow {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
                 clockView(now: now)
+                    .accessibilityLabel(clockAccessibilityLabel(now: now))
             }
             if session.timing == .paused, let age = pauseAgeHours(now: now) {
                 Text("· há \(age)h")
@@ -44,7 +45,7 @@ extension LiveNowRow {
     func clockView(now: Date) -> some View {
         switch session.timing {
         case .running:
-            TimelineView(.periodic(from: .now, by: 1)) { context in
+            TimelineView(.periodic(from: .now, by: reduceMotion ? 60 : 1)) { context in
                 Text(Self.formatClock(
                     elapsedMs: session.elapsedActiveMs,
                     runningSince: session.runningSince,
@@ -72,25 +73,12 @@ extension LiveNowRow {
         }
     }
 
-    var a11yLabel: String {
-        let clock = Self.formatClock(
-            elapsedMs: session.elapsedActiveMs,
-            runningSince: session.runningSince,
-            now: .now,
-            paused: session.timing == .paused
-        )
-        switch session.timing {
-        case .running:
-            return "\(session.title), \(session.phaseTitle)\(remoteSuffix), em execução há \(clock)"
-        case .paused:
-            let age = pauseAgeHours(now: .now).map { ", há \($0) horas" } ?? ""
-            return "\(session.title), \(session.phaseTitle)\(remoteSuffix), pausado em \(clock)\(age)"
-        case .finished:
-            return "\(session.title)\(remoteSuffix), concluído"
+    func clockAccessibilityLabel(now: Date) -> String {
+        guard let clock = spokenClock(now: now) else {
+            return "tempo ativo indisponível"
         }
-    }
-
-    var remoteSuffix: String {
-        session.isRemote ? ", sessão remota em outra superfície" : ""
+        return session.timing == .paused
+            ? "tempo ativo congelado em \(clock)"
+            : "tempo ativo \(clock)"
     }
 }

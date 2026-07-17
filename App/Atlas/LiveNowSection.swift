@@ -33,6 +33,8 @@ struct LiveNowSection: View {
                 LiveNowRow(
                     session: session,
                     hubMode: isHub,
+                    hubIndex: isHub ? index : nil,
+                    hubCount: isHub ? sessions.count : nil,
                     reduceMotion: reduceMotion,
                     remoteBadgeID: session.isRemote ? A11yID.liveNowRemoteBadge(index) : nil
                 ) {
@@ -52,6 +54,9 @@ struct LiveNowSection: View {
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.bottom, 18)
         .accessibilityIdentifier(A11yID.liveNowSection)
+        .accessibilityLabel(Self.spokenSectionLabel(
+            isHub: isHub, count: sessions.count, remoteCount: remoteCount
+        ))
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: sessions.map(\.id))
     }
 
@@ -61,6 +66,7 @@ struct LiveNowSection: View {
                 .font(AtlasFont.mono(11))
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
             if isHub {
                 Text("× \(sessions.count)")
                     .font(AtlasFont.mono(11))
