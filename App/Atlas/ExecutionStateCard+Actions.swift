@@ -1,0 +1,34 @@
+import SwiftUI
+import AtlasCore
+
+// Estilo dos botões de ação do ExecutionStateCard.
+// Extraído para manter o card sob a régua (~250).
+
+struct ExecutionStateActionStyle: ButtonStyle {
+    let style: AtlasExecutionPresentationState.ActionStyle
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundStyle(foreground)
+            .background(Capsule().fill(background.opacity(configuration.isPressed ? 0.72 : 1)))
+            .overlay(Capsule().stroke(border, lineWidth: 1))
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+    }
+
+    private var background: Color {
+        switch style {
+        case .primary: return AtlasTheme.accent
+        case .secondary: return AtlasTheme.surfaceHi
+        case .destructive: return AtlasTheme.domOperacional.opacity(0.2)
+        }
+    }
+
+    private var foreground: Color {
+        style == .primary ? AtlasTheme.bg : AtlasTheme.textPrimary
+    }
+
+    private var border: Color {
+        style == .destructive ? AtlasTheme.domOperacional.opacity(0.55) : AtlasTheme.separator
+    }
+}
