@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Cabeçalho da pasta — peel de AtlasCodeFolderRow (régua ≤100).
 /// Badge → AtlasCodeRadarFolderRow+Badge.swift
+/// Title → AtlasCodeRadarFolderRow+HeaderTitle.swift
 
 extension AtlasCodeFolderRow {
     var folderHeaderLabel: some View {
@@ -12,15 +13,7 @@ extension AtlasCodeFolderRow {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 20)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 3) {
-                Text(folder.name)
-                    .font(AtlasFont.serif(16, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                Text(folder.repositories == 1 ? "1 repositório" : "\(folder.repositories) repositórios")
-                    .font(.system(size: 11.5))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-            }
-            .accessibilityHidden(true)
+            folderTitleStack
             Spacer(minLength: 6)
             exceptionBadge
             Image(systemName: "chevron.right")
