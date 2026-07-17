@@ -16,21 +16,3 @@ extension AtlasCodeRadarStatusCapsule {
         }
     }
 }
-
-extension AtlasCodeRepoRow {
-    func spokenRepoLabel(
-        name: String,
-        issues: [AtlasCodeIssue]?,
-        trunk: String?,
-        lastCommitAt: String?
-    ) -> String {
-        var parts = [name]
-        if let issues, !issues.isEmpty {
-            parts.append(issues.map { $0.headline(trunk: trunk) }.joined(separator: ", "))
-        }
-        if let age = AtlasCodeAge.short(from: lastCommitAt) {
-            parts.append("último commit \(age)")
-        }
-        return parts.joined(separator: ", ")
-    }
-}

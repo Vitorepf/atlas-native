@@ -29,6 +29,7 @@ struct AtlasCodeRepoRow: View {
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 1.5)
                                 .background(Capsule().fill(AtlasTheme.surface))
+                                .accessibilityHidden(true)
                         }
                     }
                     // A história do repo em português — só quando existe.
@@ -37,38 +38,45 @@ struct AtlasCodeRepoRow: View {
                             Circle()
                                 .fill(first.isSevere ? AtlasCodePalette.alert : AtlasCodePalette.alert.opacity(0.45))
                                 .frame(width: 4.5, height: 4.5)
+                                .accessibilityHidden(true)
                             Text(issues.count == 1 ? first.headline(trunk: trunk) : "\(first.headline(trunk: trunk)) · +\(issues.count - 1)")
                                 .font(.system(size: 12))
                                 .foregroundStyle(AtlasTheme.textSecondary)
                                 .lineLimit(1)
+                                .accessibilityHidden(true)
                         }
                     }
                 }
+                .accessibilityHidden(true)
                 Spacer(minLength: 6)
                 if let age = AtlasCodeAge.short(from: repo.lastCommitAt) {
                     Text(age)
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .monospacedDigit()
+                        .accessibilityHidden(true)
                 }
                 Image(systemName: "chevron.right")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+                    .accessibilityHidden(true)
             }
             .padding(.vertical, 13)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            spokenRepoLabel(
+            AtlasCodeRadarRowsA11y.spokenRepo(
                 name: repo.name,
+                folder: repo.folder,
+                showsFolder: showsFolder,
                 issues: issues,
                 trunk: trunk,
                 lastCommitAt: repo.lastCommitAt
             )
         )
-        .accessibilityHint("abre o grafo do repositório")
+        .accessibilityHint(AtlasCodeRadarRowsA11y.repoHint)
         .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
     }
 }
