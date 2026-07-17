@@ -2,6 +2,8 @@ import SwiftUI
 import AtlasCore
 
 // Corpo com sinal publicado — peel de AutonomosOperationDigestSection.
+// Spoken → AutonomosOperationDigestSection+Body+Spoken.swift
+// Identifier → AutonomosOperationDigestSection+Body+Identifier.swift
 // Quiet → +Quiet · Meta → +SignalMeta
 // Chrome → AutonomosOperationDigestSection+BodyChrome.swift
 // Stack → AutonomosOperationDigestSection+BodyStack.swift
@@ -9,18 +11,12 @@ import AtlasCore
 extension AutonomosOperationDigestSection {
     @ViewBuilder
     var digestSignalBody: some View {
-        digestSignalChrome {
-            digestSignalStack
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(AutonomosOperationDigestA11y.spokenSection(
-            deliveredTotal: deliveredTotal,
-            pendingCount: pendingCount,
-            inboxCount: inboxCount,
-            incidentPresent: incidentPresent,
-            oldestBacklogCreatedAt: oldestBacklogCreatedAt,
-            findingsByRisk: findingsByRisk
-        ))
-        .accessibilityIdentifier(A11yID.autonomosOperationDigest)
+        digestSignalIdentifier(
+            digestSignalSpoken(
+                digestSignalChrome {
+                    digestSignalStack
+                }
+            )
+        )
     }
 }

@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 // Aggregate spoken — peel de AutonomosDigestSection+A11y.
+// LastBody → AutonomosDigestSection+A11yAggregate+LastBody.swift
 
 extension AutonomosDigestSectionA11y {
     static func spokenSection(
@@ -20,8 +21,8 @@ extension AutonomosDigestSectionA11y {
             hasLast: hasLast
         )
         if hasLast {
-            AutonomosDigestSectionA11yLast.appendLastBody(
-                &parts,
+            spokenLastBody(
+                parts: &parts,
                 windowCaption: windowCaption,
                 counts: counts,
                 mergeHash: mergeHash,

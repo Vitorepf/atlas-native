@@ -2,25 +2,13 @@ import AtlasCore
 import SwiftUI
 
 // Headline states — peel de AtlasCodeMirrorCard.
+// Healthy → AtlasCodeMirrorCard+Headline+Healthy.swift
+// Blocked → AtlasCodeMirrorCard+Headline+Blocked.swift
 
 extension AtlasCodeMirrorCard {
     @ViewBuilder
     var headline: some View {
-        switch response.state {
-        case .mirrored:
-            label("tudo espelhado · a verdade fica no Mac", color: AtlasTheme.textSecondary, icon: "checkmark")
-        case .pending(let commits):
-            label(
-                commits == 1 ? "1 commit ainda só no Mac" : "\(commits) commits ainda só no Mac",
-                color: AtlasTheme.textSecondary,
-                icon: "internaldrive"
-            )
-        case .blocked:
-            label("segredo detectado · nada sai da máquina", color: AtlasCodePalette.alert, icon: "exclamationmark.triangle")
-        case .noMirror:
-            label("sem espelho configurado", color: AtlasTheme.textTertiary, icon: "circle.dashed")
-        case .unknown:
-            label("espelho ainda não conhecido", color: AtlasTheme.textTertiary, icon: "questionmark.circle")
-        }
+        headlineBlocked
+        headlineHealthy
     }
 }
