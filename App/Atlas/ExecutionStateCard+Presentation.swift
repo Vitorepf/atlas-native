@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Selo, ícone, tint e resumo falado — peel de ExecutionStateCard (régua ~160).
+// Timers → ExecutionStateCard+Timers.swift
 
 extension ExecutionStateCard {
     var spokenKind: String? {
@@ -49,36 +50,5 @@ extension ExecutionStateCard {
 
     static func clock(_ ms: Int) -> String {
         AtlasTime.formatActiveDuration(milliseconds: ms)
-    }
-
-    /// Timer congelado (‖) — paridade Island/Lock para `.attentionRequired` e
-    /// `.awaitingExternal` quando o servidor publica `timing: paused`.
-    var frozenTimerText: String? {
-        guard let timer = state.timer, timer.timing == .paused else { return nil }
-        switch state.kind {
-        case .attentionRequired, .awaitingExternal:
-            return "‖ \(Self.clock(timer.elapsedActiveMilliseconds))"
-        default:
-            return nil
-        }
-    }
-
-    var frozenTimerA11y: String? {
-        guard let timer = state.timer, timer.timing == .paused else { return nil }
-        switch state.kind {
-        case .attentionRequired, .awaitingExternal:
-            return "tempo ativo congelado em \(Self.clock(timer.elapsedActiveMilliseconds))"
-        default:
-            return nil
-        }
-    }
-
-    var recoveringTimerText: String? {
-        guard state.kind == .recovering, let timer = state.timer else { return nil }
-        return "ativo \(Self.clock(timer.elapsedActiveMilliseconds))"
-    }
-
-    var spokenTimerFragment: String? {
-        frozenTimerA11y ?? recoveringTimerText
     }
 }
