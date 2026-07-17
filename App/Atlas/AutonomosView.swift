@@ -61,17 +61,7 @@ struct AutonomosView: View {
         case .failed(let message):
             AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }
             Spacer()
-            VStack(spacing: 14) {
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.title2).foregroundStyle(AtlasTheme.domOperacional)
-                Text("A frota está fora de alcance.")
-                    .font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
-                Text(message).font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
-                    .multilineTextAlignment(.center)
-                Button("Tentar de novo") { Task { await model.load() } }
-                    .buttonStyle(AutonomosPrimaryButtonStyle())
-            }
-            .padding(32)
+            AutonomosFleetFailureEmpty(message: message) { Task { await model.load() } }
             Spacer()
         case .loaded:
             AutonomosLoadedSection(

@@ -21,10 +21,6 @@ struct AutonomosLoadedSection: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 16) {
                 AutonomosNightlyProposalBlock(nightly: nightly) { nightlyStartProposal = $0 }
-                    .animation(
-                        reduceMotion ? nil : AtlasMotion.editorial,
-                        value: nightly.pendingProposal?.id
-                    )
                 AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
                 if let fleet = model.fleet {
                     AutonomosFleetSummary(

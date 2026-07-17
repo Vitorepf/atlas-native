@@ -24,24 +24,6 @@ struct AutonomosDetailChipButton: View {
     }
 }
 
-struct AutonomosNightlyProposalBlock: View {
-    let nightly: NightlyProposalController
-    let onAccept: (NightlyProposalController.ProposalPayload) -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    var body: some View {
-        if let proposal = nightly.pendingProposal, !nightly.isProposalMuted {
-            NightlyProposalCard(
-                proposal: proposal,
-                onAccept: { onAccept(proposal) },
-                onDismiss: { nightly.dismissProposal() },
-                onMute: { nightly.muteProposal(days: $0) }
-            )
-            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-        }
-    }
-}
-
 struct AutonomosRhythmLearningLine: View {
     let sampleDays: Int?
 

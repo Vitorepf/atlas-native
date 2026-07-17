@@ -59,7 +59,7 @@ struct ArenaNowSection: View {
                     .fill(AtlasTheme.accent)
                     .frame(width: 8, height: 8)
             } else {
-                BreathingDiamond(size: 8, reduceMotion: false)
+                BreathingDiamond(size: 8, reduceMotion: reduceMotion)
                     .frame(width: 8, height: 8)
             }
         default:

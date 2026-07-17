@@ -32,23 +32,11 @@ struct AtlasCodeRadarView: View {
             TraceEvidenceLoading(text: "lendo o seu workspace…", reduceMotion: reduceMotion)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         case .failed(let message):
-            VStack(spacing: 12) {
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.system(size: 22))
-                    .foregroundStyle(AtlasCodePalette.alert)
-                Text("não consegui ler o workspace")
-                    .font(AtlasFont.serif(19, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                Text(message)
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 30)
-                Button("Tentar de novo") { Task { await model.load() } }
-                    .buttonStyle(.borderedProminent)
-                    .tint(AtlasTheme.accent)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            AtlasCodeLoadFailureEmpty(
+                headline: "não consegui ler o workspace",
+                message: message,
+                onRetry: { Task { await model.load() } }
+            )
         case .loaded:
             if let workspace = model.workspace {
                 AtlasCodeRadarLoadedContent(workspace: workspace, model: model, onOpenRepo: onOpenRepo)
