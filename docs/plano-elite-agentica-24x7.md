@@ -515,7 +515,7 @@ snapshot/ContentState ou **não renderiza**.
 ### Task A5.2: Widgets
 
 - [ ] Fix W-L* (sessão) URLs
-- [ ] M84 Semana do Código (ler `week` já escrito)
+- [x] M84 Semana do Código (ler `week` já escrito) — **DONE** `AtlasCodeWeekWidget` + `CodeWeekWidgetView` (2026-07-17)
 - [ ] W-A* Arena medium (opcional, se snapshot tiver follow)
 - [ ] W-C4 exception-only code chip (silêncio se 0)
 - [ ] Families S/M/L conforme especificado; Reduce Motion ok
@@ -528,8 +528,8 @@ snapshot/ContentState ou **não renderiza**.
 
 ### Task A5.4: Live Activity + Dynamic Island (CONV)
 
-- [ ] SD-2 completo: RUN/PROG/QUEUE/REC/REPL/EXT/ATT/PLAN/OK/FAIL/CXL
-- [ ] Compact trailing `N/M` quando progresso real
+- [ ] SD-2 completo: RUN/PROG/QUEUE/REC/REPL/EXT/ATT/PLAN/OK/FAIL/CXL — **PARCIAL** 2026-07-17: ATT/EXT/FAIL/REC/PLN badges + pausa `‖` + fila `queueLabel`; RUN/PROG/QUEUE/REPL/CXL/OK/M88 ainda pendentes
+- [x] Compact trailing `N/M` quando progresso real — `progressLabel` em Island/lock (`4191353`)
 - [ ] ⚠ attention; ✕ fail; ✓ finish ~5s
 - [ ] M88 multi-session expanded list (follow)
 - [ ] M123 share-safe minimal glyph
@@ -589,11 +589,11 @@ nenhum arquivo Codex/Fable >400 sem justificativa §7.
 ### Task B1.3: ConversationModel <800
 
 - [x] Peels adicionais (`+Execution`, `+Queue`, …)
-- [x] Medir linhas; §7 — 885→642
+- [x] Medir linhas; §7 — 885→642→**250** (wave V–VI peels)
 
 ### Task B1.4: ConversationView / Chrome / RootView / Radar / ChangeReview
 
-- [ ] Cada um ≤ alvo §3; zero mudança visual intencional — **PARCIAL:** View~262 Chrome~181 Radar~66 ChangeReview shell~95 + Sections 448→225 (+Diff/Council) + ArenaSuites 234→120 (+Sheet) DONE; RootView~436 ainda >400 sem ADR; AtlasClient/AtlasAutonomos Core ainda >400
+- [ ] Cada um ≤ alvo §3; zero mudança visual intencional — **PARCIAL (wave VI):** RootView 219; View~262; Cockpit 144 (+Agents); Markdown 106; TurnPresence 211 (+Notifications); AutonomosView 194; Client 222; Model 250; Core zero >400; build Mac-pending
 
 ### Task B1.5: Dedup chrome
 

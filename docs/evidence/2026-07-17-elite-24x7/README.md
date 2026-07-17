@@ -1,31 +1,60 @@
-# Elite 24×7 — progress stub (2026-07-17)
+# Elite 24×7 — continuous wave evidence (2026-07-17)
 
 Branch: `cursor/plano-elite-agentica-24x7-a7af`  
-Plano: `docs/plano-elite-agentica-24x7.md` · design: `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md`
+Plano: `docs/plano-elite-agentica-24x7.md` · design: `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md`  
+Blackboard: `OBRA.md` §4 Elite E0–E-D
+
+## Operator note
+
+Execução **contínua e automática** por decisão do operador (plano Elite 24×7). O agente avança ondas desbloqueadas sem esperar checkpoint humano; bloqueios externos ficam registrados honestamente abaixo.
 
 ## Commit count (honest, this environment)
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits no tip (`git rev-list --count HEAD`) | ver `git rev-list --count HEAD` no tip | peels Core concorrentes podem avançar em paralelo |
-| Commits à frente de `origin/main` | ver `git rev-list --count origin/main..HEAD` | trabalho Elite + peels nesta branch |
-| `polish(ui)` / `feat(ui)` nesta branch | +1 Arena/Radar silence | casca Fable / Grok |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **~86** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 388 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 87 | trabalho Elite + peels nesta branch |
 
-Contagens capturadas no cloud agent Linux em 2026-07-17; revalidar com `git rev-list` no Mac se a branch avançar.
+Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
-## Entrega deste stub
+## Elite queue status (OBRA §4 snapshot)
 
-- `polish(ui)` SearchView: A11yID (`search-*`), query vazia → recentes + caption `RECENTES`, empty honesto sem recentes, Reduce Motion nas animações de lista; Dynamic Type via `AtlasFont`/`relativeTo` + `.system(.callout/.caption/.footnote)`.
-- `polish(ui)` WorkspaceView + peel `WorkspaceEmptyStates`: empty editorial engrossado; offline/failed distingue `AtlasFailureCopy` + retry; loading shell; A11yID (`workspace-*`); Reduce Motion no filtro de área / lista.
-- `polish(ui)` Arena/Code honest empty+silence: Arena 404→domínio copy / rede→`AtlasFailureCopy`; CodeRadar clean→caption quieta; hub badge só com exceção.
-
-## BLOCKED (honesto — não inventar verde)
-
-| Bloqueio | Por quê | O que falta |
+| # | Status | Resumo |
 |---|---|---|
-| **Swift / AtlasCoreChecks** | toolchain `swift` ausente neste cloud Linux | no Mac: `swift run AtlasCoreChecks` exit 0 |
-| **App build** | sem Xcode/`xcodebuild` neste ambiente | no Mac: `cd App && make build` exit 0 |
-| **Device / DEVICE_PROVEN** | iPhone + `passcodeRequired` / operador | `make device` + prints U1–U10 / Arena E2E |
-| **atlas-server** | repo server ausente neste workspace | M01 heal→merge bridge; Arena A12 worker drain; live-probe com `ATLAS_TOKEN` |
+| **E0** | **DONE** | Canon + plano mestre A→B→C→D; zero Route nova; humano fora do fluxo ops |
+| **E-A1** | **PARCIAL** | A1.3 deep links DONE; M84 Semana widget; **M01/A12 BLOCKED(server)** neste workspace |
+| **E-A2** | **PENDING** | Arena LA + App Intents — depende A12 worker |
+| **E-A3** | **PENDING** | §5 contratos C9/M65/C18–C21/M98+/… |
+| **E-A4** | **PARCIAL** | Fidelity matrix DONE; Session Hub DONE; Search/Workspace/Arena/CodeRadar silence DONE; demais cenas pendentes |
+| **E-A5** | **IN_PROGRESS** | `atlas://arena`; lock `queueLabel`; Island SD-2 **parcial** (ATT/EXT/FAIL/REC/PLN + N/M + fila); LockScreen/WidgetViews peels; M88/M91+ pendentes |
+| **E-A6** | **PENDING** | Device unlock + prints U1–U10 — **operador** |
+| **E-B** | **PARCIAL** | Peels contínuos App+Core; Model 250; Core zero >400; AutonomosView ~194; build Mac-pending |
+| **E-C** | **IN_PROGRESS** | Frota quieta; Island ATT/EXT/FAIL; Continuity/PlanCard; Artifact/ChangeReview; LiveTimeline 1:1; Autônomos fleet/digest/transfer honesty |
+| **E-D** | **PENDING** | Compressão 2 — aguarda E-C |
 
-Sem prova de runtime nesta sessão cloud. Diff + blackboard + este README são a evidência disponível.
+### Blockers (honesto)
+
+| Bloqueio | Impacto |
+|---|---|
+| **Swift / Linux** | `swift` / Xcode ausentes neste cloud agent — `AtlasCoreChecks` e `make build` não rodam aqui |
+| **atlas-server** | Repo server ausente neste workspace — M01 heal→merge e Arena A12 worker drain **BLOCKED** |
+| **Device / passcode** | `passcodeRequired` / operador — `make device`, prints U1–U10, DEVICE_PROVEN pendentes |
+
+## Entrega recente (wave VI — HEAD)
+
+- `polish(ui)` peels: `ConversationCockpit` 144 (+Agents), `AtlasMarkdownView` 106, `TurnPresence` 211 (+Notifications peel).
+- `polish(ui)` Autônomos: frota quieta + digest/transfer honesty (`41efee4`).
+- Island SD-2 parcial: badges ATT/EXT/FAIL/REC/PLN + `progressLabel` N/M + `queueLabel` fila em Island/lock (`4191353` + `AtlasTurnLockScreen`).
+- `docs(obra)` pin contínuo VI (`7209d34`).
+
+## BLOCKED gates (não inventar verde)
+
+| Gate | Por quê | O que falta |
+|---|---|---|
+| **Swift / AtlasCoreChecks** | toolchain ausente neste cloud Linux | no Mac: `env -u ATLAS_LIVE swift run AtlasCoreChecks` exit 0 |
+| **App build** | sem Xcode/`xcodebuild` | no Mac: `cd App && make build` exit 0 |
+| **Device / DEVICE_PROVEN** | iPhone + passcode / operador | `make device` + prints U1–U10 / Arena E2E |
+| **atlas-server** | repo ausente neste workspace | M01 bridge; Arena A12 drain; live-probe `ATLAS_TOKEN` |
+
+Sem prova de runtime nesta sessão cloud. Diff + `OBRA.md` §7 + este README são a evidência disponível.
