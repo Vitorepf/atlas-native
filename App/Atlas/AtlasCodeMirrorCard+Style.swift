@@ -18,9 +18,12 @@ extension AtlasCodeMirrorCard {
         HStack(spacing: 7) {
             Image(systemName: icon)
                 .font(.system(size: 10, weight: .semibold))
+                .accessibilityHidden(true)
             Text(text)
                 .font(.system(size: 12.5))
+                .accessibilityHidden(true)
         }
         .foregroundStyle(color)
+        .accessibilityHidden(true)
     }
 }

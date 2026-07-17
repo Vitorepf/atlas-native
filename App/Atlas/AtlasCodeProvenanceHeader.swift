@@ -10,12 +10,14 @@ extension AtlasCodeProvenanceSheet {
                 Circle()
                     .fill(AtlasCodePalette.color(for: state))
                     .frame(width: 6, height: 6)
+                    .accessibilityHidden(true)
                 Text(stateLabel)
                     .font(.system(size: 9, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(AtlasCodePalette.color(for: state))
+                    .accessibilityHidden(true)
             }
-            .accessibilityElement(children: .combine)
+            .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenStateKicker())
             .accessibilityIdentifier(A11yID.codeProvenanceState)
 
@@ -44,6 +46,7 @@ extension AtlasCodeProvenanceSheet {
                         .font(AtlasFont.mono(9.5))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .monospacedDigit()
+                        .accessibilityLabel("magnitude, \(headline)")
                 }
             }
         }

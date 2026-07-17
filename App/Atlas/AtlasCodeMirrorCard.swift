@@ -12,12 +12,13 @@ struct AtlasCodeMirrorCard: View {
                 Text("Espelho")
                     .font(AtlasFont.serif(18, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityHidden(true)
                 Spacer()
                 if let host = response.mirror?.host {
                     Text(host)
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
                 }
             }
             headline
@@ -30,8 +31,10 @@ struct AtlasCodeMirrorCard: View {
                             .padding(.horizontal, 7)
                             .padding(.vertical, 3)
                             .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.3), lineWidth: 1))
+                            .accessibilityHidden(true)
                     }
                 }
+                .accessibilityHidden(true)
             }
         }
         .padding(13)
@@ -39,7 +42,7 @@ struct AtlasCodeMirrorCard: View {
         .background(background, in: RoundedRectangle(cornerRadius: 14))
         .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(borderColor, lineWidth: 1))
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: mirrorStatePhaseID)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenMirrorLabel())
         .accessibilityHint(Self.mirrorHint)
         .accessibilityIdentifier(A11yID.codeMirror)
