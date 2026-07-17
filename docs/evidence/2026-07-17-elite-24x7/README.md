@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **383+** | primeiro commit do plano: `ec931f2`; Elite CXXXX tip `4159ea5` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **389+** | primeiro commit do plano: `ec931f2`; Elite CXXXXII tip `f278f80` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
