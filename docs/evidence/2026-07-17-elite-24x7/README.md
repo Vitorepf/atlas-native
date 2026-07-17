@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **553** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXXXIX tip `TBD` |
-| Commits no tip (`git rev-list --count HEAD`) | 552 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 240 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **555** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXL tip `7885f51` |
+| Commits no tip (`git rev-list --count HEAD`) | 554 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 242 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,9 +127,14 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXXIX (este tip)
+## Entrega Elite CXXXXXLXL (este tip)
 
-- `polish(ui)` CICLO B: ProvenanceHeader Dateline `+StateLabel`; AutonomosTransfer `+MilestoneTags/+Summary`; Reconnect BubbleLines `+Secondary/+Timer`; QueuedFollowUp Actions `+Position/+ButtonLabels`; PlanCard A11yDetail `+Plan/+Audit/+Revision`; WhySheet A11yLabels `+Sheet/+Header`; SignatureText `+Reveal/+Body`; RootView Lifecycle `+Threads/+CodeHub/+Arena/+DeepLink`; AtlasApp Lifecycle `+Bootstrap/+ScenePhase`; UserMessage `+Stream/+URL/+API`; Receipt Subline `+Ready/+Pending`; PhotoOptions `+Photo/+Camera`; LiveNowRow Timing `+Word/+Color`, TimingLine `+Clock`; Widgets IslandExpanded `+Leading/+Center/+Trailing`. Tip `TBD`.
+- `polish(ui)` CICLO B: Digest A11yAggregate `+ScheduleLead`; LastChips `+Delivered/+Risks/+Decisions`; LastRisk `+RiskLine/+DecisionLine`; CardStack `+WindowCaption/+LastBody`; OperationDigest A11yLead `+Incident/+Headline` A11yAggregate `+SectionLead`; Provenance LawBody `+Rule/+Canon` Failed `+Title/+Detail`; RootView DestinationsConversation `+Workspace/+Thread/+New/+Conversas/+Search`; CodeView GraphCommitRow `+RowBuild/+Rotor`; AreaDelivered Filled `+Caption/+CycleList`; ChangeReview Reject `+Action`; Markdown BlockViewStructural `+List/+Quote/+Code/+Divider/+Table`; Sheets Attachments `+Picker`; Widgets Fleet A11ySpoken `+Incident/+Delivery/+Stale` LockScreen QueueCapsule `+Label/+Chrome` LiveSession ContentStack `+Header/+Branch`. Tip `7885f51`.
+- 17 peels · 38 arquivos · over100=0 · App/Atlas+Widgets swift=2194; App/Widgets swift=154; zero Route nova.
+
+## Entrega Elite CXXXXXLXXXIX (anterior)
+
+- `polish(ui)` CICLO B: ProvenanceHeader Dateline `+StateLabel`; AutonomosTransfer `+MilestoneTags/+Summary`; Reconnect BubbleLines `+Secondary/+Timer`; QueuedFollowUp Actions `+Position/+ButtonLabels`; PlanCard A11yDetail `+Plan/+Audit/+Revision`; WhySheet A11yLabels `+Sheet/+Header`; SignatureText `+Reveal/+Body`; RootView Lifecycle `+Threads/+CodeHub/+Arena/+DeepLink`; AtlasApp Lifecycle `+Bootstrap/+ScenePhase`; UserMessage `+Stream/+URL/+API`; Receipt Subline `+Ready/+Pending`; PhotoOptions `+Photo/+Camera`; LiveNowRow Timing `+Word/+Color`, TimingLine `+Clock`; Widgets IslandExpanded `+Leading/+Center/+Trailing`. Tip `75b9b32`.
 - 24 peels · 33 arquivos · over100=0 · App/Atlas+Widgets swift=2156; App/Widgets swift=147; zero Route nova.
 
 ## Entrega Elite CXXXXXLXXXVIII (anterior)
