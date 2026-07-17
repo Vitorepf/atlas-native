@@ -7,6 +7,7 @@ struct AutonomosReasonSheet: View {
     var reasonOptional: Bool = false
     let onConfirm: (String, String) -> Void
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var actor = ""
     @State private var reason = ""
 
@@ -50,9 +51,20 @@ struct AutonomosReasonSheet: View {
             }
             .navigationTitle("Confirmar ação")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancelar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        dismiss()
+                    }
+                    .accessibilityLabel("cancelar ação governada")
+                    .accessibilityHint("fecha sem registrar recibo")
+                }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Confirmar") { onConfirm(actor, reason); dismiss() }
+                    Button("Confirmar") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        onConfirm(actor, reason)
+                        dismiss()
+                    }
                         .disabled(!canSubmit)
                         .accessibilityIdentifier(A11yID.autonomosReasonSubmit)
                         .accessibilityLabel(spokenConfirmLabel(canSubmit: canSubmit))

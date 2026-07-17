@@ -6,6 +6,7 @@ struct QueuedFollowUpRow: View {
     let total: Int
     let onPromote: () -> Void
     let onRemove: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var positionCaption: String {
         let ordinal = index + 1
@@ -39,7 +40,10 @@ struct QueuedFollowUpRow: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(rowSpokenLabel)
 
-            Button(action: onPromote) {
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onPromote()
+            } label: {
                 Image(systemName: "arrow.up")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(AtlasTheme.accent)
@@ -51,7 +55,10 @@ struct QueuedFollowUpRow: View {
             .accessibilityHint(promoteHint)
             .accessibilityIdentifier(A11yID.queuePromote(message.id))
 
-            Button(action: onRemove) {
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onRemove()
+            } label: {
                 Image(systemName: "trash")
                     .font(.system(size: 14))
                     .foregroundStyle(AtlasTheme.textSecondary)
