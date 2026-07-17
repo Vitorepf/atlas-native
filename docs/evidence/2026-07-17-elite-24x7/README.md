@@ -8,7 +8,7 @@ Blackboard: `OBRA.md` §4 Elite E0–E-D
 
 Execução **contínua e automática** por decisão do operador (plano Elite 24×7). O agente avança ondas desbloqueadas sem esperar checkpoint humano; bloqueios externos ficam registrados honestamente abaixo.
 
-Ondas **L–LVIII** (pós-XLIX): peels CICLO C residuais — Autônomos, Code, composer/cockpit, motion, Arena, home rows, Markdown, Artifact, ExecutionProof, Mirror, Provenance, Handoff, EmptyConversation, Why/Heal/Queue — sem checkpoint humano entre ondas.
+Ondas **L–LIX** (pós-XLIX): peels CICLO C residuais contínuos — home/Markdown/Artifact/Proof/Mirror/Provenance/Handoff/Empty/Why/Heal/Queue/Transfer/EditorialTurn/LiveStrip — sem checkpoint humano entre ondas.
 
 ## Commit count (honest, this environment)
 
