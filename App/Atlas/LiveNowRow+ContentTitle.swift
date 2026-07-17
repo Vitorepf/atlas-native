@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Title / phase stack — peel de LiveNowRow+Content.
+// Phase → LiveNowRow+ContentPhase.swift
 
 extension LiveNowRow {
     func rowTitleStack(now: Date) -> some View {
@@ -11,15 +12,7 @@ extension LiveNowRow {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(2)
                 .layoutPriority(1)
-            HStack(spacing: 6) {
-                Text(session.phaseTitle)
-                    .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .lineLimit(1)
-                if session.isRemote {
-                    remoteBadge
-                }
-            }
+            rowPhaseLine
             // Timing explícito (running/paused) + elapsed.
             timingLine(now: now)
         }

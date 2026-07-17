@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Loaded sections — peel de AtlasArenaView+Content.
+// Tail → AtlasArenaView+LoadedTail.swift
 
 extension AtlasArenaView {
     @ViewBuilder
@@ -15,13 +16,6 @@ extension AtlasArenaView {
             )
         }
         ArenaCapabilitiesSection(capabilities: model.capabilities, reduceMotion: reduceMotion)
-        if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
-            ArenaSuitesSection(
-                scoreboard: scoreboard,
-                reduceMotion: reduceMotion,
-                onSuiteTap: { selectedSuite = $0 }
-            )
-        }
-        runMeasurementButton
+        loadedArenaTail(composite)
     }
 }

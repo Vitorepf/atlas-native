@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Retry fallback — peel de ExecutionStateCard+SteerRetry.
+// Label → ExecutionStateCard+RetryLabel.swift
 
 extension ExecutionStateCard {
     @ViewBuilder
@@ -11,10 +12,7 @@ extension ExecutionStateCard {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRetry(retryableJobId)
             } label: {
-                Text("Retomar")
-                    .font(.system(.caption, weight: .semibold))
-                    .padding(.horizontal, 11).padding(.vertical, 8)
-                    .frame(maxWidth: .infinity)
+                retryFallbackLabel
             }
             .buttonStyle(ExecutionStateActionStyle(
                 style: .primary,

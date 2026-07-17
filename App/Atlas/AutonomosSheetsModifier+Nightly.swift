@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Folha da missão noturna — peel de AutonomosSheetsModifier.
+// Accept → AutonomosSheetsModifier+NightlyAccept.swift
 
 extension AutonomosSheetsModifier {
     @ViewBuilder
@@ -17,10 +18,7 @@ extension AutonomosSheetsModifier {
                     Task {
                         let previous = model.lastStartRunReceipt
                         await model.startRun(mode: .dryRun, operatorActor: actor, operatorReason: reason)
-                        if model.lastStartRunReceipt != previous,
-                           model.lastStartRunReceipt?.isEnqueued == true {
-                            await nightly.accept(proposal)
-                        }
+                        await nightlyAcceptIfEnqueued(proposal: proposal, previous: previous)
                     }
                 }
             }

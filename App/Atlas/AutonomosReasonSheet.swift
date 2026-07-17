@@ -4,6 +4,7 @@ import SwiftUI
 /// Form → AutonomosReasonSheet+Form.swift
 /// Submit → AutonomosReasonSheet+Submit.swift
 /// Init → AutonomosReasonSheet+Init.swift
+/// Navigation → AutonomosReasonSheet+Navigation.swift
 struct AutonomosReasonSheet: View {
     let title: String
     let explainer: String
@@ -15,13 +16,6 @@ struct AutonomosReasonSheet: View {
     @State var reason = ""
 
     var body: some View {
-        NavigationStack {
-            reasonForm
-            .navigationTitle("Confirmar ação")
-            .toolbar { reasonToolbar }
-            .accessibilityIdentifier(A11yID.autonomosReasonSheet)
-            .accessibilityLabel(spokenSheetLabel())
-            .accessibilityHint(spokenSheetHint())
-        }
+        reasonNavigation
     }
 }

@@ -3,6 +3,7 @@ import AtlasCore
 
 // Empty → AutonomosDetailSheet+Empty.swift
 // Scroll → AutonomosDetailSheet+Scroll.swift
+// Presentation → AutonomosDetailSheet+Presentation.swift
 struct AutonomosPublicDetailSheet: View {
     let kind: AutonomosDetailSheet
     let backlog: AtlasAutonomosBacklogResponse?
@@ -15,13 +16,6 @@ struct AutonomosPublicDetailSheet: View {
     }
 
     var body: some View {
-        NavigationStack {
-            detailScrollBody
-        }
-        .presentationDetents([.medium, .large])
-        .presentationBackground(AtlasTheme.bg)
-        .accessibilityIdentifier(A11yID.autonomosDetailSheet)
-        .accessibilityLabel(spokenSheetLabel(backlog: backlog))
-        .accessibilityHint(spokenSheetHint())
+        detailPresentation
     }
 }

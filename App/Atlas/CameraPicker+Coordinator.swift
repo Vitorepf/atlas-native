@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 
 // Coordinator da câmera — peel de CameraPicker.
+// Cancel → CameraPicker+CoordinatorCancel.swift
 
 extension CameraPicker {
     final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -16,11 +17,6 @@ extension CameraPicker {
             } else {
                 parent.onCaptureFailed()
             }
-            parent.dismiss()
-        }
-
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            parent.onCancel()
             parent.dismiss()
         }
     }
