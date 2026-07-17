@@ -44,7 +44,8 @@ struct SignatureLine: View {
 
     private var signatureWho: String {
         if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
-        return providerWord(provider)
+        let word = providerWord(provider)
+        return word.isEmpty ? "provedor não publicado" : word
     }
 }
 
@@ -87,7 +88,7 @@ struct FeedbackRow: View {
 
 // claude_cli → "claude", conselho → "conselho", etc.
 func providerWord(_ p: String?) -> String {
-    guard let p, !p.isEmpty else { return "atlas" }
+    guard let p, !p.isEmpty else { return "" }
     let x = p.lowercased()
     for (k, v) in [("claude", "claude"), ("codex", "codex"), ("gemini", "gemini"),
                    ("hermes", "hermes"), ("minimax", "minimax"),

@@ -28,12 +28,14 @@ struct ExecutingStrip: View {
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .layoutPriority(2)
+                    .accessibilityHidden(true)
             } else if let p = bubble.executionProgress {
                 Text("\(p.current)/\(p.total) · \(p.title)")
                     .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .layoutPriority(2)
+                    .accessibilityHidden(true)
             } else if let act = bubble.currentActivity {
                 HStack(spacing: 5) {
                     Image(systemName: activityIcon(act.kind))
@@ -46,12 +48,14 @@ struct ExecutingStrip: View {
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .layoutPriority(2)
+                        .accessibilityHidden(true)
                 }
             } else {
                 Text("Seguindo a execução")
                     .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(1)
                     .layoutPriority(2)
+                    .accessibilityHidden(true)
             }
             TimelineView(.periodic(from: .now, by: 1)) { ctx in
                 let secs = bubble.startedAt.map { max(0, Int(ctx.date.timeIntervalSince($0))) } ?? 0
@@ -70,7 +74,7 @@ struct ExecutingStrip: View {
                     .accessibilityHidden(true)
             }
             }
-            .accessibilityElement(children: .combine)
+            .accessibilityElement(children: .ignore)
             .accessibilityLabel(stripAccessibilityLabel)
             Spacer(minLength: 0)
             stripActionButtons

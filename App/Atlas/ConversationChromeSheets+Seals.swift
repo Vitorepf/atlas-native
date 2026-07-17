@@ -36,12 +36,14 @@ struct StaleReadSeal: View {
             ))
             .font(AtlasFont.mono(11))
             .modifier(NumericTextTransition(enabled: !reduceMotion && !confirming))
+            .accessibilityHidden(true)
         }
         .foregroundStyle(AtlasTheme.textTertiary)
         .frame(maxWidth: .infinity, alignment: .leading)
         .scaleEffect(confirming && !reduceMotion ? 1.045 : 1)
         .opacity(confirming && !reduceMotion ? 0.72 : 1)
         .animation(confirming && !reduceMotion ? .easeInOut(duration: 0.32) : nil, value: confirming)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(StaleReadSealA11y.spokenLabel(
             capturedAt: capturedAt,
             now: now,
@@ -60,9 +62,11 @@ struct NewSinceLastVisitMarker: View {
                 .font(AtlasFont.mono(10))
                 .tracking(1.1)
                 .foregroundStyle(AtlasTheme.accent)
+                .accessibilityHidden(true)
             Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
                 .accessibilityHidden(true)
         }
+        .accessibilityElement(children: .ignore)
         .accessibilityIdentifier(A11yID.conversationNewMarker)
         .accessibilityLabel("novo desde a última visita")
         .accessibilityAddTraits(.isStaticText)
