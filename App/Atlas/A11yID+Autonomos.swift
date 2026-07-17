@@ -22,6 +22,12 @@ extension A11yID {
     static let autonomosHeader = "autonomos-header"
     static let autonomosRefresh = "autonomos-refresh"
     static let autonomosAreaControls = "autonomos-area-controls"
+    static let autonomosReasonSheet = "autonomos-reason-sheet"
+    static let autonomosReasonActor = "autonomos-reason-actor"
+    static let autonomosReasonField = "autonomos-reason-field"
+    static let autonomosReasonSubmit = "autonomos-reason-submit"
+    static let autonomosDetailClose = "autonomos-detail-close"
+    static let autonomosDetailEmpty = "autonomos-detail-empty"
 
     static let nightlyProposalCard = "nightly-proposal-card"
     static let nightlyProposalAccept = "nightly-proposal-accept"

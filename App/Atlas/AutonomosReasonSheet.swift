@@ -24,16 +24,28 @@ struct AutonomosReasonSheet: View {
         _reason = State(initialValue: initialReason)
     }
 
+    private var canSubmit: Bool {
+        !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && (reasonOptional || !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
+
     var body: some View {
         NavigationStack {
             Form {
                 Section("Ação governada") {
                     Text(title)
+                        .accessibilityAddTraits(.isHeader)
                     Text(explainer).font(.footnote).foregroundStyle(.secondary)
                 }
-                Section("Operador") { TextField("Quem autoriza", text: $actor) }
+                Section("Operador") {
+                    TextField("Quem autoriza", text: $actor)
+                        .accessibilityIdentifier(A11yID.autonomosReasonActor)
+                        .accessibilityHint(spokenActorHint())
+                }
                 Section(reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo") {
                     TextField("Motivo auditável", text: $reason, axis: .vertical).lineLimit(3...6)
+                        .accessibilityIdentifier(A11yID.autonomosReasonField)
+                        .accessibilityHint(spokenReasonHint())
                 }
             }
             .navigationTitle("Confirmar ação")
@@ -41,10 +53,15 @@ struct AutonomosReasonSheet: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") { onConfirm(actor, reason); dismiss() }
-                        .disabled(actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                                  || (!reasonOptional && reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty))
+                        .disabled(!canSubmit)
+                        .accessibilityIdentifier(A11yID.autonomosReasonSubmit)
+                        .accessibilityLabel(spokenConfirmLabel(canSubmit: canSubmit))
+                        .accessibilityHint(spokenConfirmHint(canSubmit: canSubmit))
                 }
             }
+            .accessibilityIdentifier(A11yID.autonomosReasonSheet)
+            .accessibilityLabel(spokenSheetLabel())
+            .accessibilityHint(spokenSheetHint())
         }
     }
 }
