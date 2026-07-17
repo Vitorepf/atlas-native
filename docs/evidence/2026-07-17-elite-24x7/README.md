@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **353+** | primeiro commit do plano: `ec931f2`; Elite CXXVI em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **354+** | primeiro commit do plano: `ec931f2`; Elite CXXVII em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,9 +127,14 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXVI (este tip)
+## Entrega Elite CXXVII (este tip)
 
-- `refactor(ui)` CICLO B: Editorial+Glyph; Home+ConversationCounts; Nightly+A11yMute; Sheets+Nightly; Artifact+ListRow; Steer+Retry; Ledger+Findings; Area+Primary; Provenance+Block; Plan+RevisionCompare; Suite+A11yCaptions; Radar+A11ySpoken; Week+Quiet; Anchors+AnchorsVisible; String+NonEmpty; Review+Reject; Capabilities+A11yCaptions; Chrome+OptionalA11yID.
+- `refactor(ui)` CICLO B: Lock+LockRectEmphasis; Graph+GraphListRows; LiveSession+A11ySpoken; State+PresentationChrome; Area+Controls; Markdown+BlockView/+Table; Sheets+A11yEffort; Heal+A11ySpoken; Zoom+ZoomReset; Suites+A11ySuite; Camera+Coordinator; Run+FormEngine; Transfer+UISpoken; Scroll+ScrollKey; Review+Unavailable.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXVI (anterior)
+
+- `refactor(ui)` CICLO B: Editorial+Glyph; Home+ConversationCounts; Nightly+A11yMute; Sheets+Nightly; Artifact+ListRow; Steer+Retry; Ledger+Findings; Area+Primary; Provenance+Block; Plan+RevisionCompare; Suite+A11yCaptions; Radar+A11ySpoken; Week+Quiet; Anchors+AnchorsVisible; String+NonEmpty; Review+Reject; Capabilities+A11yCaptions; Chrome+OptionalA11yID. Tip `4853223`.
 - Zero App/Widgets >100; zero Route nova.
 
 ## Entrega Elite CXXV (anterior)
