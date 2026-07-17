@@ -6,10 +6,10 @@ import AtlasCore
 /// Badge → AtlasTurnLockScreen+Badge.swift
 /// Labels → AtlasTurnLockScreen+StateLabels.swift
 /// Symbol → AtlasTurnLockScreen+Symbol.swift
+/// Terminal → AtlasTurnLockScreen+State+Terminal.swift
 extension AtlasTurnAttributes.ContentState {
     var atlasColor: Color {
-        if phaseTitle.localizedCaseInsensitiveContains("falhou") { return Ink.alert }
-        if finished { return Ink.healed }
+        if let terminal = atlasColorTerminal { return terminal }
         if paused == true
             || phaseTitle.localizedCaseInsensitiveContains("atenção")
             || phaseTitle.localizedCaseInsensitiveContains("aguard") {
