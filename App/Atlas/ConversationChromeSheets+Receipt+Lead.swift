@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Icon + copy — peel de ConversationHandoffReceipt.
+// Icon — peel de ConversationHandoffReceipt.
+// Copy → ConversationChromeSheets+Receipt+CopyStack.swift
 
 extension ConversationHandoffReceipt {
     var receiptIcon: some View {
@@ -10,19 +11,5 @@ extension ConversationHandoffReceipt {
             .foregroundStyle(isReady ? AtlasTheme.accent : AtlasTheme.textTertiary)
             .symbolEffect(.rotate, isActive: isPending && !reduceMotion)
             .accessibilityHidden(true)
-    }
-
-    var receiptCopy: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(headline)
-                .font(.system(.footnote, weight: .medium))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .accessibilityHidden(true)
-            Text(subline)
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(2)
-                .accessibilityHidden(true)
-        }
     }
 }

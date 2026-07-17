@@ -4,6 +4,7 @@ import AtlasCore
 // Botões Aceitar — peel de ChangeReviewRunActions.
 // Applying → ChangeReviewRunActions+Applying.swift
 // Reject → ChangeReviewRunActions+Reject.swift
+// Label → ChangeReviewRunActions+AcceptLabel.swift
 
 extension ChangeReviewRunActions {
     @ViewBuilder
@@ -14,10 +15,7 @@ extension ChangeReviewRunActions {
                 applying = true
                 Task { await reviews.applyChangeReview(traceId: traceId, action: .accept); applying = false }
             } label: {
-                Text("Aceitar tudo")
-                    .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
-                    .padding(.horizontal, 18).padding(.vertical, 10)
-                    .background(Capsule().fill(AtlasTheme.accent))
+                acceptButtonLabel
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel("aceitar todos os arquivos e concluir revisão")

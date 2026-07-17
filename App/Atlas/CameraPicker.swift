@@ -5,6 +5,7 @@ import UIKit
 // zero lógica além de entregar os bytes; o AtlasImaging normaliza depois.
 // Coordinator → CameraPicker+Coordinator.swift
 // RM → CameraPicker+ReduceMotion.swift
+// Make → CameraPicker+Make.swift
 struct CameraPicker: UIViewControllerRepresentable {
     let onCapture: (Data) -> Void
     var onCaptureFailed: () -> Void = {}
@@ -13,11 +14,7 @@ struct CameraPicker: UIViewControllerRepresentable {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.sourceType = .camera
-        picker.delegate = context.coordinator
-        applyReduceMotion(picker)
-        return picker
+        makeCameraPicker(context: context)
     }
 
     func updateUIViewController(_ vc: UIImagePickerController, context: Context) {

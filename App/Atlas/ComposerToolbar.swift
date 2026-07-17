@@ -5,6 +5,7 @@ import AtlasCore
 // de modo·esforço·workspace). Peel de ConversationComposer (régua <200).
 // Field → ComposerToolbar+Field.swift
 // CanSubmit → ComposerToolbar+CanSubmit.swift
+// Row → ComposerToolbar+Row.swift
 
 struct ComposerToolbar: View {
     var model: ConversationModel
@@ -20,11 +21,6 @@ struct ComposerToolbar: View {
     var onSend: () -> Void
 
     var body: some View {
-        HStack(spacing: 10) {
-            attachButton
-            composerTextField
-            trailingControl
-        }
-        .accessibilityElement(children: .contain)
+        toolbarRow
     }
 }

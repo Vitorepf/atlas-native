@@ -8,6 +8,7 @@ import AtlasCore
 /// O hash fecha a folha — máquina embaixo do vidro (lei 6).
 /// Chrome → AtlasCodeProvenanceSheet+Chrome.swift
 /// Scroll → AtlasCodeProvenanceSheet+Scroll.swift
+/// Surface → AtlasCodeProvenanceSheet+Surface.swift
 struct AtlasCodeProvenanceSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var whyTarget: AtlasCodeProvenanceWhyTarget?
@@ -26,11 +27,6 @@ struct AtlasCodeProvenanceSheet: View {
     let onAsk: () -> Void
 
     var body: some View {
-        provenanceSheetChrome(
-            ZStack {
-                AtlasTheme.bg.ignoresSafeArea()
-                provenanceScrollStack
-            }
-        )
+        provenanceSheetChrome(provenanceSurface)
     }
 }
