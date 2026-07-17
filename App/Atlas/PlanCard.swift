@@ -14,9 +14,10 @@ struct PlanCard: View {
     @State private var showRevisions = false
 
     var plan: AtlasExecutionPlan? { bubble.executionPlan }
-    // Índice 1-based do passo atual; nil = plano sem checkpoint observado ainda.
-    var currentIndex: Int? { bubble.executionProgress?.current }
-    var isTerminal: Bool { bubble.executionProgress?.isTerminal == true }
+    /// Checkpoint observado no stream; nil = nenhum passo marcado ainda (tudo pendente).
+    var executionProgress: AtlasExecutionPlan.Progress? { bubble.executionProgress }
+    var currentIndex: Int? { executionProgress?.current }
+    var isTerminal: Bool { executionProgress?.isTerminal == true }
     private var revisions: [AtlasTraceGovernance.PlanRevision] { bubble.planRevisions }
     /// Só revisões com metadata real do servidor — ausência não vira “v1” nem motivo genérico.
     private var meaningfulRevisions: [AtlasTraceGovernance.PlanRevision] {
@@ -30,27 +31,12 @@ struct PlanCard: View {
             VStack(alignment: .leading, spacing: 9) {
                 planHeader(plan: plan)
                 planStepsList(plan: plan)
-                if session.auditModeEnabled, isTerminal, let progress = bubble.executionProgress {
+                if session.auditModeEnabled, isTerminal, let progress = executionProgress {
                     auditTerminalLine(plan: plan, progress: progress)
                 }
                 // C19 / cena 02: "comparar versões" só com planRevisions reais.
                 if !meaningfulRevisions.isEmpty {
-                    Button {
-                        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
-                            showRevisions.toggle()
-                        }
-                    } label: {
-                        Text(showRevisions
-                             ? "ocultar versões"
-                             : "comparar versões · \(meaningfulRevisions.count)")
-                            .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("comparar versões do plano")
-                    if showRevisions {
-                        PlanRevisionCompare(plan: plan, revisions: meaningfulRevisions)
-                            .transition(reduceMotion ? .identity : .opacity)
-                    }
+                    revisionToggle(plan: plan)
                 }
                 if !plan.tools.isEmpty || !plan.agents.isEmpty || !plan.qualityGates.isEmpty {
                     Button {
@@ -62,13 +48,36 @@ struct PlanCard: View {
                             .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(showDetail ? "ocultar ferramentas agentes e gates" : "mostrar ferramentas agentes e gates")
+                    .accessibilityHint(showDetail ? "toque para recolher" : "toque para expandir")
                     if showDetail { planDetail(plan) }
                 }
             }
             .padding(12)
             .atlasCard(cornerRadius: 12, fillOpacity: 0.5)
             .accessibilityElement(children: .contain)
-            .accessibilityLabel("plano da obra, \(plan.steps.count) passos")
+            .accessibilityLabel(spokenCardLabel(plan: plan, progress: executionProgress))
+            .accessibilityIdentifier(A11yID.planCard)
+        }
+    }
+
+    @ViewBuilder
+    private func revisionToggle(plan: AtlasExecutionPlan) -> some View {
+        let count = meaningfulRevisions.count
+        Button {
+            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+                showRevisions.toggle()
+            }
+        } label: {
+            Text(showRevisions ? "ocultar versões" : "comparar versões · \(count)")
+                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(spokenRevisionToggle(expanded: showRevisions, count: count))
+        .accessibilityHint(showRevisions ? "toque para ocultar" : "toque para expandir")
+        if showRevisions {
+            PlanRevisionCompare(plan: plan, revisions: meaningfulRevisions)
+                .transition(reduceMotion ? .identity : .opacity)
         }
     }
 }

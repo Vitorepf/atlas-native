@@ -6,13 +6,17 @@ extension PlanCard {
         HStack(spacing: 8) {
             Image(systemName: "list.bullet.rectangle")
                 .font(.system(size: 12)).foregroundStyle(AtlasTheme.accent.opacity(0.85))
+                .accessibilityHidden(true)
             Text(plan.title)
                 .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary)
             Spacer(minLength: 0)
-            if let c = currentIndex {
-                Text("\(min(c, plan.steps.count))/\(plan.steps.count)")
+            // C10 / cena 02: N/M só com checkpoint real — nunca 0/M fabricado.
+            if let progress = bubble.executionProgress {
+                Text("\(progress.current)/\(progress.total)")
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
                     .monospacedDigit()
+                    .modifier(NumericTextTransition(enabled: !reduceMotion))
+                    .accessibilityLabel(spokenProgressBadge(progress))
             }
         }
     }

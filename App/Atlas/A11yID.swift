@@ -39,6 +39,7 @@ enum A11yID {
     static let executionReplayScrubber = "execution-replay-scrubber"
     static let executionProof = "execution-proof"
     static let executionStateCard = "execution-state-card"
+    static let planCard = "plan-card"
     static let queueChip = "queue-chip"
     static let queueSheet = "queue-sheet"
     static let queueRowPrefix = "queue-row-"
@@ -63,6 +64,8 @@ enum A11yID {
     static let autonomosTransferActor = "autonomos-transfer-actor"
     static let autonomosTransferReason = "autonomos-transfer-reason"
     static let autonomosTransferSubmit = "autonomos-transfer-submit"
+    static let autonomosLoadFailure = "autonomos-load-failure"
+    static let autonomosRetry = "autonomos-retry"
 
     static let liveNowSection = "live-now-section"
     static let liveNowRowPrefix = "live-now-row-"
