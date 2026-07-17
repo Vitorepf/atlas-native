@@ -14,6 +14,7 @@ struct AutonomosView: View {
     @State private var nightly = NightlyProposalController.shared
     @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
     @State private var selfConstructionReceipt: SelfConstructionReceipt?
+    @State private var rhythmSampleDays: Int?
 
     private var model: AutonomosModel { session.autonomos }
 
@@ -27,6 +28,7 @@ struct AutonomosView: View {
         }
         .navigationBarHidden(true)
         .task { if case .idle = model.phase { await model.load() } }
+        .task { await refreshRhythmLearning() }
         .sheet(item: $control) { action in
             AutonomosControlSheet(action: action) { actor, reason in
                 Task { await model.control(action, operatorActor: actor, reason: reason) }
@@ -118,6 +120,9 @@ struct AutonomosView: View {
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, 10)
             }
+            rhythmLearningLine
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.top, 10)
             Spacer()
             VStack(spacing: 14) {
                 ProgressView().tint(AtlasTheme.accent)
@@ -131,6 +136,9 @@ struct AutonomosView: View {
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, 10)
             }
+            rhythmLearningLine
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.top, 10)
             Spacer()
             VStack(spacing: 14) {
                 Image(systemName: "exclamationmark.triangle")
@@ -151,6 +159,7 @@ struct AutonomosView: View {
                         nightlyProposal(proposal)
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
+                    rhythmLearningLine
                     if let fleet = model.fleet { fleetSummary(fleet) }
                     nextDigestSection
                     operationDigest
@@ -170,7 +179,10 @@ struct AutonomosView: View {
                 }
                 .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 10).padding(.bottom, 32)
             }
-            .refreshable { await model.load() }
+            .refreshable {
+                await model.load()
+                await refreshRhythmLearning()
+            }
             .scrollIndicators(.hidden)
         }
     }
@@ -179,8 +191,25 @@ struct AutonomosView: View {
         NightlyProposalCard(
             proposal: proposal,
             onAccept: { nightlyStartProposal = proposal },
-            onDismiss: { nightly.dismissProposal() }
+            onDismiss: { nightly.dismissProposal() },
+            onMute: { nightly.muteProposal(days: $0) }
         )
+    }
+
+    @ViewBuilder
+    private var rhythmLearningLine: some View {
+        if let sampleDays = rhythmSampleDays, sampleDays < 4 {
+            Text("aprendendo seu ritmo · dia \(max(1, sampleDays)) de 4")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityLabel("aprendendo seu ritmo, dia \(max(1, sampleDays)) de 4")
+        }
+    }
+
+    private func refreshRhythmLearning() async {
+        let windows = await AtlasSession.rhythm.windows(minimumDays: 4)
+        rhythmSampleDays = windows.sampleDays
     }
 
     // MARK: - Próximo resumo (M09)

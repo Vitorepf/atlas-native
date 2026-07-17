@@ -36,9 +36,11 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     @ObservationIgnored private var immediateNightlyDateKey: String?
 
     private(set) var pendingProposal: ProposalPayload?
+    private(set) var mutedUntil: Date?
 
     private override init() {
         super.init()
+        mutedUntil = AtlasSession.nightlyProposalMutedUntil()
     }
 
     func installAsNotificationDelegate() {
@@ -48,6 +50,10 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     func registerOpenAutonomos(_ handler: @escaping () -> Void) { openAutonomos = handler }
 
     func scheduleForBackground(now: Date = .init()) async {
+        guard !isMuted(now: now) else {
+            center.removePendingNotificationRequests(withIdentifiers: [nightlyIdentifier])
+            return
+        }
         let windows = await AtlasSession.rhythm.windows(minimumDays: 4, now: now)
         guard let dayEnd = windows.dayEnd else {
             center.removePendingNotificationRequests(withIdentifiers: [nightlyIdentifier, morningIdentifier])
@@ -81,6 +87,14 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
 
     func dismissProposal() { pendingProposal = nil }
 
+    func muteProposal(days: Int, now: Date = .init()) {
+        let days = max(1, days)
+        let until = AtlasSession.muteNightlyProposal(days: days, now: now)
+        mutedUntil = until
+        pendingProposal = nil
+        center.removePendingNotificationRequests(withIdentifiers: [nightlyIdentifier])
+    }
+
     func accept(_ proposal: ProposalPayload) async {
         await scheduleMorning(after: proposal)
         pendingProposal = nil
@@ -108,6 +122,10 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     private func handle(route: String?, workspaces: [String]?) {
         guard let route else { return }
         if route == "autonomos-nightly" {
+            guard !isMuted() else {
+                openAutonomos?()
+                return
+            }
             guard let workspaces, !workspaces.isEmpty else {
                 openAutonomos?()
                 return
@@ -186,12 +204,20 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
         let components = Calendar.current.dateComponents([.year, .month, .day], from: date)
         return String(format: "%04d-%02d-%02d", components.year ?? 0, components.month ?? 0, components.day ?? 0)
     }
+
+    private func isMuted(now: Date = .init()) -> Bool {
+        guard let mutedUntil else { return false }
+        if mutedUntil > now { return true }
+        self.mutedUntil = AtlasSession.clearExpiredNightlyProposalMute(now: now)
+        return false
+    }
 }
 
 struct NightlyProposalCard: View {
     let proposal: NightlyProposalController.ProposalPayload
     let onAccept: () -> Void
     let onDismiss: () -> Void
+    let onMute: (Int) -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -221,6 +247,13 @@ struct NightlyProposalCard: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .buttonStyle(PressableScale())
                     .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
+                Menu("silenciar") {
+                    Button("1 dia") { onMute(1) }
+                    Button("3 dias") { onMute(3) }
+                    Button("7 dias") { onMute(7) }
+                }
+                .font(.system(.footnote, weight: .semibold))
+                .foregroundStyle(AtlasTheme.textTertiary)
             }
         }
         .padding(14)

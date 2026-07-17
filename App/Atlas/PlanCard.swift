@@ -48,13 +48,7 @@ struct PlanCard: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel("comparar versões do plano")
                     if showRevisions {
-                        VStack(alignment: .leading, spacing: 5) {
-                            ForEach(revisions) { rev in
-                                Text("v\(rev.revision) — \(rev.humanReason)")
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(AtlasTheme.textSecondary)
-                            }
-                        }
+                        revisionDetail(plan)
                         .transition(.opacity)
                     }
                 }
@@ -141,12 +135,70 @@ struct PlanCard: View {
         .transition(.opacity)
     }
 
+    @ViewBuilder
+    private func revisionDetail(_ plan: AtlasExecutionPlan) -> some View {
+        if let comparison = latestComparison(plan), comparison.hasChanges {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("v\(comparison.revision.revision) → plano atual")
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                if !comparison.left.isEmpty {
+                    revisionList(label: "saíram", items: comparison.left)
+                }
+                if !comparison.entered.isEmpty {
+                    revisionList(label: "entraram", items: comparison.entered)
+                }
+            }
+        } else {
+            VStack(alignment: .leading, spacing: 5) {
+                ForEach(revisions) { rev in
+                    Text("v\(rev.revision) — \(rev.humanReason)")
+                        .font(.system(size: 12))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                }
+            }
+        }
+    }
+
+    private func revisionList(label: String, items: [String]) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label.uppercased())
+                .font(AtlasFont.mono(9))
+                .tracking(0.8)
+                .foregroundStyle(AtlasTheme.textTertiary)
+            ForEach(items, id: \.self) { item in
+                Text("• \(item)")
+                    .font(.system(size: 12))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(2)
+            }
+        }
+    }
+
+    private func latestComparison(_ plan: AtlasExecutionPlan) -> RevisionComparison? {
+        guard let revision = revisions.last(where: { !$0.stepTitles.isEmpty }) else { return nil }
+        let current = plan.steps.map(\.title)
+        let archived = revision.stepTitles
+        return RevisionComparison(
+            revision: revision,
+            left: archived.filter { !current.contains($0) },
+            entered: current.filter { !archived.contains($0) }
+        )
+    }
+
     private func chipRow(label: String, items: [String]) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label.uppercased()).font(AtlasFont.mono(9)).tracking(0.8)
                 .foregroundStyle(AtlasTheme.textTertiary)
             FlowChips(items: items)
         }
+    }
+
+    private struct RevisionComparison {
+        let revision: AtlasTraceGovernance.PlanRevision
+        let left: [String]
+        let entered: [String]
+        var hasChanges: Bool { !left.isEmpty || !entered.isEmpty }
     }
 }
 

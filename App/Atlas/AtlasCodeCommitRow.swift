@@ -17,6 +17,7 @@ struct AtlasCodeCommitRow: View {
     /// sobre o repositório.
     var isDimmed: Bool = false
     let onTap: () -> Void
+    var onLongPress: (() -> Void)? = nil
 
     private var color: Color { AtlasCodePalette.color(for: state) }
 
@@ -62,6 +63,9 @@ struct AtlasCodeCommitRow: View {
         // O leitor de tela precisa do mesmo sinal que o olho recebe.
         .accessibilityHint(isDimmed ? "fora da resposta" : "")
         .accessibilityIdentifier(A11yID.codeCommit(hashPrefix: String(node.hash.prefix(8))))
+        .onLongPressGesture(minimumDuration: 0.45) {
+            onLongPress?()
+        }
     }
 
     /// A espinha: linha contínua + o nó. O desvio salta ao olho pela cor.

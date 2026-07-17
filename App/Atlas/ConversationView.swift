@@ -30,6 +30,8 @@ struct ConversationView: View {
     @State private var showCamera = false
     @FocusState private var focused: Bool
     @State private var awayFromBottom = false
+    @State private var readSealConfirming = false
+    @State private var lastCacheCapturedAt: Date?
     /// F2.8: coalescer scroll durante streaming (tokens) — anima se >100ms
     /// desde o último ou se a contagem de bolhas mudou.
     @State private var lastScrollAt: CFAbsoluteTime = 0
@@ -102,6 +104,7 @@ struct ConversationView: View {
         // enquanto trabalha + notificação local quando conclui fora da tela.
         .onAppear {
             TurnPresence.shared.watch(model, threadTitle: title, threadId: model.threadId)
+            TurnPresence.shared.setVisible(model, visible: true)
             if startFocused && model.bubbles.isEmpty {
                 // pequeno atraso: o push da navegação precisa assentar antes
                 // do foco, senão o iOS engole o teclado
@@ -110,11 +113,25 @@ struct ConversationView: View {
         }
         .onChange(of: model.threadId) { _, now in
             TurnPresence.shared.watch(model, threadTitle: title, threadId: now)
+            TurnPresence.shared.setVisible(model, visible: true)
             if let now { onThread?(now) }
+        }
+        .onDisappear {
+            TurnPresence.shared.setVisible(model, visible: false)
         }
         .onChange(of: model.isSending) { was, now in
             // Resposta terminou → haptic de sucesso (o toque que fecha o ciclo)
             if was && !now { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+        }
+        .onChange(of: model.cacheCapturedAt) { _, capturedAt in
+            if let capturedAt { lastCacheCapturedAt = capturedAt }
+        }
+        .onChange(of: model.showingStaleCache) { was, now in
+            if now, let capturedAt = model.cacheCapturedAt {
+                lastCacheCapturedAt = capturedAt
+            } else if was && !now, lastCacheCapturedAt != nil {
+                readSealConfirming = true
+            }
         }
     }
 
@@ -155,11 +172,21 @@ struct ConversationView: View {
 
     @ViewBuilder private var cacheAgeSeal: some View {
         if model.showingStaleCache, let capturedAt = model.cacheCapturedAt {
-            StaleReadSeal(capturedAt: capturedAt)
+            StaleReadSeal(capturedAt: capturedAt, confirming: false, reduceMotion: reduceMotion)
                 .padding(.horizontal, AtlasTheme.Space.screen)
                 .padding(.top, 2)
                 .padding(.bottom, 8)
                 .transition(.opacity)
+        } else if readSealConfirming, let capturedAt = lastCacheCapturedAt {
+            StaleReadSeal(capturedAt: capturedAt, confirming: true, reduceMotion: reduceMotion)
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.top, 2)
+                .padding(.bottom, 8)
+                .transition(.opacity)
+                .task {
+                    try? await Task.sleep(nanoseconds: 320_000_000)
+                    readSealConfirming = false
+                }
         }
     }
 
@@ -637,18 +664,27 @@ private struct BottomDistanceKey: PreferenceKey {
 
 private struct StaleReadSeal: View {
     let capturedAt: Date
+    let confirming: Bool
+    let reduceMotion: Bool
 
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 60)) { context in
             HStack(spacing: 6) {
                 Image(systemName: "clock.arrow.circlepath")
                     .font(.system(size: 10, weight: .semibold))
-                Text("visto há \(atlasRelativeAgePT(since: capturedAt, now: context.date))")
+                Text(reduceMotion && confirming
+                     ? "leitura atualizada"
+                     : "visto há \(atlasRelativeAgePT(since: capturedAt, now: context.date))")
                     .font(AtlasFont.mono(11))
             }
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilityLabel("histórico salvo visto há \(atlasRelativeAgePT(since: capturedAt, now: context.date))")
+            .scaleEffect(confirming && !reduceMotion ? 1.045 : 1)
+            .opacity(confirming && !reduceMotion ? 0.72 : 1)
+            .animation(confirming && !reduceMotion ? .easeInOut(duration: 0.32) : nil, value: confirming)
+            .accessibilityLabel(confirming
+                                ? "histórico salvo atualizado"
+                                : "histórico salvo visto há \(atlasRelativeAgePT(since: capturedAt, now: context.date))")
         }
     }
 }

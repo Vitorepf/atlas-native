@@ -2,13 +2,14 @@ import Foundation
 import AtlasCore
 
 /// C18/C19/C21 — as três provas que o servidor emite e a casca precisa ler
-/// sem inventar nada. Ausência é nil; divergência é fato derivado de hash.
+/// sem inventar nada. Ausência é nil; divergência é fato derivado de status/hash.
 public func runAtlasTraceGovernanceChecks(_ check: (String, Bool) -> Void) {
     let json = """
     {
       "diff_stats": {"files_touched": 3, "lines_added": 48, "lines_removed": 12},
       "plan_revisions": [
-        {"revision": 1, "iteration": 1, "reason": "quality_gate_requested_repair", "archived_at": "2026-07-14T14:00:00-03:00"},
+        {"revision": 1, "iteration": 1, "reason": "quality_gate_requested_repair", "archived_at": "2026-07-14T14:00:00-03:00",
+         "plan":{"steps":[{"id":"intent","title":"Entender pedido"},{"id":"plan","title":"Planejar"}]}},
         {"revision": 2, "iteration": 2, "reason": "quality_gate_requested_repair", "archived_at": "2026-07-14T15:00:00-03:00"}
       ],
       "council_review": [
@@ -31,6 +32,7 @@ public func runAtlasTraceGovernanceChecks(_ check: (String, Bool) -> Void) {
     let revisions = AtlasTraceGovernance.planRevisions(from: metadata)
     check("C19 plan_revisions preserva as versões", revisions.count == 2 && revisions.first?.revision == 1 && revisions.last?.revision == 2)
     check("C19 traduz o motivo sem reclassificar", revisions.first?.humanReason == "o gate de qualidade pediu reparo")
+    check("C19 preserva passos arquivados quando disponíveis", revisions.first?.stepTitles == ["Entender pedido", "Planejar"])
     check("C19 sem replanejamento é lista vazia", AtlasTraceGovernance.planRevisions(from: nil).isEmpty)
 
     // C21 · posição por membro, sem veredito inventado.
@@ -39,8 +41,8 @@ public func runAtlasTraceGovernanceChecks(_ check: (String, Bool) -> Void) {
     check("C21 preserva falha com código real", council.last?.status == "failed" && council.last?.errorCode == "timeout" && council.last?.responseHash == nil)
     check("C21 sem conselho é lista vazia", AtlasTraceGovernance.councilReview(from: nil).isEmpty)
 
-    // Divergência = fato derivado (hashes distintos entre quem concluiu).
-    check("C21 um membro concluído não é divergência", AtlasTraceGovernance.councilDiverged(council) == false)
+    // Divergência = fato derivado (status público ou hashes distintos).
+    check("C21 status distinto = divergência real", AtlasTraceGovernance.councilDiverged(council) == true)
     let dois = """
     {"council_review":[
       {"provider":"claude_cli","status":"succeeded","response_hash":"aaa"},

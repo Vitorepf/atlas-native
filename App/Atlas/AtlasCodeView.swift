@@ -21,12 +21,19 @@ struct AtlasCodeView: View {
     /// A pílula é porta, não formulário. Tocar abre o card de conversa — o mesmo
     /// gesto do commit, que abre a folha acima do grafo.
     @State var showsAskCard = false
+    @State var whyFileTarget: WhyFileTarget?
+    @Namespace var graphRotor
     /// A conversa deste repositório continua onde parou. Fechar o card não é
     /// encerrar o assunto; é só tirar a folha da frente do mapa.
     @State var askThreadId: ThreadID?
     /// Pergunta semeada por quem abriu o card (a folha do commit semeia o
     /// commit). Vazia = a pílula abrindo pelo caminho normal.
     @State var askDraft = ""
+
+    struct WhyFileTarget: Identifiable {
+        let path: String
+        var id: String { path }
+    }
 
     /// As âncoras que EXISTEM nesta janela do grafo.
     ///
@@ -172,6 +179,11 @@ struct AtlasCodeView: View {
             // Fundo translúcido: o mapa atrás não pode virar papel de parede
             // preto. Ele é o assunto.
             .presentationBackground(.ultraThinMaterial)
+        }
+        .sheet(item: $whyFileTarget) { target in
+            AtlasCodeWhySheet(client: session.client, repo: model.repo, file: target.path)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
         }
     }
 

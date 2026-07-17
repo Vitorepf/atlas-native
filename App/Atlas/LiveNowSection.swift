@@ -59,37 +59,40 @@ private struct LiveNowRow: View {
     }
 
     private var rowContent: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 10) {
-            BreathingDiamond(
-                size: 8,
-                reduceMotion: reduceMotion || session.timing != .running
-            )
-            VStack(alignment: .leading, spacing: 3) {
-                Text(session.title)
-                    .font(AtlasFont.serif(16, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .lineLimit(2)
-                    .layoutPriority(1)
-                HStack(spacing: 6) {
-                    Text(session.phaseTitle)
-                        .font(AtlasFont.serifItalic(13))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                        .lineLimit(1)
-                    clockView
+        TimelineView(.periodic(from: .now, by: 60)) { context in
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                BreathingDiamond(
+                    size: 8,
+                    reduceMotion: reduceMotion || session.timing != .running
+                )
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(session.title)
+                        .font(AtlasFont.serif(16, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .lineLimit(2)
+                        .layoutPriority(1)
+                    HStack(spacing: 6) {
+                        Text(session.phaseTitle)
+                            .font(AtlasFont.serifItalic(13))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                            .lineLimit(1)
+                        clockView(now: context.date)
+                    }
+                }
+                Spacer(minLength: 0)
+                if navigable {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
                 }
             }
-            Spacer(minLength: 0)
-            if navigable {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
+            .opacity(isLongPaused(now: context.date) ? 0.58 : 1)
         }
     }
 
     @ViewBuilder
-    private var clockView: some View {
+    private func clockView(now: Date) -> some View {
         switch session.timing {
         case .running:
             TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -104,7 +107,7 @@ private struct LiveNowRow: View {
                 .monospacedDigit()
             }
         case .paused:
-            Text("‖ \(Self.formatClock(elapsedMs: session.elapsedActiveMs, runningSince: nil, now: .now, paused: true))")
+            Text(pausedText(now: now))
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .monospacedDigit()
@@ -113,6 +116,12 @@ private struct LiveNowRow: View {
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
+    }
+
+    private func pausedText(now: Date) -> String {
+        let clock = Self.formatClock(elapsedMs: session.elapsedActiveMs, runningSince: nil, now: now, paused: true)
+        guard let age = pauseAgeHours(now: now) else { return "‖ \(clock)" }
+        return "‖ \(clock) · há \(age)h"
     }
 
     private var a11yLabel: String {
@@ -126,10 +135,22 @@ private struct LiveNowRow: View {
         case .running:
             return "\(session.title), \(session.phaseTitle), em execução há \(clock)"
         case .paused:
-            return "\(session.title), \(session.phaseTitle), pausado em \(clock)"
+            let age = pauseAgeHours(now: .now).map { ", há \($0) horas" } ?? ""
+            return "\(session.title), \(session.phaseTitle), pausado em \(clock)\(age)"
         case .finished:
             return "\(session.title), concluído"
         }
+    }
+
+    private func isLongPaused(now: Date) -> Bool {
+        pauseAgeHours(now: now) != nil
+    }
+
+    private func pauseAgeHours(now: Date) -> Int? {
+        guard session.timing == .paused, let pauseTimestamp = session.pauseTimestamp else { return nil }
+        let seconds = max(0, now.timeIntervalSince(pauseTimestamp))
+        guard seconds >= 30 * 60 else { return nil }
+        return max(1, Int(seconds / 3600))
     }
 
     /// Relógio canônico: `elapsedActiveMs` + (now − runningSince) quando running.

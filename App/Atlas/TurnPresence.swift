@@ -26,6 +26,7 @@ struct LiveSessionSnapshot: Identifiable, Equatable {
     let timing: AtlasExecutionPresence.Timing
     let elapsedActiveMs: Int?
     let runningSince: Date?
+    let pauseTimestamp: Date?
     /// 1ª observação local — só ordenação; nunca exibido como duração.
     let startedAt: Date
 }
@@ -51,6 +52,7 @@ final class TurnPresence {
         var activityKey: TraceID?   // trace real que liga Activity ↔ conversa
         var activityStarted = false
         var ongoing = false        // C14: running OU paused — a sessão vive
+        var visible = false
         var startedAt = Date()     // base local só para trace legado (timer nil)
         init(model: ConversationModel, threadTitle: String, threadId: ThreadID?) {
             self.model = model
@@ -88,6 +90,7 @@ final class TurnPresence {
                 timing: presence.timing,
                 elapsedActiveMs: presence.elapsedActiveMilliseconds,
                 runningSince: presence.runningSince,
+                pauseTimestamp: presence.pauseTimestamp,
                 startedAt: entry.startedAt
             )
             byTrace[snap.id] = snap
@@ -113,6 +116,10 @@ final class TurnPresence {
         let entry = Entry(model: model, threadTitle: threadTitle, threadId: threadId ?? model.threadId)
         entries[id] = entry
         observe(id)
+    }
+
+    func setVisible(_ model: ConversationModel, visible: Bool) {
+        entries[ObjectIdentifier(model)]?.visible = visible
     }
 
     private func observe(_ id: ObjectIdentifier) {
@@ -167,6 +174,9 @@ final class TurnPresence {
             let final = lastPresence(model, key: entry.activityKey)
             finishActivity(entry, presence: final)
             broadcastCount()
+            if UIApplication.shared.applicationState == .active, !entry.visible {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            }
             // A permissão PRIMEIRO, e esperando o veredito: pedir depois de
             // notificar fazia a primeira notificação da vida do app ser sempre
             // descartada em silêncio — justamente a que prova ao operador que a

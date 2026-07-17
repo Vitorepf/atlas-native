@@ -64,7 +64,11 @@ extension AtlasCodeView {
                     ) {
                         selectedNode = node
                         Task { await provenanceModel.load(hash: node.hash) }
+                    } onLongPress: {
+                        guard visibleAnchors.contains(node.hash) else { return }
+                        Task { await openWhyBiographyIfAvailable(for: node) }
                     }
+                    .accessibilityRotorEntry(id: node.id, in: graphRotor)
                 }
 
                 // O grafo mostra os N mais recentes e PARA — o repo tem 8.700.
@@ -91,6 +95,20 @@ extension AtlasCodeView {
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 10)
             .padding(.bottom, 96)  // espaço da pílula
+        }
+        .refreshable {
+            await model.load()
+            await mirrorModel.refresh()
+        }
+        .accessibilityRotor("Violações") {
+            ForEach(nodes(in: graph, matching: .violating), id: \.id) { node in
+                AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
+            }
+        }
+        .accessibilityRotor("Curados") {
+            ForEach(nodes(in: graph, matching: .healed), id: \.id) { node in
+                AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
+            }
         }
     }
 
@@ -188,6 +206,22 @@ extension AtlasCodeView {
                 .font(.system(size: 10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
+    }
+
+    func nodes(in graph: AtlasCodeGraphResponse, matching state: AtlasCodeNodeState) -> [AtlasCodeGraphNode] {
+        graph.nodes.filter { model.state(for: $0) == state }
+    }
+
+    func rotorLabel(for node: AtlasCodeGraphNode) -> String {
+        node.message ?? String(node.hash.prefix(8))
+    }
+
+    func openWhyBiographyIfAvailable(for node: AtlasCodeGraphNode) async {
+        await provenanceModel.load(hash: node.hash)
+        guard case .loaded(let provenance) = provenanceModel.phase,
+              let path = provenance.files.first?.path else { return }
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        whyFileTarget = WhyFileTarget(path: path)
     }
 
     /// Lei 7: a pílula nunca some — nem aqui. E agora ela responde.

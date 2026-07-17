@@ -59,6 +59,10 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
   (Wispr Flow bloqueia verificação no simulador; device é a prova).
 - Commits escopados e prefixados: `feat(core)|fix(core)` = Codex ·
   `feat(ui)|polish(ui)` = Fable · branch **main local apenas**, sem merges.
+- **M81 · device-pending envelhecido:** qualquer prova `DEVICE-PENDING` ou
+  `device-pending` com mais de 7 dias vira linha destacada em vermelho em §4
+  (`<span style="color:red">...</span>`) com owner/`Claimed by` =
+  **operador**. Pendência de device não pode ficar escondida em nota antiga.
 
 - **N8 (performance como lei):** mudança que regride um baseline de F5.1
   (Instruments no device: cold launch, hitches @120Hz, grafo 200, upload 20MB)
@@ -147,8 +151,8 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | PT0 | **PARCIAL** | **Grok 4.5** | evidence + OBRA | decisão §6 2026-07-17 | Onda 0 M01–M06 | M06 live DONE; M01 último passo+§5; M02–M05 roteiro operador | `docs/evidence/2026-07-17-onda0/`; M06 log |
 | PT1 | **PARCIAL** | **GPT-5.5** | `App/Atlas/{A11yID,AutonomosView,ConversationChrome,ConversationCockpit,ConversationView,ExecutionStateCard,SelfConstructionReceiptSheet,SteerInteractionSheet}.swift`; `OBRA.md` | PT0 | Onda 1 M07–M14 + casca sprint M15/M62/M11 | M07–M09 casca ligadas; M15 aplicado; M62/M11 verificados | este commit; checks+build+diff verdes; device-pending |
 | PT-M61 | **PARCIAL** | **GPT-5.5** | server A1–A3 já shipped; native `AtlasArena.swift`+checks+`App/Atlas/Arena*`+RootView+A11yID+XCUITest+evidence | PT1 casca sprint | M61 Arena A4–A12 (única rota nova `.arena`) | Core/UI/test/prova de enqueue app; falta drenagem worker→scoreboard final | `b2bffeb`→`1930ed3` + este commit; `docs/evidence/2026-07-17-arena/` |
-| PT2–8 | PENDING | — | conforme ondas 2–8 | PT-M61 | Ondas 2–8 (M16–M66 exceto M61); Onda 9 intocada | prova por item | — |
-| PT10 | PENDING | — | OBRA/Makefile/docs | contínuo | Onda 10 M76–M81 rituais | make verify; ledger §B | — |
+| PT2–8 | **PARCIAL** | **GPT-5.5** | `docs/{canto-canonico,arquitetura,atlas-native-*}.md`; `docs/engineering-knowledge-base/atlas-native-overview.md` | PT-M61 | Ondas 2–8 (M16–M66 exceto M61); M54/M56 entregues | canto canônico curto + arquitetura; demais itens das ondas seguem pendentes | este commit; gates finais em §7 |
+| PT10 | **PARCIAL** | **GPT-5.5** | `App/Makefile`; `OBRA.md` | contínuo | Onda 10 M76–M81 rituais; M78/M80/M81 entregues | `make verify`; ledger §B no OBRA; regra device-pending >7d | este commit; gates finais em §7 |
 | PT11–18 | PENDING | — | widgets/AX/Code/Autônomos | M118 antes widgets | Patamar Supremo M83–M140 | SD-1..SD-9; anti-padrões | — |
 | PT19–22 | PENDING | — | conversa/runtime/craft/workspace | PT11–18 | Ondas 19–22 M141–M160 | KPIs frente | — |
 
@@ -731,6 +735,22 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   Allocations; app Debug no device; capturar antes (pós-F1) e depois (pós-F2).
   NUNCA declarar alvos atingidos sem medição real.
 
+
+## 5A. Decisões pendentes do operador (fixo · M80)
+
+> Espelho operacional do §B de `docs/plano-profundidade-total.md`. Atualizar
+> quando uma decisão for tomada; OBRA §6 vence o plano se houver decisão mais
+> nova.
+
+| Decisão | Status | Bloqueia | Default enquanto pendente |
+|---|---|---|---|
+| Nome da tela de medição no código | **DECIDIDO 2026-07-17: `AtlasArena*`, rota `.arena`, título "Arena"** | M61 | — |
+| Arquivar OBRA §7 pré-15/07 em `OBRA-ARCHIVE.md` | PENDENTE | M60 | não arquivar |
+| Commitar docs de planejamento (`docs/plano-*`, `docs/roadmap-*`, `docs/spec-*`) | PENDENTE | M82 | permanecem untracked |
+| Paisagem para telas de leitura (hoje Portrait-only deliberado) | PENDENTE | M27 | manter Portrait |
+| Adotar SwiftFormat/lint como gate | PENDENTE | M41 | não adotar |
+| Biometria em ações destrutivas | PENDENTE | M53 | não implementar |
+
 ## 6. Decisões registradas
 
 - **2026-07-17 · Grok 4.5 executa Profundidade Total** (`docs/plano-profundidade-total.md`, 155 itens ativos) com autorização do operador para atravessar as lanes (casca + engine + atlas-server quando o contrato exigir) nesta missão, sem ownership permanente. Write-scope: `App/Atlas/*`, `Sources/*`, `App/UITests/*`, `App/Widgets/*`, `docs/evidence/*` (append), `OBRA.md` (append §4/§5/§6/§7), e no atlas-server os caminhos exigidos pelos contratos das ondas. Gates §2/§3 invioláveis. Baseline 2026-07-17: `swift run AtlasCoreChecks` exit 0; `cd App && make build` exit 0; ambos repos em `main`.
@@ -894,6 +914,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · GPT-5.5 · **M54/M56/M78/M80/M81 process/docs** · `f22b296` + este commit · M56 `docs/arquitetura.md` com 3 camadas, seams, contratos `atlas.*`, actors, fail-closed e boundary; M54 canto canônico curto (`canto-canonico`, rich input, Código, Autônomos, gates) com ponte para overview; M78 `make verify` honesto no `App/Makefile`; M80 ledger fixo de decisões pendentes do operador com M61 decidido como Arena; M81 regra `device-pending` >7d → §4 vermelho owner operador. Prova: `env -u ATLAS_LIVE swift run AtlasCoreChecks` exit 0; `cd App && make build` exit 0; `git diff --check` exit 0; `cd App && make -n verify` mostra CoreChecks → build → `xcodebuild ... test` no simulador `iPhone 17 Pro`.
 - 2026-07-17 · GPT-5.5 · **M61 Arena A4–A12 PARCIAL honesta** · `b2bffeb`→`1930ed3` + este commit · Core DTO/client/checks `atlas.arena.*.v1`; rota única `.arena`; home OPERAÇÃO; O ÍNDICE com Swift Charts; CAPACIDADES; SUITES/sheets; AGORA + run sheet governado; Live Activity dedicada registrada como gap; XCUITest home→arena→índice→suite→rodar sem motivo bloqueado→recibo; A12 disparou POST real do app. Prova: `env -u ATLAS_LIVE swift run AtlasCoreChecks` exit 0; `cd App && make build` exit 0; `git diff --check` exit 0; `AtlasArenaFlowTests.testHomeArenaIndexSuiteRunReceipt` 1 teste/0 falhas (`docs/evidence/2026-07-17-arena/AtlasArenaFlow.log`, `.xcresult`, screenshots). Probe pós-run: `runs/live` schema `atlas.arena.runs_live.v1`, `terminal_bench/mockllm` baseline+with_atlas `queued`; scoreboard/composite 200 com 10 suites. **Honesto:** a rodada do app ficou enfileirada; recibo mostra `worker_implemented=false`; não foi provada atualização final do scoreboard dessa rodada.
 - 2026-07-17 · GPT-5.5 · **PT1 casca bindings PARCIAL** · este commit · M07 Redirecionar ligado na execução viva com sheet `current_step|replan`, recibo literal `na fila do próximo checkpoint`/reason; M08 Self-Construction mostra `Desfazer — com recibo` só com merge hash + controle disponível e recibo `na fila · ainda não desfeito`; M09 seção `PRÓXIMO RESUMO` usa somente digest tipado; M15 corrige faixa uma linha e composer/fila real; M11 diffStats já estava no `ExecutingStrip`; M62 Fila N + sheet promover/remover verificados e envio durante execução volta a enfileirar. Prova: `env -u ATLAS_LIVE swift run AtlasCoreChecks` exit 0 (live herdado do shell foi interrompido), `cd App && make build` exit 0, `git diff --check` exit 0. **Honesto:** sem screenshot/device nesta sessão; M10–M14 não foram afirmados como fechados aqui.
 - 2026-07-17 · Grok 4.5 · **Onda 0 PARCIAL** · este commit · M06 live-probe integral exit 0 (create→SSE→done, upload 3.2MB, C4); M01 parado no último passo real (`delivered_total=0`, heal≠merge) + §5 bridge; M02–M05 roteiros operador (`passcodeRequired`). Evidence: `docs/evidence/2026-07-17-onda0/`. Gates: checks+build verdes.

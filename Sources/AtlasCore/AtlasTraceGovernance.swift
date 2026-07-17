@@ -39,6 +39,7 @@ public enum AtlasTraceGovernance {
         public let iteration: Int?
         public let reason: String?
         public let archivedAt: String?
+        public let stepTitles: [String]
 
         public var id: Int { revision }
 
@@ -61,7 +62,8 @@ public enum AtlasTraceGovernance {
                 revision: revision,
                 iteration: int(item["iteration"]),
                 reason: string(item["reason"]),
-                archivedAt: string(item["archived_at"])
+                archivedAt: string(item["archived_at"]),
+                stepTitles: planStepTitles(from: item)
             )
         }
     }
@@ -100,9 +102,11 @@ public enum AtlasTraceGovernance {
         }
     }
 
-    /// Houve divergência? É FATO derivado: hashes distintos entre membros que
-    /// concluíram. Nunca um "veredito" fabricado pela casca.
+    /// Houve divergência? É FATO derivado: status público distinto ou hashes
+    /// distintos entre membros que concluíram. Nunca um "veredito" fabricado.
     public static func councilDiverged(_ members: [CouncilMember]) -> Bool {
+        let statuses = Set(members.map(\.status))
+        if statuses.count > 1 { return true }
         let hashes = Set(members.filter(\.succeeded).compactMap(\.responseHash))
         return hashes.count > 1
     }
@@ -117,6 +121,18 @@ public enum AtlasTraceGovernance {
     private static func array(_ value: JSONValue?) -> [JSONValue]? {
         if case .array(let items) = value { return items }
         return nil
+    }
+
+    private static func planStepTitles(from item: [String: JSONValue]) -> [String] {
+        let plan = object(item["plan"])
+            ?? object(item["execution_plan"])
+            ?? object(item["archived_plan"])
+        guard let steps = array(plan?["steps"]) else { return [] }
+        return steps.compactMap { raw in
+            if let title = string(raw) { return title }
+            guard let step = object(raw) else { return nil }
+            return string(step["title"]) ?? string(step["label"]) ?? string(step["id"])
+        }
     }
 
     private static func string(_ value: JSONValue?) -> String? {
