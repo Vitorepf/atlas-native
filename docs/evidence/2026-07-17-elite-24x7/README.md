@@ -12,7 +12,7 @@ Execução **contínua e automática** por decisão do operador (plano Elite 24�
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **~86** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **115** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
 | Commits no tip (`git rev-list --count HEAD`) | 388 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 87 | trabalho Elite + peels nesta branch |
 
@@ -41,7 +41,13 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **atlas-server** | Repo server ausente neste workspace — M01 heal→merge e Arena A12 worker drain **BLOCKED** |
 | **Device / passcode** | `passcodeRequired` / operador — `make device`, prints U1–U10, DEVICE_PROVEN pendentes |
 
-## Entrega recente (wave VI — HEAD)
+## Entrega recente (wave XV — HEAD)
+
+- `polish(core)|polish(ui)` Elite B XV: peels 168+ → ≤150 (TraceChangeReview, Autonomos client, RichInput*, JSONValue, Stream, Snapshot, Jobs, Types/Transfer; UI CodeGraph, Conversation*, RootChrome, WorkspaceModel, AutonomosSheets, A11yID, Session, Execution).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **115** (após este commit).
+- Restam 23 arquivos 141–150 linhas — próxima onda B.
+
+## Entrega anterior (wave XIV — `d9db250`)
 
 - `polish(ui)` peels: `ConversationCockpit` 144 (+Agents), `AtlasMarkdownView` 106, `TurnPresence` 211 (+Notifications peel).
 - `polish(ui)` Autônomos: frota quieta + digest/transfer honesty (`41efee4`).

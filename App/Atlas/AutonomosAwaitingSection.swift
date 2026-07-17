@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// M139 — decisões públicas pendentes; silêncio total quando count = 0.
+/// Chips/nightly/rhythm: AutonomosAwaitingSection+Blocks.swift
 struct AutonomosAwaitingYouSection: View {
     let backlog: AtlasAutonomosBacklogResponse?
     let onOpenDetail: (AutonomosDetailSheet) -> Void
@@ -85,67 +86,9 @@ struct AutonomosAwaitingYouSection: View {
 }
 
 extension AutonomosAwaitingYouSection {
-    /// Chave de animação para o pai (aparição/sumário editorial).
     static func decisionCount(in backlog: AtlasAutonomosBacklogResponse?) -> Int {
         guard let backlog else { return 0 }
         return backlog.inboxItems.filter(\.decisionRequired).count
             + backlog.workOrders.filter(\.operatorDecisionRequired).count
-    }
-}
-
-struct AutonomosDetailChipButton: View {
-    let label: String
-    let kind: AutonomosDetailSheet
-    var spokenLabel: String? = nil
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text(label)
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .padding(.horizontal, 9)
-                .padding(.vertical, 6)
-                .background(Capsule().fill(AtlasTheme.surfaceHi))
-                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(spokenLabel ?? "abrir detalhes de \(label)")
-        .accessibilityHint("abre a lista pública de \(kind.title.lowercased())")
-        .accessibilityIdentifier(A11yID.autonomosDetailButton(kind.id))
-    }
-}
-
-/// Proposta das 21h — silêncio quando mute ativo ou sem proposta pendente.
-struct AutonomosNightlyProposalBlock: View {
-    let nightly: NightlyProposalController
-    let onAccept: (NightlyProposalController.ProposalPayload) -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    var body: some View {
-        if let proposal = nightly.pendingProposal, !nightly.isProposalMuted {
-            NightlyProposalCard(
-                proposal: proposal,
-                onAccept: { onAccept(proposal) },
-                onDismiss: { nightly.dismissProposal() },
-                onMute: { nightly.muteProposal(days: $0) }
-            )
-            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-        }
-    }
-}
-
-/// M20 — ritmo aprendido; só com sampleDays < 4.
-struct AutonomosRhythmLearningLine: View {
-    let sampleDays: Int?
-
-    var body: some View {
-        if let sampleDays, sampleDays < 4 {
-            Text("aprendendo seu ritmo · dia \(max(1, sampleDays)) de 4")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityLabel("aprendendo seu ritmo, dia \(max(1, sampleDays)) de 4")
-        }
     }
 }
