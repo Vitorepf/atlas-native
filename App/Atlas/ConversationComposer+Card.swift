@@ -2,33 +2,12 @@ import SwiftUI
 import AtlasCore
 
 // Card + sheets — peel de ConversationComposer (régua ≤100).
+// Body → ConversationComposer+CardBody.swift
 
 extension ConversationComposer {
     var composerCard: some View {
         VStack(alignment: .leading, spacing: expanded ? 12 : 0) {
-            liveExecutionSection
-            queueChipSection
-            keyboardGrabber
-            AttachmentStrip(
-                drafts: model.drafts,
-                reduceMotion: reduceMotion,
-                uploadPercent: model.uploadPercent,
-                onRemove: { model.removeDraft($0) },
-                onFailedTap: { model.toast = $0 }
-            )
-            ComposerToolbar(
-                model: model,
-                reduceMotion: reduceMotion,
-                focused: focused,
-                expanded: expanded,
-                mode: mode,
-                liveBubble: liveBubble,
-                onAttach: { showAttachmentSheet = true },
-                onShowWorkspace: { showWorkspaceSheet = true },
-                onShowMode: { showModeSheet = true },
-                onShowEffort: { showEffortSheet = true },
-                onSend: send
-            )
+            composerCardBody
         }
         .padding(expanded ? EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18)
                           : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))

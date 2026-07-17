@@ -5,7 +5,7 @@ import AtlasCore
 // ferramentas, agentes, gates). Antes ficava invisível; agora cada passo
 // mostra done/atual/pendente a partir do checkpoint REAL (executionProgress).
 // Sem plano no trace, o card não existe. Nada é inventado.
-// Header → PlanCard+Header · Steps → +Steps · Revisions → +Revisions · Toggle → +RevisionToggle
+// Header → PlanCard+Header · Steps → +Steps · Revisions → +Revisions · Detail → +DetailToggle
 struct PlanCard: View {
     let bubble: ChatBubble
     @Environment(AtlasSession.self) var session
@@ -38,21 +38,7 @@ struct PlanCard: View {
                 if !meaningfulRevisions.isEmpty {
                     revisionToggle(plan: plan)
                 }
-                if !plan.tools.isEmpty || !plan.agents.isEmpty || !plan.qualityGates.isEmpty {
-                    Button {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
-                            showDetail.toggle()
-                        }
-                    } label: {
-                        Text(showDetail ? "menos" : "ferramentas · agentes · gates")
-                            .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(showDetail ? "ocultar ferramentas agentes e gates" : "mostrar ferramentas agentes e gates")
-                    .accessibilityHint(showDetail ? "toque para recolher" : "toque para expandir")
-                    if showDetail { planDetail(plan) }
-                }
+                planDetailSection(plan: plan)
             }
             .padding(12)
             .atlasCard(cornerRadius: 12, fillOpacity: 0.5)

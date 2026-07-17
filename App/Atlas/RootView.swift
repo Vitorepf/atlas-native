@@ -4,7 +4,7 @@ import AtlasCore
 // Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
 // de repos reais (campo `workspace` das threads) + "Todas" + "Adicionar". Entrar
 // num workspace abre suas conversas com filtro de área.
-// Destinations → RootView+Destinations.swift
+// Destinations → RootView+Destinations.swift · Nightly → RootView+Nightly.swift
 struct RootView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -41,15 +41,7 @@ struct RootView: View {
             .navigationDestination(for: Route.self) { rootDestination(for: $0) }
         }
         .tint(AtlasTheme.accent)
-        .onAppear {
-            nightly.registerOpenAutonomos {
-                path = NavigationPath()
-                path.append(Route.autonomos)
-            }
-            #if DEBUG
-            nightly.installDemoIfRequested()
-            #endif
-        }
+        .onAppear { registerNightlyOpen() }
         .task { if session.phase == .idle { await session.loadThreads() } }
         .task {
             // A linha CÓDIGO só fala com dado real: sem resposta, ela cala.
