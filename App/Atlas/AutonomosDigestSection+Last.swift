@@ -17,20 +17,27 @@ extension AutonomosNextDigestSection {
                 AutonomosChrome.digestChip("\(digest.last.counts.pendingDecisions)", "decisões")
             }
         }
+        .accessibilityHidden(true)
+        .animation(reduceMotion ? nil : .default, value: digest.last.counts.delivered)
+        .animation(reduceMotion ? nil : .default, value: digest.last.counts.risks)
+        .animation(reduceMotion ? nil : .default, value: digest.last.counts.pendingDecisions)
         if let delivered = digest.last.delivered.first {
             AutonomosChrome.tag("merge \(String(delivered.mergeHash.prefix(8)))")
+                .accessibilityHidden(true)
         }
         if let risk = digest.last.risks.first {
             Text(risk.title?.nonEmpty ?? risk.reason?.nonEmpty ?? risk.severity)
                 .font(.caption)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(2)
+                .accessibilityHidden(true)
         }
         if let decision = digest.last.pendingDecisions.first {
             Text(decision.title)
                 .font(.caption)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(2)
+                .accessibilityHidden(true)
         }
     }
 
@@ -58,5 +65,17 @@ extension AutonomosNextDigestSection {
             parts.append("fechou há \(atlasRelativeAgePT(since: ended))")
         }
         return parts.joined(separator: " · ")
+    }
+
+    func digestMergeTag(_ digest: AtlasAutonomosDigestResponse) -> String? {
+        digest.last.delivered.first.map { String($0.mergeHash.prefix(8)) }
+    }
+
+    func digestRiskHeadline(_ digest: AtlasAutonomosDigestResponse) -> String? {
+        digest.last.risks.first.flatMap { $0.title?.nonEmpty ?? $0.reason?.nonEmpty ?? $0.severity }
+    }
+
+    func digestDecisionHeadline(_ digest: AtlasAutonomosDigestResponse) -> String? {
+        digest.last.pendingDecisions.first?.title
     }
 }
