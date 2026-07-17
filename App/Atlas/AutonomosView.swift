@@ -23,7 +23,12 @@ struct AutonomosView: View {
         ZStack {
             AtlasTheme.bg.ignoresSafeArea()
             VStack(spacing: 0) {
-                header
+                AutonomosViewHeader(
+                    auditModeEnabled: session.auditModeEnabled,
+                    canRefresh: model.selectedArea != nil,
+                    onBack: { dismiss() },
+                    onRefresh: { Task { await model.refreshSelected() } }
+                )
                 content
             }
         }
@@ -85,58 +90,11 @@ struct AutonomosView: View {
         }
     }
 
-    private var header: some View {
-        HStack(spacing: 12) {
-            Button { dismiss() } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .frame(width: 40, height: 40)
-                    .background(Circle().fill(AtlasTheme.surface))
-            }
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Autônomos")
-                    .font(AtlasFont.serif(21, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                Text("ÁREA PRÓPRIA · 24/7")
-                    .font(AtlasFont.mono(10)).tracking(1.2)
-                    .foregroundStyle(AtlasTheme.accent)
-                if session.auditModeEnabled {
-                    Text("MODO AUDITORIA")
-                        .font(AtlasFont.mono(9)).tracking(1.0)
-                        .foregroundStyle(AtlasTheme.domOperacional)
-                }
-            }
-            Spacer()
-            Button { Task { await model.refreshSelected() } } label: {
-                Image(systemName: "arrow.clockwise")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 40, height: 40)
-                    .background(Circle().fill(AtlasTheme.surface))
-            }
-            .disabled(model.selectedArea == nil)
-        }
-        .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, 8)
-    }
-
     @ViewBuilder
     private var content: some View {
         switch model.phase {
         case .idle, .loading:
-            if let proposal = nightly.pendingProposal {
-                AutonomosNightlyProposalBlock(
-                    proposal: proposal,
-                    onAccept: { nightlyStartProposal = proposal },
-                    onDismiss: { nightly.dismissProposal() },
-                    onMute: { nightly.muteProposal(days: $0) }
-                )
-                    .padding(.horizontal, AtlasTheme.Space.screen)
-                    .padding(.top, 10)
-            }
-            AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
-                .padding(.horizontal, AtlasTheme.Space.screen)
-                .padding(.top, 10)
+            AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }
             Spacer()
             VStack(spacing: 14) {
                 ProgressView().tint(AtlasTheme.accent)
@@ -145,19 +103,7 @@ struct AutonomosView: View {
             }
             Spacer()
         case .failed(let message):
-            if let proposal = nightly.pendingProposal {
-                AutonomosNightlyProposalBlock(
-                    proposal: proposal,
-                    onAccept: { nightlyStartProposal = proposal },
-                    onDismiss: { nightly.dismissProposal() },
-                    onMute: { nightly.muteProposal(days: $0) }
-                )
-                    .padding(.horizontal, AtlasTheme.Space.screen)
-                    .padding(.top, 10)
-            }
-            AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
-                .padding(.horizontal, AtlasTheme.Space.screen)
-                .padding(.top, 10)
+            AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }
             Spacer()
             VStack(spacing: 14) {
                 Image(systemName: "exclamationmark.triangle")
@@ -172,79 +118,20 @@ struct AutonomosView: View {
             .padding(32)
             Spacer()
         case .loaded:
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    if let proposal = nightly.pendingProposal {
-                        AutonomosNightlyProposalBlock(
-                            proposal: proposal,
-                            onAccept: { nightlyStartProposal = proposal },
-                            onDismiss: { nightly.dismissProposal() },
-                            onMute: { nightly.muteProposal(days: $0) }
-                        )
-                        .transition(.opacity.combined(with: .move(edge: .top)))
-                    }
-                    AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
-                    if let fleet = model.fleet { AutonomosFleetSummary(fleet: fleet) }
-                    if let digest = model.digest {
-                        AutonomosNextDigestSection(digest: digest)
-                    }
-                    AutonomosOperationDigestSection(
-                        deliveredTotal: model.delivered?.deliveredTotal ?? 0,
-                        pendingCount: model.backlog?.workOrders.count ?? 0,
-                        inboxCount: model.backlog?.inboxItems.count ?? 0,
-                        incidentPresent: model.taskHealth?.incidents.present == true,
-                        oldestBacklogCreatedAt: oldestBacklogCreatedAt(),
-                        findingsByRisk: model.backlog?.findings.byRisk ?? [:]
-                    )
-                    AutonomosAwaitingYouSection(backlog: model.backlog) { detailSheet = $0 }
-                    AutonomosAreaPicker(
-                        areas: model.areas,
-                        selectedAreaID: model.selectedAreaID
-                    ) { id in
-                        Task { await model.selectArea(id) }
-                    }
-                    if let area = model.selectedArea {
-                        AutonomosAreaDetailSection(
-                            area: area,
-                            model: model,
-                            control: $control,
-                            startRunMode: $startRunMode,
-                            showTransferSheet: $showTransferSheet,
-                            onOpenDetail: { detailSheet = $0 },
-                            onSelfConstructionReceipt: { selfConstructionReceipt = $0 }
-                        )
-                    }
-                    if let receipt = model.lastStartRunReceipt, receipt.isEnqueued {
-                        infoLine("Novo ciclo NA FILA — ainda não iniciado. A execução só é real quando o lease aparecer no vivo.")
-                    }
-                    if let transfer = model.lastTransferReceipt {
-                        AutonomosTransferStatus(transfer: transfer) {
-                            Task { await model.refreshTransferStatus() }
-                        }
-                    }
-                    if let receipt = model.lastControlReceipt { controlReceipt(receipt) }
-                    if let fleet = model.fleet {
-                        AutonomosFleetSection(
-                            fleet: fleet,
-                            incidentPresent: model.taskHealth?.incidents.present == true,
-                            auditModeEnabled: session.auditModeEnabled
-                        )
-                    }
-                    if let health = model.taskHealth {
-                        AutonomosTaskHealthSection(health: health)
-                    }
-                    if let history = model.fleetHistory, !history.events.isEmpty {
-                        AutonomosFleetHistorySection(history: history)
-                    }
-                    if let error = model.controlError { errorCard(error) }
-                }
-                .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 10).padding(.bottom, 32)
-            }
-            .refreshable {
-                await model.load()
-                await refreshRhythmLearning()
-            }
-            .scrollIndicators(.hidden)
+            AutonomosLoadedSection(
+                model: model,
+                auditModeEnabled: session.auditModeEnabled,
+                nightly: nightly,
+                rhythmSampleDays: rhythmSampleDays,
+                oldestBacklogCreatedAt: oldestBacklogCreatedAt(),
+                nightlyStartProposal: $nightlyStartProposal,
+                control: $control,
+                startRunMode: $startRunMode,
+                showTransferSheet: $showTransferSheet,
+                detailSheet: $detailSheet,
+                selfConstructionReceipt: $selfConstructionReceipt,
+                onRefreshRhythm: { await refreshRhythmLearning() }
+            )
         }
     }
 
@@ -271,25 +158,28 @@ struct AutonomosView: View {
               revert.revertOf.mergeHash == receipt.cycle.mergeHash else { return nil }
         return revert
     }
+}
 
-    private func controlReceipt(_ receipt: AtlasAutonomosRunControlResponse) -> some View {
-        Text(receipt.note)
-            .font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
-            .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.domAutonomos.opacity(0.1)))
-    }
+/// Proposta noturna + linha de ritmo — compartilhado entre idle/loading/failed.
+private struct AutonomosPreludeBlocks: View {
+    let nightly: NightlyProposalController
+    let rhythmSampleDays: Int?
+    let onAcceptProposal: (NightlyProposalController.ProposalPayload) -> Void
 
-    private func infoLine(_ text: String) -> some View {
-        Text(text)
-            .font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
-            .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .atlasCard(cornerRadius: 12)
-    }
-
-    private func errorCard(_ message: String) -> some View {
-        Text(message).font(.footnote).foregroundStyle(AtlasTheme.domOperacional)
-            .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.domOperacional.opacity(0.1)))
+    var body: some View {
+        if let proposal = nightly.pendingProposal {
+            AutonomosNightlyProposalBlock(
+                proposal: proposal,
+                onAccept: { onAcceptProposal(proposal) },
+                onDismiss: { nightly.dismissProposal() },
+                onMute: { nightly.muteProposal(days: $0) }
+            )
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.top, 10)
+        }
+        AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.top, 10)
     }
 }
 
