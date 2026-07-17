@@ -20,4 +20,8 @@ extension A11yID {
     static func draftRemove(_ id: String) -> String { draftRemovePrefix + id }
 
     static let cameraPicker = "composer-camera-picker"
+    static let attachmentsSheet = "composer-attachments-sheet"
+    static let attachmentPhoto = "composer-attachment-photo"
+    static let attachmentFile = "composer-attachment-file"
+    static let attachmentPaste = "composer-attachment-paste"
 }

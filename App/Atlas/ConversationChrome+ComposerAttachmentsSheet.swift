@@ -11,6 +11,12 @@ struct ComposerAttachmentsSheet: View {
     let onPaste: @MainActor (String) -> Void
     @Environment(\.dismiss) private var dismiss
 
+    private var pasteboardText: String? {
+        UIPasteboard.general.string?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .nonEmpty
+    }
+
     var body: some View {
         SheetShell(title: "Adicionar") {
             PhotosPicker(selection: $pickedPhoto, matching: .images) {
@@ -21,7 +27,9 @@ struct ComposerAttachmentsSheet: View {
                 )
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("escolher foto")
+            .accessibilityLabel(ComposerAttachmentsA11y.spokenPhoto)
+            .accessibilityHint(ComposerAttachmentsA11y.spokenPhotoHint)
+            .accessibilityIdentifier(A11yID.attachmentPhoto)
 
             Button {
                 choose(onChooseCamera)
@@ -35,6 +43,7 @@ struct ComposerAttachmentsSheet: View {
             .buttonStyle(.plain)
             .accessibilityLabel(CameraPickerA11y.spokenChooseCamera)
             .accessibilityHint(CameraPickerA11y.spokenChooseCameraHint)
+            .accessibilityIdentifier(A11yID.cameraPicker)
 
             Button {
                 choose(onChooseFile)
@@ -46,21 +55,34 @@ struct ComposerAttachmentsSheet: View {
                 )
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(ComposerAttachmentsA11y.spokenFile)
+            .accessibilityHint(ComposerAttachmentsA11y.spokenFileHint)
+            .accessibilityIdentifier(A11yID.attachmentFile)
 
             Button {
-                let text = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard let text = pasteboardText else { return }
                 dismiss()
-                guard let text, !text.isEmpty else { return }
                 Task { @MainActor in onPaste(text) }
             } label: {
                 ComposerAttachmentRow(
                     icon: "doc.on.clipboard",
                     title: "Colar contexto",
-                    subtitle: "Adicionar texto da área de transferência"
+                    subtitle: pasteboardText == nil
+                        ? "Nada na área de transferência"
+                        : "Adicionar texto da área de transferência"
                 )
             }
             .buttonStyle(.plain)
+            .disabled(pasteboardText == nil)
+            .accessibilityLabel(ComposerAttachmentsA11y.spokenPaste(hasText: pasteboardText != nil))
+            .accessibilityHint(pasteboardText == nil
+                ? ComposerAttachmentsA11y.spokenPasteDisabledHint
+                : ComposerAttachmentsA11y.spokenPasteHint)
+            .accessibilityIdentifier(A11yID.attachmentPaste)
         }
+        .accessibilityIdentifier(A11yID.attachmentsSheet)
+        .accessibilityLabel(ComposerAttachmentsA11y.spokenSheet)
+        .accessibilityHint(ComposerAttachmentsA11y.spokenSheetHint)
         .onChange(of: pickedPhoto) { _, photo in
             if photo != nil { dismiss() }
         }
