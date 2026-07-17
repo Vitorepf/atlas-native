@@ -7,7 +7,7 @@ import AtlasCore
 // `available` traz patches, controles, testes e findings persistidos.
 // Aceitar/rejeitar só muda a tela depois do recibo do servidor (o model
 // garante); diff vem por refreshChangeReviewDiff — nunca rede na View.
-// Seções → ChangeReviewSections.swift (comportamento idêntico).
+// Seções → ChangeReviewSections / DiffSection / CouncilSection (idêntico).
 struct ChangeReviewSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID

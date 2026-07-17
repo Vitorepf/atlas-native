@@ -592,7 +592,7 @@ nenhum arquivo Codex/Fable >400 sem justificativa §7.
 
 ### Task B1.4: ConversationView / Chrome / RootView / Radar / ChangeReview
 
-- [ ] Cada um ≤ alvo §3; zero mudança visual intencional — **PARCIAL:** View~262 Chrome~181 Radar~66 ChangeReview shell~95 DONE; RootView~436 e ChangeReviewSections~448 ainda >400 sem ADR
+- [ ] Cada um ≤ alvo §3; zero mudança visual intencional — **PARCIAL:** View~262 Chrome~181 Radar~66 ChangeReview shell~95 + Sections 448→225 (+Diff/Council) + ArenaSuites 234→120 (+Sheet) DONE; RootView~436 ainda >400 sem ADR; AtlasClient/AtlasAutonomos Core ainda >400
 
 ### Task B1.5: Dedup chrome
 
