@@ -2,8 +2,7 @@ import SwiftUI
 import AtlasCore
 import AtlasImaging
 
-/// Envio de turno, execução do stream e recuperação de outbox — fora do arquivo
-/// principal para ConversationModel ficar sob a régua (<550).
+/// Envio de turno — fora do arquivo principal para ConversationModel ficar sob a régua (<550).
 @MainActor
 extension ConversationModel {
     @discardableResult
@@ -142,121 +141,5 @@ extension ConversationModel {
             await drainQueuedMessages()
         }
         return completedSuccessfully
-    }
-
-    func recoverPendingIfNeeded() async {
-        guard activeRun == nil, !isSending else { return }
-        let pending = await outbox.pending()
-        guard let input = pending.first(where: {
-            if let threadId { return $0.threadId == threadId.rawValue }
-            return $0.threadId == nil
-        }) else { return }
-
-        // Se o relaunch carregou uma thread já finalizada, não duplica a bolha.
-        if let clientId = input.clientId,
-           let trace = try? await client.findInteraction(clientId: ClientID(clientId)),
-           trace.trace.turnStatus.isTerminal,
-           bubbles.contains(where: { $0.traceId == TraceID(trace.trace.id) }) {
-            try? await outbox.remove(clientId: clientId)
-            return
-        }
-
-        if !bubbles.suffix(2).contains(where: { $0.role == "user" && $0.text == input.inputText }) {
-            bubbles.append(ChatBubble(id: "recovered-user-\(input.clientId ?? UUID().uuidString)",
-                                      role: "user", text: input.inputText))
-        }
-        let aid = "recovered-assistant-\(input.clientId ?? UUID().uuidString)"
-        bubbles.append(ChatBubble(id: aid, role: "assistant", text: "", streaming: true, startedAt: Date()))
-        isSending = true
-        do {
-            let queuedMessageId: String?
-            if let clientId = input.clientId {
-                queuedMessageId = await outbox.followUpId(clientId: clientId)
-            } else {
-                queuedMessageId = nil
-            }
-            let completedSuccessfully = try await execute(
-                input,
-                assistantId: aid,
-                queuedMessageId: queuedMessageId
-            )
-            activeRun = nil
-            isSending = false
-            if completedSuccessfully { await drainQueuedMessages() }
-        } catch {
-            apply(error, to: aid)
-        }
-        activeRun = nil
-        isSending = false
-    }
-
-    private func execute(
-        _ input: CreateAiInteractionInput,
-        assistantId: String,
-        queuedMessageId: QueuedMessage.ID? = nil
-    ) async throws -> Bool {
-        let run = InteractionRun(transport: client, outbox: outbox)
-        activeRun = run
-        var live = ""
-        var completedSuccessfully = false
-        for try await event in await run.start(input: input, followUpId: queuedMessageId) {
-            switch event {
-            case .persisted(let followUpId):
-                if let followUpId {
-                    await consumeQueuedMessageAfterPersistence(id: followUpId)
-                }
-            case .created(let trace):
-                if let canonicalThreadId = trace.threadId.map({ ThreadID($0) }), threadId != canonicalThreadId {
-                    threadId = canonicalThreadId
-                    await adoptQueueScope(threadId: canonicalThreadId)
-                }
-                update(assistantId) { $0.traceId = TraceID(trace.id); $0.provider = trace.provider }
-                applyExecution(assistantId, trace)
-                Task { await AtlasSession.rhythm.recordActivity(workspace: workspaceName ?? workspaceSlug) }
-            case .activity(let activity):
-                update(assistantId) {
-                    $0.reconnectNotice = nil
-                    $0.activities = atlasMergeAgentActivities(
-                        existing: $0.activities,
-                        incoming: [activity]
-                    )
-                }
-            case .content(let frame):
-                guard atlasShouldRenderAssistantContent(frame),
-                      let visible = atlasVisibleAssistantText(frame.content) else { continue }
-                live = frame.type == "response" ? visible : live + visible
-                update(assistantId) { $0.text = live; $0.streaming = true }
-            case .execution(let snapshot):
-                applyExecution(
-                    assistantId,
-                    snapshot.trace,
-                    projectedStreamActivities: snapshot.projectedActivities
-                )
-            case .reconnecting(let lastSequence, let attempt):
-                update(assistantId) {
-                    $0.reconnectNotice = "Reconectando ao stream · tentativa \(attempt) · após evento \(lastSequence)"
-                }
-            case .suspended(let trace):
-                complete(assistantId, trace: trace)
-                AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
-            case .remoteError(let payload):
-                let message = payload["message"]?.stringValue ?? "erro no stream"
-                update(assistantId) { if $0.text.isEmpty { $0.text = "⚠️ \(message)" } }
-            case .completed(let done, let finalTrace):
-                complete(assistantId, trace: finalTrace)
-                completedSuccessfully = done.turnStatus == .succeeded
-                AtlasNativeSnapshotWriter.shared.recordQueuedCount(queuedMessages.count)
-            }
-        }
-        activeRun = nil
-        return completedSuccessfully
-    }
-
-    private func apply(_ error: Error, to id: String) {
-        update(id) {
-            if $0.text.isEmpty { $0.text = "⚠️ \(atlasUserMessage(for: error))" }
-            $0.streaming = false
-        }
-        toast = atlasUserMessage(for: error)
     }
 }

@@ -28,7 +28,7 @@ final class AtlasSession {
     /// sem usar threads como fonte falsa de estado.
     let autonomos: AutonomosModel
     let arena: ArenaModel
-    @ObservationIgnored private var liveSessionsPollingTask: Task<Void, Never>?
+    @ObservationIgnored var liveSessionsPollingTask: Task<Void, Never>?
     @ObservationIgnored private let pathMonitor = NWPathMonitor()
     @ObservationIgnored private let pathMonitorQueue = DispatchQueue(label: "atlas.native.path-monitor")
     @ObservationIgnored private var sawPathDown = false
@@ -90,40 +90,6 @@ final class AtlasSession {
         pathMonitor.start(queue: pathMonitorQueue)
     }
 
-    func setLiveSessionsPollingActive(_ active: Bool) {
-        guard active, hasToken else {
-            liveSessionsPollingTask?.cancel()
-            liveSessionsPollingTask = nil
-            remoteLiveSessions = []
-            AtlasNativeSnapshotWriter.shared.recordRemoteLiveSessions([])
-            return
-        }
-        guard liveSessionsPollingTask == nil else { return }
-        liveSessionsPollingTask = Task { @MainActor [weak self] in
-            while !Task.isCancelled {
-                await self?.refreshRemoteLiveSessions()
-                do {
-                    try await Task.sleep(nanoseconds: 30_000_000_000)
-                } catch {
-                    break
-                }
-            }
-        }
-    }
-
-    private func refreshRemoteLiveSessions() async {
-        do {
-            let response = try await client.getAiSessionsLive(installation: AtlasInstallationIdentity.id)
-            remoteLiveSessions = response.sessions.enumerated().map { index, session in
-                LiveSessionSnapshot(remote: session, index: index)
-            }
-            AtlasNativeSnapshotWriter.shared.recordRemoteLiveSessions(remoteLiveSessions)
-        } catch {
-            remoteLiveSessions = []
-            AtlasNativeSnapshotWriter.shared.recordRemoteLiveSessions([])
-        }
-    }
-
     static func nightlyProposalMutedUntil(now: Date = .init()) -> Date? {
         guard let until = UserDefaults.standard.object(forKey: nightlyProposalMuteKey) as? Date else {
             return nil
@@ -181,75 +147,5 @@ final class AtlasSession {
             guard let w = $0.workspace, !w.isEmpty else { return false }
             return (w as NSString).lastPathComponent.lowercased() == key
         }
-    }
-}
-
-private extension LiveSessionSnapshot {
-    init(remote session: AtlasAiLiveSession, index: Int) {
-        let threadId = session.threadId
-        self.init(
-            id: threadId.map { "remote-thread:\($0.rawValue)" } ?? "remote-session:\(index)",
-            threadId: threadId,
-            title: session.title?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty ?? "Sessão Atlas",
-            phaseTitle: session.phaseTitle?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty ?? "Executando",
-            timing: session.timing.presenceTiming,
-            elapsedActiveMs: session.elapsedActiveMs,
-            runningSince: session.runningSinceDate,
-            pauseTimestamp: nil,
-            startedAt: .now,
-            isRemote: true
-        )
-    }
-}
-
-private extension Optional where Wrapped == AtlasAiLiveSessionTiming {
-    var presenceTiming: AtlasExecutionPresence.Timing {
-        switch self {
-        case .running, nil: return .running
-        case .paused: return .paused
-        case .finished: return .finished
-        }
-    }
-}
-
-private extension String {
-    var nonEmpty: String? {
-        isEmpty ? nil : self
-    }
-}
-
-struct Workspace: Identifiable, Hashable {
-    let id: String     // chave = nome de pasta minúsculo
-    let name: String   // exibição
-    let count: Int
-}
-
-// Área/modo de uma conversa. Heurística por surface + metadata (o dado de modo é
-// esparso hoje; conforme o servidor popular current_mode/routing_domain, afina).
-enum AtlasArea: String, CaseIterable, Identifiable {
-    case tudo, operacional, autonomos, programacao
-    var id: String { rawValue }
-    var label: String {
-        switch self {
-        case .tudo: return "Tudo"
-        case .operacional: return "Operacional"
-        case .autonomos: return "Autônomos"
-        case .programacao: return "Programação"
-        }
-    }
-
-    static func of(_ t: AtlasAiThread) -> AtlasArea {
-        let surface = t.surface.lowercased()
-        let mode = (t.metadata?["current_mode"]?.stringValue
-            ?? t.metadata?["atlas_mode"]?.stringValue
-            ?? t.metadata?["workflow_mode"]?.stringValue ?? "").lowercased()
-        let domain = (t.metadata?["routing_domain"]?.stringValue ?? "").lowercased()
-        if surface.contains("code") || domain.contains("eng") || domain.contains("prog") || mode.contains("program") {
-            return .programacao
-        }
-        if mode.contains("auto") || mode.contains("loop") || (t.metadata?["awis_automation"]?.boolValue ?? false) {
-            return .autonomos
-        }
-        return .operacional
     }
 }
