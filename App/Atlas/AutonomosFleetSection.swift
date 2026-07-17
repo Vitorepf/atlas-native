@@ -36,6 +36,7 @@ struct AutonomosFleetSection: View {
     /// Incidente da fila (C13) — saudável = header quieto; barulho só por exceção.
     var incidentPresent: Bool = false
     var auditModeEnabled: Bool = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var isQuiet: Bool {
         AutonomosFleetHealth.isQuiet(fleet: fleet, incidentPresent: incidentPresent)
@@ -47,16 +48,33 @@ struct AutonomosFleetSection: View {
                 AutonomosFleetEmptyState(kind: .noAgents)
             } else {
                 AutonomosChrome.sectionCaption(incidentPresent ? "FROTA · ATENÇÃO" : "frota")
+                    .accessibilityHidden(true)
+                    .accessibilityAddTraits(.isHeader)
                 if isQuiet && !auditModeEnabled {
                     Text("todos vivos · desejados · autorizados")
                         .font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityLabel("frota saudável, todos vivos desejados e autorizados")
+                        .accessibilityHidden(true)
                 }
-                ForEach(fleet.agents) { agent in
-                    agentRow(agent, compact: isQuiet && !auditModeEnabled && !AutonomosFleetHealth.agentNeedsAttention(agent))
+                ForEach(Array(fleet.agents.enumerated()), id: \.element.id) { index, agent in
+                    agentRow(
+                        agent,
+                        index: index,
+                        compact: isQuiet && !auditModeEnabled && !AutonomosFleetHealth.agentNeedsAttention(agent)
+                    )
                 }
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(
+            AutonomosFleetSectionA11y.spokenSection(
+                agentCount: fleet.agents.count,
+                activeCount: fleet.activeCount,
+                incidentPresent: incidentPresent,
+                isQuiet: isQuiet && !auditModeEnabled
+            )
+        )
+        .accessibilityIdentifier(A11yID.autonomosFleetSection)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: isQuiet)
     }
 }
