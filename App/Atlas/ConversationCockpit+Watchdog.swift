@@ -19,7 +19,8 @@ struct SilenceWatchdog: View {
                         text: "Sem novos eventos há \(silence)s",
                         icon: "timer",
                         tint: AtlasTheme.domOperacional,
-                        reduceMotion: reduceMotion
+                        reduceMotion: reduceMotion,
+                        embedInParent: true
                     )
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
                 }

@@ -72,7 +72,8 @@ struct ReconnectBanner: View {
                     text: primary,
                     icon: bubble.reconnectBannerIcon,
                     tint: AtlasTheme.textSecondary,
-                    reduceMotion: reduceMotion
+                    reduceMotion: reduceMotion,
+                    embedInParent: true
                 )
                 ForEach(Array(bubble.reconnectSecondaryLines.enumerated()), id: \.offset) { _, line in
                     Text(line)
@@ -91,7 +92,7 @@ struct ReconnectBanner: View {
                         .accessibilityHidden(true)
                 }
             }
-            .accessibilityElement(children: .combine)
+            .accessibilityElement(children: .ignore)
             .accessibilityLabel(bubble.reconnectSpokenLabel)
             .accessibilityIdentifier(A11yID.executionReconnectBanner)
         }
