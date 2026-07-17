@@ -89,8 +89,14 @@ struct SelfConstructionReceiptSheet: View {
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.domOperacional.opacity(0.35), lineWidth: 1))
                 }
 
+                // Humano fora do fluxo: silêncio/sucesso. Único verbo = veto.
+                // Sem portão de aprovação em plumbing.
                 if canRevert {
                     VStack(alignment: .leading, spacing: 8) {
+                        Text("veto retroativo · com recibo")
+                            .font(AtlasFont.mono(10))
+                            .tracking(0.9)
+                            .foregroundStyle(AtlasTheme.textTertiary)
                         TextField("Quem autoriza", text: $actor)
                             .font(.system(.callout))
                             .textInputAutocapitalization(.never)
@@ -118,12 +124,12 @@ struct SelfConstructionReceiptSheet: View {
                         .accessibilityIdentifier(A11yID.selfReceiptVeto)
                     }
                 } else {
-                    Text("desfazer indisponível neste recorte")
+                    Text("silêncio · desfazer indisponível neste recorte")
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                 }
 
-                Text("você não foi necessário")
+                Text("você não foi necessário — entrega sem portão")
                     .font(AtlasFont.serifItalic(13))
                     .foregroundStyle(AtlasTheme.textTertiary)
 

@@ -47,7 +47,7 @@ struct AtlasCodeHealReceiptSheet: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
 
-                // Único verbo humano: o veto retroativo. Nunca "Aprovar".
+                // Único verbo humano em plumbing: veto retroativo com recibo.
                 if let note = AtlasCodeUndoWindow.note(expiresAt: heal.stepReceipts.first?.undoExpiresAt) {
                     Text(note)
                         .font(AtlasFont.mono(9))
