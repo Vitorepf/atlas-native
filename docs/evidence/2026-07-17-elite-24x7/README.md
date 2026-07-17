@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXVIII (este tip)
+## Entrega Elite CXXXIX (este tip)
+
+- `refactor(ui)` CICLO B: Home+Loading; Timers+Recovering; Attachments+Importers; Ribbon+Lanes; Strip+Upload; Review+Load; Autonomos+ContentShell; Arena+Defaults/+Body; Island+TrailingProgress. Tip `e93b48b`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXVIII (anterior)
 
 - `refactor(ui)` CICLO B: Home+WorkspaceFolders; Actions+ActionColors; Composer+CanSubmit; Editorial+AssistantExecution; Arena+Marks; Mirror+Header; Steer+Predicates; Timer+TimerText; Scrubber+Meta; Mount+CheckRow; Effort+Rows; Masthead+Title; LiveSession+TimerHelpers. Tip `7d3347a`.
 - Zero App/Widgets >100; zero Route nova.
