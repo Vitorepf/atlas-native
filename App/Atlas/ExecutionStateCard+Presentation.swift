@@ -1,8 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// Selo, ícone, tint e resumo falado — peel de ExecutionStateCard (régua ~160).
+// Selo e resumo falado — peel de ExecutionStateCard (régua ~160).
 // Timers → ExecutionStateCard+Timers.swift
+// Chrome → ExecutionStateCard+PresentationChrome.swift
 
 extension ExecutionStateCard {
     var spokenKind: String? {
@@ -26,29 +27,5 @@ extension ExecutionStateCard {
         case .failed: return "FALHOU"
         case .completed: return nil
         }
-    }
-
-    var tint: Color {
-        switch state.kind {
-        case .attentionRequired: return AtlasTheme.accent
-        case .awaitingExternal, .recovering: return AtlasTheme.textSecondary
-        case .failed: return AtlasTheme.domOperacional
-        case .replanning, .completed: return AtlasTheme.domAutonomos
-        }
-    }
-
-    var icon: String {
-        switch state.kind {
-        case .attentionRequired: return "exclamationmark.shield"
-        case .awaitingExternal: return "hourglass"
-        case .recovering: return "arrow.triangle.2.circlepath"
-        case .replanning: return "arrow.triangle.branch"
-        case .failed: return "xmark.octagon"
-        case .completed: return "checkmark.seal"
-        }
-    }
-
-    static func clock(_ ms: Int) -> String {
-        AtlasTime.formatActiveDuration(milliseconds: ms)
     }
 }

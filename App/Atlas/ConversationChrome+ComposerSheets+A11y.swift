@@ -3,6 +3,7 @@ import AtlasCore
 
 // Spoken labels — peel dos sheets do composer (CICLO C residual honesty).
 // Modo = rótulo local; esforço = opções reais do payload; workspace = threads carregadas.
+// Effort → ConversationChrome+ComposerSheets+A11yEffort.swift
 
 enum ComposerSheetA11y {
     static let modeFootnote =
@@ -11,31 +12,6 @@ enum ComposerSheetA11y {
     static func modeLabel(_ key: String, title: String, selected: Bool) -> String {
         let state = selected ? "selecionado" : "disponível"
         return "modo \(title), \(state), \(modeFootnote)"
-    }
-
-    static func effortLabel(_ effort: AtlasComputeEffort, selected: Bool) -> String {
-        let state = selected ? "selecionado" : "disponível"
-        return "\(spokenEffort(effort)), \(state)"
-    }
-
-    static func effortSubtitle(_ effort: AtlasComputeEffort) -> String {
-        switch effort {
-        case .auto: return "Atlas Decide escolhe; nada vai no payload"
-        case .fast: return "força rápido no próximo envio"
-        case .balanced: return "força normal no próximo envio"
-        case .deep: return "força profundo no próximo envio"
-        case .max: return "força máximo no próximo envio"
-        }
-    }
-
-    static func spokenEffort(_ effort: AtlasComputeEffort) -> String {
-        switch effort {
-        case .auto: return "esforço automático"
-        case .fast: return "esforço rápido"
-        case .balanced: return "esforço normal"
-        case .deep: return "esforço profundo"
-        case .max: return "esforço máximo"
-        }
     }
 
     static func workspaceLabel(name: String, count: Int, selected: Bool) -> String {

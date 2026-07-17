@@ -1,7 +1,8 @@
 import SwiftUI
 import UIKit
 
-// Gestures + reset — peel de ZoomableArtifactImage.
+// Gestures — peel de ZoomableArtifactImage.
+// Reset → ArtifactViewer+ZoomReset.swift
 
 extension ZoomableArtifactImage {
     var zoomGesture: some Gesture {
@@ -27,26 +28,5 @@ extension ZoomableArtifactImage {
             .onEnded { _ in
                 lastOffset = offset
             }
-    }
-
-    func setScale(_ value: CGFloat) {
-        scale = clamped(value)
-        lastScale = scale
-        if scale <= 1 { resetOffset() }
-    }
-
-    func resetZoom() {
-        scale = 1
-        lastScale = 1
-        resetOffset()
-    }
-
-    func resetOffset() {
-        offset = .zero
-        lastOffset = .zero
-    }
-
-    func clamped(_ value: CGFloat) -> CGFloat {
-        min(4, max(1, value))
     }
 }

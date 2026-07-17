@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Suites form — peel de ArenaRunSheet+Form.
+// Engine → ArenaRunSheet+FormEngine.swift
 
 extension ArenaRunSheet {
     @ViewBuilder
@@ -24,26 +25,6 @@ extension ArenaRunSheet {
                         else { selectedSuites.insert(suite.suite) }
                     }
                     .accessibilityIdentifier("arena-run-suite-\(suite.suite)")
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    var engineFormSection: some View {
-        section("MOTOR") {
-            if engines.isEmpty {
-                Text("nenhum motor publicado")
-                    .font(.system(.subheadline))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
-                    .accessibilityLabel(spokenEmptyEngines())
-            } else {
-                ForEach(engines, id: \.self) { engine in
-                    toggleRow(title: engine, subtitle: nil, isOn: selectedEngine == engine) {
-                        selectedEngine = engine
-                    }
-                    .accessibilityIdentifier("arena-run-engine-\(engine)")
                 }
             }
         }

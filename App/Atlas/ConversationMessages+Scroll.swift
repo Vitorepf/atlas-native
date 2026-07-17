@@ -4,6 +4,7 @@ import AtlasCore
 
 // FAB + scroll coalescing — peel de ConversationMessages.
 // FAB → ConversationMessages+ScrollFAB.swift
+// Key → ConversationMessages+ScrollKey.swift
 
 extension ConversationMessages {
     var showsScrollFAB: Bool { awayFromBottom && !model.bubbles.isEmpty }
@@ -40,9 +41,4 @@ extension ConversationMessages {
                 }
             }
     }
-}
-
-private struct BottomDistanceKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
 }

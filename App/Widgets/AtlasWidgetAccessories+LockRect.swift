@@ -2,7 +2,8 @@ import WidgetKit
 import SwiftUI
 import AtlasCore
 
-// Retângulo e helpers do lock accessory — peel de AtlasWidgetAccessories+LockLive.
+// Retângulo do lock accessory — peel de AtlasWidgetAccessories+LockLive.
+// Emphasis → AtlasWidgetAccessories+LockRectEmphasis.swift
 
 extension LockAccessorySnapshotView {
     func rectangular(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -43,13 +44,5 @@ extension LockAccessorySnapshotView {
         .transaction { transaction in
             if reduceMotion { transaction.disablesAnimations = true }
         }
-    }
-
-    func emphasisColor(_ snapshot: AtlasNativeSnapshot) -> Color {
-        if LockAccessoryA11y.incidentLine(snapshot.fleet?.incident) != nil
-            || LockAccessoryA11y.hasAttention(snapshot) {
-            return Ink.alert
-        }
-        return Ink.ink
     }
 }

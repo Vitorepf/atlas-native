@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Detalhe da área selecionada: métricas, placement, entregas, controles.
 /// Header/métricas → AutonomosAreaDetailSection+Header.swift
+/// Controls → AutonomosAreaDetailSection+Controls.swift
 struct AutonomosAreaDetailSection: View {
     let area: AtlasAutonomosArea
     let model: AutonomosModel
@@ -33,17 +34,7 @@ struct AutonomosAreaDetailSection: View {
                 onSelfConstructionReceipt: onSelfConstructionReceipt
             )
             ownedSystemsBlock
-            AutonomosAreaControls(
-                areaName: area.areaName,
-                isPaused: model.live?.isPaused == true,
-                canControl: model.canControlSelectedArea,
-                onResume: { control = .resume },
-                onPause: { control = .pause },
-                onTransfer: { showTransferSheet = true },
-                onKill: { control = .kill },
-                onDryRun: { startRunMode = .dryRun },
-                onExecute: { startRunMode = .execute }
-            )
+            areaControls
         }
         .padding(16)
         .background(RoundedRectangle(cornerRadius: 18).fill(AtlasTheme.surface))
