@@ -2,22 +2,9 @@ import Foundation
 import AtlasCore
 
 // Spoken labels do recibo — peel de AtlasCodeHealReceiptSheet+A11y.
+// Sheet → AtlasCodeHealReceiptSheet+A11ySheetSpoken.swift
 
 extension AtlasCodeHealReceiptSheet {
-    func spokenSheetLabel() -> String {
-        var parts = ["recibo de cura", heal.mode]
-        if heal.stepReceipts.isEmpty {
-            parts.append("sem passos no recibo")
-        } else {
-            parts.append("\(heal.stepReceipts.count) passo\(heal.stepReceipts.count == 1 ? "" : "s")")
-            parts.append("\(completedStepCount) concluído\(completedStepCount == 1 ? "" : "s")")
-        }
-        if let blocked = heal.blocked, !blocked.isEmpty {
-            parts.append("bloqueado, \(blocked)")
-        }
-        return parts.joined(separator: ", ")
-    }
-
     func spokenMastheadLabel() -> String {
         hasCompletedHeal
             ? "curado sozinho, modo \(heal.mode)"

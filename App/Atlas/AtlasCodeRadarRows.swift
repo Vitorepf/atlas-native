@@ -3,6 +3,7 @@ import SwiftUI
 
 // Linhas de repositório e pasta do radar — peel de AtlasCodeRadarSections.
 // Label → AtlasCodeRadarRows+Label.swift
+// A11y chrome → AtlasCodeRadarRows+A11yChrome.swift
 
 struct AtlasCodeRepoRow: View {
     let repo: AtlasCodeRepoRef
@@ -14,22 +15,6 @@ struct AtlasCodeRepoRow: View {
     let onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
-            repoRowLabel
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(
-            AtlasCodeRadarRowsA11y.spokenRepo(
-                name: repo.name,
-                folder: repo.folder,
-                showsFolder: showsFolder,
-                issues: issues,
-                trunk: trunk,
-                lastCommitAt: repo.lastCommitAt
-            )
-        )
-        .accessibilityHint(AtlasCodeRadarRowsA11y.repoHint)
-        .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
+        repoRowA11yChrome
     }
 }

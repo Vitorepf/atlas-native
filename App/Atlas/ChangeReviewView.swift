@@ -5,6 +5,7 @@ import AtlasCore
 // Conteúdo: ChangeReviewView+Content · spoken: +A11y · available: +Available.
 // Toolbar → ChangeReviewView+Toolbar.swift
 // Load → ChangeReviewView+Load.swift
+// Chrome → ChangeReviewView+Chrome.swift
 struct ChangeReviewSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -17,19 +18,7 @@ struct ChangeReviewSheet: View {
     var review: AtlasTraceChangeReview? { reviews.changeReviewsByTrace[traceId] }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                AtlasTheme.bg.ignoresSafeArea()
-                content
-            }
-            .navigationTitle("Revisar mudanças")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { reviewToolbar }
-            .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }
-            .accessibilityIdentifier(A11yID.reviewSheet)
-            .accessibilityLabel(spokenReviewSheetLabel())
-            .accessibilityHint(Self.reviewSheetHint)
-        }
-        .task { await refreshReviewTask() }
+        reviewSheetChrome
+            .task { await refreshReviewTask() }
     }
 }
