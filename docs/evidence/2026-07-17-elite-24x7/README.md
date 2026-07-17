@@ -8,13 +8,15 @@ Blackboard: `OBRA.md` §4 Elite E0–E-D
 
 Execução **contínua e automática** por decisão do operador (plano Elite 24×7). O agente avança ondas desbloqueadas sem esperar checkpoint humano; bloqueios externos ficam registrados honestamente abaixo.
 
+Ondas **L–LV** (pós-XLIX): peels CICLO C residuais de a11y/honestidade em Autônomos carregado, radar Code, composer/cockpit, primitivos motion e Arena índice — sem checkpoint humano entre ondas.
+
 ## Commit count (honest, this environment)
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **205** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
-| Commits no tip (`git rev-list --count HEAD`) | 507 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 206 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **236** | primeiro commit do plano: `ec931f2` · `docs(obra): plano Elite Agêntica 24×7` |
+| Commits no tip (`git rev-list --count HEAD`) | 538 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 237 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -71,15 +73,30 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | **XLVII** | **PARCIAL** | ArenaNow AGORA + AreaDelivered entregas; silêncio lei V1 sem runs/suites; spoken contagens publicadas; peels `ArenaNowSection+A11y`/`AutonomosAreaDeliveredSection+A11y` (`d49c971`/`f45058c`) |
 | **XLVIII** | **PARCIAL** | ArenaCapabilities motor/mapeamento/gráfico; rows casos>0 e suites publicadas; peel `ArenaCapabilitiesSection+A11y` (`756cbea`) |
 | **XLIX** | **PARCIAL** | AreaDetail métricas `—` sem payload + ArenaSuites regressões; spoken tier/fase/runtime e N suites; peels `AutonomosAreaDetailSection+A11y`/`ArenaSuitesSection+A11y` (`cd48a71`/`d5e1458`) |
+| **L** | **PARCIAL** | LoadedSection recibos spoken só publicados + ViewHeader back/refresh RM; peels `LoadedSection+A11y`/`ViewHeader+A11y` (`46e4710`/`2e2e91f`) |
+| **LI** | **PARCIAL** | RadarFolderRow desvios verificados + FleetSection quiet/atenção; peels `FolderRow+A11y`/`FleetSection+A11y` (`de1f997`/`dc1de2e`) |
+| **LII** | **PARCIAL** | ChangeReview chrome spoken + Digest contagens + RootHome chips CONVERSAS; peels `ChangeReviewSections+A11y`/`DigestSection+A11y`/`RootHomeSections+Conversation+A11y` (`ef50459`/`623d9ee`/`edc0692`) |
+| **LIII** | **PARCIAL** | RadarRows repo desvios + FileRow provenance; peels `AtlasCodeRadarRows+A11y`/`AtlasCodeFileRow+A11y` (`25c3f08`/`6c5635e`) |
+| **LIV** | **PARCIAL** | ExecutingStrip/DraftThumb/Sheets composer + DetailChip PressableScale; peels `ExecutingStrip+Actions`/`DraftThumb+A11y`/`Sheets+A11y`/`DetailChipButton+A11y` (`8c4d97b`/`0916057`/`1d49212`/`0584422`) |
+| **LV** | **PARCIAL** | CommitRow/Watchdog cockpit + motion primitivos + ExecutionBanner/GraphSpine/ArenaChart; peels `CommitRow+A11y`/`Watchdog+A11y`/`BreathingDiamond`/`ExecutionBanner+A11y`/`Spine+A11y`/`ArenaCompositeChart+A11y` (`b5185f0`/`bd04ef4`/`0302bf1`/`8ea49b6`/`e1f3264`/`460ad35`/`cfc0be5`) |
 
-## Entrega recente (wave XLIX contínuo — AreaDetail/ArenaSuites — HEAD)
+## Entrega recente (wave LV contínuo — cockpit/motion/Arena — HEAD)
+
+- `polish(ui)` CICLO C ArenaCompositeChart: spoken séries/rodadas só publicadas; gráfico decorativo silenciado; peel `ArenaCompositeChart+A11y` (`cfc0be5`).
+- `polish(ui)` CICLO C GraphSpine: conectores/nó decorativos silenciados; peel `AtlasCodeCommitRow+Spine+A11y` (`460ad35`).
+- `polish(ui)` CICLO C ExecutionBanner: ícone decorativo silenciado; `embedInParent` quando reconexão/watchdog; peel `ExecutionBanner+A11y` (`e1f3264`).
+- `polish(ui)` CICLO C motion: `BreathingDiamond`/`PressableScale`/`AtlasMotion+Presentation` RM honesty (`0302bf1`); `AutonomosChrome+Tag` visual silenciado (`8ea49b6`).
+- `polish(ui)` CICLO C CommitRow + Watchdog: spoken trunk/silêncio real; peels `AtlasCodeCommitRow+A11y`/`Watchdog+A11y` (`b5185f0`/`bd04ef4`).
+- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **236** (inclui este pin).
+- Zero arquivos App/Core/Widgets >100; max 100.
+
+## Entrega anterior (wave XLIX contínuo — AreaDetail/ArenaSuites)
 
 - `polish(ui)` CICLO C AreaDetail: métricas `—` sem payload; spoken header tier/fase/runtime; peel `AutonomosAreaDetailSection+A11y`/`+Shortcuts` (`cd48a71`).
 - `polish(ui)` CICLO C ArenaSuites: silêncio total sem suites; spoken N suites/medidas/regressões; peel `ArenaSuitesSection+A11y` (`d5e1458`).
 - `polish(ui)` CICLO C ArenaCapabilities: spoken motor/mapeamento/N capacidades; peel `ArenaCapabilitiesSection+A11y` (`756cbea`).
 - `polish(ui)` CICLO C AreaDelivered: título auto-construção honesto; spoken merge só com prova; peel `AutonomosAreaDeliveredSection+A11y` (`f45058c`).
 - `polish(ui)` CICLO C ArenaNow: silêncio total sem runs vivos; spoken N medições + Live Activity; peel `ArenaNowSection+A11y` (`d49c971`).
-- Commit count honesto: `git rev-list --count ec931f2..HEAD` = **205** (inclui este pin).
 - Zero arquivos App/Core/Widgets >100; max 100.
 
 ## Entrega anterior (wave XLVI contínuo — TaskHealth/ArtifactZoom/AreaPicker/PlanCard)
