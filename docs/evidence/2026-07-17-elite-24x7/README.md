@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **465+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXVI tip `dc7dcd4` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **467+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXXXVII tip `320784c` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXXXVI (este tip)
+## Entrega Elite CXXXXXXXVII (este tip)
+
+- `refactor(ui)` CICLO B: ArenaNow+RowContent; Engine+SummaryHeader; Suite+RowBadges; Artifact+Unavailable; Week+Title; Provenance+StateKicker. Tip `320784c`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXXXVI (anterior)
 
 - `refactor(ui)` CICLO B: Outline+Empty; Digest+WindowCaption; Caption+A11y; AskPill+Leading; Radar+AlarmCapsule; Markdown+BlockViewBody. Tip `dc7dcd4`.
 - Zero App/Widgets >100; zero Route nova.
