@@ -3,6 +3,7 @@ import AtlasCore
 
 // Conteúdo do recibo — peel de AtlasCodeHealReceiptSheet (régua ≤100).
 // Masthead/undo → +Chrome · Status → +Status.swift
+// Undo footer → AtlasCodeHealReceiptSheet+UndoFooter.swift
 
 extension AtlasCodeHealReceiptSheet {
     @ViewBuilder
@@ -20,16 +21,7 @@ extension AtlasCodeHealReceiptSheet {
                 stepsBlock()
             }
 
-            if let note = AtlasCodeUndoWindow.note(expiresAt: undoExpiresAt) {
-                Text(note)
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityIdentifier(A11yID.codeHealUndoWindow)
-                    .accessibilityLabel(spokenUndoWindowLabel(note))
-            }
-            if canUndo {
-                undoButton
-            }
+            receiptUndoFooter
 
             Spacer(minLength: 0)
         }

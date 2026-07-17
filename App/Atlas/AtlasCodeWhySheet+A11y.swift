@@ -4,6 +4,7 @@ import AtlasCore
 /// Spoken labels — peel de AtlasCodeWhySheet (CICLO C residual honesty).
 /// Commit → AtlasCodeWhySheet+A11yCommit.swift
 /// Spoken → AtlasCodeWhySheet+A11ySpoken.swift
+/// Labels → AtlasCodeWhySheet+A11yLabels.swift
 
 extension AtlasCodeWhySheet {
     var whyContentPhaseID: String {
@@ -14,24 +15,5 @@ extension AtlasCodeWhySheet {
             guard let why = model.why else { return "loaded-nil" }
             return why.commits.isEmpty ? "empty" : "timeline-\(why.commits.count)"
         }
-    }
-
-    var whySheetSpokenLabel: String {
-        var parts = ["biografia do arquivo, \(file)"]
-        if model.phase == .loaded, let why = model.why {
-            if why.commits.isEmpty {
-                parts.append("sem história neste recorte")
-            } else {
-                var history = "\(why.commits.count) commit\(why.commits.count == 1 ? "" : "s")"
-                if why.truncated { history += " de \(why.commitsTotal), história truncada" }
-                parts.append(history)
-            }
-        }
-        return parts.joined(separator: ", ")
-    }
-
-    var whyHeaderSpokenLabel: String {
-        guard let why = model.why, why.truncated else { return file }
-        return "\(file), mostrando \(why.commits.count) de \(why.commitsTotal)"
     }
 }
