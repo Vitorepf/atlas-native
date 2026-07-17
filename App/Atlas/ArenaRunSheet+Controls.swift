@@ -74,16 +74,3 @@ extension ArenaRunSheet {
         return "\(title), \(state)"
     }
 }
-
-struct ArenaToggleSymbolBounce: ViewModifier {
-    let enabled: Bool
-    let isOn: Bool
-
-    func body(content: Content) -> some View {
-        if enabled {
-            content.symbolEffect(.bounce, value: isOn)
-        } else {
-            content
-        }
-    }
-}

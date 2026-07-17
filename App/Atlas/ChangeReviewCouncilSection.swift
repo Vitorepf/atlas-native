@@ -3,6 +3,7 @@ import AtlasCore
 
 // MARK: - Governance / Conselho (C18 · C19 · C21)
 // Extraído de ChangeReviewSections sem mudança de comportamento.
+// Council block → ChangeReviewCouncilSection+Block.swift
 
 /// C18 · C19 · C21 — as provas que o servidor emite. Cada bloco só existe
 /// se a fonte existir: sem diff medido, sem replanejamento e sem conselho,
@@ -11,7 +12,7 @@ struct ChangeReviewGovernanceSection: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         if let trace = reviews.governanceByTrace[traceId] {
@@ -26,6 +27,7 @@ struct ChangeReviewGovernanceSection: View {
                             Image(systemName: "plusminus")
                                 .font(.system(size: 11))
                                 .foregroundStyle(AtlasTheme.textTertiary)
+                                .accessibilityHidden(true)
                             Text(stats.headline)
                                 .font(AtlasFont.mono(11))
                                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -38,6 +40,7 @@ struct ChangeReviewGovernanceSection: View {
                             Image(systemName: "clock.arrow.circlepath")
                                 .font(.system(size: 11))
                                 .foregroundStyle(AtlasTheme.textTertiary)
+                                .accessibilityHidden(true)
                             Text(revisions.count == 1
                                  ? "plano v1 arquivado — \(last.humanReason)"
                                  : "\(revisions.count) versões de plano arquivadas — \(last.humanReason)")
@@ -56,32 +59,5 @@ struct ChangeReviewGovernanceSection: View {
                 .accessibilityIdentifier(A11yID.reviewGovernance)
             }
         }
-    }
-
-    @ViewBuilder
-    private func councilBlock(_ council: [AtlasTraceGovernance.CouncilMember]) -> some View {
-        let diverged = AtlasTraceGovernance.councilDiverged(council)
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Text("Conselho")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityAddTraits(.isHeader)
-                if diverged {
-                    Text("divergência")
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(AtlasTheme.accent)
-                        .accessibilityLabel("divergência entre pareceres")
-                }
-            }
-            ForEach(council) { member in
-                ChangeReviewCouncilMemberRow(member: member)
-                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-            }
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewCouncilA11y.spokenSection(memberCount: council.count, diverged: diverged))
-        .accessibilityIdentifier(A11yID.reviewCouncil)
-        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: council.map(\.id))
     }
 }
