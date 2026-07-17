@@ -2,17 +2,12 @@ import SwiftUI
 import UIKit
 
 // Lista de workspaces — peel de WorkspaceSheet.
+// Header → ConversationChrome+ComposerSheets+WorkspaceHeader.swift
 
 extension WorkspaceSheet {
     @ViewBuilder
     var workspaceList: some View {
-        Text("pastas das conversas carregadas · vale no próximo envio")
-            .font(.system(size: 12))
-            .foregroundStyle(AtlasTheme.textTertiary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 24)
-            .padding(.bottom, 10)
-            .accessibilityAddTraits(.isHeader)
+        workspaceListHeader
         ForEach(workspaces) { ws in
             let isSelected = ws.name == current
             SheetRow(
@@ -29,9 +24,5 @@ extension WorkspaceSheet {
                 dismiss()
             }
         }
-    }
-
-    func workspaceCountLine(_ count: Int) -> String {
-        count == 1 ? "1 conversa carregada" : "\(count) conversas carregadas"
     }
 }

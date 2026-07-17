@@ -5,6 +5,7 @@ import AtlasCore
 /// Agrega só contagens e textos publicados; silêncio/sem portão quando delivered>0.
 /// Counts → AutonomosDigestSection+A11yCounts.swift
 /// Last → AutonomosDigestSection+A11yLast.swift
+/// Schedule → AutonomosDigestSection+A11ySchedule.swift
 
 enum AutonomosDigestSectionA11y {
     static func spokenSection(
@@ -17,12 +18,11 @@ enum AutonomosDigestSectionA11y {
         riskHeadline: String?,
         decisionTitle: String?
     ) -> String {
-        var parts: [String] = []
-        if let next = nextDigestAt?.nonEmpty {
-            parts.append("próximo resumo, agendado para \(next)")
-        } else {
-            parts.append("resumo governado")
-        }
+        var parts = spokenScheduleLead(
+            nextDigestAt: nextDigestAt,
+            scheduleReason: scheduleReason,
+            hasLast: hasLast
+        )
         if hasLast {
             AutonomosDigestSectionA11yLast.appendLastBody(
                 &parts,
@@ -32,10 +32,6 @@ enum AutonomosDigestSectionA11y {
                 riskHeadline: riskHeadline,
                 decisionTitle: decisionTitle
             )
-        } else if let reason = scheduleReason?.nonEmpty {
-            parts.append(reason)
-        } else if nextDigestAt?.nonEmpty == nil {
-            parts.append("sem agenda publicada")
         }
         return parts.joined(separator: ", ")
     }

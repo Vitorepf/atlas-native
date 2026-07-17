@@ -3,6 +3,7 @@ import AtlasCore
 
 // Surfaces filter/timeline — peel de LiveTimeline.
 // Scroll → LiveTimeline+Scroll.swift
+// Timeline → LiveTimeline+TimelineSurface.swift
 
 extension LiveTimeline {
     @ViewBuilder
@@ -17,20 +18,5 @@ extension LiveTimeline {
                                                                                 totalSteps: baseRows.count))
                 .accessibilityIdentifier(A11yID.liveTimelineFilterSilence)
         }
-    }
-
-    var timelineSurface: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if showsFilterChips {
-                TimelineFilterChips(filter: $filter,
-                                    baseRows: baseRows,
-                                    reduceMotion: reduceMotion,
-                                    filterSilence: false)
-            }
-            timelineScroll
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(LiveTimelineA11y.spokenSectionLabel(stepCount: rows.count))
-        .accessibilityIdentifier(A11yID.liveTimeline)
     }
 }
