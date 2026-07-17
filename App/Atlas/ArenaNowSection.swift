@@ -30,6 +30,10 @@ struct ArenaNowSection: View {
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("\(run.suite), \(run.engine), \(run.arm?.labelPT ?? "braço desconhecido"), \(run.status.displayPT)")
                 }
+                Text("Seguir medição na Live Activity: pendente de ActivityKit dedicado para Arena.")
+                    .font(.system(.caption))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityLabel("Seguir medição na Live Activity pendente de contrato dedicado para Arena")
             }
             .padding(16)
             .atlasCard()
