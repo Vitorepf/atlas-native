@@ -14,6 +14,8 @@ struct ExecutionStateCard: View {
     var onRetry: (JobID) -> Void = { _ in }
     var onSteer: (() -> Void)? = nil
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
@@ -24,8 +26,8 @@ struct ExecutionStateCard: View {
                     .font(.system(.footnote, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Spacer(minLength: 0)
-                if state.kind == .attentionRequired {
-                    Text("PAUSADO")
+                if let badge = kindBadge {
+                    Text(badge)
                         .font(AtlasFont.mono(10)).tracking(0.8)
                         .foregroundStyle(tint)
                 }
@@ -36,16 +38,31 @@ struct ExecutionStateCard: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            // Checkpoint / timer / deadline: só campos tipados do contrato.
+            // recovering não tem retry_count no v1 — se o servidor publicar
+            // tentativas, elas vêm em `detail`; a casca não inventa contagem.
+            if let checkpoint = state.checkpoint {
+                Text("checkpoint · \(checkpoint)")
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+            }
+            if state.kind == .recovering, let timer = state.timer {
+                Text("ativo \(Self.clock(timer.elapsedActiveMilliseconds))")
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .monospacedDigit()
+                    .accessibilityLabel("tempo ativo \(Self.clock(timer.elapsedActiveMilliseconds))")
+            }
             if let deadline = state.deadline {
                 Text("Próxima mudança: \(deadline)")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
             }
-            // Ações são renderizadas sempre que o SERVIDOR as declarar (não só
-            // em atenção): assim uma falha recuperável, uma espera externa ou um
-            // replanejamento com ação aparecem sozinhos quando o contrato existir
-            // — nunca um botão inventado pela casca.
+            // Ações = somente `state.actions` declaradas pelo servidor (cena 01).
+            // Falha (cena 13): resume/retry só quando há pills do contrato OU
+            // `retryableJobId` real no model — nunca um botão inventado sem ambos.
             if let jobId, !state.actions.isEmpty {
                 HStack(spacing: 8) {
                     ForEach(state.actions) { action in
@@ -56,19 +73,24 @@ struct ExecutionStateCard: View {
                                 .padding(.horizontal, 11).padding(.vertical, 8)
                                 .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(ExecutionStateActionStyle(style: action.style))
+                        .buttonStyle(ExecutionStateActionStyle(
+                            style: action.style,
+                            reduceMotion: reduceMotion
+                        ))
                     }
                 }
-            } else if state.kind == .failed, let retryableJobId {
-                // C17: falha sem ação declarada pelo servidor → oferecemos o
-                // retry real do job (reenfileira do ponto de falha).
+            } else if state.kind == .failed, state.actions.isEmpty, let retryableJobId {
+                // C17: falha sem action no presentation state → retry do job real.
                 Button { onRetry(retryableJobId) } label: {
                     Text("Retomar")
                         .font(.system(.caption, weight: .semibold))
                         .padding(.horizontal, 11).padding(.vertical, 8)
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(ExecutionStateActionStyle(style: .primary))
+                .buttonStyle(ExecutionStateActionStyle(
+                    style: .primary,
+                    reduceMotion: reduceMotion
+                ))
             }
             if let onSteer {
                 Button(action: onSteer) {
@@ -78,7 +100,10 @@ struct ExecutionStateCard: View {
                         .padding(.horizontal, 11).padding(.vertical, 8)
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(ExecutionStateActionStyle(style: .secondary))
+                .buttonStyle(ExecutionStateActionStyle(
+                    style: .secondary,
+                    reduceMotion: reduceMotion
+                ))
                 .accessibilityLabel("redirecionar esta execução")
             }
         }
@@ -90,6 +115,18 @@ struct ExecutionStateCard: View {
         )
         .accessibilityElement(children: .contain)
         .accessibilityLabel(state.title)
+    }
+
+    /// Selo 1:1 com `kind` — nunca copy inventada além do mapeamento canônico.
+    private var kindBadge: String? {
+        switch state.kind {
+        case .attentionRequired: return "PAUSADO"
+        case .awaitingExternal: return "AGUARDANDO"
+        case .recovering: return "RECONECTANDO"
+        case .replanning: return "REPLANEJANDO"
+        case .failed: return "FALHOU"
+        case .completed: return nil
+        }
     }
 
     private var tint: Color {
@@ -110,5 +147,12 @@ struct ExecutionStateCard: View {
         case .failed: return "xmark.octagon"
         case .completed: return "checkmark.seal"
         }
+    }
+
+    private static func clock(_ ms: Int) -> String {
+        let s = max(0, ms / 1000)
+        return s >= 3600
+            ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
+            : String(format: "%d:%02d", s / 60, s % 60)
     }
 }

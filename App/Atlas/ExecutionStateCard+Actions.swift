@@ -6,14 +6,18 @@ import AtlasCore
 
 struct ExecutionStateActionStyle: ButtonStyle {
     let style: AtlasExecutionPresentationState.ActionStyle
+    var reduceMotion: Bool = false
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(foreground)
             .background(Capsule().fill(background.opacity(configuration.isPressed ? 0.72 : 1)))
             .overlay(Capsule().stroke(border, lineWidth: 1))
-            .scaleEffect(configuration.isPressed ? 0.97 : 1)
-            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
+            .animation(
+                reduceMotion ? nil : .easeOut(duration: 0.15),
+                value: configuration.isPressed
+            )
     }
 
     private var background: Color {

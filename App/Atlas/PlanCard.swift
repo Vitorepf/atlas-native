@@ -5,9 +5,11 @@ import AtlasCore
 // ferramentas, agentes, gates). Antes ficava invisível; agora cada passo
 // mostra done/atual/pendente a partir do checkpoint REAL (executionProgress).
 // Sem plano no trace, o card não existe. Nada é inventado.
+// Revisões → PlanCard+Revisions.swift.
 struct PlanCard: View {
     let bubble: ChatBubble
     @Environment(AtlasSession.self) private var session
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showDetail = false
     @State private var showRevisions = false
 
@@ -40,10 +42,12 @@ struct PlanCard: View {
                 if session.auditModeEnabled, isTerminal, let progress = bubble.executionProgress {
                     auditTerminalLine(plan: plan, progress: progress)
                 }
-                // C19: "comparar versões" só quando o servidor arquivou planos.
+                // C19 / cena 02: "comparar versões" só com planRevisions reais.
                 if !revisions.isEmpty {
                     Button {
-                        withAnimation(.easeOut(duration: 0.2)) { showRevisions.toggle() }
+                        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+                            showRevisions.toggle()
+                        }
                     } label: {
                         Text(showRevisions
                              ? "ocultar versões"
@@ -53,13 +57,15 @@ struct PlanCard: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel("comparar versões do plano")
                     if showRevisions {
-                        revisionDetail(plan)
-                        .transition(.opacity)
+                        PlanRevisionCompare(plan: plan, revisions: revisions)
+                            .transition(reduceMotion ? .identity : .opacity)
                     }
                 }
                 if !plan.tools.isEmpty || !plan.agents.isEmpty || !plan.qualityGates.isEmpty {
                     Button {
-                        withAnimation(.easeOut(duration: 0.2)) { showDetail.toggle() }
+                        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+                            showDetail.toggle()
+                        }
                     } label: {
                         Text(showDetail ? "menos" : "ferramentas · agentes · gates")
                             .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
@@ -137,7 +143,7 @@ struct PlanCard: View {
                 chipRow(label: "gates", items: plan.qualityGates.map(\.label))
             }
         }
-        .transition(.opacity)
+        .transition(reduceMotion ? .identity : .opacity)
     }
 
     private func auditTerminalLine(
@@ -162,70 +168,12 @@ struct PlanCard: View {
         .accessibilityLabel("auditoria do plano, \(plan.steps.count) passos planejados, \(min(progress.current, progress.total)) de \(progress.total) executados")
     }
 
-    @ViewBuilder
-    private func revisionDetail(_ plan: AtlasExecutionPlan) -> some View {
-        if let comparison = latestComparison(plan), comparison.hasChanges {
-            VStack(alignment: .leading, spacing: 7) {
-                Text("v\(comparison.revision.revision) → plano atual")
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                if !comparison.left.isEmpty {
-                    revisionList(label: "saíram", items: comparison.left)
-                }
-                if !comparison.entered.isEmpty {
-                    revisionList(label: "entraram", items: comparison.entered)
-                }
-            }
-        } else {
-            VStack(alignment: .leading, spacing: 5) {
-                ForEach(revisions) { rev in
-                    Text("v\(rev.revision) — \(rev.humanReason)")
-                        .font(.system(size: 12))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                }
-            }
-        }
-    }
-
-    private func revisionList(label: String, items: [String]) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(label.uppercased())
-                .font(AtlasFont.mono(9))
-                .tracking(0.8)
-                .foregroundStyle(AtlasTheme.textTertiary)
-            ForEach(items, id: \.self) { item in
-                Text("• \(item)")
-                    .font(.system(size: 12))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .lineLimit(2)
-            }
-        }
-    }
-
-    private func latestComparison(_ plan: AtlasExecutionPlan) -> RevisionComparison? {
-        guard let revision = revisions.last(where: { !$0.stepTitles.isEmpty }) else { return nil }
-        let current = plan.steps.map(\.title)
-        let archived = revision.stepTitles
-        return RevisionComparison(
-            revision: revision,
-            left: archived.filter { !current.contains($0) },
-            entered: current.filter { !archived.contains($0) }
-        )
-    }
-
     private func chipRow(label: String, items: [String]) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label.uppercased()).font(AtlasFont.mono(9)).tracking(0.8)
                 .foregroundStyle(AtlasTheme.textTertiary)
             FlowChips(items: items)
         }
-    }
-
-    private struct RevisionComparison {
-        let revision: AtlasTraceGovernance.PlanRevision
-        let left: [String]
-        let entered: [String]
-        var hasChanges: Bool { !left.isEmpty || !entered.isEmpty }
     }
 }
 
