@@ -174,7 +174,7 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
 | E-A4 | **PARCIAL** | **Grok 4.5** | deepen + fidelity matrix | E0 | Onda A4 casca deepen | A4.5 matrix DONE; A4.1 Session Hub=`LiveNowSection` multi-row deepen DONE; demais cenas ainda pendente | `14585d7` + este commit LiveNow hub |
 | E-A5 | **IN_PROGRESS** | **Grok 4.5** | `App/Widgets/*` + `AtlasDeepLink` | E-A1 deep links | Onda A5 fora-do-app | M84 Semana + lock accessories; `atlas://arena`→`.arena`; lock `queueLabel` cápsula gold no título; Island SD-2 ainda parcial; widgetURL Arena home entry opcional depois | este commit + `183f01f`+`08f0dda`+`a702926` |
 | E-A6 | **PENDING** | **operador** | device unlock + prints | passcode | Onda A6 DEVICE_PROVEN | U1–U10 + Arena E2E + M03/M04 | — |
-| E-B | **PARCIAL** | **Grok 4.5** | AutonomosView + ConversationView + ConversationModel + RootChrome + ChangeReview/Radar + ConversationChrome/ExecutionStateCard peel | E-A* | CICLO B compressão 1 | AutonomosView 1153→565→297; ConversationView 795→611→370; ConversationModel 885→642; RootView 592→433; ChangeReviewView 453→95; AtlasCodeRadarView 470→66; ConversationChrome 520→181; ExecutionStateCard 346→114; ConversationComposer 277 | peels + `wc -l`; build Mac-pending |
+| E-B | **PARCIAL** | **Grok 4.5** | AutonomosView + ConversationView + ConversationModel + RootChrome + ChangeReview/Radar + ConversationChrome/ExecutionStateCard peel + AtlasClient domain split | E-A* | CICLO B compressão 1 | AutonomosView 1153→565→297; ConversationView 795→611→370; ConversationModel 885→642; RootView 592→433; ChangeReviewView 453→95; AtlasCodeRadarView 470→66; ConversationChrome 520→181; ExecutionStateCard 346→114; ConversationComposer 277; AtlasClient 658→473 (+AI/Code/LiveActivity) | peels + `wc -l`; build Mac-pending |
 | E-C | **PENDING** | — | aprofundar 9 rotas + presença | E-B | CICLO C patamares | profundidade sem largura de telas | — |
 | E-D | **PENDING** | — | compressão 2 | E-C | CICLO D | delete ≥60% linhas de C ou ADR | — |
 
@@ -967,6 +967,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
+
+- 2026-07-17 · Grok 4.5 · **polish(core) — split AtlasClient domain extensions** · este commit · `AtlasClient.swift` 658→473 (core networking + SSE + steer); extrai `AtlasClient+AI.swift` (60) · `AtlasClient+Code.swift` (98) · `AtlasClient+LiveActivity.swift` (39). Arena/Autônomos já vivem em `AtlasArena`/`AtlasAutonomos`. Zero mudança de API pública. Prova: `wc -l` 658→473+60+98+39; Swift toolchain ausente neste cloud — re-rodar `swift run AtlasCoreChecks` + `make build` no Mac.
 
 - 2026-07-17 · Grok 4.5 · **CICLO B — peel ConversationView composer** · este commit · `ConversationView.swift` 611→370; extrai `ConversationComposer.swift` (277) — bar/input/strip/fila/execução viva/trailing + sheets modifier; FocusState/steer/review bindings do shell; zero Route; comportamento idêntico. §4 E-B atualizado. Prova: `wc -l` 611→370+277; Swift toolchain ausente neste cloud — re-rodar `make build` no Mac.
 
