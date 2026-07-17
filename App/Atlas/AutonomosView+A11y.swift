@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels e saúde do cabeçalho — peel de AutonomosView (CICLO C residual honesty).
 /// Spoken → AutonomosView+A11ySpoken.swift
+/// Phase → AutonomosView+A11yPhase.swift
 
 extension AutonomosView {
     /// Silêncio no masthead quando frota+operação estão quietas (barulho só por exceção).
@@ -16,14 +17,5 @@ extension AutonomosView {
         guard delivered == 0, pending == 0, inbox == 0 else { return false }
         guard let fleet = model.fleet else { return false }
         return AutonomosFleetHealth.isQuiet(fleet: fleet, incidentPresent: false)
-    }
-
-    var contentPhaseID: String {
-        switch model.phase {
-        case .idle: return "idle"
-        case .loading: return "loading"
-        case .loaded: return "loaded"
-        case .failed: return "failed"
-        }
     }
 }

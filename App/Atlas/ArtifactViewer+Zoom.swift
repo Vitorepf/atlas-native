@@ -11,19 +11,6 @@ struct ZoomableArtifactImage: View {
     @State var lastOffset: CGSize = .zero
 
     var body: some View {
-        applyZoomAccessibility(
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .scaleEffect(scale)
-                .offset(offset)
-                .frame(maxWidth: .infinity)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .contentShape(Rectangle())
-                .gesture(zoomGesture.simultaneously(with: dragGesture))
-                .onTapGesture(count: 2) { resetZoom() }
-                .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: scale)
-                .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: offset)
-        )
+        applyZoomAccessibility(zoomImageCore)
     }
 }

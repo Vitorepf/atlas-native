@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Entregas comprovadas — peel de AutonomosAreaDetailSection.
+// Empty → AutonomosAreaDeliveredSection+Empty.swift
 
 struct AutonomosAreaDeliveredSection: View {
     let area: AtlasAutonomosArea
@@ -18,7 +19,7 @@ struct AutonomosAreaDeliveredSection: View {
     /// C13 + Elite C: merge comprovado = sucesso/silêncio; delivered_total=0
     /// em auto-construção = vazio honesto (nunca “melhorou” sem ledger).
     @ViewBuilder
-    private var deliveredSection: some View {
+    var deliveredSection: some View {
         let isSelf = isSelfConstructionArea(area)
         let deliveredTotal = model.delivered?.deliveredTotal ?? 0
         if let delivered = model.delivered, deliveredTotal > 0 {
@@ -43,16 +44,7 @@ struct AutonomosAreaDeliveredSection: View {
             .accessibilityLabel(AutonomosAreaDeliveredA11y.spokenSection(isSelf: isSelf, total: deliveredTotal, visible: visible))
             .accessibilityIdentifier(isSelf ? A11yID.autonomosAreaDeliveredSelf : A11yID.autonomosAreaDeliveredSection)
         } else if isSelf {
-            VStack(alignment: .leading, spacing: 6) {
-                AutonomosChrome.sectionCaption("AUTO-CONSTRUÇÃO", role: .header)
-                Text("Trabalho ainda não mergeado — aguardando o ledger. Sem entrega comprovada neste recorte.")
-                    .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(AutonomosAreaDeliveredA11y.spokenEmptySelf())
-            .accessibilityIdentifier(A11yID.autonomosAreaDeliveredEmpty)
+            deliveredEmptySelf
         }
     }
 }

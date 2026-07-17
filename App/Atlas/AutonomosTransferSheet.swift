@@ -4,6 +4,7 @@ import AtlasCore
 /// Folha de transferência — só placement verificado do lock; alvo nunca inventado.
 /// Form → AutonomosTransferSheet+Form.swift · Placement → +Placement.swift · Toolbar → +Toolbar.swift
 /// Predicates → AutonomosTransferSheet+Predicates.swift
+/// A11y → AutonomosTransferSheet+A11yChrome.swift
 struct AutonomosTransferSheet: View {
     let areaName: String
     let focus: String
@@ -15,15 +16,13 @@ struct AutonomosTransferSheet: View {
     @State var reason = ""
 
     var body: some View {
-        NavigationStack {
-            transferForm
-            .navigationTitle("Transferir missão")
-            .toolbar { transferToolbar }
-            .accessibilityIdentifier(A11yID.autonomosTransferSheet)
-        }
-        .accessibilityLabel(
-            AutonomosTransferSheetA11y.spokenSheet(areaName: areaName, hasPlacement: hasPlacement)
+        transferA11yChrome(
+            NavigationStack {
+                transferForm
+                .navigationTitle("Transferir missão")
+                .toolbar { transferToolbar }
+                .accessibilityIdentifier(A11yID.autonomosTransferSheet)
+            }
         )
-        .accessibilityHint(AutonomosTransferSheetA11y.sheetHint)
     }
 }

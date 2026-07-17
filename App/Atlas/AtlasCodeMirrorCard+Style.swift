@@ -2,6 +2,7 @@ import AtlasCore
 import SwiftUI
 
 // Style + a11y helpers — peel de AtlasCodeMirrorCard.
+// Label → AtlasCodeMirrorCard+StyleLabel.swift
 
 extension AtlasCodeMirrorCard {
     var background: Color {
@@ -12,18 +13,5 @@ extension AtlasCodeMirrorCard {
     var borderColor: Color {
         if case .blocked = response.state { return AtlasCodePalette.alert.opacity(0.35) }
         return AtlasTheme.separator
-    }
-
-    func label(_ text: String, color: Color, icon: String) -> some View {
-        HStack(spacing: 7) {
-            Image(systemName: icon)
-                .font(.system(size: 10, weight: .semibold))
-                .accessibilityHidden(true)
-            Text(text)
-                .font(.system(size: 12.5))
-                .accessibilityHidden(true)
-        }
-        .foregroundStyle(color)
-        .accessibilityHidden(true)
     }
 }

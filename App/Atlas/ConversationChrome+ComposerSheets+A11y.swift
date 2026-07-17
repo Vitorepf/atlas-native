@@ -4,6 +4,7 @@ import AtlasCore
 // Spoken labels — peel dos sheets do composer (CICLO C residual honesty).
 // Modo = rótulo local; esforço = opções reais do payload; workspace = threads carregadas.
 // Effort → ConversationChrome+ComposerSheets+A11yEffort.swift
+// Hints → ConversationChrome+ComposerSheets+A11yHints.swift
 
 enum ComposerSheetA11y {
     static let modeFootnote =
@@ -22,8 +23,4 @@ enum ComposerSheetA11y {
 
     static let workspaceEmpty =
         "nenhum workspace nas conversas carregadas; abra uma conversa com pasta ou volte à home"
-
-    static let modeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
-    static let effortSheetHint = "escolhe o esforço computacional do próximo envio"
-    static let workspaceSheetHint = "escolhe a pasta do próximo envio entre as conversas carregadas"
 }

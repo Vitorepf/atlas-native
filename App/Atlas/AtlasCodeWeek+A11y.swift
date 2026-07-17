@@ -4,6 +4,7 @@ import Foundation
 /// Semana no grafo — peel de AtlasCodeGraphChrome+Week (CICLO C residual honesty).
 /// Zeros quietos; métricas faladas só quando o servidor publicou valor positivo.
 /// Spoken → AtlasCodeWeek+A11ySpoken.swift
+/// Phase → AtlasCodeWeek+A11yPhase.swift
 
 enum AtlasCodeWeekUI {
     static func isQuiet(commits: Int, heals: Int, prevented: Int) -> Bool {
@@ -20,10 +21,5 @@ enum AtlasCodeWeekUI {
 
     static func spokenLabel(_ week: AtlasCodeWeek) -> String {
         AtlasCodeWeekUISpoken.spokenLabel(week)
-    }
-
-    static func weekPhaseID(_ week: AtlasCodeWeek) -> String {
-        if isQuiet(week) { return "quiet-\(week.window)" }
-        return "active-\(week.window)-\(week.commits)-\(week.heals)-\(week.prevented)"
     }
 }

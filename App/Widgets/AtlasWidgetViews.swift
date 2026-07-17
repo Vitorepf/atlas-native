@@ -2,8 +2,10 @@ import WidgetKit
 import SwiftUI
 import AtlasCore
 
-// MARK: - Snapshot provider + shared container (SD-1)
+// MARK: - Snapshot provider (SD-1)
 // Age helpers → AtlasWidgetViews+Age.swift
+// Container → AtlasWidgetViews+Container.swift
+// Install → AtlasWidgetViews+Install.swift
 
 struct SnapshotEntry: TimelineEntry {
     let date: Date
@@ -28,32 +30,5 @@ struct SnapshotProvider: TimelineProvider {
         guard let file = AtlasNativeSnapshotStore.appGroupFileURL() else { return nil }
         guard let data = try? Data(contentsOf: file) else { return nil }
         return try? JSONDecoder.atlasNativeSnapshotDecoder().decode(AtlasNativeSnapshot.self, from: data)
-    }
-}
-
-struct SnapshotContainer<Content: View>: View {
-    @ViewBuilder var content: () -> Content
-
-    var body: some View {
-        ZStack {
-            Ink.bg
-            content()
-                .foregroundStyle(Ink.ink)
-                .padding(14)
-        }
-        .containerBackground(Ink.bg, for: .widget)
-    }
-}
-
-struct InstallPromptView: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("✦ Atlas")
-                .font(.system(size: 18, weight: .semibold, design: .serif))
-                .foregroundStyle(Ink.gold)
-            Text("abra o Atlas")
-                .font(.system(size: 15, weight: .semibold, design: .serif))
-                .foregroundStyle(Ink.ink)
-        }
     }
 }

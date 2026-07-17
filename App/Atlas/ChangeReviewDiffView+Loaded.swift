@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Loaded diff — peel de ChangeReviewDiffView+Body.
+// Warnings → ChangeReviewDiffView+LoadedWarnings.swift
 
 extension ChangeReviewDiffView {
     @ViewBuilder
@@ -16,13 +17,7 @@ extension ChangeReviewDiffView {
             }
             .frame(maxHeight: 320)
             .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.bgRecessed))
-            if response.diff.truncated {
-                Text("diff truncado — \(response.diff.returnedBytes) de \(response.diff.sizeBytes) bytes")
-                    .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
-            }
-            if response.patch.hashMatches == false {
-                ChangeReviewHashWarning()
-            }
+            loadedDiffWarnings(response)
         }
         .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
     }

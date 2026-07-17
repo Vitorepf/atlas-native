@@ -3,7 +3,7 @@ import UIKit
 import AtlasCore
 
 // Preview/zoom → ArtifactViewer.swift · conteúdo → ArtifactSheet+Content.swift · toast → +Toast
-// Selection → ArtifactSheet+Selection.swift
+// Selection → ArtifactSheet+Selection.swift · Chrome → ArtifactSheet+Chrome.swift
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -17,25 +17,12 @@ struct ArtifactSheet: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                AtlasTheme.bg.ignoresSafeArea()
-                content
-            }
-            .navigationTitle("Artefatos")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    AtlasCloseToolbarButton(
-                        spokenLabel: "fechar artefatos",
-                        spokenHint: "volta para a conversa",
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }
+            artifactSheetChrome(
+                ZStack {
+                    AtlasTheme.bg.ignoresSafeArea()
+                    content
                 }
-            }
-            .overlay(alignment: .top) { toast }
-            .accessibilityIdentifier(A11yID.artifactsSheet)
-            .accessibilityLabel(spokenArtifactsSheetLabel())
-            .accessibilityHint("lista e preview só com itens publicados no contrato")
+            )
         }
         .task {
             await reviews.refreshChangeReview(traceId: traceId)

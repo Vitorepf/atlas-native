@@ -5,25 +5,16 @@ import AtlasCore
 // Schedule → AutonomosDigestSection+ScheduleCopy.swift
 // Chrome → AutonomosDigestSection+CardChrome.swift
 // Stack → AutonomosDigestSection+CardStack.swift
+// A11y → AutonomosDigestSection+CardA11y.swift
 
 extension AutonomosNextDigestSection {
     var digestCard: some View {
         let last = hasLastDigest(digest)
         let window = digestWindowCaption(digest)
-        return digestCardChrome {
-            digestCardStack(last: last, window: window)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(AutonomosDigestSectionA11y.spokenSection(
-            nextDigestAt: digest.nextDigestAt,
-            scheduleReason: digest.schedule.reason,
-            hasLast: last,
-            windowCaption: window,
-            counts: digest.last.counts,
-            mergeHash: digestMergeTag(digest),
-            riskHeadline: digestRiskHeadline(digest),
-            decisionTitle: digestDecisionHeadline(digest)
-        ))
-        .accessibilityIdentifier(A11yID.autonomosDigestSection)
+        return digestA11yChrome(last: last, window: window,
+            digestCardChrome {
+                digestCardStack(last: last, window: window)
+            }
+        )
     }
 }

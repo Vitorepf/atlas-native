@@ -3,6 +3,7 @@ import AtlasCore
 
 // Provider header line — peel de ChangeReviewCouncilRow.
 // Status → ChangeReviewCouncilRow+HeaderStatus.swift
+// Model → ChangeReviewCouncilRow+HeaderModel.swift
 
 extension ChangeReviewCouncilMemberRow {
     var providerHeader: some View {
@@ -15,13 +16,7 @@ extension ChangeReviewCouncilMemberRow {
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
-            if let model = member.model {
-                Text(model)
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1)
-                    .accessibilityHidden(true)
-            }
+            providerModelLabel
             Spacer()
             providerStatus
         }
