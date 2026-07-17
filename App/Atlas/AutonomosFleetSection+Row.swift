@@ -3,23 +3,13 @@ import AtlasCore
 
 // Agent row chrome — peel de AutonomosFleetSection.
 // Tags → AutonomosFleetSection+RowTags.swift
+// Header → AutonomosFleetSection+RowHeader.swift
 
 extension AutonomosFleetSection {
     @ViewBuilder
     func agentRow(_ agent: AtlasAutonomosFleetAgent, index: Int, compact: Bool) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            HStack(spacing: 8) {
-                Circle().fill(agent.alive ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
-                    .frame(width: 7, height: 7)
-                    .accessibilityHidden(true)
-                Text(agent.label).font(.system(.footnote, weight: .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .accessibilityHidden(true)
-                Spacer()
-                Text(agent.status).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
-            .accessibilityHidden(true)
+            agentRowHeader(agent)
             agentCompactTags(agent, compact: compact)
             agentAuditTags(agent)
         }

@@ -3,6 +3,7 @@ import Charts
 import AtlasCore
 
 // Title + score row — peel de ArenaEngineIndexRow.
+// Coverage → ArenaEngineIndexRow+Coverage.swift
 
 extension ArenaEngineIndexRow {
     var titleRow: some View {
@@ -24,16 +25,6 @@ extension ArenaEngineIndexRow {
                 .foregroundStyle(deltaColor(engine.delta))
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
-                .accessibilityHidden(true)
-        }
-    }
-
-    @ViewBuilder
-    var partialCoverageLine: some View {
-        if engine.isPartialCoverage {
-            Text("cobertura parcial \(Int((engine.coverage * 100).rounded()))%")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
         }
     }

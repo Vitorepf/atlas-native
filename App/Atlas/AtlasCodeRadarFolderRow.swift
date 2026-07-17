@@ -4,6 +4,7 @@ import SwiftUI
 // Linha de pasta do radar — peel de AtlasCodeRadarRows.
 // Header → +Header · Expandidos → +Expanded · spoken → FolderRow+A11y.
 // Count → AtlasCodeRadarFolderRow+Count.swift
+// Toggle → AtlasCodeRadarFolderRow+Toggle.swift
 struct AtlasCodeFolderRow: View {
     let folder: AtlasCodeFolder
     let isExpanded: Bool
@@ -15,24 +16,7 @@ struct AtlasCodeFolderRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Button {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                onToggle()
-            } label: {
-                folderHeaderLabel
-            }
-            .buttonStyle(.plain)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(
-                AtlasCodeFolderRowA11y.spokenFolder(
-                    name: folder.name,
-                    repositoryCount: folder.repositories,
-                    verifiedExceptionCount: verifiedExceptionCount,
-                    isExpanded: isExpanded
-                )
-            )
-            .accessibilityHint(AtlasCodeFolderRowA11y.spokenHint(isExpanded: isExpanded))
-            .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
+            folderToggleButton
             expandedRepos
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: isExpanded)

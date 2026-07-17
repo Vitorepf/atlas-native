@@ -5,6 +5,7 @@ import AtlasCore
 // Assinatura/feedback → EditorialTurnChrome; empty/failure → ConversationEmptyStates.
 // Assistant stack → EditorialTurn+Assistant.swift
 // Arrival → EditorialTurn+Arrival.swift
+// Equatable → EditorialTurn+Equatable.swift
 
 struct EditorialTurn: View, Equatable {
     let bubble: ChatBubble
@@ -19,12 +20,6 @@ struct EditorialTurn: View, Equatable {
     var artifactItems: [AtlasTraceArtifacts.Item] = []
     var onOpenArtifacts: (TraceID) -> Void = { _ in }
     @State var placed = false
-
-    // F2.10: igualdade só no que a tela mostra — closures recriadas pelo pai
-    // não invalidam o subtree (pare com `.equatable()` no call site).
-    nonisolated static func == (lhs: EditorialTurn, rhs: EditorialTurn) -> Bool {
-        lhs.bubble == rhs.bubble && lhs.reduceMotion == rhs.reduceMotion && lhs.artifactItems == rhs.artifactItems
-    }
 
     var body: some View {
         applyArrival(

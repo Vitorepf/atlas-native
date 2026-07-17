@@ -5,6 +5,7 @@ import AtlasCore
 // ficam (persistentes, expansíveis), com o Atlas Decide (por que este modelo)
 // e o quality gate (a auto-avaliação). Fechado = uma linha discreta.
 // Header → ExecutionProof+Header.swift
+// Chrome → ExecutionProof+Chrome.swift
 struct ExecutionProof: View {
     let bubble: ChatBubble
     var artifactItems: [AtlasTraceArtifacts.Item] = []
@@ -25,16 +26,13 @@ struct ExecutionProof: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            collapsedHeader
-            if open {
-                expandedProofContent
+        proofChrome {
+            VStack(alignment: .leading, spacing: 0) {
+                collapsedHeader
+                if open {
+                    expandedProofContent
+                }
             }
         }
-        .padding(.vertical, 8).padding(.horizontal, 12)
-        .background(
-            RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.35))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
-        )
     }
 }

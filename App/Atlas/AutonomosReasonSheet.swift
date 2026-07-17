@@ -3,6 +3,7 @@ import SwiftUI
 /// Folha padrão de governança: quem autoriza + motivo auditável.
 /// Form → AutonomosReasonSheet+Form.swift
 /// Submit → AutonomosReasonSheet+Submit.swift
+/// Init → AutonomosReasonSheet+Init.swift
 struct AutonomosReasonSheet: View {
     let title: String
     let explainer: String
@@ -12,20 +13,6 @@ struct AutonomosReasonSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var actor = ""
     @State var reason = ""
-
-    init(
-        title: String,
-        explainer: String,
-        reasonOptional: Bool = false,
-        initialReason: String = "",
-        onConfirm: @escaping (String, String) -> Void
-    ) {
-        self.title = title
-        self.explainer = explainer
-        self.reasonOptional = reasonOptional
-        self.onConfirm = onConfirm
-        _reason = State(initialValue: initialReason)
-    }
 
     var body: some View {
         NavigationStack {

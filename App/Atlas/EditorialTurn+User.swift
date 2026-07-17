@@ -2,19 +2,13 @@ import SwiftUI
 import AtlasCore
 
 // User turn block — peel de EditorialTurn.
+// Quote → EditorialTurn+UserQuote.swift
 
 extension EditorialTurn {
     @ViewBuilder
     var userTurn: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(""\(bubble.text)"")
-                .font(AtlasFont.serifItalic(18)).lineSpacing(8).foregroundStyle(AtlasTheme.textPrimary)
-                .padding(.leading, 16)
-                .overlay(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
-                        .accessibilityHidden(true)
-                }
-                .accessibilityLabel(EditorialTurnA11y.spokenUserMessage(bubble.text))
+            userQuote
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onEditResend()

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Empty → AutonomosDetailSheet+Empty.swift
+// Scroll → AutonomosDetailSheet+Scroll.swift
 struct AutonomosPublicDetailSheet: View {
     let kind: AutonomosDetailSheet
     let backlog: AtlasAutonomosBacklogResponse?
@@ -15,21 +16,7 @@ struct AutonomosPublicDetailSheet: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
-                    if let backlog {
-                        AutonomosDetailContent.rows(kind: kind, backlog: backlog)
-                            .transition(reduceMotion ? .identity : .opacity)
-                    } else {
-                        emptyProjection
-                    }
-                }
-                .padding(AtlasTheme.Space.screen)
-                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-            }
-            .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle(kind.title)
-            .toolbar { detailToolbar }
+            detailScrollBody
         }
         .presentationDetents([.medium, .large])
         .presentationBackground(AtlasTheme.bg)

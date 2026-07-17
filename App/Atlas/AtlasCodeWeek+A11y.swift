@@ -3,6 +3,7 @@ import Foundation
 
 /// Semana no grafo — peel de AtlasCodeGraphChrome+Week (CICLO C residual honesty).
 /// Zeros quietos; métricas faladas só quando o servidor publicou valor positivo.
+/// Spoken → AtlasCodeWeek+A11ySpoken.swift
 
 enum AtlasCodeWeekUI {
     static func isQuiet(commits: Int, heals: Int, prevented: Int) -> Bool {
@@ -14,23 +15,11 @@ enum AtlasCodeWeekUI {
     }
 
     static func spokenLabel(window: String, commits: Int, heals: Int, prevented: Int) -> String {
-        if isQuiet(commits: commits, heals: heals, prevented: prevented) {
-            return "A semana \(window), semana quieta, sem commits nem curas"
-        }
-        var parts = ["A semana \(window)"]
-        if commits > 0 { parts.append("\(commits) commit\(commits == 1 ? "" : "s")") }
-        if heals > 0 { parts.append("\(heals) cura\(heals == 1 ? "" : "s")") }
-        if prevented > 0 { parts.append("\(prevented) prevenida\(prevented == 1 ? "" : "s")") }
-        return parts.joined(separator: ", ")
+        AtlasCodeWeekUISpoken.spokenLabel(window: window, commits: commits, heals: heals, prevented: prevented)
     }
 
     static func spokenLabel(_ week: AtlasCodeWeek) -> String {
-        spokenLabel(
-            window: week.window,
-            commits: week.commits,
-            heals: week.heals,
-            prevented: week.prevented
-        )
+        AtlasCodeWeekUISpoken.spokenLabel(week)
     }
 
     static func weekPhaseID(_ week: AtlasCodeWeek) -> String {
