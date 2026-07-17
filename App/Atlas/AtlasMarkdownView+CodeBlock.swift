@@ -3,6 +3,7 @@ import AtlasCore
 
 // Code block "carved in slate" com label de linguagem + botão copiar (gap do RN).
 // Copy → AtlasMarkdownView+CodeBlock+Copy.swift · Toolbar → +Toolbar.swift
+// Scroll → AtlasMarkdownView+CodeBlockScroll.swift
 struct CodeBlockView: View {
     let code: String
     let lang: String?
@@ -14,14 +15,7 @@ struct CodeBlockView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             codeBlockToolbar
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                Text(code)
-                    .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textPrimary)
-                    .lineSpacing(5).textSelection(.enabled)
-                    .padding(.horizontal, 16).padding(.bottom, 14)
-                    .accessibilityLabel(MarkdownCodeBlockA11y.spokenBlock(lang: lang, lineCount: lineCount))
-            }
+            codeBlockScroll
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
