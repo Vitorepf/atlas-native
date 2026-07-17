@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Pílula de pergunta — peel de AtlasCodeView+Graph (régua ~160).
+// Clear → AtlasCodeView+AskPillClear.swift
 
 extension AtlasCodeView {
     /// Lei 7: a pílula nunca some — nem aqui. E agora ela responde.
@@ -18,20 +19,7 @@ extension AtlasCodeView {
                 .accessibilityHidden(true)
                 .accessibilityIdentifier(A11yID.codeAskAnchorNote)
             Spacer(minLength: 0)
-            if askModel.isAnchoring {
-                Button {
-                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                    askModel.clear()
-                } label: {
-                    Text("mostrar tudo")
-                        .font(AtlasFont.mono(9))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(AtlasCodeAskPillA11y.clearLabel)
-                .accessibilityHint(AtlasCodeAskPillA11y.clearHint)
-                .accessibilityIdentifier(A11yID.codeAskClear)
-            }
+            askPillClearButton
             Image(systemName: "chevron.up")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textSecondary)

@@ -2,10 +2,11 @@ import SwiftUI
 import AtlasCore
 
 /// C13: estados do handoff LITERAIS; host alvo só depois de target_claimed.
+/// Body → AutonomosFleetTransfer+Body.swift
 struct AutonomosTransferStatus: View {
     let transfer: AtlasAutonomosTransferResponse
     let onRefresh: () -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -25,40 +26,7 @@ struct AutonomosTransferStatus: View {
                 .accessibilityHint("busca o recibo mais recente do servidor")
                 .accessibilityIdentifier(A11yID.autonomosTransferRefresh)
             }
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 6) {
-                    AutonomosChrome.tag(transfer.handoff.focus)
-                    if let host = transfer.handoff.source.host?.nonEmpty {
-                        AutonomosChrome.tag("fonte \(host)")
-                    }
-                    if transfer.isTargetClaimed, let host = transfer.handoff.target.host?.nonEmpty {
-                        AutonomosChrome.tag("alvo \(host)")
-                    }
-                }
-                .accessibilityHidden(true)
-                if !transfer.transferMilestoneTags.isEmpty {
-                    HStack(spacing: 6) {
-                        ForEach(transfer.transferMilestoneTags, id: \.self) { tag in
-                            AutonomosChrome.tag(tag)
-                        }
-                    }
-                    .accessibilityHidden(true)
-                }
-                if let note = transfer.note?.nonEmpty {
-                    Text(note).font(.caption).foregroundStyle(AtlasTheme.textSecondary).lineLimit(3)
-                        .accessibilityHidden(true)
-                }
-                if transfer.isHandoffInFlight {
-                    Text("Alvo ainda desconhecido — só aparece após target_claimed.")
-                        .font(AtlasFont.serifItalic(12))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityHidden(true)
-                }
-            }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(transfer.transferSpokenSummary)
-            .accessibilityAddTraits(transfer.isHandoffInFlight ? .updatesFrequently : [])
+            transferBody
         }
         .padding(12)
         .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.goldVeil))

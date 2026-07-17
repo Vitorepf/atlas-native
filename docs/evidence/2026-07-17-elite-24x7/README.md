@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **329+** | primeiro commit do plano: `ec931f2`; Elite CII em voo |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **330+** | primeiro commit do plano: `ec931f2`; Elite CIII em voo |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,13 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CII (este tip)
+## Entrega Elite CIII (este tip)
+
+- `refactor(ui)` CICLO B: Review+Buttons; Graph+GraphListTail; Week+WeekHeal; TraceEvidence+Unavailable; Area+Cycle; Mount+MountChecks; Awaiting+Chips; Detail+Kind; CodeView+Init/+AskPillClear.
+- `polish(ui)` CICLO C: Week/TraceEvidence decorative silence sob spoken.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CII (anterior)
 
 - `refactor(ui)` CICLO B: Digest+Card; Radar Capsules/Labels; ArenaRun+Input; AwaitingFailed+Spoken; Capabilities+DualBar; Plan+RevisionList; Proof+Header; Root+Masthead; Outline+OutlineRow; AutonomosHeader+Title.
 - `polish(ui)` CICLO C: Radar/Capability/PlanRevision/Header decorative silence sob spoken.
