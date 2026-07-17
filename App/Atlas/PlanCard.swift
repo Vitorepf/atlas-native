@@ -7,6 +7,7 @@ import AtlasCore
 // Sem plano no trace, o card não existe. Nada é inventado.
 // Header → +Header · Steps → +Steps · Body → +Body · Revisions → +Revisions
 // Progress → PlanCard+Progress.swift
+// Chrome → PlanCard+Chrome.swift
 struct PlanCard: View {
     let bubble: ChatBubble
     @Environment(AtlasSession.self) var session
@@ -16,14 +17,11 @@ struct PlanCard: View {
 
     var body: some View {
         if let plan, !plan.steps.isEmpty {
-            VStack(alignment: .leading, spacing: 9) {
-                planBody(plan: plan)
+            planCardChrome(plan: plan) {
+                VStack(alignment: .leading, spacing: 9) {
+                    planBody(plan: plan)
+                }
             }
-            .padding(12)
-            .atlasCard(cornerRadius: 12, fillOpacity: 0.5)
-            .accessibilityElement(children: .contain)
-            .accessibilityLabel(spokenCardLabel(plan: plan, progress: executionProgress))
-            .accessibilityIdentifier(A11yID.planCard)
         }
     }
 }

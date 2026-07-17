@@ -3,6 +3,7 @@ import AtlasCore
 
 // Steer — peel de ExecutionStateCard+ActionButtons.
 // Retry → ExecutionStateCard+Retry.swift
+// Label → ExecutionStateCard+SteerLabel.swift
 
 extension ExecutionStateCard {
     @ViewBuilder
@@ -12,11 +13,7 @@ extension ExecutionStateCard {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onSteer()
             } label: {
-                Text("Redirecionar")
-                    .font(.system(.caption, weight: .semibold))
-                    .lineLimit(1)
-                    .padding(.horizontal, 11).padding(.vertical, 8)
-                    .frame(maxWidth: .infinity)
+                steerButtonLabel
             }
             .buttonStyle(ExecutionStateActionStyle(
                 style: .secondary,

@@ -3,6 +3,7 @@ import AtlasCore
 
 // Agentes — peel de ConversationCockpit (régua anti-inchaço).
 // Status → ConversationCockpit+AgentStatus.swift
+// Model → ConversationCockpit+AgentModel.swift
 
 struct AgentRow: View {
     let agent: ExecAgent
@@ -12,9 +13,7 @@ struct AgentRow: View {
             Circle().fill(statusColor).frame(width: 6, height: 6)
             Text(agent.agent ?? providerWord(agent.provider))
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
-            if let m = agent.model, !m.isEmpty, !m.hasSuffix("_default") {
-                Text(m).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
-            }
+            agentModelLabel
             Spacer()
             Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
         }

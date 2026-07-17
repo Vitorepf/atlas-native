@@ -4,6 +4,7 @@ import AtlasCore
 // Conteúdo carregado da Arena — peel de AtlasArenaView (régua ≤110).
 // Run → AtlasArenaView+RunButton.swift
 // Loaded → AtlasArenaView+Loaded.swift
+// Failed → AtlasArenaView+ContentFailed.swift
 
 extension AtlasArenaView {
     @ViewBuilder
@@ -13,11 +14,7 @@ extension AtlasArenaView {
              .loading where model.composite == nil:
             loadingCard
         case .failed where model.composite == nil:
-            if model.isDomainUnavailable {
-                domainUnavailableCard
-            } else {
-                networkFailureCard
-            }
+            failedOrUnavailableCard
         default:
             if let composite = model.composite {
                 loadedArenaContent(composite)

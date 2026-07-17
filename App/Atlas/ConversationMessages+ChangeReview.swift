@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Change-review chip — peel de ConversationMessages (régua ≤100).
+// Label → ConversationMessages+ChangeReviewLabel.swift
 
 extension ConversationMessages {
     @ViewBuilder
@@ -12,13 +13,7 @@ extension ConversationMessages {
            review.state == .available,
            ChangeReviewSheet.hasReviewSurface(review) {
             Button { reviewTrace = ConversationReviewTraceRef(id: trace) } label: {
-                HStack(spacing: 6) {
-                    Image(systemName: "plus.forwardslash.minus").font(.system(size: 11))
-                    Text("Revisar mudanças").font(.system(.footnote, weight: .medium))
-                }
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .padding(.horizontal, 13).padding(.vertical, 7)
-                .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                changeReviewChipLabel
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel(ConversationMessagesA11y.spokenChangeReview(patchCount: review.patches.count))

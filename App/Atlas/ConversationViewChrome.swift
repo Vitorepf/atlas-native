@@ -4,6 +4,7 @@ import AtlasCore
 
 // Chrome extraído de ConversationView (Elite compressão).
 // Toast → ConversationViewChrome+Toast.swift
+// Confirming → ConversationViewChrome+ConfirmingSeal.swift
 extension ConversationView {
     // MARK: - Cache seal
 
@@ -14,16 +15,8 @@ extension ConversationView {
                 .padding(.top, 2)
                 .padding(.bottom, 8)
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-        } else if readSealConfirming, let capturedAt = lastCacheCapturedAt {
-            StaleReadSeal(capturedAt: capturedAt, confirming: true, reduceMotion: reduceMotion)
-                .padding(.horizontal, AtlasTheme.Space.screen)
-                .padding(.top, 2)
-                .padding(.bottom, 8)
-                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-                .task {
-                    if !reduceMotion { try? await Task.sleep(nanoseconds: 320_000_000) }
-                    readSealConfirming = false
-                }
+        } else {
+            confirmingCacheSeal
         }
     }
 }

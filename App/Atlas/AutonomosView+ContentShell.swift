@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Idle/loading/failed shells — peel de AutonomosView+Content.
+// Failed → AutonomosView+ContentFailed.swift
 
 extension AutonomosView {
     @ViewBuilder
@@ -14,15 +15,6 @@ extension AutonomosView {
             preludeShell
             Spacer()
             TraceEvidenceLoading(text: "consultando a frota…", reduceMotion: reduceMotion)
-            Spacer()
-        }
-    }
-
-    func failedContent(message: String) -> some View {
-        Group {
-            preludeShell
-            Spacer()
-            AutonomosFleetFailureEmpty(message: message) { Task { await model.load() } }
             Spacer()
         }
     }

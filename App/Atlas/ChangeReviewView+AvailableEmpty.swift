@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Available empty surfaces — peel de ChangeReviewView+Available.
+// Empty → ChangeReviewView+AvailableEmptySurface.swift
 
 extension ChangeReviewSheet {
     func reviewUnavailableContent(_ review: AtlasTraceChangeReview) -> some View {
@@ -13,16 +14,6 @@ extension ChangeReviewSheet {
                 prefix: "sem revisão de mudanças nesta execução",
                 reason: review.reason
             ),
-            systemImage: "doc.text.magnifyingglass"
-        )
-    }
-
-    func reviewEmptySurface() -> some View {
-        TraceEvidenceUnavailable(
-            title: "Revisão ligada, mas sem patches nem provas publicadas.",
-            subtitle: "o servidor confirmou o vínculo, porém não há diff, checks ou achados a mostrar.",
-            identifier: A11yID.reviewEmpty,
-            spoken: "revisão ligada mas sem patches nem provas publicadas",
             systemImage: "doc.text.magnifyingglass"
         )
     }

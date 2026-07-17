@@ -15,11 +15,7 @@ struct LockScreenView: View {
             VStack(alignment: .leading, spacing: 3) {
                 titleBadges
                 phaseLine
-                if let progress = context.state.progressLabel {
-                    Text(progress)
-                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                        .foregroundStyle(Ink.ink2)
-                }
+                progressLine
             }
             Spacer()
             trailingStatus
