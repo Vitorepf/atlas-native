@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXXXII (este tip)
+## Entrega Elite CXXXXXLXXXIII (este tip)
+
+- `polish(ui)` CICLO B: ConversationTypes `+ExecAgent/+ChatBubble+Activity/+LiveSurface/+Presence/+LocalDraft`; Reconnect Bubble `+PrimaryLine`; AreaPicker RowLabel `+NameStack`; WhySheet `+BodyShell/+LifecycleA11y`; ArenaRun `+NavShell/+SheetA11y`; DetailLedger Summary `+RiskRoute`; Provenance A11y `+LoadedBody` Header Kicker `+Glyph`; EditorialTurn A11y `+UserMessage/+Signature`; LiveTimeline Surfaces `+A11yBind`; RootChrome TrailingStatus `+Running/+Count`; CodeGraph WorktreeMeta `+BranchHead`; ChangeReview Buttons `+AcceptAction`; Search HeaderClear `+Action`; Widgets Fleet `+BodyGate` IslandCompact `+LeadingSymbol` LockScreen Trailing `+Finished/+Timer` LockLive Spoken `+Attention` SnapshotProvider `+GetSnapshot`. Tip `4ed4994`.
+- 28 peels · 47 arquivos · over100=0 · App/Atlas+Widgets swift=1989; App/Widgets swift=130; zero Route nova.
+
+## Entrega Elite CXXXXXLXXXII (anterior)
 
 - `polish(ui)` CICLO B: AreaPicker Row `+A11y/+RowLabel+Chrome`; CodeCommitRow Label `+TextStack` Meta `+AuthorTime`; Search HeaderField `+FieldInput`; LiveNow RemoteBadge `+Capsule`; ExecutionStateCard Header `+Badge`; ChangeReview Reject `+Label`; LiveTimeline FilterButton `+A11y`; ArenaRun Submit `+Label`; PlanCard RevisionList `+Items`; ExecutionProof ActivityRows `+RowCell` Scrubber `+Stepper/+Slider`; MirrorCard `+CardChrome`; ArenaSuite Body `+TitleHeader`; LiveNow RowCell `+Transition`; WhySheet Header `+TitleBlock`; RadarFolder Toggle `+A11y`; Artifact MountCounter `+ProgressText`; Widgets LockScreen Phase `+Badge` Title `+SessionsBadge` Island Trailing `+Timer` Fleet State `+Incident` Age `+Relative` Timer `+Frame`. Tip `9912e70`.
 - 26 peels · 51 arquivos · over100=0 · App/Atlas+Widgets swift=1961; App/Widgets swift=124; zero Route nova.
