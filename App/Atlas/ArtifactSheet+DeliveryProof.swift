@@ -1,18 +1,12 @@
 import AtlasCore
 
 // Provas de montagem — só controles/testes reais do contrato C15 (nunca inventa 0/3).
+// Check → ArtifactSheet+DeliveryCheck.swift
 
 struct ArtifactDeliveryCheck: Identifiable, Equatable {
     let id: String
     let label: String
     let status: String
-
-    var isPassing: Bool {
-        let s = status.lowercased()
-        return s == "pass" || s == "passed"
-    }
-
-    var spoken: String { "\(label), status \(status)" }
 }
 
 enum ArtifactDeliveryProof {

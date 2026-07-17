@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Toolbar steer — peel de SteerInteractionSheet.
+// Submit → SteerInteractionSheet+ToolbarSubmit.swift
 
 extension SteerInteractionSheet {
     @ToolbarContentBuilder
@@ -14,15 +15,6 @@ extension SteerInteractionSheet {
                 reduceMotion: reduceMotion
             ) { dismiss() }
         }
-        ToolbarItem(placement: .confirmationAction) {
-            Button("Enviar") {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                onSubmit(instruction, scope)
-            }
-            .disabled(!canSubmit)
-            .accessibilityIdentifier(A11yID.steerSubmit)
-            .accessibilityLabel(spokenSubmitLabel(canSubmit: canSubmit))
-            .accessibilityHint(spokenSubmitHint(canSubmit: canSubmit))
-        }
+        steerSubmitItem
     }
 }

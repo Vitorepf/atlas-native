@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Now section chrome — peel de ArenaNowSection.
+// Live note → ArenaNowSection+LiveNote.swift
 
 extension ArenaNowSection {
     var nowSectionBody: some View {
@@ -12,11 +13,7 @@ extension ArenaNowSection {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
             nowRunRows
-            Text("Seguir medição na Live Activity: pendente de ActivityKit dedicado para Arena.")
-                .font(.system(.caption))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-                .accessibilityIdentifier(A11yID.arenaNowLiveActivityNote)
+            nowLiveActivityNote
         }
         .padding(16)
         .atlasCard()

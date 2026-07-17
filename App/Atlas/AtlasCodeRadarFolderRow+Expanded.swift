@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Repos expandidos — peel de AtlasCodeFolderRow (régua ≤100).
+/// Separator → AtlasCodeRadarFolderRow+Separator.swift
 
 extension AtlasCodeFolderRow {
     @ViewBuilder var expandedRepos: some View {
@@ -12,13 +13,7 @@ extension AtlasCodeFolderRow {
                         onOpenRepo(repo.slug)
                     }
                     .padding(.leading, 32)
-                    if repo.id != folder.repos.last?.id {
-                        Rectangle()
-                            .fill(AtlasTheme.separator.opacity(0.4))
-                            .frame(height: 0.5)
-                            .padding(.leading, 32)
-                            .accessibilityHidden(true)
-                    }
+                    expandedRepoSeparator(after: repo)
                 }
             }
             .padding(.bottom, 6)
