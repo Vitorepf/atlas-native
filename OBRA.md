@@ -1000,6 +1000,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 - 2026-07-17 · Grok 4.5 · **polish(ui) — peel ComposerToolbar + ConversationMessages** · `ae0c8e7` · `ConversationComposer.swift` 277→196; extrai `ComposerToolbar.swift` (132) — paperclip/campo/enviar/menu modo·esforço·workspace + `AttachmentStrip` (DraftStrip+upload%); `ConversationView.swift` 370→262; extrai `ConversationMessages.swift` (138) — scroll/FAB/empty/revisão; zero Route; comportamento idêntico. §4 E-B atualizado. Prova: `wc -l` Composer 196 View 262 Toolbar 132 Messages 138; Swift toolchain ausente neste cloud Linux — re-rodar `make build` no Mac.
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo VIII — Model/Client shells ≤150 + Nightly/home C** · `a18dc04`/`9bebca8`/`8fb1ec1` · ConversationModel 139; Client 126; ArenaRunSheet/LiveNow/Nightly/RootHome peels; Nightly mute silence + home A11y. Quase zero arquivo App/Core >220. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` + diffs.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo VII — Plan/Artifact/Fleet peels + Arena C + evidence** · `9dcf873`/`6dcfcde`/`c1a0de3`/`4e7178d` · PlanCard/Artifact/Fleet/Markdown/ChangeReview peels; Arena Now silence + Index/Suites honesty; evidence README + plano checkboxes honestos. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` + docs.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo VI — Cockpit/Markdown/TurnPresence peels + Autônomos C** · `41efee4`/`fa4a7ab`/`12d00bc`/`61f79e0` · Cockpit/Markdown/TurnPresence peels; Autônomos fleet quiet + transfer placement real + digest sem next_digest_at inventado. CICLO D skip (sem dead safe). Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` + diffs.
