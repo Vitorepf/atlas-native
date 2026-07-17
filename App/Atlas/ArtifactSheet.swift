@@ -32,10 +32,16 @@ struct ArtifactSheet: View {
             .navigationTitle("Artefatos")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Fechar") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Fechar") { dismiss() }
+                        .accessibilityLabel("fechar artefatos")
+                        .accessibilityHint("volta para a conversa")
+                }
             }
             .overlay(alignment: .top) { toast }
             .accessibilityIdentifier(A11yID.artifactsSheet)
+            .accessibilityLabel("artefatos da execução")
+            .accessibilityHint("lista e preview só com itens publicados no contrato")
         }
         .task {
             await reviews.refreshChangeReview(traceId: traceId)
@@ -61,6 +67,8 @@ struct ArtifactSheet: View {
                 .padding(.horizontal, 16).padding(.vertical, 9)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
+                .accessibilityLabel(t)
+                .accessibilityAddTraits(.isStaticText)
                 .task {
                     try? await Task.sleep(nanoseconds: 1_400_000_000)
                     if reduceMotion { reviews.toast = nil }

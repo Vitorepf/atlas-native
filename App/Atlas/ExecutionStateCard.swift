@@ -31,9 +31,11 @@ struct ExecutionStateCard: View {
                 Image(systemName: icon)
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(tint)
+                    .accessibilityHidden(true)
                 Text(state.title)
                     .font(.system(.footnote, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityHidden(true)
                 Spacer(minLength: 0)
                 if let badge = kindBadge {
                     Text(badge)
@@ -47,40 +49,40 @@ struct ExecutionStateCard: View {
                     .font(.footnote)
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityLabel(failureReasonA11y ?? detail)
+                    .accessibilityHidden(true)
             }
             if let kicker = leaveScreenKicker {
                 Text(kicker)
                     .font(.system(.caption, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityLabel(kicker)
+                    .accessibilityHidden(true)
             }
             if let checkpoint = state.checkpoint {
                 Text("checkpoint · \(checkpoint)")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
-                    .accessibilityLabel("checkpoint \(checkpoint)")
+                    .accessibilityHidden(true)
             }
-            if let frozen = frozenTimerText, let a11y = frozenTimerA11y {
+            if let frozen = frozenTimerText {
                 Text(frozen)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
-                    .accessibilityLabel(a11y)
+                    .accessibilityHidden(true)
             } else if let active = recoveringTimerText {
                 Text(active)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
-                    .accessibilityLabel("tempo ativo \(active.replacingOccurrences(of: "ativo ", with: ""))")
+                    .accessibilityHidden(true)
             }
             if let deadline = publishedExternalDeadline {
                 Text("Próxima mudança: \(deadline)")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
-                    .accessibilityLabel("próxima mudança \(deadline)")
+                    .accessibilityHidden(true)
             }
             actionButtons
         }

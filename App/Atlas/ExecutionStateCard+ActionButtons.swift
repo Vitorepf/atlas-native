@@ -18,11 +18,15 @@ extension ExecutionStateCard {
                         style: action.style,
                         reduceMotion: reduceMotion
                     ))
+                    .accessibilityLabel(action.title)
                     .accessibilityHint("ação declarada pelo servidor")
                 }
             }
         } else if showsRetryFallback, let retryableJobId {
-            Button { onRetry(retryableJobId) } label: {
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onRetry(retryableJobId)
+            } label: {
                 Text("Retomar")
                     .font(.system(.caption, weight: .semibold))
                     .padding(.horizontal, 11).padding(.vertical, 8)
@@ -36,7 +40,10 @@ extension ExecutionStateCard {
             .accessibilityHint("reenfileira o job que falhou")
         }
         if let onSteer {
-            Button(action: onSteer) {
+            Button {
+                if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                onSteer()
+            } label: {
                 Text("Redirecionar")
                     .font(.system(.caption, weight: .semibold))
                     .lineLimit(1)
@@ -48,6 +55,7 @@ extension ExecutionStateCard {
                 reduceMotion: reduceMotion
             ))
             .accessibilityLabel("redirecionar esta execução")
+            .accessibilityHint("abre instrução para o próximo checkpoint seguro")
         }
     }
 }
