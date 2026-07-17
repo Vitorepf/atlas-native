@@ -5,6 +5,7 @@ import AtlasCore
 // Home-screen live session widget — peel de LockLive (régua ~160).
 
 struct LiveSessionWidgetView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let entry: SnapshotEntry
 
     var body: some View {
@@ -12,13 +13,14 @@ struct LiveSessionWidgetView: View {
             guard let snapshot = entry.snapshot else {
                 return AnyView(InstallPromptView())
             }
+            let stale = snapshot.isStale(at: entry.date)
             let live = snapshot.liveSessions?.first
             return AnyView(VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text("✦ Sessão viva")
                         .font(.system(size: 14, weight: .semibold, design: .serif))
                     Spacer()
-                    if snapshot.isStale(at: entry.date) {
+                    if stale {
                         Text("visto \(snapshot.ageText(at: entry.date))")
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundStyle(Ink.alert)
@@ -35,7 +37,7 @@ struct LiveSessionWidgetView: View {
                         .foregroundStyle(live.timing == .paused ? Ink.gold : Ink.ink2)
                         .lineLimit(1)
                     HStack {
-                        liveTimer(live)
+                        LiveSessionWidgetTimer(live: live)
                         Spacer()
                         Text("Seguir")
                             .font(.system(size: 12, weight: .semibold, design: .serif))
@@ -43,43 +45,28 @@ struct LiveSessionWidgetView: View {
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
                             .background(Capsule().fill(Ink.gold))
+                            .accessibilityHidden(true)
                     }
-                } else if let delivery = snapshot.fleet?.lastDelivery {
-                    Text("silêncio na obra")
-                        .font(.system(size: 17, weight: .semibold, design: .serif))
-                    Text("última concluída \(delivery.mergeHash.prefix(7))")
-                        .font(.system(size: 12, design: .monospaced))
-                        .foregroundStyle(Ink.ink2)
                 } else {
                     Text("silêncio na obra")
                         .font(.system(size: 17, weight: .semibold, design: .serif))
-                    Text("nenhuma sessão viva agora")
+                    Text(LiveSessionWidgetA11y.silenceDetail(snapshot))
                         .font(.system(size: 12, design: .serif))
                         .foregroundStyle(Ink.ink2)
                 }
-            })
+            }
+            .id(LiveSessionWidgetA11y.contentPhaseID(snapshot: snapshot, live: live, stale: stale))
+            .transaction { transaction in
+                if reduceMotion { transaction.disablesAnimations = true }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(LiveSessionWidgetA11y.spokenLabel(
+                snapshot: snapshot,
+                live: live,
+                stale: stale,
+                age: snapshot.ageText(at: entry.date)
+            )))
         }
         .widgetURL(URL(string: "atlas://execution"))
-    }
-
-    @ViewBuilder
-    private func liveTimer(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
-        if live.timing == .paused {
-            Text("‖ \(Self.clock(live.elapsedActiveMs))")
-                .font(.system(size: 13, design: .monospaced))
-                .foregroundStyle(Ink.gold)
-        } else if let since = live.runningSince.flatMap(AtlasTime.date) {
-            Text(since, style: .timer)
-                .font(.system(size: 13, design: .monospaced))
-                .foregroundStyle(Ink.ink2)
-        } else if let ms = live.elapsedActiveMs {
-            Text(Self.clock(ms))
-                .font(.system(size: 13, design: .monospaced))
-                .foregroundStyle(Ink.ink2)
-        }
-    }
-
-    private static func clock(_ ms: Int?) -> String {
-        AtlasTime.formatActiveDuration(milliseconds: ms ?? 0)
     }
 }

@@ -6,6 +6,7 @@ import AtlasCore
 
 struct FleetWidgetView: View {
     @Environment(\.widgetFamily) private var family
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let entry: SnapshotEntry
 
     var body: some View {
@@ -26,22 +27,40 @@ struct FleetWidgetView: View {
                     }
                 }
                 fleetState(snapshot)
-                if family != .systemSmall, let delivery = snapshot.fleet?.lastDelivery {
-                    Text("última entrega \(delivery.mergeHash.prefix(7))")
+                if family != .systemSmall,
+                   let delivery = snapshot.fleet?.lastDelivery,
+                   let caption = FleetWidgetA11y.deliveryCaption(delivery) {
+                    Text(caption)
                         .font(.system(size: 11, design: .monospaced))
                         .foregroundStyle(Ink.ink2)
                         .lineLimit(1)
                 }
                 Spacer(minLength: 0)
-            })
+            }
+            .id(FleetWidgetA11y.contentPhaseID(snapshot: snapshot, stale: stale))
+            .transaction { transaction in
+                if reduceMotion { transaction.disablesAnimations = true }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(FleetWidgetA11y.spokenLabel(
+                snapshot: snapshot,
+                stale: stale,
+                at: entry.date,
+                age: snapshot.ageText(at: entry.date)
+            )))
         }
         .widgetURL(URL(string: "atlas://autonomos"))
     }
 
     @ViewBuilder
     private func fleetState(_ snapshot: AtlasNativeSnapshot) -> some View {
-        if let incident = snapshot.fleet?.incident, incident.present {
-            Text(incident.recommendedAction ?? incident.flags.first ?? "incidente na frota")
+        if let line = FleetWidgetA11y.incidentLine(snapshot.fleet?.incident) {
+            Text(line)
+                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .foregroundStyle(Ink.alert)
+                .lineLimit(2)
+        } else if snapshot.fleet?.incident?.present == true {
+            Text("atenção na frota")
                 .font(.system(size: 16, weight: .semibold, design: .serif))
                 .foregroundStyle(Ink.alert)
                 .lineLimit(2)
