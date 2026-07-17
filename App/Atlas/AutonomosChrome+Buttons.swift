@@ -2,28 +2,45 @@ import SwiftUI
 import AtlasCore
 
 struct AutonomosPrimaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 14).padding(.vertical, 9)
-            .background(Capsule().fill(AtlasTheme.accent.opacity(configuration.isPressed ? 0.72 : 1)))
-            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .background(
+                Capsule().fill(
+                    AtlasTheme.accent.opacity(
+                        configuration.isPressed && !reduceMotion ? 0.72 : 1
+                    )
+                )
+            )
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
 
 struct AutonomosSecondaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 14).padding(.vertical, 9)
             .background(Capsule().fill(AtlasTheme.surfaceHi))
             .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+            .opacity(configuration.isPressed && !reduceMotion ? 0.88 : 1)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
 
 struct AutonomosDestructiveButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.domOperacional)
             .padding(.horizontal, 14).padding(.vertical, 9)
             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
             .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
+            .opacity(configuration.isPressed && !reduceMotion ? 0.88 : 1)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
