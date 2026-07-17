@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Row + phase helpers — peel de AutonomosAreaPicker.
+// Row — peel de AutonomosAreaPicker.
+// Phase → AutonomosAreaPicker+Phase.swift
 
 extension AutonomosAreaPicker {
     @ViewBuilder
@@ -38,23 +39,5 @@ extension AutonomosAreaPicker {
         .accessibilityHint(AutonomosAreaPickerA11y.spokenRowHint())
         .accessibilityAddTraits(isSelected ? .isSelected : [])
         .accessibilityIdentifier(A11yID.autonomosAreaPickerRow(index))
-    }
-
-    func areaStateLabel(_ area: AtlasAutonomosArea) -> String {
-        switch area.loopStatus.phase {
-        case .terminated: return "encerrada"
-        case .paused: return "pausada"
-        case .running: return "executando"
-        case .idle: return "sem lease"
-        }
-    }
-
-    func areaStateColor(_ area: AtlasAutonomosArea) -> Color {
-        switch area.loopStatus.phase {
-        case .terminated: return AtlasTheme.domOperacional
-        case .paused: return AtlasTheme.accent
-        case .running: return AtlasTheme.domAutonomos
-        case .idle: return AtlasTheme.textTertiary
-        }
     }
 }

@@ -1,34 +1,10 @@
 import SwiftUI
 import AtlasCore
 
-// Empty + bubble row — peel de ConversationMessages+List.
+// Bubble row — peel de ConversationMessages+List.
+// Empty → ConversationMessages+Empty.swift
 
 extension ConversationMessages {
-    @ViewBuilder
-    func emptyMessages() -> some View {
-        if model.loadError != nil {
-            AtlasNetworkFailureEmpty(
-                kind: model.loadFailureKind,
-                hasToken: session.hasToken,
-                host: session.host,
-                topPadding: 100,
-                retryHint: "reconecta e recarrega esta conversa",
-                accessibilityIdentifier: A11yID.conversationLoadFailure,
-                onRetry: { Task { await model.load() } }
-            )
-        } else {
-            EmptyConversation(
-                reduceMotion: reduceMotion,
-                prompt: emptyPrompt,
-                suggestions: emptySuggestions
-            ) { suggestion in
-                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
-                let effort = model.effort
-                Task { await model.send(suggestion, effort: effort) }
-            }
-        }
-    }
-
     @ViewBuilder
     func bubbleRow(_ bubble: ChatBubble) -> some View {
         let traceArtifacts = bubble.traceId.flatMap { model.reviews.artifactsByTrace[$0] }

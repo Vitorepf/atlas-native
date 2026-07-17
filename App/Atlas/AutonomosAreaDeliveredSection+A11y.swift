@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels das entregas comprovadas — peel de AutonomosAreaDeliveredSection (CICLO C).
 /// Merge só quando `mergePerformed` e hash publicados; nunca «melhorou» fabricado.
+/// Caption/hint → AutonomosAreaDeliveredSection+A11yCaption.swift
 
 enum AutonomosAreaDeliveredA11y {
     static let visibleCap = 3
@@ -41,20 +42,5 @@ enum AutonomosAreaDeliveredA11y {
         if isSelf { parts.append("abre recibo de auto-construção") }
         else if opensGraph { parts.append("abre merge no grafo") }
         return parts.joined(separator: ", ")
-    }
-
-    static func spokenRowHint(isSelf: Bool) -> String {
-        isSelf ? "abre recibo com regra e prova do ciclo" : "abre o commit no grafo de código"
-    }
-
-    static func sectionCaption(isSelf: Bool, total: Int, visible: Int) -> String {
-        if isSelf {
-            return visible < total
-                ? "AUTO-CONSTRUÇÃO · \(visible) DE \(total) NO LEDGER"
-                : "AUTO-CONSTRUÇÃO · \(total) NO LEDGER"
-        }
-        return visible < total
-            ? "ENTREGAS COMPROVADAS · \(visible) DE \(total)"
-            : "ENTREGAS COMPROVADAS · \(total)"
     }
 }
