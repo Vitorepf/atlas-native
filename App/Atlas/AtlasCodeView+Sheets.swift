@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Folhas do grafo — peel de AtlasCodeView; zero mudança de rota.
-// Ask/Why → +AskWhy.
+// Ask/Why → +AskWhy · Provenance/Heal → +Sheets+Provenance
 
 extension View {
   func atlasCodeSheets(
@@ -48,29 +48,7 @@ struct AtlasCodeSheetsModifier: ViewModifier {
   let onProvenanceAsk: (AtlasCodeGraphNode) -> Void
 
   func body(content: Content) -> some View {
-    content
-      .sheet(item: $selectedNode) { node in
-        AtlasCodeProvenanceSheet(
-          client: session.client,
-          repo: model.repo,
-          node: node,
-          state: model.state(for: node),
-          ruleId: model.ruleId(for: node),
-          ruleCanon: model.ruleCanon(for: node),
-          trunk: model.violations?.trunk,
-          phase: provenanceModel.phase,
-          onAsk: { onProvenanceAsk(node) }
-        )
-        .presentationDetents([.large])
-        .presentationDragIndicator(.visible)
-      }
-      .sheet(isPresented: $showsHealReceipt) {
-        if let heal = model.heal {
-          AtlasCodeHealReceiptSheet(heal: heal) { Task { await model.undoLastHeal() } }
-            .presentationDetents([.medium])
-            .presentationDragIndicator(.visible)
-        }
-      }
+    provenanceAndHealSheets(on: content)
       .modifier(AtlasCodeAskWhySheetsModifier(
         session: session,
         model: model,
