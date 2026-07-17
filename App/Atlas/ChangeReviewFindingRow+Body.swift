@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Finding body text — peel de ChangeReviewFindingRow.
+// Path → ChangeReviewFindingRow+Path.swift
 
 extension ChangeReviewFindingRow {
     var findingBody: some View {
@@ -16,16 +17,7 @@ extension ChangeReviewFindingRow {
                     .lineLimit(2)
                     .accessibilityHidden(true)
             }
-            if let path = finding.filePath {
-                Text(path + (finding.startLine.map { ":\($0)" } ?? ""))
-                    .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
-                    .accessibilityHidden(true)
-            }
-            if let rec = finding.recommendation {
-                Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
-                    .lineLimit(3).padding(.top, 1)
-                    .accessibilityHidden(true)
-            }
+            findingPathAndRecommendation
         }
         .padding(.vertical, 3)
     }

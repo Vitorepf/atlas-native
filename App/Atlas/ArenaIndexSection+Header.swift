@@ -3,6 +3,7 @@ import AtlasCore
 
 // Header — peel de ArenaIndexSection.
 // Captions → ArenaIndexSection+Captions.swift
+// Weights → ArenaIndexSection+HeaderWeights.swift
 
 extension ArenaIndexSection {
     var sectionHeader: some View {
@@ -19,12 +20,7 @@ extension ArenaIndexSection {
                     .accessibilityHidden(true)
             }
             Spacer()
-            if !composite.weightsPublic.isEmpty {
-                Text("\(composite.weightsPublic.count) pesos")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityHidden(true)
-            }
+            sectionHeaderWeights
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(sectionSpokenLabel)

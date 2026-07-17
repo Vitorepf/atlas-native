@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Meta author/time/law — peel de AtlasCodeCommitRow+Label.
+// Hint → AtlasCodeCommitRow+Hint.swift
 
 extension AtlasCodeCommitRow {
     var commitMetaLine: some View {
@@ -22,11 +23,5 @@ extension AtlasCodeCommitRow {
         }
         .font(AtlasFont.mono(9))
         .foregroundStyle(AtlasTheme.textTertiary)
-    }
-
-    var commitAccessibilityHint: String {
-        guard !isDimmed else { return "" }
-        if onLongPress != nil { return "abre proveniência do commit; pressione e segure para opções" }
-        return "abre proveniência do commit"
     }
 }

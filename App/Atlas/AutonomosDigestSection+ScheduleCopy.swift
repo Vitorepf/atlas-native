@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Schedule copy — peel de AutonomosDigestSection+Card.
+// Title → AutonomosDigestSection+ScheduleTitle.swift
 
 extension AutonomosNextDigestSection {
     @ViewBuilder
@@ -25,9 +26,5 @@ extension AutonomosNextDigestSection {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
         }
-    }
-
-    var sectionTitle: String {
-        digest.nextDigestAt?.nonEmpty != nil ? "PRÓXIMO RESUMO" : "RESUMO GOVERNADO"
     }
 }

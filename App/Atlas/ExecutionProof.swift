@@ -6,6 +6,7 @@ import AtlasCore
 // e o quality gate (a auto-avaliação). Fechado = uma linha discreta.
 // Header → ExecutionProof+Header.swift
 // Chrome → ExecutionProof+Chrome.swift
+// Gate → ExecutionProof+ShouldDisplay.swift
 struct ExecutionProof: View {
     let bubble: ChatBubble
     var artifactItems: [AtlasTraceArtifacts.Item] = []
@@ -13,17 +14,6 @@ struct ExecutionProof: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var open = false
     @State var replayIndex = 0
-
-    /// Passos, decide, quality ou artefatos reais — nunca card vazio pós-conclusão.
-    static func shouldDisplay(
-        bubble: ChatBubble,
-        artifactItems: [AtlasTraceArtifacts.Item] = []
-    ) -> Bool {
-        !bubble.activities.isEmpty
-            || bubble.decisionSummary.map(hasDecisionSurface) == true
-            || bubble.qualitySummary != nil
-            || (!artifactItems.isEmpty && bubble.traceId != nil)
-    }
 
     var body: some View {
         proofChrome {
