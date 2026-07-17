@@ -72,6 +72,14 @@ extension A11yID {
     static func artifactsMountCheck(_ index: Int) -> String { artifactsMountCheckPrefix + String(index) }
     static let artifactsItemPrefix = "artifacts-item-"
     static func artifactsItem(_ index: Int) -> String { artifactsItemPrefix + String(index) }
+    static let artifactsZoomImage = "artifacts-zoom-image"
+
+    // C5 · Live orchestration timeline
+    static let liveTimeline = "live-timeline"
+    static let liveTimelineFilters = "live-timeline-filters"
+    static let liveTimelineFilterSilence = "live-timeline-filter-silence"
+    static let liveTimelineFilterPrefix = "live-timeline-filter-"
+    static func liveTimelineFilter(_ raw: String) -> String { liveTimelineFilterPrefix + raw }
 
     // M07 · Steering
     static let steerSheet = "steer-sheet"

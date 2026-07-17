@@ -36,6 +36,7 @@ enum TimelineReadFilter: String, CaseIterable, Identifiable {
 
 struct TimelineFilterChips: View {
     @Binding var filter: TimelineReadFilter
+    var baseRows: [NarrativeRow]
     var reduceMotion: Bool = false
     var filterSilence: Bool = false
 
@@ -43,6 +44,7 @@ struct TimelineFilterChips: View {
         HStack(spacing: 6) {
             ForEach(TimelineReadFilter.allCases) { option in
                 let active = option == filter
+                let count = option.apply(to: baseRows).count
                 Button {
                     if !reduceMotion {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -61,12 +63,16 @@ struct TimelineFilterChips: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(LiveTimelineA11y.spokenFilterChip(option,
+                                                                      count: count,
                                                                       active: active,
                                                                       silent: active && filterSilence))
+                .accessibilityHint(LiveTimelineA11y.spokenFilterHint())
                 .accessibilityAddTraits(active ? .isSelected : [])
+                .accessibilityIdentifier(A11yID.liveTimelineFilter(option.rawValue))
             }
         }
         .padding(.leading, 20)
+        .accessibilityIdentifier(A11yID.liveTimelineFilters)
         .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: filter)
     }
 }

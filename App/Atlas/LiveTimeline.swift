@@ -27,8 +27,13 @@ struct LiveTimeline: View {
     private var filterSilenceSurface: some View {
         if showsFilterChips {
             TimelineFilterChips(filter: $filter,
+                                baseRows: baseRows,
                                 reduceMotion: reduceMotion,
                                 filterSilence: filterSilence)
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(LiveTimelineA11y.spokenFilterSilenceSurface(filter: filter,
+                                                                                totalSteps: baseRows.count))
+                .accessibilityIdentifier(A11yID.liveTimelineFilterSilence)
         }
     }
 
@@ -36,6 +41,7 @@ struct LiveTimeline: View {
         VStack(alignment: .leading, spacing: 8) {
             if showsFilterChips {
                 TimelineFilterChips(filter: $filter,
+                                    baseRows: baseRows,
                                     reduceMotion: reduceMotion,
                                     filterSilence: false)
             }
@@ -43,6 +49,7 @@ struct LiveTimeline: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(LiveTimelineA11y.spokenSectionLabel(stepCount: rows.count))
+        .accessibilityIdentifier(A11yID.liveTimeline)
     }
 
     private var timelineScroll: some View {
