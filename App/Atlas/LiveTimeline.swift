@@ -50,6 +50,9 @@ struct NarrativeRow: Identifiable, Equatable {
     let icon: String
     let title: String
     let detail: String?
+    let occurredAt: Date?
+    var durationMs: Int? = nil
+    var isP90: Bool = false
 }
 
 // Colapsa ferramentas consecutivas: [read,read,execute,read] → "Explorou 3
@@ -67,7 +70,8 @@ func narrativeRows(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
         if toolRun.count == 1, let only = toolRun.first {
             rows.append(NarrativeRow(id: only.id, style: .single,
                                      icon: activityIcon(only.kind),
-                                     title: only.title, detail: only.detail))
+                                     title: only.title, detail: only.detail,
+                                     occurredAt: AtlasTime.date(only.occurredAt)))
         } else {
             let reads = toolRun.filter { $0.kind == .reading }.count
             let execs = toolRun.filter { $0.kind == .executing }.count
@@ -80,7 +84,8 @@ func narrativeRows(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
             rows.append(NarrativeRow(id: last.id, style: .tools,
                                      icon: "square.stack.3d.up",
                                      title: "Explorou " + parts.joined(separator: " e "),
-                                     detail: last.detail))
+                                     detail: last.detail,
+                                     occurredAt: AtlasTime.date(last.occurredAt)))
         }
         toolRun.removeAll()
     }
@@ -90,7 +95,8 @@ func narrativeRows(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
             flushTools()
             rows.append(NarrativeRow(id: a.id, style: .intent,
                                      icon: activityIcon(a.kind),
-                                     title: a.title, detail: a.detail))
+                                     title: a.title, detail: a.detail,
+                                     occurredAt: AtlasTime.date(a.occurredAt)))
         } else {
             // ferramenta nova de kind diferente do run atual? mantém no run —
             // o resumo é misto de propósito ("4 arquivos e 3 comandos")
@@ -106,9 +112,28 @@ func narrativeRows(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
         } else { toolRun.removeAll() }
         rows.append(NarrativeRow(id: current.id, style: .single,
                                  icon: activityIcon(current.kind),
-                                 title: current.title, detail: current.detail))
+                                 title: current.title, detail: current.detail,
+                                 occurredAt: AtlasTime.date(current.occurredAt)))
     }
+    annotateDurations(&rows)
     return rows
+}
+
+private func annotateDurations(_ rows: inout [NarrativeRow]) {
+    guard rows.count > 1 else { return }
+    for index in rows.indices.dropLast() {
+        guard let start = rows[index].occurredAt,
+              let end = rows[rows.index(after: index)].occurredAt else { continue }
+        rows[index].durationMs = max(0, Int(end.timeIntervalSince(start) * 1000))
+    }
+    let durations = rows.compactMap(\.durationMs).sorted()
+    guard !durations.isEmpty else { return }
+    let p90Index = min(durations.count - 1, Int(ceil(Double(durations.count) * 0.9)) - 1)
+    let threshold = durations[max(0, p90Index)]
+    guard threshold > 0 else { return }
+    for index in rows.indices {
+        rows[index].isP90 = (rows[index].durationMs ?? 0) >= threshold
+    }
 }
 
 struct NarrativeRowView: View {
@@ -147,6 +172,20 @@ struct NarrativeRowView: View {
                     Text(d).font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .lineLimit(1).truncationMode(.middle)
+                }
+                if let duration = row.durationMs {
+                    HStack(spacing: 5) {
+                        Text("Δ \(humanDuration(duration))")
+                            .font(AtlasFont.mono(10))
+                            .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
+                            .contentTransition(.numericText())
+                        if row.isP90 {
+                            Text("p90")
+                                .font(AtlasFont.mono(9))
+                                .foregroundStyle(AtlasTheme.domOperacional)
+                        }
+                    }
+                    .accessibilityLabel("duração do passo \(humanDuration(duration))\(row.isP90 ? ", acima do p90" : "")")
                 }
             }
             .padding(.bottom, 10)

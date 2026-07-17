@@ -25,6 +25,23 @@ private actor ScriptedAtlasStreamSource: AtlasAiStreamSource {
     func requestedAfters() -> [Int] { afterValues }
 }
 
+private final class ReconnectSignalRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var values: [(Int, Int)] = []
+
+    func append(lastSequence: Int, attempt: Int) {
+        lock.lock()
+        values.append((lastSequence, attempt))
+        lock.unlock()
+    }
+
+    func all() -> [(Int, Int)] {
+        lock.lock()
+        defer { lock.unlock() }
+        return values
+    }
+}
+
 private actor ScriptedInteractionTransport: AtlasInteractionTransport {
     private let created: AiTraceResponse
     private let frames: [AtlasAiStreamFrame]?
@@ -209,11 +226,15 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
             .done(AtlasAiStreamDone(traceId: "trace-r", status: "succeeded", lastSequence: 9)),
         ],
     ])
+    let reconnectSignals = ReconnectSignalRecorder()
     let stream = makeAtlasResumableInteractionStream(
         source: source,
         traceId: "trace-r",
         after: 7,
-        policy: AtlasStreamReconnectPolicy(maxReconnects: 4, baseDelayMilliseconds: 0)
+        policy: AtlasStreamReconnectPolicy(maxReconnects: 4, baseDelayMilliseconds: 0),
+        onReconnect: { lastSequence, attempt in
+            reconnectSignals.append(lastSequence: lastSequence, attempt: attempt)
+        }
     )
 
     var contents: [String] = []
@@ -227,6 +248,7 @@ public func runInteractionRunChecks(_ check: (String, Bool) -> Void) async {
             }
         }
         check("reconnect retoma com after=lastSequence", await source.requestedAfters() == [7, 8])
+        check("reconnect expõe tentativa pública para a casca", reconnectSignals.all().elementsEqual([(8, 1)], by: ==))
         check("reconnect não duplica sequência já entregue", contents == ["A", "B"])
         check("done encerra sem nova conexão", done)
     } catch {
@@ -806,7 +828,7 @@ public func runInteractionRunLiveProbe(
                 leakedReasoning = leakedReasoning || frame.content.lowercased().contains("┌─ reasoning")
             case .completed:
                 completed = true
-            case .persisted, .activity, .execution, .remoteError, .suspended:
+            case .persisted, .activity, .execution, .remoteError, .suspended, .reconnecting:
                 break
             }
         }
@@ -877,7 +899,7 @@ public func runProviderToolActivityLiveProbe(
                     liveToolFinishedAt = Date()
                 }
             case .completed: completed = true
-            case .persisted, .content, .execution, .remoteError, .suspended: break
+            case .persisted, .content, .execution, .remoteError, .suspended, .reconnecting: break
             }
         }
         check("live \(providerLabel) tool run concluiu", completed)

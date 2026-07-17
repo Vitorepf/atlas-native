@@ -10,11 +10,15 @@ import AtlasCore
 final class AtlasSession {
     static let rhythm = AtlasDayRhythm()
     private static let nightlyProposalMuteKey = "atlas.nightlyProposal.mutedUntil"
+    private static let auditModeKey = "atlas.auditMode.enabled"
 
     var phase: LoadPhase = .idle
     var failureKind: AtlasNetworkFailureKind?
     var threads: [AtlasAiThread] = []
     private(set) var remoteLiveSessions: [LiveSessionSnapshot] = []
+    var auditModeEnabled: Bool {
+        didSet { UserDefaults.standard.set(auditModeEnabled, forKey: Self.auditModeKey) }
+    }
 
     let host: String
     let hasToken: Bool
@@ -36,6 +40,7 @@ final class AtlasSession {
         self.client = client
         self.autonomos = AutonomosModel(client: client)
         self.arena = ArenaModel(client: client)
+        self.auditModeEnabled = UserDefaults.standard.bool(forKey: Self.auditModeKey)
     }
 
     func loadThreads() async {

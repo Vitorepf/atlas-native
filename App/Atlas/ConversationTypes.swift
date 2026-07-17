@@ -15,6 +15,7 @@ struct ChatBubble: Identifiable, Equatable {
     var text: String
     var streaming: Bool = false
     var traceId: TraceID? = nil
+    var occurredAt: String? = nil
     var provider: String? = nil
     var model: String? = nil
     var feedbackAction: String? = nil
@@ -26,6 +27,9 @@ struct ChatBubble: Identifiable, Equatable {
     var decideStrategy: String? = nil
     var activities: [AtlasAgentActivity] = []
     var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
+    /// Aviso público do stream resumível. Só aparece quando o InteractionRun
+    /// expõe uma tentativa real de reconexão; a View não estima rede.
+    var reconnectNotice: String? = nil
     var decisionSummary: AtlasDecisionSummary? = nil
     var qualitySummary: AtlasQualitySummary? = nil
     /// Plano real criado pelo Terminal/CLI; a casca só recebe os dados já

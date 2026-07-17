@@ -13,11 +13,11 @@ struct ConversationView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(AtlasSession.self) private var session
     @State private var model: ConversationModel
-    @State private var draft = ""
     @State private var mode = "geral"
     @State private var showModeSheet = false
     @State private var showWorkspaceSheet = false
     @State private var showQueueSheet = false
+    @State private var showOutline = false
     @State private var reviewTrace: ReviewTraceRef?
     @State private var artifactTrace: ReviewTraceRef?
     @State private var steerTrace: SteerTraceRef?
@@ -73,7 +73,6 @@ struct ConversationView: View {
         // Pergunta semeada por quem abriu (ex.: a folha do commit): o operador
         // chega com o assunto escrito e edita se quiser. Semear NÃO é enviar —
         // mandar sozinho seria decidir por ele.
-        _draft = State(initialValue: draft)
         self.emptyPrompt = emptyPrompt
         self.emptySuggestions = emptySuggestions
         self.onThread = onThread
@@ -83,6 +82,9 @@ struct ConversationView: View {
         if let workspace {
             model.workspaceSlug = workspace
             model.workspaceName = workspace
+        }
+        if !draft.isEmpty {
+            model.updateDraft(draft)
         }
         _model = State(initialValue: model)
     }
@@ -118,6 +120,7 @@ struct ConversationView: View {
         }
         .onDisappear {
             TurnPresence.shared.setVisible(model, visible: false)
+            model.markThreadVisited()
         }
         .onChange(of: model.isSending) { was, now in
             // Resposta terminou → haptic de sucesso (o toque que fecha o ciclo)
@@ -125,6 +128,13 @@ struct ConversationView: View {
         }
         .onChange(of: model.cacheCapturedAt) { _, capturedAt in
             if let capturedAt { lastCacheCapturedAt = capturedAt }
+        }
+        .sheet(isPresented: $showOutline) {
+            SheetShell(title: "Índice da conversa") {
+                ForEach(Array(model.bubbles.enumerated()), id: \.element.id) { index, bubble in
+                    ConversationOutlineRow(index: index + 1, bubble: bubble)
+                }
+            }
         }
         .onChange(of: model.showingStaleCache) { was, now in
             if now, let capturedAt = model.cacheCapturedAt {
@@ -151,6 +161,9 @@ struct ConversationView: View {
             // Só para conversa canônica; o "pronto" só aparece com o recibo.
             if model.threadId != nil {
                 Menu {
+                    Button { showOutline = true } label: {
+                        Label("Índice da conversa", systemImage: "list.bullet.rectangle")
+                    }
                     Button {
                         Task { await model.handoffToSurface(.desktop) }
                     } label: { Label("Continuar no Mac", systemImage: "desktopcomputer") }
@@ -208,6 +221,10 @@ struct ConversationView: View {
                 } else {
                     LazyVStack(alignment: .leading, spacing: 40) {
                         ForEach(model.bubbles) { bubble in
+                            if bubble.id == model.firstNewBubbleId {
+                                NewSinceLastVisitMarker()
+                                    .id("new-since-last-visit")
+                            }
                             let traceArtifacts = bubble.traceId.flatMap { model.reviews.artifactsByTrace[$0] }
                             let artifactItems = traceArtifacts?.state == .available ? traceArtifacts?.items ?? [] : []
                             EditorialTurn(bubble: bubble, reduceMotion: reduceMotion,
@@ -406,9 +423,12 @@ struct ConversationView: View {
                 ZStack(alignment: .topLeading) {
                     Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
                         .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
-                        .allowsHitTesting(false).opacity(draft.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
-                        .animation(.easeOut(duration: 0.28), value: draft.isEmpty)
-                    TextField("", text: $draft, axis: .vertical)
+                        .allowsHitTesting(false).opacity(model.draftText.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
+                        .animation(.easeOut(duration: 0.28), value: model.draftText.isEmpty)
+                    TextField("", text: Binding(
+                        get: { model.draftText },
+                        set: { model.updateDraft($0) }
+                    ), axis: .vertical)
                         .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
                         .tint(AtlasTheme.accent).lineLimit(1...6).focused($focused)
                         .accessibilityIdentifier(A11yID.conversationInput)
@@ -537,7 +557,7 @@ struct ConversationView: View {
     }
 
     private var composerCanSubmit: Bool {
-        let hasText = !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let hasText = !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         if model.isSending || liveBubble != nil {
             return hasText
         }
@@ -615,8 +635,7 @@ struct ConversationView: View {
 
     private func send() {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        let text = draft
-        draft = ""
+        let text = model.draftText
         let effort = model.effort
         Task { await model.send(text, effort: effort) }
     }
@@ -686,6 +705,56 @@ private struct StaleReadSeal: View {
                                 ? "histórico salvo atualizado"
                                 : "histórico salvo visto há \(atlasRelativeAgePT(since: capturedAt, now: context.date))")
         }
+    }
+}
+
+private struct NewSinceLastVisitMarker: View {
+    var body: some View {
+        HStack(spacing: 8) {
+            Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
+            Text("NOVO DESDE ÚLTIMA VISITA")
+                .font(AtlasFont.mono(10))
+                .tracking(1.1)
+                .foregroundStyle(AtlasTheme.accent)
+            Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
+        }
+        .accessibilityIdentifier(A11yID.conversationNewMarker)
+        .accessibilityLabel("novo desde a última visita")
+    }
+}
+
+private struct ConversationOutlineRow: View {
+    let index: Int
+    let bubble: ChatBubble
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text(String(format: "%02d", index))
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.accent)
+                .contentTransition(.numericText())
+            VStack(alignment: .leading, spacing: 3) {
+                Text(bubble.role == "user" ? "Você" : "Atlas")
+                    .font(.system(.caption, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text(snippet)
+                    .font(.system(.footnote))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(2)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.vertical, 10)
+        .accessibilityIdentifier(A11yID.conversationOutlineRow(index))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("turno \(index), \(bubble.role == "user" ? "você" : "Atlas"), \(snippet)")
+    }
+
+    private var snippet: String {
+        let text = AtlasMarkdown.plainText(bubble.text)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return text.isEmpty ? "sem texto visível" : String(text.prefix(140))
     }
 }
 

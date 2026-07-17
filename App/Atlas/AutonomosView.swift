@@ -11,6 +11,7 @@ struct AutonomosView: View {
     @State private var control: AtlasAutonomosRunAction?
     @State private var startRunMode: AtlasAutonomosStartRunMode?
     @State private var showTransferSheet = false
+    @State private var detailSheet: AutonomosDetailSheet?
     @State private var nightly = NightlyProposalController.shared
     @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
     @State private var selfConstructionReceipt: SelfConstructionReceipt?
@@ -62,6 +63,9 @@ struct AutonomosView: View {
                 Task { await model.transfer(operatorActor: actor, reason: reason) }
             }
         }
+        .sheet(item: $detailSheet) { sheet in
+            AutonomosPublicDetailSheet(kind: sheet, backlog: model.backlog)
+        }
         .sheet(item: $selfConstructionReceipt) { receipt in
             SelfConstructionReceiptSheet(
                 receipt: receipt,
@@ -97,6 +101,11 @@ struct AutonomosView: View {
                 Text("ÁREA PRÓPRIA · 24/7")
                     .font(AtlasFont.mono(10)).tracking(1.2)
                     .foregroundStyle(AtlasTheme.accent)
+                if session.auditModeEnabled {
+                    Text("MODO AUDITORIA")
+                        .font(AtlasFont.mono(9)).tracking(1.0)
+                        .foregroundStyle(AtlasTheme.domOperacional)
+                }
             }
             Spacer()
             Button { Task { await model.refreshSelected() } } label: {
@@ -163,6 +172,7 @@ struct AutonomosView: View {
                     if let fleet = model.fleet { fleetSummary(fleet) }
                     nextDigestSection
                     operationDigest
+                    awaitingYouSection
                     areaPicker
                     if let area = model.selectedArea { areaDetail(area) }
                     if let receipt = model.lastStartRunReceipt, receipt.isEnqueued {
@@ -344,10 +354,68 @@ struct AutonomosView: View {
     private func digestChip(_ value: String, _ label: String) -> some View {
         HStack(spacing: 5) {
             Text(value).font(AtlasFont.mono(14)).foregroundStyle(AtlasTheme.accent)
+                .contentTransition(.numericText())
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
         }
         .padding(.horizontal, 9).padding(.vertical, 6)
         .background(Capsule().fill(AtlasTheme.bgRecessed))
+    }
+
+    // MARK: - Aguarda operador (M139)
+
+    @ViewBuilder
+    private var awaitingYouSection: some View {
+        let inbox = model.backlog?.inboxItems.filter(\.decisionRequired) ?? []
+        let workOrders = model.backlog?.workOrders.filter(\.operatorDecisionRequired) ?? []
+        let count = inbox.count + workOrders.count
+        if count > 0 {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    sectionCaption("AGUARDANDO VOCÊ")
+                    Spacer()
+                    Text("\(count)")
+                        .font(AtlasFont.mono(13))
+                        .foregroundStyle(AtlasTheme.domOperacional)
+                        .contentTransition(.numericText())
+                }
+                Text("Há decisão pública pendente; nada aqui afirma execução antes do recibo do owner.")
+                    .font(AtlasFont.serifItalic(14))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                HStack(spacing: 8) {
+                    if !inbox.isEmpty {
+                        detailButton("inbox \(inbox.count)", .inbox)
+                    }
+                    if !workOrders.isEmpty {
+                        detailButton("ordens \(workOrders.count)", .workOrders)
+                    }
+                    if model.backlog?.findings.returned ?? 0 > 0 {
+                        detailButton("findings", .findings)
+                    }
+                    detailButton("budgets", .budgets)
+                }
+            }
+            .padding(14)
+            .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.domOperacional.opacity(0.08)))
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.domOperacional.opacity(0.38), lineWidth: 1))
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("aguardando você, \(count) decisões")
+            .accessibilityIdentifier(A11yID.autonomosAwaitingYou)
+        }
+    }
+
+    private func detailButton(_ label: String, _ kind: AutonomosDetailSheet) -> some View {
+        Button { detailSheet = kind } label: {
+            Text(label)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 6)
+                .background(Capsule().fill(AtlasTheme.surfaceHi))
+                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("abrir detalhes de \(label)")
+        .accessibilityIdentifier(A11yID.autonomosDetailButton(kind.id))
     }
 
     // MARK: - Frota global (C13: agentes reais, nunca contagem de áreas)
@@ -379,6 +447,21 @@ struct AutonomosView: View {
                         if let spent = agent.spentUsd { tag(String(format: "US$ %.2f", spent)) }
                         tag(agent.desired ? "desejado" : "não desejado")
                         tag(agent.authorized ? "autorizado" : "não autorizado")
+                    }
+                    if session.auditModeEnabled {
+                        HStack(spacing: 6) {
+                            tag(agent.account)
+                            tag(agent.kind)
+                            if let ttl = agent.ttlRemainingSeconds { tag("ttl \(ttl)s") }
+                            if let budget = agent.budgetLimitUsd { tag(String(format: "limite %.2f", budget)) }
+                            if let target = agent.targetRef?.nonEmpty { tag(target) }
+                        }
+                        if let reason = agent.reason?.nonEmpty {
+                            Text(reason)
+                                .font(.caption2)
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .lineLimit(2)
+                        }
                     }
                 }
                 .padding(12)
@@ -425,14 +508,42 @@ struct AutonomosView: View {
             sectionCaption(history.events.count > 6
                            ? "HISTÓRICO DA FROTA · 6 DE \(history.events.count)"
                            : "HISTÓRICO DA FROTA")
-            ForEach(history.events.prefix(6)) { event in
-                HStack(alignment: .firstTextBaseline, spacing: 10) {
-                    Text(event.event).font(.system(.caption, weight: .semibold))
-                        .foregroundStyle(AtlasTheme.textPrimary)
-                    Text(event.agentKey).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                    Spacer()
-                    Text(event.at).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
-                        .lineLimit(1)
+            ForEach(Array(history.events.prefix(6).enumerated()), id: \.element.id) { index, event in
+                HStack(alignment: .top, spacing: 10) {
+                    VStack(spacing: 0) {
+                        Circle()
+                            .fill(index == 0 ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.35))
+                            .frame(width: 7, height: 7)
+                            .padding(.top, 5)
+                        if index < min(history.events.count, 6) - 1 {
+                            Rectangle()
+                                .fill(AtlasTheme.accent.opacity(0.18))
+                                .frame(width: 1.5, height: 34)
+                        }
+                    }
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(event.event)
+                            .font(.system(.caption, weight: .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        HStack(spacing: 6) {
+                            tag(event.agentKey)
+                            if let by = event.by?.nonEmpty { tag(by) }
+                            if let account = event.account?.nonEmpty { tag(account) }
+                            if let pid = event.pid { tag("pid \(pid)") }
+                            if let duration = event.durationSeconds { tag(Self.uptime(duration)) }
+                        }
+                        if let reason = event.reason?.nonEmpty {
+                            Text(reason)
+                                .font(.caption2)
+                                .foregroundStyle(AtlasTheme.textSecondary)
+                                .lineLimit(2)
+                        }
+                        Text(event.at)
+                            .font(AtlasFont.mono(9))
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                            .lineLimit(1)
+                    }
+                    Spacer(minLength: 0)
                 }
                 .padding(.vertical, 4)
             }
@@ -486,6 +597,7 @@ struct AutonomosView: View {
                 DetailMetric(label: "tarefas", value: "\(model.backlog?.workOrders.count ?? 0)")
                 DetailMetric(label: "inbox", value: "\(model.backlog?.inboxItems.count ?? 0)")
             }
+            backlogDetailShortcuts
             placementSection
             deliveredSection(for: area)
             if !area.ownedSystems.isEmpty {
@@ -499,6 +611,23 @@ struct AutonomosView: View {
         .padding(16)
         .background(RoundedRectangle(cornerRadius: 18).fill(AtlasTheme.surface))
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(AtlasTheme.separator, lineWidth: 1))
+    }
+
+    @ViewBuilder
+    private var backlogDetailShortcuts: some View {
+        if let backlog = model.backlog {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("DETALHES PÚBLICOS")
+                    .font(AtlasFont.mono(10)).tracking(0.9)
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                HStack(spacing: 8) {
+                    detailButton("workOrders \(backlog.workOrders.count)", .workOrders)
+                    detailButton("inbox \(backlog.inboxItems.count)", .inbox)
+                    detailButton("findings \(backlog.findings.returned)", .findings)
+                    detailButton("budgets", .budgets)
+                }
+            }
+        }
     }
 
     /// C13: placement é só o rótulo verificado do lock real — campo ausente
@@ -699,6 +828,7 @@ private struct FleetMetric: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(value).font(AtlasFont.mono(18)).foregroundStyle(AtlasTheme.textPrimary)
+                .contentTransition(.numericText())
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary).lineLimit(2)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(11)
@@ -711,8 +841,159 @@ private struct DetailMetric: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value).font(AtlasFont.mono(15)).foregroundStyle(AtlasTheme.textPrimary)
+                .contentTransition(.numericText())
             Text(label).font(.caption2).foregroundStyle(AtlasTheme.textTertiary)
         }.frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private enum AutonomosDetailSheet: String, Identifiable {
+    case workOrders
+    case inbox
+    case budgets
+    case findings
+
+    var id: String { rawValue }
+    var title: String {
+        switch self {
+        case .workOrders: return "Work orders"
+        case .inbox: return "Inbox"
+        case .budgets: return "Budgets"
+        case .findings: return "Findings"
+        }
+    }
+}
+
+private struct AutonomosPublicDetailSheet: View {
+    let kind: AutonomosDetailSheet
+    let backlog: AtlasAutonomosBacklogResponse?
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    if let backlog {
+                        content(backlog)
+                    } else {
+                        Text("Sem projeção pública disponível agora.")
+                            .font(.footnote)
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(14)
+                            .atlasCard(cornerRadius: 12)
+                    }
+                }
+                .padding(AtlasTheme.Space.screen)
+            }
+            .background(AtlasTheme.bg.ignoresSafeArea())
+            .navigationTitle(kind.title)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Fechar") { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+        .presentationBackground(AtlasTheme.bg)
+        .accessibilityIdentifier(A11yID.autonomosDetailSheet)
+    }
+
+    @ViewBuilder
+    private func content(_ backlog: AtlasAutonomosBacklogResponse) -> some View {
+        switch kind {
+        case .workOrders:
+            ForEach(backlog.workOrders) { item in
+                detailCard(item.title) {
+                    detailField("id", item.workOrderId)
+                    detailField("finding", item.findingHash)
+                    detailField("route", item.route)
+                    detailField("owner service", item.routesToOwnerService)
+                    detailField("risk", item.riskLevel)
+                    detailField("priority", "\(item.priorityScore)")
+                    detailField("status", item.status)
+                    detailField("branch isolation", item.requiresBranchIsolation ? "sim" : "não")
+                    detailField("decisão do operador", item.operatorDecisionRequired ? "sim" : "não")
+                    detailField("evidência exigida", item.evidenceRequired ? "sim" : "não")
+                    detailField("execução feita", item.executionExecuted ? "sim" : "não")
+                }
+            }
+        case .inbox:
+            ForEach(backlog.inboxItems) { item in
+                detailCard(item.title) {
+                    detailField("finding", item.findingHash)
+                    detailField("route", item.route)
+                    detailField("risk", item.riskLevel)
+                    detailField("priority", "\(item.priorityScore)")
+                    detailField("decisão exigida", item.decisionRequired ? "sim" : "não")
+                    detailField("opções", item.decisionOptions.joined(separator: " · "))
+                }
+            }
+        case .findings:
+            detailCard("Resumo") {
+                detailField("total", "\(backlog.findings.total)")
+                detailField("distintos", "\(backlog.findings.distinctTotal)")
+                detailField("retornados", "\(backlog.findings.returned)")
+                detailField("por risco", backlog.findings.byRisk.sorted { $0.key < $1.key }.map { "\($0.key): \($0.value)" }.joined(separator: " · "))
+                detailField("por rota", backlog.findings.byRoute.sorted { $0.key < $1.key }.map { "\($0.key): \($0.value)" }.joined(separator: " · "))
+            }
+            ForEach(backlog.findings.items) { item in
+                detailCard(item.title) {
+                    detailField("hash", item.findingHash)
+                    detailField("source", item.source)
+                    detailField("owner", item.sourceOwner)
+                    detailField("gap", item.gapKind)
+                    detailField("risk", item.riskLevel)
+                    detailField("priority", "\(item.priorityScore)")
+                    detailField("route", item.route)
+                    detailField("count", "\(item.count)")
+                    if let rule = item.ruleId { detailField("rule id", rule) }
+                    if let text = item.ruleText { detailField("rule", text) }
+                }
+            }
+        case .budgets:
+            let b = backlog.budgets
+            detailCard("Limites públicos") {
+                detailField("dev mode", b.devBudget.mode)
+                detailField("dev work orders", "\(b.devBudget.maxConcurrentWorkOrders)")
+                detailField("forge mode", b.forgeBudget.mode)
+                detailField("forge obras", "\(b.forgeBudget.maxConcurrentObras)")
+                detailField("wip", "\(b.wipUsed)/\(b.wipLimit)")
+                detailField("dev routed", "\(b.devRouted)")
+                detailField("forge routed", "\(b.forgeRouted)")
+                detailField("queued", "\(b.queued)")
+                detailField("budget consumed", b.budgetConsumed ? "sim" : "não")
+                detailField("execution executed", b.executionExecuted ? "sim" : "não")
+            }
+        }
+    }
+
+    private func detailCard<Content: View>(
+        _ title: String,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.system(.footnote, weight: .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            content()
+        }
+        .padding(14)
+        .atlasCard(cornerRadius: 12)
+    }
+
+    private func detailField(_ label: String, _ value: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Text(label)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .frame(width: 112, alignment: .leading)
+            Text(value.isEmpty ? "—" : value)
+                .font(.caption)
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .textSelection(.enabled)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 }
 

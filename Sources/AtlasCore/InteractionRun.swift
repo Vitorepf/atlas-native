@@ -50,7 +50,8 @@ public func makeAtlasResumableInteractionStream(
     traceId: String,
     after: Int = 0,
     timeoutSeconds: Int = 120,
-    policy: AtlasStreamReconnectPolicy = AtlasStreamReconnectPolicy()
+    policy: AtlasStreamReconnectPolicy = AtlasStreamReconnectPolicy(),
+    onReconnect: (@Sendable (_ lastSequence: Int, _ attempt: Int) -> Void)? = nil
 ) -> AsyncThrowingStream<AtlasAiStreamFrame, Error> {
     AsyncThrowingStream { continuation in
         let task = Task {
@@ -88,6 +89,7 @@ public func makeAtlasResumableInteractionStream(
 
                     if completed { break attempts }
                     if attempt < policy.maxReconnects {
+                        onReconnect?(lastSequence, attempt + 1)
                         try await Task.sleep(nanoseconds: policy.delayNanoseconds(afterAttempt: attempt))
                     }
                 }
@@ -140,6 +142,10 @@ public enum InteractionRunEvent: Sendable {
     case content(AtlasAiStreamEvent)
     case execution(InteractionRunExecution)
     case remoteError(JSONValue)
+    /// A janela SSE fechou antes de `done` e o stream resumível abriu nova
+    /// tentativa com `after=lastSequence`. É um sinal de transporte, não erro
+    /// terminal nem razão para duplicar conteúdo.
+    case reconnecting(lastSequence: Int, attempt: Int)
     /// O servidor confirmou uma pausa durável (por exemplo, decisão do
     /// operador), portanto o stream pode encerrar sem transformar a pausa em
     /// falha de rede nem reenviar a mesma instrução da outbox.
@@ -255,7 +261,10 @@ public actor InteractionRun {
                 source: transport,
                 traceId: traceId.rawValue,
                 timeoutSeconds: streamWindowSeconds,
-                policy: reconnectPolicy
+                policy: reconnectPolicy,
+                onReconnect: { lastSequence, attempt in
+                    continuation.yield(.reconnecting(lastSequence: lastSequence, attempt: attempt))
+                }
             )
             var completed: AtlasAiStreamDone?
             do {

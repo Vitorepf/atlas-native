@@ -24,6 +24,7 @@ struct RootView: View {
     @State private var path = NavigationPath()
     @State private var codeHub: AtlasCodeHubModel?
     @State private var nightly = NightlyProposalController.shared
+    @State private var homeWorkspaceFilter: String?
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -131,16 +132,32 @@ struct RootView: View {
         // editorial do masthead (mesma do ícone).
         .overlay {
             VStack(spacing: 5) {
-                Text("Atlas")
-                    .font(AtlasFont.serif(24, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
+                HStack(spacing: 4) {
+                    Text("Atlas")
+                        .font(AtlasFont.serif(24, .semibold))
+                    Text("✦")
+                        .font(AtlasFont.serif(15, .semibold))
+                        .foregroundStyle(session.auditModeEnabled ? AtlasTheme.domOperacional : AtlasTheme.accent)
+                }
+                .foregroundStyle(AtlasTheme.textPrimary)
                 Rectangle()
                     .fill(AtlasTheme.accent.opacity(0.6))
                     .frame(width: 30, height: 1.5)
+                if session.auditModeEnabled {
+                    Text("AUDITORIA")
+                        .font(AtlasFont.mono(8))
+                        .tracking(1.0)
+                        .foregroundStyle(AtlasTheme.domOperacional)
+                }
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Atlas")
+            .accessibilityIdentifier(A11yID.auditMasthead)
             .accessibilityAddTraits(.isHeader)
+            .onLongPressGesture(minimumDuration: 0.55) {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                session.auditModeEnabled.toggle()
+            }
             // Cap deliberado: em AXXXL o nameplate colidia com busca/+ (evidência
             // 03). Marca limita a própria escala; o CONTEÚDO escala livre.
             .dynamicTypeSize(...DynamicTypeSize.accessibility1)
@@ -216,9 +233,11 @@ struct RootView: View {
                     // conversas SEM projeto: perguntas, pesquisas, pensamento
                     // livre (o uso GPT-no-iPhone). A pílula embaixo cria uma.
                     sectionLabel("CONVERSAS")
-                    WorkspaceRow(icon: "bubble.left.and.bubble.right", name: "Conversas livres",
-                                 count: freeThreadCount) {
-                        path.append(Route.conversas)
+                    homeWorkspaceChips
+                    WorkspaceRow(icon: "bubble.left.and.bubble.right", name: homeConversationLabel,
+                                 count: homeConversationCount,
+                                 detail: session.auditModeEnabled ? auditDetail : nil) {
+                        path.append(homeConversationRoute)
                     }
                     rowDivider
                     sectionLabel("OPERAÇÃO")
@@ -287,6 +306,74 @@ struct RootView: View {
     /// Conversas sem projeto (workspace nulo) — o modo "só conversar".
     private var freeThreadCount: Int {
         session.threads.filter { $0.workspace == nil }.count
+    }
+
+    private var homeConversationRoute: Route {
+        switch homeWorkspaceFilter {
+        case .some("__all"):
+            return .workspace(key: nil, title: "Todas")
+        case .some(let key):
+            let title = session.workspaces.first(where: { $0.id == key })?.name ?? "Workspace"
+            return .workspace(key: key, title: title)
+        case .none:
+            return .conversas
+        }
+    }
+
+    private var homeConversationLabel: String {
+        switch homeWorkspaceFilter {
+        case .some("__all"): return "Todas as conversas"
+        case .some(let key): return session.workspaces.first(where: { $0.id == key })?.name ?? "Workspace"
+        case .none: return "Conversas livres"
+        }
+    }
+
+    private var homeConversationCount: Int {
+        switch homeWorkspaceFilter {
+        case .some("__all"): return session.threads.count
+        case .some(let key): return session.threads(inWorkspace: key).count
+        case .none: return freeThreadCount
+        }
+    }
+
+    private var auditDetail: String {
+        let key = homeWorkspaceFilter ?? "livres"
+        return "auditoria · filtro \(key) · \(homeConversationCount) threads"
+    }
+
+    private var homeWorkspaceChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                homeFilterChip("Livres", key: nil)
+                homeFilterChip("Todas", key: "__all")
+                ForEach(session.workspaces) { workspace in
+                    homeFilterChip(workspace.name, key: workspace.id)
+                }
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.bottom, 10)
+        }
+        .accessibilityLabel("filtros de workspace das conversas")
+        .accessibilityIdentifier(A11yID.homeWorkspaceChips)
+    }
+
+    private func homeFilterChip(_ label: String, key: String?) -> some View {
+        let active = homeWorkspaceFilter == key
+        return Button {
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            homeWorkspaceFilter = key
+        } label: {
+            Text(label)
+                .font(.system(.caption, weight: .medium))
+                .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface))
+                .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("filtrar conversas por \(label)")
+        .accessibilityIdentifier(A11yID.homeWorkspaceChip(key ?? "__free"))
     }
 
     private func sectionLabel(_ t: String) -> some View {
@@ -403,7 +490,12 @@ private struct WorkspaceRow: View {
                         .frame(width: 8, height: 8)
                         .accessibilityHidden(true)
                 }
-                if let count { Text("\(count)").font(.system(.callout)).foregroundStyle(AtlasTheme.textTertiary) }
+                if let count {
+                    Text("\(count)")
+                        .font(.system(.callout))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .contentTransition(.numericText())
+                }
                 Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
             }
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
@@ -421,6 +513,7 @@ struct ThreadRow: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var isRunning: Bool { TurnPresence.shared.runningTitles.contains(thread.title) }
+    private var isNew: Bool { ConversationModel.hasNewerContent(thread) }
 
     var body: some View {
         HStack(spacing: 14) {
@@ -431,10 +524,22 @@ struct ThreadRow: View {
             }
             Text(thread.title).font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1).truncationMode(.tail)
             Spacer(minLength: 8)
+            if isNew && !isRunning {
+                Text("novo")
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.accent)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(Capsule().fill(AtlasTheme.goldVeil))
+                    .accessibilityLabel("novo desde a última visita")
+            }
             if isRunning {
                 Text("executando").font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
             } else {
-                Text("\(thread.messageCount)").font(.system(size: 16)).foregroundStyle(AtlasTheme.textTertiary)
+                Text("\(thread.messageCount)")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .contentTransition(.numericText())
             }
             Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
         }

@@ -144,12 +144,14 @@ private struct LiveNowRow: View {
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .monospacedDigit()
+                .contentTransition(.numericText())
             }
         case .paused:
             Text(pausedText(now: now))
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .monospacedDigit()
+                .contentTransition(.numericText())
         case .finished:
             Text("✓ concluído")
                 .font(AtlasFont.serifItalic(13))

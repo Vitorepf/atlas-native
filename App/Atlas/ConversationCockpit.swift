@@ -35,6 +35,7 @@ struct ExecutingStrip: View {
                 Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
+                    .contentTransition(.numericText())
                     .lineLimit(1)
             }
             // C18: pílula +N −M só quando o servidor mediu shortstat no workspace.
@@ -80,6 +81,15 @@ struct ExecutionRibbon: View {
     let onStop: () -> Void
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            if let notice = bubble.reconnectNotice {
+                ExecutionBanner(
+                    text: notice,
+                    icon: "wifi.exclamationmark",
+                    tint: AtlasTheme.accent,
+                    accessibilityIdentifier: A11yID.executionReconnectBanner
+                )
+            }
+            SilenceWatchdog(bubble: bubble)
             // A CONSTRUÇÃO AO VIVO — todos os passos empilham conforme chegam
             // (contrato C5: projeção segura). O atual pulsa; os anteriores
             // assentam. É a progressão do Cursor, na gramática do Atlas.
@@ -88,7 +98,13 @@ struct ExecutionRibbon: View {
             }
             if !bubble.agents.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
-                    ForEach(bubble.agents) { AgentRow(agent: $0) }
+                    if bubble.agents.count >= 2 {
+                        Text("LANES")
+                            .font(AtlasFont.mono(10))
+                            .tracking(1.1)
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                    }
+                    ForEach(bubble.agents) { AgentRow(agent: $0, compactLane: bubble.agents.count >= 2) }
                 }.padding(.leading, 24)
             }
             if let strat = bubble.decideStrategy {
@@ -103,6 +119,7 @@ struct ExecutionRibbon: View {
 
 struct AgentRow: View {
     let agent: ExecAgent
+    var compactLane = false
     var body: some View {
         HStack(spacing: 8) {
             Circle().fill(statusColor).frame(width: 6, height: 6)
@@ -113,6 +130,13 @@ struct AgentRow: View {
             }
             Spacer()
             Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .padding(.vertical, compactLane ? 3 : 0)
+        .padding(.horizontal, compactLane ? 8 : 0)
+        .background {
+            if compactLane {
+                Capsule().fill(AtlasTheme.bgRecessed)
+            }
         }
     }
     private var turnStatus: AtlasTurnStatus { AtlasTurnStatus(rawValue: agent.status) }
@@ -135,5 +159,57 @@ struct AgentRow: View {
         case .awaitingExternal: return "aguardando externo"
         case .unknown(let raw): return raw
         }
+    }
+}
+
+private struct ExecutionBanner: View {
+    let text: String
+    let icon: String
+    let tint: Color
+    var accessibilityIdentifier: String?
+
+    var body: some View {
+        HStack(spacing: 7) {
+            Image(systemName: icon)
+                .font(.system(size: 11, weight: .semibold))
+            Text(text)
+                .font(AtlasFont.mono(10))
+                .lineLimit(2)
+            Spacer(minLength: 0)
+        }
+        .foregroundStyle(tint)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(RoundedRectangle(cornerRadius: 10).fill(tint.opacity(0.10)))
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(tint.opacity(0.35), lineWidth: 1))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(text)
+        .accessibilityIdentifier(accessibilityIdentifier ?? "")
+    }
+}
+
+private struct SilenceWatchdog: View {
+    let bubble: ChatBubble
+
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 15)) { context in
+            if let silence = silenceSeconds(now: context.date), silence > 90 {
+                ExecutionBanner(
+                    text: "Sem novos eventos há \(silence)s",
+                    icon: "timer",
+                    tint: AtlasTheme.domOperacional,
+                    accessibilityIdentifier: A11yID.executionSilenceWatchdog
+                )
+                .contentTransition(.numericText())
+            }
+        }
+    }
+
+    private func silenceSeconds(now: Date) -> Int? {
+        guard bubble.streaming else { return nil }
+        let last = bubble.activities.reversed().compactMap { AtlasTime.date($0.occurredAt) }.first
+            ?? bubble.startedAt
+        guard let last else { return nil }
+        return max(0, Int(now.timeIntervalSince(last)))
     }
 }

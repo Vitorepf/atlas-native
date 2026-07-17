@@ -5,7 +5,18 @@ import Foundation
 /// splits de view; constantes compartilhadas falham no compile.
 enum A11yID {
     static let topbarCode = "topbar-code"
+    static let auditMasthead = "audit-masthead"
     static let conversationInput = "conversation-input"
+    static let conversationNewMarker = "conversation-new-marker"
+    static let conversationOutlineRowPrefix = "conversation-outline-row-"
+    static let homeWorkspaceChips = "home-workspace-chips"
+    static let homeWorkspaceChipPrefix = "home-workspace-chip-"
+    static let executionReconnectBanner = "execution-reconnect-banner"
+    static let executionSilenceWatchdog = "execution-silence-watchdog"
+    static let executionReplayScrubber = "execution-replay-scrubber"
+    static let autonomosAwaitingYou = "autonomos-awaiting-you"
+    static let autonomosDetailSheet = "autonomos-detail-sheet"
+    static let autonomosDetailButtonPrefix = "autonomos-detail-button-"
 
     static let codeStatus = "code-status"
     static let codeGraphTruncated = "code-graph-truncated"
@@ -34,6 +45,9 @@ enum A11yID {
     static let liveNowRemoteBadgePrefix = "live-now-remote-badge-"
     static func liveNowRow(_ index: Int) -> String { liveNowRowPrefix + String(index) }
     static func liveNowRemoteBadge(_ index: Int) -> String { liveNowRemoteBadgePrefix + String(index) }
+    static func conversationOutlineRow(_ index: Int) -> String { conversationOutlineRowPrefix + String(index) }
+    static func homeWorkspaceChip(_ key: String) -> String { homeWorkspaceChipPrefix + key }
+    static func autonomosDetailButton(_ key: String) -> String { autonomosDetailButtonPrefix + key }
 
     // V2 · Proposta das 21h
     static let nightlyProposalCard = "nightly-proposal-card"

@@ -33,7 +33,8 @@ extension ConversationModel {
                 content: message.content,
                 traceId: message.traceId,
                 provider: message.provider,
-                model: message.model
+                model: message.model,
+                occurredAt: message.occurredAt
             )
         }
     }
@@ -46,7 +47,8 @@ extension ConversationModel {
                 content: message.content,
                 traceId: message.traceId,
                 provider: message.provider,
-                model: message.model
+                model: message.model,
+                occurredAt: message.occurredAt
             )
         }
     }
@@ -57,7 +59,8 @@ extension ConversationModel {
         content: String,
         traceId: String?,
         provider: String?,
-        model: String?
+        model: String?,
+        occurredAt: String? = nil
     ) -> ChatBubble {
         let visible = role == "assistant"
             ? atlasVisibleAssistantText(content)
@@ -67,9 +70,18 @@ extension ConversationModel {
             role: role,
             text: visible ?? "A resposta anterior continha saída interna e foi ocultada.",
             traceId: traceId.map { TraceID($0) },
+            occurredAt: occurredAt,
             provider: provider,
             model: model
         )
+    }
+
+    static func firstNewBubbleId(in bubbles: [ChatBubble], after visit: Date?) -> String? {
+        guard let visit else { return nil }
+        return bubbles.first { bubble in
+            guard let occurred = AtlasTime.date(bubble.occurredAt) else { return false }
+            return occurred > visit
+        }?.id
     }
 
     static func snapshot(
@@ -88,7 +100,8 @@ extension ConversationModel {
                     content: $0.content,
                     traceId: $0.traceId,
                     provider: $0.provider,
-                    model: $0.model
+                    model: $0.model,
+                    occurredAt: $0.occurredAt
                 )
             }
         )

@@ -7,6 +7,8 @@ import AtlasImaging
 @Observable
 final class ConversationModel {
     private static let effortPreferenceKey = "atlas.composer.effort"
+    private static let draftPrefix = "atlas.conversation.draft."
+    private static let visitedPrefix = "atlas.conversation.lastVisit."
 
     private struct PendingAttachmentPreparation {
         let kind: AtlasAttachmentKind
@@ -32,6 +34,13 @@ final class ConversationModel {
     var queuedMessages: [QueuedMessage] = []
     /// Preferência persistente pertence ao model; a View só renderiza/cicla.
     var effort: AtlasComputeEffort
+    /// Rascunho persistido por thread. Conversa nova usa escopo local até o
+    /// servidor devolver `threadId`, quando o model migra o texto para a chave
+    /// canônica da thread.
+    var draftText: String = ""
+    /// Marcador calculado ao abrir: primeiro turno posterior à visita anterior.
+    var firstNewBubbleId: String?
+    var lastVisitAt: Date?
     /// Artefatos, diff e decisões de revisão vivem num domínio dedicado. A
     /// conversa só recebe de volta o trace atualizado para refrescar as bolhas.
     let reviews: ChangeReviewModel
@@ -72,6 +81,7 @@ final class ConversationModel {
     @ObservationIgnored private let queueStore: QueuedFollowUpStore
     @ObservationIgnored let readCache: ThreadReadCache
     @ObservationIgnored private var queueScope: String
+    @ObservationIgnored private var draftScope: String
 
     /// Identidade da execução atual exposta à ponte ActivityKit, nunca à View.
     /// `nil` até o servidor confirmar o trace continua sendo um estado normal.
@@ -112,9 +122,14 @@ final class ConversationModel {
         self.queueStore = QueuedFollowUpStore(fileURL: QueuedFollowUpStore.applicationSupportFileURL())
         self.readCache = readCache
         self.queueScope = threadId.map { "thread:\($0.rawValue)" } ?? "local:\(UUID().uuidString.lowercased())"
+        self.draftScope = self.queueScope
         self.effort = AtlasComputeEffort(
             rawValue: UserDefaults.standard.string(forKey: Self.effortPreferenceKey) ?? ""
         ) ?? .auto
+        self.draftText = Self.loadDraft(scope: draftScope)
+        if let threadId {
+            self.lastVisitAt = Self.lastVisitDate(threadId: threadId.rawValue)
+        }
         self.reviews.onTraceUpdated = { [weak self] traceId, trace in
             guard let self else { return }
             for bubble in self.bubbles where bubble.traceId == traceId {
@@ -126,6 +141,43 @@ final class ConversationModel {
     func cycleEffort() {
         effort = effort.next
         UserDefaults.standard.set(effort.rawValue, forKey: Self.effortPreferenceKey)
+    }
+
+    func updateDraft(_ value: String) {
+        draftText = value
+        Self.saveDraft(value, scope: draftScope)
+    }
+
+    func markThreadVisited() {
+        guard let threadId else { return }
+        Self.markVisited(threadId: threadId.rawValue)
+    }
+
+    static func lastVisitDate(threadId: String) -> Date? {
+        UserDefaults.standard.object(forKey: visitedPrefix + threadId) as? Date
+    }
+
+    static func hasNewerContent(_ thread: AtlasAiThread) -> Bool {
+        guard let last = AtlasTime.date(thread.lastMessageAt ?? thread.updatedAt) else { return false }
+        guard let visit = lastVisitDate(threadId: thread.id) else { return thread.messageCount > 0 }
+        return last > visit
+    }
+
+    private static func loadDraft(scope: String) -> String {
+        UserDefaults.standard.string(forKey: draftPrefix + scope) ?? ""
+    }
+
+    private static func saveDraft(_ value: String, scope: String) {
+        let key = draftPrefix + scope
+        if value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            UserDefaults.standard.removeObject(forKey: key)
+        } else {
+            UserDefaults.standard.set(value, forKey: key)
+        }
+    }
+
+    private static func markVisited(threadId: String) {
+        UserDefaults.standard.set(Date(), forKey: visitedPrefix + threadId)
     }
 
     // MARK: - Anexos (imagem via PhotosPicker/câmera/clipboard)
@@ -276,7 +328,9 @@ final class ConversationModel {
                 let response = try await client.getAiThread(threadId.rawValue)
                 applyWorkspace(response.thread.workspace)
                 let messages = (response.thread.messages ?? []).sorted { $0.position < $1.position }
+                let previousVisit = lastVisitAt
                 bubbles = Self.bubbles(from: messages)
+                firstNewBubbleId = Self.firstNewBubbleId(in: bubbles, after: previousVisit)
                 showingStaleCache = false
                 cacheCapturedAt = nil
                 loadError = nil
@@ -298,6 +352,7 @@ final class ConversationModel {
     }
 
     func send(_ text: String, effort: AtlasComputeEffort = .auto) async {
+        updateDraft("")
         _ = await sendTurn(text, effort: effort, drainQueueOnSuccess: true)
     }
 
@@ -574,6 +629,7 @@ final class ConversationModel {
             $0.executionPresentationState = trace.executionPresentationState
             $0.executionChoiceJobId = choiceJob.map { JobID($0.id) }
             $0.retryableJobId = failedJob.map { JobID($0.id) }
+            $0.reconnectNotice = nil
             let fromStream = projectedStreamActivities ?? atlasAgentTimeline(from: trace.streamEvents ?? [])
             let recovered = fromStream + trace.toolActivities
             $0.activities = atlasMergeAgentActivities(existing: $0.activities, incoming: recovered)
@@ -625,6 +681,7 @@ final class ConversationModel {
             $0.streaming = false
             $0.agents = []
             $0.decideStage = nil
+            $0.reconnectNotice = nil
             if let trace {
                 if $0.text.isEmpty, let response = trace.responseText,
                    let visible = atlasVisibleAssistantText(response) { $0.text = visible }
@@ -662,6 +719,7 @@ final class ConversationModel {
                 Task { await AtlasSession.rhythm.recordActivity(workspace: workspaceName ?? workspaceSlug) }
             case .activity(let activity):
                 update(assistantId) {
+                    $0.reconnectNotice = nil
                     $0.activities = atlasMergeAgentActivities(
                         existing: $0.activities,
                         incoming: [activity]
@@ -678,6 +736,10 @@ final class ConversationModel {
                     snapshot.trace,
                     projectedStreamActivities: snapshot.projectedActivities
                 )
+            case .reconnecting(let lastSequence, let attempt):
+                update(assistantId) {
+                    $0.reconnectNotice = "Reconectando ao stream · tentativa \(attempt) · após evento \(lastSequence)"
+                }
             case .suspended(let trace):
                 complete(assistantId, trace: trace)
             case .remoteError(let payload):
@@ -744,6 +806,7 @@ final class ConversationModel {
 
     private func adoptQueueScope(threadId: ThreadID) async {
         let canonicalScope = "thread:\(threadId.rawValue)"
+        adoptDraftScope(canonicalScope)
         guard canonicalScope != queueScope else { return }
         do {
             try await queueStore.migrate(scope: queueScope, to: canonicalScope)
@@ -754,6 +817,19 @@ final class ConversationModel {
             // algum; a próxima abertura pode tentar a migração de novo.
             toast = "A fila continua segura neste aparelho; a conversa ainda está sincronizando."
         }
+    }
+
+    private func adoptDraftScope(_ canonicalScope: String) {
+        guard canonicalScope != draftScope else { return }
+        let current = draftText
+        Self.saveDraft("", scope: draftScope)
+        draftScope = canonicalScope
+        if current.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            draftText = Self.loadDraft(scope: canonicalScope)
+        } else {
+            Self.saveDraft(current, scope: canonicalScope)
+        }
+        if let threadId { lastVisitAt = Self.lastVisitDate(threadId: threadId.rawValue) }
     }
 
     private func drainQueuedMessages() async {

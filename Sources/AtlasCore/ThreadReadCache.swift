@@ -11,6 +11,7 @@ public actor ThreadReadCache {
         public let traceId: String?
         public let provider: String?
         public let model: String?
+        public let occurredAt: String?
 
         public init(
             id: String,
@@ -18,7 +19,8 @@ public actor ThreadReadCache {
             content: String,
             traceId: String? = nil,
             provider: String? = nil,
-            model: String? = nil
+            model: String? = nil,
+            occurredAt: String? = nil
         ) {
             self.id = id
             self.role = role
@@ -26,6 +28,7 @@ public actor ThreadReadCache {
             self.traceId = traceId
             self.provider = provider
             self.model = model
+            self.occurredAt = occurredAt
         }
     }
 
