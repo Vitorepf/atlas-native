@@ -4,26 +4,27 @@ import AtlasCore
 
 // MARK: - Arena SUITES section
 // Sheets → ArenaSuiteSheet.swift (Suite + Engine).
+// Sem suites publicadas = silêncio total (não inventar «não medido» na home).
 
 struct ArenaSuitesSection: View {
     let scoreboard: AtlasArenaScoreboard?
     let onSuiteTap: (AtlasArenaSuite) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("SUITES")
-                    .font(.system(.caption, weight: .semibold))
-                    .tracking(1.4)
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityIdentifier(A11yID.arenaSuitesSection)
-                Spacer()
-                Text("\(scoreboard?.suites.count ?? 0)")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-            }
+        if let suites = scoreboard?.suites, !suites.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("SUITES")
+                        .font(.system(.caption, weight: .semibold))
+                        .tracking(1.4)
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                    Spacer()
+                    Text("\(suites.count)")
+                        .font(AtlasFont.mono(11))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .accessibilityLabel("\(suites.count) suites")
+                }
 
-            if let suites = scoreboard?.suites, !suites.isEmpty {
                 ForEach(suites) { suite in
                     Button { onSuiteTap(suite) } label: {
                         ArenaSuiteRow(suite: suite)
@@ -33,15 +34,11 @@ struct ArenaSuitesSection: View {
                     .accessibilityLabel("\(suite.suite), \(suite.arenaSubtitleText)")
                     .accessibilityIdentifier("arena-suite-\(suite.suite)")
                 }
-            } else {
-                Text("não medido")
-                    .font(AtlasFont.mono(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .padding(.vertical, 8)
             }
+            .padding(16)
+            .atlasCard()
+            .accessibilityIdentifier(A11yID.arenaSuitesSection)
         }
-        .padding(16)
-        .atlasCard()
     }
 }
 
@@ -63,6 +60,7 @@ private struct ArenaSuiteRow: View {
                     }
                     if suite.hasRegression {
                         Circle().fill(AtlasTheme.alert).frame(width: 7, height: 7)
+                            .accessibilityLabel("regressão")
                     }
                 }
                 Text(subtitle)
@@ -71,8 +69,13 @@ private struct ArenaSuiteRow: View {
                     .lineLimit(1)
             }
             Spacer(minLength: 8)
-            if let engine = suite.engines.first, !engine.history.isEmpty {
+            if let engine = suite.engines.first,
+               engine.history.contains(where: { $0.score != nil }) {
                 SuiteSparkline(engine: engine).frame(width: 64, height: 30)
+            } else if suite.isMeasured {
+                Text("medido")
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
             } else {
                 Text("não medido")
                     .font(AtlasFont.mono(10))
@@ -81,6 +84,7 @@ private struct ArenaSuiteRow: View {
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
         }
         .padding(.vertical, 10)
         .contentShape(Rectangle())

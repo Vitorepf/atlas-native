@@ -3,6 +3,7 @@ import AtlasCore
 
 struct ArenaRunSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Bindable var model: ArenaModel
     @State private var selectedSuites: Set<String> = []
     @State private var selectedEngine: String = ""
@@ -39,6 +40,7 @@ struct ArenaRunSheet: View {
                             Text("nenhuma suite com adapter instalado")
                                 .font(.system(.subheadline))
                                 .foregroundStyle(AtlasTheme.textTertiary)
+                                .accessibilityLabel("nenhuma suite com adapter instalado")
                         } else {
                             ForEach(installedSuites) { suite in
                                 toggleRow(
@@ -49,14 +51,23 @@ struct ArenaRunSheet: View {
                                     if selectedSuites.contains(suite.suite) { selectedSuites.remove(suite.suite) }
                                     else { selectedSuites.insert(suite.suite) }
                                 }
+                                .accessibilityIdentifier("arena-run-suite-\(suite.suite)")
                             }
                         }
                     }
 
                     section("MOTOR") {
-                        ForEach(engines, id: \.self) { engine in
-                            toggleRow(title: engine, subtitle: nil, isOn: selectedEngine == engine) {
-                                selectedEngine = engine
+                        if engines.isEmpty {
+                            Text("nenhum motor publicado")
+                                .font(.system(.subheadline))
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .accessibilityLabel("nenhum motor publicado pelo servidor")
+                        } else {
+                            ForEach(engines, id: \.self) { engine in
+                                toggleRow(title: engine, subtitle: nil, isOn: selectedEngine == engine) {
+                                    selectedEngine = engine
+                                }
+                                .accessibilityIdentifier("arena-run-engine-\(engine)")
                             }
                         }
                     }
@@ -67,6 +78,7 @@ struct ArenaRunSheet: View {
                                 if selectedArms.contains(arm), selectedArms.count > 1 { selectedArms.remove(arm) }
                                 else { selectedArms.insert(arm) }
                             }
+                            .accessibilityIdentifier("arena-run-arm-\(arm.rawValue)")
                         }
                     }
 
@@ -85,27 +97,11 @@ struct ArenaRunSheet: View {
                         Text(error)
                             .font(.system(.callout))
                             .foregroundStyle(AtlasTheme.alert)
+                            .accessibilityLabel("erro: \(error)")
                     }
 
                     if let receipt = model.lastStartReceipt {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text("recibo \(receipt.receiptHash)")
-                                .font(AtlasFont.mono(11))
-                                .foregroundStyle(AtlasTheme.textSecondary)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
-                            Text(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
-                                .font(.system(.callout, weight: .semibold))
-                                .foregroundStyle(AtlasTheme.accent)
-                            if receipt.workerImplemented == false {
-                                Text("worker de medição ainda não implementado")
-                                    .font(.system(.caption))
-                                    .foregroundStyle(AtlasTheme.textTertiary)
-                            }
-                        }
-                        .padding(14)
-                        .atlasCard()
-                        .accessibilityIdentifier(A11yID.arenaRunReceipt)
+                        receiptCard(receipt)
                     }
 
                     Button {
@@ -118,10 +114,11 @@ struct ArenaRunSheet: View {
                             .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
                             .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableScale())
                     .foregroundStyle(input.isLocallyValidForSubmission ? AtlasTheme.accent : AtlasTheme.textTertiary)
                     .disabled(!input.isLocallyValidForSubmission)
                     .accessibilityIdentifier(A11yID.arenaRunSubmit)
+                    .accessibilityHint(input.isLocallyValidForSubmission ? "envia medição governada" : "preencha ator, motivo, suites, motor e braços")
                 }
                 .padding(AtlasTheme.Space.screen)
             }
@@ -145,6 +142,38 @@ struct ArenaRunSheet: View {
         .accessibilityIdentifier(A11yID.arenaRunSheet)
     }
 
+    private func receiptCard(_ receipt: AtlasArenaStartReceipt) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("recibo \(receipt.receiptHash)")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+            Text(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
+                .font(.system(.callout, weight: .semibold))
+                .foregroundStyle(AtlasTheme.accent)
+            if receipt.workerImplemented == false {
+                Text("worker de medição ainda não implementado")
+                    .font(.system(.caption))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            }
+        }
+        .padding(14)
+        .atlasCard()
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(receiptAccessibilityLabel(receipt))
+        .accessibilityIdentifier(A11yID.arenaRunReceipt)
+    }
+
+    private func receiptAccessibilityLabel(_ receipt: AtlasArenaStartReceipt) -> String {
+        var parts = ["recibo \(receipt.receiptHash)"]
+        parts.append(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
+        if receipt.workerImplemented == false {
+            parts.append("worker de medição ainda não implementado")
+        }
+        return parts.joined(separator: ", ")
+    }
+
     private func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title)
@@ -160,6 +189,7 @@ struct ArenaRunSheet: View {
             HStack(spacing: 10) {
                 Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(isOn ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                    .modifier(ArenaToggleSymbolBounce(enabled: !reduceMotion, isOn: isOn))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
                         .font(.system(.callout, weight: .medium))
@@ -174,6 +204,26 @@ struct ArenaRunSheet: View {
             }
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
+        .accessibilityLabel(toggleAccessibilityLabel(title: title, subtitle: subtitle, isOn: isOn))
+    }
+
+    private func toggleAccessibilityLabel(title: String, subtitle: String?, isOn: Bool) -> String {
+        let state = isOn ? "selecionado" : "não selecionado"
+        if let subtitle { return "\(title), \(subtitle), \(state)" }
+        return "\(title), \(state)"
+    }
+}
+
+private struct ArenaToggleSymbolBounce: ViewModifier {
+    let enabled: Bool
+    let isOn: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.symbolEffect(.bounce, value: isOn)
+        } else {
+            content
+        }
     }
 }

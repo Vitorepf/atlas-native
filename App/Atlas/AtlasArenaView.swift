@@ -83,8 +83,7 @@ struct AtlasArenaView: View {
             }
         default:
             if let composite = model.composite {
-                ArenaNowSection(liveRuns: model.liveRuns)
-                    .accessibilityIdentifier(A11yID.arenaNowSection)
+                ArenaNowSection(liveRuns: model.liveRuns, reduceMotion: reduceMotion)
                 ArenaIndexSection(
                     composite: composite,
                     reduceMotion: reduceMotion,
@@ -93,10 +92,12 @@ struct AtlasArenaView: View {
                     .accessibilityIdentifier(A11yID.arenaIndexSection)
                 ArenaCapabilitiesSection(capabilities: model.capabilities)
                     .accessibilityIdentifier(A11yID.arenaCapabilitiesSection)
-                ArenaSuitesSection(
-                    scoreboard: model.scoreboard,
-                    onSuiteTap: { selectedSuite = $0 }
-                )
+                if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
+                    ArenaSuitesSection(
+                        scoreboard: scoreboard,
+                        onSuiteTap: { selectedSuite = $0 }
+                    )
+                }
                 Button {
                     showingRunSheet = true
                 } label: {

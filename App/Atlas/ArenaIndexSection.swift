@@ -13,14 +13,14 @@ struct ArenaIndexSection: View {
             ForEach(composite.engines) { engine in
                 if let onEngineTap {
                     Button { onEngineTap(engine) } label: {
-                        ArenaEngineIndexRow(engine: engine)
+                        ArenaEngineIndexRow(engine: engine, reduceMotion: reduceMotion)
                     }
                     .buttonStyle(.plain)
                 } else {
-                    ArenaEngineIndexRow(engine: engine)
+                    ArenaEngineIndexRow(engine: engine, reduceMotion: reduceMotion)
                 }
             }
-            if let engine = composite.engines.first, !engine.history.isEmpty {
+            if let engine = chartEngine {
                 ArenaCompositeChart(engine: engine, reduceMotion: reduceMotion)
                     .frame(height: 170)
                     .padding(.top, 4)
@@ -30,6 +30,20 @@ struct ArenaIndexSection: View {
         .atlasCard()
     }
 
+    private var chartEngine: AtlasArenaCompositeEngine? {
+        composite.engines.first { engine in
+            engine.history.contains { point in
+                point.composite != nil || point.withAtlas != nil || point.withoutAtlas != nil
+            }
+        }
+    }
+
+    private var coverageCaption: String {
+        let base = "cobertura \(composite.suitesMeasured)/\(composite.suitesTotal)"
+        guard composite.suitesMeasured < composite.suitesTotal else { return base }
+        return "\(base) · parcial"
+    }
+
     private var sectionHeader: some View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: 3) {
@@ -37,20 +51,24 @@ struct ArenaIndexSection: View {
                     .font(.system(.caption, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(AtlasTheme.textTertiary)
-                Text("cobertura \(composite.suitesMeasured)/\(composite.suitesTotal) · parcial")
+                Text(coverageCaption)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             Spacer()
-            Text("\(composite.weightsPublic.count) pesos")
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
+            if !composite.weightsPublic.isEmpty {
+                Text("\(composite.weightsPublic.count) pesos")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .accessibilityLabel("\(composite.weightsPublic.count) pesos públicos")
+            }
         }
     }
 }
 
 private struct ArenaEngineIndexRow: View {
     let engine: AtlasArenaCompositeEngine
+    let reduceMotion: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -64,15 +82,19 @@ private struct ArenaEngineIndexRow: View {
                     .font(AtlasFont.mono(18))
                     .foregroundStyle(engine.composite == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
                     .monospacedDigit()
+                    .modifier(ArenaNumericTransition(enabled: !reduceMotion))
                 Text(ArenaFormat.signed(engine.delta))
                     .font(AtlasFont.mono(12))
-                    .foregroundStyle((engine.delta ?? 0) < 0 ? AtlasTheme.alert : AtlasTheme.accent)
+                    .foregroundStyle(deltaColor(engine.delta))
                     .monospacedDigit()
+                    .modifier(ArenaNumericTransition(enabled: !reduceMotion))
             }
             HStack(spacing: 10) {
-                metric("c/Atlas", ArenaFormat.score(engine.withAtlasComposite), color: AtlasTheme.accent)
-                metric("sem", ArenaFormat.score(engine.withoutAtlasComposite), color: AtlasTheme.textSecondary)
-                metric("N×M", ArenaFormat.multiplier(engine.atlasMultiplier), color: AtlasTheme.textPrimary)
+                metric("c/Atlas", ArenaFormat.score(engine.withAtlasComposite), color: metricColor(engine.withAtlasComposite))
+                metric("sem", ArenaFormat.score(engine.withoutAtlasComposite), color: metricColor(engine.withoutAtlasComposite, fallback: AtlasTheme.textSecondary))
+                if engine.atlasMultiplier != nil {
+                    metric("N×M", ArenaFormat.multiplier(engine.atlasMultiplier), color: AtlasTheme.textPrimary)
+                }
             }
             if engine.isPartialCoverage {
                 Text("cobertura parcial \(Int((engine.coverage * 100).rounded()))%")
@@ -91,8 +113,28 @@ private struct ArenaEngineIndexRow: View {
             .monospacedDigit()
     }
 
+    private func metricColor(_ value: Double?, fallback: Color = AtlasTheme.accent) -> Color {
+        value == nil ? AtlasTheme.textTertiary : fallback
+    }
+
+    private func deltaColor(_ delta: Double?) -> Color {
+        guard let delta else { return AtlasTheme.textTertiary }
+        return delta < 0 ? AtlasTheme.alert : AtlasTheme.accent
+    }
+
     private var accessibilityText: String {
-        "\(engine.engine), composto \(ArenaFormat.score(engine.composite)), variação \(ArenaFormat.signed(engine.delta)), com Atlas \(ArenaFormat.score(engine.withAtlasComposite)), multiplicador \(ArenaFormat.multiplier(engine.atlasMultiplier))"
+        var parts = ["\(engine.engine), composto \(ArenaFormat.score(engine.composite))"]
+        if let delta = engine.delta {
+            parts.append("variação \(ArenaFormat.signed(delta))")
+        }
+        parts.append("com Atlas \(ArenaFormat.score(engine.withAtlasComposite))")
+        if let multiplier = engine.atlasMultiplier {
+            parts.append("multiplicador \(ArenaFormat.multiplier(multiplier))")
+        }
+        if engine.isPartialCoverage {
+            parts.append("cobertura parcial \(Int((engine.coverage * 100).rounded())) por cento")
+        }
+        return parts.joined(separator: ", ")
     }
 }
 
@@ -124,5 +166,17 @@ private struct ArenaCompositeChart: View {
         .chartXAxis(.hidden)
         .chartYAxis { AxisMarks(position: .leading) }
         .accessibilityLabel("histórico do índice \(engine.engine)")
+    }
+}
+
+private struct ArenaNumericTransition: ViewModifier {
+    let enabled: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.contentTransition(.numericText())
+        } else {
+            content
+        }
     }
 }
