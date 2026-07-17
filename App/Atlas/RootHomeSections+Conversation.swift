@@ -28,13 +28,16 @@ extension RootHomeSections {
         }
     }
 
-    var homeConversationCount: Int? {
-        let n: Int
+    var homeConversationThreadCount: Int {
         switch homeWorkspaceFilter {
-        case .some("__all"): n = session.threads.count
-        case .some(let key): n = session.threads(inWorkspace: key).count
-        case .none: n = freeThreadCount
+        case .some("__all"): return session.threads.count
+        case .some(let key): return session.threads(inWorkspace: key).count
+        case .none: return freeThreadCount
         }
+    }
+
+    var homeConversationCount: Int? {
+        let n = homeConversationThreadCount
         return n > 0 ? n : nil
     }
 
@@ -58,7 +61,7 @@ extension RootHomeSections {
                 .padding(.horizontal, AtlasTheme.Space.screen)
                 .padding(.bottom, 10)
             }
-            .accessibilityLabel("filtros de workspace das conversas")
+            .accessibilityLabel(filterChipsSpokenLabel())
             .accessibilityIdentifier(A11yID.homeWorkspaceChips)
         }
     }
@@ -76,9 +79,11 @@ extension RootHomeSections {
                 .padding(.vertical, 7)
                 .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface))
                 .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: active)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("filtrar conversas por \(label)")
+        .accessibilityLabel(filterChipSpokenLabel(label, active: active))
+        .accessibilityHint("altera o filtro de conversas na lista abaixo")
         .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
         .accessibilityIdentifier(A11yID.homeWorkspaceChip(key ?? "__free"))
     }

@@ -12,11 +12,6 @@ extension RootHomeSections {
         return "Atlas Código, código quieto"
     }
 
-    func conversasSpokenLabel(label: String, count: Int?) -> String {
-        guard let count else { return label }
-        return "\(label), \(count) conversa\(count == 1 ? "" : "s")"
-    }
-
     func arenaSpokenLabel(regression: String?, domainUnavailable: Bool) -> String {
         if let regression { return "Arena, \(regression)" }
         if domainUnavailable { return "Arena, \(ArenaModel.domainUnavailableCopy)" }

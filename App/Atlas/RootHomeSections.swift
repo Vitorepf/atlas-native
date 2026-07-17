@@ -3,7 +3,7 @@ import AtlasCore
 
 // Conteúdo da home (estados + listas CONVERSAS/OPERAÇÃO/WORKSPACES) —
 // peel de RootView. Route e NavigationStack ficam no shell.
-// Failure → RootHomeSections+Failure.swift; chips → RootHomeSections+Conversation.swift;
+// Failure → RootHomeSections+Failure.swift; chips → RootHomeSections+Conversation.swift (+Conversation+A11y);
 // loaded → RootHomeSections+Loaded.swift; a11y → RootHomeSections+A11y.swift.
 
 struct RootHomeSections: View {

@@ -36,7 +36,7 @@ extension RootHomeSections {
                      detail: session.auditModeEnabled ? auditDetail : nil) {
             onNavigate(homeConversationRoute)
         }
-        .accessibilityLabel(conversasSpokenLabel(label: homeConversationLabel, count: homeConversationCount))
+        .accessibilityLabel(conversasEntrySpokenLabel())
         .accessibilityHint("abre conversas deste filtro")
         .accessibilityIdentifier(A11yID.homeConversasEntry)
     }
