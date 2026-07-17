@@ -4,6 +4,7 @@ import AtlasCore
 
 // Gráfico de histórico do índice — peel de ArenaIndexSection (régua ~120).
 // Marks → ArenaCompositeChart+Marks.swift
+// Chrome → ArenaCompositeChart+Chrome.swift
 
 struct ArenaCompositeChart: View {
     let engine: AtlasArenaCompositeEngine
@@ -12,12 +13,6 @@ struct ArenaCompositeChart: View {
     var interpolation: InterpolationMethod { reduceMotion ? .linear : .catmullRom }
 
     var body: some View {
-        Chart {
-            historyMarks
-        }
-        .chartLegend(.visible)
-        .chartXAxis(.hidden)
-        .chartYAxis { AxisMarks(position: .leading) }
-        .accessibilityHidden(true)
+        compositeChartChrome
     }
 }

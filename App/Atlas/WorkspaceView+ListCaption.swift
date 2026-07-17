@@ -3,19 +3,7 @@ import AtlasCore
 
 // Caption — peel de WorkspaceThreadsSection.
 // Header → WorkspaceView+ListCaptionHeader.swift
+// Caption → WorkspaceView+ListCaption+Caption.swift
+// Spoken → WorkspaceView+ListCaption+Spoken.swift
 
-extension WorkspaceThreadsSection {
-    var caption: String {
-        if area == .tudo {
-            return "\(threads.count) conversa\(threads.count == 1 ? "" : "s")"
-        }
-        return "\(threads.count) em \(area.label)"
-    }
-
-    var spokenCaption: String {
-        if area == .tudo {
-            return "\(threads.count) conversa\(threads.count == 1 ? "" : "s") em \(screenTitle)"
-        }
-        return "\(threads.count) conversa\(threads.count == 1 ? "" : "s") em \(area.label), \(screenTitle)"
-    }
-}
+extension WorkspaceThreadsSection {}

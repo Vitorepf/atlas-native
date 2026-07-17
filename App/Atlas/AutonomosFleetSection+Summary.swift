@@ -3,22 +3,22 @@ import AtlasCore
 
 /// Frota global — summary quiet/metrics — peel de AutonomosFleetSection.
 /// Quiet → AutonomosFleetSection+QuietLine.swift
+/// Empty → AutonomosFleetSection+Summary+Empty.swift
+/// Health → AutonomosFleetSection+Summary+Health.swift
 
 struct AutonomosFleetSummary: View {
     let fleet: AtlasAutonomosFleetResponse
     var incidentPresent: Bool = false
 
-    private var isQuiet: Bool {
+    var isQuiet: Bool {
         AutonomosFleetHealth.isQuiet(fleet: fleet, incidentPresent: incidentPresent)
     }
 
     var body: some View {
         if fleet.agents.isEmpty {
-            AutonomosFleetEmptyState(kind: .noAgents)
-        } else if isQuiet {
-            quietSummaryLine
+            summaryEmptyBranch
         } else {
-            metricsSummaryRow
+            summaryHealthBranch
         }
     }
 }

@@ -2,20 +2,16 @@ import SwiftUI
 import AtlasCore
 
 // Inline emphasis marks — peel de AtlasMarkdownView+InlineMark.
+// Bold → AtlasMarkdownView+InlineMarkEmphasis+Bold.swift
+// Italic → AtlasMarkdownView+InlineMarkEmphasis+Italic.swift
 
 extension AtlasMarkdownView {
     func inlineEmphasisMark(_ span: InlineSpan, base: InlineBase) -> AttributedString? {
         switch span {
         case .bold(let t):
-            var piece = AttributedString(t)
-            piece.font = .system(size: base.size, weight: .semibold)
-            piece.foregroundColor = AtlasTheme.textPrimary
-            return piece
+            return inlineBoldMark(t, base: base)
         case .italic(let t):
-            var piece = AttributedString(t)
-            piece.font = AtlasFont.serifItalic(base.size)
-            piece.foregroundColor = base.color
-            return piece
+            return inlineItalicMark(t, base: base)
         default:
             return nil
         }

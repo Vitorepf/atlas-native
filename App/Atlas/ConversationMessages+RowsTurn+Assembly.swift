@@ -4,6 +4,7 @@ import AtlasCore
 // EditorialTurn assembly — peel de ConversationMessages+RowsTurn.
 // ExecTuple → ConversationMessages+RowsTurn+Assembly+ExecTuple.swift
 // SteerTuple → ConversationMessages+RowsTurn+Assembly+SteerTuple.swift
+// Built → ConversationMessages+RowsTurn+Assembly+Built.swift
 
 extension ConversationMessages {
     func editorialTurnAssembly(
@@ -34,18 +35,6 @@ extension ConversationMessages {
             onSteer: steer.onSteer,
             artifactItems: artifactItems,
             onOpenArtifacts: steer.onOpenArtifacts
-        )
-    }
-
-    func editorialTurnAssemblyBuilt(
-        bubble: ChatBubble,
-        artifactItems: [AtlasTraceArtifacts.Item]
-    ) -> EditorialTurn {
-        editorialTurnAssembly(
-            bubble: bubble,
-            artifactItems: artifactItems,
-            exec: editorialTurnExecTuple(for: bubble),
-            steer: editorialTurnSteerTuple
         )
     }
 }

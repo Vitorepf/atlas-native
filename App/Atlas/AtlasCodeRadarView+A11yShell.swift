@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Radar shell spoken — peel de AtlasCodeRadarView+A11y.
+// Loaded → AtlasCodeRadarView+A11yShell+Loaded.swift
 
 extension AtlasCodeRadarView {
     var radarShellSpokenLabel: String {
@@ -12,12 +13,7 @@ extension AtlasCodeRadarView {
         case .failed(let message):
             parts.append(spokenFailed(message))
         case .loaded:
-            if let workspace = model.workspace, workspace.repositoryCount > 0 {
-                let n = workspace.repositoryCount
-                parts.append("\(n) repositório\(n == 1 ? "" : "s")")
-            } else {
-                parts.append(spokenEmptyWorkspace())
-            }
+            parts.append(contentsOf: radarShellLoadedParts())
         }
         return parts.joined(separator: ", ")
     }

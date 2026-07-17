@@ -3,6 +3,7 @@ import Foundation
 
 // Spoken label da sessão viva — peel de LiveSessionWidgetA11y.
 // Stale → AtlasWidgetAccessories+LiveSession+A11ySpoken+Stale.swift
+// Core → AtlasWidgetAccessories+LiveSession+A11ySpoken+Core.swift
 
 extension LiveSessionWidgetA11y {
     static func spokenLabel(
@@ -12,11 +13,7 @@ extension LiveSessionWidgetA11y {
         age: String
     ) -> String {
         var parts = ["Sessão viva"]
-        if let live {
-            parts.append(contentsOf: spokenLiveParts(live))
-        } else {
-            parts.append(contentsOf: spokenSilenceParts(snapshot))
-        }
+        parts.append(contentsOf: spokenCoreParts(snapshot: snapshot, live: live))
         parts.append(contentsOf: spokenStaleParts(stale: stale, age: age))
         return parts.joined(separator: ", ")
     }
