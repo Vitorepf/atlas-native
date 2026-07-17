@@ -17,6 +17,7 @@ enum DraftThumbCache {
 
 struct DraftThumb: View {
     let draft: LocalDraft
+    let reduceMotion: Bool
     let onRemove: (String) -> Void
     let onFailedTap: (String) -> Void
 
@@ -46,11 +47,18 @@ struct DraftThumb: View {
                 }
                 .buttonStyle(.plain)
                 .offset(x: 12, y: -12)
-                .accessibilityLabel("remover \(draft.fileName)")
+                .accessibilityLabel(DraftStripA11y.spokenRemove(draft))
+                .accessibilityHint(DraftStripA11y.removeHint)
+                .accessibilityIdentifier(A11yID.draftRemove(draft.id))
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(a11yLabel)
+        .accessibilityLabel(DraftStripA11y.spokenThumb(draft))
+        .accessibilityValue(failedMessage.map { DraftStripA11y.spokenFailedValue($0) } ?? "")
+        .accessibilityHint(failedMessage != nil ? DraftStripA11y.failedHint : "")
+        .accessibilityAddTraits(failedMessage != nil ? .isButton : [])
+        .accessibilityIdentifier(A11yID.draft(draft.id))
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: draft.state)
     }
 
     @ViewBuilder private var thumb: some View {
@@ -73,23 +81,14 @@ struct DraftThumb: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(.black.opacity(0.38))
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.94)))
         } else if failedMessage != nil {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 16))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                 .padding(6)
+                .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.9)))
         }
-    }
-
-    private var a11yLabel: String {
-        let mb = String(format: "%.1f", Double(draft.bytes) / 1_048_576)
-        let state: String
-        switch draft.state {
-        case .pronto: state = "pronto para enviar"
-        case .subindo: state = "enviando"
-        case .falhou: state = "falhou, toque para ver o motivo"
-        }
-        return "anexo \(draft.fileName), \(mb) megabytes, \(state)"
     }
 }

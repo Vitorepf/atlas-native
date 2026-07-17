@@ -13,4 +13,9 @@ extension A11yID {
     static func modeRow(_ key: String) -> String { modeRowPrefix + key }
     static func effortRow(_ effort: String) -> String { effortRowPrefix + effort }
     static func workspaceRow(_ key: String) -> String { workspaceRowPrefix + key }
+
+    static let draftPrefix = "composer-draft-"
+    static let draftRemovePrefix = "composer-draft-remove-"
+    static func draft(_ id: String) -> String { draftPrefix + id }
+    static func draftRemove(_ id: String) -> String { draftRemovePrefix + id }
 }
