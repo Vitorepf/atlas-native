@@ -3,6 +3,7 @@ import SwiftUI
 import AtlasCore
 
 // MARK: - Snapshot provider + shared container (SD-1)
+// Age helpers → AtlasWidgetViews+Age.swift
 
 struct SnapshotEntry: TimelineEntry {
     let date: Date
@@ -54,25 +55,5 @@ struct InstallPromptView: View {
                 .font(.system(size: 15, weight: .semibold, design: .serif))
                 .foregroundStyle(Ink.ink)
         }
-    }
-}
-
-extension AtlasNativeSnapshot {
-    func isStale(at now: Date) -> Bool {
-        now.timeIntervalSince(generatedAt) > 6 * 60 * 60
-    }
-
-    func ageText(at now: Date) -> String {
-        generatedAt.relativeShort(to: now)
-    }
-}
-
-extension Date {
-    func relativeShort(to now: Date) -> String {
-        let seconds = max(0, Int(now.timeIntervalSince(self)))
-        if seconds >= 86_400 { return "há \(seconds / 86_400)d" }
-        if seconds >= 3_600 { return "há \(seconds / 3_600)h" }
-        if seconds >= 60 { return "há \(seconds / 60)m" }
-        return "agora"
     }
 }

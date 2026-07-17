@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Modifier das folhas Autônomos — peel de `AutonomosView+Sheets`.
+/// Detail/transfer → AutonomosSheetsModifier+Detail.swift
 struct AutonomosSheetsModifier: ViewModifier {
     @Bindable var model: AutonomosModel
     let nightly: NightlyProposalController
@@ -15,7 +16,8 @@ struct AutonomosSheetsModifier: ViewModifier {
     let revertReceipt: (SelfConstructionReceipt) -> AtlasAutonomosCycleRevertResponse?
 
     func body(content: Content) -> some View {
-        content
+        detailSheets(on:
+            content
             .sheet(item: $control) { action in
                 AutonomosControlSheet(action: action) { actor, reason in
                     Task { await model.control(action, operatorActor: actor, reason: reason) }
@@ -43,34 +45,6 @@ struct AutonomosSheetsModifier: ViewModifier {
                     }
                 }
             }
-            .sheet(isPresented: $showTransferSheet) {
-                AutonomosTransferSheet(
-                    areaName: model.selectedArea?.areaName ?? "",
-                    focus: model.selectedArea?.focus ?? "",
-                    placement: model.live?.runtimePlacement
-                ) { actor, reason in
-                    Task { await model.transfer(operatorActor: actor, reason: reason) }
-                }
-            }
-            .sheet(item: $detailSheet) { sheet in
-                AutonomosPublicDetailSheet(kind: sheet, backlog: model.backlog)
-            }
-            .sheet(item: $selfConstructionReceipt) { receipt in
-                SelfConstructionReceiptSheet(
-                    receipt: receipt,
-                    canRevert: canRevert(receipt),
-                    revertReceipt: revertReceipt(receipt)
-                ) { actor, reason in
-                    Task {
-                        await model.revertCycle(
-                            cycle: String(receipt.cycle.cycleIndex),
-                            operatorActor: actor,
-                            reason: reason
-                        )
-                    }
-                }
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
-            }
+        )
     }
 }

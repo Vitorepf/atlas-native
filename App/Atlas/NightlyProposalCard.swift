@@ -6,9 +6,9 @@ struct NightlyProposalCard: View {
     /// Silêncio: some o card sem toast, sem confirmação, sem fila.
     let onDismiss: () -> Void
     let onMute: (Int) -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    private static let muteDays = [1, 3, 7]
+    static let muteDays = [1, 3, 7]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -31,41 +31,7 @@ struct NightlyProposalCard: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
-            HStack(spacing: 10) {
-                Button("Preparar missão noturna") {
-                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                    onAccept()
-                }
-                .buttonStyle(AutonomosPrimaryButtonStyle())
-                .accessibilityIdentifier(A11yID.nightlyProposalAccept)
-                .accessibilityLabel(Self.spokenAcceptLabel())
-                .accessibilityHint(Self.spokenAcceptHint())
-                Button("hoje não") {
-                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                    onDismiss()
-                }
-                .font(.system(.footnote, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .buttonStyle(PressableScale())
-                .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
-                .accessibilityLabel(Self.spokenDismissLabel())
-                .accessibilityHint(Self.spokenDismissHint())
-                Menu("silenciar") {
-                    ForEach(Self.muteDays, id: \.self) { days in
-                        Button("\(days) dia\(days == 1 ? "" : "s")") {
-                            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                            onMute(days)
-                        }
-                        .accessibilityLabel(Self.spokenMuteOption(days: days))
-                        .accessibilityHint(Self.spokenMuteOptionHint())
-                    }
-                }
-                .font(.system(.footnote, weight: .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityIdentifier(A11yID.nightlyProposalMute)
-                .accessibilityLabel(Self.spokenMuteMenuLabel())
-                .accessibilityHint(Self.spokenMuteMenuHint())
-            }
+            actionRow
         }
         .padding(14)
         .atlasCard(cornerRadius: 14)

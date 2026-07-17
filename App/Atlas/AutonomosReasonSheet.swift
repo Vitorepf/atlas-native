@@ -1,15 +1,16 @@
 import SwiftUI
 
 /// Folha padrão de governança: quem autoriza + motivo auditável.
+/// Form → AutonomosReasonSheet+Form.swift
 struct AutonomosReasonSheet: View {
     let title: String
     let explainer: String
     var reasonOptional: Bool = false
     let onConfirm: (String, String) -> Void
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var actor = ""
-    @State private var reason = ""
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var actor = ""
+    @State var reason = ""
 
     init(
         title: String,
@@ -25,52 +26,16 @@ struct AutonomosReasonSheet: View {
         _reason = State(initialValue: initialReason)
     }
 
-    private var canSubmit: Bool {
+    var canSubmit: Bool {
         !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && (reasonOptional || !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Ação governada") {
-                    Text(title)
-                        .accessibilityAddTraits(.isHeader)
-                    Text(explainer).font(.footnote).foregroundStyle(.secondary)
-                }
-                Section("Operador") {
-                    TextField("Quem autoriza", text: $actor)
-                        .accessibilityIdentifier(A11yID.autonomosReasonActor)
-                        .accessibilityHint(spokenActorHint())
-                }
-                Section(reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo") {
-                    TextField("Motivo auditável", text: $reason, axis: .vertical).lineLimit(3...6)
-                        .accessibilityIdentifier(A11yID.autonomosReasonField)
-                        .accessibilityHint(spokenReasonHint())
-                }
-            }
+            reasonForm
             .navigationTitle("Confirmar ação")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    AtlasCloseToolbarButton(
-                        title: "Cancelar",
-                        spokenLabel: "cancelar ação governada",
-                        spokenHint: "fecha sem registrar recibo",
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Confirmar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        onConfirm(actor, reason)
-                        dismiss()
-                    }
-                        .disabled(!canSubmit)
-                        .accessibilityIdentifier(A11yID.autonomosReasonSubmit)
-                        .accessibilityLabel(spokenConfirmLabel(canSubmit: canSubmit))
-                        .accessibilityHint(spokenConfirmHint(canSubmit: canSubmit))
-                }
-            }
+            .toolbar { reasonToolbar }
             .accessibilityIdentifier(A11yID.autonomosReasonSheet)
             .accessibilityLabel(spokenSheetLabel())
             .accessibilityHint(spokenSheetHint())

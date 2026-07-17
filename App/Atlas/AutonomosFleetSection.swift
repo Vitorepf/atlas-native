@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Frota global — agentes reais, saúde da fila, histórico e handoff (C13).
-/// Task health → AutonomosFleetTaskHealth.swift · histórico → AutonomosFleetHistory.swift · transfer → AutonomosFleetTransfer.swift.
+/// Summary stays here · Section → AutonomosFleetSection+Body.swift
 struct AutonomosFleetSummary: View {
     let fleet: AtlasAutonomosFleetResponse
     var incidentPresent: Bool = false
@@ -36,43 +36,24 @@ struct AutonomosFleetSection: View {
     /// Incidente da fila (C13) — saudável = header quieto; barulho só por exceção.
     var incidentPresent: Bool = false
     var auditModeEnabled: Bool = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    private var isQuiet: Bool {
+    var isQuiet: Bool {
         AutonomosFleetHealth.isQuiet(fleet: fleet, incidentPresent: incidentPresent)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if fleet.agents.isEmpty {
-                AutonomosFleetEmptyState(kind: .noAgents)
-            } else {
-                AutonomosChrome.sectionCaption(incidentPresent ? "FROTA · ATENÇÃO" : "frota")
-                if isQuiet && !auditModeEnabled {
-                    Text("todos vivos · desejados · autorizados")
-                        .font(AtlasFont.mono(11))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                        .accessibilityHidden(true)
-                }
-                ForEach(Array(fleet.agents.enumerated()), id: \.element.id) { index, agent in
-                    agentRow(
-                        agent,
-                        index: index,
-                        compact: isQuiet && !auditModeEnabled && !AutonomosFleetHealth.agentNeedsAttention(agent)
-                    )
-                }
-            }
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(
-            AutonomosFleetSectionA11y.spokenSection(
-                agentCount: fleet.agents.count,
-                activeCount: fleet.activeCount,
-                incidentPresent: incidentPresent,
-                isQuiet: isQuiet && !auditModeEnabled
+        fleetSectionBody
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(
+                AutonomosFleetSectionA11y.spokenSection(
+                    agentCount: fleet.agents.count,
+                    activeCount: fleet.activeCount,
+                    incidentPresent: incidentPresent,
+                    isQuiet: isQuiet && !auditModeEnabled
+                )
             )
-        )
-        .accessibilityIdentifier(A11yID.autonomosFleetSection)
-        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: isQuiet)
+            .accessibilityIdentifier(A11yID.autonomosFleetSection)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: isQuiet)
     }
 }
