@@ -9,7 +9,7 @@ import AtlasCore
 struct PlanCard: View {
     let bubble: ChatBubble
     @Environment(AtlasSession.self) private var session
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State private var showDetail = false
     @State private var showRevisions = false
 

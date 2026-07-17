@@ -34,6 +34,10 @@ enum A11yID {
     static func editorialTurnFeedback(_ kind: String) -> String { editorialTurnFeedbackPrefix + kind }
     static let executionStateCard = "execution-state-card"
     static let planCard = "plan-card"
+    static let planSteps = "plan-steps"
+    static let planProgress = "plan-progress"
+    static let planStepPrefix = "plan-step-"
+    static func planStep(_ index: Int) -> String { planStepPrefix + String(index) }
     static let queueChip = "queue-chip"
     static let queueSheet = "queue-sheet"
     static let queueRowPrefix = "queue-row-"
