@@ -3,6 +3,7 @@ import SwiftUI
 import AtlasCore
 
 // Corpo do fleet widget — peel de FleetWidgetView.
+// Delivery → AtlasWidgetAccessories+Fleet+Delivery.swift
 
 extension FleetWidgetView {
     @ViewBuilder
@@ -10,14 +11,7 @@ extension FleetWidgetView {
         VStack(alignment: .leading, spacing: 7) {
             fleetHeader(stale: stale, age: snapshot.ageText(at: entry.date))
             fleetState(snapshot)
-            if family != .systemSmall,
-               let delivery = snapshot.fleet?.lastDelivery,
-               let caption = FleetWidgetA11y.deliveryCaption(delivery) {
-                Text(caption)
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundStyle(Ink.ink2)
-                    .lineLimit(1)
-            }
+            fleetDeliveryCaption(snapshot)
             Spacer(minLength: 0)
         }
         .id(FleetWidgetA11y.contentPhaseID(snapshot: snapshot, stale: stale))

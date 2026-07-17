@@ -4,6 +4,7 @@ import AtlasCore
 /// Modifier das folhas Autônomos — peel de `AutonomosView+Sheets`.
 /// Detail/transfer → AutonomosSheetsModifier+Detail.swift
 /// Nightly → AutonomosSheetsModifier+Nightly.swift
+/// Control → AutonomosSheetsModifier+Control.swift
 struct AutonomosSheetsModifier: ViewModifier {
     @Bindable var model: AutonomosModel
     let nightly: NightlyProposalController
@@ -19,17 +20,7 @@ struct AutonomosSheetsModifier: ViewModifier {
     func body(content: Content) -> some View {
         detailSheets(on:
             nightlyStartSheet(on:
-                content
-                .sheet(item: $control) { action in
-                    AutonomosControlSheet(action: action) { actor, reason in
-                        Task { await model.control(action, operatorActor: actor, reason: reason) }
-                    }
-                }
-                .sheet(item: $startRunMode) { mode in
-                    AutonomosStartRunSheet(mode: mode) { actor, reason in
-                        Task { await model.startRun(mode: mode, operatorActor: actor, operatorReason: reason) }
-                    }
-                }
+                controlSheets(on: content)
             )
         )
     }
