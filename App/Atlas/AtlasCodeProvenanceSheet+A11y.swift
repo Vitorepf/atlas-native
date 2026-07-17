@@ -5,6 +5,7 @@ import AtlasCore
 /// Sheet/header spoken → AtlasCodeProvenanceSheet+A11ySpoken.swift
 /// Copy helpers → AtlasCodeProvenanceSheet+A11ySpokenCopy.swift
 /// LoadedBody → AtlasCodeProvenanceSheet+A11y+LoadedBody.swift
+/// LoadedPhaseID → AtlasCodeProvenanceSheet+A11y+LoadedPhaseID.swift
 
 extension AtlasCodeProvenanceSheet {
     var provenanceContentPhaseID: String {
@@ -12,7 +13,7 @@ extension AtlasCodeProvenanceSheet {
         case .idle, .loading: return "loading"
         case .failed: return "failed"
         case .loaded(let provenance):
-            return hasLoadedBody(provenance) ? "loaded-\(provenance.files.count)" : "loaded-empty"
+            return provenanceLoadedPhaseID(provenance)
         }
     }
 }

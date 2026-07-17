@@ -1,16 +1,12 @@
 import AtlasCore
 
 // Spoken summary — peel de AtlasAutonomosTransfer+UISpoken.
+// Hosts → AtlasAutonomosTransfer+UISpoken+Summary+Hosts.swift
 
 extension AtlasAutonomosTransferResponse {
     var transferSpokenSummary: String {
         var parts = ["transferência", handoff.status, "foco \(handoff.focus)"]
-        if let host = handoff.source.host?.nonEmpty { parts.append("fonte \(host)") }
-        if isTargetClaimed, let host = handoff.target.host?.nonEmpty {
-            parts.append("alvo \(host)")
-        } else if isHandoffInFlight {
-            parts.append("alvo ainda desconhecido")
-        }
+        parts.append(contentsOf: transferSpokenHostParts)
         if !transferMilestoneTags.isEmpty { parts.append(transferMilestoneTags.joined(separator: ", ")) }
         if let note = note?.nonEmpty { parts.append(note) }
         return parts.joined(separator: ", ")

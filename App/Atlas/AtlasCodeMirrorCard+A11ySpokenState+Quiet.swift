@@ -2,12 +2,12 @@ import AtlasCore
 import SwiftUI
 
 /// Mirror quiet spoken — peel de AtlasCodeMirrorCard+A11ySpokenState.
+/// Mirrored → AtlasCodeMirrorCard+A11ySpokenState+Quiet+Mirrored.swift
 
 extension AtlasCodeMirrorCard {
     func spokenMirrorQuietParts() -> [String]? {
+        if let mirrored = spokenMirrorMirroredParts() { return mirrored }
         switch response.state {
-        case .mirrored:
-            return ["tudo espelhado, verdade no Mac"]
         case .noMirror:
             return ["sem espelho configurado"]
         case .unknown:
