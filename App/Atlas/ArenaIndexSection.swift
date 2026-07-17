@@ -83,8 +83,9 @@ struct ArenaIndexSection: View {
         if !composite.weightsPublic.isEmpty {
             parts.append("\(composite.weightsPublic.count) pesos públicos")
         }
-        if chartEngine != nil {
-            parts.append("gráfico de histórico disponível")
+        if chartEngine != nil, let engine = chartEngine {
+            let chartSpoken = ArenaCompositeChartA11y.spokenChart(engine)
+            if !chartSpoken.isEmpty { parts.append(chartSpoken) }
         }
         return parts.joined(separator: ", ")
     }
