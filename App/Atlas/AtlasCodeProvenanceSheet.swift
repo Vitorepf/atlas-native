@@ -7,8 +7,8 @@ import AtlasCore
 /// estado ele está, o que ele diz, por que existe, e o que ele tocou.
 /// O hash fecha a folha — máquina embaixo do vidro (lei 6).
 struct AtlasCodeProvenanceSheet: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var whyTarget: AtlasCodeProvenanceWhyTarget?
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var whyTarget: AtlasCodeProvenanceWhyTarget?
     let client: AtlasClient
     let repo: String
     let node: AtlasCodeGraphNode
