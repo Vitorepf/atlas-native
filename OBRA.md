@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXIX — CICLO C AutonomosView + RootView + ArtifactList** · este commit · CICLO C: AutonomosView — `autonomos-screen` spoken por fase/frota quieta. RootView — home spoken+hint. ArtifactList — RM haptic; selected trait; textos decorativos. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Autonomos 90 Root 90 List 50; `rg Aprovar`=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXVIII — CICLO C ExecutionStateCard + ArtifactSheet** · este commit · CICLO C: ExecutionStateCard — título/detail/timer/deadline decorativos sob `spokenSummary`; ações com label+RM haptic. ArtifactSheet — close/sheet spoken; toast a11y. Shells Card 99 Actions 61 Sheet 79≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Card 99 Actions 61 Sheet 79; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXVII — CICLO C AwaitingYou + NarrativeRow + PlanRevisions** · este commit · CICLO C: AutonomosAwaitingYou — contagem/copy decorativos; hint chips. NarrativeRow — título/detail silenciados sob spoken. PlanRevisionCompare — comparison `children: .ignore`. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Awaiting 96 Narrative 86 Revisions 40; `rg Aprovar`=0; device-pending.
