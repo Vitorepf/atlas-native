@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Home conversation route — peel de RootHomeSections+Conversation.
 /// All → RootHomeSections+ConversationRoute+All.swift
+/// Keyed → RootHomeSections+ConversationRoute+Keyed.swift
 
 extension RootHomeSections {
     var homeConversationRoute: Route {
@@ -10,8 +11,7 @@ extension RootHomeSections {
         case .some("__all"):
             return homeConversationAllRoute
         case .some(let key):
-            let title = session.workspaces.first(where: { $0.id == key })?.name ?? "Workspace"
-            return .workspace(key: key, title: title)
+            return homeConversationKeyedRoute(key)
         case .none:
             return .conversas
         }

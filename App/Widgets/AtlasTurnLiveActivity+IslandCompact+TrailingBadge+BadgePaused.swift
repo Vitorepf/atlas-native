@@ -4,14 +4,13 @@ import ActivityKit
 import AtlasCore
 
 // Badge/paused branch — peel de IslandCompact+TrailingBadge.
+// Chip → AtlasTurnLiveActivity+IslandCompact+TrailingBadge+BadgePaused+Chip.swift
 
 extension AtlasTurnIslandCompactTrailing {
     @ViewBuilder
     var badgeOrPausedTrailing: some View {
-        if let badge = context.state.phaseBadge {
-            Text(badge)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
-                .foregroundStyle(Ink.alert)
+        if context.state.phaseBadge != nil {
+            badgeTrailingChip
         } else if context.state.paused == true {
             Text("‖").font(.system(size: 12, weight: .semibold, design: .monospaced))
                 .foregroundStyle(Ink.ink2)
