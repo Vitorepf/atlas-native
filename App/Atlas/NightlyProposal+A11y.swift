@@ -8,6 +8,10 @@ extension NightlyProposalCard {
             + "A frota pode continuar enquanto você descansa."
     }
 
+    static func spokenCardHint() -> String {
+        "preparar, descartar em silêncio ou silenciar por dias"
+    }
+
     static func spokenAcceptLabel() -> String { "preparar missão noturna" }
 
     static func spokenAcceptHint() -> String {
