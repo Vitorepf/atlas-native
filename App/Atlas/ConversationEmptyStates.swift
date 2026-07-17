@@ -2,16 +2,15 @@ import SwiftUI
 import AtlasCore
 
 // Empty state vivo + falha de carga da thread — peel de EditorialTurn.
+// Suggestions → ConversationEmptyStates+Suggestions.swift
 
-// Empty state vivo: a pergunta contemplativa ✦ + convites REAIS (cada chip
-// dispara um envio de verdade — nada decorativo).
 struct EmptyConversation: View {
     let reduceMotion: Bool
     /// Assunto da conversa. Ausente = a conversa do Atlas, que é sobre tudo.
     var prompt: String? = nil
     var suggestionsOverride: [String]? = nil
     let onSuggestion: (String) -> Void
-    @State private var breathe = false
+    @State var breathe = false
 
     init(
         reduceMotion: Bool,
@@ -23,14 +22,6 @@ struct EmptyConversation: View {
         self.prompt = prompt
         self.suggestionsOverride = suggestions
         self.onSuggestion = onSuggestion
-    }
-
-    private var suggestions: [String] {
-        suggestionsOverride ?? [
-            "O que está rodando no Atlas agora?",
-            "Resuma meu dia até aqui",
-            "Qual o status dos meus projetos?",
-        ]
     }
 
     var body: some View {
@@ -47,34 +38,11 @@ struct EmptyConversation: View {
                 .accessibilityLabel(EmptyConversationA11y.spokenPrompt(prompt))
                 .accessibilityAddTraits(.isHeader)
             Spacer().frame(height: 44)
-            VStack(spacing: 10) {
-                ForEach(Array(suggestions.enumerated()), id: \.element) { index, s in
-                    Button { onSuggestion(s) } label: {
-                        Text(s)
-                            .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
-                            .padding(.horizontal, 18).padding(.vertical, 10)
-                            .frame(maxWidth: .infinity)
-                            .background(Capsule().fill(AtlasTheme.surface)
-                                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
-                    }
-                    .buttonStyle(PressableScale())
-                    .accessibilityLabel(
-                        EmptyConversationA11y.spokenSuggestion(s, index: index, total: suggestions.count)
-                    )
-                    .accessibilityHint(EmptyConversationA11y.suggestionHint)
-                }
-            }
-            .padding(.horizontal, 12)
+            suggestionStack
         }
         .padding(.horizontal, 32).padding(.top, 120)
         .frame(maxWidth: .infinity)
-        .onAppear {
-            if !reduceMotion {
-                withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
-                    breathe = true
-                }
-            }
-        }
+        .onAppear { startBreathing() }
         .accessibilityElement(children: .contain)
     }
 }
