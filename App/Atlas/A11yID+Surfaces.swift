@@ -8,6 +8,9 @@ extension A11yID {
     static let arenaCapabilitiesSection = "arena-capabilities-section"
     static let arenaSuitesSection = "arena-suites-section"
     static let arenaNowSection = "arena-now-section"
+    static let arenaNowLiveActivityNote = "arena-now-live-activity-note"
+    static let arenaNowRunPrefix = "arena-now-run-"
+    static func arenaNowRun(_ runId: String) -> String { arenaNowRunPrefix + runId }
     static let arenaRunButton = "arena-run-button"
     static let arenaRunSheet = "arena-run-sheet"
     static let arenaRunActor = "arena-run-actor"

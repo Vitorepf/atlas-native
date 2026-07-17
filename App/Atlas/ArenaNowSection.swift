@@ -17,6 +17,7 @@ struct ArenaNowSection: View {
                     .font(.system(.caption, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityAddTraits(.isHeader)
                 ForEach(runs) { run in
                     HStack(spacing: 10) {
                         statusIndicator(for: run)
@@ -29,11 +30,13 @@ struct ArenaNowSection: View {
                                 .font(AtlasFont.mono(11))
                                 .foregroundStyle(AtlasTheme.textSecondary)
                         }
+                        .accessibilityHidden(true)
                         Spacer()
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel(runAccessibilityLabel(run))
-                    .transition(reduceMotion ? .opacity : .asymmetric(
+                    .accessibilityLabel(ArenaNowSectionA11y.spokenRun(run))
+                    .accessibilityIdentifier(A11yID.arenaNowRun(run.runIdPublic))
+                    .transition(reduceMotion ? .identity : .asymmetric(
                         insertion: .opacity.combined(with: .offset(y: 6)),
                         removal: .opacity
                     ))
@@ -41,10 +44,13 @@ struct ArenaNowSection: View {
                 Text("Seguir medição na Live Activity: pendente de ActivityKit dedicado para Arena.")
                     .font(.system(.caption))
                     .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityLabel("Seguir medição na Live Activity pendente de contrato dedicado para Arena")
+                    .accessibilityHidden(true)
+                    .accessibilityIdentifier(A11yID.arenaNowLiveActivityNote)
             }
             .padding(16)
             .atlasCard()
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(ArenaNowSectionA11y.spokenSection(runCount: runs.count))
             .accessibilityIdentifier(A11yID.arenaNowSection)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: runs.map(\.id))
         }
@@ -52,26 +58,15 @@ struct ArenaNowSection: View {
 
     @ViewBuilder
     private func statusIndicator(for run: AtlasArenaLiveRun) -> some View {
-        switch run.status {
-        case .running:
-            if reduceMotion {
-                Circle()
-                    .fill(AtlasTheme.accent)
-                    .frame(width: 8, height: 8)
-            } else {
+        Group {
+            if case .running = run.status {
                 BreathingDiamond(size: 8, reduceMotion: reduceMotion)
-                    .frame(width: 8, height: 8)
+            } else {
+                Circle()
+                    .fill(AtlasTheme.textTertiary)
             }
-        default:
-            Circle()
-                .fill(AtlasTheme.textTertiary)
-                .frame(width: 8, height: 8)
         }
-    }
-
-    private func runAccessibilityLabel(_ run: AtlasArenaLiveRun) -> String {
-        let arm = run.arm?.labelPT ?? "braço desconhecido"
-        let progress = run.progressText
-        return "\(run.suite), \(run.engineDisplayName), \(arm), \(run.status.displayPT), \(progress)"
+        .frame(width: 8, height: 8)
+        .accessibilityHidden(true)
     }
 }
