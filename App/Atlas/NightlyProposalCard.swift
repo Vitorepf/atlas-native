@@ -30,12 +30,18 @@ struct NightlyProposalCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
             HStack(spacing: 10) {
-                Button("Preparar missão noturna", action: onAccept)
+                Button("Preparar missão noturna") {
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    onAccept()
+                }
                     .buttonStyle(AutonomosPrimaryButtonStyle())
                     .accessibilityIdentifier(A11yID.nightlyProposalAccept)
                     .accessibilityLabel(Self.spokenAcceptLabel())
                     .accessibilityHint(Self.spokenAcceptHint())
-                Button("hoje não", action: onDismiss)
+                Button("hoje não") {
+                    if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                    onDismiss()
+                }
                     .font(.system(.footnote, weight: .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .buttonStyle(PressableScale())
@@ -43,13 +49,22 @@ struct NightlyProposalCard: View {
                     .accessibilityLabel(Self.spokenDismissLabel())
                     .accessibilityHint(Self.spokenDismissHint())
                 Menu("silenciar") {
-                    Button("1 dia") { onMute(1) }
+                    Button("1 dia") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        onMute(1)
+                    }
                         .accessibilityLabel(Self.spokenMuteOption(days: 1))
                         .accessibilityHint(Self.spokenMuteOptionHint())
-                    Button("3 dias") { onMute(3) }
+                    Button("3 dias") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        onMute(3)
+                    }
                         .accessibilityLabel(Self.spokenMuteOption(days: 3))
                         .accessibilityHint(Self.spokenMuteOptionHint())
-                    Button("7 dias") { onMute(7) }
+                    Button("7 dias") {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+                        onMute(7)
+                    }
                         .accessibilityLabel(Self.spokenMuteOption(days: 7))
                         .accessibilityHint(Self.spokenMuteOptionHint())
                 }

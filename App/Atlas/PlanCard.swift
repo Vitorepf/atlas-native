@@ -40,6 +40,7 @@ struct PlanCard: View {
                 }
                 if !plan.tools.isEmpty || !plan.agents.isEmpty || !plan.qualityGates.isEmpty {
                     Button {
+                        if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
                         withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
                             showDetail.toggle()
                         }
@@ -65,6 +66,7 @@ struct PlanCard: View {
     private func revisionToggle(plan: AtlasExecutionPlan) -> some View {
         let count = meaningfulRevisions.count
         Button {
+            if !reduceMotion { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
             withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
                 showRevisions.toggle()
             }
