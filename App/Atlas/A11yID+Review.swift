@@ -4,6 +4,7 @@ extension A11yID {
     // C15/C21 · Change review (cenas 07 + 12)
     // File helpers → A11yID+ReviewFiles.swift
     // Patch/file → A11yID+ReviewPatch.swift
+    // Findings → A11yID+ReviewFindings.swift
     static let reviewGovernance = "review-governance"
     static let reviewCouncil = "review-council"
     static let reviewCouncilMemberPrefix = "review-council-member-"
@@ -17,9 +18,6 @@ extension A11yID {
     static let reviewEmpty = "review-empty"
     static let reviewLoadFailure = "review-load-failure"
     static let reviewDiffUnavailable = "review-diff-unavailable"
-    static let reviewFindingsSection = "review-findings-section"
-    static let reviewFindingAxisPrefix = "review-finding-axis-"
-    static let reviewFindingRowPrefix = "review-finding-row-"
     static let reviewHashWarning = "review-hash-warning"
     static let reviewRunHeader = "review-run-header"
     static let reviewToast = "review-toast"
@@ -28,6 +26,4 @@ extension A11yID {
     static let reviewDecidedSection = "review-decided-section"
     static let reviewRunAccept = "review-run-accept"
     static let reviewRunReject = "review-run-reject"
-    static func reviewFindingAxis(_ axis: String) -> String { reviewFindingAxisPrefix + axis.lowercased() }
-    static func reviewFindingRow(_ id: String) -> String { reviewFindingRowPrefix + id }
 }

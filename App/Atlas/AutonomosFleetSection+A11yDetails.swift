@@ -1,7 +1,8 @@
 import Foundation
 import AtlasCore
 
-/// Operational/audit spoken append — peel de AutonomosFleetSection+A11y.
+/// Operational spoken append — peel de AutonomosFleetSection+A11y.
+/// Audit → AutonomosFleetSection+A11yAudit.swift
 
 extension AutonomosFleetSectionA11y {
     static func appendOperationalDetails(
@@ -15,17 +16,5 @@ extension AutonomosFleetSectionA11y {
         if let spent = agent.spentUsd { parts.append(String(format: "gasto US$ %.2f", spent)) }
         if !agent.desired { parts.append("não desejado") }
         if !agent.authorized { parts.append("não autorizado") }
-    }
-
-    static func appendAuditDetails(
-        _ parts: inout [String],
-        agent: AtlasAutonomosFleetAgent
-    ) {
-        parts.append("conta \(agent.account)")
-        parts.append(agent.kind)
-        if let ttl = agent.ttlRemainingSeconds { parts.append("ttl \(ttl) segundos") }
-        if let budget = agent.budgetLimitUsd { parts.append(String(format: "limite US$ %.2f", budget)) }
-        if let target = agent.targetRef?.nonEmpty { parts.append("alvo \(target)") }
-        if let reason = agent.reason?.nonEmpty { parts.append(reason) }
     }
 }

@@ -3,6 +3,7 @@ import AtlasCore
 
 // Chip button label — peel de AtlasCodeGraphChrome+Chips.
 // Label → AtlasCodeGraphChrome+ChipLabel.swift
+// A11y → AtlasCodeGraphChrome+ChipA11y.swift
 
 extension AtlasCodeView {
     func graphStateChipButton(
@@ -20,12 +21,6 @@ extension AtlasCodeView {
             graphStateChipLabel(option, count: count, active: active)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(
-            AtlasCodeGraphA11y.spokenFilterChip(
-                option, count: count, active: active, silent: active && filterSilence
-            )
-        )
-        .accessibilityAddTraits(active ? .isSelected : [])
-        .accessibilityIdentifier(A11yID.codeGraphFilter(option.rawValue))
+        .graphStateChipA11y(option, count: count, active: active, filterSilence: filterSilence)
     }
 }

@@ -1,6 +1,7 @@
 import Foundation
 
 // Operation digest counts spoken — peel de AutonomosOperationDigest+A11y.
+// Findings → AutonomosOperationDigest+A11yFindings.swift
 
 extension AutonomosOperationDigestA11y {
     static func spokenCounts(
@@ -23,9 +24,7 @@ extension AutonomosOperationDigestA11y {
         if let oldest = oldestBacklogCreatedAt {
             parts.append("item mais antigo \(AutonomosChrome.relativeAge(from: oldest))")
         }
-        if !findingsByRisk.isEmpty {
-            parts.append(spokenFindings(findingsByRisk))
-        }
+        parts.append(contentsOf: spokenCountFindings(findingsByRisk))
         return parts
     }
 }

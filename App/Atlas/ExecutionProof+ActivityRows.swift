@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Activity rows — peel de ExecutionProof+Expanded.
+// Copy → ExecutionProof+ActivityRowCopy.swift
 
 extension ExecutionProof {
     @ViewBuilder
@@ -13,14 +14,7 @@ extension ExecutionProof {
                         .font(.system(size: 11)).foregroundStyle(AtlasTheme.accent.opacity(0.8))
                         .frame(width: 15)
                         .accessibilityHidden(true)
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(act.title)
-                            .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
-                        if let d = act.detail, !d.isEmpty {
-                            Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                                .lineLimit(2).truncationMode(.middle)
-                        }
-                    }
+                    activityRowCopy(act)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel(

@@ -3,6 +3,7 @@ import AtlasCore
 
 // Form sections — peel de AutonomosTransferSheet (régua ≤100).
 // Operator → AutonomosTransferSheet+Operator.swift
+// Lock → AutonomosTransferSheet+FormLock.swift
 
 extension AutonomosTransferSheet {
     @ViewBuilder
@@ -14,15 +15,7 @@ extension AutonomosTransferSheet {
                 Text(focus).font(AtlasFont.mono(11)).foregroundStyle(.secondary)
                     .accessibilityLabel(AutonomosTransferSheetA11y.spokenFocus(focus))
             }
-            Section("Lock atual (verificado)") {
-                if hasPlacement {
-                    placementFields
-                } else {
-                    Text("Nenhum lock publicado neste recorte — a transferência exige lease vivo.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                        .accessibilityLabel(AutonomosTransferSheetA11yConfirm.spokenNoLock)
-                }
-            }
+            transferLockSection
             if hasPlacement {
                 transferOperatorSections
             }

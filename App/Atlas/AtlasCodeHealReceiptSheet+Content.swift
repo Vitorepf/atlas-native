@@ -4,6 +4,7 @@ import AtlasCore
 // Conteúdo do recibo — peel de AtlasCodeHealReceiptSheet (régua ≤100).
 // Masthead/undo → +Chrome · Status → +Status.swift
 // Undo footer → AtlasCodeHealReceiptSheet+UndoFooter.swift
+// Steps → AtlasCodeHealReceiptSheet+StepsOrEmpty.swift
 
 extension AtlasCodeHealReceiptSheet {
     @ViewBuilder
@@ -11,18 +12,8 @@ extension AtlasCodeHealReceiptSheet {
         VStack(alignment: .leading, spacing: 12) {
             masthead
             healStatusLines
-
-            if heal.stepReceipts.isEmpty {
-                Text("sem passos registrados no recibo")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityLabel(spokenEmptyStepsLabel())
-            } else {
-                stepsBlock()
-            }
-
+            receiptStepsOrEmpty
             receiptUndoFooter
-
             Spacer(minLength: 0)
         }
         .padding(22)

@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Falha de carregamento da frota — canônico (substitui VStack inline em AutonomosView).
+/// Copy → AutonomosView+FailureCopy.swift
 struct AutonomosFleetFailureEmpty: View {
     let message: String
     let onRetry: () -> Void
@@ -11,13 +12,7 @@ struct AutonomosFleetFailureEmpty: View {
                 .font(.title2)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
-            Text("A frota está fora de alcance.")
-                .font(AtlasFont.serif(20, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-            Text(message)
-                .font(.footnote)
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .multilineTextAlignment(.center)
+            failureCopy
             Button("Tentar de novo", action: onRetry)
                 .buttonStyle(AutonomosPrimaryButtonStyle())
                 .accessibilityIdentifier(A11yID.autonomosRetry)

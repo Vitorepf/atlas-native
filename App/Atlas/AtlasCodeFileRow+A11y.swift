@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels da linha de arquivo — peel de AtlasCodeFileRow (CICLO C).
 /// Contagens só quando o payload publica; binário sem inventar linhas.
+/// Verb → AtlasCodeFileRow+A11yVerb.swift
 
 enum AtlasCodeFileRowA11y {
     static func spokenFile(_ file: AtlasCodeFileChange) -> String {
@@ -15,17 +16,5 @@ enum AtlasCodeFileRowA11y {
             parts.append("arquivo binário")
         }
         return parts.joined(separator: ", ")
-    }
-
-    private static func verb(for status: AtlasCodeFileStatus) -> String {
-        switch status {
-        case .added: return "adicionado"
-        case .modified: return "alterado"
-        case .deleted: return "removido"
-        case .renamed: return "renomeado"
-        case .copied: return "copiado"
-        case .typeChanged: return "tipo alterado"
-        case .unknown: return "mudança desconhecida"
-        }
     }
 }
