@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXVIII — CICLO C ExecutionStateCard + ArtifactSheet** · este commit · CICLO C: ExecutionStateCard — título/detail/timer/deadline decorativos sob `spokenSummary`; ações com label+RM haptic. ArtifactSheet — close/sheet spoken; toast a11y. Shells Card 99 Actions 61 Sheet 79≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Card 99 Actions 61 Sheet 79; `rg Aprovar`=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXVII — CICLO C AwaitingYou + NarrativeRow + PlanRevisions** · este commit · CICLO C: AutonomosAwaitingYou — contagem/copy decorativos; hint chips. NarrativeRow — título/detail silenciados sob spoken. PlanRevisionCompare — comparison `children: .ignore`. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Awaiting 96 Narrative 86 Revisions 40; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXVI — CICLO C ComposerToolbar residual honesty** · este commit · CICLO C: attach RM haptic+hint; placeholder decorativo; input spoken; processing diamond silenciado; menu workspace/modo/esforço RM+spoken. Shells Toolbar 62 Trailing 72 A11y 63≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Toolbar 62 Trailing 72 A11y 63; `rg Aprovar`=0; device-pending.
