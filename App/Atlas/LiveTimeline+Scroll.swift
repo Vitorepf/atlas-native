@@ -3,7 +3,6 @@ import AtlasCore
 
 // Scroll da timeline — peel de LiveTimeline+Surfaces.
 // Rows → LiveTimeline+ScrollRows.swift
-// Auto → LiveTimeline+ScrollAuto.swift
 
 extension LiveTimeline {
     var timelineScroll: some View {
@@ -13,7 +12,12 @@ extension LiveTimeline {
             }
             .frame(maxHeight: min(CGFloat(rows.count) * 34 + 12, 232))
             .scrollIndicators(.hidden)
-            .background { timelineAutoScroll(proxy) }
+            .onChange(of: rows.count) {
+                guard let last = rows.last?.id else { return }
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+                    proxy.scrollTo(last, anchor: .bottom)
+                }
+            }
             .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: rows.count)
         }
     }
