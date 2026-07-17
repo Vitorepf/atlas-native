@@ -165,13 +165,18 @@ public struct AtlasArenaLiveRun: Codable, Sendable, Equatable, Identifiable {
 
     public let runIdPublic: String
     public let suite: String
-    public let engine: String
+    public let engine: String?
     public let arm: AtlasArenaRunArm?
     public let status: AtlasArenaRunStatus
     public let casesDone: Int?
     public let casesTotal: Int?
     public let startedAt: String?
     public let queuedAt: String?
+
+    public var engineDisplayName: String {
+        guard let engine, !engine.isEmpty else { return "motor desconhecido" }
+        return engine
+    }
 
     public var progressText: String {
         guard let casesDone, let casesTotal, casesTotal > 0 else { return status.displayPT }

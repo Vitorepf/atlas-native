@@ -17,7 +17,7 @@ struct ArenaNowSection: View {
                             .fill(run.status == .running ? AtlasTheme.accent : AtlasTheme.textTertiary)
                             .frame(width: 8, height: 8)
                         VStack(alignment: .leading, spacing: 3) {
-                            Text("\(run.suite) · \(run.engine)")
+                            Text("\(run.suite) · \(run.engineDisplayName)")
                                 .font(.system(.callout, weight: .medium))
                                 .foregroundStyle(AtlasTheme.textPrimary)
                                 .lineLimit(1)
@@ -28,7 +28,7 @@ struct ArenaNowSection: View {
                         Spacer()
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("\(run.suite), \(run.engine), \(run.arm?.labelPT ?? "braço desconhecido"), \(run.status.displayPT)")
+                    .accessibilityLabel("\(run.suite), \(run.engineDisplayName), \(run.arm?.labelPT ?? "braço desconhecido"), \(run.status.displayPT)")
                 }
                 Text("Seguir medição na Live Activity: pendente de ActivityKit dedicado para Arena.")
                     .font(.system(.caption))

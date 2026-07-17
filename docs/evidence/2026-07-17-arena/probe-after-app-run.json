@@ -1,0 +1,133 @@
+{
+  "captured_at": "2026-07-17T04:35:22.290340+00:00",
+  "host": "100.80.228.41",
+  "probes": {
+    "live": {
+      "status": 200,
+      "schema_version": "atlas.arena.runs_live.v1",
+      "runs_count": 9,
+      "terminal_bench_mockllm": [
+        {
+          "run_id_public": "arq_598bc8198ed711dd126c",
+          "suite": "terminal_bench",
+          "engine": "mockllm",
+          "arm": "baseline",
+          "status": "queued",
+          "queued_at": "2026-07-17T04:23:44+00:00"
+        },
+        {
+          "run_id_public": "arq_1dca02232e0ab7a0f355",
+          "suite": "terminal_bench",
+          "engine": "mockllm",
+          "arm": "with_atlas",
+          "status": "queued",
+          "queued_at": "2026-07-17T04:23:44+00:00"
+        },
+        {
+          "run_id_public": "arq_9a2461b5bf6de4923a1a",
+          "suite": "terminal_bench",
+          "engine": "mockllm",
+          "arm": "baseline",
+          "status": "queued",
+          "queued_at": "2026-07-17T04:35:00+00:00"
+        },
+        {
+          "run_id_public": "arq_74534688d88ef2bd4cb1",
+          "suite": "terminal_bench",
+          "engine": "mockllm",
+          "arm": "with_atlas",
+          "status": "queued",
+          "queued_at": "2026-07-17T04:35:00+00:00"
+        }
+      ],
+      "runs_sample": [
+        {
+          "run_id_public": "ar_7632800f567e56c160d0",
+          "suite": "swe_bench_live",
+          "status": "queued",
+          "cases_done": 0,
+          "cases_total": 18,
+          "queued_at": "2026-07-17T01:18:53+00:00"
+        },
+        {
+          "run_id_public": "ar_1e67b08843dc22fd4f08",
+          "suite": "hal_harness",
+          "status": "running",
+          "cases_done": 34,
+          "cases_total": 18,
+          "started_at": "2026-07-17T01:18:53+00:00"
+        },
+        {
+          "run_id_public": "ar_96e34f75e1d7a06344db",
+          "suite": "bfcl",
+          "status": "queued",
+          "cases_done": 0,
+          "cases_total": 18,
+          "queued_at": "2026-07-17T01:18:53+00:00"
+        },
+        {
+          "run_id_public": "ar_9beb4a9b8fe78b72b4e9",
+          "suite": "terminal_bench",
+          "status": "queued",
+          "cases_done": 0,
+          "cases_total": 18,
+          "queued_at": "2026-07-17T01:18:53+00:00"
+        },
+        {
+          "run_id_public": "ar_660c16afa07777aa9a88",
+          "suite": "aider_polyglot",
+          "status": "queued",
+          "cases_done": 0,
+          "cases_total": 18,
+          "queued_at": "2026-07-17T01:18:53+00:00"
+        },
+        {
+          "run_id_public": "arq_598bc8198ed711dd126c",
+          "suite": "terminal_bench",
+          "engine": "mockllm",
+          "arm": "baseline",
+          "status": "queued",
+          "queued_at": "2026-07-17T04:23:44+00:00"
+        },
+        {
+          "run_id_public": "arq_1dca02232e0ab7a0f355",
+          "suite": "terminal_bench",
+          "engine": "mockllm",
+          "arm": "with_atlas",
+          "status": "queued",
+          "queued_at": "2026-07-17T04:23:44+00:00"
+        },
+        {
+          "run_id_public": "arq_9a2461b5bf6de4923a1a",
+          "suite": "terminal_bench",
+          "engine": "mockllm",
+          "arm": "baseline",
+          "status": "queued",
+          "queued_at": "2026-07-17T04:35:00+00:00"
+        }
+      ]
+    },
+    "scoreboard": {
+      "status": 200,
+      "schema_version": "atlas.arena.scoreboard.v1",
+      "suites_count": 10,
+      "first_suites": [
+        "terminal_bench",
+        "inspect_evals",
+        "tau2_bench",
+        "bfcl",
+        "senior_swe_bench"
+      ]
+    },
+    "composite": {
+      "status": 200,
+      "schema_version": "atlas.arena.composite.v1",
+      "suites_total": 10,
+      "suites_measured": 10,
+      "engines": [
+        "verboo_kimi_k2_7",
+        "mockllm"
+      ]
+    }
+  }
+}

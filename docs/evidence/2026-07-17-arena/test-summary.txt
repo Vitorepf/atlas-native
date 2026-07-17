@@ -1,0 +1,6 @@
+Test Case '-[AtlasDeviceProof.AtlasArenaFlowTests testHomeArenaIndexSuiteRunReceipt]' started.
+Test Case '-[AtlasDeviceProof.AtlasArenaFlowTests testHomeArenaIndexSuiteRunReceipt]' passed (33.875 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 33.875 (33.876) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 33.875 (33.877) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 33.875 (33.878) seconds
+** TEST SUCCEEDED **

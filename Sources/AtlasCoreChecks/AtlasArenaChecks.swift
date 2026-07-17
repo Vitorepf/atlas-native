@@ -71,12 +71,14 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
      "runs":[{"run_id_public":"ar_1","suite":"terminal_bench","engine":"codex_cli",
        "arm":"with_atlas","status":"running","cases_done":17,"cases_total":42,
        "started_at":"2026-07-17T01:00:00Z"},
-      {"run_id_public":"ar_2","suite":"terminal_bench","engine":"codex_cli",
+      {"run_id_public":"ar_2","suite":"terminal_bench",
        "arm":"baseline","status":"queued","queued_at":"2026-07-17T01:01:00Z"}]}
     """
     let live = try? decoder.decode(AtlasArenaLiveRuns.self, from: Data(liveJSON.utf8))
     check("AGORA decodifica running e queued", live?.runs.map(\.status) == [.running, .queued])
     check("queued tem copy honesta de fila", live?.runs.last?.status.displayPT == "na fila, ainda não iniciado")
+    check("run live parcial sem motor não derruba AGORA",
+          live?.runs.last?.engineDisplayName == "motor desconhecido")
 
     let receiptJSON = """
     {"schema_version":"atlas.arena.start_receipt.v1","status":"enqueued","receipt_hash":"sha256:abc",
