@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLIV (este tip)
+## Entrega Elite CXXXXXLXLV (este tip)
+
+- `polish(ui)` CICLO B: AutonomosLoaded StackHead `+Nightly/+Rhythm/+FleetSummary` StackMid `+Awaiting/+AreaPicker` StackDigest `+NextDigest/+OperationDigest` StackTailFleet `+Fleet/+TaskHealth` StackTailHistory `+FleetHistory/+ErrorCard` ReceiptLines `+Transfer`; ComposerToolbar Row `+Attach/+Field/+Trailing` Trailing `+Branch` CanSubmit `+Sending/+DraftEmpty`; ConversationMessages ScrollBubbleLifecycle `+EmptyChange/+ListChange` ScrollFAB `+Action/+Button` ScrollPreference `+Indicators/+Overlay`; AtlasArena Content `+LoadingBranch/+DefaultBranch` Loaded `+Now/+Index/+Capabilities`; EditorialTurn Body `+UserBranch/+AssistantBranch`; Markdown CodeBlock Shell `+Stack/+Frame`; ConversationComposer Shell `+VBox/+Padding` CardBody `+Live/+Queue/+Grabber/+Strip`; Widgets LiveSession A11ySpoken `+Silence` IslandMinimal `+BadgeBranch/+ProgressBranch/+SymbolBranch`. Tip `a17eccb`.
+- 20 peels · 43 arquivos · over100=0 · App/Atlas+Widgets swift=2375; App/Widgets swift=178; zero Route nova.
+
+## Entrega Elite CXXXXXLXLIV (anterior)
 
 - `polish(ui)` CICLO B: QueuedFollowUp `+Layout` Text `+Position/+Message`; ConversationMessages RowsTurn `+Execution/+SteerArtifacts`; Composer QueueChip `+Button/+A11y`; Transfer ToolbarConfirm `+Button/+A11y`; AskPillA11y `+Tap/+PaddingAnimation`; Radar Folders `+Header/+Loop` A11yChrome `+Button/+SpokenBind`; ChangeReviewDiff `+LoadTask`; AutonomosViewHeader `+Layout`; Paste `+Action/+A11y`; LiveNowRow RowStack `+Leading/+Trailing`; ArenaEngine Scroll `+Scroll/+Inner`; ExecutionState Summary `+Lead/+Tail`; RootChrome HBox `+Leading/+Trailing`; ArenaCapabilities Stack `+Rows/+Chart`; Workspace ThreadRows `+Loop`; LiveNowSection Body `+Header/+Rows`; SelfConstruction Body `+Stack`; Receipt Layout `+HBox`; ArenaIndex Stack `+Header/+Rows/+Chart`; Widgets Fleet Stack `+Header/+State/+Delivery` LiveSession Bodies `+Titles/+TimerBlock`. Tip `b4138ba`.
 - 23 peels · 65 arquivos · over100=0 · App/Atlas+Widgets swift=2332; App/Widgets swift=174; zero Route nova.
