@@ -46,12 +46,15 @@ struct AtlasCodeView: View {
         }
         .navigationTitle("Grafo")
         .navigationBarTitleDisplayMode(.inline)
+        .accessibilityIdentifier(A11yID.codeScreen)
+        .accessibilityLabel(spokenCodeScreenLabel())
+        .accessibilityHint(Self.codeScreenHint)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Text(model.repo)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityLabel("repositório \(model.repo)")
+                    .accessibilityHidden(true)
             }
         }
         .task { if model.phase == .idle { await model.load() } }

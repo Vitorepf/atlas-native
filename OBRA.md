@@ -968,6 +968,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 > Formato: `AAAA-MM-DD · <agente> · <commit> · <o quê> · prova: <checks/print/live-probe>`
 
+- 2026-07-17 · Grok 4.5 · **Elite contínuo LXXX — CICLO C AtlasCodeView screen** · este commit · CICLO C: AtlasCodeView — `code-screen` spoken por fase/repo/N commits; toolbar repo decorativo sob screen. Peel `+A11y` (22). Shell ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Code 90 A11y 22; `rg Aprovar`=0; device-pending.
+
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXIX — CICLO C Arena screen + Queue sheet** · este commit · CICLO C: AtlasArenaView — screen spoken por fase; header textos decorativos. QueuedFollowUpsSheet — sheet spoken N mensagens. Shells ≤100. Zero Route. **BLOCKED:** Swift/server/device. Prova: `wc -l` Arena 84 A11y 55 Queue 64; `rg Aprovar`=0; device-pending.
 
 - 2026-07-17 · Grok 4.5 · **Elite contínuo LXXVIII — CICLO C Arena/Review Fechar RM** · este commit · CICLO C: ChangeReviewSheet + ArenaSuite/Run/Engine Fechar — RM haptic + hint. Zero Route. **BLOCKED:** Swift/server/device. Prova: `rg 'Button\("Fechar"\)' App/Atlas` com RM; `rg Aprovar`=0; device-pending.

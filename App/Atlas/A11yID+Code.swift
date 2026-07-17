@@ -25,6 +25,7 @@ extension A11yID {
     static let codeMirror = "code-mirror"
     static let codeWeek = "code-week"
     static let radarScreen = "code-radar"
+    static let codeScreen = "code-screen"
     static let radarLoading = "code-radar-loading"
     static let radarFailure = "code-radar-failure"
     static let codeLoadFailure = "code-load-failure"
