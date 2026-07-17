@@ -3,25 +3,10 @@ import Charts
 import AtlasCore
 
 // Capabilities chart — peel de ArenaCapabilitiesSection+Rows.
+// Points → ArenaCapabilitiesSection+ChartPoints.swift
 
 struct ArenaCapabilitiesChart: View {
     let capabilities: [AtlasArenaCapability]
-
-    private struct Point: Identifiable {
-        let id = UUID()
-        let label: String
-        let series: String
-        let value: Double
-    }
-
-    private var points: [Point] {
-        capabilities.flatMap { capability in
-            [
-                capability.score.map { Point(label: capability.labelPt, series: "sem Atlas", value: $0) },
-                capability.withAtlas.map { Point(label: capability.labelPt, series: "com Atlas", value: $0) },
-            ].compactMap { $0 }
-        }
-    }
 
     var body: some View {
         if !points.isEmpty {

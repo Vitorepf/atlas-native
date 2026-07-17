@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Copy editorial para `reason` do contrato trace-scoped — nunca inventa motivo.
 /// Unavailable → ArtifactViewer+TraceEvidenceUnavailable.swift
+/// Loading → ArtifactViewer+TraceEvidenceLoading.swift
 enum TraceEvidenceCopy {
     static func unavailableReason(_ reason: String?) -> String? {
         guard let reason, !reason.isEmpty else { return nil }
@@ -19,23 +20,5 @@ enum TraceEvidenceCopy {
         var parts = [prefix]
         if let reason = unavailableReason(reason) { parts.append(reason) }
         return parts.joined(separator: ", ")
-    }
-}
-
-/// Loading compartilhado por ArtifactSheet e ChangeReviewSheet.
-struct TraceEvidenceLoading: View {
-    let text: String
-    let reduceMotion: Bool
-
-    var body: some View {
-        VStack(spacing: 12) {
-            BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-            Text(text)
-                .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(text)
     }
 }
