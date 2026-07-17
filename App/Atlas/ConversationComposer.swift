@@ -15,6 +15,7 @@ struct ConversationComposer: View {
     @Binding var mode: String
     @Binding var showModeSheet: Bool
     @Binding var showWorkspaceSheet: Bool
+    @Binding var showEffortSheet: Bool
     @Binding var showQueueSheet: Bool
     @Binding var showAttachmentSheet: Bool
     @Binding var pickedPhoto: PhotosPickerItem?
@@ -66,6 +67,7 @@ struct ConversationComposer: View {
                 onAttach: { showAttachmentSheet = true },
                 onShowWorkspace: { showWorkspaceSheet = true },
                 onShowMode: { showModeSheet = true },
+                onShowEffort: { showEffortSheet = true },
                 onSend: send
             )
         }
@@ -80,6 +82,7 @@ struct ConversationComposer: View {
             mode: $mode,
             showModeSheet: $showModeSheet,
             showWorkspaceSheet: $showWorkspaceSheet,
+            showEffortSheet: $showEffortSheet,
             showQueueSheet: $showQueueSheet,
             showAttachmentSheet: $showAttachmentSheet,
             showCamera: $showCamera,

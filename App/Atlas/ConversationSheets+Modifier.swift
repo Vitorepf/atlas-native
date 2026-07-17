@@ -9,6 +9,7 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
     @Binding var mode: String
     @Binding var showModeSheet: Bool
     @Binding var showWorkspaceSheet: Bool
+    @Binding var showEffortSheet: Bool
     @Binding var showQueueSheet: Bool
     @Binding var showAttachmentSheet: Bool
     @Binding var showCamera: Bool
@@ -22,6 +23,7 @@ private struct ConversationComposerSheetsModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(isPresented: $showModeSheet) { ModeSheet(selected: $mode) }
+            .sheet(isPresented: $showEffortSheet) { EffortSheet(model: model) }
             .sheet(item: $reviewTrace) { ref in
                 ChangeReviewSheet(reviews: model.reviews, traceId: ref.id)
             }

@@ -14,7 +14,11 @@ struct SheetShell<Content: View>: View {
         VStack(spacing: 0) {
             RoundedRectangle(cornerRadius: 3).fill(AtlasTheme.textTertiary.opacity(0.5))
                 .frame(width: 40, height: 5).padding(.top, 10).padding(.bottom, 16)
-            Text(title).font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary).padding(.bottom, 14)
+            Text(title)
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .padding(.bottom, 14)
+                .accessibilityAddTraits(.isHeader)
             ScrollView { VStack(spacing: 0) { content } }
             Spacer(minLength: 0)
         }
@@ -30,6 +34,8 @@ struct SheetRow: View {
     let label: String
     var sub: String? = nil
     let selected: Bool
+    var accessibilityLabel: String? = nil
+    var accessibilityIdentifier: String? = nil
     let action: () -> Void
     var body: some View {
         Button(action: action) {
@@ -44,6 +50,16 @@ struct SheetRow: View {
             .padding(.horizontal, 24).padding(.vertical, 15).contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel ?? label)
+        .accessibilityAddTraits(selected ? .isSelected : [])
+        .modifier(OptionalAccessibilityIdentifier(accessibilityIdentifier))
         .overlay(alignment: .bottom) { Divider().overlay(AtlasTheme.separator).padding(.leading, 24) }
+    }
+}
+
+private struct OptionalAccessibilityIdentifier: ViewModifier {
+    let id: String?
+    func body(content: Content) -> some View {
+        if let id { content.accessibilityIdentifier(id) } else { content }
     }
 }

@@ -18,6 +18,7 @@ struct ConversationView: View {
     @State private var mode = "geral"
     @State private var showModeSheet = false
     @State private var showWorkspaceSheet = false
+    @State private var showEffortSheet = false
     @State private var showQueueSheet = false
     @State var showOutline = false
     @State private var reviewTrace: ConversationReviewTraceRef?
@@ -70,6 +71,7 @@ struct ConversationView: View {
                     mode: $mode,
                     showModeSheet: $showModeSheet,
                     showWorkspaceSheet: $showWorkspaceSheet,
+                    showEffortSheet: $showEffortSheet,
                     showQueueSheet: $showQueueSheet,
                     showAttachmentSheet: $showAttachmentSheet,
                     pickedPhoto: $pickedPhoto,

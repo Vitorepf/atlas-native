@@ -46,13 +46,13 @@ extension ComposerToolbar {
                     Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
                 }
                 Button {
-                    model.cycleEffort()
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    onShowEffort()
                 } label: {
                     Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
                 }
                 .accessibilityLabel(spokenEffortLabel(model.effort))
-                .accessibilityHint(spokenEffortHint())
+                .accessibilityHint("abre opções de esforço computacional")
             } label: {
                 Image(systemName: "ellipsis")
                     .font(.system(size: 17, weight: .semibold))

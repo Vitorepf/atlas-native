@@ -43,7 +43,7 @@ extension ComposerToolbar {
     }
 
     func spokenEffortHint() -> String {
-        "alterna entre automático, rápido, normal, profundo e máximo"
+        "abre opções de esforço computacional para o próximo envio"
     }
 
     func spokenOptionsHint() -> String {

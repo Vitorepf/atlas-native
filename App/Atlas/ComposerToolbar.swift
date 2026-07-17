@@ -14,6 +14,7 @@ struct ComposerToolbar: View {
     var onAttach: () -> Void
     var onShowWorkspace: () -> Void
     var onShowMode: () -> Void
+    var onShowEffort: () -> Void
     var onSend: () -> Void
 
     var canSubmit: Bool {
