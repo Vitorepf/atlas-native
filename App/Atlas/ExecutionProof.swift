@@ -16,8 +16,10 @@ struct ExecutionProof: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                withAnimation(.easeOut(duration: 0.22)) { open.toggle() }
+                if !reduceMotion {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                }
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.22)) { open.toggle() }
             } label: {
                 HStack(spacing: 10) {
                     Circle().fill(AtlasTheme.accent).frame(width: 10, height: 10)
@@ -108,7 +110,7 @@ struct ExecutionProof: View {
                 }
                 .padding(.top, 8)
                 .padding(.leading, 4)
-                .transition(.opacity)
+                .transition(reduceMotion ? .identity : .opacity)
                 .onChange(of: bubble.activities.count) {
                     replayIndex = min(replayIndex, max(0, timestampedActivities.count - 1))
                 }
@@ -145,7 +147,7 @@ struct ExecutionProof: View {
                     Text("\(index + 1)/\(stamped.count)")
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
-                        .contentTransition(.numericText())
+                        .modifier(LiveTimelineNumericTransition(enabled: !reduceMotion))
                 }
                 Text(selected.activity.title)
                     .font(.system(.caption, weight: .semibold))

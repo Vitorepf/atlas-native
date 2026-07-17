@@ -55,7 +55,7 @@ struct EditorialTurn: View, Equatable {
                     // O PLANO da obra: durante a execução, o roteiro é percorrido
                     // ao vivo (done/atual/pendente); depois, fica como prova.
                     PlanCard(bubble: bubble)
-                    if bubble.streaming {
+                    if bubble.streaming, bubble.hasLiveExecutionSurface {
                         ExecutionRibbon(bubble: bubble, reduceMotion: reduceMotion, onStop: onStop)
                     }
                     if let state = bubble.executionPresentationState {

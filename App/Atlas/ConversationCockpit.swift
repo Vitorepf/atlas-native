@@ -24,6 +24,19 @@ struct ExecutingStrip: View {
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .layoutPriority(2)
+            } else if let act = bubble.currentActivity {
+                HStack(spacing: 5) {
+                    Image(systemName: activityIcon(act.kind))
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.85))
+                        .accessibilityHidden(true)
+                    Text(act.title)
+                        .font(.system(.footnote))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .layoutPriority(2)
+                }
             } else {
                 Text("Seguindo a execução")
                     .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
@@ -35,7 +48,7 @@ struct ExecutingStrip: View {
                 Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()
-                    .contentTransition(.numericText())
+                    .modifier(LiveTimelineNumericTransition(enabled: !reduceMotion))
                     .lineLimit(1)
             }
             // C18: pílula +N −M só quando o servidor mediu shortstat no workspace.
@@ -69,6 +82,18 @@ struct ExecutingStrip: View {
         }
         .padding(.horizontal, 6)
         .lineLimit(1)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(stripAccessibilityLabel)
+    }
+
+    private var stripAccessibilityLabel: String {
+        if let p = bubble.executionProgress {
+            return "execução ao vivo, passo \(p.current) de \(p.total), \(p.title)"
+        }
+        if let act = bubble.currentActivity {
+            return "execução ao vivo, \(act.title), \(bubble.activities.count) eventos"
+        }
+        return "seguindo a execução, \(bubble.activities.count) eventos"
     }
 }
 

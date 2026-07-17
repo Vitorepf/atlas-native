@@ -27,6 +27,13 @@ struct ChatBubble: Identifiable, Equatable {
     var decideStrategy: String? = nil
     var activities: [AtlasAgentActivity] = []
     var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
+    /// Superfície viva do cockpit: só renderiza ribbon quando há dado real.
+    var hasLiveExecutionSurface: Bool {
+        reconnectNotice != nil
+            || !activities.isEmpty
+            || !agents.isEmpty
+            || decideStrategy != nil
+    }
     /// Aviso público do stream resumível. Só aparece quando o InteractionRun
     /// expõe uma tentativa real de reconexão; a View não estima rede.
     var reconnectNotice: String? = nil

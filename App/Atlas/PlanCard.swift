@@ -117,6 +117,18 @@ struct PlanCard: View {
                 .padding(.bottom, isLast ? 0 : 9)
             Spacer(minLength: 0)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(planStepAccessibility(step: step, state: state))
+    }
+
+    private func planStepAccessibility(step: AtlasExecutionPlan.Step, state: StepState) -> String {
+        let word: String
+        switch state {
+        case .done: word = "concluído"
+        case .current: word = "em curso"
+        case .pending: word = "pendente"
+        }
+        return "\(step.title), \(word)"
     }
 
     private enum StepState { case done, current, pending }

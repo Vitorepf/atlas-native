@@ -27,7 +27,7 @@ enum TimelineReadFilter: String, CaseIterable, Identifiable {
         case .intent:
             return rows.filter { $0.style == .intent }
         case .tools:
-            return rows.filter { $0.style == .tools || $0.style == .single }
+            return rows.filter { $0.style == .single }
         case .p90:
             return rows.filter(\.isP90)
         }
@@ -36,14 +36,19 @@ enum TimelineReadFilter: String, CaseIterable, Identifiable {
 
 struct TimelineFilterChips: View {
     @Binding var filter: TimelineReadFilter
+    var reduceMotion: Bool = false
 
     var body: some View {
         HStack(spacing: 6) {
             ForEach(TimelineReadFilter.allCases) { option in
                 let active = option == filter
                 Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    filter = option
+                    if !reduceMotion {
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    }
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
+                        filter = option
+                    }
                 } label: {
                     Text(option.label)
                         .font(AtlasFont.mono(9))
