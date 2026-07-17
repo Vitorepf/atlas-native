@@ -2,15 +2,13 @@ import SwiftUI
 import AtlasCore
 
 // Quiet body — peel de AutonomosFleetTaskHealth+Bodies.
+// Copy → AutonomosFleetTaskHealth+QuietCopy.swift
 
 extension AutonomosTaskHealthSection {
     var quietBody: some View {
         VStack(alignment: .leading, spacing: 6) {
             AutonomosChrome.sectionCaption("fila", role: .header)
-            Text("estável · \(health.tasks.servableNow) servíveis · \(health.leases.active) leases")
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+            quietCopy
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
