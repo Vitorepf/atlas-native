@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **368+** | primeiro commit do plano: `ec931f2`; Elite CXXXIV tip `18541a8` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **370+** | primeiro commit do plano: `ec931f2`; Elite CXXXV tip `7f469b3` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXIV (este tip)
+## Entrega Elite CXXXV (este tip)
+
+- `refactor(ui)` CICLO B: Area+Body; Loaded+A11yControl; Fleet+RowAudit; OperationDigest+BodyChrome; SheetRow+Label; Composer+FieldAttach; LiveNow+ContentTitle; Plan+StepRowTitle/+RevisionsCompare; File+Reject; Council+Header; Header+Refresh; Digest+A11yLast; CodeBlock+CopyAction; Artifact+ZoomA11y; Queue+Text; LockRect+Quiet. Tip `7f469b3`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXIV (anterior)
 
 - `refactor(ui)` CICLO B: Metrics+DetailMetric; Arena+A11yEmpty; Mirror+A11ySpoken; Graph+ChipButton; Plan+A11yStep; Lock+SpokenLabel; Workspace+Content/+FilterChip/+ScrollLoaded; Search+QueryPhase/+ScrollQuery; Transfer+A11yConfirm; Fleet+FleetEmpty; Finding+Severity; Review+AvailableEmpty; Digest+CardChrome; Draft+ChromeVeil; Composer+TrailingSend; Execution+Leave; Timeline+FilterButton; Nightly+A11yMuteMenu. Tip `18541a8`.
 - Zero App/Widgets >100; zero Route nova.
