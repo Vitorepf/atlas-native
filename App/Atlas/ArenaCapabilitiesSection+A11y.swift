@@ -4,6 +4,7 @@ import AtlasCore
 /// Spoken labels — peel de ArenaCapabilitiesSection (CICLO C residual honesty).
 /// Casos/suites só quando o servidor publica; gráfico decorativo.
 /// Captions → ArenaCapabilitiesSection+A11yCaptions.swift
+/// Row → ArenaCapabilitiesSection+A11yRow.swift
 
 enum ArenaCapabilitiesSectionA11y {
     static func spokenSection(_ capabilities: AtlasArenaCapabilities) -> String {
@@ -23,13 +24,6 @@ enum ArenaCapabilitiesSectionA11y {
     }
 
     static func spokenCapability(_ capability: AtlasArenaCapability) -> String {
-        var parts = [
-            capability.labelPt,
-            "score \(ArenaFormat.score(capability.score))",
-            "com Atlas \(ArenaFormat.score(capability.withAtlas))",
-        ]
-        if let cases = ArenaCapabilitiesSectionA11yCaptions.casesCaption(for: capability) { parts.append(cases) }
-        if let suites = ArenaCapabilitiesSectionA11yCaptions.suitesCaption(for: capability) { parts.append(suites) }
-        return parts.joined(separator: ", ")
+        ArenaCapabilitiesSectionA11yRow.spokenCapability(capability)
     }
 }

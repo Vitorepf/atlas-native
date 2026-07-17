@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Enum do filtro de leitura — peel de LiveTimeline+Filters.
+// Apply → LiveTimeline+FilterApply.swift
 
 enum TimelineReadFilter: String, CaseIterable, Identifiable {
     case all
@@ -17,19 +18,6 @@ enum TimelineReadFilter: String, CaseIterable, Identifiable {
         case .intent: return "intenção"
         case .tools: return "ferramentas"
         case .p90: return "p90"
-        }
-    }
-
-    func apply(to rows: [NarrativeRow]) -> [NarrativeRow] {
-        switch self {
-        case .all:
-            return rows
-        case .intent:
-            return rows.filter { $0.style == .intent }
-        case .tools:
-            return rows.filter { $0.style == .single }
-        case .p90:
-            return rows.filter(\.isP90)
         }
     }
 }

@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Spoken labels do patch/diff — peel de ChangeReviewPatchCard (cena 07 residual honesty).
 /// Só contagens e flags publicadas pelo servidor; diff expandido é estado local honesto.
+/// Toggle → ChangeReviewDiffSection+A11yToggle.swift
 
 enum ChangeReviewPatchA11y {
     static func spokenCard(patch: AtlasTraceChangeReview.Patch, diffExpanded: Bool) -> String {
@@ -26,10 +27,10 @@ enum ChangeReviewPatchA11y {
     }
 
     static func spokenDiffToggle(expanded: Bool) -> String {
-        expanded ? "fechar diff do patch" : "ver diff do patch"
+        ChangeReviewPatchA11yToggle.spokenDiffToggle(expanded: expanded)
     }
 
     static func spokenRiskFlags(_ flags: [String]) -> String {
-        "alertas de risco, \(flags.joined(separator: ", "))"
+        ChangeReviewPatchA11yToggle.spokenRiskFlags(flags)
     }
 }

@@ -4,6 +4,7 @@ import AtlasCore
 // Empty state vivo + falha de carga da thread — peel de EditorialTurn.
 // Suggestions → ConversationEmptyStates+Suggestions.swift
 // Hero → ConversationEmptyStates+Hero.swift
+// Init → ConversationEmptyStates+Init.swift
 
 struct EmptyConversation: View {
     let reduceMotion: Bool
@@ -12,18 +13,6 @@ struct EmptyConversation: View {
     var suggestionsOverride: [String]? = nil
     let onSuggestion: (String) -> Void
     @State var breathe = false
-
-    init(
-        reduceMotion: Bool,
-        prompt: String? = nil,
-        suggestions: [String]? = nil,
-        onSuggestion: @escaping (String) -> Void
-    ) {
-        self.reduceMotion = reduceMotion
-        self.prompt = prompt
-        self.suggestionsOverride = suggestions
-        self.onSuggestion = onSuggestion
-    }
 
     var body: some View {
         heroStack
