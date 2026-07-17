@@ -3,6 +3,7 @@ import AtlasCore
 
 /// Uma linha do Session Hub / VIVO AGORA — title, phase, timing, elapsed.
 /// Content → LiveNowRow+Content.swift
+/// A11y → LiveNowRow+A11yShell.swift
 struct LiveNowRow: View {
     let session: LiveSessionSnapshot
     let hubMode: Bool
@@ -15,17 +16,6 @@ struct LiveNowRow: View {
     var navigable: Bool { session.threadId != nil }
 
     var body: some View {
-        Group {
-            if navigable {
-                Button(action: onTap) { rowContent }
-                    .buttonStyle(PressableScale())
-            } else {
-                rowContent
-            }
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(spokenLabel(hubIndex: hubIndex, hubCount: hubCount))
-        .accessibilityHint(navigable ? "abre conversa desta sessão" : "")
-        .accessibilityAddTraits(navigable ? .isButton : [])
+        liveNowA11yShell
     }
 }

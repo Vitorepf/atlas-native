@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Provider header line — peel de ChangeReviewCouncilRow.
+// Status → ChangeReviewCouncilRow+HeaderStatus.swift
 
 extension ChangeReviewCouncilMemberRow {
     var providerHeader: some View {
@@ -22,10 +23,7 @@ extension ChangeReviewCouncilMemberRow {
                     .accessibilityHidden(true)
             }
             Spacer()
-            Text(member.status)
-                .font(AtlasFont.mono(9))
-                .foregroundStyle(member.succeeded ? Color(hex: 0x83B46D) : Color(hex: 0xE08C8C))
-                .accessibilityHidden(true)
+            providerStatus
         }
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Duration meta — peel de NarrativeRowView+NarrativeBody.
+// Traits → LiveTimeline+NarrativeTraits.swift
 
 extension NarrativeRowView {
     @ViewBuilder
@@ -21,10 +22,5 @@ extension NarrativeRowView {
             }
             .accessibilityHidden(true)
         }
-    }
-
-    var currentTraits: AccessibilityTraits {
-        guard isCurrent else { return [] }
-        return reduceMotion ? .isSelected : [.isSelected, .updatesFrequently]
     }
 }

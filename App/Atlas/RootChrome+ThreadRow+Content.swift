@@ -4,6 +4,7 @@ import AtlasCore
 // Conteúdo da linha — peel de ThreadRow.
 // Trailing → RootChrome+ThreadRow+Trailing.swift
 // Lead → RootChrome+ThreadRow+Lead.swift
+// Tint → RootChrome+ThreadRow+Tint.swift
 
 extension ThreadRow {
     var rowContent: some View {
@@ -16,15 +17,7 @@ extension ThreadRow {
             rowTrailing
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
-        .overlay(alignment: .leading) {
-            if let workspaceTint {
-                Rectangle()
-                    .fill(workspaceTint.opacity(0.85))
-                    .frame(width: 2)
-                    .padding(.vertical, 10)
-                    .accessibilityHidden(true)
-            }
-        }
+        .overlay(alignment: .leading) { rowWorkspaceTint }
         .contentShape(Rectangle())
     }
 }

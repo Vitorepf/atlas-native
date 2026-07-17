@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Mount check row — peel de ArtifactSheet+MountChecks.
+// Spoken → ArtifactSheet+MountSpoken.swift
 
 extension ArtifactSheet {
     func mountCheckRow(index: Int, check: ArtifactDeliveryCheck) -> some View {
@@ -21,11 +22,5 @@ extension ArtifactSheet {
         .accessibilityLabel(check.spoken)
         .accessibilityIdentifier(A11yID.artifactsMountCheck(index))
         .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-    }
-
-    var mountSpoken: String {
-        let n = min(mountRevealed, deliveryChecks.count)
-        let tail = mountComplete ? "entrega liberada" : "montando provas"
-        return "montagem da entrega, prova \(n) de \(deliveryChecks.count), \(tail)"
     }
 }

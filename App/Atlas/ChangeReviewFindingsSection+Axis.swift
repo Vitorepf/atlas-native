@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Axis group — peel de ChangeReviewFindingsSection.
+// Label → ChangeReviewFindingsSection+AxisLabel.swift
 
 extension ChangeReviewFindingsSection {
     func axisGroup(axis: String, axisFindings: [AtlasTraceChangeReview.Finding]) -> some View {
@@ -21,11 +22,5 @@ extension ChangeReviewFindingsSection {
                 ChangeReviewFindingRow(finding: f)
             }
         }
-    }
-
-    func axisHeaderLabel(axis: String, count: Int) -> String {
-        let name = axis == "GERAIS" ? "gerais" : axis.lowercased()
-        let noun = count == 1 ? "achado" : "achados"
-        return "eixo \(name), \(count) \(noun)"
     }
 }

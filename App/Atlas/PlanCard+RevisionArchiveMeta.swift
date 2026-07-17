@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Archive meta lines — peel de PlanCard+RevisionArchiveRow.
+// Steps → PlanCard+RevisionArchiveSteps.swift
 
 extension PlanRevisionCompare {
     @ViewBuilder
@@ -20,12 +21,6 @@ extension PlanRevisionCompare {
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
-        if !rev.stepTitles.isEmpty {
-            Text(rev.stepTitles.joined(separator: " · "))
-                .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(2)
-                .accessibilityHidden(true)
-        }
+        revisionArchiveSteps(rev)
     }
 }

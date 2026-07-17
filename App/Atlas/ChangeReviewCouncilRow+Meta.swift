@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Meta secundária do membro do conselho — peel de ChangeReviewCouncilRow.
+/// Latency → ChangeReviewCouncilRow+MetaLatency.swift
 
 extension ChangeReviewCouncilMemberRow {
     @ViewBuilder
@@ -19,13 +20,7 @@ extension ChangeReviewCouncilMemberRow {
                     .foregroundStyle(Color(hex: 0xE08C8C))
                     .accessibilityHidden(true)
             }
-            if let latency = member.latencyMs {
-                Text("\(latency)ms")
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .monospacedDigit()
-                    .accessibilityHidden(true)
-            }
+            metaLatency
         }
     }
 }

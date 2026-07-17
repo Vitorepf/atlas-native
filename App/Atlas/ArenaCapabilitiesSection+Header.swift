@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Header capacidades — peel de ArenaCapabilitiesSection.
+// Mapping → ArenaCapabilitiesSection+HeaderMapping.swift
 
 extension ArenaCapabilitiesSection {
     func capabilitiesHeader(_ capabilities: AtlasArenaCapabilities) -> some View {
@@ -20,12 +21,7 @@ extension ArenaCapabilitiesSection {
                 }
             }
             Spacer()
-            if let mapping = capabilities.mappingVersion.nonEmpty {
-                Text(mapping)
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityHidden(true)
-            }
+            capabilitiesMapping(capabilities)
         }
     }
 }
