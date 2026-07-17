@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Empty / unavailable — peel de ArtifactSheet+Content.
+// Gate → ArtifactSheet+EmptyGate.swift
 
 extension ArtifactSheet {
     @ViewBuilder
@@ -26,19 +27,7 @@ extension ArtifactSheet {
                 )
             )
         } else if items.isEmpty {
-            Text("nenhum artefato visualizável")
-                .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .accessibilityIdentifier(A11yID.artifactsEmpty)
-                .accessibilityLabel("sem artefatos visualizáveis nesta execução")
+            emptyVisualizable
         }
-    }
-
-    var showsEmptyOrUnavailable: Bool {
-        (!loadFinished && artifacts == nil)
-            || (loadFinished && artifacts == nil)
-            || artifacts?.state == .unavailable
-            || items.isEmpty
     }
 }

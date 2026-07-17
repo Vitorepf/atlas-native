@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Week body — peel de AtlasCodeGraphChrome+Week.
+// Quiet → AtlasCodeGraphChrome+WeekQuiet.swift
 
 extension AtlasCodeView {
     @ViewBuilder
@@ -18,19 +19,7 @@ extension AtlasCodeView {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
             }
-            if AtlasCodeWeekUI.isQuiet(week) {
-                Text("semana quieta · sem commits nem curas")
-                    .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .accessibilityHidden(true)
-            } else {
-                HStack(spacing: 18) {
-                    if week.commits > 0 { weekMetric("commits", value: week.commits) }
-                    if week.heals > 0 { weekMetric("curas", value: week.heals) }
-                    if week.prevented > 0 { weekMetric("prevenidas", value: week.prevented) }
-                }
-                .accessibilityHidden(true)
-            }
+            weekMetricsOrQuiet(week)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(AtlasCodeWeekUI.spokenLabel(week))

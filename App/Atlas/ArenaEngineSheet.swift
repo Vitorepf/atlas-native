@@ -3,6 +3,7 @@ import AtlasCore
 
 // MARK: - Arena engine sheet (peel de ArenaSuiteSheet)
 // Summary → ArenaEngineSheet+Summary.swift
+// Toolbar → ArenaEngineSheet+Toolbar.swift
 
 struct ArenaEngineSheet: View {
     @Environment(\.dismiss) var dismiss
@@ -27,15 +28,7 @@ struct ArenaEngineSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Motor")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    AtlasCloseToolbarButton(
-                        spokenLabel: ArenaEngineSheetA11y.closeLabel,
-                        spokenHint: ArenaEngineSheetA11y.closeHint,
-                        reduceMotion: reduceMotion
-                    ) { dismiss() }
-                }
-            }
+            .toolbar { engineToolbar }
         }
         .accessibilityIdentifier(A11yID.arenaEngineSheet)
         .accessibilityLabel(ArenaEngineSheetA11y.spokenSheet(engine, capabilities: capabilities))

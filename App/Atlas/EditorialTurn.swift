@@ -4,6 +4,7 @@ import AtlasCore
 // Turno editorial — extraído de ConversationChrome (CICLO B compressão).
 // Assinatura/feedback → EditorialTurnChrome; empty/failure → ConversationEmptyStates.
 // Assistant stack → EditorialTurn+Assistant.swift
+// Arrival → EditorialTurn+Arrival.swift
 
 struct EditorialTurn: View, Equatable {
     let bubble: ChatBubble
@@ -26,18 +27,14 @@ struct EditorialTurn: View, Equatable {
     }
 
     var body: some View {
-        Group {
-            if bubble.role == "user" {
-                userTurn
-            } else {
-                assistantTurn
+        applyArrival(
+            Group {
+                if bubble.role == "user" {
+                    userTurn
+                } else {
+                    assistantTurn
+                }
             }
-        }
-        .opacity(placed ? 1 : 0)
-        .offset(y: placed ? 0 : 12)
-        .onAppear {
-            if reduceMotion { placed = true }
-            else { withAnimation(AtlasMotion.arrival) { placed = true } }
-        }
+        )
     }
 }

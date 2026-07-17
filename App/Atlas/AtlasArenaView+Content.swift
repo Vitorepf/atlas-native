@@ -3,6 +3,7 @@ import AtlasCore
 
 // Conteúdo carregado da Arena — peel de AtlasArenaView (régua ≤110).
 // Run → AtlasArenaView+RunButton.swift
+// Loaded → AtlasArenaView+Loaded.swift
 
 extension AtlasArenaView {
     @ViewBuilder
@@ -19,23 +20,7 @@ extension AtlasArenaView {
             }
         default:
             if let composite = model.composite {
-                ArenaNowSection(liveRuns: model.liveRuns, reduceMotion: reduceMotion)
-                if showsIndexSection(composite) {
-                    ArenaIndexSection(
-                        composite: composite,
-                        reduceMotion: reduceMotion,
-                        onEngineTap: { selectedEngine = $0 }
-                    )
-                }
-                ArenaCapabilitiesSection(capabilities: model.capabilities, reduceMotion: reduceMotion)
-                if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
-                    ArenaSuitesSection(
-                        scoreboard: scoreboard,
-                        reduceMotion: reduceMotion,
-                        onSuiteTap: { selectedSuite = $0 }
-                    )
-                }
-                runMeasurementButton
+                loadedArenaContent(composite)
             } else {
                 domainUnavailableCard
             }

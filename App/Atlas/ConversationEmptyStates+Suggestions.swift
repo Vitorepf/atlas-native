@@ -1,7 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Sugestões + breathe — peel de EmptyConversation.
+// Sugestões — peel de EmptyConversation.
+// Breathe → ConversationEmptyStates+Breathe.swift
 
 extension EmptyConversation {
     var suggestions: [String] {
@@ -31,13 +32,5 @@ extension EmptyConversation {
             }
         }
         .padding(.horizontal, 12)
-    }
-
-    func startBreathing() {
-        if !reduceMotion {
-            withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
-                breathe = true
-            }
-        }
     }
 }

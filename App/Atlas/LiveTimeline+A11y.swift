@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Spoken labels da orquestra ao vivo — peel de LiveTimeline (cena 05 residual honesty).
+/// Row → LiveTimeline+A11yRow.swift
 
 enum LiveTimelineA11y {
     static func spokenSectionLabel(stepCount: Int) -> String {
@@ -24,20 +25,5 @@ enum LiveTimelineA11y {
 
     static func spokenFilterSilenceSurface(filter: TimelineReadFilter, totalSteps: Int) -> String {
         "orquestra ao vivo, filtro \(filter.label), nenhum dos \(totalSteps) passos corresponde"
-    }
-
-    static func spokenRow(row: NarrativeRow, index: Int, total: Int, isCurrent: Bool) -> String {
-        var parts = ["passo \(index + 1) de \(total)", row.title]
-        if let detail = row.detail, !detail.isEmpty { parts.append(detail) }
-        if let duration = row.durationMs {
-            parts.append("duração \(humanDuration(duration))")
-            if row.isP90 { parts.append("acima do p90") }
-        }
-        if isCurrent { parts.append("passo atual da orquestra") }
-        return parts.joined(separator: ", ")
-    }
-
-    static func rowValue(index: Int, total: Int, isCurrent: Bool) -> String {
-        isCurrent ? "passo \(index + 1) de \(total), em andamento" : "passo \(index + 1) de \(total)"
     }
 }

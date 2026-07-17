@@ -3,37 +3,23 @@ import AtlasCore
 
 // Status capsule — peel de AtlasCodeGraphChrome.
 // Week → AtlasCodeGraphChrome+WeekMetric.swift
+// Tokens → AtlasCodeGraphChrome+StatusTokens.swift
 
 extension AtlasCodeView {
     /// Cápsula central e simétrica: a única voz do estado geral.
     var statusCapsule: some View {
-        let cor: Color = {
-            switch model.scanState {
-            case .violating: return AtlasCodePalette.alert
-            case .clean: return AtlasCodePalette.healed
-            case .unknown: return AtlasTheme.textTertiary
-            }
-        }()
-        let simbolo: String = {
-            switch model.scanState {
-            case .violating: return "exclamationmark.triangle"
-            case .clean: return "checkmark"
-            case .unknown: return "questionmark"
-            }
-        }()
-
-        return HStack(spacing: 7) {
-            Image(systemName: simbolo)
+        HStack(spacing: 7) {
+            Image(systemName: statusCapsuleSymbol)
                 .font(.system(size: 10, weight: .semibold))
             Text(model.statusHeadline)
                 .font(.system(size: 11, weight: .semibold))
                 .monospacedDigit()
         }
-        .foregroundStyle(cor)
+        .foregroundStyle(statusCapsuleColor)
         .padding(.horizontal, 15)
         .padding(.vertical, 7)
-        .background(Capsule().fill(cor.opacity(0.09)))
-        .overlay(Capsule().strokeBorder(cor.opacity(0.35), lineWidth: 1))
+        .background(Capsule().fill(statusCapsuleColor.opacity(0.09)))
+        .overlay(Capsule().strokeBorder(statusCapsuleColor.opacity(0.35), lineWidth: 1))
         .frame(maxWidth: .infinity, alignment: .center)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.scanState)
         .accessibilityLabel(AtlasCodeGraphA11y.spokenStatus(

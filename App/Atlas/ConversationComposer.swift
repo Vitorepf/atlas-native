@@ -4,6 +4,7 @@ import AtlasCore
 
 // Composer da conversa — peel de ConversationView (régua anti-inchaço).
 // Card → +Card · LiveStrip → +LiveStrip · Actions → +Actions · Fade → +Fade.
+// Helpers → ConversationComposer+Helpers.swift
 
 struct ConversationComposer: View {
     var model: ConversationModel
@@ -23,14 +24,6 @@ struct ConversationComposer: View {
     @Binding var reviewTrace: ConversationReviewTraceRef?
     @Binding var artifactTrace: ConversationReviewTraceRef?
     @Binding var steerTrace: ConversationSteerTraceRef?
-
-    // Anexo presente = card aberto: sem isso, anexar com o composer colapsado
-    // deixava o operador sem botão de enviar (a fileira de controles só existia
-    // com o teclado aberto). Estado de composição ⊃ estado de foco.
-    var expanded: Bool { focused.wrappedValue || !model.drafts.isEmpty }
-
-    /// Turno vivo (streaming) — dirige a faixa de execução dentro do composer.
-    var liveBubble: ChatBubble? { model.bubbles.last(where: { $0.streaming }) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

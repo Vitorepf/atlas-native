@@ -1,6 +1,7 @@
 import SwiftUI
 
 // Ações Preparar/hoje não/silenciar — peel de NightlyProposalCard.
+// Mute → NightlyProposalCard+Mute.swift
 
 extension NightlyProposalCard {
     var actionRow: some View {
@@ -23,21 +24,7 @@ extension NightlyProposalCard {
             .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
             .accessibilityLabel(Self.spokenDismissLabel())
             .accessibilityHint(Self.spokenDismissHint())
-            Menu("silenciar") {
-                ForEach(Self.muteDays, id: \.self) { days in
-                    Button("\(days) dia\(days == 1 ? "" : "s")") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                        onMute(days)
-                    }
-                    .accessibilityLabel(Self.spokenMuteOption(days: days))
-                    .accessibilityHint(Self.spokenMuteOptionHint())
-                }
-            }
-            .font(.system(.footnote, weight: .semibold))
-            .foregroundStyle(AtlasTheme.textTertiary)
-            .accessibilityIdentifier(A11yID.nightlyProposalMute)
-            .accessibilityLabel(Self.spokenMuteMenuLabel())
-            .accessibilityHint(Self.spokenMuteMenuHint())
+            muteMenu
         }
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Folha padrão de governança: quem autoriza + motivo auditável.
 /// Form → AutonomosReasonSheet+Form.swift
+/// Submit → AutonomosReasonSheet+Submit.swift
 struct AutonomosReasonSheet: View {
     let title: String
     let explainer: String
@@ -24,11 +25,6 @@ struct AutonomosReasonSheet: View {
         self.reasonOptional = reasonOptional
         self.onConfirm = onConfirm
         _reason = State(initialValue: initialReason)
-    }
-
-    var canSubmit: Bool {
-        !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            && (reasonOptional || !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
 
     var body: some View {

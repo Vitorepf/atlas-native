@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 /// Cabeçalho da pasta — peel de AtlasCodeFolderRow (régua ≤100).
+/// Badge → AtlasCodeRadarFolderRow+Badge.swift
 
 extension AtlasCodeFolderRow {
     var folderHeaderLabel: some View {
@@ -21,17 +22,7 @@ extension AtlasCodeFolderRow {
             }
             .accessibilityHidden(true)
             Spacer(minLength: 6)
-            if verifiedExceptionCount > 0 {
-                HStack(spacing: 4) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 9, weight: .semibold))
-                    Text("\(verifiedExceptionCount)")
-                        .font(.system(size: 11, weight: .semibold))
-                        .monospacedDigit()
-                }
-                .foregroundStyle(AtlasCodePalette.alert)
-                .accessibilityHidden(true)
-            }
+            exceptionBadge
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))

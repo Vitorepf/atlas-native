@@ -3,6 +3,7 @@ import AtlasCore
 
 // MARK: - Cabeçalho da folha de proveniência (C23)
 // Meta → AtlasCodeProvenanceHeader+Meta.swift · Dateline → +Dateline.swift
+// Title → AtlasCodeProvenanceHeader+Title.swift
 
 extension AtlasCodeProvenanceSheet {
     var header: some View {
@@ -22,19 +23,7 @@ extension AtlasCodeProvenanceSheet {
             .accessibilityLabel(spokenStateKicker())
             .accessibilityIdentifier(A11yID.codeProvenanceState)
 
-            Group {
-                if let message = node.message?.nonEmpty {
-                    Text(message)
-                        .font(AtlasFont.serif(22, .semibold))
-                } else {
-                    Text(String(node.hash.prefix(8)))
-                        .font(AtlasFont.mono(22, .semibold))
-                }
-            }
-            .foregroundStyle(AtlasTheme.textPrimary)
-            .fixedSize(horizontal: false, vertical: true)
-            .accessibilityLabel(spokenHeaderTitle())
-
+            headerTitle
             headerDatelineBlock
         }
         .accessibilityElement(children: .contain)
