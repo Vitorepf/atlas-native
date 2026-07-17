@@ -11,6 +11,8 @@ enum A11yID {
     static let conversationOptions = "conversation-options"
     static let conversationToast = "conversation-toast"
     static let conversationOutline = "conversation-outline"
+    static let conversationOutlineSheet = "conversation-outline-sheet"
+    static let conversationStaleReadSeal = "conversation-stale-read-seal"
     static let conversationHeaderContinuity = "conversation-header-continuity"
     static let composerAttachmentStrip = "composer-attachment-strip"
     static let conversationNewMarker = "conversation-new-marker"
