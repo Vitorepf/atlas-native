@@ -5,7 +5,7 @@ import AtlasCore
 
 enum AutonomosDetailLedgerBudgetFields {
     @ViewBuilder
-    static func fields(_ b: AtlasAutonomosBudgets) -> some View {
+    static func fields(_ b: AtlasAutonomosBacklogBudgets) -> some View {
         AutonomosDetailChrome.field("dev mode", b.devBudget.mode)
         AutonomosDetailChrome.field("dev work orders", "\(b.devBudget.maxConcurrentWorkOrders)")
         AutonomosDetailChrome.field("forge mode", b.forgeBudget.mode)
