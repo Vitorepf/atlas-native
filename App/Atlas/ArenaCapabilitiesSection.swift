@@ -1,130 +1,20 @@
 import SwiftUI
-import Charts
 import AtlasCore
 
+/// Capacidades medidas — sem dados reais = silêncio total (lei V1, paridade AGORA/SUITES).
+/// Header → ArenaCapabilitiesSection+Header.swift
+/// Body → ArenaCapabilitiesSection+MeasuredBody.swift
 struct ArenaCapabilitiesSection: View {
     let capabilities: AtlasArenaCapabilities?
+    let reduceMotion: Bool
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("CAPACIDADES")
-                        .font(.system(.caption, weight: .semibold))
-                        .tracking(1.4)
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                    Text(capabilities?.engine ?? "motor não selecionado")
-                        .font(AtlasFont.mono(11))
-                        .foregroundStyle(AtlasTheme.textTertiary)
-                }
-                Spacer()
-                Text(capabilities?.mappingVersion ?? "não medido")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(capabilities == nil ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
-            }
-
-            if let capabilities, !capabilities.capabilities.isEmpty {
-                ForEach(capabilities.capabilities) { capability in
-                    ArenaCapabilityRow(capability: capability)
-                }
-                ArenaCapabilitiesChart(capabilities: capabilities.capabilities)
-                    .frame(height: 190)
-            } else {
-                Text("não medido")
-                    .font(AtlasFont.mono(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 8)
-                    .accessibilityLabel("capacidades não medidas")
-            }
-        }
-        .padding(16)
-        .atlasCard()
-    }
-}
-
-private struct ArenaCapabilityRow: View {
-    let capability: AtlasArenaCapability
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 7) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(capability.labelPt)
-                    .font(.system(.callout, weight: .medium))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .lineLimit(1)
-                Spacer()
-                Text("\(ArenaFormat.score(capability.score)) · c/A \(ArenaFormat.score(capability.withAtlas))")
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(capability.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
-                    .monospacedDigit()
-            }
-            DualBar(score: capability.score, withAtlas: capability.withAtlas)
-            Text("\(capability.casesTotal ?? 0) casos · \(capability.suitesContributing.joined(separator: ", "))")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(1)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(capability.labelPt), score \(ArenaFormat.score(capability.score)), com Atlas \(ArenaFormat.score(capability.withAtlas))")
-    }
-}
-
-private struct DualBar: View {
-    let score: Double?
-    let withAtlas: Double?
-
-    var body: some View {
-        VStack(spacing: 4) {
-            bar(score, color: AtlasTheme.textSecondary)
-            bar(withAtlas, color: AtlasTheme.accent)
-        }
-        .accessibilityHidden(true)
-    }
-
-    private func bar(_ value: Double?, color: Color) -> some View {
-        GeometryReader { proxy in
-            let width = proxy.size.width * min(max(value ?? 0, 0), 1)
-            ZStack(alignment: .leading) {
-                Capsule().fill(AtlasTheme.surfaceHi.opacity(0.8))
-                Capsule()
-                    .fill(value == nil ? AtlasTheme.textTertiary.opacity(0.25) : color.opacity(0.85))
-                    .frame(width: width)
-            }
-        }
-        .frame(height: 5)
-    }
-}
-
-private struct ArenaCapabilitiesChart: View {
-    let capabilities: [AtlasArenaCapability]
-
-    private struct Point: Identifiable {
-        let id = UUID()
-        let label: String
-        let series: String
-        let value: Double
-    }
-
-    private var points: [Point] {
-        capabilities.flatMap { capability in
-            [
-                capability.score.map { Point(label: capability.labelPt, series: "sem Atlas", value: $0) },
-                capability.withAtlas.map { Point(label: capability.labelPt, series: "com Atlas", value: $0) },
-            ].compactMap { $0 }
-        }
+    var measuredCapabilities: [AtlasArenaCapability] {
+        capabilities?.capabilities ?? []
     }
 
     var body: some View {
-        Chart(points) { point in
-            BarMark(x: .value("score", point.value), y: .value("capacidade", point.label))
-                .position(by: .value("série", point.series))
-                .foregroundStyle(point.series == "com Atlas" ? AtlasTheme.accent : AtlasTheme.textSecondary)
+        if !measuredCapabilities.isEmpty, let capabilities {
+            capabilitiesMeasuredBody(capabilities)
         }
-        .chartXScale(domain: 0...1)
-        .chartLegend(.visible)
-        .chartXAxis { AxisMarks(values: [0, 0.5, 1]) }
-        .chartYAxis(.hidden)
-        .accessibilityLabel("barras de capacidades medidas")
     }
 }

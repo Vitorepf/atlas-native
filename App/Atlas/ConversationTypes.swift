@@ -1,14 +1,6 @@
 import Foundation
 import AtlasCore
 
-struct ExecAgent: Equatable, Identifiable {
-    let id: String
-    let agent: String?     // orquestrador / atlas / …
-    let provider: String?  // hermes_cli / claude_cli / …
-    let model: String?     // claude-sonnet-4-6 / qwen3.6-27b / …
-    let status: String     // queued / processing / succeeded / failed / …
-}
-
 struct ChatBubble: Identifiable, Equatable {
     let id: String
     let role: String
@@ -26,7 +18,6 @@ struct ChatBubble: Identifiable, Equatable {
     var decideStage: String? = nil
     var decideStrategy: String? = nil
     var activities: [AtlasAgentActivity] = []
-    var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
     /// Aviso público do stream resumível. Só aparece quando o InteractionRun
     /// expõe uma tentativa real de reconexão; a View não estima rede.
     var reconnectNotice: String? = nil
@@ -52,52 +43,4 @@ struct ChatBubble: Identifiable, Equatable {
     /// C17: job real que FALHOU e aceita retry. `nil` quando não há job em
     /// estado falho; a casca só oferece "Retomar" com ele.
     var retryableJobId: JobID? = nil
-    /// Dado único para presença do iOS: título de fase e regra de timer vêm do
-    /// Core tipado, nunca de uma animação ou de texto do provider.
-    var executionPresence: AtlasExecutionPresence? {
-        AtlasExecutionPresence(
-            isExecuting: streaming,
-            presentationState: executionPresentationState,
-            currentActivity: currentActivity
-        )
-    }
-}
-
-// Anexo local (pré-envio) — o ÚNICO contrato de UI de anexos: a strip do
-// composer renderiza isto e nada mais. O AttachmentInput correspondente vive
-// no model, fora da View.
-struct LocalDraft: Identifiable, Equatable {
-    enum State: Equatable { case pronto, subindo, falhou(String) }
-    let id: String
-    let fileName: String
-    let mimeType: String
-    let kind: AtlasAttachmentKind
-    let bytes: Int
-    let preview: Data?     // pequena o bastante pra UIImage(data:) direto
-    var state: State = .pronto
-}
-
-enum FeedbackKind: String, CaseIterable, Identifiable {
-    case util, contexto, longo, fraco
-    var id: String { rawValue }
-    var label: String {
-        switch self {
-        case .util: return "útil"; case .contexto: return "contexto"
-        case .longo: return "longo"; case .fraco: return "fraco"
-        }
-    }
-    var payload: FeedbackAiInteractionInput {
-        switch self {
-        case .util: return .init(feedbackScore: 5, feedbackAction: "useful")
-        case .contexto: return .init(feedbackScore: 1, feedbackAction: "wrong_context")
-        case .longo: return .init(feedbackScore: 2, feedbackComment: "[too_long]")
-        case .fraco: return .init(feedbackScore: 1, feedbackComment: "[weak]")
-        }
-    }
-    var activeAction: String {
-        switch self {
-        case .util: return "useful"; case .contexto: return "wrong_context"
-        case .longo: return "too_long"; case .fraco: return "weak"
-        }
-    }
 }

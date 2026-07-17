@@ -1,14 +1,5 @@
 import Foundation
 
-public struct PreparedInteraction: Sendable {
-    public let input: CreateAiInteractionInput
-    public let wasPending: Bool
-    /// Identificador local da instrução de follow-up que originou este turno.
-    /// Nunca é enviado ao servidor; serve somente para reconciliar a outbox
-    /// com a fila local após relaunch.
-    public let followUpId: String?
-}
-
 /// Outbox mínima e profunda: um JSON atômico, carregado inteiro. Preserva o
 /// `clientId` que torna o create idempotente no servidor e sobrevive a kill,
 /// relaunch, timeout e troca de rede sem introduzir SwiftData.

@@ -2,236 +2,24 @@ import SwiftUI
 import AtlasCore
 
 // Renderiza markdown na tipografia do Atlas — porte de EditorialMarkdown.tsx.
-// Regra de ouro: *italic* é SEMPRE Fraunces italic (oralidade); **bold** é Sans
-// semibold (peso editorial); `code` é JetBrains Mono em surface (registro).
-// Tom "operational" (padrão das respostas): corpo em Sans; headings escalonados.
-//
-// Streaming (F2.7): enquanto `streaming`, memoiza o parse por contagem de chars
-// com throttle ~100ms (ou fronteira de bloco `\n\n` / fence). No finalize,
-// parse completo único — evita O(n²) re-parse a cada token.
+// Parse → AtlasMarkdownView+Parse.swift · Rendering → +Rendering · Code → +CodeBlock
+// Block → AtlasMarkdownView+BlockView.swift · Refresh → +ParseRefresh.swift
 struct AtlasMarkdownView: View {
     let text: String
     var streaming: Bool = false
 
-    @State private var blocks: [MarkdownBlock] = []
-    @State private var cachedCount: Int = -1
-    @State private var lastParseAt: CFAbsoluteTime = 0
+    @State var blocks: [MarkdownBlock] = []
+    @State var cachedCount: Int = -1
+    @State var lastParseAt: CFAbsoluteTime = 0
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
-                blockView(block)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .onAppear { refreshBlocks(force: true) }
-        .onChange(of: text) { _, _ in refreshBlocks(force: !streaming) }
-        .onChange(of: streaming) { _, isStreaming in
-            if !isStreaming { refreshBlocks(force: true) }
-        }
-    }
-
-    private func refreshBlocks(force: Bool) {
-        let count = text.count
-        if count == cachedCount, !force { return }
-
-        if !force, streaming {
-            let now = CFAbsoluteTimeGetCurrent()
-            let elapsed = now - lastParseAt
-            if elapsed < 0.1, !Self.isBlockBoundary(text) { return }
-            lastParseAt = now
-        } else {
-            lastParseAt = CFAbsoluteTimeGetCurrent()
-        }
-
-        cachedCount = count
-        blocks = AtlasMarkdown.parse(text)
-    }
-
-    /// Fronteira barata: parágrafo novo ou fence fechando — re-parse imediato.
-    private static func isBlockBoundary(_ text: String) -> Bool {
-        text.hasSuffix("\n\n") || text.hasSuffix("```\n") || text.hasSuffix("```")
-    }
-
-    @ViewBuilder
-    private func blockView(_ block: MarkdownBlock) -> some View {
-        switch block {
-        case .paragraph(let spans):
-            Text(inline(spans, base: .init(font: .system(size: 16), size: 16, color: AtlasTheme.textPrimary)))
-                .lineSpacing(6)
-
-        case .heading(let level, let spans):
-            heading(level, spans)
-
-        case .list(let ordered, let items):
-            VStack(alignment: .leading, spacing: 6) {
-                ForEach(Array(items.enumerated()), id: \.offset) { idx, item in
-                    HStack(alignment: .top, spacing: 0) {
-                        if ordered {
-                            Text("\(idx + 1).")
-                                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textSecondary)
-                                .frame(width: 26, alignment: .leading).padding(.top, 3)
-                        } else {
-                            Text("—")
-                                .font(.system(size: 16)).foregroundStyle(AtlasTheme.accent)
-                                .frame(width: 22, alignment: .leading)
-                        }
-                        Text(inline(item, base: .init(font: .system(size: 16), size: 16, color: AtlasTheme.textPrimary)))
-                            .lineSpacing(6)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
+        parseRefreshLifecycle(
+            VStack(alignment: .leading, spacing: 14) {
+                ForEach(Array(blocks.enumerated()), id: \.offset) { index, block in
+                    blockView(block, index: index)
                 }
             }
-
-        case .quote(let spans):
-            HStack(alignment: .top, spacing: 14) {
-                RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
-                Text(inline(spans, base: .init(font: AtlasFont.serifItalic(17), size: 17, color: AtlasTheme.textPrimary)))
-                    .lineSpacing(5)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .fixedSize(horizontal: false, vertical: true)
-
-        case .code(let codeText, let lang):
-            CodeBlockView(code: codeText, lang: lang)
-
-        case .divider:
-            Rectangle().fill(AtlasTheme.separator).frame(height: 1).padding(.vertical, 2)
-
-        case .table(let headers, let rows):
-            tableView(headers, rows)
-        }
-    }
-
-    @ViewBuilder
-    private func heading(_ level: Int, _ spans: [InlineSpan]) -> some View {
-        switch level {
-        case 1:
-            Text(inline(spans, base: .init(font: AtlasFont.serif(22, .semibold), size: 22, color: AtlasTheme.textPrimary)))
-                .padding(.top, 4)
-        case 2:
-            Text(plain(spans).uppercased())
-                .font(.system(size: 11, weight: .medium)).tracking(1.1)
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .padding(.top, 6).padding(.bottom, 2)
-        default:
-            Text(inline(spans, base: .init(font: .system(size: 14, weight: .semibold), size: 14, color: AtlasTheme.textPrimary)))
-                .padding(.top, 2)
-        }
-    }
-
-    private func tableView(_ headers: [[InlineSpan]], _ rows: [[[InlineSpan]]]) -> some View {
-        let colCount = max(headers.count, rows.map { $0.count }.max() ?? 0)
-        return VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                ForEach(0..<colCount, id: \.self) { ci in
-                    Text(plain(ci < headers.count ? headers[ci] : []).uppercased())
-                        .font(AtlasFont.mono(10, .medium)).tracking(1.4)
-                        .foregroundStyle(AtlasTheme.accent)
-                        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 8)
-                }
-            }
-            .padding(.vertical, 10)
-            .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.separator).frame(height: 1) }
-
-            ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
-                HStack(spacing: 0) {
-                    ForEach(0..<colCount, id: \.self) { ci in
-                        Text(inline(ci < row.count ? row[ci] : [], base: .init(font: .system(size: 14), size: 14, color: AtlasTheme.textPrimary)))
-                            .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 8)
-                    }
-                }
-                .padding(.vertical, 12)
-                .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1) }
-            }
-        }
-        .overlay(alignment: .top) { Rectangle().fill(AtlasTheme.separator).frame(height: 1) }
-    }
-
-    // MARK: - Inline → AttributedString (flui e quebra linha, com bg no code)
-
-    private struct InlineBase { let font: Font; let size: CGFloat; let color: Color }
-
-    private func inline(_ spans: [InlineSpan], base: InlineBase) -> AttributedString {
-        var out = AttributedString()
-        for span in spans {
-            var piece: AttributedString
-            switch span {
-            case .text(let t):
-                piece = AttributedString(t); piece.font = base.font; piece.foregroundColor = base.color
-            case .bold(let t):
-                piece = AttributedString(t)
-                piece.font = .system(size: base.size, weight: .semibold)
-                piece.foregroundColor = AtlasTheme.textPrimary
-            case .italic(let t):
-                piece = AttributedString(t)
-                piece.font = AtlasFont.serifItalic(base.size)
-                piece.foregroundColor = base.color
-            case .code(let t):
-                piece = AttributedString(" \(t) ")
-                piece.font = AtlasFont.mono(13)
-                piece.foregroundColor = AtlasTheme.textPrimary
-                piece.backgroundColor = AtlasTheme.surface
-            case .link(let t, let url):
-                piece = AttributedString(t)
-                piece.font = .system(size: base.size, weight: .medium)
-                piece.foregroundColor = AtlasTheme.prussian
-                piece.underlineStyle = .single
-                if let u = URL(string: url) { piece.link = u }
-            }
-            out.append(piece)
-        }
-        return out
-    }
-
-    private func plain(_ spans: [InlineSpan]) -> String {
-        spans.map {
-            switch $0 {
-            case .text(let t), .bold(let t), .italic(let t), .code(let t): return t
-            case .link(let t, _): return t
-            }
-        }.joined()
-    }
-}
-
-// Code block "carved in slate" com label de linguagem + botão copiar (gap do RN).
-// Scroll horizontal pra linhas longas; JetBrains Mono; copia SÓ este bloco.
-private struct CodeBlockView: View {
-    let code: String
-    let lang: String?
-    @State private var copied = false
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text((lang?.isEmpty == false ? lang! : "código").lowercased())
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
-                Spacer()
-                Button {
-                    UIPasteboard.general.string = code
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    withAnimation(AtlasMotion.editorial) { copied = true }
-                    Task { try? await Task.sleep(nanoseconds: 1_200_000_000); withAnimation(AtlasMotion.editorial) { copied = false } }
-                } label: {
-                    Text(copied ? "copiado" : "copiar")
-                        .font(AtlasFont.mono(11))
-                        .foregroundStyle(copied ? AtlasTheme.accent : AtlasTheme.textSecondary)
-                }
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 8)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                Text(code)
-                    .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textPrimary)
-                    .lineSpacing(5).textSelection(.enabled)
-                    .padding(.horizontal, 16).padding(.bottom, 14)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface)
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separator, lineWidth: 1))
+            .frame(maxWidth: .infinity, alignment: .leading)
         )
     }
 }
