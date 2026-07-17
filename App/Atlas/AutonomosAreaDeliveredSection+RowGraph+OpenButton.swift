@@ -2,6 +2,8 @@ import SwiftUI
 import AtlasCore
 
 // Graph-open button — peel de AutonomosAreaDeliveredSection+RowGraph.
+// Label → AutonomosAreaDeliveredSection+RowGraph+OpenButton+Label.swift
+// Action → AutonomosAreaDeliveredSection+RowGraph+OpenButton+Action.swift
 // A11y → AutonomosAreaDeliveredSection+RowGraph+OpenButton+A11y.swift
 
 extension AutonomosAreaDeliveredSection {
@@ -13,10 +15,8 @@ extension AutonomosAreaDeliveredSection {
         repo: String
     ) -> some View {
         deliveredGraphOpenA11y(
-            Button {
-                openCommit(cycle.mergeHash, repo: repo)
-            } label: {
-                deliveredRow(cycle, graphHint: true)
+            Button(action: deliveredGraphOpenAction(cycle: cycle, repo: repo)) {
+                deliveredGraphOpenLabel(cycle: cycle)
             }
             .buttonStyle(.plain),
             cycle: cycle,

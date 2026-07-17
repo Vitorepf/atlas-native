@@ -3,6 +3,8 @@ import SwiftUI
 import AtlasCore
 
 // Phase/id bind — peel de AtlasWidgetAccessories+Fleet+A11yChrome.
+// Transaction → AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind+Transaction.swift
+// Spoken → AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind+Spoken.swift
 // SpokenLabel → AtlasWidgetAccessories+Fleet+A11yChrome+SpokenLabel.swift
 
 extension FleetWidgetView {
@@ -11,10 +13,8 @@ extension FleetWidgetView {
         snapshot: AtlasNativeSnapshot,
         stale: Bool
     ) -> some View {
-        fleetA11ySpokenLabel(
-            content
-                .id(FleetWidgetA11y.contentPhaseID(snapshot: snapshot, stale: stale))
-                .transaction { transaction in fleetA11yTransaction(&transaction) },
+        fleetA11yPhaseSpoken(
+            fleetA11yPhaseTransaction(content, snapshot: snapshot, stale: stale),
             snapshot: snapshot,
             stale: stale
         )

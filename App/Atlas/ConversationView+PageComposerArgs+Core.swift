@@ -3,6 +3,7 @@ import PhotosUI
 import AtlasCore
 
 // Core args — peel de ConversationView+PageComposerArgs.
+// Session → ConversationView+PageComposerArgs+Core+Session.swift
 // Bindings → ConversationView+PageComposerArgs+Bindings.swift
 
 extension ConversationView {
@@ -22,11 +23,12 @@ extension ConversationView {
             steerTrace: Binding<ConversationSteerTraceRef?>
         )
     ) -> ConversationComposer {
-        ConversationComposer(
-            model: model,
-            session: session,
-            reduceMotion: reduceMotion,
-            focused: $focused,
+        let sessionArgs = conversationComposerSessionArgs(focused: $focused)
+        return ConversationComposer(
+            model: sessionArgs.model,
+            session: sessionArgs.session,
+            reduceMotion: sessionArgs.reduceMotion,
+            focused: sessionArgs.focused,
             mode: bindings.mode,
             showModeSheet: bindings.showModeSheet,
             showWorkspaceSheet: bindings.showWorkspaceSheet,

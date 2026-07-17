@@ -3,6 +3,8 @@ import SwiftUI
 import AtlasCore
 
 // Spoken label bind — peel de AtlasWidgetAccessories+LiveSession+A11yChrome.
+// Combine → AtlasWidgetAccessories+LiveSession+A11ySpokenBind+Combine.swift
+// Label → AtlasWidgetAccessories+LiveSession+A11ySpokenBind+Label.swift
 
 extension LiveSessionWidgetView {
     func liveSessionSpokenLabelBind<Content: View>(
@@ -11,13 +13,9 @@ extension LiveSessionWidgetView {
         live: AtlasNativeSnapshot.LiveSession?,
         stale: Bool
     ) -> some View {
-        content
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(LiveSessionWidgetA11y.spokenLabel(
-                snapshot: snapshot,
-                live: live,
-                stale: stale,
-                age: snapshot.ageText(at: entry.date)
-            ))
+        liveSessionSpokenCombine(content)
+            .accessibilityLabel(
+                liveSessionSpokenLabelText(snapshot: snapshot, live: live, stale: stale)
+            )
     }
 }

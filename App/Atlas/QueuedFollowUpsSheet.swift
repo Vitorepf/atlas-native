@@ -3,6 +3,7 @@ import SwiftUI
 /// Folha C11: mensagens enfileiradas durante execução — promover (enviar agora)
 /// ou remover. Só renderiza o que `ConversationModel.queuedMessages` expõe.
 /// Content → QueuedFollowUpsSheet+Content.swift · Row → QueuedFollowUpRow.swift.
+/// EmptyDismiss → QueuedFollowUpsSheet+EmptyDismiss.swift
 struct QueuedFollowUpsSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Environment(\.dismiss) private var dismiss
@@ -12,7 +13,7 @@ struct QueuedFollowUpsSheet: View {
     var body: some View {
         Group {
             if model.queuedMessages.isEmpty {
-                Color.clear.onAppear { dismiss() }
+                emptyQueueDismiss
             } else {
                 sheetContent
             }

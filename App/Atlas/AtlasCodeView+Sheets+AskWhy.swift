@@ -2,7 +2,9 @@ import SwiftUI
 import AtlasCore
 
 // Folhas ask/why — peel de AtlasCodeView+Sheets (régua ≤100).
-// Ask → AtlasCodeView+Sheets+AskConversation.swift
+// Ask → AtlasCodeView+Sheets+AskWhy+AskSheet.swift
+// Why → AtlasCodeView+Sheets+AskWhy+WhySheet.swift
+// AskConversation → AtlasCodeView+Sheets+AskConversation.swift
 
 struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   let session: AtlasSession
@@ -14,14 +16,6 @@ struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   @Binding var askDraft: String
 
   func body(content: Content) -> some View {
-    content
-      .sheet(isPresented: $showsAskCard) {
-        askConversationSheet
-      }
-      .sheet(item: $whyFileTarget) { target in
-        AtlasCodeWhySheet(client: session.client, repo: model.repo, file: target.path)
-          .presentationDetents([.large])
-          .presentationDragIndicator(.visible)
-      }
+    askWhyWhySheet(on: askWhyAskSheet(on: content))
   }
 }

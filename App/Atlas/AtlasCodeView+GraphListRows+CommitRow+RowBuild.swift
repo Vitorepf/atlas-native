@@ -2,6 +2,8 @@ import SwiftUI
 import AtlasCore
 
 // Row build — peel de AtlasCodeView+GraphListRows+CommitRow.
+// Init → AtlasCodeView+GraphListRows+CommitRow+RowBuild+Init.swift
+// Handlers → AtlasCodeView+GraphListRows+CommitRow+RowBuild+Handlers.swift
 
 extension AtlasCodeView {
     func graphCommitRowView(
@@ -9,18 +11,18 @@ extension AtlasCodeView {
         index: Int,
         total: Int
     ) -> AtlasCodeCommitRow {
-        AtlasCodeCommitRow(
-            node: node,
-            state: model.state(for: node),
-            ruleId: model.ruleId(for: node),
-            trunk: model.violations?.trunk,
-            isFirst: index == 0,
-            isLast: index == total - 1,
-            isDimmed: !visibleAnchors.isEmpty && !visibleAnchors.contains(node.hash)
-        ) {
-            graphCommitRowSelect(node)
-        } onLongPress: {
-            graphCommitRowLongPress(node)
-        }
+        let initArgs = graphCommitRowInit(node: node, index: index, total: total)
+        let handlers = graphCommitRowHandlers(for: node)
+        return AtlasCodeCommitRow(
+            node: initArgs.node,
+            state: initArgs.state,
+            ruleId: initArgs.ruleId,
+            trunk: initArgs.trunk,
+            isFirst: initArgs.isFirst,
+            isLast: initArgs.isLast,
+            isDimmed: initArgs.isDimmed,
+            onTap: handlers.onSelect,
+            onLongPress: handlers.onLongPress
+        )
     }
 }

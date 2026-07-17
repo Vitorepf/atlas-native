@@ -2,6 +2,8 @@ import Foundation
 import AtlasCore
 
 // spokenSection assembly — peel de AutonomosDigestSection+A11yAggregate.
+// Schedule → AutonomosDigestSection+A11yAggregate+SpokenSection+Schedule.swift
+// Last → AutonomosDigestSection+A11yAggregate+SpokenSection+Last.swift
 
 extension AutonomosDigestSectionA11y {
     static func spokenSection(
@@ -14,13 +16,13 @@ extension AutonomosDigestSectionA11y {
         riskHeadline: String?,
         decisionTitle: String?
     ) -> String {
-        var parts = spokenScheduleLeadParts(
+        var parts = spokenSectionScheduleParts(
             nextDigestAt: nextDigestAt,
             scheduleReason: scheduleReason,
             hasLast: hasLast
         )
         if hasLast {
-            spokenLastBody(
+            spokenSectionLastParts(
                 parts: &parts,
                 windowCaption: windowCaption,
                 counts: counts,

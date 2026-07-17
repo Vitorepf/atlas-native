@@ -3,6 +3,8 @@ import PhotosUI
 import AtlasCore
 
 // Sheet/trace bindings — peel de ConversationView+PageComposerArgs.
+// Sheets → ConversationView+PageComposerArgs+Bindings+Sheets.swift
+// Trace → ConversationView+PageComposerArgs+Bindings+Trace.swift
 
 extension ConversationView {
     var conversationComposerSheetBindings: (
@@ -19,19 +21,21 @@ extension ConversationView {
         artifactTrace: Binding<ConversationReviewTraceRef?>,
         steerTrace: Binding<ConversationSteerTraceRef?>
     ) {
-        (
-            mode: $mode,
-            showModeSheet: $showModeSheet,
-            showWorkspaceSheet: $showWorkspaceSheet,
-            showEffortSheet: $showEffortSheet,
-            showQueueSheet: $showQueueSheet,
-            showAttachmentSheet: $showAttachmentSheet,
-            pickedPhoto: $pickedPhoto,
-            showFileImporter: $showFileImporter,
-            showCamera: $showCamera,
-            reviewTrace: $reviewTrace,
-            artifactTrace: $artifactTrace,
-            steerTrace: $steerTrace
+        let sheets = conversationComposerSheetFlagBindings
+        let traces = conversationComposerTraceBindings
+        return (
+            mode: sheets.mode,
+            showModeSheet: sheets.showModeSheet,
+            showWorkspaceSheet: sheets.showWorkspaceSheet,
+            showEffortSheet: sheets.showEffortSheet,
+            showQueueSheet: sheets.showQueueSheet,
+            showAttachmentSheet: sheets.showAttachmentSheet,
+            pickedPhoto: sheets.pickedPhoto,
+            showFileImporter: sheets.showFileImporter,
+            showCamera: sheets.showCamera,
+            reviewTrace: traces.reviewTrace,
+            artifactTrace: traces.artifactTrace,
+            steerTrace: traces.steerTrace
         )
     }
 }
