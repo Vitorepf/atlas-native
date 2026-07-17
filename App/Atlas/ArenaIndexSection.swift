@@ -7,6 +7,12 @@ struct ArenaIndexSection: View {
     var onEngineTap: ((AtlasArenaCompositeEngine) -> Void)?
 
     var body: some View {
+        if !composite.engines.isEmpty {
+            indexContent
+        }
+    }
+
+    private var indexContent: some View {
         VStack(alignment: .leading, spacing: 14) {
             sectionHeader
             ForEach(composite.engines) { engine in

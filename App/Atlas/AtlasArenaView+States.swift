@@ -21,6 +21,18 @@ extension AtlasArenaView {
             .accessibilityLabel(message)
     }
 
+    var domainUnavailableCard: some View {
+        Text(ArenaModel.domainUnavailableCopy)
+            .font(.system(.subheadline))
+            .foregroundStyle(AtlasTheme.textSecondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .atlasCard()
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(domainUnavailableSpoken)
+            .accessibilityHint(domainUnavailableHint)
+    }
+
     var networkFailureCard: some View {
         let kind = model.loadFailureKind
         let hasToken = session.hasToken
@@ -66,5 +78,7 @@ extension AtlasArenaView {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.alert.opacity(0.10)))
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.alert.opacity(0.35), lineWidth: 1))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("regressão, \(text)")
     }
 }

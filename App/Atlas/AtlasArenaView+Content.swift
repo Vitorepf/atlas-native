@@ -12,19 +12,21 @@ extension AtlasArenaView {
             loadingCard
         case .failed where model.composite == nil:
             if model.isDomainUnavailable {
-                stateCard(ArenaModel.domainUnavailableCopy)
+                domainUnavailableCard
             } else {
                 networkFailureCard
             }
         default:
             if let composite = model.composite {
                 ArenaNowSection(liveRuns: model.liveRuns, reduceMotion: reduceMotion)
-                ArenaIndexSection(
-                    composite: composite,
-                    reduceMotion: reduceMotion,
-                    onEngineTap: { selectedEngine = $0 }
-                )
+                if showsIndexSection(composite) {
+                    ArenaIndexSection(
+                        composite: composite,
+                        reduceMotion: reduceMotion,
+                        onEngineTap: { selectedEngine = $0 }
+                    )
                     .accessibilityIdentifier(A11yID.arenaIndexSection)
+                }
                 ArenaCapabilitiesSection(capabilities: model.capabilities)
                 if let scoreboard = model.scoreboard, !scoreboard.suites.isEmpty {
                     ArenaSuitesSection(
@@ -44,9 +46,11 @@ extension AtlasArenaView {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(AtlasTheme.accent)
+                .accessibilityLabel(runButtonSpoken)
+                .accessibilityHint(runButtonHint)
                 .accessibilityIdentifier(A11yID.arenaRunButton)
             } else {
-                stateCard(ArenaModel.domainUnavailableCopy)
+                domainUnavailableCard
             }
         }
     }

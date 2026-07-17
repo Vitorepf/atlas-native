@@ -18,17 +18,26 @@ struct AtlasArenaView: View {
                     header
                     if let exception = model.regressionException {
                         exceptionBanner(exception)
+                            .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: -6)))
                     }
                     content
+                        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
                 }
                 .padding(.horizontal, AtlasTheme.Space.screen)
                 .padding(.vertical, 18)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.regressionException != nil)
             }
             .scrollIndicators(.hidden)
         }
         .navigationTitle("Arena")
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier(A11yID.arenaScreen)
+        .accessibilityHint(
+            model.isDomainUnavailable && model.composite == nil
+                ? domainUnavailableHint
+                : "medição de regressão dos motores"
+        )
         .sheet(item: $selectedSuite) { suite in
             ArenaSuiteSheet(suite: suite)
         }
@@ -57,13 +66,14 @@ struct AtlasArenaView: View {
             Text("Medição dos motores")
                 .font(AtlasFont.serif(28, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            if let age = model.snapshotAgeText {
+            if let age = model.snapshotAgeText, model.composite != nil {
                 Text("snapshot \(age)")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Arena, medição dos motores")
+        .accessibilityLabel(headerSpokenLabel)
+        .accessibilityAddTraits(.isHeader)
     }
 }
