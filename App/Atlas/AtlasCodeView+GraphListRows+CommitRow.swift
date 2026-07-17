@@ -20,11 +20,9 @@ extension AtlasCodeView {
             isLast: index == total - 1,
             isDimmed: !visibleAnchors.isEmpty && !visibleAnchors.contains(node.hash)
         ) {
-            selectedNode = node
-            Task { await provenanceModel.load(hash: node.hash) }
+            graphCommitRowSelect(node)
         } onLongPress: {
-            guard visibleAnchors.contains(node.hash) else { return }
-            Task { await openWhyBiographyIfAvailable(for: node) }
+            graphCommitRowLongPress(node)
         }
         .accessibilityRotorEntry(id: node.id, in: graphRotor)
     }

@@ -16,11 +16,7 @@ extension SelfConstructionReceiptSheet {
                     .tracking(0.9)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
-                Text(receipt.proofLine)
-                    .font(AtlasFont.mono(12))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .textSelection(.enabled)
-                    .accessibilityHidden(true)
+                proofCopyBlock
             }
         )
     }

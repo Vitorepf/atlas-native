@@ -14,14 +14,6 @@ struct BreathingDiamond: View {
     var effectiveReduceMotion: Bool { reduceMotion ?? envReduceMotion }
 
     var body: some View {
-        applyBreathHandlers(
-            RoundedRectangle(cornerRadius: 2)
-                .fill(AtlasTheme.accent)
-                .frame(width: size, height: size)
-                .rotationEffect(.degrees(45))
-                .scaleEffect(on ? 1.18 : 1)
-                .opacity(on ? 0.45 : 1)
-                .accessibilityHidden(true)
-        )
+        applyBreathHandlers(breathingDiamondShape)
     }
 }

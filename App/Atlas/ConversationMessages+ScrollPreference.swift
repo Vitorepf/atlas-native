@@ -10,16 +10,11 @@ extension ConversationMessages {
         proxy: ScrollViewProxy,
         @ViewBuilder content: () -> Content
     ) -> some View {
-        content()
-            .scrollIndicators(.hidden)
-            .scrollDismissesKeyboard(.interactively)
-            .onPreferenceChange(BottomDistanceKey.self) { minY in
-                guard !model.bubbles.isEmpty else {
-                    awayFromBottom = false
-                    return
-                }
-                awayFromBottom = minY > UIScreen.main.bounds.height + 140
-            }
+        applyScrollDistancePref(
+            content()
+                .scrollIndicators(.hidden)
+                .scrollDismissesKeyboard(.interactively)
+        )
             .overlay(alignment: .bottomTrailing) {
                 scrollFAB(proxy: proxy)
             }

@@ -9,12 +9,7 @@ extension AutonomosView {
     func autonomosLifecycleChrome<Content: View>(_ content: Content) -> some View {
         autonomosRhythmTask(
             autonomosLifecycleSheets(
-                content
-                    .navigationBarHidden(true)
-                    .accessibilityIdentifier(A11yID.autonomosScreen)
-                    .accessibilityLabel(spokenScreenLabel())
-                    .accessibilityHint(Self.screenHint)
-                    .task { if case .idle = model.phase { await model.load() } }
+                autonomosLifecycleScreenA11y(content)
             )
         )
     }

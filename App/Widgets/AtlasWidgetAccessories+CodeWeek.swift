@@ -12,14 +12,7 @@ struct CodeWeekWidgetView: View {
 
     var body: some View {
         SnapshotContainer {
-            guard let snapshot = entry.snapshot else {
-                return AnyView(InstallPromptView())
-            }
-            guard let week = snapshot.week else {
-                return AnyView(unpublishedWeek)
-            }
-            let stale = snapshot.isStale(at: entry.date)
-            return AnyView(weekBody(week: week, stale: stale, age: snapshot.ageText(at: entry.date)))
+            AnyView(codeWeekEntryView(snapshot: entry.snapshot))
         }
         .widgetURL(URL(string: "atlas://code"))
     }

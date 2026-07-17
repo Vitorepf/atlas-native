@@ -9,11 +9,7 @@ import AtlasCore
 extension AutonomosFleetSection {
     @ViewBuilder
     func agentRow(_ agent: AtlasAutonomosFleetAgent, index: Int, compact: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 5) {
-            agentRowHeader(agent)
-            agentCompactTags(agent, compact: compact)
-            agentAuditTags(agent)
-        }
+        agentRowInnerStack(agent, compact: compact)
         .padding(12)
         .atlasCard(cornerRadius: 12)
         .autonomosFleetAgentA11y(

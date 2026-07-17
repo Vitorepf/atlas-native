@@ -12,8 +12,7 @@ struct EffortSheet: View {
     var body: some View {
         effortA11yBind(
             SheetShell(title: "Esforço") {
-                effortFootnoteCopy
-                effortRows
+                effortSheetContent
             }
         )
     }

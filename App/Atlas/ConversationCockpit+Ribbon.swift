@@ -13,13 +13,6 @@ struct ExecutionRibbon: View {
     let reduceMotion: Bool
     let onStop: () -> Void
     var body: some View {
-        executionRibbonCard(
-            VStack(alignment: .leading, spacing: 8) {
-                reconnectBannerStack
-                activitiesTimelineBlock
-                agentLanes
-                decideStrategyLine
-            }
-        )
+        executionRibbonCard(executionRibbonStack)
     }
 }

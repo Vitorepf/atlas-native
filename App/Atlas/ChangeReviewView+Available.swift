@@ -11,17 +11,7 @@ extension ChangeReviewSheet {
         case .unavailable:
             reviewUnavailableContent(review)
         case .available:
-            if Self.hasReviewSurface(review) {
-                ChangeReviewAvailableContent(
-                    reviews: reviews,
-                    traceId: traceId,
-                    review: review,
-                    expandedDiffPatch: $expandedDiffPatch,
-                    applying: $applying
-                )
-            } else {
-                reviewEmptySurface()
-            }
+            reviewAvailableBranch(review)
         }
     }
 }

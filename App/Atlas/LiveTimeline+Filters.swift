@@ -14,11 +14,7 @@ struct TimelineFilterChips: View {
 
     var body: some View {
         HStack(spacing: 6) {
-            ForEach(TimelineReadFilter.allCases) { option in
-                let active = option == filter
-                let count = option.apply(to: baseRows).count
-                filterChipButton(option, active: active, count: count)
-            }
+            filterChipLoop
         }
         .padding(.leading, 20)
         .accessibilityIdentifier(A11yID.liveTimelineFilters)

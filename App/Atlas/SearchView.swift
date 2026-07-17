@@ -14,11 +14,6 @@ struct SearchView: View {
     @FocusState var focused: Bool
 
     var body: some View {
-        searchA11yChrome(
-            ZStack {
-                AtlasTheme.bg.ignoresSafeArea()
-                searchLayout
-            }
-        )
+        searchA11yChrome(searchBackgroundShell)
     }
 }

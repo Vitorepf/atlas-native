@@ -12,15 +12,13 @@ extension LiveSessionWidgetView {
         live: AtlasNativeSnapshot.LiveSession?,
         stale: Bool
     ) -> some View {
-        content
-            .id(LiveSessionWidgetA11y.contentPhaseID(snapshot: snapshot, live: live, stale: stale))
-            .transaction { transaction in liveSessionA11yTransaction(&transaction) }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(LiveSessionWidgetA11y.spokenLabel(
-                snapshot: snapshot,
-                live: live,
-                stale: stale,
-                age: snapshot.ageText(at: entry.date)
-            ))
+        liveSessionSpokenLabelBind(
+            content
+                .id(LiveSessionWidgetA11y.contentPhaseID(snapshot: snapshot, live: live, stale: stale))
+                .transaction { transaction in liveSessionA11yTransaction(&transaction) },
+            snapshot: snapshot,
+            live: live,
+            stale: stale
+        )
     }
 }

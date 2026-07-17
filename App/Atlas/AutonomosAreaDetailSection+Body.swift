@@ -10,18 +10,8 @@ import AtlasCore
 extension AutonomosAreaDetailSection {
     var areaDetailBody: some View {
         VStack(alignment: .leading, spacing: 16) {
-            areaHeader
-            areaObjectiveBlock
-            metricsRow
-            backlogDetailShortcuts
-            placementSection
-            AutonomosAreaDeliveredSection(
-                area: area,
-                model: model,
-                onSelfConstructionReceipt: onSelfConstructionReceipt
-            )
-            ownedSystemsBlock
-            areaControls
+            areaDetailUpperStack
+            areaDetailLowerStack
         }
     }
 }

@@ -21,12 +21,6 @@ struct ConversationMessages: View {
     var onCopy: (String, String) -> Void
 
     var body: some View {
-        ScrollViewReader { proxy in
-            scrollChrome(proxy: proxy) {
-                ScrollView {
-                    messagesList()
-                }
-            }
-        }
+        messagesReaderBody
     }
 }

@@ -14,11 +14,7 @@ struct ChangeReviewRunActions: View {
     var body: some View {
         let available = review.review.availableActions
         if !available.isEmpty {
-            HStack(spacing: 10) {
-                acceptButton(available: available)
-                rejectButton(available: available)
-                if applying { applyingIndicator }
-            }
+            runActionButtonRow(available: available)
             .disabled(applying)
             .padding(.top, 4)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: applying)
