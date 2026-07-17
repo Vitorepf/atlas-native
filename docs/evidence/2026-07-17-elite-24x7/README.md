@@ -14,9 +14,9 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **579** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXII tip `4da9b49` |
-| Commits no tip (`git rev-list --count HEAD`) | 881 | inclui histórico pré-Elite |
-| Commits à frente de `origin/main` | 580 | trabalho Elite + peels nesta branch |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **581** | primeiro commit do plano: `ec931f2`; Elite CXXXXXLXLXIII tip `47e346b` |
+| Commits no tip (`git rev-list --count HEAD`) | 883 | inclui histórico pré-Elite |
+| Commits à frente de `origin/main` | 582 | trabalho Elite + peels nesta branch |
 
 Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXLXLXII (este tip)
+## Entrega Elite CXXXXXLXLXIII (este tip)
+
+- `polish(ui)` CICLO B: AreaLabel; TraceEvidence `+Known`; Artifact Preview `+Document/+File` States `+Busy/+Loaded`; Mirror A11y `+Counted` Headline `+Active/+QuietBranch`; Effort Spoken/Subtitle `+Light`; Toolbar Effort `+Light`; AtlasType Anchor `+Large/+Small`; CommitRow Branch `+Healthy`; CodeView Graph `+Loading/+Loaded` A11y `+Loaded`; Root Destinations `+ConversationRoutes/+DomainRoutes` Hub `+Autonomos/+ArenaCode`; DetailContent `+Work/+Ledger`; Arena A11y `+Failed/+FailedID`; FilterApply `+Style`; Provenance Kickers `+State`; Markdown Inline `+Fallback`. Tip `47e346b`.
+- 29 peels · 50 arquivos · over100=0 · App/Atlas+Widgets swift=2661; App/Widgets swift=203; zero Route nova.
+
+## Entrega Elite CXXXXXLXLXII (anterior)
 
 - `polish(ui)` CICLO B: ActivityIcon `+Intent/+Tool/+Terminal`; GraphFilter `+Label`; DetailSheet `+Title`; FailureCopy `+Network/+AuthServer` Hint `+Network/+AuthServer`; AgentStatus `+Active/+Terminal`; Exec Icon/Presentation/KindBadge Attention/Terminal; FileRow Verb `+Mutate/+Transform`; ChangeReview/Artifact A11y `+Load/+Available`; DraftThumb `+Size/+State`; Radar Content `+Loading` A11y `+LoadedID`; Autonomos Spoken `+Phase`; Palette `+Color`; Search QueryPhase `+NetworkFailure/+LoadingShell`; LiveNow Clock `+Branch`; Editorial Feedback `+Base`; Widgets LockLive `+Family` CodeWeek `+Quiet/+Active` LockScreen Badge `+FailAtt/+ExtRecPln`. Tip `4da9b49`.
 - 37 peels · 60 arquivos · over100=0 · App/Atlas+Widgets swift=2632; App/Widgets swift=203; zero Route nova.
