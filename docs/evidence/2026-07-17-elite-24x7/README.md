@@ -14,7 +14,7 @@ Ondas **L–C** (pós-XLIX): peels CICLO C/D residuais contínuos — Arena/Revi
 
 | Métrica | Valor | Nota |
 |---|---|---|
-| Commits desde plano Elite (`ec931f2` → `HEAD`) | **424+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXVII tip `f1c2321` |
+| Commits desde plano Elite (`ec931f2` → `HEAD`) | **426+** | primeiro commit do plano: `ec931f2`; Elite CXXXXXVIII tip `7f6706f` |
 | Commits no tip (`git rev-list --count HEAD`) | 539 | inclui histórico pré-Elite |
 | Commits à frente de `origin/main` | 238 | trabalho Elite + peels nesta branch |
 
@@ -127,7 +127,12 @@ Revalidar no Mac com `git rev-list --count ec931f2..HEAD` se a branch avançar.
 | 91 | `App/Atlas/TurnPresence+LiveActivity.swift` |
 | 91 | `App/Atlas/LiveActivityRemoteBridge.swift` |
 
-## Entrega Elite CXXXXXVII (este tip)
+## Entrega Elite CXXXXXVIII (este tip)
+
+- `refactor(ui)` CICLO B: Conversation+A11yEmpty; Area+MetricsChips; Nightly+A11yShell; Steer+ToolbarCancel; Arena+StackHeader; Review+ApplyingStatic; LiveNow+ContentTitleText; Messages+ScrollAutoGate; Workspace+EditorialGlyph. Tip `7f6706f`.
+- Zero App/Widgets >100; zero Route nova.
+
+## Entrega Elite CXXXXXVII (anterior)
 
 - `refactor(ui)` CICLO B: Plan+RevisionArchiveWhen; Messages+A11yFAB; Loaded+A11yControlError; Arena+FailureRetryA11y; Fleet+QuietA11y. Tip `f1c2321`.
 - Zero App/Widgets >100; zero Route nova.
