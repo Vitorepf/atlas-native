@@ -5,13 +5,13 @@ import SwiftUI
 
 extension AtlasCodeRadarView {
     var radarContentShell: some View {
-        ZStack {
-            AtlasTheme.bg.ignoresSafeArea()
-            radarNavShell(
-                radarContent
-                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
-                    .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-            )
-        }
+        // Fundo como .background: a barra nativa precisa enxergar o scroll
+        // para ligar o scroll-edge material (ZStack escondia).
+        radarNavShell(
+            radarContent
+                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
+        )
+        .background(AtlasTheme.bg.ignoresSafeArea())
     }
 }

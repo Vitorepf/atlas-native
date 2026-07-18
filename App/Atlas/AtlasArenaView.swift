@@ -16,12 +16,13 @@ struct AtlasArenaView: View {
     @State var suitesExpanded = false
 
     var body: some View {
+        // Fundo como .background (não camada de ZStack): a barra nativa só
+        // liga o scroll-edge material quando enxerga o ScrollView — sem isso
+        // o conteúdo rolava legível por baixo do título.
         arenaSheets(on:
             arenaLifecycleChrome(
-                ZStack {
-                    AtlasTheme.bg.ignoresSafeArea()
-                    arenaScrollBody
-                }
+                arenaScrollBody
+                    .background(AtlasTheme.bg.ignoresSafeArea())
             )
         )
     }

@@ -6,10 +6,9 @@ import AtlasCore
 extension ChangeReviewSheet {
     var reviewSheetChrome: some View {
         NavigationStack {
-            ZStack {
-                AtlasTheme.bg.ignoresSafeArea()
-                content
-            }
+            // Fundo como .background: destrava o scroll-edge material da barra.
+            content
+                .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Revisar mudanças")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { reviewToolbar }
