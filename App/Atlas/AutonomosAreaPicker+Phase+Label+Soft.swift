@@ -8,7 +8,7 @@ extension AutonomosAreaPicker {
         switch area.loopStatus.phase {
         case .paused: return "pausada"
         case .running: return "executando"
-        case .idle: return "sem lease"
+        case .idle: return "em espera"
         default: return nil
         }
     }

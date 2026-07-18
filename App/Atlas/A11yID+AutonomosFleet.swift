@@ -3,6 +3,7 @@ import Foundation
 // Autonomos fleet A11yIDs — peel de A11yID+Autonomos.
 
 extension A11yID {
+    static let autonomosFleetDormant = "autonomos-fleet-dormant"
     static let autonomosFleetEmpty = "autonomos-fleet-empty"
     static let autonomosFleetQuiet = "autonomos-fleet-quiet"
     static let autonomosFleetSection = "autonomos-fleet-section"

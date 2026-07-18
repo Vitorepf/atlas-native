@@ -9,7 +9,7 @@ extension AutonomosFleetHistorySection {
     @ViewBuilder
     func historyEventBody(event: AtlasAutonomosFleetHistoryEvent) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(event.event)
+            Text(AutonomosFleetHistoryCopy.event(event.event))
                 .font(.system(.caption, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)

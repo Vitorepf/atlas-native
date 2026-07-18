@@ -8,6 +8,8 @@ extension AutonomosFleetSummary {
     var summaryHealthBranch: some View {
         if isQuiet {
             quietSummaryLine
+        } else if AutonomosFleetHealth.isDormant(fleet: fleet) {
+            dormantSummaryLine
         } else {
             metricsSummaryRow
         }

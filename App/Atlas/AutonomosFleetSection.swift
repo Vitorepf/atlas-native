@@ -10,9 +10,15 @@ struct AutonomosFleetSection: View {
     var incidentPresent: Bool = false
     var auditModeEnabled: Bool = false
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+    /// Frota em repouso colapsa em 1 linha; o toque reabre os cards.
+    @State var dormantRowsExpanded = false
 
     var isQuiet: Bool {
         AutonomosFleetHealth.isQuiet(fleet: fleet, incidentPresent: incidentPresent)
+    }
+
+    var isDormant: Bool {
+        AutonomosFleetHealth.isDormant(fleet: fleet)
     }
 
     var body: some View {

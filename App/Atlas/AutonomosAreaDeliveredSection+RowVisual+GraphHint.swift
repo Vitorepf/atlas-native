@@ -13,7 +13,9 @@ extension AutonomosAreaDeliveredSection {
                 .accessibilityHidden(true)
         }
         Spacer()
-        Text(cycle.recordedAt).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+        // "há 6 semanas" no lugar do ISO cru; sem parse, o cru ainda é verdade.
+        Text(AtlasTime.date(cycle.recordedAt).map { "há \(AutonomosChrome.relativeAge(from: $0))" } ?? cycle.recordedAt)
+            .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
             .lineLimit(1)
     }
 }

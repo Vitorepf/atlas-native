@@ -14,6 +14,8 @@ struct AutonomosAreaDetailSection: View {
     let onSelfConstructionReceipt: (SelfConstructionReceipt) -> Void
 
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+    /// Objetivo clampado a 3 linhas; o toque abre o parágrafo inteiro.
+    @State var objectiveExpanded = false
 
     var body: some View {
         areaDetailCardChrome(areaDetailBody)
