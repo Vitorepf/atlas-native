@@ -10,7 +10,9 @@ enum AutonomosDetailWorkOrderFields {
         AutonomosDetailChrome.field("id", item.workOrderId)
         AutonomosDetailChrome.field("finding", item.findingHash)
         AutonomosDetailChrome.field("route", item.route)
-        AutonomosDetailChrome.field("owner service", item.routesToOwnerService)
+        if let ownerService = item.routesToOwnerService {
+            AutonomosDetailChrome.field("owner service", ownerService)
+        }
         AutonomosDetailChrome.field("risk", item.riskLevel)
         AutonomosDetailChrome.field("priority", "\(item.priorityScore)")
         AutonomosDetailChrome.field("status", item.status)

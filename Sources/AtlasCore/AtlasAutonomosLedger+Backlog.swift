@@ -7,7 +7,9 @@ public struct AtlasAutonomosWorkOrder: Codable, Sendable, Equatable, Identifiabl
     public let findingHash: String
     public let title: String
     public let route: String
-    public let routesToOwnerService: String
+    /// O servidor emite `null` quando o work order ainda não roteou para um
+    /// owner service; ausência é estado real, não erro de contrato.
+    public let routesToOwnerService: String?
     public let riskLevel: String
     public let priorityScore: Int
     public let requiresBranchIsolation: Bool
