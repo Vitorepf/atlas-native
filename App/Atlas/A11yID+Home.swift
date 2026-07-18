@@ -10,6 +10,10 @@ extension A11yID {
     static let topbarProfile = "topbar-profile"
     static let profileSheet = "profile-sheet"
     static let profileAuditToggle = "profile-audit-toggle"
+    static let homeAddWorkspace = "home-add-workspace"
+    static let workspacePickerSheet = "workspace-picker-sheet"
+    static let workspacePickerRowPrefix = "workspace-picker-"
+    static func workspacePickerRow(_ slug: String) -> String { workspacePickerRowPrefix + slug }
     static let topbarNew = "topbar-new"
     static let homeInputPill = "home-input-pill"
     static let homeLoading = "home-loading"

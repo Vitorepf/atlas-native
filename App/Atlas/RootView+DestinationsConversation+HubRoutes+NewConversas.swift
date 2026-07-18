@@ -7,8 +7,8 @@ extension RootView {
     @ViewBuilder
     func rootConversationNewConversasRoutes(for route: Route) -> some View {
         switch route {
-        case .new:
-            rootConversationNewDestination
+        case .new(let workspaceKey):
+            rootConversationNewDestination(workspaceKey: workspaceKey)
         case .conversas:
             rootConversationConversasDestination
         default:

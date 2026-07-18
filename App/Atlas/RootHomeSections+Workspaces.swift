@@ -2,11 +2,16 @@ import SwiftUI
 import AtlasCore
 
 extension RootHomeSections {
-    // Sem "Todas as conversas": agregado duplicava livres + workspaces
-    // (a busca cobre o corte transversal). Só as pastas reais.
+    // Cursor-parity (ordem 2026-07-18): os 3 mais recentes + Adicionar.
+    // Sem "Todas as conversas": agregado duplicava livres + workspaces.
     @ViewBuilder
     var workspacesSection: some View {
         sectionLabel("WORKSPACES", accessibilityID: A11yID.homeWorkspacesSection)
-        workspaceFolderRows
+        ForEach(session.recentWorkspaces(3)) { ws in
+            rowDivider
+            workspaceFolderRow(ws)
+        }
+        rowDivider
+        addWorkspaceRow
     }
 }

@@ -8,7 +8,7 @@ import AtlasCore
 extension RootView {
     @ViewBuilder
     var inputBar: some View {
-        Button { path.append(Route.new) } label: {
+        Button { path.append(Route.new(workspaceKey: nil)) } label: {
             inputBarContent
         }
         .buttonStyle(.plain)

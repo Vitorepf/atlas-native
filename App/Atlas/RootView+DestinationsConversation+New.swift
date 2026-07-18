@@ -5,7 +5,14 @@ import AtlasCore
 
 extension RootView {
     @ViewBuilder
-    var rootConversationNewDestination: some View {
-        ConversationView(client: session.client, threadId: nil, title: "Nova conversa")
+    func rootConversationNewDestination(workspaceKey: String?) -> some View {
+        ConversationView(
+            client: session.client,
+            threadId: nil,
+            title: workspaceKey.map { key in
+                session.workspaces.first(where: { $0.id == key })?.name ?? key
+            } ?? "Nova conversa",
+            workspace: workspaceKey
+        )
     }
 }

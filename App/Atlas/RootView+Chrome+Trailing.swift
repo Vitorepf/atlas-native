@@ -11,7 +11,7 @@ extension RootView {
                 .accessibilityLabel(searchSpokenLabel())
                 .accessibilityHint("abre busca nas conversas carregadas")
                 .accessibilityIdentifier(A11yID.topbarSearch)
-            CircleButton(icon: "plus") { path.append(Route.new) }
+            CircleButton(icon: "plus") { path.append(Route.new(workspaceKey: nil)) }
                 .keyboardShortcut("n", modifiers: .command)
                 .accessibilityLabel(newConversationSpokenLabel())
                 .accessibilityHint(newConversationSpokenHint())

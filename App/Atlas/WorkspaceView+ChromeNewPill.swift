@@ -6,7 +6,8 @@ import AtlasCore
 
 extension WorkspaceView {
     var newPill: some View {
-        NavigationLink(value: Route.new) {
+        // A conversa nova nasce NESTE workspace (livres → sem workspace).
+        NavigationLink(value: Route.new(workspaceKey: freeOnly ? nil : workspaceKey)) {
             newPillLabel
         }
         .buttonStyle(.plain)

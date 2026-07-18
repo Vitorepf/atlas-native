@@ -127,6 +127,28 @@ final class AtlasDesignTourTests: XCTestCase {
         attach(app, name: "codigo-03-fim")
     }
 
+    func testDesignTourAddWorkspace() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        let add = app.buttons[A11yID.homeAddWorkspace]
+        XCTAssertTrue(add.waitForExistence(timeout: 45), "home precisa expor Adicionar workspace")
+        attach(app, name: "addws-00-home")
+        add.tap()
+        let sheet = app.descendants(matching: .any)[A11yID.workspacePickerSheet]
+        XCTAssertTrue(sheet.waitForExistence(timeout: 10), "picker precisa abrir")
+        let row = app.descendants(matching: .any).matching(
+            NSPredicate(format: "identifier BEGINSWITH %@", A11yID.workspacePickerRowPrefix)
+        ).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 20), "picker precisa listar os repos do Mac")
+        attach(app, name: "addws-01-picker")
+    }
+
     func testDesignTourPerfil() {
         continueAfterFailure = false
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
