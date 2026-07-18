@@ -8,7 +8,7 @@ extension AtlasMarkdownView {
     func listBlockItem(ordered: Bool, index: Int, item: [InlineSpan]) -> some View {
         HStack(alignment: .top, spacing: 0) {
             listItemMarker(ordered: ordered, index: index)
-            Text(inline(item, base: .init(font: .system(size: 16), size: 16, color: AtlasTheme.textPrimary)))
+            Text(inline(item, base: .init(font: AtlasFont.sans(16, weight: .regular, at: typeSize), size: 16, color: AtlasTheme.textPrimary, typeSize: typeSize)))
                 .lineSpacing(6)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityHidden(true)

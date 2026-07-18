@@ -5,7 +5,7 @@ import AtlasCore
 
 extension AtlasMarkdownView {
     func headingDefault(_ spans: [InlineSpan]) -> some View {
-        Text(inline(spans, base: .init(font: .system(size: 14, weight: .semibold), size: 14, color: AtlasTheme.textPrimary)))
+        Text(inline(spans, base: .init(font: AtlasFont.sans(14, weight: .semibold, at: typeSize), size: 14, color: AtlasTheme.textPrimary, typeSize: typeSize)))
             .padding(.top, 2)
     }
 }

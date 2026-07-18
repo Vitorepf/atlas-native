@@ -9,7 +9,7 @@ extension AtlasMarkdownView {
         ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
             HStack(spacing: 0) {
                 ForEach(0..<colCount, id: \.self) { ci in
-                    Text(inline(ci < row.count ? row[ci] : [], base: .init(font: .system(size: 14), size: 14, color: AtlasTheme.textPrimary)))
+                    Text(inline(ci < row.count ? row[ci] : [], base: .init(font: AtlasFont.sans(14, weight: .regular, at: typeSize), size: 14, color: AtlasTheme.textPrimary, typeSize: typeSize)))
                         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 8)
                 }
             }

@@ -7,7 +7,14 @@ import AtlasCore
 // Table → AtlasMarkdownView+Table.swift
 
 extension AtlasMarkdownView {
-    struct InlineBase { let font: Font; let size: CGFloat; let color: Color }
+    struct InlineBase {
+        let font: Font
+        let size: CGFloat
+        let color: Color
+        // Serif/mono escalam sozinhos (relativeTo); o sans dos marks precisa
+        // da categoria para escalar junto.
+        var typeSize: DynamicTypeSize = .large
+    }
 
     @ViewBuilder
     func heading(_ level: Int, _ spans: [InlineSpan]) -> some View {

@@ -9,7 +9,7 @@ extension AtlasMarkdownView {
         HStack(alignment: .top, spacing: 14) {
             RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
                 .accessibilityHidden(true)
-            Text(inline(spans, base: .init(font: AtlasFont.serifItalic(17), size: 17, color: AtlasTheme.textPrimary)))
+            Text(inline(spans, base: .init(font: AtlasFont.serifItalic(17), size: 17, color: AtlasTheme.textPrimary, typeSize: typeSize)))
                 .lineSpacing(5)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityHidden(true)
