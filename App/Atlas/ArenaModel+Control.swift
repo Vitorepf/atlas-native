@@ -10,6 +10,9 @@ extension ArenaModel {
             async let compositeRequest = client.getArenaComposite()
             async let scoreboardRequest = client.getArenaScoreboard()
             let (nextComposite, nextScoreboard) = try await (compositeRequest, scoreboardRequest)
+            // Capacidades acompanham o snapshot: refresh sem elas deixava o
+            // hero dizendo "nenhuma medida" com medição real viva no servidor.
+            await loadCapabilities(for: nextComposite)
             composite = nextComposite
             scoreboard = nextScoreboard
             markLoaded()

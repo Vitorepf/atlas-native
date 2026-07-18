@@ -10,7 +10,7 @@ extension ArenaCapabilityRow {
             parts.append(cases)
         }
         if !capability.suitesContributing.isEmpty {
-            parts.append(capability.suitesContributing.joined(separator: ", "))
+            parts.append(capability.suitesContributing.map(ArenaDisplay.suite).joined(separator: ", "))
         }
         return parts.joined(separator: " · ")
     }

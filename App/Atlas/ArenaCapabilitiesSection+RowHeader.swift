@@ -12,7 +12,7 @@ extension ArenaCapabilityRow {
                 .lineLimit(1)
                 .accessibilityHidden(true)
             Spacer()
-            Text("\(ArenaFormat.score(capability.score)) · c/A \(ArenaFormat.score(capability.withAtlas))")
+            Text("\(ArenaFormat.score(capability.score)) · Atlas \(ArenaFormat.score(capability.withAtlas))")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(capability.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
                 .monospacedDigit()

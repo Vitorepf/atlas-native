@@ -55,6 +55,28 @@ final class ArenaModel {
         return capabilityEngineOptions.first.flatMap { capabilitiesByEngine[$0] } ?? capabilities
     }
 
+    /// Ponto ÚNICO de carga do hero de capacidades — load() e o refresh da
+    /// tela passam por aqui (o refresh keep-snapshot deixava o hero órfão:
+    /// launch com rede em corrida → capacidades nunca mais carregavam).
+    func loadCapabilities(for composite: AtlasArenaComposite) async {
+        var byEngine: [String: AtlasArenaCapabilities] = [:]
+        for engine in composite.engines.map(\.engine) {
+            if let profile = try? await client.getArenaCapabilities(engine: engine),
+               !profile.capabilities.isEmpty {
+                byEngine[engine] = profile
+            }
+        }
+        capabilitiesByEngine = byEngine
+        if byEngine.isEmpty {
+            // Perfil por motor ausente ([]), mas o agregado global pode
+            // existir (engine vazio → todos os motores; proveniência DITA).
+            capabilities = (try? await client.getArenaCapabilities(engine: ""))
+                .flatMap { $0.capabilities.isEmpty ? nil : $0 }
+        } else {
+            capabilities = composite.engines.first.flatMap { byEngine[$0.engine] }
+        }
+    }
+
     var preferredEngine: String? {
         composite?.engines.first?.engine
             ?? scoreboard?.suites.lazy.flatMap(\.engines).first?.engine
@@ -93,12 +115,7 @@ final class ArenaModel {
             // Capacidades ANTES de publicar o composite: @Observable re-renderiza
             // na 1ª atribuição, e o hero não pode nascer dizendo "não medida"
             // enquanto o fetch ainda está em voo (estado atômico, nunca meia-tela).
-            var byEngine: [String: AtlasArenaCapabilities] = [:]
-            for engine in nextComposite.engines.map(\.engine) {
-                byEngine[engine] = try? await client.getArenaCapabilities(engine: engine)
-            }
-            capabilitiesByEngine = byEngine
-            capabilities = nextComposite.engines.first.flatMap { byEngine[$0.engine] }
+            await loadCapabilities(for: nextComposite)
             composite = nextComposite
             scoreboard = nextScoreboard
             liveRuns = try? await client.getArenaLiveRuns()
