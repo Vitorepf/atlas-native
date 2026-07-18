@@ -25,7 +25,7 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
             .frame(height: 1)
     }
     .padding(.horizontal, AtlasTheme.Space.screen)
-    .padding(.top, 6)
+    .padding(.top, 16)
     .padding(.bottom, 12)
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(.isHeader)

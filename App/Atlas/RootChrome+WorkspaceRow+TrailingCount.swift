@@ -6,9 +6,10 @@ extension WorkspaceRow {
     @ViewBuilder
     var rowTrailingCount: some View {
         if let count {
+            // Número é meta: fala em mono (a voz editorial da casa).
             Text("\(count)")
-                .font(.system(.callout))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(14))
+                .foregroundStyle(AtlasTheme.textSecondary)
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
