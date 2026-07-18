@@ -9,7 +9,7 @@ extension WorkspaceView {
             AtlasTheme.bg.ignoresSafeArea()
             VStack(spacing: 0) {
                 header
-                if !showsNetworkFailure && !showsLoadingShell {
+                if !showsNetworkFailure && !showsLoadingShell && hasThreadsToFilter {
                     areaFilter
                 }
                 listView

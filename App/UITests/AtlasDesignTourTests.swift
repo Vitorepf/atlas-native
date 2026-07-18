@@ -127,6 +127,22 @@ final class AtlasDesignTourTests: XCTestCase {
         attach(app, name: "codigo-03-fim")
     }
 
+    func testDesignTourConversasLivres() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        let entry = app.buttons[A11yID.homeConversasEntry]
+        XCTAssertTrue(entry.waitForExistence(timeout: 45), "home precisa expor Conversas livres")
+        entry.tap()
+        sleep(3)
+        attach(app, name: "livres-01-lista")
+    }
+
     private func attach(_ app: XCUIApplication, name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = name
