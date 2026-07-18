@@ -11,7 +11,7 @@ extension SearchViewHeader {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 40, height: 40).background(Circle().fill(AtlasTheme.surface))
+                .frame(width: 40, height: 40).atlasGlassCircle()
         }
         .accessibilityLabel("voltar")
         .accessibilityHint("fecha a busca")

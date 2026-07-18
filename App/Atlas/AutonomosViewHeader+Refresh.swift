@@ -12,7 +12,7 @@ extension AutonomosViewHeader {
                 .atlasSans(15, .medium)
                 .foregroundStyle(canRefresh ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .frame(width: 40, height: 40)
-                .background(Circle().fill(AtlasTheme.surface))
+                .atlasGlassCircle()
         }
         .disabled(!canRefresh)
         .opacity(canRefresh ? 1 : 0.45)

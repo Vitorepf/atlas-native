@@ -13,7 +13,7 @@ extension ConversationView {
             } label: {
                 Image(systemName: "list.bullet.rectangle")
                     .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 40, height: 40).background(Circle().fill(AtlasTheme.surface))
+                    .frame(width: 40, height: 40).atlasGlassCircle()
             }
             .accessibilityLabel(ConversationViewA11y.spokenOutlineLabel(turnCount: model.bubbles.count))
             .accessibilityHint(ConversationViewA11y.outlineHint)
