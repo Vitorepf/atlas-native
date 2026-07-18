@@ -9,6 +9,7 @@ import AtlasCore
 struct AutonomosRhythmLearningLine: View {
     @State private var windows: AtlasDayRhythm.Windows?
     @State private var rhythmSheetShown = false
+    @State private var nightly = NightlyProposalController.shared
 
     var body: some View {
         Group {
@@ -17,7 +18,7 @@ struct AutonomosRhythmLearningLine: View {
                     rhythmSheetShown = true
                 } label: {
                     HStack(spacing: 5) {
-                        Text(AutonomosRhythmCopy.line(windows))
+                        Text(AutonomosRhythmCopy.line(windows, paused: nightly.isProposalMuted))
                             .font(AtlasFont.mono(10))
                         Image(systemName: "chevron.right")
                             .font(.system(size: 7, weight: .semibold))
@@ -27,7 +28,7 @@ struct AutonomosRhythmLearningLine: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(AutonomosRhythmCopy.spokenLine(windows))
+                .accessibilityLabel(AutonomosRhythmCopy.spokenLine(windows, paused: nightly.isProposalMuted))
                 .accessibilityHint("mostra o que o Atlas aprendeu do seu dia")
                 .accessibilityIdentifier(A11yID.autonomosRhythmLine)
                 .sheet(isPresented: $rhythmSheetShown) {

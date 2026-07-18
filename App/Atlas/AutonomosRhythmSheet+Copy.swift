@@ -4,24 +4,28 @@ import AtlasCore
 /// Copy do ritmo — a linha, as falas e os parágrafos da folha. Toda afirmação
 /// vem das janelas reais; aprendizado incompleto é dito como incompleto.
 enum AutonomosRhythmCopy {
-    static func line(_ windows: AtlasDayRhythm.Windows) -> String {
+    static func line(_ windows: AtlasDayRhythm.Windows, paused: Bool = false) -> String {
+        let base: String
         if windows.sampleDays < 4 {
-            return "aprendendo seu ritmo · dia \(max(1, windows.sampleDays)) de 4"
+            base = "aprendendo seu ritmo · dia \(max(1, windows.sampleDays)) de 4"
+        } else if let dayEnd = hour(windows.dayEnd) {
+            base = "ritmo aprendido · seu dia termina ~\(dayEnd)"
+        } else {
+            base = "ritmo aprendido · \(windows.sampleDays) dias de uso"
         }
-        if let dayEnd = hour(windows.dayEnd) {
-            return "ritmo aprendido · seu dia termina ~\(dayEnd)"
-        }
-        return "ritmo aprendido · \(windows.sampleDays) dias de uso"
+        return paused ? "\(base) · propostas em pausa" : base
     }
 
-    static func spokenLine(_ windows: AtlasDayRhythm.Windows) -> String {
+    static func spokenLine(_ windows: AtlasDayRhythm.Windows, paused: Bool = false) -> String {
+        let base: String
         if windows.sampleDays < 4 {
-            return "aprendendo seu ritmo, dia \(max(1, windows.sampleDays)) de 4"
+            base = "aprendendo seu ritmo, dia \(max(1, windows.sampleDays)) de 4"
+        } else if let dayEnd = hour(windows.dayEnd) {
+            base = "ritmo aprendido: seu dia costuma terminar perto das \(dayEnd)"
+        } else {
+            base = "ritmo aprendido em \(windows.sampleDays) dias de uso"
         }
-        if let dayEnd = hour(windows.dayEnd) {
-            return "ritmo aprendido: seu dia costuma terminar perto das \(dayEnd)"
-        }
-        return "ritmo aprendido em \(windows.sampleDays) dias de uso"
+        return paused ? "\(base). Propostas noturnas em pausa" : base
     }
 
     static func learnedParagraph(_ windows: AtlasDayRhythm.Windows) -> String {

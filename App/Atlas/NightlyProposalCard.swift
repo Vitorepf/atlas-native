@@ -7,10 +7,16 @@ struct NightlyProposalCard: View {
     let onDismiss: () -> Void
     let onMute: (Int) -> Void
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+    /// Hora aprendida do fim do dia — o masthead diz o ritmo real, não "21h" fixo.
+    @State var learnedDayEnd: String?
 
     static let muteDays = [1, 3, 7]
 
     var body: some View {
         cardA11y
+            .task {
+                let windows = await AtlasSession.rhythm.windows(minimumDays: 4)
+                learnedDayEnd = AutonomosRhythmCopy.hour(windows.dayEnd)
+            }
     }
 }

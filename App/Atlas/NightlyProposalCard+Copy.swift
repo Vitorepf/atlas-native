@@ -8,7 +8,8 @@ extension NightlyProposalCard {
         HStack(spacing: 8) {
             BreathingDiamond(size: 8, reduceMotion: reduceMotion)
                 .accessibilityHidden(true)
-            Text("MISSÃO NOTURNA · PROPOSTA DAS 21H")
+            Text(learnedDayEnd.map { "MISSÃO NOTURNA · NO SEU RITMO (~\($0))" }
+                ?? "MISSÃO NOTURNA · NO SEU RITMO")
                 .font(AtlasFont.mono(10))
                 .tracking(1.1)
                 .foregroundStyle(AtlasTheme.textTertiary)
