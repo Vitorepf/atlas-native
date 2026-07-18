@@ -34,6 +34,9 @@ struct AutonomosRhythmSheet: View {
                 }
                 rhythmRow("amostra", "\(windows.sampleDays) \(windows.sampleDays == 1 ? "dia" : "dias") de uso")
                 rhythmRow("hoje", AutonomosRhythmCopy.todayLine(today))
+                if let score = AutonomosRhythmCopy.scoreLine(AtlasSession.nightlyProposalScore()) {
+                    rhythmRow("propostas", score)
+                }
             }
 
             Text(AutonomosRhythmCopy.whatHappensParagraph(windows))

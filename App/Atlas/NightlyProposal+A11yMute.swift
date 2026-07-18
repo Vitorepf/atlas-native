@@ -8,6 +8,10 @@ extension NightlyProposalController {
         let formatter = RelativeDateTimeFormatter()
         formatter.locale = Locale(identifier: "pt_BR")
         formatter.unitsStyle = .full
-        return "propostas noturnas silenciadas até \(formatter.localizedString(for: until, relativeTo: now))"
+        let prazo = formatter.localizedString(for: until, relativeTo: now)
+        if AtlasSession.nightlyProposalAutoPaused() {
+            return "propostas em pausa — você recusou as últimas \(Self.dismissStreakPauseThreshold); voltam \(prazo)"
+        }
+        return "propostas noturnas silenciadas até \(prazo)"
     }
 }

@@ -29,25 +29,40 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
 
     func registerOpenAutonomos(_ handler: @escaping () -> Void) { openAutonomos = handler }
 
-    func dismissProposal() { pendingProposal = nil }
+    /// Recusas ensinam: 3 seguidas → pausa automática de 7 dias, dita como
+    /// aprendizado na folha do ritmo (nunca silêncio inexplicado).
+    static let dismissStreakPauseThreshold = 3
+
+    func dismissProposal() {
+        pendingProposal = nil
+        let streak = AtlasSession.recordNightlyProposalDismissal()
+        if streak >= Self.dismissStreakPauseThreshold {
+            muteProposal(days: 7)
+            AtlasSession.setNightlyProposalAutoPaused(true)
+        }
+    }
 
     func muteProposal(days: Int, now: Date = .init()) {
         let days = max(1, days)
         let until = AtlasSession.muteNightlyProposal(days: days, now: now)
         mutedUntil = until
         pendingProposal = nil
+        AtlasSession.setNightlyProposalAutoPaused(false)
         center.removePendingNotificationRequests(withIdentifiers: [nightlyIdentifier])
     }
 
-    /// Desfaz o silêncio na hora: limpa o mute e rearma o agendamento noturno
-    /// (o único caminho de volta antes do prazo — vive na folha do ritmo).
+    /// Desfaz o silêncio na hora: limpa o mute (manual ou automático), zera o
+    /// streak de recusas e rearma o agendamento (vive na folha do ritmo).
     func unmuteProposal() {
         AtlasSession.clearNightlyProposalMute()
+        AtlasSession.setNightlyProposalAutoPaused(false)
+        AtlasSession.resetNightlyProposalStreak()
         mutedUntil = nil
         Task { await scheduleForBackground() }
     }
 
     func accept(_ proposal: ProposalPayload) async {
+        AtlasSession.recordNightlyProposalAccept()
         await scheduleMorning(after: proposal)
         pendingProposal = nil
     }

@@ -45,6 +45,14 @@ enum AutonomosRhythmCopy {
         return today.workspaces.joined(separator: " · ")
     }
 
+    /// Placar só existe depois da primeira resposta — zero histórico, zero linha.
+    static func scoreLine(_ score: (accepted: Int, dismissed: Int)) -> String? {
+        guard score.accepted + score.dismissed > 0 else { return nil }
+        let aceitas = "\(score.accepted) \(score.accepted == 1 ? "aceita" : "aceitas")"
+        let recusadas = "\(score.dismissed) \(score.dismissed == 1 ? "recusada" : "recusadas")"
+        return "\(aceitas) · \(recusadas)"
+    }
+
     static func hour(_ components: DateComponents?) -> String? {
         guard let hour = components?.hour else { return nil }
         return String(format: "%02d:%02d", hour, components?.minute ?? 0)
