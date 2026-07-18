@@ -786,6 +786,15 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 6. Decisões registradas
 
+- **2026-07-18 · Padrão Liquid Glass no chrome (operador):** todo botão
+  circular de navegação/chrome (topo de tela, voltar, fechar, refresh) usa o
+  padrão canônico `.atlasGlassCircle()` (`App/Atlas/AtlasGlassCircle.swift` —
+  o arquivo é a documentação): Liquid Glass interativo do sistema no iOS 26,
+  fallback surface no alvo mínimo. Proibido círculo chapado novo; a
+  identidade mora no glifo/ink, o vidro é do sistema. Crítica de origem:
+  "o back nativo tem o padrão da Apple; os custom estão feios e sem padrão —
+  tudo no Atlas precisa de padrão documentado".
+
 - **2026-07-17 · Plano Elite Agêntica 24×7 (operador):** missão contínua
   documentada em `docs/plano-elite-agentica-24x7.md` + design
   `docs/superpowers/specs/2026-07-17-elite-agentica-24x7-design.md`.
@@ -972,6 +981,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 - 2026-07-18 · Fable · **fix(ui) — edge-swipe ressuscitado; ZERO bugs conhecidos em aberto na casca** · `a758599d` · Gesto de voltar pela borda morto → 3 hipóteses testadas com o teste como juiz → delegate no PRÓPRIO UINavigationController é o único anexo que o NavigationStack iOS 18+ não re-seta (verde). API legada navigationBarHidden→toolbar(.hidden) migrada nas 5 telas; shim SwipeBackEnabler + 4 call sites DELETADOS (arquivo = extension de 10 linhas). Regressão-check 4/4 (Swipe/Rhythm/Nightly/LiveNow). Estado da bateria: TODOS os testes executáveis verdes; únicos vermelhos = 2 CodeFlow dependentes do mac-agent que o operador manteve em pânico-off ("verde aqui seria mentira"). Device: App installed (launch = tela bloqueada; build a bordo).
 
 - 2026-07-18 · Fable · **fix(ui)+test — bateria completa rodada; regressão real morta (linha de ritmo)** · `b1c7f1d2` · 1ª rodada da suíte inteira pós-reestruturas pegou: linha de ritmo SUMIDA do app (.task num Group vazio em LazyVStack nunca dispara — ovo-e-galinha da refatoração autossuficiente; confirmado no screenshot do operador). Corrigida com reserva de altura (texto pousa sem pulo). Testes migrados ao fluxo novo (Arena via toggle fim-a-fim ✓; Nightly pela voz canônica ✓). **Placar: 7 verdes** (Rhythm, Arena, Nightly, LiveNow, 4 Tours) · **2 vermelhos honestos** (CodeFlow: mac-agent em pânico-off por decisão do operador — o teste diz "verde aqui seria mentira") · **1 bug real registrado** (SwipeBack: shim SwipeBackEnabler não segura o pop com barra oculta no iOS 26 — PRÓXIMO ALVO, arquivo apontado). Device: "✓ Atlas rodando no iPhone" (b1c7f1d2 entregue).
+
+- 2026-07-18 · Fable · **polish(ui) — Liquid Glass canônico nos 8 botões de chrome (ordem do operador "padrão documentado")** · `5845aa40` · O back nativo do iOS 26 tinha o vidro; os círculos custom eram chapados. `AtlasGlassCircle` vira o padrão documentado (decisão em §6): topo da home ×4, voltar da Conversa/Busca/Workspace, outline/menu da Conversa, refresh/botões do Autônomos — `glassEffect(.regular.interactive())` do sistema, fallback surface no iOS 17. Prova: `docs/evidence/2026-07-18-home-limpa/02-home-liquid-glass.png`; gates checks ✓ + build exit 0; instalado no device na sequência.
 
 - 2026-07-18 · Fable · **polish(ui) — home no modelo mental certo (crítica direta do operador: "deplorável, a Apple não faria")** · `0d65f044` · Diagnóstico acatado integralmente: a home oferecia TRÊS vocabulários para os mesmos destinos (chips Livres/Todas/atlas/atlas-native + linha CONVERSAS filtrada + linhas WORKSPACES) e ainda o agregado "Todas as conversas" — poluição pura. Modelo do operador: **conversa é LIVRE ou pertence a um workspace, ponto** (como Codex). Agora: CONVERSAS = uma linha (livres) · OPERAÇÃO = Autônomos + Arena por exceção · WORKSPACES = só pastas reais; busca cobre o corte transversal. **−13 arquivos / −236 linhas** (chips + encanamento inteiro do filtro deletados, não escondidos). Prova: `docs/evidence/2026-07-18-home-limpa/`; gates checks ✓ + build exit 0; tour re-apontado para o 1º workspace. Instalado no iPhone do operador na sequência (`make device`). Veto retroativo disponível como sempre — mas a tela agora diz UMA coisa por grupo.
 
