@@ -11,11 +11,11 @@ extension RootHomeSections {
             icon: "chart.line.uptrend.xyaxis",
             name: "Arena",
             count: nil,
-            detail: session.arena.regressionException,
-            badge: session.arena.regressionException != nil,
+            detail: session.arena.regressionSummary,
+            badge: session.arena.regressionSummary != nil,
             a11yID: A11yID.arenaHomeEntry,
             spokenOverride: arenaSpokenLabel(
-                regression: session.arena.regressionException,
+                regression: session.arena.regressionSummary,
                 domainUnavailable: session.arena.isDomainUnavailable
             ),
             spokenHint: "abre medição de regressão"
