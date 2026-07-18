@@ -15,7 +15,8 @@ extension AtlasArenaView {
                 .font(AtlasFont.serif(28, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
-            headerAge
+            // "medido há Xmin" REMOVIDO do visual (veto do operador: relógio
+            // de máquina não é experiência) — a idade do snapshot fica na voz.
         }
     }
 }

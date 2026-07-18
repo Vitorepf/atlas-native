@@ -6,13 +6,13 @@ import AtlasCore
 extension AtlasArenaView {
     var headerSpokenLabel: String {
         var parts = ["Arena, medição dos motores"]
-        if let regression = model.regressionException {
-            parts.append(regression)
-        } else if model.isDomainUnavailable, model.composite == nil {
+        if model.isDomainUnavailable, model.composite == nil {
             parts.append(ArenaModel.domainUnavailableCopy)
         }
+        // Regressão e idade saíram do visual (veto do operador) — a voz
+        // acompanha: regressão é dita na home e no disclosure das suítes.
         if let age = model.snapshotAgeText, model.composite != nil {
-            parts.append("snapshot \(age)")
+            parts.append("medido \(age)")
         }
         return parts.joined(separator: ", ")
     }
