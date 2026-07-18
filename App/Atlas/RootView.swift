@@ -12,6 +12,7 @@ struct RootView: View {
     @State var path = NavigationPath()
     @State var codeHub: AtlasCodeHubModel?
     @State var nightly = NightlyProposalController.shared
+    @State var showingProfile = false
 
     var body: some View {
         rootLifecycleChrome(

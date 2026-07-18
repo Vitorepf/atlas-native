@@ -127,6 +127,56 @@ final class AtlasDesignTourTests: XCTestCase {
         attach(app, name: "codigo-03-fim")
     }
 
+    func testDesignTourPerfil() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        let profile = app.buttons[A11yID.topbarProfile]
+        XCTAssertTrue(profile.waitForExistence(timeout: 45), "home precisa expor o perfil")
+        attach(app, name: "perfil-00-home")
+        profile.tap()
+        let sheet = app.descendants(matching: .any)[A11yID.profileSheet]
+        XCTAssertTrue(sheet.waitForExistence(timeout: 10), "perfil precisa abrir")
+        sleep(1)
+        attach(app, name: "perfil-01-sheet")
+    }
+
+    func testDesignTourSearchAndWorkspace() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        let search = app.buttons[A11yID.topbarSearch]
+        XCTAssertTrue(search.waitForExistence(timeout: 45), "home precisa expor a busca")
+        search.tap()
+        sleep(2)
+        attach(app, name: "search-01-vazia")
+        app.typeText("atlas")
+        sleep(2)
+        attach(app, name: "search-02-resultados")
+
+        app.terminate()
+        app.launch()
+        let workspace = app.buttons.matching(
+            NSPredicate(format: "identifier BEGINSWITH %@", A11yID.homeWorkspacePrefix)
+        ).firstMatch
+        XCTAssertTrue(workspace.waitForExistence(timeout: 45), "home precisa expor um workspace")
+        workspace.tap()
+        sleep(3)
+        attach(app, name: "workspace-01-lista")
+        app.swipeUp()
+        attach(app, name: "workspace-02-meio")
+    }
+
     func testDesignTourConversasLivres() {
         continueAfterFailure = false
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")

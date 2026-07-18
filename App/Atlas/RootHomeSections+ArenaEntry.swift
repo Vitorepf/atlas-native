@@ -11,8 +11,9 @@ extension RootHomeSections {
             icon: "chart.line.uptrend.xyaxis",
             name: "Arena",
             count: nil,
+            // Sem ponto vermelho (ordem 2026-07-18): a sublinha "N regressões"
+            // é o sinal — dois avisos para o mesmo fato é ruído.
             detail: session.arena.regressionSummary,
-            badge: session.arena.regressionSummary != nil,
             a11yID: A11yID.arenaHomeEntry,
             spokenOverride: arenaSpokenLabel(
                 regression: session.arena.regressionSummary,

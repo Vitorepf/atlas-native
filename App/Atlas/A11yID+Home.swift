@@ -7,6 +7,9 @@ import Foundation
 
 extension A11yID {
     static let topbarSearch = "topbar-search"
+    static let topbarProfile = "topbar-profile"
+    static let profileSheet = "profile-sheet"
+    static let profileAuditToggle = "profile-audit-toggle"
     static let topbarNew = "topbar-new"
     static let homeInputPill = "home-input-pill"
     static let homeLoading = "home-loading"
