@@ -9,6 +9,10 @@ import AtlasCore
 struct ArenaCapabilitiesSection: View {
     let capabilities: AtlasArenaCapabilities?
     let reduceMotion: Bool
+    /// Motores com perfil disponível (2+ → seletor no hero); default vazio
+    /// preserva o uso dentro do ArenaEngineSheet (motor fixo).
+    var engineOptions: [String] = []
+    var onSelectEngine: ((String) -> Void)?
 
     var measuredCapabilities: [AtlasArenaCapability] {
         capabilities?.capabilities ?? []
@@ -22,6 +26,36 @@ struct ArenaCapabilitiesSection: View {
         }
     }
 
+    /// Chips de motor — troca o perfil sem sair do hero (goal 3).
+    @ViewBuilder
+    var engineChips: some View {
+        if engineOptions.count > 1, let onSelectEngine {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(engineOptions, id: \.self) { engine in
+                        engineChip(engine, isSelected: engine == capabilities?.engine, action: onSelectEngine)
+                    }
+                }
+            }
+        }
+    }
+
+    func engineChip(_ engine: String, isSelected: Bool, action: @escaping (String) -> Void) -> some View {
+        Button { action(engine) } label: {
+            Text(ArenaDisplay.engine(engine))
+                .font(.system(.caption, weight: .medium))
+                .foregroundStyle(isSelected ? AtlasTheme.accent : AtlasTheme.textSecondary)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Capsule().fill(isSelected ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
+                .overlay(Capsule().stroke(isSelected ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+        }
+        .buttonStyle(PressableScale())
+        .accessibilityLabel("capacidades de \(ArenaDisplay.engine(engine))")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityIdentifier("arena-capability-engine-\(engine)")
+    }
+
     /// Ausência dita: a taxonomia vem do servidor; aqui só o estado.
     var capabilitiesUnmeasuredCard: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -30,6 +64,7 @@ struct ArenaCapabilitiesSection: View {
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
+            engineChips
             Text("Nenhuma capacidade medida ainda — rode uma medição para mapear as habilidades dos motores.")
                 .font(.system(.caption))
                 .foregroundStyle(AtlasTheme.textTertiary)

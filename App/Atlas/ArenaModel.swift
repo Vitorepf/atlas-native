@@ -11,6 +11,11 @@ final class ArenaModel {
     var composite: AtlasArenaComposite?
     var scoreboard: AtlasArenaScoreboard?
     var capabilities: AtlasArenaCapabilities?
+    /// Capacidades por motor (goal 3: perfil de habilidades de TODOS os
+    /// motores, não só o primeiro). Chave = engine id público.
+    var capabilitiesByEngine: [String: AtlasArenaCapabilities] = [:]
+    /// Motor escolhido no hero de capacidades (nil = primeiro do índice).
+    var capabilitiesEngineSelection: String?
     var liveRuns: AtlasArenaLiveRuns?
     var lastStartReceipt: AtlasArenaStartReceipt?
     /// Agregado do último start multi-motor (goal 1) — soma dos recibos B5.
@@ -33,6 +38,19 @@ final class ArenaModel {
 
     init(client: AtlasClient) {
         self.client = client
+    }
+
+    /// Motores com perfil de capacidades disponível, na ordem do índice.
+    var capabilityEngineOptions: [String] {
+        (composite?.engines.map(\.engine) ?? []).filter { capabilitiesByEngine[$0] != nil }
+    }
+
+    /// Capacidades do motor escolhido no hero (fallback: primeiro do índice).
+    var selectedCapabilities: AtlasArenaCapabilities? {
+        if let selection = capabilitiesEngineSelection, let chosen = capabilitiesByEngine[selection] {
+            return chosen
+        }
+        return capabilityEngineOptions.first.flatMap { capabilitiesByEngine[$0] } ?? capabilities
     }
 
     var preferredEngine: String? {
@@ -70,9 +88,12 @@ final class ArenaModel {
             let (nextComposite, nextScoreboard) = try await (compositeRequest, scoreboardRequest)
             composite = nextComposite
             scoreboard = nextScoreboard
-            if let engine = nextComposite.engines.first?.engine {
-                capabilities = try? await client.getArenaCapabilities(engine: engine)
+            var byEngine: [String: AtlasArenaCapabilities] = [:]
+            for engine in nextComposite.engines.map(\.engine) {
+                byEngine[engine] = try? await client.getArenaCapabilities(engine: engine)
             }
+            capabilitiesByEngine = byEngine
+            capabilities = nextComposite.engines.first.flatMap { byEngine[$0.engine] }
             liveRuns = try? await client.getArenaLiveRuns()
             lastLoadedAt = Date()
             phase = .loaded

@@ -6,6 +6,11 @@ import AtlasCore
 extension AtlasArenaView {
     @ViewBuilder
     func loadedArenaCapabilitiesSection(_ composite: AtlasArenaComposite) -> some View {
-        ArenaCapabilitiesSection(capabilities: model.capabilities, reduceMotion: reduceMotion)
+        ArenaCapabilitiesSection(
+            capabilities: model.selectedCapabilities,
+            reduceMotion: reduceMotion,
+            engineOptions: model.capabilityEngineOptions,
+            onSelectEngine: { model.capabilitiesEngineSelection = $0 }
+        )
     }
 }
