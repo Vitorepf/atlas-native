@@ -57,6 +57,12 @@ enum AutonomosRhythmCopy {
         return "\(aceitas) · \(recusadas)"
     }
 
+    /// Janela adaptativa só é dita quando existe — 0 min = sem linha.
+    static func adjustmentLine(_ minutes: Int) -> String? {
+        guard minutes > 0 else { return nil }
+        return "+\(minutes) min — seu horário real de resposta"
+    }
+
     static func hour(_ components: DateComponents?) -> String? {
         guard let hour = components?.hour else { return nil }
         return String(format: "%02d:%02d", hour, components?.minute ?? 0)

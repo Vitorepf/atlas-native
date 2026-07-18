@@ -37,6 +37,9 @@ struct AutonomosRhythmSheet: View {
                 if let score = AutonomosRhythmCopy.scoreLine(AtlasSession.nightlyProposalScore()) {
                     rhythmRow("propostas", score)
                 }
+                if let adjustment = AutonomosRhythmCopy.adjustmentLine(AtlasSession.nightlyProposalAdjustmentMinutes()) {
+                    rhythmRow("ajuste", adjustment)
+                }
             }
 
             Text(AutonomosRhythmCopy.whatHappensParagraph(windows))

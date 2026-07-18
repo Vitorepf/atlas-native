@@ -5,9 +5,12 @@ import UserNotifications
 
 extension NightlyProposalController {
     func nightlyTrigger(dayEnd: DateComponents, now: Date) -> UNNotificationTrigger {
-        guard let target = Self.date(matching: dayEnd, on: now) else {
+        guard var target = Self.date(matching: dayEnd, on: now) else {
             return Self.calendarTrigger(for: now.addingTimeInterval(60))
         }
+        // Janela adaptativa: desliza a proposta para o horário em que o
+        // operador realmente responde (mediana dos aceites; dita na folha).
+        target += TimeInterval(AtlasSession.nightlyProposalAdjustmentMinutes() * 60)
         if target <= now {
             let today = Self.dateKey(now)
             if immediateNightlyDateKey != today {

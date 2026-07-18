@@ -62,7 +62,8 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     }
 
     func accept(_ proposal: ProposalPayload) async {
-        AtlasSession.recordNightlyProposalAccept()
+        let delayMinutes = Int(Date().timeIntervalSince(proposal.proposedAt) / 60)
+        AtlasSession.recordNightlyProposalAccept(delayMinutes: delayMinutes)
         await scheduleMorning(after: proposal)
         pendingProposal = nil
     }
