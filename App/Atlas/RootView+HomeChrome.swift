@@ -9,7 +9,7 @@ extension RootView {
     // Tela não fala por cima dos elementos: cada um carrega a própria voz.
     func rootHomeNavChrome<Content: View>(_ content: Content) -> some View {
         content
-            .navigationBarHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: Route.self) { rootDestination(for: $0) }
     }
 }

@@ -21,10 +21,12 @@ final class AtlasSwipeBackTests: XCTestCase {
         let searchScreen = app.descendants(matching: .any)[A11yID.searchScreen]
         XCTAssertTrue(searchScreen.waitForExistence(timeout: 10), "busca não abriu")
 
-        // Swipe da borda esquerda — o gesto nativo de voltar.
-        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.01, dy: 0.5))
-        let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5))
-        start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
+        // Swipe da borda esquerda — o gesto nativo de voltar. Borda absoluta,
+        // sem holds: variantes com hold/velocity não qualificam como edge-pan
+        // no simulador do iOS 26.
+        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.0, dy: 0.5))
+        let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
+        start.press(forDuration: 0.05, thenDragTo: end)
 
         let home = app.buttons[A11yID.homeInputPill]
         XCTAssertTrue(home.waitForExistence(timeout: 10), "gesto de voltar não devolveu a home")

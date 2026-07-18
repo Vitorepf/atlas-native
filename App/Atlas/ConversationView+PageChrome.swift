@@ -7,8 +7,7 @@ import AtlasCore
 extension ConversationView {
     func conversationPageChrome<Content: View>(_ content: Content) -> some View {
         content
-            .navigationBarHidden(true)
-            .atlasSwipeBack()
+            .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.conversationScreen)
             .accessibilityLabel(spokenConversationScreenLabel())
             .accessibilityHint(ConversationViewA11y.screenHint)

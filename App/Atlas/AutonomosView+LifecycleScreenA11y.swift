@@ -6,8 +6,7 @@ import AtlasCore
 extension AutonomosView {
     func autonomosLifecycleScreenA11y<Content: View>(_ content: Content) -> some View {
         content
-            .navigationBarHidden(true)
-            .atlasSwipeBack()
+            .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.autonomosScreen)
             .accessibilityLabel(spokenScreenLabel())
             .accessibilityHint(Self.screenHint)

@@ -6,8 +6,7 @@ import AtlasCore
 extension WorkspaceView {
     func workspaceScreenChrome<Content: View>(_ content: Content) -> some View {
         content
-            .navigationBarHidden(true)
-            .atlasSwipeBack()
+            .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.workspaceScreen)
             .accessibilityLabel(spokenWorkspaceScreenLabel())
             .accessibilityHint(workspaceScreenHint)

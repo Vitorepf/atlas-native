@@ -6,8 +6,7 @@ import AtlasCore
 extension SearchView {
     func searchA11yChrome<Content: View>(_ content: Content) -> some View {
         content
-            .navigationBarHidden(true)
-            .atlasSwipeBack()
+            .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.searchScreen)
             .accessibilityLabel(spokenSearchScreenLabel())
             .accessibilityHint(Self.searchScreenHint)
