@@ -19,7 +19,7 @@ final class AtlasCodeFlowTests: XCTestCase {
         // 2 · O radar responde com a frota real (ou diz honestamente que falhou).
         // A cápsula é um container (HStack): procurar em qualquer descendente.
         let radarStatus = app.descendants(matching: .any)[A11yID.radarStatus]
-        let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.radarRepoPrefix)).firstMatch
+        let repoCard = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.radarRepoPrefix)).firstMatch
         XCTAssertTrue(
             radarStatus.waitForExistence(timeout: 25) || repoCard.waitForExistence(timeout: 5),
             "o radar precisa mostrar o estado da frota"
@@ -37,7 +37,10 @@ final class AtlasCodeFlowTests: XCTestCase {
         // 3 · O grafo do repo escolhido, com a cápsula de estado e a pílula.
         let status = app.descendants(matching: .any)[A11yID.codeStatus]
         XCTAssertTrue(status.waitForExistence(timeout: 30), "o grafo precisa dizer o estado da main")
-        XCTAssertTrue(app.descendants(matching: .any)[A11yID.codeAskPill].exists,
+        // A pílula chega com animação; o id do CONTAINER não surge na árvore
+        // do iOS 26 (children:.contain colapsa) — a folha da legenda é o
+        // sinal estável.
+        XCTAssertTrue(app.descendants(matching: .any)[A11yID.codeAskAnchorNote].waitForExistence(timeout: 10),
                       "a pílula nunca some (lei 7)")
         attach(app, name: "03-grafo-do-repo")
 
@@ -110,7 +113,7 @@ final class AtlasCodeFlowTests: XCTestCase {
         // Não alcançar o Mac não é falha DESTE código — mas é falha do TESTE
         // dizer que provou o card quando nunca chegou nele. Então falha, com a
         // foto do que apareceu no lugar.
-        let repoCard = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.radarRepoPrefix)).firstMatch
+        let repoCard = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.radarRepoPrefix)).firstMatch
         if !repoCard.waitForExistence(timeout: 25) {
             attach(app, name: "10-radar-nao-carregou")
             XCTFail("o radar não carregou a frota — o app não alcançou o Mac, então este teste NÃO provou o card. Verde aqui seria mentira.")
@@ -121,7 +124,7 @@ final class AtlasCodeFlowTests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)[A11yID.codeStatus].waitForExistence(timeout: 30))
 
         // 1 · A pílula está lá (lei 7) e é porta, não formulário.
-        let pill = app.descendants(matching: .any).matching(identifier: A11yID.codeAskPill).firstMatch
+        let pill = app.descendants(matching: .any).matching(identifier: A11yID.codeAskAnchorNote).firstMatch
         XCTAssertTrue(pill.waitForExistence(timeout: 10), "a pílula nunca some")
         pill.tap()
 

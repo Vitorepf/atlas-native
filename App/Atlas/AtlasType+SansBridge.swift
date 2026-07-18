@@ -20,20 +20,6 @@ extension AtlasFont {
         }
     }
 
-    static func uiWeight(_ weight: Font.Weight) -> UIFont.Weight {
-        switch weight {
-        case .bold: return .bold
-        case .semibold: return .semibold
-        case .medium: return .medium
-        case .light: return .light
-        case .thin: return .thin
-        case .heavy: return .heavy
-        case .black: return .black
-        case .ultraLight: return .ultraLight
-        default: return .regular
-        }
-    }
-
     static func contentCategory(_ typeSize: DynamicTypeSize) -> UIContentSizeCategory {
         switch typeSize {
         case .xSmall: return .extraSmall

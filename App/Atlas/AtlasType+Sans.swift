@@ -26,11 +26,10 @@ struct AtlasSansFont: ViewModifier {
 
 extension AtlasFont {
     /// SF escalado por categoria explícita (o modifier entrega a do environment).
+    /// Lookup puro na curva pré-computada — zero UIKit em body.
+    @MainActor
     static func sans(_ size: CGFloat, weight: Font.Weight, at typeSize: DynamicTypeSize) -> Font {
-        let traits = UITraitCollection(preferredContentSizeCategory: contentCategory(typeSize))
-        let metrics = UIFontMetrics(forTextStyle: uiTextStyle(anchor(size)))
-        let scaled = metrics.scaledFont(for: .systemFont(ofSize: size, weight: uiWeight(weight)),
-                                        compatibleWith: traits)
-        return Font(scaled)
+        .system(size: size * AtlasSansScale.factor(uiTextStyle(anchor(size)), typeSize),
+                weight: weight)
     }
 }
