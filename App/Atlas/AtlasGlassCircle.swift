@@ -19,6 +19,20 @@ struct AtlasGlassCircle: ViewModifier {
     }
 }
 
+struct AtlasGlassCapsule: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.glassEffect(.regular.interactive(), in: Capsule())
+        } else {
+            content.background(
+                Capsule().fill(AtlasTheme.surface)
+                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
+        }
+    }
+}
+
 extension View {
     func atlasGlassCircle() -> some View { modifier(AtlasGlassCircle()) }
+    /// Mesma lei para pílulas/cápsulas de chrome (composer da home, new pill).
+    func atlasGlassCapsule() -> some View { modifier(AtlasGlassCapsule()) }
 }

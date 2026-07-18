@@ -4,8 +4,14 @@ import AtlasCore
 // Layout helpers — peel de RootHomeSections.
 
 extension RootHomeSections {
+    // Hairline com fade no fim — a linha premium do site, em miniatura.
     var rowDivider: some View {
-        Divider().overlay(AtlasTheme.separator).padding(.leading, AtlasTheme.Space.screen + 36)
+        LinearGradient(
+            colors: [AtlasTheme.separator, AtlasTheme.separator, AtlasTheme.separator.opacity(0)],
+            startPoint: .leading, endPoint: .trailing
+        )
+        .frame(height: 1)
+        .padding(.leading, AtlasTheme.Space.screen + 36)
     }
 
     func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
