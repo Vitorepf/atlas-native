@@ -6,6 +6,6 @@ import AtlasCore
 extension AutonomosView {
     @ViewBuilder
     var preludeShell: some View {
-        AutonomosPreludeBlocks(nightly: nightly, rhythmSampleDays: rhythmSampleDays) { nightlyStartProposal = $0 }
+        AutonomosPreludeBlocks(nightly: nightly) { nightlyStartProposal = $0 }
     }
 }

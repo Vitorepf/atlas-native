@@ -9,4 +9,6 @@ extension A11yID {
     static let autonomosAwaitingYou = "autonomos-awaiting-you"
     static let autonomosDetailSheet = "autonomos-detail-sheet"
     static let autonomosDetailButtonPrefix = "autonomos-detail-button-"
+    static let autonomosRhythmLine = "autonomos-rhythm-line"
+    static let autonomosRhythmSheet = "autonomos-rhythm-sheet"
 }

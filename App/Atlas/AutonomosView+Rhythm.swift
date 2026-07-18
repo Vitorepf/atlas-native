@@ -1,15 +1,11 @@
 import SwiftUI
 import AtlasCore
 
-// Ritmo — peel de AutonomosView.
+// Idade do backlog — peel de AutonomosView. (A linha de ritmo é
+// autossuficiente em AutonomosAwaitingSection+Rhythm.swift.)
 // Revert → AutonomosView+Revert.swift
 
 extension AutonomosView {
-    func refreshRhythmLearning() async {
-        let windows = await AtlasSession.rhythm.windows(minimumDays: 4)
-        rhythmSampleDays = windows.sampleDays
-    }
-
     func oldestBacklogCreatedAt() -> Date? {
         guard let backlog = model.backlog else { return nil }
         let values = backlog.workOrders.compactMap { AtlasTime.date($0.createdAt) }

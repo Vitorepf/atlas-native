@@ -9,15 +9,13 @@ extension AutonomosView {
             model: model,
             auditModeEnabled: session.auditModeEnabled,
             nightly: nightly,
-            rhythmSampleDays: rhythmSampleDays,
             oldestBacklogCreatedAt: oldestBacklogCreatedAt(),
             nightlyStartProposal: $nightlyStartProposal,
             control: $control,
             startRunMode: $startRunMode,
             showTransferSheet: $showTransferSheet,
             detailSheet: $detailSheet,
-            selfConstructionReceipt: $selfConstructionReceipt,
-            onRefreshRhythm: { await refreshRhythmLearning() }
+            selfConstructionReceipt: $selfConstructionReceipt
         )
     }
 }

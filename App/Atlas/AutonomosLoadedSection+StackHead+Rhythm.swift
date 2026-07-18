@@ -6,6 +6,6 @@ import AtlasCore
 extension AutonomosLoadedSection {
     @ViewBuilder
     var loadedStackHeadRhythm: some View {
-        AutonomosRhythmLearningLine(sampleDays: rhythmSampleDays)
+        AutonomosRhythmLearningLine()
     }
 }

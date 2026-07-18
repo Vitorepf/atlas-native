@@ -8,7 +8,6 @@ extension AutonomosLoadedSection {
         content
             .refreshable {
                 await model.load()
-                await onRefreshRhythm()
             }
             .scrollIndicators(.hidden)
     }

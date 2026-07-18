@@ -8,7 +8,6 @@ struct AutonomosLoadedSection: View {
     let model: AutonomosModel
     let auditModeEnabled: Bool
     let nightly: NightlyProposalController
-    let rhythmSampleDays: Int?
     let oldestBacklogCreatedAt: Date?
     @Binding var nightlyStartProposal: NightlyProposalController.ProposalPayload?
     @Binding var control: AtlasAutonomosRunAction?
@@ -16,7 +15,6 @@ struct AutonomosLoadedSection: View {
     @Binding var showTransferSheet: Bool
     @Binding var detailSheet: AutonomosDetailSheet?
     @Binding var selfConstructionReceipt: SelfConstructionReceipt?
-    let onRefreshRhythm: () async -> Void
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {

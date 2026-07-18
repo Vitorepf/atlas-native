@@ -18,7 +18,6 @@ struct AutonomosView: View {
     @State var nightly = NightlyProposalController.shared
     @State var nightlyStartProposal: NightlyProposalController.ProposalPayload?
     @State var selfConstructionReceipt: SelfConstructionReceipt?
-    @State var rhythmSampleDays: Int?
 
     var model: AutonomosModel { session.autonomos }
 
