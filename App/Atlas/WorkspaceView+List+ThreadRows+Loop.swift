@@ -5,8 +5,8 @@ import AtlasCore
 
 extension WorkspaceThreadsSection {
     @ViewBuilder
-    func threadRowLoop(_ t: AtlasAiThread) -> some View {
-        WorkspaceThreadLink(thread: t, reduceMotion: reduceMotion)
+    func threadRowLoop(_ t: AtlasAiThread, newBadgeSuppressed: Bool = false) -> some View {
+        WorkspaceThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: newBadgeSuppressed)
         threadRowSeparator(after: t)
     }
 }

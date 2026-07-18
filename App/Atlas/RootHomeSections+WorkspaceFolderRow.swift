@@ -8,15 +8,15 @@ extension RootHomeSections {
         WorkspaceRow(
             icon: "folder",
             name: ws.name,
-            count: ws.count > 0 ? ws.count : nil
+            count: ws.count > 0 ? ws.count : nil,
+            a11yID: A11yID.homeWorkspace(ws.id),
+            spokenOverride: workspaceSpokenLabel(
+                name: ws.name,
+                count: ws.count > 0 ? ws.count : nil
+            ),
+            spokenHint: "abre conversas deste workspace"
         ) {
             onNavigate(.workspace(key: ws.id, title: ws.name))
         }
-        .accessibilityLabel(workspaceSpokenLabel(
-            name: ws.name,
-            count: ws.count > 0 ? ws.count : nil
-        ))
-        .accessibilityHint("abre conversas deste workspace")
-        .accessibilityIdentifier(A11yID.homeWorkspace(ws.id))
     }
 }

@@ -6,7 +6,7 @@ import AtlasCore
 extension WorkspaceThreadLink {
     var threadLinkA11y: some View {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
-            ThreadRow(thread: thread)
+            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(SearchThreadLink.spokenLabel(thread))

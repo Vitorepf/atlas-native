@@ -10,11 +10,11 @@ extension RootHomeSections {
         homeWorkspaceChips
         WorkspaceRow(icon: "bubble.left.and.bubble.right", name: homeConversationLabel,
                      count: homeConversationCount,
-                     detail: session.auditModeEnabled ? auditDetail : nil) {
+                     detail: session.auditModeEnabled ? auditDetail : nil,
+                     a11yID: A11yID.homeConversasEntry,
+                     spokenOverride: conversasEntrySpokenLabel(),
+                     spokenHint: "abre conversas deste filtro") {
             onNavigate(homeConversationRoute)
         }
-        .accessibilityLabel(conversasEntrySpokenLabel())
-        .accessibilityHint("abre conversas deste filtro")
-        .accessibilityIdentifier(A11yID.homeConversasEntry)
     }
 }

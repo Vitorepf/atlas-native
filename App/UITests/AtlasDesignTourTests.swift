@@ -64,6 +64,47 @@ final class AtlasDesignTourTests: XCTestCase {
         attach(app, name: "arena-03-fim")
     }
 
+    func testDesignTourConversa() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        // Conversa nova (composer vazio — estado inicial é design também).
+        let pill = app.buttons[A11yID.homeInputPill]
+        XCTAssertTrue(pill.waitForExistence(timeout: 45), "home não abriu")
+        pill.tap()
+        sleep(2)
+        attach(app, name: "conversa-01-nova")
+        // Overlay de tutorial do teclado do simulador rouba toques — relançar
+        // é determinístico onde navegar de volta não é.
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(pill.waitForExistence(timeout: 30), "home não voltou após relaunch")
+
+        // Conversa existente com conteúdo real: Todas as conversas (100+).
+        let freeList = app.buttons[A11yID.homeWorkspaceAll]
+        if freeList.waitForExistence(timeout: 10) {
+            freeList.tap()
+            sleep(2)
+            attach(app, name: "conversa-02-lista")
+            let firstThread = app.buttons.matching(
+                NSPredicate(format: "identifier BEGINSWITH %@", A11yID.workspaceThreadPrefix)
+            ).firstMatch
+            let target = firstThread.exists ? firstThread : app.cells.firstMatch
+            if target.waitForExistence(timeout: 10) {
+                target.tap()
+                sleep(3)
+                attach(app, name: "conversa-03-thread")
+                app.swipeDown()
+                attach(app, name: "conversa-04-thread-historico")
+            }
+        }
+    }
+
     private func attach(_ app: XCUIApplication, name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = name

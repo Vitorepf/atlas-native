@@ -8,10 +8,13 @@ import AtlasCore
 
 struct ThreadRow: View {
     let thread: AtlasAiThread
+    /// Sinal saturado não discrimina: quando a maioria da lista seria "novo",
+    /// o dono da lista silencia o badge em bloco (volta quando for exceção).
+    var newBadgeSuppressed: Bool = false
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var isRunning: Bool { TurnPresence.shared.runningTitles.contains(thread.title) }
-    var isNew: Bool { ConversationModel.hasNewerContent(thread) }
+    var isNew: Bool { !newBadgeSuppressed && ConversationModel.hasNewerContent(thread) }
     var workspaceTint: Color? { thread.workspace.map(threadWorkspaceColor) }
 
     var body: some View {

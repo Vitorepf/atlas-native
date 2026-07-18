@@ -31,6 +31,9 @@ extension ConversationModel {
 
     static func hasNewerContent(_ thread: AtlasAiThread) -> Bool {
         guard let last = AtlasTime.date(thread.lastMessageAt ?? thread.updatedAt) else { return false }
+        // "Novo" é novidade RECENTE (7 dias): acervo antigo nunca aberto é
+        // arquivo, não notícia — 100 badges dourados = zero informação.
+        guard last > Date().addingTimeInterval(-7 * 86_400) else { return false }
         guard let visit = lastVisitDate(threadId: thread.id) else { return thread.messageCount > 0 }
         return last > visit
     }
