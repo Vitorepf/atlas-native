@@ -14,7 +14,6 @@ extension RootView {
 
             RootHomeSections(
                 reduceMotion: reduceMotion,
-                homeWorkspaceFilter: $homeWorkspaceFilter,
                 onNavigate: { path.append($0) },
                 onOpenThread: { id, title in path.append(Route.thread(id: id, title: title)) }
             )

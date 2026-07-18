@@ -5,8 +5,7 @@ import AtlasCore
 
 extension RootHomeSections {
     var auditDetail: String {
-        let key = homeWorkspaceFilter ?? "livres"
         let n = homeConversationCount ?? 0
-        return "auditoria · filtro \(key) · \(n) threads"
+        return "auditoria · livres · \(n) threads"
     }
 }

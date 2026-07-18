@@ -5,7 +5,7 @@ import SwiftUI
 
 extension RootHomeSections {
     func conversasEntrySpokenLabel() -> String {
-        var parts = [homeConversationLabel]
+        var parts = ["Conversas livres"]
         let n = homeConversationThreadCount
         if n == 0 {
             parts.append("nenhuma conversa")

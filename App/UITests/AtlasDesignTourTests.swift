@@ -85,8 +85,10 @@ final class AtlasDesignTourTests: XCTestCase {
         app.launch()
         XCTAssertTrue(pill.waitForExistence(timeout: 30), "home não voltou após relaunch")
 
-        // Conversa existente com conteúdo real: Todas as conversas (100+).
-        let freeList = app.buttons[A11yID.homeWorkspaceAll]
+        // Conversa existente com conteúdo real: primeiro workspace da home.
+        let freeList = app.buttons.matching(
+            NSPredicate(format: "identifier BEGINSWITH %@", A11yID.homeWorkspacePrefix)
+        ).firstMatch
         if freeList.waitForExistence(timeout: 10) {
             freeList.tap()
             sleep(2)

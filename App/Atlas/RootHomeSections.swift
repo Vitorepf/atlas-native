@@ -11,7 +11,6 @@ import AtlasCore
 struct RootHomeSections: View {
     @Environment(AtlasSession.self) var session
     var reduceMotion: Bool
-    @Binding var homeWorkspaceFilter: String?
     var onNavigate: (Route) -> Void
     var onOpenThread: (ThreadID, String) -> Void
 
