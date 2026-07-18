@@ -88,14 +88,17 @@ final class ArenaModel {
             async let compositeRequest = client.getArenaComposite()
             async let scoreboardRequest = client.getArenaScoreboard()
             let (nextComposite, nextScoreboard) = try await (compositeRequest, scoreboardRequest)
-            composite = nextComposite
-            scoreboard = nextScoreboard
+            // Capacidades ANTES de publicar o composite: @Observable re-renderiza
+            // na 1ª atribuição, e o hero não pode nascer dizendo "não medida"
+            // enquanto o fetch ainda está em voo (estado atômico, nunca meia-tela).
             var byEngine: [String: AtlasArenaCapabilities] = [:]
             for engine in nextComposite.engines.map(\.engine) {
                 byEngine[engine] = try? await client.getArenaCapabilities(engine: engine)
             }
             capabilitiesByEngine = byEngine
             capabilities = nextComposite.engines.first.flatMap { byEngine[$0.engine] }
+            composite = nextComposite
+            scoreboard = nextScoreboard
             liveRuns = try? await client.getArenaLiveRuns()
             engineCatalog = try? await client.getArenaEngines()
             lastLoadedAt = Date()

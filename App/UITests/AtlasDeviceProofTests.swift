@@ -8,7 +8,7 @@ final class AtlasDeviceProofTests: XCTestCase {
         let provider = ProcessInfo.processInfo.environment["ATLAS_DEVICE_PROOF_PROVIDER"] ?? "hermes_cli"
         app.launchEnvironment["ATLAS_DEVICE_PROOF_PROVIDER"] = provider
         app.launch()
-        let newConversation = app.buttons["Escreva ao Atlas"]
+        let newConversation = app.buttons[A11yID.homeInputPill]
         XCTAssertTrue(newConversation.waitForExistence(timeout: 45), "home não abriu uma ação de conversa")
         newConversation.tap()
 

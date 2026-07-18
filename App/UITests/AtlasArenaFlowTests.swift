@@ -7,8 +7,10 @@ final class AtlasArenaFlowTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        XCTAssertTrue(app.buttons[A11yID.arenaHomeEntry].waitForExistence(timeout: 60), "entrada Arena não apareceu na home")
-        app.buttons[A11yID.arenaHomeEntry].tap()
+        // id vive no wrapper A11y (WorkspaceRow ignora filhos) — query por descendants.
+        let arenaEntry = app.descendants(matching: .any)[A11yID.arenaHomeEntry]
+        XCTAssertTrue(arenaEntry.waitForExistence(timeout: 60), "entrada Arena não apareceu na home")
+        arenaEntry.tap()
 
         XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaScreen].waitForExistence(timeout: 20), "tela Arena não abriu")
         XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaIndexSection].waitForExistence(timeout: 60), "índice da Arena não carregou")
@@ -21,11 +23,21 @@ final class AtlasArenaFlowTests: XCTestCase {
         suite.tap()
         XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaSuiteSheet].waitForExistence(timeout: 20), "sheet da suite não abriu")
         capture(app, "02-arena-suite")
+        // AtlasCloseToolbarButton fala "fechar detalhes da suite" (AX label vence o título).
+        app.buttons["fechar detalhes da suite"].tapIfExists()
         app.buttons["Done"].tapIfExists()
         app.buttons["Fechar"].tapIfExists()
+        XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaSuiteSheet].waitForNonExistence(timeout: 10), "sheet da suite não fechou")
 
         let runButton = app.buttons[A11yID.arenaRunButton]
         XCTAssertTrue(scrollUntilVisible(runButton, app: app, timeout: 20), "botão Rodar medição ausente")
+        // Borda inferior fica sob o home indicator após dismiss do sheet —
+        // swipes curtos até o botão virar hittable antes do tap.
+        let hittableDeadline = Date().addingTimeInterval(10)
+        while !runButton.isHittable, Date() < hittableDeadline {
+            app.swipeUp(velocity: .slow)
+        }
+        XCTAssertTrue(runButton.isHittable, "botão Rodar medição não ficou tocável")
         runButton.tap()
         XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaRunSheet].waitForExistence(timeout: 20), "run sheet não abriu")
 

@@ -6,7 +6,6 @@ import Foundation
 // Search/Workspace → A11yID+SearchWorkspace.swift
 
 extension A11yID {
-    static let homeScreen = "home-screen"
     static let topbarSearch = "topbar-search"
     static let topbarNew = "topbar-new"
     static let homeInputPill = "home-input-pill"

@@ -11,7 +11,7 @@ final class AtlasRhythmSheetTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        let autonomos = app.buttons["Autônomos"]
+        let autonomos = app.buttons[A11yID.homeAutonomosEntry]
         XCTAssertTrue(autonomos.waitForExistence(timeout: 45), "home precisa expor a área Autônomos")
         autonomos.tap()
 

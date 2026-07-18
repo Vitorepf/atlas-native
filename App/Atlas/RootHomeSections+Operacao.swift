@@ -8,11 +8,15 @@ extension RootHomeSections {
     @ViewBuilder
     var operacaoSection: some View {
         sectionLabel("OPERAÇÃO", accessibilityID: A11yID.homeOperacaoSection)
-        WorkspaceRow(icon: "bolt.horizontal.circle", name: "Autônomos", count: nil) {
+        WorkspaceRow(
+            icon: "bolt.horizontal.circle",
+            name: "Autônomos",
+            count: nil,
+            a11yID: A11yID.homeAutonomosEntry,
+            spokenOverride: "Autônomos, abre frota e digest"
+        ) {
             onNavigate(.autonomos)
         }
-        .accessibilityLabel("Autônomos, abre frota e digest")
-        .accessibilityIdentifier(A11yID.homeAutonomosEntry)
         rowDivider
         arenaEntryRow
     }

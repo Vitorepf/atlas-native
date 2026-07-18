@@ -35,6 +35,18 @@ enum ArenaDisplay {
         engines[id] ?? humanized(id)
     }
 
+    /// 78778ms → "1min 19s"; 6201ms → "6,2s"; 320ms → "320ms".
+    static func duration(ms: Int) -> String {
+        if ms < 1000 { return "\(ms)ms" }
+        let seconds = Double(ms) / 1000
+        if seconds < 60 {
+            return String(format: "%.1fs", seconds).replacingOccurrences(of: ".", with: ",")
+        }
+        let minutes = Int(seconds) / 60
+        let rest = Int(seconds) % 60
+        return rest == 0 ? "\(minutes)min" : "\(minutes)min \(rest)s"
+    }
+
     /// Origem do run (`iphone|ipad|mac|cli`) → rótulo humano; nil = não dita.
     static func origin(_ id: String?) -> String? {
         switch id {

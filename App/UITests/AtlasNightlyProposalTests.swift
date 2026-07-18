@@ -10,7 +10,7 @@ final class AtlasNightlyProposalTests: XCTestCase {
         app.launchArguments = ["-atlas.nightly.demo", "1"]
         app.launch()
 
-        let autonomos = app.buttons["Autônomos"]
+        let autonomos = app.buttons[A11yID.homeAutonomosEntry]
         XCTAssertTrue(autonomos.waitForExistence(timeout: 45), "home precisa expor a área Autônomos")
         autonomos.tap()
 

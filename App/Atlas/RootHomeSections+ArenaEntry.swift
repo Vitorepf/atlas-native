@@ -7,16 +7,20 @@ import AtlasCore
 extension RootHomeSections {
     @ViewBuilder
     var arenaEntryRow: some View {
-        arenaEntryA11y(
-            WorkspaceRow(
-                icon: "chart.line.uptrend.xyaxis",
-                name: "Arena",
-                count: nil,
-                detail: session.arena.regressionException,
-                badge: session.arena.regressionException != nil
-            ) {
-                onNavigate(.arena)
-            }
-        )
+        WorkspaceRow(
+            icon: "chart.line.uptrend.xyaxis",
+            name: "Arena",
+            count: nil,
+            detail: session.arena.regressionException,
+            badge: session.arena.regressionException != nil,
+            a11yID: A11yID.arenaHomeEntry,
+            spokenOverride: arenaSpokenLabel(
+                regression: session.arena.regressionException,
+                domainUnavailable: session.arena.isDomainUnavailable
+            ),
+            spokenHint: "abre medição de regressão"
+        ) {
+            onNavigate(.arena)
+        }
     }
 }

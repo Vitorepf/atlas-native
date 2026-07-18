@@ -14,14 +14,14 @@ final class AtlasLiveNowTests: XCTestCase {
         app.launch()
 
         // Home ociosa: a seção NÃO pode existir sem sessão.
-        XCTAssertTrue(app.buttons["Escreva ao Atlas"].waitForExistence(timeout: 45),
+        XCTAssertTrue(app.buttons[A11yID.homeInputPill].waitForExistence(timeout: 45),
                       "home não abriu")
         attach(app, name: "01-home-idle")
         if app.descendants(matching: .any)[A11yID.liveNowSection].exists {
             XCTFail("VIVO AGORA não pode existir na home ociosa")
         }
 
-        app.buttons["Escreva ao Atlas"].tap()
+        app.buttons[A11yID.homeInputPill].tap()
         let field = app.textFields[A11yID.conversationInput].exists
             ? app.textFields[A11yID.conversationInput]
             : app.textFields.firstMatch
