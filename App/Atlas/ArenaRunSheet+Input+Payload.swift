@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import AtlasCore
 
 // Start input payload — peel de ArenaRunSheet+Input.
@@ -20,7 +21,8 @@ extension ArenaRunSheet {
             engine: engine,
             arms: AtlasArenaRunArm.allCases.filter { selectedArms.contains($0) },
             operatorActor: actor,
-            operatorReason: reason
+            operatorReason: reason,
+            origin: UIDevice.current.userInterfaceIdiom == .pad ? "ipad" : "iphone"
         )
     }
 }

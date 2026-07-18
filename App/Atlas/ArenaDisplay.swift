@@ -28,6 +28,17 @@ enum ArenaDisplay {
         engines[id] ?? humanized(id)
     }
 
+    /// Origem do run (`iphone|ipad|mac|cli`) → rótulo humano; nil = não dita.
+    static func origin(_ id: String?) -> String? {
+        switch id {
+        case "iphone": return "iPhone"
+        case "ipad": return "iPad"
+        case "mac": return "Mac"
+        case "cli": return "CLI"
+        default: return nil
+        }
+    }
+
     static func suite(_ id: String) -> String {
         suites[id] ?? humanized(id)
     }

@@ -40,13 +40,17 @@ public struct AtlasArenaStartInput: Codable, Sendable, Equatable {
     public let arms: [AtlasArenaRunArm]
     public let operatorActor: String
     public let operatorReason: String
+    /// De onde o start partiu (`iphone|ipad|mac|cli`) — opcional; servidor
+    /// projeta em runs_live para o AGORA mostrar a origem (goal 2).
+    public let origin: String?
 
     public init(
         suites: AtlasArenaStartSuites,
         engine: String,
         arms: [AtlasArenaRunArm] = [.baseline, .withAtlas],
         operatorActor: String,
-        operatorReason: String
+        operatorReason: String,
+        origin: String? = nil
     ) {
         let trimmedSuites: AtlasArenaStartSuites
         switch suites {
@@ -60,6 +64,8 @@ public struct AtlasArenaStartInput: Codable, Sendable, Equatable {
         self.arms = arms
         self.operatorActor = operatorActor.trimmingCharacters(in: .whitespacesAndNewlines)
         self.operatorReason = operatorReason.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedOrigin = origin?.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.origin = (trimmedOrigin?.isEmpty ?? true) ? nil : trimmedOrigin
     }
 
     public var isLocallyValidForSubmission: Bool {

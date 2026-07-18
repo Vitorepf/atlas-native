@@ -63,6 +63,9 @@ public struct AtlasArenaLiveRun: Codable, Sendable, Equatable, Identifiable {
     public let casesTotal: Int?
     public let startedAt: String?
     public let queuedAt: String?
+    /// De onde o run foi disparado (`iphone|ipad|mac|cli`) — opcional
+    /// fail-open: servidor antigo sem o campo não derruba o AGORA.
+    public let origin: String?
 
     public var engineDisplayName: String {
         guard let engine, !engine.isEmpty else { return "motor desconhecido" }

@@ -10,7 +10,11 @@ extension ArenaNowSection {
                 .font(.system(.callout, weight: .medium))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)
-            Text("\(run.arm?.labelPT ?? "braço desconhecido") · \(run.progressText)")
+            Text(
+                [ArenaDisplay.origin(run.origin), run.arm?.labelPT ?? "braço desconhecido", run.progressText]
+                    .compactMap(\.self)
+                    .joined(separator: " · ")
+            )
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
