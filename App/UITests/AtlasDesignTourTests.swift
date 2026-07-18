@@ -105,6 +105,26 @@ final class AtlasDesignTourTests: XCTestCase {
         }
     }
 
+    func testDesignTourCodigo() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        let code = app.buttons[A11yID.topbarCode]
+        XCTAssertTrue(code.waitForExistence(timeout: 45), "home precisa expor o Atlas Código")
+        code.tap()
+        sleep(3)
+        attach(app, name: "codigo-01-topo")
+        app.swipeUp()
+        attach(app, name: "codigo-02-meio")
+        app.swipeUp()
+        attach(app, name: "codigo-03-fim")
+    }
+
     private func attach(_ app: XCUIApplication, name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = name
