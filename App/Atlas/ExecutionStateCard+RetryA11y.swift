@@ -10,6 +10,7 @@ extension ExecutionStateCard {
                 style: .primary,
                 reduceMotion: reduceMotion
             ))
+            .accessibilityIdentifier(A11yID.executionRetry)
             .accessibilityLabel("retomar execução a partir do último checkpoint")
             .accessibilityHint("reenfileira o job que falhou")
     }

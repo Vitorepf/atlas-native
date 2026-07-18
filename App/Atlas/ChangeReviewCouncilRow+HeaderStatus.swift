@@ -7,7 +7,7 @@ extension ChangeReviewCouncilMemberRow {
     var providerStatus: some View {
         Text(member.status)
             .font(AtlasFont.mono(9))
-            .foregroundStyle(member.succeeded ? Color(hex: 0x83B46D) : Color(hex: 0xE08C8C))
+            .foregroundStyle(member.succeeded ? AtlasCodePalette.healed : AtlasTheme.alert)
             .accessibilityHidden(true)
     }
 }

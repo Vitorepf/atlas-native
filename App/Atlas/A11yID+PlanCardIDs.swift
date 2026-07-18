@@ -4,6 +4,7 @@ import Foundation
 
 extension A11yID {
     static let planCard = "plan-card"
+    static let planDetailToggle = "plan-detail-toggle"
     static let planSteps = "plan-steps"
     static let planProgress = "plan-progress"
     static let planStepPrefix = "plan-step-"

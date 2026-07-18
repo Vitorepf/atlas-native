@@ -15,7 +15,7 @@ extension ChangeReviewCouncilMemberRow {
         if let code = member.errorCode {
             Text(code)
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(Color(hex: 0xE08C8C))
+                .foregroundStyle(AtlasTheme.alert)
                 .accessibilityHidden(true)
         }
     }

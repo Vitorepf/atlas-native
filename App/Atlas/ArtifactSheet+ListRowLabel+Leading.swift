@@ -10,8 +10,9 @@ extension ArtifactSheet {
             .font(AtlasFont.mono(11))
             .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.textTertiary)
             .accessibilityHidden(true)
+        // Linha de lista fala em sans (canon §C: serif é masthead/título).
         Text(item.name)
-            .font(AtlasFont.serif(15, .semibold))
+            .atlasSans(15, .medium)
             .foregroundStyle(AtlasTheme.textPrimary)
             .lineLimit(1)
             .accessibilityHidden(true)

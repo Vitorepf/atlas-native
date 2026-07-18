@@ -8,4 +8,7 @@ extension A11yID {
     static let executionReplayScrubber = "execution-replay-scrubber"
     static let executionProof = "execution-proof"
     static let executionStateCard = "execution-state-card"
+    static let executionRetry = "execution-retry"
+    static let executionActionChoicePrefix = "execution-action-"
+    static func executionActionChoice(_ id: String) -> String { executionActionChoicePrefix + id }
 }

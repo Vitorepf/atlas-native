@@ -7,7 +7,7 @@ extension ChangeReviewCouncilMemberRow {
     var providerOutcomeGlyph: some View {
         Image(systemName: member.succeeded ? "checkmark" : "xmark")
             .atlasSans(9, .semibold)
-            .foregroundStyle(member.succeeded ? Color(hex: 0x83B46D) : Color(hex: 0xE08C8C))
+            .foregroundStyle(member.succeeded ? AtlasCodePalette.healed : AtlasTheme.alert)
             .accessibilityHidden(true)
     }
 }

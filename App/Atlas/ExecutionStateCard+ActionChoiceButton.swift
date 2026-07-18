@@ -16,6 +16,7 @@ extension ExecutionStateCard {
             style: action.style,
             reduceMotion: reduceMotion
         ))
+        .accessibilityIdentifier(A11yID.executionActionChoice(action.id))
         .accessibilityLabel(action.title)
         .accessibilityHint("ação declarada pelo servidor")
     }

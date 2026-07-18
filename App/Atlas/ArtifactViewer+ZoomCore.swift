@@ -15,7 +15,7 @@ extension ZoomableArtifactImage {
             .contentShape(Rectangle())
             .gesture(zoomGesture.simultaneously(with: dragGesture))
             .onTapGesture(count: 2) { resetZoom() }
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: scale)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: offset)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: scale)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: offset)
     }
 }

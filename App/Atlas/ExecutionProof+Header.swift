@@ -8,7 +8,7 @@ extension ExecutionProof {
     var collapsedHeader: some View {
         Button {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.22)) { open.toggle() }
+            withAnimation(reduceMotion ? nil : AtlasMotion.editorial) { open.toggle() }
         } label: {
             collapsedHeaderLabel
         }

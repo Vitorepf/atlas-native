@@ -7,12 +7,13 @@ extension PlanCard {
     func revisionToggleControl(plan: AtlasExecutionPlan, count: Int) -> some View {
         Button {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+            withAnimation(reduceMotion ? nil : AtlasMotion.editorial) {
                 showRevisions.toggle()
             }
         } label: {
+            // Ação fala em sans (mono é hash/recibo/meta — canon §C).
             Text(showRevisions ? "ocultar versões" : "comparar versões · \(count)")
-                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+                .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(spokenRevisionToggle(expanded: showRevisions, count: count))
