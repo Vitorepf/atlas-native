@@ -9,6 +9,7 @@ import AtlasCore
 struct SearchThreadLink: View {
     let thread: AtlasAiThread
     let reduceMotion: Bool
+    var newBadgeSuppressed: Bool = false
 
     var body: some View {
         threadLinkTransition(threadNavigationLink)
