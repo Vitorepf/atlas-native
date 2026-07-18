@@ -24,8 +24,9 @@ extension AutonomosFleetSection {
     /// 5 cards de "off · não desejado · não autorizado" viram um sussurro só.
     var dormantCollapsedRow: some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             if reduceMotion { dormantRowsExpanded = true } else {
-                withAnimation(.easeOut(duration: 0.2)) { dormantRowsExpanded = true }
+                withAnimation(AtlasMotion.editorial) { dormantRowsExpanded = true }
             }
         } label: {
             HStack(spacing: 6) {

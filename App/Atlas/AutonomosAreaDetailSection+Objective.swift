@@ -12,8 +12,9 @@ extension AutonomosAreaDetailSection {
             .lineLimit(objectiveExpanded ? nil : 3)
             .contentShape(Rectangle())
             .onTapGesture {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 if reduceMotion { objectiveExpanded.toggle() } else {
-                    withAnimation(.easeOut(duration: 0.2)) { objectiveExpanded.toggle() }
+                    withAnimation(AtlasMotion.editorial) { objectiveExpanded.toggle() }
                 }
             }
             .accessibilityLabel(area.objective)

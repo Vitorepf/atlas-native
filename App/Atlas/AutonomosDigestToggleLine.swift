@@ -15,7 +15,7 @@ struct AutonomosDigestToggleLine: View {
             // Mesma gramática háptica do resto da casca (voltar = softImpact).
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             if reduceMotion { expanded.toggle() } else {
-                withAnimation(.easeOut(duration: 0.2)) { expanded.toggle() }
+                withAnimation(AtlasMotion.editorial) { expanded.toggle() }
             }
         } label: {
             HStack(spacing: 6) {
