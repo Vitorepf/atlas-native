@@ -6,8 +6,10 @@ import AtlasCore
 extension AtlasCodeFolderRow {
     var folderTitleStack: some View {
         VStack(alignment: .leading, spacing: 3) {
+            // Mesma voz das linhas irmãs (repo=medium, pasta=semibold): serif
+            // é masthead/título — linha de lista fala em sans (canon §C).
             Text(folder.name)
-                .font(AtlasFont.serif(16, .semibold))
+                .atlasSans(15, .semibold)
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(folder.repositories == 1 ? "1 repositório" : "\(folder.repositories) repositórios")
                 .atlasSans(11.5)
