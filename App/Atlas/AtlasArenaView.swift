@@ -11,6 +11,9 @@ struct AtlasArenaView: View {
     @State var selectedSuite: AtlasArenaSuite?
     @State var selectedEngine: AtlasArenaCompositeEngine?
     @State var showingRunSheet = false
+    /// Suítes são bastidor (capacidades são o palco): lista colapsada em uma
+    /// linha; regressão fura o colapso.
+    @State var suitesExpanded = false
 
     var body: some View {
         arenaSheets(on:

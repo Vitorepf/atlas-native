@@ -5,6 +5,7 @@ import Foundation
 extension A11yID {
     static let arenaIndexSection = "arena-index-section"
     static let arenaCapabilitiesSection = "arena-capabilities-section"
+    static let arenaSuitesToggle = "arena-suites-toggle"
     static let arenaSuitesSection = "arena-suites-section"
     static let arenaNowSection = "arena-now-section"
     static let arenaNowLiveActivityNote = "arena-now-live-activity-note"
