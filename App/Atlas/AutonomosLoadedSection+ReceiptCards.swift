@@ -11,7 +11,7 @@ struct AutonomosControlReceiptLine: View {
         Text(receipt.note)
             .font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
             .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.domAutonomos.opacity(0.1)))
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.domAutonomos.opacity(0.1)))
             .accessibilityLabel(AutonomosLoadedSectionA11y.spokenControlReceipt(receipt))
             .accessibilityAddTraits(.isStaticText)
             .accessibilityIdentifier(A11yID.autonomosControlReceipt)

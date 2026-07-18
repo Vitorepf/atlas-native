@@ -11,7 +11,7 @@ extension ZoomableArtifactImage {
             .scaleEffect(scale)
             .offset(offset)
             .frame(maxWidth: .infinity)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .clipShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
             .contentShape(Rectangle())
             .gesture(zoomGesture.simultaneously(with: dragGesture))
             .onTapGesture(count: 2) { resetZoom() }

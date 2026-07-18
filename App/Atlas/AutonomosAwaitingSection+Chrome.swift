@@ -15,7 +15,7 @@ extension AutonomosAwaitingYouSection {
             awaitingChips
         }
         .padding(14)
-        .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.domOperacional.opacity(0.08)))
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.domOperacional.opacity(0.38), lineWidth: 1))
+        .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).fill(AtlasTheme.domOperacional.opacity(0.08)))
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.domOperacional.opacity(0.38), lineWidth: 1))
     }
 }

@@ -10,7 +10,7 @@ extension AutonomosPublicDetailSheet {
             .foregroundStyle(AtlasTheme.textSecondary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(14)
-            .atlasCard(cornerRadius: 12)
+            .atlasCard(cornerRadius: AtlasTheme.Radius.control)
             .accessibilityLabel(spokenEmptyLabel())
             .accessibilityIdentifier(A11yID.autonomosDetailEmpty)
     }

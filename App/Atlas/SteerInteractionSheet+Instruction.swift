@@ -11,8 +11,8 @@ extension SteerInteractionSheet {
             .tint(AtlasTheme.accent)
             .lineLimit(3...7)
             .padding(12)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.surface))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.separator, lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface))
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separator, lineWidth: 1))
             .accessibilityIdentifier(A11yID.steerInstruction)
             .accessibilityHint("descreve o que deve mudar na execução")
     }

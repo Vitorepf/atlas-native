@@ -15,8 +15,8 @@ extension ExecutionProof {
             replayControls(stampedCount: total)
         }
         .padding(10)
-        .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.bgRecessed))
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.bgRecessed))
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
         .accessibilityIdentifier(A11yID.executionReplayScrubber)
     }
 }

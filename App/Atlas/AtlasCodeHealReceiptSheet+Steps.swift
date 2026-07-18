@@ -14,7 +14,7 @@ extension AtlasCodeHealReceiptSheet {
     }
     .padding(12)
     .frame(maxWidth: .infinity, alignment: .leading)
-    .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+    .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
     .accessibilityElement(children: .contain)
     .accessibilityLabel(spokenStepsSummaryLabel())
   }

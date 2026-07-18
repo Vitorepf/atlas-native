@@ -15,6 +15,6 @@ extension AtlasCodeProvenanceSheet {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+        .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
     }
 }

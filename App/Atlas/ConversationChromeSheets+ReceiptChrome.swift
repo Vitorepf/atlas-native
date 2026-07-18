@@ -8,8 +8,8 @@ extension ConversationHandoffReceipt {
         content
             .padding(.horizontal, 12)
             .padding(.vertical, 9)
-            .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.goldVeil))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.goldVeil))
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.goldBorder, lineWidth: 1))
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 2)
             .padding(.bottom, 8)

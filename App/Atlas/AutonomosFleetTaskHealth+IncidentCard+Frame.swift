@@ -9,8 +9,8 @@ extension AutonomosTaskHealthSection {
             incidentCardTexts
         }
         .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.domOperacional.opacity(0.08)))
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
+        .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.domOperacional.opacity(0.08)))
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(AutonomosTaskHealthA11y.spokenIncident(health))
         .accessibilityIdentifier(A11yID.autonomosTaskHealthIncident)

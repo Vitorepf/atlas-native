@@ -19,6 +19,6 @@ extension AtlasCodeProvenanceSheet {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 4)
-        .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+        .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
     }
 }

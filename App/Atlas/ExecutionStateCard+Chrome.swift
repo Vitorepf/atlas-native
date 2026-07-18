@@ -8,9 +8,9 @@ extension ExecutionStateCard {
         content()
             .padding(14)
             .background(
-                RoundedRectangle(cornerRadius: 14)
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.card)
                     .fill(AtlasTheme.surface.opacity(0.68))
-                    .overlay(RoundedRectangle(cornerRadius: 14).stroke(tint.opacity(0.42), lineWidth: 1))
+                    .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(tint.opacity(0.42), lineWidth: 1))
             )
             .accessibilityElement(children: .contain)
             .accessibilityLabel(spokenSummary)

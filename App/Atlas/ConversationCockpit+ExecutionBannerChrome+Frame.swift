@@ -7,7 +7,7 @@ extension ExecutionBanner {
         content
             .padding(.horizontal, 10)
             .padding(.vertical, 7)
-            .background(RoundedRectangle(cornerRadius: 10).fill(tint.opacity(0.10)))
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(tint.opacity(0.35), lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(tint.opacity(0.10)))
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(tint.opacity(0.35), lineWidth: 1))
     }
 }

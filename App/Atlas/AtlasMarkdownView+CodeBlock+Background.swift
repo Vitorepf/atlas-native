@@ -4,7 +4,7 @@ import SwiftUI
 
 extension CodeBlockView {
     var codeBlockBackground: some View {
-        RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface)
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separator, lineWidth: 1))
+        RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface)
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separator, lineWidth: 1))
     }
 }

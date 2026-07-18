@@ -12,8 +12,8 @@ extension AtlasCodeMirrorCard {
         }
         .padding(13)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(background, in: RoundedRectangle(cornerRadius: 14))
-        .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(borderColor, lineWidth: 1))
+        .background(background, in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.card))
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).strokeBorder(borderColor, lineWidth: 1))
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: mirrorStatePhaseID)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenMirrorLabel())

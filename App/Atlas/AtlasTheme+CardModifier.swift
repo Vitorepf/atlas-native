@@ -15,7 +15,7 @@ private struct AtlasCardModifier: ViewModifier {
 
 extension View {
     /// Chrome canônico de card: surface + borda separator + cantos 14.
-    func atlasCard(cornerRadius: CGFloat = 14, fillOpacity: Double = 1) -> some View {
+    func atlasCard(cornerRadius: CGFloat = AtlasTheme.Radius.card, fillOpacity: Double = 1) -> some View {
         modifier(AtlasCardModifier(cornerRadius: cornerRadius, fillOpacity: fillOpacity))
     }
 }

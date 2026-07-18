@@ -7,7 +7,7 @@ extension AutonomosNextDigestSection {
     func digestCardChrome<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content()
             .padding(14)
-            .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.surface))
-            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).fill(AtlasTheme.surface))
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.goldBorder, lineWidth: 1))
     }
 }

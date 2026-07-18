@@ -8,6 +8,6 @@ extension AutonomosInfoLine {
         Text(text)
             .font(.footnote).foregroundStyle(AtlasTheme.textSecondary)
             .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .atlasCard(cornerRadius: 12)
+            .atlasCard(cornerRadius: AtlasTheme.Radius.control)
     }
 }

@@ -8,8 +8,8 @@ extension ExecutionProof {
         content()
             .padding(.vertical, 8).padding(.horizontal, 12)
             .background(
-                RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.surface.opacity(0.35))
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.35))
+                    .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
             )
     }
 }

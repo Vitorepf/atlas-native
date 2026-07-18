@@ -9,7 +9,7 @@ extension DraftThumb {
             ZStack { ProgressView().tint(.white) }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(.black.opacity(0.38))
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous))
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.94)))
         } else if failedMessage != nil {
             Image(systemName: "exclamationmark.triangle.fill").atlasSans(16)

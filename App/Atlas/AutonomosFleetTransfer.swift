@@ -15,8 +15,8 @@ struct AutonomosTransferStatus: View {
             transferBody
         }
         .padding(12)
-        .background(RoundedRectangle(cornerRadius: 12).fill(AtlasTheme.goldVeil))
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.goldVeil))
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.autonomosTransferStatus)
     }

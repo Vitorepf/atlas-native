@@ -10,7 +10,7 @@ extension AtlasCodeProvenanceSheet {
             .padding(.horizontal, 13)
             .padding(.vertical, 10)
             .background(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)
                     .fill(AtlasCodePalette.alert.opacity(0.08))
             )
             .accessibilityElement(children: .ignore)

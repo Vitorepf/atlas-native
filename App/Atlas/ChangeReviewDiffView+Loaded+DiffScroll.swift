@@ -14,6 +14,6 @@ extension ChangeReviewDiffView {
                 .padding(10)
         }
         .frame(maxHeight: 320)
-        .background(RoundedRectangle(cornerRadius: 10).fill(AtlasTheme.bgRecessed))
+        .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.bgRecessed))
     }
 }

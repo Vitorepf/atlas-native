@@ -8,7 +8,7 @@ extension AutonomosCardEmptyState {
         content
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .atlasCard(cornerRadius: 12)
+            .atlasCard(cornerRadius: AtlasTheme.Radius.control)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("\(caption), \(copy)")
             .accessibilityIdentifier(accessibilityIdentifier)

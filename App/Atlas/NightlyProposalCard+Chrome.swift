@@ -10,7 +10,7 @@ extension NightlyProposalCard {
             actionRow
         }
         .padding(14)
-        .atlasCard(cornerRadius: 14)
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .atlasCard(cornerRadius: AtlasTheme.Radius.card)
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.goldBorder, lineWidth: 1))
     }
 }

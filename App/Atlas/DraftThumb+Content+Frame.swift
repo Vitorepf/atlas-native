@@ -8,9 +8,9 @@ extension DraftThumb {
     var thumbFrame: some View {
         thumb
             .frame(width: 64, height: 64)
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
                     .stroke(
                         failedMessage != nil
                             ? AtlasTheme.domOperacional.opacity(0.8)

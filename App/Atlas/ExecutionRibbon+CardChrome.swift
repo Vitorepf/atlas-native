@@ -7,6 +7,6 @@ extension ExecutionRibbon {
     func executionRibbonCard<V: View>(_ content: V) -> some View {
         content
             .padding(.vertical, 10).padding(.horizontal, 14)
-            .atlasCard(cornerRadius: 12, fillOpacity: 0.5)
+            .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.5)
     }
 }

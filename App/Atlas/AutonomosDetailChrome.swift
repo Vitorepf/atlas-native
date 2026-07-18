@@ -17,7 +17,7 @@ enum AutonomosDetailChrome {
             content()
         }
         .padding(14)
-        .atlasCard(cornerRadius: 12)
+        .atlasCard(cornerRadius: AtlasTheme.Radius.control)
         .accessibilityElement(children: .contain)
     }
 }

@@ -13,7 +13,7 @@ extension AutonomosFleetSection {
     ) -> some View {
         content
             .padding(12)
-            .atlasCard(cornerRadius: 12)
+            .atlasCard(cornerRadius: AtlasTheme.Radius.control)
             .autonomosFleetAgentA11y(
                 agent: agent,
                 index: index,

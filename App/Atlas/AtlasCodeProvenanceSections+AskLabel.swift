@@ -13,7 +13,7 @@ extension AtlasCodeProvenanceSheet {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 11)
-        .atlasCard(cornerRadius: 12)
-        .contentShape(RoundedRectangle(cornerRadius: 12))
+        .atlasCard(cornerRadius: AtlasTheme.Radius.control)
+        .contentShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
     }
 }

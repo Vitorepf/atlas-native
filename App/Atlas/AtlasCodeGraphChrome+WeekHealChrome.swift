@@ -8,9 +8,9 @@ extension AtlasCodeView {
         content
             .padding(.vertical, 11)
             .padding(.horizontal, 13)
-            .background(AtlasCodePalette.healed.opacity(0.07), in: RoundedRectangle(cornerRadius: 12))
+            .background(AtlasCodePalette.healed.opacity(0.07), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
                     .strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
             )
     }

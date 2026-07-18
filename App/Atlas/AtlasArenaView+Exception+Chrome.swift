@@ -8,8 +8,8 @@ extension AtlasArenaView {
         row
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: 14).fill(AtlasTheme.alert.opacity(0.10)))
-            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AtlasTheme.alert.opacity(0.35), lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).fill(AtlasTheme.alert.opacity(0.10)))
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.alert.opacity(0.35), lineWidth: 1))
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("regressão, \(text)")
     }
