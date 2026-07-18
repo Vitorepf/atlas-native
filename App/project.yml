@@ -85,7 +85,11 @@ targets:
     sources:
       - path: UITests
       # Mesmas constantes que a casca — XCUITest não pode divergir em silêncio.
-      - path: Atlas/A11yID.swift
+      # A família inteira (base + peels A11yID+*.swift), senão os IDs peelados
+      # somem do target de teste e a bateria para de compilar.
+      - path: Atlas
+        includes:
+          - "A11yID*.swift"
     dependencies:
       - target: Atlas
     settings:
