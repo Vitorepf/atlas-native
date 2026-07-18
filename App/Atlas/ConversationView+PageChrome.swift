@@ -8,6 +8,7 @@ extension ConversationView {
     func conversationPageChrome<Content: View>(_ content: Content) -> some View {
         content
             .navigationBarHidden(true)
+            .atlasSwipeBack()
             .accessibilityIdentifier(A11yID.conversationScreen)
             .accessibilityLabel(spokenConversationScreenLabel())
             .accessibilityHint(ConversationViewA11y.screenHint)

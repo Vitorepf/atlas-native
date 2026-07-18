@@ -7,6 +7,7 @@ extension SearchView {
     func searchA11yChrome<Content: View>(_ content: Content) -> some View {
         content
             .navigationBarHidden(true)
+            .atlasSwipeBack()
             .accessibilityIdentifier(A11yID.searchScreen)
             .accessibilityLabel(spokenSearchScreenLabel())
             .accessibilityHint(Self.searchScreenHint)

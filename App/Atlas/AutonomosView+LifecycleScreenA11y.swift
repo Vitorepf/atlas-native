@@ -7,6 +7,7 @@ extension AutonomosView {
     func autonomosLifecycleScreenA11y<Content: View>(_ content: Content) -> some View {
         content
             .navigationBarHidden(true)
+            .atlasSwipeBack()
             .accessibilityIdentifier(A11yID.autonomosScreen)
             .accessibilityLabel(spokenScreenLabel())
             .accessibilityHint(Self.screenHint)
