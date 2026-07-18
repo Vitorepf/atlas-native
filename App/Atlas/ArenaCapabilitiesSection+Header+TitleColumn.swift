@@ -13,7 +13,7 @@ extension ArenaCapabilitiesSection {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
             if let engine = capabilities.engine?.nonEmpty {
-                Text(engine)
+                Text(ArenaDisplay.engine(engine))
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)

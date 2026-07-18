@@ -8,7 +8,7 @@ extension AtlasArenaSuite {
     var arenaSubtitleText: String {
         guard isMeasured else { return "não medido" }
         let rounds = runsTotal == 1 ? "1 rodada" : "\(runsTotal) rodadas"
-        if let lastRunAt { return "\(rounds) · \(lastRunAt)" }
+        if let relative = ArenaDisplay.relative(lastRunAt) { return "\(rounds) · \(relative)" }
         return rounds
     }
 }

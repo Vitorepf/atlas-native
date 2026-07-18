@@ -41,7 +41,7 @@ final class ArenaModel {
         for suite in scoreboard?.suites ?? [] {
             guard let engine = suite.engines.first(where: \.regressed),
                   let delta = engine.delta else { continue }
-            return "\(suite.suite) · \(engine.engine) regrediu \(ArenaFormat.signed(delta))"
+            return "\(ArenaDisplay.suite(suite.suite)) · \(ArenaDisplay.engine(engine.engine)) regrediu \(ArenaFormat.signed(delta))"
         }
         return nil
     }

@@ -1,7 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-/// AGORA — só existe com run vivo (spec §E). Sem runs = silêncio total (lei V1).
+/// AGORA — sempre visível quando o feed live carregou (goal do operador
+/// 2026-07-17: contagem + quais motores rodando, mesmo quando zero).
+/// Feed ausente (fetch falhou) = silêncio; zero runs = estado quieto dito.
 /// Indicator → ArenaNowSection+Indicator.swift · Rows → +Rows.swift
 /// Body → ArenaNowSection+Body.swift
 struct ArenaNowSection: View {
@@ -12,8 +14,16 @@ struct ArenaNowSection: View {
         liveRuns?.runs ?? []
     }
 
+    var runningCount: Int {
+        runs.filter { if case .running = $0.status { true } else { false } }.count
+    }
+
+    var queuedCount: Int {
+        runs.count - runningCount
+    }
+
     var body: some View {
-        if !runs.isEmpty {
+        if liveRuns != nil {
             nowSectionBody
         }
     }

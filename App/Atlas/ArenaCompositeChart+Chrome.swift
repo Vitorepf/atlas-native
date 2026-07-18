@@ -11,7 +11,8 @@ extension ArenaCompositeChart {
         }
         .chartLegend(.visible)
         .chartXAxis(.hidden)
-        .chartYAxis { AxisMarks(position: .leading) }
+        .chartYScale(domain: 0 ... 1)
+        .chartYAxis { AxisMarks(position: .leading, values: [0, 0.5, 1]) }
         .accessibilityHidden(true)
     }
 }

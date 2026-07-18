@@ -7,9 +7,10 @@ import AtlasCore
 extension AtlasArenaView {
     @ViewBuilder
     func loadedArenaContent(_ composite: AtlasArenaComposite) -> some View {
+        // Ordem do goal 2026-07-17: capacidades são o hero — vêm antes do índice.
         loadedArenaNowSection(composite)
-        loadedArenaIndexSection(composite)
         loadedArenaCapabilitiesSection(composite)
+        loadedArenaIndexSection(composite)
         loadedArenaTail(composite)
     }
 }

@@ -9,7 +9,7 @@ import AtlasCore
 extension ArenaEngineIndexRow {
     var titleRow: some View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
-            Text(engine.engine)
+            Text(ArenaDisplay.engine(engine.engine))
                 .font(.system(.body, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)

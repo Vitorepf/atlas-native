@@ -13,6 +13,7 @@ struct ArenaEngineIndexRow: View {
         VStack(alignment: .leading, spacing: 8) {
             titleRow
             metricsRow
+            suspectMeasurementNote
             partialCoverageLine
         }
         .accessibilityElement(children: .ignore)

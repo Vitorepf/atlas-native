@@ -6,7 +6,7 @@ import AtlasCore
 extension ArenaNowSection {
     func nowRunCopy(_ run: AtlasArenaLiveRun) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text("\(run.suite) · \(run.engineDisplayName)")
+            Text("\(ArenaDisplay.suite(run.suite)) · \(ArenaDisplay.engine(run.engineDisplayName))")
                 .font(.system(.callout, weight: .medium))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)

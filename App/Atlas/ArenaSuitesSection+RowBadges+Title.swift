@@ -6,8 +6,8 @@ import AtlasCore
 extension ArenaSuiteRow {
     @ViewBuilder
     var suiteTitleBadges: some View {
-        Text(suite.suite.uppercased())
-            .font(AtlasFont.mono(12))
+        Text(ArenaDisplay.suite(suite.suite))
+            .font(.system(.subheadline, weight: .medium))
             .foregroundStyle(AtlasTheme.textPrimary)
             .lineLimit(1)
             .accessibilityHidden(true)

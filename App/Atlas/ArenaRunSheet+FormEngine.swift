@@ -12,7 +12,7 @@ extension ArenaRunSheet {
                 engineFormEmpty
             } else {
                 ForEach(engines, id: \.self) { engine in
-                    toggleRow(title: engine, subtitle: nil, isOn: selectedEngine == engine) {
+                    toggleRow(title: ArenaDisplay.engine(engine), subtitle: nil, isOn: selectedEngine == engine) {
                         selectedEngine = engine
                     }
                     .accessibilityIdentifier("arena-run-engine-\(engine)")
