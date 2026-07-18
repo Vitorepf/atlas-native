@@ -28,14 +28,22 @@ extension ArenaModel {
         }
     }
 
-    func startRuns(input: AtlasArenaStartInput) async {
+    /// Um POST B5 por motor (goal 1: motor contra motor numa medição só).
+    func startRuns(inputs: [AtlasArenaStartInput]) async {
         controlError = nil
-        guard input.isLocallyValidForSubmission else {
+        guard !inputs.isEmpty, inputs.allSatisfy(\.isLocallyValidForSubmission) else {
             controlError = "ator e motivo obrigatórios"
             return
         }
         do {
-            lastStartReceipt = try await client.startArenaRuns(input: input)
+            var plannedTotal = 0
+            for input in inputs {
+                let receipt = try await client.startArenaRuns(input: input)
+                plannedTotal += receipt.runsPlanned
+                lastStartReceipt = receipt
+            }
+            lastStartEnginesCount = inputs.count
+            lastStartRunsPlannedTotal = plannedTotal
             await refreshLiveRuns()
         } catch {
             controlError = Self.publicMessage(error)

@@ -9,9 +9,9 @@ extension ArenaRunSheet {
             selectedSuites.insert(first)
         }
         if engines.isEmpty {
-            selectedEngine = ""
-        } else if selectedEngine.isEmpty {
-            selectedEngine = engines.first ?? ""
+            selectedEngines = []
+        } else if selectedEngines.isEmpty, let first = engines.first {
+            selectedEngines = [first]
         }
     }
 }

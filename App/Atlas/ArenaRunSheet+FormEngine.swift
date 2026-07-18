@@ -7,15 +7,29 @@ import AtlasCore
 extension ArenaRunSheet {
     @ViewBuilder
     var engineFormSection: some View {
-        section("MOTOR") {
+        section("MOTORES") {
             if engines.isEmpty {
                 engineFormEmpty
             } else {
                 ForEach(engines, id: \.self) { engine in
-                    toggleRow(title: ArenaDisplay.engine(engine), subtitle: nil, isOn: selectedEngine == engine) {
-                        selectedEngine = engine
+                    toggleRow(
+                        title: ArenaDisplay.engine(engine),
+                        subtitle: nil,
+                        isOn: selectedEngines.contains(engine)
+                    ) {
+                        if selectedEngines.contains(engine) {
+                            selectedEngines.remove(engine)
+                        } else {
+                            selectedEngines.insert(engine)
+                        }
                     }
                     .accessibilityIdentifier("arena-run-engine-\(engine)")
+                }
+                if engines.count > 1 {
+                    Text("Escolha 2 ou mais para comparar motor contra motor.")
+                        .font(.system(.caption))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
                 }
             }
         }

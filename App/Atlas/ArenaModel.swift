@@ -13,6 +13,9 @@ final class ArenaModel {
     var capabilities: AtlasArenaCapabilities?
     var liveRuns: AtlasArenaLiveRuns?
     var lastStartReceipt: AtlasArenaStartReceipt?
+    /// Agregado do último start multi-motor (goal 1) — soma dos recibos B5.
+    var lastStartEnginesCount = 0
+    var lastStartRunsPlannedTotal = 0
     var controlError: String?
     /// Tipo de falha de rede (espelha ConversationModel) — casca usa AtlasFailureCopy.
     private(set) var loadFailureKind: AtlasNetworkFailureKind?

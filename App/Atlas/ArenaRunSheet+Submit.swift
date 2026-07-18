@@ -9,7 +9,7 @@ extension ArenaRunSheet {
     var submitButton: some View {
         Button {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            Task { await model.startRuns(input: input) }
+            Task { await model.startRuns(inputs: inputs) }
         } label: {
             submitButtonLabel
         }

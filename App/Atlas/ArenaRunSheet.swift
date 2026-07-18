@@ -9,7 +9,8 @@ struct ArenaRunSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Bindable var model: ArenaModel
     @State var selectedSuites: Set<String> = []
-    @State var selectedEngine: String = ""
+    /// Multi-select (goal 1: motor contra motor) — cada motor vira um POST B5.
+    @State var selectedEngines: Set<String> = []
     @State var selectedArms: Set<AtlasArenaRunArm> = [.baseline, .withAtlas]
     @State var actor = ""
     @State var reason = ""
