@@ -17,6 +17,8 @@ final class ArenaModel {
     /// Motor escolhido no hero de capacidades (nil = primeiro do índice).
     var capabilitiesEngineSelection: String?
     var liveRuns: AtlasArenaLiveRuns?
+    /// Catálogo B6 de motores rodáveis — estreia de motor novo pelo app.
+    var engineCatalog: AtlasArenaEngines?
     var lastStartReceipt: AtlasArenaStartReceipt?
     /// Agregado do último start multi-motor (goal 1) — soma dos recibos B5.
     var lastStartEnginesCount = 0
@@ -95,6 +97,7 @@ final class ArenaModel {
             capabilitiesByEngine = byEngine
             capabilities = nextComposite.engines.first.flatMap { byEngine[$0.engine] }
             liveRuns = try? await client.getArenaLiveRuns()
+            engineCatalog = try? await client.getArenaEngines()
             lastLoadedAt = Date()
             phase = .loaded
             updateLivePolling()

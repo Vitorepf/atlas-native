@@ -18,6 +18,7 @@ public enum AtlasRoute {
     public static let arenaComposite = "/arena/composite"
     public static let arenaScoreboard = "/arena/scoreboard"
     public static let arenaLiveRuns = "/arena/runs/live"
+    public static let arenaEngines = "/arena/engines"
     public static let arenaRuns = "/arena/runs"
     public static let autonomosAreas = "/ai/software-company-stewardship/loop/areas"
     public static let autonomosDigest = "/ai/software-company-stewardship/autonomos/digest"

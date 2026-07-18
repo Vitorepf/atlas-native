@@ -19,6 +19,10 @@ public extension AtlasClient {
         try await get(AtlasRoute.arenaLiveRuns)
     }
 
+    func getArenaEngines() async throws -> AtlasArenaEngines {
+        try await get(AtlasRoute.arenaEngines)
+    }
+
     func startArenaRuns(input: AtlasArenaStartInput) async throws -> AtlasArenaStartReceipt {
         guard input.isLocallyValidForSubmission else { throw AtlasArenaClientError.invalidStartInput }
         return try await post(AtlasRoute.arenaRuns, body: input, timeout: 30)

@@ -5,9 +5,16 @@ import Foundation
 /// nunca lê snake_case nem ISO 8601 cru.
 enum ArenaDisplay {
     private static let engines: [String: String] = [
+        "claude_opus_4_8": "Claude Opus 4.8",
+        "claude_sonnet_5": "Claude Sonnet 5",
+        "codex_gpt_5_5": "Codex · GPT-5.5",
         "codex_cli": "Codex CLI",
         "claude_code": "Claude Code",
+        "gemini": "Gemini",
+        "minimax_m3": "MiniMax M3",
+        "verboo_qwen_3_6_27b": "Qwen 3.6 27B · Verboo",
         "verboo_kimi_k2_7": "Kimi K2.7 · Verboo",
+        "glm_5_2": "GLM 5.2",
         "hermes": "Hermes",
     ]
 

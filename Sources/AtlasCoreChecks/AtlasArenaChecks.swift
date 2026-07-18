@@ -82,6 +82,16 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
     check("origem decodifica quando publicada e é fail-open quando ausente",
           live?.runs.first?.origin == "iphone" && live?.runs.last?.origin == nil)
 
+    let enginesJSON = """
+    {"schema_version":"atlas.arena.engines.v1","generated_at":"2026-07-17T01:00:00Z",
+     "engines":[{"engine":"codex_gpt_5_5","access_type":"cli","local":true},
+       {"engine":"glm_5_2","access_type":"api"}]}
+    """
+    let engineCatalog = try? decoder.decode(AtlasArenaEngines.self, from: Data(enginesJSON.utf8))
+    check("catálogo de motores decodifica com campos opcionais fail-open",
+          engineCatalog?.engines.map(\.engine) == ["codex_gpt_5_5", "glm_5_2"] &&
+          engineCatalog?.engines.last?.local == nil)
+
     let receiptJSON = """
     {"schema_version":"atlas.arena.start_receipt.v1","status":"enqueued","receipt_hash":"sha256:abc",
      "runs_planned":2,"started":false,"worker_implemented":false,"provider_invoked":false,

@@ -32,6 +32,34 @@ public struct AtlasArenaCapability: Codable, Sendable, Equatable, Identifiable {
     public let casesTotal: Int?
 }
 
+/// Catálogo de motores rodáveis (B6) — enabled, nunca harness-only.
+public struct AtlasArenaEngines: Sendable, Equatable, Decodable {
+    public static let schemaVersion = "atlas.arena.engines.v1"
+
+    public let schemaVersion: String
+    public let generatedAt: String?
+    public let engines: [AtlasArenaEngineOption]
+
+    enum CodingKeys: String, CodingKey {
+        case schemaVersion, generatedAt, engines
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        schemaVersion = try values.requireSchema(Self.schemaVersion, forKey: .schemaVersion, message: "Unsupported Atlas Arena engines schema.")
+        generatedAt = try values.decodeIfPresent(String.self, forKey: .generatedAt)
+        engines = try values.decodeIfPresent([AtlasArenaEngineOption].self, forKey: .engines) ?? []
+    }
+}
+
+public struct AtlasArenaEngineOption: Codable, Sendable, Equatable, Identifiable {
+    public var id: String { engine }
+
+    public let engine: String
+    public let accessType: String?
+    public let local: Bool?
+}
+
 public struct AtlasArenaLiveRuns: Sendable, Equatable, Decodable {
     public static let schemaVersion = "atlas.arena.runs_live.v1"
 
