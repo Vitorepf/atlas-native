@@ -22,4 +22,8 @@ extension AtlasSession {
     static func clearExpiredNightlyProposalMute(now: Date = .init()) -> Date? {
         nightlyProposalMutedUntil(now: now)
     }
+
+    static func clearNightlyProposalMute() {
+        UserDefaults.standard.removeObject(forKey: nightlyProposalMuteKey)
+    }
 }

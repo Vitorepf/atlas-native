@@ -39,6 +39,14 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
         center.removePendingNotificationRequests(withIdentifiers: [nightlyIdentifier])
     }
 
+    /// Desfaz o silêncio na hora: limpa o mute e rearma o agendamento noturno
+    /// (o único caminho de volta antes do prazo — vive na folha do ritmo).
+    func unmuteProposal() {
+        AtlasSession.clearNightlyProposalMute()
+        mutedUntil = nil
+        Task { await scheduleForBackground() }
+    }
+
     func accept(_ proposal: ProposalPayload) async {
         await scheduleMorning(after: proposal)
         pendingProposal = nil

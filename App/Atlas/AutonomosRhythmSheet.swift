@@ -42,9 +42,17 @@ struct AutonomosRhythmSheet: View {
                 .fixedSize(horizontal: false, vertical: true)
 
             if let muted = nightly.spokenMuteStatus() {
-                Text(muted)
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(muted)
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                    Button("Reativar propostas noturnas") {
+                        nightly.unmuteProposal()
+                    }
+                    .font(AtlasFont.mono(11, .semibold))
+                    .foregroundStyle(AtlasTheme.accent)
+                    .accessibilityIdentifier(A11yID.autonomosRhythmUnmute)
+                }
             }
 
             Spacer(minLength: 0)
