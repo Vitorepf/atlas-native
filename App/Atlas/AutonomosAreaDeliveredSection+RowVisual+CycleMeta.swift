@@ -6,9 +6,8 @@ import AtlasCore
 extension AutonomosAreaDeliveredSection {
     @ViewBuilder
     func deliveredRowCycleMeta(_ cycle: AtlasAutonomosCycle) -> some View {
+        // Hex cru fora da tela: a identidade do commit vive no botão que abre
+        // o grafo (Atlas Código) — prova preservada pela ação, não pelo hash.
         Text("ciclo \(cycle.cycleIndex)").font(.caption).foregroundStyle(AtlasTheme.textSecondary)
-        Text(String(cycle.mergeHash.prefix(8))).font(AtlasFont.mono(10))
-            .foregroundStyle(AtlasTheme.textTertiary)
-            .monospacedDigit()
     }
 }

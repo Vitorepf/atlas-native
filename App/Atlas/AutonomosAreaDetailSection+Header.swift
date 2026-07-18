@@ -9,11 +9,11 @@ extension AutonomosAreaDetailSection {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(area.areaName).font(AtlasFont.serif(24, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
-                Text(area.focus).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                Text(AutonomosChrome.plainSlugText(area.focus)).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
             }
             Spacer()
-            Text("tier \(area.autonomyTier)/\(area.maxTierForArea)")
+            Text("autonomia \(area.autonomyTier)/\(area.maxTierForArea)")
                 .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
         }

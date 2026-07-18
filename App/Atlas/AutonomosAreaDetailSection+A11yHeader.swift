@@ -8,7 +8,7 @@ extension AutonomosAreaDetailA11y {
         var parts = [area.areaName]
         let focus = area.focus.trimmingCharacters(in: .whitespacesAndNewlines)
         if !focus.isEmpty { parts.append(focus) }
-        parts.append("tier \(area.autonomyTier) de \(area.maxTierForArea)")
+        parts.append("autonomia \(area.autonomyTier) de \(area.maxTierForArea)")
         parts.append(spokenPhase(area.loopStatus.phase))
         if let isPaused {
             parts.append(isPaused ? "pausada no runtime" : "ativa no runtime")

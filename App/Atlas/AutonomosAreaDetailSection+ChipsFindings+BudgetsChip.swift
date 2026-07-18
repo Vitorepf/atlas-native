@@ -7,7 +7,7 @@ extension AutonomosAreaDetailSection {
     @ViewBuilder
     func backlogBudgetsChip() -> some View {
         AutonomosDetailChipButton(
-            label: "budgets", kind: .budgets,
+            label: "orçamentos", kind: .budgets,
             spokenLabel: AutonomosAreaDetailA11y.spokenChip(kind: .budgets, count: 1)
         ) { onOpenDetail(.budgets) }
     }

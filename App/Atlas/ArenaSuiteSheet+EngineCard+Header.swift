@@ -7,7 +7,7 @@ extension ArenaSuiteSheet {
     @ViewBuilder
     func engineCardHeader(_ engine: AtlasArenaSuiteEngine) -> some View {
         HStack {
-            Text(engine.engine)
+            Text(ArenaDisplay.engine(engine.engine))
                 .font(.system(.headline))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)

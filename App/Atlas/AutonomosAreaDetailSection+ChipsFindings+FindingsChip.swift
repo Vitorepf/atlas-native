@@ -7,7 +7,7 @@ extension AutonomosAreaDetailSection {
     @ViewBuilder
     func backlogFindingsChip(_ backlog: AtlasAutonomosBacklogResponse) -> some View {
         AutonomosDetailChipButton(
-            label: "findings \(backlog.findings.returned)", kind: .findings,
+            label: "achados \(backlog.findings.returned)", kind: .findings,
             spokenLabel: AutonomosAreaDetailA11y.spokenChip(kind: .findings, count: backlog.findings.returned)
         ) { onOpenDetail(.findings) }
     }
