@@ -56,22 +56,21 @@ struct ArenaCapabilitiesSection: View {
         .accessibilityIdentifier("arena-capability-engine-\(engine)")
     }
 
-    /// Ausência dita: a taxonomia vem do servidor; aqui só o estado.
+    /// Ausência dita, mas em sussurro: um card vazio não pode pesar mais que
+    /// conteúdo real. A dimensão existe e está vazia — uma linha basta.
     var capabilitiesUnmeasuredCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             Text("CAPACIDADES")
                 .font(.system(.caption, weight: .semibold))
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
             engineChips
-            Text("Nenhuma capacidade medida ainda — rode uma medição para mapear as habilidades dos motores.")
-                .font(.system(.caption))
+            Text("nenhuma medida ainda — rode uma medição")
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .atlasCard()
         .accessibilityElement(children: .combine)
         .accessibilityLabel("capacidades, nenhuma medida ainda")
         .accessibilityIdentifier(A11yID.arenaCapabilitiesSection)

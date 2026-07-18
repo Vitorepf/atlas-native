@@ -7,11 +7,11 @@ import AtlasCore
 extension ArenaEngineIndexRow {
     var metricsRow: some View {
         HStack(spacing: 10) {
-            metric("c/Atlas", ArenaFormat.score(engine.withAtlasComposite), color: metricColor(engine.withAtlasComposite))
-            metric("sem", ArenaFormat.score(engine.withoutAtlasComposite), color: metricColor(engine.withoutAtlasComposite, fallback: AtlasTheme.textSecondary))
+            metric("com Atlas", ArenaFormat.score(engine.withAtlasComposite), color: metricColor(engine.withAtlasComposite))
+            metric("sem Atlas", ArenaFormat.score(engine.withoutAtlasComposite), color: metricColor(engine.withoutAtlasComposite, fallback: AtlasTheme.textSecondary))
             if let multiplier = engine.atlasMultiplier {
                 // Cor é estado: Atlas multiplicando = accent; regredindo = alert.
-                metric("N×M", ArenaFormat.multiplier(multiplier), color: multiplier >= 1 ? AtlasTheme.accent : AtlasTheme.alert)
+                metric("multiplicador", ArenaFormat.multiplier(multiplier), color: multiplier >= 1 ? AtlasTheme.accent : AtlasTheme.alert)
             }
         }
     }

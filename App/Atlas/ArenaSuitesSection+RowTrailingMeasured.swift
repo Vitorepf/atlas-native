@@ -6,12 +6,8 @@ import AtlasCore
 extension ArenaSuiteRow {
     @ViewBuilder
     var suiteTrailingMeasuredLabel: some View {
-        if suite.isMeasured {
-            Text("medido")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-        } else {
+        // Medido é o normal — silêncio. Só a exceção fala.
+        if !suite.isMeasured {
             Text("não medido")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)

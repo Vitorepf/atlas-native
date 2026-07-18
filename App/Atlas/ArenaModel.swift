@@ -64,7 +64,9 @@ final class ArenaModel {
         for suite in scoreboard?.suites ?? [] {
             guard let engine = suite.engines.first(where: \.regressed),
                   let delta = engine.delta else { continue }
-            return "\(ArenaDisplay.suite(suite.suite)) · \(ArenaDisplay.engine(engine.engine)) regrediu \(ArenaFormat.signed(delta))"
+            // O fato lidera; os nomes vêm depois ("Verboo regrediu" lia como
+            // português quebrado quando o braço tem nome próprio).
+            return "regrediu \(ArenaFormat.signed(delta)) · \(ArenaDisplay.suite(suite.suite)) · \(ArenaDisplay.engine(engine.engine))"
         }
         return nil
     }

@@ -7,7 +7,7 @@ extension AtlasArenaView {
     @ViewBuilder
     var headerAge: some View {
         if let age = model.snapshotAgeText, model.composite != nil {
-            Text("snapshot \(age)")
+            Text("medido \(age)")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
