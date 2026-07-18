@@ -16,6 +16,9 @@ struct AutonomosLoadedSection: View {
     @Binding var detailSheet: AutonomosDetailSheet?
     @Binding var selfConstructionReceipt: SelfConstructionReceipt?
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+    /// Resumos abrem colapsados (uma linha); o toque expande o card completo.
+    @State var governedDigestExpanded = false
+    @State var operationDigestExpanded = false
 
     var body: some View {
         loadedScrollShell

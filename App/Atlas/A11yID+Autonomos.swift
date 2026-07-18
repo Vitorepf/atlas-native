@@ -11,5 +11,7 @@ extension A11yID {
     static let autonomosDetailButtonPrefix = "autonomos-detail-button-"
     static let autonomosRhythmLine = "autonomos-rhythm-line"
     static let autonomosRhythmSheet = "autonomos-rhythm-sheet"
+    static let autonomosGovernedToggle = "autonomos-governed-toggle"
+    static let autonomosOperationToggle = "autonomos-operation-toggle"
     static let autonomosRhythmUnmute = "autonomos-rhythm-unmute"
 }

@@ -5,8 +5,8 @@ import AtlasCore
 
 extension ArenaSuiteSheet {
     var suiteBodyTitle: some View {
-        Text(suite.suite.uppercased())
-            .font(AtlasFont.mono(18))
+        Text(ArenaDisplay.suite(suite.suite))
+            .font(AtlasFont.serif(22, .semibold))
             .foregroundStyle(AtlasTheme.textPrimary)
             .accessibilityAddTraits(.isHeader)
             .accessibilityLabel(ArenaSuiteSheetA11y.spokenSuiteTitle(suite.suite))

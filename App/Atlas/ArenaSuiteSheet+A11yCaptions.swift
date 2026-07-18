@@ -15,6 +15,6 @@ enum ArenaSuiteSheetA11yCaptions {
 
     static func durationCaption(for engine: AtlasArenaSuiteEngine) -> String? {
         guard let ms = engine.durationAvgMs else { return nil }
-        return "duração média \(ms) milissegundos"
+        return "duração média \(ArenaDisplay.duration(ms: ms)) por caso"
     }
 }

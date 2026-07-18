@@ -6,7 +6,6 @@ import AtlasCore
 extension AutonomosLoadedSection {
     @ViewBuilder
     var loadedStackMid: some View {
-        loadedStackMidAwaiting
         loadedStackMidAreaPicker
         loadedAreaDetail
     }

@@ -7,7 +7,8 @@ extension AutonomosAwaitingYouSection {
     var awaitingChrome: some View {
         VStack(alignment: .leading, spacing: 10) {
             awaitingHeader
-            Text("Há decisão pública pendente; nada aqui afirma execução antes do recibo do owner.")
+            // Copy fala ao operador, não a linguagem de governança do sistema.
+            Text("Decisões que só você pode tomar.")
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
