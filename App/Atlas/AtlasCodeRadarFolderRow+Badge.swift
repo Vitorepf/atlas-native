@@ -9,9 +9,9 @@ extension AtlasCodeFolderRow {
         if verifiedExceptionCount > 0 {
             HStack(spacing: 4) {
                 Image(systemName: "exclamationmark.triangle")
-                    .font(.system(size: 9, weight: .semibold))
+                    .atlasSans(9, .semibold)
                 Text("\(verifiedExceptionCount)")
-                    .font(.system(size: 11, weight: .semibold))
+                    .atlasSans(11, .semibold)
                     .monospacedDigit()
             }
             .foregroundStyle(AtlasCodePalette.alert)

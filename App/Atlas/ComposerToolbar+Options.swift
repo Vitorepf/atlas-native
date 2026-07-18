@@ -10,7 +10,7 @@ extension ComposerToolbar {
             optionsMenuButtons
         } label: {
             Image(systemName: "ellipsis")
-                .font(.system(size: 17, weight: .semibold))
+                .atlasSans(17, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 32, height: 32)
                 .contentShape(Circle())

@@ -9,7 +9,7 @@ extension AtlasCodeHealReceiptSheet {
   func stepRow(index: Int, receipt: AtlasCodeHealStepReceipt) -> some View {
     HStack(alignment: .top, spacing: 9) {
       Image(systemName: receipt.status == "completed" ? "checkmark" : "xmark")
-        .font(.system(size: 10, weight: .semibold))
+        .atlasSans(10, .semibold)
         .foregroundStyle(receipt.status == "completed" ? AtlasCodePalette.healed : AtlasCodePalette.alert)
         .padding(.top, 2)
         .accessibilityHidden(true)

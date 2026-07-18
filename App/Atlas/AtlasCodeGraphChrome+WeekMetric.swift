@@ -11,7 +11,7 @@ extension AtlasCodeView {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .monospacedDigit()
             Text(label)
-                .font(.system(size: 10))
+                .atlasSans(10)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
     }

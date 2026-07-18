@@ -7,7 +7,7 @@ import AtlasCore
 extension ConversationMessages {
     var scrollFABLabel: some View {
         Image(systemName: "arrow.down")
-            .font(.system(size: 15, weight: .semibold))
+            .atlasSans(15, .semibold)
             .foregroundStyle(AtlasTheme.textPrimary)
             .frame(width: 40, height: 40)
             .background(Circle().fill(AtlasTheme.surfaceHi)

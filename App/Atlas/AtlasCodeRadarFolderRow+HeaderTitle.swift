@@ -10,7 +10,7 @@ extension AtlasCodeFolderRow {
                 .font(AtlasFont.serif(16, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(folder.repositories == 1 ? "1 repositório" : "\(folder.repositories) repositórios")
-                .font(.system(size: 11.5))
+                .atlasSans(11.5)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
         .accessibilityHidden(true)

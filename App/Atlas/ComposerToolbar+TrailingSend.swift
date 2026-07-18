@@ -8,7 +8,7 @@ extension ComposerToolbar {
     var trailingSendButton: some View {
         Button(action: onSend) {
             Image(systemName: "arrow.up.circle.fill")
-                .font(.system(size: 29))
+                .atlasSans(29)
                 .foregroundStyle(AtlasTheme.accent)
                 .frame(width: 32, height: 32)
         }

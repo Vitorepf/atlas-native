@@ -6,7 +6,7 @@ import AtlasCore
 extension AtlasCodeProvenanceSheet {
     var filesSectionHeader: some View {
         Text("ARQUIVOS")
-            .font(.system(size: 8.5, weight: .semibold))
+            .atlasSans(8.5, .semibold)
             .tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)

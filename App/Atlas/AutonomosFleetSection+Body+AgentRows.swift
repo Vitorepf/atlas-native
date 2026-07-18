@@ -34,7 +34,7 @@ extension AutonomosFleetSection {
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
                 Image(systemName: "chevron.down")
-                    .font(.system(size: 8, weight: .semibold))
+                    .atlasSans(8, .semibold)
                     .foregroundStyle(AtlasTheme.textTertiary)
                 Spacer(minLength: 0)
             }

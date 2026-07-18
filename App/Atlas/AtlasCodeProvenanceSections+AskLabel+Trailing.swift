@@ -8,7 +8,7 @@ extension AtlasCodeProvenanceSheet {
     var askButtonLabelTrailing: some View {
         Spacer(minLength: 0)
         Image(systemName: "arrow.up.right")
-            .font(.system(size: 10, weight: .semibold))
+            .atlasSans(10, .semibold)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
     }

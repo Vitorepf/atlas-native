@@ -7,7 +7,7 @@ import AtlasCore
 extension ConversationHandoffReceipt {
     var receiptIcon: some View {
         Image(systemName: isReady ? "checkmark.circle.fill" : "arrow.triangle.2.circlepath")
-            .font(.system(size: 12, weight: .semibold))
+            .atlasSans(12, .semibold)
             .foregroundStyle(isReady ? AtlasTheme.accent : AtlasTheme.textTertiary)
             .modifier(ReceiptSpinEffect(active: isPending && !reduceMotion))
             .accessibilityHidden(true)

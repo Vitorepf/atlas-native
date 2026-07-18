@@ -14,7 +14,7 @@ extension AtlasCodeRepoRow {
                 .accessibilityHidden(true)
         }
         Image(systemName: "chevron.right")
-            .font(.system(size: 12, weight: .semibold))
+            .atlasSans(12, .semibold)
             .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
             .accessibilityHidden(true)
     }

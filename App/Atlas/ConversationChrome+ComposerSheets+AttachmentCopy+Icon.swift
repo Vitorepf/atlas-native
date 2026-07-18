@@ -6,7 +6,7 @@ import UIKit
 extension ComposerAttachmentRow {
     var attachmentRowIcon: some View {
         Image(systemName: icon)
-            .font(.system(size: 17, weight: .medium))
+            .atlasSans(17, .medium)
             .foregroundStyle(AtlasTheme.accent)
             .frame(width: 28)
             .accessibilityHidden(true)

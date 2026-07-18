@@ -8,12 +8,12 @@ extension AtlasCodeHealReceiptSheet {
     var masthead: some View {
         HStack(spacing: 7) {
             Image(systemName: hasCompletedHeal ? "checkmark" : "exclamationmark.triangle")
-                .font(.system(size: 10, weight: .bold))
+                .atlasSans(10, .bold)
                 .accessibilityHidden(true)
             Text(hasCompletedHeal
                  ? "CURADO SOZINHO · \(heal.mode.uppercased())"
                  : "CURA · \(heal.mode.uppercased())")
-                .font(.system(size: 9, weight: .bold))
+                .atlasSans(9, .bold)
                 .tracking(1.2)
                 .accessibilityHidden(true)
         }

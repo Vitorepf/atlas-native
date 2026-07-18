@@ -6,14 +6,14 @@ import AtlasCore
 extension WorkspaceView {
     var newPillLabel: some View {
         HStack(spacing: 10) {
-            Image(systemName: "plus").font(.system(size: 17, weight: .medium))
+            Image(systemName: "plus").atlasSans(17, .medium)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 30, height: 30).background(Circle().fill(AtlasTheme.surfaceHi))
                 .accessibilityHidden(true)
             Text("Escreva ao Atlas").font(.system(.callout)).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Spacer()
-            Image(systemName: "mic.fill").font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary)
+            Image(systemName: "mic.fill").atlasSans(17).foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 30, height: 30)
                 .accessibilityHidden(true)
         }

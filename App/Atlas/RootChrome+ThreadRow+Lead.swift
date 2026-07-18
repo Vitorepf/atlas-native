@@ -11,7 +11,7 @@ extension ThreadRow {
                 .accessibilityHidden(true)
         } else {
             Image(systemName: "bubble.left")
-                .font(.system(size: 17)).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+                .atlasSans(17).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
                 .accessibilityHidden(true)
         }
     }

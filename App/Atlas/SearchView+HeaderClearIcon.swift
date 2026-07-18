@@ -6,6 +6,6 @@ import AtlasCore
 extension SearchViewHeader {
     var searchClearIcon: some View {
         Image(systemName: "xmark.circle.fill")
-            .font(.system(size: 15)).foregroundStyle(AtlasTheme.textTertiary)
+            .atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
     }
 }

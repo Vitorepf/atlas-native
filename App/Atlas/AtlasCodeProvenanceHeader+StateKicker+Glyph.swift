@@ -11,7 +11,7 @@ extension AtlasCodeProvenanceSheet {
                 .frame(width: 6, height: 6)
                 .accessibilityHidden(true)
             Text(stateLabel)
-                .font(.system(size: 9, weight: .bold))
+                .atlasSans(9, .bold)
                 .tracking(1.4)
                 .foregroundStyle(AtlasCodePalette.color(for: state))
                 .accessibilityHidden(true)

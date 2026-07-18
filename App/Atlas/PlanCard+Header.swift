@@ -5,7 +5,7 @@ extension PlanCard {
     func planHeader(plan: AtlasExecutionPlan) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "list.bullet.rectangle")
-                .font(.system(size: 12)).foregroundStyle(AtlasTheme.accent.opacity(0.85))
+                .atlasSans(12).foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityHidden(true)
             Text(plan.title)
                 .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary)

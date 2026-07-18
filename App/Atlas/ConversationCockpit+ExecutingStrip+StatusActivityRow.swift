@@ -8,7 +8,7 @@ extension ExecutingStrip {
     func stripStatusActivityRow(_ act: AtlasAgentActivity) -> some View {
         HStack(spacing: 5) {
             Image(systemName: activityIcon(act.kind))
-                .font(.system(size: 10, weight: .semibold))
+                .atlasSans(10, .semibold)
                 .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityHidden(true)
             Text(act.title)

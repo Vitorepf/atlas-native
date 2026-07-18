@@ -13,7 +13,7 @@ extension AtlasMarkdownView {
                 .accessibilityHidden(true)
         } else {
             Text("—")
-                .font(.system(size: 16)).foregroundStyle(AtlasTheme.accent)
+                .atlasSans(16).foregroundStyle(AtlasTheme.accent)
                 .frame(width: 22, alignment: .leading)
                 .accessibilityHidden(true)
         }

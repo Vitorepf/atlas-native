@@ -7,7 +7,7 @@ extension EditorialTurn {
     var userEditResendLabel: some View {
         HStack(spacing: 5) {
             Image(systemName: "arrow.turn.down.right")
-                .font(.system(size: 10, weight: .semibold))
+                .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
             Text("editar e reenviar")
                 .font(AtlasFont.mono(10))

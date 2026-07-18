@@ -9,7 +9,7 @@ extension SearchViewHeader {
     var searchFieldLeading: some View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
-                .font(.system(size: 15)).foregroundStyle(AtlasTheme.textTertiary)
+                .atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             searchFieldInput
             searchClearButton

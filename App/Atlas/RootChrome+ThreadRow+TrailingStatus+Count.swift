@@ -6,7 +6,7 @@ import AtlasCore
 extension ThreadRow {
     var rowTrailingCount: some View {
         Text("\(thread.messageCount)")
-            .font(.system(size: 16))
+            .atlasSans(16)
             .foregroundStyle(AtlasTheme.textTertiary)
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))

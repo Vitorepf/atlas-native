@@ -7,7 +7,7 @@ extension LiveNowRow {
     var remoteBadgeCapsule: some View {
         HStack(spacing: 4) {
             Image(systemName: "arrow.triangle.branch")
-                .font(.system(size: 8, weight: .semibold))
+                .atlasSans(8, .semibold)
                 .accessibilityHidden(true)
             Text("remota")
                 .font(AtlasFont.mono(9))

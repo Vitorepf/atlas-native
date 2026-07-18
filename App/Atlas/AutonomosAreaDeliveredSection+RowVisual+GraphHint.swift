@@ -8,7 +8,7 @@ extension AutonomosAreaDeliveredSection {
     func deliveredRowGraphHint(_ cycle: AtlasAutonomosCycle, graphHint: Bool) -> some View {
         if graphHint {
             Image(systemName: "point.3.connected.trianglepath.dotted")
-                .font(.system(size: 10, weight: .semibold))
+                .atlasSans(10, .semibold)
                 .foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
         }

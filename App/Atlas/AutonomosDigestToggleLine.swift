@@ -27,7 +27,7 @@ struct AutonomosDigestToggleLine: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                 Image(systemName: "chevron.down")
-                    .font(.system(size: 7, weight: .semibold))
+                    .atlasSans(7, .semibold)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .rotationEffect(.degrees(expanded ? 180 : 0))
                 Spacer(minLength: 0)

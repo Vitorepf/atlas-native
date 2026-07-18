@@ -8,7 +8,7 @@ extension ExecutionStateCard {
     var stateHeader: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: icon)
-                .font(.system(size: 13, weight: .semibold))
+                .atlasSans(13, .semibold)
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
             Text(state.title)

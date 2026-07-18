@@ -7,10 +7,10 @@ extension AtlasCodeRadarStatusCapsule {
     var alarmCapsule: some View {
         HStack(spacing: 7) {
             Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 10, weight: .semibold))
+                .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
             Text(model.headline)
-                .font(.system(size: 11, weight: .semibold))
+                .atlasSans(11, .semibold)
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }

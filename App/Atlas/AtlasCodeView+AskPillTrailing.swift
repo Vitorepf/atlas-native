@@ -5,7 +5,7 @@ import SwiftUI
 extension AtlasCodeView {
     var askPillTrailingChevron: some View {
         Image(systemName: "chevron.up")
-            .font(.system(size: 10, weight: .semibold))
+            .atlasSans(10, .semibold)
             .foregroundStyle(AtlasTheme.textSecondary)
             .accessibilityHidden(true)
     }

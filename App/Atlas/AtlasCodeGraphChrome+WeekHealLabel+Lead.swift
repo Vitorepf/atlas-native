@@ -7,7 +7,7 @@ extension AtlasCodeView {
     @ViewBuilder
     var weekHealReceiptLabelLead: some View {
         Image(systemName: "checkmark.seal")
-            .font(.system(size: 12))
+            .atlasSans(12)
             .foregroundStyle(AtlasCodePalette.healed)
             .accessibilityHidden(true)
         Text("curado sozinho · ver recibo")

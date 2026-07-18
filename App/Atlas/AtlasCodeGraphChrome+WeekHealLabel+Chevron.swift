@@ -8,7 +8,7 @@ extension AtlasCodeView {
     var weekHealReceiptLabelChevron: some View {
         Spacer()
         Image(systemName: "chevron.right")
-            .font(.system(size: 10, weight: .semibold))
+            .atlasSans(10, .semibold)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
     }

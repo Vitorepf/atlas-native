@@ -12,7 +12,7 @@ extension DraftThumb {
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.94)))
         } else if failedMessage != nil {
-            Image(systemName: "exclamationmark.triangle.fill").font(.system(size: 16))
+            Image(systemName: "exclamationmark.triangle.fill").atlasSans(16)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading).padding(6)
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.9)))

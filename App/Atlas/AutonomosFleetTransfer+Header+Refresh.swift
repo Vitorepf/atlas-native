@@ -9,7 +9,7 @@ extension AutonomosTransferStatus {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onRefresh()
         } label: {
-            Image(systemName: "arrow.clockwise").font(.system(size: 12, weight: .medium))
+            Image(systemName: "arrow.clockwise").atlasSans(12, .medium)
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityLabel("atualizar status da transferência")

@@ -12,7 +12,7 @@ extension ConversationView {
                 showOutline = true
             } label: {
                 Image(systemName: "list.bullet.rectangle")
-                    .font(.system(size: 15, weight: .semibold)).foregroundStyle(AtlasTheme.textSecondary)
+                    .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 40, height: 40).background(Circle().fill(AtlasTheme.surface))
             }
             .accessibilityLabel(ConversationViewA11y.spokenOutlineLabel(turnCount: model.bubbles.count))

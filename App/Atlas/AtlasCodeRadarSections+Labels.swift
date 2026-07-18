@@ -10,7 +10,7 @@ struct AtlasCodeRadarSectionLabel: View {
 
     var body: some View {
         Text(text)
-            .font(.system(size: 10, weight: .semibold))
+            .atlasSans(10, .semibold)
             .tracking(1.3)
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.bottom, 8)

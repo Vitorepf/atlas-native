@@ -7,7 +7,7 @@ extension SelfConstructionReceiptSheet {
     var receiptSealHeader: some View {
         HStack(spacing: 7) {
             Image(systemName: "checkmark.seal")
-                .font(.system(size: 11, weight: .bold))
+                .atlasSans(11, .bold)
                 .accessibilityHidden(true)
             Text("RECIBO DE AUTO-CONSTRUÇÃO")
                 .font(AtlasFont.mono(11))

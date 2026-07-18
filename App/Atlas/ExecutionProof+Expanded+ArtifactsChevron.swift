@@ -6,7 +6,7 @@ import AtlasCore
 extension ExecutionProof {
     var artifactsChevron: some View {
         Image(systemName: "chevron.right")
-            .font(.system(size: 10, weight: .semibold))
+            .atlasSans(10, .semibold)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
     }

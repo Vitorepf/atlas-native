@@ -7,7 +7,7 @@ extension ExecutionProof {
     func activityRowCell(index: Int, act: AtlasAgentActivity) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: activityIcon(act.kind))
-                .font(.system(size: 11)).foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.8))
                 .frame(width: 15)
                 .accessibilityHidden(true)
             activityRowCopy(act)

@@ -9,7 +9,7 @@ extension AutonomosViewHeader {
             onRefresh()
         } label: {
             Image(systemName: "arrow.clockwise")
-                .font(.system(size: 15, weight: .medium))
+                .atlasSans(15, .medium)
                 .foregroundStyle(canRefresh ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .frame(width: 40, height: 40)
                 .background(Circle().fill(AtlasTheme.surface))

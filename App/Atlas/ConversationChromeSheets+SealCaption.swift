@@ -7,7 +7,7 @@ extension StaleReadSeal {
     func sealCaptionRow(now: Date) -> some View {
         HStack(spacing: 6) {
             Image(systemName: "clock.arrow.circlepath")
-                .font(.system(size: 10, weight: .semibold))
+                .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
             Text(StaleReadSealA11y.displayCaption(
                 capturedAt: capturedAt,

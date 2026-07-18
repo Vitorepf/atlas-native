@@ -25,7 +25,7 @@ extension WorkspaceView {
     var headerBackButton: some View {
         Button { dismiss() } label: {
             Image(systemName: "chevron.left")
-                .font(.system(size: 17, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary)
+                .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).background(Circle().fill(AtlasTheme.surface))
         }
         .accessibilityLabel("voltar")

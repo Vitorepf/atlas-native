@@ -9,7 +9,7 @@ extension ComposerToolbar {
             BreathingDiamond(size: 13, reduceMotion: reduceMotion)
                 .accessibilityHidden(true)
             Image(systemName: "arrow.up.circle.fill")
-                .font(.system(size: 29))
+                .atlasSans(29)
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.38))
                 .accessibilityHidden(true)
         }

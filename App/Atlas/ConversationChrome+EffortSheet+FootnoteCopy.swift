@@ -7,7 +7,7 @@ import AtlasCore
 extension EffortSheet {
     var effortFootnoteCopy: some View {
         Text("vale para o próximo envio; automático deixa o Atlas Decide escolher")
-            .font(.system(size: 12))
+            .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)

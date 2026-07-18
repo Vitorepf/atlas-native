@@ -7,10 +7,10 @@ extension AtlasCodeMirrorCard {
     func label(_ text: String, color: Color, icon: String) -> some View {
         HStack(spacing: 7) {
             Image(systemName: icon)
-                .font(.system(size: 10, weight: .semibold))
+                .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
             Text(text)
-                .font(.system(size: 12.5))
+                .atlasSans(12.5)
                 .accessibilityHidden(true)
         }
         .foregroundStyle(color)

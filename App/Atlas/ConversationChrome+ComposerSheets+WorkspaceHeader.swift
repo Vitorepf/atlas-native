@@ -6,7 +6,7 @@ import UIKit
 extension WorkspaceSheet {
     var workspaceListHeader: some View {
         Text("pastas das conversas carregadas · vale no próximo envio")
-            .font(.system(size: 12))
+            .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)

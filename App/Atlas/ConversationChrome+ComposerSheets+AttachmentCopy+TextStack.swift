@@ -6,9 +6,9 @@ import UIKit
 extension ComposerAttachmentRow {
     var attachmentRowTextStack: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(title).font(.system(size: 17)).foregroundStyle(AtlasTheme.textPrimary)
+            Text(title).atlasSans(17).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
-            Text(subtitle).font(.system(size: 13)).foregroundStyle(AtlasTheme.textTertiary)
+            Text(subtitle).atlasSans(13).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
         }
     }

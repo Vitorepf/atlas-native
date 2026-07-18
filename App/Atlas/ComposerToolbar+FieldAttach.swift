@@ -10,7 +10,7 @@ extension ComposerToolbar {
             onAttach()
         } label: {
             Image(systemName: "paperclip")
-                .font(.system(size: 17, weight: .medium))
+                .atlasSans(17, .medium)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 32, height: 32)
         }

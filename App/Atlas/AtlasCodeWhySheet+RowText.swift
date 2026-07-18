@@ -13,7 +13,7 @@ extension AtlasCodeWhySheet {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Text(commit.subject)
-                .font(.system(size: 11))
+                .atlasSans(11)
                 .foregroundStyle(AtlasTheme.textSecondary.opacity(0.75))
                 .lineLimit(2)
                 .accessibilityHidden(true)

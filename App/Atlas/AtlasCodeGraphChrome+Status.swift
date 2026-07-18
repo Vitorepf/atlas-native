@@ -12,9 +12,9 @@ extension AtlasCodeView {
         statusCapsuleChrome(
             HStack(spacing: 7) {
                 Image(systemName: statusCapsuleSymbol)
-                    .font(.system(size: 10, weight: .semibold))
+                    .atlasSans(10, .semibold)
                 Text(model.statusHeadline)
-                    .font(.system(size: 11, weight: .semibold))
+                    .atlasSans(11, .semibold)
                     .monospacedDigit()
             }
         )

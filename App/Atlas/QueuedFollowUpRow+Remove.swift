@@ -9,7 +9,7 @@ extension QueuedFollowUpRow {
             onRemove()
         } label: {
             Image(systemName: "trash")
-                .font(.system(size: 14))
+                .atlasSans(14)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 38, height: 38)
                 .background(Circle().fill(AtlasTheme.surfaceHi))

@@ -9,7 +9,7 @@ extension ExecutingStrip {
     var stripStatusLeading: some View {
         if bubble.showsReconnectSurface {
             Image(systemName: bubble.reconnectBannerIcon)
-                .font(.system(size: 10, weight: .semibold))
+                .atlasSans(10, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
                 .accessibilityHidden(true)

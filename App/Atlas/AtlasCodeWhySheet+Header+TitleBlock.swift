@@ -7,7 +7,7 @@ extension AtlasCodeWhySheet {
     var whyHeaderTitleBlock: some View {
         Group {
             Text("POR QUE ESTE ARQUIVO EXISTE")
-                .font(.system(size: 9, weight: .semibold))
+                .atlasSans(9, .semibold)
                 .tracking(1.5)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)

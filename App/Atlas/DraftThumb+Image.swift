@@ -10,7 +10,7 @@ extension DraftThumb {
             Image(uiImage: ui).resizable().scaledToFill()
         } else {
             VStack(spacing: 4) {
-                Image(systemName: "doc.fill").font(.system(size: 20)).foregroundStyle(AtlasTheme.textSecondary)
+                Image(systemName: "doc.fill").atlasSans(20).foregroundStyle(AtlasTheme.textSecondary)
                 Text((draft.fileName as NSString).pathExtension.uppercased())
                     .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
             }.frame(maxWidth: .infinity, maxHeight: .infinity).background(AtlasTheme.surfaceHi)

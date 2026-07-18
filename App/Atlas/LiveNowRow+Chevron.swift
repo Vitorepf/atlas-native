@@ -8,7 +8,7 @@ extension LiveNowRow {
     var rowChevron: some View {
         if navigable {
             Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .semibold))
+                .atlasSans(12, .semibold)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
         }

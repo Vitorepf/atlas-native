@@ -15,7 +15,7 @@ extension AtlasCodeRepoRow {
                     .accessibilityHidden(true)
                 // "+1" era críptico: diz o que é ("mais 1 alerta"), não só o número.
                 Text(issues.count == 1 ? first.headline(trunk: trunk) : "\(first.headline(trunk: trunk)) · mais \(issues.count - 1) alerta\(issues.count - 1 == 1 ? "" : "s")")
-                    .font(.system(size: 12))
+                    .atlasSans(12)
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(1)
                     .accessibilityHidden(true)

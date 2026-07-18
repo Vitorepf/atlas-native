@@ -10,7 +10,7 @@ extension PlanStepRowView {
             Circle().fill(dotFill(state)).frame(width: 13, height: 13)
                 .opacity(state == .current && pulse && !reduceMotion ? 0.55 : 1)
             if state == .done {
-                Image(systemName: "checkmark").font(.system(size: 7, weight: .bold))
+                Image(systemName: "checkmark").atlasSans(7, .bold)
                     .foregroundStyle(AtlasTheme.bg)
             } else if state == .current {
                 Circle().fill(AtlasTheme.bg).frame(width: 5, height: 5)

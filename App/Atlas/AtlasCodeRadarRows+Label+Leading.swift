@@ -9,7 +9,7 @@ extension AtlasCodeRepoRow {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 7) {
                 Text(repo.name)
-                    .font(.system(size: 15, weight: .medium))
+                    .atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                 repoFolderBadge
             }

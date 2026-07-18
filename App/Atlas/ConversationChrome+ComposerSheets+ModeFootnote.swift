@@ -5,7 +5,7 @@ import SwiftUI
 extension ModeSheet {
     var modeFootnote: some View {
         Text(ComposerSheetA11y.modeFootnote)
-            .font(.system(size: 12))
+            .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)

@@ -10,7 +10,7 @@ extension QueuedFollowUpRow {
             onPromote()
         } label: {
             Image(systemName: "arrow.up")
-                .font(.system(size: 15, weight: .semibold))
+                .atlasSans(15, .semibold)
                 .foregroundStyle(AtlasTheme.accent)
                 .frame(width: 38, height: 38)
                 .background(Circle().fill(AtlasTheme.goldVeil))

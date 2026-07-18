@@ -8,7 +8,7 @@ extension AtlasCodeHealReceiptSheet {
   func stepCopy(_ receipt: AtlasCodeHealStepReceipt) -> some View {
     VStack(alignment: .leading, spacing: 2) {
       Text(receipt.action)
-        .font(.system(size: 13))
+        .atlasSans(13)
         .foregroundStyle(AtlasTheme.textPrimary)
         .accessibilityHidden(true)
       if !receipt.result.isEmpty {

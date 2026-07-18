@@ -10,7 +10,7 @@ extension SelfConstructionReceiptSheet {
                 .accessibilityHidden(true)
             Text("Desfazer — com recibo")
         }
-        .font(.system(size: 14, weight: .medium))
+        .atlasSans(14, .medium)
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .foregroundStyle(AtlasTheme.domOperacional)

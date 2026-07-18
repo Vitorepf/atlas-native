@@ -8,7 +8,7 @@ extension AtlasCodeRepoRow {
     var repoFolderBadge: some View {
         if showsFolder, let folder = repo.folder {
             Text(folder)
-                .font(.system(size: 10))
+                .atlasSans(10)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.horizontal, 6)
                 .padding(.vertical, 1.5)

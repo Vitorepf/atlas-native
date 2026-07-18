@@ -6,7 +6,7 @@ import UIKit
 extension WorkspaceSheet {
     var workspaceEmptyLabel: some View {
         Text("Nenhum workspace nas conversas carregadas")
-            .font(.system(size: 15))
+            .atlasSans(15)
             .foregroundStyle(AtlasTheme.textTertiary)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 24)

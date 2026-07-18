@@ -11,7 +11,7 @@ extension AtlasCodeProvenanceSheet {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
             Text("sua frase")
-                .font(.system(size: 9))
+                .atlasSans(9)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
     }

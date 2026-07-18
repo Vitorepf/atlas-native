@@ -7,7 +7,7 @@ extension AtlasCodeFileRow {
     var fileNameStack: some View {
         VStack(alignment: .leading, spacing: 1) {
             Text(file.fileName)
-                .font(.system(size: 12.5, weight: .medium))
+                .atlasSans(12.5, .medium)
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)
                 .truncationMode(.middle)

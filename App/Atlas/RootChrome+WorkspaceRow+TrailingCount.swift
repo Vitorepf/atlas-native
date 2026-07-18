@@ -14,7 +14,7 @@ extension WorkspaceRow {
                 .accessibilityHidden(true)
         }
         Image(systemName: "chevron.right")
-            .font(.system(size: 13, weight: .semibold)).foregroundStyle(AtlasTheme.textTertiary)
+            .atlasSans(13, .semibold).foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
     }
 }

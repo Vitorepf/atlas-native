@@ -8,7 +8,7 @@ extension ChangeReviewGovernanceSection {
     func councilBlockHeader(diverged: Bool) -> some View {
         HStack(spacing: 8) {
             Text("Conselho")
-                .font(.system(size: 11, weight: .semibold))
+                .atlasSans(11, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
             if diverged {

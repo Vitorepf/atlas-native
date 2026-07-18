@@ -13,6 +13,12 @@ struct AutonomosRhythmLearningLine: View {
 
     var body: some View {
         Group {
+            if windows == nil {
+                // Reserva a altura da linha: view VAZIA em LazyVStack nunca
+                // "aparece" e o .task nunca dispara (ovo-e-galinha que sumiu
+                // com a linha do app). O texto pousa sem pulo de layout.
+                Text(" ").font(AtlasFont.mono(10)).accessibilityHidden(true)
+            }
             if let windows {
                 Button {
                     rhythmSheetShown = true
@@ -21,7 +27,7 @@ struct AutonomosRhythmLearningLine: View {
                         Text(AutonomosRhythmCopy.line(windows, paused: nightly.isProposalMuted))
                             .font(AtlasFont.mono(10))
                         Image(systemName: "chevron.right")
-                            .font(.system(size: 7, weight: .semibold))
+                            .atlasSans(7, .semibold)
                     }
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .frame(maxWidth: .infinity, alignment: .leading)

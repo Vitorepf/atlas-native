@@ -7,7 +7,7 @@ import SwiftUI
 extension AtlasCodeLoadFailureEmpty {
     var failureIcon: some View {
         Image(systemName: "exclamationmark.triangle")
-            .font(.system(size: 24))
+            .atlasSans(24)
             .foregroundStyle(AtlasCodePalette.alert)
             .accessibilityHidden(true)
     }

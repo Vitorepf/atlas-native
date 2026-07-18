@@ -6,7 +6,7 @@ extension SheetRow {
     @ViewBuilder
     var sheetRowTrailing: some View {
         if selected {
-            Image(systemName: "checkmark").font(.system(size: 15, weight: .semibold))
+            Image(systemName: "checkmark").atlasSans(15, .semibold)
                 .foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
         }

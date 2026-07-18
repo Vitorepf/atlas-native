@@ -6,7 +6,7 @@ extension ExecutionBanner {
     var bannerContentRow: some View {
         HStack(spacing: 7) {
             Image(systemName: icon)
-                .font(.system(size: 11, weight: .semibold))
+                .atlasSans(11, .semibold)
                 .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
                 .accessibilityHidden(true)
             Text(text)
