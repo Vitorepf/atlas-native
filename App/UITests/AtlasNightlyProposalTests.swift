@@ -27,7 +27,9 @@ final class AtlasNightlyProposalTests: XCTestCase {
         XCTAssertTrue(prefilled.waitForExistence(timeout: 10), "motivo precisa vir pré-preenchido")
         attach(app, name: "02-sheet-prefilled")
 
-        app.buttons["Cancelar"].tap()
+        // O botão visível "Cancelar" fala "cancelar ação governada" (AX label
+        // vence o título nas queries) — query pela voz canônica.
+        app.buttons["cancelar ação governada"].tap()
         XCTAssertTrue(card.waitForExistence(timeout: 10), "cancelar o sheet não deve descartar a proposta")
         app.buttons[A11yID.nightlyProposalDismiss].tap()
         XCTAssertFalse(card.waitForExistence(timeout: 5), "hoje não precisa silenciar o card")

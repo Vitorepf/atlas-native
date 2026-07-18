@@ -16,6 +16,11 @@ final class AtlasArenaFlowTests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaIndexSection].waitForExistence(timeout: 60), "índice da Arena não carregou")
         capture(app, "01-arena-index")
 
+        // Suítes agora vivem em disclosure (capacidades são o palco) — o
+        // caminho do operador é: achar a linha, tocar, e ENTÃO ver a lista.
+        let suitesToggle = app.buttons[A11yID.arenaSuitesToggle]
+        XCTAssertTrue(scrollUntilVisible(suitesToggle, app: app, timeout: 30), "linha de suítes não apareceu")
+        suitesToggle.tap()
         let suitesSection = app.descendants(matching: .any)[A11yID.arenaSuitesSection]
         XCTAssertTrue(scrollUntilVisible(suitesSection, app: app, timeout: 30), "seção SUITES não apareceu")
         let suite = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "arena-suite-")).firstMatch
