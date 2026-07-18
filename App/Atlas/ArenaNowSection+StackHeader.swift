@@ -12,19 +12,15 @@ extension ArenaNowSection {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
             Spacer()
-            Text(nowCountCaption)
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(runningCount > 0 ? AtlasTheme.accent : AtlasTheme.textTertiary)
-                .monospacedDigit()
-                .accessibilityHidden(true)
+            // Só o estado VIVO merece o canto do header; a fila fala na
+            // própria linha de disclosure — dizer duas vezes era ruído.
+            if runningCount > 0 {
+                Text(runningCount == 1 ? "medindo" : "\(runningCount) medindo")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.accent)
+                    .monospacedDigit()
+                    .accessibilityHidden(true)
+            }
         }
-    }
-
-    /// "2 rodando · 3 na fila" / "1 na fila" / "nada rodando".
-    var nowCountCaption: String {
-        var parts: [String] = []
-        if runningCount > 0 { parts.append("\(runningCount) rodando") }
-        if queuedCount > 0 { parts.append("\(queuedCount) na fila") }
-        return parts.isEmpty ? "nada rodando" : parts.joined(separator: " · ")
     }
 }

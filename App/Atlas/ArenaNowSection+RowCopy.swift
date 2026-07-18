@@ -10,8 +10,10 @@ extension ArenaNowSection {
                 .font(.system(.callout, weight: .medium))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)
+            // Braço + progresso, ponto. Origem fica na voz (a11y) — no visual
+            // era inventário, não informação.
             Text(
-                [ArenaDisplay.origin(run.origin), run.arm?.labelPT ?? "braço desconhecido", run.progressText]
+                [run.arm?.labelPT, run.progressText]
                     .compactMap(\.self)
                     .joined(separator: " · ")
             )

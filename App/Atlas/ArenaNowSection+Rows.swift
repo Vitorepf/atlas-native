@@ -7,7 +7,7 @@ import AtlasCore
 extension ArenaNowSection {
     @ViewBuilder
     var nowRunRows: some View {
-        ForEach(runs) { run in
+        ForEach(runningRuns) { run in
             nowRunRow(run)
         }
     }

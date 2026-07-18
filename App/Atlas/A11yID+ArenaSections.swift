@@ -8,5 +8,5 @@ extension A11yID {
     static let arenaSuitesToggle = "arena-suites-toggle"
     static let arenaSuitesSection = "arena-suites-section"
     static let arenaNowSection = "arena-now-section"
-    static let arenaNowLiveActivityNote = "arena-now-live-activity-note"
+    static let arenaNowQueueToggle = "arena-now-queue-toggle"
 }

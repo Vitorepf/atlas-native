@@ -9,7 +9,10 @@ extension ArenaNowSection {
     var nowSectionBody: some View {
         nowSectionStack
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(ArenaNowSectionA11y.spokenSection(runCount: runs.count))
+            .accessibilityLabel(ArenaNowSectionA11y.spokenSection(
+                running: runningCount,
+                queuedSuites: queuedSuiteNames.count
+            ))
             .accessibilityIdentifier(A11yID.arenaNowSection)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: runs.map(\.id))
     }
