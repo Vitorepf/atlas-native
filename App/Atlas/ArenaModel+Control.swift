@@ -17,18 +17,19 @@ extension ArenaModel {
             scoreboard = nextScoreboard
             markLoaded()
             if case .idle = phase { phase = .loaded }
+            // O feed vivo acompanha o snapshot: sem isto, revisita da tela
+            // ficava com liveRuns nil e a seção AGORA sumia.
+            await refreshLiveRuns()
         } catch {
             controlError = Self.publicMessage(error)
         }
     }
 
     func refreshLiveRuns() async {
-        do {
-            liveRuns = try await client.getArenaLiveRuns()
-            updateLivePolling()
-        } catch {
-            controlError = Self.publicMessage(error)
-        }
+        // Ambiente (polling 10s): falha transitória não vira banner — a seção
+        // AGORA segue com o último feed conhecido e o próximo tick tenta de novo.
+        liveRuns = (try? await client.getArenaLiveRuns()) ?? liveRuns
+        updateLivePolling()
     }
 
     /// Um POST B5 por motor (goal 1: motor contra motor numa medição só).
