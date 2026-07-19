@@ -20,6 +20,10 @@ struct ArenaPremiumCapabilitiesView: View {
                 rows
             }
         }
+        // Ao abrir a aba, re-busca do servidor: o poll de 10s não recarrega
+        // capacidades, então sem isto a tela ficava com dado velho (o -8,3
+        // falso onde o servidor já diz "não medido").
+        .task { await model.refreshCapabilities() }
     }
 
     @ViewBuilder

@@ -27,6 +27,15 @@ extension ArenaModel {
         }
     }
 
+    /// Re-busca capacidades ao abrir a aba Capacidades. O poll de 10s só
+    /// atualiza runs VIVAS; sem isto a aba ficava congelada no dado de antes
+    /// da última medição (ou de antes de um fix de servidor), mostrando -X
+    /// falso onde o servidor já dizia "não medido".
+    func refreshCapabilities() async {
+        guard let composite else { return }
+        await loadCapabilities(for: composite, preserveCurrentOnTotalFailure: true)
+    }
+
     func refreshLiveRuns() async {
         // Ambiente (polling 10s): falha transitória não vira banner — a seção
         // AGORA segue com o último feed conhecido e o próximo tick tenta de novo.
