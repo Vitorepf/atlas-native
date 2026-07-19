@@ -1,12 +1,13 @@
 import SwiftUI
 import AtlasCore
 
-// Author/time prefix — peel de AtlasCodeCommitRow+Meta.
+// Meta lead/time — peel de AtlasCodeCommitRow+Meta.
+// Lidera pelo TIPO do commit (sinal alto); autor só quando não-convencional.
 
 extension AtlasCodeCommitRow {
     @ViewBuilder
     var commitMetaAuthorTime: some View {
-        Text(node.authorName.isEmpty ? node.authorEmail : node.authorName)
+        Text(metaLead)
             .accessibilityHidden(true)
         Text("·")
             .accessibilityHidden(true)

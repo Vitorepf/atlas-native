@@ -17,5 +17,16 @@ extension AtlasCodeView {
         .padding(.vertical, 7)
         .background(Capsule().fill(AtlasTheme.bgRecessed))
         .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        // Uma frase, não fragmentos: o hash (mono, 8 chars) seria soletrado
+        // letra a letra pelo VoiceOver — fica só no visual, fora da fala.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(worktreeSpokenLabel(worktree))
+    }
+
+    private func worktreeSpokenLabel(_ worktree: AtlasCodeWorktree) -> String {
+        var parts = [worktree.pathLabel]
+        if let branch = worktree.branch?.nonEmpty { parts.append("branch \(branch)") }
+        if let state = worktree.state?.nonEmpty { parts.append(state) }
+        return parts.joined(separator: ", ")
     }
 }

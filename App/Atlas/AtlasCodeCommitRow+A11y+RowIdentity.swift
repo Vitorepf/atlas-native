@@ -8,7 +8,9 @@ enum AtlasCodeCommitRowA11yRowIdentity {
         node: AtlasCodeGraphNode,
         trunk: String?
     ) -> (title: String, author: String, linha: String) {
-        let title = node.message ?? String(node.hash.prefix(8))
+        // VoiceOver lê a FRASE limpa (sem o prefixo de tipo), igual à manchete.
+        let title = node.message.map { AtlasConventionalCommit.split($0).subject }
+            ?? String(node.hash.prefix(8))
         let author = node.authorName.isEmpty ? node.authorEmail : node.authorName
         let linha = trunk?.nonEmpty ?? "linha principal"
         return (title, author, linha)

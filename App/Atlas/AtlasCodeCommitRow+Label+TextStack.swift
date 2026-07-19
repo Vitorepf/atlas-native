@@ -6,7 +6,7 @@ import AtlasCore
 extension AtlasCodeCommitRow {
     var commitRowTextStack: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(node.message ?? String(node.hash.prefix(8)))
+            Text(titleText)
                 .atlasSans(14, .medium)
                 .foregroundStyle(state == .violating ? color : AtlasTheme.textPrimary)
                 .multilineTextAlignment(.leading)
