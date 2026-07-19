@@ -19,7 +19,6 @@ struct ArenaPremiumExecutionView: View {
             ArenaPremiumHairline()
             ArenaPremiumKicker(text: "Corridas")
             runRows
-            evidence
         }
     }
 
@@ -35,9 +34,6 @@ struct ArenaPremiumExecutionView: View {
                 stageConnector(done: atlasStage == .done)
                 stage("Consolidar", symbol: "circle", state: consolidationStage)
             }
-            Text("O pipeline avança somente com recibos e casos confirmados.")
-                .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
         }
     }
 
@@ -108,7 +104,9 @@ struct ArenaPremiumExecutionView: View {
                             Text(ArenaDisplay.suite(run.suite))
                                 .font(.system(.callout, weight: .medium))
                                 .foregroundStyle(AtlasTheme.textPrimary)
-                            Text([run.arm?.labelPT, run.progressText].compactMap(\.self).joined(separator: " · "))
+                            // Estado fala UMA vez (no trailing) — a sublinha
+                            // repetia "na fila, ainda não iniciado" literal.
+                            Text([run.arm?.labelPT, run.progressText == run.status.displayPT ? nil : run.progressText].compactMap(\.self).joined(separator: " · "))
                                 .font(AtlasFont.mono(10))
                                 .foregroundStyle(AtlasTheme.textSecondary)
                         }
@@ -126,27 +124,8 @@ struct ArenaPremiumExecutionView: View {
         }
     }
 
-    private var evidence: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            ArenaPremiumKicker(text: "Garantias")
-            evidenceRow("Sem estimativa inventada")
-            evidenceRow("Parciais permanecem parciais")
-            evidenceRow("Parada preserva casos concluídos")
-        }
-        .font(AtlasFont.mono(10))
-        .foregroundStyle(AtlasTheme.textSecondary)
-    }
-
-    private func evidenceRow(_ text: String) -> some View {
-        HStack(spacing: 8) {
-            ArenaPremiumIcon(
-                symbol: ArenaPremiumIconography.verified,
-                tone: .neutral,
-                role: .compact
-            )
-            Text(text)
-        }
-    }
+    // Bloco "Garantias" morto: honestidade se MOSTRA (estados literais,
+    // parciais como parciais), não se declara — UI falando de si é ruído.
 
     private var statusLabel: String {
         switch model.livePresentation?.phase ?? .idle {
