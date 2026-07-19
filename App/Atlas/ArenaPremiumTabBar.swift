@@ -11,16 +11,18 @@ struct ArenaPremiumTabBar: View {
                 Button {
                     withAnimation(reduceMotion ? nil : AtlasMotion.editorial) { selection = tab }
                 } label: {
-                    // Controle fala sans (canon §C); seleção é pílula CONTIDA
-                    // (o sublinhado vazava para fora da cápsula).
+                    // Controle fala sans (canon §C); seleção = pílula neutra
+                    // ELEVADA (padrão do segmented nativo), não véu de ouro —
+                    // ouro é ESTADO, não seleção de controle.
                     Text(tab.rawValue)
                         .atlasSans(15, .medium)
-                        .foregroundStyle(selection == tab ? AtlasTheme.accent : AtlasTheme.textSecondary)
+                        .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
                         .frame(maxWidth: .infinity, minHeight: 40)
                         .background {
                             if selection == tab {
                                 Capsule()
-                                    .fill(AtlasTheme.goldVeil)
+                                    .fill(AtlasTheme.surfaceHi)
+                                    .shadow(color: .black.opacity(0.28), radius: 4, y: 1)
                                     .matchedGeometryEffect(id: "arena-tab", in: selectionNamespace)
                             }
                         }

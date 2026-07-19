@@ -16,6 +16,8 @@ struct AtlasCloseToolbarButton: View {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         }
+        // Dispensar nunca é acento: Fechar/Cancelar fala ink neutro (canon §C).
+        .tint(AtlasTheme.textSecondary)
         .accessibilityLabel(spokenLabel)
         .accessibilityHint(spokenHint)
         .modifier(CloseToolbarA11yID(accessibilityID))

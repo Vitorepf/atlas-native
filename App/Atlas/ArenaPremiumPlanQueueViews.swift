@@ -4,6 +4,20 @@ import AtlasCore
 struct ArenaPremiumPlanView: View {
     @Bindable var model: ArenaModel
 
+    private var liveRuns: [AtlasArenaLiveRun] { model.arenaPrimaryMeasurementRuns }
+
+    private var liveSuites: [String] {
+        var seen = Set<String>()
+        return liveRuns.compactMap { seen.insert($0.suite).inserted ? $0.suite : nil }
+    }
+
+    private var liveArmsText: String {
+        var seen = Set<String>()
+        return liveRuns.compactMap(\.arm)
+            .compactMap { seen.insert($0.rawValue).inserted ? $0.labelPT : nil }
+            .joined(separator: " → ")
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             ArenaPremiumKicker(text: "Ordem de medição", tone: .active)
@@ -12,34 +26,48 @@ struct ArenaPremiumPlanView: View {
                 .font(AtlasFont.serif(36))
                 .foregroundStyle(AtlasTheme.textPrimary)
             if let plan = model.activePlan {
-                headline(plan)
-                sequence(plan)
+                headline(engines: plan.engines.count, suites: plan.suites.count,
+                         arms: plan.arms.count, runs: plan.runsPlanned)
+                suiteSequence(plan.suites,
+                              armsText: plan.arms.map(\.labelPT).joined(separator: " → "),
+                              footer: "A seleção enviada pode avançar; casos concluídos não são reabertos.")
+            } else if !liveSuites.isEmpty {
+                // Medição viva sem plano explícito (veio do servidor): a
+                // medição É o plano — derivar das corridas reais. Dizer
+                // "nenhum plano" com suítes na fila era a contradição.
+                headline(engines: Set(liveRuns.map(\.engineDisplayName)).count,
+                         suites: liveSuites.count,
+                         arms: Set(liveRuns.compactMap { $0.arm?.rawValue }).count,
+                         runs: liveRuns.count)
+                suiteSequence(liveSuites,
+                              armsText: liveArmsText,
+                              footer: "Ordem derivada da medição em curso; casos concluídos não são reabertos.")
             } else {
                 empty
             }
         }
     }
 
-    private func headline(_ plan: AtlasArenaMeasurementPlan) -> some View {
+    private func headline(engines: Int, suites: Int, arms: Int, runs: Int) -> some View {
         ViewThatFits(in: .horizontal) {
             HStack(spacing: 28) {
-                metric(plan.engines.count, "motores")
-                metric(plan.suites.count, "suítes")
-                metric(plan.arms.count, "braços")
-                metric(plan.runsPlanned, "corridas")
+                metric(engines, "motores")
+                metric(suites, "suítes")
+                metric(arms, "braços")
+                metric(runs, "corridas")
             }
             VStack(alignment: .leading, spacing: 12) {
-                metric(plan.engines.count, "motores")
-                metric(plan.suites.count, "suítes")
-                metric(plan.runsPlanned, "corridas")
+                metric(engines, "motores")
+                metric(suites, "suítes")
+                metric(runs, "corridas")
             }
         }
     }
 
-    private func sequence(_ plan: AtlasArenaMeasurementPlan) -> some View {
+    private func suiteSequence(_ suites: [String], armsText: String, footer: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             ArenaPremiumHairline()
-            ForEach(Array(plan.suites.enumerated()), id: \.element) { index, suite in
+            ForEach(Array(suites.enumerated()), id: \.element) { index, suite in
                 HStack(spacing: 14) {
                     Text(String(format: "%02d", index + 1))
                         .font(AtlasFont.mono(10))
@@ -49,7 +77,7 @@ struct ArenaPremiumPlanView: View {
                         Text(ArenaDisplay.suite(suite))
                             .atlasSans(16, .medium)
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        Text(plan.arms.map(\.labelPT).joined(separator: " → "))
+                        Text(armsText)
                             .font(AtlasFont.mono(10))
                             .foregroundStyle(AtlasTheme.textSecondary)
                     }
@@ -63,7 +91,7 @@ struct ArenaPremiumPlanView: View {
                 .accessibilityIdentifier(A11yID.arenaPremiumPlanRow(suite))
                 ArenaPremiumHairline()
             }
-            Text("A seleção enviada pode avançar; casos concluídos não são reabertos.")
+            Text(footer)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.top, 16)
@@ -176,7 +204,11 @@ struct ArenaPremiumQueueView: View {
 
     private func queueDetail(_ suite: String) -> String {
         let runs = queued.filter { $0.suite == suite }
-        let arms = runs.compactMap(\.arm).map(\.labelPT)
+        // Dedup dos braços: 2 motores × 2 braços rendia "sem Atlas · com
+        // Atlas · sem Atlas · com Atlas" (a quebra da Fila) — cada braço uma vez.
+        var seenArms = Set<String>()
+        let arms = runs.compactMap(\.arm)
+            .compactMap { seenArms.insert($0.rawValue).inserted ? $0.labelPT : nil }
         let engine = runs.first.map { ArenaDisplay.engine($0.engineDisplayName) }
         return ([engine] + arms).compactMap(\.self).joined(separator: " · ")
     }

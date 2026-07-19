@@ -84,10 +84,11 @@ struct ArenaPremiumShell: View {
         ToolbarItem(placement: .topBarTrailing) {
             // Item de toolbar puro: no iOS 26 a barra JÁ dá o vidro — caixa
             // custom + atlasGlassCircle rendia vidro sobre vidro (anel duplo).
+            // Ink neutro: ouro é ESTADO/commit, não chrome de barra (canon §C).
             Button { showingRunSheet = true } label: {
                 Image(systemName: ArenaPremiumIconography.add)
                     .atlasSans(17, .medium)
-                    .foregroundStyle(AtlasTheme.accent)
+                    .foregroundStyle(AtlasTheme.textPrimary)
             }
             .accessibilityLabel("Nova medição")
             .accessibilityHint("Escolhe motores, suítes e braços")

@@ -57,15 +57,26 @@ struct ArenaPremiumStopSheet: View {
 
     private var fields: some View {
         VStack(alignment: .leading, spacing: 14) {
-            TextField("Operador", text: $actor)
+            // Chrome da casa: .roundedBorder rendia caixas BRANCAS no dark
+            // (a mesma quebra já corrigida na folha de rodar) — ink neutro.
+            fieldLabel("Operador")
+            TextField("quem autoriza esta parada", text: $actor)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
+                .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaPremiumStopActor)
-            TextField("Motivo auditável", text: $reason, axis: .vertical)
+            fieldLabel("Motivo")
+            TextField("por que parar agora (fica no recibo)", text: $reason, axis: .vertical)
                 .lineLimit(2...4)
+                .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaPremiumStopReason)
         }
-        .textFieldStyle(.roundedBorder)
+    }
+
+    private func fieldLabel(_ text: String) -> some View {
+        Text(text)
+            .atlasSans(12, .medium)
+            .foregroundStyle(AtlasTheme.textSecondary)
     }
 
     @ViewBuilder

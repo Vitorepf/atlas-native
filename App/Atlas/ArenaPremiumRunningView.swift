@@ -78,14 +78,14 @@ struct ArenaPremiumRunningView: View {
     private var actions: some View {
         ViewThatFits(in: .horizontal) {
             HStack(spacing: 12) {
-                ArenaPremiumAction(title: "Ver execução", symbol: "list.bullet.rectangle") {
+                ArenaPremiumAction(title: "Ver execução", symbol: "list.bullet.rectangle", tone: .neutral) {
                     onNavigate(.execution)
                 }
                 .accessibilityIdentifier(A11yID.arenaPremiumExecutionAction)
                 stopButton
             }
             VStack(alignment: .leading, spacing: 10) {
-                ArenaPremiumAction(title: "Ver execução", symbol: "list.bullet.rectangle") {
+                ArenaPremiumAction(title: "Ver execução", symbol: "list.bullet.rectangle", tone: .neutral) {
                     onNavigate(.execution)
                 }
                 .accessibilityIdentifier(A11yID.arenaPremiumExecutionAction)

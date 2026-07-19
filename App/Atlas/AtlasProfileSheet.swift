@@ -26,6 +26,7 @@ struct AtlasProfileSheet: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Fechar") { dismiss() }
                         .atlasSans(15, .medium)
+                        .tint(AtlasTheme.textSecondary)
                 }
             }
             .accessibilityIdentifier(A11yID.profileSheet)

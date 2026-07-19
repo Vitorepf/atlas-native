@@ -65,7 +65,7 @@ struct ArenaPremiumQueuedView: View {
             Text("Ainda não iniciado · nenhum progresso foi presumido.")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
-            ArenaPremiumAction(title: "Ver plano", symbol: "list.number") {
+            ArenaPremiumAction(title: "Ver plano", symbol: "list.number", tone: .neutral) {
                 onNavigate(.plan)
             }
             ArenaPremiumOperationalRows(model: model, onNavigate: onNavigate)
@@ -150,13 +150,13 @@ struct ArenaPremiumTerminalView: View {
         } else {
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 12) {
-                    ArenaPremiumAction(title: "Ver resultados", symbol: "chart.xyaxis.line") {
+                    ArenaPremiumAction(title: "Ver resultados", symbol: "chart.xyaxis.line", tone: .neutral) {
                         onNavigate(.results)
                     }
                     ArenaPremiumAction(title: "Rodar novamente", symbol: "arrow.clockwise", tone: .neutral, action: onRun)
                 }
                 VStack(alignment: .leading, spacing: 10) {
-                    ArenaPremiumAction(title: "Ver resultados", symbol: "chart.xyaxis.line") {
+                    ArenaPremiumAction(title: "Ver resultados", symbol: "chart.xyaxis.line", tone: .neutral) {
                         onNavigate(.results)
                     }
                     ArenaPremiumAction(title: "Rodar novamente", symbol: "arrow.clockwise", tone: .neutral, action: onRun)

@@ -27,6 +27,7 @@ struct AtlasWorkspacePickerSheet: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Fechar") { dismiss() }.atlasSans(15, .medium)
+                            .tint(AtlasTheme.textSecondary)
                     }
                 }
                 .task { if case .idle = model.phase { await model.load() } }
