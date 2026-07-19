@@ -74,8 +74,10 @@ struct ArenaPremiumDisclosureRow: View {
         Button(action: action) {
             HStack(spacing: 14) {
                 ArenaPremiumIcon(symbol: symbol, tone: tone)
+                // Linha de lista fala sans (canon §C — serif é masthead/título);
+                // mesma lei aplicada no Código e nos Artifacts hoje.
                 Text(title)
-                    .font(AtlasFont.serif(18))
+                    .atlasSans(16, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Spacer(minLength: 12)
                 Text(detail)

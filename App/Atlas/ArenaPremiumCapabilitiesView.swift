@@ -85,13 +85,11 @@ struct ArenaPremiumCapabilitiesView: View {
     private var rows: some View {
         VStack(spacing: 0) {
             ArenaPremiumHairline()
-            ForEach(Array(capabilities.enumerated()), id: \.element.id) { index, capability in
+            ForEach(capabilities) { capability in
                 Button { onCapability(capability) } label: {
+                    // Sem numeral: a lista não é sequência — número que não
+                    // codifica nada é ruído (régua da casa).
                     HStack(spacing: 10) {
-                        Text("\(index + 1)")
-                            .font(AtlasFont.mono(11))
-                            .foregroundStyle(AtlasTheme.textTertiary)
-                            .frame(width: 22, alignment: .leading)
                         Text(capability.labelPt)
                             .font(.system(.callout))
                             .foregroundStyle(AtlasTheme.textPrimary)
