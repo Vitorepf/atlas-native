@@ -45,9 +45,15 @@ struct ArenaPremiumComparison: View {
             )
             metric(ArenaFormat.score(value.withAtlasScore), "Com Atlas")
             Spacer(minLength: 2)
-            Text(ArenaFormat.signed(delta))
-                .font(AtlasFont.mono(13, .medium))
-                .foregroundStyle(abs(delta) < 0.005 ? AtlasTheme.textSecondary : (delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.alert))
+            // Delta com rótulo — número órfão flutuando na borda era quebra.
+            VStack(alignment: .trailing, spacing: 4) {
+                Text(ArenaFormat.signed(delta))
+                    .font(AtlasFont.mono(15, .medium))
+                    .foregroundStyle(abs(delta) < 0.005 ? AtlasTheme.textSecondary : (delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.alert))
+                Text("diferença")
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            }
         }
     }
 

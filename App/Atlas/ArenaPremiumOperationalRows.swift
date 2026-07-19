@@ -8,14 +8,18 @@ struct ArenaPremiumOperationalRows: View {
     var body: some View {
         VStack(spacing: 0) {
             ArenaPremiumHairline()
-            ArenaPremiumDisclosureRow(
-                title: "Plano",
-                detail: planDetail,
-                symbol: ArenaPremiumIconography.plan,
-                tone: .active
-            ) { onNavigate(.plan) }
-            .accessibilityIdentifier(A11yID.arenaPremiumPlanAction)
-            ArenaPremiumHairline()
+            // Linha só existe com plano REAL: "em andamento" aqui com a folha
+            // dizendo "nenhum plano ativo" era contradição (run ≠ plano).
+            if model.activePlan != nil {
+                ArenaPremiumDisclosureRow(
+                    title: "Plano",
+                    detail: planDetail,
+                    symbol: ArenaPremiumIconography.plan,
+                    tone: .active
+                ) { onNavigate(.plan) }
+                .accessibilityIdentifier(A11yID.arenaPremiumPlanAction)
+                ArenaPremiumHairline()
+            }
             ArenaPremiumDisclosureRow(
                 title: "Fila",
                 detail: queueDetail,

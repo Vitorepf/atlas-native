@@ -117,7 +117,11 @@ struct ArenaPremiumProgressRing: View {
                 }
                 .foregroundStyle(AtlasTheme.textPrimary)
             } else {
-                ArenaPremiumIcon(symbol: "ellipsis", role: .standard)
+                // Antes do primeiro caso, "0%" gigante lia como quebra —
+                // o ✦ da casa segura o centro até haver progresso real.
+                Text("✦")
+                    .font(AtlasFont.serif(24))
+                    .foregroundStyle(AtlasTheme.accent)
             }
         }
         .frame(width: 142, height: 142)

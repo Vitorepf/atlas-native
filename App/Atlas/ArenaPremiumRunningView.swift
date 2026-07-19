@@ -9,7 +9,9 @@ struct ArenaPremiumRunningView: View {
     private var run: AtlasArenaLiveRun? { model.arenaPrimaryRun }
     private var progress: AtlasArenaLiveProgress? { model.livePresentation?.progress }
     private var percentage: Int? {
-        progress.map { Int(($0.fraction * 100).rounded(.down)) }
+        // Sem caso concluído não há percentual que mereça 50pt — o anel
+        // mostra o ✦ e a cópia diz "começando".
+        progress.flatMap { $0.completed == 0 ? nil : Int(($0.fraction * 100).rounded(.down)) }
     }
 
     var body: some View {
@@ -67,7 +69,7 @@ struct ArenaPremiumRunningView: View {
                     .font(AtlasFont.mono(13, .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
             }
-            Text("tempo restante indisponível")
+            Text(progress?.completed == 0 ? "começando…" : "tempo restante indisponível")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
