@@ -4,7 +4,16 @@ import AtlasCore
 struct ArenaPremiumPlanView: View {
     @Bindable var model: ArenaModel
 
-    private var liveRuns: [AtlasArenaLiveRun] { model.arenaPrimaryMeasurementRuns }
+    private var liveRuns: [AtlasArenaLiveRun] {
+        // União medição + fila (dedup por suíte+braço): o Plano nunca fica
+        // mais magro que a Fila, mesmo se o measurementId não casar em toda
+        // corrida enfileirada. Corridas vivas primeiro, fila depois.
+        var seen = Set<String>()
+        return (model.arenaPrimaryMeasurementRuns + (model.livePresentation?.queuedRuns ?? []))
+            .compactMap { run in
+                seen.insert("\(run.suite)|\(run.arm?.rawValue ?? "")").inserted ? run : nil
+            }
+    }
 
     private var liveSuites: [String] {
         var seen = Set<String>()
