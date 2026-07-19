@@ -83,7 +83,7 @@ struct ArenaPremiumCapabilityDetail: View {
                         symbol: ArenaPremiumIconography.suite(suite)
                     )
                     Text(ArenaDisplay.suite(suite))
-                        .font(AtlasFont.serif(17))
+                        .atlasSans(16, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Spacer()
                     Text(suiteCases(suite))
@@ -99,7 +99,8 @@ struct ArenaPremiumCapabilityDetail: View {
     private var provenance: some View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(text: "Proveniência")
-            Text("\(capability.casesTotal.map(String.init) ?? "—") casos no denominador publicado")
+            // "denominador" é jargão de estatístico — português direto.
+            Text("\(capability.casesTotal.map(String.init) ?? "—") casos somados na conta publicada")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
             Text("Ausência de um braço permanece não medida.")

@@ -103,7 +103,7 @@ struct ArenaPremiumAlertsView: View {
         HStack(spacing: 14) {
             ArenaPremiumIcon(symbol: symbol, tone: .negative)
             Text(title)
-                .font(AtlasFont.serif(17))
+                .atlasSans(16, .medium)
                 .foregroundStyle(AtlasTheme.textPrimary)
             Spacer()
             Text(detail)
