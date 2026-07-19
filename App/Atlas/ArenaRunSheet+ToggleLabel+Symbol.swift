@@ -6,9 +6,10 @@ import AtlasCore
 extension ArenaRunSheet {
     @ViewBuilder
     func toggleLabelSymbol(isOn: Bool) -> some View {
-        Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
-            .foregroundStyle(isOn ? AtlasTheme.accent : AtlasTheme.textTertiary)
+        ArenaPremiumIcon(
+            symbol: isOn ? "checkmark.circle" : "circle",
+            tone: isOn ? .active : .muted
+        )
             .modifier(ArenaToggleSymbolBounce(enabled: !reduceMotion, isOn: isOn))
-            .accessibilityHidden(true)
     }
 }

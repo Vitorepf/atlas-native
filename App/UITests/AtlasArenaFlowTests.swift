@@ -2,71 +2,99 @@ import XCTest
 
 final class AtlasArenaFlowTests: XCTestCase {
     @MainActor
-    func testHomeArenaIndexSuiteRunReceipt() {
+    func testPremiumArenaNavigationAndGovernedControls() {
         continueAfterFailure = false
         let app = XCUIApplication()
+        app.launchArguments = ["-atlas.arena.scenario", "running"]
         app.launch()
 
-        // id vive no wrapper A11y (WorkspaceRow ignora filhos) — query por descendants.
-        let arenaEntry = app.descendants(matching: .any)[A11yID.arenaHomeEntry]
-        XCTAssertTrue(arenaEntry.waitForExistence(timeout: 60), "entrada Arena não apareceu na home")
-        arenaEntry.tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumState("running"), in: app).waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["17/42 casos"].exists)
+        XCTAssertTrue(app.staticTexts["tempo restante indisponível"].exists)
+        capture(app, "arena-premium-01-running")
 
-        XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaScreen].waitForExistence(timeout: 20), "tela Arena não abriu")
-        XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaIndexSection].waitForExistence(timeout: 60), "índice da Arena não carregou")
-        capture(app, "01-arena-index")
+        app.buttons[A11yID.arenaPremiumExecutionAction].tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumExecution, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-03-execution")
+        app.navigationBars.buttons.firstMatch.tap()
 
-        // Suítes agora vivem em disclosure (capacidades são o palco) — o
-        // caminho do operador é: achar a linha, tocar, e ENTÃO ver a lista.
-        let suitesToggle = app.buttons[A11yID.arenaSuitesToggle]
-        XCTAssertTrue(scrollUntilVisible(suitesToggle, app: app, timeout: 30), "linha de suítes não apareceu")
-        suitesToggle.tap()
-        let suitesSection = app.descendants(matching: .any)[A11yID.arenaSuitesSection]
-        XCTAssertTrue(scrollUntilVisible(suitesSection, app: app, timeout: 30), "seção SUITES não apareceu")
-        let suite = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "arena-suite-")).firstMatch
-        XCTAssertTrue(scrollUntilVisible(suite, app: app, timeout: 20), "nenhuma suite apareceu")
+        app.buttons[A11yID.arenaPremiumPlanAction].tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumPlan, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-04-plan")
+        app.navigationBars.buttons.firstMatch.tap()
+
+        app.buttons[A11yID.arenaPremiumQueueAction].tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumQueue, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-05-queue")
+        app.navigationBars.buttons.firstMatch.tap()
+
+        app.buttons[A11yID.arenaPremiumAlertsAction].tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumAlerts, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-06-alerts")
+        app.navigationBars.buttons.firstMatch.tap()
+
+        app.buttons[A11yID.arenaPremiumTab("resultados")].tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumResults, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-02-results")
+
+        let suite = app.buttons[A11yID.arenaPremiumResultSuite("live_code_bench")]
+        XCTAssertTrue(scrollUntilVisible(suite, app: app), "resultado da suíte precisa estar acessível")
         suite.tap()
-        XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaSuiteSheet].waitForExistence(timeout: 20), "sheet da suite não abriu")
-        capture(app, "02-arena-suite")
-        // AtlasCloseToolbarButton fala "fechar detalhes da suite" (AX label vence o título).
+        XCTAssertTrue(element(A11yID.arenaSuiteSheet, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-03-suite")
         app.buttons["fechar detalhes da suite"].tapIfExists()
         app.buttons["Done"].tapIfExists()
         app.buttons["Fechar"].tapIfExists()
-        XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaSuiteSheet].waitForNonExistence(timeout: 10), "sheet da suite não fechou")
 
-        let runButton = app.buttons[A11yID.arenaRunButton]
-        XCTAssertTrue(scrollUntilVisible(runButton, app: app, timeout: 20), "botão Rodar medição ausente")
-        // Borda inferior fica sob o home indicator após dismiss do sheet —
-        // swipes curtos até o botão virar hittable antes do tap.
-        let hittableDeadline = Date().addingTimeInterval(10)
-        while !runButton.isHittable, Date() < hittableDeadline {
-            app.swipeUp(velocity: .slow)
-        }
-        XCTAssertTrue(runButton.isHittable, "botão Rodar medição não ficou tocável")
-        runButton.tap()
-        XCTAssertTrue(app.descendants(matching: .any)[A11yID.arenaRunSheet].waitForExistence(timeout: 20), "run sheet não abriu")
+        app.buttons[A11yID.arenaPremiumTab("capacidades")].tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumCapabilities, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-09-capabilities")
+        let capability = app.buttons[A11yID.arenaCapabilityRow("code_editing")]
+        XCTAssertTrue(scrollUntilVisible(capability, app: app))
+        capability.tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumCapabilityDetail, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-04-capability")
+        app.buttons["fechar capacidade"].tap()
 
-        let actor = app.textFields[A11yID.arenaRunActor]
-        XCTAssertTrue(actor.waitForExistence(timeout: 10), "campo ator ausente")
-        actor.tap()
-        actor.typeText("uitest")
+        app.buttons[A11yID.arenaPremiumTab("agora")].tap()
+        let stop = app.buttons[A11yID.arenaPremiumStop]
+        XCTAssertTrue(stop.waitForExistence(timeout: 10))
+        stop.tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumStopSheet, in: app).waitForExistence(timeout: 10))
+        XCTAssertTrue(app.textFields[A11yID.arenaPremiumStopActor].exists)
+        XCTAssertTrue(element(A11yID.arenaPremiumStopReason, in: app).exists)
+        XCTAssertFalse(app.buttons[A11yID.arenaPremiumStopConfirm].isEnabled)
+        capture(app, "arena-premium-05-stop")
+    }
+
+    @MainActor
+    func testPremiumArenaNewMeasurementRequiresGovernance() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-atlas.arena.scenario", "idle"]
+        app.launch()
+
+        XCTAssertTrue(element(A11yID.arenaPremiumState("idle"), in: app).waitForExistence(timeout: 20))
+        app.buttons[A11yID.arenaPremiumAdd].tap()
+        XCTAssertTrue(element(A11yID.arenaRunSheet, in: app).waitForExistence(timeout: 10))
 
         let submit = app.buttons[A11yID.arenaRunSubmit]
-        XCTAssertTrue(submit.waitForExistence(timeout: 10), "submit ausente")
-        XCTAssertFalse(submit.isEnabled, "sem motivo, a UI não pode enviar o POST que o servidor responderia 422")
+        XCTAssertTrue(submit.waitForExistence(timeout: 10))
+        XCTAssertFalse(submit.isEnabled)
+        capture(app, "arena-premium-02-new-measurement")
 
-        let reason = app.textFields[A11yID.arenaRunReason].exists
-            ? app.textFields[A11yID.arenaRunReason]
-            : app.textViews[A11yID.arenaRunReason]
-        XCTAssertTrue(reason.waitForExistence(timeout: 10), "campo motivo ausente")
+        let actor = app.textFields[A11yID.arenaRunActor]
+        actor.tap()
+        actor.typeText("uitest")
+        let reason = element(A11yID.arenaRunReason, in: app)
         reason.tap()
-        reason.typeText("prova governada XCUITest")
-        submit.tap()
+        reason.typeText("comparação governada")
+        XCTAssertTrue(submit.isEnabled)
+        capture(app, "arena-premium-02-new-measurement-governed")
+    }
 
-        let receipt = app.descendants(matching: .any)[A11yID.arenaRunReceipt]
-        XCTAssertTrue(receipt.waitForExistence(timeout: 60), "recibo enqueued não apareceu")
-        XCTAssertTrue(app.staticTexts["na fila, ainda não iniciado"].waitForExistence(timeout: 10), "recibo não preservou fila")
-        capture(app, "03-arena-receipt")
+    @MainActor
+    private func element(_ identifier: String, in app: XCUIApplication) -> XCUIElement {
+        app.descendants(matching: .any)[identifier]
     }
 
     @MainActor
@@ -78,14 +106,11 @@ final class AtlasArenaFlowTests: XCTestCase {
     }
 
     @MainActor
-    private func scrollUntilVisible(_ element: XCUIElement, app: XCUIApplication, timeout: TimeInterval) -> Bool {
-        let deadline = Date().addingTimeInterval(timeout)
+    private func scrollUntilVisible(_ element: XCUIElement, app: XCUIApplication) -> Bool {
+        let deadline = Date().addingTimeInterval(12)
         while Date() < deadline {
             if element.exists && element.isHittable { return true }
-            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.86))
-            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.18))
-            start.press(forDuration: 0.01, thenDragTo: end)
-            RunLoop.current.run(until: Date().addingTimeInterval(0.5))
+            app.swipeUp()
         }
         return element.exists
     }

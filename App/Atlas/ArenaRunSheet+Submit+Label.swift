@@ -8,7 +8,7 @@ extension ArenaRunSheet {
         Text("Rodar medição")
             .font(.system(.body, weight: .semibold))
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
+            .frame(minHeight: 52)
             .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
             .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
     }

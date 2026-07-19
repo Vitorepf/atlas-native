@@ -10,16 +10,18 @@ extension ArenaModel {
             async let compositeRequest = client.getArenaComposite()
             async let scoreboardRequest = client.getArenaScoreboard()
             let (nextComposite, nextScoreboard) = try await (compositeRequest, scoreboardRequest)
+            async let reportRequest: AtlasArenaReport? = try? client.getArenaReport()
+            async let liveRunsRequest: AtlasArenaLiveRuns? = try? client.getArenaLiveRuns()
             // Capacidades acompanham o snapshot: refresh sem elas deixava o
             // hero dizendo "nenhuma medida" com medição real viva no servidor.
-            await loadCapabilities(for: nextComposite)
+            await loadCapabilities(for: nextComposite, preserveCurrentOnTotalFailure: true)
             composite = nextComposite
             scoreboard = nextScoreboard
+            report = await reportRequest ?? report
+            publishLiveRuns(await liveRunsRequest)
             markLoaded()
             if case .idle = phase { phase = .loaded }
-            // O feed vivo acompanha o snapshot: sem isto, revisita da tela
-            // ficava com liveRuns nil e a seção AGORA sumia.
-            await refreshLiveRuns()
+            updateLivePolling()
         } catch {
             controlError = Self.publicMessage(error)
         }
@@ -28,26 +30,66 @@ extension ArenaModel {
     func refreshLiveRuns() async {
         // Ambiente (polling 10s): falha transitória não vira banner — a seção
         // AGORA segue com o último feed conhecido e o próximo tick tenta de novo.
-        liveRuns = (try? await client.getArenaLiveRuns()) ?? liveRuns
+        publishLiveRuns(try? await client.getArenaLiveRuns())
         updateLivePolling()
     }
 
     /// Um POST B5 por motor (goal 1: motor contra motor numa medição só).
     func startRuns(inputs: [AtlasArenaStartInput]) async {
+        guard !isStartingRuns else { return }
         controlError = nil
-        guard !inputs.isEmpty, inputs.allSatisfy(\.isLocallyValidForSubmission) else {
-            controlError = "ator e motivo obrigatórios"
+        guard let plan = AtlasArenaMeasurementPlan(inputs: inputs) else {
+            controlError = "selecione suítes, motores e braços; informe ator e motivo"
             return
         }
+        isStartingRuns = true
+        defer { isStartingRuns = false }
+        activePlan = plan
+        lastStartReceipt = nil
+        lastStartReceipts = []
+        lastStartEnginesCount = 0
+        lastStartRunsPlannedTotal = 0
         do {
-            var plannedTotal = 0
             for input in inputs {
                 let receipt = try await client.startArenaRuns(input: input)
-                plannedTotal += receipt.runsPlanned
                 lastStartReceipt = receipt
+                lastStartReceipts.append(receipt)
+                lastStartEnginesCount = lastStartReceipts.count
+                lastStartRunsPlannedTotal += receipt.runsPlanned
             }
-            lastStartEnginesCount = inputs.count
-            lastStartRunsPlannedTotal = plannedTotal
+            await refreshLiveRuns()
+        } catch {
+            if lastStartReceipts.isEmpty {
+                controlError = Self.publicMessage(error)
+            } else {
+                controlError = "\(lastStartReceipts.count) de \(inputs.count) motores enfileirados · o restante não foi confirmado"
+                await refreshLiveRuns()
+            }
+        }
+    }
+
+    func stopMeasurement(
+        measurementId: String,
+        operatorActor: String,
+        operatorReason: String
+    ) async {
+        guard !isStoppingMeasurement else { return }
+        let input = AtlasArenaStopInput(
+            operatorActor: operatorActor,
+            operatorReason: operatorReason
+        )
+        guard input.isLocallyValidForSubmission else {
+            controlError = "informe operador e motivo para parar a medição"
+            return
+        }
+        isStoppingMeasurement = true
+        controlError = nil
+        defer { isStoppingMeasurement = false }
+        do {
+            lastStopReceipt = try await client.stopArenaMeasurement(
+                measurementId: measurementId,
+                input: input
+            )
             await refreshLiveRuns()
         } catch {
             controlError = Self.publicMessage(error)

@@ -6,7 +6,7 @@ import AtlasCore
 extension ArenaRunSheet {
     @ViewBuilder
     var governanceFields: some View {
-        section("GOVERNANÇA") {
+        section("Governança") {
             TextField("ator", text: $actor)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()

@@ -14,6 +14,7 @@ extension ArenaRunSheet {
             toggleLabelTitleStack(title: title, subtitle: subtitle)
             Spacer()
         }
+        .frame(minHeight: 44)
         .contentShape(Rectangle())
     }
 }

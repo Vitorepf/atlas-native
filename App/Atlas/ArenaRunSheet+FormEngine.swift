@@ -7,7 +7,7 @@ import AtlasCore
 extension ArenaRunSheet {
     @ViewBuilder
     var engineFormSection: some View {
-        section("MOTORES") {
+        section("Motores") {
             if engines.isEmpty {
                 engineFormEmpty
             } else {

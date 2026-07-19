@@ -9,7 +9,7 @@ import AtlasCore
 extension ArenaRunSheet {
     @ViewBuilder
     var suitesFormSection: some View {
-        section("SUITES COM ADAPTER") {
+        section("Suítes") {
             if installedSuites.isEmpty {
                 suitesEmptyLabel
             } else {

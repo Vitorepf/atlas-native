@@ -5,11 +5,14 @@ import AtlasCore
 
 extension ArenaModel {
     var shouldPollLiveRuns: Bool {
+#if DEBUG
+        if visualScenarioInstalled { return false }
+#endif
         // Só visibilidade: exigir feed não-vazio criava ovo-e-galinha — um
         // fetch falho (nil) ou fila vazia desligava o polling PARA SEMPRE e
         // a seção AGORA nunca mais voltava (worker medindo, tela muda,
         // 2026-07-18). Custo: 1 GET ~130ms a cada 10s enquanto visível.
-        visible
+        return visible
     }
 
     func updateLivePolling() {

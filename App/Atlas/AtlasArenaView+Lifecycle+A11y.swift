@@ -8,12 +8,7 @@ extension AtlasArenaView {
         content
             .navigationTitle("Arena")
             .navigationBarTitleDisplayMode(.inline)
-            .accessibilityIdentifier(A11yID.arenaScreen)
-            .accessibilityLabel(spokenArenaScreenLabel())
-            .accessibilityHint(
-                model.isDomainUnavailable && model.composite == nil
-                    ? domainUnavailableHint
-                    : "medição de regressão dos motores"
-            )
+            // O título de navegação já anuncia a superfície. Label/ID no
+            // container inteiro substituía o nome e o ID de cada tab e CTA.
     }
 }

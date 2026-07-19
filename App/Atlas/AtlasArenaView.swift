@@ -11,18 +11,26 @@ struct AtlasArenaView: View {
     @State var selectedSuite: AtlasArenaSuite?
     @State var selectedEngine: AtlasArenaCompositeEngine?
     @State var showingRunSheet = false
+    @State var selectedTab: ArenaPremiumTab = .now
+    @State var premiumDestination: ArenaPremiumDestination?
+    @State var selectedCapability: AtlasArenaCapability?
+    @State var stoppingRun: AtlasArenaLiveRun?
     /// Suítes são bastidor (capacidades são o palco): lista colapsada em uma
     /// linha; regressão fura o colapso.
     @State var suitesExpanded = false
 
     var body: some View {
-        // Fundo como .background (não camada de ZStack): a barra nativa só
-        // liga o scroll-edge material quando enxerga o ScrollView — sem isso
-        // o conteúdo rolava legível por baixo do título.
         arenaSheets(on:
             arenaLifecycleChrome(
-                arenaScrollBody
-                    .background(AtlasTheme.bg.ignoresSafeArea())
+                ArenaPremiumShell(
+                    model: model,
+                    selectedTab: $selectedTab,
+                    destination: $premiumDestination,
+                    selectedSuite: $selectedSuite,
+                    selectedCapability: $selectedCapability,
+                    showingRunSheet: $showingRunSheet,
+                    stoppingRun: $stoppingRun
+                )
             )
         )
     }
