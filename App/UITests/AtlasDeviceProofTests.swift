@@ -11,6 +11,10 @@ final class AtlasDeviceProofTests: XCTestCase {
         let newConversation = app.buttons[A11yID.homeInputPill]
         XCTAssertTrue(newConversation.waitForExistence(timeout: 45), "home não abriu uma ação de conversa")
         newConversation.tap()
+        // A pílula abre o picker; "Sem repositório" = conversa geral (o antigo "+").
+        let semRepo = app.buttons[A11yID.workspacePickerNoRepo]
+        XCTAssertTrue(semRepo.waitForExistence(timeout: 20), "picker não abriu com 'sem repositório'")
+        semRepo.tap()
 
         let field = app.textFields.firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 20), "composer não apareceu")

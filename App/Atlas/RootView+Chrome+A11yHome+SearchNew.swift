@@ -6,12 +6,4 @@ extension RootView {
     func searchSpokenLabel() -> String {
         "buscar conversas"
     }
-
-    func newConversationSpokenLabel() -> String {
-        "nova conversa"
-    }
-
-    func newConversationSpokenHint() -> String {
-        "abre conversa em branco"
-    }
 }

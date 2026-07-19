@@ -14,7 +14,7 @@ extension A11yID {
     static let workspacePickerSheet = "workspace-picker-sheet"
     static let workspacePickerRowPrefix = "workspace-picker-"
     static func workspacePickerRow(_ slug: String) -> String { workspacePickerRowPrefix + slug }
-    static let topbarNew = "topbar-new"
+    static let workspacePickerNoRepo = "workspace-picker-no-repo"
     static let homeInputPill = "home-input-pill"
     static let homeLoading = "home-loading"
     static let homeOffline = "home-offline"

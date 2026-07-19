@@ -6,4 +6,8 @@ extension RootView {
     func inputPillSpokenLabel() -> String {
         "Escreva ao Atlas, nova conversa"
     }
+
+    func inputPillSpokenHint() -> String {
+        "abre a escolha: sem repositório ou um repositório recente"
+    }
 }

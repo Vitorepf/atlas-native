@@ -22,6 +22,10 @@ final class AtlasLiveNowTests: XCTestCase {
         }
 
         app.buttons[A11yID.homeInputPill].tap()
+        // A pílula abre o picker; "Sem repositório" = conversa geral (o antigo "+").
+        let semRepo = app.buttons[A11yID.workspacePickerNoRepo]
+        XCTAssertTrue(semRepo.waitForExistence(timeout: 20), "picker não abriu com 'sem repositório'")
+        semRepo.tap()
         let field = app.textFields[A11yID.conversationInput].exists
             ? app.textFields[A11yID.conversationInput]
             : app.textFields.firstMatch

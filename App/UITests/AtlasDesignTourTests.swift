@@ -77,6 +77,9 @@ final class AtlasDesignTourTests: XCTestCase {
         let pill = app.buttons[A11yID.homeInputPill]
         XCTAssertTrue(pill.waitForExistence(timeout: 45), "home não abriu")
         pill.tap()
+        // A pílula abre o picker; "Sem repositório" leva à conversa em branco.
+        let semRepo = app.buttons[A11yID.workspacePickerNoRepo]
+        if semRepo.waitForExistence(timeout: 10) { semRepo.tap() }
         sleep(2)
         attach(app, name: "conversa-01-nova")
         // Overlay de tutorial do teclado do simulador rouba toques — relançar

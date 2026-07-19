@@ -8,15 +8,30 @@ import AtlasCore
 extension RootView {
     @ViewBuilder
     var inputBar: some View {
-        Button { path.append(Route.new(workspaceKey: nil)) } label: {
+        // A pílula é o ÚNICO ponto de partida (o "+" saiu): abre o picker do
+        // Cursor — "Sem repositório" (conversa geral) ou um repo por recência.
+        Button { showingNewPicker = true } label: {
             inputBarContent
         }
         .buttonStyle(.plain)
         .keyboardShortcut("n", modifiers: .command)
         .accessibilityLabel(inputPillSpokenLabel())
-        .accessibilityHint(newConversationSpokenHint())
+        .accessibilityHint(inputPillSpokenHint())
         .accessibilityIdentifier(A11yID.homeInputPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(inputBarBackground)
+        .sheet(isPresented: $showingNewPicker) {
+            AtlasWorkspacePickerSheet(
+                client: session.client,
+                title: "Nova conversa",
+                onNoRepo: {
+                    showingNewPicker = false
+                    path.append(Route.new(workspaceKey: nil))
+                }
+            ) { key, title in
+                showingNewPicker = false
+                path.append(Route.workspace(key: key, title: title))
+            }
+        }
     }
 }
