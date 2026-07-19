@@ -13,6 +13,7 @@ struct ArenaCapabilityRow: View {
         VStack(alignment: .leading, spacing: 7) {
             capabilityHeader
             DualBar(score: capability.score, withAtlas: capability.withAtlas)
+            confidenceCaption
             contributionLineView
         }
         .accessibilityElement(children: .ignore)

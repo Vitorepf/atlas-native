@@ -1,7 +1,7 @@
 import Foundation
 
 public struct AtlasArenaCapabilities: Sendable, Equatable, Decodable {
-    public static let schemaVersion = "atlas.arena.capabilities.v1"
+    public static let schemaVersion = "atlas.arena.capabilities.v2"
 
     public let schemaVersion: String
     public let mappingVersion: String
@@ -21,6 +21,14 @@ public struct AtlasArenaCapabilities: Sendable, Equatable, Decodable {
     }
 }
 
+/// Delta com-vs-sem-Atlas com IC de Newcombe. `significant` = o IC 95% não cruza zero.
+public struct AtlasArenaCapabilityDelta: Codable, Sendable, Equatable {
+    public let value: Double
+    public let ciLow: Double
+    public let ciHigh: Double
+    public let significant: Bool
+}
+
 public struct AtlasArenaCapability: Codable, Sendable, Equatable, Identifiable {
     public var id: String { capability }
 
@@ -28,8 +36,28 @@ public struct AtlasArenaCapability: Codable, Sendable, Equatable, Identifiable {
     public let labelPt: String
     public let score: Double?
     public let withAtlas: Double?
+    /// IC 95% de Wilson [baixo, alto] de cada braço — a verdade contínua da confiança.
+    public let baselineCi: [Double]?
+    public let withAtlasCi: [Double]?
+    /// N por braço (soma das rodadas). O piso `minCasesForConfidence` separa medido de "poucos casos".
+    public let baselineCases: Int?
+    public let withAtlasCases: Int?
+    public let delta: AtlasArenaCapabilityDelta?
+    /// "measured" | "low" | "unmeasured" — nunca cravar número de baixa confiança como verdade.
+    public let confidence: String?
     public let suitesContributing: [String]
     public let casesTotal: Int?
+    public let minCasesForConfidence: Int?
+
+    public enum Confidence: String { case measured, low, unmeasured }
+
+    /// Fail-open: servidor v1 antigo (sem o campo) vira `.low` — nunca finge medido.
+    public var confidenceLevel: Confidence {
+        guard let confidence, let level = Confidence(rawValue: confidence) else {
+            return (score == nil && withAtlas == nil) ? .unmeasured : .low
+        }
+        return level
+    }
 }
 
 /// Catálogo de motores rodáveis (B6) — enabled, nunca harness-only.

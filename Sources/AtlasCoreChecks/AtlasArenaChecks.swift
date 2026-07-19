@@ -58,13 +58,18 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
     check("histórico por suíte preserva braço", scoreboard?.suites.first?.engines.first?.history.first?.arm == .baseline)
 
     let capabilitiesJSON = """
-    {"schema_version":"atlas.arena.capabilities.v1","mapping_version":"arena.capability_map.v1",
+    {"schema_version":"atlas.arena.capabilities.v2","mapping_version":"arena.capability_map.v1",
      "engine":"codex_cli","capabilities":[{"capability":"terminal_operation","label_pt":"Operação de terminal",
-       "score":0.86,"with_atlas":0.93,"suites_contributing":["terminal_bench"],"cases_total":42}]}
+       "score":0.86,"with_atlas":0.93,"baseline_ci":[0.73,0.93],"with_atlas_ci":[0.82,0.97],
+       "baseline_cases":42,"with_atlas_cases":42,"delta":{"value":0.07,"ci_low":0.01,"ci_high":0.13,"significant":true},
+       "confidence":"measured","suites_contributing":["terminal_bench"],"cases_total":42,"min_cases_for_confidence":10}]}
     """
     let capabilities = try? decoder.decode(AtlasArenaCapabilities.self, from: Data(capabilitiesJSON.utf8))
     check("capacidades decodificam barras duplas", capabilities?.capabilities.first?.score == 0.86 && capabilities?.capabilities.first?.withAtlas == 0.93)
     check("capacidade preserva suites contribuintes", capabilities?.capabilities.first?.suitesContributing == ["terminal_bench"])
+    check("capacidade decodifica IC de Wilson por braço", capabilities?.capabilities.first?.baselineCi == [0.73, 0.93] && capabilities?.capabilities.first?.withAtlasCi == [0.82, 0.97])
+    check("capacidade decodifica delta com significância", capabilities?.capabilities.first?.delta?.value == 0.07 && capabilities?.capabilities.first?.delta?.significant == true)
+    check("capacidade decodifica confiança medida", capabilities?.capabilities.first?.confidenceLevel == .measured && capabilities?.capabilities.first?.withAtlasCases == 42)
     check("régua pública Arena converte score normalizado para zero a dez",
           abs((AtlasArenaPresentationScale.score(0.67) ?? 0) - 6.7) < 0.000_001 &&
           AtlasArenaPresentationScale.score(1.0) == 10.0)

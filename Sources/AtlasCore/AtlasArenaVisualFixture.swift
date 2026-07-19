@@ -116,20 +116,20 @@ public enum AtlasArenaVisualFixture {
 
     static let capabilities = #"""
     {
-      "schema_version":"atlas.arena.capabilities.v1",
+      "schema_version":"atlas.arena.capabilities.v2",
       "mapping_version":"2026-07-18",
       "engine":"verboo_kimi_k2_7",
       "capabilities":[
-        {"capability":"agentic_dialogue","label_pt":"Diálogo agêntico","score":0.62,"with_atlas":0.70,"suites_contributing":["tau2_bench"],"cases_total":9},
-        {"capability":"bug_fixing","label_pt":"Correção de bugs","score":0.68,"with_atlas":0.72,"suites_contributing":["senior_swe_bench","swe_bench_live"],"cases_total":36},
-        {"capability":"code_editing","label_pt":"Edição de código","score":0.10,"with_atlas":0.04,"suites_contributing":["live_code_bench","aider_polyglot"],"cases_total":84},
-        {"capability":"context_recovery","label_pt":"Recuperação de contexto","score":0.56,"with_atlas":0.71,"suites_contributing":["inspect_evals"],"cases_total":9},
-        {"capability":"instruction_following","label_pt":"Seguir instruções","score":0.76,"with_atlas":0.82,"suites_contributing":["inspect_evals"],"cases_total":9},
-        {"capability":"long_horizon","label_pt":"Trabalho de longo prazo","score":0.39,"with_atlas":0.42,"suites_contributing":["hal_harness","swe_marathon"],"cases_total":36},
-        {"capability":"reasoning","label_pt":"Raciocínio","score":0.65,"with_atlas":0.72,"suites_contributing":["inspect_evals","live_code_bench"],"cases_total":51},
-        {"capability":"defensive_security","label_pt":"Segurança defensiva","score":0.74,"with_atlas":0.78,"suites_contributing":["inspect_evals"],"cases_total":9},
-        {"capability":"terminal_operation","label_pt":"Operação de terminal","score":0.58,"with_atlas":0.67,"suites_contributing":["terminal_bench"],"cases_total":6},
-        {"capability":"tool_use","label_pt":"Uso de ferramentas","score":0.62,"with_atlas":0.66,"suites_contributing":["bfcl","tau2_bench"],"cases_total":27}
+        {"capability":"agentic_dialogue","label_pt":"Diálogo agêntico","score":0.62,"with_atlas":0.70,"baseline_ci":[0.30,0.86],"with_atlas_ci":[0.38,0.90],"baseline_cases":9,"with_atlas_cases":9,"delta":{"value":0.08,"ci_low":-0.28,"ci_high":0.42,"significant":false},"confidence":"low","suites_contributing":["tau2_bench"],"cases_total":9,"min_cases_for_confidence":10},
+        {"capability":"bug_fixing","label_pt":"Correção de bugs","score":0.68,"with_atlas":0.72,"baseline_ci":[0.52,0.81],"with_atlas_ci":[0.56,0.84],"baseline_cases":36,"with_atlas_cases":36,"delta":{"value":0.04,"ci_low":-0.16,"ci_high":0.24,"significant":false},"confidence":"measured","suites_contributing":["senior_swe_bench","swe_bench_live"],"cases_total":36,"min_cases_for_confidence":10},
+        {"capability":"code_editing","label_pt":"Edição de código","score":0.10,"with_atlas":0.04,"baseline_ci":[0.05,0.18],"with_atlas_ci":[0.01,0.11],"baseline_cases":84,"with_atlas_cases":84,"delta":{"value":-0.06,"ci_low":-0.13,"ci_high":-0.01,"significant":true},"confidence":"measured","suites_contributing":["live_code_bench","aider_polyglot"],"cases_total":84,"min_cases_for_confidence":10},
+        {"capability":"context_recovery","label_pt":"Recuperação de contexto","score":0.56,"with_atlas":0.71,"baseline_ci":[0.27,0.81],"with_atlas_ci":[0.39,0.91],"baseline_cases":9,"with_atlas_cases":9,"delta":{"value":0.15,"ci_low":-0.22,"ci_high":0.48,"significant":false},"confidence":"low","suites_contributing":["inspect_evals"],"cases_total":9,"min_cases_for_confidence":10},
+        {"capability":"instruction_following","label_pt":"Seguir instruções","score":0.76,"with_atlas":null,"baseline_ci":[0.45,0.92],"with_atlas_ci":null,"baseline_cases":9,"with_atlas_cases":0,"delta":null,"confidence":"unmeasured","suites_contributing":["inspect_evals"],"cases_total":9,"min_cases_for_confidence":10},
+        {"capability":"long_horizon","label_pt":"Trabalho de longo prazo","score":0.39,"with_atlas":0.42,"baseline_ci":[0.25,0.55],"with_atlas_ci":[0.27,0.58],"baseline_cases":36,"with_atlas_cases":36,"delta":{"value":0.03,"ci_low":-0.20,"ci_high":0.26,"significant":false},"confidence":"measured","suites_contributing":["hal_harness","swe_marathon"],"cases_total":36,"min_cases_for_confidence":10},
+        {"capability":"reasoning","label_pt":"Raciocínio","score":0.65,"with_atlas":0.72,"baseline_ci":[0.51,0.77],"with_atlas_ci":[0.58,0.83],"baseline_cases":51,"with_atlas_cases":51,"delta":{"value":0.07,"ci_low":0.01,"ci_high":0.13,"significant":true},"confidence":"measured","suites_contributing":["inspect_evals","live_code_bench"],"cases_total":51,"min_cases_for_confidence":10},
+        {"capability":"defensive_security","label_pt":"Segurança defensiva","score":0.74,"with_atlas":0.78,"baseline_ci":[0.43,0.91],"with_atlas_ci":[0.47,0.94],"baseline_cases":9,"with_atlas_cases":9,"delta":{"value":0.04,"ci_low":-0.32,"ci_high":0.38,"significant":false},"confidence":"low","suites_contributing":["inspect_evals"],"cases_total":9,"min_cases_for_confidence":10},
+        {"capability":"terminal_operation","label_pt":"Operação de terminal","score":0.58,"with_atlas":0.67,"baseline_ci":[0.23,0.86],"with_atlas_ci":[0.30,0.90],"baseline_cases":6,"with_atlas_cases":6,"delta":{"value":0.09,"ci_low":-0.35,"ci_high":0.49,"significant":false},"confidence":"low","suites_contributing":["terminal_bench"],"cases_total":6,"min_cases_for_confidence":10},
+        {"capability":"tool_use","label_pt":"Uso de ferramentas","score":0.62,"with_atlas":0.66,"baseline_ci":[0.44,0.77],"with_atlas_ci":[0.47,0.81],"baseline_cases":27,"with_atlas_cases":27,"delta":{"value":0.04,"ci_low":-0.21,"ci_high":0.29,"significant":false},"confidence":"measured","suites_contributing":["bfcl","tau2_bench"],"cases_total":27,"min_cases_for_confidence":10}
       ]
     }
     """#
