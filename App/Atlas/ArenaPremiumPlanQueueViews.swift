@@ -47,7 +47,7 @@ struct ArenaPremiumPlanView: View {
                         .frame(width: 28, alignment: .leading)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(ArenaDisplay.suite(suite))
-                            .font(AtlasFont.serif(17))
+                            .atlasSans(16, .medium)
                             .foregroundStyle(AtlasTheme.textPrimary)
                         Text(plan.arms.map(\.labelPT).joined(separator: " → "))
                             .font(AtlasFont.mono(10))
@@ -135,10 +135,9 @@ struct ArenaPremiumQueueView: View {
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
+            // Sem rodapé-manual: o kicker "aguardando execução" + o relógio
+            // por linha já dizem o estado — meta-copy é ruído.
             queueRows
-            Text("Fila significa programado, não iniciado. Nenhuma porcentagem é mostrada antes do primeiro caso.")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
         }
     }
 
@@ -153,7 +152,7 @@ struct ArenaPremiumQueueView: View {
                         .frame(width: 26, alignment: .leading)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(ArenaDisplay.suite(suite))
-                            .font(AtlasFont.serif(17))
+                            .atlasSans(16, .medium)
                             .foregroundStyle(AtlasTheme.textPrimary)
                         Text(queueDetail(suite))
                             .font(AtlasFont.mono(10))
