@@ -1,0 +1,137 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "B981D320-F9A4-46D9-8F98-39AC218A36ED.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-premium-05-stop_0_4F6661D1-8544-46C6-BF49-C22ACF213D32.png",
+        "timestamp" : 1784420665.501
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "2686DFFA-964B-4A60-B50B-2F7FA4815BFA.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-premium-04-capability_0_959EEDFE-5CA4-4B9F-948D-947AF9F79BCF.png",
+        "timestamp" : 1784420660.131
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "B7532CF5-ED6E-41F0-B154-DCCB95BE9956.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-premium-03-suite_0_5A2A9949-506F-4F93-8F07-905EAE0F83AC.png",
+        "timestamp" : 1784420649.634
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "621CBDAB-99A6-438B-BEAA-1B8ED8012A30.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-premium-02-results_0_FE54E35F-AE01-418F-9580-EBAC1E6E6657.png",
+        "timestamp" : 1784420646.996
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "457A8C88-C8F3-420B-B85A-F916F61EF61B.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-premium-01-running_0_B53E0E12-9508-4962-B6CC-D96F167DD7FF.png",
+        "timestamp" : 1784420645.339
+      }
+    ],
+    "testIdentifier" : "AtlasArenaFlowTests/testPremiumArenaNavigationAndGovernedControls()",
+    "testIdentifierURL" : "test://com.apple.xcode/Atlas/AtlasDeviceProof/AtlasArenaFlowTests/testPremiumArenaNavigationAndGovernedControls"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "B11F388B-5708-4279-AC18-03054D6A67A1.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-premium-06-new-measurement_0_5CBC4AFE-CBBA-49DC-B3A7-9C8BDE9F416B.png",
+        "timestamp" : 1784420677.012
+      }
+    ],
+    "testIdentifier" : "AtlasArenaFlowTests/testPremiumArenaNewMeasurementRequiresGovernance()",
+    "testIdentifierURL" : "test://com.apple.xcode/Atlas/AtlasDeviceProof/AtlasArenaFlowTests/testPremiumArenaNewMeasurementRequiresGovernance"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "63C929CA-7695-4896-98E6-3EC8BB5999C2.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-state-failed_0_2DBA7D7F-F793-49AC-95D6-13BC39380672.png",
+        "timestamp" : 1784420708.069
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "7C9B1502-2EF1-4B5D-80FD-D56D154EB1EB.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-state-completed_0_3F9DF2B4-375C-4A2C-9956-22329B2B7238.png",
+        "timestamp" : 1784420703.703
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "924E7D0C-D781-46DF-86C7-252532173FE4.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-state-stopped_0_BB87CAAD-1E7E-40E1-9142-97F01F33BECC.png",
+        "timestamp" : 1784420699.292
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "4F31CE51-E4DE-4F1F-9038-E91AB156B825.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-state-stopping_0_3B73525A-411A-4999-A333-F9B629CA777B.png",
+        "timestamp" : 1784420694.818
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "814AFE4C-51BD-4302-A332-872F153126EA.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-state-running_0_98C75889-2801-447F-B62D-26F8B302AF08.png",
+        "timestamp" : 1784420690.416
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "38212C99-350C-4FFA-AD4E-E100EF35115B.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-state-queued_0_827B7797-9C86-4386-8474-4AAE9B7BE462.png",
+        "timestamp" : 1784420685.996
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "6033B043-F436-41F9-B4F8-2D9E67761980",
+        "deviceName" : "iPhone 17 Pro Max",
+        "exportedFileName" : "C0447469-6C09-4729-AA98-43382BAA71EE.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "arena-state-idle_0_31FB9526-CBF6-4B33-8E1F-777E708648B3.png",
+        "timestamp" : 1784420681.586
+      }
+    ],
+    "testIdentifier" : "AtlasArenaNowProbeTests/testEveryArenaLifecycleStateHasDistinctSemantics()",
+    "testIdentifierURL" : "test://com.apple.xcode/Atlas/AtlasDeviceProof/AtlasArenaNowProbeTests/testEveryArenaLifecycleStateHasDistinctSemantics"
+  }
+]
