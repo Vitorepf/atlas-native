@@ -83,6 +83,8 @@ public struct AtlasArenaLiveRun: Codable, Sendable, Equatable, Identifiable {
     public var id: String { runIdPublic }
 
     public let runIdPublic: String
+    /// Identidade pública estável da medição que agrupa suítes, motores e braços.
+    public let measurementIdPublic: String?
     public let suite: String
     public let engine: String?
     public let arm: AtlasArenaRunArm?
@@ -91,6 +93,14 @@ public struct AtlasArenaLiveRun: Codable, Sendable, Equatable, Identifiable {
     public let casesTotal: Int?
     public let startedAt: String?
     public let queuedAt: String?
+    public let completedAt: String?
+    public let stopRequestedAt: String?
+    public let stoppedAt: String?
+    /// Código público allowlisted; motivo interno e stdout nunca chegam à UI.
+    public let failureCode: String?
+    public let terminalReceiptHash: String?
+    /// Ação declarada pelo servidor; a casca nunca infere Parar pelo status.
+    public let canStop: Bool?
     /// De onde o run foi disparado (`iphone|ipad|mac|cli`) — opcional
     /// fail-open: servidor antigo sem o campo não derruba o AGORA.
     public let origin: String?

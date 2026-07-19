@@ -12,4 +12,8 @@ extension AtlasRoute {
     public static func arenaCapabilities(engine: String) -> String {
         "\(arenaCapabilitiesBase)\(atlasQueryString([("engine", .string(engine))]))"
     }
+
+    public static func arenaStop(measurementId: String) -> String {
+        "/arena/measurements/\(component(measurementId))/stop"
+    }
 }

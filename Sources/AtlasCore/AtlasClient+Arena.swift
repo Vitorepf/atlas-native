@@ -11,6 +11,10 @@ public extension AtlasClient {
         try await get(AtlasRoute.arenaScoreboard)
     }
 
+    func getArenaReport() async throws -> AtlasArenaReport {
+        try await get(AtlasRoute.arenaReport)
+    }
+
     func getArenaCapabilities(engine: String) async throws -> AtlasArenaCapabilities {
         try await get(AtlasRoute.arenaCapabilities(engine: engine))
     }
@@ -26,5 +30,13 @@ public extension AtlasClient {
     func startArenaRuns(input: AtlasArenaStartInput) async throws -> AtlasArenaStartReceipt {
         guard input.isLocallyValidForSubmission else { throw AtlasArenaClientError.invalidStartInput }
         return try await post(AtlasRoute.arenaRuns, body: input, timeout: 30)
+    }
+
+    func stopArenaMeasurement(
+        measurementId: String,
+        input: AtlasArenaStopInput
+    ) async throws -> AtlasArenaStopReceipt {
+        guard input.isLocallyValidForSubmission else { throw AtlasArenaClientError.invalidStartInput }
+        return try await post(AtlasRoute.arenaStop(measurementId: measurementId), body: input, timeout: 30)
     }
 }

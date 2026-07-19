@@ -19,6 +19,8 @@ public enum AtlasArenaRunArm: String, Codable, Sendable, Equatable, CaseIterable
 public enum AtlasArenaRunStatus: Sendable, Equatable, Hashable {
     case queued
     case running
+    case stopping
+    case stopped
     case completed
     case failed
     case unknown(String)
@@ -27,6 +29,8 @@ public enum AtlasArenaRunStatus: Sendable, Equatable, Hashable {
         switch self {
         case .queued: return "queued"
         case .running: return "running"
+        case .stopping: return "stopping"
+        case .stopped: return "stopped"
         case .completed: return "completed"
         case .failed: return "failed"
         case .unknown(let value): return value
@@ -37,6 +41,8 @@ public enum AtlasArenaRunStatus: Sendable, Equatable, Hashable {
         switch self {
         case .queued: return "na fila, ainda não iniciado"
         case .running: return "em medição"
+        case .stopping: return "parada solicitada"
+        case .stopped: return "parada pelo operador"
         case .completed: return "concluído"
         case .failed: return "falhou"
         case .unknown(let value): return value
@@ -50,6 +56,8 @@ extension AtlasArenaRunStatus: Codable {
         switch value {
         case "queued": self = .queued
         case "running": self = .running
+        case "stopping", "stop_requested": self = .stopping
+        case "stopped", "cancelled", "canceled": self = .stopped
         case "completed", "done", "reported": self = .completed
         case "failed", "error": self = .failed
         default: self = .unknown(value)

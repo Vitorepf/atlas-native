@@ -65,6 +65,59 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
     let capabilities = try? decoder.decode(AtlasArenaCapabilities.self, from: Data(capabilitiesJSON.utf8))
     check("capacidades decodificam barras duplas", capabilities?.capabilities.first?.score == 0.86 && capabilities?.capabilities.first?.withAtlas == 0.93)
     check("capacidade preserva suites contribuintes", capabilities?.capabilities.first?.suitesContributing == ["terminal_bench"])
+    check("régua pública Arena converte score normalizado para zero a dez",
+          abs((AtlasArenaPresentationScale.score(0.67) ?? 0) - 6.7) < 0.000_001 &&
+          AtlasArenaPresentationScale.score(1.0) == 10.0)
+    check("régua pública Arena converte delta sem alterar o sinal",
+          abs((AtlasArenaPresentationScale.delta(-0.06) ?? 0) + 0.6) < 0.000_001)
+    check("régua pública Arena preserva ausência em vez de fabricar zero",
+          AtlasArenaPresentationScale.score(nil) == nil)
+
+    let reportJSON = """
+    {"schema_version":"atlas.arena.report.v1","built_at":"2026-07-17T02:00:00Z",
+     "claim_allowed":false,"claim_blockers":["coverage_incomplete"],
+     "narrative":"Medição parcial; faltam suítes.","primary_engine":"codex_cli",
+     "suites_ok":7,"suites_failed":1,"suites_blocked":1,"suites_missing_data":1,
+     "suites":[{"suite":"terminal_bench","status":"ok","success_rate":0.81,
+       "intelligence_rate":0.76,"median_wall_ms":48200,"cost_per_task":0.03,
+       "env_failure_rate":0.02,"pipeline_valid":true},
+      {"suite":"swe_marathon","status":"not_run","success_rate":null,
+       "intelligence_rate":null,"median_wall_ms":null,"cost_per_task":null,
+       "env_failure_rate":null,"pipeline_valid":false},
+      {"suite":"inspect_evals","status":"failed","success_rate":0.38,
+       "intelligence_rate":0.31,"median_wall_ms":61000,"cost_per_task":0.05,
+       "env_failure_rate":0.0,"pipeline_valid":false}],
+     "engines":[{"engine":"codex_cli","runtimes_measured":["bare","atlas_dev"],
+       "narrative":"Forte em terminal.",
+       "strengths":[{"suite":"terminal_bench","category":"terminal_operation","success_rate":0.91}],
+       "weaknesses":[{"suite":"inspect_evals","category":"context_recovery","success_rate":0.38}]}]}
+    """
+    let report = try? decoder.decode(AtlasArenaReport.self, from: Data(reportJSON.utf8))
+    check("relatório Arena preserva confiança fail-closed e bloqueadores",
+          report?.claimAllowed == false &&
+          report?.claimBlockers == ["coverage_incomplete"] &&
+          report?.suitesMissingData == 1)
+    check("relatório Arena traz resultado de suíte sem inventar ausência",
+          report?.suites.first?.successRate == 0.81 &&
+          report?.suites.first?.status == .ok &&
+          report?.suites.first?.pipelineValid == true &&
+          report?.suites.first?.medianWallMs == 48_200)
+    check("relatório Arena conta não medido a partir das linhas reais",
+          report?.suitesNotRun == 1 &&
+          report?.suites[1].status == .notRun)
+    check("alertas separam falha real de suíte ainda não medida",
+          report?.attentionSuites.map(\.suite) == ["inspect_evals"] &&
+          report?.suites[1].status.requiresAttention == false)
+    check("relatório Arena sustenta forças e fragilidades por motor",
+          report?.engines.first?.strengths.first?.category == "terminal_operation" &&
+          report?.engines.first?.weaknesses.first?.successRate == 0.38)
+
+    let wrongReport = reportJSON.replacingOccurrences(
+        of: "atlas.arena.report.v1",
+        with: "atlas.arena.report.v0"
+    )
+    check("schema errado do relatório falha fechado",
+          (try? decoder.decode(AtlasArenaReport.self, from: Data(wrongReport.utf8))) == nil)
 
     let liveJSON = """
     {"schema_version":"atlas.arena.runs_live.v1","generated_at":"2026-07-17T01:00:00Z",
@@ -81,6 +134,81 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
           live?.runs.last?.engineDisplayName == "motor desconhecido")
     check("origem decodifica quando publicada e é fail-open quando ausente",
           live?.runs.first?.origin == "iphone" && live?.runs.last?.origin == nil)
+    let livePresentation = live?.presentation
+    check("projeção AGORA prioriza a execução viva sem misturar a fila",
+          livePresentation?.phase == .running &&
+          livePresentation?.primaryRun?.runIdPublic == "ar_1" &&
+          livePresentation?.runningRuns.map(\.runIdPublic) == ["ar_1"] &&
+          livePresentation?.queuedRuns.map(\.runIdPublic) == ["ar_2"])
+    check("progresso AGORA só existe com denominador verdadeiro",
+          livePresentation?.progress?.completed == 17 &&
+          livePresentation?.progress?.total == 42 &&
+          livePresentation?.progress?.remaining == 25 &&
+          livePresentation?.progress?.fraction == 17.0 / 42.0)
+
+    let mixedLiveJSON = """
+    {"schema_version":"atlas.arena.runs_live.v1","generated_at":"2026-07-17T01:00:00Z",
+     "runs":[{"run_id_public":"ar_failed","suite":"terminal_bench","engine":"codex_cli",
+       "arm":"baseline","status":"failed","failure_code":"internal_error"},
+      {"run_id_public":"ar_unknown","suite":"inspect_evals","engine":"codex_cli",
+       "arm":"with_atlas","status":"paused"}]}
+    """
+    let mixedLive = try? decoder.decode(AtlasArenaLiveRuns.self, from: Data(mixedLiveJSON.utf8))
+    check("falha e estado desconhecido nunca viram fila por exclusão",
+          mixedLive?.presentation.phase == .failed &&
+          mixedLive?.presentation.queuedRuns.isEmpty == true &&
+          mixedLive?.presentation.unknownRuns.map(\.runIdPublic) == ["ar_unknown"])
+    check("falha live decodifica somente código público allowlisted",
+          mixedLive?.runs.first?.failureCode == "internal_error")
+
+    let queuedLiveJSON = """
+    {"schema_version":"atlas.arena.runs_live.v1","generated_at":"2026-07-17T01:00:00Z",
+     "runs":[{"run_id_public":"ar_q1","suite":"terminal_bench","engine":"codex_cli",
+       "arm":"baseline","status":"queued"},
+      {"run_id_public":"ar_q2","suite":"terminal_bench","engine":"codex_cli",
+       "arm":"with_atlas","status":"queued"},
+      {"run_id_public":"ar_q3","suite":"inspect_evals","engine":"codex_cli",
+       "arm":"baseline","status":"queued"}]}
+    """
+    let queuedLive = try? decoder.decode(AtlasArenaLiveRuns.self, from: Data(queuedLiveJSON.utf8))
+    check("fila agrupa suítes sem duplicar braços",
+          queuedLive?.presentation.phase == .queued &&
+          queuedLive?.presentation.queuedSuites == ["terminal_bench", "inspect_evals"])
+
+    let terminalLiveJSON = """
+    {"schema_version":"atlas.arena.runs_live.v1","generated_at":"2026-07-17T01:00:00Z",
+     "runs":[{"run_id_public":"ar_stop","measurement_id_public":"am_123",
+       "suite":"terminal_bench","engine":"codex_cli","arm":"baseline",
+       "status":"stopping","cases_done":17,"cases_total":42,"can_stop":false,
+       "stop_requested_at":"2026-07-17T01:10:00Z"},
+      {"run_id_public":"ar_done","measurement_id_public":"am_older",
+       "suite":"inspect_evals","engine":"codex_cli","arm":"with_atlas",
+       "status":"completed","can_stop":false,
+       "completed_at":"2026-07-17T00:50:00Z","terminal_receipt_hash":"done-hash"}]}
+    """
+    let terminalLive = try? decoder.decode(AtlasArenaLiveRuns.self, from: Data(terminalLiveJSON.utf8))
+    check("ciclo terminal decodifica identidade, stopping e recibo",
+          terminalLive?.runs.first?.measurementIdPublic == "am_123" &&
+          terminalLive?.runs.first?.status == .stopping &&
+          terminalLive?.runs.first?.canStop == false &&
+          terminalLive?.runs.last?.status == .completed &&
+          terminalLive?.runs.last?.terminalReceiptHash == "done-hash")
+    check("stopping vence o terminal anterior na projeção AGORA",
+          terminalLive?.presentation.phase == .stopping &&
+          terminalLive?.presentation.stoppingRuns.map(\.runIdPublic) == ["ar_stop"])
+    let completedProgressJSON = """
+    {"schema_version":"atlas.arena.runs_live.v1",
+     "runs":[{"run_id_public":"ar_terminal","measurement_id_public":"am_done",
+       "suite":"terminal_bench","status":"completed","cases_done":42,"cases_total":42}]}
+    """
+    let completedProgress = try? decoder.decode(
+        AtlasArenaLiveRuns.self,
+        from: Data(completedProgressJSON.utf8)
+    )
+    check("terminal preserva denominador verdadeiro para a prova visual",
+          completedProgress?.presentation.phase == .completed &&
+          completedProgress?.presentation.progress?.completed == 42 &&
+          completedProgress?.presentation.progress?.total == 42)
 
     let enginesJSON = """
     {"schema_version":"atlas.arena.engines.v1","generated_at":"2026-07-17T01:00:00Z",
@@ -93,13 +221,41 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
           engineCatalog?.engines.last?.local == nil)
 
     let receiptJSON = """
-    {"schema_version":"atlas.arena.start_receipt.v1","status":"enqueued","receipt_hash":"sha256:abc",
+    {"schema_version":"atlas.arena.start_receipt.v1","status":"enqueued",
+     "measurement_id_public":"am_123","receipt_hash":"sha256:abc",
      "runs_planned":2,"started":false,"worker_implemented":false,"provider_invoked":false,
      "note":"measurement_worker_missing_enqueue_only"}
     """
     let receipt = try? decoder.decode(AtlasArenaStartReceipt.self, from: Data(receiptJSON.utf8))
     check("recibo de start preserva fila sem iniciar execução",
-          receipt?.isEnqueued == true && receipt?.started == false && receipt?.workerImplemented == false)
+          receipt?.isEnqueued == true &&
+          receipt?.measurementIdPublic == "am_123" &&
+          receipt?.started == false &&
+          receipt?.workerImplemented == false)
+
+    let stopReceiptJSON = """
+    {"schema_version":"atlas.arena.stop_receipt.v1","measurement_id_public":"am_123",
+     "status":"stopping","accepted":true,"receipt_hash":"stop-hash",
+     "requested_at":"2026-07-17T01:10:00Z","queued_stopped":2,
+     "running_stop_requested":1,"already_stopped":0,"stops_after_current_case":true}
+    """
+    let stopReceipt = try? decoder.decode(AtlasArenaStopReceipt.self, from: Data(stopReceiptJSON.utf8))
+    check("recibo de Parar preserva escopo e transição honesta",
+          stopReceipt?.measurementIdPublic == "am_123" &&
+          stopReceipt?.status == .stopping &&
+          stopReceipt?.accepted == true &&
+          stopReceipt?.queuedStopped == 2 &&
+          stopReceipt?.runningStopRequested == 1 &&
+          stopReceipt?.stopsAfterCurrentCase == true)
+    let lateStopJSON = """
+    {"schema_version":"atlas.arena.stop_receipt.v1","measurement_id_public":"am_done",
+     "status":"completed","accepted":false,"receipt_hash":"terminal-hash",
+     "queued_stopped":0,"running_stop_requested":0,"already_stopped":0,
+     "stops_after_current_case":false}
+    """
+    let lateStop = try? decoder.decode(AtlasArenaStopReceipt.self, from: Data(lateStopJSON.utf8))
+    check("Parar tardio preserva terminal e não afirma aceite",
+          lateStop?.status == .completed && lateStop?.accepted == false)
 
     let input = AtlasArenaStartInput(
         suites: .selected(["terminal_bench"]),
@@ -123,6 +279,27 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
     )
     check("input sem motivo é inválido localmente", missingReason.isLocallyValidForSubmission == false)
 
+    let secondInput = AtlasArenaStartInput(
+        suites: .selected(["terminal_bench", "inspect_evals"]),
+        engine: "kimi_k2_7",
+        arms: [.baseline, .withAtlas],
+        operatorActor: "vitor",
+        operatorReason: "comparar dois motores"
+    )
+    let batchPlan = AtlasArenaMeasurementPlan(inputs: [input, secondInput])
+    check("plano agrega motores, suítes e braços sem duplicar",
+          batchPlan?.engines == ["codex_cli", "kimi_k2_7"] &&
+          batchPlan?.suites == ["terminal_bench", "inspect_evals"] &&
+          batchPlan?.arms == [.baseline, .withAtlas])
+    check("plano conta runs pela seleção real de cada motor",
+          batchPlan?.runsPlanned == 6 &&
+          batchPlan?.comparesAtlas == true)
+    check("plano inválido falha fechado antes da casca",
+          AtlasArenaMeasurementPlan(inputs: [missingReason]) == nil)
+
     check("rota Arena composite usa contrato público", AtlasRoute.arenaComposite == "/arena/composite")
+    check("rota Arena report usa contrato público", AtlasRoute.arenaReport == "/arena/report")
+    check("rota Arena Parar encoda identidade pública",
+          AtlasRoute.arenaStop(measurementId: "am/a") == "/arena/measurements/am%2Fa/stop")
     check("rota Arena capabilities encoda engine", AtlasRoute.arenaCapabilities(engine: "codex/cli") == "/arena/capabilities?engine=codex%2Fcli")
 }

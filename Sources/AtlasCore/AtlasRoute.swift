@@ -17,6 +17,7 @@ public enum AtlasRoute {
     public static let uploadChunksStart = "/ai/uploads/chunks/start"
     public static let arenaComposite = "/arena/composite"
     public static let arenaScoreboard = "/arena/scoreboard"
+    public static let arenaReport = "/arena/report"
     public static let arenaLiveRuns = "/arena/runs/live"
     public static let arenaEngines = "/arena/engines"
     public static let arenaRuns = "/arena/runs"
