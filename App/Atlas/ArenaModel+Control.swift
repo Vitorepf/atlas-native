@@ -4,8 +4,10 @@ import AtlasCore
 // Refresh/start sem polling — peel de ArenaModel (régua ~120).
 
 extension ArenaModel {
-    func refreshSummaryKeepingSnapshot() async {
-        controlError = nil
+    /// `quiet`: refresh disparado pelo POLL — falha transitória não vira banner
+    /// (o próximo tick tenta de novo); só o refresh manual mostra erro.
+    func refreshSummaryKeepingSnapshot(quiet: Bool = false) async {
+        if !quiet { controlError = nil }
         do {
             async let compositeRequest = client.getArenaComposite()
             async let scoreboardRequest = client.getArenaScoreboard()
@@ -23,7 +25,7 @@ extension ArenaModel {
             if case .idle = phase { phase = .loaded }
             updateLivePolling()
         } catch {
-            controlError = Self.publicMessage(error)
+            if !quiet { controlError = Self.publicMessage(error) }
         }
     }
 

@@ -23,10 +23,21 @@ extension ArenaModel {
         }
         guard livePollingTask == nil else { return }
         livePollingTask = Task { @MainActor [weak self] in
+            var lastFullRefresh = ContinuousClock.now
             while let self, !Task.isCancelled, self.shouldPollLiveRuns {
                 try? await Task.sleep(for: .seconds(10))
                 guard !Task.isCancelled, self.shouldPollLiveRuns else { break }
+                let runsBefore = self.liveRuns?.runs
                 await self.refreshLiveRuns()
+                // Medição nova aparece em SEGUNDOS (ordem do operador, 20/07):
+                // run vivo transicionou → refresh completo (capacidades +
+                // scoreboard + report) NA HORA. Fallback de 30s cobre o que não
+                // passa pela fila viva (batteries importam ao fim da suíte).
+                let transitioned = runsBefore != self.liveRuns?.runs
+                if transitioned || ContinuousClock.now - lastFullRefresh > .seconds(30) {
+                    lastFullRefresh = ContinuousClock.now
+                    await self.refreshSummaryKeepingSnapshot(quiet: true)
+                }
             }
         }
     }
