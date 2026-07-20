@@ -45,11 +45,17 @@ public struct AtlasArenaCapability: Codable, Sendable, Equatable, Identifiable {
     public let delta: AtlasArenaCapabilityDelta?
     /// "measured" | "low" | "unmeasured" — nunca cravar número de baixa confiança como verdade.
     public let confidence: String?
+    /// "binary" (pass@1, taxa de acerto) | "continuous" (média de score, ex. rougeL).
+    /// Distingue 0.14-rougeL de 0.14-pass@1 — sem isso o número lê fora de escala.
+    public let measurementType: String?
     public let suitesContributing: [String]
     public let casesTotal: Int?
     public let minCasesForConfidence: Int?
 
     public enum Confidence: String { case measured, low, unmeasured }
+
+    /// Verdadeiro quando a nota é uma MÉDIA de score contínuo (não taxa binária).
+    public var isContinuous: Bool { measurementType == "continuous" }
 
     /// Fail-open: servidor v1 antigo (sem o campo) vira `.low` — nunca finge medido.
     public var confidenceLevel: Confidence {
