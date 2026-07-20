@@ -86,10 +86,40 @@ struct ArenaPremiumCapabilitiesView: View {
         }
     }
 
+    /// Ordem fixa dos grupos da taxonomia v2 — decisão editorial, não alfabética:
+    /// construir → compreender → manter → operar.
+    private static let groupOrder = ["construction", "comprehension", "quality", "agentic"]
+
     private var rows: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if let area = model.selectedCapabilities?.areaLabelPt, !area.isEmpty {
+                Text(area.uppercased())
+                    .font(AtlasFont.mono(10, .medium))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .padding(.bottom, 10)
+            }
+            ForEach(Self.groupOrder, id: \.self) { groupKey in
+                let members = capabilities.filter { ($0.group ?? "quality") == groupKey }
+                if !members.isEmpty {
+                    Text(model.selectedCapabilities?.groupsPt?[groupKey] ?? groupKey)
+                        .font(AtlasFont.serif(17))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .padding(.top, 14)
+                        .padding(.bottom, 4)
+                    groupRows(members)
+                }
+            }
+            Text(capabilitiesCaption)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .padding(.top, 16)
+        }
+    }
+
+    private func groupRows(_ members: [AtlasArenaCapability]) -> some View {
         VStack(spacing: 0) {
             ArenaPremiumHairline()
-            ForEach(capabilities) { capability in
+            ForEach(members) { capability in
                 Button { onCapability(capability) } label: {
                     // Sem numeral: a lista não é sequência — número que não
                     // codifica nada é ruído (régua da casa).
@@ -123,10 +153,6 @@ struct ArenaPremiumCapabilitiesView: View {
                 .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
                 ArenaPremiumHairline()
             }
-            Text(capabilitiesCaption)
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .padding(.top, 16)
         }
     }
 
@@ -176,6 +202,10 @@ struct ArenaPremiumCapabilitiesView: View {
     /// Sub-rótulo honesto para linha que NÃO é medida — a mesma verdade que a
     /// aba clássica fala via confidenceCaption, na densidade da lista premium.
     private func shortConfidence(_ capability: AtlasArenaCapability) -> String? {
+        // Capacidade gated: instrumento em preparação — a razão É a informação.
+        if let gated = capability.gatedReason, !gated.isEmpty {
+            return gated
+        }
         switch capability.confidenceLevel {
         case .measured:
             return capability.delta?.significant == true ? nil : "dentro do ruído"

@@ -6,10 +6,15 @@ public struct AtlasArenaCapabilities: Sendable, Equatable, Decodable {
     public let schemaVersion: String
     public let mappingVersion: String
     public let engine: String?
+    /// Área da taxonomia (v2): "Engenharia de Software" hoje; outras áreas
+    /// entram como áreas novas, nunca misturadas.
+    public let areaLabelPt: String?
+    /// Rótulos PT dos grupos (construction/comprehension/quality/agentic).
+    public let groupsPt: [String: String]?
     public let capabilities: [AtlasArenaCapability]
 
     enum CodingKeys: String, CodingKey {
-        case schemaVersion, mappingVersion, engine, capabilities
+        case schemaVersion, mappingVersion, engine, areaLabelPt, groupsPt, capabilities
     }
 
     public init(from decoder: Decoder) throws {
@@ -17,6 +22,8 @@ public struct AtlasArenaCapabilities: Sendable, Equatable, Decodable {
         schemaVersion = try values.requireSchema(Self.schemaVersion, forKey: .schemaVersion, message: "Unsupported Atlas Arena capabilities schema.")
         mappingVersion = try values.decode(String.self, forKey: .mappingVersion)
         engine = try values.decodeIfPresent(String.self, forKey: .engine)
+        areaLabelPt = try values.decodeIfPresent(String.self, forKey: .areaLabelPt)
+        groupsPt = try values.decodeIfPresent([String: String].self, forKey: .groupsPt)
         capabilities = try values.decodeIfPresent([AtlasArenaCapability].self, forKey: .capabilities) ?? []
     }
 }
@@ -45,6 +52,16 @@ public struct AtlasArenaCapability: Codable, Sendable, Equatable, Identifiable {
     public let delta: AtlasArenaCapabilityDelta?
     /// "measured" | "low" | "unmeasured" — nunca cravar número de baixa confiança como verdade.
     public let confidence: String?
+    /// Grupo da taxonomia v2 (construction/comprehension/quality/agentic).
+    public let group: String?
+    /// Capacidade gated (instrumento em preparação): mostra a razão, nunca número.
+    public let gatedReason: String?
+    /// Casos DISTINTOS por braço — réplica não é problema novo; o piso de
+    /// confiança conta isto, não ensaios.
+    public let baselineDistinctCases: Int?
+    public let withAtlasDistinctCases: Int?
+    public let exclusionRateBaseline: Double?
+    public let exclusionRateWithAtlas: Double?
     /// "binary" (pass@1, taxa de acerto) | "continuous" (média de score, ex. rougeL)
     /// | "mixed" (a capacidade junta suíte contínua e binária no mesmo N).
     /// Distingue 0.14-rougeL de 0.14-pass@1 — sem isso o número lê fora de escala.
