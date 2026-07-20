@@ -62,7 +62,8 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
      "engine":"codex_cli","capabilities":[{"capability":"terminal_operation","label_pt":"Operação de terminal",
        "score":0.86,"with_atlas":0.93,"baseline_ci":[0.73,0.93],"with_atlas_ci":[0.82,0.97],
        "baseline_cases":42,"with_atlas_cases":42,"delta":{"value":0.07,"ci_low":0.01,"ci_high":0.13,"significant":true},
-       "confidence":"measured","measurement_type":"binary","suites_contributing":["terminal_bench"],"cases_total":42,"min_cases_for_confidence":10}]}
+       "confidence":"measured","measurement_type":"binary","suites_contributing":["terminal_bench"],"cases_total":42,"min_cases_for_confidence":10,"baseline_excluded":0,"with_atlas_excluded":2,"max_exclusion_rate":0.045},
+      {"capability":"code_editing","label_pt":"Edição de código","score":0.55,"with_atlas":1.0,"baseline_ci":[0.45,0.64],"with_atlas_ci":[0.88,1.0],"baseline_cases":112,"with_atlas_cases":30,"delta":null,"confidence":"unmeasured","measurement_type":"binary","suites_contributing":["aider_polyglot"],"cases_total":112,"min_cases_for_confidence":10,"baseline_excluded":70,"with_atlas_excluded":128,"max_exclusion_rate":0.81}]}
     """
     let capabilities = try? decoder.decode(AtlasArenaCapabilities.self, from: Data(capabilitiesJSON.utf8))
     check("capacidades decodificam barras duplas", capabilities?.capabilities.first?.score == 0.86 && capabilities?.capabilities.first?.withAtlas == 0.93)
@@ -71,6 +72,14 @@ public func runAtlasArenaChecks(_ check: (String, Bool) -> Void) {
     check("capacidade decodifica delta com significância", capabilities?.capabilities.first?.delta?.value == 0.07 && capabilities?.capabilities.first?.delta?.significant == true)
     check("capacidade decodifica confiança medida", capabilities?.capabilities.first?.confidenceLevel == .measured && capabilities?.capabilities.first?.withAtlasCases == 42)
     check("capacidade binária não é contínua", capabilities?.capabilities.first?.measurementType == "binary" && capabilities?.capabilities.first?.isContinuous == false)
+    // Descarte alto = amostra selecionada. O app precisa poder dizer "X% descartado
+    // no setup · não medível" em vez de "Atlas ainda não rodou aqui" — são verdades
+    // diferentes, e esconder a segunda deixaria passar nota inflada por sobrevivência
+    // (aider_polyglot: Atlas 1.000 construído descartando 128 unidades).
+    let selecionada = capabilities?.capabilities.first { $0.capability == "code_editing" }
+    check("taxa de descarte chega na casca", (selecionada?.maxExclusionRate ?? 0) >= 0.5)
+    check("descarte por braço chega na casca", selecionada?.withAtlasExcluded == 128)
+    check("nota alta com descarte alto NÃO é medida", selecionada?.confidenceLevel == .unmeasured && selecionada?.withAtlas == 1.0)
     check("régua pública Arena converte score normalizado para zero a dez",
           abs((AtlasArenaPresentationScale.score(0.67) ?? 0) - 6.7) < 0.000_001 &&
           AtlasArenaPresentationScale.score(1.0) == 10.0)

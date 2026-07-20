@@ -29,6 +29,12 @@ extension ArenaCapabilityRow {
     private var confidenceText: String {
         switch capability.confidenceLevel {
         case .unmeasured:
+            // Descarte alto vem ANTES das outras razões: "rodou e nada chegou ao
+            // corretor" não é "nunca rodou". Sem esta linha o app mostraria o silêncio
+            // de um braço cuja nota só subiu porque toda falha dele foi descartada.
+            if let rate = capability.maxExclusionRate, rate >= 0.5 {
+                return "\(Int((rate * 100).rounded()))% descartado no setup · não medível"
+            }
             return capability.withAtlas == nil ? "Atlas ainda não rodou aqui" : "sem par para comparar"
         case .low:
             let n = capability.withAtlasCases ?? capability.baselineCases ?? 0

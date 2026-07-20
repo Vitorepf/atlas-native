@@ -52,6 +52,12 @@ public struct AtlasArenaCapability: Codable, Sendable, Equatable, Identifiable {
     public let suitesContributing: [String]
     public let casesTotal: Int?
     public let minCasesForConfidence: Int?
+    /// Unidades descartadas (setup/ambiente/bridge bloqueado) por braço, e a maior
+    /// taxa de descarte entre os dois. Descarte alto = amostra selecionada: a nota
+    /// sobe sozinha porque só o que passou sobrou. Fica visível, nunca em silêncio.
+    public let baselineExcluded: Int?
+    public let withAtlasExcluded: Int?
+    public let maxExclusionRate: Double?
 
     public enum Confidence: String { case measured, low, unmeasured }
 
