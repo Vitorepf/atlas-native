@@ -35,6 +35,9 @@ podem viver em `ConversationModel+UI.swift` (extension, sem lógica).
 
 ## Leia também
 - `OBRA.md` — o blackboard (fonte de verdade da coordenação)
+- `docs/engineering-knowledge-base/atlas-native-agentic-pill.md` — **PÍLULA = baseline
+  da era agêntica** (contexto compilado por tela; perguntar→responde; mandar→faz;
+  Arena sem pílula = falha). Nunca tratar como “avançado” ou opcional.
 - `docs/rich-input-shared-core.md` — dossiê do rich input (a strip/composer
   renderizam `LocalDraft`/`UploadProgress` — o único contrato de UI de anexos)
 - Anti-inchaço: OBRA.md §3 — a lição do app RN. View >~200 linhas = split;

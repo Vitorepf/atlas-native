@@ -47,6 +47,10 @@ da casca? Registre em **OBRA.md §5 (Pedidos de contrato)**.
 
 ## Leia também
 - `OBRA.md` — o blackboard (fonte de verdade da coordenação)
+- `docs/engineering-knowledge-base/atlas-native-agentic-pill.md` — **PÍLULA = baseline
+  da era agêntica** (contexto compilado por tela; perguntar→responde; mandar→faz;
+  Arena sem pílula = falha). Packs de contexto / contratos ask-do = território Core
+  quando a casca pedir em OBRA §5. Nunca tratar como “avançado” ou opcional.
 - `docs/rich-input-shared-core.md` — dossiê + arquitetura do rich input
 - Anti-inchaço: OBRA.md §3 — a lição do app RN que morreu inchado. Zero deps
   novas sem decisão registrada; protocol novo só com 2º consumidor; toda

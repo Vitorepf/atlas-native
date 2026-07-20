@@ -1,6 +1,8 @@
 import SwiftUI
 import AtlasCore
 
+/// Execução = o ÚNICO mapa da medição (mockup operador 2026-07-20).
+/// Pipeline macro + casos da suíte ao vivo + corridas tocáveis.
 struct ArenaPremiumExecutionView: View {
     @Bindable var model: ArenaModel
     let onStop: (AtlasArenaLiveRun) -> Void
@@ -8,124 +10,209 @@ struct ArenaPremiumExecutionView: View {
     private var runs: [AtlasArenaLiveRun] { model.arenaPrimaryMeasurementRuns }
     private var primary: AtlasArenaLiveRun? { model.arenaPrimaryRun }
 
+    private var orderedRuns: [AtlasArenaLiveRun] {
+        let live = runs.filter { $0.status == .running || $0.status == .stopping }
+        let done = runs.filter {
+            $0.status == .completed || $0.status == .failed || $0.status == .stopped
+        }
+        let upcoming = runs.filter { $0.status == .queued }
+        return live + done + upcoming
+    }
+
+    private var pipeline: ArenaPremiumPipelineProjection {
+        let planArms = model.activePlan?.arms ?? []
+        return .project(
+            runs: runs,
+            expectsBare: planArms.contains(.baseline) || runs.contains { $0.arm == .baseline },
+            expectsAtlas: planArms.contains(.withAtlas) || runs.contains { $0.arm == .withAtlas },
+            hasReport: model.report != nil
+        )
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             header
                 .accessibilityIdentifier(A11yID.arenaPremiumExecution)
-            progress
-            control
+            nowBlock
+            if canStop {
+                ArenaPremiumAction(title: "Parar após o caso atual", quiet: true) {
+                    if let primary { onStop(primary) }
+                }
+            }
             ArenaPremiumHairline()
-            pipeline
+            ArenaPremiumExecutionPipeline(projection: pipeline)
             ArenaPremiumHairline()
-            ArenaPremiumKicker(text: "Corridas")
-            runRows
+            corridas
         }
     }
 
-    private var pipeline: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            ArenaPremiumKicker(text: "Pipeline")
-            HStack(alignment: .top, spacing: 0) {
-                stage("Preparar", symbol: "checkmark.circle", state: .done)
-                stageConnector(done: true)
-                stage("Sem Atlas", symbol: "checkmark", state: baselineStage)
-                stageConnector(done: baselineStage == .done)
-                stage("Com Atlas", symbol: "play.circle", state: atlasStage)
-                stageConnector(done: atlasStage == .done)
-                stage("Consolidar", symbol: "circle", state: consolidationStage)
-            }
-        }
+    private var canStop: Bool {
+        guard let primary else { return false }
+        return primary.canStop == true && primary.measurementIdPublic != nil
     }
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ArenaPremiumKicker(text: statusLabel, tone: statusTone, showsDot: true)
-            Text(ArenaDisplay.engine(primary?.engineDisplayName ?? model.preferredEngine ?? "Arena"))
+            ArenaPremiumKicker(
+                text: statusLabel,
+                tone: statusTone,
+                showsLiveMark: statusTone == .active
+            )
+            Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text("Ordem, estado e progresso confirmados pelo servidor.")
-                .font(.system(.callout))
-                .foregroundStyle(AtlasTheme.textSecondary)
-        }
-    }
-
-    @ViewBuilder
-    private var progress: some View {
-        if let value = model.livePresentation?.progress {
-            HStack(alignment: .lastTextBaseline, spacing: 8) {
-                Text("\(value.completed)")
-                    .font(AtlasFont.serif(56))
-                Text("de \(value.total) casos")
-                    .font(AtlasFont.mono(12))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                Spacer()
-                Text("\(Int((value.fraction * 100).rounded(.down)))%")
-                    .font(AtlasFont.mono(18, .medium))
-                    .foregroundStyle(AtlasTheme.accent)
-            }
-            .foregroundStyle(AtlasTheme.textPrimary)
-        } else {
-            Text("Sem denominador publicado")
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
     }
 
     @ViewBuilder
-    private var control: some View {
-        if let primary,
-           primary.canStop == true,
-           primary.measurementIdPublic != nil {
-            ArenaPremiumAction(
-                title: "Parar após o caso atual",
-                symbol: ArenaPremiumIconography.stop,
-                tone: .neutral
-            ) {
-                onStop(primary)
+    private var nowBlock: some View {
+        if let primary {
+            let casesDone = primary.casesDone
+            let casesTotal = primary.casesTotal
+            if let casesDone, let casesTotal, casesTotal > 0 {
+                caseHero(
+                    done: min(casesDone, casesTotal),
+                    total: casesTotal,
+                    fraction: Double(min(max(0, casesDone), casesTotal)) / Double(casesTotal),
+                    suiteLine: suiteLine(primary)
+                )
+            } else if let progress = model.livePresentation?.progress {
+                caseHero(
+                    done: progress.completed,
+                    total: progress.total,
+                    fraction: progress.fraction,
+                    suiteLine: suiteLine(primary)
+                )
+            } else {
+                Text("Casos ainda sem denominador nesta corrida.")
+                    .font(AtlasFont.mono(12))
+                    .foregroundStyle(AtlasTheme.textSecondary)
             }
+        } else if runs.isEmpty {
+            Text("Nenhuma corrida nesta medição.")
+                .font(AtlasFont.mono(12))
+                .foregroundStyle(AtlasTheme.textSecondary)
         }
     }
 
-    private var runRows: some View {
-        VStack(spacing: 0) {
-            if runs.isEmpty {
-                Text("Nenhuma corrida publicada.")
-                    .font(.system(.callout))
+    private func caseHero(done: Int, total: Int, fraction: Double, suiteLine: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .lastTextBaseline, spacing: 8) {
+                Text("\(done)")
+                    .font(AtlasFont.serif(52))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text("de \(total) casos")
+                    .font(AtlasFont.serif(22))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
+                Spacer()
+                Text("\(Int((fraction * 100).rounded(.down)))%")
+                    .font(AtlasFont.mono(18, .medium))
+                    .foregroundStyle(AtlasTheme.accent)
+            }
+            Text(suiteLine)
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textSecondary)
+        }
+    }
+
+    private func suiteLine(_ run: AtlasArenaLiveRun) -> String {
+        [ArenaDisplay.suite(run.suite), run.arm?.labelPT]
+            .compactMap(\.self)
+            .joined(separator: " · ")
+    }
+
+    private var corridas: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Corridas")
+                .font(AtlasFont.mono(10, .medium))
+                .tracking(1.4)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .textCase(.uppercase)
+                .padding(.bottom, 10)
+            if orderedRuns.isEmpty {
+                Text("Ainda sem corridas publicadas.")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textTertiary)
             } else {
-                ForEach(runs) { run in
-                    HStack(alignment: .top, spacing: 12) {
-                        ArenaPremiumIcon(
-                            symbol: ArenaPremiumIconography.run(run.status),
-                            tone: tone(run.status)
-                        )
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(ArenaDisplay.suite(run.suite))
-                                .font(.system(.callout, weight: .medium))
-                                .foregroundStyle(AtlasTheme.textPrimary)
-                            // Estado fala UMA vez (no trailing) — a sublinha
-                            // repetia "na fila, ainda não iniciado" literal.
-                            Text([run.arm?.labelPT, run.progressText == run.status.displayPT ? nil : run.progressText].compactMap(\.self).joined(separator: " · "))
-                                .font(AtlasFont.mono(10))
-                                .foregroundStyle(AtlasTheme.textSecondary)
-                        }
-                        Spacer()
-                        Text(run.status.displayPT)
-                            .font(AtlasFont.mono(10, .medium))
-                            .foregroundStyle(tone(run.status).color)
-                            .multilineTextAlignment(.trailing)
+                ForEach(orderedRuns) { run in
+                    NavigationLink {
+                        ArenaPremiumRunDetailView(run: run)
+                    } label: {
+                        runRow(run)
                     }
-                    .padding(.vertical, 14)
-                    .accessibilityIdentifier(A11yID.arenaPremiumExecutionRun(run.runIdPublic))
+                    .buttonStyle(.plain)
                     ArenaPremiumHairline()
                 }
             }
         }
     }
 
-    // Bloco "Garantias" morto: honestidade se MOSTRA (estados literais,
-    // parciais como parciais), não se declara — UI falando de si é ruído.
+    private func runRow(_ run: AtlasArenaLiveRun) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 14) {
+            Text(rowGlyph(run))
+                .font(AtlasFont.serif(14))
+                .foregroundStyle(tone(run.status).color)
+                .frame(width: 22, alignment: .center)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(ArenaDisplay.suite(run.suite))
+                    .atlasSans(16, .medium)
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text(rowDetail(run))
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+            Spacer(minLength: 8)
+            Text(rowTrailing(run))
+                .font(AtlasFont.mono(11, .medium))
+                .foregroundStyle(tone(run.status).color)
+                .multilineTextAlignment(.trailing)
+            ArenaPremiumChevron()
+        }
+        .padding(.vertical, 14)
+        .contentShape(Rectangle())
+        .accessibilityIdentifier(A11yID.arenaPremiumExecutionRun(run.runIdPublic))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            "\(ArenaDisplay.suite(run.suite)), \(run.arm?.labelPT ?? ""), \(rowTrailing(run))"
+        )
+        .accessibilityHint("Abre os casos desta corrida")
+    }
+
+    /// Ao vivo = ▸ (rodando). Nunca ✦ do Atlas nas corridas.
+    private func rowGlyph(_ run: AtlasArenaLiveRun) -> String {
+        switch run.status {
+        case .running, .stopping: "▸"
+        case .completed: "✓"
+        case .failed: "※"
+        case .queued: "◷"
+        case .stopped, .unknown: "·"
+        }
+    }
+
+    private func rowDetail(_ run: AtlasArenaLiveRun) -> String {
+        if let done = run.casesDone, let total = run.casesTotal, total > 0 {
+            return "\(done)/\(total) casos"
+        }
+        return run.arm?.labelPT ?? run.status.displayPT
+    }
+
+    private func rowTrailing(_ run: AtlasArenaLiveRun) -> String {
+        let arm = run.arm?.labelPT
+        let state: String = switch run.status {
+        case .running: "ao vivo"
+        case .stopping: "parando"
+        case .queued: "na fila"
+        case .completed: "concluída"
+        case .failed: "falhou"
+        case .stopped: "parada"
+        case .unknown: run.status.displayPT
+        }
+        return [state, arm].compactMap(\.self).joined(separator: " · ")
+    }
 
     private var statusLabel: String {
         switch model.livePresentation?.phase ?? .idle {
@@ -155,55 +242,5 @@ struct ArenaPremiumExecutionView: View {
         case .failed: .negative
         case .stopped, .unknown: .neutral
         }
-    }
-
-    private enum StageState: Equatable {
-        case waiting
-        case active
-        case done
-    }
-
-    private var baselineStage: StageState {
-        let baseline = runs.filter { $0.arm == .baseline }
-        if baseline.contains(where: { $0.status == .running || $0.status == .stopping }) { return .active }
-        if !baseline.isEmpty, baseline.allSatisfy({ $0.status == .completed }) { return .done }
-        if runs.contains(where: { $0.arm == .withAtlas && $0.status != .queued }) { return .done }
-        return .waiting
-    }
-
-    private var atlasStage: StageState {
-        let atlas = runs.filter { $0.arm == .withAtlas }
-        if atlas.contains(where: { $0.status == .running || $0.status == .stopping }) { return .active }
-        if !atlas.isEmpty, atlas.allSatisfy({ $0.status == .completed }) { return .done }
-        return .waiting
-    }
-
-    private var consolidationStage: StageState {
-        guard !runs.isEmpty else { return .waiting }
-        if runs.allSatisfy({ $0.status == .completed }) { return .done }
-        return .waiting
-    }
-
-    private func stage(_ title: String, symbol: String, state: StageState) -> some View {
-        VStack(spacing: 7) {
-            ArenaPremiumIcon(
-                symbol: state == .done ? "checkmark.circle" : (state == .active ? symbol : "circle"),
-                tone: state == .waiting ? .muted : .active
-            )
-            Text(title)
-                .font(AtlasFont.mono(8, state == .active ? .medium : .regular))
-                .foregroundStyle(state == .waiting ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.72)
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private func stageConnector(done: Bool) -> some View {
-        Rectangle()
-            .fill(done ? AtlasTheme.accent.opacity(0.7) : AtlasTheme.separator)
-            .frame(maxWidth: .infinity)
-            .frame(height: 1)
-            .padding(.top, 8)
     }
 }

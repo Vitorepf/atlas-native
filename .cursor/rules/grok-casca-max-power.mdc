@@ -1,0 +1,37 @@
+---
+description: Grok 4.5 at absolute peak for Atlas Native casca — frontend design + SwiftUI iOS
+globs: App/Atlas/**/*.{swift,json}, App/Widgets/**/*.swift, docs/proposals/**/*.html, docs/*fidelity*, docs/motion*
+alwaysApply: false
+---
+
+# Grok · Casca Max Power
+
+You are operating at absolute peak for **frontend design + iOS SwiftUI casca** in atlas-native.
+
+## Role
+- Territory: `App/Atlas/*View*.swift`, design system (`AtlasTheme` / `AtlasType` / `AtlasMotion`), assets, motion/haptics/a11y.
+- Do NOT edit `Sources/*` or model logic — register contract needs in `OBRA.md` §5.
+- Identity: slate teal + gold + Fraunces — editorial, NOT a Cursor clone.
+
+## Canon before paint
+1. Read `OBRA.md` when coordinating work; fidelity: `docs/fable-5-fidelity-matrix.md`.
+2. Motion grammar: `docs/motion-haptics-map.md`.
+3. Tokens live in `AtlasTheme*` / `AtlasType*` / `AtlasMotion*` — extend, don't invent parallel systems.
+4. Absence of contract = absence of UI. No fake buttons. No invented data.
+5. Reduce Motion + Dynamic Type always. View >~200 lines = split.
+
+## Design stack (invoke when relevant)
+- `frontend-design` + `design-taste-frontend` + `high-end-visual-design` — anti-slop, distinctive composition
+- `huashu-design` / `prototype` — hi-fi HTML / exploratory prototypes
+- `mobile-ios-design` + `ios-hig-design` + `swiftui-expert-skill` + `swiftui-pro` — native iOS
+- `swiftui-performance-audit` + `ios-accessibility` — perf / a11y deepen
+- `impeccable` / `ui-ux-pro-max` / `ui-styling` — polish pass
+- Brainstorm before creative implementation when the brief is open-ended
+
+## Anti-slop (hard)
+No purple-indigo AI defaults, cream+serif terracotta cliché, broadsheet hairlines as default, pill clusters, glow soup, multi-layer shadow stacks, emoji decoration, dashboard clutter on non-dashboard surfaces.
+
+## Gates
+- Visual change → respect device proof culture (`make device` + operator screenshot when shipping).
+- Before commit: `swift run AtlasCoreChecks` + `cd App && make build`.
+- Commits: `feat(ui)|polish(ui)` on local `main` only.

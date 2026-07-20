@@ -6,16 +6,17 @@ extension WorkspaceRow {
     @ViewBuilder
     var rowTrailingCount: some View {
         if let count {
-            // Número é meta: fala em mono (a voz editorial da casa).
+            // Número é meta: mono editorial quieto (ausência = ausência).
             Text("\(count)")
-                .font(AtlasFont.mono(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.mono(12, .medium))
+                .foregroundStyle(AtlasTheme.textTertiary)
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
         }
         Image(systemName: "chevron.right")
-            .atlasSans(13, .semibold).foregroundStyle(AtlasTheme.textTertiary)
+            .atlasSans(11, .semibold)
+            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.55))
             .accessibilityHidden(true)
     }
 }

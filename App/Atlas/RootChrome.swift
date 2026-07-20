@@ -16,8 +16,8 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
                        startPoint: .leading, endPoint: .trailing)
             .frame(height: 1)
         Text(t)
-            .font(.system(.caption, weight: .semibold))
-            .tracking(1.4)
+            .font(.system(size: 11, weight: .semibold))
+            .tracking(1.55)
             .foregroundStyle(AtlasTheme.textTertiary)
             .fixedSize()
         LinearGradient(colors: [AtlasTheme.separator, AtlasTheme.separator.opacity(0)],
@@ -25,8 +25,8 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
             .frame(height: 1)
     }
     .padding(.horizontal, AtlasTheme.Space.screen)
-    .padding(.top, 16)
-    .padding(.bottom, 12)
+    .padding(.top, 18)
+    .padding(.bottom, 11)
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(.isHeader)
     .homeSectionA11yID(accessibilityID)

@@ -48,7 +48,7 @@ struct ArenaPremiumQueuedView: View {
             Text("Medição programada")
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text(ArenaDisplay.engine(model.arenaPrimaryRun?.engineDisplayName ?? model.preferredEngine ?? "motor"))
+            Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.mono(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
             ViewThatFits(in: .horizontal) {
@@ -65,8 +65,8 @@ struct ArenaPremiumQueuedView: View {
             Text("Ainda não iniciado · nenhum progresso foi presumido.")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
-            ArenaPremiumAction(title: "Ver plano", symbol: "list.number", tone: .neutral) {
-                onNavigate(.plan)
+            ArenaPremiumAction(title: "Ver execução", tone: .neutral) {
+                onNavigate(.execution)
             }
             ArenaPremiumOperationalRows(model: model, onNavigate: onNavigate)
         }
@@ -111,7 +111,7 @@ struct ArenaPremiumTerminalView: View {
             ArenaPremiumEmptyGlyph(symbol: configuration.2, tone: configuration.3)
                 .accessibilityIdentifier(A11yID.arenaPremiumState(stateIdentifier))
             ArenaPremiumKicker(text: configuration.0, tone: configuration.3)
-            Text(ArenaDisplay.engine(model.arenaPrimaryRun?.engineDisplayName ?? model.preferredEngine ?? "Arena"))
+            Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.serif(33))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(configuration.1)

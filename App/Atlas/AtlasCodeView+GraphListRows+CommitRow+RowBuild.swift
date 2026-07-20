@@ -9,9 +9,15 @@ extension AtlasCodeView {
     func graphCommitRowView(
         node: AtlasCodeGraphNode,
         index: Int,
-        total: Int
+        total: Int,
+        filteredNodes: [AtlasCodeGraphNode]
     ) -> AtlasCodeCommitRow {
-        let initArgs = graphCommitRowInit(node: node, index: index, total: total)
+        let initArgs = graphCommitRowInit(
+            node: node,
+            index: index,
+            total: total,
+            filteredNodes: filteredNodes
+        )
         let handlers = graphCommitRowHandlers(for: node)
         return AtlasCodeCommitRow(
             node: initArgs.node,
@@ -20,9 +26,12 @@ extension AtlasCodeView {
             trunk: initArgs.trunk,
             isFirst: initArgs.isFirst,
             isLast: initArgs.isLast,
+            aboveState: initArgs.aboveState,
+            belowState: initArgs.belowState,
             isDimmed: initArgs.isDimmed,
             onTap: handlers.onSelect,
-            onLongPress: handlers.onLongPress
+            onLongPress: handlers.onLongPress,
+            onAsk: handlers.onAsk
         )
     }
 }

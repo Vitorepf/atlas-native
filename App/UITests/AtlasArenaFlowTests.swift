@@ -9,31 +9,39 @@ final class AtlasArenaFlowTests: XCTestCase {
         app.launch()
 
         XCTAssertTrue(element(A11yID.arenaPremiumState("running"), in: app).waitForExistence(timeout: 10))
-        XCTAssertTrue(app.staticTexts["17/42 casos"].exists)
-        XCTAssertTrue(app.staticTexts["tempo restante indisponível"].exists)
+        XCTAssertTrue(app.staticTexts["casos confirmados"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons[A11yID.arenaPremiumAskPill].exists)
         capture(app, "arena-premium-01-running")
 
         app.buttons[A11yID.arenaPremiumExecutionAction].tap()
         XCTAssertTrue(element(A11yID.arenaPremiumExecution, in: app).waitForExistence(timeout: 10))
+        XCTAssertTrue(element(A11yID.arenaPremiumExecutionPipeline, in: app).waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Pipeline"].exists || app.staticTexts["PIPELINE"].exists)
+        XCTAssertTrue(app.staticTexts["Corridas"].exists || app.staticTexts["CORRIDAS"].exists)
+        let liveRun = app.buttons[A11yID.arenaPremiumExecutionRun("run_live")]
+        if liveRun.waitForExistence(timeout: 5) {
+            liveRun.tap()
+            XCTAssertTrue(element(A11yID.arenaPremiumRunDetail, in: app).waitForExistence(timeout: 5))
+            capture(app, "arena-premium-03b-run-detail")
+            app.navigationBars.buttons.firstMatch.tap()
+        }
         capture(app, "arena-premium-03-execution")
         app.navigationBars.buttons.firstMatch.tap()
 
-        app.buttons[A11yID.arenaPremiumPlanAction].tap()
-        XCTAssertTrue(element(A11yID.arenaPremiumPlan, in: app).waitForExistence(timeout: 10))
-        capture(app, "arena-premium-04-plan")
-        app.navigationBars.buttons.firstMatch.tap()
+        // Fila/Plano/Cobertura saíram da Agora — o mapa mora em Execução.
+        // Alertas só aparece com exceção real no cenário.
+        if app.buttons[A11yID.arenaPremiumAlertsAction].exists {
+            app.buttons[A11yID.arenaPremiumAlertsAction].tap()
+            XCTAssertTrue(element(A11yID.arenaPremiumAlerts, in: app).waitForExistence(timeout: 10))
+            capture(app, "arena-premium-06-alerts")
+            app.navigationBars.buttons.firstMatch.tap()
+        }
 
-        app.buttons[A11yID.arenaPremiumQueueAction].tap()
-        XCTAssertTrue(element(A11yID.arenaPremiumQueue, in: app).waitForExistence(timeout: 10))
-        capture(app, "arena-premium-05-queue")
-        app.navigationBars.buttons.firstMatch.tap()
+        app.buttons[A11yID.arenaPremiumTab("frota")].tap()
+        XCTAssertTrue(element(A11yID.arenaPremiumFleet, in: app).waitForExistence(timeout: 10))
+        capture(app, "arena-premium-02b-fleet")
 
-        app.buttons[A11yID.arenaPremiumAlertsAction].tap()
-        XCTAssertTrue(element(A11yID.arenaPremiumAlerts, in: app).waitForExistence(timeout: 10))
-        capture(app, "arena-premium-06-alerts")
-        app.navigationBars.buttons.firstMatch.tap()
-
-        app.buttons[A11yID.arenaPremiumTab("resultados")].tap()
+        app.buttons[A11yID.arenaPremiumTab("motor")].tap()
         XCTAssertTrue(element(A11yID.arenaPremiumResults, in: app).waitForExistence(timeout: 10))
         capture(app, "arena-premium-02-results")
 

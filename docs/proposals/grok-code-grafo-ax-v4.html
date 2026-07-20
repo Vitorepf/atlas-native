@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Código · Grafo AX — mockup Grok v4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Canon AtlasTheme — slate teal + gold + Fraunces
+     v4: mata pílula de alerta + chips; status vira tipografia; filtro vira tabs. */
+  :root {
+    --stage: #0e151a;
+    --bg: #1d2b34;
+    --recessed: #15212a;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #2c3a43;
+    --gold: #d4a85a;
+    --alert: #c98989;
+    --prussian: #7fa7c4;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+    --row: 56px;
+    --gx: 88px;
+    --x0: 26px;
+    --x1: 52px;
+    --x2: 78px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(127,167,196,0.06), transparent 55%),
+      radial-gradient(700px 400px at 78% 100%, rgba(212,168,90,0.04), transparent 50%),
+      var(--stage);
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) auto;
+    gap: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 32px 64px;
+  }
+
+  .brief { max-width: 300px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 26px;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .brief .lede {
+    margin-top: 12px; font-size: 13.5px; line-height: 1.6; color: var(--ink2);
+  }
+  .brief .lede em {
+    font-family: var(--serif); font-style: italic; color: var(--ink);
+  }
+  .brief .rule {
+    width: 32px; height: 1px; margin: 18px 0;
+    background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.7;
+  }
+  .brief ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .brief li {
+    font-size: 12px; line-height: 1.5; color: var(--ink3);
+    padding-left: 12px; position: relative;
+  }
+  .brief li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 1px; background: var(--gold); opacity: 0.65;
+  }
+  .brief li strong { color: var(--ink2); font-weight: 500; }
+
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 52px; padding: 10px; background: #070b0e;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55);
+    position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 52px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 4px #040608;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
+    background: var(--bg); display: flex; flex-direction: column; position: relative;
+  }
+  .screen::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(320px 180px at 18% 8%, rgba(212,168,90,0.07), transparent 60%),
+      radial-gradient(280px 200px at 90% 72%, rgba(127,167,196,0.05), transparent 55%);
+  }
+  .island {
+    position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+    width: 116px; height: 33px; background: #000; border-radius: 20px; z-index: 6;
+  }
+
+  .chrome { position: relative; z-index: 2; flex-shrink: 0; }
+
+  .status {
+    height: 50px; padding: 13px 26px 0;
+    display: flex; justify-content: space-between;
+    font-size: 15px; font-weight: 600;
+  }
+  .status .r { font-size: 12px; font-weight: 500; color: var(--ink2); }
+
+  .nav {
+    padding: 2px 20px 0;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    position: relative;
+  }
+  .nav h1 {
+    text-align: center;
+    font-family: var(--serif); font-weight: 600; font-size: 22px;
+    letter-spacing: -0.02em; line-height: 1.1;
+  }
+  /* Repo switcher — abaixo do título, glass capsule */
+  .repo-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    max-width: 180px;
+    min-height: 30px; padding: 0 12px 0 13px;
+    border-radius: 999px;
+    font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.01em; color: var(--ink);
+    background:
+      linear-gradient(155deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04) 40%, transparent 68%),
+      rgba(21,33,42,0.58);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      0 0 0 0.5px rgba(212,168,90,0.18),
+      0 2px 8px rgba(0,0,0,0.28);
+    backdrop-filter: blur(22px) saturate(1.45);
+    -webkit-backdrop-filter: blur(22px) saturate(1.45);
+    cursor: pointer;
+  }
+  .repo-btn .name {
+    min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .repo-btn .chev {
+    flex-shrink: 0; opacity: 0.55; color: var(--ink2);
+    transition: transform 0.18s ease;
+  }
+  .repo-btn[aria-expanded="true"] .chev { transform: rotate(180deg); opacity: 0.85; }
+
+  .repo-wrap { position: relative; display: flex; justify-content: center; }
+  .repo-menu {
+    display: none;
+    position: absolute; top: calc(100% + 6px); left: 50%;
+    transform: translateX(-50%);
+    min-width: 176px; padding: 5px;
+    border-radius: 14px; z-index: 20;
+    background:
+      linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03) 45%, transparent),
+      rgba(21,33,42,0.78);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.16),
+      0 16px 40px rgba(0,0,0,0.45);
+    backdrop-filter: blur(28px) saturate(1.5);
+    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+  }
+  .repo-menu.open { display: block; }
+  .repo-menu button {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 9px 11px; border: none; border-radius: 10px;
+    background: transparent; color: var(--ink2);
+    font-family: var(--mono); font-size: 11px; text-align: left; cursor: pointer;
+  }
+  .repo-menu button:hover { background: rgba(255,255,255,0.06); color: var(--ink); }
+  .repo-menu button.on {
+    color: var(--ink);
+    background: rgba(212,168,90,0.1);
+  }
+  .repo-menu button.on::after {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 6px rgba(212,168,90,0.55);
+  }
+
+  /* masthead — só o sinal útil */
+  .mast {
+    padding: 12px 22px 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .pulse {
+    font-family: var(--serif); font-style: italic; font-size: 13px;
+    color: var(--alert); font-weight: 500; letter-spacing: -0.01em;
+  }
+
+  .tabs {
+    display: flex; gap: 0; width: 100%;
+    border-bottom: 1px solid rgba(44,58,67,0.85);
+  }
+  .tab {
+    flex: 1; text-align: center;
+    padding: 8px 4px 10px;
+    font-size: 11.5px; font-weight: 500; color: var(--ink3);
+    position: relative; background: none; border: none;
+  }
+  .tab b {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    margin-left: 3px; opacity: 0.55;
+  }
+  .tab.on { color: var(--ink); }
+  .tab.on::after {
+    content: ""; position: absolute; left: 18%; right: 18%; bottom: -1px;
+    height: 1.5px; border-radius: 2px;
+    background: var(--gold); box-shadow: 0 0 8px rgba(212,168,90,0.35);
+  }
+  .tab.warn.on { color: var(--alert); }
+  .tab.warn.on::after {
+    background: var(--alert); box-shadow: 0 0 8px rgba(201,137,137,0.3);
+  }
+
+  .scroll {
+    flex: 1; overflow: hidden; position: relative; z-index: 1;
+    mask-image: linear-gradient(#000 calc(100% - 86px), transparent);
+  }
+  .graph { position: relative; padding-bottom: 108px; }
+
+  .topo {
+    position: absolute; left: 0; top: 0;
+    width: var(--gx); height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  .rows { position: relative; z-index: 1; }
+  .row {
+    display: grid;
+    grid-template-columns: var(--gx) 1fr;
+    height: var(--row);
+    align-items: center;
+  }
+  .row.head-row .body .title { color: var(--ink); }
+  .row.head-row .body {
+    position: relative;
+  }
+  .row.head-row .body::before {
+    content: "";
+    position: absolute; left: -8px; right: 12px; top: 50%;
+    transform: translateY(-50%);
+    height: 40px; border-radius: 10px;
+    background: linear-gradient(90deg, rgba(212,168,90,0.06), transparent 70%);
+    pointer-events: none; z-index: -1;
+  }
+
+  .gutter { position: relative; height: 100%; }
+
+  .mark {
+    position: absolute; top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; display: grid; place-items: center;
+  }
+  .mark.t { left: var(--x0); }
+  .mark.d1 { left: var(--x1); }
+  .mark.d2 { left: var(--x2); }
+
+  .mark.star svg {
+    display: block; width: 12px; height: 12px;
+    filter: drop-shadow(0 0 5px rgba(212,168,90,0.45));
+  }
+  .mark.star.head svg {
+    width: 15px; height: 15px;
+    filter: drop-shadow(0 0 8px rgba(212,168,90,0.6));
+  }
+  .mark.star.dim { opacity: 0.32; }
+  .mark.star.dim svg { filter: none; }
+
+  .mark.dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    box-shadow: 0 0 0 2.5px var(--bg);
+  }
+  .mark.dot.alert {
+    background: var(--alert);
+    box-shadow: 0 0 0 2.5px var(--bg), 0 0 10px rgba(201,137,137,0.4);
+  }
+  .mark.dot.side {
+    background: var(--prussian);
+    box-shadow: 0 0 0 2.5px var(--bg), 0 0 8px rgba(127,167,196,0.35);
+  }
+
+  .body { padding: 0 20px 0 2px; min-width: 0; }
+  .title {
+    font-size: 13.5px; font-weight: 500; letter-spacing: -0.018em;
+    line-height: 1.25; color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  /* Sempre: branch · autor · tempo — pequeno, sob o título */
+  .meta {
+    margin-top: 4px;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--ink3); min-width: 0;
+  }
+  .meta .br {
+    font-family: var(--mono); font-size: 10px; flex-shrink: 1;
+    min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .meta .br.main { color: var(--gold); }
+  .meta .br.orphan { color: var(--alert); }
+  .meta .br.side { color: var(--prussian); }
+  .meta .who { color: var(--ink2); flex-shrink: 0; }
+  .meta .t { font-variant-numeric: tabular-nums; flex-shrink: 0; opacity: 0.9; }
+  .meta .sep { opacity: 0.35; flex-shrink: 0; }
+
+  .ask-wrap {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+    padding: 14px 18px 28px;
+    background: linear-gradient(180deg, transparent, rgba(29,43,52,0.92) 28%, var(--bg));
+  }
+  .ask {
+    display: flex; align-items: center; gap: 11px;
+    min-height: 48px; padding: 0 16px; border-radius: 999px;
+    background: rgba(21,33,42,0.88);
+    border: 1px solid rgba(44,58,67,0.9);
+    box-shadow:
+      0 0 0 1px rgba(212,168,90,0.12),
+      0 8px 24px rgba(0,0,0,0.25);
+  }
+  .ask .glyph {
+    width: 13px; height: 13px; flex-shrink: 0;
+    filter: drop-shadow(0 0 5px rgba(212,168,90,0.5));
+  }
+  .ask .ph {
+    font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink3);
+  }
+  .home {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 4px; border-radius: 4px;
+    background: rgba(214,221,226,0.22); z-index: 4;
+  }
+
+  @media (max-width: 720px) {
+    body { grid-template-columns: 1fr; padding: 24px 16px 40px; }
+    .brief { max-width: none; order: 2; }
+  }
+</style>
+</head>
+<body>
+  <!--
+    Geometria v4 (row h = 56). Centro row i = i*56 + 28.
+    Meta SEMPRE: branch · autor · tempo
+  -->
+  <aside class="brief">
+    <div class="kicker">Grok · Grafo AX · v4</div>
+    <h1>Instrumento, não alerta</h1>
+    <p class="lede">
+      Embaixo de cada título, pequeno e sempre: <em>branch · autor · hora</em>.
+      Sem isso a linha está quebrada.
+    </p>
+    <div class="rule"></div>
+    <ul>
+      <li><strong>branch</strong> — em qual linha o commit vive (main / fora / obra).</li>
+      <li><strong>autor</strong> — quem fez (Fable, Codex, Vitor…).</li>
+      <li><strong>hora</strong> — há quanto tempo.</li>
+      <li><strong>Trunk = ✦</strong> — glyph Atlas na spine.</li>
+      <li><strong>Sem retorno</strong> — bola coral + masthead.</li>
+      <li><strong>Swipe → ask</strong> — commit vira contexto na pílula.</li>
+    </ul>
+  </aside>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="chrome">
+        <div class="status"><span>16:47</span><div class="r">LTE · 52</div></div>
+
+        <div class="nav">
+          <h1>Grafo</h1>
+          <div class="repo-wrap">
+            <button type="button" class="repo-btn" id="repoBtn" aria-label="trocar repositório" aria-haspopup="listbox" aria-expanded="false">
+              <span class="name" id="repoName">atlas-native</span>
+              <svg class="chev" width="8" height="5" viewBox="0 0 8 5" fill="none" aria-hidden="true">
+                <path d="M1 1l3 3 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="repo-menu" id="repoMenu" role="listbox" aria-label="repositórios">
+              <button type="button" class="on" data-repo="atlas-native">atlas-native</button>
+              <button type="button" data-repo="atlas-server">atlas-server</button>
+              <button type="button" data-repo="atlas-desktop">atlas-desktop</button>
+              <button type="button" data-repo="atlas-app">atlas-app</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mast">
+          <div class="pulse" role="status">1 sem retorno</div>
+          <div class="tabs" role="tablist">
+            <button class="tab on" type="button">todos <b>11</b></button>
+            <button class="tab" type="button">main <b>8</b></button>
+            <button class="tab warn" type="button">fora <b>1</b></button>
+            <button class="tab" type="button">curados <b>0</b></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="graph">
+          <!-- viewBox height = 11 * 56 = 616 -->
+          <svg class="topo" viewBox="0 0 88 616" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M26 0 V616" stroke="#d4a85a" stroke-width="1.2" opacity="0.38"/>
+            <path d="M52 84 V336 C52 352, 26 352, 26 364"
+                  stroke="#c98989" stroke-width="1.35" fill="none" opacity="0.85"/>
+            <path d="M26 196 C26 216, 78 216, 78 236 V456 C78 472, 26 472, 26 476"
+                  stroke="#7fa7c4" stroke-width="1.35" fill="none" opacity="0.78"/>
+          </svg>
+
+          <div class="rows">
+            <!-- SEMPRE: branch · autor · tempo -->
+            <div class="row head-row">
+              <div class="gutter">
+                <span class="mark t star head">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">polish(ui) — home artesanal · pílula viva</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Grok 4.5</span><span class="sep">·</span><span class="t">12m</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter"><span class="mark d1 dot alert"></span></div>
+              <div class="body">
+                <div class="title">WIP — experimentação fora da main</div>
+                <div class="meta"><span class="br orphan">hungry-cartwright</span><span class="sep">·</span><span class="who">Codex</span><span class="sep">·</span><span class="t">3h</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">feat(ui) — Arena Premium · cockpit Agora</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Fable 5</span><span class="sep">·</span><span class="t">4h</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">Merge pull request #1 → main</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Vitor Freire</span><span class="sep">·</span><span class="t">8h</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter"><span class="mark d2 dot side"></span></div>
+              <div class="body">
+                <div class="title">plano elite 24×7 — rascunho de obra</div>
+                <div class="meta"><span class="br side">cursor/plano-elite</span><span class="sep">·</span><span class="who">Cursor</span><span class="sep">·</span><span class="t">9h</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">fix(a11y) — grafo · cada elemento com voz</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Fable 5</span><span class="sep">·</span><span class="t">11h</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">docs(obra) — registro §7 · busca limpa</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Fable 5</span><span class="sep">·</span><span class="t">14h</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">fix(ui) — Capacidades re-busca ao abrir</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Fable 5</span><span class="sep">·</span><span class="t">18h</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">feat(core) — decode backlog · Arena</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Codex</span><span class="sep">·</span><span class="t">1d</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star dim">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body" style="opacity:.5">
+                <div class="title">save</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Vitor Freire</span><span class="sep">·</span><span class="t">2d</span></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star dim">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body" style="opacity:.38">
+                <div class="title">polish(ui) — refinamento absoluto da home</div>
+                <div class="meta"><span class="br main">main</span><span class="sep">·</span><span class="who">Fable 5</span><span class="sep">·</span><span class="t">3d</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ask-wrap">
+        <div class="ask">
+          <svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+          <span class="ph">pergunte sobre este repositório</span>
+        </div>
+      </div>
+      <div class="home"></div>
+    </div>
+  </div>
+<script>
+  (() => {
+    const btn = document.getElementById("repoBtn");
+    const menu = document.getElementById("repoMenu");
+    const name = document.getElementById("repoName");
+    const toggle = (open) => {
+      const next = open ?? !menu.classList.contains("open");
+      menu.classList.toggle("open", next);
+      btn.setAttribute("aria-expanded", String(next));
+    };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+    menu.querySelectorAll("button").forEach((item) => {
+      item.addEventListener("click", () => {
+        menu.querySelectorAll("button").forEach((b) => b.classList.remove("on"));
+        item.classList.add("on");
+        name.textContent = item.dataset.repo;
+        toggle(false);
+      });
+    });
+    document.addEventListener("click", () => toggle(false));
+  })();
+</script>
+</body>
+</html>

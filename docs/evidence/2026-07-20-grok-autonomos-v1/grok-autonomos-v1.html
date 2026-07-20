@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Autônomos · mapa Jobs — hub + push + pílula</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Autônomos v1 — mesma gramática Arena/Home/Grafo.
+     Ouro = atenção viva · pílula = verbo · hub = um olhar. */
+  :root {
+    --stage: #0e151a;
+    --bg: #1d2b34;
+    --recessed: #15212a;
+    --surface: #243743;
+    --surface-hi: #2d4351;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #2c3a43;
+    --gold: #d4a85a;
+    --gold-veil: rgba(212,168,90,0.12);
+    --gold-border: rgba(212,168,90,0.34);
+    --alert: #c98989;
+    --op: #c8a363;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button:focus { outline: none; }
+  button:focus-visible {
+    outline: 1px solid rgba(212,168,90,0.45);
+    outline-offset: 2px;
+  }
+  body {
+    min-height: 100vh;
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(127,167,196,0.05), transparent 55%),
+      radial-gradient(700px 400px at 78% 100%, rgba(212,168,90,0.03), transparent 50%),
+      var(--stage);
+  }
+  .stage {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(280px, 380px) auto;
+    gap: 48px;
+    align-items: start;
+    justify-content: center;
+    padding: 40px 32px 72px;
+  }
+  .brief { max-width: 380px; position: sticky; top: 36px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 26px;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .brief .lede {
+    margin-top: 12px; font-size: 13.5px; line-height: 1.6; color: var(--ink2);
+  }
+  .brief .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .brief .rule {
+    width: 32px; height: 1px; margin: 18px 0;
+    background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.7;
+  }
+  .brief h2 {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink3); margin: 18px 0 8px;
+  }
+  .brief ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .brief li {
+    font-size: 12px; line-height: 1.45; color: var(--ink3);
+    padding-left: 12px; position: relative;
+  }
+  .brief li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 1px; background: var(--gold); opacity: 0.55;
+  }
+  .brief li strong { color: var(--ink2); font-weight: 500; }
+  .brief li.kill::before { background: var(--alert); }
+  .brief li.pick::before { background: var(--gold); opacity: 1; }
+  .approaches {
+    display: flex; flex-direction: column; gap: 10px; margin-top: 8px;
+  }
+  .approach {
+    padding: 12px 14px; border-radius: 14px;
+    border: 1px solid var(--sep); background: rgba(21,33,42,0.55);
+  }
+  .approach.on {
+    border-color: var(--gold-border); background: var(--gold-veil);
+  }
+  .approach b {
+    display: block; font-family: var(--serif); font-size: 14px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .approach span { font-size: 11.5px; line-height: 1.45; color: var(--ink2); }
+  .approach .tag {
+    display: inline-block; margin-top: 8px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold);
+  }
+
+  .phone-wrap { display: flex; flex-direction: column; gap: 16px; align-items: center; }
+  .switches {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 420px;
+  }
+  .switches button {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink2);
+    background: var(--recessed); border: 1px solid var(--sep);
+    border-radius: 999px; padding: 8px 12px;
+  }
+  .switches button.on {
+    color: var(--ink);
+    border-color: rgba(214,221,226,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 52px; padding: 10px; background: #070b0e;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55);
+    position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 52px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 4px #040608;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
+    background: var(--bg); position: relative; display: flex; flex-direction: column;
+  }
+  .status {
+    height: 48px; padding: 14px 28px 0;
+    display: flex; justify-content: space-between;
+    font-size: 12px; font-weight: 600; color: var(--ink);
+  }
+  .nav {
+    height: 52px; padding: 0 16px;
+    display: grid; grid-template-columns: 44px 1fr 44px; align-items: center;
+  }
+  .nav .orb {
+    width: 36px; height: 36px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--ink); font-size: 15px;
+  }
+  .nav .titles { text-align: center; }
+  .nav .titles strong {
+    display: block; font-family: var(--serif); font-size: 17px; font-weight: 600;
+  }
+  .nav .titles em {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-style: normal; font-size: 8px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
+  }
+  .scroll {
+    flex: 1; overflow-y: auto; padding: 8px 20px 110px;
+    scrollbar-width: none;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  .panel { display: none; }
+  .panel.on { display: block; animation: in 0.28s ease; }
+  @keyframes in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .kicker-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .kicker-row .mark {
+    color: var(--gold); font-family: var(--serif); font-size: 12px;
+    animation: breath 2.4s ease-in-out infinite;
+  }
+  @keyframes breath {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+  .kicker-row span {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .kicker-row.quiet span { color: var(--ink3); }
+  .kicker-row.quiet .mark { display: none; }
+
+  .hero-title {
+    font-family: var(--serif); font-weight: 600; font-size: 28px;
+    line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 8px;
+  }
+  .hero-sub {
+    font-size: 14px; line-height: 1.5; color: var(--ink2); margin-bottom: 20px;
+  }
+  .hero-sub em {
+    font-family: var(--serif); font-style: italic; color: var(--ink);
+  }
+
+  .cta {
+    display: block; width: 100%; text-align: center;
+    padding: 14px 16px; border-radius: 14px;
+    background: var(--surface); border: 1px solid var(--sep);
+    color: var(--ink); font-size: 15px; font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .cta.quiet {
+    background: transparent; border-color: rgba(149,163,172,0.22);
+    color: var(--ink2); font-size: 14px;
+  }
+  .cta.danger {
+    border-color: rgba(201,137,137,0.35); color: var(--alert);
+  }
+
+  .hair {
+    height: 1px; margin: 22px 0;
+    background: linear-gradient(90deg, transparent, var(--sep), transparent);
+  }
+
+  .sec {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 12px;
+  }
+
+  .focus {
+    padding: 4px 0 0;
+  }
+  .focus .name {
+    font-family: var(--serif); font-size: 20px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .focus .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2); margin-bottom: 10px;
+  }
+  .focus .obj {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    line-height: 1.45; color: var(--ink2);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .await-card {
+    padding: 16px 16px 14px;
+    border-radius: 16px;
+    background: rgba(200,163,99,0.06);
+    border: 1px solid rgba(200,163,99,0.32);
+    margin-bottom: 8px;
+  }
+  .await-card .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .await-card .top .l {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--op);
+  }
+  .await-card .top .n {
+    font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--ink);
+  }
+  .await-card p {
+    font-size: 13px; color: var(--ink2); margin-bottom: 12px; line-height: 1.4;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--mono); font-size: 11px;
+    padding: 7px 12px; border-radius: 999px;
+    background: var(--recessed); border: 1px solid var(--sep); color: var(--ink2);
+  }
+
+  .metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    margin: 18px 0;
+  }
+  .metric b {
+    display: block; font-family: var(--serif); font-size: 26px; font-weight: 600;
+  }
+  .metric span {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  }
+
+  .row {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(149,163,172,0.1);
+  }
+  .row:last-child { border-bottom: 0; }
+  .row .glyph {
+    width: 22px; text-align: center;
+    font-family: var(--serif); font-size: 14px; color: var(--ink3);
+  }
+  .row .glyph.live { color: var(--gold); }
+  .row .body { flex: 1; min-width: 0; }
+  .row .body .t {
+    font-size: 15px; font-weight: 500; margin-bottom: 3px;
+  }
+  .row .body .s {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2);
+  }
+  .row .trail {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    text-align: right;
+  }
+  .row .trail.attn { color: var(--op); }
+
+  .controls {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    margin-top: 16px;
+  }
+  .controls .cta { margin: 0; padding: 12px 8px; font-size: 13px; }
+  .controls-stack { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+
+  .pill-dock {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 0 20px 28px;
+    background: linear-gradient(180deg, transparent, var(--bg) 28%);
+    pointer-events: none;
+  }
+  .pill-dock > * { pointer-events: auto; }
+  .pill {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: rgba(36,55,67,0.72);
+    border: 0.75px solid var(--gold-border);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+  }
+  .pill .spark {
+    color: var(--gold); font-family: var(--serif); font-size: 16px;
+    animation: breath 2.4s ease-in-out infinite;
+  }
+  .pill .invite {
+    flex: 1; font-family: var(--serif); font-style: italic; font-size: 15px;
+    color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pill .invite.anchored { color: var(--ink); }
+
+  .note {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    margin-top: 8px; line-height: 1.4;
+  }
+
+  .empty-quiet {
+    font-family: var(--serif); font-style: italic;
+    font-size: 15px; color: var(--ink3); margin: 8px 0 4px;
+  }
+
+  @media (max-width: 900px) {
+    .stage { grid-template-columns: 1fr; justify-items: center; }
+    .brief { position: static; max-width: 520px; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="brief">
+    <div class="kicker">Grok · Autônomos v1</div>
+    <h1>Command center que cabe num olhar.</h1>
+    <p class="lede">
+      A tela atual é honesta, mas <em>densa demais</em>: lista de instâncias +
+      detalhe da mesma, digests crípticos, CTAs dourados, histórico sempre à
+      vista, zero pílula. Mesma lei da Arena e do Grafo.
+    </p>
+    <div class="rule"></div>
+
+    <h2>O que a tela atual faz (prints)</h2>
+    <ul>
+      <li><strong>Aguardando você</strong> — certo (exceção primeiro).</li>
+      <li><strong>3 cards de instância + card gigante</strong> — duplica.</li>
+      <li><strong>governado / operação</strong> — números sem mapa.</li>
+      <li><strong>Sistemas · histórico · ensaio dourado</strong> — ruído no scroll.</li>
+      <li class="kill"><strong>Sem pílula</strong> — falha na era agêntica.</li>
+    </ul>
+
+    <h2>Três caminhos</h2>
+    <div class="approaches">
+      <div class="approach on">
+        <b>C · Hub + push + pílula</b>
+        <span>Hub = status + (só se doer) decisões + uma área em foco. Detalhe, frota e decisões são push. Pílula é o verbo.</span>
+        <div class="tag">recomendado · Jobs</div>
+      </div>
+      <div class="approach">
+        <b>A · Dashboard completo</b>
+        <span>Manter tudo no scroll (prints atuais). Completo, mas ninguém “vê” — só varre.</span>
+      </div>
+      <div class="approach">
+        <b>B · Só decisões</b>
+        <span>Hub = só Aguardando. Frota/área só pela pílula. Limpo demais: some o mapa 24/7.</span>
+      </div>
+    </div>
+
+    <h2>Leis deste mockup</h2>
+    <ul>
+      <li class="pick"><strong>Ouro</strong> = atenção viva (aguardando / ao vivo), nunca CTA.</li>
+      <li class="pick"><strong>Uma área em foco</strong> no hub — não lista + detalhe.</li>
+      <li class="pick"><strong>Pílula</strong> em toda superfície; convite muda.</li>
+      <li class="kill">Matar digests crípticos no hub; números moram no push.</li>
+      <li class="kill">Matar “Novo ciclo · ensaio” dourado; ensaio é quieto.</li>
+    </ul>
+
+    <h2>Como usar</h2>
+    <ul>
+      <li>Troque os estados nos chips abaixo do telefone.</li>
+      <li>Toques no telefone navegam hub → área / decisões / frota.</li>
+      <li>OK visual → casca Swift. Sem OK = sem código.</li>
+    </ul>
+  </aside>
+
+  <div class="phone-wrap">
+    <div class="switches" id="switches">
+      <button type="button" class="on" data-panel="hub-await">Hub · aguardando</button>
+      <button type="button" data-panel="hub-quiet">Hub · repouso</button>
+      <button type="button" data-panel="area">Área</button>
+      <button type="button" data-panel="decisoes">Decisões</button>
+      <button type="button" data-panel="frota">Frota</button>
+    </div>
+
+    <div class="phone">
+      <div class="screen">
+        <div class="status"><span>14:08</span><span>■■■□ 43%</span></div>
+        <div class="nav">
+          <button type="button" class="orb" id="navBack" aria-label="Voltar">‹</button>
+          <div class="titles">
+            <strong id="navTitle">Autônomos</strong>
+            <em id="navSub">Área própria · 24/7</em>
+          </div>
+          <button type="button" class="orb" aria-label="Atualizar">↻</button>
+        </div>
+
+        <div class="scroll">
+          <!-- HUB AGUARDANDO -->
+          <section class="panel on" id="hub-await">
+            <div class="kicker-row">
+              <span class="mark">✦</span>
+              <span>Aguardando você</span>
+            </div>
+            <div class="hero-title">6 decisões<br>pedem você</div>
+            <p class="hero-sub">Só o que o humano pode resolver. O resto da frota segue em silêncio.</p>
+
+            <div class="await-card">
+              <div class="top">
+                <span class="l">Fila humana</span>
+                <span class="n">6</span>
+              </div>
+              <p>Inbox e ordens que bloqueiam o ciclo.</p>
+              <div class="chips">
+                <button type="button" class="chip" data-goto="decisoes">inbox 3</button>
+                <button type="button" class="chip" data-goto="decisoes">ordens 3</button>
+              </div>
+            </div>
+            <button type="button" class="cta" data-goto="decisoes">Ver decisões</button>
+
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · autonomia 0/2 · dev · forge</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas — do pedido à prova no device.</div>
+            </div>
+            <button type="button" class="cta quiet" data-goto="area" style="margin-top:16px">Ver área</button>
+            <button type="button" class="cta quiet" data-goto="frota">Ver frota · em repouso</button>
+          </section>
+
+          <!-- HUB REPOUSO -->
+          <section class="panel" id="hub-quiet">
+            <div class="kicker-row quiet">
+              <span>Em repouso</span>
+            </div>
+            <div class="hero-title">Frota quieta</div>
+            <p class="hero-sub">5 agentes registrados · nenhum pedindo atenção. Silêncio é o produto.</p>
+            <p class="empty-quiet">Nenhuma decisão pendente.</p>
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · 200 ciclos · 116 na fila</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas.</div>
+            </div>
+            <button type="button" class="cta quiet" data-goto="area" style="margin-top:16px">Ver área</button>
+            <button type="button" class="cta quiet" data-goto="frota">Ver frota</button>
+          </section>
+
+          <!-- ÁREA -->
+          <section class="panel" id="area">
+            <div class="kicker-row quiet">
+              <span>Em espera</span>
+            </div>
+            <div class="hero-title">Agentic Engineering OS</div>
+            <p class="hero-sub"><em>dev · forge</em> · autonomia 0/2</p>
+            <p class="hero-sub" style="margin-top:-8px">
+              Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas — do pedido à prova no device.
+            </p>
+
+            <div class="metrics">
+              <div class="metric"><b>200</b><span>ciclos</span></div>
+              <div class="metric"><b>116</b><span>tarefas</span></div>
+              <div class="metric"><b>3</b><span>inbox</span></div>
+            </div>
+
+            <div class="sec">Detalhes públicos</div>
+            <div class="chips" style="margin-bottom:8px">
+              <button type="button" class="chip" data-goto="decisoes">ordens 116</button>
+              <button type="button" class="chip" data-goto="decisoes">inbox 3</button>
+              <span class="chip">achados 17</span>
+              <span class="chip">orçamentos</span>
+            </div>
+
+            <div class="hair"></div>
+            <div class="sec">Entregas comprovadas · 3 de 24</div>
+            <div class="row">
+              <div class="glyph">⌖</div>
+              <div class="body">
+                <div class="t">ciclo 148</div>
+                <div class="s">merge comprovado</div>
+              </div>
+              <div class="trail">há 49d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">⌖</div>
+              <div class="body">
+                <div class="t">ciclo 147</div>
+                <div class="s">merge comprovado</div>
+              </div>
+              <div class="trail">há 49d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">⌖</div>
+              <div class="body">
+                <div class="t">ciclo 143</div>
+                <div class="s">merge comprovado</div>
+              </div>
+              <div class="trail">há 49d</div>
+            </div>
+
+            <div class="hair"></div>
+            <div class="sec">Governança</div>
+            <div class="controls">
+              <button type="button" class="cta quiet">Pausar</button>
+              <button type="button" class="cta quiet">Transferir</button>
+              <button type="button" class="cta danger">Encerrar</button>
+            </div>
+            <div class="controls-stack">
+              <button type="button" class="cta quiet">Novo ciclo · ensaio</button>
+              <button type="button" class="cta">Executar de verdade</button>
+            </div>
+            <p class="note">Ensaio e execução pedem ator + motivo. Ouro não vende o botão — o recibo prova a ação.</p>
+          </section>
+
+          <!-- DECISÕES -->
+          <section class="panel" id="decisoes">
+            <div class="kicker-row">
+              <span class="mark">✦</span>
+              <span>Decisões</span>
+            </div>
+            <div class="hero-title">6 itens</div>
+            <p class="hero-sub">Aceitar, rejeitar, adiar ou pedir mudanças — cada um com recibo.</p>
+
+            <div class="sec">Inbox</div>
+            <div class="row">
+              <div class="glyph live">※</div>
+              <div class="body">
+                <div class="t">Revisar patch de heal no grafo</div>
+                <div class="s">risco alto · área AEOS</div>
+              </div>
+              <div class="trail attn">agora</div>
+            </div>
+            <div class="row">
+              <div class="glyph live">※</div>
+              <div class="body">
+                <div class="t">Autorizar spend Codex no reconciler</div>
+                <div class="s">risco médio · frota</div>
+              </div>
+              <div class="trail attn">há 2h</div>
+            </div>
+            <div class="row">
+              <div class="glyph">※</div>
+              <div class="body">
+                <div class="t">Confirmar handoff Mac → cloud</div>
+                <div class="s">risco baixo</div>
+              </div>
+              <div class="trail">há 1d</div>
+            </div>
+
+            <div class="hair"></div>
+            <div class="sec">Ordens</div>
+            <div class="row">
+              <div class="glyph">◷</div>
+              <div class="body">
+                <div class="t">Fechar ciclo 149 com prova device</div>
+                <div class="s">aguarda assinatura</div>
+              </div>
+              <div class="trail attn">bloqueia</div>
+            </div>
+            <div class="row">
+              <div class="glyph">◷</div>
+              <div class="body">
+                <div class="t">Promover ensaio → real</div>
+                <div class="s">Agentic Engineering OS</div>
+              </div>
+              <div class="trail">na fila</div>
+            </div>
+            <div class="row">
+              <div class="glyph">◷</div>
+              <div class="body">
+                <div class="t">Drenar worker Claude ocioso</div>
+                <div class="s">frota</div>
+              </div>
+              <div class="trail">na fila</div>
+            </div>
+          </section>
+
+          <!-- FROTA -->
+          <section class="panel" id="frota">
+            <div class="kicker-row quiet">
+              <span>Frota</span>
+            </div>
+            <div class="hero-title">5 em repouso</div>
+            <p class="hero-sub">Por decisão sua · gasto US$&nbsp;0,00. Fila estável · 500 prontas.</p>
+
+            <div class="sec">Workers</div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">ai-worker.claude</div>
+                <div class="s">desligado por você</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">reconciler</div>
+                <div class="s">parado · não desejado</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">codex-worker</div>
+                <div class="s">gasto vetado por você</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+
+            <div class="hair"></div>
+            <div class="sec">Histórico · 6 de 15</div>
+            <div class="row">
+              <div class="glyph live">▸</div>
+              <div class="body">
+                <div class="t">parado</div>
+                <div class="s">ai-worker.claude · Claude</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">desligado por você</div>
+                <div class="s">não desejado — decisão sua</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <p class="note">Histórico só aqui — não compete com decisões no hub.</p>
+          </section>
+        </div>
+
+        <div class="pill-dock">
+          <button type="button" class="pill" id="pill" aria-label="Pílula agêntica">
+            <span class="spark">✦</span>
+            <span class="invite" id="pillInvite">o que preciso decidir?</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const invites = {
+    "hub-await": "o que preciso decidir?",
+    "hub-quiet": "pergunte sobre a frota",
+    "area": "pergunte sobre esta área",
+    "decisoes": "ajude a decidir isto",
+    "frota": "pergunte sobre a frota",
+  };
+  const titles = {
+    "hub-await": ["Autônomos", "Área própria · 24/7"],
+    "hub-quiet": ["Autônomos", "Área própria · 24/7"],
+    "area": ["Área", "Agentic Engineering OS"],
+    "decisoes": ["Decisões", "6 pendentes"],
+    "frota": ["Frota", "5 em repouso"],
+  };
+  const hubPanels = new Set(["hub-await", "hub-quiet"]);
+
+  let current = "hub-await";
+  let stack = [];
+
+  function show(id, push) {
+    if (push && !hubPanels.has(current)) {
+      /* stay */
+    } else if (push && hubPanels.has(current)) {
+      stack.push(current);
+    } else if (!push) {
+      stack = [];
+    }
+    current = id;
+    document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("on", p.id === id));
+    document.querySelectorAll("#switches button").forEach((b) => {
+      b.classList.toggle("on", b.dataset.panel === id);
+    });
+    const inv = document.getElementById("pillInvite");
+    inv.textContent = invites[id] || "pergunte sobre a frota";
+    inv.classList.toggle("anchored", id === "hub-await" || id === "decisoes");
+    const [t, s] = titles[id] || ["Autônomos", "Área própria · 24/7"];
+    document.getElementById("navTitle").textContent = t;
+    document.getElementById("navSub").textContent = s;
+  }
+
+  document.getElementById("switches").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-panel]");
+    if (!b) return;
+    show(b.dataset.panel, false);
+  });
+
+  document.querySelector(".screen").addEventListener("click", (e) => {
+    const go = e.target.closest("[data-goto]");
+    if (!go) return;
+    show(go.dataset.goto, true);
+  });
+
+  document.getElementById("navBack").addEventListener("click", () => {
+    if (stack.length) {
+      show(stack.pop(), false);
+      return;
+    }
+    if (!hubPanels.has(current)) {
+      show("hub-await", false);
+    }
+  });
+</script>
+</body>
+</html>

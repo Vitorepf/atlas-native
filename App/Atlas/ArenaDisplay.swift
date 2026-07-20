@@ -29,6 +29,7 @@ enum ArenaDisplay {
         "hal_harness": "HAL Harness",
         "aider_polyglot": "Aider Polyglot",
         "swe_marathon": "SWE Marathon",
+        "testeval": "TestEval",
     ]
 
     static func engine(_ id: String) -> String {

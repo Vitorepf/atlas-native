@@ -24,9 +24,10 @@ struct AtlasGlassCapsule: ViewModifier {
         if #available(iOS 26.0, *) {
             content.glassEffect(.regular.interactive(), in: Capsule())
         } else {
+            // Fallback pré-26: recessed quieto (mockup home), não surface chapado.
             content.background(
-                Capsule().fill(AtlasTheme.surface)
-                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
+                Capsule().fill(AtlasTheme.bgRecessed.opacity(0.82))
+                    .overlay(Capsule().stroke(AtlasTheme.separator.opacity(0.9), lineWidth: 1)))
         }
     }
 }

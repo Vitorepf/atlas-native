@@ -2,6 +2,8 @@ import SwiftUI
 import AtlasCore
 
 // Ask conversation sheet — peel de AtlasCodeView+Sheets+AskWhy.
+// Experiência de página editorial: fundo Atlas, detent large, sem grabber
+// de sheet nem botão voltar — fecha no gesto.
 
 extension AtlasCodeAskWhySheetsModifier {
     var askConversationSheet: some View {
@@ -15,10 +17,13 @@ extension AtlasCodeAskWhySheetsModifier {
             workspace: model.repo,
             draft: askDraft,
             turnFacts: { [askModel] question in await askModel.facts(for: question) },
-            onThread: { askThreadId = $0 }
+            onThread: { askThreadId = $0 },
+            hidesNavigationBack: true
         )
-        .presentationDetents([.medium, .large])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(.ultraThinMaterial)
+        .presentationDetents([.large])
+        .presentationDragIndicator(.hidden)
+        .presentationBackground(AtlasTheme.bg)
+        .presentationCornerRadius(28)
+        .interactiveDismissDisabled(false)
     }
 }

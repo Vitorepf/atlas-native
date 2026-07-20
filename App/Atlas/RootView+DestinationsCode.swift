@@ -8,11 +8,12 @@ extension RootView {
     func rootCodeDestination(for route: Route) -> some View {
         switch route {
         case .code:
-            // A porta do domínio é o radar: a frota primeiro, o repo depois.
             AtlasCodeRadarView(client: session.client) { repo in
                 path.append(Route.codeGraph(repo: repo))
             }
         case .codeGraph(let repo):
+            // Troca de repo é in-place na própria tela (rápido).
+            // Remount via path/.id era a experiência lenta.
             AtlasCodeView(client: session.client, repo: repo)
         default:
             EmptyView()

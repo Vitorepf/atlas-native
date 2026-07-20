@@ -48,7 +48,10 @@
 6. **Linguagem humana na superfície; máquina embaixo do vidro** (a ≤2 toques: hash, diff,
    log existem, mas nunca como primeiro plano).
 7. **A pílula de linguagem natural nunca some** de uma tela — inclusive durante execução
-   (escrever enfileira, não interrompe).
+   (escrever enfileira, não interrompe). **Generalização canônica (baseline da era agêntica,
+   não “avançado”):** `docs/engineering-knowledge-base/atlas-native-agentic-pill.md` —
+   toda superfície operacional (Grafo, Arena, …); contexto compilado perfeito; âncora
+   refina; perguntar→responde; mandar→faz.
 8. **Decisão humana só para o que é do humano:** produto, preço, risco. Nunca para operação.
 9. **Recibo para todo ato** (append-only, ledger local): detecção, cura, undo, espelho,
    release.

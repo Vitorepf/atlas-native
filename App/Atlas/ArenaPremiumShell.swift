@@ -3,6 +3,7 @@ import AtlasCore
 
 struct ArenaPremiumShell: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(AtlasSession.self) private var session
     @Bindable var model: ArenaModel
     @Binding var selectedTab: ArenaPremiumTab
     @Binding var destination: ArenaPremiumDestination?
@@ -10,13 +11,16 @@ struct ArenaPremiumShell: View {
     @Binding var selectedCapability: AtlasArenaCapability?
     @Binding var showingRunSheet: Bool
     @Binding var stoppingRun: AtlasArenaLiveRun?
+    @State private var showingAsk = false
+    @State private var askThreadId: ThreadID?
+    @State private var askDraft = ""
 
     var body: some View {
         VStack(spacing: 0) {
             ArenaPremiumTabBar(selection: $selectedTab)
                 .padding(.horizontal, AtlasTheme.Space.screen)
-                .padding(.top, 8)
-                .padding(.bottom, 10)
+                .padding(.top, 6)
+                .padding(.bottom, 8)
                 .background(AtlasTheme.bg)
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 26) {
@@ -24,12 +28,17 @@ struct ArenaPremiumShell: View {
                         .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: 8)))
                 }
                 .padding(.horizontal, AtlasTheme.Space.screen)
-                .padding(.top, 16)
-                .padding(.bottom, 36)
+                .padding(.top, 12)
+                .padding(.bottom, 108)
             }
             .scrollIndicators(.hidden)
         }
         .background(AtlasTheme.bg.ignoresSafeArea())
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if destination == nil {
+                askPillDock
+            }
+        }
         .toolbar { addToolbarItem }
         .navigationDestination(item: $destination) { target in
             ArenaPremiumDestinationView(
@@ -49,6 +58,52 @@ struct ArenaPremiumShell: View {
         .sheet(item: $stoppingRun) { run in
             ArenaPremiumStopSheet(model: model, run: run)
         }
+        .sheet(isPresented: $showingAsk) {
+            askConversationSheet
+        }
+    }
+
+    private var askPillDock: some View {
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 28)
+            .allowsHitTesting(false)
+            ArenaPremiumAskPill(
+                invite: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination)
+            ) {
+                askDraft = ""
+                showingAsk = true
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.bottom, 10)
+        }
+        .background(AtlasTheme.bg.opacity(0.01))
+    }
+
+    private var askConversationSheet: some View {
+        ConversationView(
+            client: session.client,
+            threadId: askThreadId,
+            title: "Arena",
+            emptyPrompt: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination),
+            emptySuggestions: ArenaPremiumAskContext.emptySuggestions(tab: selectedTab),
+            taskKind: "arena",
+            workspace: nil,
+            draft: askDraft,
+            turnFacts: { [model, selectedTab] _ in
+                ArenaPremiumAskContext.facts(model: model, tab: selectedTab)
+            },
+            onThread: { askThreadId = $0 },
+            hidesNavigationBack: true
+        )
+        .presentationDetents([.large])
+        .presentationDragIndicator(.hidden)
+        .presentationBackground(AtlasTheme.bg)
+        .presentationCornerRadius(28)
     }
 
     @ViewBuilder
@@ -64,6 +119,8 @@ struct ArenaPremiumShell: View {
                     onNavigate: { destination = $0 },
                     onStop: { stoppingRun = $0 }
                 )
+            case .fleet:
+                ArenaPremiumFleetView(model: model)
             case .results:
                 ArenaPremiumResultsView(
                     model: model,
@@ -82,9 +139,6 @@ struct ArenaPremiumShell: View {
     @ToolbarContentBuilder
     private var addToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            // Item de toolbar puro: no iOS 26 a barra JÁ dá o vidro — caixa
-            // custom + atlasGlassCircle rendia vidro sobre vidro (anel duplo).
-            // Ink neutro: ouro é ESTADO/commit, não chrome de barra (canon §C).
             Button { showingRunSheet = true } label: {
                 Image(systemName: ArenaPremiumIconography.add)
                     .atlasSans(17, .medium)

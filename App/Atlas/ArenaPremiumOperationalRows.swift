@@ -1,79 +1,29 @@
 import SwiftUI
 import AtlasCore
 
+/// Agora ao vivo: zero inventário. Só o que o operador precisa agora —
+/// progresso, um verbo (Ver execução), par se existir, alerta se doer.
 struct ArenaPremiumOperationalRows: View {
     @Bindable var model: ArenaModel
     let onNavigate: (ArenaPremiumDestination) -> Void
 
+    private var alertCount: Int { model.arenaAlertSuiteCount }
+
     var body: some View {
-        VStack(spacing: 0) {
-            ArenaPremiumHairline()
-            // Linha só existe com plano REAL: "em andamento" aqui com a folha
-            // dizendo "nenhum plano ativo" era contradição (run ≠ plano).
-            if model.activePlan != nil {
-                ArenaPremiumDisclosureRow(
-                    title: "Plano",
-                    detail: planDetail,
-                    symbol: ArenaPremiumIconography.plan,
-                    tone: .active
-                ) { onNavigate(.plan) }
-                .accessibilityIdentifier(A11yID.arenaPremiumPlanAction)
+        // Sem exceção: some a seção. Fila/Cobertura/Próxima/Plano moram
+        // DENTRO de Execução — duplicar aqui era a confusão.
+        if alertCount > 0 {
+            VStack(spacing: 0) {
                 ArenaPremiumHairline()
+                ArenaPremiumGlyphRow(
+                    glyph: "※",
+                    title: "Alertas",
+                    detail: alertCount == 1 ? "1 exceção" : "\(alertCount) exceções",
+                    tone: .negative,
+                    glyphTone: .negative
+                ) { onNavigate(.alerts) }
+                .accessibilityIdentifier(A11yID.arenaPremiumAlertsAction)
             }
-            ArenaPremiumDisclosureRow(
-                title: "Fila",
-                detail: queueDetail,
-                symbol: ArenaPremiumIconography.queue,
-                tone: .neutral
-            ) { onNavigate(.queue) }
-            .accessibilityIdentifier(A11yID.arenaPremiumQueueAction)
-            ArenaPremiumHairline()
-            ArenaPremiumDisclosureRow(
-                title: "Alertas",
-                detail: alertDetail,
-                symbol: ArenaPremiumIconography.alerts,
-                tone: model.arenaRegressionCount > 0 ? .negative : .neutral
-            ) { onNavigate(.alerts) }
-            .accessibilityIdentifier(A11yID.arenaPremiumAlertsAction)
-            ArenaPremiumHairline()
-            ArenaPremiumDisclosureRow(
-                title: "Cobertura",
-                detail: model.arenaCoverageText,
-                symbol: ArenaPremiumIconography.coverage,
-                tone: .neutral
-            ) { onNavigate(.plan) }
-            nextRow
-        }
-    }
-
-    private var planDetail: String {
-        guard let plan = model.activePlan else {
-            return model.livePresentation?.primaryRun == nil ? "nenhum ativo" : "em andamento"
-        }
-        return "\(plan.suites.count) suítes"
-    }
-
-    private var queueDetail: String {
-        let count = model.livePresentation?.queuedSuites.count ?? 0
-        return count == 1 ? "1 suíte" : "\(count) suítes"
-    }
-
-    private var alertDetail: String {
-        let count = model.arenaAlertSuiteCount
-        if count == 0 { return "nenhuma exceção" }
-        return count == 1 ? "1 exceção" : "\(count) exceções"
-    }
-
-    @ViewBuilder
-    private var nextRow: some View {
-        if let suite = model.livePresentation?.queuedSuites.first {
-            ArenaPremiumHairline()
-            ArenaPremiumDisclosureRow(
-                title: "Próxima",
-                detail: ArenaDisplay.suite(suite),
-                symbol: ArenaPremiumIconography.next,
-                tone: .neutral
-            ) { onNavigate(.queue) }
         }
     }
 }

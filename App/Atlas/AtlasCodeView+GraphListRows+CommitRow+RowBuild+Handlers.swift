@@ -6,11 +6,13 @@ import AtlasCore
 extension AtlasCodeView {
     func graphCommitRowHandlers(for node: AtlasCodeGraphNode) -> (
         onSelect: () -> Void,
-        onLongPress: () -> Void
+        onLongPress: () -> Void,
+        onAsk: () -> Void
     ) {
         (
             onSelect: { graphCommitRowSelect(node) },
-            onLongPress: { graphCommitRowLongPress(node) }
+            onLongPress: { graphCommitRowLongPress(node) },
+            onAsk: { anchorAskOnCommit(node) }
         )
     }
 }

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Código · Grafo AX — mockup Grok</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-stage: #0e151a;
+    --app-bg: #1d2b34;
+    --recessed: #15212a;
+    --surface: #243743;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #313f47;
+    --gold: #d4a85a;
+    --alert: #e08c8c;
+    --healed: #6fa06a;
+    --prussian: #7fa7c4;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+    --lane0: 22px;   /* trunk */
+    --lane1: 54px;   /* desvio 1 */
+    --lane2: 86px;   /* desvio 2 */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(224,140,140,0.05), transparent 50%),
+      radial-gradient(700px 400px at 80% 100%, rgba(212,168,90,0.04), transparent 50%),
+      var(--bg-stage);
+  }
+
+  .stage {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) auto;
+    gap: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px 56px;
+  }
+
+  .brief { max-width: 360px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 26px;
+    line-height: 1.15; letter-spacing: -0.015em; text-wrap: balance;
+  }
+  .brief .lede {
+    margin-top: 12px; font-size: 13.5px; line-height: 1.65; color: var(--ink2);
+  }
+  .brief .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .brief .rule {
+    width: 36px; height: 1.5px; margin: 18px 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.75;
+  }
+  .brief ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .brief li {
+    font-size: 12px; line-height: 1.5; color: var(--ink3);
+    padding-left: 14px; position: relative;
+  }
+  .brief li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 1px; background: var(--gold); opacity: 0.7;
+  }
+  .brief li strong { color: var(--ink2); font-weight: 500; }
+  .brief .meta {
+    margin-top: 22px; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.06em; color: var(--ink3);
+  }
+  .legend {
+    margin-top: 20px; display: grid; gap: 8px;
+    padding: 12px 14px; border: 1px solid rgba(49,63,71,0.8);
+    border-radius: 12px; background: rgba(21,33,42,0.5);
+  }
+  .legend .row { display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: var(--ink2); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot.trunk { background: var(--gold); box-shadow: 0 0 8px rgba(212,168,90,0.35); }
+  .dot.fork { background: var(--alert); }
+  .dot.heal { background: var(--healed); }
+  .dot.hist { background: var(--ink3); }
+
+  .device-wrap { filter: drop-shadow(0 40px 80px rgba(0,0,0,0.55)); }
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 54px; background: #0a1014; padding: 11px;
+    border: 1px solid rgba(255,255,255,0.06); position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 54px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.08), inset 0 0 0 4px #05080a;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+    background:
+      radial-gradient(120% 50% at 50% -8%, rgba(224,140,140,0.06), transparent 40%),
+      var(--app-bg);
+    display: flex; flex-direction: column; position: relative;
+  }
+  .island {
+    position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+    width: 118px; height: 34px; background: #000; border-radius: 20px; z-index: 5;
+  }
+  .status {
+    height: 54px; padding: 14px 28px 0; display: flex; justify-content: space-between;
+    font-size: 15px; font-weight: 600; color: var(--ink); flex-shrink: 0;
+  }
+  .status .right { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+
+  .nav {
+    height: 44px; padding: 0 12px; display: grid;
+    grid-template-columns: 44px 1fr auto; align-items: center; flex-shrink: 0;
+  }
+  .nav-back {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(49,63,71,0.9); background: rgba(21,33,42,0.55);
+    display: grid; place-items: center; color: var(--ink2);
+  }
+  .nav-title {
+    text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.02em;
+  }
+  .nav-repo {
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+    padding: 4px 8px; border: 1px solid var(--sep); border-radius: 999px;
+  }
+
+  .head {
+    padding: 6px 16px 10px; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;
+  }
+  .capsule {
+    align-self: center;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 14px; border-radius: 999px;
+    background: rgba(224,140,140,0.12);
+    border: 1px solid rgba(224,140,140,0.38);
+    color: var(--alert);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.01em;
+  }
+  .chips {
+    display: flex; gap: 7px; overflow: hidden;
+  }
+  .chip {
+    flex-shrink: 0;
+    font-size: 11px; font-weight: 500; color: var(--ink3);
+    padding: 6px 11px; border-radius: 999px;
+    border: 1px solid var(--sep); background: rgba(21,33,42,0.4);
+  }
+  .chip.on {
+    color: var(--ink); border-color: rgba(212,168,90,0.45);
+    background: rgba(212,168,90,0.08);
+  }
+  .chip b { font-family: var(--mono); font-weight: 500; font-size: 10.5px; margin-left: 4px; color: inherit; opacity: 0.75; }
+  .chip.alert-on {
+    color: var(--alert); border-color: rgba(224,140,140,0.45);
+    background: rgba(224,140,140,0.08);
+  }
+
+  .scroll {
+    flex: 1; overflow: hidden; position: relative;
+    mask-image: linear-gradient(#000 92%, transparent);
+  }
+  .graph {
+    padding: 4px 16px 100px 0;
+    position: relative;
+  }
+
+  /* SVG topology underlay — the truth the list lied about */
+  .topo {
+    position: absolute; left: 0; top: 0; width: 110px; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  .rows { position: relative; z-index: 1; display: flex; flex-direction: column; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    min-height: 58px;
+    align-items: center;
+    position: relative;
+  }
+  .row .gutter { position: relative; height: 58px; }
+  .row .node {
+    position: absolute; width: 10px; height: 10px; border-radius: 50%;
+    top: 50%; transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  .row .node.trunk {
+    left: var(--lane0);
+    background: var(--gold);
+    box-shadow: 0 0 0 2.5px var(--app-bg), 0 0 10px rgba(212,168,90,0.35);
+  }
+  .row .node.fork {
+    left: var(--lane1);
+    background: var(--alert);
+    box-shadow: 0 0 0 2.5px var(--app-bg), 0 0 10px rgba(224,140,140,0.4);
+  }
+  .row .node.fork2 {
+    left: var(--lane2);
+    background: var(--prussian);
+    box-shadow: 0 0 0 2.5px var(--app-bg), 0 0 8px rgba(127,167,196,0.35);
+  }
+  .row .node.healed {
+    left: var(--lane1);
+    background: var(--healed);
+    box-shadow: 0 0 0 2.5px var(--app-bg);
+  }
+  .row .node.dim {
+    opacity: 0.35;
+  }
+
+  .body { padding: 8px 18px 8px 4px; min-width: 0; }
+  .title {
+    font-size: 14.5px; font-weight: 500; letter-spacing: -0.015em;
+    color: var(--ink); line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .meta {
+    margin-top: 3px; font-size: 12px; color: var(--ink3);
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .meta .kind { color: var(--ink2); }
+  .meta .time { font-variant-numeric: tabular-nums; }
+  .branch-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.02em;
+    color: var(--alert);
+    padding: 2px 7px; border-radius: 999px;
+    background: rgba(224,140,140,0.1);
+    border: 1px solid rgba(224,140,140,0.28);
+    max-width: 160px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .branch-tag.orphan::after {
+    content: "· sem retorno";
+    opacity: 0.8;
+  }
+  .branch-tag.claude {
+    color: var(--prussian);
+    background: rgba(127,167,196,0.1);
+    border-color: rgba(127,167,196,0.28);
+  }
+  .row.is-fork .title { color: #f0d0d0; }
+  .row.is-orphan .body {
+    border-left: 0;
+  }
+  .whisper {
+    margin: 6px 18px 14px 114px;
+    font-family: var(--serif); font-style: italic; font-size: 12px;
+    color: var(--ink3); line-height: 1.4;
+  }
+
+  .ask-wrap {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 12px 16px 28px;
+    background: linear-gradient(180deg, transparent, rgba(29,43,52,0.94) 28%, var(--app-bg));
+  }
+  .ask {
+    display: flex; align-items: center; gap: 10px;
+    min-height: 48px; padding: 0 16px; border-radius: 999px;
+    background: rgba(21,33,42,0.75);
+    border: 1px solid rgba(49,63,71,0.9);
+    box-shadow: 0 0 0 0.5px rgba(212,168,90,0.08);
+  }
+  .ask .star { color: var(--gold); font-size: 14px; filter: drop-shadow(0 0 5px rgba(212,168,90,0.4)); }
+  .ask .ph {
+    font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink3);
+  }
+  .home-bar {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 128px; height: 4px; border-radius: 4px; background: rgba(214,221,226,0.28);
+  }
+
+  @media (max-width: 900px) {
+    .stage { grid-template-columns: 1fr; gap: 28px; justify-items: center; }
+    .brief { max-width: var(--phone-w); }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <aside class="brief">
+      <div class="kicker">Mockup · Atlas Código · Grafo AX v1</div>
+      <h1>A topologia não pode mentir. Desvio tem de saltar.</h1>
+      <p class="lede">
+        Era agêntica: o operador <em>não opera git</em>. Ele julga.
+        O grafo responde em um relance: <em>a frota está na main?</em>
+        O que saiu e não voltou?
+      </p>
+      <div class="rule" aria-hidden="true"></div>
+      <ul>
+        <li><strong>Espinha ouro</strong> — só a trunk (`main`). Nunca a branch “atual” de uma obra.</li>
+        <li><strong>Lanes de desvio</strong> — ramificação geométrica real (curva + offset). Sem linha única falsa.</li>
+        <li><strong>Órfão visível</strong> — branch que não retornou: tag + lane que não fecha.</li>
+        <li><strong>Zero chrome GitKraken</strong> — sem pull/push/stash/checkout. Cura é autônoma; humano veta.</li>
+        <li><strong>Cápsula = mapa</strong> — “10 desvios” só existe se o olho também vê 10 desvios.</li>
+      </ul>
+      <div class="legend">
+        <div class="row"><span class="dot trunk"></span> trunk · main</div>
+        <div class="row"><span class="dot fork"></span> desvio · sem retorno</div>
+        <div class="row"><span class="dot heal"></span> curado (recibo)</div>
+        <div class="row"><span class="dot hist"></span> história / merge fechado</div>
+      </div>
+      <p class="meta">Grok 4.5 · AX · tokens AtlasTheme · aprovar / iterar</p>
+    </aside>
+
+    <div class="device-wrap">
+      <div class="phone" role="img" aria-label="Mockup do Grafo Atlas Código com ramificações visíveis">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="status">
+            <span>14:28</span>
+            <div class="right"><span>▮▮▮</span><span>38</span></div>
+          </div>
+
+          <div class="nav">
+            <div class="nav-back" aria-hidden="true">
+              <svg width="10" height="16" viewBox="0 0 10 16" fill="none"><path d="M8.5 1.5L2 8l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <div class="nav-title">Grafo</div>
+            <div class="nav-repo">atlas-native</div>
+          </div>
+
+          <div class="head">
+            <div class="capsule">⚠ 3 desvios da main · 1 sem retorno</div>
+            <div class="chips">
+              <span class="chip on">todos <b>12</b></span>
+              <span class="chip">trunk <b>9</b></span>
+              <span class="chip alert-on">desvios <b>3</b></span>
+              <span class="chip">curados <b>0</b></span>
+            </div>
+          </div>
+
+          <div class="scroll">
+            <div class="graph">
+              <!-- Topology SVG: trunk at x=22, fork lane at x=54, second at x=86 -->
+              <svg class="topo" viewBox="0 0 110 700" preserveAspectRatio="xMinYMin meet" aria-hidden="true">
+                <!-- trunk continuous -->
+                <path d="M22 0 V700" stroke="#d4a85a" stroke-width="1.5" opacity="0.55"/>
+                <!-- fork 1 lane (orphan — does NOT return) -->
+                <path d="M22 145 C22 165, 54 165, 54 185 V520" stroke="#e08c8c" stroke-width="1.5" fill="none" opacity="0.75"/>
+                <!-- open end whisper for orphan -->
+                <path d="M54 520 V580" stroke="#e08c8c" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.45"/>
+                <!-- fork 2 (returns via merge) -->
+                <path d="M22 290 C22 310, 86 310, 86 330 V410 C86 430, 22 430, 22 450" stroke="#7fa7c4" stroke-width="1.5" fill="none" opacity="0.7"/>
+              </svg>
+
+              <div class="rows">
+                <!-- trunk -->
+                <div class="row">
+                  <div class="gutter"><span class="node trunk"></span></div>
+                  <div class="body">
+                    <div class="title">polish(ui) — home artesanal · pílula viva</div>
+                    <div class="meta"><span class="kind">Grok 4.5</span><span>·</span><span class="time">12m</span></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="gutter"><span class="node trunk"></span></div>
+                  <div class="body">
+                    <div class="title">feat(ui) — Arena Premium · cockpit Agora</div>
+                    <div class="meta"><span class="kind">Fable 5</span><span>·</span><span class="time">1h</span></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="gutter"><span class="node trunk"></span></div>
+                  <div class="body">
+                    <div class="title">docs(obra) — registro §7 · busca sem saturado</div>
+                    <div class="meta"><span class="kind">Fable 5</span><span>·</span><span class="time">2h</span></div>
+                  </div>
+                </div>
+
+                <!-- ORPHAN FORK starts -->
+                <div class="row is-fork is-orphan">
+                  <div class="gutter"><span class="node fork"></span></div>
+                  <div class="body">
+                    <div class="title">WIP — experimentação fora da main</div>
+                    <div class="meta">
+                      <span class="branch-tag orphan">claude/hungry-cartwright…</span>
+                      <span class="time">3h</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="whisper">saiu · não voltou — o operador julga, a cura age</div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node trunk"></span></div>
+                  <div class="body">
+                    <div class="title">fix(a11y) — grafo · cada elemento com voz</div>
+                    <div class="meta"><span class="kind">Fable 5</span><span>·</span><span class="time">4h</span></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="gutter"><span class="node trunk"></span></div>
+                  <div class="body">
+                    <div class="title">fix(ui) — Capacidades re-busca ao abrir</div>
+                    <div class="meta"><span class="kind">fix(ui)</span><span>·</span><span class="time">5h</span></div>
+                  </div>
+                </div>
+
+                <!-- temporary fork that returns -->
+                <div class="row is-fork">
+                  <div class="gutter"><span class="node fork2"></span></div>
+                  <div class="body">
+                    <div class="title">plano elite 24×7 — rascunho de obra</div>
+                    <div class="meta">
+                      <span class="branch-tag claude">cursor/plano-elite…</span>
+                      <span class="time">11h</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row is-fork">
+                  <div class="gutter"><span class="node fork2"></span></div>
+                  <div class="body">
+                    <div class="title">Merge pull request #1 → main</div>
+                    <div class="meta"><span class="kind">retorno à trunk</span><span>·</span><span class="time">12h</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node trunk"></span></div>
+                  <div class="body">
+                    <div class="title">feat(core) — decode backlog · Arena</div>
+                    <div class="meta"><span class="kind">Codex</span><span>·</span><span class="time">14h</span></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="gutter"><span class="node trunk"></span></div>
+                  <div class="body">
+                    <div class="title">save</div>
+                    <div class="meta"><span class="kind">Vitor Freire</span><span>·</span><span class="time">1d</span></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="gutter"><span class="node trunk dim"></span></div>
+                  <div class="body" style="opacity:0.55">
+                    <div class="title">polish(ui) — refinamento absoluto da home</div>
+                    <div class="meta"><span class="kind">história</span><span>·</span><span class="time">2d</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ask-wrap">
+            <div class="ask">
+              <span class="star">✦</span>
+              <span class="ph">pergunte sobre este repositório</span>
+            </div>
+          </div>
+          <div class="home-bar" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

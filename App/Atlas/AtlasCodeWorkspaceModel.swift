@@ -24,13 +24,40 @@ final class AtlasCodeWorkspaceModel {
         self.client = client
     }
 
+    /// Hidrata na hora a partir do cache — picker sem frame de loading.
+    func seedFromCache() {
+        guard let cached = AtlasCodeWorkspaceCache.peek() else { return }
+        workspace = cached
+        phase = .loaded
+    }
+
     func load() async {
         phase = .loading
         do {
             let response = try await client.getCodeWorkspace()
+            AtlasCodeWorkspaceCache.store(response)
             workspace = response
             phase = .loaded
             await scan(response.recents.map(\.slug))
+        } catch {
+            phase = .failed(String(describing: error))
+        }
+    }
+
+    /// Só a frota (pastas/repos) — sem scan de violações.
+    /// Cache quente → instantâneo no picker do grafo.
+    func loadStructure() async {
+        if let cached = AtlasCodeWorkspaceCache.peek() {
+            workspace = cached
+            phase = .loaded
+            return
+        }
+        phase = .loading
+        do {
+            let response = try await client.getCodeWorkspace()
+            AtlasCodeWorkspaceCache.store(response)
+            workspace = response
+            phase = .loaded
         } catch {
             phase = .failed(String(describing: error))
         }

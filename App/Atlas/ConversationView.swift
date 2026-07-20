@@ -39,6 +39,8 @@ struct ConversationView: View {
     let emptyPrompt: String?
     let emptySuggestions: [String]?
     let onThread: ((ThreadID) -> Void)?
+    /// Sheet do grafo: sem chevron — o gesto de arrastar fecha.
+    let hidesNavigationBack: Bool
 
     var body: some View {
         conversationLifecycleModifiers(conversationPage)
@@ -54,13 +56,15 @@ struct ConversationView: View {
         workspace: String? = nil,
         draft: String = "",
         turnFacts: ((String) async -> String?)? = nil,
-        onThread: ((ThreadID) -> Void)? = nil
+        onThread: ((ThreadID) -> Void)? = nil,
+        hidesNavigationBack: Bool = false
     ) {
         self.title = title
         self.startFocused = threadId == nil
         self.emptyPrompt = emptyPrompt
         self.emptySuggestions = emptySuggestions
         self.onThread = onThread
+        self.hidesNavigationBack = hidesNavigationBack
         _model = Self.initModelState(
             client: client,
             threadId: threadId,

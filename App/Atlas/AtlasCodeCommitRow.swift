@@ -15,12 +15,17 @@ struct AtlasCodeCommitRow: View {
     let trunk: String?
     let isFirst: Bool
     let isLast: Bool
+    /// Estado do vizinho acima/abaixo no filtro atual — continuidade da lane.
+    var aboveState: AtlasCodeNodeState? = nil
+    var belowState: AtlasCodeNodeState? = nil
     /// A pílula respondeu e este commit não está na resposta: ele recua, mas
     /// nunca some — esconder história para responder uma pergunta seria mentir
     /// sobre o repositório.
     var isDimmed: Bool = false
     let onTap: () -> Void
     var onLongPress: (() -> Void)? = nil
+    /// Arrastar → pílula/ask com este commit como contexto.
+    var onAsk: (() -> Void)? = nil
 
     var color: Color { AtlasCodePalette.color(for: state) }
 

@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Arena · mapa completo — hub + push + folhas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Atlas Arena v3 — refinamento máximo.
+     Diferenciação por cuidado milimétrico, nunca por efeito.
+     Ouro = vivo/estado · um só tipo de pílula (home) · escala 8/12/16/24/32. */
+  :root {
+    --stage: #0e151a;
+    --bg: #1d2b34;
+    --recessed: #15212a;
+    --surface: #243743;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #2c3a43;
+    --gold: #d4a85a;
+    --gold-veil: rgba(212,168,90,0.12);
+    --gold-border: rgba(212,168,90,0.34);
+    --alert: #c98989;
+    --prussian: #7fa7c4;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  button:focus { outline: none; }
+  button:focus-visible {
+    outline: 1px solid rgba(212,168,90,0.45);
+    outline-offset: 2px;
+  }
+  body {
+    min-height: 100vh;
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(127,167,196,0.05), transparent 55%),
+      radial-gradient(700px 400px at 78% 100%, rgba(212,168,90,0.03), transparent 50%),
+      var(--stage);
+  }
+  .stage {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) auto;
+    gap: 48px;
+    align-items: start;
+    justify-content: center;
+    padding: 40px 32px 72px;
+  }
+  .brief { max-width: 360px; position: sticky; top: 36px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 26px;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .brief .lede {
+    margin-top: 12px; font-size: 13.5px; line-height: 1.6; color: var(--ink2);
+  }
+  .brief .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .brief .rule {
+    width: 32px; height: 1px; margin: 18px 0;
+    background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.7;
+  }
+  .brief h2 {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink3); margin: 18px 0 8px;
+  }
+  .brief ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .brief li {
+    font-size: 12px; line-height: 1.45; color: var(--ink3);
+    padding-left: 12px; position: relative;
+  }
+  .brief li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 1px; background: var(--gold); opacity: 0.55;
+  }
+  .brief li strong { color: var(--ink2); font-weight: 500; }
+  .brief li.kill::before { background: var(--alert); }
+  .brief li.evolve::before { background: var(--prussian); }
+  .switches {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px;
+  }
+  .switches button {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink2);
+    background: var(--recessed); border: 1px solid var(--sep);
+    border-radius: 999px; padding: 8px 12px; cursor: pointer;
+  }
+  .switches button.on {
+    color: var(--ink);
+    border-color: rgba(214,221,226,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .phone-wrap { display: flex; flex-direction: column; gap: 16px; align-items: center; }
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 52px; padding: 10px; background: #070b0e;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55);
+    position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 52px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 4px #040608;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
+    background: var(--bg); display: flex; flex-direction: column; position: relative;
+  }
+  .screen::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(420px 220px at 50% -10%, rgba(127,167,196,0.055), transparent 60%);
+  }
+  .screen > * { position: relative; z-index: 1; }
+
+  .status {
+    height: 54px; display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 0 28px 10px; font-family: var(--sans); font-size: 15px; font-weight: 600;
+    color: var(--ink); letter-spacing: -0.02em;
+  }
+  .status .sig {
+    display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink);
+    opacity: 0.92; font-weight: 500;
+  }
+  .status .sig .bat {
+    width: 24px; height: 11px; border: 1.2px solid rgba(214,221,226,0.85);
+    border-radius: 2.5px; position: relative; margin-left: 2px;
+  }
+  .status .sig .bat::before {
+    content: ""; position: absolute; right: -3.5px; top: 2.5px;
+    width: 1.5px; height: 4px; border-radius: 0 1px 1px 0;
+    background: rgba(214,221,226,0.85);
+  }
+  .status .sig .bat i {
+    display: block; height: 100%; width: 72%;
+    background: var(--ink); border-radius: 1px;
+  }
+  .nav {
+    display: flex; align-items: center; justify-content: center;
+    padding: 2px 16px 12px; position: relative; min-height: 40px;
+  }
+  .nav .title {
+    font-family: var(--serif); font-size: 21px; font-weight: 600; color: var(--ink);
+    letter-spacing: -0.015em;
+  }
+  .nav .plus {
+    position: absolute; right: 18px; width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center; color: var(--ink2);
+    border: 1px solid rgba(49,63,71,0.9);
+    background: rgba(21,33,42,0.55);
+    font-size: 20px; line-height: 1; font-weight: 300;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  /* Tabs: seleção NEUTRA (ouro = só estado vivo) */
+  .tabs {
+    margin: 0 18px 10px; padding: 3px;
+    border-radius: 999px;
+    background: rgba(21,33,42,0.92);
+    border: 1px solid rgba(44,58,67,0.55);
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+  }
+  .tab {
+    border: 0; background: transparent; color: var(--ink3);
+    font-size: 12.5px; font-weight: 510; padding: 9px 2px; border-radius: 999px;
+    cursor: pointer; font-family: var(--sans); letter-spacing: -0.015em;
+    transition: color 0.18s ease, background 0.18s ease;
+  }
+  .tab.on {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 6px 16px rgba(0,0,0,0.22);
+  }
+
+  .scroll {
+    flex: 1; overflow-y: auto; padding: 6px 20px 118px;
+    scrollbar-width: none;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+  .panel { display: none; }
+  .panel.on { display: block; }
+
+  .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 8px;
+  }
+  .kicker.live {
+    color: var(--gold); display: flex; align-items: center; gap: 8px;
+  }
+  .kicker.live .mark {
+    font-family: var(--serif); font-size: 11px; line-height: 1;
+    animation: breath 2.4s ease-in-out infinite;
+  }
+  @keyframes breath {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kicker.live .mark { animation: none; opacity: 1; }
+  }
+
+  .hero-title {
+    font-family: var(--serif); font-size: 31px; font-weight: 600;
+    letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 6px;
+  }
+  .sub {
+    font-family: var(--mono); font-size: 12px; color: var(--ink2);
+    margin-bottom: 24px; letter-spacing: 0.01em;
+  }
+  .note {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    line-height: 1.55; letter-spacing: 0.01em;
+  }
+  .index-row .vs {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    color: var(--gold); margin-left: auto; font-weight: 500;
+  }
+  .fleet-item.best .eng { letter-spacing: -0.02em; }
+  .fleet-item.best .x { font-weight: 560; }
+
+  /* Anel — stroke preciso, sem conic “grosso” */
+  .ring-row {
+    display: flex; align-items: center; gap: 24px; margin: 0 0 24px;
+  }
+  .ring {
+    width: 142px; height: 142px; flex-shrink: 0; position: relative;
+  }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring .track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 3.5; }
+  .ring .prog {
+    fill: none; stroke: var(--gold); stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-dasharray: 408;
+    stroke-dashoffset: 326; /* ~20% */
+  }
+  .ring-inner {
+    position: absolute; inset: 0;
+    display: flex; align-items: baseline; justify-content: center;
+    font-family: var(--serif); font-size: 42px; font-weight: 600;
+    letter-spacing: -0.03em; line-height: 1;
+    padding-top: 2px; /* optical center Fraunces */
+  }
+  .ring-inner .unit {
+    font-family: var(--mono); font-size: 13px; color: var(--ink2);
+    font-weight: 500; margin-left: 2px;
+    transform: translateY(-0.15em);
+  }
+  .ring-meta {
+    display: flex; flex-direction: column; gap: 4px;
+    justify-content: center; min-height: 142px;
+  }
+  .ring-meta .count {
+    font-family: var(--serif); font-size: 28px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.1;
+  }
+  .ring-meta .count em {
+    font-style: normal; font-size: 18px; color: var(--ink2); font-weight: 500;
+  }
+  .ring-meta span {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2);
+  }
+  .ring-meta span.dim { color: var(--ink3); font-size: 10px; margin-top: 4px; }
+
+  /* CTAs — zero ouro de chrome; primary = ink fill quieto */
+  .cta {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; min-height: 46px; padding: 0 20px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.055);
+    color: var(--ink); font-size: 14px; font-weight: 530;
+    margin-bottom: 8px; cursor: pointer; font-family: var(--sans);
+    letter-spacing: -0.012em;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .cta:hover { background: rgba(255,255,255,0.075); }
+  .cta.quiet {
+    border-color: rgba(44,58,67,0.7);
+    background: transparent;
+    color: var(--ink2); font-weight: 480;
+    margin-bottom: 28px;
+  }
+  .cta.quiet:hover { color: var(--ink); border-color: rgba(149,163,172,0.45); }
+
+  .pair-kicker {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink3);
+    margin: 4px 0 10px;
+  }
+  .pair {
+    display: grid; grid-template-columns: 1fr auto 1fr auto;
+    gap: 14px; align-items: end;
+    padding: 0 0 4px; margin-bottom: 4px;
+  }
+  .pair .cell { display: flex; flex-direction: column; gap: 5px; }
+  .pair .lbl {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3);
+  }
+  .pair .val {
+    font-family: var(--serif); font-size: 28px; font-weight: 500;
+    letter-spacing: -0.025em; line-height: 1;
+  }
+  .pair .val.gold { color: var(--gold); }
+  .pair .arrow {
+    color: var(--ink3); padding-bottom: 4px; font-size: 15px;
+    font-family: var(--serif); opacity: 0.7;
+  }
+  .pair .delta {
+    font-family: var(--serif); font-size: 15px; font-style: italic;
+    color: var(--gold); padding-bottom: 4px; letter-spacing: -0.01em;
+    font-weight: 500;
+  }
+
+  /* Hairline gradiente */
+  .hair {
+    height: 1px; border: 0;
+    background: linear-gradient(90deg,
+      rgba(44,58,67,0.15),
+      rgba(44,58,67,0.95) 20%,
+      rgba(44,58,67,0.95) 80%,
+      rgba(44,58,67,0.15));
+    margin: 16px 0 0;
+  }
+
+  /* Linhas — sem caixinha; alfabeto tipográfico */
+  .rows { margin-top: 4px; }
+  .row {
+    display: grid;
+    grid-template-columns: 18px 1fr auto 10px;
+    gap: 14px; align-items: center;
+    min-height: 54px;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(90deg,
+      rgba(44,58,67,0.12),
+      rgba(44,58,67,0.7) 18%,
+      rgba(44,58,67,0.7) 82%,
+      rgba(44,58,67,0.12)) 1;
+  }
+  .row .glyph {
+    font-family: var(--serif); font-size: 13px; color: var(--ink3);
+    line-height: 1; text-align: center;
+  }
+  .row .glyph.alert { color: var(--alert); }
+  .row .name {
+    font-size: 15.5px; font-weight: 510; letter-spacing: -0.01em;
+  }
+  .row .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2);
+    text-align: right; white-space: nowrap;
+  }
+  .row .meta.alert { color: var(--alert); }
+  .row .chev { color: var(--ink3); font-size: 13px; text-align: right; }
+
+  /* —— Frota: lista editorial, não cards gritantes —— */
+  .fleet-hero { margin-bottom: 20px; }
+  .fleet-hero .mult {
+    font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--gold);
+    margin-top: 8px; font-weight: 400;
+  }
+  .legend {
+    display: flex; gap: 16px; margin: 4px 0 20px;
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  }
+  .legend .sym {
+    display: inline-block; margin-right: 6px; vertical-align: -1px;
+  }
+  .legend .sym.bare {
+    width: 8px; height: 8px; border-radius: 50%;
+    border: 1.5px solid rgba(214,221,226,0.5); background: transparent;
+  }
+  .legend .sym.atlas {
+    font-family: var(--serif); font-size: 11px; color: var(--gold);
+    border: 0; width: auto; height: auto;
+  }
+
+  .fleet-item {
+    padding: 16px 0 14px;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(90deg,
+      rgba(44,58,67,0.12),
+      rgba(44,58,67,0.7) 18%,
+      rgba(44,58,67,0.7) 82%,
+      rgba(44,58,67,0.12)) 1;
+  }
+  .fleet-item.best .eng { color: var(--ink); }
+  .fleet-top {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .fleet-top .eng {
+    font-size: 15px; font-weight: 530; letter-spacing: -0.015em;
+  }
+  .fleet-top .x {
+    font-family: var(--mono); font-size: 11px; color: var(--gold);
+  }
+  .fleet-top .x.down { color: var(--alert); }
+  .fleet-top .x.mute { color: var(--ink3); }
+  .bar-row {
+    display: grid; grid-template-columns: 52px 1fr 32px; gap: 10px; align-items: center;
+    margin-bottom: 7px;
+  }
+  .bar-row .lbl {
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  }
+  .bar-track {
+    height: 2px; border-radius: 1px; background: rgba(255,255,255,0.06); position: relative;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 1px; background: rgba(149,163,172,0.55);
+  }
+  .bar-fill.atlas { background: var(--gold); }
+  .bar-row .n {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2); text-align: right;
+  }
+
+  /* —— Capacidades —— */
+  .cap-covered {
+    font-family: var(--serif); font-size: 48px; font-weight: 600;
+    letter-spacing: -0.03em; line-height: 1; margin: 4px 0 2px;
+  }
+  .cap-covered span { font-size: 22px; color: var(--ink2); font-weight: 500; }
+  .cap-label {
+    font-family: var(--mono); font-size: 10px; color: var(--ink2);
+    margin-bottom: 14px;
+  }
+  .cap-sum {
+    display: flex; flex-wrap: wrap; gap: 16px; margin: 0 0 16px;
+    font-family: var(--mono); font-size: 12px; color: var(--ink2);
+  }
+  .cap-sum .bad { color: var(--alert); }
+  .cap-row {
+    display: grid; grid-template-columns: 1fr 44px 10px; gap: 10px; align-items: center;
+    min-height: 58px;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(90deg,
+      rgba(44,58,67,0.12),
+      rgba(44,58,67,0.7) 18%,
+      rgba(44,58,67,0.7) 82%,
+      rgba(44,58,67,0.12)) 1;
+    cursor: pointer;
+  }
+  .cap-row .name { font-size: 14px; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .track {
+    position: relative; height: 2px; background: rgba(255,255,255,0.07);
+    border-radius: 1px; margin-right: 4px;
+  }
+  .dot {
+    position: absolute; top: 50%; width: 8px; height: 8px; border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .dot.bare {
+    border: 1.5px solid rgba(214,221,226,0.5); background: transparent;
+  }
+  .mark.atlas {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    font-family: var(--serif); font-size: 12px; color: var(--gold);
+    line-height: 1; pointer-events: none;
+  }
+  .cap-d { font-family: var(--mono); font-size: 11px; text-align: right; color: var(--ink2); }
+  .cap-d.bad { color: var(--alert); }
+  .cap-d.ok { color: var(--ink2); }
+
+  .engine-pick { position: relative; margin: 0 0 16px; }
+  .engine-pick > button.trigger {
+    width: 100%; text-align: left; cursor: pointer;
+    background: transparent; border: 0; padding: 0;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .engine-pick .hero-title { flex: 1; margin-bottom: 0; text-align: left; font-size: 31px; }
+  .engine-pick .chev-down {
+    margin-top: 12px; color: var(--ink3); font-size: 11px;
+    font-family: var(--mono); letter-spacing: 0.02em;
+  }
+  .engine-menu {
+    display: none; margin-top: 12px; padding: 4px;
+    background: var(--recessed); border: 1px solid rgba(44,58,67,0.9);
+    border-radius: 14px; overflow: hidden;
+  }
+  .engine-menu.open { display: block; }
+  .engine-menu button {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 12px 14px; border: 0; border-radius: 10px;
+    background: transparent; color: var(--ink); font-size: 14px;
+    font-family: var(--sans); cursor: pointer; text-align: left;
+  }
+  .engine-menu button:hover { background: rgba(255,255,255,0.03); }
+  .engine-menu button.on { background: rgba(255,255,255,0.045); }
+  .engine-menu .tag {
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  }
+  .engine-menu button.on .tag { color: var(--ink2); }
+
+  .index-row {
+    display: flex; align-items: baseline; gap: 8px; margin: 4px 0 16px;
+  }
+  .index-row .big {
+    font-family: var(--serif); font-size: 52px; font-weight: 600;
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .index-row .over {
+    font-family: var(--mono); font-size: 13px; color: var(--ink2);
+  }
+
+  .caption {
+    margin-top: 20px; font-family: var(--mono); font-size: 10px;
+    line-height: 1.55; color: var(--ink3);
+  }
+  .phone-cap {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); text-align: center;
+  }
+
+  /* —— Pílula agêntica = ÚNICO tipo (paridade home) ——
+     Canon: RootView+InputBarContent + HomeComposerStar + atlasGlassCapsule.
+     Só muda o convite; o chrome é o mesmo. */
+  .agent-pill-dock {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+    padding: 8px 16px 22px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(29,43,52,0.55) 22%,
+      rgba(29,43,52,0.96) 55%,
+      var(--bg) 100%
+    );
+    pointer-events: none;
+  }
+  .agent-pill {
+    pointer-events: auto;
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(21, 33, 42, 0.68);
+    backdrop-filter: blur(28px) saturate(1.18);
+    -webkit-backdrop-filter: blur(28px) saturate(1.18);
+    border: 0;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.045),
+      0 10px 28px rgba(0, 0, 0, 0.28);
+    position: relative;
+    cursor: pointer;
+    text-align: left;
+    font: inherit; color: inherit;
+    transition: box-shadow 0.22s ease;
+  }
+  .agent-pill:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 12px 32px rgba(0, 0, 0, 0.34);
+  }
+  /* Fio de ouro artesanal — LinearGradient 0.22 / 0.04 / 0.12 · 0.75pt */
+  .agent-pill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    padding: 0.75px;
+    background: linear-gradient(
+      135deg,
+      rgba(212, 168, 90, 0.22),
+      rgba(212, 168, 90, 0.04) 42%,
+      rgba(212, 168, 90, 0.12)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .agent-pill .star {
+    width: 30px; height: 30px; flex-shrink: 0;
+    position: relative; display: grid; place-items: center;
+  }
+  .agent-pill .star .glyph {
+    font-family: var(--serif); font-size: 16px; color: var(--gold);
+    line-height: 1; position: relative; z-index: 1;
+    filter: drop-shadow(0 0 5px rgba(212, 168, 90, 0.35));
+  }
+  .agent-pill .star .pulse {
+    position: absolute; inset: 2px; border-radius: 50%;
+    background: rgba(212, 168, 90, 0.12);
+    filter: blur(6px);
+    animation: star-breathe 2.8s ease-in-out infinite;
+  }
+  @keyframes star-breathe {
+    0%, 100% { opacity: 0.4; transform: scale(0.92); }
+    50% { opacity: 0.95; transform: scale(1.18); }
+  }
+  .agent-pill .invite {
+    flex: 1; min-width: 0;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 16px; color: var(--ink3);
+    letter-spacing: -0.01em; line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .home-indicator {
+    width: 128px; height: 5px; border-radius: 999px;
+    background: rgba(214,221,226,0.28);
+    margin: 10px auto 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .agent-pill .star .pulse { animation: none; opacity: 0.55; transform: none; }
+  }
+
+  @media (max-width: 860px) {
+    .stage { grid-template-columns: 1fr; justify-items: center; }
+    .brief { position: static; max-width: 393px; }
+  }
+
+  /* —— Push / folhas (telas que faltavam) —— */
+  .nav .back {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    border: 0; background: transparent; color: var(--ink2);
+    font-size: 15px; font-family: var(--sans); cursor: pointer;
+    padding: 8px 10px; letter-spacing: -0.01em;
+    display: none;
+  }
+  .nav.push .back { display: block; }
+  .nav.push .title { font-size: 17px; font-weight: 560; }
+  .tabs.hidden { display: none; }
+  .screen.sheet-mode .tabs,
+  .screen.sheet-mode .nav .plus { display: none; }
+  .screen.sheet-mode .nav .back { display: block; }
+
+  .metrics {
+    display: flex; flex-wrap: wrap; gap: 22px 28px;
+    margin: 4px 0 8px;
+  }
+  .metrics .m .n {
+    font-family: var(--serif); font-size: 30px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .metrics .m .l {
+    font-family: var(--mono); font-size: 10px; color: var(--ink2);
+    margin-top: 4px;
+  }
+
+  .pipeline {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin: 8px 0 4px; align-items: start;
+  }
+  .pipeline .st {
+    text-align: center; position: relative;
+  }
+  .pipeline .st .ic {
+    font-family: var(--serif); font-size: 14px; color: var(--ink3);
+    margin-bottom: 7px; height: 18px;
+  }
+  .pipeline .st.done .ic { color: var(--gold); }
+  .pipeline .st.live .ic { color: var(--gold); }
+  .pipeline .st .nm {
+    font-family: var(--mono); font-size: 8px; color: var(--ink3);
+    letter-spacing: 0.02em;
+  }
+  .pipeline .st.done .nm,
+  .pipeline .st.live .nm { color: var(--ink2); }
+  .pipeline .st:not(:last-child)::after {
+    content: ""; position: absolute; top: 8px; left: calc(50% + 14px);
+    right: calc(-50% + 14px); height: 1px;
+    background: rgba(44,58,67,0.85);
+  }
+  .pipeline .st.done:not(:last-child)::after { background: rgba(212,168,90,0.55); }
+
+  .big-stat {
+    display: flex; align-items: baseline; gap: 8px; margin: 4px 0 18px;
+  }
+  .big-stat .n {
+    font-family: var(--serif); font-size: 56px; font-weight: 600;
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .big-stat .n.alert { color: var(--alert); }
+  .big-stat .u {
+    font-family: var(--mono); font-size: 12px; color: var(--ink2);
+  }
+  .big-stat .pct {
+    margin-left: auto; font-family: var(--mono); font-size: 18px;
+    color: var(--gold); font-weight: 500;
+  }
+
+  .field-lab {
+    font-size: 12px; font-weight: 510; color: var(--ink2); margin: 0 0 6px;
+  }
+  .field {
+    width: 100%; min-height: 44px; padding: 12px 14px; margin-bottom: 14px;
+    border-radius: 12px; border: 1px solid rgba(44,58,67,0.95);
+    background: var(--recessed); color: var(--ink3);
+    font-family: var(--sans); font-size: 15px;
+  }
+  .field.tall { min-height: 72px; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+  .chip {
+    padding: 8px 12px; border-radius: 999px;
+    border: 1px solid rgba(44,58,67,0.9);
+    font-size: 13px; color: var(--ink2); background: transparent;
+  }
+  .chip.on {
+    color: var(--ink); background: rgba(255,255,255,0.05);
+    border-color: rgba(214,221,226,0.28);
+  }
+
+  .empty-glyph {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: grid; place-items: center; margin-bottom: 16px;
+    border: 1px solid rgba(44,58,67,0.9);
+    color: var(--ink3); font-size: 22px; font-family: var(--serif);
+  }
+  .empty-glyph.alert {
+    border-color: rgba(201,137,137,0.45); color: var(--alert);
+  }
+
+  .map-group {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink3);
+    margin: 14px 0 8px;
+  }
+  .switches { flex-wrap: wrap; }
+  .switches button.sub {
+    font-size: 11px; padding: 7px 10px; opacity: 0.92;
+  }
+  .row { cursor: pointer; }
+  .row:hover .name { color: #fff; }
+  .cta, .cta.quiet { cursor: pointer; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <aside class="brief">
+      <div class="kicker">Atlas Arena · mapa completo</div>
+      <h1>Todas as<br>superfícies.</h1>
+      <p class="lede">
+        Hub (abas) + push (Execução · Fila · Alertas · Plano) + folhas (Rodar · Parar)
+        + detalhes (capacidade · suíte) + estados Agora (idle · vivo · concluída).
+        Mesmo craft; pílula em toda superfície operacional.
+      </p>
+      <div class="rule"></div>
+
+      <h2>Mapa</h2>
+      <div class="map-group">Hub</div>
+      <div class="switches" id="switches">
+        <button type="button" data-screen="agora" class="on">Agora</button>
+        <button type="button" data-screen="frota">Frota</button>
+        <button type="button" data-screen="capacidades">Capac.</button>
+        <button type="button" data-screen="motor">Motor</button>
+        <button type="button" data-screen="idle" class="sub">Idle</button>
+        <button type="button" data-screen="concluida" class="sub">Concluída</button>
+      </div>
+      <div class="map-group">Push · da Agora</div>
+      <div class="switches" id="switches-push">
+        <button type="button" data-screen="execucao" class="sub">Execução</button>
+        <button type="button" data-screen="fila" class="sub">Fila</button>
+        <button type="button" data-screen="alertas" class="sub">Alertas</button>
+        <button type="button" data-screen="plano" class="sub">Plano</button>
+      </div>
+      <div class="map-group">Detalhe · folha</div>
+      <div class="switches" id="switches-detail">
+        <button type="button" data-screen="cap-detail" class="sub">Capacidade</button>
+        <button type="button" data-screen="suite" class="sub">Suíte</button>
+        <button type="button" data-screen="rodar" class="sub">Rodar</button>
+        <button type="button" data-screen="parar" class="sub">Parar</button>
+      </div>
+
+      <h2>Gramática</h2>
+      <ul>
+        <li><strong>✦</strong> vivo / com Atlas / pílula</li>
+        <li><strong>○</strong> sem Atlas</li>
+        <li><strong>Ouro</strong> = estado, nunca chrome de botão</li>
+        <li><strong>Pack</strong> = interno; só o convite muda</li>
+      </ul>
+    </aside>
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <span class="sig">
+              <span aria-hidden="true">■■■</span>
+              <span aria-hidden="true">☁︎</span>
+              <span class="bat" aria-hidden="true"><i></i></span>
+            </span>
+          </div>
+          <div class="nav" id="nav">
+            <button type="button" class="back" id="nav-back" aria-label="voltar">‹ Agora</button>
+            <div class="title" id="nav-title">Arena</div>
+            <div class="plus" id="nav-plus" title="nova medição" data-goto="rodar">+</div>
+          </div>
+          <div class="tabs" id="tabs">
+            <button type="button" class="tab on" data-screen="agora">Agora</button>
+            <button type="button" class="tab" data-screen="frota">Frota</button>
+            <button type="button" class="tab" data-screen="capacidades">Capac.</button>
+            <button type="button" class="tab" data-screen="motor">Motor</button>
+          </div>
+
+          <div class="scroll">
+            <!-- AGORA -->
+            <section class="panel on" id="panel-agora">
+              <div class="kicker live"><span class="mark">✦</span> AO VIVO</div>
+              <div class="hero-title">Kimi K2.7 · Verboo</div>
+              <div class="sub">LiveCodeBench · com Atlas</div>
+
+              <div class="ring-row">
+                <div class="ring">
+                  <svg viewBox="0 0 142 142" aria-hidden="true">
+                    <circle class="track" cx="71" cy="71" r="65"></circle>
+                    <circle class="prog" cx="71" cy="71" r="65"></circle>
+                  </svg>
+                  <div class="ring-inner">20<span class="unit">%</span></div>
+                </div>
+                <div class="ring-meta">
+                  <div class="count">5 <em>/ 24</em></div>
+                  <span>casos confirmados</span>
+                  <span class="dim">19 restantes</span>
+                </div>
+              </div>
+
+              <button type="button" class="cta" data-goto="execucao">Ver execução</button>
+              <button type="button" class="cta quiet" data-goto="parar">Parar após o caso atual</button>
+
+              <div class="pair-kicker">Último par · escala 0–10</div>
+              <div class="pair">
+                <div class="cell">
+                  <span class="lbl">Sem Atlas</span>
+                  <span class="val">6,0</span>
+                </div>
+                <span class="arrow">→</span>
+                <div class="cell">
+                  <span class="lbl">Com Atlas</span>
+                  <span class="val gold">7,6</span>
+                </div>
+                <span class="delta">+1,6</span>
+              </div>
+
+              <hr class="hair">
+              <div class="rows">
+                <div class="row" data-goto="fila">
+                  <div class="glyph">∥</div>
+                  <div class="name">Fila</div>
+                  <div class="meta">16 suítes</div>
+                  <div class="chev">›</div>
+                </div>
+                <div class="row" data-goto="alertas">
+                  <div class="glyph alert">※</div>
+                  <div class="name">Alertas</div>
+                  <div class="meta alert">1 exceção</div>
+                  <div class="chev">›</div>
+                </div>
+                <div class="row" data-goto="plano">
+                  <div class="glyph">⌖</div>
+                  <div class="name">Cobertura</div>
+                  <div class="meta">3/3 suítes</div>
+                  <div class="chev">›</div>
+                </div>
+                <div class="row" data-goto="fila">
+                  <div class="glyph">◷</div>
+                  <div class="name">Próxima</div>
+                  <div class="meta">LiveCodeBench</div>
+                  <div class="chev">›</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- FROTA -->
+            <section class="panel" id="panel-frota">
+              <div class="fleet-hero">
+                <div class="kicker">Frota medida · 6 motores</div>
+                <div class="hero-title">Onde o Atlas sobe</div>
+                <div class="mult">melhor ganho · Claude Opus 4.8 · ×1,43</div>
+              </div>
+
+              <div class="fleet-item best">
+                <div class="fleet-top">
+                  <div class="eng">Claude Opus 4.8</div>
+                  <div class="x">×1,43</div>
+                </div>
+                <div class="bar-row"><span class="lbl">sem</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><span class="n">5,8</span></div>
+                <div class="bar-row"><span class="lbl">Atlas</span><div class="bar-track"><div class="bar-fill atlas" style="width:83%"></div></div><span class="n">8,3</span></div>
+              </div>
+
+              <div class="fleet-item">
+                <div class="fleet-top">
+                  <div class="eng">Kimi K2.7 · Verboo</div>
+                  <div class="x">×1,21</div>
+                </div>
+                <div class="bar-row"><span class="lbl">sem</span><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div><span class="n">6,0</span></div>
+                <div class="bar-row"><span class="lbl">Atlas</span><div class="bar-track"><div class="bar-fill atlas" style="width:76%"></div></div><span class="n">7,6</span></div>
+              </div>
+
+              <div class="fleet-item">
+                <div class="fleet-top">
+                  <div class="eng">GPT-5.6 Sol</div>
+                  <div class="x">×1,12</div>
+                </div>
+                <div class="bar-row"><span class="lbl">sem</span><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div><span class="n">7,2</span></div>
+                <div class="bar-row"><span class="lbl">Atlas</span><div class="bar-track"><div class="bar-fill atlas" style="width:81%"></div></div><span class="n">8,1</span></div>
+              </div>
+
+              <div class="fleet-item">
+                <div class="fleet-top">
+                  <div class="eng">Grok 4.5</div>
+                  <div class="x">×1,08</div>
+                </div>
+                <div class="bar-row"><span class="lbl">sem</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="n">7,0</span></div>
+                <div class="bar-row"><span class="lbl">Atlas</span><div class="bar-track"><div class="bar-fill atlas" style="width:76%"></div></div><span class="n">7,6</span></div>
+              </div>
+
+              <div class="fleet-item">
+                <div class="fleet-top">
+                  <div class="eng">Gemini 3.5 Flash</div>
+                  <div class="x down">×0,94</div>
+                </div>
+                <div class="bar-row"><span class="lbl">sem</span><div class="bar-track"><div class="bar-fill" style="width:68%"></div></div><span class="n">6,8</span></div>
+                <div class="bar-row"><span class="lbl">Atlas</span><div class="bar-track"><div class="bar-fill atlas" style="width:64%"></div></div><span class="n">6,4</span></div>
+              </div>
+
+              <div class="fleet-item">
+                <div class="fleet-top">
+                  <div class="eng">Claude Fable 5</div>
+                  <div class="x mute">não medido</div>
+                </div>
+                <div class="bar-row"><span class="lbl">sem</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="n">—</span></div>
+                <div class="bar-row"><span class="lbl">Atlas</span><div class="bar-track"><div class="bar-fill atlas" style="width:0%"></div></div><span class="n">—</span></div>
+              </div>
+            </section>
+
+            <!-- CAPACIDADES -->
+            <section class="panel" id="panel-capacidades">
+              <div class="kicker">Perfil medido · escala 0–10</div>
+
+              <div class="engine-pick" data-pick="cap">
+                <button type="button" class="trigger" aria-expanded="false" aria-haspopup="listbox">
+                  <div class="hero-title" data-engine-label>Kimi K2.7 · Verboo</div>
+                  <span class="chev-down">▾</span>
+                </button>
+                <div class="engine-menu" role="listbox">
+                  <button type="button" class="on" data-engine="kimi" data-covered="6 / 7" data-sum="0 melhoraram · 1 estável · 5 regrediram">
+                    <span>Kimi K2.7 · Verboo</span><span class="tag">atual</span>
+                  </button>
+                  <button type="button" data-engine="opus" data-covered="7 / 7" data-sum="4 melhoraram · 2 estáveis · 1 regrediu">
+                    <span>Claude Opus 4.8</span><span class="tag">×1,43</span>
+                  </button>
+                  <button type="button" data-engine="sol" data-covered="7 / 7" data-sum="3 melhoraram · 3 estáveis · 1 regrediu">
+                    <span>GPT-5.6 Sol</span><span class="tag">×1,12</span>
+                  </button>
+                  <button type="button" data-engine="grok" data-covered="5 / 7" data-sum="2 melhoraram · 2 estáveis · 1 regrediu">
+                    <span>Grok 4.5</span><span class="tag">×1,08</span>
+                  </button>
+                  <button type="button" data-engine="gem" data-covered="4 / 7" data-sum="0 melhoraram · 1 estável · 3 regrediram">
+                    <span>Gemini 3.5 Flash</span><span class="tag">×0,94</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="cap-covered" data-covered>6 <span>/ 7</span></div>
+              <div class="cap-label">capacidades cobertas</div>
+              <div class="cap-sum" data-sum>
+                <span>0 melhoraram</span>
+                <span>1 estável</span>
+                <span class="bad">5 regrediram</span>
+              </div>
+
+              <div class="cap-row" data-goto="cap-detail">
+                <div>
+                  <div class="name">Arquitetura &amp; design</div>
+                  <div class="track"><span class="dot bare" style="left:42%"></span><span class="mark atlas" style="left:34%">✦</span></div>
+                </div>
+                <div class="cap-d bad">−0,8</div>
+                <div class="chev">›</div>
+              </div>
+              <div class="cap-row" data-goto="cap-detail">
+                <div>
+                  <div class="name">Edição de código</div>
+                  <div class="track"><span class="dot bare" style="left:55%"></span><span class="mark atlas" style="left:45%">✦</span></div>
+                </div>
+                <div class="cap-d bad">−1,0</div>
+                <div class="chev">›</div>
+              </div>
+              <div class="cap-row" data-goto="cap-detail">
+                <div>
+                  <div class="name">Geração de código</div>
+                  <div class="track"><span class="dot bare" style="left:78%"></span><span class="mark atlas" style="left:61%">✦</span></div>
+                </div>
+                <div class="cap-d bad">−1,7</div>
+                <div class="chev">›</div>
+              </div>
+              <div class="cap-row" data-goto="cap-detail">
+                <div>
+                  <div class="name">Raciocínio sobre código</div>
+                  <div class="track"><span class="mark atlas" style="left:88%">✦</span></div>
+                </div>
+                <div class="cap-d ok">0</div>
+                <div class="chev">›</div>
+              </div>
+              <div class="cap-row" data-goto="cap-detail">
+                <div>
+                  <div class="name">Depuração</div>
+                  <div class="track"><span class="dot bare" style="left:72%"></span><span class="mark atlas" style="left:41%">✦</span></div>
+                </div>
+                <div class="cap-d bad">−3,1</div>
+                <div class="chev">›</div>
+              </div>
+              <div class="cap-row" data-goto="cap-detail">
+                <div>
+                  <div class="name">Uso de ferramentas</div>
+                  <div class="track"><span class="dot bare" style="left:90%"></span><span class="mark atlas" style="left:40%">✦</span></div>
+                </div>
+                <div class="cap-d bad">−5,0</div>
+                <div class="chev">›</div>
+              </div>
+            </section>
+
+            <!-- MOTOR -->
+            <section class="panel" id="panel-motor">
+              <div class="kicker">Medição parcial · um motor</div>
+
+              <div class="engine-pick" data-pick="motor">
+                <button type="button" class="trigger" aria-expanded="false" aria-haspopup="listbox">
+                  <div class="hero-title" data-engine-label>Kimi K2.7 · Verboo</div>
+                  <span class="chev-down">▾</span>
+                </button>
+                <div class="engine-menu" role="listbox">
+                  <button type="button" class="on" data-engine="kimi">
+                    <span>Kimi K2.7 · Verboo</span><span class="tag">atual</span>
+                  </button>
+                  <button type="button" data-engine="opus">
+                    <span>Claude Opus 4.8</span><span class="tag">×1,43</span>
+                  </button>
+                  <button type="button" data-engine="sol">
+                    <span>GPT-5.6 Sol</span><span class="tag">×1,12</span>
+                  </button>
+                  <button type="button" data-engine="grok">
+                    <span>Grok 4.5</span><span class="tag">×1,08</span>
+                  </button>
+                </div>
+              </div>
+
+              <p class="note" style="margin: 4px 0 22px;">
+                Nos 5 pares confirmados: 0↑ · 2↓ · saldo −4,0&nbsp;pp.
+              </p>
+
+              <div class="pair-kicker" style="color: var(--gold); letter-spacing: 0.18em;">Índice</div>
+              <div class="index-row">
+                <span class="big">7,6</span>
+                <span class="over">/10</span>
+                <span class="vs">+1,6 vs sem</span>
+              </div>
+
+              <div class="pair" style="margin-top:8px;">
+                <div class="cell"><span class="lbl">Sem Atlas</span><span class="val" style="font-size:24px;">6,0</span></div>
+                <span class="arrow">→</span>
+                <div class="cell"><span class="lbl">Com Atlas</span><span class="val gold" style="font-size:24px;">7,6</span></div>
+                <span class="delta">×1,27</span>
+              </div>
+              <p class="note" style="margin: 2px 0 4px;">cobertura 3/3 · parcial</p>
+
+              <hr class="hair">
+              <div class="pair-kicker" style="margin-top:18px;">Por suíte</div>
+              <div class="rows">
+                <div class="row" data-goto="suite">
+                  <div class="glyph">{ }</div>
+                  <div class="name">BFCL · Funções</div>
+                  <div class="meta">10 · 0</div>
+                  <div class="chev">›</div>
+                </div>
+                <div class="row" data-goto="suite">
+                  <div class="glyph">&lt;/&gt;</div>
+                  <div class="name">LiveCodeBench</div>
+                  <div class="meta">10 · 0</div>
+                  <div class="chev">›</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- IDLE -->
+            <section class="panel" id="panel-idle">
+              <div class="empty-glyph">⌖</div>
+              <div class="kicker">Arena pronta</div>
+              <div class="hero-title">Nada medindo agora</div>
+              <p class="note" style="margin: 8px 0 24px; font-family: var(--sans); font-size: 15px; color: var(--ink2); line-height: 1.45;">
+                Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado.
+              </p>
+              <button type="button" class="cta" data-goto="rodar">Rodar medição</button>
+              <hr class="hair">
+              <div class="pair-kicker" style="margin-top:16px;">Último resultado</div>
+              <div class="rows">
+                <div class="row" data-goto="motor">
+                  <div class="glyph">↗</div>
+                  <div class="name">Kimi K2.7 · Verboo</div>
+                  <div class="meta">3/3 suítes</div>
+                  <div class="chev">›</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- CONCLUÍDA -->
+            <section class="panel" id="panel-concluida">
+              <div class="empty-glyph">✓</div>
+              <div class="kicker">Concluída</div>
+              <div class="hero-title">Medição publicada</div>
+              <div class="sub">Kimi K2.7 · Verboo · 24/24 casos</div>
+              <div class="pair-kicker">Par final · escala 0–10</div>
+              <div class="pair">
+                <div class="cell"><span class="lbl">Sem Atlas</span><span class="val">6,0</span></div>
+                <span class="arrow">→</span>
+                <div class="cell"><span class="lbl">Com Atlas</span><span class="val gold">7,6</span></div>
+                <span class="delta">+1,6</span>
+              </div>
+              <button type="button" class="cta" data-goto="motor" style="margin-top:20px;">Ver resultados</button>
+              <button type="button" class="cta quiet" data-goto="rodar">Rodar novamente</button>
+              <hr class="hair">
+              <div class="rows">
+                <div class="row" data-goto="alertas">
+                  <div class="glyph alert">※</div>
+                  <div class="name">Alertas</div>
+                  <div class="meta alert">1 exceção</div>
+                  <div class="chev">›</div>
+                </div>
+                <div class="row" data-goto="plano">
+                  <div class="glyph">⌖</div>
+                  <div class="name">Cobertura</div>
+                  <div class="meta">3/3 suítes</div>
+                  <div class="chev">›</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- EXECUÇÃO -->
+            <section class="panel" id="panel-execucao">
+              <div class="kicker live"><span class="mark">✦</span> AO VIVO</div>
+              <div class="hero-title">Kimi K2.7 · Verboo</div>
+              <p class="note" style="margin: 0 0 20px; font-family: var(--sans); font-size: 14px; color: var(--ink2);">
+                Ordem, estado e progresso confirmados pelo servidor.
+              </p>
+              <div class="big-stat">
+                <span class="n">5</span>
+                <span class="u">de 24 casos</span>
+                <span class="pct">20%</span>
+              </div>
+              <button type="button" class="cta quiet" data-goto="parar">Parar após o caso atual</button>
+              <hr class="hair">
+              <div class="pair-kicker" style="margin-top:16px;">Pipeline</div>
+              <div class="pipeline">
+                <div class="st done"><div class="ic">✓</div><div class="nm">Preparar</div></div>
+                <div class="st done"><div class="ic">✓</div><div class="nm">Sem Atlas</div></div>
+                <div class="st live"><div class="ic">✦</div><div class="nm">Com Atlas</div></div>
+                <div class="st"><div class="ic">○</div><div class="nm">Consolidar</div></div>
+              </div>
+              <hr class="hair">
+              <div class="pair-kicker" style="margin-top:16px;">Corridas</div>
+              <div class="rows">
+                <div class="row">
+                  <div class="glyph" style="color:var(--gold)">▸</div>
+                  <div class="name">LiveCodeBench</div>
+                  <div class="meta" style="color:var(--gold)">ao vivo · com Atlas</div>
+                  <div class="chev"></div>
+                </div>
+                <div class="row">
+                  <div class="glyph">✓</div>
+                  <div class="name">LiveCodeBench</div>
+                  <div class="meta">concluída · sem Atlas</div>
+                  <div class="chev"></div>
+                </div>
+                <div class="row">
+                  <div class="glyph">◷</div>
+                  <div class="name">BFCL · Funções</div>
+                  <div class="meta">na fila · com Atlas</div>
+                  <div class="chev"></div>
+                </div>
+                <div class="row">
+                  <div class="glyph">◷</div>
+                  <div class="name">BFCL · Funções</div>
+                  <div class="meta">na fila · sem Atlas</div>
+                  <div class="chev"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- FILA -->
+            <section class="panel" id="panel-fila">
+              <div class="kicker live"><span class="mark">✦</span> Aguardando execução</div>
+              <div class="big-stat">
+                <span class="n">16</span>
+                <span class="u">suítes na fila</span>
+              </div>
+              <div class="rows">
+                <div class="row" data-goto="suite">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">1</div>
+                  <div class="name">LiveCodeBench</div>
+                  <div class="meta">Kimi · sem → com</div>
+                  <div class="chev">◷</div>
+                </div>
+                <div class="row" data-goto="suite">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">2</div>
+                  <div class="name">BFCL · Funções</div>
+                  <div class="meta">Kimi · sem → com</div>
+                  <div class="chev">◷</div>
+                </div>
+                <div class="row" data-goto="suite">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">3</div>
+                  <div class="name">Terminal Bench</div>
+                  <div class="meta">Kimi · sem → com</div>
+                  <div class="chev">◷</div>
+                </div>
+                <div class="row">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">4</div>
+                  <div class="name">SWE-bench Live</div>
+                  <div class="meta">Kimi · sem → com</div>
+                  <div class="chev">◷</div>
+                </div>
+                <div class="row">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">5</div>
+                  <div class="name">Inspect Evals</div>
+                  <div class="meta">Kimi · sem → com</div>
+                  <div class="chev">◷</div>
+                </div>
+                <div class="row">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">…</div>
+                  <div class="name">+11 suítes</div>
+                  <div class="meta">mesma ordem</div>
+                  <div class="chev"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ALERTAS -->
+            <section class="panel" id="panel-alertas">
+              <div class="kicker" style="color:var(--alert)">Exceções que pedem atenção</div>
+              <div class="big-stat">
+                <span class="n alert">1</span>
+                <span class="u">alerta</span>
+              </div>
+              <div class="rows">
+                <div class="row" data-goto="suite">
+                  <div class="glyph alert">↘</div>
+                  <div class="name">Gemini 3.5 Flash</div>
+                  <div class="meta alert">−0,4 · regressão</div>
+                  <div class="chev">›</div>
+                </div>
+              </div>
+              <div class="pair-kicker" style="margin-top:28px;">Publicação bloqueada</div>
+              <p class="note">há dados incompletos em 1 suíte — resultado ainda não pode ser afirmado.</p>
+            </section>
+
+            <!-- PLANO / COBERTURA -->
+            <section class="panel" id="panel-plano">
+              <div class="kicker live"><span class="mark">✦</span> Ordem de medição</div>
+              <div class="hero-title">Plano</div>
+              <div class="metrics">
+                <div class="m"><div class="n">1</div><div class="l">motor</div></div>
+                <div class="m"><div class="n">3</div><div class="l">suítes</div></div>
+                <div class="m"><div class="n">2</div><div class="l">braços</div></div>
+                <div class="m"><div class="n">6</div><div class="l">corridas</div></div>
+              </div>
+              <hr class="hair">
+              <div class="rows">
+                <div class="row">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">01</div>
+                  <div class="name">LiveCodeBench</div>
+                  <div class="meta" style="color:var(--gold)">ao vivo</div>
+                  <div class="chev">▸</div>
+                </div>
+                <div class="row">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">02</div>
+                  <div class="name">BFCL · Funções</div>
+                  <div class="meta">na fila</div>
+                  <div class="chev">◷</div>
+                </div>
+                <div class="row">
+                  <div class="glyph" style="font-family:var(--mono);font-size:10px;color:var(--ink3)">03</div>
+                  <div class="name">Terminal Bench</div>
+                  <div class="meta">na fila</div>
+                  <div class="chev">◷</div>
+                </div>
+              </div>
+              <p class="note" style="margin-top:16px;">Ordem derivada da medição em curso · sem Atlas → com Atlas · casos concluídos não são reabertos.</p>
+            </section>
+
+            <!-- CAPACIDADE DETAIL -->
+            <section class="panel" id="panel-cap-detail">
+              <div class="kicker live"><span class="mark">✦</span> Capacidade medida · escala 0–10</div>
+              <div class="hero-title">Depuração</div>
+              <div class="pair" style="margin: 16px 0 12px;">
+                <div class="cell"><span class="lbl">Sem Atlas</span><span class="val">7,2</span></div>
+                <span class="arrow">→</span>
+                <div class="cell"><span class="lbl">Com Atlas</span><span class="val gold">4,1</span></div>
+                <span class="delta" style="color:var(--alert)">−3,1</span>
+              </div>
+              <div class="track" style="height:2px;margin:18px 0 28px;position:relative;background:rgba(255,255,255,0.07)">
+                <span class="dot bare" style="left:72%"></span>
+                <span class="mark atlas" style="left:41%">✦</span>
+              </div>
+              <div class="pair-kicker">Suítes que contribuíram</div>
+              <div class="rows">
+                <div class="row" data-goto="suite">
+                  <div class="glyph">&lt;/&gt;</div>
+                  <div class="name">LiveCodeBench</div>
+                  <div class="meta">18 casos</div>
+                  <div class="chev">›</div>
+                </div>
+                <div class="row" data-goto="suite">
+                  <div class="glyph">{ }</div>
+                  <div class="name">BFCL · Funções</div>
+                  <div class="meta">6 casos</div>
+                  <div class="chev">›</div>
+                </div>
+              </div>
+              <div class="pair-kicker" style="margin-top:24px;">Proveniência</div>
+              <p class="note">24 casos somados na conta publicada. Ausência de um braço permanece não medida.</p>
+            </section>
+
+            <!-- SUÍTE -->
+            <section class="panel" id="panel-suite">
+              <div class="kicker">Suíte medida</div>
+              <div class="hero-title">LiveCodeBench</div>
+              <div class="sub">Kimi K2.7 · Verboo</div>
+              <div class="metrics">
+                <div class="m"><div class="n">6,0</div><div class="l">sem Atlas</div></div>
+                <div class="m"><div class="n" style="color:var(--gold)">7,6</div><div class="l">com Atlas</div></div>
+                <div class="m"><div class="n" style="color:var(--gold)">+1,6</div><div class="l">diferença</div></div>
+              </div>
+              <hr class="hair">
+              <p class="note" style="margin:14px 0 8px;">24 casos · braços equivalentes · mesma suíte</p>
+              <p class="note">Valores ausentes permanecem não medidos. Comparações só quando os dois braços foram publicados.</p>
+            </section>
+
+            <!-- RODAR -->
+            <section class="panel" id="panel-rodar">
+              <div class="kicker live"><span class="mark">✦</span> Nova medição</div>
+              <div class="hero-title">O que vamos medir?</div>
+              <p class="note" style="margin: 8px 0 22px; font-family: var(--sans); font-size: 14px; color: var(--ink2); line-height: 1.45;">
+                Escolha somente o necessário. Ordem e progresso aparecem quando o servidor confirmar.
+              </p>
+              <div class="pair-kicker">Motores</div>
+              <div class="chip-row">
+                <span class="chip on">Kimi K2.7</span>
+                <span class="chip">Opus 4.8</span>
+                <span class="chip">GPT-5.6</span>
+                <span class="chip">Grok 4.5</span>
+              </div>
+              <div class="pair-kicker">Suítes</div>
+              <div class="chip-row">
+                <span class="chip on">LiveCodeBench</span>
+                <span class="chip on">BFCL</span>
+                <span class="chip">Terminal</span>
+              </div>
+              <div class="pair-kicker">Braços</div>
+              <div class="chip-row">
+                <span class="chip on">sem Atlas</span>
+                <span class="chip on">com Atlas</span>
+              </div>
+              <div class="pair-kicker" style="margin-top:8px;">Plano</div>
+              <p class="note" style="margin-bottom:20px; color: var(--ink); font-family: var(--mono); font-size: 12px;">
+                1 motor · 2 suítes · 4 corridas<br>
+                <span style="color:var(--ink2)">sem Atlas → com Atlas</span>
+              </p>
+              <div class="field-lab">Operador</div>
+              <div class="field">vitor</div>
+              <div class="field-lab">Motivo</div>
+              <div class="field">medir ganho Atlas no LCB</div>
+              <button type="button" class="cta">Enfileirar medição</button>
+            </section>
+
+            <!-- PARAR -->
+            <section class="panel" id="panel-parar">
+              <div class="empty-glyph alert">■</div>
+              <div class="kicker" style="color:var(--alert)">Ação governada</div>
+              <div class="hero-title">Parar a medição?</div>
+              <p class="note" style="margin: 8px 0 22px; font-family: var(--sans); font-size: 15px; color: var(--ink2); line-height: 1.45;">
+                O caso atual termina antes da parada. Casos concluídos e resultados parciais são preservados.
+              </p>
+              <div class="field-lab">Operador</div>
+              <div class="field">quem autoriza esta parada</div>
+              <div class="field-lab">Motivo</div>
+              <div class="field tall">por que parar agora (fica no recibo)</div>
+              <button type="button" class="cta quiet">Confirmar parada após o caso</button>
+            </section>
+          </div>
+
+          <!-- Pílula agêntica: verbo da Arena — pack só de medição -->
+          <div class="agent-pill-dock">
+            <button type="button" class="agent-pill" id="agent-pill" aria-label="Pílula agêntica da Arena">
+              <span class="star" aria-hidden="true">
+                <span class="pulse"></span>
+                <span class="glyph">✦</span>
+              </span>
+              <span class="invite" id="agent-pill-invite">pergunte sobre esta medição</span>
+            </button>
+            <div class="home-indicator" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-cap" id="phone-cap">Agora · pílula + medição viva</div>
+    </div>
+  </div>
+
+<script>
+  const HUB = new Set(["agora", "frota", "capacidades", "motor", "idle", "concluida"]);
+  const PUSH = new Set(["execucao", "fila", "alertas", "plano", "cap-detail", "suite", "rodar", "parar"]);
+  const TAB_SCREENS = new Set(["agora", "frota", "capacidades", "motor"]);
+
+  const labels = {
+    agora: "Agora · medição viva",
+    frota: "Frota · ranking",
+    capacidades: "Capacidades · perfil",
+    motor: "Motor · índice",
+    idle: "Agora · idle",
+    concluida: "Agora · concluída",
+    execucao: "Execução · pipeline + corridas",
+    fila: "Fila · suítes aguardando",
+    alertas: "Alertas · exceções",
+    plano: "Plano · ordem / cobertura",
+    "cap-detail": "Capacidade · detalhe",
+    suite: "Suíte · detalhe",
+    rodar: "Folha · Rodar medição",
+    parar: "Folha · Parar"
+  };
+  const navTitle = {
+    agora: "Arena", frota: "Arena", capacidades: "Arena", motor: "Arena",
+    idle: "Arena", concluida: "Arena",
+    execucao: "Execução", fila: "Fila", alertas: "Alertas", plano: "Plano",
+    "cap-detail": "Capacidade", suite: "Suíte",
+    rodar: "Rodar medição", parar: "Parar"
+  };
+  const backLabel = {
+    execucao: "‹ Agora", fila: "‹ Agora", alertas: "‹ Agora", plano: "‹ Agora",
+    "cap-detail": "‹ Capac.", suite: "‹ Motor",
+    rodar: "‹ Arena", parar: "‹ Agora"
+  };
+  const pillByScreen = {
+    agora: { invite: "pergunte sobre esta medição" },
+    frota: { invite: "pergunte sobre a frota medida" },
+    capacidades: { invite: "pergunte sobre estas capacidades" },
+    motor: { invite: "pergunte sobre este motor" },
+    idle: { invite: "pergunte sobre a Arena" },
+    concluida: { invite: "pergunte sobre este resultado" },
+    execucao: { invite: "pergunte sobre esta execução" },
+    fila: { invite: "pergunte sobre a fila" },
+    alertas: { invite: "pergunte sobre estes alertas" },
+    plano: { invite: "pergunte sobre este plano" },
+    "cap-detail": { invite: "pergunte sobre esta capacidade" },
+    suite: { invite: "pergunte sobre esta suíte" },
+    rodar: { invite: "ajude a montar esta medição" },
+    parar: { invite: "explique o impacto de parar" }
+  };
+
+  let stack = ["agora"];
+
+  function syncPill(id) {
+    const cfg = pillByScreen[id] || pillByScreen.agora;
+    const invite = document.getElementById("agent-pill-invite");
+    if (invite) invite.textContent = cfg.invite;
+  }
+
+  function syncChrome(id) {
+    const nav = document.getElementById("nav");
+    const tabs = document.getElementById("tabs");
+    const screen = document.querySelector(".screen");
+    const back = document.getElementById("nav-back");
+    const title = document.getElementById("nav-title");
+    const isPush = PUSH.has(id);
+    const isSheet = id === "rodar" || id === "parar";
+
+    nav.classList.toggle("push", isPush);
+    tabs.classList.toggle("hidden", isPush || !TAB_SCREENS.has(id));
+    screen.classList.toggle("sheet-mode", isSheet);
+    title.textContent = navTitle[id] || "Arena";
+    back.textContent = backLabel[id] || "‹ Arena";
+
+    document.querySelectorAll(".tab").forEach(t =>
+      t.classList.toggle("on", t.dataset.screen === id)
+    );
+    document.querySelectorAll(".switches button").forEach(b =>
+      b.classList.toggle("on", b.dataset.screen === id)
+    );
+  }
+
+  function show(id, { push = false } = {}) {
+    if (!document.getElementById("panel-" + id)) return;
+    if (push) {
+      if (stack[stack.length - 1] !== id) stack.push(id);
+    } else {
+      stack = [id];
+    }
+
+    document.querySelectorAll(".panel").forEach(p =>
+      p.classList.toggle("on", p.id === "panel-" + id)
+    );
+    document.getElementById("phone-cap").textContent = labels[id] || id;
+    document.querySelectorAll(".engine-menu").forEach(m => m.classList.remove("open"));
+    syncChrome(id);
+    syncPill(id);
+  }
+
+  function pop() {
+    if (stack.length <= 1) { show("agora"); return; }
+    stack.pop();
+    const id = stack[stack.length - 1];
+    document.querySelectorAll(".panel").forEach(p =>
+      p.classList.toggle("on", p.id === "panel-" + id)
+    );
+    document.getElementById("phone-cap").textContent = labels[id] || id;
+    syncChrome(id);
+    syncPill(id);
+  }
+
+  document.getElementById("nav-back").addEventListener("click", pop);
+
+  document.getElementById("tabs").addEventListener("click", e => {
+    const b = e.target.closest("[data-screen]");
+    if (b) show(b.dataset.screen);
+  });
+
+  ["switches", "switches-push", "switches-detail"].forEach(sid => {
+    const el = document.getElementById(sid);
+    if (!el) return;
+    el.addEventListener("click", e => {
+      const b = e.target.closest("[data-screen]");
+      if (!b) return;
+      const id = b.dataset.screen;
+      if (PUSH.has(id)) {
+        stack = [HUB.has(stack[0]) ? stack[0] : "agora"];
+        show(id, { push: true });
+      } else {
+        show(id);
+      }
+    });
+  });
+
+  document.querySelector(".screen").addEventListener("click", e => {
+    const go = e.target.closest("[data-goto]");
+    if (!go) return;
+    const id = go.dataset.goto;
+    if (PUSH.has(id)) show(id, { push: true });
+    else show(id);
+  });
+
+  document.querySelectorAll(".engine-pick").forEach(pick => {
+    const trigger = pick.querySelector(".trigger");
+    const menu = pick.querySelector(".engine-menu");
+    const label = pick.querySelector("[data-engine-label]");
+    trigger.addEventListener("click", () => {
+      const open = menu.classList.toggle("open");
+      trigger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    menu.addEventListener("click", e => {
+      const opt = e.target.closest("[data-engine]");
+      if (!opt) return;
+      menu.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === opt));
+      const name = opt.querySelector("span").textContent;
+      label.textContent = name;
+      const panel = pick.closest(".panel");
+      if (panel && opt.dataset.covered) {
+        const cov = panel.querySelector("[data-covered]");
+        if (cov) {
+          const parts = opt.dataset.covered.split("/");
+          cov.innerHTML = parts[0].trim() + ' <span>/ ' + parts[1].trim() + "</span>";
+        }
+      }
+      if (panel && opt.dataset.sum) {
+        const sum = panel.querySelector("[data-sum]");
+        if (sum) {
+          const bits = opt.dataset.sum.split("·").map(s => s.trim());
+          sum.innerHTML = bits.map((b) => {
+            const bad = /regred/.test(b);
+            return `<span${bad ? ' class="bad"' : ""}>${b}</span>`;
+          }).join("\n");
+        }
+      }
+      if (panel && panel.id === "panel-capacidades") {
+        pillByScreen.capacidades.invite = "pergunte sobre " + name;
+        syncPill("capacidades");
+      }
+      if (panel && panel.id === "panel-motor") {
+        pillByScreen.motor.invite = "pergunte sobre " + name;
+        syncPill("motor");
+      }
+      menu.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>
+</body>
+</html>

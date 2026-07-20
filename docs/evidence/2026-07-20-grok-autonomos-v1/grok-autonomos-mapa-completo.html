@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Autônomos · mapa completo — hub + push + folhas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --stage: #0e151a; --bg: #1d2b34; --recessed: #15212a; --surface: #243743;
+    --ink: #d6dde2; --ink2: #95a3ac; --ink3: #677482; --sep: #2c3a43;
+    --gold: #d4a85a; --gold-veil: rgba(212,168,90,0.12); --gold-border: rgba(212,168,90,0.34);
+    --alert: #c98989; --op: #c8a363;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px; --phone-h: 852px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button:focus { outline: none; }
+  button:focus-visible { outline: 1px solid rgba(212,168,90,0.45); outline-offset: 2px; }
+  body {
+    min-height: 100vh; font-family: var(--sans); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(127,167,196,0.05), transparent 55%),
+      radial-gradient(700px 400px at 78% 100%, rgba(212,168,90,0.03), transparent 50%),
+      var(--stage);
+  }
+  .stage {
+    min-height: 100vh; display: grid;
+    grid-template-columns: minmax(280px, 400px) auto;
+    gap: 44px; align-items: start; justify-content: center;
+    padding: 36px 28px 64px;
+  }
+  .brief { max-width: 400px; position: sticky; top: 28px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 24px;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .brief .lede { margin-top: 10px; font-size: 13px; line-height: 1.55; color: var(--ink2); }
+  .brief .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .brief .rule {
+    width: 32px; height: 1px; margin: 16px 0;
+    background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.7;
+  }
+  .brief h2 {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin: 16px 0 8px;
+  }
+  .map-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px;
+    font-size: 11.5px; line-height: 1.35; color: var(--ink3);
+  }
+  .map-grid b { color: var(--ink2); font-weight: 500; }
+  .canon-box {
+    margin-top: 12px; padding: 12px 14px; border-radius: 14px;
+    border: 1px solid var(--gold-border); background: var(--gold-veil);
+  }
+  .canon-box b { display: block; font-family: var(--serif); font-size: 14px; margin-bottom: 4px; }
+  .canon-box p { font-size: 11.5px; line-height: 1.45; color: var(--ink2); }
+
+  .phone-wrap { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .switch-groups { display: flex; flex-direction: column; gap: 8px; max-width: 440px; width: 100%; }
+  .switch-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .switch-row .lab {
+    width: 100%; text-align: center;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 2px;
+  }
+  .switches button {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--ink2);
+    background: var(--recessed); border: 1px solid var(--sep);
+    border-radius: 999px; padding: 7px 10px;
+  }
+  .switches button.on {
+    color: var(--ink); border-color: rgba(214,221,226,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 52px; padding: 10px; background: #070b0e;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55); position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 52px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 4px #040608;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
+    background: var(--bg); position: relative; display: flex; flex-direction: column;
+  }
+  .status {
+    height: 46px; padding: 14px 28px 0;
+    display: flex; justify-content: space-between;
+    font-size: 12px; font-weight: 600;
+  }
+  .nav {
+    height: 50px; padding: 0 16px;
+    display: grid; grid-template-columns: 44px 1fr 44px; align-items: center;
+  }
+  .nav .orb {
+    width: 36px; height: 36px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08); font-size: 15px;
+  }
+  .nav .titles { text-align: center; }
+  .nav .titles strong {
+    display: block; font-family: var(--serif); font-size: 17px; font-weight: 600;
+  }
+  .nav .titles em {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-style: normal; font-size: 8px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
+  }
+  .scroll {
+    flex: 1; overflow-y: auto; padding: 8px 22px 118px; scrollbar-width: none;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+  .panel { display: none; }
+  .panel.on { display: block; animation: in 0.24s ease; }
+  @keyframes in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .kicker-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .kicker-row .mark {
+    color: var(--gold); font-family: var(--serif); font-size: 12px;
+    animation: breath 2.4s ease-in-out infinite;
+  }
+  @keyframes breath { 0%,100%{opacity:.55} 50%{opacity:1} }
+  .kicker-row span {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .kicker-row.quiet span { color: var(--ink3); }
+  .kicker-row.quiet .mark { display: none; }
+  .kicker-row.alert span { color: var(--alert); }
+  .kicker-row.alert .mark { color: var(--alert); animation: none; }
+
+  .hero-title {
+    font-family: var(--serif); font-weight: 600; font-size: 28px;
+    line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 8px;
+  }
+  .hero-sub {
+    font-size: 14px; line-height: 1.5; color: var(--ink2); margin-bottom: 18px;
+  }
+  .cta {
+    display: block; width: 100%; text-align: center;
+    padding: 14px 16px; border-radius: 14px;
+    background: var(--surface); border: 1px solid rgba(149,163,172,0.18);
+    color: var(--ink); font-size: 15px; font-weight: 500;
+  }
+  .cta.quiet {
+    background: transparent; border-color: rgba(149,163,172,0.2);
+    color: var(--ink2); font-size: 14px; margin-top: 8px;
+  }
+  .cta.danger { border-color: rgba(201,137,137,0.35); color: var(--alert); }
+  .cta.primary-stack { margin-top: 8px; }
+  .hair {
+    height: 1px; margin: 24px 0 18px;
+    background: linear-gradient(90deg, transparent, var(--sep), transparent);
+  }
+  .sec {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 12px;
+  }
+  .focus .name {
+    font-family: var(--serif); font-size: 20px; font-weight: 600; margin-bottom: 5px;
+  }
+  .focus .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2); margin-bottom: 8px;
+  }
+  .focus .obj {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    line-height: 1.45; color: var(--ink2);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .nav-line {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 13px 0;
+    border-bottom: 1px solid rgba(149,163,172,0.1); text-align: left;
+  }
+  .nav-line .l { font-size: 15px; font-weight: 500; }
+  .nav-line .r { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
+  .nav-line .chev { color: var(--ink3); margin-left: 8px; }
+  .metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 18px;
+  }
+  .metric b { display: block; font-family: var(--serif); font-size: 24px; font-weight: 600; }
+  .metric span {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  }
+  .row {
+    display: flex; align-items: baseline; gap: 12px; padding: 12px 0;
+    border-bottom: 1px solid rgba(149,163,172,0.1);
+  }
+  .row:last-child { border-bottom: 0; }
+  .row .glyph {
+    width: 20px; text-align: center;
+    font-family: var(--serif); font-size: 14px; color: var(--ink3);
+  }
+  .row .glyph.attn { color: var(--gold); }
+  .row .body { flex: 1; min-width: 0; }
+  .row .body .t { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+  .row .body .s { font-family: var(--mono); font-size: 11px; color: var(--ink2); }
+  .row .trail { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
+  .controls {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px;
+  }
+  .controls .cta { margin: 0; padding: 12px 6px; font-size: 13px; }
+  .stack { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .note {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    margin-top: 12px; line-height: 1.4;
+  }
+  .field {
+    margin-bottom: 14px;
+  }
+  .field label {
+    display: block; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3);
+    margin-bottom: 8px;
+  }
+  .field input, .field textarea {
+    width: 100%; border-radius: 12px; padding: 12px 14px;
+    background: var(--recessed); border: 1px solid var(--sep);
+    color: var(--ink); font-size: 14px; font-family: var(--sans);
+  }
+  .field textarea { min-height: 88px; resize: none; }
+  .receipt {
+    padding: 16px; border-radius: 14px;
+    border: 1px solid var(--gold-border); background: var(--gold-veil);
+    margin-bottom: 16px;
+  }
+  .receipt .t {
+    font-family: var(--serif); font-size: 18px; font-weight: 600; margin-bottom: 6px;
+  }
+  .receipt .s { font-size: 13px; color: var(--ink2); line-height: 1.45; }
+  .area-pill-row {
+    display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+    margin-bottom: 8px; scrollbar-width: none;
+  }
+  .area-pill-row::-webkit-scrollbar { display: none; }
+  .area-tab {
+    flex-shrink: 0; padding: 8px 12px; border-radius: 12px;
+    background: var(--recessed); border: 1px solid var(--sep);
+    font-size: 13px; color: var(--ink2);
+  }
+  .area-tab.on {
+    background: rgba(255,255,255,0.06);
+    border-color: var(--gold-border); color: var(--ink);
+  }
+
+  /* sheet overlay */
+  .sheet {
+    display: none; position: absolute; inset: 0; z-index: 8;
+    background: rgba(7,11,14,0.55); align-items: flex-end;
+  }
+  .sheet.on { display: flex; }
+  .sheet-card {
+    width: 100%; max-height: 78%;
+    background: var(--bg); border-radius: 28px 28px 0 0;
+    padding: 12px 22px 36px; overflow-y: auto;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    animation: sheetIn 0.28s ease;
+  }
+  @keyframes sheetIn {
+    from { transform: translateY(24px); opacity: 0.6; }
+    to { transform: none; opacity: 1; }
+  }
+  .sheet-grab {
+    width: 36px; height: 4px; border-radius: 999px;
+    background: rgba(214,221,226,0.22); margin: 4px auto 16px;
+  }
+
+  /* agentic pill — canon home/arena */
+  .agent-pill-dock {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+    padding: 8px 16px 22px;
+    background: linear-gradient(
+      180deg, transparent 0%, rgba(29,43,52,0.55) 22%,
+      rgba(29,43,52,0.96) 55%, var(--bg) 100%
+    );
+    pointer-events: none;
+  }
+  .agent-pill {
+    pointer-events: auto; width: 100%; min-height: 52px;
+    padding: 12px 18px; border-radius: 999px;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(21, 33, 42, 0.68);
+    backdrop-filter: blur(28px) saturate(1.18);
+    -webkit-backdrop-filter: blur(28px) saturate(1.18);
+    border: 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 10px 28px rgba(0,0,0,0.28);
+    position: relative; text-align: left; font: inherit; color: inherit;
+  }
+  .agent-pill::after {
+    content: ""; position: absolute; inset: 0; border-radius: 999px;
+    pointer-events: none; padding: 0.75px;
+    background: linear-gradient(135deg, rgba(212,168,90,0.22), rgba(212,168,90,0.04) 42%, rgba(212,168,90,0.12));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+  .agent-pill .star {
+    width: 30px; height: 30px; flex-shrink: 0;
+    position: relative; display: grid; place-items: center;
+  }
+  .agent-pill .star .glyph {
+    font-family: var(--serif); font-size: 16px; color: var(--gold);
+    line-height: 1; position: relative; z-index: 1;
+    filter: drop-shadow(0 0 5px rgba(212,168,90,0.35));
+  }
+  .agent-pill .star .pulse {
+    position: absolute; inset: 2px; border-radius: 50%;
+    background: rgba(212,168,90,0.12); filter: blur(6px);
+    animation: star-breathe 2.8s ease-in-out infinite;
+  }
+  @keyframes star-breathe {
+    0%,100%{opacity:.4;transform:scale(.92)}
+    50%{opacity:.95;transform:scale(1.18)}
+  }
+  .agent-pill .invite {
+    flex: 1; min-width: 0;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 16px; color: var(--ink3); letter-spacing: -0.01em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .home-indicator {
+    width: 128px; height: 5px; border-radius: 999px;
+    background: rgba(214,221,226,0.28); margin: 10px auto 0;
+  }
+  .screen.sheet-open .agent-pill-dock { opacity: 0; pointer-events: none; }
+
+  @media (max-width: 920px) {
+    .stage { grid-template-columns: 1fr; justify-items: center; }
+    .brief { position: static; max-width: 520px; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="brief">
+    <div class="kicker">Grok · Autônomos mapa completo</div>
+    <h1>Tudo que a superfície precisa — sem dashboard.</h1>
+    <p class="lede">
+      Hub Jobs + pushes + folhas de governança. Pílula = craft Home em
+      <em>todas</em> as telas. Só muda o convite.
+    </p>
+    <div class="rule"></div>
+    <div class="canon-box">
+      <b>Pílula pétrea</b>
+      <p>Glass + ✦ 30pt + itálico 16 + fio 0,75pt. Zero segunda família. Navegação = linhas › ou CTA retangular.</p>
+    </div>
+    <h2>Mapa (18 superfícies)</h2>
+    <div class="map-grid">
+      <div><b>Hub aguardando</b><br>decisões pedem você</div>
+      <div><b>Hub quieto</b><br>frota em silêncio</div>
+      <div><b>Hub ao vivo</b><br>ciclo em execução</div>
+      <div><b>Área</b><br>missão + entregas</div>
+      <div><b>Trocar área</b><br>picker de instâncias</div>
+      <div><b>Decisões</b><br>inbox + ordens</div>
+      <div><b>Decisão</b><br>um item + ações</div>
+      <div><b>Frota</b><br>workers + histórico</div>
+      <div><b>Achados</b><br>ledger de risco</div>
+      <div><b>Orçamentos</b><br>limites públicos</div>
+      <div><b>Ciclo</b><br>entrega comprovada</div>
+      <div><b>Incidente</b><br>fila em atenção</div>
+      <div><b>Ritmo</b><br>dia aprendido</div>
+      <div><b>Pausar</b><br>folha ator+motivo</div>
+      <div><b>Transferir</b><br>handoff governado</div>
+      <div><b>Encerrar</b><br>kill com recibo</div>
+      <div><b>Ensaio / Real</b><br>start governado</div>
+      <div><b>Recibo</b><br>prova da ação</div>
+    </div>
+    <h2>Como usar</h2>
+    <div class="map-grid" style="grid-template-columns:1fr">
+      <div>Chips abaixo · toques no telefone · voltar recupera a pilha · folhas sobem por baixo.</div>
+    </div>
+  </aside>
+
+  <div class="phone-wrap">
+    <div class="switch-groups switches" id="switches">
+      <div class="switch-row">
+        <div class="lab">Hub</div>
+        <button type="button" class="on" data-panel="hub-await">Aguardando</button>
+        <button type="button" data-panel="hub-quiet">Quieto</button>
+        <button type="button" data-panel="hub-live">Ao vivo</button>
+      </div>
+      <div class="switch-row">
+        <div class="lab">Push</div>
+        <button type="button" data-panel="area">Área</button>
+        <button type="button" data-panel="areas">Áreas</button>
+        <button type="button" data-panel="decisoes">Decisões</button>
+        <button type="button" data-panel="decisao">1 decisão</button>
+        <button type="button" data-panel="frota">Frota</button>
+        <button type="button" data-panel="achados">Achados</button>
+        <button type="button" data-panel="orcamentos">Orçamentos</button>
+        <button type="button" data-panel="ciclo">Ciclo</button>
+        <button type="button" data-panel="incidente">Incidente</button>
+        <button type="button" data-panel="ritmo">Ritmo</button>
+      </div>
+      <div class="switch-row">
+        <div class="lab">Folhas</div>
+        <button type="button" data-sheet="pausar">Pausar</button>
+        <button type="button" data-sheet="transferir">Transferir</button>
+        <button type="button" data-sheet="encerrar">Encerrar</button>
+        <button type="button" data-sheet="ensaio">Ensaio</button>
+        <button type="button" data-sheet="executar">Real</button>
+        <button type="button" data-sheet="recibo">Recibo</button>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="screen" id="screen">
+        <div class="status"><span>14:18</span><span>■■■□ 43%</span></div>
+        <div class="nav">
+          <button type="button" class="orb" id="navBack" aria-label="Voltar">‹</button>
+          <div class="titles">
+            <strong id="navTitle">Autônomos</strong>
+            <em id="navSub">Área própria · 24/7</em>
+          </div>
+          <button type="button" class="orb" aria-label="Atualizar">↻</button>
+        </div>
+
+        <div class="scroll" id="scroll">
+          <section class="panel on" id="hub-await">
+            <div class="kicker-row"><span class="mark">✦</span><span>Aguardando você</span></div>
+            <div class="hero-title">6 decisões<br>pedem você</div>
+            <p class="hero-sub">Só o que o humano pode resolver. O resto segue em silêncio.</p>
+            <button type="button" class="cta" data-goto="decisoes">Ver decisões</button>
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · autonomia 0/2</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas.</div>
+            </div>
+            <button type="button" class="nav-line" data-goto="area"><span class="l">Ver área</span><span><span class="r">dev · forge</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="frota"><span class="l">Ver frota</span><span><span class="r">5 em repouso</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="ritmo"><span class="l">Ritmo do dia</span><span><span class="r">termina ~20:13</span><span class="chev">›</span></span></button>
+</section>
+          <section class="panel " id="hub-quiet">
+            <div class="kicker-row quiet"><span>Em repouso</span></div>
+            <div class="hero-title">Frota quieta</div>
+            <p class="hero-sub">Nenhuma decisão pendente. Silêncio é o produto.</p>
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · 200 ciclos</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas.</div>
+            </div>
+            <button type="button" class="nav-line" data-goto="area"><span class="l">Ver área</span><span><span class="r">dev · forge</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="frota"><span class="l">Ver frota</span><span><span class="r">5 em repouso</span><span class="chev">›</span></span></button>
+</section>
+          <section class="panel " id="hub-live">
+            <div class="kicker-row"><span class="mark">✦</span><span>Ao vivo</span></div>
+            <div class="hero-title">Ciclo 149<br>em medição</div>
+            <p class="hero-sub">Agentic Engineering OS · lock retido · prova ainda aberta.</p>
+            <button type="button" class="cta" data-goto="area">Ver área</button>
+            <button type="button" class="cta quiet" data-sheet="pausar">Pausar após o passo atual</button>
+            <div class="hair"></div>
+            <button type="button" class="nav-line" data-goto="frota"><span class="l">Frota</span><span><span class="r">1 ativo · 4 em espera</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="incidente"><span class="l">Saúde da fila</span><span><span class="r">estável</span><span class="chev">›</span></span></button>
+</section>
+          <section class="panel " id="area">
+            <div class="kicker-row quiet"><span>Em espera</span></div>
+            <div class="hero-title">Agentic Engineering OS</div>
+            <p class="hero-sub">dev · forge · autonomia 0/2</p>
+            <p class="hero-sub" style="margin-top:-10px">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas — do pedido à prova no device.</p>
+            <div class="metrics">
+              <div class="metric"><b>200</b><span>ciclos</span></div>
+              <div class="metric"><b>116</b><span>tarefas</span></div>
+              <div class="metric"><b>3</b><span>inbox</span></div>
+            </div>
+            <button type="button" class="nav-line" data-goto="decisoes"><span class="l">Ordens e inbox</span><span><span class="r">116 · 3</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="achados"><span class="l">Achados</span><span><span class="r">17</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="orcamentos"><span class="l">Orçamentos</span><span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="areas"><span class="l">Trocar área</span><span><span class="r">3 instâncias</span><span class="chev">›</span></span></button>
+            <div class="hair"></div>
+            <div class="sec">Entregas · 3 de 24</div>
+            <button type="button" class="row" data-goto="ciclo" style="width:100%;text-align:left">
+              <div class="glyph">⌖</div>
+              <div class="body"><div class="t">ciclo 148</div><div class="s">merge comprovado</div></div>
+              <div class="trail">há 49d ›</div>
+            </button>
+            <div class="row"><div class="glyph">⌖</div><div class="body"><div class="t">ciclo 147</div><div class="s">merge comprovado</div></div><div class="trail">há 49d</div></div>
+            <div class="hair"></div>
+            <div class="sec">Governança</div>
+            <div class="controls">
+              <button type="button" class="cta quiet" data-sheet="pausar">Pausar</button>
+              <button type="button" class="cta quiet" data-sheet="transferir">Transferir</button>
+              <button type="button" class="cta danger" data-sheet="encerrar">Encerrar</button>
+            </div>
+            <div class="stack">
+              <button type="button" class="cta quiet" data-sheet="ensaio">Novo ciclo · ensaio</button>
+              <button type="button" class="cta" data-sheet="executar">Executar de verdade</button>
+            </div>
+            <p class="note">Toda ação destrutiva ou de spend pede ator + motivo e deixa recibo.</p>
+</section>
+          <section class="panel " id="areas">
+            <div class="kicker-row quiet"><span>Instâncias</span></div>
+            <div class="hero-title">3 áreas</div>
+            <p class="hero-sub">Escolha qual missão governa o foco. Frota continua global.</p>
+            <button type="button" class="nav-line" data-goto="area"><span class="l">Agentic Engineering OS</span><span><span class="r">em espera</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="area"><span class="l">Fábrica do Loop</span><span><span class="r">em espera</span><span class="chev">›</span></span></button>
+            <button type="button" class="nav-line" data-goto="area"><span class="l">Atlas Native</span><span><span class="r">em espera</span><span class="chev">›</span></span></button>
+</section>
+          <section class="panel " id="decisoes">
+            <div class="kicker-row"><span class="mark">✦</span><span>Decisões</span></div>
+            <div class="hero-title">6 itens</div>
+            <p class="hero-sub">Inbox e ordens que bloqueiam o ciclo.</p>
+            <div class="sec">Inbox</div>
+            <button type="button" class="row" data-goto="decisao" style="width:100%;text-align:left">
+              <div class="glyph attn">※</div>
+              <div class="body"><div class="t">Revisar patch de heal no grafo</div><div class="s">risco alto · AEOS</div></div>
+              <div class="trail">agora ›</div>
+            </button>
+            <div class="row"><div class="glyph attn">※</div><div class="body"><div class="t">Autorizar spend Codex</div><div class="s">risco médio · frota</div></div><div class="trail">há 2h</div></div>
+            <div class="row"><div class="glyph">※</div><div class="body"><div class="t">Confirmar handoff Mac → cloud</div><div class="s">risco baixo</div></div><div class="trail">há 1d</div></div>
+            <div class="hair"></div>
+            <div class="sec">Ordens</div>
+            <div class="row"><div class="glyph">◷</div><div class="body"><div class="t">Fechar ciclo 149 com prova device</div><div class="s">aguarda assinatura</div></div><div class="trail">bloqueia</div></div>
+            <div class="row"><div class="glyph">◷</div><div class="body"><div class="t">Promover ensaio → real</div><div class="s">AEOS</div></div><div class="trail">na fila</div></div>
+            <div class="row"><div class="glyph">◷</div><div class="body"><div class="t">Drenar worker Claude ocioso</div><div class="s">frota</div></div><div class="trail">na fila</div></div>
+</section>
+          <section class="panel " id="decisao">
+            <div class="kicker-row"><span class="mark">✦</span><span>Decisão</span></div>
+            <div class="hero-title">Revisar patch de heal no grafo</div>
+            <p class="hero-sub">Risco alto · Agentic Engineering OS · chegou agora.</p>
+            <div class="sec">O que pede</div>
+            <p class="hero-sub">Aceitar o patch reverte 2 desvios sem retorno e abre prova no device. Rejeitar mantém o ciclo aberto.</p>
+            <div class="stack">
+              <button type="button" class="cta" data-sheet="recibo">Aceitar</button>
+              <button type="button" class="cta quiet" data-sheet="recibo">Pedir mudanças</button>
+              <button type="button" class="cta quiet" data-sheet="recibo">Adiar</button>
+              <button type="button" class="cta danger" data-sheet="recibo">Rejeitar</button>
+            </div>
+            <p class="note">Cada escolha grava recibo com ator e motivo.</p>
+</section>
+          <section class="panel " id="frota">
+            <div class="kicker-row quiet"><span>Frota</span></div>
+            <div class="hero-title">5 em repouso</div>
+            <p class="hero-sub">Por decisão sua · US$&nbsp;0,00. Fila estável · 500 prontas.</p>
+            <div class="sec">Workers</div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">ai-worker.claude</div><div class="s">desligado por você</div></div><div class="trail">há 16d</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">reconciler</div><div class="s">parado · não desejado</div></div><div class="trail">há 16d</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">codex-worker</div><div class="s">gasto vetado por você</div></div><div class="trail">há 16d</div></div>
+            <div class="hair"></div>
+            <div class="sec">Histórico</div>
+            <div class="row"><div class="glyph attn">▸</div><div class="body"><div class="t">parado</div><div class="s">ai-worker.claude · Claude</div></div><div class="trail">há 16d</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">desligado por você</div><div class="s">não desejado — decisão sua</div></div><div class="trail">há 16d</div></div>
+            <button type="button" class="nav-line" data-goto="incidente" style="margin-top:8px"><span class="l">Saúde da fila</span><span><span class="r">estável</span><span class="chev">›</span></span></button>
+</section>
+          <section class="panel " id="achados">
+            <div class="kicker-row quiet"><span>Achados</span></div>
+            <div class="hero-title">17 públicos</div>
+            <p class="hero-sub">Somente o que o servidor publicou. Sem path interno.</p>
+            <div class="row"><div class="glyph attn">※</div><div class="body"><div class="t">Heal órfão sem retorno</div><div class="s">risco alto · grafo</div></div><div class="trail">aberto</div></div>
+            <div class="row"><div class="glyph">※</div><div class="body"><div class="t">Contrato digest sem next_at</div><div class="s">risco médio · C19</div></div><div class="trail">aberto</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">Warning StrictConcurrency</div><div class="s">risco baixo</div></div><div class="trail">triado</div></div>
+</section>
+          <section class="panel " id="orcamentos">
+            <div class="kicker-row quiet"><span>Orçamentos</span></div>
+            <div class="hero-title">Limites públicos</div>
+            <p class="hero-sub">Ausência permanece ausência — sem inventar teto.</p>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">Spend Codex</div><div class="s">vetado por você</div></div><div class="trail">US$ 0</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">Ciclos / dia</div><div class="s">sem teto publicado</div></div><div class="trail">—</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">Device proof</div><div class="s">obrigatório no real</div></div><div class="trail">on</div></div>
+</section>
+          <section class="panel " id="ciclo">
+            <div class="kicker-row quiet"><span>Entrega</span></div>
+            <div class="hero-title">Ciclo 148</div>
+            <p class="hero-sub">Merge comprovado · há 49 dias · AEOS</p>
+            <div class="receipt">
+              <div class="t">Prova</div>
+              <div class="s">outcome merged · merge_performed · hash publicado. Plano ou tentativa não entram aqui.</div>
+            </div>
+            <button type="button" class="nav-line"><span class="l">Abrir no grafo</span><span><span class="chev">›</span></span></button>
+            <button type="button" class="cta quiet" data-goto="area">Voltar à área</button>
+</section>
+          <section class="panel " id="incidente">
+            <div class="kicker-row alert"><span class="mark">※</span><span>Atenção</span></div>
+            <div class="hero-title">Fila em observação</div>
+            <p class="hero-sub">Exemplo de incidente. Quando saudável, esta tela nem aparece no hub.</p>
+            <div class="receipt" style="border-color:rgba(201,137,137,0.35);background:rgba(201,137,137,0.08)">
+              <div class="t">Lease atrasada</div>
+              <div class="s">Knowledge Sync sem heartbeat há 4 min. Nenhuma escrita nova até recuperar ou transferir.</div>
+            </div>
+            <div class="stack">
+              <button type="button" class="cta" data-sheet="transferir">Transferir missão</button>
+              <button type="button" class="cta quiet">Aguardar 5 min</button>
+            </div>
+</section>
+          <section class="panel " id="ritmo">
+            <div class="kicker-row quiet"><span>Ritmo</span></div>
+            <div class="hero-title">Seu dia</div>
+            <p class="hero-sub">Aprendido pelo uso. Sem números inventados de manhã.</p>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">Dia termina</div><div class="s">janela aprendida</div></div><div class="trail">~20:13</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">Proposta noturna</div><div class="s">quando houve trabalho hoje</div></div><div class="trail">21h</div></div>
+            <button type="button" class="cta quiet">Silenciar propostas</button>
+</section>
+
+        </div>
+
+        <div class="agent-pill-dock">
+          <button type="button" class="agent-pill" id="pill" aria-label="Pílula agêntica">
+            <div class="star" aria-hidden="true"><div class="pulse"></div><span class="glyph">✦</span></div>
+            <span class="invite" id="pillInvite">o que preciso decidir?</span>
+          </button>
+          <div class="home-indicator" aria-hidden="true"></div>
+        </div>
+
+        <!-- FOLHAS -->
+        <div class="sheet" id="sheet" data-active="">
+          <div class="sheet-card" id="sheetCard"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const invites = {
+  "hub-await":"o que preciso decidir?","hub-quiet":"pergunte sobre a frota","hub-live":"como está este ciclo?",
+  "area":"pergunte sobre esta área","areas":"qual área governa agora?","decisoes":"o que preciso decidir?",
+  "decisao":"ajude a decidir isto","frota":"pergunte sobre a frota","achados":"explique estes achados",
+  "orcamentos":"quais limites valem?","ciclo":"o que este ciclo entregou?","incidente":"o que precisa de mim?",
+  "ritmo":"como está meu ritmo?"
+};
+const titles = {
+  "hub-await":["Autônomos","Área própria · 24/7"],"hub-quiet":["Autônomos","Área própria · 24/7"],
+  "hub-live":["Autônomos","Ao vivo"],"area":["Área","Agentic Engineering OS"],"areas":["Áreas","3 instâncias"],
+  "decisoes":["Decisões","6 pendentes"],"decisao":["Decisão","risco alto"],"frota":["Frota","5 em repouso"],
+  "achados":["Achados","17 públicos"],"orcamentos":["Orçamentos","limites"],"ciclo":["Ciclo 148","entrega"],
+  "incidente":["Atenção","fila"],"ritmo":["Ritmo","seu dia"]
+};
+const sheets = {
+  pausar: {
+    title: "Pausar",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Pausar área</div>
+      <p class="hero-sub">Para após o passo atual. Lock liberado com recibo.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo auditável</label><textarea>pausar AEOS para revisão humana do heal</textarea></div>
+      <button type="button" class="cta" data-sheet="recibo">Confirmar pausa</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  transferir: {
+    title: "Transferir",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Transferir missão</div>
+      <p class="hero-sub">Handoff só depois do alvo reivindicar. Host especulativo não aparece.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>mover AEOS para runtime com device desbloqueado</textarea></div>
+      <button type="button" class="cta" data-sheet="recibo">Pedir handoff</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  encerrar: {
+    title: "Encerrar",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Encerrar</div>
+      <p class="hero-sub">Kill switch. Irreversível sem nova autorização.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>encerrar área após prova no device</textarea></div>
+      <button type="button" class="cta danger" data-sheet="recibo">Encerrar de verdade</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  ensaio: {
+    title: "Ensaio",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Novo ciclo · ensaio</div>
+      <p class="hero-sub">Sem spend real. CTA quieto — ouro não vende o botão.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>ensaio do ciclo 150 antes do real</textarea></div>
+      <button type="button" class="cta" data-sheet="recibo">Rodar ensaio</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  executar: {
+    title: "Real",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Executar de verdade</div>
+      <p class="hero-sub">Spend e merge possíveis. Exige autoridade explícita.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>ciclo 150 com prova device obrigatória</textarea></div>
+      <button type="button" class="cta" data-sheet="recibo">Executar</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  recibo: {
+    title: "Recibo",
+    body: `<div class="sheet-grab"></div>
+      <div class="receipt"><div class="t">Recibo gravado</div>
+      <div class="s">Ação aceita pelo servidor · hash público · ator vitor · motivo auditável. A casca não inventa sucesso.</div></div>
+      <button type="button" class="cta" data-close-sheet>Fechar</button>`
+  }
+};
+
+const hub = new Set(["hub-await","hub-quiet","hub-live"]);
+let current = "hub-await";
+let stack = [];
+
+function show(id) {
+  current = id;
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === id));
+  document.querySelectorAll("#switches button[data-panel]").forEach(b => b.classList.toggle("on", b.dataset.panel === id));
+  document.getElementById("pillInvite").textContent = invites[id] || "pergunte sobre a frota";
+  const [t,s] = titles[id] || ["Autônomos","Área própria · 24/7"];
+  document.getElementById("navTitle").textContent = t;
+  document.getElementById("navSub").textContent = s;
+  document.getElementById("scroll").scrollTop = 0;
+}
+
+function openSheet(key) {
+  const s = sheets[key]; if (!s) return;
+  const sheet = document.getElementById("sheet");
+  document.getElementById("sheetCard").innerHTML = s.body;
+  sheet.classList.add("on");
+  document.getElementById("screen").classList.add("sheet-open");
+  document.querySelectorAll("#switches button[data-sheet]").forEach(b => b.classList.toggle("on", b.dataset.sheet === key));
+}
+function closeSheet() {
+  document.getElementById("sheet").classList.remove("on");
+  document.getElementById("screen").classList.remove("sheet-open");
+  document.querySelectorAll("#switches button[data-sheet]").forEach(b => b.classList.remove("on"));
+}
+
+document.getElementById("switches").addEventListener("click", e => {
+  const p = e.target.closest("button[data-panel]");
+  if (p) { closeSheet(); stack = []; show(p.dataset.panel); return; }
+  const sh = e.target.closest("button[data-sheet]");
+  if (sh) openSheet(sh.dataset.sheet);
+});
+
+document.getElementById("screen").addEventListener("click", e => {
+  if (e.target.closest("[data-close-sheet]")) { closeSheet(); return; }
+  const sh = e.target.closest("[data-sheet]");
+  if (sh) { openSheet(sh.dataset.sheet); return; }
+  const go = e.target.closest("[data-goto]");
+  if (!go) return;
+  if (hub.has(current) || !hub.has(go.dataset.goto)) stack.push(current);
+  closeSheet();
+  show(go.dataset.goto);
+});
+
+document.getElementById("navBack").addEventListener("click", () => {
+  if (document.getElementById("sheet").classList.contains("on")) { closeSheet(); return; }
+  if (stack.length) { show(stack.pop()); return; }
+  if (!hub.has(current)) show("hub-await");
+});
+</script>
+</body>
+</html>

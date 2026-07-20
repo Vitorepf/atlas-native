@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Código · Grafo AX — mockup Grok v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --stage: #0c1217;
+    --bg: #1d2b34;
+    --recessed: #15212a;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #2c3a43;
+    --gold: #d4a85a;
+    --alert: #e08c8c;
+    --prussian: #7fa7c4;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+    --row: 54px;
+    --gx: 96px;
+    --x0: 28px;
+    --x1: 56px;
+    --x2: 84px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(800px 420px at 50% 0%, rgba(212,168,90,0.04), transparent 55%),
+      var(--stage);
+    display: grid;
+    place-items: center;
+    padding: 40px 20px;
+  }
+
+  .phone {
+    width: var(--phone-w);
+    height: var(--phone-h);
+    border-radius: 52px;
+    padding: 10px;
+    background: #070b0e;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55);
+    position: relative;
+  }
+  .phone::before {
+    content: "";
+    position: absolute; inset: 0; border-radius: 52px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 4px #040608;
+  }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 42px;
+    overflow: hidden;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .island {
+    position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+    width: 116px; height: 33px; background: #000; border-radius: 20px; z-index: 6;
+  }
+
+  /* —— chrome —— */
+  .status {
+    height: 50px; padding: 13px 26px 0;
+    display: flex; justify-content: space-between;
+    font-size: 15px; font-weight: 600; flex-shrink: 0;
+  }
+  .status .r { font-size: 12px; font-weight: 500; color: var(--ink2); }
+
+  .nav {
+    height: 40px; padding: 0 14px;
+    display: grid; grid-template-columns: 36px 1fr auto; align-items: center;
+    flex-shrink: 0;
+  }
+  .back {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: grid; place-items: center; color: var(--ink2);
+    background: rgba(21,33,42,0.65);
+    border: 1px solid rgba(44,58,67,0.95);
+  }
+  .nav h1 {
+    text-align: center; font-size: 17px; font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .repo {
+    font-family: var(--mono); font-size: 9.5px; color: var(--ink3);
+    letter-spacing: 0.02em;
+    padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--sep);
+  }
+
+  /* —— head —— */
+  .head {
+    padding: 2px 16px 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+  .now {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(212,168,90,0.75);
+  }
+
+  /* cápsula editorial — não “alerta de sistema” */
+  .capsule {
+    display: flex; align-items: baseline; gap: 0;
+    padding: 0;
+    border: none; background: none;
+  }
+  .capsule .n {
+    font-family: var(--serif); font-weight: 600; font-size: 22px;
+    color: var(--alert); letter-spacing: -0.02em; line-height: 1;
+  }
+  .capsule .copy {
+    margin-left: 8px;
+    font-size: 12px; font-weight: 500; color: var(--ink2);
+    line-height: 1.25;
+  }
+  .capsule .copy em {
+    font-family: var(--serif); font-style: italic; color: var(--alert);
+    font-weight: 500;
+  }
+  .capsule-rule {
+    width: 28px; height: 1px; margin-top: -2px;
+    background: linear-gradient(90deg, var(--alert), transparent);
+    opacity: 0.55;
+  }
+
+  .chips {
+    display: flex; gap: 6px; width: 100%;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+  .chip {
+    flex-shrink: 0;
+    font-size: 11px; font-weight: 500; color: var(--ink3);
+    padding: 5px 10px; border-radius: 999px;
+    border: 1px solid transparent;
+    background: rgba(21,33,42,0.55);
+  }
+  .chip b {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    margin-left: 4px; opacity: 0.65;
+  }
+  .chip.on {
+    color: var(--ink);
+    border-color: rgba(212,168,90,0.35);
+    background: rgba(212,168,90,0.07);
+  }
+  .chip.warn {
+    color: var(--alert);
+    border-color: rgba(224,140,140,0.28);
+    background: rgba(224,140,140,0.06);
+  }
+
+  /* —— graph —— */
+  .scroll {
+    flex: 1; overflow: hidden; position: relative;
+    mask-image: linear-gradient(#000 calc(100% - 78px), transparent);
+  }
+  .graph { position: relative; padding-bottom: 100px; }
+
+  .topo {
+    position: absolute; left: 0; top: 0;
+    width: var(--gx); height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  .rows { position: relative; z-index: 1; }
+  .row {
+    display: grid;
+    grid-template-columns: var(--gx) 1fr;
+    height: var(--row);
+    align-items: center;
+  }
+
+  .gutter { position: relative; height: 100%; }
+
+  .mark {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    display: grid;
+    place-items: center;
+  }
+  .mark.t { left: var(--x0); }
+  .mark.d1 { left: var(--x1); }
+  .mark.d2 { left: var(--x2); }
+
+  .mark.star svg {
+    display: block;
+    width: 13px; height: 13px;
+    filter: drop-shadow(0 0 4px rgba(212,168,90,0.4));
+  }
+  .mark.star.head svg {
+    width: 15px; height: 15px;
+    filter: drop-shadow(0 0 7px rgba(212,168,90,0.55));
+  }
+  .mark.star.dim { opacity: 0.38; }
+  .mark.star.dim svg { filter: none; }
+
+  .mark.dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    box-shadow: 0 0 0 2.5px var(--bg);
+  }
+  .mark.dot.alert {
+    background: var(--alert);
+    box-shadow: 0 0 0 2.5px var(--bg), 0 0 8px rgba(224,140,140,0.35);
+  }
+  .mark.dot.side {
+    background: var(--prussian);
+    box-shadow: 0 0 0 2.5px var(--bg), 0 0 7px rgba(127,167,196,0.3);
+  }
+
+  .body { padding: 0 18px 0 0; min-width: 0; }
+  .title {
+    font-size: 13.5px; font-weight: 500; letter-spacing: -0.015em;
+    line-height: 1.25; color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .meta {
+    margin-top: 3px;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--ink3); min-width: 0;
+  }
+  .meta .who { color: var(--ink2); flex-shrink: 0; }
+  .meta .t { font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .tag {
+    font-family: var(--mono); font-size: 9px;
+    padding: 1.5px 6px; border-radius: 999px;
+    max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    flex-shrink: 1; min-width: 0;
+  }
+  .tag.main {
+    color: var(--gold);
+    border: 1px solid rgba(212,168,90,0.28);
+    background: rgba(212,168,90,0.07);
+  }
+  .tag.orphan {
+    color: var(--alert);
+    border: 1px solid rgba(224,140,140,0.3);
+    background: rgba(224,140,140,0.08);
+  }
+  .tag.side {
+    color: var(--prussian);
+    border: 1px solid rgba(127,167,196,0.28);
+    background: rgba(127,167,196,0.08);
+  }
+  .tag.back {
+    color: var(--ink2);
+    border: 1px solid rgba(149,163,172,0.22);
+    background: rgba(149,163,172,0.06);
+  }
+
+  .ask-wrap {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 12px 16px 26px;
+    background: linear-gradient(180deg, transparent, rgba(29,43,52,0.96) 32%, var(--bg));
+  }
+  .ask {
+    display: flex; align-items: center; gap: 10px;
+    min-height: 46px; padding: 0 15px; border-radius: 999px;
+    background: rgba(21,33,42,0.82);
+    border: 1px solid rgba(44,58,67,0.95);
+  }
+  .ask .glyph {
+    width: 14px; height: 14px; flex-shrink: 0;
+    filter: drop-shadow(0 0 5px rgba(212,168,90,0.45));
+  }
+  .ask .ph {
+    font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink3);
+  }
+  .home {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 4px; border-radius: 4px;
+    background: rgba(214,221,226,0.24);
+  }
+</style>
+</head>
+<body>
+  <!--
+    Geometria (row h = 54). Centro da row i = i*54 + 27.
+    Lanes: trunk x=28, orphan x=56, returned x=84
+    Rows:
+      0 HEAD trunk
+      1 orphan tip (d1)
+      2 trunk
+      3 merge trunk (retorno)
+      4 side tip (d2)
+      5 trunk
+      6 trunk = orphan fork from trunk
+      7 trunk
+      8 trunk = side fork from trunk
+      9–10 past trunk
+  -->
+  <div class="phone">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="status"><span>16:47</span><div class="r">LTE · 52</div></div>
+
+      <div class="nav">
+        <div class="back" aria-hidden="true">
+          <svg width="9" height="14" viewBox="0 0 9 14" fill="none"><path d="M7.5 1.5L2 7l5.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h1>Grafo</h1>
+        <div class="repo">atlas-native</div>
+      </div>
+
+      <div class="head">
+        <div class="now">agora · head</div>
+        <div class="capsule" role="status">
+          <span class="n">2</span>
+          <span class="copy">desvios · <em>1 sem retorno</em></span>
+        </div>
+        <div class="capsule-rule" aria-hidden="true"></div>
+        <div class="chips">
+          <span class="chip on">todos <b>11</b></span>
+          <span class="chip">trunk <b>8</b></span>
+          <span class="chip warn">desvios <b>2</b></span>
+          <span class="chip">curados <b>0</b></span>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="graph">
+          <svg class="topo" viewBox="0 0 96 594" preserveAspectRatio="none" aria-hidden="true">
+            <!-- trunk -->
+            <path d="M28 0 V594" stroke="#d4a85a" stroke-width="1.25" opacity="0.42"/>
+            <!-- orphan: tip exatamente em (56,81) — mesmo centro do .mark.d1 -->
+            <path d="M56 81 V327 C56 343, 28 343, 28 351" stroke="#e08c8c" stroke-width="1.4" fill="none" opacity="0.82"/>
+            <circle cx="56" cy="81" r="1.2" fill="#e08c8c" opacity="0"/>
+            <!-- returned: merge (28,189) · side tip (84,243) · fork (28,459) -->
+            <path d="M28 189 C28 207, 84 207, 84 225 V435 C84 451, 28 451, 28 459" stroke="#7fa7c4" stroke-width="1.4" fill="none" opacity="0.75"/>
+            <circle cx="84" cy="243" r="1.2" fill="#7fa7c4" opacity="0"/>
+          </svg>
+
+          <div class="rows">
+            <!-- 0 -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star head">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">polish(ui) — home artesanal · pílula viva</div>
+                <div class="meta"><span class="who">Grok 4.5</span><span>·</span><span class="t">12m</span><span class="tag main">main</span></div>
+              </div>
+            </div>
+
+            <!-- 1 orphan tip -->
+            <div class="row">
+              <div class="gutter"><span class="mark d1 dot alert"></span></div>
+              <div class="body">
+                <div class="title">WIP — experimentação fora da main</div>
+                <div class="meta"><span class="tag orphan">sem retorno</span><span class="tag orphan">hungry-cartwright…</span><span class="t">3h</span></div>
+              </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">feat(ui) — Arena Premium · cockpit Agora</div>
+                <div class="meta"><span class="who">Fable 5</span><span>·</span><span class="t">4h</span></div>
+              </div>
+            </div>
+
+            <!-- 3 merge -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">Merge pull request #1 → main</div>
+                <div class="meta"><span class="tag back">retorno</span><span class="t">8h</span></div>
+              </div>
+            </div>
+
+            <!-- 4 side tip — ON lane x2 -->
+            <div class="row">
+              <div class="gutter"><span class="mark d2 dot side"></span></div>
+              <div class="body">
+                <div class="title">plano elite 24×7 — rascunho de obra</div>
+                <div class="meta"><span class="tag side">cursor/plano-elite…</span><span class="t">9h</span></div>
+              </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">fix(a11y) — grafo · cada elemento com voz</div>
+                <div class="meta"><span class="who">Fable 5</span><span>·</span><span class="t">11h</span></div>
+              </div>
+            </div>
+
+            <!-- 6 orphan fork -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">docs(obra) — registro §7 · busca limpa</div>
+                <div class="meta"><span class="who">Fable 5</span><span>·</span><span class="t">14h</span></div>
+              </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">fix(ui) — Capacidades re-busca ao abrir</div>
+                <div class="meta"><span class="who">fix(ui)</span><span>·</span><span class="t">18h</span></div>
+              </div>
+            </div>
+
+            <!-- 8 side fork -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body">
+                <div class="title">feat(core) — decode backlog · Arena</div>
+                <div class="meta"><span class="who">Codex</span><span>·</span><span class="t">1d</span></div>
+              </div>
+            </div>
+
+            <!-- 9 -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star dim">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body" style="opacity:.55">
+                <div class="title">save</div>
+                <div class="meta"><span class="who">Vitor Freire</span><span>·</span><span class="t">2d</span></div>
+              </div>
+            </div>
+
+            <!-- 10 -->
+            <div class="row">
+              <div class="gutter">
+                <span class="mark t star dim">
+                  <svg viewBox="0 0 16 16"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+                </span>
+              </div>
+              <div class="body" style="opacity:.4">
+                <div class="title">polish(ui) — refinamento absoluto da home</div>
+                <div class="meta"><span class="who">história</span><span>·</span><span class="t">3d</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ask-wrap">
+        <div class="ask">
+          <svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg>
+          <span class="ph">pergunte sobre este repositório</span>
+        </div>
+      </div>
+      <div class="home"></div>
+    </div>
+  </div>
+</body>
+</html>

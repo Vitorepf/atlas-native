@@ -10,7 +10,6 @@ extension AtlasCodeView {
         filterSilence: Bool
     ) -> some View {
         statusCapsule
-            .padding(.bottom, 14)
 
         if !graph.worktrees.isEmpty {
             worktreesSection(graph.worktrees)

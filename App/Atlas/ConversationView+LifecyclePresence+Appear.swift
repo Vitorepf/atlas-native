@@ -8,7 +8,8 @@ extension ConversationView {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: model.threadId)
         TurnPresence.shared.setVisible(model, visible: true)
         if startFocused && model.bubbles.isEmpty {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { focused = true }
+            // Espera a sheet assentar; 0.45 sentia lento demais.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.22) { focused = true }
         }
     }
 }

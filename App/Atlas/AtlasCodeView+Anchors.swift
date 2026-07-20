@@ -15,6 +15,9 @@ extension AtlasCodeView {
     ///   intacto depois de uma resposta que citou commits precisa de
     ///   explicação, senão lê como pergunta ignorada.
     var anchorLegend: String? {
+        if let focus = askFocusNode {
+            return swipeFocusLegend(focus)
+        }
         guard askModel.isAnchoring else { return nil }
         let acesas = visibleAnchors.count
         let citadas = askModel.anchors.count

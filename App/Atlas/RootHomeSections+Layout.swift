@@ -11,7 +11,7 @@ extension RootHomeSections {
             startPoint: .leading, endPoint: .trailing
         )
         .frame(height: 1)
-        .padding(.leading, AtlasTheme.Space.screen + 36)
+        .padding(.leading, AtlasTheme.Space.screen + 42)
     }
 
     func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {

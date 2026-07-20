@@ -16,7 +16,7 @@ struct EmptyConversation: View {
 
     var body: some View {
         heroStack
-            .padding(.horizontal, 32).padding(.top, 120)
+            .padding(.horizontal, 32).padding(.top, 56)
             .frame(maxWidth: .infinity)
             .onAppear { startBreathing() }
             .accessibilityElement(children: .contain)

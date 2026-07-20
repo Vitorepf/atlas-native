@@ -11,4 +11,7 @@ enum AtlasCodeGraphStateFilter: String, CaseIterable, Identifiable {
     case history
 
     var id: String { rawValue }
+
+    /// Tabs do grafo AX — sem “história” (ruído; o scroll já é história).
+    static let grafoTabs: [AtlasCodeGraphStateFilter] = [.all, .onMain, .violating, .healed]
 }

@@ -6,11 +6,21 @@ extension A11yID {
     static let arenaPremiumStop = "arena-premium-stop"
     static let arenaPremiumStopConfirm = "arena-premium-stop-confirm"
     static let arenaPremiumExecution = "arena-premium-execution"
+    static let arenaPremiumExecutionPipeline = "arena-premium-execution-pipeline"
+    static let arenaPremiumRunDetail = "arena-premium-run-detail"
+    static let arenaPremiumRunDetailCases = "arena-premium-run-detail-cases"
     static let arenaPremiumPlan = "arena-premium-plan"
     static let arenaPremiumQueue = "arena-premium-queue"
     static let arenaPremiumAlerts = "arena-premium-alerts"
     static let arenaPremiumResults = "arena-premium-results"
+    static let arenaPremiumFleet = "arena-premium-fleet"
     static let arenaPremiumCapabilities = "arena-premium-capabilities"
+    static let arenaPremiumEnginePicker = "arena-premium-engine-picker"
+    static let arenaPremiumAskPill = "arena-premium-ask-pill"
+
+    static func arenaPremiumFleetRow(_ engine: String) -> String {
+        "arena-premium-fleet-row-\(engine)"
+    }
     static let arenaPremiumCapabilityDetail = "arena-premium-capability-detail"
     static let arenaPremiumExecutionAction = "arena-premium-execution-action"
     static let arenaPremiumPlanAction = "arena-premium-plan-action"

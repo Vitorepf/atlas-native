@@ -9,6 +9,8 @@ extension AtlasTheme {
 
     enum Space {
         static let screen: CGFloat = 20
-        static let row: CGFloat = 16
+        /// Ritmo vertical das rows da home — um pouco mais compacto que o body
+        /// padrão, sem apertar o alvo de toque.
+        static let row: CGFloat = 13
     }
 }

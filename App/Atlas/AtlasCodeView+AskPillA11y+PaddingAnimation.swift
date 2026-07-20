@@ -11,7 +11,7 @@ extension AtlasCodeView {
             .animation(
                 reduceMotion ? nil : .easeInOut(duration: 0.22),
                 value: AtlasCodeAskPillA11y.pillPhaseID(
-                    isAnchoring: askModel.isAnchoring,
+                    isAnchoring: pillIsAnchoring,
                     anchorLegend: anchorLegend
                 )
             )

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Código · Grafo AX — mockup Grok v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-stage: #0e151a;
+    --app-bg: #1d2b34;
+    --recessed: #15212a;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #313f47;
+    --gold: #d4a85a;
+    --alert: #e08c8c;
+    --healed: #6fa06a;
+    --prussian: #7fa7c4;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+    --row-h: 56px;
+    --gx: 110px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    background:
+      radial-gradient(900px 480px at 48% -6%, rgba(212,168,90,0.045), transparent 52%),
+      radial-gradient(640px 380px at 82% 100%, rgba(224,140,140,0.04), transparent 48%),
+      var(--bg-stage);
+  }
+
+  .stage {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(280px, 350px) auto;
+    gap: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 28px 52px;
+  }
+
+  .brief { max-width: 350px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 25px;
+    line-height: 1.14; letter-spacing: -0.015em; text-wrap: balance;
+  }
+  .brief .lede {
+    margin-top: 11px; font-size: 13.5px; line-height: 1.65; color: var(--ink2);
+  }
+  .brief .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .brief .rule {
+    width: 34px; height: 1.5px; margin: 16px 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.75;
+  }
+  .brief ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .brief li {
+    font-size: 12px; line-height: 1.5; color: var(--ink3);
+    padding-left: 14px; position: relative;
+  }
+  .brief li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 1px; background: var(--gold); opacity: 0.7;
+  }
+  .brief li strong { color: var(--ink2); font-weight: 500; }
+  .fix {
+    margin-top: 16px; padding: 11px 13px; border-radius: 12px;
+    border: 1px solid rgba(212,168,90,0.22);
+    background: rgba(212,168,90,0.06);
+    font-size: 12px; line-height: 1.5; color: var(--ink2);
+  }
+  .fix b { color: var(--gold); font-weight: 600; font-family: var(--serif); font-style: italic; }
+  .brief .meta {
+    margin-top: 18px; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.06em; color: var(--ink3);
+  }
+
+  .device-wrap { filter: drop-shadow(0 36px 72px rgba(0,0,0,0.55)); }
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 54px; background: #0a1014; padding: 11px;
+    border: 1px solid rgba(255,255,255,0.06); position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 54px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.08), inset 0 0 0 4px #05080a;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+    background:
+      radial-gradient(110% 42% at 50% -6%, rgba(212,168,90,0.05), transparent 42%),
+      var(--app-bg);
+    display: flex; flex-direction: column; position: relative;
+  }
+  .island {
+    position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+    width: 118px; height: 34px; background: #000; border-radius: 20px; z-index: 5;
+  }
+  .status {
+    height: 52px; padding: 14px 26px 0; display: flex; justify-content: space-between;
+    font-size: 15px; font-weight: 600; color: var(--ink); flex-shrink: 0;
+  }
+  .status .right { font-size: 12px; color: var(--ink2); letter-spacing: 0.04em; }
+
+  .nav {
+    height: 42px; padding: 0 12px; display: grid;
+    grid-template-columns: 40px 1fr auto; align-items: center; flex-shrink: 0;
+  }
+  .nav-back {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid rgba(49,63,71,0.85); background: rgba(21,33,42,0.5);
+    display: grid; place-items: center; color: var(--ink2);
+  }
+  .nav-title {
+    text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.02em;
+  }
+  .nav-repo {
+    font-family: var(--mono); font-size: 9.5px; color: var(--ink3);
+    padding: 3px 8px; border: 1px solid var(--sep); border-radius: 999px;
+  }
+
+  .head {
+    padding: 4px 16px 8px; display: flex; flex-direction: column; gap: 9px; flex-shrink: 0;
+  }
+  .now-rail {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .now-rail .line {
+    width: 18px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,90,0.55));
+  }
+  .now-rail .line.rev { background: linear-gradient(90deg, rgba(212,168,90,0.55), transparent); }
+  .now-rail span {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold); opacity: 0.85;
+  }
+  .capsule {
+    align-self: center;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 13px; border-radius: 999px;
+    background: rgba(224,140,140,0.11);
+    border: 1px solid rgba(224,140,140,0.36);
+    color: var(--alert);
+    font-size: 11px; font-weight: 600;
+  }
+  .chips { display: flex; gap: 6px; overflow: hidden; }
+  .chip {
+    flex-shrink: 0;
+    font-size: 11px; font-weight: 500; color: var(--ink3);
+    padding: 5px 10px; border-radius: 999px;
+    border: 1px solid var(--sep); background: rgba(21,33,42,0.35);
+  }
+  .chip.on {
+    color: var(--ink); border-color: rgba(212,168,90,0.42);
+    background: rgba(212,168,90,0.08);
+  }
+  .chip b {
+    font-family: var(--mono); font-weight: 500; font-size: 10px;
+    margin-left: 3px; opacity: 0.7;
+  }
+  .chip.alert-on {
+    color: var(--alert); border-color: rgba(224,140,140,0.42);
+    background: rgba(224,140,140,0.08);
+  }
+
+  .scroll {
+    flex: 1; overflow: hidden; position: relative;
+    mask-image: linear-gradient(#000 calc(100% - 72px), transparent);
+  }
+  .graph {
+    position: relative;
+    padding: 0 0 96px;
+  }
+
+  /* Row height × N — SVG coords match 1:1 with CSS rows */
+  .topo {
+    position: absolute; left: 0; top: 0;
+    width: var(--gx); height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  .rows { position: relative; z-index: 1; }
+
+  .row {
+    display: grid;
+    grid-template-columns: var(--gx) 1fr;
+    height: var(--row-h);
+    align-items: center;
+  }
+  .gutter { position: relative; height: 100%; }
+  .node {
+    position: absolute;
+    top: 50%;
+    left: 24px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    /* centro geométrico no eixo da lane — sem glifo tipográfico torto */
+    transform: translate(-50%, -50%);
+  }
+  .node.l0 { left: 24px; }
+  .node.l1 { left: 56px; }
+  .node.l2 { left: 88px; }
+
+  /*
+    Trunk / main = ✦ da pílula, SVG centrado no eixo.
+    Nunca bola. Nunca App Icon. Nunca ::before tipográfico (desalinha).
+  */
+  .node.trunk {
+    width: 14px;
+    height: 14px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .node.trunk svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    overflow: visible;
+    filter: drop-shadow(0 0 5px rgba(212, 168, 90, 0.5));
+  }
+  .node.trunk.head {
+    width: 16px;
+    height: 16px;
+  }
+  .node.trunk.head svg {
+    width: 16px;
+    height: 16px;
+    filter: drop-shadow(0 0 8px rgba(212, 168, 90, 0.65));
+  }
+  .node.trunk.merge svg {
+    filter: drop-shadow(0 0 4px rgba(127, 167, 196, 0.5));
+  }
+  .node.trunk.dim {
+    opacity: 0.4;
+  }
+  .node.trunk.dim svg {
+    filter: none;
+  }
+
+  /* Desvio = bola centrada na lane do desvio */
+  .node.fork,
+  .node.side {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .node.fork {
+    background: var(--alert);
+    box-shadow: 0 0 0 2.5px var(--app-bg), 0 0 9px rgba(224,140,140,0.38);
+  }
+  .node.side {
+    background: var(--prussian);
+    box-shadow: 0 0 0 2.5px var(--app-bg), 0 0 8px rgba(127,167,196,0.32);
+  }
+
+  .body { padding: 0 18px 0 2px; min-width: 0; }
+  .title {
+    font-size: 14px; font-weight: 500; letter-spacing: -0.015em;
+    color: var(--ink); line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .meta {
+    margin-top: 3px; font-size: 11.5px; color: var(--ink3);
+    display: flex; align-items: center; gap: 5px; min-width: 0;
+  }
+  .meta .who { color: var(--ink2); flex-shrink: 0; }
+  .meta .time { font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .tag {
+    display: inline-flex; align-items: center;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.01em;
+    padding: 2px 6px; border-radius: 999px;
+    max-width: 148px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    flex-shrink: 1; min-width: 0;
+  }
+  .tag.orphan {
+    color: var(--alert);
+    background: rgba(224,140,140,0.1);
+    border: 1px solid rgba(224,140,140,0.3);
+  }
+  .tag.side {
+    color: var(--prussian);
+    background: rgba(127,167,196,0.1);
+    border: 1px solid rgba(127,167,196,0.28);
+  }
+  .tag.merge {
+    color: var(--gold);
+    background: rgba(212,168,90,0.08);
+    border: 1px solid rgba(212,168,90,0.28);
+  }
+  .note {
+    grid-column: 2;
+    margin: -6px 18px 8px 2px;
+    font-family: var(--serif); font-style: italic; font-size: 11.5px;
+    color: var(--ink3); line-height: 1.35;
+  }
+  .note.alert { color: rgba(224,140,140,0.85); }
+  .past-fade {
+    margin: 4px 18px 0 calc(var(--gx) + 2px);
+    font-family: var(--serif); font-style: italic; font-size: 11px;
+    color: var(--ink3); opacity: 0.7;
+  }
+
+  .ask-wrap {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 10px 16px 26px;
+    background: linear-gradient(180deg, transparent, rgba(29,43,52,0.95) 30%, var(--app-bg));
+  }
+  .ask {
+    display: flex; align-items: center; gap: 10px;
+    min-height: 46px; padding: 0 15px; border-radius: 999px;
+    background: rgba(21,33,42,0.78);
+    border: 1px solid rgba(49,63,71,0.88);
+  }
+  .ask .star {
+    color: var(--gold); font-size: 13px;
+    filter: drop-shadow(0 0 5px rgba(212,168,90,0.4));
+  }
+  .ask .ph {
+    font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink3);
+  }
+  .home-bar {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 124px; height: 4px; border-radius: 4px; background: rgba(214,221,226,0.26);
+  }
+
+  @media (max-width: 900px) {
+    .stage { grid-template-columns: 1fr; gap: 26px; justify-items: center; }
+    .brief { max-width: var(--phone-w); }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <aside class="brief">
+      <div class="kicker">Mockup · Grafo AX v2 · refinado</div>
+      <h1>Topo é o agora. Embaixo é o passado.</h1>
+      <p class="lede">
+        Correção: o grafo lê como <em>git log</em> e GitKraken —
+        <em>HEAD no topo</em>, história descendo. A ramificação nasce
+        no passado e sobe até o tip; órfão não fecha.
+      </p>
+      <div class="rule" aria-hidden="true"></div>
+      <ul>
+        <li><strong>Main = ✦ da pílula</strong> — todo commit que vale (trunk) é a marca Atlas, não bola nem App Icon.</li>
+        <li><strong>Desvio = bola</strong> — só o que saiu da produção usa ponto colorido.</li>
+        <li><strong>Topo = final</strong> — o estado atual da frota, não a raiz.</li>
+        <li><strong>Fork sobe</strong> — ponto de cisão mais antigo (embaixo); tip mais novo (acima).</li>
+        <li><strong>Merge acima do fork</strong> — retorno à trunk é mais recente que o desvio.</li>
+        <li><strong>Órfão aberto</strong> — tip coral + lane que não volta.</li>
+      </ul>
+      <div class="fix">
+        <b>Regra pétrea:</b> produção (`main`/trunk) = ✦ da pílula em cada commit.
+        Bola só para desvio. App Icon em quadrado = erro — removido.
+      </div>
+      <p class="meta">Grok 4.5 · polish AX · aprovar / iterar</p>
+    </aside>
+
+    <div class="device-wrap">
+      <div class="phone" role="img" aria-label="Grafo Atlas Código — topo é agora, ramificações honestas">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="status">
+            <span>16:08</span>
+            <div class="right">LTE · 41</div>
+          </div>
+
+          <div class="nav">
+            <div class="nav-back" aria-hidden="true">
+              <svg width="10" height="16" viewBox="0 0 10 16" fill="none"><path d="M8.5 1.5L2 8l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <div class="nav-title">Grafo</div>
+            <div class="nav-repo">atlas-native</div>
+          </div>
+
+          <div class="head">
+            <div class="now-rail" aria-hidden="true">
+              <span class="line"></span>
+              <span>agora · HEAD</span>
+              <span class="line rev"></span>
+            </div>
+            <div class="capsule">⚠ 2 desvios · 1 sem retorno</div>
+            <div class="chips">
+              <span class="chip on">todos <b>11</b></span>
+              <span class="chip">trunk <b>8</b></span>
+              <span class="chip alert-on">desvios <b>2</b></span>
+              <span class="chip">curados <b>0</b></span>
+            </div>
+          </div>
+
+          <div class="scroll">
+            <div class="graph">
+              <!--
+                Row index → y center = row*56 + 28
+                Lanes: trunk x=24, orphan x=56, returned x=88
+                Time flows TOP (now) → BOTTOM (past)
+                Orphan: tip at row1 (newer), fork from trunk row6 (older) — curve goes DOWN from tip to fork? 
+                Actually: tip is NEWER = higher. Fork point is OLDER = lower.
+                Line connects tip (high) down to fork point (low) on trunk.
+                Merge: merge commit NEWER (higher) than side commits; fork point oldest (lowest).
+              -->
+              <!--
+                Fixed row-h 56. Center of row i = i*56+28.
+                0 HEAD trunk · 1 orphan tip · 2 trunk · 3 merge · 4 side · 5 trunk
+                6 orphan-fork trunk · 7 trunk · 8 side-fork trunk · 9–10 past
+              -->
+              <svg class="topo" viewBox="0 0 110 616" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M24 0 V616" stroke="#d4a85a" stroke-width="1.4" opacity="0.48"/>
+                <!-- orphan: tip y=84 → fork trunk y=364 ; open tip dash upward -->
+                <!-- órfão: tip centrado em x=56; lane desce até cisão na trunk x=24 — sem pontilhado quebrado pra cima -->
+                <path d="M56 84 V340 C56 354, 24 354, 24 364" stroke="#e08c8c" stroke-width="1.5" fill="none" opacity="0.8"/>
+                <!-- returned: merge y=196 ← side y=252 ← fork trunk y=476 -->
+                <path d="M24 196 C24 214, 88 214, 88 232 V448 C88 468, 24 468, 24 476" stroke="#7fa7c4" stroke-width="1.5" fill="none" opacity="0.74"/>
+              </svg>
+
+              <div class="rows">
+                <div class="row">
+                  <div class="gutter">
+                    <span class="node l0 trunk head" title="main · o que vale"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span>
+                  </div>
+                  <div class="body">
+                    <div class="title">polish(ui) — home artesanal · pílula viva</div>
+                    <div class="meta"><span class="who">Grok 4.5</span><span>·</span><span class="time">12m</span><span class="tag merge">main</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l1 fork"></span></div>
+                  <div class="body">
+                    <div class="title">WIP — experimentação fora da main</div>
+                    <div class="meta">
+                      <span class="tag orphan">sem retorno · hungry-cartwright…</span>
+                      <span class="time">3h</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body">
+                    <div class="title">feat(ui) — Arena Premium · cockpit Agora</div>
+                    <div class="meta"><span class="who">Fable 5</span><span>·</span><span class="time">4h</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk merge"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body">
+                    <div class="title">Merge pull request #1 → main</div>
+                    <div class="meta">
+                      <span class="tag merge">retorno à trunk</span>
+                      <span class="time">8h</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l2 side"></span></div>
+                  <div class="body">
+                    <div class="title">plano elite 24×7 — rascunho de obra</div>
+                    <div class="meta">
+                      <span class="tag side">cursor/plano-elite…</span>
+                      <span class="time">9h</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body">
+                    <div class="title">fix(a11y) — grafo · cada elemento com voz</div>
+                    <div class="meta"><span class="who">Fable 5</span><span>·</span><span class="time">11h</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body">
+                    <div class="title">docs(obra) — cisão do órfão coral</div>
+                    <div class="meta"><span class="who">Fable 5</span><span>·</span><span class="time">14h</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body">
+                    <div class="title">fix(ui) — Capacidades re-busca ao abrir</div>
+                    <div class="meta"><span class="who">fix(ui)</span><span>·</span><span class="time">18h</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body">
+                    <div class="title">feat(core) — cisão da obra prussian</div>
+                    <div class="meta"><span class="who">Codex</span><span>·</span><span class="time">1d</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk dim"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body" style="opacity:0.55">
+                    <div class="title">save</div>
+                    <div class="meta"><span class="who">Vitor Freire</span><span>·</span><span class="time">2d</span></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="gutter"><span class="node l0 trunk dim"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d4a85a" d="M8 .6c.35 4.2 2.6 6.45 6.8 6.8-4.2.35-6.45 2.6-6.8 6.8-.35-4.2-2.6-6.45-6.8-6.8C5.4 7.05 7.65 4.8 8 .6z"/></svg></span></div>
+                  <div class="body" style="opacity:0.42">
+                    <div class="title">polish(ui) — refinamento absoluto da home</div>
+                    <div class="meta"><span class="who">história</span><span>·</span><span class="time">3d</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="past-fade">↓ passado</div>
+            </div>
+          </div>
+
+          <div class="ask-wrap">
+            <div class="ask">
+              <span class="star">✦</span>
+              <span class="ph">pergunte sobre este repositório</span>
+            </div>
+          </div>
+          <div class="home-bar" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

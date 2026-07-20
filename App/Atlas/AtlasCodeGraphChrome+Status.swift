@@ -1,22 +1,46 @@
 import SwiftUI
 import AtlasCore
 
-// Status capsule — peel de AtlasCodeGraphChrome.
-// Week → AtlasCodeGraphChrome+WeekMetric.swift
-// Tokens → AtlasCodeGraphChrome+StatusTokens.swift
-// Chrome → AtlasCodeGraphChrome+StatusChrome.swift
+// Status editorial — peel de AtlasCodeGraphChrome.
+// Sem pílula/triângulo. Violação → "N sem retorno". Limpo → silêncio.
 
 extension AtlasCodeView {
-    /// Cápsula central e simétrica: a única voz do estado geral.
+    @ViewBuilder
     var statusCapsule: some View {
-        statusCapsuleChrome(
-            HStack(spacing: 7) {
-                Image(systemName: statusCapsuleSymbol)
-                    .atlasSans(10, .semibold)
-                Text(model.statusHeadline)
-                    .atlasSans(11, .semibold)
-                    .monospacedDigit()
-            }
-        )
+        if let pulse = statusPulseCopy {
+            Text(pulse)
+                .font(AtlasFont.serifItalic(13))
+                .foregroundStyle(statusPulseColor)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.bottom, 12)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.scanState)
+                .accessibilityLabel(AtlasCodeGraphA11y.spokenStatus(
+                    scanState: model.scanState, headline: pulse
+                ))
+                .accessibilityIdentifier(A11yID.codeStatus)
+        }
+    }
+
+    /// Copy de apresentação: mesma unidade do model (violations.count),
+    /// vocabulário do operador ("sem retorno"), não "desvios".
+    var statusPulseCopy: String? {
+        switch model.scanState {
+        case .violating:
+            let n = model.violations?.violations.count ?? 0
+            guard n > 0 else { return model.statusHeadline }
+            return n == 1 ? "1 sem retorno" : "\(n) sem retorno"
+        case .unknown:
+            return model.statusHeadline
+        case .clean:
+            return nil
+        }
+    }
+
+    var statusPulseColor: Color {
+        switch model.scanState {
+        case .violating: return AtlasCodePalette.alert
+        case .unknown: return AtlasTheme.textTertiary
+        case .clean: return AtlasTheme.textSecondary
+        }
     }
 }

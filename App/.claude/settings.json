@@ -1,0 +1,47 @@
+{
+    "$comment": "Atlas Open Brain Gateway hooks installed by workspace activation. Hooks live in atlas-server and scope calls to the opened workspace.",
+    "hooks": {
+        "UserPromptSubmit": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "/Users/vitorepf/develop/Atlas/atlas-server/.claude/hooks/atlas-ctx.sh"
+                    }
+                ]
+            }
+        ],
+        "PreToolUse": [
+            {
+                "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "/Users/vitorepf/develop/Atlas/atlas-server/.claude/hooks/atlas-pretooluse-guard.sh"
+                    }
+                ]
+            }
+        ],
+        "PostToolUse": [
+            {
+                "matcher": "Read|Edit|Write|MultiEdit|NotebookEdit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "/Users/vitorepf/develop/Atlas/atlas-server/.claude/hooks/atlas-postedit-context.sh"
+                    }
+                ]
+            }
+        ],
+        "Stop": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "/Users/vitorepf/develop/Atlas/atlas-server/.claude/hooks/atlas-session-capture.sh"
+                    }
+                ]
+            }
+        ]
+    }
+}

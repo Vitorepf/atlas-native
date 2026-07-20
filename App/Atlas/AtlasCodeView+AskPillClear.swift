@@ -6,7 +6,20 @@ import AtlasCore
 extension AtlasCodeView {
     @ViewBuilder
     var askPillClearButton: some View {
-        if askModel.isAnchoring {
+        if askFocusNode != nil {
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                clearAskFocus()
+            } label: {
+                Text("limpar")
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Limpar referência do commit")
+            .accessibilityHint("Remove o commit da pílula")
+            .accessibilityIdentifier(A11yID.codeAskClear)
+        } else if askModel.isAnchoring {
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 askModel.clear()

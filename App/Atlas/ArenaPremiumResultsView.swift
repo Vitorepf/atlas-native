@@ -10,7 +10,6 @@ struct ArenaPremiumResultsView: View {
         VStack(alignment: .leading, spacing: 24) {
             if let engine = model.arenaPrimaryEngine {
                 resultHeader(engine)
-                enginePicker
                 resultMetrics(engine)
                 if !engine.history.isEmpty {
                     ArenaPremiumKicker(text: "Índice por rodada")
@@ -24,28 +23,8 @@ struct ArenaPremiumResultsView: View {
         }
     }
 
-    @ViewBuilder
-    private var enginePicker: some View {
-        if let engines = model.composite?.engines, engines.count > 1 {
-            Menu {
-                ForEach(engines) { engine in
-                    Button(ArenaDisplay.engine(engine.engine)) {
-                        model.capabilitiesEngineSelection = engine.engine
-                    }
-                }
-            } label: {
-                HStack(spacing: 7) {
-                    ArenaPremiumIcon(
-                        symbol: "chevron.up.chevron.down",
-                        tone: .neutral,
-                        role: .compact
-                    )
-                    Text("Trocar motor")
-                }
-                    .font(AtlasFont.mono(10, .medium))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-            }
-        }
+    private var measuredEngineOptions: [String] {
+        model.composite?.engines.map(\.engine) ?? []
     }
 
     private func resultHeader(_ engine: AtlasArenaCompositeEngine) -> some View {
@@ -54,9 +33,11 @@ struct ArenaPremiumResultsView: View {
                 text: model.report?.claimAllowed == true ? "Última medição concluída" : "Medição parcial"
             )
             .accessibilityIdentifier(A11yID.arenaPremiumResults)
-            Text(ArenaDisplay.engine(engine.engine))
-                .font(AtlasFont.serif(33))
-                .foregroundStyle(AtlasTheme.textPrimary)
+            ArenaPremiumEngineTitle(
+                engineID: engine.engine,
+                options: measuredEngineOptions,
+                onSelect: { model.capabilitiesEngineSelection = $0 }
+            )
             if let narrative = model.report?.narrative {
                 Text(narrative)
                     .font(.system(.callout))
@@ -71,7 +52,7 @@ struct ArenaPremiumResultsView: View {
         return VStack(alignment: .leading, spacing: 18) {
             HStack(alignment: .lastTextBaseline) {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Índice").font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
+                    Text("Índice").font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     HStack(alignment: .lastTextBaseline, spacing: 4) {
                         Text(ArenaFormat.score(engine.composite))
                             .font(AtlasFont.serif(62))
@@ -87,8 +68,8 @@ struct ArenaPremiumResultsView: View {
                 if let atlasDelta {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text(ArenaFormat.signed(atlasDelta))
-                            .font(AtlasFont.serif(27))
-                            .foregroundStyle(atlasDelta >= 0 ? AtlasTheme.textPrimary : AtlasTheme.alert)
+                            .font(AtlasFont.serifItalic(18))
+                            .foregroundStyle(atlasDelta >= 0 ? AtlasTheme.accent : AtlasTheme.alert)
                         Text("vs. sem Atlas")
                             .font(AtlasFont.mono(10))
                             .foregroundStyle(AtlasTheme.textSecondary)

@@ -20,12 +20,18 @@ final class AtlasCodeAskModel {
     }
 
     let client: AtlasClient
-    let repo: String
+    private(set) var repo: String
     private(set) var phase: Phase = .idle
 
     init(client: AtlasClient, repo: String) {
         self.client = client
         self.repo = repo
+    }
+
+    func adoptRepo(_ newRepo: String) {
+        guard newRepo != repo else { return }
+        repo = newRepo
+        phase = .idle
     }
 
     /// Os commits que a resposta atual cita. O grafo acende só estes.

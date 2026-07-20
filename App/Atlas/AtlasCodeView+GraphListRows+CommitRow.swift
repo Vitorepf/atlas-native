@@ -14,7 +14,12 @@ extension AtlasCodeView {
         filteredNodes: [AtlasCodeGraphNode]
     ) -> some View {
         graphCommitRowRotor(
-            graphCommitRowView(node: node, index: index, total: total),
+            graphCommitRowView(
+                node: node,
+                index: index,
+                total: total,
+                filteredNodes: filteredNodes
+            ),
             node: node
         )
     }

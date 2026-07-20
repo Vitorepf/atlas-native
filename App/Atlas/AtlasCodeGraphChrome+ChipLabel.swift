@@ -1,17 +1,36 @@
 import SwiftUI
 import AtlasCore
 
-// Chip label — peel de AtlasCodeGraphChrome+ChipButton.
+// Filter tabs — sublinhado dourado (AX v4), não cluster de chips.
 
 extension AtlasCodeView {
     func graphStateChipLabel(_ option: AtlasCodeGraphStateFilter, count: Int, active: Bool) -> some View {
-        Text("\(option.label) \(count)")
-            .font(AtlasFont.mono(9))
-            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
+        VStack(spacing: 8) {
+            HStack(spacing: 3) {
+                Text(option.label)
+                    .atlasSans(11.5, .medium)
+                Text("\(count)")
+                    .font(AtlasFont.mono(10))
+                    .opacity(0.55)
+            }
+            .foregroundStyle(tabForeground(option, active: active))
             .monospacedDigit()
-            .padding(.horizontal, 9)
-            .padding(.vertical, 5)
-            .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface))
-            .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+
+            Rectangle()
+                .fill(active ? tabUnderline(option) : Color.clear)
+                .frame(height: 1.5)
+                .shadow(color: active ? tabUnderline(option).opacity(0.35) : .clear, radius: 4, y: 0)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 4)
+    }
+
+    private func tabForeground(_ option: AtlasCodeGraphStateFilter, active: Bool) -> Color {
+        guard active else { return AtlasTheme.textTertiary }
+        return option == .violating ? AtlasCodePalette.alert : AtlasTheme.textPrimary
+    }
+
+    private func tabUnderline(_ option: AtlasCodeGraphStateFilter) -> Color {
+        option == .violating ? AtlasCodePalette.alert : AtlasTheme.accent
     }
 }

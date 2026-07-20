@@ -8,7 +8,7 @@ extension AtlasCodeGraphStateFilter {
     var label: String {
         if let healthy = labelHealthy { return healthy }
         switch self {
-        case .violating: return "desvios"
+        case .violating: return "fora"
         case .history: return "história"
         default: return "todos"
         }

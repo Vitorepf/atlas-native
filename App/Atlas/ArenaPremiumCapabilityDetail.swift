@@ -16,7 +16,7 @@ struct ArenaPremiumCapabilityDetail: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    ArenaPremiumKicker(text: "Capacidade medida · escala 0–10", tone: .active)
+            ArenaPremiumKicker(text: "Capacidade medida · escala 0–10")
                         .accessibilityIdentifier(A11yID.arenaPremiumCapabilityDetail)
                     Text(capability.labelPt)
                         .font(AtlasFont.serif(34))

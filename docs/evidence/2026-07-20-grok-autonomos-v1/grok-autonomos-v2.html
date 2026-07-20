@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Autônomos · v2 — uma pílula, um olhar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Autônomos v2 — correção do operador:
+     1) Pílula = ÚNICO tipo do app (CSS idêntico Arena/Home).
+     2) Hub sem card “Fila humana”, sem chips que imitam pílula. */
+  :root {
+    --stage: #0e151a;
+    --bg: #1d2b34;
+    --recessed: #15212a;
+    --surface: #243743;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #2c3a43;
+    --gold: #d4a85a;
+    --gold-veil: rgba(212,168,90,0.12);
+    --gold-border: rgba(212,168,90,0.34);
+    --alert: #c98989;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button:focus { outline: none; }
+  button:focus-visible {
+    outline: 1px solid rgba(212,168,90,0.45);
+    outline-offset: 2px;
+  }
+  body {
+    min-height: 100vh;
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(127,167,196,0.05), transparent 55%),
+      radial-gradient(700px 400px at 78% 100%, rgba(212,168,90,0.03), transparent 50%),
+      var(--stage);
+  }
+  .stage {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(280px, 380px) auto;
+    gap: 48px;
+    align-items: start;
+    justify-content: center;
+    padding: 40px 32px 72px;
+  }
+  .brief { max-width: 380px; position: sticky; top: 36px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 26px;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .brief .lede {
+    margin-top: 12px; font-size: 13.5px; line-height: 1.6; color: var(--ink2);
+  }
+  .brief .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .brief .rule {
+    width: 32px; height: 1px; margin: 18px 0;
+    background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.7;
+  }
+  .brief h2 {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink3); margin: 18px 0 8px;
+  }
+  .brief ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .brief li {
+    font-size: 12px; line-height: 1.45; color: var(--ink3);
+    padding-left: 12px; position: relative;
+  }
+  .brief li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 1px; background: var(--gold); opacity: 0.55;
+  }
+  .brief li strong { color: var(--ink2); font-weight: 500; }
+  .brief li.kill::before { background: var(--alert); }
+  .canon-box {
+    margin-top: 14px; padding: 14px 16px; border-radius: 14px;
+    border: 1px solid var(--gold-border); background: var(--gold-veil);
+  }
+  .canon-box b {
+    display: block; font-family: var(--serif); font-size: 15px; margin-bottom: 6px;
+  }
+  .canon-box p { font-size: 12px; line-height: 1.5; color: var(--ink2); }
+
+  .phone-wrap { display: flex; flex-direction: column; gap: 16px; align-items: center; }
+  .switches {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 420px;
+  }
+  .switches button {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink2);
+    background: var(--recessed); border: 1px solid var(--sep);
+    border-radius: 999px; padding: 8px 12px;
+  }
+  .switches button.on {
+    color: var(--ink);
+    border-color: rgba(214,221,226,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 52px; padding: 10px; background: #070b0e;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55);
+    position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 52px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 4px #040608;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
+    background: var(--bg); position: relative; display: flex; flex-direction: column;
+  }
+  .status {
+    height: 48px; padding: 14px 28px 0;
+    display: flex; justify-content: space-between;
+    font-size: 12px; font-weight: 600; color: var(--ink);
+  }
+  .nav {
+    height: 52px; padding: 0 16px;
+    display: grid; grid-template-columns: 44px 1fr 44px; align-items: center;
+  }
+  .nav .orb {
+    width: 36px; height: 36px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--ink); font-size: 15px;
+  }
+  .nav .titles { text-align: center; }
+  .nav .titles strong {
+    display: block; font-family: var(--serif); font-size: 17px; font-weight: 600;
+  }
+  .nav .titles em {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-style: normal; font-size: 8px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
+  }
+  .scroll {
+    flex: 1; overflow-y: auto; padding: 10px 22px 120px;
+    scrollbar-width: none;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+  .panel { display: none; }
+  .panel.on { display: block; animation: in 0.26s ease; }
+  @keyframes in {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .kicker-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .kicker-row .mark {
+    color: var(--gold); font-family: var(--serif); font-size: 12px;
+    animation: breath 2.4s ease-in-out infinite;
+  }
+  @keyframes breath {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+  .kicker-row span {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .kicker-row.quiet span { color: var(--ink3); }
+  .kicker-row.quiet .mark { display: none; }
+
+  .hero-title {
+    font-family: var(--serif); font-weight: 600; font-size: 30px;
+    line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 10px;
+  }
+  .hero-sub {
+    font-size: 14px; line-height: 1.55; color: var(--ink2);
+    max-width: 30em; margin-bottom: 22px;
+  }
+
+  .cta {
+    display: block; width: 100%; text-align: center;
+    padding: 15px 16px; border-radius: 14px;
+    background: var(--surface); border: 1px solid rgba(149,163,172,0.18);
+    color: var(--ink); font-size: 15px; font-weight: 500;
+  }
+  .cta.quiet {
+    background: transparent; border-color: rgba(149,163,172,0.2);
+    color: var(--ink2); font-size: 14px; margin-top: 10px;
+  }
+  .cta.danger {
+    border-color: rgba(201,137,137,0.35); color: var(--alert);
+  }
+
+  .hair {
+    height: 1px; margin: 28px 0 20px;
+    background: linear-gradient(90deg, transparent, var(--sep), transparent);
+  }
+  .sec {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 14px;
+  }
+
+  /* Área em foco — texto, não card */
+  .focus .name {
+    font-family: var(--serif); font-size: 20px; font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .focus .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2);
+    margin-bottom: 10px;
+  }
+  .focus .obj {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    line-height: 1.45; color: var(--ink2);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; margin-bottom: 4px;
+  }
+
+  /* Link de navegação — NÃO é pílula */
+  .nav-line {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 14px 0;
+    border-bottom: 1px solid rgba(149,163,172,0.1);
+    text-align: left;
+  }
+  .nav-line .l {
+    font-size: 15px; font-weight: 500; color: var(--ink);
+  }
+  .nav-line .r {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+  }
+  .nav-line .chev { color: var(--ink3); margin-left: 8px; }
+
+  .metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    margin: 8px 0 22px;
+  }
+  .metric b {
+    display: block; font-family: var(--serif); font-size: 26px; font-weight: 600;
+  }
+  .metric span {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  }
+
+  .row {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(149,163,172,0.1);
+  }
+  .row:last-child { border-bottom: 0; }
+  .row .glyph {
+    width: 20px; text-align: center;
+    font-family: var(--serif); font-size: 14px; color: var(--ink3);
+  }
+  .row .glyph.attn { color: var(--gold); }
+  .row .body { flex: 1; min-width: 0; }
+  .row .body .t { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+  .row .body .s { font-family: var(--mono); font-size: 11px; color: var(--ink2); }
+  .row .trail {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+  }
+
+  .controls {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px;
+  }
+  .controls .cta { margin: 0; padding: 12px 6px; font-size: 13px; }
+  .stack { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .note {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    margin-top: 12px; line-height: 1.4;
+  }
+
+  /* —— Pílula agêntica = ÚNICO tipo (cópia byte-a-byte do Arena/Home) —— */
+  .agent-pill-dock {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+    padding: 8px 16px 22px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(29,43,52,0.55) 22%,
+      rgba(29,43,52,0.96) 55%,
+      var(--bg) 100%
+    );
+    pointer-events: none;
+  }
+  .agent-pill {
+    pointer-events: auto;
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(21, 33, 42, 0.68);
+    backdrop-filter: blur(28px) saturate(1.18);
+    -webkit-backdrop-filter: blur(28px) saturate(1.18);
+    border: 0;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.045),
+      0 10px 28px rgba(0, 0, 0, 0.28);
+    position: relative;
+    cursor: pointer;
+    text-align: left;
+    font: inherit; color: inherit;
+  }
+  .agent-pill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    padding: 0.75px;
+    background: linear-gradient(
+      135deg,
+      rgba(212, 168, 90, 0.22),
+      rgba(212, 168, 90, 0.04) 42%,
+      rgba(212, 168, 90, 0.12)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .agent-pill .star {
+    width: 30px; height: 30px; flex-shrink: 0;
+    position: relative; display: grid; place-items: center;
+  }
+  .agent-pill .star .glyph {
+    font-family: var(--serif); font-size: 16px; color: var(--gold);
+    line-height: 1; position: relative; z-index: 1;
+    filter: drop-shadow(0 0 5px rgba(212, 168, 90, 0.35));
+  }
+  .agent-pill .star .pulse {
+    position: absolute; inset: 2px; border-radius: 50%;
+    background: rgba(212, 168, 90, 0.12);
+    filter: blur(6px);
+    animation: star-breathe 2.8s ease-in-out infinite;
+  }
+  @keyframes star-breathe {
+    0%, 100% { opacity: 0.4; transform: scale(0.92); }
+    50% { opacity: 0.95; transform: scale(1.18); }
+  }
+  .agent-pill .invite {
+    flex: 1; min-width: 0;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 16px; color: var(--ink3);
+    letter-spacing: -0.01em; line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .home-indicator {
+    width: 128px; height: 5px; border-radius: 999px;
+    background: rgba(214,221,226,0.28);
+    margin: 10px auto 0;
+  }
+
+  @media (max-width: 900px) {
+    .stage { grid-template-columns: 1fr; justify-items: center; }
+    .brief { position: static; max-width: 520px; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="brief">
+    <div class="kicker">Grok · Autônomos v2</div>
+    <h1>Uma pílula. Um olhar. Zero imitação.</h1>
+    <p class="lede">
+      O v1 ainda era <em>dashboard</em>: card “Fila humana” repetindo o hero,
+      chips ovalados competindo com a pílula, chrome quase-igual. Morto.
+    </p>
+    <div class="rule"></div>
+
+    <div class="canon-box">
+      <b>Padrão pétreo da pílula</b>
+      <p>
+        Um único tipo em todo o app = craft da <strong>Home</strong>
+        (<code>RootView+InputBarContent</code> · Arena · Grafo).
+        Glass + ✦ 30pt com pulso + itálico 16 + fio de ouro 0,75pt.
+        <strong>Só muda o convite.</strong> Proibido segunda família.
+      </p>
+    </div>
+
+    <h2>Hub v2 (Jobs)</h2>
+    <ul>
+      <li><strong>Hero</strong> — 6 decisões / frota quieta</li>
+      <li><strong>Um verbo</strong> — Ver decisões (ou nada, se quieto)</li>
+      <li><strong>Área em foco</strong> — texto + Ver área · Ver frota como linhas</li>
+      <li class="kill">Sem card dourado, sem chips oval, sem digests</li>
+    </ul>
+
+    <h2>O que mudou vs v1</h2>
+    <ul>
+      <li>Pílula = CSS idêntico Arena/Home</li>
+      <li>Chips inbox/ordens fora do hub</li>
+      <li>Card “Fila humana” deletado</li>
+      <li>Navegação = linhas com ›, não cápsulas</li>
+    </ul>
+  </aside>
+
+  <div class="phone-wrap">
+    <div class="switches" id="switches">
+      <button type="button" class="on" data-panel="hub-await">Hub · aguardando</button>
+      <button type="button" data-panel="hub-quiet">Hub · quieto</button>
+      <button type="button" data-panel="area">Área</button>
+      <button type="button" data-panel="decisoes">Decisões</button>
+      <button type="button" data-panel="frota">Frota</button>
+    </div>
+
+    <div class="phone">
+      <div class="screen">
+        <div class="status"><span>14:08</span><span>■■■□ 43%</span></div>
+        <div class="nav">
+          <button type="button" class="orb" id="navBack" aria-label="Voltar">‹</button>
+          <div class="titles">
+            <strong id="navTitle">Autônomos</strong>
+            <em id="navSub">Área própria · 24/7</em>
+          </div>
+          <button type="button" class="orb" aria-label="Atualizar">↻</button>
+        </div>
+
+        <div class="scroll">
+          <!-- HUB AGUARDANDO — composição única -->
+          <section class="panel on" id="hub-await">
+            <div class="kicker-row">
+              <span class="mark">✦</span>
+              <span>Aguardando você</span>
+            </div>
+            <div class="hero-title">6 decisões<br>pedem você</div>
+            <p class="hero-sub">Só o que o humano pode resolver. O resto segue em silêncio.</p>
+            <button type="button" class="cta" data-goto="decisoes">Ver decisões</button>
+
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · autonomia 0/2</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas.</div>
+            </div>
+            <button type="button" class="nav-line" data-goto="area">
+              <span class="l">Ver área</span>
+              <span><span class="r">dev · forge</span><span class="chev">›</span></span>
+            </button>
+            <button type="button" class="nav-line" data-goto="frota">
+              <span class="l">Ver frota</span>
+              <span><span class="r">5 em repouso</span><span class="chev">›</span></span>
+            </button>
+          </section>
+
+          <!-- HUB QUIETO -->
+          <section class="panel" id="hub-quiet">
+            <div class="kicker-row quiet">
+              <span>Em repouso</span>
+            </div>
+            <div class="hero-title">Frota quieta</div>
+            <p class="hero-sub">Nenhuma decisão pendente. Silêncio é o produto.</p>
+
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · 200 ciclos</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas.</div>
+            </div>
+            <button type="button" class="nav-line" data-goto="area">
+              <span class="l">Ver área</span>
+              <span><span class="r">dev · forge</span><span class="chev">›</span></span>
+            </button>
+            <button type="button" class="nav-line" data-goto="frota">
+              <span class="l">Ver frota</span>
+              <span><span class="r">5 em repouso</span><span class="chev">›</span></span>
+            </button>
+          </section>
+
+          <!-- ÁREA -->
+          <section class="panel" id="area">
+            <div class="kicker-row quiet"><span>Em espera</span></div>
+            <div class="hero-title">Agentic Engineering OS</div>
+            <p class="hero-sub">dev · forge · autonomia 0/2</p>
+            <p class="hero-sub" style="margin-top:-12px">
+              Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas — do pedido à prova no device.
+            </p>
+            <div class="metrics">
+              <div class="metric"><b>200</b><span>ciclos</span></div>
+              <div class="metric"><b>116</b><span>tarefas</span></div>
+              <div class="metric"><b>3</b><span>inbox</span></div>
+            </div>
+            <button type="button" class="nav-line" data-goto="decisoes">
+              <span class="l">Ordens e inbox</span>
+              <span><span class="r">116 · 3</span><span class="chev">›</span></span>
+            </button>
+            <button type="button" class="nav-line">
+              <span class="l">Achados</span>
+              <span><span class="r">17</span><span class="chev">›</span></span>
+            </button>
+            <button type="button" class="nav-line">
+              <span class="l">Orçamentos</span>
+              <span><span class="chev">›</span></span>
+            </button>
+
+            <div class="hair"></div>
+            <div class="sec">Entregas · 3 de 24</div>
+            <div class="row">
+              <div class="glyph">⌖</div>
+              <div class="body"><div class="t">ciclo 148</div><div class="s">merge comprovado</div></div>
+              <div class="trail">há 49d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">⌖</div>
+              <div class="body"><div class="t">ciclo 147</div><div class="s">merge comprovado</div></div>
+              <div class="trail">há 49d</div>
+            </div>
+
+            <div class="hair"></div>
+            <div class="sec">Governança</div>
+            <div class="controls">
+              <button type="button" class="cta quiet">Pausar</button>
+              <button type="button" class="cta quiet">Transferir</button>
+              <button type="button" class="cta danger">Encerrar</button>
+            </div>
+            <div class="stack">
+              <button type="button" class="cta quiet">Novo ciclo · ensaio</button>
+              <button type="button" class="cta">Executar de verdade</button>
+            </div>
+            <p class="note">Ensaio e execução pedem ator + motivo. Ouro não vende o botão.</p>
+          </section>
+
+          <!-- DECISÕES -->
+          <section class="panel" id="decisoes">
+            <div class="kicker-row">
+              <span class="mark">✦</span>
+              <span>Decisões</span>
+            </div>
+            <div class="hero-title">6 itens</div>
+            <p class="hero-sub">Cada um com recibo. Aceitar, rejeitar, adiar ou pedir mudanças.</p>
+            <div class="sec">Inbox</div>
+            <div class="row">
+              <div class="glyph attn">※</div>
+              <div class="body">
+                <div class="t">Revisar patch de heal no grafo</div>
+                <div class="s">risco alto · AEOS</div>
+              </div>
+              <div class="trail">agora</div>
+            </div>
+            <div class="row">
+              <div class="glyph attn">※</div>
+              <div class="body">
+                <div class="t">Autorizar spend Codex</div>
+                <div class="s">risco médio · frota</div>
+              </div>
+              <div class="trail">há 2h</div>
+            </div>
+            <div class="row">
+              <div class="glyph">※</div>
+              <div class="body">
+                <div class="t">Confirmar handoff Mac → cloud</div>
+                <div class="s">risco baixo</div>
+              </div>
+              <div class="trail">há 1d</div>
+            </div>
+            <div class="hair"></div>
+            <div class="sec">Ordens</div>
+            <div class="row">
+              <div class="glyph">◷</div>
+              <div class="body">
+                <div class="t">Fechar ciclo 149 com prova device</div>
+                <div class="s">aguarda assinatura</div>
+              </div>
+              <div class="trail">bloqueia</div>
+            </div>
+            <div class="row">
+              <div class="glyph">◷</div>
+              <div class="body">
+                <div class="t">Promover ensaio → real</div>
+                <div class="s">AEOS</div>
+              </div>
+              <div class="trail">na fila</div>
+            </div>
+            <div class="row">
+              <div class="glyph">◷</div>
+              <div class="body">
+                <div class="t">Drenar worker Claude ocioso</div>
+                <div class="s">frota</div>
+              </div>
+              <div class="trail">na fila</div>
+            </div>
+          </section>
+
+          <!-- FROTA -->
+          <section class="panel" id="frota">
+            <div class="kicker-row quiet"><span>Frota</span></div>
+            <div class="hero-title">5 em repouso</div>
+            <p class="hero-sub">Por decisão sua · US$&nbsp;0,00. Fila estável.</p>
+            <div class="sec">Workers</div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">ai-worker.claude</div>
+                <div class="s">desligado por você</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">reconciler</div>
+                <div class="s">parado · não desejado</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">codex-worker</div>
+                <div class="s">gasto vetado por você</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <div class="hair"></div>
+            <div class="sec">Histórico</div>
+            <div class="row">
+              <div class="glyph attn">▸</div>
+              <div class="body">
+                <div class="t">parado</div>
+                <div class="s">ai-worker.claude · Claude</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+            <div class="row">
+              <div class="glyph">·</div>
+              <div class="body">
+                <div class="t">desligado por você</div>
+                <div class="s">não desejado — decisão sua</div>
+              </div>
+              <div class="trail">há 16d</div>
+            </div>
+          </section>
+        </div>
+
+        <div class="agent-pill-dock">
+          <button type="button" class="agent-pill" id="pill" aria-label="Pílula agêntica">
+            <div class="star" aria-hidden="true">
+              <div class="pulse"></div>
+              <span class="glyph">✦</span>
+            </div>
+            <span class="invite" id="pillInvite">o que preciso decidir?</span>
+          </button>
+          <div class="home-indicator" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const invites = {
+    "hub-await": "o que preciso decidir?",
+    "hub-quiet": "pergunte sobre a frota",
+    "area": "pergunte sobre esta área",
+    "decisoes": "o que preciso decidir?",
+    "frota": "pergunte sobre a frota",
+  };
+  const titles = {
+    "hub-await": ["Autônomos", "Área própria · 24/7"],
+    "hub-quiet": ["Autônomos", "Área própria · 24/7"],
+    "area": ["Área", "Agentic Engineering OS"],
+    "decisoes": ["Decisões", "6 pendentes"],
+    "frota": ["Frota", "5 em repouso"],
+  };
+  const hubPanels = new Set(["hub-await", "hub-quiet"]);
+  let current = "hub-await";
+  let stack = [];
+
+  function show(id) {
+    current = id;
+    document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("on", p.id === id));
+    document.querySelectorAll("#switches button").forEach((b) => {
+      b.classList.toggle("on", b.dataset.panel === id);
+    });
+    document.getElementById("pillInvite").textContent = invites[id] || "pergunte sobre a frota";
+    const [t, s] = titles[id] || ["Autônomos", "Área própria · 24/7"];
+    document.getElementById("navTitle").textContent = t;
+    document.getElementById("navSub").textContent = s;
+  }
+
+  document.getElementById("switches").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-panel]");
+    if (!b) return;
+    stack = [];
+    show(b.dataset.panel);
+  });
+
+  document.querySelector(".screen").addEventListener("click", (e) => {
+    const go = e.target.closest("[data-goto]");
+    if (!go) return;
+    if (hubPanels.has(current)) stack.push(current);
+    show(go.dataset.goto);
+  });
+
+  document.getElementById("navBack").addEventListener("click", () => {
+    if (stack.length) { show(stack.pop()); return; }
+    if (!hubPanels.has(current)) show("hub-await");
+  });
+</script>
+</body>
+</html>

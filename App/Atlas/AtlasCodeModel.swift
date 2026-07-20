@@ -6,7 +6,7 @@ import Observation
 final class AtlasCodeModel {
 
     let client: AtlasClient
-    let repo: String
+    private(set) var repo: String
     private(set) var phase: LoadPhase = .idle
     private(set) var graph: AtlasCodeGraphResponse?
     private(set) var violations: AtlasCodeViolationsResponse?
@@ -18,26 +18,43 @@ final class AtlasCodeModel {
         self.repo = repo
     }
 
+    /// Troca in-place — a casca não remonta a NavigationStack.
+    func adoptRepo(_ newRepo: String) {
+        guard newRepo != repo else { return }
+        repo = newRepo
+        phase = .idle
+        graph = nil
+        violations = nil
+        heal = nil
+        week = nil
+        spineHashes = []
+        undoError = nil
+    }
+
     func load(before: String? = nil) async {
+        let requested = repo
         phase = .loading
         do {
-            let graph = try await client.getCodeGraph(repo: repo, before: before)
+            // Grafo primeiro: a tela ganha mapa sem esperar heal/week/scan.
+            let graph = try await client.getCodeGraph(repo: requested, before: before)
+            guard repo == requested else { return }
             self.graph = graph
-            // A espinha nasce da ponta da TRUNK e desce pelos pais.
-            //
-            // Duas coisas que pareciam uma: o git decora só a ponta (por isso a
-            // travessia), e `head` é onde o OPERADOR está, não a trunk (por
-            // isso `trunkHead`). Traçar do `head` numa obra pintaria a obra
-            // inteira de dourado — a exceção vestida de norma. Sem trunk, sem
-            // espinha: pinta menos, nunca pinta errado.
             spineHashes = AtlasCodeGraphState.spine(nodes: graph.nodes, head: graph.trunkHead)
-            // A stale or unavailable scan must not hide a valid topology.
-            violations = try? await client.getCodeViolations(repo: repo)
-            heal = try? await client.getCodeHealTick(repo: repo)
-            week = try? await client.getCodeWeek(repo: repo)
-            AtlasNativeSnapshotWriter.shared.recordCodeWeek(week)
             phase = .loaded
+
+            async let violationsTask = client.getCodeViolations(repo: requested)
+            async let healTask = client.getCodeHealTick(repo: requested)
+            async let weekTask = client.getCodeWeek(repo: requested)
+            let nextViolations = try? await violationsTask
+            let nextHeal = try? await healTask
+            let nextWeek = try? await weekTask
+            guard repo == requested else { return }
+            violations = nextViolations
+            heal = nextHeal
+            week = nextWeek
+            AtlasNativeSnapshotWriter.shared.recordCodeWeek(week)
         } catch {
+            guard repo == requested else { return }
             phase = .failed(String(describing: error))
         }
     }

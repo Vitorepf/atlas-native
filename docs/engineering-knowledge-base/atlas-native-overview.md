@@ -62,6 +62,7 @@ related_paths:
   - docs/canto-canonico.md
   - docs/arquitetura.md
   - OBRA.md
+  - docs/engineering-knowledge-base/atlas-native-agentic-pill.md
   - docs/rich-input-shared-core.md
   - docs/atlas-native-gates.md
   - docs/atlas-native-rich-input.md
@@ -125,10 +126,12 @@ atlas-server via contratos versionados; coordenação multi-IA pelo OBRA.md.
 
 ## Fluxo
 
-Intenção (conversa/pílula) → execução viva (presença, plano, timeline) →
+Intenção (pílula agêntica com contexto compilado da ocasião) →
+execução viva (presença, plano, timeline) →
 prova (recibo, diff, quality) → governança (grafo, lei, cura) → frota
-(Autônomos 24/7). A conversa é o drill-down; a home se reorganiza em cockpit
-quando há trabalho vivo.
+(Autônomos 24/7). A pílula é o verbo primário (**baseline**, não fase futura) —
+canon: `docs/engineering-knowledge-base/atlas-native-agentic-pill.md`.
+A conversa é o drill-down; a home se reorganiza em cockpit quando há trabalho vivo.
 
 ## Contratos
 

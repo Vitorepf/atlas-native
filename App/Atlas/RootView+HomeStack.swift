@@ -8,7 +8,7 @@ extension RootView {
     var rootHomeStack: some View {
         rootHomeNavChrome(
             ZStack(alignment: .bottom) {
-                AtlasTheme.bg.ignoresSafeArea()
+                homeAtmosphere
                 rootHomeSectionsStack
                 inputBar
             }

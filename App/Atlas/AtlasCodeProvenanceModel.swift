@@ -9,7 +9,7 @@ final class AtlasCodeProvenanceModel {
     }
 
     let client: AtlasClient
-    let repo: String
+    private(set) var repo: String
     private(set) var phase: Phase = .idle
     /// O commit que a folha ABERTA pediu. Resposta de pedido velho não grava.
     private var wanted: String?
@@ -17,6 +17,13 @@ final class AtlasCodeProvenanceModel {
     init(client: AtlasClient, repo: String) {
         self.client = client
         self.repo = repo
+    }
+
+    func adoptRepo(_ newRepo: String) {
+        guard newRepo != repo else { return }
+        repo = newRepo
+        phase = .idle
+        wanted = nil
     }
 
     func load(hash: String) async {

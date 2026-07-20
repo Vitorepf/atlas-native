@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Native · Home — mockup Grok</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Canon AtlasTheme — slate teal + gold + Fraunces */
+  :root {
+    --bg-stage: #0e151a;
+    --app-bg: #1d2b34;
+    --bg-recessed: #15212a;
+    --surface: #243743;
+    --surface-hi: #2d4351;
+    --ink: #d6dde2;
+    --ink2: #95a3ac;
+    --ink3: #677482;
+    --sep: #313f47;
+    --sep-soft: #27353e;
+    --gold: #d4a85a;
+    --gold-veil: rgba(212, 168, 90, 0.10);
+    --gold-border: rgba(212, 168, 90, 0.34);
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px;
+    --phone-h: 852px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(127, 167, 196, 0.06), transparent 55%),
+      radial-gradient(700px 400px at 78% 100%, rgba(212, 168, 90, 0.04), transparent 50%),
+      var(--bg-stage);
+  }
+
+  .stage {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) auto;
+    gap: 56px;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px 64px;
+  }
+
+  .brief {
+    max-width: 340px;
+  }
+  .brief .kicker {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .brief h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .brief .lede {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink2);
+    text-wrap: pretty;
+  }
+  .brief .lede em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink);
+  }
+  .brief .rule {
+    width: 36px;
+    height: 1.5px;
+    margin: 22px 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.75;
+  }
+  .brief ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .brief li {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink3);
+    padding-left: 14px;
+    position: relative;
+  }
+  .brief li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  .brief li strong {
+    color: var(--ink2);
+    font-weight: 500;
+  }
+  .brief .meta {
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+  }
+
+  /* ── Device ── */
+  .device-wrap {
+    position: relative;
+    filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.55));
+  }
+  .phone {
+    width: var(--phone-w);
+    height: var(--phone-h);
+    border-radius: 54px;
+    background: #0a1014;
+    padding: 11px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .phone::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 54px;
+    pointer-events: none;
+    box-shadow:
+      inset 0 0 0 1.5px rgba(255, 255, 255, 0.08),
+      inset 0 0 0 4px #05080a;
+  }
+  .screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    background:
+      radial-gradient(120% 60% at 50% -10%, rgba(212, 168, 90, 0.045), transparent 42%),
+      radial-gradient(80% 50% at 100% 80%, rgba(36, 55, 67, 0.55), transparent 55%),
+      var(--app-bg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Status bar */
+  .status {
+    height: 54px;
+    padding: 14px 28px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .status .right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .island {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 118px;
+    height: 34px;
+    background: #000;
+    border-radius: 20px;
+  }
+
+  /* Masthead */
+  .masthead {
+    height: 52px;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .mh-left, .mh-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mh-right { justify-content: flex-end; }
+  .glyph-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(49, 63, 71, 0.9);
+    background: rgba(21, 33, 42, 0.55);
+    display: grid;
+    place-items: center;
+    color: var(--ink2);
+    cursor: default;
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+  }
+  .glyph-btn:hover {
+    border-color: var(--gold-border);
+    color: var(--ink);
+    background: rgba(36, 55, 67, 0.7);
+  }
+  .glyph-btn svg { width: 15px; height: 15px; }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+  }
+  .brand-row {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+  }
+  .brand-name {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 23px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .diamond {
+    width: 9px;
+    height: 9px;
+    margin-bottom: 1px;
+    background: var(--gold);
+    transform: rotate(45deg) scale(0.72);
+    box-shadow: 0 0 12px rgba(212, 168, 90, 0.35);
+    opacity: 0.92;
+  }
+  .brand-rule {
+    width: 44px;
+    height: 1.5px;
+    border-radius: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(212, 168, 90, 0.7) 50%,
+      transparent 100%
+    );
+  }
+
+  /* Content */
+  .scroll {
+    flex: 1;
+    overflow: hidden;
+    padding: 6px 0 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px 11px;
+  }
+  .section-label .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--sep));
+  }
+  .section-label .line.rev {
+    background: linear-gradient(90deg, var(--sep), transparent);
+  }
+  .section-label span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--ink3);
+    white-space: nowrap;
+  }
+
+  .rows {
+    display: flex;
+    flex-direction: column;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 22px;
+    cursor: default;
+    transition: background 0.2s ease;
+  }
+  .row:active { background: rgba(36, 55, 67, 0.45); }
+  .row-icon {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    color: var(--ink2);
+  }
+  .row-icon svg { width: 20px; height: 20px; stroke-width: 1.5; }
+  .row-title {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .row-trail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .count {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink3);
+    letter-spacing: 0.02em;
+    min-width: 1.6em;
+    text-align: right;
+  }
+  .chev {
+    color: var(--ink3);
+    opacity: 0.55;
+    display: grid;
+    place-items: center;
+  }
+  .chev svg { width: 11px; height: 11px; }
+  .divider {
+    height: 1px;
+    margin-left: 70px;
+    margin-right: 22px;
+    background: var(--sep-soft);
+  }
+
+  .row.add .row-title { color: var(--ink2); }
+  .row.add .row-icon { color: var(--ink3); }
+
+  /* Composer — the signature act */
+  .composer-wrap {
+    flex-shrink: 0;
+    padding: 10px 16px 28px;
+    background: linear-gradient(180deg, transparent 0%, rgba(29, 43, 52, 0.92) 28%, var(--app-bg) 100%);
+  }
+  .composer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: rgba(21, 33, 42, 0.72);
+    border: 1px solid rgba(49, 63, 71, 0.85);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 0 0 0.5px rgba(212, 168, 90, 0.06);
+    position: relative;
+  }
+  .composer::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      rgba(212, 168, 90, 0.18),
+      transparent 35%,
+      transparent 65%,
+      rgba(212, 168, 90, 0.08)
+    );
+    opacity: 0.55;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    padding: 1px;
+  }
+  .star {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  .star svg {
+    width: 14px;
+    height: 14px;
+    color: var(--gold);
+    filter: drop-shadow(0 0 6px rgba(212, 168, 90, 0.45));
+  }
+  .star .pulse {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 168, 90, 0.22), transparent 70%);
+    animation: breath 2.8s ease-in-out infinite;
+  }
+  .placeholder {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--ink3);
+    letter-spacing: -0.01em;
+  }
+  .home-bar {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 128px;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(214, 221, 226, 0.28);
+  }
+
+  @keyframes breath {
+    0%, 100% { opacity: 0.35; transform: scale(0.92); }
+    50% { opacity: 0.85; transform: scale(1.08); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .star .pulse { animation: none; opacity: 0.5; }
+  }
+
+  /* Entrance — calm, editorial */
+  .screen > *:not(.island) {
+    animation: arrive 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .masthead { animation-delay: 0.04s; }
+  .scroll { animation-delay: 0.1s; }
+  .composer-wrap { animation-delay: 0.18s; }
+  @keyframes arrive {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .screen > * { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .stage {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 32px 20px 48px;
+      justify-items: center;
+    }
+    .brief { max-width: var(--phone-w); text-align: left; }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <aside class="brief">
+      <div class="kicker">Mockup · Home v1</div>
+      <h1>Silêncio como superfície. Intenção como único ato.</h1>
+      <p class="lede">
+        A home do Atlas Native não é dashboard. É o limiar do operador:
+        <em>estrutura quieta</em> acima, <em>conversa com o cérebro</em> abaixo.
+        Ouro só onde a vida respira.
+      </p>
+      <div class="rule" aria-hidden="true"></div>
+      <ul>
+        <li><strong>Masthead</strong> — Fraunces soberano, diamante e regra em fade. Sem chrome extra.</li>
+        <li><strong>Seções</strong> — CONVERSAS · OPERAÇÃO · WORKSPACES. Hairlines, não cards.</li>
+        <li><strong>Contagens</strong> — mono editorial; ausência = ausência (sem zero falso).</li>
+        <li><strong>Pílula</strong> — o único gesto. Estrela viva, placeholder itálico.</li>
+      </ul>
+      <p class="meta">Grok 4.5 · tokens canônicos AtlasTheme · aprovar / iterar</p>
+    </aside>
+
+    <div class="device-wrap">
+      <div class="phone" role="img" aria-label="Mockup da home do Atlas Native em iPhone">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+
+          <div class="status">
+            <span>13:21</span>
+            <div class="right">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="3.5" width="3" height="7.5" rx="0.6"/><rect x="4.5" y="2" width="3" height="9" rx="0.6"/><rect x="9" y="0.5" width="3" height="10.5" rx="0.6"/><rect x="13.5" y="0" width="3" height="11" rx="0.6" opacity="0.35"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 3.2c2.1 0 4 0.8 5.4 2.1l1.1-1.2C12.7 2.3 10.5 1.2 8 1.2S3.3 2.3 1.5 4.1L2.6 5.3C4 4 5.9 3.2 8 3.2zm0 2.4c1.4 0 2.6.5 3.5 1.4l1.1-1.2C11.3 4.6 9.7 4 8 4S4.7 4.6 3.4 5.8L4.5 7C5.4 6.1 6.6 5.6 8 5.6zm0 2.4c.8 0 1.5.3 2 .8L8 11l-2-2.2c.5-.5 1.2-.8 2-.8z"/></svg>
+              <span>38</span>
+              <svg width="27" height="12" viewBox="0 0 27 12" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="11" rx="2.5" stroke="currentColor" fill="none" opacity="0.4"/><rect x="2" y="2" width="12" height="8" rx="1.2" fill="currentColor"/><rect x="23.5" y="3.5" width="2.5" height="5" rx="0.8" fill="currentColor" opacity="0.4"/></svg>
+            </div>
+          </div>
+
+          <header class="masthead">
+            <div class="mh-left">
+              <button class="glyph-btn" type="button" aria-label="Conta">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 19c1.4-3.2 3.7-4.8 6.5-4.8s5.1 1.6 6.5 4.8"/></svg>
+              </button>
+              <button class="glyph-btn" type="button" aria-label="Atlas Código">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2"/><circle cx="17" cy="8" r="2"/><circle cx="12" cy="16" r="2"/><path d="M9 8.5l2.2 5.2M15 8.5l-2.2 5.2M9 8h6"/></svg>
+              </button>
+            </div>
+            <div class="brand">
+              <div class="brand-row">
+                <span class="brand-name">Atlas</span>
+                <span class="diamond" aria-hidden="true"></span>
+              </div>
+              <div class="brand-rule" aria-hidden="true"></div>
+            </div>
+            <div class="mh-right">
+              <button class="glyph-btn" type="button" aria-label="Buscar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M16.5 16.5L20 20"/></svg>
+              </button>
+            </div>
+          </header>
+
+          <main class="scroll">
+            <div class="section-label">
+              <div class="line"></div>
+              <span>CONVERSAS</span>
+              <div class="line rev"></div>
+            </div>
+            <div class="rows">
+              <div class="row">
+                <div class="row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16.5V7.8A2.8 2.8 0 0 1 7.8 5h8.4A2.8 2.8 0 0 1 19 7.8v5.4A2.8 2.8 0 0 1 16.2 16H9l-4 3.2z"/></svg>
+                </div>
+                <div class="row-title">Conversas livres</div>
+                <div class="row-trail">
+                  <span class="chev"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-label">
+              <div class="line"></div>
+              <span>OPERAÇÃO</span>
+              <div class="line rev"></div>
+            </div>
+            <div class="rows">
+              <div class="row">
+                <div class="row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M11 7.5l-2.2 5.2h3L10.2 17l5-7.2h-3.2L14 7.5z"/></svg>
+                </div>
+                <div class="row-title">Autônomos</div>
+                <div class="row-trail">
+                  <span class="chev"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg></span>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="row">
+                <div class="row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5l4.2-4.2 3.1 3.1 6.7-7.4"/><path d="M14.5 8h5v5"/></svg>
+                </div>
+                <div class="row-title">Arena</div>
+                <div class="row-trail">
+                  <span class="chev"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-label">
+              <div class="line"></div>
+              <span>WORKSPACES</span>
+              <div class="line rev"></div>
+            </div>
+            <div class="rows">
+              <div class="row">
+                <div class="row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9.5a1.5 1.5 0 0 0-1.5-1.5H12l-1.8-2H6A2 2 0 0 0 4 8.5z"/></svg>
+                </div>
+                <div class="row-title">atlas</div>
+                <div class="row-trail">
+                  <span class="count">85</span>
+                  <span class="chev"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg></span>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="row">
+                <div class="row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9.5a1.5 1.5 0 0 0-1.5-1.5H12l-1.8-2H6A2 2 0 0 0 4 8.5z"/></svg>
+                </div>
+                <div class="row-title">atlas-native</div>
+                <div class="row-trail">
+                  <span class="count">15</span>
+                  <span class="chev"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg></span>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="row add">
+                <div class="row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9.5a1.5 1.5 0 0 0-1.5-1.5H12l-1.8-2H6A2 2 0 0 0 4 8.5z"/><path d="M12 11v5M9.5 13.5h5"/></svg>
+                </div>
+                <div class="row-title">Adicionar workspace</div>
+                <div class="row-trail">
+                  <span class="chev"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          <div class="composer-wrap">
+            <div class="composer" role="search">
+              <div class="star" aria-hidden="true">
+                <div class="pulse"></div>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2l1.15 6.55L19.8 12l-6.65 3.25L12 21.8l-1.15-6.55L4.2 12l6.65-3.25L12 2.2z"/></svg>
+              </div>
+              <span class="placeholder">Escreva ao Atlas</span>
+            </div>
+          </div>
+          <div class="home-bar" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

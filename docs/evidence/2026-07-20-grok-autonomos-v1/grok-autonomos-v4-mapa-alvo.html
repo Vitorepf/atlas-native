@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Autônomos · 18→9 — hub + push + folhas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --stage: #0e151a; --bg: #1d2b34; --recessed: #15212a; --surface: #243743;
+    --ink: #d6dde2; --ink2: #95a3ac; --ink3: #677482; --sep: #2c3a43;
+    --gold: #d4a85a; --gold-veil: rgba(212,168,90,0.12); --gold-border: rgba(212,168,90,0.34);
+    --alert: #c98989;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: -apple-system, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --phone-w: 393px; --phone-h: 852px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button:focus { outline: none; }
+  button:focus-visible { outline: 1px solid rgba(212,168,90,0.45); outline-offset: 2px; }
+  body {
+    min-height: 100vh; font-family: var(--sans); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(127,167,196,0.05), transparent 55%),
+      radial-gradient(700px 400px at 78% 100%, rgba(212,168,90,0.03), transparent 50%),
+      var(--stage);
+  }
+  .stage {
+    min-height: 100vh; display: grid;
+    grid-template-columns: minmax(280px, 380px) auto;
+    gap: 44px; align-items: start; justify-content: center;
+    padding: 36px 28px 64px;
+  }
+  .brief { max-width: 380px; position: sticky; top: 28px; }
+  .brief .kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .brief h1 {
+    font-family: var(--serif); font-weight: 600; font-size: 24px;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .brief .lede { margin-top: 10px; font-size: 13px; line-height: 1.55; color: var(--ink2); }
+  .brief .lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+  .brief .rule {
+    width: 32px; height: 1px; margin: 16px 0;
+    background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.7;
+  }
+  .brief h2 {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin: 16px 0 8px;
+  }
+  .brief ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .brief li {
+    font-size: 12px; line-height: 1.4; color: var(--ink3);
+    padding-left: 12px; position: relative;
+  }
+  .brief li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 1px; background: var(--gold); opacity: 0.55;
+  }
+  .brief li strong { color: var(--ink2); font-weight: 500; }
+  .brief li.kill::before { background: var(--alert); }
+  .canon-box {
+    margin-top: 12px; padding: 12px 14px; border-radius: 14px;
+    border: 1px solid var(--gold-border); background: var(--gold-veil);
+  }
+  .canon-box b { display: block; font-family: var(--serif); font-size: 14px; margin-bottom: 4px; }
+  .canon-box p { font-size: 11.5px; line-height: 1.45; color: var(--ink2); }
+
+  .phone-wrap { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .switch-groups { display: flex; flex-direction: column; gap: 8px; max-width: 420px; width: 100%; }
+  .switch-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .switch-row .lab {
+    width: 100%; text-align: center;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 2px;
+  }
+  .switches button {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--ink2);
+    background: var(--recessed); border: 1px solid var(--sep);
+    border-radius: 999px; padding: 7px 10px;
+  }
+  .switches button.on {
+    color: var(--ink); border-color: rgba(214,221,226,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    border-radius: 52px; padding: 10px; background: #070b0e;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55); position: relative;
+  }
+  .phone::before {
+    content: ""; position: absolute; inset: 0; border-radius: 52px; pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 4px #040608;
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
+    background: var(--bg); position: relative; display: flex; flex-direction: column;
+  }
+  .status {
+    height: 46px; padding: 14px 28px 0;
+    display: flex; justify-content: space-between;
+    font-size: 12px; font-weight: 600;
+  }
+  .nav {
+    height: 50px; padding: 0 16px;
+    display: grid; grid-template-columns: 44px 1fr 44px; align-items: center;
+  }
+  .nav .orb {
+    width: 36px; height: 36px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08); font-size: 15px;
+  }
+  .nav .titles { text-align: center; }
+  .nav .titles strong {
+    display: block; font-family: var(--serif); font-size: 17px; font-weight: 600;
+  }
+  .nav .titles em {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-style: normal; font-size: 8px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
+  }
+  .scroll {
+    flex: 1; overflow-y: auto; padding: 8px 22px 118px; scrollbar-width: none;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+  .panel { display: none; }
+  .panel.on { display: block; animation: in 0.24s ease; }
+  @keyframes in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .kicker-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .kicker-row .mark {
+    color: var(--gold); font-family: var(--serif); font-size: 12px;
+    animation: breath 2.4s ease-in-out infinite;
+  }
+  @keyframes breath { 0%,100%{opacity:.55} 50%{opacity:1} }
+  .kicker-row span {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .kicker-row.quiet span { color: var(--ink3); }
+  .kicker-row.quiet .mark { display: none; }
+  .kicker-row.alert span { color: var(--alert); }
+  .kicker-row.alert .mark { color: var(--alert); animation: none; }
+
+  .hero-title {
+    font-family: var(--serif); font-weight: 600; font-size: 28px;
+    line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 8px;
+  }
+  .hero-sub {
+    font-size: 14px; line-height: 1.5; color: var(--ink2); margin-bottom: 18px;
+  }
+  /* CTAs — zero ouro de chrome; primary = ink fill quieto (Arena) */
+  .cta {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; min-height: 46px; padding: 0 20px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.055);
+    color: var(--ink); font-size: 14px; font-weight: 530;
+    margin-bottom: 8px; letter-spacing: -0.012em;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .cta:hover { background: rgba(255,255,255,0.075); }
+  .cta.quiet {
+    border-color: rgba(44,58,67,0.7); background: transparent;
+    color: var(--ink2); font-weight: 480; margin-top: 0;
+  }
+  .cta.quiet:hover { color: var(--ink); border-color: rgba(149,163,172,0.45); }
+  .cta.danger {
+    border-color: rgba(201,137,137,0.35); background: transparent; color: var(--alert);
+  }
+  .cta.danger:hover { background: rgba(201,137,137,0.08); }
+  .hair {
+    height: 1px; margin: 22px 0 16px; border: 0;
+    background: linear-gradient(90deg,
+      rgba(44,58,67,0.15), rgba(44,58,67,0.95) 20%,
+      rgba(44,58,67,0.95) 80%, rgba(44,58,67,0.15));
+  }
+  .sec {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 12px;
+  }
+  .focus .name {
+    font-family: var(--serif); font-size: 20px; font-weight: 600; margin-bottom: 5px;
+  }
+  .focus .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--ink2); margin-bottom: 8px;
+  }
+  .focus .obj {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    line-height: 1.45; color: var(--ink2);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .nav-line {
+    display: grid; grid-template-columns: 1fr auto 10px; gap: 10px;
+    align-items: center; width: 100%; min-height: 48px; padding: 12px 0;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(90deg,
+      rgba(44,58,67,0.12), rgba(44,58,67,0.7) 18%,
+      rgba(44,58,67,0.7) 82%, rgba(44,58,67,0.12)) 1;
+    text-align: left;
+  }
+  .nav-line .l { font-size: 15.5px; font-weight: 510; letter-spacing: -0.01em; }
+  .nav-line .r { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
+  .nav-line .chev { color: var(--ink3); font-size: 13px; }
+  .metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 18px;
+  }
+  .metric b { display: block; font-family: var(--serif); font-size: 24px; font-weight: 600; }
+  .metric span {
+    display: block; margin-top: 2px;
+    font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  }
+  .row {
+    display: grid; grid-template-columns: 18px 1fr auto;
+    gap: 14px; align-items: center; min-height: 54px; padding: 0;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(90deg,
+      rgba(44,58,67,0.12), rgba(44,58,67,0.7) 18%,
+      rgba(44,58,67,0.7) 82%, rgba(44,58,67,0.12)) 1;
+    text-align: left; width: 100%;
+  }
+  .row:last-child { border-bottom: 0; border-image: none; }
+  .row .glyph {
+    font-family: var(--serif); font-size: 13px; color: var(--ink3);
+    line-height: 1; text-align: center;
+  }
+  .row .glyph.attn { color: var(--gold); }
+  .row .body { min-width: 0; }
+  .row .body .t {
+    font-size: 15.5px; font-weight: 510; letter-spacing: -0.01em; margin-bottom: 3px;
+  }
+  .row .body .s { font-family: var(--mono); font-size: 11px; color: var(--ink2); }
+  .row .trail { font-family: var(--mono); font-size: 11px; color: var(--ink3); white-space: nowrap; }
+  .controls {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px;
+  }
+  .controls .cta { margin: 0; min-height: 42px; font-size: 13px; padding: 0 8px; }
+  .stack { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .note {
+    font-family: var(--mono); font-size: 11px; color: var(--ink3);
+    margin-top: 12px; line-height: 1.4;
+  }
+  .pill-hint {
+    margin-top: 10px; padding: 10px 12px; border-radius: 12px;
+    background: rgba(21,33,42,0.55); border: 1px solid rgba(149,163,172,0.12);
+    font-size: 12px; line-height: 1.45; color: var(--ink3);
+  }
+  .pill-hint em {
+    font-family: var(--serif); font-style: italic; color: var(--ink2);
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3);
+    margin-bottom: 8px;
+  }
+  .field input, .field textarea {
+    width: 100%; border-radius: 12px; padding: 12px 14px;
+    background: var(--recessed); border: 1px solid var(--sep);
+    color: var(--ink); font-size: 14px; font-family: var(--sans);
+  }
+  .field textarea { min-height: 88px; resize: none; }
+  .receipt {
+    padding: 16px; border-radius: 14px;
+    border: 1px solid var(--gold-border); background: var(--gold-veil);
+    margin-bottom: 16px;
+  }
+  .receipt .t {
+    font-family: var(--serif); font-size: 18px; font-weight: 600; margin-bottom: 6px;
+  }
+  .receipt .s { font-size: 13px; color: var(--ink2); line-height: 1.45; }
+  .receipt.alert {
+    border-color: rgba(201,137,137,0.35); background: rgba(201,137,137,0.08);
+  }
+
+  .sheet {
+    display: none; position: absolute; inset: 0; z-index: 8;
+    background: rgba(7,11,14,0.55); align-items: flex-end;
+  }
+  .sheet.on { display: flex; }
+  .sheet-card {
+    width: 100%; max-height: 78%;
+    background: var(--bg); border-radius: 28px 28px 0 0;
+    padding: 12px 22px 36px; overflow-y: auto;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    animation: sheetIn 0.28s ease;
+  }
+  @keyframes sheetIn {
+    from { transform: translateY(24px); opacity: 0.6; }
+    to { transform: none; opacity: 1; }
+  }
+  .sheet-grab {
+    width: 36px; height: 4px; border-radius: 999px;
+    background: rgba(214,221,226,0.22); margin: 4px auto 16px;
+  }
+
+  .agent-pill-dock {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+    padding: 8px 16px 22px;
+    background: linear-gradient(
+      180deg, transparent 0%, rgba(29,43,52,0.55) 22%,
+      rgba(29,43,52,0.96) 55%, var(--bg) 100%
+    );
+    pointer-events: none;
+  }
+  .agent-pill {
+    pointer-events: auto; width: 100%; min-height: 52px;
+    padding: 12px 18px; border-radius: 999px;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(21, 33, 42, 0.68);
+    backdrop-filter: blur(28px) saturate(1.18);
+    -webkit-backdrop-filter: blur(28px) saturate(1.18);
+    border: 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 10px 28px rgba(0,0,0,0.28);
+    position: relative; text-align: left; font: inherit; color: inherit;
+    transition: background 0.18s ease, box-shadow 0.18s ease;
+  }
+  .agent-pill:hover {
+    background: rgba(21, 33, 42, 0.78);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 32px rgba(0,0,0,0.34);
+  }
+  .agent-pill::after {
+    content: ""; position: absolute; inset: 0; border-radius: 999px;
+    pointer-events: none; padding: 0.75px;
+    background: linear-gradient(135deg, rgba(212,168,90,0.22), rgba(212,168,90,0.04) 42%, rgba(212,168,90,0.12));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+  .agent-pill .star {
+    width: 30px; height: 30px; flex-shrink: 0;
+    position: relative; display: grid; place-items: center;
+  }
+  .agent-pill .star .glyph {
+    font-family: var(--serif); font-size: 16px; color: var(--gold);
+    line-height: 1; position: relative; z-index: 1;
+    filter: drop-shadow(0 0 5px rgba(212,168,90,0.35));
+  }
+  .agent-pill .star .pulse {
+    position: absolute; inset: 2px; border-radius: 50%;
+    background: rgba(212,168,90,0.12); filter: blur(6px);
+    animation: star-breathe 2.8s ease-in-out infinite;
+  }
+  @keyframes star-breathe {
+    0%,100%{opacity:.4;transform:scale(.92)}
+    50%{opacity:.95;transform:scale(1.18)}
+  }
+  .agent-pill .invite {
+    flex: 1; min-width: 0;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 16px; color: var(--ink3); letter-spacing: -0.01em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .home-indicator {
+    width: 128px; height: 5px; border-radius: 999px;
+    background: rgba(214,221,226,0.28); margin: 10px auto 0;
+  }
+  .screen.sheet-open .agent-pill-dock { opacity: 0; pointer-events: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel.on, .sheet-card { animation: none; }
+    .kicker-row .mark, .agent-pill .star .pulse { animation: none; opacity: 0.7; }
+  }
+
+  @media (max-width: 920px) {
+    .stage { grid-template-columns: 1fr; justify-items: center; }
+    .brief { position: static; max-width: 520px; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="brief">
+    <div class="kicker">Grok · Autônomos v4 · mapa alvo</div>
+    <h1>18 → 9. O resto é pílula.</h1>
+    <p class="lede">
+      Recorte rigoroso: chrome = atenção + mapa da missão + assinatura.
+      Achados, orçamentos, ritmo, histórico longo e placement = <em>pack da pílula</em>.
+      CTAs e linhas no mesmo alfabeto da Arena (cápsula quieta, hairline, sem ouro de chrome).
+    </p>
+    <div class="rule"></div>
+    <div class="canon-box">
+      <b>Pílula = Home</b>
+      <p>Glass + ✦ 30pt + itálico 16 + fio 0,75pt. Só muda o convite. Pack nunca na cara.</p>
+    </div>
+    <h2>Mantém · 9 destinos</h2>
+    <ul>
+      <li><strong>Hub</strong> — 1 tela, 3 vestimentas (aguardando / ao vivo / quieto)</li>
+      <li><strong>Push</strong> — Decisões · 1 decisão · Área · Frota · Ciclo · Incidente*</li>
+      <li><strong>Folhas</strong> — Pausar · Transferir · Encerrar · Start · Recibo</li>
+      <li><strong>Áreas</strong> — sheet no meio da Área, não destino</li>
+    </ul>
+    <h2>Morto como destino</h2>
+    <ul>
+      <li class="kill">Hub-live separado · Achados · Orçamentos · Ritmo</li>
+      <li class="kill">Áreas full-screen · digests no hub · chips oval · CTA dourado</li>
+    </ul>
+    <h2>*Incidente</h2>
+    <ul>
+      <li>Só existe quando a fila publica exceção. Quieto = ausência.</li>
+    </ul>
+    <h2>Gate</h2>
+    <ul>
+      <li>OK visual do operador → casca Swift. Sem OK = sem código.</li>
+    </ul>
+  </aside>
+
+  <div class="phone-wrap">
+    <div class="switch-groups switches" id="switches">
+      <div class="switch-row">
+        <div class="lab">Hub · uma tela</div>
+        <button type="button" class="on" data-panel="hub-await">Aguardando</button>
+        <button type="button" data-panel="hub-live">Ao vivo</button>
+        <button type="button" data-panel="hub-quiet">Quieto</button>
+      </div>
+      <div class="switch-row">
+        <div class="lab">Push</div>
+        <button type="button" data-panel="decisoes">Decisões</button>
+        <button type="button" data-panel="decisao">1 decisão</button>
+        <button type="button" data-panel="area">Área</button>
+        <button type="button" data-panel="frota">Frota</button>
+        <button type="button" data-panel="ciclo">Ciclo</button>
+        <button type="button" data-panel="incidente">Incidente</button>
+      </div>
+      <div class="switch-row">
+        <div class="lab">Folhas</div>
+        <button type="button" data-sheet="areas">Áreas</button>
+        <button type="button" data-sheet="pausar">Pausar</button>
+        <button type="button" data-sheet="transferir">Transferir</button>
+        <button type="button" data-sheet="encerrar">Encerrar</button>
+        <button type="button" data-sheet="start">Start</button>
+        <button type="button" data-sheet="recibo">Recibo</button>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="screen" id="screen">
+        <div class="status"><span>14:28</span><span>■■■□ 43%</span></div>
+        <div class="nav">
+          <button type="button" class="orb" id="navBack" aria-label="Voltar">‹</button>
+          <div class="titles">
+            <strong id="navTitle">Autônomos</strong>
+            <em id="navSub">Área própria · 24/7</em>
+          </div>
+          <button type="button" class="orb" aria-label="Atualizar">↻</button>
+        </div>
+
+        <div class="scroll" id="scroll">
+
+          <section class="panel on" id="hub-await">
+            <div class="kicker-row"><span class="mark">✦</span><span>Aguardando você</span></div>
+            <div class="hero-title">6 decisões<br>pedem você</div>
+            <p class="hero-sub">Só o que o humano pode resolver. O resto segue em silêncio.</p>
+            <button type="button" class="cta" data-goto="decisoes">Ver decisões</button>
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · autonomia 0/2</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas.</div>
+            </div>
+            <button type="button" class="nav-line" data-goto="area"><span class="l">Ver área</span><span class="r">dev · forge</span><span class="chev">›</span></button>
+            <button type="button" class="nav-line" data-goto="frota"><span class="l">Ver frota</span><span class="r">5 em repouso</span><span class="chev">›</span></button>
+          </section>
+
+          <section class="panel" id="hub-live">
+            <div class="kicker-row"><span class="mark">✦</span><span>Ao vivo</span></div>
+            <div class="hero-title">Ciclo 149<br>em andamento</div>
+            <p class="hero-sub">Agentic Engineering OS · lock retido. Mesmo hub — só muda o estado.</p>
+            <button type="button" class="cta" data-goto="area">Ver área</button>
+            <button type="button" class="cta quiet" data-sheet="pausar">Pausar após o passo atual</button>
+            <div class="hair"></div>
+            <button type="button" class="nav-line" data-goto="frota"><span class="l">Frota</span><span class="r">1 ativo</span><span class="chev">›</span></button>
+          </section>
+
+          <section class="panel" id="hub-quiet">
+            <div class="kicker-row quiet"><span>Em repouso</span></div>
+            <div class="hero-title">Frota quieta</div>
+            <p class="hero-sub">Nenhuma decisão. Silêncio é o produto.</p>
+            <div class="hair"></div>
+            <div class="sec">Área em foco</div>
+            <div class="focus">
+              <div class="name">Agentic Engineering OS</div>
+              <div class="meta">em espera · 200 ciclos</div>
+              <div class="obj">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas.</div>
+            </div>
+            <button type="button" class="nav-line" data-goto="area"><span class="l">Ver área</span><span class="r">dev · forge</span><span class="chev">›</span></button>
+            <button type="button" class="nav-line" data-goto="frota"><span class="l">Ver frota</span><span class="r">5 em repouso</span><span class="chev">›</span></button>
+            <div class="pill-hint">Ritmo, digest, placement, achados → pergunte na <em>pílula</em>.</div>
+          </section>
+
+          <section class="panel" id="decisoes">
+            <div class="kicker-row"><span class="mark">✦</span><span>Decisões</span></div>
+            <div class="hero-title">6 itens</div>
+            <p class="hero-sub">Inbox e ordens que bloqueiam o ciclo.</p>
+            <div class="sec">Inbox</div>
+            <button type="button" class="row" data-goto="decisao">
+              <div class="glyph attn">※</div>
+              <div class="body"><div class="t">Revisar patch de heal no grafo</div><div class="s">risco alto · AEOS</div></div>
+              <div class="trail">agora ›</div>
+            </button>
+            <div class="row"><div class="glyph attn">※</div><div class="body"><div class="t">Autorizar spend Codex</div><div class="s">risco médio · frota</div></div><div class="trail">há 2h</div></div>
+            <div class="row"><div class="glyph">※</div><div class="body"><div class="t">Confirmar handoff Mac → cloud</div><div class="s">risco baixo</div></div><div class="trail">há 1d</div></div>
+            <div class="hair"></div>
+            <div class="sec">Ordens</div>
+            <div class="row"><div class="glyph">◷</div><div class="body"><div class="t">Fechar ciclo 149 com prova device</div><div class="s">aguarda assinatura</div></div><div class="trail">bloqueia</div></div>
+            <div class="row"><div class="glyph">◷</div><div class="body"><div class="t">Promover ensaio → real</div><div class="s">AEOS</div></div><div class="trail">na fila</div></div>
+            <div class="row"><div class="glyph">◷</div><div class="body"><div class="t">Drenar worker Claude ocioso</div><div class="s">frota</div></div><div class="trail">na fila</div></div>
+          </section>
+
+          <section class="panel" id="decisao">
+            <div class="kicker-row"><span class="mark">✦</span><span>Decisão</span></div>
+            <div class="hero-title">Revisar patch de heal no grafo</div>
+            <p class="hero-sub">Risco alto · AEOS · chegou agora. Assinatura humana.</p>
+            <div class="stack">
+              <button type="button" class="cta" data-sheet="recibo">Aceitar</button>
+              <button type="button" class="cta quiet" data-sheet="recibo">Pedir mudanças</button>
+              <button type="button" class="cta quiet" data-sheet="recibo">Adiar</button>
+              <button type="button" class="cta danger" data-sheet="recibo">Rejeitar</button>
+            </div>
+            <p class="note">Cada escolha grava recibo com ator e motivo.</p>
+          </section>
+
+          <section class="panel" id="area">
+            <div class="kicker-row quiet"><span>Em espera</span></div>
+            <div class="hero-title">Agentic Engineering OS</div>
+            <p class="hero-sub">dev · forge · autonomia 0/2</p>
+            <p class="hero-sub" style="margin-top:-10px">Melhorar continuamente todo o fluxo de desenvolvimento de software do Atlas — do pedido à prova no device.</p>
+            <div class="metrics">
+              <div class="metric"><b>200</b><span>ciclos</span></div>
+              <div class="metric"><b>116</b><span>tarefas</span></div>
+              <div class="metric"><b>3</b><span>inbox</span></div>
+            </div>
+            <button type="button" class="nav-line" data-goto="decisoes"><span class="l">Ordens e inbox</span><span class="r">116 · 3</span><span class="chev">›</span></button>
+            <button type="button" class="nav-line" data-sheet="areas"><span class="l">Trocar área</span><span class="r">3</span><span class="chev">›</span></button>
+            <div class="pill-hint">Achados (17) e orçamentos → <em>«explique os achados»</em> / <em>«quais limites?»</em> na pílula.</div>
+            <div class="hair"></div>
+            <div class="sec">Entregas · 3 de 24</div>
+            <button type="button" class="row" data-goto="ciclo">
+              <div class="glyph">⌖</div>
+              <div class="body"><div class="t">ciclo 148</div><div class="s">merge comprovado</div></div>
+              <div class="trail">há 49d ›</div>
+            </button>
+            <div class="row"><div class="glyph">⌖</div><div class="body"><div class="t">ciclo 147</div><div class="s">merge comprovado</div></div><div class="trail">há 49d</div></div>
+            <div class="hair"></div>
+            <div class="sec">Governança</div>
+            <div class="controls">
+              <button type="button" class="cta quiet" data-sheet="pausar">Pausar</button>
+              <button type="button" class="cta quiet" data-sheet="transferir">Transferir</button>
+              <button type="button" class="cta danger" data-sheet="encerrar">Encerrar</button>
+            </div>
+            <div class="stack">
+              <button type="button" class="cta quiet" data-sheet="start">Novo ciclo</button>
+            </div>
+            <p class="note">Start abre folha com ensaio / real. Ouro não vende o botão.</p>
+          </section>
+
+          <section class="panel" id="frota">
+            <div class="kicker-row quiet"><span>Frota</span></div>
+            <div class="hero-title">5 em repouso</div>
+            <p class="hero-sub">Por decisão sua · US$&nbsp;0,00. Histórico longo = pílula.</p>
+            <div class="sec">Workers</div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">ai-worker.claude</div><div class="s">desligado por você</div></div><div class="trail">há 16d</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">reconciler</div><div class="s">parado · não desejado</div></div><div class="trail">há 16d</div></div>
+            <div class="row"><div class="glyph">·</div><div class="body"><div class="t">codex-worker</div><div class="s">gasto vetado</div></div><div class="trail">há 16d</div></div>
+            <div class="pill-hint">«o que aconteceu na frota?» / placement / heartbeat → <em>pílula</em>.</div>
+          </section>
+
+          <section class="panel" id="ciclo">
+            <div class="kicker-row quiet"><span>Entrega</span></div>
+            <div class="hero-title">Ciclo 148</div>
+            <p class="hero-sub">Merge comprovado · há 49 dias · AEOS</p>
+            <div class="receipt">
+              <div class="t">Prova</div>
+              <div class="s">outcome merged · merge_performed · hash publicado. Plano não conta.</div>
+            </div>
+            <button type="button" class="cta quiet" data-goto="area">Voltar à área</button>
+          </section>
+
+          <section class="panel" id="incidente">
+            <div class="kicker-row alert"><span class="mark">※</span><span>Atenção</span></div>
+            <div class="hero-title">Fila em observação</div>
+            <p class="hero-sub">Só existe com exceção real. Saudável = esta tela some.</p>
+            <div class="receipt alert">
+              <div class="t">Lease atrasada</div>
+              <div class="s">Heartbeat ausente há 4 min. Nenhuma escrita até recuperar ou transferir.</div>
+            </div>
+            <div class="stack">
+              <button type="button" class="cta" data-sheet="transferir">Transferir missão</button>
+              <button type="button" class="cta quiet">Aguardar 5 min</button>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="agent-pill-dock">
+          <button type="button" class="agent-pill" id="pill" aria-label="Pílula agêntica">
+            <div class="star" aria-hidden="true"><div class="pulse"></div><span class="glyph">✦</span></div>
+            <span class="invite" id="pillInvite">o que preciso decidir?</span>
+          </button>
+          <div class="home-indicator" aria-hidden="true"></div>
+        </div>
+
+        <div class="sheet" id="sheet">
+          <div class="sheet-card" id="sheetCard"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const invites = {
+  "hub-await":"o que preciso decidir?",
+  "hub-live":"como está este ciclo?",
+  "hub-quiet":"pergunte sobre a frota",
+  "decisoes":"o que preciso decidir?",
+  "decisao":"ajude a decidir isto",
+  "area":"pergunte sobre esta área",
+  "frota":"pergunte sobre a frota",
+  "ciclo":"o que este ciclo entregou?",
+  "incidente":"o que precisa de mim?"
+};
+const titles = {
+  "hub-await":["Autônomos","Área própria · 24/7"],
+  "hub-live":["Autônomos","Ao vivo"],
+  "hub-quiet":["Autônomos","Área própria · 24/7"],
+  "decisoes":["Decisões","6 pendentes"],
+  "decisao":["Decisão","risco alto"],
+  "area":["Área","Agentic Engineering OS"],
+  "frota":["Frota","5 em repouso"],
+  "ciclo":["Ciclo 148","entrega"],
+  "incidente":["Atenção","fila"]
+};
+const sheets = {
+  areas: {
+    title: "Áreas",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:22px">Trocar área</div>
+      <p class="hero-sub">Ferramenta, não destino. Frota continua global.</p>
+      <button type="button" class="nav-line" data-goto="area" data-close-sheet><span class="l">Agentic Engineering OS</span><span class="r">em espera</span><span class="chev">›</span></button>
+      <button type="button" class="nav-line" data-goto="area" data-close-sheet><span class="l">Fábrica do Loop</span><span class="r">em espera</span><span class="chev">›</span></button>
+      <button type="button" class="nav-line" data-goto="area" data-close-sheet><span class="l">Atlas Native</span><span class="r">em espera</span><span class="chev">›</span></button>`
+  },
+  pausar: {
+    title: "Pausar",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Pausar</div>
+      <p class="hero-sub">Após o passo atual. Lock liberado com recibo.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>pausar AEOS para revisão humana</textarea></div>
+      <button type="button" class="cta" data-sheet="recibo">Confirmar</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  transferir: {
+    title: "Transferir",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Transferir</div>
+      <p class="hero-sub">Handoff só depois do alvo reivindicar.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>mover missão para runtime com device</textarea></div>
+      <button type="button" class="cta" data-sheet="recibo">Pedir handoff</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  encerrar: {
+    title: "Encerrar",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Encerrar</div>
+      <p class="hero-sub">Kill switch. Irreversível sem nova autoridade.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>encerrar após prova no device</textarea></div>
+      <button type="button" class="cta danger" data-sheet="recibo">Encerrar</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  start: {
+    title: "Start",
+    body: `<div class="sheet-grab"></div>
+      <div class="hero-title" style="font-size:24px">Novo ciclo</div>
+      <p class="hero-sub">Uma folha, dois modos. Ensaio quieto · real com spend.</p>
+      <div class="field"><label>Quem autoriza</label><input value="vitor" /></div>
+      <div class="field"><label>Motivo</label><textarea>ciclo 150 com prova device</textarea></div>
+      <button type="button" class="cta quiet" data-sheet="recibo">Rodar ensaio</button>
+      <button type="button" class="cta" data-sheet="recibo">Executar de verdade</button>
+      <button type="button" class="cta quiet" data-close-sheet>Cancelar</button>`
+  },
+  recibo: {
+    title: "Recibo",
+    body: `<div class="sheet-grab"></div>
+      <div class="receipt"><div class="t">Recibo gravado</div>
+      <div class="s">Ação aceita · hash público · ator vitor · motivo auditável.</div></div>
+      <button type="button" class="cta" data-close-sheet>Fechar</button>`
+  }
+};
+
+const hub = new Set(["hub-await","hub-live","hub-quiet"]);
+let current = "hub-await";
+let stack = [];
+
+function show(id) {
+  current = id;
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === id));
+  document.querySelectorAll("#switches button[data-panel]").forEach(b => b.classList.toggle("on", b.dataset.panel === id));
+  document.getElementById("pillInvite").textContent = invites[id] || "pergunte sobre a frota";
+  const [t,s] = titles[id] || ["Autônomos","Área própria · 24/7"];
+  document.getElementById("navTitle").textContent = t;
+  document.getElementById("navSub").textContent = s;
+  document.getElementById("scroll").scrollTop = 0;
+}
+function openSheet(key) {
+  const s = sheets[key]; if (!s) return;
+  document.getElementById("sheetCard").innerHTML = s.body;
+  document.getElementById("sheet").classList.add("on");
+  document.getElementById("screen").classList.add("sheet-open");
+  document.querySelectorAll("#switches button[data-sheet]").forEach(b => b.classList.toggle("on", b.dataset.sheet === key));
+}
+function closeSheet() {
+  document.getElementById("sheet").classList.remove("on");
+  document.getElementById("screen").classList.remove("sheet-open");
+  document.querySelectorAll("#switches button[data-sheet]").forEach(b => b.classList.remove("on"));
+}
+
+document.getElementById("switches").addEventListener("click", e => {
+  const p = e.target.closest("button[data-panel]");
+  if (p) { closeSheet(); stack = []; show(p.dataset.panel); return; }
+  const sh = e.target.closest("button[data-sheet]");
+  if (sh) openSheet(sh.dataset.sheet);
+});
+
+document.getElementById("screen").addEventListener("click", e => {
+  if (e.target.closest("[data-close-sheet]") && !e.target.closest("[data-goto]")) {
+    closeSheet(); return;
+  }
+  const sh = e.target.closest("[data-sheet]");
+  if (sh && !sh.closest(".switches")) { openSheet(sh.dataset.sheet); return; }
+  const go = e.target.closest("[data-goto]");
+  if (!go) return;
+  const close = !!e.target.closest("[data-close-sheet]");
+  if (hub.has(current)) stack.push(current);
+  else if (!hub.has(go.dataset.goto)) stack.push(current);
+  closeSheet();
+  show(go.dataset.goto);
+});
+
+document.getElementById("navBack").addEventListener("click", () => {
+  if (document.getElementById("sheet").classList.contains("on")) { closeSheet(); return; }
+  if (stack.length) { show(stack.pop()); return; }
+  if (!hub.has(current)) show("hub-await");
+});
+</script>
+</body>
+</html>

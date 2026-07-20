@@ -3,10 +3,21 @@ import AtlasCore
 
 enum ArenaPremiumTab: String, CaseIterable, Identifiable {
     case now = "Agora"
-    case results = "Resultados"
-    case capabilities = "Capacidades"
+    case fleet = "Frota"
+    case capabilities = "Capac."
+    case results = "Motor"
 
     var id: String { rawValue }
+
+    /// Identificador estável p/ a11y (não depende do rótulo curto da aba).
+    var a11yKey: String {
+        switch self {
+        case .now: "agora"
+        case .fleet: "frota"
+        case .capabilities: "capacidades"
+        case .results: "motor"
+        }
+    }
 }
 
 enum ArenaPremiumDestination: String, Identifiable, Hashable {
@@ -76,5 +87,19 @@ extension ArenaModel {
         var suites = Set(scoreboard?.suites.filter(\.hasRegression).map(\.suite) ?? [])
         suites.formUnion(report?.attentionSuites.map(\.suite) ?? [])
         return suites.count
+    }
+
+    /// Título humano do motor ao vivo — nunca o literal "motor desconhecido".
+    var arenaLiveEngineTitle: String {
+        if let id = arenaPrimaryRun?.engine, !id.isEmpty {
+            return ArenaDisplay.engine(id)
+        }
+        if let preferred = preferredEngine, !preferred.isEmpty {
+            return ArenaDisplay.engine(preferred)
+        }
+        if let composite = arenaPrimaryEngine?.engine {
+            return ArenaDisplay.engine(composite)
+        }
+        return "Medição ao vivo"
     }
 }

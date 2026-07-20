@@ -4,4 +4,8 @@ import Foundation
 // Radar → A11yID+CodeRadarHelpers.swift · Graph → +CodeGraphHelpers.swift
 // Heal/Why → A11yID+CodeHealWhyHelpers.swift
 
-extension A11yID {}
+extension A11yID {
+    static func codeRepoPickerRow(_ slug: String) -> String {
+        codeRepoPickerRowPrefix + slug
+    }
+}

@@ -29,7 +29,7 @@ struct ArenaPremiumPlanView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(text: "Ordem de medição", tone: .active)
+            ArenaPremiumKicker(text: "Ordem de medição")
                 .accessibilityIdentifier(A11yID.arenaPremiumPlan)
             Text("Plano")
                 .font(AtlasFont.serif(36))
@@ -162,7 +162,7 @@ struct ArenaPremiumQueueView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(text: "Aguardando execução", tone: queued.isEmpty ? .neutral : .active)
+            ArenaPremiumKicker(text: "Aguardando execução", tone: queued.isEmpty ? .neutral : .active, showsLiveMark: !queued.isEmpty)
                 .accessibilityIdentifier(A11yID.arenaPremiumQueue)
             HStack(alignment: .lastTextBaseline) {
                 Text("\(queuedSuites.count)")

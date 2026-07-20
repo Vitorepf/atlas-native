@@ -9,7 +9,7 @@ extension AtlasCodeView {
             .accessibilityElement(children: .contain)
             .accessibilityLabel(
                 AtlasCodeAskPillA11y.spokenPill(
-                    isAnchoring: askModel.isAnchoring,
+                    isAnchoring: pillIsAnchoring,
                     anchorLegend: anchorLegend
                 )
             )
