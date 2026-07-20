@@ -5,10 +5,11 @@ import AtlasCore
 
 extension AutonomosView {
     func failedContent(message: String) -> some View {
-        Group {
-            preludeShell
+        VStack {
             Spacer()
-            AutonomosFleetFailureEmpty(message: message) { Task { await model.load() } }
+            AutonomosFleetFailureEmpty(message: message) {
+                Task { await model.load() }
+            }
             Spacer()
         }
     }

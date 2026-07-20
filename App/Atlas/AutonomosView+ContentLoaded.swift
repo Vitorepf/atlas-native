@@ -1,21 +1,15 @@
 import SwiftUI
 import AtlasCore
 
-// Loaded content — peel de AutonomosView+Content.
+// Loaded content — mapa Autônomos v9 (catálogo → hub → evolução).
 
 extension AutonomosView {
     var loadedContent: some View {
-        AutonomosLoadedSection(
+        AutonomosMapShell(
             model: model,
-            auditModeEnabled: session.auditModeEnabled,
-            nightly: nightly,
-            oldestBacklogCreatedAt: oldestBacklogCreatedAt(),
-            nightlyStartProposal: $nightlyStartProposal,
-            control: $control,
-            startRunMode: $startRunMode,
-            showTransferSheet: $showTransferSheet,
-            detailSheet: $detailSheet,
-            selfConstructionReceipt: $selfConstructionReceipt
+            destination: $destination,
+            selectedUnitID: $selectedUnitID,
+            showNewSheet: $showNewSheet
         )
     }
 }

@@ -9,5 +9,5 @@ extension AutonomosView {
         spokenScreenPhaseLabel()
     }
 
-    static let screenHint = "frota, digest e áreas só com dados publicados pelo servidor"
+    static let screenHint = "catálogo 24/7; pergunta e manda só pela pílula"
 }

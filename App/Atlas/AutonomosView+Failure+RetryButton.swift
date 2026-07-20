@@ -7,6 +7,6 @@ extension AutonomosFleetFailureEmpty {
         Button("Tentar de novo", action: onRetry)
             .buttonStyle(AutonomosPrimaryButtonStyle())
             .accessibilityIdentifier(A11yID.autonomosRetry)
-            .accessibilityHint("reconecta à frota Autônomos")
+            .accessibilityHint("tenta reabrir o catálogo Autônomos")
     }
 }

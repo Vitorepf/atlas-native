@@ -5,10 +5,10 @@ import SwiftUI
 extension AutonomosViewHeader {
     @ViewBuilder
     var titleBadges: some View {
-        if !isHealthy {
-            Text("ÁREA PRÓPRIA · 24/7")
+        if !subtitle.isEmpty {
+            Text(subtitle.uppercased())
                 .font(AtlasFont.mono(10)).tracking(1.2)
-                .foregroundStyle(AtlasTheme.accent)
+                .foregroundStyle(subtitleLive ? AtlasTheme.accent : AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
         }

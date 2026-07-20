@@ -6,7 +6,7 @@ import SwiftUI
 extension AutonomosViewHeader {
     var titleBlock: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text("Autônomos")
+            Text(title)
                 .font(AtlasFont.serif(21, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)

@@ -8,8 +8,8 @@ extension AutonomosView {
     func spokenScreenPhaseLabel() -> String {
         if let busy = spokenScreenBusyLabel() { return busy }
         if isHeaderHealthy {
-            return "Autônomos, frota quieta"
+            return "Autônomos, catálogo quieto"
         }
-        return "Autônomos, frota carregada"
+        return "Autônomos, catálogo carregado"
     }
 }

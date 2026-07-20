@@ -5,7 +5,7 @@ import SwiftUI
 extension AutonomosFleetFailureEmpty {
     var failureCopy: some View {
         Group {
-            Text("A frota está fora de alcance.")
+            Text("Catálogo fora de alcance.")
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(message)

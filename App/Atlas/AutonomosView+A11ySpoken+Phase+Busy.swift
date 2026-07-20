@@ -7,9 +7,9 @@ extension AutonomosView {
     func spokenScreenBusyLabel() -> String? {
         switch model.phase {
         case .idle, .loading:
-            return "Autônomos, consultando a frota"
+            return "Autônomos, abrindo catálogo"
         case .failed:
-            return "Autônomos, falha ao consultar a frota"
+            return "Autônomos, falha ao abrir catálogo"
         default:
             return nil
         }

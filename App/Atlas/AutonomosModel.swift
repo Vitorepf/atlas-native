@@ -11,7 +11,7 @@ final class AutonomosModel {
 
     let client: AtlasClient
 
-    var phase: LoadPhase = .idle
+    var phase: LoadPhase = .loaded
     var areas: [AtlasAutonomosArea] = []
     var selectedAreaID: String?
     var live: AtlasAutonomosLiveResponse?
@@ -32,6 +32,8 @@ final class AutonomosModel {
     var lastControlReceipt: AtlasAutonomosRunControlResponse?
     var lastDecisionReceipt: AtlasAutonomosOperatorDecisionReceipt?
     var controlError: String?
+    /// Catálogo do operador (face Autônomos). Em memória até POST create (§5).
+    var operatorUnits: [AutonomosUnit] = []
 
     init(client: AtlasClient) {
         self.client = client
@@ -47,30 +49,41 @@ final class AutonomosModel {
         selectedArea?.registered == true
     }
 
-    /// Primeiro carregamento: lista de instâncias e, em seguida, o conjunto
-    /// vivo da área selecionada. Nada é marcado 'rodando' até /live confirmar
-    /// que o lock do loop está efetivamente retido.
+    /// Face Autônomos = catálogo local (instantâneo). Áreas do loop hidratam
+    /// em segundo plano sem bloquear nem selecionar backlog (anti-badge mentiroso).
     func load() async {
-        phase = .loading
+        clearSelectionProjection()
+        phase = .loaded
         controlError = nil
         do {
             let response = try await client.listAutonomosAreas()
             areas = response.areas
-            let preferred = selectedAreaID ?? response.defaultArea
-            selectedAreaID = areas.contains(where: { $0.id == preferred })
-                ? preferred
-                : areas.first?.id
-            try await loadSelectedDetails()
-            phase = .loaded
         } catch {
-            phase = .failed(Self.publicMessage(error))
+            // Catálogo local funciona sem isto; não derruba a superfície.
         }
     }
 
     func selectArea(_ id: String) async {
         guard areas.contains(where: { $0.id == id }) else { return }
+        // Limpa projeção antes do fetch — nunca mostrar backlog de outra área.
         selectedAreaID = id
+        live = nil
+        cycles = nil
+        delivered = nil
+        backlog = nil
         await refreshSelected()
+    }
+
+    func clearSelectionProjection() {
+        selectedAreaID = nil
+        live = nil
+        cycles = nil
+        delivered = nil
+        backlog = nil
+        fleet = nil
+        fleetHistory = nil
+        taskHealth = nil
+        digest = nil
     }
 
     func refreshSelected() async {

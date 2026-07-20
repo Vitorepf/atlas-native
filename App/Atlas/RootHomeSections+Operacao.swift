@@ -13,7 +13,7 @@ extension RootHomeSections {
             name: "Autônomos",
             count: nil,
             a11yID: A11yID.homeAutonomosEntry,
-            spokenOverride: "Autônomos, abre frota e digest"
+            spokenOverride: "Autônomos, abre catálogo de escopos soberanos"
         ) {
             onNavigate(.autonomos)
         }

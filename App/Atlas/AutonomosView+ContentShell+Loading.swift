@@ -5,10 +5,9 @@ import AtlasCore
 
 extension AutonomosView {
     var loadingContent: some View {
-        Group {
-            preludeShell
+        VStack {
             Spacer()
-            TraceEvidenceLoading(text: "consultando a frota…", reduceMotion: reduceMotion)
+            TraceEvidenceLoading(text: "abrindo catálogo…", reduceMotion: reduceMotion)
             Spacer()
         }
     }

@@ -10,6 +10,6 @@ extension AutonomosView {
             .accessibilityIdentifier(A11yID.autonomosScreen)
             .accessibilityLabel(spokenScreenLabel())
             .accessibilityHint(Self.screenHint)
-            .task { if case .idle = model.phase { await model.load() } }
+            .task { await model.load() }
     }
 }

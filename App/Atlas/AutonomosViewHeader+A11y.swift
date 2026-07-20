@@ -5,13 +5,12 @@ import SwiftUI
 
 extension AutonomosViewHeader {
     func spokenTitle(isHealthy: Bool, auditModeEnabled: Bool) -> String {
-        var parts = ["Autônomos"]
-        if !isHealthy { parts.append("área própria 24 horas") }
+        var parts = [title, subtitle]
         if auditModeEnabled { parts.append("modo auditoria") }
         return parts.joined(separator: ", ")
     }
 
     func spokenBackLabel() -> String { "voltar" }
 
-    func spokenBackHint() -> String { "fecha a área Autônomos" }
+    func spokenBackHint() -> String { "volta" }
 }
