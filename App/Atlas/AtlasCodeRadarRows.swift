@@ -65,6 +65,18 @@ enum AtlasCodeRadarAskContext {
             facts.append("repos_mute: \(model.failedSlugs.sorted().joined(separator: ", "))")
         }
 
+        // WAVE-024: top attention subjects (real issue counts only).
+        let top = AtlasCodeRadarJudgment.topAttention(issuesBySlug: model.issuesBySlug)
+        if !top.isEmpty {
+            facts.append("top_attention:")
+            for item in top {
+                facts.append("  \(item.slug): \(item.count) signal\(item.count == 1 ? "" : "s")")
+                anchors.append("attention · \(item.slug) · \(item.count)")
+            }
+        } else if scanned > 0 {
+            absences.append("nenhum subject com sem-retorno no scan atual (frota quieta neste load)")
+        }
+
         absences.append("não inventar merges ou cures; julgamento soberano do workspace")
 
         return AgenticOccasionPack(
@@ -121,7 +133,13 @@ extension AtlasCodeFolderRow {
     var expandedReposList: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(folder.repos) { repo in
-                AtlasCodeRepoRow(repo: repo, issues: issuesFor(repo.slug), trunk: trunkFor(repo.slug), showsFolder: false) {
+                AtlasCodeRepoRow(
+                    repo: repo,
+                    issues: issuesFor(repo.slug),
+                    trunk: trunkFor(repo.slug),
+                    showsFolder: false,
+                    isMute: isMuteFor(repo.slug)
+                ) {
                     onOpenRepo(repo.slug)
                 }
                 .padding(.leading, 32)
@@ -168,6 +186,7 @@ struct AtlasCodeFolderRow: View {
     let isExpanded: Bool
     let issuesFor: (String) -> [AtlasCodeIssue]?
     let trunkFor: (String) -> String?
+    var isMuteFor: (String) -> Bool = { _ in false }
     let onToggle: () -> Void
     let onOpenRepo: (String) -> Void
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -230,13 +249,24 @@ extension AtlasCodeRepoRow {
 extension AtlasCodeRepoRow {
     @ViewBuilder
     var repoRowIssues: some View {
-        if let issues, let first = issues.first {
+        if isMute {
+            // WAVE-024: mute never reads as clean.
+            HStack(spacing: 6) {
+                Image(systemName: "antenna.radiowaves.left.and.right.slash")
+                    .atlasSans(9, .semibold)
+                    .accessibilityHidden(true)
+                Text("\(AtlasCodeRadarJudgment.muteBadgeLabel) · \(AtlasCodeRadarJudgment.muteSpoken)")
+                    .atlasSans(12)
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+                    .accessibilityHidden(true)
+            }
+        } else if let issues, let first = issues.first {
             HStack(spacing: 6) {
                 Circle()
                     .fill(first.isSevere ? AtlasCodePalette.alert : AtlasCodePalette.alert.opacity(0.45))
                     .frame(width: 4.5, height: 4.5)
                     .accessibilityHidden(true)
-                // "+1" era críptico: diz o que é ("mais 1 alerta"), não só o número.
                 Text(issues.count == 1 ? first.headline(trunk: trunk) : "\(first.headline(trunk: trunk)) · mais \(issues.count - 1) alerta\(issues.count - 1 == 1 ? "" : "s")")
                     .atlasSans(12)
                     .foregroundStyle(AtlasTheme.textSecondary)
@@ -273,6 +303,8 @@ struct AtlasCodeRepoRow: View {
     var trunk: String? = nil
     /// Nos recentes a pasta situa; dentro da pasta seria redundante.
     let showsFolder: Bool
+    /// WAVE-024: scan failed / mute — never read as limpo.
+    var isMute: Bool = false
     let onTap: () -> Void
 
     var body: some View {

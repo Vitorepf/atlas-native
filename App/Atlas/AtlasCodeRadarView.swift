@@ -155,6 +155,7 @@ extension AtlasCodeRadarLoadedContent {
                     isExpanded: model.expandedFolders.contains(folder.slug),
                     issuesFor: { model.issues(for: $0) },
                     trunkFor: { model.trunk(for: $0) },
+                    isMuteFor: { model.failedSlugs.contains($0) },
                     onToggle: { Task { await model.toggle(folder) } },
                     onOpenRepo: onOpenRepo
                 )
@@ -176,16 +177,31 @@ extension AtlasCodeRadarLoadedContent {
 
 // --- AtlasCodeRadarLoadedContent+Loose.swift ---
 extension AtlasCodeRadarLoadedContent {
+    /// WAVE-024: issues-first judgment order when scan hydrated.
+    var judgmentLoose: [AtlasCodeRepoRef] {
+        AtlasCodeRadarJudgment.sortedForJudgment(
+            workspace.loose,
+            issuesBySlug: model.issuesBySlug,
+            failedSlugs: model.failedSlugs
+        )
+    }
+
     @ViewBuilder
     var radarLooseSection: some View {
         if !workspace.loose.isEmpty {
             AtlasCodeRadarSectionLabel(text: "AVULSOS", accessibilityID: A11yID.radarLoose)
                 .padding(.top, 22)
-            ForEach(workspace.loose) { repo in
-                AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), trunk: model.trunk(for: repo.slug), showsFolder: false) {
+            ForEach(judgmentLoose) { repo in
+                AtlasCodeRepoRow(
+                    repo: repo,
+                    issues: model.issues(for: repo.slug),
+                    trunk: model.trunk(for: repo.slug),
+                    showsFolder: false,
+                    isMute: model.failedSlugs.contains(repo.slug)
+                ) {
                     onOpenRepo(repo.slug)
                 }
-                if repo.id != workspace.loose.last?.id { AtlasCodeRadarRowDivider() }
+                if repo.id != judgmentLoose.last?.id { AtlasCodeRadarRowDivider() }
             }
         }
     }
@@ -193,15 +209,29 @@ extension AtlasCodeRadarLoadedContent {
 
 // --- AtlasCodeRadarLoadedContent+Sections+Recents.swift ---
 extension AtlasCodeRadarLoadedContent {
+    var judgmentRecents: [AtlasCodeRepoRef] {
+        AtlasCodeRadarJudgment.sortedForJudgment(
+            workspace.recents,
+            issuesBySlug: model.issuesBySlug,
+            failedSlugs: model.failedSlugs
+        )
+    }
+
     @ViewBuilder
     var radarRecentsSection: some View {
         if !workspace.recents.isEmpty {
             AtlasCodeRadarSectionLabel(text: "RECENTES", accessibilityID: A11yID.radarRecents)
-            ForEach(workspace.recents) { repo in
-                AtlasCodeRepoRow(repo: repo, issues: model.issues(for: repo.slug), trunk: model.trunk(for: repo.slug), showsFolder: true) {
+            ForEach(judgmentRecents) { repo in
+                AtlasCodeRepoRow(
+                    repo: repo,
+                    issues: model.issues(for: repo.slug),
+                    trunk: model.trunk(for: repo.slug),
+                    showsFolder: true,
+                    isMute: model.failedSlugs.contains(repo.slug)
+                ) {
                     onOpenRepo(repo.slug)
                 }
-                if repo.id != workspace.recents.last?.id { AtlasCodeRadarRowDivider() }
+                if repo.id != judgmentRecents.last?.id { AtlasCodeRadarRowDivider() }
             }
         }
     }
