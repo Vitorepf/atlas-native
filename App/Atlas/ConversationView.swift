@@ -4019,7 +4019,7 @@ struct SignatureLine: View {
 
     var body: some View {
         Text(signature)
-            .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.textPrimary.opacity(0.4))
+            .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .opacity(shown ? 1 : 0)
             .accessibilityLabel(EditorialTurnA11y.spokenSignature(provider: provider, model: model, elapsedMs: elapsedMs))
