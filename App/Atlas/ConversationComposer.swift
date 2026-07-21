@@ -93,7 +93,7 @@ extension ConversationComposer {
         .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(composerCardSpokenLabel)
-        .accessibilityHint(ComposerToolbarJudgment.cardHint)
+        .accessibilityHint(ComposerToolbarJudgment.spokenCardHint)
     }
 
     var composerCardPadding: EdgeInsets {

@@ -1407,13 +1407,13 @@ extension ArenaRunSheet {
                 .autocorrectionDisabled()
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaRunActor)
-                .accessibilityHint(ArenaRunSheetJudgment.actorHint)
+                .accessibilityHint(ArenaRunSheetJudgment.spokenActorHint)
             fieldLabel("Motivo")
             TextField("por que rodar agora (fica no recibo)", text: $reason, axis: .vertical)
                 .lineLimit(2...4)
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaRunReason)
-                .accessibilityHint(ArenaRunSheetJudgment.reasonHint)
+                .accessibilityHint(ArenaRunSheetJudgment.spokenReasonHint)
         }
     }
 
@@ -1571,7 +1571,7 @@ struct ArenaRunSheet: View {
         .accessibilityIdentifier(A11yID.arenaRunSheet)
         .accessibilityLabel(ArenaRunSheetJudgment.spokenSheet(face: runSheetFace))
         .accessibilityValue(runSheetFace.productWord)
-        .accessibilityHint(ArenaRunSheetJudgment.sheetHint)
+        .accessibilityHint(ArenaRunSheetJudgment.spokenSheetHint)
     }
 
     var runScrollBody: some View {

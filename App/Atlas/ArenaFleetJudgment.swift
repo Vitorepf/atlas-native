@@ -393,13 +393,13 @@ enum ArenaRunSheetFace: Equatable {
 /// Pure Arena run-sheet shell grammar — face · spoken · pack.
 enum ArenaRunSheetJudgment {
 
-    static let sheetTitle = "rodar medição Arena"
-    static let sheetHint =
+    static let productSheetTitle = "rodar medição Arena"
+    static let spokenSheetHint =
         "escolhe suites, motor e braços; ator e motivo auditáveis são obrigatórios"
     static let spokenClose = "fechar folha de medição"
     static let spokenCloseHint = "volta para a Arena sem enviar"
-    static let actorHint = "nome de quem autoriza a medição"
-    static let reasonHint = "motivo auditável registrado no ledger"
+    static let spokenActorHint = "nome de quem autoriza a medição"
+    static let spokenReasonHint = "motivo auditável registrado no ledger"
 
     static func face(engineCount: Int, suiteCount: Int) -> ArenaRunSheetFace {
         if engineCount <= 0 { return .emptyEngines }
@@ -408,7 +408,7 @@ enum ArenaRunSheetJudgment {
     }
 
     static func spokenSheet(face: ArenaRunSheetFace) -> String {
-        "\(sheetTitle), \(face.spokenFace)"
+        "\(productSheetTitle), \(face.spokenFace)"
     }
 
     static func spokenEmptyEngines() -> String {

@@ -214,8 +214,8 @@ enum AutonomosAreaBindJudgment {
         "escolher área do loop, \(count) área\(count == 1 ? "" : "s") registrada\(count == 1 ? "" : "s")"
     }
 
-    static let chooserHint = "liga a frota a uma área registrada no motor"
-    static let ctaTitle = "Escolher área"
+    static let spokenChooserHint = "liga a frota a uma área registrada no motor"
+    static let productCTA = "Escolher área"
     static let ctaSpoken = "escolher área do loop Autônomos"
 
     static func packFacts(
@@ -424,16 +424,16 @@ enum AutonomosReasonFace: Equatable {
 /// Pure governed reason-sheet grammar — face · canSubmit · spoken · pack.
 enum AutonomosReasonJudgment {
 
-    static let navigationTitle = "Confirmar ação"
+    static let productNavigationTitle = "Confirmar ação"
     static let sectionAction = "Ação governada"
     static let sectionOperator = "Operador"
     static let actorPlaceholder = "Quem autoriza"
     static let reasonPlaceholder = "Motivo auditável"
-    static let confirmTitle = "Confirmar"
-    static let cancelTitle = "Cancelar"
-    static let cancelSpoken = "cancelar ação governada"
-    static let cancelHint = "fecha sem registrar recibo"
-    static let actorHint = "nome de quem autoriza a ação governada"
+    static let productConfirm = "Confirmar"
+    static let productCancel = "Cancelar"
+    static let spokenCancel = "cancelar ação governada"
+    static let spokenCancelHint = "fecha sem registrar recibo"
+    static let spokenActorHint = "nome de quem autoriza a ação governada"
     static let reasonHintRequired = "motivo auditável registrado no ledger"
     static let reasonHintOptional = "motivo auditável opcional no ensaio"
 

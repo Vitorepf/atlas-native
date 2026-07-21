@@ -1456,7 +1456,7 @@ extension AtlasCodeView {
                 )
             }
             .accessibilityIdentifier(A11yID.codeHealReceipt)
-            .accessibilityLabel(AtlasCodeHealVetoJudgment.curedAloneOpenReceiptLabel)
+            .accessibilityLabel(AtlasCodeHealVetoJudgment.spokenCuredAloneOpenReceipt)
             .accessibilityHint("abre os passos registrados pelo servidor")
         }
     }

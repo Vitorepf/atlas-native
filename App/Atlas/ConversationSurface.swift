@@ -341,8 +341,8 @@ extension ConversationView {
         } label: {
             continuityMenuLabel
         }
-        .accessibilityLabel(ConversationMessagesJudgment.headerContinuityLabel)
-        .accessibilityHint(ConversationMessagesJudgment.headerContinuityHint)
+        .accessibilityLabel(ConversationMessagesJudgment.spokenHeaderContinuity)
+        .accessibilityHint(ConversationMessagesJudgment.spokenHeaderContinuityHint)
         .accessibilityIdentifier(A11yID.conversationHeaderContinuity)
     }
 }
@@ -1538,7 +1538,7 @@ extension ExecutingStrip {
                 .buttonStyle(PressableScale())
                 .accessibilityIdentifier(A11yID.executionActionChoice(only.id))
                 .accessibilityLabel(only.title)
-                .accessibilityHint(ConversationLiveStripJudgment.spokenChooseConfirmHint())
+                .accessibilityHint(ConversationLiveStripJudgment.spokenChooseConfirmHint)
             } else {
                 Menu {
                     ForEach(choiceActions) { action in
@@ -1557,7 +1557,7 @@ extension ExecutingStrip {
                     .minimumScaleFactor(0.82)
                 }
                 .accessibilityLabel(ConversationDecisionJudgment.spokenLead)
-                .accessibilityHint(ConversationLiveStripJudgment.spokenChooseMenuHint())
+                .accessibilityHint(ConversationLiveStripJudgment.spokenChooseMenuHint)
             }
         }
         if ConversationLiveStripJudgment.showsSteerCTA(
@@ -1565,25 +1565,25 @@ extension ExecutingStrip {
             hasSteerHandler: onSteer != nil
         ), let onSteer {
             Button(action: onSteer) {
-                Text(ConversationLiveStripJudgment.steerButtonTitle)
+                Text(ConversationLiveStripJudgment.productSteer)
                     .font(.system(.footnote, weight: .medium))
                     .foregroundStyle(AtlasTheme.accent)
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel(ConversationLiveStripJudgment.spokenSteer())
-            .accessibilityHint(ConversationLiveStripJudgment.spokenSteerHint())
+            .accessibilityLabel(ConversationLiveStripJudgment.spokenSteer)
+            .accessibilityHint(ConversationLiveStripJudgment.spokenSteerHint)
         }
         Button(action: onStop) {
-            Text(ConversationLiveStripJudgment.stopButtonTitle)
+            Text(ConversationLiveStripJudgment.productStop)
                 .font(.system(.footnote, weight: .medium))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel(ConversationLiveStripJudgment.spokenStop())
-        .accessibilityHint(ConversationLiveStripJudgment.spokenStopHint())
+        .accessibilityLabel(ConversationLiveStripJudgment.spokenStop)
+        .accessibilityHint(ConversationLiveStripJudgment.spokenStopHint)
     }
 
     // MARK: A11y (phase-aligned compound label · WAVE-093)

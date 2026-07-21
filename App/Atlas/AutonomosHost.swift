@@ -955,7 +955,7 @@ struct AutonomosAreaBindChooser: View {
                 AutonomosAreaBindJudgment.spokenChooser(count: ranked.count)
             )
             .accessibilityValue(AutonomosAreaBindFace.needsBind(ranked.count).productWord)
-            .accessibilityHint(AutonomosAreaBindJudgment.chooserHint)
+            .accessibilityHint(AutonomosAreaBindJudgment.spokenChooserHint)
         }
     }
 
@@ -978,7 +978,7 @@ struct AutonomosAreaBindChooser: View {
     private var areaList: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text(AutonomosAreaBindJudgment.chooserHint)
+                Text(AutonomosAreaBindJudgment.spokenChooserHint)
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .padding(.horizontal, AtlasTheme.Space.screen)
@@ -1046,7 +1046,7 @@ struct AutonomosAreaBindCTA: View {
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(AutonomosAreaBindJudgment.ctaTitle)
+                    Text(AutonomosAreaBindJudgment.productCTA)
                         .font(AtlasFont.mono(12, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text("\(registeredCount) áreas registradas — sem área o hub fica quieto")
@@ -1065,7 +1065,7 @@ struct AutonomosAreaBindCTA: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(AutonomosAreaBindJudgment.ctaSpoken)
-        .accessibilityHint(AutonomosAreaBindJudgment.chooserHint)
+        .accessibilityHint(AutonomosAreaBindJudgment.spokenChooserHint)
         .accessibilityValue(AutonomosAreaBindFace.needsBind(registeredCount).productWord)
         .accessibilityIdentifier(A11yID.autonomosAreaBindCTA)
     }
@@ -1823,7 +1823,7 @@ struct AutonomosReasonSheet: View {
                 Section(AutonomosReasonJudgment.sectionOperator) {
                     TextField(AutonomosReasonJudgment.actorPlaceholder, text: $actor)
                         .accessibilityIdentifier(A11yID.autonomosReasonActor)
-                        .accessibilityHint(AutonomosReasonJudgment.actorHint)
+                        .accessibilityHint(AutonomosReasonJudgment.spokenActorHint)
                 }
                 Section(AutonomosReasonJudgment.productReasonSection(reasonOptional: reasonOptional)) {
                     TextField(
@@ -1838,18 +1838,18 @@ struct AutonomosReasonSheet: View {
                     )
                 }
             }
-            .navigationTitle(AutonomosReasonJudgment.navigationTitle)
+            .navigationTitle(AutonomosReasonJudgment.productNavigationTitle)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     AtlasCloseToolbarButton(
-                        title: AutonomosReasonJudgment.cancelTitle,
-                        spokenLabel: AutonomosReasonJudgment.cancelSpoken,
-                        spokenHint: AutonomosReasonJudgment.cancelHint,
+                        title: AutonomosReasonJudgment.productCancel,
+                        spokenLabel: AutonomosReasonJudgment.spokenCancel,
+                        spokenHint: AutonomosReasonJudgment.spokenCancelHint,
                         reduceMotion: reduceMotion
                     ) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(AutonomosReasonJudgment.confirmTitle) {
+                    Button(AutonomosReasonJudgment.productConfirm) {
                         AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onConfirm(actor, reason)
                         dismiss()

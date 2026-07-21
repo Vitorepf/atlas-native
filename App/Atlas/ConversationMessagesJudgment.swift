@@ -40,9 +40,9 @@ enum ConversationMessagesFace: Equatable {
 /// Pure messages-surface grammar — face · spoken · pack.
 enum ConversationMessagesJudgment {
 
-    static let scrollFABLabel = "ir para o fim da conversa"
-    static let scrollFABHint = "volta às mensagens mais recentes"
-    static let changeReviewHint = "abre arquivos, diff e provas desta execução"
+    static let spokenScrollFAB = "ir para o fim da conversa"
+    static let spokenScrollFABHint = "volta às mensagens mais recentes"
+    static let spokenChangeReviewHint = "abre arquivos, diff e provas desta execução"
 
     static func face(
         hasLoadError: Bool,
@@ -98,8 +98,8 @@ enum ConversationMessagesJudgment {
 
     static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
 
-    static let headerContinuityLabel = "continuidade da conversa"
-    static let headerContinuityHint = "continuar esta conversa no Mac ou no Terminal"
+    static let spokenHeaderContinuity = "continuidade da conversa"
+    static let spokenHeaderContinuityHint = "continuar esta conversa no Mac ou no Terminal"
     static let spokenScreenHint = "turnos e composer só com dados da sessão e do model"
 }
 // MARK: - ConversationDecisionJudgment
@@ -192,16 +192,16 @@ enum ConversationDecisionJudgment {
 /// Phase face stays ConversationExecutionPhase; decision/steer sheets stay 053/058 organs.
 enum ConversationLiveStripJudgment {
 
-    static let stopLabel = "parar execução"
-    static let stopHint = "interrompe a execução ao vivo"
-    static let stopButtonTitle = "Parar"
+    static let spokenStop = "parar execução"
+    static let spokenStopHint = "interrompe a execução ao vivo"
+    static let productStop = "Parar"
 
-    static let steerLabel = "redirecionar execução"
-    static let steerHint = "abre opções para redirecionar a execução ao vivo"
-    static let steerButtonTitle = "Redirecionar"
+    static let spokenSteer = "redirecionar execução"
+    static let spokenSteerHint = "abre opções para redirecionar a execução ao vivo"
+    static let productSteer = "Redirecionar"
 
-    static let chooseConfirmHint = "confirma a decisão publicada pelo servidor"
-    static let chooseMenuHint = "abre as ações de decisão publicadas"
+    static let spokenChooseConfirmHint = "confirma a decisão publicada pelo servidor"
+    static let spokenChooseMenuHint = "abre as ações de decisão publicadas"
 
     // MARK: Visibility
 
@@ -213,14 +213,7 @@ enum ConversationLiveStripJudgment {
         decisionRequired && actionCount > 0
     }
 
-    // MARK: Spoken CTAs
-
-    static func spokenStop() -> String { stopLabel }
-    static func spokenStopHint() -> String { stopHint }
-    static func spokenSteer() -> String { steerLabel }
-    static func spokenSteerHint() -> String { steerHint }
-    static func spokenChooseConfirmHint() -> String { chooseConfirmHint }
-    static func spokenChooseMenuHint() -> String { chooseMenuHint }
+    // Spoken CTAs are the static lets above (spokenStop / spokenSteer / …).
 
     // MARK: Compound strip label
 

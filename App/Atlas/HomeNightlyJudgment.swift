@@ -141,14 +141,14 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     // MARK: - Notification copy
 
     enum NotificationCopy {
-        static let nightlyTitle = "A frota pode trabalhar esta noite"
+        static let productNightlyTitle = "A frota pode trabalhar esta noite"
 
         static func nightlyBody(workspaces: [String]) -> String {
             "Hoje você mexeu em \(workspaces.joined(separator: ", ")). "
                 + "Quer pôr os Autônomos nisso enquanto descansa?"
         }
 
-        static let morningTitle = "Resumo da missão noturna"
+        static let productMorningTitle = "Resumo da missão noturna"
         static let morningBody = "Abra Autônomos para ver o que a frota entregou com prova."
     }
 
@@ -259,7 +259,7 @@ extension NightlyProposalController {
 
     func nightlyBackgroundContent(workspaces: [String]) -> UNMutableNotificationContent {
         let content = UNMutableNotificationContent()
-        content.title = NotificationCopy.nightlyTitle
+        content.title = NotificationCopy.productNightlyTitle
         content.body = NotificationCopy.nightlyBody(workspaces: workspaces)
         content.sound = .default
         content.userInfo = [
@@ -292,7 +292,7 @@ extension NightlyProposalController {
               await canScheduleNotifications() else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = NotificationCopy.morningTitle
+        content.title = NotificationCopy.productMorningTitle
         content.body = NotificationCopy.morningBody
         content.sound = .default
         content.userInfo = ["atlas.route": "autonomos"]

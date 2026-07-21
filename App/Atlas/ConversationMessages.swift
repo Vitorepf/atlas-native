@@ -126,7 +126,7 @@ extension ConversationMessages {
                 patchCount: model.reviews.changeReviewsByTrace[trace]!.patches.count
             )
         )
-        .accessibilityHint(ConversationMessagesJudgment.changeReviewHint)
+        .accessibilityHint(ConversationMessagesJudgment.spokenChangeReviewHint)
         .accessibilityIdentifier(A11yID.reviewChip(trace.rawValue))
     }
 
@@ -288,8 +288,8 @@ extension ConversationMessages {
             .buttonStyle(PressableScale())
             .padding(.trailing, AtlasTheme.Space.screen).padding(.bottom, 110)
             .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
-            .accessibilityLabel(ConversationMessagesJudgment.scrollFABLabel)
-            .accessibilityHint(ConversationMessagesJudgment.scrollFABHint)
+            .accessibilityLabel(ConversationMessagesJudgment.spokenScrollFAB)
+            .accessibilityHint(ConversationMessagesJudgment.spokenScrollFABHint)
             .accessibilityIdentifier(A11yID.conversationScrollFAB)
     }
 

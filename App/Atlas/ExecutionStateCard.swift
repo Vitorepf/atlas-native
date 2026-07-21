@@ -568,8 +568,8 @@ extension ExecutionStateCard {
             style: .secondary,
             reduceMotion: reduceMotion
         ))
-        .accessibilityLabel(ConversationLiveStripJudgment.spokenSteer())
-        .accessibilityHint(ConversationLiveStripJudgment.spokenSteerHint())
+        .accessibilityLabel(ConversationLiveStripJudgment.spokenSteer)
+        .accessibilityHint(ConversationLiveStripJudgment.spokenSteerHint)
     }
 }
 

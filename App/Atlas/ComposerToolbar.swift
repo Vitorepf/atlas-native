@@ -70,7 +70,7 @@ extension ComposerToolbar {
     }
 
     func spokenEffortHint() -> String {
-        ComposerEffortJudgment.effortHint
+        ComposerEffortJudgment.spokenEffortHint
     }
 
     func spokenOptionsHint() -> String {
@@ -258,8 +258,8 @@ extension ComposerToolbar {
                 .frame(width: 32, height: 32)
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel(ComposerToolbarJudgment.spokenAttach())
-        .accessibilityHint(ComposerToolbarJudgment.spokenAttachHint())
+        .accessibilityLabel(ComposerToolbarJudgment.spokenAttach)
+        .accessibilityHint(ComposerToolbarJudgment.spokenAttachHint)
     }
 }
 
@@ -274,7 +274,7 @@ extension ComposerToolbar {
                 .frame(width: 32, height: 32)
                 .contentShape(Circle())
         }
-        .accessibilityLabel(ComposerToolbarJudgment.spokenOptions())
+        .accessibilityLabel(ComposerToolbarJudgment.spokenOptions)
         .accessibilityHint(
             ComposerToolbarJudgment.spokenOptionsHint(effortOptionsHint: spokenOptionsHint())
         )
@@ -311,7 +311,7 @@ extension ComposerToolbar {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onShowMode()
         } label: {
-            Label(ComposerToolbarJudgment.modeMenuTitle(mode), systemImage: "slider.horizontal.3")
+            Label(ComposerToolbarJudgment.productModeMenu(mode), systemImage: "slider.horizontal.3")
         }
         .accessibilityLabel(ComposerToolbarJudgment.spokenMode(mode))
     }
@@ -324,7 +324,7 @@ extension ComposerToolbar {
             onShowWorkspace()
         } label: {
             Label(
-                ComposerToolbarJudgment.workspaceMenuTitle(model.workspaceName),
+                ComposerToolbarJudgment.productWorkspaceMenu(model.workspaceName),
                 systemImage: "square.grid.2x2"
             )
         }
@@ -622,18 +622,12 @@ struct CameraPicker: UIViewControllerRepresentable {
 /// Attach · options · mode · workspace spoken — not send (046) · not effort (076) · not draft (086).
 enum ComposerToolbarJudgment {
 
-    static let attachLabel = "adicionar anexo"
-    static let attachHint = "abre foto, arquivo ou colar"
-    static let optionsLabel = "opções da conversa"
+    static let spokenAttach = "adicionar anexo"
+    static let spokenAttachHint = "abre foto, arquivo ou colar"
+    static let spokenOptions = "opções da conversa"
     static let defaultWorkspaceName = "Atlas"
 
-    // MARK: Spoken
-
-    static func spokenAttach() -> String { attachLabel }
-
-    static func spokenAttachHint() -> String { attachHint }
-
-    static func spokenOptions() -> String { optionsLabel }
+    // Spoken attach/options are the static lets above.
 
     /// WAVE-076 already owns effort options hint composition at call sites.
     static func spokenOptionsHint(effortOptionsHint: String) -> String {
@@ -656,11 +650,11 @@ enum ComposerToolbarJudgment {
         return trimmed.isEmpty ? defaultWorkspaceName : trimmed
     }
 
-    static func workspaceMenuTitle(_ name: String?) -> String {
+    static func productWorkspaceMenu(_ name: String?) -> String {
         "Workspace: \(resolvedWorkspaceName(name))"
     }
 
-    static func modeMenuTitle(_ mode: String) -> String {
+    static func productModeMenu(_ mode: String) -> String {
         let trimmed = mode.trimmingCharacters(in: .whitespacesAndNewlines)
         let name = trimmed.isEmpty ? "geral" : trimmed
         return "Modo: \(name.capitalized)"
@@ -668,7 +662,7 @@ enum ComposerToolbarJudgment {
 
     // MARK: Composer card (host shell)
 
-    static let cardHint =
+    static let spokenCardHint =
         "escreve, anexa e envia; fila e execução viva aparecem quando publicadas"
 
     static func spokenCard(
@@ -767,7 +761,7 @@ enum ComposerEffortFace: Equatable {
 /// Pure composer effort grammar — face · spoken · pack.
 enum ComposerEffortJudgment {
 
-    static let effortHint = "abre opções de esforço computacional para o próximo envio"
+    static let spokenEffortHint = "abre opções de esforço computacional para o próximo envio"
     static let effortSheetHint = "escolhe o esforço computacional do próximo envio"
     static let effortSheetLabel = "esforço computacional"
     static let processingLabel = "Atlas processando"

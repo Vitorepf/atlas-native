@@ -31,7 +31,7 @@ extension AtlasCodeRepoRow {
                     isMute: isMute
                 )
             )
-            .accessibilityHint(AtlasCodeRadarJudgment.repoHint)
+            .accessibilityHint(AtlasCodeRadarJudgment.spokenRepoHint)
             .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
     }
 }
@@ -94,7 +94,7 @@ extension AtlasCodeRadarView {
         AtlasCodeRadarLoadJudgment.spokenShell(face: radarScreenFace)
     }
 
-    static var shellHint: String { AtlasCodeRadarLoadJudgment.shellHint }
+    static var shellHint: String { AtlasCodeRadarLoadJudgment.spokenShellHint }
 
     func spokenEmptyWorkspace() -> String {
         AtlasCodeRadarScreenFace.empty.spokenFace
@@ -763,9 +763,9 @@ enum AtlasCodeRadarJudgment {
         return (facts, absences, anchors)
     }
 
-    static let muteBadgeLabel = "mudo"
+    static let productMuteBadge = "mudo"
     static let muteSpoken = "não respondeu ao scan"
-    static let repoHint = "abre o grafo do repositório"
+    static let spokenRepoHint = "abre o grafo do repositório"
 
     // MARK: Folder / row spoken (IDLE · was AtlasCodeRadarA11y)
 
@@ -1072,7 +1072,7 @@ extension AtlasCodeRepoRow {
                 Image(systemName: "antenna.radiowaves.left.and.right.slash")
                     .atlasSans(9, .semibold)
                     .accessibilityHidden(true)
-                Text("\(AtlasCodeRadarJudgment.muteBadgeLabel) · \(AtlasCodeRadarJudgment.muteSpoken)")
+                Text("\(AtlasCodeRadarJudgment.productMuteBadge) · \(AtlasCodeRadarJudgment.muteSpoken)")
                     .atlasSans(12)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
@@ -1161,7 +1161,7 @@ enum AtlasCodeRadarScreenFace: Equatable {
 /// Pure Radar screen load grammar — face · spoken · phaseID · pack.
 enum AtlasCodeRadarLoadJudgment {
 
-    static let shellHint = "pastas, recentes e sem retorno verificados do seu código"
+    static let spokenShellHint = "pastas, recentes e sem retorno verificados do seu código"
 
     static func face(
         phase: LoadPhase,
@@ -1358,7 +1358,7 @@ enum AtlasCodeHealVetoJudgment {
         "falha ao desfazer, \(err)"
     }
 
-    static let curedAloneOpenReceiptLabel = "curado sozinho, ver recibo de cura"
+    static let spokenCuredAloneOpenReceipt = "curado sozinho, ver recibo de cura"
 
     static func spokenSheet(
         heal: AtlasCodeHealResponse,
