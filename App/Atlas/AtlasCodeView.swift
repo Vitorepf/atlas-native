@@ -196,9 +196,9 @@ extension AtlasCodeView {
                 clearAskFocus()
             } label: {
                 Text("limpar")
-                    .font(AtlasFont.mono(9))
+                    .font(AtlasFont.serif(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(minHeight: 44, alignment: .center)
+                    .frame(minHeight: 48, alignment: .center)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -212,9 +212,9 @@ extension AtlasCodeView {
                 askModel.clear()
             } label: {
                 Text("mostrar tudo")
-                    .font(AtlasFont.mono(9))
+                    .font(AtlasFont.serif(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(minHeight: 44, alignment: .center)
+                    .frame(minHeight: 48, alignment: .center)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
