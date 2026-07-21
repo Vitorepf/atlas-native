@@ -297,8 +297,8 @@ extension PlanCard {
             planToolsChips(plan)
             planGatesChips(plan)
         }
+        // Contain without fused label: chip rows speak their own labels.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(spokenPlanDetail(plan))
         .transition(reduceMotion ? .identity : .opacity)
     }
 

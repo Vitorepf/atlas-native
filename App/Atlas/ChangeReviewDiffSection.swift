@@ -84,8 +84,8 @@ extension ChangeReviewPatchCard {
         content()
             .padding(14)
             .atlasCard()
+            // Contain without fused label: Ver/Fechar diff stays a button.
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(ChangeReviewPatchA11y.spokenCard(patch: patch, diffExpanded: diffExpanded))
             .accessibilityIdentifier(A11yID.reviewPatchCard(patch.id))
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: diffExpanded)
     }
