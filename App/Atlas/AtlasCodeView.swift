@@ -4213,7 +4213,8 @@ struct AtlasCodeCommitRow: View {
         Text("·")
             .accessibilityHidden(true)
         Text(displayAuthor)
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet author meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             .accessibilityHidden(true)
         Text("·")
             .accessibilityHidden(true)

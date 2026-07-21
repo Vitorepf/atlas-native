@@ -453,7 +453,8 @@ extension ChangeReviewGovernanceSection {
         HStack(spacing: 8) {
             Text("Conselho")
                 .atlasSans(11, .semibold)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet review section header.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
             if diverged {
                 Text("Divergência")

@@ -2453,7 +2453,8 @@ struct ArenaPremiumExecutionView: View {
             }
             Text(suiteLine)
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet suite line meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
         }
     }
 
@@ -3169,7 +3170,8 @@ struct ArenaPremiumCapabilitiesView: View {
     private func summaryMetric(_ value: Int, _ label: String, _ tone: ArenaPremiumTone) -> some View {
         HStack(spacing: 6) {
             Text("\(value)").font(AtlasFont.serif(25)).foregroundStyle(tone.color)
-            Text(label).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet summary metric label.
+            Text(label).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.65))
         }
     }
 
@@ -3346,7 +3348,8 @@ struct ArenaPremiumCapabilityDetail: View {
                     Spacer()
                     Text(suiteCases(suite))
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet suite cases meta.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 }
                 .padding(.vertical, 14)
                 ArenaPremiumHairline()
@@ -3360,7 +3363,8 @@ struct ArenaPremiumCapabilityDetail: View {
             // "denominador" é jargão de estatístico — português direto.
             Text("\(capability.casesTotal.map(String.init) ?? "—") casos somados na conta publicada")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet capability cases honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             Text("Ausência de um braço permanece não medida.")
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet arm honesty footnote.
@@ -3382,7 +3386,8 @@ struct ArenaPremiumCapabilityDetail: View {
                 .foregroundStyle(tone.color)
             Text(label)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet detail label.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
         }
     }
 
@@ -3463,7 +3468,8 @@ extension ArenaRunSheet {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 Text(selectedArms.sorted { $0.rawValue < $1.rawValue }.map(\.labelPT).joined(separator: " → "))
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet arms path meta.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             }
             .padding(.vertical, 4)
             .accessibilityElement(children: .combine)
@@ -3699,7 +3705,8 @@ extension ArenaRunSheet {
     func receiptHashCopy(_ receipt: AtlasArenaStartReceipt) -> some View {
         Text("Recibo \(receipt.receiptHash)")
             .font(AtlasFont.mono(11))
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet start receipt hash.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             .lineLimit(1)
             .truncationMode(.middle)
             .accessibilityHidden(true)
@@ -3745,7 +3752,8 @@ extension ArenaRunSheet {
         if model.lastStartEnginesCount > 1 {
             Text("\(model.lastStartEnginesCount) motores · \(model.lastStartRunsPlannedTotal) runs na fila")
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet start summary meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }
@@ -4167,7 +4175,8 @@ extension ArenaSuiteSheet {
             if engine.score != nil {
                 Text("/10")
                     .font(AtlasFont.mono(9, .medium))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet suite score scale unit.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
             }
         }
             // Soft gold-quiet unmeasured score; measured stays primary.
@@ -4218,7 +4227,8 @@ extension ArenaSuiteSheet {
                 }
             }
             .font(AtlasFont.mono(10))
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet suite metadata row.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
         }
         .accessibilityAddTraits(.isHeader)
         .accessibilityLabel(ArenaSuiteSheetA11y.spokenSuiteTitle(suite.suite))
@@ -4288,7 +4298,8 @@ extension ArenaSuiteSheet {
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text("Índice da suíte · escala 0–10")
                     .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet sparkline caption.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             }
             .accessibilityHidden(true)
             Spacer()
@@ -4336,7 +4347,8 @@ extension ArenaSuiteSheet {
                 .foregroundStyle(tone.color)
             Text(label)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet detail label.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(

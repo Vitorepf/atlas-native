@@ -2492,7 +2492,8 @@ extension AtlasEditorialGlyphEmpty {
     var editorialCopyStack: some View {
         VStack(spacing: 8) {
             Text(headline)
-                .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet editorial empty headline.
+                .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .multilineTextAlignment(.center)
                 .accessibilityHidden(true)
             if let footnote {
