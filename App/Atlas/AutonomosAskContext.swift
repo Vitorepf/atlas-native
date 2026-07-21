@@ -177,7 +177,17 @@ enum AutonomosAskContext {
 
         absences.append("create no servidor ainda pendente (§5)")
         absences.append("catálogo local some se o app for morto — não invente frota 24/7 persistida")
-        absences.append("NL de chat ainda não autoriza tools de escrita no wire")
+
+        // WAVE-088: can_do matrix honesty (never always faceCTALocal).
+        let canDoPack = AutonomosCanDoJudgment.packFacts(
+            destination: destination,
+            controlFace: controlFace,
+            canControl: canControl,
+            decisionCount: decisionCount,
+            hasUnit: unit != nil
+        )
+        facts.append(contentsOf: canDoPack.facts)
+        absences.append(contentsOf: canDoPack.absences)
 
         let subject: String
         if decisionCount > 0, let first = subjects.first {
@@ -193,7 +203,7 @@ enum AutonomosAskContext {
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: .faceCTALocal
+            canDo: canDoPack.canDo
         ).render()
     }
 }

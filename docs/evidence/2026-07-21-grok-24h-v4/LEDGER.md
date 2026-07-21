@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 82
+- waves_completed: 83
 - idle_compress_passes: 4
 - collapse_host: 0
 
@@ -93,21 +93,14 @@ mode: designer + implementer
 - WAVE-085
 - WAVE-086
 - WAVE-087
+- WAVE-088
 
 ## Idle compress
-- pass 1–4 · prior (Messages peels · CommitRow A11y · Sheet A11y shim)
+- pass 1–4 · Messages peels · CommitRow A11y · Sheet shim
 
-## Designer
-- designs_proposed: 82
-- designs_open: 0
-- last_regen: regen-queue.py
-
-## Open queue snapshot
-
-| # | wave | Δ | status |
-|---|---|---|---|
-| — | _(none)_ | — | — |
+## Open queue
+_(none)_
 
 ## Notes
-- WAVE-084 empty editorial · WAVE-086 draft attachment · WAVE-087 worktrees.
+- Session: WAVE-084 empty · IDLE×2 · WAVE-086 draft · WAVE-087 worktrees · WAVE-088 can_do.
 - DEVICE_PENDING. Continuity BLOCKED.

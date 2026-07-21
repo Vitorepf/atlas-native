@@ -59,6 +59,7 @@
 | **Empty editorial (partida)** | `ConversationEmptyJudgment` → face silence/default_prompt/custom_prompt/suggestions(N) · EmptyStates |
 | **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · `ConversationOutlineSheet` |
 | **Home OPERAÇÃO attention** | `HomeOpsJudgment` → Autônomos door face · Arena door · pack |
+| **Autônomos can_do honesty** | `AutonomosCanDoJudgment` → matrix dest×control×canControl · AskContext pack |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |
 | **Steer / redirecionar** | `ConversationSteerJudgment` → receipt face · scope PT · allowsSubmit |
