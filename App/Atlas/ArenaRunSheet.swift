@@ -357,11 +357,15 @@ extension ArenaRunSheet {
 extension ArenaRunSheet {
     @ViewBuilder
     func toggleLabelSymbol(isOn: Bool) -> some View {
-        ArenaPremiumIcon(
+        let icon = ArenaPremiumIcon(
             symbol: isOn ? "checkmark.circle" : "circle",
             tone: isOn ? .active : .muted
         )
-            .modifier(ArenaToggleSymbolBounce(enabled: !reduceMotion, isOn: isOn))
+        if reduceMotion {
+            icon
+        } else {
+            icon.symbolEffect(.bounce, value: isOn)
+        }
     }
 }
 
