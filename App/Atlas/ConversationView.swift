@@ -1032,9 +1032,9 @@ struct NewSinceLastVisitMarker: View {
         HStack(spacing: 8) {
             Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
                 .accessibilityHidden(true)
-            Text("NOVO DESDE ÚLTIMA VISITA")
+            Text("Novo desde a última visita")
                 .font(AtlasFont.mono(10))
-                .tracking(1.1)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
             Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
@@ -4218,8 +4218,8 @@ extension EditorialTurn {
         if !bubble.streaming,
            ExecutionProof.shouldDisplay(bubble: bubble, artifactItems: artifactItems) {
             ExecutionProof(bubble: bubble, artifactItems: artifactItems, onOpenArtifacts: onOpenArtifacts)
-            Text("RESPOSTA FINAL")
-                .font(AtlasFont.mono(9, .semibold)).tracking(1.6)
+            Text("Resposta final")
+                .font(AtlasFont.mono(9, .semibold)).tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityLabel(EditorialTurnA11y.spokenFinalAnswerKicker)
                 .accessibilityAddTraits(.isHeader)
@@ -5842,7 +5842,7 @@ extension ExecutionProof {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.8))
                 .frame(width: 15)
                 .accessibilityHidden(true)
-            Text("ARTEFATOS (\(count))")
+            Text("Artefatos (\(count))")
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
             Spacer()
@@ -8624,9 +8624,10 @@ extension AtlasMarkdownView {
 
 extension AtlasMarkdownView {
     func headingTwo(_ spans: [InlineSpan]) -> some View {
-        Text(plain(spans).uppercased())
-            .atlasSans(11, .medium).tracking(1.1)
+        Text(plain(spans))
+            .atlasSans(11, .medium).tracking(0.2)
             .foregroundStyle(AtlasTheme.textSecondary)
+            .accessibilityAddTraits(.isHeader)
             .padding(.top, 6).padding(.bottom, 2)
     }
 }
@@ -9025,8 +9026,8 @@ extension AtlasMarkdownView {
     func tableHeaderRow(_ headers: [[InlineSpan]], colCount: Int) -> some View {
         HStack(spacing: 0) {
             ForEach(0..<colCount, id: \.self) { ci in
-                Text(plain(ci < headers.count ? headers[ci] : []).uppercased())
-                    .font(AtlasFont.mono(10, .medium)).tracking(1.4)
+                Text(plain(ci < headers.count ? headers[ci] : []))
+                    .font(AtlasFont.mono(10, .medium)).tracking(0.3)
                     .foregroundStyle(AtlasTheme.accent)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 8)
             }
@@ -9189,9 +9190,10 @@ extension ArtifactSheet {
 
 extension ArtifactSheet {
     var loadedArtifactsHeader: some View {
-        Text("ARTEFATOS DO TURNO · \(artifacts?.workspaceLabel ?? "workspace")")
-            .font(AtlasFont.mono(10)).tracking(1.0)
+        Text("Artefatos do turno · \(artifacts?.workspaceLabel ?? "workspace")")
+            .font(AtlasFont.mono(10)).tracking(0.4)
             .foregroundStyle(AtlasTheme.textTertiary)
+            .accessibilityAddTraits(.isHeader)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 14)
     }

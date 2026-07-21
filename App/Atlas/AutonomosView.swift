@@ -1681,9 +1681,9 @@ extension SelfConstructionReceiptSheet {
             Image(systemName: "checkmark.seal")
                 .atlasSans(11, .bold)
                 .accessibilityHidden(true)
-            Text("RECIBO DE AUTO-CONSTRUÇÃO")
+            Text("Recibo de auto-construção")
                 .font(AtlasFont.mono(11))
-                .tracking(1.0)
+                .tracking(0.3)
                 .accessibilityHidden(true)
         }
         .foregroundStyle(AtlasTheme.textTertiary)
@@ -2119,10 +2119,10 @@ struct NightlyProposalCard: View {
         HStack(spacing: 8) {
             BreathingDiamond(size: 8, reduceMotion: reduceMotion)
                 .accessibilityHidden(true)
-            Text(learnedDayEnd.map { "MISSÃO NOTURNA · NO SEU RITMO (~\($0))" }
-                ?? "MISSÃO NOTURNA · NO SEU RITMO")
+            Text(learnedDayEnd.map { "Missão noturna · no seu ritmo (~\($0))" }
+                ?? "Missão noturna · no seu ritmo")
                 .font(AtlasFont.mono(10))
-                .tracking(1.1)
+                .tracking(0.3)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
         }

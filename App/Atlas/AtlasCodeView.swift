@@ -2652,9 +2652,9 @@ extension AtlasCodeWhySheet {
 extension AtlasCodeWhySheet {
     var whyHeaderTitleBlock: some View {
         Group {
-            Text("POR QUE ESTE ARQUIVO EXISTE")
+            Text("Por que este arquivo existe")
                 .atlasSans(9, .semibold)
-                .tracking(1.5)
+                .tracking(0.3)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Text(file)
@@ -3674,7 +3674,7 @@ struct AtlasCodeRadarStatusCapsule: View {
             case .clean, .unknown:
                 Text(model.scanState == .clean ? "código" : model.headline)
                     .atlasSans(11, .semibold)
-                    .tracking(1.2)
+                    .tracking(0.3)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.vertical, 7)
                     .accessibilityHidden(true)
@@ -3722,7 +3722,7 @@ struct AtlasCodeRadarSectionLabel: View {
     var body: some View {
         Text(text)
             .atlasSans(10, .semibold)
-            .tracking(1.3)
+            .tracking(0.3)
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)

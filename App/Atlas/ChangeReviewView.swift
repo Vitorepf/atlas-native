@@ -1134,7 +1134,7 @@ struct ChangeReviewControlsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            ChangeReviewCaption("CONTROLES · \(controls.count)")
+            ChangeReviewCaption("Controles · \(controls.count)")
             ForEach(controls) { c in
                 controlRow(c)
             }
@@ -1150,7 +1150,7 @@ struct ChangeReviewCaption: View {
     init(_ text: String) { self.text = text }
 
     var body: some View {
-        Text(text).font(AtlasFont.mono(10)).tracking(1.0).foregroundStyle(AtlasTheme.textTertiary)
+        Text(text).font(AtlasFont.mono(10)).tracking(0.4).foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)
             .accessibilityLabel(ChangeReviewSectionsA11y.spokenCaption(text))
     }
@@ -1161,7 +1161,7 @@ struct ChangeReviewDecidedSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            ChangeReviewCaption("DECISÕES REGISTRADAS")
+            ChangeReviewCaption("Decisões registradas")
             ForEach(actions) { a in
                 decidedActionRow(a)
             }
@@ -1220,7 +1220,7 @@ struct ChangeReviewTestsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            ChangeReviewCaption("TESTES · \(tests.count)")
+            ChangeReviewCaption("Testes · \(tests.count)")
             ForEach(tests) { t in
                 testRow(t)
             }
@@ -1328,7 +1328,7 @@ struct ChangeReviewFindingsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            ChangeReviewCaption("ACHADOS · \(findings.count)")
+            ChangeReviewCaption("Achados · \(findings.count)")
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel("achados, \(findings.count) no total")
             ForEach(groups.keys.sorted(), id: \.self) { axis in
@@ -1368,7 +1368,7 @@ extension ChangeReviewFindingsSection {
 extension ChangeReviewFindingsSection {
     func axisHeaderRow(axis: String, count: Int) -> some View {
         HStack(spacing: 8) {
-            Text(axis).font(AtlasFont.mono(9)).tracking(0.8)
+            Text(axis.localizedCapitalized).font(AtlasFont.mono(9)).tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
             Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
             Text("\(count)")
