@@ -21,7 +21,7 @@
 | Intenção | Comece em |
 |---|---|
 | Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View |
-| **Radar screen load (frota)** | `AtlasCodeRadarScreenJudgment` → face loading/failed/empty/ready · shell a11y |
+| **Radar screen load (frota)** | `AtlasCodeRadarScreenJudgment` → face loading/failed/empty/ready · shell a11y · pack Ask (WAVE-162) |
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
 | Código grafo peels | `AtlasCodeSurface` host · `AtlasCodeSurfaceGraph` content/list |
@@ -39,7 +39,7 @@
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
 | **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
-| **Workspace screen (lista)** | `WorkspaceScreenJudgment` → face loading/offline/empty/list · screen a11y |
+| **Workspace screen (lista)** | `WorkspaceScreenJudgment` → face loading/offline/empty/list · screen a11y · pack Ask (WAVE-162) |
 | **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face loading/failed/empty/list/miss · rank · pack |
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |
 | **Ops failure (multi-superfície)** | `AtlasOpsFailureJudgment` → face network/domain/load · FailureEmpty |
@@ -66,7 +66,7 @@
 | **Partida can_do (Home/WS/Radar)** | `PartidaCanDoJudgment` → HomeAskContext · WorkspaceAskContext · RadarAskContext (WAVE-158) |
 | **Autônomos can_do honesty** | `AutonomosCanDoJudgment` → matrix dest×control×canControl · AskContext pack |
 | **Autônomos lista/row** | `AutonomosListJudgment` → list empty/list(N) · row awaiting/live/quiet · pack |
-| **Autônomos hub** | `AutonomosHubJudgment` → hubFace · spokenHub · receiptTone · pack |
+| **Autônomos hub** | `AutonomosHubJudgment` → hubFace · spokenHub · receiptTone · pack Ask .hub (WAVE-162) |
 | **Autônomos razão governada** | `AutonomosReasonJudgment` → face blocked/ready · ReasonSheet |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |

@@ -72,6 +72,23 @@ enum WorkspaceAskContext {
 
         absences.append("não invente grafo/Arena/frota; pack é só deste workspace")
 
+        // WAVE-162: workspace screen face organ (loading/offline/empty/list).
+        let showsLoading = (session.phase == .loading || session.phase == .idle) && threads.isEmpty
+        let showsOffline = {
+            if case .failed = session.phase { return threads.isEmpty }
+            return false
+        }()
+        let screenPack = WorkspaceScreenJudgment.packFacts(
+            title: name,
+            showsLoadingShell: showsLoading,
+            showsNetworkFailure: showsOffline,
+            threadCount: threads.count,
+            areaLabel: "todas",
+            freeOnly: false
+        )
+        facts.append(contentsOf: screenPack.facts)
+        absences.append(contentsOf: screenPack.absences)
+
         // WAVE-158: can_do matrix — scoped live never invents stop on workspace pack.
         let scopedLiveCount = WorkspaceThreadJudgment.rank(threads, remote: session.remoteLiveSessions)
             .filter { WorkspaceThreadJudgment.isRunning(thread: $0, remote: session.remoteLiveSessions) }

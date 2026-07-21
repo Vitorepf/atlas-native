@@ -157,6 +157,31 @@ enum AutonomosAskContext {
                         facts.append("decisao: \(title)")
                     }
                 }
+                // WAVE-162: hub face organ (vestment × control × bind × transfer).
+                if let unit {
+                    let hubPack = AutonomosHubJudgment.packFacts(
+                        unitName: unit.name,
+                        vestment: AutonomosHubVestment.resolve(
+                            backlog: backlog,
+                            live: live,
+                            incidentPresent: AutonomosTaskHealthJudgment.incidentPresent(taskHealth),
+                            unitPaused: unit.paused
+                        ),
+                        controlFace: controlFace,
+                        needsAreaBind: AutonomosAreaBindJudgment.face(
+                            areas: areas,
+                            selectedAreaID: selectedAreaID
+                        ).needsChooser,
+                        canTransfer: AutonomosTransferJudgment.canTransfer(
+                            canControlSelectedArea: canControl
+                        ),
+                        hasControlReceipt: lastControlReceipt != nil,
+                        hasTransferReceipt: lastTransferReceipt != nil,
+                        controlApplied: lastControlReceipt?.applied
+                    )
+                    facts.append(contentsOf: hubPack.facts)
+                    absences.append(contentsOf: hubPack.absences)
+                }
             case .decisions, .decisionInbox, .decisionOrder:
                 facts.append("foco: decisões")
                 if decisionCount > 0 {

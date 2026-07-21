@@ -78,6 +78,20 @@ enum AtlasCodeRadarAskContext {
 
         absences.append("não inventar merges ou cures; julgamento soberano do workspace")
 
+        // WAVE-162: radar screen face organ.
+        let failMsg: String? = {
+            if case .failed(let m) = model.phase { return m }
+            return nil
+        }()
+        let repoCount = model.workspace.map { $0.folders.reduce(0) { $0 + $1.repos.count } + $0.recents.count }
+        let screenPack = AtlasCodeRadarScreenJudgment.packFacts(
+            phase: model.phase,
+            repositoryCount: repoCount,
+            failMessage: failMsg
+        )
+        facts.append(contentsOf: screenPack.facts)
+        absences.append(contentsOf: screenPack.absences)
+
         // WAVE-158: can_do matrix — radar list has no local heal CTA; honesty via absences.
         let attentionCount = AtlasCodeRadarJudgment.topAttention(issuesBySlug: model.issuesBySlug).count
         let partida = PartidaCanDoJudgment.radar(
