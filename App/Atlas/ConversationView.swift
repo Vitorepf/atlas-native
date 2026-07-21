@@ -2182,6 +2182,8 @@ extension ConversationComposer {
                     Capsule(style: .continuous)
                         .strokeBorder(AtlasTheme.separator, lineWidth: 1)
                 )
+                // Collapsed invite shares floating plane with home AgenticPill.
+                .atlasElevation(radius: 10, y: 3, opacity: 0.14)
         }
     }
 }
@@ -3068,6 +3070,8 @@ extension ComposerToolbar {
                 .atlasSans(17, .medium)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 48, height: 48)
+                .background(Circle().fill(AtlasTheme.surfaceHi.opacity(0.55)))
+                .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                 .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
