@@ -6055,7 +6055,8 @@ extension ExecutionProof {
                 .accessibilityHidden(true)
             Text("Artefatos (\(count))")
                 .font(AtlasFont.mono(12))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet artifacts header.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             Spacer()
         }
     }
@@ -6065,7 +6066,8 @@ extension ExecutionProof {
     @ViewBuilder
     var decisionBlock: some View {
         if let d = bubble.decisionSummary, Self.hasDecisionSurface(d) {
-            Divider().overlay(AtlasTheme.separatorSoft).accessibilityHidden(true)
+            // Soft gold-breath divider before decision meta.
+            Divider().overlay(AtlasTheme.accent.opacity(0.22)).accessibilityHidden(true)
             decisionSummaryRow(d)
             decisionReason(d)
         }
@@ -6080,7 +6082,8 @@ extension ExecutionProof {
                 .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.8)).frame(width: 15)
                 .accessibilityHidden(true)
             Text(decideLine(d))
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet decision meta.
+                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.7))
                 .lineLimit(2)
         }
         .accessibilityElement(children: .combine)
@@ -6097,7 +6100,8 @@ extension ExecutionProof {
                     .atlasSans(11).foregroundStyle(qualityColor(q)).frame(width: 15)
                     .accessibilityHidden(true)
                 Text(qualityLine(q))
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet quality meta (seal color stays status).
+                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.7))
             }
             .accessibilityLabel(qualitySpoken(q))
         }

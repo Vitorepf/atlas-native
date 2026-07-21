@@ -682,7 +682,8 @@ struct AutonomosRhythmLearningLine: View {
             HStack(spacing: 5) {
                 Text(AutonomosRhythmCopy.line(windows, paused: nightly.isProposalMuted))
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet rhythm meta — match disclosure chevron.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .lineLimit(2)
                 Image(systemName: "chevron.right")
                     .atlasSans(7, .semibold)

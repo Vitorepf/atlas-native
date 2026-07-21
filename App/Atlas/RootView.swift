@@ -2637,7 +2637,8 @@ struct WorkspaceLoadingEmpty: View {
         VStack(spacing: 18) {
             BreathingGlyph(reduceMotion: reduceMotion)
             Text(text)
-                .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet loading caption under breathing ✦.
+                .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .frame(maxWidth: .infinity).padding(.top, topPadding)
         .accessibilityElement(children: .combine)

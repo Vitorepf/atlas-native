@@ -775,7 +775,8 @@ extension ChangeReviewPatchCard {
     var patchHeader: some View {
         HStack {
             Text("Patch \(String(patch.id.prefix(8)))")
-                .font(AtlasFont.mono(10)).tracking(0.3).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet patch hash kicker.
+                .font(AtlasFont.mono(10)).tracking(0.3).foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .accessibilityHidden(true)
             Spacer()
             Button {
@@ -1185,7 +1186,8 @@ struct ChangeReviewCaption: View {
     init(_ text: String) { self.text = text }
 
     var body: some View {
-        Text(text).font(AtlasFont.mono(10)).tracking(0.4).foregroundStyle(AtlasTheme.textTertiary)
+        // Soft gold-quiet section caption — same family as home/radar kickers.
+        Text(text).font(AtlasFont.mono(10)).tracking(0.4).foregroundStyle(AtlasTheme.accent.opacity(0.68))
             .accessibilityAddTraits(.isHeader)
             .accessibilityLabel(text)
     }

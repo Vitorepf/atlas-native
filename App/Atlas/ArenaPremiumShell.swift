@@ -730,7 +730,8 @@ struct ArenaPremiumStopSheet: View {
     private func fieldLabel(_ text: String) -> some View {
         Text(text)
             .atlasSans(12, .medium)
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet form kicker — match Autônomos field labels.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.7))
             .accessibilityAddTraits(.isHeader)
     }
 
@@ -1052,7 +1053,8 @@ struct ArenaPremiumPlanView: View {
     private func metric(_ value: Int, _ label: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text("\(value)").font(AtlasFont.serif(30)).foregroundStyle(AtlasTheme.textPrimary)
-            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet metric caption.
+            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.68))
         }
     }
 
@@ -3871,7 +3873,8 @@ extension ArenaRunSheet {
     private func fieldLabel(_ text: String) -> some View {
         Text(text)
             .atlasSans(12, .medium)
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet form kicker — match Autônomos field labels.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.7))
             .accessibilityAddTraits(.isHeader)
     }
 }
