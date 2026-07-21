@@ -111,6 +111,16 @@ struct AtlasGlassCapsule: ViewModifier {
 extension View {
     func atlasGlassCircle() -> some View { modifier(AtlasGlassCircle()) }
     func atlasGlassCapsule() -> some View { modifier(AtlasGlassCapsule()) }
+
+    /// Skip empty/nil identifiers so XCUITest never sees `""` nodes.
+    @ViewBuilder
+    func atlasAccessibilityIdentifier(_ id: String?) -> some View {
+        if let id, !id.isEmpty {
+            self.accessibilityIdentifier(id)
+        } else {
+            self
+        }
+    }
 }
 
 

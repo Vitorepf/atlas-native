@@ -4495,7 +4495,7 @@ struct ExecutionBanner: View {
             .accessibilityElement(children: .ignore)
             .accessibilityHidden(embedInParent)
             .accessibilityLabel(text)
-            .accessibilityIdentifier(accessibilityIdentifier ?? "")
+            .atlasAccessibilityIdentifier(accessibilityIdentifier)
     }
 }
 

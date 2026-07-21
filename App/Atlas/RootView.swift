@@ -1245,7 +1245,7 @@ struct LiveNowRow: View {
         .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("sessão remota em outra superfície")
-        .accessibilityIdentifier(remoteBadgeID ?? "")
+        .atlasAccessibilityIdentifier(remoteBadgeID)
     }
 
     private func timingLine(now: Date) -> some View {
@@ -2580,20 +2580,9 @@ struct BreathingGlyph: View {
     }
 }
 
-private struct HomeSectionA11yID: ViewModifier {
-    let id: String?
-    func body(content: Content) -> some View {
-        if let id {
-            content.accessibilityIdentifier(id)
-        } else {
-            content
-        }
-    }
-}
-
 extension View {
     func homeSectionA11yID(_ id: String?) -> some View {
-        modifier(HomeSectionA11yID(id: id))
+        atlasAccessibilityIdentifier(id)
     }
 }
 
@@ -2773,7 +2762,7 @@ struct WorkspaceRow: View {
         // a11y; recriar o elemento gera um invólucro `Other` e emudece o botão.
         .accessibilityLabel(spokenOverride ?? RootChromeRowA11y.workspaceSpoken(name: name, count: count, detail: detail, badge: badge))
         .accessibilityHint(spokenHint ?? "abre \(name)")
-        .accessibilityIdentifier(a11yID ?? "")
+        .atlasAccessibilityIdentifier(a11yID)
         .accessibilityAddTraits(.isButton)
     }
 }
