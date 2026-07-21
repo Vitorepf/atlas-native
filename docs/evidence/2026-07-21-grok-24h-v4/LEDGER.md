@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 166
-- idle_compress_passes: 2
+- idle_compress_passes: 1
 - collapse_host: 0
 
 ## Waves done
@@ -179,15 +179,15 @@ mode: designer + implementer
 - WAVE-171
 
 ## Idle compress
-- pass 4 · `21b78488` MARK WAVE-171 peels
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `dcd35e3f` MARK dense layout (post WAVE-156)
+- pass 4 · `32d17ab2` MARK WAVE-171 peels
 
 ## Designer
 - designs_proposed: 166
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -196,7 +196,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- Continuity BLOCKED. DEVICE_PENDING.
+- WAVE-156–170 pack sovereignty · WAVE-171 pack-host density · IDLE MARK peels.
+- ConversationModel deferred.
+- Remaining hollows host-blocked: Search/Timeline/Markdown/Rhythm.
