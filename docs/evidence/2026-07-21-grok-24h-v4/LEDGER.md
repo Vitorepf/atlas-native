@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 0
-- idle_compress_passes: 1
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Designer
@@ -15,15 +15,21 @@ mode: designer + implementer
 - last_wave: null
 
 ## Idle compress log
-### pass 1 — peel fusion (same-feature)
+### pass 1 — peel fusion (same-feature) · `419bedf3`
 - WorkspaceEmptyStates*: 19 → 3 files (failure + editorial + loading)
 - ConversationChrome SheetShell/SheetRow/A11y: micro-peels → hosts
 - ConversationChromeSheets Receipt: 14 → 1
 - ConversationChromeSheets Outline: 16 → 1
 - ~70 App/Atlas peels deleted; hosts ≤150 LOC; no god-file; zero Core
-- PROVA: `swift run AtlasCoreChecks` exit 0 · `cd App && make build` exit 0 · guard OK
+- PROVA: AtlasCoreChecks + make build + guard OK
+
+### pass 2 — RootChrome + LiveNow peel fusion
+- RootChrome ThreadRow/WorkspaceRow/CircleButton/A11y/Controls → 3 hosts
+- LiveNowSection* → 1 · LiveNowRow* → 3 (row/timing/spoken)
+- hosts ≤131 LOC; no god-file; zero Core
+- PROVA: AtlasCoreChecks + make build + guard OK
 
 ## Notes
 - Prefer QUEUE over inventing micros
 - App/** only Implementer
-- Queue still empty → next: more idle compress (RootChrome/LiveNow) or own WAVE if ROI saturates
+- Queue empty → continue idle or own WAVE if peel ROI plateaus

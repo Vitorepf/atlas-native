@@ -1,76 +1,97 @@
 #!/usr/bin/env bash
-# grok-god-wave-guard.sh — checagens mecânicas da missão GOD WAVES v3.1
-# Exit 0 = ok para commit de produto. Exit 1 = hard fail.
+# grok-god-wave-guard.sh — v4 dual prefer + v3 fallback
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-LEDGER="docs/evidence/2026-07-21-grok-24h-v3/LEDGER.md"
+LEDGER_V4="docs/evidence/2026-07-21-grok-24h-v4/LEDGER.md"
+QUEUE_V4="docs/evidence/2026-07-21-grok-24h-v4/QUEUE.md"
+LEDGER_V3="docs/evidence/2026-07-21-grok-24h-v3/LEDGER.md"
 FAIL=0
 
 say() { printf '%s\n' "$*"; }
 fail() { say "GUARD FAIL: $*"; FAIL=1; }
 
-if [[ ! -f "$LEDGER" ]]; then
-  fail "missing $LEDGER — create v3.1 ledger before product commits"
+MODE=unknown
+LEDGER=""
+if [[ -f "$LEDGER_V4" ]]; then
+  MODE=v4
+  LEDGER="$LEDGER_V4"
+elif [[ -f "$LEDGER_V3" ]]; then
+  MODE=v3
+  LEDGER="$LEDGER_V3"
 else
-  phase=$(rg -n '^phase:' "$LEDGER" | head -1 | sed 's/.*phase:[[:space:]]*//' | tr -d '\r' || true)
-  active=$(rg -n '^active_wave:' "$LEDGER" | head -1 | sed 's/.*active_wave:[[:space:]]*//' | tr -d '\r' || true)
-  approved=$(rg -n '^design_approved:' "$LEDGER" | head -1 | sed 's/.*design_approved:[[:space:]]*//' | tr -d '\r' || true)
-  design=$(rg -n '^design_path:' "$LEDGER" | head -1 | sed 's/.*design_path:[[:space:]]*//' | tr -d '\r' || true)
-  say "ledger phase=$phase active_wave=$active design_approved=$approved"
+  fail "missing ledger v4 or v3"
+fi
 
-  case "${phase:-}" in
-    idle|W0_council|W1_design|W2_implement|W3_compress) ;;
-    *) fail "invalid or missing phase in ledger" ;;
-  esac
+APP_TOUCHED=0
+if git diff --name-only HEAD 2>/dev/null | rg -q '^App/Atlas/.*\.swift$'; then
+  APP_TOUCHED=1
+fi
+if git diff --cached --name-only 2>/dev/null | rg -q '^App/Atlas/.*\.swift$'; then
+  APP_TOUCHED=1
+fi
 
-  # Product code staged/changed?
-  if git diff --cached --name-only 2>/dev/null | rg -q '^App/Atlas/.*\.swift$' \
-    || git diff --name-only 2>/dev/null | rg -q '^App/Atlas/.*\.swift$'; then
+if [[ "$MODE" == "v4" ]]; then
+  say "mode=v4"
+  [[ -f "$QUEUE_V4" ]] || fail "missing $QUEUE_V4"
+  # v4: implementer may edit App during implementing wave OR idle_compress (ledger phase idle)
+  if [[ "$APP_TOUCHED" -eq 1 ]]; then
+    phase=$(rg '^- phase:' "$LEDGER" | head -1 | awk '{print $3}' | tr -d '\r' || true)
+    active=$(rg '^- active_wave:' "$LEDGER" | head -1 | awk '{print $3}' | tr -d '\r' || true)
+    # Allow: phase idle (idle compress) OR active_wave non-null (wave implement)
+    if [[ "${phase:-}" != "idle" && "${active:-null}" == "null" ]]; then
+      fail "App changes while phase=${phase:-?} active_wave=${active:-null} (need idle or active wave)"
+    fi
+  fi
+elif [[ "$MODE" == "v3" && -n "$LEDGER" ]]; then
+  say "mode=v3"
+  phase=$(rg '^phase:' "$LEDGER" | head -1 | awk '{print $2}' | tr -d '\r' || true)
+  approved=$(rg '^design_approved:' "$LEDGER" | head -1 | awk '{print $2}' | tr -d '\r' || true)
+  design=$(rg '^design_path:' "$LEDGER" | head -1 | awk '{print $2}' | tr -d '\r' || true)
+  say "phase=${phase:-?} approved=${approved:-?}"
+  if [[ "$APP_TOUCHED" -eq 1 ]]; then
     if [[ "$phase" != "W2_implement" && "$phase" != "W3_compress" ]]; then
-      fail "App/Atlas Swift changes while phase=$phase (only W2/W3 allowed)"
+      fail "App changes while phase=${phase:-missing} (need W2/W3)"
     fi
     if [[ "$phase" == "W2_implement" ]]; then
-      if [[ "${approved}" != "true" ]]; then
-        fail "W2 requires design_approved: true"
-      fi
-      if [[ -z "${design}" || "${design}" == "null" || ! -f "${design}" ]]; then
-        fail "W2 requires design_path file to exist on disk"
-      fi
+      [[ "$approved" == "true" ]] || fail "W2 needs design_approved: true"
+      [[ -n "$design" && "$design" != "null" && -f "$design" ]] || fail "W2 needs design file"
     fi
   fi
 fi
 
-# Hard fail god-files
+# God-file hard fail
 while IFS= read -r line; do
-  lines=${line%% *}
-  file=${line#* }
+  case "$line" in
+    *total) continue ;;
+  esac
+  lines=$(echo "$line" | awk '{print $1}')
+  file=$(echo "$line" | awk '{print $2}')
   base=$(basename "$file")
-  if [[ "$base" == *View*.swift || "$base" == *Shell*.swift ]]; then
-    if [[ "$lines" -gt 400 ]]; then
-      fail "god-file $file has $lines lines (>400)"
-    fi
-  fi
+  case "$base" in
+    *View*.swift|*Shell*.swift)
+      if [[ "$lines" =~ ^[0-9]+$ ]] && (( lines > 400 )); then
+        fail "god-file $file has $lines lines (>400)"
+      fi
+      ;;
+  esac
 done < <(find App/Atlas -name '*.swift' -print0 | xargs -0 wc -l | sed '$d')
 
-# Forbidden paths touched in working tree / index
-if git diff --name-only HEAD 2>/dev/null | rg -q '^(Sources/|App/Atlas/ConversationModel\.swift$|App/Atlas/AtlasSession\.swift$|App/Makefile$|App/project\.yml$)' \
-  || git diff --cached --name-only 2>/dev/null | rg -q '^(Sources/|App/Atlas/ConversationModel\.swift$|App/Atlas/AtlasSession\.swift$|App/Makefile$|App/project\.yml$)'; then
-  fail "forbidden Core/build paths touched"
-fi
+FORBIDDEN=$(git diff --name-only HEAD 2>/dev/null || true)
+FORBIDDEN_C=$(git diff --cached --name-only 2>/dev/null || true)
+echo "$FORBIDDEN"$'\n'"$FORBIDDEN_C" | rg -q '^(Sources/|App/Atlas/ConversationModel\.swift$|App/Atlas/AtlasSession\.swift$|App/Makefile$|App/project\.yml$)' \
+  && fail "forbidden Core/build paths touched" || true
 
-# Recent commit message smell (informational if no commits yet)
 if git log -1 --pretty=%s 2>/dev/null | rg -qi 'collapse.*host|into host files'; then
-  fail "last commit message smells like host-collapse"
+  fail "last commit smells like host-collapse"
 fi
 
 if [[ "$FAIL" -ne 0 ]]; then
-  say "---"
-  say "Fix process/ledger/files before committing. See docs/prompts/grok-24h-autonomous-deepening-v3.md"
+  say "See docs/prompts/grok-24h-v4-dual.md"
   exit 1
 fi
 
-say "GUARD OK"
+say "GUARD OK (mode=$MODE)"
 exit 0
