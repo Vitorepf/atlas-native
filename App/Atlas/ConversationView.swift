@@ -990,11 +990,24 @@ extension SheetShell {
     }
 
     var sheetTitle: some View {
-        Text(title)
-            .font(AtlasFont.serif(20, .semibold))
-            .foregroundStyle(AtlasTheme.textPrimary)
-            .padding(.bottom, 14)
-            .accessibilityAddTraits(.isHeader)
+        VStack(spacing: 6) {
+            Text(title)
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.5),
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: 56, height: 1.5)
+            .accessibilityHidden(true)
+        }
+        .padding(.bottom, 14)
     }
 }
 
