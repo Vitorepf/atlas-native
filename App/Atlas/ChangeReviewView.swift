@@ -587,7 +587,7 @@ extension ChangeReviewCouncilMemberRow {
     @ViewBuilder
     var metaHashCode: some View {
         if let hash = member.responseHash {
-            Text("hash \(String(hash.prefix(12)))")
+            Text("Hash \(String(hash.prefix(12)))")
                 .font(AtlasFont.mono(9))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
@@ -983,7 +983,7 @@ extension ChangeReviewDiffView {
 extension ChangeReviewDiffView {
     @ViewBuilder
     var diffBodyUnavailable: some View {
-        Text("diff indisponível para este patch")
+        Text("Diff indisponível para este patch")
             .font(AtlasFont.serifItalic(13))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -1046,7 +1046,7 @@ extension ChangeReviewDiffView {
     @ViewBuilder
     func loadedDiffWarnings(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
         if response.diff.truncated {
-            Text("diff truncado — \(response.diff.returnedBytes) de \(response.diff.sizeBytes) bytes")
+            Text("Diff truncado — \(response.diff.returnedBytes) de \(response.diff.sizeBytes) bytes")
                 .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
         }
         if response.patch.hashMatches == false {
@@ -1060,7 +1060,7 @@ extension ChangeReviewDiffView {
                 .atlasSans(11, .semibold)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
-            Text("atenção: o hash do diff não confere com o artefato registrado")
+            Text("Atenção: o hash do diff não confere com o artefato registrado")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .fixedSize(horizontal: false, vertical: true)

@@ -298,7 +298,7 @@ struct ArenaPremiumTabBar: View {
                 .accessibilityLabel(Text(tabAccessibilityLabel(tab)))
                 .accessibilityAddTraits(selection == tab ? [.isButton, .isSelected] : .isButton)
                 .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.a11yKey))
-                .accessibilityHint(selection == tab ? Text("selecionado") : Text("troca aba da Arena"))
+                .accessibilityHint(selection == tab ? Text("Selecionado") : Text("Troca aba da Arena"))
             }
         }
         .padding(3)
@@ -3149,7 +3149,7 @@ struct ArenaPremiumCapabilityDetail: View {
                 VStack(alignment: .leading, spacing: 14) {
                     metric("Sem Atlas", capability.score)
                     metric("Com Atlas", capability.withAtlas, tone: .active)
-                    Text("diferença \(ArenaFormat.signed(delta))")
+                    Text("Diferença \(ArenaFormat.signed(delta))")
                         .font(AtlasFont.mono(12, .medium))
                         .foregroundStyle(deltaColor)
                 }
@@ -4300,10 +4300,10 @@ struct ArenaPremiumAction: View {
         .accessibilityLabel(Text(title))
         .accessibilityHint(
             disabled
-                ? Text("indisponível")
+                ? Text("Indisponível")
                 : Text(quiet
-                    ? "ação secundária da Arena, \(title.lowercased())"
-                    : "ação principal da Arena, \(title.lowercased())")
+                    ? "Ação secundária da Arena, \(title.lowercased())"
+                    : "Ação principal da Arena, \(title.lowercased())")
         )
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(disabled || quiet ? 0 : 9) // primary Arena CTA surfaces early in VO

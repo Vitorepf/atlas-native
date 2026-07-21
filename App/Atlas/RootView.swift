@@ -1233,7 +1233,7 @@ struct LiveNowRow: View {
             Image(systemName: "arrow.triangle.branch")
                 .atlasSans(8, .semibold)
                 .accessibilityHidden(true)
-            Text("remota")
+            Text("Remota")
                 .font(AtlasFont.mono(9))
                 .tracking(0.4)
                 .accessibilityHidden(true)

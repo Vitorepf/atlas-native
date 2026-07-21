@@ -4829,7 +4829,7 @@ extension ReconnectBanner {
     @ViewBuilder
     var reconnectActiveTimerLine: some View {
         if let ms = bubble.reconnectActiveTimerMs {
-            Text("ativo \(ExecutionStateCard.clock(ms))")
+            Text("Ativo \(ExecutionStateCard.clock(ms))")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .monospacedDigit()
@@ -5146,7 +5146,7 @@ extension PlanCard {
         plan: AtlasExecutionPlan,
         progress: AtlasExecutionPlan.Progress
     ) -> some View {
-        Text("planejado \(plan.steps.count) · executado \(min(progress.current, progress.total))/\(progress.total)")
+        Text("Planejado \(plan.steps.count) · executado \(min(progress.current, progress.total))/\(progress.total)")
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .monospacedDigit()
@@ -6669,7 +6669,7 @@ extension ExecutionStateCard {
                 .accessibilityHidden(true)
         }
         if let checkpoint = state.checkpoint {
-            Text("checkpoint · \(checkpoint)")
+            Text("Checkpoint · \(checkpoint)")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(1)

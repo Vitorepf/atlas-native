@@ -988,7 +988,7 @@ struct AutonomosListView: View {
     @ViewBuilder
     private func trailing(_ unit: AutonomosUnit) -> some View {
         if unit.paused {
-            Text("pausado")
+            Text("Pausado")
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
                 .foregroundStyle(AtlasTheme.textTertiary)

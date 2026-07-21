@@ -1143,7 +1143,7 @@ extension AtlasCodeFileRow {
                 .monospacedDigit()
                 .accessibilityHidden(true)
         } else {
-            Text("binário")
+            Text("Binário")
                 .font(AtlasFont.mono(8.5))
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
                 .accessibilityHidden(true)
