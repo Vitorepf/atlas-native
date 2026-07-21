@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 95
-- idle_compress_passes: 2
+- idle_compress_passes: 25
 - collapse_host: 0
 
 ## Waves done
@@ -108,23 +108,22 @@ mode: designer + implementer
 - WAVE-100
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
+- pass 21-22 · multi-surface chrome to Judgment
+- pass 23 · 3427812c · ChangeReviewSectionsA11y to Judgment
+- pass 24 · dc82150f · AtlasCodeRadarA11y to RadarJudgment
+- pass 25 · 87932be2 · AtlasCodeCommitRowA11y to CommitRowJudgment
 
 ## Designer
 - designs_proposed: 95
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
-## Open queue snapshot (must match QUEUE.md)
+## Open queue snapshot
 
-| # | wave | Δ | status |
+| # | wave | delta | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| - | (none) | - | - |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-100 + IDLE-25. DEVICE_PENDING.
+- Concurrent LEDGER strips - B rewrites full truth (no backticks).
