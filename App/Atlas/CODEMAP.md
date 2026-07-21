@@ -136,6 +136,7 @@
 | **AutonomosView peels** | View · Header (WAVE-128) |
 | **ChangeReview patch peels** | PatchBody · DiffViewBody (WAVE-129) |
 | **Markdown blocks peels** | Blocks · ViewBlocks (WAVE-130) |
+| **A11yID domain peels** | core · Arena · Code · Autonomos (WAVE-131) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
