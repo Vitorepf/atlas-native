@@ -849,8 +849,8 @@ enum ArenaSuiteFace: Equatable {
 /// Pure suite engines grammar — rank · face · spoken · pack.
 enum ArenaSuiteJudgment {
 
-    static let closeLabel = "fechar detalhes da suite"
-    static let closeHint = "volta para a Arena"
+    static let spokenClose = "fechar detalhes da suite"
+    static let spokenCloseHint = "volta para a Arena"
     static let sheetHint = "scores, casos e duração só quando o servidor publica"
 
     static func spokenSuiteTitle(_ suite: String) -> String {

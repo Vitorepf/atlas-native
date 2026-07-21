@@ -984,8 +984,8 @@ struct ArenaPremiumStopSheet: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
-                        spokenLabel: ArenaStopJudgment.closeSpoken,
-                        spokenHint: ArenaStopJudgment.closeHint,
+                        spokenLabel: ArenaStopJudgment.spokenClose,
+                        spokenHint: ArenaStopJudgment.spokenCloseHint,
                         reduceMotion: reduceMotion
                     ) { dismiss() }
                 }
@@ -1661,8 +1661,8 @@ struct ArenaRunSheet: View {
     var runToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             AtlasCloseToolbarButton(
-                spokenLabel: ArenaRunSheetJudgment.closeLabel,
-                spokenHint: ArenaRunSheetJudgment.closeHint,
+                spokenLabel: ArenaRunSheetJudgment.spokenClose,
+                spokenHint: ArenaRunSheetJudgment.spokenCloseHint,
                 reduceMotion: reduceMotion
             ) { dismiss() }
         }
@@ -1949,8 +1949,8 @@ extension ArenaSuiteSheet {
     var suiteToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             AtlasCloseToolbarButton(
-                spokenLabel: ArenaSuiteJudgment.closeLabel,
-                spokenHint: ArenaSuiteJudgment.closeHint,
+                spokenLabel: ArenaSuiteJudgment.spokenClose,
+                spokenHint: ArenaSuiteJudgment.spokenCloseHint,
                 reduceMotion: reduceMotion
             ) { dismiss() }
         }

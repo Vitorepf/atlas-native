@@ -47,8 +47,8 @@ enum ArenaStopJudgment {
     static let actorPlaceholder = "quem autoriza"
     static let reasonPlaceholder = "por que parar agora"
     static let confirmTitle = "Confirmar parada"
-    static let closeSpoken = "fechar confirmação"
-    static let closeHint = "mantém a medição em execução"
+    static let spokenClose = "fechar confirmação"
+    static let spokenCloseHint = "mantém a medição em execução"
     static let confirmHint = "envia a parada governada com operador e motivo"
 
     static func trimmed(_ value: String) -> String {

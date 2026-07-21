@@ -235,8 +235,8 @@ extension ArtifactSheet {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     AtlasCloseToolbarButton(
-                        spokenLabel: ArtifactListJudgment.closeLabel,
-                        spokenHint: ArtifactListJudgment.closeHint,
+                        spokenLabel: ArtifactListJudgment.spokenClose,
+                        spokenHint: ArtifactListJudgment.spokenCloseHint,
                         reduceMotion: reduceMotion
                     ) { dismiss() }
                 }
@@ -1119,8 +1119,8 @@ enum ArtifactListFace: Equatable {
 /// Pure artifact list/row grammar — list face · row spoken · empty · close · pack.
 enum ArtifactListJudgment {
 
-    static let closeLabel = "fechar artefatos"
-    static let closeHint = "volta para a conversa"
+    static let spokenClose = "fechar artefatos"
+    static let spokenCloseHint = "volta para a conversa"
     static let sheetHint = "lista e preview só com itens publicados no contrato"
     static let emptyVisualizableLabel = "sem artefatos visualizáveis nesta execução"
     static let emptyVisualizableCopy = "nenhum artefato visualizável"

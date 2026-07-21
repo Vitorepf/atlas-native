@@ -396,8 +396,8 @@ enum ArenaRunSheetJudgment {
     static let sheetTitle = "rodar medição Arena"
     static let sheetHint =
         "escolhe suites, motor e braços; ator e motivo auditáveis são obrigatórios"
-    static let closeLabel = "fechar folha de medição"
-    static let closeHint = "volta para a Arena sem enviar"
+    static let spokenClose = "fechar folha de medição"
+    static let spokenCloseHint = "volta para a Arena sem enviar"
     static let actorHint = "nome de quem autoriza a medição"
     static let reasonHint = "motivo auditável registrado no ledger"
 

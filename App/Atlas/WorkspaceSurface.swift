@@ -570,7 +570,7 @@ struct AtlasWorkspacePickerSheet: View {
             .searchable(text: $query, prompt: WorkspacePickerJudgment.searchPrompt)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(WorkspacePickerJudgment.closeLabel) { dismiss() }
+                    Button(WorkspacePickerJudgment.spokenClose) { dismiss() }
                         .atlasSans(15, .medium)
                         .tint(AtlasTheme.textSecondary)
                 }
@@ -1246,7 +1246,7 @@ enum WorkspacePickerJudgment {
     static let searchPrompt = "Buscar repositórios"
     static let rowHint = "abre o workspace deste repositório"
     static let currentRepoBadgeLabel = "atual"
-    static let closeLabel = "Fechar"
+    static let spokenClose = "Fechar"
 
     // MARK: Face
 
