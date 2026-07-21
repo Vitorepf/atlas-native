@@ -5233,7 +5233,8 @@ extension PlanCard {
 
     func chipRow(label: String, items: [String]) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label.uppercased()).font(AtlasFont.mono(9)).tracking(0.8)
+            Text(label)
+                .font(AtlasFont.serif(12, .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             PlanFlowChips(items: items)
@@ -5545,9 +5546,8 @@ struct PlanRevisionCompare: View {
 
     func revisionList(label: String, items: [String], tone: RevisionTone) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label.uppercased())
-                .font(AtlasFont.mono(9))
-                .tracking(0.8)
+            Text(label)
+                .font(AtlasFont.serif(12, .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             revisionListItems(items: items, tone: tone)
