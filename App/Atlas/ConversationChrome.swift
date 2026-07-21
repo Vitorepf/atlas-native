@@ -86,7 +86,7 @@ struct NewSinceLastVisitMarker: View {
         .accessibilityElement(children: .ignore)
         .accessibilityIdentifier(A11yID.conversationNewMarker)
         .accessibilityLabel("novo desde a última visita")
-        .accessibilityAddTraits(.isStaticText)
+        .accessibilityAddTraits([.isStaticText, .isHeader])
     }
 }
 
