@@ -683,26 +683,26 @@ enum AutonomosAskContext {
     static func invite(destination: AutonomosDestination?, vestment: AutonomosHubVestment) -> String {
         switch destination {
         case .evolution:
-            return "resuma isto"
+            return "Resuma isto"
         case .hub:
             break
         case nil:
-            return "o que mudou hoje?"
+            return "O que mudou hoje?"
         }
         switch vestment {
-        case .live: return "o que ele fez hoje?"
-        case .quiet: return "devo retomar?"
+        case .live: return "O que ele fez hoje?"
+        case .quiet: return "Devo retomar?"
         }
     }
 
     static func emptySuggestions(destination: AutonomosDestination?) -> [String] {
         switch destination {
         case .evolution:
-            return ["o que mudou hoje?", "o que ele melhorou?"]
+            return ["O que mudou hoje?", "O que ele melhorou?"]
         case .hub:
-            return ["devo retomar?", "o que ele fez?"]
+            return ["Devo retomar?", "O que ele fez?"]
         case nil:
-            return ["novo Autônomo", "o que mudou hoje?"]
+            return ["Novo Autônomo", "O que mudou hoje?"]
         }
     }
 
@@ -1358,7 +1358,7 @@ enum AutonomosRhythmCopy {
 
     static func todayLine(_ today: AtlasDayRhythm.DaySummary?) -> String {
         guard let today, !today.workspaces.isEmpty else {
-            return "nenhum trabalho registrado ainda"
+            return "Nenhum trabalho registrado ainda"
         }
         return today.workspaces.joined(separator: " · ")
     }
@@ -2197,23 +2197,23 @@ struct NightlyProposalCard: View {
 
     // MARK: - Spoken
 
-    static func spokenAcceptLabel() -> String { "preparar missão noturna" }
+    static func spokenAcceptLabel() -> String { "Preparar missão noturna" }
     static func spokenAcceptHint() -> String {
-        "abre o ensaio governado da missão noturna"
+        "Abre o ensaio governado da missão noturna"
     }
     static func spokenDismissLabel() -> String { "Hoje não" }
     static func spokenDismissHint() -> String {
-        "descarta a proposta em silêncio, sem confirmação"
+        "Descarta a proposta em silêncio, sem confirmação"
     }
-    static func spokenMuteMenuLabel() -> String { "silenciar propostas noturnas" }
+    static func spokenMuteMenuLabel() -> String { "Silenciar propostas noturnas" }
     static func spokenMuteMenuHint() -> String {
-        "oculta card e notificações por 1, 3 ou 7 dias, em silêncio"
+        "Oculta card e notificações por 1, 3 ou 7 dias, em silêncio"
     }
     static func spokenMuteOption(days: Int) -> String {
-        "silenciar por \(days) \(days == 1 ? "dia" : "dias")"
+        "Silenciar por \(days) \(days == 1 ? "dia" : "dias")"
     }
     static func spokenMuteOptionHint() -> String {
-        "remove a proposta e pausa notificações, sem toast"
+        "Remove a proposta e pausa notificações, sem toast"
     }
 }
 
@@ -2225,9 +2225,9 @@ extension NightlyProposalController {
         formatter.unitsStyle = .full
         let prazo = formatter.localizedString(for: until, relativeTo: now)
         if AtlasSession.nightlyProposalAutoPaused() {
-            return "propostas em pausa — você recusou as últimas \(Self.dismissStreakPauseThreshold); voltam \(prazo)"
+            return "Propostas em pausa — você recusou as últimas \(Self.dismissStreakPauseThreshold); voltam \(prazo)"
         }
-        return "propostas noturnas silenciadas até \(prazo)"
+        return "Propostas noturnas silenciadas até \(prazo)"
     }
 }
 
