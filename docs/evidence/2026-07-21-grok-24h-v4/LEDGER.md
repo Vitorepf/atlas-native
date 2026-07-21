@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 85
-- idle_compress_passes: 8
+- idle_compress_passes: 9
 - collapse_host: 0
 
 ## Waves done
@@ -98,11 +98,11 @@ mode: designer + implementer
 - WAVE-090
 
 ## Idle compress
-- pass 5–8 · Cockpit · ChangeReview · Nightly · EditorialTurnChrome
+- pass 5–8 · prior
+- pass 9 · delete EditorialTurnA11y shim → Judgment-only
 
 ## Open queue
 _(none)_
 
 ## Notes
-- WAVE-089 search list · WAVE-090 autonomos list.
-- DEVICE_PENDING.
+- WAVE-090 shipped. DEVICE_PENDING.

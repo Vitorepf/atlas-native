@@ -3,46 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS MARK + canonical layout (WAVE-post · agent navigation)
 
-// MARK: - A11y (WAVE-069 → EditorialTurnJudgment)
-
-enum EditorialTurnA11y {}
-
-extension EditorialTurnA11y {
-  static func spokenSignature(provider: String?, model: String?, elapsedMs: Int?) -> String {
-    EditorialTurnJudgment.spokenSignature(
-      provider: provider, model: model, elapsedMs: elapsedMs
-    )
-  }
-
-  static func spokenUserMessage(_ text: String) -> String {
-    EditorialTurnJudgment.spokenUserMessage(text)
-  }
-
-  static var spokenFinalAnswerKicker: String {
-    EditorialTurnJudgment.spokenFinalAnswerKicker
-  }
-
-  static var copyLongPressHint: String {
-    EditorialTurnJudgment.copyLongPressHint
-  }
-
-  static func spokenFeedbackBase(kind: FeedbackKind) -> String {
-    EditorialTurnJudgment.spokenFeedbackBase(kind: kind)
-  }
-
-  static func spokenFeedbackLabel(kind: FeedbackKind, active: Bool) -> String {
-    EditorialTurnJudgment.spokenFeedbackLabel(kind: kind, active: active)
-  }
-
-  static func spokenFeedbackHint() -> String {
-    EditorialTurnJudgment.feedbackHint
-  }
-
-  static func signatureWho(provider: String?, model: String?) -> String? {
-    EditorialTurnJudgment.signatureWho(provider: provider, model: model)
-  }
-}
-
 // MARK: - Types / Inputs
 
 struct EditorialTurn: View, Equatable {
@@ -92,7 +52,7 @@ extension EditorialTurn {
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
         .onLongPressGesture(minimumDuration: 0.38) { onCopy() }
-        .accessibilityHint(EditorialTurnA11y.copyLongPressHint)
+        .accessibilityHint(EditorialTurnJudgment.copyLongPressHint)
     }
 }
 
@@ -186,7 +146,7 @@ extension EditorialTurn {
             Text("RESPOSTA FINAL")
                 .font(.system(.caption2, weight: .semibold)).tracking(1.6)
                 .foregroundStyle(AtlasTheme.accent.opacity(0.85))
-                .accessibilityLabel(EditorialTurnA11y.spokenFinalAnswerKicker)
+                .accessibilityLabel(EditorialTurnJudgment.spokenFinalAnswerKicker)
                 .accessibilityAddTraits(.isHeader)
         }
         assistantClosingTail
@@ -277,6 +237,6 @@ extension EditorialTurn {
                 RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
                     .accessibilityHidden(true)
             }
-            .accessibilityLabel(EditorialTurnA11y.spokenUserMessage(bubble.text))
+            .accessibilityLabel(EditorialTurnJudgment.spokenUserMessage(bubble.text))
     }
 }

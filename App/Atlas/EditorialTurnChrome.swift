@@ -27,8 +27,8 @@ extension FeedbackRow {
         isActive: Bool
     ) -> some View {
         content
-            .accessibilityLabel(EditorialTurnA11y.spokenFeedbackLabel(kind: kind, active: isActive))
-            .accessibilityHint(EditorialTurnA11y.spokenFeedbackHint())
+            .accessibilityLabel(EditorialTurnJudgment.spokenFeedbackLabel(kind: kind, active: isActive))
+            .accessibilityHint(EditorialTurnJudgment.feedbackHint)
             .accessibilityAddTraits(isActive ? .isSelected : [])
             .accessibilityIdentifier(A11yID.editorialTurnFeedback(kind.rawValue))
     }
@@ -91,7 +91,7 @@ struct SignatureLine: View {
             .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.textPrimary.opacity(0.4))
             .frame(maxWidth: .infinity, alignment: .trailing)
             .opacity(shown ? 1 : 0)
-            .accessibilityLabel(EditorialTurnA11y.spokenSignature(provider: provider, model: model, elapsedMs: elapsedMs))
+            .accessibilityLabel(EditorialTurnJudgment.spokenSignature(provider: provider, model: model, elapsedMs: elapsedMs))
             .accessibilityValue(
                 EditorialTurnJudgment.face(provider: provider, model: model).productWord
             )
