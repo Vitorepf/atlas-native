@@ -158,7 +158,7 @@
 | **Markdown blocks peels** | Blocks · ViewBlocks (WAVE-130) |
 | **A11yID domain peels** | core · Arena · Code · Autonomos (WAVE-131) |
 | **ChangeReview Judgment** | `ChangeReviewJudgment` (risk · rank · spoken · pack · governance) |
-| **SelfConstruction receipt chrome** | Body · BodyChrome · Chrome (sheet veto) |
+| **SelfConstruction receipt chrome** | `SelfConstructionReceiptChrome` · Body · BodyChrome (sheet veto) |
 | **Root home sections peels** | Body · Live (WAVE-135) |
 | **LiveTimeline narrative peels** | RowView · Chrome (WAVE-136) |
 | **AutonomosDecision Judgment** | `AutonomosDecisionJudgment` (faces · spoken · packFacts) |
