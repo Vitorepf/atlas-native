@@ -146,6 +146,7 @@ struct ArenaPremiumAction: View {
                     : "ação principal da Arena, \(title.lowercased())")
         )
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(disabled || quiet ? 0 : 9) // primary Arena CTA surfaces early in VO
     }
 }
 

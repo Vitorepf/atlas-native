@@ -117,6 +117,7 @@ private struct AutonomosMapPrimaryCTA: View {
         .accessibilityLabel(Text(title))
         .accessibilityHint(Text(enabled ? "confirma \(title.lowercased())" : "indisponível"))
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(enabled ? 9 : 0) // primary map CTA surfaces early in VO
     }
 }
 
