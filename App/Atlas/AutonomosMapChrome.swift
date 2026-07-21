@@ -112,6 +112,7 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 14).padding(.vertical, 9)
+            .frame(minHeight: 44)
             .background(
                 Capsule().fill(
                     AtlasTheme.accent.opacity(
@@ -119,6 +120,7 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
                     )
                 )
             )
+            .contentShape(Capsule())
             .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
             .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }

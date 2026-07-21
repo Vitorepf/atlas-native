@@ -115,6 +115,7 @@ struct ArenaPremiumTerminalView: View {
             Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.serif(33))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text(configuration.1)
                 .font(.system(.body))
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -127,6 +128,8 @@ struct ArenaPremiumTerminalView: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(progress.completed) de \(progress.total) casos confirmados")
             }
             if kind == .failed {
                 Text(publicFailureCopy)

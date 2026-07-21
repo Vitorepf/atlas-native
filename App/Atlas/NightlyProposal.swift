@@ -204,7 +204,7 @@ struct NightlyProposalCard: View {
             .accessibilityLabel(Self.spokenDismissLabel())
             .accessibilityHint(Self.spokenDismissHint())
 
-            Menu("silenciar") {
+            Menu {
                 ForEach(Self.muteDays, id: \.self) { days in
                     Button("\(days) dia\(days == 1 ? "" : "s")") {
                         AtlasMotion.softImpact(reduceMotion: reduceMotion)
@@ -213,9 +213,13 @@ struct NightlyProposalCard: View {
                     .accessibilityLabel(Self.spokenMuteOption(days: days))
                     .accessibilityHint(Self.spokenMuteOptionHint())
                 }
+            } label: {
+                Text("silenciar")
+                    .font(.system(.footnote, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
-            .font(.system(.footnote, weight: .semibold))
-            .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityIdentifier(A11yID.nightlyProposalMute)
             .accessibilityLabel(Self.spokenMuteMenuLabel())
             .accessibilityHint(Self.spokenMuteMenuHint())

@@ -40,12 +40,19 @@ struct ArenaPremiumRunningView: View {
                 .font(AtlasFont.serif(31))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(2)
+                .accessibilityAddTraits(.isHeader)
             if !subtitle.isEmpty {
                 Text(subtitle)
                     .font(AtlasFont.mono(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            subtitle.isEmpty
+                ? "Ao vivo, \(engineTitle)"
+                : "Ao vivo, \(engineTitle), \(subtitle)"
+        )
     }
 
     private var progressHero: some View {
@@ -89,6 +96,15 @@ struct ArenaPremiumRunningView: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(progressSpoken)
+    }
+
+    private var progressSpoken: String {
+        if let progress {
+            return "\(progress.completed) de \(progress.total) casos confirmados, \(progress.remaining) restantes"
+        }
+        return "Progresso indeterminado, denominador ainda não publicado"
     }
 
     private var actions: some View {
