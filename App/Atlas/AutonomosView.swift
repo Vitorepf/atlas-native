@@ -990,11 +990,10 @@ struct AutonomosListView: View {
         if unit.paused {
             Text("pausado")
                 .font(AtlasFont.mono(10))
-                .tracking(0.8)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .textCase(.uppercase)
                 .padding(.top, 6)
-                // Row combine speaks "pausado"; visual UPPERCASE is decoration only.
+                // Row VO combines spoken(unit); visual kicker is decoration only.
                 .accessibilityHidden(true)
         } else {
             Circle()
@@ -1086,9 +1085,8 @@ struct AutonomosNewSheet: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
                 .font(AtlasFont.mono(10))
-                .tracking(0.8)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .textCase(.uppercase)
                 // Visual only — TextField carries accessibilityLabel(label).
                 .accessibilityHidden(true)
             Group {

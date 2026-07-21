@@ -2356,11 +2356,9 @@ struct ArenaPremiumExecutionView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Corridas")
                 .font(AtlasFont.mono(10, .medium))
-                .tracking(1.4)
+                .tracking(0.6)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .textCase(.uppercase)
                 .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel("Corridas")
                 .padding(.bottom, 10)
             if orderedRuns.isEmpty {
                 Text("Ainda sem corridas publicadas.")
@@ -2555,9 +2553,9 @@ struct ArenaPremiumRunDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Casos")
                 .font(AtlasFont.mono(10, .medium))
-                .tracking(1.4)
+                .tracking(0.6)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .textCase(.uppercase)
+                .accessibilityAddTraits(.isHeader)
             Text("Lista por teste ainda não publicada pelo servidor. Quando o contrato chegar, cada caso aparece aqui — feitos, ao vivo e a seguir.")
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -2708,9 +2706,9 @@ struct ArenaPremiumExecutionPipeline: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Pipeline")
                 .font(AtlasFont.mono(10, .medium))
-                .tracking(1.4)
+                .tracking(0.6)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .textCase(.uppercase)
+                .accessibilityAddTraits(.isHeader)
             HStack(alignment: .top, spacing: 0) {
                 ForEach(ArenaPremiumPipelineStep.allCases) { step in
                     stepColumn(step)
@@ -2878,9 +2876,11 @@ struct ArenaPremiumCapabilitiesView: View {
     private var rows: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let area = model.selectedCapabilities?.areaLabelPt, !area.isEmpty {
-                Text(area.uppercased())
+                Text(area)
                     .font(AtlasFont.mono(10, .medium))
+                    .tracking(0.6)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityAddTraits(.isHeader)
                     .padding(.bottom, 10)
             }
             ForEach(Self.groupOrder, id: \.self) { groupKey in
