@@ -56,6 +56,7 @@
 | **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + FindingsBody/PatchBody · sheet spoken |
 | **Plan progresso (card + cockpit)** | `PlanJudgment` → PlanFaceStrip · stepState · strip summary |
 | **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
+| **Preview de artefato** | `ArtifactPreviewJudgment` → face idle/load/loaded/tooLarge/failed |
 | **Prova de execução (card recolhido)** | `ExecutionProofJudgment` → face kicker · shouldDisplay · ranked artifacts |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 

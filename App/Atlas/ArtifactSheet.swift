@@ -460,6 +460,11 @@ extension ArtifactSheet {
 }
 
 extension ArtifactSheet {
+    /// WAVE-058: exclusive preview face.
+    var previewFace: ArtifactPreviewFace {
+        ArtifactPreviewJudgment.face(preview, selectedName: selected?.name)
+    }
+
     @ViewBuilder
     var previewPane: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -468,6 +473,11 @@ extension ArtifactSheet {
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .atlasCard()
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(
+            ArtifactPreviewJudgment.spokenPane(preview, selectedName: selected?.name)
+        )
+        .accessibilityValue(previewFace.productWord)
     }
 }
 
@@ -503,7 +513,12 @@ extension ArtifactSheet {
             .font(AtlasFont.serifItalic(14))
             .foregroundStyle(AtlasTheme.domOperacional)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilityLabel("preview falhou, \(message)")
+            .accessibilityLabel(
+                ArtifactPreviewJudgment.face(
+                    .failed(message),
+                    selectedName: selected?.name
+                ).spokenFace
+            )
     }
 }
 
@@ -559,10 +574,10 @@ extension ArtifactSheet {
             subtitle: "grande demais para visualizar aqui · \(ArtifactViewer.byteLabel(bytes))"
         )
         .accessibilityLabel(
-            ArtifactViewerA11y.spokenTooLarge(
-                name: selected?.name ?? "artefato",
-                bytes: bytes
-            )
+            ArtifactPreviewJudgment.face(
+                .tooLarge(bytes),
+                selectedName: selected?.name
+            ).spokenFace
         )
     }
 }

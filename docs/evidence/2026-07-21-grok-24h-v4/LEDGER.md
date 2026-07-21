@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 52
+- waves_completed: 53
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -63,6 +63,7 @@ mode: designer + implementer
 - WAVE-055
 - WAVE-056
 - WAVE-057
+- WAVE-058
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -73,7 +74,7 @@ mode: designer + implementer
 - pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
 
 ## Designer
-- designs_proposed: 52
+- designs_proposed: 53
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -84,5 +85,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-057 provenance judgment. Prefer A fill. DEVICE_PENDING.
-- Continuity App Group BLOCKED.
+- WAVE-057–058 (provenance + artifact preview). Prefer A fill.
+- DEVICE_PENDING. Continuity App Group BLOCKED.
