@@ -2196,9 +2196,8 @@ struct ArenaPremiumComparison: View {
 
     private func metric(_ value: String, _ label: String, gold: Bool) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(label.uppercased())
-                .font(AtlasFont.mono(9))
-                .tracking(1.2)
+            Text(label)
+                .font(AtlasFont.serif(12, .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Text(value)
@@ -4176,14 +4175,12 @@ struct ArenaPremiumKicker: View {
                     .modifier(ArenaLiveBreath())
                     .accessibilityHidden(true)
             }
-            Text(text.uppercased())
-                .font(AtlasFont.mono(10, .medium))
-                .tracking(1.6)
+            Text(text)
+                .font(AtlasFont.serif(13, .semibold))
                 .foregroundStyle(tone.color)
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
-        // Spoken title stays natural case — uppercase tracking is visual only.
         .accessibilityLabel(text)
     }
 }

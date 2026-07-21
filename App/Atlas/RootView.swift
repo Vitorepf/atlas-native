@@ -2024,8 +2024,8 @@ extension WorkspaceThreadsSection {
 
 extension WorkspaceThreadsSection {
     var captionHeader: some View {
-        Text(caption.uppercased())
-            .font(AtlasFont.mono(10, .semibold)).tracking(1.2)
+        Text(spokenCaption)
+            .font(AtlasFont.serif(13, .semibold))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
