@@ -4,8 +4,8 @@
 
 ```yaml
 pass: 1
-domain_index: 1
-last_focus: "ChangeReviewSections* → Body + SheetBody"
+domain_index: 2
+last_focus: "AtlasCodeProvenanceSections* → SheetBody"
 passes_completed: 0
 ```
 
@@ -14,28 +14,23 @@ passes_completed: 0
 | # | Domínio | Status pass1 |
 |---|---|---|
 | 0 | Home | **closed** |
-| 1 | Conversa | EmptyConversation · ExecutionProofBody · ChangeReviewBody/SheetBody · continue peels/MARK |
-| 2 | Código | next soft: ProvenanceSections* |
-| 3–7 | … | pending |
+| 1 | Conversa | EmptyConversation · ProofBody · ChangeReview Body/SheetBody |
+| 2 | Código | ProvenanceSheetBody fuse · continue Radar/Graph peels |
+| 3 | Pílula | pending |
+| 4 | Arena | soft *States* remaining |
+| 5 | Autônomos | soft DecisionSections remaining |
+| 6–7 | Continuity / Cross | pending |
 
-## Checklist domain 1 Conversa
+## Soft global remaining
 
-| # | Item | Status |
-|---|---|---|
-| 1 | Delete morto | soft open |
-| 2 | Rename honesty | **done** for *Sections*/*States* in Conversa+ChangeReview+Proof |
-| 3 | spoken/packFacts | open denser pass |
-| 4 | MARK >200 | open |
-| 5 | Fuse peels | partial |
-| 6 | CODEMAP | partial |
+- ArenaPremiumNowStates · ArenaPremiumStates  
+- AutonomosDecisionSections  
 
-**Próximo:** Conversation thin peels fuse (Sheets/Composer) **ou** domain_index→2 Código ProvenanceSections
+(zero *Sections* in Home/Conversa/Código after this commit)
 
-## Soft global remaining *Sections*/*States*
+## Próximo
 
-- ArenaPremiumNowStates · ArenaPremiumStates
-- AtlasCodeProvenanceSections · SectionsBody
-- AutonomosDecisionSections
+Arena *States* rename (domain 4) **ou** AutonomosDecisionSections (domain 5) **ou** deepen Código.
 
 ## Proibido
 

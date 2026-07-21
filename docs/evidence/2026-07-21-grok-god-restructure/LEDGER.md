@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: Conversa peels or Código Provenance
-- domain_index: 1
+- focus: Arena States or Autonomos Sections
+- domain_index: 2
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-cr
+- last_commit: pending-prov
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,22 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T23:20Z — ProvenanceSheetBody fuse · domain 2
+
+```yaml
+phase: prove
+focus: AtlasCodeProvenanceSections* → AtlasCodeProvenanceSheetBody
+domain_index: 2
+pass: 1
+commands: |
+  fuse 169+209 → SheetBody ~374 · gates ✓
+  soft *Sections* only Autonomos left; *States* only Arena
+before_after: |
+  2 peels → AtlasCodeProvenanceSheetBody
+  CODEMAP Provenance sheet body
+notes: next Arena States or Autonomos Sections
+```
 
 ### 2026-07-21T23:10Z — ChangeReview Body + SheetBody
 

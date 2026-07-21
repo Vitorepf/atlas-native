@@ -149,7 +149,7 @@
 | **Plan card parts** | PlanCard host · PlanCardBody |
 | **Workspace surface parts** | Surface · Body/threads |
 | **Composer toolbar parts** | Chrome · ChromeBody |
-| **Provenance sections parts** | Sections · SectionsBody |
+| **Provenance sheet body** | `AtlasCodeProvenanceSheetBody` (was Sections*) · WhyTarget |
 | **Surface graph parts** | Graph · GraphBody |
 | **ArenaRunSheet parts** | host · Body |
 | **ExecutionStateCard parts** | host · Body |
