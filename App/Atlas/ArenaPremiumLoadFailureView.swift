@@ -13,6 +13,7 @@ struct ArenaPremiumLoadFailureView: View {
             Text(model.isDomainUnavailable ? "A medição ainda não existe neste servidor" : "Não foi possível carregar a medição")
                 .font(AtlasFont.serif(31))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text(
                 model.isDomainUnavailable
                     ? "Nenhum índice, progresso ou resultado foi presumido."
@@ -26,6 +27,7 @@ struct ArenaPremiumLoadFailureView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 22)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.arenaPremiumState("failed-load"))
     }
 }

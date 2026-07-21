@@ -34,6 +34,7 @@ struct ArenaPremiumPlanView: View {
             Text("Plano")
                 .font(AtlasFont.serif(36))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             if let plan = model.activePlan {
                 headline(engines: plan.engines.count, suites: plan.suites.count,
                          arms: plan.arms.count, runs: plan.runsPlanned)

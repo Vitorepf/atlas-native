@@ -48,6 +48,8 @@ struct ArenaPremiumCapabilitiesView: View {
                     .padding(.leading, 6)
             }
             .foregroundStyle(AtlasTheme.textPrimary)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(measuredCount) de \(capabilities.count) capacidades cobertas")
         }
     }
 

@@ -28,6 +28,7 @@ struct ArenaPremiumStopSheet: View {
                     Text("Parar a medição?")
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
                     Text("O caso atual termina antes da parada. Casos concluídos e resultados parciais são preservados.")
                         .font(.system(.body))
                         .foregroundStyle(AtlasTheme.textSecondary)
