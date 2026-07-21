@@ -114,6 +114,7 @@ extension AtlasCodeWhySheet {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.top, 6)
                 .accessibilityLabel(spokenEmptyHistory())
+                .accessibilityAddTraits(.isHeader)
         } else {
             VStack(alignment: .leading, spacing: 0) {
                 ForEach(Array(why.commits.enumerated()), id: \.element.id) { index, commit in
@@ -140,6 +141,7 @@ extension AtlasCodeWhySheet {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenFailed())
+        .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -275,10 +277,10 @@ extension AtlasCodeWhySheet {
             whyRowRail(isLast: isLast)
             whyRowText(commit, isLast: isLast)
         }
+        .frame(minHeight: 56, alignment: .top)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenCommit(commit))
-        .accessibilityIdentifier(A11yID.whyRow(index))
-    }
+        .accessibilityIdentifier(A11yID.whyRow(index))    }
 }
 
 extension AtlasCodeWhySheet {
