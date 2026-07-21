@@ -2817,7 +2817,10 @@ extension WorkspaceRow {
 extension WorkspaceRow {
     var workspaceRowNameStack: some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(name).font(.system(.body)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+            Text(name)
+                .font(AtlasFont.serif(16))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(1)
                 .accessibilityHidden(true)
             rowDetail
         }
@@ -2840,7 +2843,7 @@ extension WorkspaceRow {
         // texto em vermelho por cima dele era sinal duplicado gritando.
         if let detail, !detail.isEmpty {
             Text(detail)
-                .font(.system(.caption))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .accessibilityHidden(true)
@@ -2914,7 +2917,9 @@ extension ThreadRow {
     var rowContent: some View {
         HStack(spacing: 14) {
             rowLead
-            Text(thread.title).font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
+            Text(thread.title)
+                .font(AtlasFont.serif(15))
+                .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1).truncationMode(.tail)
                 .accessibilityHidden(true)
             Spacer(minLength: 8)
