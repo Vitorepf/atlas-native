@@ -1,7 +1,7 @@
 import Foundation
 import AtlasCore
 
-/// Pack de contexto Autônomos v9 — presentation-only; pack nunca na cara.
+/// Pack de contexto Autônomos — WAVE-020 grammar + can_do honesty (face CTA local).
 enum AutonomosAskContext {
     static func invite(destination: AutonomosDestination?, vestment: AutonomosHubVestment) -> String {
         if let destination {
@@ -46,37 +46,52 @@ enum AutonomosAskContext {
     }
 
     static func facts(unit: AutonomosUnit?, destination: AutonomosDestination?) -> String {
-        var lines: [String] = [
-            "Contexto Autônomos (ocasião). Pack local anexa sempre; intenção do operador pode pedir outro mundo — não bloqueie por silo.",
-        ]
+        var anchors: [String] = []
+        var facts: [String] = []
+        var absences: [String] = []
+
         if let unit {
-            lines.append("Autônomo: \(unit.name).")
-            lines.append("Carta: \(unit.charter)")
-            lines.append(unit.paused ? "Estado: pausado (local)." : "Estado: no catálogo local deste iPhone.")
-            lines.append("Idade local: \(unit.ageLabel).")
+            anchors.append("autonomo: \(unit.name)")
+            facts.append("carta: \(unit.charter)")
+            facts.append(unit.paused ? "estado: pausado (local)" : "estado: no catálogo local deste iPhone")
+            facts.append("idade_local: \(unit.ageLabel)")
         } else {
-            lines.append("Lista de Autônomos — nenhum aberto.")
+            absences.append("lista de Autônomos — nenhum aberto")
         }
+
         if let destination {
-            lines.append("Tela: \(destination.navTitle).")
+            facts.append("tela: \(destination.navTitle)")
+            anchors.append("dest: \(destination.navTitle)")
             switch destination {
             case .hub:
-                lines.append("Foco: hub do Autônomo — saúde e atalhos locais.")
+                facts.append("foco: hub do Autônomo — saúde e atalhos locais")
             case .decisions, .decisionInbox, .decisionOrder:
-                lines.append("Foco: decisões. Só o que a face mostra; não invente backlog servidor.")
+                facts.append("foco: decisões")
+                absences.append("não invente backlog servidor de decisões")
             case .evolution:
-                lines.append("Foco: evolução. Ausência: motor de evolução por unit ainda não ligado no wire.")
+                facts.append("foco: evolução")
+                absences.append("motor de evolução por unit ainda não ligado no wire")
             case .moment:
-                lines.append("Foco: momento. Ausência: feed de momentos pode estar vazio sem inventar.")
+                facts.append("foco: momento")
+                absences.append("feed de momentos pode estar vazio sem inventar")
             case .incident:
-                lines.append("Foco: incidente. Só sinais reais da face.")
+                facts.append("foco: incidente — só sinais reais da face")
             }
         } else {
-            lines.append("Tela: catálogo do operador.")
+            facts.append("tela: catálogo do operador")
         }
-        lines.append("Create no servidor ainda pendente (§5). Catálogo local some se o app for morto — não invente frota 24/7 persistida.")
-        lines.append("Pause/retomar/encerrar: controles da face; NL de chat ainda não autoriza tools de escrita no wire.")
-        return lines.joined(separator: "\n")
+
+        absences.append("create no servidor ainda pendente (§5)")
+        absences.append("catálogo local some se o app for morto — não invente frota 24/7 persistida")
+        absences.append("NL de chat ainda não autoriza tools de escrita no wire")
+
+        return AgenticOccasionPack(
+            surface: "autonomos",
+            subject: unit.map { "Autônomo · \($0.name)" } ?? "catálogo Autônomos",
+            anchors: anchors,
+            facts: facts,
+            absences: absences,
+            canDo: .faceCTALocal
+        ).render()
     }
 }
-

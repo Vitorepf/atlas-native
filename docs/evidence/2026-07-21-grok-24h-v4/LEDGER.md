@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 14
+- waves_completed: 15
 - idle_compress_passes: 2
 - collapse_host: 0
 
@@ -25,6 +25,7 @@ mode: designer + implementer
 - WAVE-017
 - WAVE-018
 - WAVE-019
+- WAVE-020
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -32,7 +33,7 @@ mode: designer + implementer
 
 ## Designer
 - designs_proposed: 16
-- designs_open: 2
+- designs_open: 1
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -40,8 +41,7 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-020-agentic-pack-compiled-grammar | **high** | proposed |
-| 2 | WAVE-021-arena-premium-score-judgment-instrument | **high** | proposed |
+| 1 | WAVE-021-arena-premium-score-judgment-instrument | **high** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.

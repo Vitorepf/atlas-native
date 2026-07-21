@@ -1,8 +1,7 @@
 import Foundation
 import AtlasCore
 
-/// Pack de partida da Home — presentation-only (sem dump de outros mundos).
-/// Intenção free: o operador pode pedir qualquer coisa; o pack local anexa.
+/// Pack de partida da Home — WAVE-020 grammar (surface · subject · anchors · facts · absences · can_do).
 enum HomeAskContext {
     static let invite = "Escreva ao Atlas"
 
@@ -23,27 +22,39 @@ enum HomeAskContext {
 
     @MainActor
     static func facts(session: AtlasSession) -> String {
-        var lines: [String] = [
-            "Contexto Home (partida). Pack local da home; intenção do operador pode pedir outro mundo.",
-        ]
+        var anchors: [String] = []
+        var facts: [String] = []
+        var absences: [String] = []
+
         let threads = session.threads
-        lines.append("Conversas conhecidas: \(threads.count).")
+        facts.append("conversas_conhecidas: \(threads.count)")
+
         let live = TurnPresence.shared.liveSessions
         if live.isEmpty {
-            lines.append("Nenhuma sessão viva no hub agora.")
+            facts.append("sessoes_vivas: 0")
         } else {
-            lines.append("Sessões vivas: \(live.count).")
+            facts.append("sessoes_vivas: \(live.count)")
             for s in live.prefix(5) {
-                lines.append("- \(s.title) · \(s.phaseTitle)")
+                anchors.append("live · \(s.title) · \(s.phaseTitle)")
             }
         }
+
         let workspaces = session.workspaces
         if workspaces.isEmpty {
-            lines.append("Nenhum workspace listado.")
+            absences.append("nenhum workspace listado")
         } else {
-            lines.append("Workspaces: \(workspaces.prefix(8).map(\.name).joined(separator: ", ")).")
+            facts.append("workspaces: \(workspaces.prefix(8).map(\.name).joined(separator: ", "))")
         }
-        lines.append("Ausências: não invente contagens de frota/Arena sem a superfície correspondente.")
-        return lines.joined(separator: "\n")
+
+        absences.append("não invente contagens de frota/Arena sem a superfície correspondente")
+
+        return AgenticOccasionPack(
+            surface: "home",
+            subject: "partida do operador",
+            anchors: anchors,
+            facts: facts,
+            absences: absences,
+            canDo: .readChat
+        ).render()
     }
 }

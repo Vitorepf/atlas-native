@@ -90,89 +90,105 @@ enum ArenaPremiumAskContext {
         }
     }
 
-    /// Fatos em prosa humana — tab **e** destination (nunca forçar Agora em destinos).
+    /// Pack WAVE-020 — tab **e** destination (nunca forçar Agora em destinos).
     @MainActor
     static func facts(
         model: ArenaModel,
         tab: ArenaPremiumTab,
         destination: ArenaPremiumDestination? = nil
     ) -> String {
-        var lines: [String] = [
-            "Contexto Arena (medição). Use este pack da ocasião; intenção do operador pode pedir outro mundo — o pack local anexa sempre.",
-        ]
+        var anchors: [String] = []
+        var facts: [String] = []
+        var absences: [String] = []
+
         if let destination {
-            lines.append("Tela: \(destinationLabel(destination)).")
+            facts.append("tela: \(destinationLabel(destination))")
+            anchors.append("dest: \(destinationLabel(destination))")
         } else {
-            lines.append("Aba: \(tab.rawValue).")
+            facts.append("aba: \(tab.rawValue)")
+            anchors.append("tab: \(tab.rawValue)")
         }
+
         if let engine = model.arenaPrimaryEngine {
-            lines.append("Motor em foco: \(ArenaDisplay.engine(engine.engine)).")
-            lines.append("Índice composto: \(ArenaFormat.score(engine.composite)) / 10.")
-            lines.append("Sem Atlas: \(ArenaFormat.score(engine.withoutAtlasComposite)); com Atlas: \(ArenaFormat.score(engine.withAtlasComposite)).")
+            facts.append("motor: \(ArenaDisplay.engine(engine.engine))")
+            facts.append("indice_composto: \(ArenaFormat.score(engine.composite)) / 10")
+            facts.append("sem_atlas: \(ArenaFormat.score(engine.withoutAtlasComposite)); com_atlas: \(ArenaFormat.score(engine.withAtlasComposite))")
             if let mult = engine.atlasMultiplier {
-                lines.append("Multiplicador Atlas: \(ArenaFormat.multiplier(mult)).")
+                facts.append("multiplicador: \(ArenaFormat.multiplier(mult))")
             }
             if engine.isPartialCoverage {
-                lines.append("Cobertura parcial.")
+                facts.append("cobertura: parcial")
             }
+            anchors.append("engine: \(ArenaDisplay.engine(engine.engine))")
         } else {
-            lines.append("Nenhum motor composto publicado ainda.")
+            absences.append("nenhum motor composto publicado ainda")
         }
-        lines.append("Cobertura: \(model.arenaCoverageText).")
+
+        facts.append("cobertura_texto: \(model.arenaCoverageText)")
         if let phase = model.livePresentation?.phase {
-            lines.append("Fase ao vivo: \(phaseLabel(phase)).")
+            facts.append("fase_ao_vivo: \(phaseLabel(phase))")
         }
         if let progress = model.livePresentation?.progress {
-            lines.append("Progresso: \(progress.completed) de \(progress.total) casos (\(progress.remaining) restantes).")
+            facts.append("progresso: \(progress.completed)/\(progress.total) (\(progress.remaining) restantes)")
         }
         if let run = model.arenaPrimaryRun {
-            lines.append("Corrida: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT).")
+            facts.append("corrida: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT)")
         }
         let alerts = model.arenaAlertSuiteCount
-        lines.append(alerts == 0 ? "Alertas: nenhuma exceção." : "Alertas: \(alerts) exceção(ões).")
+        facts.append(alerts == 0 ? "alertas: nenhuma exceção" : "alertas: \(alerts) exceção(ões)")
         if let narrative = model.report?.narrative, !narrative.isEmpty {
-            lines.append("Narrativa publicada: \(narrative)")
+            facts.append("narrativa: \(narrative)")
         }
+
         let focusTab = destination == nil ? tab : tabForDestination(destination!)
         if focusTab == .fleet || destination == nil && tab == .fleet, let composite = model.composite {
-            lines.append("Frota (\(composite.engines.count) motores), ordenada por ganho Atlas:")
+            facts.append("frota_motores: \(composite.engines.count)")
             for engine in composite.engines.prefix(8) {
                 let mult = engine.atlasMultiplier.map(ArenaFormat.multiplier) ?? "não medido"
-                lines.append("- \(ArenaDisplay.engine(engine.engine)): \(mult) (sem \(ArenaFormat.score(engine.withoutAtlasComposite)) → com \(ArenaFormat.score(engine.withAtlasComposite)))")
+                facts.append("frota · \(ArenaDisplay.engine(engine.engine)): \(mult) (sem \(ArenaFormat.score(engine.withoutAtlasComposite)) → com \(ArenaFormat.score(engine.withAtlasComposite)))")
             }
         }
         if focusTab == .capabilities || destination == nil && tab == .capabilities {
             let caps = model.selectedCapabilities?.capabilities ?? []
             let covered = caps.filter { $0.score != nil || $0.withAtlas != nil }.count
-            lines.append("Capacidades no perfil: \(covered) cobertas de \(caps.count).")
+            facts.append("capacidades: \(covered) cobertas de \(caps.count)")
             for cap in caps.prefix(8) {
                 let d: Double? = {
                     guard let a = cap.withAtlas, let b = cap.score else { return nil }
                     return a - b
                 }()
-                lines.append("- \(cap.labelPt): sem \(ArenaFormat.score(cap.score)) → com \(ArenaFormat.score(cap.withAtlas)) (\(ArenaFormat.signed(d)))")
+                facts.append("cap · \(cap.labelPt): sem \(ArenaFormat.score(cap.score)) → com \(ArenaFormat.score(cap.withAtlas)) (\(ArenaFormat.signed(d)))")
             }
         }
         if destination == .execution || destination == .queue {
             let live = model.liveRuns?.runs ?? []
-            lines.append("Corridas publicadas em live: \(live.count).")
+            facts.append("corridas_live: \(live.count)")
             for run in live.prefix(6) {
-                lines.append("- \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT)")
+                facts.append("live · \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT)")
             }
             if live.isEmpty {
-                lines.append("Ausência: nenhuma corrida live publicada.")
+                absences.append("nenhuma corrida live publicada")
             }
         }
         if destination == .plan {
             if model.activePlan != nil {
-                lines.append("Há plano ativo real no model.")
+                facts.append("plano_ativo: sim")
             } else {
-                lines.append("Ausência: sem plano multi-suíte publicado (não invente progresso de plano).")
+                absences.append("sem plano multi-suíte publicado (não invente progresso de plano)")
             }
         }
-        lines.append("Ausências: não invente scores; diga “não medido” quando faltar braço ou suíte.")
-        lines.append("Ações run/stop: use os controles da Arena (NL de chat ainda não autoriza tools de escrita no wire).")
-        return lines.joined(separator: "\n")
+
+        absences.append("não invente scores; diga “não medido” quando faltar braço ou suíte")
+        absences.append("pack Core tipado Arena ainda §5 — este é presentation-only")
+
+        return AgenticOccasionPack(
+            surface: "arena",
+            subject: destination.map { "Arena · \(destinationLabel($0))" } ?? "Arena · \(tab.rawValue)",
+            anchors: anchors,
+            facts: facts,
+            absences: absences,
+            canDo: .ctaOnlyRunStop
+        ).render()
     }
 
     private static func destinationLabel(_ d: ArenaPremiumDestination) -> String {
