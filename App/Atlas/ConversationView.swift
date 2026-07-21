@@ -3066,8 +3066,8 @@ extension ComposerToolbar {
                 .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("adicionar anexo")
-        .accessibilityHint("abre foto, arquivo ou colar")
+        .accessibilityLabel("Adicionar anexo")
+        .accessibilityHint("Abre foto, arquivo ou colar")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -3077,11 +3077,11 @@ extension ComposerToolbar {
 
     func spokenSendLabel(canSubmit: Bool) -> String {
         if canSubmit {
-            return isExecuting ? "adicionar à fila" : "enviar ao Atlas"
+            return isExecuting ? "Adicionar à fila" : "Enviar ao Atlas"
         }
         return isExecuting
-            ? "enviar indisponível, Atlas processando"
-            : "enviar indisponível, sem mensagem nem anexo"
+            ? "Enviar indisponível, Atlas processando"
+            : "Enviar indisponível, sem mensagem nem anexo"
     }
 }
 
@@ -3094,9 +3094,9 @@ extension ComposerToolbar {
 extension ComposerToolbar {
     func spokenEffortLightLabel(_ effort: AtlasComputeEffort) -> String? {
         switch effort {
-        case .auto: return "esforço automático, Atlas Decide escolhe"
-        case .fast: return "esforço rápido"
-        case .balanced: return "esforço normal"
+        case .auto: return "Esforço automático, Atlas Decide escolhe"
+        case .fast: return "Esforço rápido"
+        case .balanced: return "Esforço normal"
         default: return nil
         }
     }
@@ -3106,33 +3106,33 @@ extension ComposerToolbar {
     func spokenEffortLabel(_ effort: AtlasComputeEffort) -> String {
         if let light = spokenEffortLightLabel(effort) { return light }
         switch effort {
-        case .deep: return "esforço profundo"
-        case .max: return "esforço máximo"
-        default: return "esforço automático, Atlas Decide escolhe"
+        case .deep: return "Esforço profundo"
+        case .max: return "Esforço máximo"
+        default: return "Esforço automático, Atlas Decide escolhe"
         }
     }
 }
 
 extension ComposerToolbar {
     func spokenEffortHint() -> String {
-        "abre opções de esforço computacional para o próximo envio"
+        "Abre opções de esforço computacional para o próximo envio"
     }
 
     func spokenOptionsHint() -> String {
-        "modo, esforço e workspace; \(spokenSendHint(canSubmit: false).lowercased())"
+        "Modo, esforço e workspace; \(spokenSendHint(canSubmit: false))"
     }
 }
 
 extension ComposerToolbar {
     func spokenInputLabel() -> String {
-        model.bubbles.isEmpty ? "mensagem para o Atlas" : "continuar conversa com o Atlas"
+        model.bubbles.isEmpty ? "Mensagem para o Atlas" : "Continuar conversa com o Atlas"
     }
 
     func spokenInputHint() -> String {
         if canSubmit {
-            return isExecuting ? "texto para a fila do próximo turno" : "texto do próximo envio"
+            return isExecuting ? "Texto para a fila do próximo turno" : "Texto do próximo envio"
         }
-        return "escreva aqui para habilitar o envio"
+        return "Escreva aqui para habilitar o envio"
     }
 }
 
@@ -3143,20 +3143,20 @@ extension ComposerToolbar {
 extension ComposerToolbar {
     func spokenSendHintBlocked() -> String {
         if isExecuting {
-            return "escreva uma mensagem para adicionar à fila durante a execução"
+            return "Escreva uma mensagem para adicionar à fila durante a execução"
         }
         if !model.drafts.isEmpty {
-            return "adicione texto ou envie os anexos prontos"
+            return "Adicione texto ou envie os anexos prontos"
         }
-        return "escreva uma mensagem ou adicione um anexo para enviar"
+        return "Escreva uma mensagem ou adicione um anexo para enviar"
     }
 }
 
 extension ComposerToolbar {
     func spokenSendHintReady() -> String {
         isExecuting
-            ? "envia esta mensagem na fila do próximo turno"
-            : "envia mensagem e anexos ao Atlas"
+            ? "Envia esta mensagem na fila do próximo turno"
+            : "Envia mensagem e anexos ao Atlas"
     }
 }
 
@@ -3254,7 +3254,7 @@ extension ComposerToolbar {
                 .frame(width: 48, height: 48)
                 .contentShape(Circle())
         }
-        .accessibilityLabel("opções da conversa")
+        .accessibilityLabel("Opções da conversa")
         .accessibilityHint(spokenOptionsHint())
         .accessibilityIdentifier(A11yID.conversationOptions)
         .accessibilityAddTraits(.isButton)
