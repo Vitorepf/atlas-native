@@ -104,6 +104,7 @@ struct AtlasCodeRepoPickerSheet: View {
                 .tracking(1.6)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(title)
             VStack(spacing: 0) {
                 ForEach(Array(repos.enumerated()), id: \.element.id) { index, repo in
                     repoRow(repo)
