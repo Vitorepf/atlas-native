@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-157-arena-occasion-organ-pack-wire-instrument
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-157-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: max
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-158-design.md
 created_by: designer
@@ -38,8 +28,7 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-157-arena-occasion-organ-pack-wire-instrument | **max** | `WAVE-157-design.md` |
-| **2** | WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument | **max** | `WAVE-158-design.md` |
+| **1** | WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument | **max** | `WAVE-158-design.md` |
 
 ## History (done)
 
@@ -194,4 +183,5 @@ approved_at: null
 - WAVE-154 done
 - WAVE-155 done
 - WAVE-156 done
+- WAVE-157 done
 

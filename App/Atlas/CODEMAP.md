@@ -80,6 +80,7 @@
 | **Arena capacidades (confiança)** | `ArenaCapabilitiesJudgment` → measured/improved/regressed one law · rank · pack |
 | **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
 | **Arena pack can_do honesty** | AskContext wires Now+LiveControl packFacts · canDo matrix · canStop one law |
+| **Arena organ pack wire (157)** | AskContext → Stop/Pipeline/Start/RunStatus packFacts · RunStatus productWord · `ArenaFleetJudgment` rank≡FleetView |
 | **Arena plano/fila** | `ArenaPlanQueueJudgment` → planFace empty/published/derived_live · queueFace |
 | **Arena live control (corridas)** | `ArenaLiveControlJudgment` → rank · face · canStop |
 | **Arena start / recibo rodar** | `ArenaStartJudgment` → submit face · receipt face · worker gap |

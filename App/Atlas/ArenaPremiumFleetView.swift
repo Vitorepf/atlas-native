@@ -6,27 +6,13 @@ import AtlasCore
 struct ArenaPremiumFleetView: View {
     @Bindable var model: ArenaModel
 
+    /// WAVE-157: rank/best from ArenaFleetJudgment (pack ≡ UI).
     private var engines: [AtlasArenaCompositeEngine] {
-        let raw = model.composite?.engines ?? []
-        return raw.sorted { lhs, rhs in
-            switch (lhs.atlasMultiplier, rhs.atlasMultiplier) {
-            case let (l?, r?): return l > r
-            case (_?, nil): return true
-            case (nil, _?): return false
-            case (nil, nil):
-                switch (lhs.composite, rhs.composite) {
-                case let (l?, r?): return l > r
-                case (_?, nil): return true
-                case (nil, _?): return false
-                default: return lhs.engine < rhs.engine
-                }
-            }
-        }
+        ArenaFleetJudgment.rank(model.composite?.engines ?? [])
     }
 
     private var best: AtlasArenaCompositeEngine? {
-        engines.first { $0.atlasMultiplier != nil && ($0.atlasMultiplier ?? 0) > 0 }
-            ?? engines.first { $0.composite != nil }
+        ArenaFleetJudgment.best(in: engines)
     }
 
     var body: some View {

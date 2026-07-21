@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 151
-- idle_compress_passes: 1
+- waves_completed: 152
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -162,15 +162,15 @@ mode: designer + implementer
 - WAVE-154
 - WAVE-155
 - WAVE-156
+- WAVE-157
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `4b39165a` MARK dense layout (post WAVE-156)
 
 ## Designer
 - designs_proposed: 153
-- designs_open: 2
+- designs_open: 1
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -178,8 +178,7 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-157-arena-occasion-organ-pack-wire-instrument | **max** | proposed |
-| 2 | WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument | **max** | proposed |
+| 1 | WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument | **max** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.

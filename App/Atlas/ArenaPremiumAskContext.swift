@@ -151,7 +151,13 @@ enum ArenaPremiumAskContext {
             facts.append("progresso: \(progress.completed)/\(progress.total) (\(progress.remaining) restantes)")
         }
         if let run = primary {
-            facts.append("corrida: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT)")
+            // WAVE-157: RunStatusJudgment productWord — one law with list/detail UI.
+            facts.append(
+                "corrida: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
+            )
+            let statusPack = ArenaRunStatusJudgment.packFacts(for: run.status)
+            facts.append(contentsOf: statusPack.facts)
+            absences.append(contentsOf: statusPack.absences)
         }
         let alerts = model.arenaAlertSuiteCount
         facts.append(alerts == 0 ? "alertas: nenhuma exceção" : "alertas: \(alerts) exceção(ões)")
@@ -160,12 +166,11 @@ enum ArenaPremiumAskContext {
         }
 
         let focusTab = destination == nil ? tab : tabForDestination(destination!)
-        if focusTab == .fleet || destination == nil && tab == .fleet, let composite = model.composite {
-            facts.append("frota_motores: \(composite.engines.count)")
-            for engine in composite.engines.prefix(8) {
-                let mult = engine.atlasMultiplier.map(ArenaFormat.multiplier) ?? "não medido"
-                facts.append("frota · \(ArenaDisplay.engine(engine.engine)): \(mult) (sem \(ArenaFormat.score(engine.withoutAtlasComposite)) → com \(ArenaFormat.score(engine.withAtlasComposite)))")
-            }
+        // WAVE-157: fleet pack order ≡ FleetView rank.
+        if focusTab == .fleet || destination == nil && tab == .fleet {
+            let fleetPack = ArenaFleetJudgment.packFacts(engines: model.composite?.engines ?? [])
+            facts.append(contentsOf: fleetPack.facts)
+            absences.append(contentsOf: fleetPack.absences)
         }
         if focusTab == .capabilities || destination == nil && tab == .capabilities {
             // WAVE-094: measured confidence one law — never score-presence as cobertas.
@@ -176,12 +181,64 @@ enum ArenaPremiumAskContext {
         }
         if destination == .execution || destination == .queue {
             facts.append("corridas_live: \(liveRuns.count)")
-            for run in liveRuns.prefix(6) {
-                facts.append("live · \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT)")
+            let orderedLive = ArenaLiveControlJudgment.rank(liveRuns)
+            for run in orderedLive.prefix(6) {
+                facts.append(
+                    "live · \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
+                )
             }
             if liveRuns.isEmpty {
                 absences.append("nenhuma corrida live publicada")
             }
+        }
+
+        // WAVE-157: pipeline organ when execution / now live has published runs.
+        if destination == .execution || (destination == nil && tab == .now && !liveRuns.isEmpty) {
+            let planArms = model.activePlan?.arms ?? []
+            let projection = ArenaPipelineJudgment.project(
+                runs: model.arenaPrimaryMeasurementRuns,
+                expectsBare: planArms.contains(.baseline) || model.arenaPrimaryMeasurementRuns.contains { $0.arm == .baseline },
+                expectsAtlas: planArms.contains(.withAtlas) || model.arenaPrimaryMeasurementRuns.contains { $0.arm == .withAtlas },
+                hasReport: model.report != nil
+            )
+            let pipePack = ArenaPipelineJudgment.packFacts(projection)
+            facts.append(contentsOf: pipePack.facts)
+            absences.append(contentsOf: pipePack.absences)
+        }
+
+        // WAVE-157: stop organ — wire when canStop; sheet-local actor/reason → honest absence.
+        if ArenaLiveControlJudgment.canStop(primary: primary) {
+            let hasReceipt = model.lastStopReceipt?.measurementIdPublic == primary?.measurementIdPublic
+            let stopPack = ArenaStopJudgment.packFacts(
+                actor: "",
+                reason: "",
+                hasMatchingReceipt: hasReceipt
+            )
+            facts.append(contentsOf: stopPack.facts)
+            absences.append(contentsOf: stopPack.absences)
+            absences.append("stop_sheet: face-only — actor/motivo só no modal de parada")
+        }
+
+        // WAVE-157: start organ when receipt or run-sheet context (engines/suites published).
+        let enginesPublished = model.engineCatalog?.engines.count
+            ?? model.composite?.engines.count
+            ?? 0
+        let suitesPublished = model.activePlan?.suites.count
+            ?? model.livePresentation?.queuedRuns.count
+            ?? 0
+        if model.lastStartReceipt != nil
+            || destination == .execution
+            || destination == .plan
+            || (destination == nil && tab == .now)
+        {
+            let startPack = ArenaStartJudgment.packFacts(
+                input: nil,
+                receipt: model.lastStartReceipt,
+                enginesPublished: enginesPublished,
+                suitesPublished: suitesPublished
+            )
+            facts.append(contentsOf: startPack.facts)
+            absences.append(contentsOf: startPack.absences)
         }
         // WAVE-085: plan/queue faces — never "sem plano" when UI is derived_live.
         if destination == .plan {
