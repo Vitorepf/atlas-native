@@ -44,3 +44,46 @@ struct ChatBubble: Identifiable, Equatable {
     /// estado falho; a casca só oferece "Retomar" com ele.
     var retryableJobId: JobID? = nil
 }
+
+extension ChatBubble {
+    var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
+
+    /// Só renderiza ribbon quando há dado real.
+    var hasLiveExecutionSurface: Bool {
+        showsReconnectSurface
+            || !activities.isEmpty
+            || !agents.isEmpty
+            || decideStrategy != nil
+    }
+
+    /// Dado único para presença do iOS: título de fase e regra de timer vêm do
+    /// Core tipado, nunca de uma animação ou de texto do provider.
+    var executionPresence: AtlasExecutionPresence? {
+        AtlasExecutionPresence(
+            isExecuting: streaming,
+            presentationState: executionPresentationState,
+            currentActivity: currentActivity
+        )
+    }
+}
+
+struct ExecAgent: Equatable, Identifiable {
+    let id: String
+    let agent: String?     // orquestrador / atlas / …
+    let provider: String?  // hermes_cli / claude_cli / …
+    let model: String?     // claude-sonnet-4-6 / qwen3.6-27b / …
+    let status: String     // queued / processing / succeeded / failed / …
+}
+
+/// Anexo local (pré-envio). O ÚNICO contrato de UI de anexos: a strip do
+/// composer renderiza isto e nada mais.
+struct LocalDraft: Identifiable, Equatable {
+    enum State: Equatable { case pronto, subindo, falhou(String) }
+    let id: String
+    let fileName: String
+    let mimeType: String
+    let kind: AtlasAttachmentKind
+    let bytes: Int
+    let preview: Data?     // pequena o bastante pra UIImage(data:) direto
+    var state: State = .pronto
+}
