@@ -405,32 +405,33 @@ extension StaleReadSeal {
 }
 
 enum StaleReadSealA11y {
+    /// WAVE-060: caption/spoken from ConversationStaleReadJudgment.
     static func spokenLabel(
         capturedAt: Date,
         now: Date,
         confirming: Bool,
         reduceMotion: Bool
     ) -> String {
-        if confirming {
-            return reduceMotion
-                ? "histórico salvo atualizado"
-                : "histórico salvo atualizado após sincronizar"
-        }
-        return "histórico salvo visto há \(atlasRelativeAgePT(since: capturedAt, now: now))"
+        ConversationStaleReadJudgment.spokenLabel(
+            capturedAt: capturedAt,
+            now: now,
+            confirming: confirming,
+            reduceMotion: reduceMotion
+        )
     }
-}
 
-extension StaleReadSealA11y {
     static func displayCaption(
         capturedAt: Date,
         now: Date,
         confirming: Bool,
         reduceMotion: Bool
     ) -> String {
-        if confirming {
-            return reduceMotion ? "leitura atualizada" : "leitura sincronizada"
-        }
-        return "visto há \(atlasRelativeAgePT(since: capturedAt, now: now))"
+        ConversationStaleReadJudgment.displayCaption(
+            capturedAt: capturedAt,
+            now: now,
+            confirming: confirming,
+            reduceMotion: reduceMotion
+        )
     }
 }
 
@@ -455,6 +456,12 @@ struct StaleReadSeal: View {
     var body: some View {
         sealTimelineGate(now: Date())
             .accessibilityIdentifier(A11yID.conversationStaleReadSeal)
+            .accessibilityValue(
+                ConversationStaleReadJudgment.face(
+                    capturedAt: capturedAt,
+                    confirming: confirming
+                ).productWord
+            )
             .accessibilityAddTraits(confirming || reduceMotion ? .isStaticText : .updatesFrequently)
     }
 }
