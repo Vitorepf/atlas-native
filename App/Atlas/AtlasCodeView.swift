@@ -3126,6 +3126,8 @@ extension AtlasCodeProvenanceSheet {
         .padding(.vertical, 11)
         .frame(minHeight: 48)
         .atlasCard(cornerRadius: AtlasTheme.Radius.control)
+        // Invitation CTA shares depth with heal-undo / glass chrome.
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         .contentShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
     }
 }

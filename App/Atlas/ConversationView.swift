@@ -6371,6 +6371,12 @@ struct ExecutionStateActionStyle: ButtonStyle {
             .foregroundStyle(foreground)
             .background(Capsule().fill(background.opacity(configuration.isPressed ? 0.72 : 1)))
             .overlay(Capsule().stroke(border, lineWidth: 1))
+            // Execution CTAs share floating chrome with strip/toast planes.
+            .atlasElevation(
+                radius: 8,
+                y: 2,
+                opacity: configuration.isPressed ? 0.08 : elevationOpacity
+            )
             .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
             .animation(
                 reduceMotion
@@ -6396,6 +6402,14 @@ struct ExecutionStateActionStyle: ButtonStyle {
 
     var foreground: Color {
         style == .primary ? AtlasTheme.bg : AtlasTheme.textPrimary
+    }
+
+    var elevationOpacity: Double {
+        switch style {
+        case .primary: return 0.18
+        case .destructive: return 0.14
+        case .secondary: return 0.1
+        }
     }
 }
 
@@ -7976,6 +7990,8 @@ extension SteerInteractionSheet {
             .frame(minHeight: 88, alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separator, lineWidth: 1))
+            // Soft field lift — same plane as search glass / primary inputs.
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityIdentifier(A11yID.steerInstruction)
             .accessibilityHint("Descreve o que deve mudar na execução")
     }
