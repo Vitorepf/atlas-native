@@ -73,4 +73,29 @@ enum AutonomosHubVestment: Equatable {
         case .quiet: "Parado"
         }
     }
+
+    /// WAVE-025 product face word (align with presence vocabulary style).
+    var productWord: String {
+        switch self {
+        case .awaiting: return "awaiting"
+        case .live: return "live"
+        case .quiet: return "quiet"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .awaiting(let n):
+            return n == 1 ? "pede 1 decisão" : "pede \(n) decisões"
+        case .live:
+            return "vivo"
+        case .quiet:
+            return "parado"
+        }
+    }
+
+    /// List index (no backlog wire): pause local → quiet; else live catalog.
+    static func listFace(unitPaused: Bool) -> AutonomosHubVestment {
+        unitPaused ? .quiet : .live
+    }
 }

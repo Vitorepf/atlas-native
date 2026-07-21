@@ -89,8 +89,10 @@ struct AutonomosListView: View {
 
     @ViewBuilder
     private func trailing(_ unit: AutonomosUnit) -> some View {
-        if unit.paused {
-            Text("pausado")
+        // WAVE-025: vestment face on list (pause → quiet; else live).
+        let face = AutonomosHubVestment.listFace(unitPaused: unit.paused)
+        if face == .quiet {
+            Text(face.productWord)
                 .font(AtlasFont.mono(10))
                 .tracking(0.8)
                 .foregroundStyle(AtlasTheme.textTertiary)
@@ -106,8 +108,8 @@ struct AutonomosListView: View {
     }
 
     private func spoken(_ unit: AutonomosUnit) -> String {
-        var parts = [unit.name, unit.charter]
-        parts.append(unit.paused ? "pausado" : "vivo")
+        let face = AutonomosHubVestment.listFace(unitPaused: unit.paused)
+        var parts = [unit.name, unit.charter, face.spokenFace]
         parts.append(unit.ageLabel)
         return parts.joined(separator: ", ")
     }

@@ -57,7 +57,7 @@ struct AutonomosHubView: View {
     }
 
     private var hubSpokenLabel: String {
-        "\(unit.name), \(vestment.kicker), \(vestment.heroTitle)"
+        "\(unit.name), \(vestment.spokenFace), \(vestment.heroTitle)"
     }
 
     @ViewBuilder
