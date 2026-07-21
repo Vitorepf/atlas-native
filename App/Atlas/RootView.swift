@@ -2574,7 +2574,7 @@ struct BreathingGlyph: View {
             .scaleEffect(on ? 1.08 : 1).opacity(on ? 0.8 : 1)
             .onAppear {
                 if !reduceMotion {
-                    withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) { on = true }
+                    withAnimation(AtlasMotion.breath(1.6)) { on = true }
                 }
             }
             .accessibilityHidden(true)

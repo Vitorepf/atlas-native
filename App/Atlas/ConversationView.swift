@@ -836,7 +836,7 @@ enum EmptyConversationA11y {
 extension EmptyConversation {
     func startBreathing() {
         if !reduceMotion {
-            withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
+            withAnimation(AtlasMotion.breath(2.2)) {
                 breathe = true
             }
         }
@@ -2213,7 +2213,7 @@ extension ConversationComposer {
         if reduceMotion {
             focused.wrappedValue = false
         } else {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.82)) { focused.wrappedValue = false }
+            withAnimation(AtlasMotion.arrival) { focused.wrappedValue = false }
         }
     }
 }
