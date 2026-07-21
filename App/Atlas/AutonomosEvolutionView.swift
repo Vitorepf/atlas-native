@@ -33,6 +33,7 @@ struct AutonomosEvolutionView: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Ainda sem prova publicada neste Autônomo.")
 
                 Text("Quando o Server aceitar create, os ciclos aparecem aqui — só deste escopo.")
                     .font(AtlasFont.serifItalic(14))
