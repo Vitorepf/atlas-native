@@ -744,16 +744,16 @@ extension AtlasCodeView {
         } label: {
             HStack(spacing: 5) {
                 Text(model.repo)
-                    .font(AtlasFont.mono(10.5))
+                    .font(AtlasFont.serif(13, .semibold))
                     .lineLimit(1)
                 Image(systemName: "chevron.down")
-                    .atlasSans(8, .semibold)
+                    .atlasSans(9, .semibold)
                     .opacity(0.55)
                     .accessibilityHidden(true)
             }
             .foregroundStyle(AtlasTheme.textPrimary)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 7)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
             .frame(minHeight: 48) // HIG 44+; match chrome pill breath
             .contentShape(Capsule())
             .atlasGlassCapsule()
