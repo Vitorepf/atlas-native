@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 70
-- idle_compress_passes: 15
+- idle_compress_passes: 16
 - collapse_host: 0
 
 ## Waves done
@@ -98,6 +98,7 @@ mode: designer + implementer
 - pass 13 · `9f8583e4` · peel ArtifactSheet Delivery
 - pass 14 · `33b1356e` · peel AtlasCodeSurface Graph
 - pass 15 · `44810009` · peel ExecutionStateCard spoken
+- pass 16 · `ff96a02a` · peel LiveTimeline → FilterChrome (590→456)
 
 ## Designer
 - designs_open: 0
@@ -110,5 +111,6 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-070–075. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
-- LEDGER idle B-owned; do not strip passes 3–15.
+- WAVE-070–075 + idle FilterChrome. Prefer A fill.
+- DEVICE_PENDING. Continuity BLOCKED.
+- LEDGER idle B-owned; do not strip passes 3–16.
