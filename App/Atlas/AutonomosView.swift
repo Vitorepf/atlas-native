@@ -1512,12 +1512,12 @@ enum AutonomosMapChrome {
         Rectangle()
             .fill(
                 LinearGradient(
-                    // Pure gold-breath — no cold separator mid.
+                    // Pure gold-breath — sectionLabel / radar divider family.
                     colors: [
                         AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.32),
-                        AtlasTheme.accent.opacity(0.14),
-                        AtlasTheme.accent.opacity(0.32),
+                        AtlasTheme.accent.opacity(0.28),
+                        AtlasTheme.accent.opacity(0.12),
+                        AtlasTheme.accent.opacity(0.28),
                         AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,

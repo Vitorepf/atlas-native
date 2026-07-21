@@ -1499,11 +1499,12 @@ struct SearchViewHeader: View {
                 searchBackButton
                 searchFieldCapsule
             }
-            // Quiet gold rule under search chrome — masthead family.
+            // Pure gold-breath under search chrome — sectionLabel family.
             LinearGradient(
                 colors: [
                     AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.4),
+                    AtlasTheme.accent.opacity(0.28),
+                    AtlasTheme.accent.opacity(0.12),
                     AtlasTheme.accent.opacity(0)
                 ],
                 startPoint: .leading,

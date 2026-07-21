@@ -1061,14 +1061,15 @@ struct SheetShell<Content: View>: View {
 struct NewSinceLastVisitMarker: View {
     var body: some View {
         HStack(spacing: 8) {
-            Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
+            // Soft gold-quiet marker rules — state, not shout.
+            Rectangle().fill(AtlasTheme.accent.opacity(0.48)).frame(height: 1)
                 .accessibilityHidden(true)
             Text("Novo desde a última visita")
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
-            Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
+            Rectangle().fill(AtlasTheme.accent.opacity(0.48)).frame(height: 1)
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
@@ -1251,8 +1252,8 @@ struct ConversationOutlineRow: View {
                 LinearGradient(
                     colors: [
                         AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.18),
-                        AtlasTheme.accent.opacity(0.18),
+                        AtlasTheme.accent.opacity(0.28),
+                        AtlasTheme.accent.opacity(0.12),
                         AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,
@@ -2123,8 +2124,8 @@ extension SheetRow {
         LinearGradient(
             colors: [
                 AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.18),
-                AtlasTheme.accent.opacity(0.18),
+                AtlasTheme.accent.opacity(0.28),
+                AtlasTheme.accent.opacity(0.12),
                 AtlasTheme.accent.opacity(0)
             ],
             startPoint: .leading,
@@ -2662,10 +2663,20 @@ extension ConversationComposer {
 extension ConversationComposer {
     @ViewBuilder
     var liveExecutionSeparator: some View {
-        // Soft gold-breath hairline under live execution chrome.
-        Rectangle().fill(AtlasTheme.accent.opacity(0.22)).frame(height: 1)
-            .padding(.bottom, expanded ? 0 : 8)
-            .accessibilityHidden(true)
+        // Pure gold-breath under live execution chrome — sectionLabel family.
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0),
+                AtlasTheme.accent.opacity(0.28),
+                AtlasTheme.accent.opacity(0.12),
+                AtlasTheme.accent.opacity(0)
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(height: 1)
+        .padding(.bottom, expanded ? 0 : 8)
+        .accessibilityHidden(true)
     }
 }
 
@@ -6098,7 +6109,8 @@ extension ExecutionProof {
     var decisionBlock: some View {
         if let d = bubble.decisionSummary, Self.hasDecisionSurface(d) {
             // Soft gold-breath divider before decision meta.
-            Divider().overlay(AtlasTheme.accent.opacity(0.22)).accessibilityHidden(true)
+            // Soft gold-breath row rule — divider family 0.14.
+            Divider().overlay(AtlasTheme.accent.opacity(0.14)).accessibilityHidden(true)
             decisionSummaryRow(d)
             decisionReason(d)
         }
@@ -8528,8 +8540,8 @@ extension QueuedFollowUpRow {
             LinearGradient(
                 colors: [
                     AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.18),
-                    AtlasTheme.accent.opacity(0.18),
+                    AtlasTheme.accent.opacity(0.28),
+                    AtlasTheme.accent.opacity(0.12),
                     AtlasTheme.accent.opacity(0)
                 ],
                 startPoint: .leading,
@@ -8884,8 +8896,8 @@ extension AtlasMarkdownView {
 extension AtlasMarkdownView {
     @ViewBuilder
     var blockViewDividerBlock: some View {
-        // Soft gold-breath between editorial blocks.
-        Rectangle().fill(AtlasTheme.accent.opacity(0.18)).frame(height: 1).padding(.vertical, 2)
+        // Pure gold-breath between editorial blocks — sectionLabel mid tone.
+        Rectangle().fill(AtlasTheme.accent.opacity(0.14)).frame(height: 1).padding(.vertical, 2)
     }
 }
 

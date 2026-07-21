@@ -1424,11 +1424,12 @@ extension ChangeReviewFindingsSection {
         HStack(spacing: 8) {
             Text(axis.localizedCapitalized).font(AtlasFont.mono(9)).tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
-            // Gold-quiet hairline — same family as home sectionLabel.
+            // Pure gold-breath — same family as home sectionLabel.
             LinearGradient(
                 colors: [
-                    AtlasTheme.accent.opacity(0.4),
-                    AtlasTheme.accent.opacity(0.18),
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.28),
+                    AtlasTheme.accent.opacity(0.12),
                     AtlasTheme.accent.opacity(0)
                 ],
                 startPoint: .leading,
