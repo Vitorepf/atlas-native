@@ -35,6 +35,8 @@ struct AtlasProfileSheet: View {
                 }
             }
             .accessibilityIdentifier(A11yID.profileSheet)
+            // Contain: masthead, rows and audit toggle stay separately focusable.
+            .accessibilityElement(children: .contain)
         }
     }
 
