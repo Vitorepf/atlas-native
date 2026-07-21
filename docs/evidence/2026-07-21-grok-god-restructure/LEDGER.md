@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: prove
-- focus: RootView HomeChrome+Route · RootChrome density
-- domain_index: 0
+- focus: ConversationChrome SheetsHost fuse
+- domain_index: 1
 - pass: 1
 - actionable: open
 - soft_sections_states: 0
-- last_commit: pending-rootview-fuse
+- last_commit: pending-conversation-chrome
 
 ## Scope
 - App/Atlas + App/Widgets

@@ -63,7 +63,7 @@
 | **Composer toolbar** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |
 | **Composer esforço** | `ComposerEffortJudgment` → face · pack mid-thread |
 | **Composer folhas modo/workspace** | `ComposerSheetJudgment` → mode face · workspace sheet empty/list |
-| Composer sheet parts | `ComposerSheetPrimitives` (EffortSheet · SheetRow · NewMarker) · SheetsHost |
+| Composer sheet parts | `ConversationChrome` (SheetShell · attachments · workspace · mode · effort fused) |
 | **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
 | **Stale-read cache seal** | `ConversationStaleReadJudgment` (seal chrome fused) → face · pack mid-thread |
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face · pack mid-thread |
