@@ -43,6 +43,8 @@ struct AutonomosMapNavLine: View {
         .accessibilityLabel(meta.isEmpty ? title : "\(title), \(meta)")
         .accessibilityHint(danger ? "abre confirmação de \(title.lowercased())" : "abre \(title.lowercased())")
         .accessibilityAddTraits(.isButton)
+        // Medium governed (Pausar) and danger (Encerrar) surface early in VO.
+        .accessibilitySortPriority(haptic == .medium || danger ? 8 : 0)
         .accessibilityIdentifier(A11yID.autonomosNav(title))
     }
 }
