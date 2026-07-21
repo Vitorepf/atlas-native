@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 75
-- idle_compress_passes: 17
+- idle_compress_passes: 18
 - collapse_host: 0
 
 ## Waves done
@@ -105,6 +105,7 @@ mode: designer + implementer
 - pass 15 · `44810009` · peel ExecutionStateCard spoken
 - pass 16 · `3c63dc3a` · peel LiveTimeline FilterChrome
 - pass 17 · `d8653fc7` · peel ConversationOutlineSheet
+- pass 18 · `5c9fec5d` · peel ChromeExtras Handoff+StaleRead seals (333→148)
 
 ## Designer
 - designs_open: 0
