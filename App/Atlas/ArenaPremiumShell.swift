@@ -27,11 +27,13 @@ struct ArenaPremiumShell: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 26) {
                     selectedContent
+                        .id(selectedTab)
                         .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: 8)))
                 }
                 .padding(.horizontal, AtlasTheme.Space.screen)
                 .padding(.top, 12)
                 .padding(.bottom, 108)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: selectedTab)
             }
             .scrollIndicators(.hidden)
         }
