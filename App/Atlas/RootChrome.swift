@@ -1,7 +1,9 @@
-import AtlasCore
 import SwiftUI
+import AtlasCore
 
-// GOD-RESTRUCTURE: home chrome primitives + RootView masthead/routes
+// GOD-RESTRUCTURE: RootChrome fused
+
+// MARK: - RootChrome
 
 // MARK: - Shared chrome helpers
 
@@ -355,3 +357,343 @@ extension RootView {
         }
     }
 }
+
+// MARK: - RootChromeLifecycle
+
+extension RootView {
+    func rootLifecycleArena<Content: View>(_ content: Content) -> some View {
+        content.task {
+#if DEBUG
+            // Harness ANTES de qualquer rede — UITest não espera Mac/servidor.
+            if ProcessInfo.processInfo.arguments.contains("-atlas.uitest.newConversation") {
+                if path.isEmpty { path.append(Route.new(workspaceKey: nil)) }
+                return
+            }
+            if session.arena.installVisualScenarioIfRequested() {
+                if path.isEmpty { path.append(Route.arena) }
+                return
+            }
+#endif
+            if case .idle = session.arena.phase {
+                await session.arena.refreshSummaryKeepingSnapshot()
+            }
+        }
+    }
+}
+
+extension RootView {
+    func rootLifecycleCodeHub<Content: View>(_ content: Content) -> some View {
+        content.task {
+            // A linha CÓDIGO só fala com dado real: sem resposta, ela cala.
+            let hub = codeHub ?? AtlasCodeHubModel(client: session.client)
+            codeHub = hub
+            await hub.refresh()
+        }
+    }
+}
+
+extension RootView {
+    func rootLifecycleDeepLink<Content: View>(_ content: Content) -> some View {
+        content.onOpenURL { handleDeepLink($0) }
+    }
+}
+
+extension RootView {
+    func rootLifecycleThreads<Content: View>(_ content: Content) -> some View {
+        content.task { if session.phase == .idle { await session.loadThreads() } }
+    }
+}
+
+extension RootView {
+    func rootLifecycleTintAppear<Content: View>(_ content: Content) -> some View {
+        content
+            .tint(AtlasTheme.accent)
+            .onAppear { registerNightlyOpen() }
+    }
+}
+
+extension RootView {
+    func rootLifecycleChrome<Content: View>(_ content: Content) -> some View {
+        rootLifecycleDeepLink(
+            rootLifecycleArena(
+                rootLifecycleCodeHub(
+                    rootLifecycleThreads(
+                        rootLifecycleTintAppear(content)
+                    )
+                )
+            )
+        )
+    }
+}
+
+extension RootView {
+    func registerNightlyOpen() {
+        nightly.registerOpenAutonomos {
+            path = NavigationPath()
+            path.append(Route.autonomos)
+        }
+        #if DEBUG
+        nightly.installDemoIfRequested()
+        #endif
+    }
+}
+
+// MARK: - RootChromeDeepLink
+
+extension RootView {
+    func handleExecutionFamilyDeepLink(_ link: AtlasDeepLink) {
+        switch link {
+        case .executionHome:
+            handleExecutionHomeDeepLink()
+        case .execution(let traceId):
+            handleExecutionDeepLink(traceId: traceId)
+        default:
+            break
+        }
+    }
+}
+
+extension RootView {
+    func handleSurfaceOrCodeDeepLink(_ link: AtlasDeepLink) {
+        switch link {
+        case .autonomos, .arena, .codeHome, .code(_):
+            handleSurfaceDeepLink(link)
+        default:
+            break
+        }
+    }
+}
+
+extension RootView {
+    func handleDeepLink(_ url: URL) {
+        guard let link = AtlasDeepLink.parse(url) else { return }
+        switch link {
+        case .autonomos, .arena, .codeHome, .code(_):
+            handleSurfaceOrCodeDeepLink(link)
+        case .executionHome, .execution(_):
+            handleExecutionFamilyDeepLink(link)
+        }
+    }
+}
+
+extension RootView {
+    func handleExecutionDeepLink(traceId: String) {
+        Task { @MainActor in
+            guard let trace = try? await session.client.getAiInteraction(TraceID(traceId)).trace,
+                  let rawThread = trace.threadId else { return }
+            let threadId = ThreadID(rawThread)
+            let title = session.threads.first(where: { $0.id == rawThread })?.title ?? "Execução Atlas"
+            path = NavigationPath()
+            path.append(Route.thread(id: threadId, title: title))
+        }
+    }
+}
+
+extension RootView {
+    func handleCodeGraphDeepLink(_ link: AtlasDeepLink) {
+        if case .code(let repo) = link {
+            path.append(Route.codeGraph(repo: repo))
+        }
+    }
+}
+
+extension RootView {
+    func handleArenaOrCodeDeepLink(_ link: AtlasDeepLink) {
+        switch link {
+        case .arena:
+            path = NavigationPath()
+            path.append(Route.arena)
+        case .codeHome:
+            path = NavigationPath()
+            path.append(Route.code)
+        default:
+            break
+        }
+    }
+}
+
+extension RootView {
+    func handleAutonomosDeepLink() {
+        path = NavigationPath()
+        path.append(Route.autonomos)
+    }
+}
+
+extension RootView {
+    func handleHubDeepLink(_ link: AtlasDeepLink) {
+        switch link {
+        case .autonomos:
+            handleAutonomosDeepLink()
+        case .arena, .codeHome:
+            handleArenaOrCodeDeepLink(link)
+        default:
+            break
+        }
+    }
+}
+
+extension RootView {
+    func handleSurfaceDeepLink(_ link: AtlasDeepLink) {
+        handleHubDeepLink(link)
+        handleCodeGraphDeepLink(link)
+    }
+}
+
+// MARK: - RootChromeConversationRoutes
+
+extension RootView {
+    @ViewBuilder
+    func rootCodeDestination(for route: Route) -> some View {
+        switch route {
+        case .code:
+            AtlasCodeRadarView(client: session.client) { repo in
+                path.append(Route.codeGraph(repo: repo))
+            }
+        case .codeGraph(let repo):
+            // Troca de repo é in-place na própria tela (rápido).
+            // Remount via path/.id era a experiência lenta.
+            AtlasCodeView(client: session.client, repo: repo)
+        default:
+            EmptyView()
+        }
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    var rootConversationConversasDestination: some View {
+        WorkspaceView(workspaceKey: nil, title: "Conversas", freeOnly: true)
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    func rootConversationNewConversasRoutes(for route: Route) -> some View {
+        switch route {
+        case .new(let workspaceKey):
+            rootConversationNewDestination(workspaceKey: workspaceKey)
+        case .conversas:
+            rootConversationConversasDestination
+        default:
+            EmptyView()
+        }
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    func rootConversationHubRoutes(for route: Route) -> some View {
+        switch route {
+        case .new, .conversas:
+            rootConversationNewConversasRoutes(for: route)
+        case .search:
+            rootConversationSearchDestination
+        default:
+            EmptyView()
+        }
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    func rootConversationNewDestination(workspaceKey: String?) -> some View {
+        if let workspaceKey {
+            let name = session.workspaces.first(where: { $0.id == workspaceKey })?.name ?? workspaceKey
+            let threadCount = session.threads(inWorkspace: workspaceKey).count
+            ConversationView(
+                client: session.client,
+                threadId: nil,
+                title: name,
+                emptyPrompt: WorkspaceAskContext.invite(workspaceName: name),
+                emptySuggestions: WorkspaceAskContext.emptySuggestions(
+                    workspaceName: name,
+                    threadCount: threadCount
+                ),
+                workspace: workspaceKey,
+                turnFacts: { [session] _ in
+                    WorkspaceAskContext.facts(session: session, workspaceKey: workspaceKey)
+                }
+            )
+        } else {
+            // Livre / hub: partida Home (não inventa workspace).
+            ConversationView(
+                client: session.client,
+                threadId: nil,
+                title: "Nova conversa",
+                emptyPrompt: HomeAskContext.invite,
+                emptySuggestions: HomeAskContext.emptySuggestions(
+                    hasWorkspaces: !session.workspaces.isEmpty
+                ),
+                isHomePartida: true,
+                workspace: nil,
+                turnFacts: { [session] _ in
+                    HomeAskContext.facts(session: session)
+                }
+            )
+        }
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    var rootConversationSearchDestination: some View {
+        SearchView()
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    func rootConversationThreadDestination(id: ThreadID, title: String) -> some View {
+        // WAVE-029: mid-thread occasion = conversation pack (never Home partida).
+        ConversationView(
+            client: session.client,
+            threadId: id,
+            title: title,
+            emptyPrompt: ConversationOccasionPack.invite,
+            emptySuggestions: ConversationOccasionPack.emptySuggestions,
+            turnFacts: { [session] _ in
+                ConversationOccasionPack.facts(
+                    session: session,
+                    threadId: id,
+                    title: title
+                )
+            }
+        )
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    func rootConversationThreadRoutes(for route: Route) -> some View {
+        switch route {
+        case .workspace(let key, let title):
+            rootConversationWorkspaceDestination(key: key, title: title)
+        case .thread(let id, let title):
+            rootConversationThreadDestination(id: id, title: title)
+        default:
+            EmptyView()
+        }
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    func rootConversationWorkspaceDestination(key: String?, title: String) -> some View {
+        WorkspaceView(workspaceKey: key, title: title)
+    }
+}
+
+extension RootView {
+    @ViewBuilder
+    func rootConversationDestination(for route: Route) -> some View {
+        switch route {
+        case .workspace(_, _), .thread(_, _):
+            rootConversationThreadRoutes(for: route)
+        case .new, .conversas, .search:
+            rootConversationHubRoutes(for: route)
+        default:
+            EmptyView()
+        }
+    }
+}
+

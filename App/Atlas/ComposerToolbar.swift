@@ -1,7 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// GOD-RESTRUCTURE: ComposerToolbar host+Chrome+ChromeBody fused
+// GOD-RESTRUCTURE: ComposerToolbar fused
+
+// MARK: - ComposerToolbar
 
 // MARK: - Host
 
@@ -416,3 +418,4 @@ extension ComposerToolbar {
         .accessibilityIdentifier(A11yID.conversationSend)
     }
 }
+

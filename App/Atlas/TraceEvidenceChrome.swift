@@ -1,7 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-068: TraceEvidence chrome peels → TraceEvidenceJudgment
+// GOD-RESTRUCTURE: TraceEvidenceChrome fused
+
+// MARK: - TraceEvidenceChrome
 
 enum TraceEvidenceCopy {
     static func knownMissingRunReason(_ reason: String) -> String? {
@@ -92,3 +94,4 @@ struct TraceEvidenceUnavailable: View {
             .accessibilityIdentifier(identifier)
     }
 }
+
