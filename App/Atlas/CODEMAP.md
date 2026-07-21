@@ -115,6 +115,7 @@
 | **Autônomos/Home residual spoken** | Digest/Evolution/Hub/Decision + HomeOps profile (WAVE-104) |
 | **Mid-thread pack hydration** | `ConversationOccasionPack.PublishedSlice` + model.turnFacts rebind (WAVE-106) |
 | **Arena run status chrome** | `ArenaRunStatusJudgment` label/tone/glyph/trailing · Execution/Detail/Icon (WAVE-107) |
+| **Arena stop governance** | `ArenaStopJudgment` face blocked/ready · StopSheet (WAVE-108) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)

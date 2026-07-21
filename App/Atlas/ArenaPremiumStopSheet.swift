@@ -9,9 +9,12 @@ struct ArenaPremiumStopSheet: View {
     @State private var actor = ""
     @State private var reason = ""
 
+    private var stopFace: ArenaStopFace {
+        ArenaStopJudgment.face(actor: actor, reason: reason)
+    }
+
     private var valid: Bool {
-        !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            && !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        ArenaStopJudgment.canSubmit(actor: actor, reason: reason)
     }
 
     private var isConfirmed: Bool {
@@ -23,12 +26,12 @@ struct ArenaPremiumStopSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     ArenaPremiumEmptyGlyph(symbol: "stop.circle", tone: .negative)
-                    ArenaPremiumKicker(text: "Ação governada", tone: .negative)
+                    ArenaPremiumKicker(text: ArenaStopJudgment.kicker, tone: .negative)
                         .accessibilityIdentifier(A11yID.arenaPremiumStopSheet)
-                    Text("Parar a medição?")
+                    Text(ArenaStopJudgment.heroTitle)
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text("O caso atual termina antes da parada. Casos concluídos e resultados parciais são preservados.")
+                    Text(ArenaStopJudgment.bodyCopy)
                         .font(.system(.body))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -40,17 +43,26 @@ struct ArenaPremiumStopSheet: View {
             }
             .scrollIndicators(.hidden)
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Parar")
+            .navigationTitle(ArenaStopJudgment.navigationTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
-                        spokenLabel: "fechar confirmação",
-                        spokenHint: "mantém a medição em execução",
+                        spokenLabel: ArenaStopJudgment.closeSpoken,
+                        spokenHint: ArenaStopJudgment.closeHint,
                         reduceMotion: reduceMotion
                     ) { dismiss() }
                 }
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(
+                ArenaStopJudgment.spokenSheet(
+                    actor: actor,
+                    reason: reason,
+                    suite: ArenaDisplay.suite(run.suite)
+                )
+            )
+            .accessibilityValue(stopFace.productWord)
         }
         .onAppear { model.controlError = nil }
     }
@@ -59,14 +71,14 @@ struct ArenaPremiumStopSheet: View {
         VStack(alignment: .leading, spacing: 14) {
             // Chrome da casa: .roundedBorder rendia caixas BRANCAS no dark
             // (a mesma quebra já corrigida na folha de rodar) — ink neutro.
-            fieldLabel("Operador")
-            TextField("quem autoriza esta parada", text: $actor)
+            fieldLabel(ArenaStopJudgment.actorLabel)
+            TextField(ArenaStopJudgment.actorPlaceholder, text: $actor)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaPremiumStopActor)
-            fieldLabel("Motivo")
-            TextField("por que parar agora (fica no recibo)", text: $reason, axis: .vertical)
+            fieldLabel(ArenaStopJudgment.reasonLabel)
+            TextField(ArenaStopJudgment.reasonPlaceholder, text: $reason, axis: .vertical)
                 .lineLimit(2...4)
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaPremiumStopReason)
@@ -95,6 +107,7 @@ struct ArenaPremiumStopSheet: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             .accessibilityIdentifier(A11yID.arenaPremiumStopReceipt)
+            .accessibilityLabel(ArenaStopJudgment.spokenReceipt(value))
         }
         if let error = model.controlError {
             Text(error)
@@ -120,7 +133,7 @@ struct ArenaPremiumStopSheet: View {
                     symbol: ArenaPremiumIconography.stop,
                     tone: valid && !isConfirmed ? .negative : .muted
                 )
-                Text(model.isStoppingMeasurement ? "Solicitando…" : "Parar após o caso atual")
+                Text(model.isStoppingMeasurement ? "Solicitando…" : ArenaStopJudgment.confirmTitle)
             }
                 .font(.system(.body, weight: .semibold))
                 .frame(maxWidth: .infinity, minHeight: 50)
@@ -131,5 +144,7 @@ struct ArenaPremiumStopSheet: View {
         .buttonStyle(PressableScale())
         .disabled(!valid || model.isStoppingMeasurement || isConfirmed)
         .accessibilityIdentifier(A11yID.arenaPremiumStopConfirm)
+        .accessibilityLabel(ArenaStopJudgment.spokenConfirm(actor: actor, reason: reason))
+        .accessibilityHint(ArenaStopJudgment.confirmHint)
     }
 }
