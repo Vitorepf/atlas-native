@@ -1894,6 +1894,7 @@ extension SelfConstructionReceiptSheet {
         .contentShape(Rectangle())
         .foregroundStyle(AtlasTheme.domOperacional)
         .atlasCard(cornerRadius: 13)
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
     }
 }
 
