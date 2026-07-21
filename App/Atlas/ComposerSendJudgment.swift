@@ -147,4 +147,39 @@ enum ComposerSendJudgment {
         "\(processing), \(sendSpoken)"
     }
 
+    // MARK: Pack (WAVE-178)
+
+    static func packFacts(
+        draftText: String,
+        drafts: [LocalDraft],
+        isSending: Bool,
+        liveBubblePresent: Bool
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(
+            draftText: draftText,
+            drafts: drafts,
+            isSending: isSending,
+            liveBubblePresent: liveBubblePresent
+        )
+        facts.append("send_face: \(face.productWord)")
+        facts.append("send_allows: \(face.allowsSend ? "yes" : "no")")
+        switch face {
+        case .empty:
+            absences.append("composer sem payload — sem mensagem nem anexo pronto")
+        case .ready:
+            break
+        case .blockedFailed:
+            absences.append("anexo falhou — remova ou reconecte antes de enviar")
+        case .blockedUploading:
+            absences.append("anexo ainda subindo — CTA bloqueado até pronto")
+        case .queueOnly:
+            facts.append("send_mode: queue_followup")
+        case .executing:
+            absences.append("Atlas processando — escreva para enfileirar follow-up")
+        }
+        absences.append("NL de chat não dispara send — só CTA gold do composer")
+        return (facts, absences)
+    }
 }

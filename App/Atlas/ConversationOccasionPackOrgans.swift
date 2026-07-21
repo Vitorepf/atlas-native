@@ -78,6 +78,18 @@ extension ConversationOccasionPack {
         )
         facts.append(contentsOf: draftPack.facts)
         absences.append(contentsOf: draftPack.absences)
+        // WAVE-178: gold CTA send face ≡ pack (never invent allows).
+        let liveBubblePresent = bubble.map {
+            ConversationExecutionPhase.stripShowsLiveChrome($0)
+        } ?? false
+        let sendPack = ComposerSendJudgment.packFacts(
+            draftText: published.draftText,
+            drafts: published.drafts,
+            isSending: published.isSending,
+            liveBubblePresent: liveBubblePresent
+        )
+        facts.append(contentsOf: sendPack.facts)
+        absences.append(contentsOf: sendPack.absences)
         let effortPack = ComposerEffortJudgment.packFacts(effort: published.effort)
         facts.append(contentsOf: effortPack.facts)
         absences.append(contentsOf: effortPack.absences)

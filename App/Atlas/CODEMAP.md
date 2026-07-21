@@ -53,7 +53,7 @@
 | **Markdown block kinds (pack)** | `AtlasMarkdownJudgment.packFacts(from:)` → list\|quote\|code mid-thread (WAVE-174) |
 | Timeline filter peels | `LiveTimelineFilterChrome` (ReadFilter + FilterChips) |
 | **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other · pack mid-thread (WAVE-161) |
-| **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank |
+| **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank · pack mid-thread (WAVE-178) |
 | **Composer draft/anexos** | `ComposerDraftJudgment` → strip · DraftStrip · pack mid-thread (WAVE-164) |
 | **Composer toolbar chrome** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |
 | **Composer esforço** | `ComposerEffortJudgment` → face · pack mid-thread (WAVE-164) |

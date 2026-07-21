@@ -38,6 +38,9 @@ enum ConversationOccasionPack {
         var uploadPercent: Double? = nil
         var effort: AtlasComputeEffort = .auto
         var cacheCapturedAt: Date? = nil
+        /// WAVE-178: send readiness (draft text + sending flag).
+        var draftText: String = ""
+        var isSending: Bool = false
         var artifacts: [AtlasTraceArtifacts.Item] = []
         /// WAVE-170: full artifacts bag when published for ArtifactJudgment.
         var artifactsBag: AtlasTraceArtifacts? = nil

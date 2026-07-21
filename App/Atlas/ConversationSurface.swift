@@ -179,6 +179,8 @@ extension ConversationView {
                 }) ? model.uploadPercent : nil,
                 effort: model.effort,
                 cacheCapturedAt: model.cacheCapturedAt,
+                draftText: model.draftText,
+                isSending: model.isSending,
                 artifacts: artifacts,
                 artifactsBag: artifactsBag,
                 turnCount: model.bubbles.count,
