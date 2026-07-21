@@ -6541,7 +6541,7 @@ extension ExecutionStateCard {
     var detailLine: some View {
         if let detail = state.detail {
             Text(detail)
-                .font(.footnote)
+                .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
@@ -7847,7 +7847,7 @@ extension SteerInteractionSheet {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text("A instrução entra no próximo checkpoint seguro desta execução. O Atlas pode recusar e devolver o motivo público.")
-                .font(.footnote)
+                .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
@@ -9855,7 +9855,7 @@ extension TraceEvidenceUnavailable {
     var unavailableSubtitle: some View {
         if let subtitle, !subtitle.isEmpty {
             Text(subtitle)
-                .font(.footnote)
+                .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
                 .accessibilityHidden(true)

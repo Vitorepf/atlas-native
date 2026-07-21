@@ -1061,7 +1061,7 @@ extension ChangeReviewDiffView {
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
             Text("atenção: o hash do diff não confere com o artefato registrado")
-                .font(.caption)
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -1448,7 +1448,7 @@ extension ChangeReviewFindingRow {
                         .foregroundStyle(Self.severityColor(severity))
                         .accessibilityHidden(true)
                 }
-                Text(finding.title ?? "finding").font(.footnote).foregroundStyle(AtlasTheme.textPrimary)
+                Text(finding.title ?? "finding").font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textPrimary)
                     .lineLimit(2)
                     .accessibilityHidden(true)
             }
