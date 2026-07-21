@@ -226,6 +226,27 @@ enum AtlasGoldChrome {
             endPoint: .bottomTrailing
         )
     }
+
+    /// Soft horizontal gold stroke for empty-suggestion capsules.
+    static var suggestionStroke: LinearGradient {
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0.28),
+                AtlasTheme.accent.opacity(0.08),
+                AtlasTheme.accent.opacity(0.18)
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+    }
+
+    /// Soft 1pt rule between dense editorial blocks (markdown tables/lists).
+    static var softRule: some View {
+        Rectangle()
+            .fill(AtlasTheme.accent.opacity(0.14))
+            .frame(height: 1)
+            .accessibilityHidden(true)
+    }
 }
 
 

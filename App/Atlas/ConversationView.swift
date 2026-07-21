@@ -942,15 +942,7 @@ extension EmptyConversation {
                     Capsule().fill(AtlasTheme.surface.opacity(0.92))
                         .overlay(
                             Capsule().strokeBorder(
-                                LinearGradient(
-                                    colors: [
-                                        AtlasTheme.accent.opacity(0.28),
-                                        AtlasTheme.accent.opacity(0.08),
-                                        AtlasTheme.accent.opacity(0.18)
-                                    ],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                ),
+                                AtlasGoldChrome.suggestionStroke,
                                 lineWidth: 1
                             )
                         )
@@ -8819,8 +8811,8 @@ extension AtlasMarkdownView {
 extension AtlasMarkdownView {
     @ViewBuilder
     var blockViewDividerBlock: some View {
-        // Pure gold-breath between editorial blocks — sectionLabel mid tone.
-        Rectangle().fill(AtlasTheme.accent.opacity(0.14)).frame(height: 1).padding(.vertical, 2)
+        // Soft gold rule between editorial blocks.
+        AtlasGoldChrome.softRule.padding(.vertical, 2)
     }
 }
 
@@ -9318,7 +9310,7 @@ extension AtlasMarkdownView {
             }
             .padding(.vertical, 12)
             // Soft gold-breath row rule.
-            .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.accent.opacity(0.14)).frame(height: 1) }
+            .overlay(alignment: .bottom) { AtlasGoldChrome.softRule }
         }
     }
 }
