@@ -102,7 +102,7 @@ mode: designer + implementer
 ## Designer
 - designs_proposed: 81
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
+- last_regen: regen-queue.py
 - policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
@@ -112,7 +112,6 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-086 self-WAVE residual (composer draft/attachment) after 2 IDLE.
-- WAVE-084 empty editorial shipped prior.
-- DEVICE_PENDING for device screenshots.
-- Continuity restore BLOCKED (App Group).
+- WAVE-086 self residual shipped (composer draft/attachment).
+- WAVE-084 empty editorial shipped.
+- DEVICE_PENDING. Continuity BLOCKED (App Group).
