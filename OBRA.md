@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos kicker header (ciclo 121)** · `887ae0d0` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — reject medium + kicker headers (ciclo 120)** · `9ad82ea2` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — provenance failed header (ciclo 119)** · `8f1b6173` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — evolution empty header (ciclo 118)** · `91e7aaca` · App/Atlas 214. **Prova:** checks+build.
