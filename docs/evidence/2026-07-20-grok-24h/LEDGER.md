@@ -1,25 +1,25 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 052
-- last_commit: f77ef20b
+- phase: D1 cycle 053
+- last_commit: 56924871
 - last_gates: green
-- next_leap: continue craft OR make device when unlocked
+- next_leap: continue craft · optional `make device` when phone unlocked
 - blocked: none
 - App/Atlas Swift: 214
 
 ## Resume scoreboard
-| metric | value |
-|--------|-------|
-| App/Atlas Swift start | 1748 |
-| App/Atlas Swift now | 214 |
-| Δ files | **−1534** |
-| cycles this resume | 015–051 |
-| gates | AtlasCoreChecks + make build green each cycle |
-| forbidden | Sources/** ConversationModel AtlasSession clean |
-| new domains | **none** |
+| | |
+|--|--|
+| Start (this resume) | **1748** App/Atlas Swift |
+| Now | **214** |
+| Δ | **−1534 files** |
+| Cycles | 015–052 |
+| Gates | checks + make build green |
+| Forbidden | Sources / ConversationModel / AtlasSession clean |
+| New domains | none |
 
-## Craft (047–051)
-AgenticPill · empty conversation · Autônomos failure · Arena CTA · network retry 44pt
+## Craft
+AgenticPill · empty conversation · Autônomos failure · Arena CTA · network retry · Live Now row
 
-**Not done.** Peel plateau; craft continues.
+**Not done.** Eternal loop continues.
