@@ -1,6 +1,13 @@
 import SwiftUI
 
-// Position captions — peel de QueuedFollowUpRow+Actions.
+// Cycle 040 fuse → QueuedFollowUpRow+Actions.swift
+
+extension QueuedFollowUpRow {
+    var promoteLabel: String { "enviar agora, \(positionCaption): \(message.text)" }
+    var promoteHint: String { "torna esta mensagem a próxima instrução; o turno atual continua" }
+    var removeLabel: String { "remover da fila, \(positionCaption): \(message.text)" }
+    var removeHint: String { "remove da fila sem enviar" }
+}
 
 extension QueuedFollowUpRow {
     var positionCaption: String {

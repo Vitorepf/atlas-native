@@ -1,8 +1,34 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Provenance dateline — peel de AtlasCodeProvenanceHeader+Meta.
-// StateLabel → AtlasCodeProvenanceHeader+Dateline+StateLabel.swift
+// Cycle 040 fuse → AtlasCodeProvenanceHeader+Dateline.swift
+
+extension AtlasCodeProvenanceSheet {
+    var stateLabelHealthy: String? {
+        switch state {
+        case .onMain: return "NA MAIN"
+        case .healed: return "CURADO"
+        default: return nil
+        }
+    }
+}
+
+extension AtlasCodeProvenanceSheet {
+    var stateLabelViolating: String {
+        ruleId.map { "FORA DA LINHA · \(AtlasCodeIssue.law($0, trunk: trunk).uppercased())" } ?? "FORA DA LINHA"
+    }
+}
+
+extension AtlasCodeProvenanceSheet {
+    var stateLabel: String {
+        if let healthy = stateLabelHealthy { return healthy }
+        switch state {
+        case .violating: return stateLabelViolating
+        case .history: return "HISTÓRIA"
+        default: return "HISTÓRIA"
+        }
+    }
+}
 
 extension AtlasCodeProvenanceSheet {
     /// Autor · agente · quando. O agente só aparece quando o ledger respondeu.

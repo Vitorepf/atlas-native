@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 023 fuse → RootView.swift
+// Cycle 040 fuse → RootView.swift
 
 // Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
 // de repos reais (campo `workspace` das threads) + "Todas" + "Adicionar". Entrar

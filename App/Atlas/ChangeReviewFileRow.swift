@@ -1,7 +1,8 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-/// Linha de arquivo com aceite/rejeição por patch — peel de ChangeReviewDiffSection (C16).
+// Cycle 040 fuse → ChangeReviewFileRow.swift
+
 /// Ações: +Actions · a11y: +A11y · Trailing: +Trailing · Meta: +Meta.
 struct ChangeReviewFileRow: View {
     let reviews: ChangeReviewModel

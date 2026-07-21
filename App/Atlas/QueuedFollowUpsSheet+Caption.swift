@@ -1,7 +1,6 @@
 import SwiftUI
 
-// Caption — peel de QueuedFollowUpsSheet+Content.
-// Titles → QueuedFollowUpsSheet+Titles.swift
+// Cycle 040 fuse → QueuedFollowUpsSheet+Caption.swift
 
 extension QueuedFollowUpsSheet {
     @ViewBuilder

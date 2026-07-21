@@ -1,9 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-/// Linha de membro do conselho — peel de ChangeReviewCouncilSection (cena 07).
-/// Meta → ChangeReviewCouncilRow+Meta.swift
-/// Header → ChangeReviewCouncilRow+Header.swift
+// Cycle 040 fuse → ChangeReviewCouncilRow.swift
 
 struct ChangeReviewCouncilMemberRow: View {
     let member: AtlasTraceGovernance.CouncilMember

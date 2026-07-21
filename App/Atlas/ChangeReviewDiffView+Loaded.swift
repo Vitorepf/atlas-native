@@ -1,9 +1,22 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Loaded diff — peel de ChangeReviewDiffView+Body.
-// Scroll → ChangeReviewDiffView+Loaded+DiffScroll.swift
-// Warnings → ChangeReviewDiffView+LoadedWarnings.swift
+// Cycle 040 fuse → ChangeReviewDiffView+Loaded.swift
+
+extension ChangeReviewDiffView {
+    @ViewBuilder
+    func loadedDiffScroll(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            Text(response.diff.content)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .textSelection(.enabled)
+                .padding(10)
+        }
+        .frame(maxHeight: 320)
+        .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.bgRecessed))
+    }
+}
 
 extension ChangeReviewDiffView {
     @ViewBuilder

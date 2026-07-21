@@ -1,7 +1,16 @@
 import AtlasCore
 
-/// Network reachability headlines — peel de AtlasFailureCopy.
-/// Offline → AtlasFailureCopy+Network+Offline.swift
+// Cycle 040 fuse → AtlasFailureCopy+Network.swift
+
+extension AtlasFailureCopy {
+    static func networkOfflineHeadline(kind: AtlasNetworkFailureKind) -> String? {
+        switch kind {
+        case .offline: return "Você está sem internet."
+        case .timedOut: return "O Mac não respondeu a tempo."
+        default: return nil
+        }
+    }
+}
 
 extension AtlasFailureCopy {
     static func networkHeadline(kind: AtlasNetworkFailureKind) -> String? {

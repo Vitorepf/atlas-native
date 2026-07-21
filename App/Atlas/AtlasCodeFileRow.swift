@@ -1,11 +1,11 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 040 fuse → AtlasCodeFileRow.swift
 
 /// Uma linha por arquivo. O VERBO é a forma do símbolo, não a cor: cor aqui
 /// é reservada ao estado do commit (main/fora/curado) e mentiria se pintasse
 /// tipo de mudança de vermelho dentro de um commit saudável.
-/// Meta → AtlasCodeFileRow+Meta.swift · Stats → +Stats.swift
-/// Lead → AtlasCodeFileRow+Lead.swift
 struct AtlasCodeFileRow: View {
     let file: AtlasCodeFileChange
     var accessibilityIdentifier: String?

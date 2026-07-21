@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Reject file — peel de ChangeReviewFileRow+Actions.
+// Cycle 040 fuse → ChangeReviewFileRow+Reject.swift
 
 extension ChangeReviewFileRow {
     var rejectButton: some View {

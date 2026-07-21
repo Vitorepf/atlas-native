@@ -1,6 +1,32 @@
 import SwiftUI
 
-// Queue sheet titles — peel de QueuedFollowUpsSheet+Caption.
+// Cycle 040 fuse → QueuedFollowUpsSheet+Titles.swift
+
+extension QueuedFollowUpsSheet {
+    func queueSheetA11yShell<V: View>(_ content: V) -> some View {
+        content
+            .accessibilityIdentifier(A11yID.queueSheet)
+            .accessibilityLabel(spokenQueueSheetLabel())
+            .accessibilityHint("promover ou remover só mensagens reais da fila do model")
+    }
+}
+
+extension QueuedFollowUpsSheet {
+    @ViewBuilder
+    var queueSheetBodyBranch: some View {
+        if model.queuedMessages.isEmpty {
+            emptyQueueDismiss
+        } else {
+            sheetContent
+        }
+    }
+}
+
+extension QueuedFollowUpsSheet {
+    var emptyQueueDismiss: some View {
+        Color.clear.onAppear { dismiss() }
+    }
+}
 
 extension QueuedFollowUpsSheet {
     func sheetTitle(count: Int) -> String {

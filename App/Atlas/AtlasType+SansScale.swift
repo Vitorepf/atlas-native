@@ -1,7 +1,8 @@
 import SwiftUI
 import UIKit
 
-// Tabela de escala Dynamic Type do sans — peel de AtlasType+Sans.
+// Cycle 040 fuse → AtlasType+SansScale.swift
+
 //
 // UIFontMetrics/UIFont em body corrompia heap: o engine de acessibilidade
 // avalia bodies fora da main e UIKit não é thread-safe (SIGSEGV com sítio

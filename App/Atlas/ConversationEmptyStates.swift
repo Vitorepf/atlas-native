@@ -1,10 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Empty state vivo + falha de carga da thread — peel de EditorialTurn.
-// Suggestions → ConversationEmptyStates+Suggestions.swift
-// Hero → ConversationEmptyStates+Hero.swift
-// Init → ConversationEmptyStates+Init.swift
+// Cycle 040 fuse → ConversationEmptyStates.swift
 
 struct EmptyConversation: View {
     let reduceMotion: Bool

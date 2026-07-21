@@ -1,7 +1,15 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Accept button chrome — peel de ChangeReviewRunActions+Buttons.
+// Cycle 040 fuse → ChangeReviewRunActions+Buttons.swift
+
+extension ChangeReviewRunActions {
+    func performAccept() {
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        applying = true
+        Task { await reviews.applyChangeReview(traceId: traceId, action: .accept); applying = false }
+    }
+}
 
 extension ChangeReviewRunActions {
     @ViewBuilder

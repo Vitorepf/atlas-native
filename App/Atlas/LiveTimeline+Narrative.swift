@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 025 fuse → LiveTimeline+Narrative.swift
+// Cycle 040 fuse → LiveTimeline+Narrative.swift
 
 extension NarrativeRowView {
     var narrativeA11y: some View {

@@ -1,10 +1,16 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Provider header line — peel de ChangeReviewCouncilRow.
-// Status → ChangeReviewCouncilRow+HeaderStatus.swift
-// Model → ChangeReviewCouncilRow+HeaderModel.swift
-// Glyph → ChangeReviewCouncilRow+Header+ProviderGlyph.swift
+// Cycle 040 fuse → ChangeReviewCouncilRow+Header.swift
+
+extension ChangeReviewCouncilMemberRow {
+    var providerOutcomeGlyph: some View {
+        Image(systemName: member.succeeded ? "checkmark" : "xmark")
+            .atlasSans(9, .semibold)
+            .foregroundStyle(member.succeeded ? AtlasCodePalette.healed : AtlasTheme.alert)
+            .accessibilityHidden(true)
+    }
+}
 
 extension ChangeReviewCouncilMemberRow {
     var providerHeader: some View {

@@ -1,8 +1,24 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Governance content — peel de ChangeReviewCouncilSection.
-// Stack → ChangeReviewCouncilSection+Content+Stack.swift
+// Cycle 040 fuse → ChangeReviewCouncilSection+Content.swift
+
+extension ChangeReviewGovernanceSection {
+    @ViewBuilder
+    func governanceContentStack(
+        stats: AtlasTraceGovernance.DiffStats?,
+        revisions: [AtlasTraceGovernance.PlanRevision],
+        council: [AtlasTraceGovernance.CouncilMember]
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if let stats {
+                governanceStatsLine(stats)
+            }
+            governanceRevisionsLine(revisions)
+            governanceCouncilBlock(council)
+        }
+    }
+}
 
 extension ChangeReviewGovernanceSection {
     @ViewBuilder

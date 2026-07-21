@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 023 fuse → RootView+Destinations.swift
+// Cycle 040 fuse → RootView+Destinations.swift
 
 extension RootView {
     @ViewBuilder

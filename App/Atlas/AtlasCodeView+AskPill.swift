@@ -1,5 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 040 fuse → AtlasCodeView+AskPill.swift
 
 // Pílula de pergunta do grafo + âncora (swipe/proveniência). Lei 7: nunca some.
 

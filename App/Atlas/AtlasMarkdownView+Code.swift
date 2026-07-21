@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Cycle 022 fuse → AtlasMarkdownView+Code.swift
+// Cycle 040 fuse → AtlasMarkdownView+Code.swift
 
 extension CodeBlockView {
     var codeBlockBackground: some View {

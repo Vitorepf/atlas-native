@@ -1,7 +1,7 @@
 import Foundation
 import UserNotifications
 
-/// Morning notification — peel de NightlyProposal+Schedule.
+// Cycle 040 fuse → NightlyProposal+ScheduleMorning.swift
 
 extension NightlyProposalController {
     func scheduleMorning(after proposal: ProposalPayload) async {

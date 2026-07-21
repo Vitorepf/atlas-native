@@ -1,8 +1,23 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Provenance state kicker — peel de AtlasCodeProvenanceHeader.
-// Glyph → AtlasCodeProvenanceHeader+StateKicker+Glyph.swift
+// Cycle 040 fuse → AtlasCodeProvenanceHeader+StateKicker.swift
+
+extension AtlasCodeProvenanceSheet {
+    var headerStateKickerGlyph: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(AtlasCodePalette.color(for: state))
+                .frame(width: 6, height: 6)
+                .accessibilityHidden(true)
+            Text(stateLabel)
+                .atlasSans(9, .bold)
+                .tracking(1.4)
+                .foregroundStyle(AtlasCodePalette.color(for: state))
+                .accessibilityHidden(true)
+        }
+    }
+}
 
 extension AtlasCodeProvenanceSheet {
     var headerStateKicker: some View {

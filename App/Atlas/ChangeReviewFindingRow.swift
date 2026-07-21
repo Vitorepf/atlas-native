@@ -1,9 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-/// Linha de achado — peel de ChangeReviewFindingsSection.
-/// A11y → ChangeReviewFindingRow+A11y.swift
-/// Body → ChangeReviewFindingRow+Body.swift
+// Cycle 040 fuse → ChangeReviewFindingRow.swift
 
 struct ChangeReviewFindingRow: View {
     let finding: AtlasTraceChangeReview.Finding

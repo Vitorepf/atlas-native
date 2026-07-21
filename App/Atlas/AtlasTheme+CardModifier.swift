@@ -1,6 +1,6 @@
 import SwiftUI
 
-// atlasCard modifier — peel de AtlasTheme+Card.
+// Cycle 040 fuse → AtlasTheme+CardModifier.swift
 
 private struct AtlasCardModifier: ViewModifier {
     let cornerRadius: CGFloat

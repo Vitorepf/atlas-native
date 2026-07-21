@@ -1,8 +1,6 @@
 import SwiftUI
 
-// Ícone da falha — peel de AtlasCodeLoadFailure.
-// Headline → AtlasCodeLoadFailure+Headline.swift
-// Message → AtlasCodeLoadFailure+Message.swift
+// Cycle 040 fuse → AtlasCodeLoadFailure+Icon.swift
 
 extension AtlasCodeLoadFailureEmpty {
     var failureIcon: some View {

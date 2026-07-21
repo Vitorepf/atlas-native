@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Patch risk flags — peel de ChangeReviewDiffSection+Toggle.
+// Cycle 040 fuse → ChangeReviewDiffSection+RiskFlags.swift
 
 extension ChangeReviewPatchCard {
     var patchRiskFlags: some View {

@@ -1,8 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Finding body text — peel de ChangeReviewFindingRow.
-// Path → ChangeReviewFindingRow+Path.swift
+// Cycle 040 fuse → ChangeReviewFindingRow+Body.swift
 
 extension ChangeReviewFindingRow {
     var findingBody: some View {

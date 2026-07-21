@@ -1,12 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 040 fuse → ChangeReviewDiffSection.swift
 
 // MARK: - Patch / Diff (C15 · C16)
-// DiffView → ChangeReviewDiffView.swift · Toggle → +Toggle · Header → +Header
-// Chrome → ChangeReviewDiffSection+Chrome.swift
-// Body → ChangeReviewDiffSection+Body.swift
-// Expanded → ChangeReviewDiffSection+Expanded.swift
-// Shell → ChangeReviewDiffSection+Shell.swift
 
 struct ChangeReviewPatchCard: View {
     let reviews: ChangeReviewModel

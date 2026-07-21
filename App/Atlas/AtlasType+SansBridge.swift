@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-// Pontes SwiftUI→UIKit do sans escalado — peel de AtlasType+Sans.
+// Cycle 040 fuse → AtlasType+SansBridge.swift
 
 extension AtlasFont {
     static func uiTextStyle(_ style: Font.TextStyle) -> UIFont.TextStyle {

@@ -1,10 +1,8 @@
 import SwiftUI
 
+// Cycle 040 fuse → AtlasCodeLoadFailure.swift
+
 /// Falha de carregamento Código — canônico (radar + grafo).
-/// Retry → AtlasCodeLoadFailure+Retry.swift
-/// Icon/copy → AtlasCodeLoadFailure+Icon.swift
-/// Stack → AtlasCodeLoadFailure+Stack.swift
-/// A11y → AtlasCodeLoadFailure+A11y.swift
 struct AtlasCodeLoadFailureEmpty: View {
     let headline: String
     let message: String

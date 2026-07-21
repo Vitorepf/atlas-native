@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Retry button — peel de AtlasCodeLoadFailureEmpty.
+// Cycle 040 fuse → AtlasCodeLoadFailure+Retry.swift
 
 extension AtlasCodeLoadFailureEmpty {
     var retryButton: some View {

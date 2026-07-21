@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Suggestion button — peel de ConversationEmptyStates+Suggestions.
+// Cycle 040 fuse → ConversationEmptyStates+SuggestionButton.swift
 
 extension EmptyConversation {
     func suggestionButton(_ s: String, index: Int) -> some View {

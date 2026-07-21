@@ -1,8 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Conselho C21 — peel de ChangeReviewCouncilSection.
-// Header → ChangeReviewCouncilSection+BlockHeader.swift
+// Cycle 040 fuse → ChangeReviewCouncilSection+Block.swift
 
 extension ChangeReviewGovernanceSection {
     @ViewBuilder

@@ -1,8 +1,7 @@
 import Foundation
 import UserNotifications
 
-/// Agendamento noturno em background — peel de NightlyProposal (régua ≤100).
-/// Content → NightlyProposal+BackgroundContent.swift
+// Cycle 040 fuse → NightlyProposal+Background.swift
 
 extension NightlyProposalController {
     func scheduleForBackground(now: Date = .init()) async {

@@ -1,7 +1,35 @@
 import SwiftUI
 import UIKit
 
-// SF Pro com Dynamic Type — peel de AtlasType.
+// Cycle 040 fuse → AtlasType+Sans.swift
+
+extension AtlasFont {
+    static func anchorLarge(_ size: CGFloat) -> Font.TextStyle? {
+        switch size {
+        case 28...: return .largeTitle
+        case 22..<28: return .title2
+        case 17..<22: return .body
+        default: return nil
+        }
+    }
+}
+
+extension AtlasFont {
+    static func anchorSmall(_ size: CGFloat) -> Font.TextStyle {
+        switch size {
+        case 14..<17: return .callout
+        case 12..<14: return .footnote
+        default: return .caption2
+        }
+    }
+}
+
+extension AtlasFont {
+    static func anchor(_ size: CGFloat) -> Font.TextStyle {
+        anchorLarge(size) ?? anchorSmall(size)
+    }
+}
+
 //
 // `.font(.system(size:))` é FIXO: ignora o ajuste de texto do operador.
 // `.atlasSans(size, weight)` ancora o tamanho na mesma régua do serif/mono

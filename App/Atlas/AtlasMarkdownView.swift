@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Cycle 022 fuse → AtlasMarkdownView.swift
+// Cycle 040 fuse → AtlasMarkdownView.swift
 
 extension AtlasMarkdownView {
     func refreshBlocks(force: Bool) {

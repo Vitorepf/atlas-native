@@ -1,7 +1,17 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Diff warnings — peel de ChangeReviewDiffView+Loaded.
+// Cycle 040 fuse → ChangeReviewDiffView+LoadedWarnings.swift
+
+extension ChangeReviewDiffView {
+    func diffLoadTask() async {
+        loadSettled = false
+        if reviews.changeReviewDiff(traceId: traceId, patchId: patch.patchID) == nil {
+            await reviews.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID)
+        }
+        loadSettled = true
+    }
+}
 
 extension ChangeReviewDiffView {
     @ViewBuilder

@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// LoadTask → ChangeReviewDiffView+LoadTask.swift
+// Cycle 040 fuse → ChangeReviewDiffView.swift
 
 struct ChangeReviewDiffView: View {
     let reviews: ChangeReviewModel

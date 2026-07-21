@@ -1,6 +1,6 @@
 import AtlasCore
 
-/// Auth/server headlines — peel de AtlasFailureCopy.
+// Cycle 040 fuse → AtlasFailureCopy+AuthServer.swift
 
 extension AtlasFailureCopy {
     static func authServerHeadline(kind: AtlasNetworkFailureKind) -> String {

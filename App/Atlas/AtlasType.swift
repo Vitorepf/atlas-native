@@ -1,11 +1,12 @@
 import SwiftUI
 
+// Cycle 040 fuse → AtlasType.swift
+
 // Tipografia do Atlas: Fraunces (serif editorial) pro masthead e títulos — a
 // identidade do app original — com SF Pro no corpo/listas (clareza estilo Cursor).
 //
 // DYNAMIC TYPE: todo Font.custom sai com `relativeTo:` — a tipografia inteira
 // escala com o ajuste de texto do operador (acessibilidade não é opcional).
-// Anchor → AtlasType+Anchor.swift
 enum AtlasFont {
     /// Serif Fraunces. Só SemiBold é usado na casca (28/28); Regular é o
     /// fallback do default — Bold/Medium foram podados (0 chamadas).

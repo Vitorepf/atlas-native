@@ -1,6 +1,7 @@
 import Foundation
 
-// Raio canônico — peel de AtlasTheme (padrão documentado, decisão §6).
+// Cycle 040 fuse → AtlasTheme+Radius.swift
+
 //
 // Três raios e só três: card (superfícies/cartões), control (controles,
 // recibos, blocos internos), soft (chrome menor: banners, scrubber).

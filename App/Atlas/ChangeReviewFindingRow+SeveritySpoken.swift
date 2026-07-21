@@ -1,7 +1,16 @@
 import Foundation
 
-// Severity spoken — peel de ChangeReviewFindingRow+Severity.
-// High → ChangeReviewFindingRow+SeveritySpoken+High.swift
+// Cycle 040 fuse → ChangeReviewFindingRow+SeveritySpoken.swift
+
+extension ChangeReviewFindingRow {
+    static func severitySpokenHigh(_ s: String) -> String? {
+        switch s.lowercased() {
+        case "critical": return "crítica"
+        case "high": return "alta"
+        default: return nil
+        }
+    }
+}
 
 extension ChangeReviewFindingRow {
     static func severitySpoken(_ s: String) -> String {

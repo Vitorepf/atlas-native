@@ -1,8 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Spoken — peel de ChangeReviewFindingRow.
-// Severity → ChangeReviewFindingRow+Severity.swift
+// Cycle 040 fuse → ChangeReviewFindingRow+A11y.swift
 
 extension ChangeReviewFindingRow {
     var rowAccessibilityLabel: String {
@@ -19,5 +18,31 @@ extension ChangeReviewFindingRow {
             parts.append("recomendação: \(rec)")
         }
         return parts.joined(separator: ", ")
+    }
+}
+
+extension ChangeReviewFindingRow {
+    @ViewBuilder
+    var findingPathAndRecommendation: some View {
+        if let path = finding.filePath {
+            Text(path + (finding.startLine.map { ":\($0)" } ?? ""))
+                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+                .accessibilityHidden(true)
+        }
+        if let rec = finding.recommendation {
+            Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(3).padding(.top, 1)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension ChangeReviewFindingRow {
+    static func severityColor(_ s: String) -> Color {
+        switch s.lowercased() {
+        case "critical", "high": return AtlasTheme.domOperacional
+        case "medium": return AtlasTheme.accent
+        default: return AtlasTheme.textTertiary
+        }
     }
 }

@@ -1,9 +1,10 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 040 fuse → ChangeReviewRunActions.swift
 
 /// Aceitar o run = aceitar todos os arquivos capturados e depois o run —
 /// semântica do servidor; o botão só existe se a ação estiver disponível.
-/// Buttons → ChangeReviewRunActions+Buttons.swift
 struct ChangeReviewRunActions: View {
     let review: AtlasTraceChangeReview
     let reviews: ChangeReviewModel

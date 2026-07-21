@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Cycle 022 fuse → AtlasMarkdownView+Blocks.swift
+// Cycle 040 fuse → AtlasMarkdownView+Blocks.swift
 
 extension AtlasMarkdownView {
     @ViewBuilder

@@ -1,10 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 040 fuse → AtlasCodeProvenanceHeader.swift
 
 // MARK: - Cabeçalho da folha de proveniência (C23)
-// Meta → AtlasCodeProvenanceHeader+Meta.swift · Dateline → +Dateline.swift
-// Title → AtlasCodeProvenanceHeader+Title.swift
-// State → AtlasCodeProvenanceHeader+StateKicker.swift
 
 extension AtlasCodeProvenanceSheet {
     var header: some View {

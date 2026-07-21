@@ -1,9 +1,9 @@
-import Foundation
 import AtlasCore
+import Foundation
 
-/// Spoken labels do conselho — peel de ChangeReviewCouncilMemberRow (cena 07).
+// Cycle 040 fuse → ChangeReviewCouncilRow+A11y.swift
+
 /// Só fala o que `council_review` publica; sem `agentVerdicts` nem papéis inventados.
-/// Section → ChangeReviewCouncilRow+A11ySection.swift
 
 extension AtlasTraceGovernance.CouncilMember {
     var spokenCouncilLine: String {

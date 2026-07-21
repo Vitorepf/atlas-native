@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Layout → QueuedFollowUpRow+Layout.swift
+// Cycle 040 fuse → QueuedFollowUpRow.swift
 
 struct QueuedFollowUpRow: View {
     let message: QueuedMessage

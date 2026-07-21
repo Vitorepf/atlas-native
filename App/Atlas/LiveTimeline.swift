@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 025 fuse → LiveTimeline.swift
+// Cycle 040 fuse → LiveTimeline.swift
 
 extension LiveTimeline {
     @ViewBuilder

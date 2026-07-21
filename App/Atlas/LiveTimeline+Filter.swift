@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 025 fuse → LiveTimeline+Filter.swift
+// Cycle 040 fuse → LiveTimeline+Filter.swift
 
 extension TimelineReadFilter {
     func applyAllOrP90(to rows: [NarrativeRow]) -> [NarrativeRow] {

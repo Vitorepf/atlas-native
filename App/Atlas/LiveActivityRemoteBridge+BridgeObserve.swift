@@ -1,9 +1,11 @@
-import Foundation
-import AtlasCore
-#if canImport(ActivityKit)
 import ActivityKit
+import AtlasCore
+import Foundation
 
-/// Push token observation — peel de LiveActivityRemoteBridge.
+// Cycle 040 fuse → LiveActivityRemoteBridge+BridgeObserve.swift
+
+#if canImport(ActivityKit)
+
 
 extension LiveActivityRemoteBridge {
     func observePushTokens(

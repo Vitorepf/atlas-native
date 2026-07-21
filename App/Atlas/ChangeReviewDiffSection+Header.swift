@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Patch header — peel de ChangeReviewDiffSection.
+// Cycle 040 fuse → ChangeReviewDiffSection+Header.swift
 
 extension ChangeReviewPatchCard {
     var patchHeader: some View {

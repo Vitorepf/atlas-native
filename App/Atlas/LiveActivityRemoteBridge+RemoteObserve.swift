@@ -1,9 +1,11 @@
-import Foundation
-import AtlasCore
-#if canImport(ActivityKit)
 import ActivityKit
+import AtlasCore
+import Foundation
 
-/// Remote activity updates — peel de LiveActivityRemoteBridge+Remote.
+// Cycle 040 fuse → LiveActivityRemoteBridge+RemoteObserve.swift
+
+#if canImport(ActivityKit)
+
 
 extension LiveActivityRemoteBridge {
     func bootstrapRemoteActivities(client: AtlasClient, installationId: String) {

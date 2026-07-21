@@ -1,13 +1,13 @@
-import Foundation
-import AtlasCore
-#if canImport(ActivityKit)
 import ActivityKit
+import AtlasCore
+import Foundation
+
+// Cycle 040 fuse → LiveActivityRemoteBridge.swift
+
+#if canImport(ActivityKit)
 
 /// Transporte APNs de uma Live Activity já iniciada na tela local.
 ///
-/// Observe → LiveActivityRemoteBridge+BridgeObserve.swift
-/// End → LiveActivityRemoteBridge+BridgeEnd.swift
-/// Wait → LiveActivityRemoteBridge+BridgeWait.swift
 @MainActor
 final class LiveActivityRemoteBridge {
     static let shared = LiveActivityRemoteBridge()

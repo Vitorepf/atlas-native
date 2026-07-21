@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 023 fuse → RootView+Chrome.swift
+// Cycle 040 fuse → RootView+Chrome.swift
 
 extension RootView {
     func mastheadSpokenLabel(auditModeEnabled: Bool) -> String {
