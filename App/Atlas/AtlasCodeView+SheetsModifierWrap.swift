@@ -1,0 +1,35 @@
+import SwiftUI
+import AtlasCore
+
+// Modifier factory — peel de AtlasCodeView+Sheets.
+// Init → AtlasCodeView+SheetsModifierWrap+Init.swift
+
+extension View {
+    func atlasCodeSheetsModifierWrap(
+        session: AtlasSession,
+        model: AtlasCodeModel,
+        provenanceModel: AtlasCodeProvenanceModel,
+        askModel: AtlasCodeAskModel,
+        selectedNode: Binding<AtlasCodeGraphNode?>,
+        showsHealReceipt: Binding<Bool>,
+        showsAskCard: Binding<Bool>,
+        whyFileTarget: Binding<AtlasCodeView.WhyFileTarget?>,
+        askThreadId: Binding<ThreadID?>,
+        askDraft: Binding<String>,
+        onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
+    ) -> some View {
+        atlasCodeSheetsModifierInit(
+            session: session,
+            model: model,
+            provenanceModel: provenanceModel,
+            askModel: askModel,
+            selectedNode: selectedNode,
+            showsHealReceipt: showsHealReceipt,
+            showsAskCard: showsAskCard,
+            whyFileTarget: whyFileTarget,
+            askThreadId: askThreadId,
+            askDraft: askDraft,
+            onProvenanceAsk: onProvenanceAsk
+        )
+    }
+}
