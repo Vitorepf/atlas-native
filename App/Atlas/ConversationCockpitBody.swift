@@ -435,3 +435,8 @@ enum SilenceWatchdogA11y {
     }
 }
 
+
+// IDLE-COMPRESS ExecutionBanner a11y
+enum ExecutionBannerA11y {
+    static func spoken(text: String) -> String { text }
+}
