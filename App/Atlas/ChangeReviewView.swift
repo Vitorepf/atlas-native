@@ -114,31 +114,9 @@ extension ChangeReviewToast {
 }
 
 extension ChangeReviewSheet {
-    func spokenReviewSheetSurfaceLabel(_ review: AtlasTraceChangeReview) -> String {
-        if Self.hasReviewSurface(review) {
-            let patches = review.patches.count
-            var parts = [
-                "revisão de mudanças disponível",
-                "\(patches) patch\(patches == 1 ? "" : "es")"
-            ]
-            // WAVE-039: risk face in sheet spoken.
-            if let risk = ChangeReviewJudgment.spokenSheetSupplement(from: review) {
-                parts.append(risk)
-            }
-            return parts.joined(separator: ", ")
-        }
-        return "revisão de mudanças ligada, sem patches nem provas publicadas"
-    }
-}
-
-extension ChangeReviewSheet {
+    /// WAVE-063: ready/empty/unavailable spoken owned by ChangeReviewSheetJudgment.
     func spokenReviewSheetAvailableLabel(_ review: AtlasTraceChangeReview) -> String {
-        switch review.state {
-        case .available:
-            return spokenReviewSheetSurfaceLabel(review)
-        case .unavailable:
-            return "revisão de mudanças indisponível"
-        }
+        ChangeReviewSheetJudgment.spokenSheet(loadFinished: true, review: review)
     }
 }
 
@@ -222,6 +200,7 @@ extension ChangeReviewSheet {
             .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }
             .accessibilityIdentifier(A11yID.reviewSheet)
             .accessibilityLabel(spokenReviewSheetLabel())
+            .accessibilityValue(reviewSheetFace.productWord)
             .accessibilityHint(Self.reviewSheetHint)
         }
     }

@@ -221,21 +221,16 @@ struct ChangeReviewRunHeader: View {
 }
 
 extension ChangeReviewSheet {
-    func spokenReviewSheetLoadLabel() -> String? {
-        if !loadFinished, review == nil { return "revisão de mudanças, consultando" }
-        if loadFinished, review == nil { return "revisão de mudanças, indisponível" }
-        return nil
+    /// WAVE-063: exclusive sheet face from loadFinished + review.
+    var reviewSheetFace: ChangeReviewSheetFace {
+        ChangeReviewSheetJudgment.face(loadFinished: loadFinished, review: review)
     }
-}
 
-extension ChangeReviewSheet {
     func spokenReviewSheetLabel() -> String {
-        if let load = spokenReviewSheetLoadLabel() { return load }
-        guard let review else { return "revisão de mudanças" }
-        return spokenReviewSheetAvailableLabel(review)
+        ChangeReviewSheetJudgment.spokenSheet(loadFinished: loadFinished, review: review)
     }
 
-    static let reviewSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
+    static var reviewSheetHint: String { ChangeReviewSheetJudgment.sheetHint }
 }
 
 extension ChangeReviewSheet {

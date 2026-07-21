@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 57
+- waves_completed: 58
 - idle_compress_passes: 9
 - collapse_host: 0
 
@@ -68,6 +68,7 @@ mode: designer + implementer
 - WAVE-060
 - WAVE-061
 - WAVE-062
+- WAVE-063
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -81,7 +82,7 @@ mode: designer + implementer
 - pass 9 · `876b24e3` · peel ArtifactPreview → TraceEvidence + Zoom
 
 ## Designer
-- designs_proposed: 57
+- designs_proposed: 58
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -92,6 +93,6 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-060–062 (stale-read · graph screen · ask pill) + idle peels 7–9.
-- Prefer A fill. DEVICE_PENDING. Continuity App Group BLOCKED.
-- LEDGER idle list is B-owned truth; do not strip passes 3–9.
+- WAVE-060–063 + idle peels 7–9. Prefer A fill.
+- DEVICE_PENDING. Continuity App Group BLOCKED.
+- LEDGER idle list is B-owned; do not strip passes 3–9.
