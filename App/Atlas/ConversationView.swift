@@ -4572,7 +4572,9 @@ extension ExecutionRibbon {
     var decideStrategyLine: some View {
         if let strat = bubble.decideStrategy {
             Text("Atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
+                .padding(.leading, 24)
         }
     }
 }
@@ -4594,9 +4596,9 @@ extension ExecutionRibbon {
     var agentLanesCaption: some View {
         if bubble.agents.count >= 2 {
             Text("Lanes")
-                .font(AtlasFont.mono(10))
-                .tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(10, .medium))
+                .tracking(0.3)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.75))
                 .accessibilityAddTraits(.isHeader)
         }
     }
@@ -9958,7 +9960,11 @@ extension TraceEvidenceUnavailable {
     var unavailableIconTitle: some View {
         Image(systemName: systemImage)
             .atlasSans(22)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .foregroundStyle(AtlasTheme.textSecondary)
+            .frame(width: 56, height: 56)
+            .background(Circle().fill(AtlasTheme.surface.opacity(0.7)))
+            .overlay(Circle().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
             .accessibilityHidden(true)
         Text(title)
             .font(AtlasFont.serif(18, .semibold))
