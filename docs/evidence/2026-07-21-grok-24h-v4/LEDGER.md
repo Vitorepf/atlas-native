@@ -49,7 +49,7 @@ mode: designer + implementer
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
 - pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
-- pass 4 · PENDING · MARK PlanCard + ExecutionProof agent layout
+- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
 
 ## Designer
 - designs_open: 0
