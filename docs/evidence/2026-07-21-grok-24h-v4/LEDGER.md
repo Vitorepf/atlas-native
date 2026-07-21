@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 85
+- waves_completed: 86
 - idle_compress_passes: 10
 - collapse_host: 0
 
@@ -96,14 +96,14 @@ mode: designer + implementer
 - WAVE-088
 - WAVE-089
 - WAVE-090
+- WAVE-091
 
 ## Idle compress
-- pass 9 · EditorialTurnA11y delete
-- pass 10 · OutlineA11y delete
+- pass 5–10 · Cockpit · ChangeReview · Nightly · Editorial peels · A11y shims
 
 ## Open queue
 _(none)_
 
 ## Notes
-- Max 2 consecutive IDLE after WAVE-090 (9–10). Next A fill or full-bar residual.
+- WAVE-091 composer toolbar chrome residual.
 - DEVICE_PENDING.

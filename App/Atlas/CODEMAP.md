@@ -50,6 +50,7 @@
 | **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other |
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank |
 | **Composer draft/anexos** | `ComposerDraftJudgment` → strip silence/drafts(N)/uploading/failed · thumb · DraftStrip |
+| **Composer toolbar chrome** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |
 | **Composer esforço** | `ComposerEffortJudgment` → face auto/fast/balanced/deep/max · toolbar/sheet spoken |
 | **Composer folhas modo/workspace** | `ComposerSheetJudgment` → mode face · workspace sheet empty/list |
 | Composer sheet peels | `ComposerSheetPrimitives` (EffortSheet · SheetRow · NewMarker) · SheetsHost |

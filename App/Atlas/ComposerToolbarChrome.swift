@@ -225,8 +225,8 @@ extension ComposerToolbar {
                 .frame(width: 32, height: 32)
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("adicionar anexo")
-        .accessibilityHint("abre foto, arquivo ou colar")
+        .accessibilityLabel(ComposerToolbarJudgment.spokenAttach())
+        .accessibilityHint(ComposerToolbarJudgment.spokenAttachHint())
     }
 }
 
@@ -241,8 +241,10 @@ extension ComposerToolbar {
                 .frame(width: 32, height: 32)
                 .contentShape(Circle())
         }
-        .accessibilityLabel("opções da conversa")
-        .accessibilityHint(spokenOptionsHint())
+        .accessibilityLabel(ComposerToolbarJudgment.spokenOptions())
+        .accessibilityHint(
+            ComposerToolbarJudgment.spokenOptionsHint(effortOptionsHint: spokenOptionsHint())
+        )
         .accessibilityIdentifier(A11yID.conversationOptions)
     }
 }
@@ -276,9 +278,9 @@ extension ComposerToolbar {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onShowMode()
         } label: {
-            Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
+            Label(ComposerToolbarJudgment.modeMenuTitle(mode), systemImage: "slider.horizontal.3")
         }
-        .accessibilityLabel("modo, \(mode)")
+        .accessibilityLabel(ComposerToolbarJudgment.spokenMode(mode))
     }
 }
 
@@ -288,9 +290,12 @@ extension ComposerToolbar {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onShowWorkspace()
         } label: {
-            Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
+            Label(
+                ComposerToolbarJudgment.workspaceMenuTitle(model.workspaceName),
+                systemImage: "square.grid.2x2"
+            )
         }
-        .accessibilityLabel("workspace, \(model.workspaceName ?? "Atlas")")
+        .accessibilityLabel(ComposerToolbarJudgment.spokenWorkspace(model.workspaceName))
     }
 }
 
