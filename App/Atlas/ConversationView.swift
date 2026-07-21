@@ -7183,6 +7183,12 @@ extension NarrativeRowView {
                 .fill(isCurrent ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.4))
                 .frame(width: 7, height: 7)
                 .opacity(isCurrent && pulse && !reduceMotion ? 0.4 : 1)
+                // Live step blooms; history nodes stay quiet.
+                .shadow(
+                    color: AtlasTheme.accent.opacity(isCurrent ? 0.5 : 0.15),
+                    radius: isCurrent ? 4 : 1,
+                    y: 0
+                )
                 .padding(.top, 5)
             if !isLast {
                 Rectangle()

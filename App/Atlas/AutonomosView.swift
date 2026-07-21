@@ -1438,9 +1438,11 @@ enum AutonomosMapChrome {
             .fill(
                 LinearGradient(
                     colors: [
-                        AtlasTheme.separator.opacity(0.12),
-                        AtlasTheme.separator.opacity(0.95),
-                        AtlasTheme.separator.opacity(0.12)
+                        AtlasTheme.accent.opacity(0),
+                        AtlasTheme.accent.opacity(0.28),
+                        AtlasTheme.separator.opacity(0.9),
+                        AtlasTheme.accent.opacity(0.28),
+                        AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,
                     endPoint: .trailing
@@ -1454,6 +1456,7 @@ enum AutonomosMapChrome {
     static func section(_ text: String) -> some View {
         Text(text)
             .font(AtlasFont.serif(13, .semibold))
+            // Match home sectionLabel tone — tertiary with quiet gold breath via hairline.
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)
             .accessibilityLabel(text)
