@@ -4,22 +4,23 @@
 
 ```yaml
 pass: 1
-domain_index: 1
-last_focus: "OpsFailure + ConversationCockpit fuse"
-session_commits: 80
+domain_index: 5
+last_focus: "AutonomosHost + Workspace judgments"
+session_commits: 85
 soft_sections_states: 0
-swift_App_Atlas: 211
+swift_App_Atlas: 180
 ```
 
-## Hard
+## Scoreboard
 
-| Metric | Value |
+| Metric | Now |
 |---|---|
-| commits this mission slice | 80 |
-| App/Atlas .swift | 211 |
+| Mission commits | **85** |
+| App/Atlas .swift | **180** (was ~350+ at soft-debt era) |
 | *Sections*/*States* | **0** |
-| density guard | OK |
+| Density guard | OK |
+| AtlasSession/ConversationModel | **untouched** (guard) |
 
-## Próximo
+## Next forever
 
-deepen forever · **PROIBIDO Goal Done / god_hold**
+residual Judgment peels · MARK · CODEMAP · pass+=1 · **never Goal Done**
