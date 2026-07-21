@@ -75,7 +75,11 @@ struct AutonomosMapShell: View {
             }
         }
         .confirmationDialog("Encerrar este Autônomo?", isPresented: $confirmEnd, titleVisibility: .visible) {
-            Button("Encerrar de vez", role: .destructive) { deleteSelected() }
+            Button("Encerrar de vez", role: .destructive) {
+                // Medium: governed destructive commit (lista local).
+                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+                deleteSelected()
+            }
             Button("Cancelar", role: .cancel) {}
         } message: {
             Text("Sai da sua lista. O motor no servidor ainda não liga a isto.")

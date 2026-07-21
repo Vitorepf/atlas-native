@@ -126,7 +126,12 @@ private struct AutonomosMapQuietCTA: View {
 
     var body: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Soft invitation; medium when danger (governed destructive quiet CTA).
+            if danger {
+                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            } else {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            }
             action()
         } label: {
             Text(title)
@@ -144,6 +149,7 @@ private struct AutonomosMapQuietCTA: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(title))
+        .accessibilityHint(Text(danger ? "ação destrutiva" : ""))
     }
 }
 

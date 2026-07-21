@@ -368,11 +368,12 @@ extension ConversationView {
     @ViewBuilder
     var continuityMenuActions: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: governed surface handoff (Mac / Terminal).
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.desktop) }
         } label: { Label("Continuar no Mac", systemImage: "desktopcomputer") }
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.terminal) }
         } label: { Label("Continuar no Terminal", systemImage: "terminal") }
     }
