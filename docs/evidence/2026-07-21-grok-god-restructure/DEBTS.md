@@ -4,22 +4,45 @@
 
 ```yaml
 pass: 3
-domain_index: 2
-last_focus: "pass3 Código residual — headroom only / densify hold"
-session_commits: 130
+domain_index: 0
+last_focus: "Judgment ≤1200 family split policy + densify coexistence"
+session_commits: 132
 soft_sections_states: 0
-swift_App_Atlas: 35
+swift_App_Atlas: 46
 swift_Widgets: 2
 ```
 
-## Densified host set (App/Atlas = 35)
+## Policy (pass 3)
 
-ArenaFleetJudgment · ArenaPremiumExecution · ArenaPremiumRoot · ArenaPremiumSurfaces · ArtifactSheet · AtlasApp · AtlasCodeGraph · AtlasCodeProvenanceSheet · AtlasCodeRadarSurface · AtlasCodeSurface · AtlasMarkdownRender · AtlasSession · AtlasSessionBody · AtlasActivityAttributes · AtlasTurnAttributes+ContentState · AutonomosCanDoJudgment · AutonomosHost · AutonomosMap · AutonomosModel · ChangeReviewJudgment · ChangeReviewSurface · ComposerToolbar · ConversationComposer · ConversationMessages · ConversationMessagesJudgment · ConversationModel · ConversationSurface · ExecutionStateCard · HomeOpsJudgment · PlanCard · RootChrome · RootView · SearchSurface · TurnPresence · WorkspaceSurface
+- Soft *Sections*/*States*: **0**
+- any file ≤2000 · route View/Shell ≤600
+- Judgment family hosts prefer ≤1200 (split when mega thrash)
+- Surfaces/hosts agent-optimal densify OK under 2000
 
-## Residual
+## Scoreboard
 
-Fuse headroom ~0 for safe pairs. Soft = 0. Gates green.
+| Metric | Value |
+|---|---|
+| Mission commits | **132** |
+| App/Atlas | **46** |
+| Widgets | **2** |
+| Density guard | OK |
 
-## Proibido
+## Largest Judgments
 
-Goal Done · god_hold · WAVE · dual · Core · re-split densified hosts without ROI
+- 972 ArenaLiveJudgment.swift
+- 876 ConversationSteerJudgment.swift
+- 725 ChangeReviewJudgment.swift
+- 643 HomeNightlyJudgment.swift
+- 609 ConversationMessagesJudgment.swift
+- 601 AutonomosFleetRunJudgment.swift
+- 576 ArenaFleetJudgment.swift
+- 551 AutonomosOrgansJudgment.swift
+- 524 AutonomosCanDoJudgment.swift
+- 425 HomeOpsJudgment.swift
+- 390 ConversationOutlineJudgments.swift
+- 346 ArenaControlJudgment.swift
+
+## Next
+
+residual honesty · headroom fuses · CODEMAP · **never Goal Done**
