@@ -111,12 +111,14 @@ struct AtlasCodeRepoPickerSheet: View {
 
     private func repoRow(_ repo: AtlasCodeRepoRef) -> some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onPick(repo.slug)
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "folder")
                     .font(.system(size: 15))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
                 Text(repo.name)
                     .atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
@@ -126,16 +128,22 @@ struct AtlasCodeRepoPickerSheet: View {
                     Circle()
                         .fill(AtlasTheme.accent)
                         .frame(width: 6, height: 6)
-                        .accessibilityLabel("atual")
+                        .accessibilityHidden(true)
                 }
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
+            .frame(minHeight: 48)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(repo.name)
-        .accessibilityHint(repo.slug == currentRepo ? "repositório atual" : "abre o grafo deste repositório")
+        .accessibilityLabel(
+            repo.slug == currentRepo
+                ? "\(repo.name), repositório atual"
+                : repo.name
+        )
+        .accessibilityHint(repo.slug == currentRepo ? "já aberto no grafo" : "abre o grafo deste repositório")
+        .accessibilityAddTraits(repo.slug == currentRepo ? .isSelected : [])
         .accessibilityIdentifier(A11yID.codeRepoPickerRow(repo.slug))
     }
 }

@@ -109,10 +109,12 @@ extension TimelineFilterChips {
         Text(option.label)
             .font(AtlasFont.mono(9))
             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .frame(minHeight: 36)
             .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
             .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+            .contentShape(Capsule())
     }
 }
 
