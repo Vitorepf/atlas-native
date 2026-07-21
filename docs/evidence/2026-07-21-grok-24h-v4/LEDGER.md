@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 91
-- idle_compress_passes: 16
+- idle_compress_passes: 17
 - collapse_host: 0
 
 ## Waves done
@@ -103,6 +103,11 @@ mode: designer + implementer
 - WAVE-095
 - WAVE-096
 
+## Idle compress
+- pass 17 · SheetShellA11y → ComposerSheetJudgment
+
+## Open queue
+_(none)_
+
 ## Notes
-- WAVE-096 autonomos hub face. IDLE 15–16 prior.
-- DEVICE_PENDING.
+- WAVE-096 hub shipped. DEVICE_PENDING.

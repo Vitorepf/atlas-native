@@ -123,6 +123,16 @@ enum ComposerSheetJudgment {
         count == 1 ? "1 conversa carregada" : "\(count) conversas carregadas"
     }
 
+    /// Shared sheet row shell spoken (label · sub · selection).
+    static func spokenShellRow(label: String, sub: String?, selected: Bool) -> String {
+        var parts = [label]
+        if let sub, !sub.isEmpty { parts.append(sub) }
+        parts.append(selected ? "selecionado" : "disponível")
+        return parts.joined(separator: ", ")
+    }
+
+    static let newSinceLastVisitLabel = "novo desde a última visita"
+
     static func packFacts(
         modeKey: String?,
         workspaceCount: Int,

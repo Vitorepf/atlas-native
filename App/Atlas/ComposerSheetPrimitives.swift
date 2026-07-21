@@ -69,7 +69,9 @@ struct SheetRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            accessibilityLabel ?? SheetShellA11y.spokenRow(label: label, sub: sub, selected: selected)
+            accessibilityLabel ?? ComposerSheetJudgment.spokenShellRow(
+                label: label, sub: sub, selected: selected
+            )
         )
         .accessibilityHint(accessibilityHint ?? "")
         .accessibilityAddTraits(selected ? .isSelected : [])
@@ -118,16 +120,6 @@ struct OptionalAccessibilityIdentifier: ViewModifier {
     }
 }
 
-/// Spoken labels do shell/rows compartilhados — rótulo composto com label/sub/seleção.
-enum SheetShellA11y {
-    static func spokenRow(label: String, sub: String?, selected: Bool) -> String {
-        var parts = [label]
-        if let sub, !sub.isEmpty { parts.append(sub) }
-        parts.append(selected ? "selecionado" : "disponível")
-        return parts.joined(separator: ", ")
-    }
-}
-
 struct NewSinceLastVisitMarker: View {
     var body: some View {
         HStack(spacing: 8) {
@@ -143,7 +135,7 @@ struct NewSinceLastVisitMarker: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityIdentifier(A11yID.conversationNewMarker)
-        .accessibilityLabel("novo desde a última visita")
+        .accessibilityLabel(ComposerSheetJudgment.newSinceLastVisitLabel)
         .accessibilityAddTraits(.isStaticText)
     }
 }
