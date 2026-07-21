@@ -358,10 +358,16 @@ extension CodeBlockView {
 extension CodeBlockView {
     @ViewBuilder
     var codeBlockCopyButton: some View {
-        Button(action: copyCode) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            copyCode()
+        } label: {
             Text(copyButtonTitle)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(copyForeground)
+                .frame(minHeight: 44)
+                .padding(.horizontal, 4)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .disabled(!canCopy)

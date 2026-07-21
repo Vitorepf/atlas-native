@@ -314,7 +314,10 @@ enum ConversationMessagesA11yReview {
 extension ConversationMessages {
     @ViewBuilder
     func changeReviewChipButton(for bubble: ChatBubble, trace: TraceID) -> some View {
-        Button { reviewTrace = ConversationReviewTraceRef(id: trace) } label: {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            reviewTrace = ConversationReviewTraceRef(id: trace)
+        } label: {
             changeReviewChipLabel
         }
         .buttonStyle(PressableScale())
@@ -357,7 +360,9 @@ extension ConversationMessages {
         }
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 13).padding(.vertical, 7)
+        .frame(minHeight: 44)
         .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+        .contentShape(Capsule())
     }
 }
 

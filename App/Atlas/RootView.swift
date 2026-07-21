@@ -168,6 +168,7 @@ extension RootView {
 extension RootView {
     var topBarAvatar: some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
             showingProfile = true
         } label: {
             Image(systemName: "person.fill")
@@ -175,6 +176,7 @@ extension RootView {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 44, height: 44)
                 .atlasGlassCircle()
+                .contentShape(Circle())
         }
         .accessibilityIdentifier(A11yID.topbarProfile)
         .accessibilityLabel("perfil do operador")
@@ -377,7 +379,10 @@ extension RootView {
     var inputBar: some View {
         // A pílula é o ÚNICO ponto de partida (o "+" saiu): abre o picker do
         // Cursor — "Sem repositório" (conversa geral) ou um repo por recência.
-        Button { showingNewPicker = true } label: {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            showingNewPicker = true
+        } label: {
             inputBarContent
         }
         .buttonStyle(.plain)

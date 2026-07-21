@@ -10,6 +10,7 @@ import SwiftUI
 struct AtlasProfileSheet: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         NavigationStack {
@@ -25,9 +26,12 @@ struct AtlasProfileSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }
-                        .atlasSans(15, .medium)
-                        .tint(AtlasTheme.textSecondary)
+                    AtlasCloseToolbarButton(
+                        spokenLabel: "fechar perfil",
+                        spokenHint: "volta para a home",
+                        accessibilityID: A11yID.profileSheet + "-close",
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
             }
             .accessibilityIdentifier(A11yID.profileSheet)
