@@ -2341,11 +2341,11 @@ extension WorkspaceEditorialEmpty {
     var spokenLabel: String {
         let lead: String
         if area != .tudo {
-            lead = "nada em \(area.label) em \(screenTitle)"
+            lead = "Nada em \(area.label) em \(screenTitle)"
         } else if freeOnly {
             lead = "Nenhuma conversa sem projeto ainda"
         } else {
-            lead = "nenhuma conversa em \(screenTitle) ainda"
+            lead = "Nenhuma conversa em \(screenTitle) ainda"
         }
         return "\(lead). \(footnote)"
     }
@@ -2372,6 +2372,7 @@ extension AtlasEditorialGlyphEmpty {
     var editorialGlyph: some View {
         Text("✦")
             .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
+            .shadow(color: AtlasTheme.accent.opacity(0.2), radius: 8, y: 1)
             .accessibilityHidden(true)
     }
 }
