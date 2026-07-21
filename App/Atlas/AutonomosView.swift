@@ -1,7 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// IDLE-COMPRESS fused AutonomosView · AutonomosView.swift
+// GOD-RESTRUCTURE: AutonomosView + Chrome fused
+
+// MARK: - View
 
 // MARK: - Host
 
@@ -191,3 +193,22 @@ extension AutonomosView {
     }
 }
 
+// MARK: - Chrome
+
+struct AutonomosPrimaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.bg)
+            .padding(.horizontal, 14).padding(.vertical, 9)
+            .background(
+                Capsule().fill(
+                    AtlasTheme.accent.opacity(
+                        configuration.isPressed && !reduceMotion ? 0.72 : 1
+                    )
+                )
+            )
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
+    }
+}
