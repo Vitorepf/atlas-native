@@ -82,7 +82,7 @@ enum TurnPresenceJudgment {
             && (presence.phaseTitle == "Concluído" || presence.phaseTitle == "Falhou")
     }
 
-    static func title(from presence: AtlasExecutionPresence) -> String {
+    static func spokenTitle(from presence: AtlasExecutionPresence) -> String {
         presence.phaseTitle
     }
 
@@ -174,7 +174,7 @@ extension TurnPresence {
         bubble: ChatBubble?
     ) -> UNMutableNotificationContent {
         let content = UNMutableNotificationContent()
-        content.title = TurnPresenceJudgment.title(from: presence)
+        content.title = TurnPresenceJudgment.spokenTitle(from: presence)
         content.subtitle = TurnPresenceJudgment.lockScreenText(entry.threadTitle, limit: 48)
         if let body = TurnPresenceJudgment.body(
             presence: presence,
