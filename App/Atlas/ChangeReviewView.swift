@@ -254,7 +254,7 @@ extension ChangeReviewRunActions {
             .padding(.horizontal, 18).padding(.vertical, 11)
             .frame(minHeight: 48)
             .background(Capsule().fill(AtlasTheme.accent))
-            .atlasElevation(radius: 10, y: 3, opacity: 0.2)
+            .atlasElevation(radius: 10, y: 3, opacity: 0.16)
             .contentShape(Capsule())
     }
 }
@@ -1295,7 +1295,7 @@ extension ChangeReviewToast {
             .padding(.horizontal, 16).padding(.vertical, 9)
             .frame(minHeight: 48)
             .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
-            .atlasElevation(radius: 10, y: 3, opacity: 0.2)
+            .atlasElevation(radius: 10, y: 3, opacity: 0.16)
             .padding(.top, 8)
     }
 

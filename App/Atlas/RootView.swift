@@ -468,7 +468,7 @@ extension RootView {
         .frame(minHeight: 52) // match AgenticPill / workspace invite breath
         .contentShape(Capsule())
         .atlasGlassCapsule()
-        .atlasElevation(radius: 12, y: 4, opacity: 0.2)
+        .atlasElevation(radius: 12, y: 4, opacity: 0.16)
         .overlay(
             Capsule()
                 .strokeBorder(
@@ -2030,7 +2030,7 @@ extension WorkspaceView {
         .frame(minHeight: 52) // match AgenticPill invite breath
         .contentShape(Capsule())
         .atlasGlassCapsule()
-        .atlasElevation(radius: 12, y: 4, opacity: 0.2)
+        .atlasElevation(radius: 12, y: 4, opacity: 0.16)
         .overlay(
             Capsule()
                 .strokeBorder(
@@ -3133,7 +3133,7 @@ struct AgenticPill: View {
             // aplicado como modifier de conteúdo às vezes engole o identifier.
             .background { Capsule().fill(AtlasTheme.bgRecessed.opacity(0.01)) }
             .atlasGlassCapsule()
-            .atlasElevation(radius: 12, y: 4, opacity: 0.2)
+            .atlasElevation(radius: 12, y: 4, opacity: 0.16)
             .overlay(
                 Capsule()
                     .strokeBorder(
@@ -3203,7 +3203,7 @@ struct AtlasProfileSheet: View {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                 .frame(width: 72, height: 72)
                 .atlasGlassCircle()
-                .atlasElevation(radius: 10, y: 3, opacity: 0.18)
+                .atlasElevation(radius: 10, y: 3, opacity: 0.16)
                 .accessibilityHidden(true)
             Text("Vitor")
                 .font(AtlasFont.serif(24, .semibold))

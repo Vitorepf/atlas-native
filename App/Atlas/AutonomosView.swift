@@ -2187,7 +2187,7 @@ struct NightlyProposalCard: View {
         .padding(14)
         .atlasCard(cornerRadius: AtlasTheme.Radius.card)
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.goldBorder, lineWidth: 1))
-        .atlasElevation(radius: 12, y: 4, opacity: 0.18)
+        .atlasElevation(radius: 12, y: 4, opacity: 0.16)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.nightlyProposalCard)
         .task {
