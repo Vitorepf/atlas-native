@@ -140,8 +140,8 @@ extension RootView {
         .foregroundStyle(session.auditModeEnabled ? AtlasTheme.domOperacional : AtlasTheme.accent)
         .shadow(
           color: (session.auditModeEnabled ? AtlasTheme.domOperacional : AtlasTheme.accent)
-            .opacity(0.35),
-          radius: 5,
+            .opacity(session.auditModeEnabled ? 0.4 : 0.5),
+          radius: session.auditModeEnabled ? 5 : 7,
           y: 0
         )
         .accessibilityHidden(true)
@@ -2874,7 +2874,8 @@ extension WorkspaceRow {
         }
         Image(systemName: "chevron.right")
             .atlasSans(11, .semibold)
-            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.55))
+            // Soft gold-quiet disclosure — same family as sheet grabbers.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.42))
             .accessibilityHidden(true)
     }
 }

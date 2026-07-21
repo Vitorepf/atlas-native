@@ -4514,6 +4514,15 @@ struct ArenaPremiumIcon: View {
             .atlasSans(role.pointSize, .medium)
             .foregroundStyle(tone.color)
             .frame(width: role.box, height: role.box, alignment: .center)
+            // Standard list icons float on a quiet disk; compact/hero stay bare.
+            .background {
+                if role == .standard {
+                    Circle()
+                        .fill(AtlasTheme.surface.opacity(0.88))
+                        .overlay(Circle().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                }
+            }
+            .atlasElevation(radius: 4, y: 1, opacity: role == .standard ? 0.1 : 0)
             .accessibilityHidden(true)
     }
 }
