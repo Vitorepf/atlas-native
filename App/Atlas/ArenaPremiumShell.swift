@@ -4490,7 +4490,7 @@ struct ArenaPremiumIcon: View {
     var body: some View {
         Image(systemName: symbol)
             .symbolRenderingMode(.monochrome)
-            .font(.system(size: role.pointSize, weight: .medium))
+            .atlasSans(role.pointSize, .medium)
             .foregroundStyle(tone.color)
             .frame(width: role.box, height: role.box, alignment: .center)
             .accessibilityHidden(true)
