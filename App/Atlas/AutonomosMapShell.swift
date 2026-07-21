@@ -24,12 +24,11 @@ struct AutonomosMapShell: View {
 
     /// Mesma resolve do hub — ask e hub nunca divergem (WAVE-007).
     private var organismVestment: AutonomosHubVestment {
-        // incidentPresent: model still has no discrete incident projection —
-        // never invent; backlog decisions alone drive awaiting.
+        // WAVE-036: incidentPresent from published taskHealth (never invent).
         AutonomosHubVestment.resolve(
             backlog: model.backlog,
             live: model.live,
-            incidentPresent: false,
+            incidentPresent: AutonomosTaskHealthJudgment.incidentPresent(model.taskHealth),
             unitPaused: selectedUnit?.paused ?? false
         )
     }
@@ -274,6 +273,7 @@ struct AutonomosMapShell: View {
                     ),
                     transferReceiptLine: AutonomosTransferJudgment.receiptLine(model.lastTransferReceipt)
                         ?? model.controlError,
+                    incidentMeta: AutonomosTaskHealthJudgment.hubIncidentMeta(health: model.taskHealth),
                     onNavigate: { self.destination = $0 },
                     onControl: { pendingRunControl = $0 },
                     onTransfer: { showTransferSheet = true },
@@ -299,18 +299,24 @@ struct AutonomosMapShell: View {
                 destination: destination,
                 onNavigate: { self.destination = $0 }
             )
-        case .moment, .incident:
-            // Empty honesto — momentos/incidentes ainda sem projeção por unit.
+        case .incident:
+            // WAVE-036: task health → incident surface (published flags only).
+            AutonomosIncidentSurface(
+                areaSelected: model.selectedArea != nil,
+                health: model.taskHealth
+            )
+        case .moment:
+            // Moment feed still no discrete projection — silence, not invent.
             VStack(alignment: .leading, spacing: 12) {
-                AutonomosMapChrome.heroTitle("Ainda no escopo local", size: 26)
-                Text("Create no servidor ainda não liga momentos nem incidentes a este Autônomo. Nada aqui inventa inbox.")
+                AutonomosMapChrome.heroTitle("Momento", size: 26)
+                Text("Sem feed de momentos publicado para este Autônomo. Nada aqui inventa timeline.")
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(AtlasTheme.Space.screen)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .accessibilityLabel("ainda no escopo local, create no servidor pendente, sem contagens inventadas")
+            .accessibilityLabel("sem feed de momentos publicado")
         }
     }
 
@@ -368,7 +374,9 @@ struct AutonomosMapShell: View {
                     lastControlReceipt: model.lastControlReceipt,
                     delivered: model.delivered,
                     cycles: model.cycles,
-                    lastTransferReceipt: model.lastTransferReceipt
+                    lastTransferReceipt: model.lastTransferReceipt,
+                    taskHealth: model.taskHealth,
+                    areaSelected: model.selectedArea != nil
                 )
             },
             onThread: { askThreadId = $0 },

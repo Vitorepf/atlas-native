@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 30
+- waves_completed: 31
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -41,6 +41,7 @@ mode: designer + implementer
 - WAVE-033
 - WAVE-034
 - WAVE-035
+- WAVE-036
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -58,5 +59,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-035 self-WAVE: transfer handoff instrument.
+- WAVE-036 self-WAVE: task health / incident instrument.
 - DEVICE_PENDING. Wait A for 2–5 open GOD WAVEs.

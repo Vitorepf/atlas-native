@@ -13,6 +13,8 @@ struct AutonomosHubView: View {
     /// WAVE-035: mission transfer when area canControl.
     var canTransfer: Bool = false
     var transferReceiptLine: String? = nil
+    /// WAVE-036: task-health incident nav meta when present.
+    var incidentMeta: String? = nil
     let onNavigate: (AutonomosDestination) -> Void
     let onControl: (AutonomosRunControlAction) -> Void
     var onTransfer: () -> Void = {}
@@ -86,6 +88,14 @@ struct AutonomosHubView: View {
                     meta: evolutionMeta,
                     action: { onNavigate(.evolution) }
                 )
+
+                if let incidentMeta {
+                    AutonomosMapNavLine(
+                        title: "Precisa de você",
+                        meta: incidentMeta,
+                        action: { onNavigate(.incident) }
+                    )
+                }
 
                 if canTransfer {
                     AutonomosMapNavLine(

@@ -55,7 +55,9 @@ enum AutonomosAskContext {
         lastControlReceipt: AtlasAutonomosRunControlResponse? = nil,
         delivered: AtlasAutonomosDeliveredResponse? = nil,
         cycles: AtlasAutonomosCyclesResponse? = nil,
-        lastTransferReceipt: AtlasAutonomosTransferResponse? = nil
+        lastTransferReceipt: AtlasAutonomosTransferResponse? = nil,
+        taskHealth: AtlasAutonomosTaskHealthResponse? = nil,
+        areaSelected: Bool = false
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -96,6 +98,17 @@ enum AutonomosAskContext {
         facts.append(contentsOf: transfer.facts)
         absences.append(contentsOf: transfer.absences)
 
+        // WAVE-036: task health / incident honesty.
+        let health = AutonomosTaskHealthJudgment.packFacts(
+            areaSelected: areaSelected,
+            health: taskHealth
+        )
+        facts.append(contentsOf: health.facts)
+        absences.append(contentsOf: health.absences)
+        if AutonomosTaskHealthJudgment.incidentPresent(taskHealth) {
+            anchors.append("incident · present")
+        }
+
         if let destination {
             facts.append("tela: \(destination.navTitle)")
             anchors.append("dest: \(destination.navTitle)")
@@ -133,6 +146,7 @@ enum AutonomosAskContext {
                 absences.append("feed de momentos pode estar vazio sem inventar")
             case .incident:
                 facts.append("foco: incidente — só sinais reais da face")
+                // health pack facts already appended above
             }
         } else {
             facts.append("tela: catálogo do operador")
