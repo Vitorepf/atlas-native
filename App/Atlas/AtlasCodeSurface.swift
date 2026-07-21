@@ -395,23 +395,23 @@ struct AtlasCodeMirrorCard: View {
     var headline: some View {
         switch response.state {
         case .blocked:
-            label(
+            metaChip(
                 "segredo detectado · nada sai da máquina",
                 color: AtlasCodePalette.alert,
                 icon: "exclamationmark.triangle"
             )
         case .mirrored:
-            label("tudo espelhado · a verdade fica no Mac", color: AtlasTheme.textSecondary, icon: "checkmark")
+            metaChip("tudo espelhado · a verdade fica no Mac", color: AtlasTheme.textSecondary, icon: "checkmark")
         case .pending(let commits):
-            label(
+            metaChip(
                 commits == 1 ? "1 commit ainda só no Mac" : "\(commits) commits ainda só no Mac",
                 color: AtlasTheme.textSecondary,
                 icon: "internaldrive"
             )
         case .noMirror:
-            label("sem espelho configurado", color: AtlasTheme.textTertiary, icon: "circle.dashed")
+            metaChip("sem espelho configurado", color: AtlasTheme.textTertiary, icon: "circle.dashed")
         case .unknown:
-            label("espelho ainda não conhecido", color: AtlasTheme.textTertiary, icon: "questionmark.circle")
+            metaChip("espelho ainda não conhecido", color: AtlasTheme.textTertiary, icon: "questionmark.circle")
         }
     }
 
@@ -433,7 +433,7 @@ struct AtlasCodeMirrorCard: View {
         }
     }
 
-    func label(_ text: String, color: Color, icon: String) -> some View {
+    func metaChip(_ text: String, color: Color, icon: String) -> some View {
         HStack(spacing: 7) {
             Image(systemName: icon)
                 .atlasSans(10, .semibold)
