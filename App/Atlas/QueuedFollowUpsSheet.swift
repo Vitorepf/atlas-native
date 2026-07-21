@@ -67,8 +67,8 @@ extension QueuedFollowUpsSheet {
     func queueSheetA11yShell<V: View>(_ content: V) -> some View {
         content
             .accessibilityIdentifier(A11yID.queueSheet)
-            .accessibilityLabel(spokenQueueSheetLabel())
-            .accessibilityHint("promover ou remover só mensagens reais da fila do model")
+            // Contain without fused sheet label so queue rows stay focusable.
+            .accessibilityElement(children: .contain)
     }
 }
 

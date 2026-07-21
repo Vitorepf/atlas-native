@@ -199,8 +199,8 @@ extension SearchView {
         content
             .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.searchScreen)
-            .accessibilityLabel(spokenSearchScreenLabel())
-            .accessibilityHint(Self.searchScreenHint)
+            // Contain without fused screen label so field/results stay focusable.
+            .accessibilityElement(children: .contain)
             .onAppear { focused = true }
     }
 }

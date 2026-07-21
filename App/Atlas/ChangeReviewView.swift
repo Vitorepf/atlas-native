@@ -160,8 +160,8 @@ extension ChangeReviewSheet {
             .toolbar { reviewToolbar }
             .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }
             .accessibilityIdentifier(A11yID.reviewSheet)
-            .accessibilityLabel(spokenReviewSheetLabel())
-            .accessibilityHint(Self.reviewSheetHint)
+            // Contain without fused sheet label so patches/actions stay focusable.
+            .accessibilityElement(children: .contain)
         }
     }
 }

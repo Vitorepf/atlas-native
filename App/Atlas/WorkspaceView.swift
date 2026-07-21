@@ -60,8 +60,8 @@ extension WorkspaceView {
         content
             .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.workspaceScreen)
-            .accessibilityLabel(spokenWorkspaceScreenLabel())
-            .accessibilityHint(workspaceScreenHint)
+            // Contain without fused screen label so filter/list/pill stay focusable.
+            .accessibilityElement(children: .contain)
     }
 }
 
