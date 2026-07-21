@@ -122,28 +122,39 @@ struct AutonomosView: View {
 
 /// Falha de carregamento do catálogo Autônomos.
 struct AutonomosFleetFailureEmpty: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let message: String
     let onRetry: () -> Void
 
     var body: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
                 .font(.title2)
-                .foregroundStyle(AtlasTheme.domOperacional)
+                .foregroundStyle(AtlasTheme.domOperacional.opacity(0.9))
                 .accessibilityHidden(true)
             Text("Catálogo fora de alcance.")
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .multilineTextAlignment(.center)
             Text(message)
                 .font(.footnote)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
-            Button("Tentar de novo", action: onRetry)
+                .fixedSize(horizontal: false, vertical: true)
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onRetry()
+            } label: {
+                Text("Tentar de novo")
+                    .frame(minWidth: 160, minHeight: 44)
+            }
                 .buttonStyle(AutonomosPrimaryButtonStyle())
                 .accessibilityIdentifier(A11yID.autonomosRetry)
                 .accessibilityHint("tenta reabrir o catálogo Autônomos")
         }
-        .padding(32)
+        .padding(.horizontal, 32)
+        .padding(.vertical, 28)
+        .frame(maxWidth: 420)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Catálogo Autônomos fora de alcance. \(message)")
         .accessibilityIdentifier(A11yID.autonomosLoadFailure)
