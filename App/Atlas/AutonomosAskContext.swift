@@ -59,7 +59,9 @@ enum AutonomosAskContext {
         taskHealth: AtlasAutonomosTaskHealthResponse? = nil,
         areaSelected: Bool = false,
         fleet: AtlasAutonomosFleetResponse? = nil,
-        digest: AtlasAutonomosDigestResponse? = nil
+        digest: AtlasAutonomosDigestResponse? = nil,
+        areas: [AtlasAutonomosArea] = [],
+        selectedAreaID: String? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -91,6 +93,16 @@ enum AutonomosAskContext {
         facts.append(contentsOf: loop.facts)
         absences.append(contentsOf: loop.absences)
         anchors.append("loop · \(controlFace.productWord)")
+
+        // WAVE-065: multi-area bind honesty.
+        if !areas.isEmpty || selectedAreaID != nil {
+            let bind = AutonomosAreaBindJudgment.packFacts(
+                areas: areas,
+                selectedAreaID: selectedAreaID
+            )
+            facts.append(contentsOf: bind.facts)
+            absences.append(contentsOf: bind.absences)
+        }
 
         // WAVE-035: transfer handoff honesty.
         let transfer = AutonomosTransferJudgment.packFacts(

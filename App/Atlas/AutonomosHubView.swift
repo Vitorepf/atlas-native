@@ -17,6 +17,10 @@ struct AutonomosHubView: View {
     var incidentMeta: String? = nil
     /// WAVE-038: digest/moment nav meta when published.
     var digestMeta: String? = nil
+    /// WAVE-065: multi-area bind — show chooser CTA when needsBind.
+    var needsAreaBind: Bool = false
+    var registeredAreaCount: Int = 0
+    var onChooseArea: () -> Void = {}
     let onNavigate: (AutonomosDestination) -> Void
     let onControl: (AutonomosRunControlAction) -> Void
     var onTransfer: () -> Void = {}
@@ -36,6 +40,14 @@ struct AutonomosHubView: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom, 12)
+
+                if needsAreaBind {
+                    AutonomosAreaBindCTA(
+                        registeredCount: registeredAreaCount,
+                        onChoose: onChooseArea
+                    )
+                    .padding(.bottom, 16)
+                }
 
                 if controlFace != .unbound {
                     Text(controlFace.spokenFace)

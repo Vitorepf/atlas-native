@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 59
+- waves_completed: 60
 - idle_compress_passes: 10
 - collapse_host: 0
 
@@ -70,6 +70,7 @@ mode: designer + implementer
 - WAVE-062
 - WAVE-063
 - WAVE-064
+- WAVE-065
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -85,16 +86,16 @@ mode: designer + implementer
 
 ## Designer
 - designs_proposed: 60
-- designs_open: 1
+- designs_open: 0
 - last_regen: regen-queue.py
 
 ## Open queue snapshot (must match QUEUE.md)
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-065 | max | proposed |
+| — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-064 LiveNow attention (A fill). Next: WAVE-065 multi-area bind.
+- WAVE-064–065 A fills (LiveNow · multi-area bind). Prefer A fill.
 - DEVICE_PENDING. Continuity App Group BLOCKED.
 - LEDGER idle list B-owned; do not strip.

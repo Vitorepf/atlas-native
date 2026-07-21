@@ -141,6 +141,11 @@ extension A11yID {
     static let autonomosIncident = "autonomos-incident"
     static let autonomosAskPill = "autonomos-ask-pill"
     static let autonomosAreasSheet = "autonomos-areas-sheet"
+    static let autonomosAreaBindCTA = "autonomos-area-bind-cta"
+    static let autonomosAreaBindRowPrefix = "autonomos-area-bind-row-"
+    static func autonomosAreaBindRow(_ id: String) -> String {
+        autonomosAreaBindRowPrefix + id
+    }
     static let autonomosGovernanceSheet = "autonomos-governance-sheet"
     static let autonomosReasonSheet = "autonomos-reason-sheet"
     static let autonomosReasonActor = "autonomos-reason-actor"

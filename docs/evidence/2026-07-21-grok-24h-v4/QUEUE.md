@@ -14,21 +14,12 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-```yaml
-id: WAVE-065-autonomos-multi-area-bind-chooser-instrument
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-065-design.md
-created_by: designer
-approved_at: null
-```
+_(no open proposed WAVEs)_
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-065-autonomos-multi-area-bind-chooser-instrument | **max** | `WAVE-065-design.md` |
 
 ## History (done)
 
@@ -91,4 +82,5 @@ approved_at: null
 - WAVE-062 done
 - WAVE-063 done
 - WAVE-064 done
+- WAVE-065 done
 

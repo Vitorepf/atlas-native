@@ -16,6 +16,8 @@ struct AutonomosMapShell: View {
     @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
     @State private var pendingRunControl: AutonomosRunControlAction?
     @State private var showTransferSheet = false
+    /// WAVE-065: multi-area bind chooser when N registered and unbound.
+    @State private var showAreaBindChooser = false
 
     private var selectedUnit: AutonomosUnit? {
         guard let selectedUnitID else { return nil }
@@ -143,6 +145,24 @@ struct AutonomosMapShell: View {
                 }
             }
         }
+        .sheet(isPresented: $showAreaBindChooser) {
+            // WAVE-065: thin registered-area chooser (no monólito picker).
+            AutonomosAreaBindChooser(
+                areas: model.areas,
+                onSelect: { id in
+                    showAreaBindChooser = false
+                    Task { await model.selectArea(id) }
+                },
+                onCancel: { showAreaBindChooser = false }
+            )
+        }
+    }
+
+    private var areaBindFace: AutonomosAreaBindFace {
+        AutonomosAreaBindJudgment.face(
+            areas: model.areas,
+            selectedAreaID: model.selectedAreaID
+        )
     }
 
     private var controlFace: AutonomosRunControlFace {
@@ -169,8 +189,14 @@ struct AutonomosMapShell: View {
             await model.refreshSelected()
             return
         }
-        if let id = AutonomosRunControlJudgment.bindAreaID(areas: model.areas) {
+        // WAVE-065: 0 → silence · 1 → auto · N → chooser (not unbound forever).
+        if let id = AutonomosAreaBindJudgment.autoBindID(areas: model.areas) {
             await model.selectArea(id)
+        } else if AutonomosAreaBindJudgment.face(
+            areas: model.areas,
+            selectedAreaID: model.selectedAreaID
+        ).needsChooser {
+            showAreaBindChooser = true
         }
     }
 
@@ -281,6 +307,9 @@ struct AutonomosMapShell: View {
                         ?? model.controlError,
                     incidentMeta: AutonomosTaskHealthJudgment.hubIncidentMeta(health: model.taskHealth),
                     digestMeta: AutonomosDigestJudgment.hubMeta(from: model.digest),
+                    needsAreaBind: areaBindFace.needsChooser,
+                    registeredAreaCount: AutonomosAreaBindJudgment.registeredAreas(model.areas).count,
+                    onChooseArea: { showAreaBindChooser = true },
                     onNavigate: { self.destination = $0 },
                     onControl: { pendingRunControl = $0 },
                     onTransfer: { showTransferSheet = true },
@@ -376,7 +405,9 @@ struct AutonomosMapShell: View {
                     taskHealth: model.taskHealth,
                     areaSelected: model.selectedArea != nil,
                     fleet: model.fleet,
-                    digest: model.digest
+                    digest: model.digest,
+                    areas: model.areas,
+                    selectedAreaID: model.selectedAreaID
                 )
             },
             onThread: { askThreadId = $0 },
