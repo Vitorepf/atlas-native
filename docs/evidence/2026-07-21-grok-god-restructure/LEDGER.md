@@ -28,6 +28,14 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### FileRow fuse
+
+```yaml
+focus: AtlasCodeFileRow host+body
+domain_index: 2
+gates: ok
+```
+
 ### 2026-07-22T00:00Z — ConversationMessages fuse
 
 ```yaml
