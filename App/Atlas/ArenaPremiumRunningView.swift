@@ -97,9 +97,8 @@ struct ArenaPremiumRunningView: View {
                 onNavigate(.execution)
             }
             .accessibilityIdentifier(A11yID.arenaPremiumExecutionAction)
-            if let run,
-               run.canStop == true,
-               run.measurementIdPublic != nil {
+            // WAVE-083: single canStop law = ArenaLiveControlJudgment.
+            if let run, ArenaLiveControlJudgment.canStop(primary: run) {
                 ArenaPremiumAction(title: "Parar após o caso atual", quiet: true) {
                     onStop(run)
                 }

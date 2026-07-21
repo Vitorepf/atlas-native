@@ -125,13 +125,28 @@ enum ArenaPremiumAskContext {
         }
 
         facts.append("cobertura_texto: \(model.arenaCoverageText)")
-        if let phase = model.livePresentation?.phase {
-            facts.append("fase_ao_vivo: \(phaseLabel(phase))")
-        }
+
+        // WAVE-083: Now + LiveControl packFacts (Judgment law — not ad-hoc phase).
+        let livePhase = model.livePresentation?.phase
+        let nowPack = ArenaNowJudgment.packFacts(
+            loadPhase: model.phase,
+            livePhase: livePhase,
+            compositeNil: model.composite == nil,
+            engineTitle: model.arenaLiveEngineTitle
+        )
+        facts.append(contentsOf: nowPack.facts)
+        absences.append(contentsOf: nowPack.absences)
+
+        let liveRuns = model.liveRuns?.runs ?? []
+        let primary = model.arenaPrimaryRun
+        let livePack = ArenaLiveControlJudgment.packFacts(runs: liveRuns, primary: primary)
+        facts.append(contentsOf: livePack.facts)
+        absences.append(contentsOf: livePack.absences)
+
         if let progress = model.livePresentation?.progress {
             facts.append("progresso: \(progress.completed)/\(progress.total) (\(progress.remaining) restantes)")
         }
-        if let run = model.arenaPrimaryRun {
+        if let run = primary {
             facts.append("corrida: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT)")
         }
         let alerts = model.arenaAlertSuiteCount
@@ -161,12 +176,11 @@ enum ArenaPremiumAskContext {
             }
         }
         if destination == .execution || destination == .queue {
-            let live = model.liveRuns?.runs ?? []
-            facts.append("corridas_live: \(live.count)")
-            for run in live.prefix(6) {
+            facts.append("corridas_live: \(liveRuns.count)")
+            for run in liveRuns.prefix(6) {
                 facts.append("live · \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(run.status.displayPT)")
             }
-            if live.isEmpty {
+            if liveRuns.isEmpty {
                 absences.append("nenhuma corrida live publicada")
             }
         }
@@ -178,6 +192,15 @@ enum ArenaPremiumAskContext {
             }
         }
 
+        let canDo = occasionCanDo(
+            tab: tab,
+            destination: destination,
+            primary: primary
+        )
+        if !ArenaLiveControlJudgment.canStop(primary: primary) {
+            absences.append("parada indisponível — sem primary stoppable / measurementId")
+        }
+
         absences.append("não invente scores; diga “não medido” quando faltar braço ou suíte")
         absences.append("pack Core tipado Arena ainda §5 — este é presentation-only")
 
@@ -187,8 +210,35 @@ enum ArenaPremiumAskContext {
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: .ctaOnlyRunStop
+            canDo: canDo
         ).render()
+    }
+
+    /// WAVE-083: can_do from live face — never always ctaOnlyRunStop.
+    static func occasionCanDo(
+        tab: ArenaPremiumTab,
+        destination: ArenaPremiumDestination?,
+        primary: AtlasArenaLiveRun?
+    ) -> AgenticOccasionPack.CanDo {
+        if ArenaLiveControlJudgment.canStop(primary: primary) {
+            return .ctaOnlyRunStop
+        }
+        // Browse / results / fleet / capabilities — read only.
+        if let destination {
+            switch destination {
+            case .execution, .queue, .alerts, .plan:
+                return .readChat
+            case .results:
+                return .readChat
+            }
+        }
+        switch tab {
+        case .now:
+            // Idle/terminal now: chat read; start remains CTA on face (not NL write).
+            return .faceCTALocal
+        case .fleet, .capabilities, .results:
+            return .readChat
+        }
     }
 
     private static func destinationLabel(_ d: ArenaPremiumDestination) -> String {
@@ -209,8 +259,4 @@ enum ArenaPremiumAskContext {
         }
     }
 
-    private static func phaseLabel(_ phase: AtlasArenaLivePhase) -> String {
-        // WAVE-066: product spoken from ArenaNowJudgment.
-        ArenaNowJudgment.face(from: phase).spokenFace
-    }
 }

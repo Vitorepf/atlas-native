@@ -61,6 +61,7 @@
 | Island/Lock phase chrome | Widgets Live/Lock* (sem inventar App Group) |
 | Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets |
 | **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
+| **Arena pack can_do honesty** | AskContext wires Now+LiveControl packFacts · canDo matrix · canStop one law |
 | **Arena live control (corridas)** | `ArenaLiveControlJudgment` → rank · face · canStop |
 | **Arena start / recibo rodar** | `ArenaStartJudgment` → submit face · receipt face · worker gap |
 | **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready |
