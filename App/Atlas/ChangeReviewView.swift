@@ -1061,7 +1061,8 @@ extension ChangeReviewDiffView {
         ScrollView(.horizontal, showsIndicators: false) {
             Text(response.diff.content)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet mono diff content — brand warmth, still readable.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .textSelection(.enabled)
                 .padding(10)
         }

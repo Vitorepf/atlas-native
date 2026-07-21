@@ -10138,7 +10138,8 @@ extension ArtifactPreviewContent {
         ScrollView(.horizontal, showsIndicators: false) {
             Text(String(decoding: content.data, as: UTF8.self))
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet mono content — brand warmth, still readable.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .textSelection(.enabled)
         }
         .frame(maxHeight: 360)

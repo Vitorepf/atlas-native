@@ -4554,7 +4554,8 @@ extension AtlasCodeCommitRow {
     func spineColumnFrame<Content: View>(_ content: Content, motion: Animation?) -> some View {
         content
             .frame(width: AtlasCodeGraphLane.gutter)
-            .frame(minHeight: 44)
+            // HIG 48+ breath on graph spine lane (decorative but hit-area aligned).
+            .frame(minHeight: 48)
             .animation(motion, value: state)
             .animation(motion, value: isFirst)
             .animation(motion, value: isLast)
