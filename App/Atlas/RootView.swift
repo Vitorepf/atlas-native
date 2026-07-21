@@ -3066,15 +3066,15 @@ struct AgenticPill: View {
             HStack(spacing: 12) {
                 RootView.HomeComposerStar()
                 Text(invite)
-                    .font(AtlasFont.serifItalic(16))
+                    .font(AtlasFont.serifItalic(17))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, 18)
-            .padding(.vertical, 13)
-            .frame(minHeight: 48) // HIG 44pt; breath room for Dynamic Type
+            .padding(.vertical, 14)
+            .frame(minHeight: 52) // HIG 44+; calmer invite touch
             // Vidro no background do label — glassEffect.interactive no iOS 26
             // aplicado como modifier de conteúdo às vezes engole o identifier.
             .background { Capsule().fill(AtlasTheme.bgRecessed.opacity(0.01)) }
