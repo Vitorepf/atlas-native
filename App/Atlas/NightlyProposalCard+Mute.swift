@@ -4,7 +4,7 @@ import SwiftUI
 
 extension NightlyProposalCard {
     var muteMenu: some View {
-        Menu("silenciar") {
+        Menu("pausar") {
             ForEach(Self.muteDays, id: \.self) { days in
                 Button("\(days) dia\(days == 1 ? "" : "s")") {
                     AtlasMotion.softImpact(reduceMotion: reduceMotion)

@@ -12,6 +12,6 @@ extension NightlyProposalCard {
     }
 
     static func spokenCardHint() -> String {
-        "preparar, descartar em silêncio ou silenciar por dias"
+        "preparar, descartar em silêncio ou pausar por dias"
     }
 }

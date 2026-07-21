@@ -12,6 +12,6 @@ extension NightlyProposalController {
         if AtlasSession.nightlyProposalAutoPaused() {
             return "propostas em pausa — você recusou as últimas \(Self.dismissStreakPauseThreshold); voltam \(prazo)"
         }
-        return "propostas noturnas silenciadas até \(prazo)"
+        return "propostas noturnas em pausa até \(prazo)"
     }
 }

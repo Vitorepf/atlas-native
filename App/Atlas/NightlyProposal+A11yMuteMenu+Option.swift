@@ -4,7 +4,7 @@ import Foundation
 
 extension NightlyProposalCard {
     static func spokenMuteOption(days: Int) -> String {
-        "silenciar por \(days) \(days == 1 ? "dia" : "dias")"
+        "pausar por \(days) \(days == 1 ? "dia" : "dias")"
     }
 
     static func spokenMuteOptionHint() -> String {

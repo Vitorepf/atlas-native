@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Ações Preparar/hoje não/silenciar — peel de NightlyProposalCard.
+// Ações Preparar/hoje não/pausar — peel de NightlyProposalCard.
 // Mute → NightlyProposalCard+Mute.swift
 // Dismiss → NightlyProposalCard+Dismiss.swift
 
