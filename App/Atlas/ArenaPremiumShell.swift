@@ -305,6 +305,8 @@ struct ArenaPremiumTabBar: View {
         .padding(3)
         .background(Capsule().fill(AtlasTheme.bgRecessed.opacity(0.92)))
         .overlay(Capsule().stroke(AtlasTheme.separator.opacity(0.7), lineWidth: 1))
+        // Soft lift for the tab track so the glass pill rides a shared chrome plane.
+        .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 
     private func tabAccessibilityLabel(_ tab: ArenaPremiumTab) -> String {
@@ -3849,6 +3851,11 @@ extension ArenaRunSheet {
             .frame(minHeight: 52)
             .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
             .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+            .atlasElevation(
+                radius: 10,
+                y: 3,
+                opacity: input.isLocallyValidForSubmission ? 0.16 : 0.06
+            )
             .contentShape(Capsule())
     }
 }

@@ -9192,6 +9192,8 @@ extension ArtifactSheet {
                 .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
                 .padding(.horizontal, 16).padding(.vertical, 9)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+                // Match conversation toast elevation — floating review feedback shares one plane.
+                .atlasElevation(radius: 10, y: 3, opacity: 0.2)
                 .padding(.top, 8)
                 .accessibilityLabel(ConversationViewA11y.spokenToast(t))
                 .accessibilityAddTraits(.isStaticText)

@@ -1518,6 +1518,8 @@ extension SearchViewHeader {
             .frame(minHeight: 48) // HIG 44+; match primary chrome breath
             .background(Capsule().fill(AtlasTheme.surface)
                 .overlay(Capsule().stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1)))
+            // Float with back glass circle — search chrome shares one elevation plane.
+            .atlasElevation(radius: focused ? 10 : 6, y: focused ? 3 : 2, opacity: focused ? 0.16 : 0.12)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: focused)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: query.isEmpty)
     }
