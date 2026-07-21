@@ -188,12 +188,17 @@ struct NightlyProposalCard: View {
             .accessibilityLabel(Self.spokenAcceptLabel())
             .accessibilityHint(Self.spokenAcceptHint())
 
-            Button("hoje não") {
+            Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onDismiss()
+            } label: {
+                Text("hoje não")
+                    .font(.system(.footnote, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .padding(.horizontal, 10)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
-            .font(.system(.footnote, weight: .semibold))
-            .foregroundStyle(AtlasTheme.textTertiary)
             .buttonStyle(PressableScale())
             .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
             .accessibilityLabel(Self.spokenDismissLabel())
