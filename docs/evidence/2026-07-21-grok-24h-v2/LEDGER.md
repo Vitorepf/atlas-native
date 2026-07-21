@@ -4,15 +4,15 @@ Started: 2026-07-21T12:15:18Z
 Constraint: leap-first; no god-files; no collapse-host
 
 ## Score
-- leaps_completed: 7
+- leaps_completed: 8
 - compress_cycles: 1
 - splits_for_budget: 1
 - last_gates: AtlasCoreChecks ✓ · make build ✓
 - top_hosts_wc: max ~288; budget OK
-- next: LEAP #8 more Arena form type OR compress dead OR Continuity
+- next: LEAP #9 Continuity OR Arena form type residual OR compress
 
 ## Leaps log
-1–6 previous · 7 Arena instrument idle/terminal/failure serif body
+1–7 prior · 8 Autônomos map chrome Atlas type identity
 
 ## Compress log
 ### COMPRESS-001 dead StatusCapsule peels

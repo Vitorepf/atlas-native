@@ -27,7 +27,7 @@ enum AutonomosMapChrome {
 
     static func heroSub(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 14))
+            .font(AtlasFont.serifItalic(15))
             .foregroundStyle(AtlasTheme.textSecondary)
             .fixedSize(horizontal: false, vertical: true)
     }
@@ -59,10 +59,10 @@ enum AutonomosMapChrome {
     static func primaryCTA(_ title: String, enabled: Bool = true, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 14, weight: .medium))
+                .font(AtlasFont.serif(15, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary.opacity(enabled ? 1 : 0.35))
                 .frame(maxWidth: .infinity)
-                .frame(minHeight: 46)
+                .frame(minHeight: 48)
                 .background(AtlasTheme.textPrimary.opacity(enabled ? 0.055 : 0.03), in: Capsule())
                 .overlay(Capsule().strokeBorder(Color.white.opacity(enabled ? 0.08 : 0.04), lineWidth: 1))
         }
@@ -73,10 +73,10 @@ enum AutonomosMapChrome {
     static func quietCTA(_ title: String, danger: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 14))
+                .font(AtlasFont.serif(15))
                 .foregroundStyle(danger ? AtlasTheme.alert : AtlasTheme.textSecondary)
                 .frame(maxWidth: .infinity)
-                .frame(minHeight: 46)
+                .frame(minHeight: 48)
                 .overlay(
                     Capsule().strokeBorder(
                         danger ? AtlasTheme.alert.opacity(0.35) : AtlasTheme.separator.opacity(0.7),

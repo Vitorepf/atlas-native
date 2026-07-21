@@ -10,7 +10,7 @@ struct AutonomosMapNavLine: View {
         Button(action: action) {
             HStack(spacing: 10) {
                 Text(title)
-                    .font(.system(size: 15.5, weight: .medium))
+                    .font(AtlasFont.serif(16, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text(meta)
@@ -18,7 +18,7 @@ struct AutonomosMapNavLine: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                 Text("›")
-                    .font(.system(size: 13))
+                    .font(AtlasFont.serif(14))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             .padding(.vertical, 14)
