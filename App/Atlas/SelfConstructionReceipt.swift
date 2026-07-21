@@ -161,7 +161,8 @@ extension SelfConstructionReceiptSheet {
             receiptBody
         }
         .accessibilityIdentifier(A11yID.selfReceiptSheet)
-        .accessibilityLabel(spokenSheetLabel())
+        // Contain without fused sheet label so proof lines and veto stay focusable.
+        .accessibilityElement(children: .contain)
     }
 }
 
