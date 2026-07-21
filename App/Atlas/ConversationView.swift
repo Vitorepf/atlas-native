@@ -955,7 +955,7 @@ extension EmptyConversation {
                                     colors: [
                                         AtlasTheme.accent.opacity(0.28),
                                         AtlasTheme.accent.opacity(0.08),
-                                        AtlasTheme.separator
+                                        AtlasTheme.accent.opacity(0.18)
                                     ],
                                     startPoint: .leading,
                                     endPoint: .trailing
@@ -1251,7 +1251,7 @@ struct ConversationOutlineRow: View {
                     colors: [
                         AtlasTheme.accent.opacity(0),
                         AtlasTheme.accent.opacity(0.18),
-                        AtlasTheme.separator,
+                        AtlasTheme.accent.opacity(0.18),
                         AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,
@@ -1760,9 +1760,9 @@ extension ComposerAttachmentRow {
             LinearGradient(
                 colors: [
                     AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.22),
-                    AtlasTheme.separator,
-                    AtlasTheme.accent.opacity(0)
+                AtlasTheme.accent.opacity(0.28),
+                AtlasTheme.accent.opacity(0.12),
+                AtlasTheme.accent.opacity(0)
                 ],
                 startPoint: .leading,
                 endPoint: .trailing
@@ -2123,7 +2123,7 @@ extension SheetRow {
             colors: [
                 AtlasTheme.accent.opacity(0),
                 AtlasTheme.accent.opacity(0.18),
-                AtlasTheme.separator,
+                AtlasTheme.accent.opacity(0.18),
                 AtlasTheme.accent.opacity(0)
             ],
             startPoint: .leading,
@@ -3068,7 +3068,7 @@ extension DraftThumb {
                     .stroke(
                         failedMessage != nil
                             ? AtlasTheme.domOperacional.opacity(0.8)
-                            : AtlasTheme.separator,
+                            : AtlasTheme.goldBorder.opacity(0.35),
                         lineWidth: failedMessage != nil ? 1.5 : 1
                     )
             )
@@ -5589,7 +5589,7 @@ struct PlanStepRowView: View {
         switch s {
         case .done: return AtlasTheme.accent
         case .current: return AtlasTheme.accent
-        case .pending: return AtlasTheme.separator
+        case .pending: return AtlasTheme.accent.opacity(0.22)
         }
     }
 
@@ -6621,7 +6621,7 @@ struct ExecutionStateActionStyle: ButtonStyle {
     }
 
     var border: Color {
-        style == .destructive ? AtlasTheme.domOperacional.opacity(0.55) : AtlasTheme.separator
+        style == .destructive ? AtlasTheme.domOperacional.opacity(0.55) : AtlasTheme.goldBorder.opacity(0.4)
     }
 
     var background: Color {
@@ -8524,7 +8524,7 @@ extension QueuedFollowUpRow {
                 colors: [
                     AtlasTheme.accent.opacity(0),
                     AtlasTheme.accent.opacity(0.18),
-                    AtlasTheme.separator,
+                    AtlasTheme.accent.opacity(0.18),
                     AtlasTheme.accent.opacity(0)
                 ],
                 startPoint: .leading,

@@ -1396,7 +1396,7 @@ extension AtlasCodeView {
                 colors: [
                     AtlasTheme.accent.opacity(0),
                     AtlasTheme.accent.opacity(0.25),
-                    AtlasTheme.separator,
+                    AtlasTheme.accent.opacity(0.18),
                     AtlasTheme.accent.opacity(0.25),
                     AtlasTheme.accent.opacity(0)
                 ],
@@ -2235,7 +2235,7 @@ extension AtlasCodeMirrorCard {
 
     var borderColor: Color {
         if case .blocked = response.state { return AtlasCodePalette.alert.opacity(0.35) }
-        return AtlasTheme.separator
+        return AtlasTheme.goldBorder.opacity(0.35)
     }
 }
 
@@ -3411,7 +3411,7 @@ extension AtlasCodeProvenanceSheet {
         VStack(spacing: 0) {
             ForEach(Array(provenance.files.enumerated()), id: \.element.id) { index, file in
                 if index > 0 {
-                    Divider().overlay(AtlasTheme.separator.opacity(0.5))
+                    Divider().overlay(AtlasTheme.accent.opacity(0.14))
                 }
                 provenanceFileButton(file, index: index, whyTarget: whyTarget)
             }
@@ -4099,7 +4099,7 @@ struct AtlasCodeFolderRow: View {
                         .padding(.leading, 32)
                         if repo.id != folder.repos.last?.id {
                             Rectangle()
-                                .fill(AtlasTheme.separator.opacity(0.4))
+                                .fill(AtlasTheme.accent.opacity(0.12))
                                 .frame(height: 0.5)
                                 .padding(.leading, 32)
                                 .accessibilityHidden(true)

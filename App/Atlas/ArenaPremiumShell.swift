@@ -2905,7 +2905,7 @@ struct ArenaPremiumExecutionPipeline: View {
     private func pipelineRail(after step: ArenaPremiumPipelineStep) -> some View {
         let done = (projection.marks[step] ?? .pending) == .done
         return Rectangle()
-            .fill(done ? AtlasTheme.separator : AtlasTheme.separator.opacity(0.35))
+            .fill(done ? AtlasTheme.accent.opacity(0.28) : AtlasTheme.accent.opacity(0.12))
             .frame(width: 18, height: 1)
             .padding(.top, 10)
             .accessibilityHidden(true)
@@ -4082,7 +4082,7 @@ extension ArenaRunSheet {
             .frame(maxWidth: .infinity)
             .frame(minHeight: 52)
             .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
-            .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+            .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.35), lineWidth: 1))
             .atlasElevation(
                 radius: 10,
                 y: 3,
@@ -4576,7 +4576,7 @@ struct ArenaPremiumAction: View {
                 .overlay(
                     Capsule().stroke(
                         quiet
-                            ? AtlasTheme.separator.opacity(disabled ? 0.35 : 0.7)
+                            ? AtlasTheme.goldBorder.opacity(disabled ? 0.22 : 0.45)
                             : AtlasTheme.textPrimary.opacity(disabled ? 0.05 : 0.12),
                         lineWidth: 1
                     )

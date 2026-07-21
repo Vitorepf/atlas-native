@@ -1020,9 +1020,9 @@ struct RootHomeSections: View {
         LinearGradient(
             colors: [
                 AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.22),
-                AtlasTheme.separator,
-                AtlasTheme.separator.opacity(0)
+                AtlasTheme.accent.opacity(0.28),
+                AtlasTheme.accent.opacity(0.12),
+                AtlasTheme.accent.opacity(0)
             ],
             startPoint: .leading, endPoint: .trailing
         )
@@ -1059,8 +1059,8 @@ struct LiveNowSection: View {
                     LinearGradient(
                         colors: [
                             AtlasTheme.accent.opacity(0),
-                            AtlasTheme.accent.opacity(0.22),
-                            AtlasTheme.separator.opacity(0.7),
+                            AtlasTheme.accent.opacity(0.28),
+                            AtlasTheme.accent.opacity(0.12),
                             AtlasTheme.accent.opacity(0)
                         ],
                         startPoint: .leading,
@@ -1668,8 +1668,8 @@ extension SearchResultsSection {
                     colors: [
                         AtlasTheme.accent.opacity(0),
                         AtlasTheme.accent.opacity(0.2),
-                        AtlasTheme.separator,
-                        AtlasTheme.separator.opacity(0)
+                        AtlasTheme.accent.opacity(0.22),
+                        AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,
                     endPoint: .trailing
@@ -1909,8 +1909,8 @@ extension SearchRecentSection {
                     colors: [
                         AtlasTheme.accent.opacity(0),
                         AtlasTheme.accent.opacity(0.2),
-                        AtlasTheme.separator,
-                        AtlasTheme.separator.opacity(0)
+                        AtlasTheme.accent.opacity(0.22),
+                        AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,
                     endPoint: .trailing
@@ -2368,8 +2368,8 @@ extension WorkspaceThreadsSection {
                 colors: [
                     AtlasTheme.accent.opacity(0),
                     AtlasTheme.accent.opacity(0.2),
-                    AtlasTheme.separator,
-                    AtlasTheme.separator.opacity(0)
+                    AtlasTheme.accent.opacity(0.22),
+                    AtlasTheme.accent.opacity(0)
                 ],
                 startPoint: .leading,
                 endPoint: .trailing
