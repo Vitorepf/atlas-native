@@ -1021,6 +1021,8 @@ extension ChangeReviewDiffView {
         }
         .frame(maxHeight: 320)
         .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.bgRecessed))
+        // Diff pane floats slightly above the review surface.
+        .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 
@@ -1190,6 +1192,8 @@ extension ChangeReviewRunHeader {
             .padding(14)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).fill(AtlasTheme.surface))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+            // Gold-bordered masthead shares card elevation with accept CTAs.
+            .atlasElevation(radius: 10, y: 3, opacity: 0.14)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(ChangeReviewSectionsA11y.spokenRunHeader(run: run))
             .accessibilityIdentifier(A11yID.reviewRunHeader)

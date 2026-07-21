@@ -4614,6 +4614,8 @@ extension ExecutionRibbon {
         content
             .padding(.vertical, 10).padding(.horizontal, 14)
             .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.5)
+            // Match plan-card plane — live ribbon floats above the turn stream.
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
     }
 }
 
@@ -6144,6 +6146,8 @@ extension ExecutionProof {
         .padding(10)
         .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.bgRecessed))
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        // Scrubber rides above proof chrome without competing with primary CTAs.
+        .atlasElevation(radius: 4, y: 1, opacity: 0.08)
         .accessibilityIdentifier(A11yID.executionReplayScrubber)
     }
 }

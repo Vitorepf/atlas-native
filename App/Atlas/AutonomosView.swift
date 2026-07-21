@@ -1753,6 +1753,8 @@ extension SelfConstructionReceiptSheet {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.domOperacional.opacity(0.08)))
                 .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.domOperacional.opacity(0.35), lineWidth: 1))
+                // Soft attention lift for queued revert status.
+                .atlasElevation(radius: 6, y: 2, opacity: 0.1)
                 .transition(reduceMotion ? .identity : .opacity)
                 .accessibilityLabel(spokenRevertQueueLabel())
         }
