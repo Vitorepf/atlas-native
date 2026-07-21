@@ -18,6 +18,7 @@ extension AutonomosAskContext {
         nightlyAutoPaused: Bool,
         nightlyWorkspaceText: String?,
         nightlyMutedUntil: Date?,
+        rhythmWindows: AtlasDayRhythm.Windows? = nil,
         into facts: inout [String],
         absences: inout [String],
         anchors: inout [String]
@@ -66,10 +67,20 @@ extension AutonomosAskContext {
             absences.append("nightly organ não snapshot neste turn")
         }
 
+        // WAVE-177: rhythm pack when host awaited windows (catalog only).
         if destination == nil {
-            absences.append(
-                "ritmo: janelas async — face RhythmLearningLine carrega sample; pack não inventa windows"
-            )
+            if let rhythmWindows {
+                let rhythmPack = AutonomosRhythmJudgment.packFacts(
+                    windows: rhythmWindows,
+                    paused: nightlyMuted
+                )
+                facts.append(contentsOf: rhythmPack.facts)
+                absences.append(contentsOf: rhythmPack.absences)
+            } else {
+                absences.append(
+                    "ritmo: host não passou windows — pack não inventa sample"
+                )
+            }
         }
         return canRevert
     }

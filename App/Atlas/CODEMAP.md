@@ -99,7 +99,7 @@
 | **Multi-área bind (chooser)** | `AutonomosAreaBindJudgment` → face none/auto/needs_bind/bound · `AutonomosAreaBindChooser` · Hub CTA |
 | **Proposta noturna** | `NightlyProposalJudgment` → face pending/muted/muted_auto/hidden · Block/Card/Rhythm |
 | **Nightly schedule peel** | `NightlyProposalController` host · `NightlyProposalSchedule` (WAVE-156) |
-| **Ritmo do dia (aprender)** | `AutonomosRhythmJudgment` → face learning/learned/paused · line/sheet |
+| **Ritmo do dia (aprender)** | `AutonomosRhythmJudgment` → face learning/learned/paused · line/sheet · pack Ask catalog (WAVE-177) |
 | **Veto retroativo self-construction** | `SelfConstructionVetoJudgment` → ReceiptSheet canRevert → `model.revertCycle` |
 | **Veto + nightly pack (159)** | `SelfConstructionVetoJudgment.packFacts` · Nightly pack on catalog · can_do canRevert → AskContext |
 | **Evolução / entregas Autônomos** | `AutonomosEvolutionJudgment` → EvolutionView marcos → receipt |

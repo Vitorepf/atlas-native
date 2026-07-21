@@ -27,6 +27,8 @@ extension AutonomosMapShell {
             draft: "",
             turnFacts: { [selectedUnit, destination, model, nightly] _ in
                 let n = nightly
+                // WAVE-177: same windows load as RhythmLearningLine face (no invent).
+                let rhythmWindows = await AtlasSession.rhythm.windows(minimumDays: 4)
                 return AutonomosAskContext.facts(
                     unit: selectedUnit,
                     destination: destination,
@@ -54,7 +56,8 @@ extension AutonomosMapShell {
                     nightlyMuted: n.isProposalMuted,
                     nightlyAutoPaused: AtlasSession.nightlyProposalAutoPaused(),
                     nightlyWorkspaceText: n.pendingProposal?.workspaceText,
-                    nightlyMutedUntil: n.mutedUntil
+                    nightlyMutedUntil: n.mutedUntil,
+                    rhythmWindows: rhythmWindows
                 )
             },
             onThread: { askThreadId = $0 },

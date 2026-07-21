@@ -69,7 +69,9 @@ enum AutonomosAskContext {
         nightlyMuted: Bool = false,
         nightlyAutoPaused: Bool = false,
         nightlyWorkspaceText: String? = nil,
-        nightlyMutedUntil: Date? = nil
+        nightlyMutedUntil: Date? = nil,
+        /// WAVE-177: day-rhythm windows from async host (nil → honest absence).
+        rhythmWindows: AtlasDayRhythm.Windows? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -150,6 +152,7 @@ enum AutonomosAskContext {
             nightlyAutoPaused: nightlyAutoPaused,
             nightlyWorkspaceText: nightlyWorkspaceText,
             nightlyMutedUntil: nightlyMutedUntil,
+            rhythmWindows: rhythmWindows,
             into: &facts,
             absences: &absences,
             anchors: &anchors
