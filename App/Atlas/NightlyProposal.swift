@@ -158,7 +158,7 @@ struct NightlyProposalCard: View {
                 .font(AtlasFont.mono(10))
                 .tracking(1.1)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+                .accessibilityAddTraits(.isHeader)
         }
     }
 
@@ -168,12 +168,10 @@ struct NightlyProposalCard: View {
                 .font(AtlasFont.serif(16, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
-                .accessibilityHidden(true)
             Text("A frota pode continuar enquanto você descansa.")
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
-                .accessibilityHidden(true)
         }
     }
 

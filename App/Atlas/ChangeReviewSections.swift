@@ -195,6 +195,7 @@ struct ChangeReviewToast: View {
         if let t = reviews.toast {
             toastCapsule(t)
                 .accessibilityLabel(ChangeReviewSectionsA11y.spokenToast(t))
+                .accessibilityAddTraits(.updatesFrequently)
                 .accessibilityIdentifier(A11yID.reviewToast)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .task { await dismissToastAfterDelay() }
