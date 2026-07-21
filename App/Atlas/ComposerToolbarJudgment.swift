@@ -51,6 +51,29 @@ enum ComposerToolbarJudgment {
         return "Modo: \(name.capitalized)"
     }
 
+    // MARK: Composer card (host shell)
+
+    static let cardHint =
+        "escreve, anexa e envia; fila e execução viva aparecem quando publicadas"
+
+    static func spokenCard(
+        expanded: Bool,
+        draftCount: Int,
+        queueCount: Int,
+        isSending: Bool
+    ) -> String {
+        var parts = ["compositor"]
+        if expanded { parts.append("expandido") }
+        if draftCount > 0 {
+            parts.append("\(draftCount) anexo\(draftCount == 1 ? "" : "s")")
+        }
+        if queueCount > 0 {
+            parts.append("\(queueCount) na fila")
+        }
+        if isSending { parts.append("enviando") }
+        return parts.joined(separator: ", ")
+    }
+
     // MARK: Pack
 
     static func packFacts(

@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 86
-- idle_compress_passes: 11
+- idle_compress_passes: 12
 - collapse_host: 0
 
 ## Waves done
@@ -99,10 +99,11 @@ mode: designer + implementer
 - WAVE-091
 
 ## Idle compress
-- pass 11 · delete LiveTimelineA11y · ArenaSuiteSheetA11y · StaleReadSealA11y → Judgment-only
+- pass 11 · Timeline/Suite/StaleRead A11y delete
+- pass 12 · Composer card spoken → ToolbarJudgment
 
 ## Open queue
-_(none)_
+_(none)_ — max 2 IDLE after WAVE-091 done
 
 ## Notes
-- WAVE-091 toolbar chrome shipped. DEVICE_PENDING.
+- DEVICE_PENDING. Awaiting A fill or full-bar residual only.

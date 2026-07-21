@@ -4,23 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS body
 
-enum ConversationComposerA11y {
-    static func spokenCard(expanded: Bool, draftCount: Int, queueCount: Int, isSending: Bool) -> String {
-        var parts = ["compositor"]
-        if expanded { parts.append("expandido") }
-        if draftCount > 0 {
-            parts.append("\(draftCount) anexo\(draftCount == 1 ? "" : "s")")
-        }
-        if queueCount > 0 {
-            parts.append("\(queueCount) na fila")
-        }
-        if isSending { parts.append("enviando") }
-        return parts.joined(separator: ", ")
-    }
-
-    static let cardHint = "escreve, anexa e envia; fila e execução viva aparecem quando publicadas"
-}
-
 extension ConversationComposer {
     func send() {
         AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
@@ -58,7 +41,7 @@ extension ConversationComposer {
         .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(composerCardSpokenLabel)
-        .accessibilityHint(ConversationComposerA11y.cardHint)
+        .accessibilityHint(ComposerToolbarJudgment.cardHint)
     }
 
     var composerCardPadding: EdgeInsets {
@@ -68,7 +51,7 @@ extension ConversationComposer {
     }
 
     var composerCardSpokenLabel: String {
-        ConversationComposerA11y.spokenCard(
+        ComposerToolbarJudgment.spokenCard(
             expanded: expanded,
             draftCount: model.drafts.count,
             queueCount: model.queuedMessages.count,
