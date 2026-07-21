@@ -103,7 +103,7 @@ extension WorkspaceView {
         .buttonStyle(.plain)
         .accessibilityLabel("área \(a.label)")
         .accessibilityHint("filtra conversas já carregadas")
-        .accessibilityAddTraits(active ? .isSelected : [])
+        .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
     }
 }
 

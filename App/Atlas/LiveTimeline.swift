@@ -74,7 +74,7 @@ extension TimelineFilterChips {
                                                                   active: active,
                                                                   silent: active && filterSilence))
             .accessibilityHint(LiveTimelineA11y.spokenFilterHint())
-            .accessibilityAddTraits(active ? .isSelected : [])
+            .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
             .accessibilityIdentifier(A11yID.liveTimelineFilter(option.rawValue))
     }
 }
