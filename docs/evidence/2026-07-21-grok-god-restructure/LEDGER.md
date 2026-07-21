@@ -28,6 +28,22 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T22:58Z — RootChrome ConversationRoutes density split
+
+```yaml
+phase: prove
+focus: RootChrome 699 → host + ConversationRoutes
+domain_index: 0
+pass: 1
+commands: |
+  peel RootChromeConversationRoutes for route ≤600
+  gates ✓
+before_after: |
+  RootChrome density under route ceiling
+notes: continue residual peels
+```
+
+
 ### AutonomosModel Actions fuse
 
 ```yaml

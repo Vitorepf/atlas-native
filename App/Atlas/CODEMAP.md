@@ -174,7 +174,7 @@
 | **ComposerDraftJudgment parts** | core · attach spoken fused |
 | **ChangeReview body / sheet** | `ChangeReviewBody` (controls/tests/decided/run) · `ChangeReviewSheetBody` |
 | **ArenaSuiteSheet parts** | Sheet · Body |
-| **RootChrome parts** | Chrome · Lifecycle · DeepLink · ConversationRoutes (ThreadRow own file) |
+| **RootChrome parts** | Chrome · Lifecycle · DeepLink · `RootChromeConversationRoutes` (ThreadRow own file) |
 | **ExecutionStateCard spoken** | fused in `ExecutionStateCard` (was Spoken·Body peels) |
 | **Composer sheets modifier parts** | Modifier · Body |
 | **ExecutionProof body** | `ExecutionProof` decision/quality/replay (was Sections*) |
