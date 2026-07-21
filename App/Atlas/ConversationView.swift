@@ -461,7 +461,7 @@ extension ConversationView {
             Text(t)
                 .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
                 .padding(.horizontal, 16).padding(.vertical, 9)
-                .frame(minHeight: 44)
+                .frame(minHeight: 48)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
@@ -927,7 +927,7 @@ extension EmptyConversation {
                 .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 18).padding(.vertical, 12)
-                .frame(maxWidth: .infinity, minHeight: 44)
+                .frame(maxWidth: .infinity, minHeight: 48)
                 .background(
                     Capsule().fill(AtlasTheme.surface)
                         .overlay(
@@ -1352,7 +1352,7 @@ extension ConversationHandoffReceipt {
         content
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
-            .frame(minHeight: 44, alignment: .center)
+            .frame(minHeight: 48, alignment: .center)
             .background(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
                     .fill(AtlasTheme.goldVeil)
@@ -2483,7 +2483,7 @@ extension ConversationComposer {
         Text(queueChipLabel)
             .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
             .padding(.horizontal, 12).padding(.vertical, 5)
-            .frame(minHeight: 44)
+            .frame(minHeight: 48)
             .contentShape(Capsule())
             .background(Capsule().fill(AtlasTheme.goldVeil)
                 .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
@@ -2495,7 +2495,7 @@ extension ConversationComposer {
         RoundedRectangle(cornerRadius: 3)
             .fill(AtlasTheme.textTertiary.opacity(0.55))
             .frame(width: 42, height: 5)
-            .frame(maxWidth: .infinity, minHeight: 44) // HIG hit target for dismiss
+            .frame(maxWidth: .infinity, minHeight: 48) // HIG hit target for dismiss
             .contentShape(Rectangle())
     }
 }
@@ -3728,7 +3728,7 @@ extension ConversationMessages {
         }
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 13).padding(.vertical, 7)
-        .frame(minHeight: 44)
+        .frame(minHeight: 48)
         .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
         .contentShape(Capsule())
     }
@@ -3952,7 +3952,7 @@ extension FeedbackRow {
             .font(AtlasFont.serifItalic(13))
             .foregroundStyle(isActive ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
             .padding(.horizontal, 12).padding(.vertical, 6)
-            .frame(minHeight: 44)
+            .frame(minHeight: 48)
             .contentShape(Capsule())
             .overlay(
                 Capsule().stroke(
@@ -4293,7 +4293,7 @@ extension EditorialTurn {
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 9)
         .padding(.vertical, 5)
-        .frame(minHeight: 44, alignment: .leading)
+        .frame(minHeight: 48, alignment: .leading)
         .contentShape(Rectangle())
         .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
     }
@@ -5183,7 +5183,7 @@ extension PlanCard {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
             Text(showDetail ? "menos" : "ferramentas · agentes · gates")
                 .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
-                .frame(minHeight: 44, alignment: .leading)
+                .frame(minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -5441,7 +5441,7 @@ extension PlanCard {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
             Text(showRevisions ? "ocultar versões" : "comparar versões · \(count)")
                 .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
-                .frame(minHeight: 44, alignment: .leading)
+                .frame(minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -5743,7 +5743,7 @@ extension ExecutionProof {
                 .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }
-        .frame(minHeight: 44)
+        .frame(minHeight: 48)
         .contentShape(Rectangle())
     }
 }
@@ -5822,7 +5822,7 @@ extension ExecutionProof {
             artifactsButtonLead(count: count)
             artifactsChevron
         }
-        .frame(minHeight: 44, alignment: .leading)
+        .frame(minHeight: 48, alignment: .leading)
         .contentShape(Rectangle())
     }
 }
@@ -6298,7 +6298,7 @@ extension ExecutionStateCard {
         Text("Retomar")
             .font(AtlasFont.mono(10, .semibold))
             .padding(.horizontal, 11).padding(.vertical, 8)
-            .frame(maxWidth: .infinity, minHeight: 44)
+            .frame(maxWidth: .infinity, minHeight: 48)
             .contentShape(Rectangle())
     }
 
@@ -6331,7 +6331,7 @@ extension ExecutionStateCard {
             .font(AtlasFont.mono(10, .semibold))
             .lineLimit(1)
             .padding(.horizontal, 11).padding(.vertical, 8)
-            .frame(maxWidth: .infinity, minHeight: 44)
+            .frame(maxWidth: .infinity, minHeight: 48)
             .contentShape(Rectangle())
     }
 }
@@ -7916,7 +7916,7 @@ extension SteerInteractionSheet {
             }
         }
         .pickerStyle(.segmented)
-        .frame(minHeight: 44) // HIG interactive minimum
+        .frame(minHeight: 48) // HIG interactive minimum
         .onChange(of: scope) { _, _ in
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
         }
@@ -8742,7 +8742,7 @@ extension CodeBlockView {
             Text(copyButtonTitle)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(copyForeground)
-                .frame(minHeight: 44)
+                .frame(minHeight: 48)
                 .padding(.horizontal, 4)
                 .contentShape(Rectangle())
         }
