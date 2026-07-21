@@ -54,13 +54,14 @@ extension AtlasCodeLoadFailureEmpty {
 
 extension AtlasCodeLoadFailureEmpty {
     var failureStack: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: 16) {
             failureIcon
             failureHeadline
             failureMessage
             retryButton
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 28)
+        .frame(maxWidth: 420, maxHeight: .infinity)
     }
 }
 
@@ -71,9 +72,18 @@ extension AtlasCodeLoadFailureEmpty {
             onRetry()
         } label: {
             Text("Tentar de novo")
+                .font(AtlasFont.serifItalic(16))
+                .foregroundStyle(AtlasTheme.accent)
+                .padding(.horizontal, 22)
+                .padding(.vertical, 12)
+                .frame(minHeight: 44)
+                .background(
+                    Capsule().fill(AtlasTheme.goldVeil)
+                        .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+                )
+                .contentShape(Capsule())
         }
-        .buttonStyle(.borderedProminent)
-        .tint(AtlasTheme.accent)
+        .buttonStyle(PressableScale())
         .accessibilityLabel("tentar de novo")
         .accessibilityHint("recarrega o grafo ou radar deste repositório")
         .accessibilityIdentifier(A11yID.codeLoadRetry)
