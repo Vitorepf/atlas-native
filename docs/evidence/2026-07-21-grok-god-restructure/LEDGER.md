@@ -28,6 +28,15 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### ComposerToolbar fuse
+
+```yaml
+focus: host+Chrome+ChromeBody
+domain_index: 1
+lines: 418
+gates: ok
+```
+
 ### QueuedFollowUp fuse
 
 ```yaml

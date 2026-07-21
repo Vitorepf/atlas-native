@@ -60,7 +60,7 @@
 | **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other · pack mid-thread |
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank · pack mid-thread |
 | **Composer draft/anexos** | `ComposerDraftJudgment` → strip · DraftStrip · pack mid-thread |
-| **Composer toolbar chrome** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |
+| **Composer toolbar** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |
 | **Composer esforço** | `ComposerEffortJudgment` → face · pack mid-thread |
 | **Composer folhas modo/workspace** | `ComposerSheetJudgment` → mode face · workspace sheet empty/list |
 | Composer sheet parts | `ComposerSheetPrimitives` (EffortSheet · SheetRow · NewMarker) · SheetsHost |
