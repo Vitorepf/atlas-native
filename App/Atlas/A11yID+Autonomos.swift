@@ -27,4 +27,8 @@ extension A11yID {
     static let autonomosAskPill = "autonomos-ask-pill"
     static let autonomosAreasSheet = "autonomos-areas-sheet"
     static let autonomosGovernanceSheet = "autonomos-governance-sheet"
+    static let autonomosReasonSheet = "autonomos-reason-sheet"
+    static let autonomosReasonActor = "autonomos-reason-actor"
+    static let autonomosReasonField = "autonomos-reason-field"
+    static let autonomosReasonSubmit = "autonomos-reason-submit"
 }

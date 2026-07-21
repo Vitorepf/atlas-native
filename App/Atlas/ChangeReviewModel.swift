@@ -22,6 +22,8 @@ final class ChangeReviewModel {
 
     @ObservationIgnored var onTraceUpdated: (@MainActor (TraceID, AtlasAiTrace) -> Void)?
     @ObservationIgnored let artifactContentCache = NSCache<NSString, CachedArtifactContent>()
+    /// Coalesce: um refresh in-flight por trace (evita 3 GETs × N bolhas no scroll).
+    @ObservationIgnored var changeReviewInFlight: Set<TraceID> = []
 
     let client: AtlasClient
 

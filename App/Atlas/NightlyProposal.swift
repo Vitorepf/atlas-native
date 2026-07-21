@@ -71,6 +71,8 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     #if DEBUG
     func installDemoIfRequested(arguments: [String] = ProcessInfo.processInfo.arguments) {
         guard arguments.contains("-atlas.nightly.demo") else { return }
+        // UITest não herda mute de runs anteriores no simulador.
+        unmuteProposal()
         pendingProposal = ProposalPayload(workspaces: ["atlas-native"])
     }
     #endif

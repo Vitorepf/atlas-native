@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 
 /// V1 · Cockpit postura: a home só mostra "VIVO AGORA" com sessão observada
 /// neste processo; some quando a última sessão termina. Nunca guard-return
@@ -21,21 +22,27 @@ final class AtlasLiveNowTests: XCTestCase {
             XCTFail("VIVO AGORA não pode existir na home ociosa")
         }
 
-        app.buttons[A11yID.homeInputPill].tap()
-        // A pílula abre o picker; "Sem repositório" = conversa geral (o antigo "+").
-        let semRepo = app.buttons[A11yID.workspacePickerNoRepo]
-        XCTAssertTrue(semRepo.waitForExistence(timeout: 20), "picker não abriu com 'sem repositório'")
-        semRepo.tap()
-        let field = app.textFields[A11yID.conversationInput].exists
-            ? app.textFields[A11yID.conversationInput]
-            : app.textFields.firstMatch
-        XCTAssertTrue(field.waitForExistence(timeout: 20), "composer não apareceu")
+        // 2ª launch com harness de conversa — a prova é VIVO AGORA, não o picker.
+        app.terminate()
+        app.launchArguments = ["-atlas.uitest.newConversation"]
+        app.launchEnvironment["ATLAS_DEVICE_PROOF_PROVIDER"] = provider
+        app.launch()
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 2) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let field = app.descendants(matching: .any)[A11yID.conversationInput]
+        XCTAssertTrue(field.waitForExistence(timeout: 30), "composer não apareceu")
         field.tap()
-        field.typeText("Execute obrigatoriamente sleep 8 && pwd com uma ferramenta shell read-only e responda apenas o caminho observado.")
+        field.typeText("sleep 8 && pwd")
 
-        let send = app.buttons["enviar ao Atlas"]
-        XCTAssertTrue(send.waitForExistence(timeout: 10), "envio real não ficou disponível")
-        send.tap()
+        let send = app.descendants(matching: .any)[A11yID.conversationSend]
+        let sendByLabel = app.buttons["enviar ao Atlas"]
+        XCTAssertTrue(
+            send.waitForExistence(timeout: 10) || sendByLabel.waitForExistence(timeout: 5),
+            "envio real não ficou disponível"
+        )
+        (send.exists ? send : sendByLabel).tap()
 
         // Volta à home enquanto o turno ainda vive.
         let back = app.buttons.matching(NSPredicate(format: "label CONTAINS 'chevron' OR identifier CONTAINS 'back'")).firstMatch

@@ -3,10 +3,12 @@ import XCTest
 final class AtlasArenaNowProbeTests: XCTestCase {
     @MainActor
     func testEveryArenaLifecycleStateHasDistinctSemantics() {
+        // Copy = o que a casca Premium realmente mostra (não o antigo "17/42 casos"
+        // colado: o hero fala completed/total em textos separados + "casos confirmados").
         let expected: [(scenario: String, state: String, copy: String)] = [
             ("idle", "idle", "Nada medindo agora"),
             ("queued", "queued", "Medição programada"),
-            ("running", "running", "17/42 casos"),
+            ("running", "running", "casos confirmados"),
             ("stopping", "stopping", "Finalizando o caso atual"),
             ("stopped", "stopped", "Resultados parciais preservados"),
             ("completed", "completed", "Resultado terminal confirmado"),

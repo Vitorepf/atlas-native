@@ -1,4 +1,5 @@
 import Foundation
+import AtlasCore
 
 /// Nomes de exibição e datas relativas da Arena — presentation-only.
 /// IDs crus continuam nos contratos e nos A11y identifiers; o operador
@@ -72,7 +73,7 @@ enum ArenaDisplay {
 
     /// "2026-07-16T23:42:29+00:00" → "há 2h"; nil se não parsear (nunca ISO cru).
     static func relative(_ isoString: String?) -> String? {
-        guard let isoString, let date = parseISO(isoString) else { return nil }
+        guard let date = AtlasTime.date(isoString) else { return nil }
         let seconds = max(0, Int(Date().timeIntervalSince(date)))
         switch seconds {
         case ..<60: return "agora"
@@ -81,11 +82,5 @@ enum ArenaDisplay {
         default: return "há \(seconds / 86_400)d"
         }
     }
-
-    // ISO8601DateFormatter não é Sendable — instância por chamada (barato aqui).
-    private static func parseISO(_ string: String) -> Date? {
-        let fractional = ISO8601DateFormatter()
-        fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return fractional.date(from: string) ?? ISO8601DateFormatter().date(from: string)
-    }
 }
+

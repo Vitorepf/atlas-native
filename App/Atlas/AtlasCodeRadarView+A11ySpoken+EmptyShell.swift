@@ -6,5 +6,5 @@ import AtlasCore
 extension AtlasCodeRadarView {
     func spokenEmptyWorkspace() -> String { "nenhum repositório neste workspace" }
 
-    static let shellHint = "pastas, recentes e desvios verificados do seu código"
+    static let shellHint = "pastas, recentes e sem retorno verificados do seu código"
 }

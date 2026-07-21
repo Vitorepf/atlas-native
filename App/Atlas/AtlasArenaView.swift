@@ -1,23 +1,17 @@
 import SwiftUI
 import AtlasCore
 
-/// Arena — medição de regressão dos motores (canon).
-/// Content/header → AtlasArenaView+* · Sheets → AtlasArenaView+Sheets.swift
-/// Scroll → AtlasArenaView+ScrollBody.swift · Lifecycle → AtlasArenaView+Lifecycle.swift
+/// Arena — medição de motores (premium only). Dual-stack classic removido (GOD F5).
 struct AtlasArenaView: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Environment(AtlasSession.self) var session
     @Bindable var model: ArenaModel
     @State var selectedSuite: AtlasArenaSuite?
-    @State var selectedEngine: AtlasArenaCompositeEngine?
     @State var showingRunSheet = false
     @State var selectedTab: ArenaPremiumTab = .now
     @State var premiumDestination: ArenaPremiumDestination?
     @State var selectedCapability: AtlasArenaCapability?
     @State var stoppingRun: AtlasArenaLiveRun?
-    /// Suítes são bastidor (capacidades são o palco): lista colapsada em uma
-    /// linha; regressão fura o colapso.
-    @State var suitesExpanded = false
 
     var body: some View {
         arenaSheets(on:
@@ -33,5 +27,8 @@ struct AtlasArenaView: View {
                 )
             )
         )
+        // NÃO colocar accessibilityIdentifier/label no container da Arena —
+        // no iOS 26 isso substitui o id de cada tab/CTA (todos viram
+        // "arena-screen") e quebra a bateria XCUITest.
     }
 }

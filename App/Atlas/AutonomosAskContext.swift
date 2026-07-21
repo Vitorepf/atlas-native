@@ -47,7 +47,7 @@ enum AutonomosAskContext {
 
     static func facts(unit: AutonomosUnit?, destination: AutonomosDestination?) -> String {
         var lines: [String] = [
-            "Contexto Autônomos. Responda só sobre este Autônomo (escopo fechado).",
+            "Contexto Autônomos (ocasião). Pack local anexa sempre; intenção do operador pode pedir outro mundo — não bloqueie por silo.",
         ]
         if let unit {
             lines.append("Autônomo: \(unit.name).")
@@ -60,7 +60,9 @@ enum AutonomosAskContext {
         if let destination {
             lines.append("Tela: \(destination.navTitle).")
         }
-        lines.append("Motor Server ainda não vinculado a este Autônomo (create API pendente).")
+        lines.append("Create Server de Autônomo ainda pendente (§5); catálogo local pode sumir no kill do app.")
+        lines.append("Pause/retomar/encerrar: controles da face; NL de chat ainda não autoriza tools de escrita no wire.")
         return lines.joined(separator: "\n")
     }
 }
+

@@ -14,6 +14,8 @@ struct ArenaPremiumShell: View {
     @State private var showingAsk = false
     @State private var askThreadId: ThreadID?
     @State private var askDraft = ""
+    /// Sheet local da suíte — evita race do binding com o contentor AtlasArenaView.
+    @State private var suiteSheet: AtlasArenaSuite?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -45,7 +47,7 @@ struct ArenaPremiumShell: View {
                 target: target,
                 model: model,
                 onStop: { stoppingRun = $0 },
-                onSuite: { selectedSuite = $0 }
+                onSuite: { openSuite($0) }
             )
         }
         .sheet(item: $selectedCapability) { capability in
@@ -58,9 +60,17 @@ struct ArenaPremiumShell: View {
         .sheet(item: $stoppingRun) { run in
             ArenaPremiumStopSheet(model: model, run: run)
         }
+        .fullScreenCover(item: $suiteSheet) { suite in
+            ArenaSuiteSheet(suite: suite)
+        }
         .sheet(isPresented: $showingAsk) {
             askConversationSheet
         }
+    }
+
+    private func openSuite(_ suite: AtlasArenaSuite) {
+        selectedSuite = suite
+        suiteSheet = suite
     }
 
     private var askPillDock: some View {
@@ -72,8 +82,9 @@ struct ArenaPremiumShell: View {
             )
             .frame(height: 28)
             .allowsHitTesting(false)
-            ArenaPremiumAskPill(
-                invite: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination)
+            AgenticPill(
+                invite: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination),
+                accessibilityId: A11yID.arenaPremiumAskPill
             ) {
                 askDraft = ""
                 showingAsk = true
@@ -125,7 +136,7 @@ struct ArenaPremiumShell: View {
                 ArenaPremiumResultsView(
                     model: model,
                     reduceMotion: reduceMotion,
-                    onSuite: { selectedSuite = $0 }
+                    onSuite: { openSuite($0) }
                 )
             case .capabilities:
                 ArenaPremiumCapabilitiesView(

@@ -20,18 +20,5 @@ extension RootView {
         .accessibilityIdentifier(A11yID.homeInputPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(inputBarBackground)
-        .sheet(isPresented: $showingNewPicker) {
-            AtlasWorkspacePickerSheet(
-                client: session.client,
-                title: "Nova conversa",
-                onNoRepo: {
-                    showingNewPicker = false
-                    path.append(Route.new(workspaceKey: nil))
-                }
-            ) { key, title in
-                showingNewPicker = false
-                path.append(Route.workspace(key: key, title: title))
-            }
-        }
     }
 }

@@ -11,6 +11,9 @@ struct AutonomosMapShell: View {
     @State private var showingAsk = false
     @State private var askThreadId: ThreadID?
     @State private var confirmEnd = false
+    @State private var selfConstructionReceipt: SelfConstructionReceipt?
+    @State private var nightly = NightlyProposalController.shared
+    @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
 
     private var selectedUnit: AutonomosUnit? {
         guard let selectedUnitID else { return nil }
@@ -22,19 +25,21 @@ struct AutonomosMapShell: View {
         return unit.paused ? .quiet : .live
     }
 
+    /// Só ciclos com merge real — nunca fabrica “melhorou”.
+    private var latestMergeProvedReceipt: SelfConstructionReceipt? {
+        guard let cycles = model.delivered?.delivered else { return nil }
+        guard let cycle = cycles.first(where: { $0.mergePerformed && !$0.mergeHash.isEmpty }) else {
+            return nil
+        }
+        return SelfConstructionReceipt(cycle: cycle, finding: nil)
+    }
+
     var body: some View {
         Group {
             if let destination {
                 route(destination)
             } else {
-                AutonomosListView(
-                    units: model.operatorUnits,
-                    onOpen: { unit in
-                        selectedUnitID = unit.id
-                        destination = .hub
-                    },
-                    onCreate: { showNewSheet = true }
-                )
+                catalogFace
             }
         }
         .sheet(isPresented: $showNewSheet) {
@@ -48,6 +53,26 @@ struct AutonomosMapShell: View {
                 onCancel: { showNewSheet = false }
             )
         }
+        .sheet(item: $selfConstructionReceipt) { receipt in
+            SelfConstructionReceiptSheet(receipt: receipt)
+        }
+        .sheet(item: $nightlyStartProposal) { proposal in
+            AutonomosReasonSheet(
+                title: "Preparar missão noturna",
+                explainer: "Ensaio (dry-run): a frota recebe a missão proposta e o recibo entra na fila; só o lease confirma execução.",
+                reasonOptional: true,
+                initialReason: proposal.prefilledReason
+            ) { actor, reason in
+                Task {
+                    let previous = model.lastStartRunReceipt
+                    await model.startRun(mode: .dryRun, operatorActor: actor, operatorReason: reason)
+                    if model.lastStartRunReceipt != previous,
+                       model.lastStartRunReceipt?.isEnqueued == true {
+                        await nightly.accept(proposal)
+                    }
+                }
+            }
+        }
         .confirmationDialog("Encerrar este Autônomo?", isPresented: $confirmEnd, titleVisibility: .visible) {
             Button("Encerrar de vez", role: .destructive) { deleteSelected() }
             Button("Cancelar", role: .cancel) {}
@@ -60,6 +85,64 @@ struct AutonomosMapShell: View {
         .sheet(isPresented: $showingAsk) {
             askConversationSheet
         }
+        .onAppear {
+            #if DEBUG
+            nightly.installDemoIfRequested()
+            #endif
+        }
+    }
+
+    /// Catálogo do operador + baseline Nightly/Ritmo (aprender-com-o-uso).
+    private var catalogFace: some View {
+        VStack(spacing: 0) {
+            if let receipt = latestMergeProvedReceipt {
+                selfConstructionBanner(receipt)
+            }
+            VStack(alignment: .leading, spacing: 12) {
+                AutonomosNightlyProposalBlock(nightly: nightly) { proposal in
+                    nightlyStartProposal = proposal
+                }
+                AutonomosRhythmLearningLine()
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.top, 10)
+            .padding(.bottom, 4)
+
+            AutonomosListView(
+                units: model.operatorUnits,
+                onOpen: { unit in
+                    selectedUnitID = unit.id
+                    destination = .hub
+                },
+                onCreate: { showNewSheet = true }
+            )
+        }
+    }
+
+    private func selfConstructionBanner(_ receipt: SelfConstructionReceipt) -> some View {
+        Button {
+            selfConstructionReceipt = receipt
+        } label: {
+            HStack(spacing: 10) {
+                Text("✦")
+                    .font(AtlasFont.serif(14, .semibold))
+                    .foregroundStyle(AtlasTheme.accent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("O Atlas melhorou o próprio app")
+                        .font(AtlasFont.serif(15, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    Text("Merge comprovado · toque o recibo")
+                        .font(AtlasFont.serifItalic(13))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.vertical, 14)
+            .background(AtlasTheme.surface.opacity(0.55))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
     }
 
     @ViewBuilder
@@ -118,12 +201,12 @@ struct AutonomosMapShell: View {
             )
             .frame(height: 28)
             .allowsHitTesting(false)
-            ArenaPremiumAskPill(
-                invite: AutonomosAskContext.invite(destination: destination, vestment: vestmentForAsk)
+            AgenticPill(
+                invite: AutonomosAskContext.invite(destination: destination, vestment: vestmentForAsk),
+                accessibilityId: A11yID.autonomosAskPill
             ) {
                 showingAsk = true
             }
-            .accessibilityIdentifier(A11yID.autonomosAskPill)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.bottom, 10)
         }

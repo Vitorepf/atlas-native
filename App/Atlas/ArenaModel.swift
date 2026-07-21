@@ -160,6 +160,10 @@ final class ArenaModel {
     }
 
     func load() async {
+#if DEBUG
+        // Cenário visual de UITest não pode ser apagado por refresh/rede.
+        if visualScenarioInstalled { return }
+#endif
         phase = .loading
         controlError = nil
         loadFailureKind = nil

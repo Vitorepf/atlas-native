@@ -1,12 +1,19 @@
 # Atlas Native — Plano GOD (compressão soberana · era agêntica)
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan wave-by-wave. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **⚠️ SUPERSEDED 2026-07-20 v2:** a **ordem e o cânone** deste plano peels-first estão **desatualizados**.  
+> **Fonte canônica de ordem e doutrina:**  
+> [`docs/superpowers/specs/2026-07-20-atlas-native-god-version-master-plan.md`](../specs/2026-07-20-atlas-native-god-version-master-plan.md)  
+>  
+> Correções v2: pílula = pack perfeito + **intenção cross-world livre**; grafo = baseline julgamento; **self-construction = alicerce P0**; Continuity + App Group P0; F0–F10 fundação-first (não W0–W11 peels-first).  
+> Este arquivo permanece como **inventário de compressão / peels** (útil), não como norte de prioridade.
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan wave-by-wave. Steps use checkbox (`- [ ]`) syntax for tracking. **Siga a ordem F0–F10 do master plan v2.**
 >
 > **Companion contracts:** `docs/prompts/grok-atlas-native-full-refactor.md` · `docs/engineering-knowledge-base/atlas-native-agentic-pill.md` · `OBRA.md` · Onda 1 Autônomos já entregue (`0e775045`).
 
-**Goal:** Levar o `atlas-native` à **versão absoluta** do que já existe — Swift puro, mínimo de linhas, máximo de inteligência, fluidez, confiabilidade e manutenção — com a **pílula agêntica** como único verbo de intenção em toda superfície operacional.
+**Goal:** Levar o `atlas-native` à **versão absoluta** do que já existe — Swift puro, mínimo de linhas, máximo de inteligência, fluidez, confiabilidade e manutenção — com a **pílula agêntica** (pack perfeito da ocasião + intenção livre) e **self-construction / grafo / Continuity** como alicerce, não polish.
 
-**Architecture:** Casca SwiftUI fala só com models `@Observable`; Core/transporte/SSE ficam com Codex. Compressão = **deletar > fundir peels > abstrair**. Uma vertical por onda. Pílula = chrome único + pack compilado por ocasião (nunca misturar mundos).
+**Architecture:** Casca SwiftUI fala só com models `@Observable`; Core/transporte/SSE ficam com Codex. Compressão = **deletar > fundir peels > abstrair**. Uma vertical por onda. Pílula = chrome único + pack compilado da superfície (**intenção cross-world não bloqueada**; pack local sempre anexa).
 
 **Tech Stack:** SwiftUI · Foundation · ImageIO · CryptoKit · AtlasTheme/Type/Motion · Fraunces · Liquid Glass · zero SPM novo sem OBRA §6.
 

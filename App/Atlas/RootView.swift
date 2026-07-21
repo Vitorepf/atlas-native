@@ -21,5 +21,19 @@ struct RootView: View {
                 rootHomeStack
             }
         )
+        // Sheet no root (não no Button): apresentação estável no XCUITest/iOS 26.
+        .sheet(isPresented: $showingNewPicker) {
+            AtlasWorkspacePickerSheet(
+                client: session.client,
+                title: "Nova conversa",
+                onNoRepo: {
+                    showingNewPicker = false
+                    path.append(Route.new(workspaceKey: nil))
+                }
+            ) { key, title in
+                showingNewPicker = false
+                path.append(Route.workspace(key: key, title: title))
+            }
+        }
     }
 }

@@ -71,10 +71,9 @@ extension AtlasCodeWorkspaceModel {
 }
 
 enum AtlasCodeISO {
+    /// Delega ao parse canônico do Core (gotcha de segundos fracionários).
     static func date(from text: String) -> Date? {
-        let fractional = ISO8601DateFormatter()
-        fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        if let date = fractional.date(from: text) { return date }
-        return ISO8601DateFormatter().date(from: text)
+        AtlasTime.date(text)
     }
 }
+

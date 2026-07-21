@@ -1,4 +1,5 @@
 import Foundation
+import WidgetKit
 import AtlasCore
 
 /// Escreve o SD-1 no App Group. O writer só agrega dados já vistos pelos models;
@@ -58,5 +59,8 @@ final class AtlasNativeSnapshotWriter {
             queuedCount: latestQueuedCount
         )
         try? await store.save(snapshot)
+        // Widgets só refrescam se o App Group estiver provisionado; reload é barato.
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
+

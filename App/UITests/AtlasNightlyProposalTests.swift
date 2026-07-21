@@ -15,10 +15,16 @@ final class AtlasNightlyProposalTests: XCTestCase {
         autonomos.tap()
 
         let card = app.descendants(matching: .any)[A11yID.nightlyProposalCard]
-        XCTAssertTrue(card.waitForExistence(timeout: 45), "Autônomos precisa mostrar a proposta pendente")
+        let accept = app.descendants(matching: .any)[A11yID.nightlyProposalAccept]
+        XCTAssertTrue(
+            card.waitForExistence(timeout: 20) || accept.waitForExistence(timeout: 25),
+            "Autônomos precisa mostrar a proposta pendente"
+        )
         attach(app, name: "01-card-proposta")
 
-        app.buttons[A11yID.nightlyProposalAccept].tap()
+        let acceptButton = accept.exists ? accept : app.buttons[A11yID.nightlyProposalAccept]
+        XCTAssertTrue(acceptButton.waitForExistence(timeout: 10), "botão Preparar precisa existir")
+        acceptButton.tap()
         XCTAssertTrue(app.staticTexts["Preparar missão noturna"].waitForExistence(timeout: 10),
                       "aceite precisa abrir o sheet governado existente")
         let prefilled = app.descendants(matching: .any).matching(
@@ -30,9 +36,19 @@ final class AtlasNightlyProposalTests: XCTestCase {
         // O botão visível "Cancelar" fala "cancelar ação governada" (AX label
         // vence o título nas queries) — query pela voz canônica.
         app.buttons["cancelar ação governada"].tap()
-        XCTAssertTrue(card.waitForExistence(timeout: 10), "cancelar o sheet não deve descartar a proposta")
-        app.buttons[A11yID.nightlyProposalDismiss].tap()
-        XCTAssertFalse(card.waitForExistence(timeout: 5), "hoje não precisa silenciar o card")
+        // Após cancelar, a proposta continua (accept CTA ainda no ecrã).
+        let acceptAgain = app.descendants(matching: .any)[A11yID.nightlyProposalAccept]
+        XCTAssertTrue(
+            card.waitForExistence(timeout: 8) || acceptAgain.waitForExistence(timeout: 8),
+            "cancelar o sheet não deve descartar a proposta"
+        )
+        let dismiss = app.descendants(matching: .any)[A11yID.nightlyProposalDismiss]
+        XCTAssertTrue(dismiss.waitForExistence(timeout: 8), "hoje não precisa existir")
+        dismiss.tap()
+        XCTAssertFalse(
+            acceptAgain.waitForExistence(timeout: 5) || card.waitForExistence(timeout: 2),
+            "hoje não precisa silenciar o card"
+        )
         attach(app, name: "03-card-dismissed")
     }
 

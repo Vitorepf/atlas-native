@@ -67,6 +67,7 @@ extension AtlasCodeModel {
     var hasHealReceipt: Bool { !(heal?.stepReceipts.isEmpty ?? true) }
 
     /// Estado por exceção: quando o mundo está são, a tela diz isso e cala.
+    /// Vocabulário canônico do operador: **sem retorno** (não “desvios”).
     var statusHeadline: String {
         let linha = violations?.trunk
         guard let violations else {
@@ -74,8 +75,8 @@ extension AtlasCodeModel {
         }
         if violations.violations.count > 0 {
             let quantos = violations.violations.count
-            let alvo = linha.map { " da \($0)" } ?? ""
-            return quantos == 1 ? "1 desvio\(alvo)" : "\(quantos) desvios\(alvo)"
+            // Unidade = contagem do scan (mesma da casca); §5 reconcilia obra/branch no Core.
+            return quantos == 1 ? "1 sem retorno" : "\(quantos) sem retorno"
         }
         let integra = linha.map { "\($0) íntegra" } ?? "linha principal íntegra"
         if hasHealReceipt { return "\(integra) · curada sem você" }

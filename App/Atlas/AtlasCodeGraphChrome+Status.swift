@@ -21,15 +21,10 @@ extension AtlasCodeView {
         }
     }
 
-    /// Copy de apresentação: mesma unidade do model (violations.count),
-    /// vocabulário do operador ("sem retorno"), não "desvios".
+    /// Uma voz com o model: `statusHeadline` já fala “sem retorno”.
     var statusPulseCopy: String? {
         switch model.scanState {
-        case .violating:
-            let n = model.violations?.violations.count ?? 0
-            guard n > 0 else { return model.statusHeadline }
-            return n == 1 ? "1 sem retorno" : "\(n) sem retorno"
-        case .unknown:
+        case .violating, .unknown:
             return model.statusHeadline
         case .clean:
             return nil

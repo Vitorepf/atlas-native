@@ -7,6 +7,11 @@ extension ChangeReviewModel {
     /// ecoa o mesmo trace é descartada, pois vinculá-la à bolha errada seria um
     /// vazamento de evidência entre execuções.
     func refreshChangeReview(traceId: TraceID) async {
+        // Já temos revisão (ou in-flight): não dispare rede de novo por bolha.
+        if changeReviewsByTrace[traceId] != nil { return }
+        guard !changeReviewInFlight.contains(traceId) else { return }
+        changeReviewInFlight.insert(traceId)
+        defer { changeReviewInFlight.remove(traceId) }
         do {
             async let reviewResponse = client.getTraceChangeReview(traceId)
             async let artifactsResponse = client.getTraceArtifacts(traceId: traceId)

@@ -7,9 +7,7 @@ extension ArenaSuiteSheet {
     var suitePresentation: some View {
         NavigationStack {
             suiteScrollBody
+                .accessibilityIdentifier(A11yID.arenaSuiteSheet)
         }
-        .accessibilityIdentifier(A11yID.arenaSuiteSheet)
-        .accessibilityLabel(ArenaSuiteSheetA11y.spokenSheet(suite))
-        .accessibilityHint(ArenaSuiteSheetA11y.sheetHint)
     }
 }

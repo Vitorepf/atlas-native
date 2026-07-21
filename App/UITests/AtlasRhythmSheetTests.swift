@@ -15,7 +15,7 @@ final class AtlasRhythmSheetTests: XCTestCase {
         XCTAssertTrue(autonomos.waitForExistence(timeout: 45), "home precisa expor a área Autônomos")
         autonomos.tap()
 
-        let line = app.buttons[A11yID.autonomosRhythmLine]
+        let line = app.descendants(matching: .any)[A11yID.autonomosRhythmLine]
         XCTAssertTrue(line.waitForExistence(timeout: 45), "a linha de ritmo precisa existir na tela Autônomos")
         attach(app, name: "01-linha-ritmo")
 

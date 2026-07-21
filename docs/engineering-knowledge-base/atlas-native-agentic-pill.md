@@ -141,6 +141,11 @@ não é Atlas.
    Arena → só medição (frota, capacidades, corridas, scores, plano).  
    **Proibido misturar mundos.**
 
+
+> **2026-07-20 · hop vs pack:** o pack é da **tela** (puro). A **intenção** do operador
+> pode pedir outro mundo (ex.: no Grafo mandar um Autônomo). A casca **não bloqueia**
+> cross-world; o pack local **anexa sempre**. Misturar *facts* por acidente continua crime.
+
 4. **Âncora refina; não troca o mundo.**  
    Swipe num commit no Grafo: o pack continua sendo o grafo daquele repo, **mais**
    o commit linkado com o contexto perfeito daquele nó.  

@@ -48,12 +48,12 @@ struct ArenaPremiumDestinationView: View {
                 threadId: askThreadId,
                 title: "Arena · \(title)",
                 emptyPrompt: ArenaPremiumAskContext.invite(tab: .now, destination: target),
-                emptySuggestions: ArenaPremiumAskContext.emptySuggestions(tab: .now),
+                emptySuggestions: ArenaPremiumAskContext.emptySuggestions(tab: .now, destination: target),
                 taskKind: "arena",
                 workspace: nil,
                 draft: askDraft,
-                turnFacts: { [model] _ in
-                    ArenaPremiumAskContext.facts(model: model, tab: .now)
+                turnFacts: { [model, target] _ in
+                    ArenaPremiumAskContext.facts(model: model, tab: .now, destination: target)
                 },
                 onThread: { askThreadId = $0 },
                 hidesNavigationBack: true

@@ -6,6 +6,6 @@ import AtlasCore
 enum AtlasCodeFolderRowA11yExceptions {
     static func exceptionPhrase(_ verifiedExceptionCount: Int) -> String? {
         guard verifiedExceptionCount > 0 else { return nil }
-        return "\(verifiedExceptionCount) desvio\(verifiedExceptionCount == 1 ? "" : "s") verificado\(verifiedExceptionCount == 1 ? "" : "s")"
+        return "\(verifiedExceptionCount) sem retorno\(verifiedExceptionCount == 1 ? "" : "s") verificado\(verifiedExceptionCount == 1 ? "" : "s")"
     }
 }
