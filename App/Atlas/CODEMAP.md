@@ -25,6 +25,7 @@
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
 | Código grafo peels | `AtlasCodeSurface` host · `AtlasCodeSurfaceGraph` content/list |
+| **Grafo chrome (status/filtros/worktrees/semana)** | `AtlasCodeGraphChrome` status · `FilterChrome` · `WorktreeChrome` · `WeekChrome` (WAVE-156) |
 | **Grafo screen load (Código)** | `AtlasCodeGraphScreenJudgment` → face loading/failed/empty/ready · screen a11y |
 | **Pílula ask (Código)** | `AtlasCodeAskPillJudgment` → face invite/anchoring/legend · AskContext pack |
 | **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
@@ -68,6 +69,7 @@
 | **Autônomos razão governada** | `AutonomosReasonJudgment` → face blocked/ready · ReasonSheet |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |
+| **Live strip peels** | `ConversationCockpitAgentRow` host · `StripStatus` · `StripActions` (WAVE-156) |
 | **Live strip CTAs** | `ConversationLiveStripJudgment` → stop/steer/choose spoken · compound strip · pack |
 | **Conversation can_do pack** | `ConversationCanDoJudgment` → matrix live×decision · OccasionPack wire |
 | Cockpit peels | `ConversationCockpitBody` (strip·lanes) · `ConversationCockpitBanners` (banner·reconnect·silence) |
@@ -84,9 +86,12 @@
 | **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready |
 | **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face |
 | **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` → Hub CTA / MapShell `.decisions` / `AutonomosModel.decide` |
+| **Decisão surface peels** | host · `ListBody` · `DetailBody` · `Sections` (WAVE-156) |
+| **MapShell peels** | host sheets · `Routes` · `Ask` · `Catalog` · `Actions` (WAVE-156) |
 | **Controle do loop Autônomos (veto)** | `AutonomosRunControlJudgment` → Hub primaryVerb → ReasonSheet → `model.control` / `startRun` · bind `selectArea` |
 | **Multi-área bind (chooser)** | `AutonomosAreaBindJudgment` → face none/auto/needs_bind/bound · `AutonomosAreaBindChooser` · Hub CTA |
 | **Proposta noturna** | `NightlyProposalJudgment` → face pending/muted/muted_auto/hidden · Block/Card/Rhythm |
+| **Nightly schedule peel** | `NightlyProposalController` host · `NightlyProposalSchedule` (WAVE-156) |
 | **Ritmo do dia (aprender)** | `AutonomosRhythmJudgment` → face learning/learned/paused · line/sheet |
 | **Veto retroativo self-construction** | `SelfConstructionVetoJudgment` → ReceiptSheet canRevert → `model.revertCycle` |
 | **Evolução / entregas Autônomos** | `AutonomosEvolutionJudgment` → EvolutionView marcos → receipt |
