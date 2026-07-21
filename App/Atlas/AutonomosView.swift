@@ -2163,9 +2163,9 @@ struct NightlyProposalCard: View {
                 .accessibilityHidden(true)
             Text(learnedDayEnd.map { "Missão noturna · no seu ritmo (~\($0))" }
                 ?? "Missão noturna · no seu ritmo")
-                .font(AtlasFont.mono(10))
+                .font(AtlasFont.mono(10, .medium))
                 .tracking(0.3)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
                 .accessibilityAddTraits(.isHeader)
         }
     }
@@ -2203,10 +2203,13 @@ struct NightlyProposalCard: View {
             } label: {
                 Text("Hoje não")
                     .font(AtlasFont.serif(13, .semibold))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .padding(.horizontal, 10)
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .padding(.horizontal, 12)
                     .frame(minHeight: 48)
-                    .contentShape(Rectangle())
+                    .background(Capsule().fill(AtlasTheme.surface.opacity(0.55)))
+                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                    .atlasElevation(radius: 4, y: 1, opacity: 0.08)
+                    .contentShape(Capsule())
             }
             .buttonStyle(PressableScale())
             .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
@@ -2226,9 +2229,13 @@ struct NightlyProposalCard: View {
             } label: {
                 Text("Silenciar")
                     .font(AtlasFont.serif(13, .semibold))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .padding(.horizontal, 12)
                     .frame(minHeight: 48)
-                    .contentShape(Rectangle())
+                    .background(Capsule().fill(AtlasTheme.surface.opacity(0.55)))
+                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                    .atlasElevation(radius: 4, y: 1, opacity: 0.08)
+                    .contentShape(Capsule())
             }
             .accessibilityIdentifier(A11yID.nightlyProposalMute)
             .accessibilityLabel(Self.spokenMuteMenuLabel())
