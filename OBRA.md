@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — radar empty + toast + progress ring (ciclo 086)** · `8c447339` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Arena live a11y + primary CTA + mute (ciclo 085)** · `e326c66c` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — attachments + commit tap + draft remove (ciclo 084)** · `3b53e52c` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — workspace picker + grafo switcher (ciclo 083)** · `bb885ff0` · App/Atlas 214. **Prova:** checks+build.
