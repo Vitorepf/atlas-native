@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 96
-- idle_compress_passes: 2
+- idle_compress_passes: 27
 - collapse_host: 0
 
 ## Waves done
@@ -109,23 +109,20 @@ mode: designer + implementer
 - WAVE-101
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
+- pass 25 · 87932be2 · CommitRowA11y to CommitRowJudgment
+- pass 26 · fb65caa0 · GraphA11y to GraphJudgment
+- pass 27 · a3dee5c0 · ComposerAttachmentsA11y to DraftJudgment
 
 ## Designer
 - designs_proposed: 96
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
-## Open queue snapshot (must match QUEUE.md)
+## Open queue snapshot
 
-| # | wave | Δ | status |
+| # | wave | delta | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| - | (none) | - | - |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-101 + IDLE-27. DEVICE_PENDING.
