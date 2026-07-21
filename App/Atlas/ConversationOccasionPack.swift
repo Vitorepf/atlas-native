@@ -42,6 +42,9 @@ enum ConversationOccasionPack {
         var turnCount: Int = 0
         var toolbarMode: String = ""
         var toolbarWorkspaceName: String? = nil
+        /// WAVE-168: messages load fail + presence + workspace catalog count.
+        var hasLoadError: Bool = false
+        var workspaceCatalogCount: Int = 0
 
         static let unbound = PublishedSlice(
             presenceBubble: nil,
@@ -289,6 +292,27 @@ enum ConversationOccasionPack {
             )
             facts.append(contentsOf: toolbarPack.facts)
             absences.append(contentsOf: toolbarPack.absences)
+
+            // WAVE-168: messages face + turn presence + composer sheet organs.
+            let messagesPack = ConversationMessagesJudgment.packFacts(
+                hasLoadError: published.hasLoadError,
+                turnCount: published.turnCount
+            )
+            facts.append(contentsOf: messagesPack.facts)
+            absences.append(contentsOf: messagesPack.absences)
+            let presencePack = TurnPresenceJudgment.packFacts(
+                presence: bubble?.executionPresence,
+                liveSessionCount: matchingLive.count
+            )
+            facts.append(contentsOf: presencePack.facts)
+            absences.append(contentsOf: presencePack.absences)
+            let sheetPack = ComposerSheetJudgment.packFacts(
+                modeKey: published.toolbarMode.isEmpty ? nil : published.toolbarMode,
+                workspaceCount: published.workspaceCatalogCount,
+                currentWorkspace: published.toolbarWorkspaceName
+            )
+            facts.append(contentsOf: sheetPack.facts)
+            absences.append(contentsOf: sheetPack.absences)
         }
 
         let surface: String

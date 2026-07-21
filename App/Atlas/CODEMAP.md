@@ -59,7 +59,7 @@
 | Composer sheet peels | `ComposerSheetPrimitives` (EffortSheet · SheetRow · NewMarker) · SheetsHost |
 | **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
 | **Stale-read cache seal** | `ConversationStaleReadJudgment` → face · pack mid-thread (WAVE-164) |
-| **Messages surface (lista)** | `ConversationMessagesJudgment` → face load_fail/empty/messages · list a11y |
+| **Messages surface (lista)** | `ConversationMessagesJudgment` → face · pack mid-thread (WAVE-168) |
 | Messages peels | `ConversationMessages` host · `ConversationMessagesScroll` · `ConversationMessagesEditorial` |
 | **Empty editorial (partida)** | `ConversationEmptyJudgment` → face silence/default_prompt/custom_prompt/suggestions(N) · EmptyStates |
 | **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · sheet · pack mid-thread (WAVE-166) |
@@ -70,6 +70,7 @@
 | **Autônomos hub** | `AutonomosHubJudgment` → hubFace · spokenHub · receiptTone · pack Ask .hub (WAVE-162) |
 | **Autônomos razão governada** | `AutonomosReasonJudgment` → face blocked/ready · ReasonSheet |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
+| **Turn presence pack (168)** | `TurnPresenceJudgment.packFacts` → OccasionPack mid-thread |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |
 | **Live strip peels** | `ConversationCockpitAgentRow` host · `StripStatus` · `StripActions` (WAVE-156) |
 | **Live strip CTAs** | `ConversationLiveStripJudgment` → stop/steer/choose spoken · compound strip · pack |

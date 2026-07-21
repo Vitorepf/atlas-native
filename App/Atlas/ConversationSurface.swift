@@ -182,7 +182,9 @@ extension ConversationView {
                 artifacts: artifacts,
                 turnCount: model.bubbles.count,
                 toolbarMode: model.taskKind ?? "",
-                toolbarWorkspaceName: model.workspacePath
+                toolbarWorkspaceName: model.workspacePath,
+                hasLoadError: model.loadError != nil,
+                workspaceCatalogCount: session.workspaces.count
             )
             return ConversationOccasionPack.facts(
                 session: session,
