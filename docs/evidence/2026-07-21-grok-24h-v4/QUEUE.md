@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-064-home-live-now-attention-judgment-instrument
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-064-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-065-autonomos-multi-area-bind-chooser-instrument
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: max
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-065-design.md
 created_by: designer
@@ -38,8 +28,7 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-064-home-live-now-attention-judgment-instrument | **max** | `WAVE-064-design.md` |
-| **2** | WAVE-065-autonomos-multi-area-bind-chooser-instrument | **max** | `WAVE-065-design.md` |
+| **1** | WAVE-065-autonomos-multi-area-bind-chooser-instrument | **max** | `WAVE-065-design.md` |
 
 ## History (done)
 
@@ -101,4 +90,5 @@ approved_at: null
 - WAVE-061 done
 - WAVE-062 done
 - WAVE-063 done
+- WAVE-064 done
 

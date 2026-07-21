@@ -21,13 +21,13 @@ extension RootView {
 
 extension RootView {
     func handleExecutionHomeDeepLink() {
-        // Widget "Seguir" sem trace: home; se há sessão viva real com
-        // thread, abre a mais recente — nunca inventa conversa.
+        // WAVE-064: Seguir = LiveNow attention head (not chrono last).
+        // Never invent thread; empty head → stay home.
         path = NavigationPath()
-        let live = (TurnPresence.shared.liveSessions + session.remoteLiveSessions)
-            .sorted { $0.startedAt < $1.startedAt }
-        if let snap = live.last(where: { $0.threadId != nil }),
-           let threadId = snap.threadId {
+        if let snap = LiveNowJudgment.headForOpen(
+            local: TurnPresence.shared.liveSessions,
+            remote: session.remoteLiveSessions
+        ), let threadId = snap.threadId {
             path.append(Route.thread(id: threadId, title: snap.title))
         }
     }

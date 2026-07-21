@@ -29,16 +29,15 @@ enum HomeAskContext {
         let threads = session.threads
         facts.append("conversas_conhecidas: \(threads.count)")
 
-        let live = TurnPresence.shared.liveSessions
-        if live.isEmpty {
-            facts.append("sessoes_vivas: 0")
-        } else {
-            facts.append("sessoes_vivas: \(live.count)")
-            for s in live.prefix(5) {
-                // WAVE-029: face product words (not raw phaseTitle lead).
-                anchors.append(ConversationOccasionPack.liveAnchorLine(s))
-            }
-        }
+        // WAVE-064: live anchors follow LiveNow attention rank (not wire order).
+        let livePack = LiveNowJudgment.packLiveAnchors(
+            local: TurnPresence.shared.liveSessions,
+            remote: session.remoteLiveSessions,
+            limit: 5
+        )
+        facts.append(contentsOf: livePack.facts)
+        anchors.append(contentsOf: livePack.anchors)
+        absences.append(contentsOf: livePack.absences)
 
         let workspaces = session.workspaces
         if workspaces.isEmpty {

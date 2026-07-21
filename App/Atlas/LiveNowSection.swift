@@ -10,28 +10,15 @@ struct LiveNowSection: View {
     let onOpen: (ThreadID, String) -> Void
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
+    /// WAVE-064: exclusive attention rank from LiveNowJudgment.
     var sessions: [LiveSessionSnapshot] {
-        // WAVE-023: judgment order — running/paused before finished.
-        let merged = Self.merged(local: localSessions, remote: remoteSessions)
-        return merged.enumerated().sorted { lhs, rhs in
-            let lf = ConversationExecutionPhase.face(for: lhs.element)
-            let rf = ConversationExecutionPhase.face(for: rhs.element)
-            let rank: (ConversationExecutionFace) -> Int = {
-                switch $0 {
-                case .running, .multiAgent: return 0
-                case .paused, .reconnect: return 1
-                case .finished: return 2
-                case .quiet: return 3
-                }
-            }
-            let lr = rank(lf)
-            let rr = rank(rf)
-            if lr != rr { return lr < rr }
-            return lhs.offset < rhs.offset
-        }.map(\.element)
+        LiveNowJudgment.rank(local: localSessions, remote: remoteSessions)
     }
     var isHub: Bool { sessions.count >= 2 }
     var remoteCount: Int { sessions.filter(\.isRemote).count }
+    var sectionFace: LiveNowSectionFace {
+        LiveNowJudgment.sectionFace(count: sessions.count)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: isHub ? 0 : 12) {
@@ -46,6 +33,7 @@ struct LiveNowSection: View {
         .accessibilityLabel(Self.spokenSectionLabel(
             isHub: isHub, count: sessions.count, remoteCount: remoteCount
         ))
+        .accessibilityValue(sectionFace.productWord)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: sessions.map(\.id))
     }
 
@@ -115,34 +103,9 @@ struct LiveNowSection: View {
         ))
     }
 
-    // MARK: - Merge + a11y
+    // MARK: - a11y peel → Judgment
 
     static func spokenSectionLabel(isHub: Bool, count: Int, remoteCount: Int) -> String {
-        guard isHub else { return "vivo agora" }
-        var label = "vivo agora, \(count) sessões vivas"
-        if remoteCount > 0 {
-            label += ", \(remoteCount) remota\(remoteCount == 1 ? "" : "s") em outra superfície"
-        }
-        return label
-    }
-
-    static func merged(local: [LiveSessionSnapshot], remote: [LiveSessionSnapshot]) -> [LiveSessionSnapshot] {
-        local + filteredRemote(local: local, remote: remote)
-    }
-
-    static func filteredRemote(
-        local: [LiveSessionSnapshot],
-        remote: [LiveSessionSnapshot]
-    ) -> [LiveSessionSnapshot] {
-        var seenThreads = Set(local.compactMap { $0.threadId?.rawValue })
-        var seenRemoteIDs: Set<String> = []
-        return remote.filter { session in
-            if let thread = session.threadId?.rawValue {
-                guard !seenThreads.contains(thread) else { return false }
-                seenThreads.insert(thread)
-                return true
-            }
-            return seenRemoteIDs.insert(session.id).inserted
-        }
+        LiveNowJudgment.spokenSection(isHub: isHub, count: count, remoteCount: remoteCount)
     }
 }
