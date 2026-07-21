@@ -1,17 +1,23 @@
 import SwiftUI
 
-/// Falha de carregamento Código — canônico (radar + grafo).
-/// Retry → AtlasCodeLoadFailure+Retry.swift
-/// Icon/copy → AtlasCodeLoadFailure+Icon.swift
-/// Stack → AtlasCodeLoadFailure+Stack.swift
-/// A11y → AtlasCodeLoadFailure+A11y.swift
+/// Falha de carregamento Código — thin host sobre `AtlasOpsFailureEmpty` (WAVE-008).
 struct AtlasCodeLoadFailureEmpty: View {
     let headline: String
     let message: String
     let onRetry: () -> Void
-    @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        failureA11y
+        AtlasOpsFailureEmpty(
+            mode: .load(headline: headline, message: message),
+            layout: .centered,
+            symbol: "exclamationmark.triangle",
+            topPadding: 0,
+            accessibilityIdentifier: A11yID.codeLoadFailure,
+            retryAccessibilityIdentifier: A11yID.codeLoadRetry,
+            retryHint: "recarrega o grafo ou radar deste repositório",
+            spokenOverride: "\(headline). \(message)",
+            onRetry: onRetry
+        )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
