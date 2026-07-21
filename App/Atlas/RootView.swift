@@ -2495,9 +2495,9 @@ extension AtlasEditorialGlyphEmpty {
 extension AtlasEditorialGlyphEmpty {
     var editorialGlyph: some View {
         Text("✦")
-            .font(AtlasFont.serif(24))
-            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
-            .shadow(color: AtlasTheme.accent.opacity(0.32), radius: 10, y: 1)
+            .font(AtlasFont.serif(28))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
+            .shadow(color: AtlasTheme.accent.opacity(0.4), radius: 12, y: 1)
             .accessibilityHidden(true)
     }
 }
