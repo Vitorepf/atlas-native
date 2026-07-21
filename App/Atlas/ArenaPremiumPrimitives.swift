@@ -138,6 +138,7 @@ struct ArenaPremiumAction: View {
 }
 
 struct ArenaPremiumDisclosureRow: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let title: String
     let detail: String
     let symbol: String
@@ -145,7 +146,10 @@ struct ArenaPremiumDisclosureRow: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            action()
+        } label: {
             HStack(spacing: 14) {
                 ArenaPremiumIcon(symbol: symbol, tone: tone)
                 // Linha de lista fala sans (canon §C — serif é masthead/título);
@@ -158,12 +162,17 @@ struct ArenaPremiumDisclosureRow: View {
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(tone.color)
                     .lineLimit(1)
+                    .accessibilityHidden(true)
                 ArenaPremiumChevron()
             }
             .frame(minHeight: 54)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title), \(detail)")
+        .accessibilityHint("abre o detalhe")
+        .accessibilityAddTraits(.isButton)
     }
 }
 

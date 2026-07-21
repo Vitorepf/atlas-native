@@ -40,11 +40,17 @@ extension ExecutingStrip {
     @ViewBuilder
     var stripActionButtons: some View {
         steerActionButton
-        Button(action: onStop) {
+        Button {
+            // Soft: stop is deliberate, not send/commit (medium lives on composer).
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onStop()
+        } label: {
             Text("Parar")
                 .font(.system(.footnote, weight: .medium))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel("parar execução")
@@ -56,12 +62,17 @@ extension ExecutingStrip {
     @ViewBuilder
     var steerActionButton: some View {
         if let onSteer {
-            Button(action: onSteer) {
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onSteer()
+            } label: {
                 Text("Redirecionar")
                     .font(.system(.footnote, weight: .medium))
                     .foregroundStyle(AtlasTheme.accent)
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel("redirecionar execução")
