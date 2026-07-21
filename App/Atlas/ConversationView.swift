@@ -6569,7 +6569,7 @@ extension ExecutionStateCard {
     var stateHeaderBadge: some View {
         if let badge = kindBadge {
             Text(badge)
-                .font(AtlasFont.mono(10)).tracking(0.8)
+                .font(AtlasFont.mono(10)).tracking(0.3)
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
         }
@@ -6638,8 +6638,8 @@ extension ExecutionStateCard {
 extension ExecutionStateCard {
     var kindBadgeWait: String? {
         switch state.kind {
-        case .attentionRequired: return "PAUSADO"
-        case .awaitingExternal: return "AGUARDANDO"
+        case .attentionRequired: return "Pausado"
+        case .awaitingExternal: return "Aguardando"
         default: return nil
         }
     }
@@ -6649,8 +6649,8 @@ extension ExecutionStateCard {
     var kindBadgeAttention: String? {
         if let wait = kindBadgeWait { return wait }
         switch state.kind {
-        case .recovering: return "RECONECTANDO"
-        case .replanning: return "REPLANEJANDO"
+        case .recovering: return "Reconectando"
+        case .replanning: return "Replanejando"
         default: return nil
         }
     }
@@ -6660,7 +6660,7 @@ extension ExecutionStateCard {
     /// Selo 1:1 com `kind` — nunca copy inventada além do mapeamento canônico.
     var kindBadge: String? {
         switch state.kind {
-        case .failed: return "FALHOU"
+        case .failed: return "Falhou"
         case .completed: return nil
         default: return kindBadgeAttention
         }

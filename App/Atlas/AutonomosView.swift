@@ -1742,7 +1742,7 @@ extension SelfConstructionReceiptSheet {
         VStack(alignment: .leading, spacing: 8) {
             Text("Regra citada")
                 .font(AtlasFont.mono(10))
-                .tracking(0.9)
+                .tracking(0.3)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Text("“\(receipt.ruleLabel)”")
@@ -1862,9 +1862,9 @@ extension SelfConstructionReceiptSheet {
 extension SelfConstructionReceiptSheet {
     var vetoFields: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("veto retroativo · com recibo")
+            Text("Veto retroativo · com recibo")
                 .font(AtlasFont.mono(10))
-                .tracking(0.9)
+                .tracking(0.3)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
             vetoTextFields
@@ -1903,7 +1903,7 @@ extension SelfConstructionReceiptSheet {
     var proofBlockTitle: some View {
         Text("Prova")
             .font(AtlasFont.mono(10))
-            .tracking(0.9)
+            .tracking(0.3)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
     }
