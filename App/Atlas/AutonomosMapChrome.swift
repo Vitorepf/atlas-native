@@ -52,6 +52,7 @@ enum AutonomosMapChrome {
             )
             .frame(height: 1)
             .padding(.vertical, 4)
+            .accessibilityHidden(true)
     }
 
     static func section(_ text: String) -> some View {
