@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// GOD-RESTRUCTURE: ArtifactSheet fused
+// GOD-RESTRUCTURE: ArtifactSheet + viewer/preview peels fused
 
 // MARK: - ArtifactSheet
 
@@ -303,4 +303,159 @@ extension ArtifactSheet {
         }
     }
 }
+// MARK: - ArtifactViewer
 
+enum ArtifactViewer {}
+// MARK: - ArtifactPreviewState
+
+enum ArtifactPreviewState {
+    case idle
+    case loading
+    case loaded(AtlasTraceArtifacts.Item, AtlasArtifactContent)
+    case tooLarge(Int)
+    case failed(String)
+}
+// MARK: - ArtifactFileFicha
+
+extension ArtifactFileFicha {
+    func fichaA11yBind<Content: View>(_ content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(ArtifactPreviewJudgment.spokenFicha(name: name, subtitle: subtitle))
+    }
+}
+
+extension ArtifactFileFicha {
+    var fichaNameStack: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(name)
+                .font(AtlasFont.serif(17, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityHidden(true)
+            Text(subtitle)
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+struct ArtifactFileFicha: View {
+    let name: String
+    let subtitle: String
+
+    var body: some View {
+        fichaA11yBind(fichaNameStack)
+    }
+}
+// MARK: - ArtifactPreviewZoom
+
+struct ZoomableArtifactImage: View {
+    let image: UIImage
+    let name: String
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var scale: CGFloat = 1
+    @State var lastScale: CGFloat = 1
+    @State var offset: CGSize = .zero
+    @State var lastOffset: CGSize = .zero
+
+    var body: some View {
+        applyZoomAccessibility(zoomImageCore)
+    }
+}
+
+extension ZoomableArtifactImage {
+    func applyZoomAccessibility<Content: View>(_ content: Content) -> some View {
+        content
+            .accessibilityLabel(ArtifactPreviewJudgment.spokenZoomImage(name: name, scale: scale))
+            .accessibilityHint(ArtifactPreviewJudgment.zoomHint)
+            .accessibilityIdentifier(A11yID.artifactsZoomImage)
+            .accessibilityZoomAction { action in
+                switch action.direction {
+                case .zoomIn:
+                    setScale(scale + 0.5)
+                case .zoomOut:
+                    setScale(scale - 0.5)
+                @unknown default:
+                    break
+                }
+            }
+            .accessibilityAction(named: ArtifactPreviewJudgment.zoomResetAction) { resetZoom() }
+    }
+}
+
+extension ZoomableArtifactImage {
+    func clamped(_ value: CGFloat) -> CGFloat {
+        min(4, max(1, value))
+    }
+}
+
+extension ZoomableArtifactImage {
+    var zoomImageCore: some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .scaleEffect(scale)
+            .offset(offset)
+            .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+            .contentShape(Rectangle())
+            .gesture(zoomGesture.simultaneously(with: dragGesture))
+            .onTapGesture(count: 2) { resetZoom() }
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: scale)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: offset)
+    }
+}
+
+extension ZoomableArtifactImage {
+    var dragGesture: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                guard scale > 1 else { return }
+                offset = CGSize(
+                    width: lastOffset.width + value.translation.width,
+                    height: lastOffset.height + value.translation.height
+                )
+            }
+            .onEnded { _ in
+                lastOffset = offset
+            }
+    }
+}
+
+extension ZoomableArtifactImage {
+    var zoomGesture: some Gesture {
+        MagnificationGesture()
+            .onChanged { value in
+                scale = clamped(lastScale * value)
+            }
+            .onEnded { _ in
+                lastScale = scale
+                if scale <= 1 { resetOffset() }
+            }
+    }
+}
+
+extension ZoomableArtifactImage {
+    func resetOffset() {
+        offset = .zero
+        lastOffset = .zero
+    }
+}
+
+extension ZoomableArtifactImage {
+    func resetZoom() {
+        scale = 1
+        lastScale = 1
+        resetOffset()
+    }
+}
+
+extension ZoomableArtifactImage {
+    func setScale(_ value: CGFloat) {
+        scale = clamped(value)
+        lastScale = scale
+        if scale <= 1 { resetOffset() }
+    }
+}
