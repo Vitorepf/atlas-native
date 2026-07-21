@@ -159,5 +159,6 @@ extension EmptyConversation {
         )
         .accessibilityHint(EmptyConversationA11y.suggestionHint)
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(8) // empty suggestions are send-class
     }
 }

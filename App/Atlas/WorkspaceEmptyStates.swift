@@ -148,6 +148,7 @@ extension AtlasNetworkFailureEmpty {
             .accessibilityLabel("tentar de novo")
             .accessibilityHint(retryHint)
             .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(8)
         )
     }
 }

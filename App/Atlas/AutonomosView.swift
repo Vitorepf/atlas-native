@@ -155,6 +155,7 @@ struct AutonomosFleetFailureEmpty: View {
                 .accessibilityLabel("tentar de novo")
                 .accessibilityHint("tenta reabrir o catálogo Autônomos")
                 .accessibilityAddTraits(.isButton)
+                .accessibilitySortPriority(8)
         }
         .padding(.horizontal, 32)
         .padding(.vertical, 28)

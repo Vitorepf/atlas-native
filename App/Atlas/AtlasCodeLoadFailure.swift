@@ -87,5 +87,6 @@ extension AtlasCodeLoadFailureEmpty {
         .accessibilityHint("recarrega o grafo ou radar deste repositório")
         .accessibilityIdentifier(A11yID.codeLoadRetry)
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(8)
     }
 }
