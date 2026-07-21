@@ -167,7 +167,7 @@ extension RootView {
         CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
             .keyboardShortcut("k", modifiers: .command)
             .accessibilityLabel(searchSpokenLabel())
-            .accessibilityHint("abre busca nas conversas carregadas")
+            .accessibilityHint("Abre busca nas conversas carregadas")
             .accessibilityIdentifier(A11yID.topbarSearch)
     }
 }
@@ -201,8 +201,8 @@ extension RootView {
                 .contentShape(Circle())
         }
         .accessibilityIdentifier(A11yID.topbarProfile)
-        .accessibilityLabel("perfil do operador")
-        .accessibilityHint("abre seu perfil e o estado da sessão")
+        .accessibilityLabel("Perfil do operador")
+        .accessibilityHint("Abre seu perfil e o estado da sessão")
         .accessibilityAddTraits(.isButton)
         .sheet(isPresented: $showingProfile) { AtlasProfileSheet() }
     }
@@ -214,7 +214,7 @@ extension RootView {
         // Código, com palavra — não com pingo no chrome.
         CircleButton(icon: "point.3.connected.trianglepath.dotted") { path.append(Route.code) }
             .accessibilityLabel(RootHomeSections.codeTopBarLabel(hub: codeHub))
-            .accessibilityHint("abre radar de repositórios")
+            .accessibilityHint("Abre radar de repositórios")
             .accessibilityIdentifier(A11yID.topbarCode)
     }
 }
@@ -1244,7 +1244,7 @@ struct LiveNowRow: View {
         .background(Capsule().fill(AtlasTheme.goldVeil))
         .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("sessão remota em outra superfície")
+        .accessibilityLabel("Sessão remota em outra superfície")
         .atlasAccessibilityIdentifier(remoteBadgeID)
     }
 
@@ -1461,8 +1461,8 @@ extension SearchViewHeader {
                 .frame(width: 48, height: 48).atlasGlassCircle()
                 .contentShape(Circle())
         }
-        .accessibilityLabel("voltar")
-        .accessibilityHint("fecha a busca")
+        .accessibilityLabel("Voltar")
+        .accessibilityHint("Fecha a busca")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -1491,8 +1491,8 @@ extension SearchViewHeader {
     func searchClearA11y<Content: View>(_ content: Content) -> some View {
         content
             .buttonStyle(.plain)
-            .accessibilityLabel("limpar busca")
-            .accessibilityHint("remove o texto e volta aos recentes")
+            .accessibilityLabel("Limpar busca")
+            .accessibilityHint("Remove o texto e volta aos recentes")
             .accessibilityIdentifier(A11yID.searchClear)
             .accessibilityAddTraits(.isButton)
     }
@@ -1528,7 +1528,7 @@ extension SearchViewHeader {
                 .tint(AtlasTheme.accent).focused($focused)
                 .submitLabel(.search)
                 .accessibilityLabel(spokenFieldLabel)
-                .accessibilityHint("filtra só conversas já carregadas na sessão")
+                .accessibilityHint("Filtra só conversas já carregadas na sessão")
                 .accessibilityIdentifier(A11yID.searchField)
         }
     }
@@ -1558,8 +1558,8 @@ extension SearchViewHeader {
 extension SearchViewHeader {
     var spokenFieldLabel: String {
         let trimmed = query.trimmingCharacters(in: .whitespaces)
-        if trimmed.isEmpty { return "buscar conversas" }
-        return "buscar conversas, \(trimmed)"
+        if trimmed.isEmpty { return "Buscar conversas" }
+        return "Buscar conversas, \(trimmed)"
     }
 }
 
@@ -1938,7 +1938,7 @@ extension WorkspaceView {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("área \(a.label)")
-        .accessibilityHint("filtra conversas já carregadas")
+        .accessibilityHint("Filtra conversas já carregadas")
         .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
     }
 }
@@ -1968,8 +1968,8 @@ extension WorkspaceView {
             // Soft: workspace write pill is invitation (AgenticPill class).
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
         })
-        .accessibilityLabel("nova conversa")
-        .accessibilityHint("abre o compositor para escrever ao Atlas")
+        .accessibilityLabel("Nova conversa")
+        .accessibilityHint("Abre o compositor para escrever ao Atlas")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(10) // primary write pill surfaces early in VO
         .accessibilityIdentifier(A11yID.workspaceNewPill)
@@ -2209,8 +2209,8 @@ extension WorkspaceView {
                 .frame(width: 48, height: 48).atlasGlassCircle()
                 .contentShape(Circle())
         }
-        .accessibilityLabel("voltar")
-        .accessibilityHint("fecha o workspace")
+        .accessibilityLabel("Voltar")
+        .accessibilityHint("Fecha o workspace")
     }
 
     var headerSpokenTitle: String {
@@ -2413,7 +2413,7 @@ extension AtlasNetworkFailureEmpty {
                 retryLabel
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("tentar de novo")
+            .accessibilityLabel("Tentar de novo")
             .accessibilityHint(retryHint)
             .accessibilityAddTraits(.isButton)
             .accessibilitySortPriority(8)
@@ -3197,7 +3197,7 @@ extension AtlasProfileSheet {
         }
         .accessibilityIdentifier(A11yID.profileAuditToggle)
         .accessibilityLabel("Modo auditoria")
-        .accessibilityHint("mostra ou oculta detalhes técnicos nas telas")
+        .accessibilityHint("Mostra ou oculta detalhes técnicos nas telas")
 
         Text("Atlas \(appVersion)")
             .font(AtlasFont.mono(11))
@@ -3398,7 +3398,7 @@ extension AtlasWorkspacePickerSheet {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(repo.folder.map { "\($0), " } ?? "")\(repo.name)")
-        .accessibilityHint("abre o workspace deste repositório")
+        .accessibilityHint("Abre o workspace deste repositório")
         .accessibilityIdentifier(A11yID.workspacePickerRow(repo.slug))
         .accessibilityAddTraits(.isButton)
     }
@@ -3489,8 +3489,8 @@ struct AtlasWorkspacePickerSheet: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("tentar de novo")
-                .accessibilityHint("relê os repositórios do Mac")
+                .accessibilityLabel("Tentar de novo")
+                .accessibilityHint("Relê os repositórios do Mac")
                 .accessibilityAddTraits(.isButton)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
