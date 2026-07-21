@@ -507,7 +507,8 @@ struct AutonomosMapShell: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(error)
         .accessibilityHint("toque para dispensar")
-        .accessibilityAddTraits(.isButton)
+        .accessibilityAddTraits([.isButton, .updatesFrequently])
+        .accessibilitySortPriority(10) // dry-run honesty surfaces before list chrome
         .accessibilityIdentifier(A11yID.autonomosControlError)
     }
 
