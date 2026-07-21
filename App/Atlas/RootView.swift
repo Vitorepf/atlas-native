@@ -2235,20 +2235,34 @@ extension WorkspaceView {
 
 extension WorkspaceView {
     var header: some View {
-        HStack(spacing: 12) {
-            headerBackButton
-            Spacer()
-            Text(title)
-                .font(AtlasFont.serif(20, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .lineLimit(1)
-                .accessibilityLabel(headerSpokenTitle)
-            Spacer()
-            Color.clear.frame(width: 48, height: 48)
+        VStack(spacing: 6) {
+            HStack(spacing: 12) {
+                headerBackButton
+                Spacer()
+                Text(title)
+                    .font(AtlasFont.serif(20, .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(1)
+                    .accessibilityLabel(headerSpokenTitle)
+                Spacer()
+                Color.clear.frame(width: 48, height: 48)
+            }
+            // Quiet gold rule under title — masthead family, not a second header.
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.55),
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: 56, height: 1.5)
+            .accessibilityHidden(true)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 4)
-        .padding(.bottom, 4)
+        .padding(.bottom, 6)
     }
 
     var headerBackButton: some View {
