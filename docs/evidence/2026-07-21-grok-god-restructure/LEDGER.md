@@ -6,13 +6,13 @@ product_waves: forbidden
 dual: off
 
 ## State
-- phase: god_hold
-- focus: null
-- actionable: 0
+- phase: act
+- focus: CODEMAP strip WAVE as navigation
+- actionable: 3
 - passes: 5
 - last_commit: 24fa8349
 - collapse_host: 0
-- god_hold_streak: 2
+- god_hold_streak: 0
 
 ## Scope
 - App/Atlas + App/Widgets
@@ -24,29 +24,26 @@ dual: off
 
 ## commands
 ```
-# AUDIT empty #1 → actionable 0 (god_hold_streak=1)
-# AUDIT empty #2 → actionable 0 (god_hold_streak=2) → GOD_HOLD
+# operator RELEASE god_hold — soft ROI AUDIT
+*Sections*/*States* files → 9 hosts (rename honesty residual)
+spoken dialect residual: label/title/copy on few Judgments
+CODEMAP WAVE-as-nav: 92 tokens → THIS FOCUS strip to 0
+fuse same-type <120: RootHomeSections 21 etc residual
 
-rg 'JudgmentGrammar|Peel|conversationPresence' → 0
-forbidden Grammar|Peel|JudgmentChrome|ScreenJudgment|*Face.swift → 0
-View/Shell>600 → 0
-any>2000 casca → 0
-MARK>200 casca → 0
-AtlasCoreChecks exit 0
-make build exit 0
-./scripts/grok-god-wave-guard.sh → GUARD OK mode=restructure
+# PROVE this pass
+rg 'WAVE-[0-9]' App/Atlas/CODEMAP.md → 0
+swift run AtlasCoreChecks
+cd App && make build
+./scripts/grok-god-wave-guard.sh
 ```
 
 ## before_after
 ```
-1b7d156a polish(ui): GOD-RESTRUCTURE rename-honesty Grammar Peel presence
-9a36eaf4 polish(ui): GOD-RESTRUCTURE fuse JudgmentChrome into Judgment
-fcfebaca polish(ui): GOD-RESTRUCTURE ScreenJudgment and Face honesty
-e9fe40c5 polish(ui): GOD-RESTRUCTURE MARK dense Widget surfaces
-24fa8349 polish(ui): GOD-RESTRUCTURE CODEMAP SelfConstructionReceiptChrome
+CODEMAP WAVE-id tokens: 92 → 0
+footer orphan WAVE rows folded into main "Onde muda X" table
+peels → parts language; nav rule Type.method only
 ```
 
 ## notes
-- **GOD_HOLD** — two consecutive empty audits. Stop editing. Wait for operator.
-- Soft deferred (below ROI / not invent): `*Sections.swift` / `*States.swift` filename renames; historical lowercase "density peel" comments.
-- ConversationModel 1067 LOC = Core seam OOS.
+- Focus: CODEMAP honesty (P6). No casca Swift this pass.
+- Remaining soft: Sections/States rename · spoken label/title · small fuse peels
