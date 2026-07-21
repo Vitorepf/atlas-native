@@ -27,6 +27,24 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T23:35Z — density split mega Judgment hosts
+
+```yaml
+phase: prove
+focus: Autonomos/Conversation/Arena Judgment mega-files → family splits
+domain_index: rotating
+pass: 1
+commands: |
+  AutonomosCanDo 1660 → CanDo+Organs+FleetRun
+  ConversationMessages 1860 → Messages+Thread+Outline
+  ArenaFleet 1878 → Fleet+Control+Live
+  GraphJudgment +SwiftUI · build ✓ · guard OK
+before_after: |
+  Judgment hosts back under 1200 agent-optimal
+notes: never Goal Done
+```
+
+
 ### scoreboard
 ```yaml
 phase: act
