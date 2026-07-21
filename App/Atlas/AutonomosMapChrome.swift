@@ -19,6 +19,8 @@ enum AutonomosMapChrome {
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
+        // Spoken title stays natural case — uppercase tracking is visual only.
+        .accessibilityLabel(text)
     }
 
     static func heroTitle(_ text: String, size: CGFloat = 30) -> some View {
