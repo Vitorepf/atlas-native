@@ -44,6 +44,14 @@ enum ArenaSuiteFace: Equatable {
 /// Pure suite engines grammar — rank · face · spoken · pack.
 enum ArenaSuiteJudgment {
 
+    static let closeLabel = "fechar detalhes da suite"
+    static let closeHint = "volta para a Arena"
+    static let sheetHint = "scores, casos e duração só quando o servidor publica"
+
+    static func spokenSuiteTitle(_ suite: String) -> String {
+        "suite \(suite)"
+    }
+
     /// Regressed first → measured score desc → wire-stable.
     static func rank(_ engines: [AtlasArenaSuiteEngine]) -> [AtlasArenaSuiteEngine] {
         engines.enumerated().sorted { lhs, rhs in

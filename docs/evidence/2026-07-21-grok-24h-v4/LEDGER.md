@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 86
-- idle_compress_passes: 10
+- idle_compress_passes: 11
 - collapse_host: 0
 
 ## Waves done
@@ -99,11 +99,10 @@ mode: designer + implementer
 - WAVE-091
 
 ## Idle compress
-- pass 5–10 · Cockpit · ChangeReview · Nightly · Editorial peels · A11y shims
+- pass 11 · delete LiveTimelineA11y · ArenaSuiteSheetA11y · StaleReadSealA11y → Judgment-only
 
 ## Open queue
 _(none)_
 
 ## Notes
-- WAVE-091 composer toolbar chrome residual.
-- DEVICE_PENDING.
+- WAVE-091 toolbar chrome shipped. DEVICE_PENDING.

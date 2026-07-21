@@ -3,50 +3,6 @@ import SwiftUI
 
 // WAVE-075: filter/list a11y → LiveTimelineFilterJudgment (chrono sagrado)
 
-enum LiveTimelineA11y {
-    static func spokenSectionLabel(stepCount: Int) -> String {
-        LiveTimelineFilterJudgment.spokenSectionLabel(stepCount: stepCount)
-    }
-
-    static func spokenFilterChip(
-        _ filter: TimelineReadFilter,
-        count: Int,
-        active: Bool,
-        silent: Bool
-    ) -> String {
-        LiveTimelineFilterJudgment.spokenFilterChip(
-            filter: filter, count: count, active: active, silent: silent
-        )
-    }
-
-    static func spokenFilterHint() -> String {
-        LiveTimelineFilterJudgment.filterHint
-    }
-
-    static func spokenRow(
-        row: NarrativeRow,
-        index: Int,
-        total: Int,
-        isCurrent: Bool
-    ) -> String {
-        LiveTimelineFilterJudgment.spokenRow(
-            row: row, index: index, total: total, isCurrent: isCurrent
-        )
-    }
-
-    static func rowValue(index: Int, total: Int, isCurrent: Bool) -> String {
-        LiveTimelineFilterJudgment.rowValue(index: index, total: total, isCurrent: isCurrent)
-    }
-
-    static func spokenFilterSilenceSurface(
-        filter: TimelineReadFilter,
-        totalSteps: Int
-    ) -> String {
-        LiveTimelineFilterJudgment.spokenFilterSilenceSurface(
-            filter: filter, totalSteps: totalSteps
-        )
-    }
-}
 
 func activityIconIntent(_ kind: AtlasAgentActivity.Kind) -> String? {
     switch kind {
@@ -91,11 +47,11 @@ extension NarrativeRowView {
     var narrativeA11y: some View {
         narrativeBody
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(LiveTimelineA11y.spokenRow(row: row,
+            .accessibilityLabel(LiveTimelineFilterJudgment.spokenRow(row: row,
                                                            index: index,
                                                            total: total,
                                                            isCurrent: isCurrent))
-            .accessibilityValue(LiveTimelineA11y.rowValue(index: index, total: total, isCurrent: isCurrent))
+            .accessibilityValue(LiveTimelineFilterJudgment.rowValue(index: index, total: total, isCurrent: isCurrent))
             .accessibilityAddTraits(currentTraits)
     }
 }
@@ -146,7 +102,7 @@ extension LiveTimeline {
     func filterSilenceA11y<V: View>(_ content: V) -> some View {
         content
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(LiveTimelineA11y.spokenFilterSilenceSurface(filter: filter,
+            .accessibilityLabel(LiveTimelineFilterJudgment.spokenFilterSilenceSurface(filter: filter,
                                                                             totalSteps: baseRows.count))
             .accessibilityValue(
                 LiveTimelineFilterJudgment.face(

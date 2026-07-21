@@ -8,7 +8,7 @@ extension StaleReadSeal {
     func sealBody(now: Date) -> some View {
         sealChrome(now: now)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(StaleReadSealA11y.spokenLabel(
+            .accessibilityLabel(ConversationStaleReadJudgment.spokenLabel(
                 capturedAt: capturedAt,
                 now: now,
                 confirming: confirming,
@@ -23,7 +23,7 @@ extension StaleReadSeal {
             Image(systemName: "clock.arrow.circlepath")
                 .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
-            Text(StaleReadSealA11y.displayCaption(
+            Text(ConversationStaleReadJudgment.displayCaption(
                 capturedAt: capturedAt,
                 now: now,
                 confirming: confirming,
@@ -48,36 +48,6 @@ extension StaleReadSeal {
     }
 }
 
-enum StaleReadSealA11y {
-    /// WAVE-060: caption/spoken from ConversationStaleReadJudgment.
-    static func spokenLabel(
-        capturedAt: Date,
-        now: Date,
-        confirming: Bool,
-        reduceMotion: Bool
-    ) -> String {
-        ConversationStaleReadJudgment.spokenLabel(
-            capturedAt: capturedAt,
-            now: now,
-            confirming: confirming,
-            reduceMotion: reduceMotion
-        )
-    }
-
-    static func displayCaption(
-        capturedAt: Date,
-        now: Date,
-        confirming: Bool,
-        reduceMotion: Bool
-    ) -> String {
-        ConversationStaleReadJudgment.displayCaption(
-            capturedAt: capturedAt,
-            now: now,
-            confirming: confirming,
-            reduceMotion: reduceMotion
-        )
-    }
-}
 
 extension StaleReadSeal {
     @ViewBuilder

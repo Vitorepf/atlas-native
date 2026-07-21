@@ -3,41 +3,13 @@ import SwiftUI
 
 // IDLE-COMPRESS ArenaSuiteSheet fused
 
-enum ArenaSuiteSheetA11y {
-    static func spokenSuiteTitle(_ suite: String) -> String {
-        "suite \(suite)"
-    }
-}
 
-enum ArenaSuiteSheetA11yCaptions {
-    /// WAVE-059: captions from Judgment.
-    static func casesCaption(for engine: AtlasArenaSuiteEngine) -> String? {
-        ArenaSuiteJudgment.casesCaption(for: engine)
-    }
 
-    static func durationCaption(for engine: AtlasArenaSuiteEngine) -> String? {
-        ArenaSuiteJudgment.durationCaption(for: engine)
-    }
-}
-
-extension ArenaSuiteSheetA11y {
-    static let closeLabel = "fechar detalhes da suite"
-    static let closeHint = "volta para a Arena"
-    static let sheetHint = "scores, casos e duração só quando o servidor publica"
-
-    static func spokenEngine(_ engine: AtlasArenaSuiteEngine) -> String {
-        ArenaSuiteJudgment.spokenEngine(engine)
-    }
-
-    static func spokenSheet(_ suite: AtlasArenaSuite) -> String {
-        ArenaSuiteJudgment.spokenSuite(suite)
-    }
-}
 
 extension ArenaSuiteSheet {
     @ViewBuilder
     func engineCasesCaption(_ engine: AtlasArenaSuiteEngine) -> some View {
-        if let cases = ArenaSuiteSheetA11yCaptions.casesCaption(for: engine) {
+        if let cases = ArenaSuiteJudgment.casesCaption(for: engine) {
             Text(cases)
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -49,7 +21,7 @@ extension ArenaSuiteSheet {
 extension ArenaSuiteSheet {
     @ViewBuilder
     func engineDurationCaption(_ engine: AtlasArenaSuiteEngine) -> some View {
-        if let duration = ArenaSuiteSheetA11yCaptions.durationCaption(for: engine) {
+        if let duration = ArenaSuiteJudgment.durationCaption(for: engine) {
             Text(duration)
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textTertiary)
@@ -120,7 +92,7 @@ extension ArenaSuiteSheet {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ArenaSuiteSheetA11y.spokenEngine(engine))
+        .accessibilityLabel(ArenaSuiteJudgment.spokenEngine(engine))
     }
 
     private func suiteMetric(
@@ -141,10 +113,10 @@ extension ArenaSuiteSheet {
 
     private func engineEvidence(_ engine: AtlasArenaSuiteEngine) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let cases = ArenaSuiteSheetA11yCaptions.casesCaption(for: engine) {
+            if let cases = ArenaSuiteJudgment.casesCaption(for: engine) {
                 evidenceLine(cases, symbol: "checklist")
             }
-            if let duration = ArenaSuiteSheetA11yCaptions.durationCaption(for: engine) {
+            if let duration = ArenaSuiteJudgment.durationCaption(for: engine) {
                 evidenceLine(duration, symbol: "timer")
             }
             evidenceLine("mesma suíte · braços equivalentes", symbol: "equal.circle")
@@ -217,7 +189,7 @@ extension ArenaSuiteSheet {
             .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityAddTraits(.isHeader)
-        .accessibilityLabel(ArenaSuiteSheetA11y.spokenSheet(suite))
+        .accessibilityLabel(ArenaSuiteJudgment.spokenSuite(suite))
         .accessibilityValue(suiteFace.productWord)
     }
 
@@ -267,8 +239,8 @@ extension ArenaSuiteSheet {
     var suiteToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             AtlasCloseToolbarButton(
-                spokenLabel: ArenaSuiteSheetA11y.closeLabel,
-                spokenHint: ArenaSuiteSheetA11y.closeHint,
+                spokenLabel: ArenaSuiteJudgment.closeLabel,
+                spokenHint: ArenaSuiteJudgment.closeHint,
                 reduceMotion: reduceMotion
             ) { dismiss() }
         }

@@ -44,11 +44,13 @@ extension TimelineFilterChips {
         count: Int
     ) -> some View {
         content
-            .accessibilityLabel(LiveTimelineA11y.spokenFilterChip(option,
-                                                                  count: count,
-                                                                  active: active,
-                                                                  silent: active && filterSilence))
-            .accessibilityHint(LiveTimelineA11y.spokenFilterHint())
+            .accessibilityLabel(LiveTimelineFilterJudgment.spokenFilterChip(
+                filter: option,
+                count: count,
+                active: active,
+                silent: active && filterSilence
+            ))
+            .accessibilityHint(LiveTimelineFilterJudgment.filterHint)
             .accessibilityAddTraits(active ? .isSelected : [])
             .accessibilityIdentifier(A11yID.liveTimelineFilter(option.rawValue))
     }
