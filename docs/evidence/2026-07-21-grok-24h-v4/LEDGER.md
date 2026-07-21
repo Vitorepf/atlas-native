@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 58
-- idle_compress_passes: 9
+- idle_compress_passes: 10
 - collapse_host: 0
 
 ## Waves done
@@ -80,6 +80,7 @@ mode: designer + implementer
 - pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow
 - pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
 - pass 9 · `876b24e3` · peel ArtifactPreview → TraceEvidence + Zoom
+- pass 10 · `9d4dac9c` · delete dead spokenReviewSheetAvailableLabel after WAVE-063
 
 ## Designer
 - designs_proposed: 58

@@ -114,13 +114,6 @@ extension ChangeReviewToast {
 }
 
 extension ChangeReviewSheet {
-    /// WAVE-063: ready/empty/unavailable spoken owned by ChangeReviewSheetJudgment.
-    func spokenReviewSheetAvailableLabel(_ review: AtlasTraceChangeReview) -> String {
-        ChangeReviewSheetJudgment.spokenSheet(loadFinished: true, review: review)
-    }
-}
-
-extension ChangeReviewSheet {
     @ViewBuilder
     func reviewAvailableContent(_ review: AtlasTraceChangeReview) -> some View {
         switch review.state {
