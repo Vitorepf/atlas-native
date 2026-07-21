@@ -1,7 +1,10 @@
-import SwiftUI
+import Foundation
 import AtlasCore
+import SwiftUI
 
-// WAVE-114 repo row + chrome peel
+// GOD-RESTRUCTURE: RadarChrome fused
+
+// MARK: - AtlasCodeRadarRepoChrome
 
 struct AtlasCodeRepoRow: View {
     let repo: AtlasCodeRepoRef
@@ -151,4 +154,230 @@ extension AtlasCodeRadarView {
         return nil
     }
 }
+// MARK: - AtlasCodeRadarFolderRow
 
+struct AtlasCodeFolderRow: View {
+    let folder: AtlasCodeFolder
+    let isExpanded: Bool
+    let issuesFor: (String) -> [AtlasCodeIssue]?
+    let trunkFor: (String) -> String?
+    var isMuteFor: (String) -> Bool = { _ in false }
+    let onToggle: () -> Void
+    let onOpenRepo: (String) -> Void
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            folderToggleButton
+            expandedRepos
+        }
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: isExpanded)
+    }
+}
+
+extension AtlasCodeRepoRow {
+    var repoRowLabel: some View {
+        HStack(alignment: .center, spacing: 12) {
+            repoRowLeading
+            Spacer(minLength: 6)
+            repoRowTrailing
+        }
+        .padding(.vertical, 13)
+        .contentShape(Rectangle())
+    }
+}
+
+extension AtlasCodeRepoRow {
+    var repoRowLeading: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 7) {
+                Text(repo.name)
+                    .atlasSans(15, .medium)
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                repoFolderBadge
+            }
+            repoRowIssues
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+extension AtlasCodeRepoRow {
+    @ViewBuilder
+    var repoFolderBadge: some View {
+        if showsFolder, let folder = repo.folder {
+            Text(folder)
+                .atlasSans(10)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 1.5)
+                .background(Capsule().fill(AtlasTheme.surface))
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension AtlasCodeRepoRow {
+    @ViewBuilder
+    var repoRowIssues: some View {
+        if isMute {
+            // WAVE-024: mute never reads as clean.
+            HStack(spacing: 6) {
+                Image(systemName: "antenna.radiowaves.left.and.right.slash")
+                    .atlasSans(9, .semibold)
+                    .accessibilityHidden(true)
+                Text("\(AtlasCodeRadarJudgment.muteBadgeLabel) · \(AtlasCodeRadarJudgment.muteSpoken)")
+                    .atlasSans(12)
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+                    .accessibilityHidden(true)
+            }
+        } else if let issues, let first = issues.first {
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(first.isSevere ? AtlasCodePalette.alert : AtlasCodePalette.alert.opacity(0.45))
+                    .frame(width: 4.5, height: 4.5)
+                    .accessibilityHidden(true)
+                Text(issues.count == 1 ? first.headline(trunk: trunk) : "\(first.headline(trunk: trunk)) · mais \(issues.count - 1) alerta\(issues.count - 1 == 1 ? "" : "s")")
+                    .atlasSans(12)
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(1)
+                    .accessibilityHidden(true)
+            }
+        }
+    }
+}
+
+extension AtlasCodeRepoRow {
+    @ViewBuilder
+    var repoRowTrailing: some View {
+        if let age = AtlasCodeAge.short(from: repo.lastCommitAt) {
+            Text(age)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .monospacedDigit()
+                .accessibilityHidden(true)
+        }
+        Image(systemName: "chevron.right")
+            .atlasSans(12, .semibold)
+            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+            .accessibilityHidden(true)
+    }
+}
+// MARK: - AtlasCodeRadarLoadJudgment
+
+// MARK: - Types
+
+/// Exclusive multi-repo Radar screen face (WAVE-067).
+enum AtlasCodeRadarScreenFace: Equatable {
+    case loading
+    case failed(String?)
+    case empty
+    case ready(Int)
+
+    var productWord: String {
+        switch self {
+        case .loading: return "loading"
+        case .failed: return "failed"
+        case .empty: return "empty"
+        case .ready: return "ready"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .loading:
+            return "lendo o workspace"
+        case .failed(let message):
+            if let message, !message.isEmpty {
+                return "workspace indisponível, \(message)"
+            }
+            return "workspace indisponível"
+        case .empty:
+            return "nenhum repositório neste workspace"
+        case .ready(let n):
+            return n == 1 ? "1 repositório" : "\(n) repositórios"
+        }
+    }
+
+    var phaseID: String {
+        switch self {
+        case .loading: return "loading"
+        case .failed: return "failed"
+        case .empty: return "loaded-empty"
+        case .ready(let n): return "loaded-\(n)"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure Radar screen load grammar — face · spoken · phaseID · pack.
+enum AtlasCodeRadarLoadJudgment {
+
+    static let shellHint = "pastas, recentes e sem retorno verificados do seu código"
+
+    static func face(
+        phase: LoadPhase,
+        repositoryCount: Int?,
+        failMessage: String? = nil
+    ) -> AtlasCodeRadarScreenFace {
+        switch phase {
+        case .idle, .loading:
+            return .loading
+        case .failed(let message):
+            let published = failMessage ?? message
+            return .failed(published.isEmpty ? nil : published)
+        case .loaded:
+            let n = repositoryCount ?? 0
+            if n <= 0 { return .empty }
+            return .ready(n)
+        }
+    }
+
+    static func spokenShell(face: AtlasCodeRadarScreenFace) -> String {
+        "Código, workspace do operador, \(face.spokenFace)"
+    }
+
+    static func spokenShell(
+        phase: LoadPhase,
+        repositoryCount: Int?,
+        failMessage: String? = nil
+    ) -> String {
+        spokenShell(
+            face: face(
+                phase: phase,
+                repositoryCount: repositoryCount,
+                failMessage: failMessage
+            )
+        )
+    }
+
+    static func packFacts(
+        phase: LoadPhase,
+        repositoryCount: Int?,
+        failMessage: String? = nil
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(
+            phase: phase,
+            repositoryCount: repositoryCount,
+            failMessage: failMessage
+        )
+        facts.append("radar_screen_face: \(face.productWord)")
+        switch face {
+        case .loading:
+            absences.append("workspace radar ainda carregando")
+        case .failed(let msg):
+            absences.append("workspace radar falhou")
+            if let msg, !msg.isEmpty { facts.append("radar_error: \(msg)") }
+        case .empty:
+            absences.append("workspace sem repositórios")
+            facts.append("radar_repos: 0")
+        case .ready(let n):
+            facts.append("radar_repos: \(n)")
+        }
+        return (facts, absences)
+    }
+}

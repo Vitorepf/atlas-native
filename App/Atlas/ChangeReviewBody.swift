@@ -232,3 +232,480 @@ struct ChangeReviewRiskStrip: View {
         }
     }
 }
+
+// MARK: - ChangeReviewFindings
+
+extension ChangeReviewFindingRow {
+    var rowAccessibilityLabel: String {
+        var parts: [String] = []
+        if finding.severity != nil {
+            parts.append("severidade \(ChangeReviewJudgment.severitySpoken(finding.severity))")
+        }
+        parts.append(finding.title ?? "achado sem título")
+        if let path = finding.filePath {
+            let line = finding.startLine.map { ", linha \($0)" } ?? ""
+            parts.append("\(path)\(line)")
+        }
+        if let rec = finding.recommendation {
+            parts.append("recomendação: \(rec)")
+        }
+        return parts.joined(separator: ", ")
+    }
+}
+
+extension ChangeReviewFindingRow {
+    var findingBody: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 8) {
+                if let severity = finding.severity {
+                    Text(severity).font(AtlasFont.mono(9))
+                        .foregroundStyle(ChangeReviewJudgment.severityColor(severity))
+                        .accessibilityHidden(true)
+                }
+                Text(finding.title ?? "finding").font(AtlasFont.serif(14)).foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(2)
+                    .accessibilityHidden(true)
+            }
+            findingPathAndRecommendation
+        }
+        .padding(.vertical, 3)
+    }
+}
+
+extension ChangeReviewFindingRow {
+    @ViewBuilder
+    var findingPathAndRecommendation: some View {
+        if let path = finding.filePath {
+            Text(path + (finding.startLine.map { ":\($0)" } ?? ""))
+                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+                .accessibilityHidden(true)
+        }
+        if let rec = finding.recommendation {
+            Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(3).padding(.top, 1)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+struct ChangeReviewFindingRow: View {
+    let finding: AtlasTraceChangeReview.Finding
+
+    var body: some View {
+        findingBody
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(rowAccessibilityLabel)
+            .accessibilityIdentifier(A11yID.reviewFindingRow(finding.id))
+    }
+}
+
+extension ChangeReviewFindingsSection {
+    func axisGroup(axis: String, axisFindings: [AtlasTraceChangeReview.Finding]) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            axisHeaderRow(axis: axis, count: axisFindings.count)
+            ForEach(axisFindings) { f in
+                ChangeReviewFindingRow(finding: f)
+            }
+        }
+    }
+}
+
+extension ChangeReviewFindingsSection {
+    func axisHeaderRow(axis: String, count: Int) -> some View {
+        HStack(spacing: 8) {
+            Text(axis).font(AtlasFont.mono(9)).tracking(0.8)
+                .foregroundStyle(AtlasTheme.accent)
+            Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
+            Text("\(count)")
+                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityAddTraits(.isHeader)
+        .accessibilityLabel(axisHeaderLabel(axis: axis, count: count))
+        .accessibilityIdentifier(A11yID.reviewFindingAxis(axis))
+    }
+}
+
+extension ChangeReviewFindingsSection {
+    func axisHeaderLabel(axis: String, count: Int) -> String {
+        let name = axis == "GERAIS" ? "gerais" : axis.lowercased()
+        let noun = count == 1 ? "achado" : "achados"
+        return "eixo \(name), \(count) \(noun)"
+    }
+}
+
+extension ChangeReviewFindingsSection {
+    /// WAVE-039: axes by worst severity; findings severity-first inside.
+    var rankedGroups: [(axis: String, findings: [AtlasTraceChangeReview.Finding])] {
+        ChangeReviewJudgment.rankedAxisGroups(findings)
+    }
+}
+
+struct ChangeReviewFindingsSection: View {
+    let findings: [AtlasTraceChangeReview.Finding]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            ChangeReviewCaption("ACHADOS · \(findings.count)")
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(ChangeReviewJudgment.spokenFindingsSection(count: findings.count))
+            ForEach(rankedGroups, id: \.axis) { group in
+                axisGroup(axis: group.axis, axisFindings: group.findings)
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(A11yID.reviewFindingsSection)
+    }
+}
+
+// MARK: - ChangeReviewPatchCard
+
+extension ChangeReviewPatchCard {
+    @ViewBuilder
+    var patchCardBody: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            patchHeader
+            ForEach(patch.changedFiles + patch.createdFiles + patch.deletedFiles, id: \.self) { file in
+                ChangeReviewFileRow(reviews: reviews, traceId: traceId, patch: patch, file: file)
+            }
+            patchRiskFlags
+            if diffExpanded {
+                ChangeReviewDiffView(reviews: reviews, traceId: traceId, patch: patch)
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+            }
+        }
+    }
+}
+
+extension ChangeReviewPatchCard {
+    var diffExpanded: Bool { expandedDiffPatch == patch.id }
+}
+
+extension ChangeReviewPatchCard {
+    var patchHeader: some View {
+        HStack {
+            Text("PATCH \(String(patch.id.prefix(8)))")
+                .font(AtlasFont.mono(10)).tracking(0.8).foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            Spacer()
+            Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
+                .font(AtlasFont.mono(11, .medium)).foregroundStyle(AtlasTheme.accent)
+                .accessibilityLabel(ChangeReviewJudgment.spokenDiffToggle(expanded: diffExpanded))
+                .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
+                .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
+        }
+    }
+}
+
+extension ChangeReviewPatchCard {
+    var patchRiskFlags: some View {
+        Group {
+            if !patch.riskFlags.isEmpty {
+                HStack(spacing: 6) {
+                    ForEach(patch.riskFlags, id: \.self) { flag in
+                        Text(flag).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domOperacional)
+                            .padding(.horizontal, 7).padding(.vertical, 3)
+                            .background(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
+                            .accessibilityHidden(true)
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(ChangeReviewJudgment.spokenRiskFlagsLabel(patch.riskFlags))
+            }
+        }
+    }
+}
+
+extension ChangeReviewPatchCard {
+    func toggleDiff() {
+        if diffExpanded {
+            expandedDiffPatch = nil
+        } else {
+            expandedDiffPatch = patch.id
+            Task { await reviews.refreshChangeReviewDiff(traceId: traceId, patchId: patch.patchID) }
+        }
+    }
+}
+
+// MARK: - Patch / Diff (C15 · C16)
+// DiffView → ChangeReviewDiffView.swift · Toggle → +Toggle · Header → +Header
+// Chrome → ChangeReviewDiffSection+Chrome.swift
+// Body → ChangeReviewDiffSection+Body.swift
+// Expanded → ChangeReviewDiffSection+Expanded.swift
+// Shell → ChangeReviewDiffSection+Shell.swift
+
+struct ChangeReviewPatchCard: View {
+    let reviews: ChangeReviewModel
+    let traceId: TraceID
+    let patch: AtlasTraceChangeReview.Patch
+    @Binding var expandedDiffPatch: String?
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        patchCardShell
+    }
+}
+
+// MARK: - ChangeReviewRunActions
+
+extension ChangeReviewRunActions {
+    var acceptButtonLabel: some View {
+        Text("Aceitar tudo")
+            .font(AtlasFont.mono(11, .semibold)).foregroundStyle(AtlasTheme.bg)
+            .padding(.horizontal, 18).padding(.vertical, 10)
+            .background(Capsule().fill(AtlasTheme.accent))
+    }
+}
+
+extension ChangeReviewRunActions {
+    @ViewBuilder
+    var applyingIndicator: some View {
+        if reduceMotion {
+            applyingStaticLabel
+        } else {
+            ProgressView()
+                .tint(AtlasTheme.accent)
+                .accessibilityLabel(ChangeReviewJudgment.applyingLabel)
+        }
+    }
+}
+
+extension ChangeReviewRunActions {
+    var applyingStaticLabel: some View {
+        Text("registrando…")
+            .font(AtlasFont.mono(10))
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .accessibilityLabel(ChangeReviewJudgment.applyingLabel)
+    }
+}
+
+extension ChangeReviewRunActions {
+    @ViewBuilder
+    func runActionButtonRow(available: [AtlasTraceChangeReview.Action]) -> some View {
+        HStack(spacing: 10) {
+            acceptButton(available: available)
+            rejectButton(available: available)
+            if applying { applyingIndicator }
+        }
+    }
+}
+
+extension ChangeReviewRunActions {
+    func performAccept() {
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        applying = true
+        Task { await reviews.applyChangeReview(traceId: traceId, action: .accept); applying = false }
+    }
+}
+
+extension ChangeReviewRunActions {
+    @ViewBuilder
+    func acceptButton(available: [AtlasTraceChangeReview.Action]) -> some View {
+        if available.contains(.accept) {
+            Button(action: performAccept) {
+                acceptButtonLabel
+            }
+            .buttonStyle(PressableScale())
+            .accessibilityLabel(ChangeReviewJudgment.acceptLabel)
+            .accessibilityHint(ChangeReviewJudgment.acceptHint)
+            .accessibilityIdentifier(A11yID.reviewRunAccept)
+        }
+    }
+}
+
+extension ChangeReviewRunActions {
+    func rejectReviewAction() {
+        applying = true
+        Task { await reviews.applyChangeReview(traceId: traceId, action: .reject); applying = false }
+    }
+}
+
+extension ChangeReviewRunActions {
+    @ViewBuilder
+    func rejectButton(available: [AtlasTraceChangeReview.Action]) -> some View {
+        if available.contains(.reject) {
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                rejectReviewAction()
+            } label: {
+                rejectButtonLabel
+            }
+            .buttonStyle(PressableScale())
+            .accessibilityLabel(ChangeReviewJudgment.rejectLabel)
+            .accessibilityHint(ChangeReviewJudgment.rejectHint)
+            .accessibilityIdentifier(A11yID.reviewRunReject)
+        }
+    }
+}
+
+extension ChangeReviewRunActions {
+    var rejectButtonLabel: some View {
+        Text("Rejeitar")
+            .font(AtlasFont.mono(11, .semibold)).foregroundStyle(AtlasTheme.domOperacional)
+            .padding(.horizontal, 18).padding(.vertical, 10)
+            .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
+            .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
+    }
+}
+
+struct ChangeReviewRunActions: View {
+    let review: AtlasTraceChangeReview
+    let reviews: ChangeReviewModel
+    let traceId: TraceID
+    @Binding var applying: Bool
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        let available = review.review.availableActions
+        if !available.isEmpty {
+            runActionButtonRow(available: available)
+            .disabled(applying)
+            .padding(.top, 4)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: applying)
+        }
+    }
+}
+
+// MARK: - ChangeReviewFileRowChrome
+
+// MARK: - File row a11y
+struct ChangeReviewFileRowA11y: ViewModifier {
+    let decidedLabel: String?
+    let identifier: String
+
+    func body(content: Content) -> some View {
+        if let decidedLabel {
+            content
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(decidedLabel)
+                .accessibilityIdentifier(identifier)
+        } else {
+            content
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier(identifier)
+        }
+    }
+}
+
+extension ChangeReviewFileRowA11y {
+    static func spoken(
+        displayName: String,
+        kind: String?,
+        review: AtlasTraceChangeReview.FileReview
+    ) -> String {
+        var parts = [displayName]
+        if let kind { parts.append("arquivo \(kind)") }
+        parts.append(review.action == .accept ? "aceito" : "rejeitado")
+        return parts.joined(separator: ", ")
+    }
+}
+
+// MARK: - File row chrome
+extension ChangeReviewFileRow {
+    var acceptButton: some View {
+        Button("aceitar") {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            Task {
+                await reviews.applyChangeReviewFile(
+                    traceId: traceId, patchId: patch.patchID,
+                    filePath: file, action: .accept
+                )
+            }
+        }
+        .buttonStyle(PressableScale())
+        .font(AtlasFont.mono(10, .medium)).foregroundStyle(AtlasTheme.accent)
+        .accessibilityLabel(ChangeReviewJudgment.spokenAcceptPatch(displayName))
+        .accessibilityHint("registra aceite deste arquivo no patch")
+        .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))
+    }
+}
+
+extension ChangeReviewFileRow {
+    var decided: AtlasTraceChangeReview.FileReview? {
+        patch.fileReviews.first { $0.filePath == file }
+    }
+
+    var displayName: String { (file as NSString).lastPathComponent }
+
+    var fileKindCaption: String? {
+        if patch.createdFiles.contains(file) { return "novo" }
+        if patch.deletedFiles.contains(file) { return "removido" }
+        return nil
+    }
+}
+
+extension ChangeReviewFileRow {
+    var fileLeading: some View {
+        fileLeadingRow
+    }
+}
+
+extension ChangeReviewFileRow {
+    var fileLeadingRow: some View {
+        HStack(spacing: 8) {
+            Text(displayName)
+                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                .accessibilityHidden(true)
+            if let kind = fileKindCaption {
+                Text(kind).font(AtlasFont.mono(9))
+                    .foregroundStyle(kind == "novo" ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
+                    .accessibilityHidden(true)
+            }
+            Spacer()
+            fileTrailing
+        }
+    }
+}
+
+extension ChangeReviewFileRow {
+    var rejectButton: some View {
+        Button("rejeitar") {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            Task {
+                await reviews.applyChangeReviewFile(
+                    traceId: traceId, patchId: patch.patchID,
+                    filePath: file, action: .reject
+                )
+            }
+        }
+        .buttonStyle(PressableScale())
+        .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+        .accessibilityLabel(ChangeReviewJudgment.spokenRejectPatch(displayName))
+        .accessibilityHint("registra rejeição deste arquivo no patch")
+        .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))
+    }
+}
+
+extension ChangeReviewFileRow {
+    @ViewBuilder
+    var fileTrailing: some View {
+        if let decided {
+            Text(decided.action == .accept ? "aceito" : "rejeitado")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(decided.action == .accept ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
+                .accessibilityHidden(true)
+        } else {
+            acceptButton
+            rejectButton
+        }
+    }
+}
+
+struct ChangeReviewFileRow: View {
+    let reviews: ChangeReviewModel
+    let traceId: TraceID
+    let patch: AtlasTraceChangeReview.Patch
+    let file: String
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        fileLeading
+            .padding(.vertical, 3)
+            .modifier(ChangeReviewFileRowA11y(
+                decidedLabel: decided.map {
+                    ChangeReviewFileRowA11y.spoken(displayName: displayName, kind: fileKindCaption, review: $0)
+                },
+                identifier: A11yID.reviewFileRow(patchId: patch.id, filePath: file)
+            ))
+    }
+}

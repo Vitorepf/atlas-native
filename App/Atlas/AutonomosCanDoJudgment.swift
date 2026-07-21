@@ -1,5 +1,10 @@
 import Foundation
 import AtlasCore
+import SwiftUI
+
+// GOD-RESTRUCTURE: AutonomosJudgments fused
+
+// MARK: - AutonomosCanDoJudgment
 
 // MARK: - Judgment
 
@@ -107,5 +112,628 @@ enum AutonomosCanDoJudgment {
             break
         }
         return (facts, absences, canDo)
+    }
+}
+// MARK: - AutonomosAreaBindJudgment
+
+// MARK: - Types
+
+/// Exclusive multi-area bind face (WAVE-065).
+enum AutonomosAreaBindFace: Equatable {
+    /// Zero registered areas — silence, no theater.
+    case none
+    /// Exactly one registered (or defaultArea match) — auto-bind path.
+    case auto
+    /// N>1 registered and nothing selected — operator must choose.
+    case needsBind(Int)
+    /// Area selected.
+    case bound(String)
+
+    var productWord: String {
+        switch self {
+        case .none: return "none"
+        case .auto: return "auto"
+        case .needsBind: return "needs_bind"
+        case .bound: return "bound"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .none:
+            return "nenhuma área registrada no motor"
+        case .auto:
+            return "uma área registrada, ligação automática"
+        case .needsBind(let n):
+            return "escolher área, \(n) áreas registradas"
+        case .bound(let name):
+            return "área \(name)"
+        }
+    }
+
+    var needsChooser: Bool {
+        if case .needsBind = self { return true }
+        return false
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure area-bind policy — 0/1/N · face · pack · rank for chooser.
+enum AutonomosAreaBindJudgment {
+
+    static func registeredAreas(_ areas: [AtlasAutonomosArea]) -> [AtlasAutonomosArea] {
+        areas.filter(\.registered)
+    }
+
+    /// WAVE-030 law: 1 registered → that id; defaultArea match when multi; else nil.
+    static func autoBindID(
+        areas: [AtlasAutonomosArea],
+        defaultArea: String? = nil
+    ) -> String? {
+        AutonomosRunControlJudgment.bindAreaID(areas: areas, defaultArea: defaultArea)
+    }
+
+    static func face(
+        areas: [AtlasAutonomosArea],
+        selectedAreaID: String?,
+        defaultArea: String? = nil
+    ) -> AutonomosAreaBindFace {
+        if let selectedAreaID,
+           let area = areas.first(where: { $0.id == selectedAreaID }) {
+            return .bound(area.areaName.isEmpty ? area.id : area.areaName)
+        }
+        let registered = registeredAreas(areas)
+        if registered.isEmpty { return .none }
+        if autoBindID(areas: areas, defaultArea: defaultArea) != nil {
+            return .auto
+        }
+        return .needsBind(registered.count)
+    }
+
+    /// Stable chooser order: name, then id.
+    static func rankForChooser(_ areas: [AtlasAutonomosArea]) -> [AtlasAutonomosArea] {
+        registeredAreas(areas).sorted { lhs, rhs in
+            let ln = lhs.areaName.lowercased()
+            let rn = rhs.areaName.lowercased()
+            if ln != rn { return ln < rn }
+            return lhs.id < rhs.id
+        }
+    }
+
+    static func spokenChooserRow(_ area: AtlasAutonomosArea) -> String {
+        var parts = [area.areaName.isEmpty ? area.id : area.areaName]
+        if !area.focus.isEmpty {
+            parts.append("foco \(area.focus)")
+        }
+        parts.append("registrada")
+        return parts.joined(separator: ", ")
+    }
+
+    static func spokenChooser(count: Int) -> String {
+        "escolher área do loop, \(count) área\(count == 1 ? "" : "s") registrada\(count == 1 ? "" : "s")"
+    }
+
+    static let chooserHint = "liga a frota a uma área registrada no motor"
+    static let ctaTitle = "Escolher área"
+    static let ctaSpoken = "escolher área do loop Autônomos"
+
+    static func packFacts(
+        areas: [AtlasAutonomosArea],
+        selectedAreaID: String?,
+        defaultArea: String? = nil
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(areas: areas, selectedAreaID: selectedAreaID, defaultArea: defaultArea)
+        let registered = registeredAreas(areas)
+        facts.append("area_bind_face: \(face.productWord)")
+        facts.append("areas_registered: \(registered.count)")
+        facts.append("areas_total: \(areas.count)")
+        switch face {
+        case .none:
+            absences.append("nenhuma área registered — silenciam órgãos de loop")
+        case .auto:
+            facts.append("area_bind_policy: auto_single")
+        case .needsBind:
+            absences.append("multi-área sem seleção — chooser necessário")
+        case .bound(let name):
+            facts.append("area_selected_name: \(name)")
+            if let id = selectedAreaID {
+                facts.append("area_selected_id: \(id)")
+            }
+        }
+        return (facts, absences)
+    }
+}
+// MARK: - AutonomosEvolutionJudgment
+
+// MARK: - Evolution timeline judgment (WAVE-034)
+
+enum AutonomosEvolutionFace: Equatable {
+    case unbound
+    case empty
+    case items(Int)
+
+    var productWord: String {
+        switch self {
+        case .unbound: return "unbound"
+        case .empty: return "quiet"
+        case .items: return "delivered"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .unbound: return "área de loop não ligada"
+        case .empty: return "sem entregas publicadas"
+        case .items(let n):
+            return n == 1 ? "1 entrega publicada" : "\(n) entregas publicadas"
+        }
+    }
+
+    var heroSub: String {
+        switch self {
+        case .unbound:
+            return "Sem área registrada selecionada — evolução não inventa marcos."
+        case .empty:
+            return "Nenhum ciclo merge-proved neste recorte. Silêncio honesto."
+        case .items:
+            return "Só o que o ledger publicou com prova."
+        }
+    }
+}
+
+struct AutonomosEvolutionMarco: Identifiable, Equatable {
+    let cycle: AtlasAutonomosCycle
+    let mergeProved: Bool
+
+    var id: String { cycle.id }
+
+    var title: String {
+        if mergeProved {
+            return "Merge comprovado · ciclo \(cycle.cycleIndex)"
+        }
+        return "Ciclo \(cycle.cycleIndex) · \(cycle.outcome)"
+    }
+
+    var meta: String {
+        var parts: [String] = [cycle.cycleFinalStatus]
+        if mergeProved, let hash = cycle.mergeHash.nonEmpty {
+            parts.append(String(hash.prefix(8)))
+        }
+        if !cycle.recordedAt.isEmpty {
+            parts.append(cycle.recordedAt)
+        }
+        return parts.joined(separator: " · ")
+    }
+}
+
+enum AutonomosEvolutionJudgment {
+
+    /// Prefer delivered (merge-scoped) then other published cycles without inventing merges.
+    static func marcos(
+        delivered: AtlasAutonomosDeliveredResponse?,
+        cycles: AtlasAutonomosCyclesResponse?
+    ) -> [AutonomosEvolutionMarco] {
+        var seen = Set<String>()
+        var out: [AutonomosEvolutionMarco] = []
+
+        for cycle in delivered?.delivered ?? [] {
+            let key = cycle.id
+            guard seen.insert(key).inserted else { continue }
+            let proved = cycle.mergePerformed && cycle.mergeHash.nonEmpty != nil
+            out.append(AutonomosEvolutionMarco(cycle: cycle, mergeProved: proved))
+        }
+        for cycle in cycles?.cycles ?? [] {
+            let key = cycle.id
+            guard seen.insert(key).inserted else { continue }
+            let proved = cycle.mergePerformed && cycle.mergeHash.nonEmpty != nil
+            // Secondary: history cycles only if not already in delivered.
+            out.append(AutonomosEvolutionMarco(cycle: cycle, mergeProved: proved))
+        }
+
+        return rank(out)
+    }
+
+    /// Merge-proved first, then higher cycleIndex, then recordedAt.
+    static func rank(_ items: [AutonomosEvolutionMarco]) -> [AutonomosEvolutionMarco] {
+        items.sorted { lhs, rhs in
+            if lhs.mergeProved != rhs.mergeProved { return lhs.mergeProved && !rhs.mergeProved }
+            if lhs.cycle.cycleIndex != rhs.cycle.cycleIndex {
+                return lhs.cycle.cycleIndex > rhs.cycle.cycleIndex
+            }
+            return lhs.cycle.recordedAt > rhs.cycle.recordedAt
+        }
+    }
+
+    static func face(
+        areaSelected: Bool,
+        marcos: [AutonomosEvolutionMarco]
+    ) -> AutonomosEvolutionFace {
+        if !areaSelected { return .unbound }
+        if marcos.isEmpty { return .empty }
+        return .items(marcos.count)
+    }
+
+    static func mergeProvedCount(_ marcos: [AutonomosEvolutionMarco]) -> Int {
+        marcos.filter(\.mergeProved).count
+    }
+
+    static func hubEvolutionMeta(marcos: [AutonomosEvolutionMarco], areaSelected: Bool) -> String {
+        if !areaSelected { return "área unbound" }
+        let n = mergeProvedCount(marcos)
+        if n == 0 { return "sem merge-proved" }
+        return n == 1 ? "1 entrega" : "\(n) entregas"
+    }
+
+    static func packFacts(marcos: [AutonomosEvolutionMarco]) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let proved = mergeProvedCount(marcos)
+        facts.append("evolution_marcos: \(marcos.count)")
+        facts.append("merge_proved: \(proved)")
+        for m in marcos.prefix(5) where m.mergeProved {
+            facts.append("entrega: ciclo \(m.cycle.cycleIndex)")
+        }
+        if marcos.isEmpty {
+            absences.append("sem ciclos publicados em delivered/cycles neste recorte")
+        }
+        return (facts, absences)
+    }
+
+    // MARK: Marco spoken (WAVE-104)
+
+    static func spokenMarco(title: String, meta: String) -> String {
+        "\(title), \(meta)"
+    }
+
+    static func marcoHint(mergeProved: Bool) -> String {
+        mergeProved ? "abre o recibo de auto-construção" : ""
+    }
+
+}
+// MARK: - AutonomosReasonJudgment
+
+// MARK: - Types
+
+/// Exclusive governed-action reason sheet face (WAVE-098).
+enum AutonomosReasonFace: Equatable {
+    case blocked
+    case ready
+
+    var productWord: String {
+        switch self {
+        case .blocked: return "blocked"
+        case .ready: return "ready"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .blocked:
+            return "confirmar indisponível"
+        case .ready:
+            return "pronto para confirmar"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure governed reason-sheet grammar — face · canSubmit · spoken · pack.
+enum AutonomosReasonJudgment {
+
+    static let navigationTitle = "Confirmar ação"
+    static let sectionAction = "Ação governada"
+    static let sectionOperator = "Operador"
+    static let actorPlaceholder = "Quem autoriza"
+    static let reasonPlaceholder = "Motivo auditável"
+    static let confirmTitle = "Confirmar"
+    static let cancelTitle = "Cancelar"
+    static let cancelSpoken = "cancelar ação governada"
+    static let cancelHint = "fecha sem registrar recibo"
+    static let actorHint = "nome de quem autoriza a ação governada"
+    static let reasonHintRequired = "motivo auditável registrado no ledger"
+    static let reasonHintOptional = "motivo auditável opcional no ensaio"
+
+    // MARK: Face / submit
+
+    static func trimmed(_ text: String) -> String {
+        text.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    static func face(
+        actor: String,
+        reason: String,
+        reasonOptional: Bool
+    ) -> AutonomosReasonFace {
+        canSubmit(actor: actor, reason: reason, reasonOptional: reasonOptional)
+            ? .ready
+            : .blocked
+    }
+
+    static func canSubmit(
+        actor: String,
+        reason: String,
+        reasonOptional: Bool
+    ) -> Bool {
+        !trimmed(actor).isEmpty
+            && (reasonOptional || !trimmed(reason).isEmpty)
+    }
+
+    // MARK: Spoken
+
+    static func spokenSheet(actionTitle: String) -> String {
+        "confirmar ação governada, \(actionTitle.lowercased())"
+    }
+
+    static func spokenConfirm(
+        actionTitle: String,
+        actor: String,
+        reason: String,
+        reasonOptional: Bool
+    ) -> String {
+        let f = face(actor: actor, reason: reason, reasonOptional: reasonOptional)
+        switch f {
+        case .ready:
+            return "confirmar \(actionTitle.lowercased())"
+        case .blocked:
+            return "confirmar indisponível, preencha operador e motivo"
+        }
+    }
+
+    static func reasonSectionTitle(reasonOptional: Bool) -> String {
+        reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo"
+    }
+
+    static func reasonFieldHint(reasonOptional: Bool) -> String {
+        reasonOptional ? reasonHintOptional : reasonHintRequired
+    }
+
+    // MARK: Pack
+
+    static func packFacts(
+        actionTitle: String,
+        actor: String,
+        reason: String,
+        reasonOptional: Bool
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let f = face(actor: actor, reason: reason, reasonOptional: reasonOptional)
+        facts.append("reason_face: \(f.productWord)")
+        facts.append("reason_action: \(actionTitle)")
+        facts.append("reason_optional: \(reasonOptional ? "yes" : "no")")
+        if trimmed(actor).isEmpty {
+            absences.append("operador autorizador vazio")
+        } else {
+            facts.append("reason_actor_present: true")
+        }
+        if trimmed(reason).isEmpty {
+            if reasonOptional {
+                facts.append("reason_body: optional_empty")
+            } else {
+                absences.append("motivo auditável vazio")
+            }
+        } else {
+            facts.append("reason_body_present: true")
+        }
+        return (facts, absences)
+    }
+}
+// MARK: - AutonomosTaskHealthJudgment
+
+// MARK: - Task health / incident judgment (WAVE-036)
+
+enum AutonomosTaskHealthFace: Equatable {
+    case unbound
+    case loading
+    case quiet
+    case incident(flagCount: Int)
+    case pressure
+
+    var productWord: String {
+        switch self {
+        case .unbound: return "unbound"
+        case .loading: return "loading"
+        case .quiet: return "quiet"
+        case .incident: return "incident"
+        case .pressure: return "pressure"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .unbound: return "saúde da frota não ligada"
+        case .loading: return "carregando saúde da frota"
+        case .quiet: return "frota quieta, sem incidente publicado"
+        case .incident(let n):
+            return n == 1 ? "1 sinal de incidente" : "\(n) sinais de incidente"
+        case .pressure: return "pressão de fila publicada"
+        }
+    }
+
+    var heroTitle: String {
+        switch self {
+        case .unbound: return "Saúde unbound"
+        case .loading: return "Lendo saúde…"
+        case .quiet: return "Quiet"
+        case .incident: return "Precisa de você"
+        case .pressure: return "Pressão na fila"
+        }
+    }
+
+    var heroSub: String {
+        switch self {
+        case .unbound:
+            return "Sem área selecionada — não inventamos incidentes."
+        case .loading:
+            return "Só o que o servidor publicar em task health."
+        case .quiet:
+            return "Nenhum incidente. Silêncio honesto."
+        case .incident:
+            return "Sinais publicados — julgue a ação recomendada."
+        case .pressure:
+            return "Fila sob pressão; sem flag de incidente explícita."
+        }
+    }
+}
+
+enum AutonomosTaskHealthJudgment {
+
+    static func incidentPresent(_ health: AtlasAutonomosTaskHealthResponse?) -> Bool {
+        health?.incidents.present == true
+    }
+
+    static func face(
+        areaSelected: Bool,
+        health: AtlasAutonomosTaskHealthResponse?
+    ) -> AutonomosTaskHealthFace {
+        if !areaSelected { return .unbound }
+        guard let health else { return .loading }
+        if health.incidents.present {
+            return .incident(flagCount: health.incidents.flags.count)
+        }
+        let pressure = health.operating.queuePressure
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        if !pressure.isEmpty, pressure != "none", pressure != "low", pressure != "quiet", pressure != "ok" {
+            return .pressure
+        }
+        if health.healthy {
+            return .quiet
+        }
+        // Unhealthy without explicit incident flags — still pressure attention.
+        return .pressure
+    }
+
+    static func flagLines(_ health: AtlasAutonomosTaskHealthResponse) -> [String] {
+        health.incidents.flags
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+    }
+
+    static func tasksSummary(_ health: AtlasAutonomosTaskHealthResponse) -> String {
+        let t = health.tasks
+        return "claimable \(t.claimable) · claimed \(t.claimed) · blocked \(t.blocked) · completed \(t.completed)"
+    }
+
+    static func operatingLine(_ health: AtlasAutonomosTaskHealthResponse) -> String {
+        let action = health.operating.recommendedAction
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let pressure = health.operating.queuePressure
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        var parts: [String] = []
+        if !action.isEmpty { parts.append(action) }
+        if !pressure.isEmpty { parts.append("pressão \(pressure)") }
+        return parts.isEmpty ? "sem recomendação publicada" : parts.joined(separator: " · ")
+    }
+
+    static func hubIncidentMeta(health: AtlasAutonomosTaskHealthResponse?) -> String? {
+        guard let health, health.incidents.present else { return nil }
+        let n = health.incidents.flags.count
+        if n == 0 { return "incidente" }
+        return n == 1 ? "1 sinal" : "\(n) sinais"
+    }
+
+    static func packFacts(
+        areaSelected: Bool,
+        health: AtlasAutonomosTaskHealthResponse?
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(areaSelected: areaSelected, health: health)
+        facts.append("task_health_face: \(face.productWord)")
+        guard areaSelected else {
+            absences.append("task health sem área selecionada")
+            return (facts, absences)
+        }
+        guard let health else {
+            absences.append("task health não hidratado neste recorte")
+            return (facts, absences)
+        }
+        facts.append("healthy: \(health.healthy ? "yes" : "no")")
+        facts.append("incidents_present: \(health.incidents.present ? "yes" : "no")")
+        facts.append("queue_pressure: \(health.operating.queuePressure)")
+        facts.append("recommended_action: \(health.operating.recommendedAction)")
+        facts.append("tasks: \(tasksSummary(health))")
+        for flag in flagLines(health).prefix(8) {
+            facts.append("incident_flag: \(flag)")
+        }
+        if !health.incidents.present {
+            absences.append("sem incidente publicado — não invente alarme")
+        }
+        return (facts, absences)
+    }
+
+    static func spokenSignal(_ flag: String) -> String {
+        "sinal \(flag)"
+    }
+
+    static func spokenObservedAt(_ observedAt: String) -> String {
+        "observado em \(observedAt)"
+    }
+}
+// MARK: - AutonomosTransferJudgment
+
+// MARK: - Mission transfer handoff (WAVE-035)
+
+/// Pure judgment for Autônomos mission transfer — never invents target worker.
+enum AutonomosTransferJudgment {
+
+    static let productWord = "transfer"
+    static let ctaTitle = "Transferir missão"
+    static let spokenFace = "transferência de missão com recibo"
+
+    static let reasonTitle = "Transferir missão"
+    static let reasonExplainer =
+        "Preserva a mesma missão (área + foco). O target começa desconhecido — a fila escolhe o worker; só o lock dele comprova claimed. Não inicia execução no destino sozinho."
+
+    /// Transfer only when area is selected and registered for control writes.
+    static func canTransfer(canControlSelectedArea: Bool) -> Bool {
+        canControlSelectedArea
+    }
+
+    static func receiptLine(_ receipt: AtlasAutonomosTransferResponse?) -> String? {
+        guard let receipt else { return nil }
+        if receipt.isTargetClaimed {
+            let host = receipt.handoff.target.host?.trimmingCharacters(in: .whitespacesAndNewlines)
+            let hostBit = (host?.isEmpty == false) ? " · \(host!)" : ""
+            return "Handoff claimed\(hostBit) · \(receipt.handoff.handoffId.prefix(8))"
+        }
+        if receipt.isAwaitingSourceRelease {
+            return "Transfer pedido · aguardando liberação da origem · \(receipt.handoff.handoffId.prefix(8))"
+        }
+        let note = receipt.note?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !note.isEmpty {
+            return "Transfer · \(receipt.status) · \(note)"
+        }
+        return "Transfer · \(receipt.status) · \(receipt.handoff.handoffId.prefix(8))"
+    }
+
+    static func packFacts(
+        canTransfer: Bool,
+        receipt: AtlasAutonomosTransferResponse?
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        facts.append("can_transfer: \(canTransfer ? "yes" : "no")")
+        if let receipt {
+            facts.append("handoff_status: \(receipt.status)")
+            facts.append("handoff_id: \(receipt.handoff.handoffId)")
+            facts.append("target_status: \(receipt.handoff.target.status)")
+            if receipt.isTargetClaimed {
+                facts.append("handoff_face: claimed")
+            } else if receipt.isAwaitingSourceRelease {
+                facts.append("handoff_face: awaiting_source_release")
+            }
+        } else if canTransfer {
+            absences.append("nenhum handoff pedido neste recorte")
+        } else {
+            absences.append("transfer indisponível — área unbound/unregistered")
+        }
+        absences.append("casca não escolhe worker target — servidor/fila decide")
+        return (facts, absences)
     }
 }
