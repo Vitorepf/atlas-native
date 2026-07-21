@@ -3298,11 +3298,11 @@ extension AtlasProfileSheet {
 
         VStack(spacing: 0) {
             profileLine("Servidor", value: session.host, mono: true)
-            Divider().overlay(AtlasTheme.separatorSoft)
+            profileRowHairline
             profileLine("Estado", value: connectionLabel)
-            Divider().overlay(AtlasTheme.separatorSoft)
+            profileRowHairline
             profileLine("Conversas", value: "\(session.threads.count)")
-            Divider().overlay(AtlasTheme.separatorSoft)
+            profileRowHairline
             profileLine("Workspaces", value: "\(session.workspaces.count)")
         }
         .atlasCard()
@@ -3333,9 +3333,24 @@ extension AtlasProfileSheet {
         .accessibilityHint("Mostra ou oculta detalhes técnicos nas telas")
 
         Text("Atlas \(appVersion)")
-            .font(AtlasFont.mono(11))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .font(AtlasFont.mono(11, .medium))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.7))
             .padding(.top, 8)
+    }
+
+    private var profileRowHairline: some View {
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0),
+                AtlasTheme.accent.opacity(0.2),
+                AtlasTheme.separatorSoft,
+                AtlasTheme.accent.opacity(0)
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(height: 1)
+        .padding(.leading, 14)
     }
 
     private func profileLine(_ label: String, value: String, mono: Bool = false) -> some View {
