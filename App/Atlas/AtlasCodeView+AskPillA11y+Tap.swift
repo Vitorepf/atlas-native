@@ -8,8 +8,12 @@ extension AtlasCodeView {
         content.onTapGesture {
             AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             // Com âncora de swipe, o draft já está semeado — não apagar.
+            // Sem swipe: emptyPrompt volta ao convite genérico (limpa legenda residual).
             if askFocusNode == nil {
                 askDraft = ""
+                askModel.setSheetFocusLegend(nil)
+            } else {
+                askModel.setSheetFocusLegend(anchorLegend)
             }
             showsAskCard = true
         }

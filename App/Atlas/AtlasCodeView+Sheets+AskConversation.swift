@@ -11,7 +11,7 @@ extension AtlasCodeAskWhySheetsModifier {
             client: session.client,
             threadId: askThreadId,
             title: "Código · \(model.repo)",
-            emptyPrompt: AtlasCodeAskContext.emptyPrompt(focusLegend: nil),
+            emptyPrompt: AtlasCodeAskContext.emptyPrompt(focusLegend: askModel.sheetFocusLegend),
             emptySuggestions: AtlasCodeAskContext.emptySuggestions,
             taskKind: "code",
             workspace: model.repo,

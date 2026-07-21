@@ -11,7 +11,14 @@ extension AtlasCodeRadarView {
             radarContent
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
                 .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
+                .padding(.bottom, 88)
         )
         .background(AtlasTheme.bg.ignoresSafeArea())
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            askPillDock
+        }
+        .sheet(isPresented: $showingAsk) {
+            askConversationSheet
+        }
     }
 }

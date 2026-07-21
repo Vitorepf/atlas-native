@@ -19,7 +19,7 @@ extension AtlasCodeView {
         model.adoptRepo(slug)
         provenanceModel.adoptRepo(slug)
         mirrorModel.adoptRepo(slug)
-        askModel.adoptRepo(slug)
+        askModel.adoptRepo(slug) // also clears sheetFocusLegend
 
         async let graphLoad: Void = model.load()
         async let mirrorLoad: Void = mirrorModel.refresh()

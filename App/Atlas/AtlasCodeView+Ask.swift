@@ -8,6 +8,8 @@ extension AtlasCodeView {
     func anchorAskOnCommit(_ node: AtlasCodeGraphNode) {
         selectedNode = nil
         askFocusNode = node
+        let legend = swipeFocusLegend(node)
+        askModel.setSheetFocusLegend(legend)
         askDraft = "o que o commit \(citedCommitPrefix(node)) fez, e por quê?"
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
     }
@@ -20,6 +22,7 @@ extension AtlasCodeView {
     func clearAskFocus() {
         askFocusNode = nil
         askDraft = ""
+        askModel.setSheetFocusLegend(nil)
     }
 
     var pillIsAnchoring: Bool {

@@ -16,4 +16,6 @@ extension A11yID {
     static let radarRepoPrefix = "radar-repo-"
     static let radarFolderPrefix = "radar-folder-"
     static let codeCommitPrefix = "code-commit-"
+    /// Pílula agêntica do Radar (WAVE-001).
+    static let radarAskPill = "code-radar-ask-pill"
 }

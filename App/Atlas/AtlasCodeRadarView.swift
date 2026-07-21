@@ -9,6 +9,10 @@ struct AtlasCodeRadarView: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var model: AtlasCodeWorkspaceModel
     let onOpenRepo: (String) -> Void
+    /// Pílula = porta de intenção no Radar (WAVE-001 grafo soberano / julgamento).
+    @State var showingAsk = false
+    @State var askThreadId: ThreadID?
+    @State var askDraft = ""
 
     var body: some View {
         radarContentShell

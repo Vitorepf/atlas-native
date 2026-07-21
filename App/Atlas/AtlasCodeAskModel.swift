@@ -22,6 +22,9 @@ final class AtlasCodeAskModel {
     let client: AtlasClient
     private(set) var repo: String
     private(set) var phase: Phase = .idle
+    /// Legenda de âncora de swipe/proveniência — mesma voz da pílula e do emptyPrompt.
+    /// Presentation-only; não é âncora de resposta git (`anchors` / `anchorNote`).
+    private(set) var sheetFocusLegend: String?
 
     init(client: AtlasClient, repo: String) {
         self.client = client
@@ -32,6 +35,12 @@ final class AtlasCodeAskModel {
         guard newRepo != repo else { return }
         repo = newRepo
         phase = .idle
+        sheetFocusLegend = nil
+    }
+
+    func setSheetFocusLegend(_ legend: String?) {
+        let trimmed = legend?.trimmingCharacters(in: .whitespacesAndNewlines)
+        sheetFocusLegend = (trimmed?.isEmpty == false) ? trimmed : nil
     }
 
     /// Os commits que a resposta atual cita. O grafo acende só estes.
@@ -56,7 +65,8 @@ final class AtlasCodeAskModel {
         return nil
     }
 
-    /// Limpar apaga a âncora: o grafo volta a mostrar tudo.
+    /// Limpar apaga a âncora de resposta: o grafo volta a mostrar tudo.
+    /// Não mexe em `sheetFocusLegend` (swipe) — use `setSheetFocusLegend(nil)`.
     func clear() {
         phase = .idle
     }
