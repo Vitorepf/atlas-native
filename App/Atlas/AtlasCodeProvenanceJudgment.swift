@@ -89,6 +89,8 @@ enum AtlasCodeProvenanceJudgment {
         }
     }
 
+    static let commitHashLabel = "hash do commit"
+
     static func headerTitle(node: AtlasCodeGraphNode) -> String {
         node.message?.nonEmpty ?? String(node.hash.prefix(8))
     }

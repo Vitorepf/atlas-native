@@ -172,6 +172,11 @@ enum PlanJudgment {
         return parts.joined(separator: ", ")
     }
 
+    static func spokenRevisionGroup(label: String, stepCount: Int) -> String {
+        let noun = stepCount == 1 ? "passo" : "passos"
+        return "\(label), \(stepCount) \(noun)"
+    }
+
     static func spokenStep(
         step: AtlasExecutionPlan.Step,
         state: PlanStepState,

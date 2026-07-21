@@ -176,7 +176,9 @@ extension PlanRevisionCompare {
             revisionListItems(items: items, tone: tone)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(label), \(items.count) passo\(items.count == 1 ? "" : "s")")
+        .accessibilityLabel(
+            PlanJudgment.spokenRevisionGroup(label: label, stepCount: items.count)
+        )
     }
 }
 

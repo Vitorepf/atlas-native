@@ -253,7 +253,7 @@ extension AtlasCodeView {
                 )
             }
             .accessibilityIdentifier(A11yID.codeHealReceipt)
-            .accessibilityLabel("curado sozinho, ver recibo de cura")
+            .accessibilityLabel(AtlasCodeHealVetoJudgment.curedAloneOpenReceiptLabel)
             .accessibilityHint("abre os passos registrados pelo servidor")
         }
     }

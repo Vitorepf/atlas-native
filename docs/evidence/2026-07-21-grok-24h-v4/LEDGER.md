@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 93
-- idle_compress_passes: 20
+- idle_compress_passes: 21
 - collapse_host: 0
 
 ## Waves done
@@ -105,6 +105,11 @@ mode: designer + implementer
 - WAVE-097
 - WAVE-098
 
+## Idle compress
+- pass 21 · Provenance/Ask/Arena/Plan/Heal chrome → Judgment
+
+## Open queue
+_(none)_
+
 ## Notes
-- WAVE-098 autonomos reason. IDLE 19–20 prior.
-- DEVICE_PENDING.
+- WAVE-098 reason. DEVICE_PENDING.

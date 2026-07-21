@@ -149,7 +149,7 @@ struct ArenaPremiumShell: View {
                     .atlasSans(17, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
             }
-            .accessibilityLabel("Nova medição")
+            .accessibilityLabel(ArenaStartJudgment.newMeasurementLabel)
             .accessibilityHint("Escolhe motores, suítes e braços")
             .accessibilityIdentifier(A11yID.arenaPremiumAdd)
         }

@@ -98,6 +98,12 @@ enum ArenaScoreJudgment {
         return "Frota medida · \(n) \(n == 1 ? "motor" : "motores") · \(scaleCaption)"
     }
 
+    static func spokenMeasuredEngine(_ engineID: String) -> String {
+        "Motor medido, \(ArenaDisplay.engine(engineID))"
+    }
+
+    static let measuredEngineHint = "Abre a lista dos outros motores medidos"
+
     static func capabilitiesKicker() -> String {
         "Perfil medido · \(scaleCaption)"
     }

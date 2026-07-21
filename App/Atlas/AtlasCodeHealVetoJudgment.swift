@@ -129,6 +129,8 @@ enum AtlasCodeHealVetoJudgment {
         "falha ao desfazer, \(err)"
     }
 
+    static let curedAloneOpenReceiptLabel = "curado sozinho, ver recibo de cura"
+
     static func spokenSheet(
         heal: AtlasCodeHealResponse,
         undoError: String?

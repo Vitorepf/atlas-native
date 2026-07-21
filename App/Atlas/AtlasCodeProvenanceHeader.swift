@@ -67,7 +67,7 @@ extension AtlasCodeProvenanceSheet {
             .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
             .textSelection(.enabled)
             .padding(.top, 2)
-            .accessibilityLabel("hash do commit")
+            .accessibilityLabel(AtlasCodeProvenanceJudgment.commitHashLabel)
     }
 }
 

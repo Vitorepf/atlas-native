@@ -37,8 +37,8 @@ struct ArenaPremiumEngineTitle: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
             }
-            .accessibilityLabel("Motor medido, \(ArenaDisplay.engine(engineID))")
-            .accessibilityHint("Abre a lista dos outros motores medidos")
+            .accessibilityLabel(ArenaScoreJudgment.spokenMeasuredEngine(engineID))
+            .accessibilityHint(ArenaScoreJudgment.measuredEngineHint)
             .accessibilityIdentifier(A11yID.arenaPremiumEnginePicker)
         } else {
             Text(ArenaDisplay.engine(engineID))

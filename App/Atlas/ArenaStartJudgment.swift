@@ -108,6 +108,7 @@ enum ArenaStartJudgment {
 
     static let workerGapCopy =
         "worker de medição desligado no servidor — fila aguardando"
+    static let newMeasurementLabel = "Nova medição"
 
     // MARK: Submit
 

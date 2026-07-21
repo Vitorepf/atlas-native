@@ -15,7 +15,7 @@ extension AtlasCodeProvenanceSheet {
         }
         .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.codeProvenanceAsk)
-        .accessibilityLabel("perguntar ao Atlas sobre este commit")
+        .accessibilityLabel(AtlasCodeAskPillJudgment.askCommitLabel)
         .accessibilityHint(Self.askHint)
     }
 }
@@ -354,7 +354,7 @@ extension AtlasCodeProvenanceSheet {
             pullQuoteStack(quote)
         }
         .fixedSize(horizontal: false, vertical: true)
-        .accessibilityLabel("sua frase: \(quote)")
+        .accessibilityLabel(AtlasCodeAskPillJudgment.spokenUserQuote(quote))
     }
 }
 
