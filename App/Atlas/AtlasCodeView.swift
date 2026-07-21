@@ -1510,11 +1510,11 @@ extension AtlasCodeView {
         VStack(alignment: .leading, spacing: 3) {
             Text(String(value))
                 .font(AtlasFont.serif(21, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
+                .foregroundStyle(AtlasTheme.accent)
                 .monospacedDigit()
             Text(label)
-                .atlasSans(10)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .atlasSans(10, .medium)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.7))
         }
     }
 }
