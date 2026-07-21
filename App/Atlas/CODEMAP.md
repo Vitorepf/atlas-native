@@ -156,6 +156,10 @@
 | **ArenaSuiteSheet peels** | Sheet · Body (WAVE-149) |
 | **RootChrome peels** | Chrome · Body (WAVE-150) |
 | **ExecutionStateCardSpoken peels** | Spoken · Body (WAVE-151) |
+| **Composer sheets modifier peels** | Modifier · Body (WAVE-152) |
+| **ExecutionProof sections peels** | Sections · Body (WAVE-153) |
+| **Markdown view blocks peels** | ViewBlocks · Body (WAVE-154) |
+| **SelfConstruction chrome peels** | Chrome · Peel (WAVE-155) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
