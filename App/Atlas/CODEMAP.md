@@ -170,7 +170,7 @@
 | **Code surface parts** | Surface · Body |
 | **ExecutionProof Judgment** | `ExecutionProofJudgment` (face · spoken · quality · pack) |
 | **PlanJudgment** | `PlanJudgment` (face · spoken · packFacts) |
-| **LiveNowJudgment parts** | core · Row |
+| **LiveNowJudgment** | single file: merge · rank · spoken · pack (was core+Row peels) |
 | **ComposerDraftJudgment parts** | core · Attach |
 | **ChangeReview sections parts** | Sections · SectionsBody |
 | **ArenaSuiteSheet parts** | Sheet · Body |

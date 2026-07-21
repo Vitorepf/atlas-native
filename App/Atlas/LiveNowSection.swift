@@ -30,7 +30,7 @@ struct LiveNowSection: View {
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.bottom, 18)
         .accessibilityIdentifier(A11yID.liveNowSection)
-        .accessibilityLabel(Self.spokenSectionLabel(
+        .accessibilityLabel(LiveNowJudgment.spokenSection(
             isHub: isHub, count: sessions.count, remoteCount: remoteCount
         ))
         .accessibilityValue(sectionFace.productWord)
@@ -63,7 +63,7 @@ struct LiveNowSection: View {
         }
         .padding(.bottom, isHub ? 12 : 0)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Self.spokenSectionLabel(
+        .accessibilityLabel(LiveNowJudgment.spokenSection(
             isHub: isHub, count: sessions.count, remoteCount: remoteCount
         ))
     }
@@ -103,9 +103,4 @@ struct LiveNowSection: View {
         ))
     }
 
-    // MARK: - a11y peel → Judgment
-
-    static func spokenSectionLabel(isHub: Bool, count: Int, remoteCount: Int) -> String {
-        LiveNowJudgment.spokenSection(isHub: isHub, count: count, remoteCount: remoteCount)
-    }
 }

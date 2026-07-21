@@ -8,13 +8,11 @@
 ```yaml
 pass: 1
 domain_index: 0
-last_focus: "Home WorkspaceEmptyStates → WorkspaceEmptyChrome"
+last_focus: "Home LiveNowJudgment fuse + spoken unify"
 passes_completed: 0
 ```
 
-## Domínios (rodízio obrigatório)
-
-Atacar **um domínio por ciclo** na ordem. Ao terminar o #7, `pass += 1` e volta ao #0 (aprofundar).
+## Domínios (rodízio)
 
 | # | Domínio | Glob / âncora |
 |---|---|---|
@@ -31,18 +29,18 @@ Atacar **um domínio por ciclo** na ordem. Ao terminar o #7, `pass += 1` e volta
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Delete morto | open — soft scan |
-| 2 | Rename honesty Sections/States | **done** RootHomeBody + WorkspaceEmptyChrome |
-| 3 | Unificar spoken/packFacts/rank | open |
-| 4 | MARK >200 LOC | open RootChrome/WorkspaceSurfaceBody/LiveNowRow/Search* |
-| 5 | Fuse peels <120 same host | **done** RootHome; review RootChrome peels |
-| 6 | CODEMAP Type.method | partial |
+| 1 | Delete morto | open soft |
+| 2 | Rename honesty | **done** RootHomeBody · WorkspaceEmptyChrome |
+| 3 | Unificar spoken/packFacts/rank | **done** LiveNowJudgment single + section wrappers |
+| 4 | MARK >200 LOC | open RootChrome · WorkspaceSurfaceBody · Search* |
+| 5 | Fuse peels <120 | **done** RootHome · LiveNowJudgment |
+| 6 | CODEMAP | partial |
 
-**Próximo foco:** Home spoken/packFacts unify (LiveNow + Workspace + Search + HomeOps) **ou** MARK RootChrome.
+**Próximo foco:** MARK RootChrome (355) + maybe fuse RootChrome peels if ROI · or Workspace dense MARKs.
 
 ## Soft global
 
-Home *Sections*/*States* cleared. Other domains still have ConversationEmptyStates, Arena*States, ChangeReviewSections*, etc.
+Home *Sections*/*States* cleared. Other domains still hold ConversationEmptyStates, Arena*States, ChangeReviewSections*, etc.
 
 ## Proibido
 

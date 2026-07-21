@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: Home spoken/packFacts unify
+- focus: RootChrome MARK
 - domain_index: 0
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-empty-chrome
+- last_commit: pending-livenow
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,26 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T22:45Z — LiveNowJudgment fuse
+
+```yaml
+phase: prove
+focus: LiveNowJudgment + JudgmentRow fuse · spoken wrappers
+domain_index: 0
+pass: 1
+last_commit: pending
+commands: |
+  fuse LiveNowJudgment.swift + LiveNowJudgmentRow.swift
+  delete thin LiveNowSection.spokenSectionLabel
+  AtlasCoreChecks ✓ · make build ✓ · guard OK
+before_after: |
+  133+174 peels → LiveNowJudgment.swift 297 MARKed
+  hops row spoken 2→1; section a11y → LiveNowJudgment.spokenSection
+  CODEMAP LiveNowJudgment parts → single file
+notes: |
+  Next: MARK RootChrome / Workspace dense
+```
 
 
 ### 2026-07-21T22:35Z — WorkspaceEmptyChrome rename
