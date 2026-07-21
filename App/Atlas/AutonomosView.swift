@@ -1497,8 +1497,8 @@ enum AutonomosMapChrome {
     static func section(_ text: String) -> some View {
         Text(text)
             .font(AtlasFont.serif(13, .semibold))
-            // Match home sectionLabel tone — tertiary with quiet gold breath via hairline.
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Gold-quiet meta — pairs with AutonomosMapChrome.hairline gold-breath.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.78))
             .accessibilityAddTraits(.isHeader)
             .accessibilityLabel(text)
     }
