@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Lista de Autônomos do operador — índice soberano. Vazio até criar. Zero áreas de sistema.
 struct AutonomosListView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let units: [AutonomosUnit]
     let onOpen: (AutonomosUnit) -> Void
     let onCreate: () -> Void
@@ -34,20 +35,29 @@ struct AutonomosListView: View {
     private var emptyState: some View {
         VStack(alignment: .leading, spacing: 18) {
             Spacer(minLength: 36)
+            Text("✦")
+                .font(AtlasFont.serif(28))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
+                .accessibilityHidden(true)
             AutonomosMapChrome.heroTitle("Nenhum ainda", size: 32)
+                .accessibilityAddTraits(.isHeader)
             Text("Crie um Autônomo com escopo fechado. Ele evolui só nisso — 24/7.")
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             AutonomosMapChrome.primaryCTA("Novo Autônomo", action: onCreate)
+                .accessibilityHint("abre o formulário para criar um Autônomo")
             Spacer(minLength: 0)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Nenhum Autônomo ainda. Crie um com escopo fechado.")
     }
 
     private func unitRow(_ unit: AutonomosUnit) -> some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onOpen(unit)
         } label: {
             HStack(alignment: .top, spacing: 14) {
@@ -69,7 +79,9 @@ struct AutonomosListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 trailing(unit)
             }
-            .padding(.vertical, 22)
+            .padding(.vertical, 18)
+            .frame(minHeight: 56, alignment: .top)
+            .contentShape(Rectangle())
             .opacity(unit.paused ? 0.55 : 1)
         }
         .buttonStyle(.plain)
@@ -78,6 +90,7 @@ struct AutonomosListView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spoken(unit))
+        .accessibilityHint("abre o hub deste Autônomo")
     }
 
     @ViewBuilder
