@@ -1861,10 +1861,9 @@ extension AtlasCodeHealReceiptSheet {
                 .atlasSans(10, .bold)
                 .accessibilityHidden(true)
             Text(hasCompletedHeal
-                 ? "CURADO SOZINHO · \(heal.mode.uppercased())"
-                 : "CURA · \(heal.mode.uppercased())")
-                .atlasSans(9, .bold)
-                .tracking(1.2)
+                 ? "Curado sozinho · \(heal.mode)"
+                 : "Cura · \(heal.mode)")
+                .font(AtlasFont.serif(12, .semibold))
                 .accessibilityHidden(true)
         }
         .foregroundStyle(hasCompletedHeal ? AtlasCodePalette.healed : AtlasTheme.textTertiary)
@@ -2966,8 +2965,8 @@ extension AtlasCodeProvenanceSheet {
 extension AtlasCodeProvenanceSheet {
     var stateLabelHealthy: String? {
         switch state {
-        case .onMain: return "NA MAIN"
-        case .healed: return "CURADO"
+        case .onMain: return "Na main"
+        case .healed: return "Curado"
         default: return nil
         }
     }
@@ -2975,7 +2974,7 @@ extension AtlasCodeProvenanceSheet {
 
 extension AtlasCodeProvenanceSheet {
     var stateLabelViolating: String {
-        ruleId.map { "FORA DA LINHA · \(AtlasCodeIssue.law($0, trunk: trunk).uppercased())" } ?? "FORA DA LINHA"
+        ruleId.map { "Fora da linha · \(AtlasCodeIssue.law($0, trunk: trunk))" } ?? "Fora da linha"
     }
 }
 
@@ -2984,8 +2983,8 @@ extension AtlasCodeProvenanceSheet {
         if let healthy = stateLabelHealthy { return healthy }
         switch state {
         case .violating: return stateLabelViolating
-        case .history: return "HISTÓRIA"
-        default: return "HISTÓRIA"
+        case .history: return "História"
+        default: return "História"
         }
     }
 }
@@ -3011,8 +3010,7 @@ extension AtlasCodeProvenanceSheet {
                 .frame(width: 6, height: 6)
                 .accessibilityHidden(true)
             Text(stateLabel)
-                .atlasSans(9, .bold)
-                .tracking(1.4)
+                .font(AtlasFont.serif(12, .semibold))
                 .foregroundStyle(AtlasCodePalette.color(for: state))
                 .accessibilityHidden(true)
         }
