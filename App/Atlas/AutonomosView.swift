@@ -136,6 +136,7 @@ struct AutonomosFleetFailureEmpty: View {
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .multilineTextAlignment(.center)
+                .accessibilityAddTraits(.isHeader)
             Text(message)
                 .font(.footnote)
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -150,6 +151,7 @@ struct AutonomosFleetFailureEmpty: View {
             }
                 .buttonStyle(AutonomosPrimaryButtonStyle())
                 .accessibilityIdentifier(A11yID.autonomosRetry)
+                .accessibilityLabel("tentar de novo")
                 .accessibilityHint("tenta reabrir o catálogo Autônomos")
         }
         .padding(.horizontal, 32)
