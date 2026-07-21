@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// GOD-RESTRUCTURE: PlanCard host+body fused
+// GOD-RESTRUCTURE: PlanCard + StepRow + FlexWrap fused
 
 // MARK: - Host
 
@@ -339,6 +339,209 @@ extension PlanCard {
             ForEach(Array(plan.steps.enumerated()), id: \.element.id) { idx, step in
                 planStepRow(step: step, index: idx, total: total)
             }
+        }
+    }
+}
+extension PlanStepRowView {
+    var stepRowBody: some View {
+        applyStepPulse(
+            stepRowA11yChrome(stepRowLayout)
+        )
+    }
+}
+
+extension PlanStepRowView {
+    func stepRowA11yChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(spokenLabel)
+            .accessibilityAddTraits(state == .current ? .isSelected : [])
+            .accessibilityIdentifier(A11yID.planStep(index))
+    }
+}
+
+// MARK: - Step row
+
+struct PlanStepRowView: View {
+    let step: AtlasExecutionPlan.Step
+    let index: Int
+    let total: Int
+    let state: PlanStepState
+    let isLast: Bool
+    let spokenLabel: String
+    let reduceMotion: Bool
+    @State var pulse = false
+
+    var body: some View {
+        stepRowBody
+    }
+}
+
+extension PlanStepRowView {
+    var stepDotColumn: some View {
+        VStack(spacing: 0) {
+            stepDotMark
+            stepDotSpine
+        }
+        .frame(width: 13)
+        .accessibilityHidden(true)
+    }
+}
+
+extension PlanStepRowView {
+    func dotFill(_ s: PlanStepState) -> Color {
+        switch s {
+        case .done: return AtlasTheme.accent
+        case .current: return AtlasTheme.accent
+        case .pending: return AtlasTheme.separator
+        }
+    }
+}
+
+extension PlanStepRowView {
+    @ViewBuilder
+    var stepDotMark: some View {
+        ZStack {
+            Circle().fill(dotFill(state)).frame(width: 13, height: 13)
+                .opacity(state == .current && pulse && !reduceMotion ? 0.55 : 1)
+            if state == .done {
+                Image(systemName: "checkmark").atlasSans(7, .bold)
+                    .foregroundStyle(AtlasTheme.bg)
+            } else if state == .current {
+                Circle().fill(AtlasTheme.bg).frame(width: 5, height: 5)
+            }
+        }
+        .padding(.top, 2)
+    }
+}
+
+extension PlanStepRowView {
+    @ViewBuilder
+    var stepDotSpine: some View {
+        if !isLast {
+            Rectangle().fill(AtlasTheme.accent.opacity(state == .pending ? 0.15 : 0.35))
+                .frame(width: 1.5).frame(maxHeight: .infinity)
+        }
+    }
+}
+
+extension PlanStepRowView {
+    var stepRowLayout: some View {
+        HStack(alignment: .top, spacing: 10) {
+            stepDotColumn
+            stepTitleColumn
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+extension PlanStepRowView {
+    func applyStepPulse<Content: View>(_ content: Content) -> some View {
+        content
+            .onAppear {
+                if state == .current && !reduceMotion {
+                    withAnimation(AtlasMotion.breath(0.9)) { pulse = true }
+                }
+            }
+            .onChange(of: state == .current) { _, now in if !now { pulse = false } }
+    }
+}
+
+extension PlanStepRowView {
+    var stepTitleColumn: some View {
+        Text(step.title)
+            .font(.system(.caption))
+            .foregroundStyle(state == .pending ? AtlasTheme.textTertiary
+                             : state == .current ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+            .lineLimit(2)
+            .accessibilityHidden(true)
+            .padding(.bottom, isLast ? 0 : 9)
+    }
+}
+extension PlanFlexWrap {
+    func measureFlexWrap(
+        maxWidth: CGFloat,
+        subviews: Subviews
+    ) -> (width: CGFloat, height: CGFloat) {
+        var x: CGFloat = 0, y: CGFloat = 0, lineHeight: CGFloat = 0
+        for sub in subviews {
+            let size = sub.sizeThatFits(.unspecified)
+            if x + size.width > maxWidth, x > 0 {
+                x = 0; y += lineHeight + lineSpacing; lineHeight = 0
+            }
+            x += size.width + spacing
+            lineHeight = max(lineHeight, size.height)
+        }
+        return (x, y + lineHeight)
+    }
+}
+
+// MARK: - Layout (flex wrap)
+
+struct PlanFlexWrap: Layout {
+    var spacing: CGFloat = 6
+    var lineSpacing: CGFloat = 6
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+        let measured = measureFlexWrap(maxWidth: maxWidth, subviews: subviews)
+        return CGSize(
+            width: maxWidth == .infinity ? measured.width : maxWidth,
+            height: measured.height
+        )
+    }
+}
+
+extension PlanFlexWrap {
+    func placeFlexWrapSubview(
+        _ sub: LayoutSubview,
+        x: inout CGFloat,
+        y: inout CGFloat,
+        lineHeight: inout CGFloat,
+        bounds: CGRect
+    ) {
+        let size = sub.sizeThatFits(.unspecified)
+        if x + size.width > bounds.maxX, x > bounds.minX {
+            x = bounds.minX; y += lineHeight + lineSpacing; lineHeight = 0
+        }
+        sub.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+        x += size.width + spacing
+        lineHeight = max(lineHeight, size.height)
+    }
+}
+
+extension PlanFlexWrap {
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var x = bounds.minX, y = bounds.minY, lineHeight: CGFloat = 0
+        for sub in subviews {
+            placeFlexWrapSubview(sub, x: &x, y: &y, lineHeight: &lineHeight, bounds: bounds)
+        }
+    }
+}
+
+extension PlanFlowChips {
+    func flowChipCell(_ item: String) -> some View {
+        Text(item)
+            .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textSecondary)
+            .padding(.horizontal, 7).padding(.vertical, 3)
+            .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            .lineLimit(1)
+            .accessibilityHidden(true)
+    }
+}
+
+struct PlanFlowChips: View {
+    let items: [String]
+    var body: some View {
+        if items.isEmpty {
+            EmptyView()
+        } else {
+            PlanFlexWrap(spacing: 6, lineSpacing: 6) {
+                ForEach(items, id: \.self) { item in
+                    flowChipCell(item)
+                }
+            }
+            .accessibilityHidden(true)
         }
     }
 }
