@@ -43,6 +43,8 @@ struct AutonomosMapShell: View {
                 catalogFace
             }
         }
+        // Contain: catalog vs hub/evolution remain separately focusable destinations.
+        .accessibilityElement(children: .contain)
         .sheet(isPresented: $showNewSheet) {
             AutonomosNewSheet(
                 onCreate: { name, charter in
