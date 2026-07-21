@@ -45,6 +45,7 @@ extension ChangeReviewFileRow {
         .buttonStyle(PressableScale())
         .accessibilityLabel("aceitar \(displayName)")
         .accessibilityHint("registra aceite deste arquivo no patch")
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))
     }
 }
@@ -71,6 +72,7 @@ extension ChangeReviewFileRow {
         .buttonStyle(PressableScale())
         .accessibilityLabel("rejeitar \(displayName)")
         .accessibilityHint("registra rejeição deste arquivo no patch")
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))
     }
 }

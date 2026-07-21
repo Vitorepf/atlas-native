@@ -55,6 +55,7 @@ extension QueuedFollowUpRow {
         .buttonStyle(PressableScale())
         .accessibilityLabel(promoteLabel)
         .accessibilityHint(promoteHint)
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.queuePromote(message.id))
     }
 }
@@ -94,6 +95,7 @@ extension QueuedFollowUpRow {
         .buttonStyle(PressableScale())
         .accessibilityLabel(removeLabel)
         .accessibilityHint(removeHint)
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.queueRemove(message.id))
     }
 }

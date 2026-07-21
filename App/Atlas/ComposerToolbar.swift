@@ -126,6 +126,7 @@ extension ComposerToolbar {
         .buttonStyle(PressableScale())
         .accessibilityLabel("adicionar anexo")
         .accessibilityHint("abre foto, arquivo ou colar")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -418,6 +419,7 @@ extension ComposerToolbar {
         .keyboardShortcut(.return, modifiers: .command)
         .accessibilityLabel(spokenSendLabel(canSubmit: true))
         .accessibilityHint(spokenSendHint(canSubmit: true))
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.conversationSend)
     }
 }

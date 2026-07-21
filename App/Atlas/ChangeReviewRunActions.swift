@@ -86,6 +86,7 @@ extension ChangeReviewRunActions {
             .buttonStyle(PressableScale())
             .accessibilityLabel("aceitar todos os arquivos e concluir revisão")
             .accessibilityHint("aceita cada arquivo capturado e depois conclui o run")
+            .accessibilityAddTraits(.isButton)
             .accessibilityIdentifier(A11yID.reviewRunAccept)
         }
     }
@@ -112,6 +113,7 @@ extension ChangeReviewRunActions {
             .buttonStyle(PressableScale())
             .accessibilityLabel("rejeitar revisão inteira")
             .accessibilityHint("rejeita o run de engenharia desta execução")
+            .accessibilityAddTraits(.isButton)
             .accessibilityIdentifier(A11yID.reviewRunReject)
         }
     }

@@ -55,6 +55,7 @@ extension ExecutingStrip {
         .buttonStyle(PressableScale())
         .accessibilityLabel("parar execução")
         .accessibilityHint("interrompe a execução ao vivo")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -77,6 +78,7 @@ extension ExecutingStrip {
             .buttonStyle(PressableScale())
             .accessibilityLabel("redirecionar execução")
             .accessibilityHint("abre opções para redirecionar a execução ao vivo")
+            .accessibilityAddTraits(.isButton)
         }
     }
 }
