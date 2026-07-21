@@ -26,8 +26,8 @@ extension AtlasCodeLoadFailureEmpty {
 extension AtlasCodeLoadFailureEmpty {
     var failureA11y: some View {
         failureStack
+            // Contain: headline + retry stay separately focusable.
             .accessibilityElement(children: .contain)
-            .accessibilityLabel("\(headline). \(message)")
             .accessibilityIdentifier(A11yID.codeLoadFailure)
     }
 }
@@ -37,7 +37,7 @@ extension AtlasCodeLoadFailureEmpty {
         Text(headline)
             .font(AtlasFont.serif(20, .semibold))
             .foregroundStyle(AtlasTheme.textPrimary)
-            .accessibilityHidden(true)
+            .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -48,7 +48,6 @@ extension AtlasCodeLoadFailureEmpty {
             .foregroundStyle(AtlasTheme.textTertiary)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 28)
-            .accessibilityHidden(true)
     }
 }
 

@@ -142,6 +142,7 @@ struct AutonomosFleetFailureEmpty: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
+                .accessibilityLabel(message)
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRetry()
@@ -157,8 +158,8 @@ struct AutonomosFleetFailureEmpty: View {
         .padding(.horizontal, 32)
         .padding(.vertical, 28)
         .frame(maxWidth: 420)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Catálogo Autônomos fora de alcance. \(message)")
+        // Contain: header + retry stay separately focusable for VoiceOver.
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.autonomosLoadFailure)
     }
 }
