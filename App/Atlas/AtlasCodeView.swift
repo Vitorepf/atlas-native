@@ -83,7 +83,7 @@ extension AtlasCodeView {
     func anchorAskOnCommit(_ node: AtlasCodeGraphNode) {
         selectedNode = nil
         askFocusNode = node
-        askDraft = "o que o commit \(citedCommitPrefix(node)) fez, e por quê?"
+        askDraft = "O que o commit \(citedCommitPrefix(node)) fez, e por quê?"
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
     }
 
@@ -138,7 +138,7 @@ extension AtlasCodeView {
                     .font(AtlasFont.serif(13))
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityHidden(true)
-                Text(anchorLegend ?? "pergunte sobre este repositório")
+                Text(anchorLegend ?? "Pergunte sobre este repositório")
                     .font(AtlasFont.serifItalic(13))
                     .foregroundStyle(anchorLegend != nil ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                     .lineLimit(1)
@@ -286,8 +286,8 @@ extension AtlasCodeView {
     func anchorLegendPartial(acesas: Int, citadas: Int) -> String {
         if acesas == 0 {
             return citadas == 1
-                ? "o commit da resposta está fora desta janela"
-                : "os \(citadas) commits da resposta estão fora desta janela"
+                ? "O commit da resposta está fora desta janela"
+                : "Os \(citadas) commits da resposta estão fora desta janela"
         }
         return "\(acesas) de \(citadas) acesos aqui — o resto está fora desta janela"
     }
