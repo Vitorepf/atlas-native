@@ -131,6 +131,8 @@
 | **Composer toolbar peels** | Chrome · ChromeBody (WAVE-123) |
 | **Provenance sections peels** | Sections · SectionsBody (WAVE-124) |
 | **Surface graph peels** | Graph · GraphBody (WAVE-125) |
+| **ArenaRunSheet peels** | host · Body (WAVE-126) |
+| **ExecutionStateCard peels** | host · Body (WAVE-127) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)

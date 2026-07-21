@@ -143,4 +143,6 @@ _(no open proposed WAVEs)_
 - WAVE-123 done
 - WAVE-124 done
 - WAVE-125 done
+- WAVE-126 done
+- WAVE-127 done
 
