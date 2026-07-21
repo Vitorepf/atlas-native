@@ -1502,8 +1502,8 @@ extension SearchViewHeader {
 extension SearchViewHeader {
     var searchClearIcon: some View {
         Image(systemName: "xmark.circle.fill")
-            .atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
-            .frame(width: 44, height: 44)
+            .atlasSans(16).foregroundStyle(AtlasTheme.textTertiary)
+            .frame(width: 48, height: 48)
             .contentShape(Circle())
     }
 }
@@ -1511,8 +1511,8 @@ extension SearchViewHeader {
 extension SearchViewHeader {
     var searchFieldCapsule: some View {
         searchFieldLeading
-            .padding(.horizontal, 14).padding(.vertical, 9)
-            .frame(minHeight: 44) // HIG interactive minimum
+            .padding(.horizontal, 14).padding(.vertical, 10)
+            .frame(minHeight: 48) // HIG 44+; match primary chrome breath
             .background(Capsule().fill(AtlasTheme.surface)
                 .overlay(Capsule().stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1)))
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: focused)
