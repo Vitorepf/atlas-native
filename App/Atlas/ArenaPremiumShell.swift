@@ -2968,7 +2968,8 @@ struct ArenaPremiumCapabilitiesView: View {
             }
         }
         .font(AtlasFont.mono(10))
-        .foregroundStyle(AtlasTheme.textTertiary)
+        // Soft gold-quiet track legend.
+        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         .accessibilityHidden(true)
     }
 
@@ -4138,7 +4139,8 @@ extension ArenaSuiteSheet {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
         }
-            .foregroundStyle(engine.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
+            // Soft gold-quiet unmeasured score; measured stays primary.
+            .foregroundStyle(engine.score == nil ? AtlasTheme.accent.opacity(0.48) : AtlasTheme.textPrimary)
             .accessibilityHidden(true)
     }
 }
@@ -4210,7 +4212,8 @@ extension ArenaSuiteSheet {
                 }
                 Text("Valores ausentes permanecem não medidos. Comparações só aparecem quando os dois braços foram publicados.")
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet comparison honesty.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
             }
             .padding(AtlasTheme.Space.screen)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: suite.engines.count)
@@ -4491,7 +4494,8 @@ struct ArenaPremiumAction: View {
                 .font(quiet ? AtlasFont.serif(14) : AtlasFont.serif(15, .semibold))
                 .frame(maxWidth: .infinity, minHeight: 48)
                 .padding(.horizontal, 20)
-                .foregroundStyle(disabled ? AtlasTheme.textTertiary : (quiet ? AtlasTheme.textSecondary : AtlasTheme.textPrimary))
+                // Soft gold-quiet disabled CTA; quiet secondary; primary ink when armed.
+                .foregroundStyle(disabled ? AtlasTheme.accent.opacity(0.38) : (quiet ? AtlasTheme.accent.opacity(0.78) : AtlasTheme.textPrimary))
                 .background(
                     Capsule().fill(
                         quiet || disabled

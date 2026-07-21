@@ -1942,7 +1942,8 @@ extension AtlasCodeHealReceiptSheet {
                 .font(AtlasFont.serif(12, .semibold))
                 .accessibilityHidden(true)
         }
-        .foregroundStyle(hasCompletedHeal ? AtlasCodePalette.healed : AtlasTheme.textTertiary)
+        // Soft gold-quiet incomplete heal masthead; completed stays healed moss.
+        .foregroundStyle(hasCompletedHeal ? AtlasCodePalette.healed : AtlasTheme.accent.opacity(0.72))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenMastheadLabel())
     }
@@ -2349,12 +2350,14 @@ extension AtlasCodeMirrorCard {
 extension AtlasCodeMirrorCard {
     @ViewBuilder
     var headlineHealthyNoMirror: some View {
-        label("Sem espelho configurado", color: AtlasTheme.textTertiary, icon: "circle.dashed")
+        // Soft gold-quiet healthy-empty honesty.
+        label("Sem espelho configurado", color: AtlasTheme.accent.opacity(0.58), icon: "circle.dashed")
     }
 
     @ViewBuilder
     var headlineHealthyUnknown: some View {
-        label("Espelho ainda não conhecido", color: AtlasTheme.textTertiary, icon: "questionmark.circle")
+        // Soft gold-quiet unknown honesty.
+        label("Espelho ainda não conhecido", color: AtlasTheme.accent.opacity(0.58), icon: "questionmark.circle")
     }
 }
 
@@ -2538,7 +2541,8 @@ extension AtlasCodeWhySheet {
         if why.commits.isEmpty {
             Text("Este arquivo não tem história neste recorte")
                 .font(AtlasFont.serifItalic(16))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet empty why history.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .padding(.top, 6)
                 .accessibilityLabel(spokenEmptyHistory())
                 .accessibilityAddTraits(.isHeader)
@@ -2578,7 +2582,8 @@ extension AtlasCodeWhySheet {
         if let why = model.why, why.truncated {
             Text("Mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet truncation honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         }
     }
@@ -2615,7 +2620,8 @@ extension AtlasCodeWhySheet {
                 .accessibilityHidden(true)
             Text("Lendo a história do arquivo…")
                 .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet why loading caption.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         }
         .padding(.top, 8)
@@ -2675,7 +2681,8 @@ extension AtlasCodeWhySheet {
         } else {
             Text("Sem proveniência registrada")
                 .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet empty provenance honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         }
     }
@@ -2687,7 +2694,8 @@ extension AtlasCodeWhySheet {
             whyRowQuote(commit)
             Text(meta(for: commit))
                 .font(AtlasFont.mono(10.5))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet why commit meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
             Text(commit.subject)
                 .atlasSans(11)
@@ -2738,7 +2746,8 @@ extension AtlasCodeWhySheet {
             Text("Por que este arquivo existe")
                 .atlasSans(9, .semibold)
                 .tracking(0.3)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet why sheet kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityHidden(true)
             Text(file)
                 .font(AtlasFont.mono(12))
@@ -3133,7 +3142,8 @@ extension AtlasCodeProvenanceSheet {
     var hashFooter: some View {
         Text(node.hash)
             .font(AtlasFont.mono(9))
-            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+            // Soft gold-quiet hash footer meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.48))
             .textSelection(.enabled)
             .padding(.top, 2)
             .accessibilityLabel("Hash do commit")
@@ -3407,7 +3417,8 @@ extension AtlasCodeProvenanceSheet {
     func lawCanonText(_ ruleCanon: String) -> some View {
         Text(ruleCanon)
             .font(AtlasFont.mono(8.5))
-            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.85))
+            // Soft gold-quiet law canon meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.55))
             .lineLimit(1)
             .truncationMode(.head)
             .accessibilityHidden(true)
@@ -3523,7 +3534,8 @@ extension AtlasCodeProvenanceSheet {
                 .fixedSize(horizontal: false, vertical: true)
             Text("Sua frase")
                 .atlasSans(9)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet quote kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
         }
     }
 }

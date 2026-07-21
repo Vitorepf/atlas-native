@@ -286,7 +286,8 @@ extension ChangeReviewRunActions {
     var applyingStaticLabel: some View {
         Text("Registrando…")
             .font(AtlasFont.mono(10))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet applying meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .accessibilityLabel("Registrando decisão")
     }
 }
@@ -1028,7 +1029,8 @@ extension ChangeReviewDiffView {
     var diffBodyUnavailable: some View {
         Text("Diff indisponível para este patch")
             .font(AtlasFont.serifItalic(13))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet unavailable honesty.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 8)
             .accessibilityLabel("Diff indisponível para este patch")

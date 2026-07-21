@@ -7302,7 +7302,8 @@ extension NarrativeRowView {
     var narrativeDetailLine: some View {
         if let detail = row.detail, !detail.isEmpty {
             Text(detail).font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet narrative detail meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .lineLimit(row.style == .intent ? 2 : 1)
                 .truncationMode(.middle)
                 .accessibilityHidden(true)
@@ -10345,7 +10346,8 @@ struct TraceEvidenceLoading: View {
             BreathingDiamond(size: 10, reduceMotion: reduceMotion)
             Text(text)
                 .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet trace loading caption.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
@@ -10494,7 +10496,8 @@ struct ArtifactFileFicha: View {
                 .accessibilityHidden(true)
             Text(subtitle)
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet artifact ficha meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
