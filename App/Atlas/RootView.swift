@@ -107,9 +107,9 @@ extension RootView {
     @ViewBuilder
     var mastheadAuditBadge: some View {
         if session.auditModeEnabled {
-            Text("AUDITORIA")
+            Text("Auditoria")
                 .font(AtlasFont.mono(8))
-                .tracking(1.0)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
         }
@@ -891,7 +891,7 @@ struct RootHomeSections: View {
 
     @ViewBuilder
     private var conversasSection: some View {
-        sectionLabel("CONVERSAS", accessibilityID: A11yID.homeConversasSection)
+        sectionLabel("Conversas", accessibilityID: A11yID.homeConversasSection)
         WorkspaceRow(
             icon: "bubble.left.and.bubble.right",
             name: "Conversas livres",
@@ -923,7 +923,7 @@ struct RootHomeSections: View {
 
     @ViewBuilder
     private var operacaoSection: some View {
-        sectionLabel("OPERAÇÃO", accessibilityID: A11yID.homeOperacaoSection)
+        sectionLabel("Operação", accessibilityID: A11yID.homeOperacaoSection)
         WorkspaceRow(
             icon: "bolt.horizontal.circle",
             name: "Autônomos",
@@ -957,7 +957,7 @@ struct RootHomeSections: View {
 
     @ViewBuilder
     private var workspacesSection: some View {
-        sectionLabel("WORKSPACES", accessibilityID: A11yID.homeWorkspacesSection)
+        sectionLabel("Workspaces", accessibilityID: A11yID.homeWorkspacesSection)
         ForEach(session.recentWorkspaces(3)) { ws in
             rowDivider
             WorkspaceRow(
@@ -1611,7 +1611,7 @@ struct SearchResultsSection: View {
 extension SearchResultsSection {
     var resultsCaption: some View {
         Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
-            .font(AtlasFont.mono(10, .semibold)).tracking(1.2)
+            .font(AtlasFont.mono(10, .semibold)).tracking(0.6)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
@@ -1839,13 +1839,13 @@ struct SearchRecentSection: View {
 
 extension SearchRecentSection {
     var recentCaption: some View {
-        Text("RECENTES")
-            .font(AtlasFont.mono(10, .semibold)).tracking(1.4)
+        Text("Recentes")
+            .font(AtlasFont.mono(10, .semibold)).tracking(0.6)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
-            .accessibilityLabel("recentes, \(threads.count) conversa\(threads.count == 1 ? "" : "s") carregada\(threads.count == 1 ? "" : "s")")
+            .accessibilityLabel("Recentes, \(threads.count) conversa\(threads.count == 1 ? "" : "s") carregada\(threads.count == 1 ? "" : "s")")
             .accessibilityIdentifier(A11yID.searchRecentCaption)
     }
 }
@@ -2526,7 +2526,7 @@ extension AtlasNetworkFailureEmpty {
 // Rows: RootChrome+Rows.swift · Controls: RootChrome+Controls.swift
 // A11y: RootChrome+SectionA11y.swift
 
-/// Label de seção da home (CONVERSAS / OPERAÇÃO / WORKSPACES).
+/// Label de seção da home (Conversas / Operação / Workspaces) — natural-case visual + VO.
 @MainActor
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     // A linha premium do site: hairlines em fade ladeando o rótulo natural.
@@ -2552,13 +2552,13 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     .homeSectionA11yID(accessibilityID)
 }
 
-/// Home section labels are visual UPPERCASE; VO hears natural Portuguese.
+/// Canonical natural Portuguese for home section headers (accepts legacy UPPERCASE).
 private func sectionSpokenLabel(_ t: String) -> String {
     switch t.uppercased() {
     case "CONVERSAS": return "Conversas"
     case "OPERAÇÃO", "OPERACAO": return "Operação"
     case "WORKSPACES": return "Workspaces"
-    default: return t.capitalized
+    default: return t
     }
 }
 
@@ -3357,11 +3357,10 @@ extension AtlasWorkspacePickerSheet {
     var pickerRepoList: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
-                Text("REPOSITÓRIOS")
-                    .font(AtlasFont.mono(11, .medium)).tracking(1.6)
+                Text("Repositórios")
+                    .font(AtlasFont.mono(11, .medium)).tracking(0.6)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityAddTraits(.isHeader)
-                    .accessibilityLabel("Repositórios")
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, showsNoRepoSpacing ? 18 : 4)
                 VStack(spacing: 0) {
