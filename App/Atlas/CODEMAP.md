@@ -113,6 +113,7 @@
 | EditorialTurn peels | `EditorialTurn` host · `EditorialTurnChrome` (FeedbackRow · SignatureLine) |
 | **Markdown blocks spoken** | `AtlasMarkdownJudgment` list/quote/code/copy · Surface/Blocks |
 | **Autônomos/Home residual spoken** | Digest/Evolution/Hub/Decision + HomeOps profile (WAVE-104) |
+| **Mid-thread pack hydration** | `ConversationOccasionPack.PublishedSlice` + model.turnFacts rebind (WAVE-106) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)

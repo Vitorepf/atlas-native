@@ -17,13 +17,31 @@ enum ConversationOccasionPack {
         ]
     }
 
+    /// Live mid-thread slice from ConversationModel (WAVE-106).
+    /// Never invent: only published bubble/queue/agents.
+    struct PublishedSlice: Equatable {
+        var presenceBubble: ChatBubble?
+        var queued: [QueuedMessage]
+        var agents: [ExecAgent]
+
+        static let unbound = PublishedSlice(
+            presenceBubble: nil,
+            queued: [],
+            agents: []
+        )
+
+        var hasModel: Bool { true }
+    }
+
     /// Pure-ish compile from route + hub presence (casca only).
+    /// `published` hydrates queue/plan/lanes/decision from the live model when bound.
     @MainActor
     static func facts(
         session: AtlasSession,
         threadId: ThreadID,
         title: String,
-        workspaceKey: String? = nil
+        workspaceKey: String? = nil,
+        published: PublishedSlice? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -85,39 +103,78 @@ enum ConversationOccasionPack {
         facts.append(contentsOf: empty.facts)
         absences.append(contentsOf: empty.absences)
 
+        // WAVE-106: hydrate organs from published model slice when bound.
+        let bubble = published?.presenceBubble
+        let queued = published?.queued ?? []
+        let agents = published?.agents
+            ?? bubble?.agents
+            ?? []
+        let decisionRequired = bubble.map {
+            ConversationDecisionJudgment.isDecisionRequired($0)
+        } ?? false
+        let decisionTitles = bubble.map {
+            ConversationDecisionJudgment.choiceActions(for: $0).map(\.title)
+        } ?? []
+        let hasPlan = bubble?.executionPlan != nil
+            || bubble?.executionProgress != nil
+
+        if published == nil {
+            absences.append("model mid-thread ainda não hidratado neste pack (session-only)")
+        }
+
         // WAVE-095: can_do matrix + wire organ packFacts (never ongoing-bool alone).
         let canSignals = ConversationCanDoJudgment.liveSignals(
-            matchingLive: matchingLive
+            matchingLive: matchingLive,
+            decisionRequired: decisionRequired,
+            decisionActionTitles: decisionTitles,
+            queueCount: queued.count,
+            hasPlan: hasPlan,
+            laneCount: agents.count
         )
         let canDoPack = ConversationCanDoJudgment.packFacts(canSignals)
         facts.append(contentsOf: canDoPack.facts)
         absences.append(contentsOf: canDoPack.absences)
 
-        // Decision / queue / plan / lanes / strip — selective when published.
-        let decisionPack = ConversationDecisionJudgment.packFacts(
-            decisionRequired: canSignals.hasDecision,
-            actionTitles: canSignals.decisionActionTitles
-        )
-        facts.append(contentsOf: decisionPack.facts)
-        absences.append(contentsOf: decisionPack.absences)
+        // Decision — prefer bubble pack when available.
+        if let bubble {
+            let decisionPack = ConversationDecisionJudgment.packFacts(from: bubble)
+            facts.append(contentsOf: decisionPack.facts)
+            absences.append(contentsOf: decisionPack.absences)
+        } else {
+            let decisionPack = ConversationDecisionJudgment.packFacts(
+                decisionRequired: canSignals.hasDecision,
+                actionTitles: canSignals.decisionActionTitles
+            )
+            facts.append(contentsOf: decisionPack.facts)
+            absences.append(contentsOf: decisionPack.absences)
+        }
 
-        let queuePack = ComposerQueueJudgment.packFacts(from: [])
+        let queuePack = ComposerQueueJudgment.packFacts(from: queued)
         facts.append(contentsOf: queuePack.facts)
         absences.append(contentsOf: queuePack.absences)
 
-        let planPack = PlanJudgment.packFacts(plan: nil, progress: nil)
+        let planPack = PlanJudgment.packFacts(
+            plan: bubble?.executionPlan,
+            progress: bubble?.executionProgress
+        )
         facts.append(contentsOf: planPack.facts)
         absences.append(contentsOf: planPack.absences)
 
-        let lanesPack = ConversationAgentLanesJudgment.packFacts(from: [])
+        let lanesPack = ConversationAgentLanesJudgment.packFacts(from: agents)
         facts.append(contentsOf: lanesPack.facts)
         absences.append(contentsOf: lanesPack.absences)
 
+        let stripFace: ConversationExecutionFace
+        if let bubble {
+            stripFace = ConversationExecutionPhase.face(for: bubble)
+        } else {
+            stripFace = matchingLive.first.map { ConversationExecutionPhase.face(for: $0) } ?? .quiet
+        }
         let stripPack = ConversationLiveStripJudgment.packFacts(
             decisionRequired: canSignals.hasDecision,
             choiceActionCount: canSignals.decisionActionTitles.count,
             hasSteerHandler: canSignals.hasRunning || canSignals.hasPaused,
-            face: matchingLive.first.map { ConversationExecutionPhase.face(for: $0) } ?? .quiet
+            face: stripFace
         )
         facts.append(contentsOf: stripPack.facts)
         absences.append(contentsOf: stripPack.absences)

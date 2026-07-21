@@ -113,6 +113,7 @@ extension ConversationView {
     func conversationPresenceOnAppear() {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: model.threadId)
         TurnPresence.shared.setVisible(model, visible: true)
+        rebindMidThreadTurnFacts()
         if startFocused && model.bubbles.isEmpty {
             // Espera a sheet assentar; 0.45 sentia lento demais.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.22) { focused = true }
@@ -131,7 +132,40 @@ extension ConversationView {
     func conversationPresenceOnThreadChange(_ now: ThreadID?) {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: now)
         TurnPresence.shared.setVisible(model, visible: true)
+        rebindMidThreadTurnFacts()
         if let now { onThread?(now) }
+    }
+}
+
+// MARK: - WAVE-106 mid-thread pack hydration
+
+extension ConversationView {
+    /// Rebind turnFacts to close over ConversationModel (queue/plan/lanes/decision).
+    /// Home/Workspace partida keep their own pack (do not override).
+    func rebindMidThreadTurnFacts() {
+        guard !isHomePartida else { return }
+        // Only mid-thread occasion (ConversationOccasionPack invite path / open thread).
+        guard emptyPrompt == ConversationOccasionPack.invite
+                || model.threadId != nil else { return }
+        let threadTitle = title
+        model.turnFacts = { [session, model, threadTitle] _ in
+            guard let threadId = model.threadId else {
+                return nil
+            }
+            let bubble = ConversationExecutionPhase.selectPresenceBubble(from: model.bubbles)
+            let published = ConversationOccasionPack.PublishedSlice(
+                presenceBubble: bubble,
+                queued: model.queuedMessages,
+                agents: bubble?.agents ?? []
+            )
+            return ConversationOccasionPack.facts(
+                session: session,
+                threadId: threadId,
+                title: threadTitle,
+                workspaceKey: model.workspacePath,
+                published: published
+            )
+        }
     }
 }
 

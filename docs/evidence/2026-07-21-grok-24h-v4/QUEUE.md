@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-106-conversation-mid-thread-pack-live-hydration
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-106-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-107-arena-run-status-shared-judgment-instrument
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: max
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-107-design.md
 created_by: designer
@@ -38,8 +28,7 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-106-conversation-mid-thread-pack-live-hydration | **max** | `WAVE-106-design.md` |
-| **2** | WAVE-107-arena-run-status-shared-judgment-instrument | **max** | `WAVE-107-design.md` |
+| **1** | WAVE-107-arena-run-status-shared-judgment-instrument | **max** | `WAVE-107-design.md` |
 
 ## History (done)
 
@@ -143,4 +132,5 @@ approved_at: null
 - WAVE-103 done
 - WAVE-104 done
 - WAVE-105 done
+- WAVE-106 done
 
