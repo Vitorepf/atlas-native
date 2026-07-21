@@ -269,9 +269,10 @@ extension AtlasCodeHealReceiptSheet {
             Text("Desfazer — com recibo")
         }
         .atlasSans(14, .medium)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 48)
         .padding(.vertical, 12)
         .foregroundStyle(AtlasTheme.textSecondary)
+        .contentShape(Rectangle())
         .atlasCard(cornerRadius: 13)
     }
 }

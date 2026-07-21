@@ -21,6 +21,7 @@ struct ArenaPremiumCapabilityDetail: View {
                     Text(capability.labelPt)
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
                     comparison
                     contribution
                     provenance
