@@ -2810,10 +2810,15 @@ extension WorkspaceRow {
 
 extension WorkspaceRow {
     var workspaceRowLeading: some View {
-        // Hierarchical: o SF ganha profundidade de dois tons (régua premium).
+        // Soft gold disk — same family as attachment/outline index chrome.
         Image(systemName: icon)
             .symbolRenderingMode(.hierarchical)
-            .atlasSans(18).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+            .atlasSans(15, .medium)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.9))
+            .frame(width: 36, height: 36)
+            .background(Circle().fill(AtlasTheme.goldVeil))
+            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1))
+            .atlasElevation(radius: 4, y: 1, opacity: 0.1)
             .accessibilityHidden(true)
     }
 }
@@ -2870,6 +2875,7 @@ extension WorkspaceRow {
             Circle()
                 .fill(AtlasTheme.alert)
                 .frame(width: 8, height: 8)
+                .shadow(color: AtlasTheme.alert.opacity(0.55), radius: 3, y: 0)
                 .accessibilityHidden(true)
         }
     }
