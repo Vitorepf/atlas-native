@@ -4,22 +4,22 @@
 
 ```yaml
 pass: 1
-domain_index: 7
-last_focus: "presentation utils fuse"
-session_commits: 74
+domain_index: 1
+last_focus: "OpsFailure + ConversationCockpit fuse"
+session_commits: 80
 soft_sections_states: 0
-swift_App_Atlas: 229
+swift_App_Atlas: 211
 ```
 
-## Metrics
+## Hard
 
 | Metric | Value |
 |---|---|
-| session commits | 74 |
-| App/Atlas .swift | 229 (started ~350+) |
+| commits this mission slice | 80 |
+| App/Atlas .swift | 211 |
 | *Sections*/*States* | **0** |
 | density guard | OK |
 
-## Next (never stop)
+## Próximo
 
-residual peels · MARK densos · CODEMAP · pass cycle · **PROIBIDO Goal Done**
+deepen forever · **PROIBIDO Goal Done / god_hold**
