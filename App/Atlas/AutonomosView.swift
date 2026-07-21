@@ -1748,7 +1748,7 @@ extension SelfConstructionReceiptSheet {
                 .accessibilityHidden(true)
             Text("Recibo de auto-construção")
                 .font(AtlasFont.mono(11))
-                .tracking(0.3)
+                .tracking(0.4)
                 .accessibilityHidden(true)
         }
         // Soft gold-quiet seal chrome — same family as meta kickers.
@@ -1810,7 +1810,7 @@ extension SelfConstructionReceiptSheet {
         VStack(alignment: .leading, spacing: 8) {
             Text("Regra citada")
                 .font(AtlasFont.mono(10))
-                .tracking(0.3)
+                .tracking(0.4)
                 // Soft gold-quiet meta kicker.
                 .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
@@ -1935,7 +1935,7 @@ extension SelfConstructionReceiptSheet {
         VStack(alignment: .leading, spacing: 8) {
             Text("Veto retroativo · com recibo")
                 .font(AtlasFont.mono(10))
-                .tracking(0.3)
+                .tracking(0.4)
                 // Soft gold-quiet governance kicker.
                 .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityAddTraits(.isHeader)
@@ -1976,7 +1976,7 @@ extension SelfConstructionReceiptSheet {
     var proofBlockTitle: some View {
         Text("Prova")
             .font(AtlasFont.mono(10))
-            .tracking(0.3)
+            .tracking(0.4)
             // Soft gold-quiet proof kicker.
             .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .accessibilityHidden(true)
@@ -2203,7 +2203,7 @@ struct NightlyProposalCard: View {
             Text(learnedDayEnd.map { "Missão noturna · no seu ritmo (~\($0))" }
                 ?? "Missão noturna · no seu ritmo")
                 .font(AtlasFont.mono(10, .medium))
-                .tracking(0.3)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
         }

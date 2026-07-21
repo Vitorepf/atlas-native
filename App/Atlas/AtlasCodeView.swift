@@ -2715,7 +2715,7 @@ extension AtlasCodeWhySheet {
         Group {
             Text("Por que este arquivo existe")
                 .atlasSans(9, .semibold)
-                .tracking(0.3)
+                .tracking(0.4)
                 // Soft gold-quiet why sheet kicker.
                 .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
@@ -3770,7 +3770,7 @@ struct AtlasCodeRadarStatusCapsule: View {
             case .clean, .unknown:
                 Text(model.scanState == .clean ? "código" : model.headline)
                     .atlasSans(11, .medium)
-                    .tracking(0.3)
+                    .tracking(0.4)
                     .foregroundStyle(
                         model.scanState == .clean
                             ? AtlasTheme.accent.opacity(0.72)
@@ -3825,7 +3825,7 @@ struct AtlasCodeRadarSectionLabel: View {
     var body: some View {
         Text(text)
             .atlasSans(10, .medium)
-            .tracking(0.3)
+            .tracking(0.4)
             .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)

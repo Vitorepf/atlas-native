@@ -1254,7 +1254,7 @@ struct LiveNowRow: View {
         HStack(spacing: 6) {
             Text(timingWord)
                 .font(AtlasFont.mono(10))
-                .tracking(0.3)
+                .tracking(0.4)
                 .foregroundStyle(timingColor)
             if session.timing != .finished {
                 Text("·")
@@ -1636,7 +1636,7 @@ extension SearchResultsSection {
     var resultsCaption: some View {
         Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
             .font(AtlasFont.mono(10, .medium))
-            .tracking(0.3)
+            .tracking(0.4)
             .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
@@ -1866,7 +1866,7 @@ extension SearchRecentSection {
     var recentCaption: some View {
         Text("Recentes")
             .font(AtlasFont.mono(10, .medium))
-            .tracking(0.3)
+            .tracking(0.4)
             .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)

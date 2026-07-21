@@ -4677,7 +4677,7 @@ extension ExecutionRibbon {
         if bubble.agents.count >= 2 {
             Text("Lanes")
                 .font(AtlasFont.mono(10, .medium))
-                .tracking(0.3)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
         }
@@ -6776,7 +6776,7 @@ extension ExecutionStateCard {
     var stateHeaderBadge: some View {
         if let badge = kindBadge {
             Text(badge)
-                .font(AtlasFont.mono(10)).tracking(0.3)
+                .font(AtlasFont.mono(10)).tracking(0.4)
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
         }
@@ -8897,7 +8897,7 @@ extension AtlasMarkdownView {
 extension AtlasMarkdownView {
     func headingTwo(_ spans: [InlineSpan]) -> some View {
         Text(plain(spans))
-            .atlasSans(11, .medium).tracking(0.2)
+            .atlasSans(11, .medium).tracking(0.4)
             // Soft gold-quiet markdown H2 kicker.
             .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityAddTraits(.isHeader)
@@ -9007,7 +9007,7 @@ extension CodeBlockView {
             if let langLabel = MarkdownCodeBlockA11y.langLabel(lang: lang) {
                 Text(langLabel)
                     .font(AtlasFont.mono(10, .medium))
-                    .tracking(0.3)
+                    .tracking(0.4)
                     .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
@@ -9332,7 +9332,7 @@ extension AtlasMarkdownView {
         HStack(spacing: 0) {
             ForEach(0..<colCount, id: \.self) { ci in
                 Text(plain(ci < headers.count ? headers[ci] : []))
-                    .font(AtlasFont.mono(10, .medium)).tracking(0.3)
+                    .font(AtlasFont.mono(10, .medium)).tracking(0.4)
                     .foregroundStyle(AtlasTheme.accent)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 8)
             }
