@@ -1,8 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// Layout → QueuedFollowUpRow+Layout.swift
+// IDLE-COMPRESS fused
 
+// --- QueuedFollowUpRow.swift ---
 struct QueuedFollowUpRow: View {
     let message: QueuedMessage
     let index: Int
@@ -15,3 +16,4 @@ struct QueuedFollowUpRow: View {
         rowLayout
     }
 }
+

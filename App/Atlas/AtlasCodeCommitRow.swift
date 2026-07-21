@@ -1,6 +1,9 @@
 import SwiftUI
 import AtlasCore
 
+// IDLE-COMPRESS fused
+
+// --- AtlasCodeCommitRow.swift ---
 // MARK: - Linha do commit (mensagem é a manchete)
 // Label → AtlasCodeCommitRow+Label.swift · Spine → +Spine.swift
 // LongPress → AtlasCodeCommitRow+LongPress.swift
@@ -33,3 +36,4 @@ struct AtlasCodeCommitRow: View {
         commitRowA11yChrome
     }
 }
+

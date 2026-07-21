@@ -1,5 +1,9 @@
 import SwiftUI
+import AtlasCore
 
+// IDLE-COMPRESS fused
+
+// --- NightlyProposalCard.swift ---
 struct NightlyProposalCard: View {
     let proposal: NightlyProposalController.ProposalPayload
     let onAccept: () -> Void
@@ -20,3 +24,4 @@ struct NightlyProposalCard: View {
             }
     }
 }
+

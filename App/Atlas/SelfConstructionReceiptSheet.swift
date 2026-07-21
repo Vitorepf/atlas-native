@@ -1,9 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// Stack → SelfConstructionReceiptSheet+Stack.swift
-// Predicates → SelfConstructionReceiptSheet+Predicates.swift
-// Shell → SelfConstructionReceiptSheet+Shell.swift
+// IDLE-COMPRESS fused
+
+// --- SelfConstructionReceiptSheet.swift ---
 struct SelfConstructionReceiptSheet: View {
     let receipt: SelfConstructionReceipt
     var canRevert: Bool = false
@@ -19,3 +19,4 @@ struct SelfConstructionReceiptSheet: View {
         receiptShell
     }
 }
+

@@ -1,12 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// Toolbar do composer: paperclip + campo + trailing (enviar / processando / menu
-// de modo·esforço·workspace). Peel de ConversationComposer (régua <200).
-// Field → ComposerToolbar+Field.swift
-// CanSubmit → ComposerToolbar+CanSubmit.swift
-// Row → ComposerToolbar+Row.swift
+// IDLE-COMPRESS fused
 
+// --- ComposerToolbar.swift ---
 struct ComposerToolbar: View {
     var model: ConversationModel
     var reduceMotion: Bool
@@ -24,3 +21,4 @@ struct ComposerToolbar: View {
         toolbarRow
     }
 }
+
