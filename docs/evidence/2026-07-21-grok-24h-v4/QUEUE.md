@@ -155,4 +155,6 @@ _(no open proposed WAVEs)_
 - WAVE-135 done
 - WAVE-136 done
 - WAVE-137 done
+- WAVE-138 done
+- WAVE-139 done
 
