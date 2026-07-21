@@ -2940,6 +2940,8 @@ extension ThreadRow {
                 .padding(.horizontal, 7)
                 .padding(.vertical, 3)
                 .background(Capsule().fill(AtlasTheme.goldVeil))
+                .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+                .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                 .accessibilityHidden(true)
         }
     }
