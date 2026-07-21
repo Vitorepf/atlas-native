@@ -7,17 +7,16 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 10
-- idle_compress_passes: 5
+- idle_compress_passes: 6
 - collapse_host: 0
 
 ## Waves done
 - WAVE-006..015 shipped
 
 ## Idle compress
-- pass 1–3 early
-- pass 4 Messages+EditorialTurn+Autonomos
-- pass 5 ConversationView+DraftThumb+Arena residual peels
+- passes 1–6 structural peel fusion (queue empty)
+- pass 6: ConversationChrome ~47→3 hosts
 
 ## Notes
-- Queue empty; structural idle continues
+- Queue empty of open designs
 - Device-pending
