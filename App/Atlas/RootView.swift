@@ -1253,7 +1253,11 @@ struct LiveNowRow: View {
             HStack(spacing: 6) {
                 Text(session.phaseTitle)
                     .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .foregroundStyle(
+                        session.timing == .running
+                            ? AtlasTheme.accent.opacity(0.85)
+                            : AtlasTheme.textSecondary
+                    )
                     .lineLimit(1)
                 if session.isRemote { remoteBadge }
             }
