@@ -1,10 +1,264 @@
-import AtlasCore
 import SwiftUI
+import AtlasCore
 
-// Linhas de repositório e pasta do radar — peel de AtlasCodeRadarSections.
-// Label → AtlasCodeRadarRows+Label.swift
-// A11y chrome → AtlasCodeRadarRows+A11yChrome.swift
+// WAVE-011 fused
 
+// --- AtlasCodeRadarAskContext.swift ---
+enum AtlasCodeRadarAskContext {
+    static let invite = "pergunte sobre o workspace"
+
+    static var emptySuggestions: [String] {
+        [
+            "o que pede atenção no workspace?",
+            "quais pastas têm sem retorno?",
+            "por onde começar a curar?",
+        ]
+    }
+
+    static func emptyPrompt(headline: String?) -> String {
+        let line = headline?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !line.isEmpty, line != "lendo o workspace…" {
+            return "workspace · \(line) — o que você quer saber?"
+        }
+        return invite
+    }
+
+    /// Facts prefix for the first turns — never invents scan results.
+    @MainActor
+    static func facts(model: AtlasCodeWorkspaceModel) -> String {
+        var lines: [String] = [
+            "surface: code-radar",
+            "subject: workspace do operador",
+        ]
+
+        if let workspace = model.workspace {
+            let folderCount = workspace.folders.count
+            let recentCount = workspace.recents.count
+            lines.append("folders: \(folderCount)")
+            lines.append("recents: \(recentCount)")
+            if let root = workspace.workspaceRoot, !root.isEmpty {
+                lines.append("workspace_root: \(root)")
+            } else if let slug = workspace.recents.first?.slug {
+                lines.append("workspace_wire_fallback: \(slug) (primeiro recente)")
+            } else {
+                lines.append("absences: sem workspace_root nem recentes para o wire")
+            }
+        } else {
+            lines.append("workspace: ainda não carregado")
+            lines.append("absences: workspace wire nil até load")
+        }
+
+        let scanned = model.issuesBySlug.count
+        let withIssues = model.issuesBySlug.values.filter { !$0.isEmpty }.count
+        let totalIssues = model.issuesBySlug.values.flatMap { $0 }.reduce(0) { $0 + $1.count }
+        if scanned > 0 {
+            lines.append("repos_scanned: \(scanned)")
+            lines.append("repos_with_sem_retorno: \(withIssues)")
+            if totalIssues > 0 {
+                lines.append("sem_retorno_signals: \(totalIssues)")
+            }
+            lines.append("headline: \(model.headline)")
+        } else {
+            lines.append("absences: nenhum scan de violações hidratado ainda")
+        }
+
+        if !model.failedSlugs.isEmpty {
+            lines.append("repos_mute: \(model.failedSlugs.sorted().joined(separator: ", "))")
+        }
+
+        lines.append("intent: julgamento soberano do workspace; não inventar merges ou cures")
+        return lines.joined(separator: "\n")
+    }
+}
+
+// --- AtlasCodeRadarFolderRow+Badge.swift ---
+extension AtlasCodeFolderRow {
+    @ViewBuilder
+    var exceptionBadge: some View {
+        if verifiedExceptionCount > 0 {
+            HStack(spacing: 4) {
+                Image(systemName: "exclamationmark.triangle")
+                    .atlasSans(9, .semibold)
+                Text("\(verifiedExceptionCount)")
+                    .atlasSans(11, .semibold)
+                    .monospacedDigit()
+            }
+            .foregroundStyle(AtlasCodePalette.alert)
+            .accessibilityHidden(true)
+        }
+    }
+}
+
+// --- AtlasCodeRadarFolderRow+Count.swift ---
+extension AtlasCodeFolderRow {
+    /// Só violações de repos já varridos — nil = ainda não medido, nunca conta.
+    var verifiedExceptionCount: Int {
+        folder.repos.reduce(0) { total, repo in
+            guard let issues = issuesFor(repo.slug), !issues.isEmpty else { return total }
+            return total + issues.reduce(0) { $0 + $1.count }
+        }
+    }
+}
+
+// --- AtlasCodeRadarFolderRow+Expanded.swift ---
+extension AtlasCodeFolderRow {
+    @ViewBuilder var expandedRepos: some View {
+        if isExpanded {
+            expandedReposList
+        }
+    }
+}
+
+// --- AtlasCodeRadarFolderRow+ExpandedList.swift ---
+extension AtlasCodeFolderRow {
+    var expandedReposList: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(folder.repos) { repo in
+                AtlasCodeRepoRow(repo: repo, issues: issuesFor(repo.slug), trunk: trunkFor(repo.slug), showsFolder: false) {
+                    onOpenRepo(repo.slug)
+                }
+                .padding(.leading, 32)
+                expandedRepoSeparator(after: repo)
+            }
+        }
+        .padding(.bottom, 6)
+        .transition(reduceMotion ? .identity : .opacity)
+    }
+}
+
+// --- AtlasCodeRadarFolderRow+Separator.swift ---
+extension AtlasCodeFolderRow {
+    @ViewBuilder
+    func expandedRepoSeparator(after repo: AtlasCodeRepoRef) -> some View {
+        if repo.id != folder.repos.last?.id {
+            Rectangle()
+                .fill(AtlasTheme.separator.opacity(0.4))
+                .frame(height: 0.5)
+                .padding(.leading, 32)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+// --- AtlasCodeRadarFolderRow+Toggle.swift ---
+extension AtlasCodeFolderRow {
+    var folderToggleButton: some View {
+        folderToggleA11y(
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onToggle()
+            } label: {
+                folderHeaderLabel
+            }
+            .buttonStyle(.plain)
+        )
+    }
+}
+
+// --- AtlasCodeRadarFolderRow.swift ---
+struct AtlasCodeFolderRow: View {
+    let folder: AtlasCodeFolder
+    let isExpanded: Bool
+    let issuesFor: (String) -> [AtlasCodeIssue]?
+    let trunkFor: (String) -> String?
+    let onToggle: () -> Void
+    let onOpenRepo: (String) -> Void
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            folderToggleButton
+            expandedRepos
+        }
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: isExpanded)
+    }
+}
+
+// --- AtlasCodeRadarRows+Label+Layout.swift ---
+extension AtlasCodeRepoRow {
+    var repoRowLabel: some View {
+        HStack(alignment: .center, spacing: 12) {
+            repoRowLeading
+            Spacer(minLength: 6)
+            repoRowTrailing
+        }
+        .padding(.vertical, 13)
+        .contentShape(Rectangle())
+    }
+}
+
+// --- AtlasCodeRadarRows+Label+Leading.swift ---
+extension AtlasCodeRepoRow {
+    var repoRowLeading: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 7) {
+                Text(repo.name)
+                    .atlasSans(15, .medium)
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                repoFolderBadge
+            }
+            repoRowIssues
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+// --- AtlasCodeRadarRows+LabelBadge.swift ---
+extension AtlasCodeRepoRow {
+    @ViewBuilder
+    var repoFolderBadge: some View {
+        if showsFolder, let folder = repo.folder {
+            Text(folder)
+                .atlasSans(10)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 1.5)
+                .background(Capsule().fill(AtlasTheme.surface))
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+// --- AtlasCodeRadarRows+LabelExtras.swift ---
+extension AtlasCodeRepoRow {
+    @ViewBuilder
+    var repoRowIssues: some View {
+        if let issues, let first = issues.first {
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(first.isSevere ? AtlasCodePalette.alert : AtlasCodePalette.alert.opacity(0.45))
+                    .frame(width: 4.5, height: 4.5)
+                    .accessibilityHidden(true)
+                // "+1" era críptico: diz o que é ("mais 1 alerta"), não só o número.
+                Text(issues.count == 1 ? first.headline(trunk: trunk) : "\(first.headline(trunk: trunk)) · mais \(issues.count - 1) alerta\(issues.count - 1 == 1 ? "" : "s")")
+                    .atlasSans(12)
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(1)
+                    .accessibilityHidden(true)
+            }
+        }
+    }
+}
+
+// --- AtlasCodeRadarRows+LabelTrailing.swift ---
+extension AtlasCodeRepoRow {
+    @ViewBuilder
+    var repoRowTrailing: some View {
+        if let age = AtlasCodeAge.short(from: repo.lastCommitAt) {
+            Text(age)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .monospacedDigit()
+                .accessibilityHidden(true)
+        }
+        Image(systemName: "chevron.right")
+            .atlasSans(12, .semibold)
+            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+            .accessibilityHidden(true)
+    }
+}
+
+// --- AtlasCodeRadarRows.swift ---
 struct AtlasCodeRepoRow: View {
     let repo: AtlasCodeRepoRef
     let issues: [AtlasCodeIssue]?
@@ -18,3 +272,160 @@ struct AtlasCodeRepoRow: View {
         repoRowA11yChrome
     }
 }
+
+// --- AtlasCodeRadarSections+AlarmCapsule.swift ---
+extension AtlasCodeRadarStatusCapsule {
+    var alarmCapsule: some View {
+        HStack(spacing: 7) {
+            Image(systemName: "exclamationmark.triangle")
+                .atlasSans(10, .semibold)
+                .accessibilityHidden(true)
+            Text(model.headline)
+                .atlasSans(11, .semibold)
+                .monospacedDigit()
+                .accessibilityHidden(true)
+        }
+        .foregroundStyle(AtlasCodePalette.alert)
+        .padding(.horizontal, 15)
+        .padding(.vertical, 7)
+        .background(Capsule().fill(AtlasCodePalette.alert.opacity(0.09)))
+        .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.35), lineWidth: 1))
+    }
+}
+
+// --- AtlasCodeRadarSections+Capsules.swift ---
+extension AtlasCodeRadarStatusCapsule {
+    /// Caption baixa — mesmo padrão da frota («frota» / «fila») sem incidente.
+    var silentCaption: some View {
+        Text(model.scanState == .clean ? "código" : model.headline)
+            .atlasSans(11, .semibold)
+            .tracking(1.2)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .padding(.vertical, 7)
+            .accessibilityHidden(true)
+    }
+}
+
+// --- AtlasCodeRadarSections+Labels.swift ---
+struct AtlasCodeRadarSectionLabel: View {
+    let text: String
+    var accessibilityID: String? = nil
+
+    var body: some View {
+        Text(text)
+            .atlasSans(10, .semibold)
+            .tracking(1.3)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .padding(.bottom, 8)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier(accessibilityID ?? text)
+    }
+}
+
+// --- AtlasCodeRadarSections+LabelsDivider.swift ---
+struct AtlasCodeRadarRowDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(AtlasTheme.separator.opacity(0.5))
+            .frame(height: 0.5)
+    }
+}
+
+// --- AtlasCodeRadarSections+StatusSwitch.swift ---
+extension AtlasCodeRadarStatusCapsule {
+    @ViewBuilder
+    var statusSwitchBody: some View {
+        Group {
+            switch model.scanState {
+            case .clean, .unknown:
+                silentCaption
+            case .violating:
+                alarmCapsule
+            }
+        }
+    }
+}
+
+// --- AtlasCodeRadarSections.swift ---
+// MARK: - Chrome do AtlasCodeRadarView (peel de AtlasCodeRadarSections)
+// Capsules → +Capsules · Labels → +Labels
+
+struct AtlasCodeRadarStatusCapsule: View {
+    let model: AtlasCodeWorkspaceModel
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        // Silêncio = produto: saudável (sem violações) → caption quieta, sem
+        // chrome de alarme/afirmação verde. Barulho só com exceção real.
+        statusSwitchBody
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: model.scanState)
+        .frame(maxWidth: .infinity, alignment: .center)
+        .accessibilityLabel(spokenStatus(model: model))
+        .accessibilityIdentifier(A11yID.radarStatus)
+    }
+}
+
+// --- AtlasCodeRadarView+AskPill.swift ---
+extension AtlasCodeRadarView {
+    var askPillDock: some View {
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 28)
+            .allowsHitTesting(false)
+            AgenticPill(
+                invite: AtlasCodeRadarAskContext.invite,
+                accessibilityId: A11yID.radarAskPill,
+                accessibilityHintText: "Abre conversa com o contexto do workspace"
+            ) {
+                askDraft = ""
+                showingAsk = true
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.bottom, 10)
+        }
+        .background(AtlasTheme.bg.opacity(0.01))
+    }
+
+    var askConversationSheet: some View {
+        ConversationView(
+            client: session.client,
+            threadId: askThreadId,
+            title: "Código · workspace",
+            emptyPrompt: AtlasCodeRadarAskContext.emptyPrompt(headline: model.headline),
+            emptySuggestions: AtlasCodeRadarAskContext.emptySuggestions,
+            taskKind: "code",
+            // Prefer root; senão primeiro recente; nil + absence no pack se vazio.
+            workspace: radarWireWorkspace,
+            draft: askDraft,
+            turnFacts: { [model] _ in
+                AtlasCodeRadarAskContext.facts(model: model)
+            },
+            onThread: { askThreadId = $0 },
+            hidesNavigationBack: true
+        )
+        .presentationDetents([.large])
+        .presentationDragIndicator(.hidden)
+        .presentationBackground(AtlasTheme.bg)
+        .presentationCornerRadius(28)
+    }
+
+    /// Wire workspace honesto — só o que o model já expõe (WAVE-002).
+    var radarWireWorkspace: String? {
+        if let root = model.workspace?.workspaceRoot?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !root.isEmpty {
+            return root
+        }
+        if let slug = model.workspace?.recents.first?.slug, !slug.isEmpty {
+            return slug
+        }
+        return nil
+    }
+}
+
+// --- AtlasCodeRadarView+Init.swift ---
+
+
