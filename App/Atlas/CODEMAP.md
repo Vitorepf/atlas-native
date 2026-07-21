@@ -111,6 +111,7 @@
 | **Artefatos lista/row** | `ArtifactListJudgment` → list silence/list(N) · row · empty visualizable · close |
 | **Assinatura editorial (turno)** | `EditorialTurnJudgment` → signature present/absent · feedback spoken · pack |
 | EditorialTurn peels | `EditorialTurn` host · `EditorialTurnChrome` (FeedbackRow · SignatureLine) |
+| **Markdown blocks spoken** | `AtlasMarkdownJudgment` list/quote/code/copy · Surface/Blocks |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)

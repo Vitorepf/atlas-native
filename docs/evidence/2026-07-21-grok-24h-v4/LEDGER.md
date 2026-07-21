@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 97
-- idle_compress_passes: 30
+- waves_completed: 98
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -108,22 +108,26 @@ mode: designer + implementer
 - WAVE-100
 - WAVE-101
 - WAVE-102
+- WAVE-103
 
 ## Idle compress
-- pass 28 · b2a94fc9 · RootChromeRowA11y
-- pass 29 · afc5f194 · ConversationViewA11y
-- pass 30 · 241771b3 · CameraPickerA11y to DraftJudgment
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 97
+- designs_proposed: 98
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
-## Open queue snapshot
+## Open queue snapshot (must match QUEUE.md)
 
-| # | wave | delta | status |
+| # | wave | Δ | status |
 |---|---|---|---|
-| - | (none) | - | - |
+| — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-102 + IDLE 29-30. DEVICE_PENDING.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+

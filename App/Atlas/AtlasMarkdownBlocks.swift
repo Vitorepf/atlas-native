@@ -13,8 +13,8 @@ extension CodeBlockView {
         }
         .buttonStyle(.plain)
         .disabled(!canCopy)
-        .accessibilityLabel(MarkdownCodeBlockA11y.spokenCopyButton(copied: copied, canCopy: canCopy))
-        .accessibilityHint(MarkdownCodeBlockA11y.copyHint(canCopy: canCopy))
+        .accessibilityLabel(AtlasMarkdownJudgment.spokenCopyButton(copied: copied, canCopy: canCopy))
+        .accessibilityHint(AtlasMarkdownJudgment.copyHint(canCopy: canCopy))
         .accessibilityIdentifier(A11yID.markdownCodeCopy(blockIndex))
     }
 }
@@ -39,7 +39,7 @@ extension CodeBlockView {
                 .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textPrimary)
                 .lineSpacing(5).textSelection(.enabled)
                 .padding(.horizontal, 16).padding(.bottom, 14)
-                .accessibilityLabel(MarkdownCodeBlockA11y.spokenBlock(lang: lang, lineCount: lineCount))
+                .accessibilityLabel(AtlasMarkdownJudgment.spokenBlock(lang: lang, lineCount: lineCount))
         }
     }
 }
@@ -252,7 +252,7 @@ extension AtlasMarkdownView {
         }
         .fixedSize(horizontal: false, vertical: true)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(MarkdownBlocksA11y.spokenQuote(plain(spans)))
+        .accessibilityLabel(AtlasMarkdownJudgment.spokenQuote(plain(spans)))
     }
 }
 

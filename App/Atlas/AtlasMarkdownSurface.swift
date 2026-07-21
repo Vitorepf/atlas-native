@@ -133,27 +133,6 @@ extension AtlasMarkdownView {
     }
 }
 
-enum MarkdownBlocksA11y {
-    static func spokenListItem(ordered: Bool, index: Int, plain: String) -> String {
-        let trimmed = plain.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            return ordered ? "item \(index + 1), vazio" : "item, vazio"
-        }
-        return ordered ? "item \(index + 1), \(trimmed)" : trimmed
-    }
-
-    static func spokenQuote(_ plain: String) -> String {
-        MarkdownBlocksA11yQuote.spokenQuote(plain)
-    }
-}
-
-enum MarkdownBlocksA11yQuote {
-    static func spokenQuote(_ plain: String) -> String {
-        let trimmed = plain.trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? "citação vazia" : "citação, \(trimmed)"
-    }
-}
-
 extension AtlasMarkdownView {
     @ViewBuilder
     func listBlockItem(ordered: Bool, index: Int, item: [InlineSpan]) -> some View {
@@ -165,7 +144,7 @@ extension AtlasMarkdownView {
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(MarkdownBlocksA11y.spokenListItem(ordered: ordered, index: index, plain: plain(item)))
+        .accessibilityLabel(AtlasMarkdownJudgment.spokenListItem(ordered: ordered, index: index, plain: plain(item)))
     }
 }
 
@@ -177,39 +156,6 @@ extension AtlasMarkdownView {
                 listBlockItem(ordered: ordered, index: idx, item: item)
             }
         }
-    }
-}
-
-enum MarkdownCodeBlockA11y {
-    static func spokenBlock(lang: String?, lineCount: Int) -> String {
-        var parts = ["bloco de código"]
-        if let lang, !lang.isEmpty {
-            parts.append("linguagem \(lang.lowercased())")
-        } else {
-            parts.append("linguagem não informada")
-        }
-        if lineCount == 0 {
-            parts.append("vazio")
-        } else {
-            parts.append("\(lineCount) linha\(lineCount == 1 ? "" : "s")")
-        }
-        return parts.joined(separator: ", ")
-    }
-}
-
-extension MarkdownCodeBlockA11y {
-    static func spokenCopyButton(copied: Bool, canCopy: Bool) -> String {
-        if !canCopy { return "copiar indisponível, bloco vazio" }
-        return copied ? "código copiado" : "copiar código"
-    }
-
-    static func copyHint(canCopy: Bool) -> String {
-        canCopy ? "cola este bloco na área de transferência" : ""
-    }
-
-    static func langLabel(lang: String?) -> String? {
-        guard let lang, !lang.isEmpty else { return nil }
-        return lang.lowercased()
     }
 }
 
@@ -290,7 +236,7 @@ extension CodeBlockView {
 extension CodeBlockView {
     var codeBlockToolbar: some View {
         HStack {
-            if let langLabel = MarkdownCodeBlockA11y.langLabel(lang: lang) {
+            if let langLabel = AtlasMarkdownJudgment.langLabel(lang: lang) {
                 Text(langLabel)
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
