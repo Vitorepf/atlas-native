@@ -54,7 +54,7 @@ mode: designer + implementer
 - pass 2 · `85be3450`
 - pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
 - pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
-- pass 5 · `0f6a7143` · peel ChangeReview Patch+Findings bodies
+- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
 - designs_proposed: 37
