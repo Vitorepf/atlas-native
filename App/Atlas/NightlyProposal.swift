@@ -30,7 +30,10 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     func registerOpenAutonomos(_ handler: @escaping () -> Void) { openAutonomos = handler }
 
     /// Recusas ensinam: 3 seguidas → pausa automática de 7 dias.
-    static let dismissStreakPauseThreshold = 3
+    /// WAVE-070: threshold owned by NightlyProposalJudgment.
+    static var dismissStreakPauseThreshold: Int {
+        NightlyProposalJudgment.dismissStreakPauseThreshold
+    }
 
     func dismissProposal() {
         pendingProposal = nil
@@ -81,15 +84,28 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
     }
 
     func spokenMuteStatus(now: Date = .init()) -> String? {
-        guard isMuted(now: now), let until = mutedUntil else { return nil }
-        let formatter = RelativeDateTimeFormatter()
-        formatter.locale = Locale(identifier: "pt_BR")
-        formatter.unitsStyle = .full
-        let prazo = formatter.localizedString(for: until, relativeTo: now)
-        if AtlasSession.nightlyProposalAutoPaused() {
-            return "propostas em pausa — você recusou as últimas \(Self.dismissStreakPauseThreshold); voltam \(prazo)"
-        }
-        return "propostas noturnas em pausa até \(prazo)"
+        // WAVE-070: mute spoken from Judgment.
+        NightlyProposalJudgment.spokenMuteStatus(
+            isMuted: isMuted(now: now),
+            mutedUntil: mutedUntil,
+            autoPaused: AtlasSession.nightlyProposalAutoPaused(),
+            now: now,
+            relativePrazo: { until, relativeTo in
+                let formatter = RelativeDateTimeFormatter()
+                formatter.locale = Locale(identifier: "pt_BR")
+                formatter.unitsStyle = .full
+                return formatter.localizedString(for: until, relativeTo: relativeTo)
+            }
+        )
+    }
+
+    /// WAVE-070: exclusive organ face for hosts/pack.
+    var proposalFace: NightlyProposalFace {
+        NightlyProposalJudgment.face(
+            hasPending: pendingProposal != nil,
+            isMuted: isProposalMuted,
+            autoPaused: AtlasSession.nightlyProposalAutoPaused()
+        )
     }
 
     // MARK: - Payload

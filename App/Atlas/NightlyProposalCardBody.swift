@@ -10,6 +10,8 @@ extension NightlyProposalCard {
             // no contentor sem engolir os CTAs (XCUITest + VoiceOver).
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(A11yID.nightlyProposalCard)
+            // WAVE-070: exclusive face when card is visible = pending.
+            .accessibilityValue(NightlyProposalFace.pending.productWord)
     }
 }
 
@@ -111,39 +113,45 @@ extension NightlyProposalCard {
 }
 
 extension NightlyProposalCard {
+    /// WAVE-070: spoken card/actions from NightlyProposalJudgment.
     static func spokenCardLabel(workspaceText: String) -> String {
-        "missão noturna proposta. Hoje você trabalhou em \(workspaceText). "
-            + "A frota pode continuar enquanto você descansa."
+        NightlyProposalJudgment.spokenCardLabel(workspaceText: workspaceText)
     }
 
     static func spokenCardHint() -> String {
-        "preparar, descartar em silêncio ou pausar por dias"
+        NightlyProposalJudgment.spokenCardHint
     }
 
-    static func spokenAcceptLabel() -> String { "preparar missão noturna" }
+    static func spokenAcceptLabel() -> String {
+        NightlyProposalJudgment.spokenAcceptLabel
+    }
 
     static func spokenAcceptHint() -> String {
-        "abre o ensaio governado da missão noturna"
+        NightlyProposalJudgment.spokenAcceptHint
     }
 
-    static func spokenDismissLabel() -> String { "hoje não" }
+    static func spokenDismissLabel() -> String {
+        NightlyProposalJudgment.spokenDismissLabel
+    }
 
     static func spokenDismissHint() -> String {
-        "descarta a proposta em silêncio, sem confirmação"
+        NightlyProposalJudgment.spokenDismissHint
     }
 
-    static func spokenMuteMenuLabel() -> String { "pausar propostas noturnas" }
+    static func spokenMuteMenuLabel() -> String {
+        NightlyProposalJudgment.spokenMuteMenuLabel
+    }
 
     static func spokenMuteMenuHint() -> String {
-        "oculta card e notificações por 1, 3 ou 7 dias; propostas ficam em pausa"
+        NightlyProposalJudgment.spokenMuteMenuHint
     }
 
     static func spokenMuteOption(days: Int) -> String {
-        "pausar por \(days) \(days == 1 ? "dia" : "dias")"
+        NightlyProposalJudgment.spokenMuteOption(days: days)
     }
 
     static func spokenMuteOptionHint() -> String {
-        "remove a proposta e pausa notificações, sem toast"
+        NightlyProposalJudgment.spokenMuteOptionHint
     }
 }
 

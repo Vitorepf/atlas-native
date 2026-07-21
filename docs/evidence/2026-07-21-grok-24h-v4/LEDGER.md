@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 64
+- waves_completed: 65
 - idle_compress_passes: 13
 - collapse_host: 0
 
@@ -75,24 +75,24 @@ mode: designer + implementer
 - WAVE-067
 - WAVE-068
 - WAVE-069
+- WAVE-070
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
-- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
-- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
+- pass 3 · `4ba83f4a` · MARK EditorialTurn
+- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof
+- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings
 - pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
-- pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow
-- pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
-- pass 9 · `876b24e3` · peel ArtifactPreview → TraceEvidence + Zoom
-- pass 10 · `4ed17106` · delete dead ChangeReview sheet spoken peel
-- pass 11 · `43415d1a` · peel AutonomosMapShell → Routes + Ask
+- pass 7 · `426cb439` · peel PlanCard
+- pass 8 · `10b74ff3` · peel ChangeReview Governance+RunActions
+- pass 9 · `876b24e3` · peel ArtifactPreview
+- pass 10 · `4ed17106` · delete dead sheet spoken
+- pass 11 · `43415d1a` · peel AutonomosMapShell
 - pass 12 · `2b6a7f73` · peel ExecutionStateActionStyle
-- pass 13 · `7711e5bb` · peel ArtifactSheet → ArtifactSheetDelivery (633→468)
+- pass 13 · `9f8583e4` · peel ArtifactSheet Delivery
 
 ## Designer
-- designs_proposed: 64
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -103,5 +103,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-060–069. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
-- LEDGER idle list is B-owned; do not strip passes 3–13.
+- WAVE-070 nightly. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- LEDGER idle B-owned; do not strip.

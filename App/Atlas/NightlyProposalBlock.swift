@@ -13,14 +13,23 @@ struct AutonomosNightlyProposalBlock: View {
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: visibilityToken)
     }
 
+    /// WAVE-070: face drives visibility honesty.
+    var proposalFace: NightlyProposalFace { nightly.proposalFace }
+
     var visibilityToken: String {
-        guard let proposal = nightly.pendingProposal, !nightly.isProposalMuted else { return "hidden" }
-        return proposal.id
+        switch proposalFace {
+        case .pending:
+            return nightly.pendingProposal?.id ?? "pending"
+        case .muted, .mutedAuto:
+            return "muted"
+        case .hidden:
+            return "hidden"
+        }
     }
 
     @ViewBuilder
     var nightlyContent: some View {
-        if let proposal = nightly.pendingProposal, !nightly.isProposalMuted {
+        if case .pending = proposalFace, let proposal = nightly.pendingProposal {
             NightlyProposalCard(
                 proposal: proposal,
                 onAccept: { onAccept(proposal) },
@@ -32,6 +41,7 @@ struct AutonomosNightlyProposalBlock: View {
             Color.clear
                 .frame(height: 0)
                 .accessibilityLabel(spoken)
+                .accessibilityValue(proposalFace.productWord)
                 .accessibilityAddTraits(.isStaticText)
         }
     }
