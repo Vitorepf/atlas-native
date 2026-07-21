@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 603
-domain_index: 5
-last_focus: "Autônomos product*/spoken + dead delete"
-session_commits: 176
+pass: 604
+domain_index: 6
+last_focus: "Workspace/Search spoken* + ChangeReview spokenAxisHeader"
+session_commits: 178
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,10 +14,11 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **176** · soft **0** · density OK · 46+2 · gates green
+commits **178** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
 **never Goal Done**
 
-Residual honesty spoken*/product* + delete morto. Densify headroom ~0.
+Domains 0–5 honesty residual landed. Soft 0. Densify headroom ~0.
+Next: Continuity / Steer productDestination / Radar clearLabel residual.
