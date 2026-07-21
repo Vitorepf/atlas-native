@@ -3219,17 +3219,21 @@ extension AtlasProfileSheet {
 
     private func profileLine(_ label: String, value: String, mono: Bool = false) -> some View {
         HStack {
-            Text(label).atlasSans(15).foregroundStyle(AtlasTheme.textSecondary)
+            Text(label)
+                .font(AtlasFont.serif(15))
+                .foregroundStyle(AtlasTheme.textSecondary)
             Spacer()
             if mono {
                 Text(value).font(AtlasFont.mono(13))
                     .foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
             } else {
-                Text(value).atlasSans(15)
+                Text(value)
+                    .font(AtlasFont.serif(15))
                     .foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
             }
         }
         .padding(.horizontal, 14).padding(.vertical, 12)
+        .frame(minHeight: 48)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(label), \(value)")
     }
