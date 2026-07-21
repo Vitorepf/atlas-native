@@ -18,8 +18,11 @@ struct AutonomosHubView: View {
             VStack(alignment: .leading, spacing: 0) {
                 AutonomosMapChrome.kicker(kickerLine, live: !unit.paused)
                     .padding(.bottom, 14)
+                    .accessibilityHidden(true)
                 AutonomosMapChrome.heroTitle(vestment.hero)
                     .padding(.bottom, 10)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("\(unit.name), \(vestment.hero), \(kickerLine)")
                 Text(unit.charter)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textSecondary)
@@ -52,6 +55,7 @@ struct AutonomosHubView: View {
         }
         .scrollIndicators(.hidden)
         .accessibilityIdentifier(A11yID.autonomosHub)
+        .accessibilityElement(children: .contain)
     }
 
     private var kickerLine: String {
