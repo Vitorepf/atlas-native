@@ -30,7 +30,6 @@ enum A11yID {
 
 extension A11yID {
     static let arenaPremiumAdd = "arena-premium-add"
-    static let arenaPremiumHero = "arena-premium-hero"
     static let arenaPremiumStop = "arena-premium-stop"
     static let arenaPremiumStopConfirm = "arena-premium-stop-confirm"
     static let arenaPremiumExecution = "arena-premium-execution"
@@ -51,8 +50,6 @@ extension A11yID {
     }
     static let arenaPremiumCapabilityDetail = "arena-premium-capability-detail"
     static let arenaPremiumExecutionAction = "arena-premium-execution-action"
-    static let arenaPremiumPlanAction = "arena-premium-plan-action"
-    static let arenaPremiumQueueAction = "arena-premium-queue-action"
     static let arenaPremiumAlertsAction = "arena-premium-alerts-action"
     static let arenaPremiumStopSheet = "arena-premium-stop-sheet"
     static let arenaPremiumStopActor = "arena-premium-stop-actor"
@@ -113,7 +110,6 @@ extension A11yID {
 extension A11yID {
     // M61 · Arena
     static let arenaHomeEntry = "arena-home-entry"
-    static let arenaScreen = "arena-screen"
 }
 
 extension A11yID {
@@ -122,7 +118,6 @@ extension A11yID {
 }
 
 extension A11yID {
-    static let arenaRunButton = "arena-run-button"
     static let arenaRunSheet = "arena-run-sheet"
     static let arenaRunActor = "arena-run-actor"
     static let arenaRunReason = "arena-run-reason"
@@ -137,7 +132,6 @@ extension A11yID {
 
 extension A11yID {
     static let arenaSuiteSheet = "arena-suite-sheet"
-    static let arenaEngineSheet = "arena-engine-sheet"
 }
 
 extension A11yID {
