@@ -1600,8 +1600,18 @@ extension SearchResultsSection {
         ForEach(results) { t in
             SearchThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: saturated)
             if t.id != results.last?.id {
-                Divider().overlay(AtlasTheme.separator)
-                    .padding(.leading, AtlasTheme.Space.screen + 36)
+                LinearGradient(
+                    colors: [
+                        AtlasTheme.accent.opacity(0),
+                        AtlasTheme.accent.opacity(0.2),
+                        AtlasTheme.separator,
+                        AtlasTheme.separator.opacity(0)
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(height: 1)
+                .padding(.leading, AtlasTheme.Space.screen + 50)
             }
         }
     }
@@ -1623,8 +1633,9 @@ struct SearchResultsSection: View {
 extension SearchResultsSection {
     var resultsCaption: some View {
         Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
-            .font(AtlasFont.mono(10, .semibold)).tracking(0.4)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .font(AtlasFont.mono(10, .medium))
+            .tracking(0.3)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
