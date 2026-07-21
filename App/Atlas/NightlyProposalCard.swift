@@ -13,8 +13,6 @@ struct NightlyProposalCard: View {
     /// Hora aprendida do fim do dia — o masthead diz o ritmo real, não "21h" fixo.
     @State var learnedDayEnd: String?
 
-    static var muteDays: [Int] { NightlyProposalJudgment.muteDays }
-
     var body: some View {
         cardA11y
             .task {

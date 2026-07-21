@@ -95,7 +95,7 @@ extension NightlyProposalCard {
 extension NightlyProposalCard {
     var muteMenu: some View {
         Menu("pausar") {
-            ForEach(Self.muteDays, id: \.self) { days in
+            ForEach(NightlyProposalJudgment.muteDays, id: \.self) { days in
                 Button("\(days) dia\(days == 1 ? "" : "s")") {
                     AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onMute(days)
