@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: RootChrome MARK
+- focus: domain0 residual or Conversa
 - domain_index: 0
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-livenow
+- last_commit: pending-rootchrome
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,24 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T22:50Z — RootChrome MARK + ThreadRow rename
+
+```yaml
+phase: prove
+focus: RootChrome MARK · RootChromeBody→ThreadRow
+domain_index: 0
+pass: 1
+commands: |
+  git mv RootChromeBody.swift ThreadRow.swift
+  RootChrome MARKs: Shared · Masthead · Top bar · Routes
+  gates ✓
+before_after: |
+  dishonest RootChromeBody → ThreadRow.swift
+  RootChrome 3→5 MARKs agent layout
+notes: |
+  Domain 0 checklist largely proven; residual Workspace/Search MARK or advance to Conversa
+```
 
 ### 2026-07-21T22:45Z — LiveNowJudgment fuse
 

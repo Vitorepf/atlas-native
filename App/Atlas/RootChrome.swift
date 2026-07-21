@@ -1,7 +1,9 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// GOD-RESTRUCTURE: home chrome primitives + RootView masthead/routes
+
+// MARK: - Shared chrome helpers
 
 @MainActor
 @ViewBuilder
@@ -155,11 +157,7 @@ struct WorkspaceRow: View {
     }
 }
 
-// MARK: - Masthead / destinations (was RootChromeFace)
-
-// WAVE-015 fused
-
-// MARK: - Host
+// MARK: - Masthead / a11y
 
 extension RootView {
     func mastheadSpokenLabel(auditModeEnabled: Bool) -> String {
@@ -201,7 +199,7 @@ extension RootView {
     }
 }
 
-// MARK: - Sections
+// MARK: - Masthead body
 
 extension RootView {
   // A linha premium do site no clímax dela: ouro em fade nas duas pontas.
@@ -246,6 +244,8 @@ extension RootView {
     }
   }
 }
+
+// MARK: - Top bar
 
 extension RootView {
     var topBarTrailing: some View {
@@ -301,6 +301,8 @@ extension RootView {
     }
 }
 
+
+// MARK: - Route destinations
 
 extension RootView {
     @ViewBuilder

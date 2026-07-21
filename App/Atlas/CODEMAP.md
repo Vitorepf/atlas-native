@@ -140,7 +140,7 @@
 | **LiveNow row spoken** | `LiveNowJudgment` spokenRow/clock · LiveNowRow |
 | **Artifact sheet parts** | host/list · Chrome · Preview · Delivery |
 | **Radar rows parts** | FolderRow · RepoChrome · AskContext |
-| **Root chrome** | `RootChrome` · ConversationRoutes · Lifecycle · `RootHomeChrome` |
+| **Root chrome** | `RootChrome` · ConversationRoutes · Lifecycle · DeepLink · `RootHomeChrome` · `ThreadRow` |
 | **TurnPresence parts** | host · Activity · Runtime |
 | **LiveTimeline parts** | host · NarrativeRow · NarrativeRowView |
 | **Commit row parts** | Body · Meta |
@@ -174,7 +174,7 @@
 | **ComposerDraftJudgment parts** | core · Attach |
 | **ChangeReview sections parts** | Sections · SectionsBody |
 | **ArenaSuiteSheet parts** | Sheet · Body |
-| **RootChrome parts** | Chrome · Body |
+| **RootChrome parts** | Chrome · Lifecycle · DeepLink · ConversationRoutes (ThreadRow own file) |
 | **ExecutionStateCardSpoken parts** | Spoken · Body |
 | **Composer sheets modifier parts** | Modifier · Body |
 | **ExecutionProof sections parts** | Sections · Body |

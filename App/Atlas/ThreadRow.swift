@@ -1,7 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-151 density peel
+// GOD-RESTRUCTURE: was RootChromeBody — file is ThreadRow only
+
+// MARK: - Row host
 
 struct ThreadRow: View {
     let thread: AtlasAiThread
