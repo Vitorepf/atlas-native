@@ -761,8 +761,12 @@ extension ChangeReviewPatchCard {
                 Text(diffExpanded ? "Fechar diff" : "Ver diff")
                     .font(AtlasFont.serif(13, .medium))
                     .foregroundStyle(AtlasTheme.accent)
+                    .padding(.horizontal, 12)
                     .frame(minHeight: 48)
-                    .contentShape(Rectangle())
+                    .background(Capsule().fill(AtlasTheme.goldVeil.opacity(diffExpanded ? 0.55 : 0.35)))
+                    .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(diffExpanded ? 1 : 0.7), lineWidth: 1))
+                    .atlasElevation(radius: 5, y: 1, opacity: diffExpanded ? 0.12 : 0.08)
+                    .contentShape(Capsule())
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel(ChangeReviewPatchA11y.spokenDiffToggle(expanded: diffExpanded))
@@ -781,7 +785,9 @@ extension ChangeReviewPatchCard {
                     ForEach(patch.riskFlags, id: \.self) { flag in
                         Text(flag).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domOperacional)
                             .padding(.horizontal, 7).padding(.vertical, 3)
-                            .background(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
+                            .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.08)))
+                            .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
+                            .atlasElevation(radius: 3, y: 1, opacity: 0.08)
                             .accessibilityHidden(true)
                     }
                 }
@@ -1378,7 +1384,17 @@ extension ChangeReviewFindingsSection {
         HStack(spacing: 8) {
             Text(axis.localizedCapitalized).font(AtlasFont.mono(9)).tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
-            Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
+            // Gold-quiet hairline — same family as home sectionLabel.
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0.35),
+                    AtlasTheme.separatorSoft,
+                    AtlasTheme.separatorSoft.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 1)
             Text("\(count)")
                 .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
         }
