@@ -733,12 +733,25 @@ extension AtlasCodeView {
 extension AtlasCodeView {
     var codeToolbar: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("Grafo")
-                .font(AtlasFont.serif(20))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel(spokenCodeScreenLabel())
-                .accessibilityHint(Self.codeScreenHint)
+            VStack(spacing: 4) {
+                Text("Grafo")
+                    .font(AtlasFont.serif(20))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel(spokenCodeScreenLabel())
+                    .accessibilityHint(Self.codeScreenHint)
+                LinearGradient(
+                    colors: [
+                        AtlasTheme.accent.opacity(0),
+                        AtlasTheme.accent.opacity(0.5),
+                        AtlasTheme.accent.opacity(0)
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(width: 44, height: 1.5)
+                .accessibilityHidden(true)
+            }
         }
     }
 
@@ -754,7 +767,7 @@ extension AtlasCodeView {
                     .lineLimit(1)
                 Image(systemName: "chevron.down")
                     .atlasSans(9, .semibold)
-                    .opacity(0.55)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .accessibilityHidden(true)
             }
             .foregroundStyle(AtlasTheme.textPrimary)
