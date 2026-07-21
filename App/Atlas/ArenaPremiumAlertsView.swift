@@ -81,6 +81,9 @@ struct ArenaPremiumAlertsView: View {
                     .font(.system(.callout))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity, minHeight: 86, alignment: .leading)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Nenhuma regressão ou falha publicada")
+                    .accessibilityIdentifier(A11yID.arenaPremiumState("alerts-empty"))
             }
         }
     }

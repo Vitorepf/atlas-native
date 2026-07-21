@@ -93,11 +93,14 @@ struct ArenaPremiumExecutionView: View {
                 Text("Casos ainda sem denominador nesta corrida.")
                     .font(AtlasFont.mono(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
+                    .accessibilityLabel("Casos ainda sem denominador nesta corrida.")
             }
         } else if runs.isEmpty {
             Text("Nenhuma corrida nesta medição.")
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
+                .accessibilityLabel("Nenhuma corrida nesta medição.")
+                .accessibilityIdentifier(A11yID.arenaPremiumState("execution-empty"))
         }
     }
 
