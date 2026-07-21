@@ -759,8 +759,8 @@ extension AtlasCodeView {
             .atlasGlassCapsule()
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("repositório \(model.repo)")
-        .accessibilityHint("troca de repositório")
+        .accessibilityLabel("Repositório \(model.repo)")
+        .accessibilityHint("Troca de repositório")
         .accessibilityIdentifier(A11yID.codeRepoSwitcher)
         .accessibilityAddTraits(.isButton)
     }
@@ -1417,9 +1417,9 @@ extension AtlasCodeView {
                 }
                 .buttonStyle(.plain)
                 .accessibilityIdentifier(A11yID.codeHealReceipt)
-                .accessibilityLabel("curado sozinho, ver recibo de cura")
+                .accessibilityLabel("Curado sozinho, ver recibo de cura")
                 .accessibilityAddTraits(.isButton)
-                .accessibilityHint("abre os passos registrados pelo servidor")
+                .accessibilityHint("Abre os passos registrados pelo servidor")
             }
         }
     }
@@ -3052,7 +3052,7 @@ extension AtlasCodeProvenanceSheet {
             .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
             .textSelection(.enabled)
             .padding(.top, 2)
-            .accessibilityLabel("hash do commit")
+            .accessibilityLabel("Hash do commit")
     }
 }
 
@@ -3193,7 +3193,7 @@ extension AtlasCodeProvenanceSheet {
         }
         .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.codeProvenanceAsk)
-        .accessibilityLabel("perguntar ao Atlas sobre este commit")
+        .accessibilityLabel("Perguntar ao Atlas sobre este commit")
         .accessibilityHint(Self.askHint)
         .accessibilityAddTraits(.isButton)
     }
@@ -3250,7 +3250,7 @@ extension AtlasCodeProvenanceSheet {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
-        .accessibilityHint("abre o porquê deste arquivo no commit")
+        .accessibilityHint("Abre o porquê deste arquivo no commit")
         .accessibilityIdentifier(A11yID.whyFileRow(index))
         .accessibilityAddTraits(.isButton)
     }
@@ -3443,7 +3443,7 @@ extension AtlasCodeProvenanceSheet {
             pullQuoteStack(quote)
         }
         .fixedSize(horizontal: false, vertical: true)
-        .accessibilityLabel("sua frase: \(quote)")
+        .accessibilityLabel("Sua frase: \(quote)")
     }
 }
 
@@ -3504,7 +3504,7 @@ struct AtlasCodeRadarView: View {
                 onRetry: { Task { await model.load() } }
             )
             .accessibilityLabel(spokenFailed(message))
-            .accessibilityHint("reconecta ao servidor Atlas")
+            .accessibilityHint("Reconecta ao servidor Atlas")
             .accessibilityIdentifier(A11yID.radarFailure)
         case .loaded:
             if let workspace = model.workspace {
@@ -3580,8 +3580,8 @@ struct AtlasCodeLoadFailureEmpty: View {
                     .contentShape(Capsule())
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("tentar de novo")
-            .accessibilityHint("recarrega o grafo ou radar deste repositório")
+            .accessibilityLabel("Tentar de novo")
+            .accessibilityHint("Recarrega o grafo ou radar deste repositório")
             .accessibilityIdentifier(A11yID.codeLoadRetry)
             .accessibilityAddTraits(.isButton)
             .accessibilitySortPriority(8)
@@ -3810,7 +3810,7 @@ struct AtlasCodeRepoRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenLabel)
-        .accessibilityHint("abre o grafo do repositório")
+        .accessibilityHint("Abre o grafo do repositório")
         .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
         .accessibilityAddTraits(.isButton)
     }

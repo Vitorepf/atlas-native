@@ -368,8 +368,8 @@ extension ConversationView {
                 .frame(width: 48, height: 48).atlasGlassCircle()
                 .contentShape(Circle())
         }
-        .accessibilityLabel("voltar")
-        .accessibilityHint("fecha a conversa")
+        .accessibilityLabel("Voltar")
+        .accessibilityHint("Fecha a conversa")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -382,15 +382,15 @@ extension ConversationView {
             AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.desktop) }
         } label: { Label("Continuar no Mac", systemImage: "desktopcomputer") }
-        .accessibilityLabel("continuar no Mac")
-        .accessibilityHint("transfere esta sessão para o desktop")
+        .accessibilityLabel("Continuar no Mac")
+        .accessibilityHint("Transfere esta sessão para o desktop")
         .accessibilityAddTraits(.isButton)
         Button {
             AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.terminal) }
         } label: { Label("Continuar no Terminal", systemImage: "terminal") }
-        .accessibilityLabel("continuar no Terminal")
-        .accessibilityHint("transfere esta sessão para o terminal")
+        .accessibilityLabel("Continuar no Terminal")
+        .accessibilityHint("Transfere esta sessão para o terminal")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -1035,7 +1035,7 @@ struct NewSinceLastVisitMarker: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityIdentifier(A11yID.conversationNewMarker)
-        .accessibilityLabel("novo desde a última visita")
+        .accessibilityLabel("Novo desde a última visita")
         .accessibilityAddTraits([.isStaticText, .isHeader])
     }
 }
@@ -1763,7 +1763,7 @@ struct WorkspaceSheet: View {
             }
         }
         .accessibilityIdentifier(A11yID.workspaceSheet)
-        .accessibilityLabel("workspace da conversa")
+        .accessibilityLabel("Workspace da conversa")
         .accessibilityHint(ComposerSheetA11y.workspaceSheetHint)
     }
 }
@@ -1849,7 +1849,7 @@ struct ModeSheet: View {
             modeRows
         }
         .accessibilityIdentifier(A11yID.modeSheet)
-        .accessibilityLabel("modo da conversa")
+        .accessibilityLabel("Modo da conversa")
         .accessibilityHint(ComposerSheetA11y.modeSheetHint)
     }
 }
@@ -1909,7 +1909,7 @@ extension EffortSheet {
     func effortA11yBind<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityIdentifier(A11yID.effortSheet)
-            .accessibilityLabel("esforço computacional")
+            .accessibilityLabel("Esforço computacional")
             .accessibilityHint(ComposerSheetA11y.effortSheetHint)
     }
 }
@@ -2445,7 +2445,7 @@ extension ConversationComposer {
             .padding(.bottom, expanded ? 0 : 8)
             .transition(reduceMotion ? .identity : .opacity)
             .accessibilityLabel(queueAccessibilityLabel)
-            .accessibilityHint("abre a folha para enviar agora ou remover da fila")
+            .accessibilityHint("Abre a folha para enviar agora ou remover da fila")
             .accessibilityIdentifier(A11yID.queueChip)
             .accessibilityAddTraits(.isButton)
     }
@@ -2508,8 +2508,8 @@ extension ConversationComposer {
                 DragGesture(minimumDistance: 6)
                     .onEnded { if $0.translation.height > 8 { dismissKeyboard() } }
             )
-            .accessibilityLabel("fechar teclado")
-            .accessibilityHint("toque ou arraste para baixo para dispensar o teclado")
+            .accessibilityLabel("Fechar teclado")
+            .accessibilityHint("Toque ou arraste para baixo para dispensar o teclado")
             .accessibilityAddTraits(.isButton)
     }
 }
@@ -3218,7 +3218,7 @@ extension AttachmentStrip {
     func uploadProgressA11y<Content: View>(_ content: Content, percent: Double) -> some View {
         content
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("enviando anexos, \(Int(percent * 100)) por cento")
+            .accessibilityLabel("Enviando anexos, \(Int(percent * 100)) por cento")
     }
 }
 
@@ -3292,8 +3292,8 @@ extension ComposerToolbar {
         } label: {
             Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
         }
-        .accessibilityLabel("modo, \(mode)")
-        .accessibilityHint("abre opções de modo para o próximo envio")
+        .accessibilityLabel("Modo, \(mode)")
+        .accessibilityHint("Abre opções de modo para o próximo envio")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -3306,8 +3306,8 @@ extension ComposerToolbar {
         } label: {
             Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
         }
-        .accessibilityLabel("workspace, \(model.workspaceName ?? "Atlas")")
-        .accessibilityHint("abre o seletor de workspace da conversa")
+        .accessibilityLabel("Workspace, \(model.workspaceName ?? "Atlas")")
+        .accessibilityHint("Abre o seletor de workspace da conversa")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -4273,8 +4273,8 @@ extension EditorialTurn {
             userEditResendLabel
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("editar esta mensagem e reenviar como novo turno")
-        .accessibilityHint("abre o compositor com este texto para um novo envio")
+        .accessibilityLabel("Editar esta mensagem e reenviar como novo turno")
+        .accessibilityHint("Abre o compositor com este texto para um novo envio")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -5801,8 +5801,8 @@ extension ExecutionProof {
         content
             .buttonStyle(.plain)
             .accessibilityIdentifier(A11yID.artifactsRow)
-            .accessibilityLabel("artefatos desta execução, \(count)")
-            .accessibilityHint("abre a lista de artefatos deste trace")
+            .accessibilityLabel("Artefatos desta execução, \(count)")
+            .accessibilityHint("Abre a lista de artefatos deste trace")
             .accessibilityAddTraits(.isButton)
     }
 }
@@ -5900,7 +5900,7 @@ extension ExecutionProof {
             Text("\"\(r)\"")
                 .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
                 .padding(.leading, 23)
-                .accessibilityLabel("motivo, \(r)")
+                .accessibilityLabel("Motivo, \(r)")
         }
     }
 }
@@ -6079,7 +6079,7 @@ extension ExecutionProof {
             set: { replayIndex = min(max(0, Int($0.rounded())), stampedCount - 1) }
         ), in: 0...Double(stampedCount - 1), step: 1)
         .tint(AtlasTheme.accent)
-        .accessibilityLabel("scrubber de replay da execução")
+        .accessibilityLabel("Scrubber de replay da execução")
         .accessibilityValue("passo \(min(replayIndex, stampedCount - 1) + 1) de \(stampedCount)")
     }
 }
@@ -6091,7 +6091,7 @@ extension ExecutionProof {
             set: { replayIndex = min(max(0, $0), stampedCount - 1) }
         ), in: 0...(stampedCount - 1))
         .labelsHidden()
-        .accessibilityLabel("replay da execução, passo \(min(replayIndex, stampedCount - 1) + 1) de \(stampedCount)")
+        .accessibilityLabel("Replay da execução, passo \(min(replayIndex, stampedCount - 1) + 1) de \(stampedCount)")
     }
 }
 
@@ -6256,7 +6256,7 @@ extension ExecutionStateCard {
         ))
         .accessibilityIdentifier(A11yID.executionActionChoice(action.id))
         .accessibilityLabel(action.title)
-        .accessibilityHint("ação declarada pelo servidor")
+        .accessibilityHint("Ação declarada pelo servidor")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(action.style == .primary || action.style == .destructive ? 9 : 0)
     }
@@ -6288,8 +6288,8 @@ extension ExecutionStateCard {
                 reduceMotion: reduceMotion
             ))
             .accessibilityIdentifier(A11yID.executionRetry)
-            .accessibilityLabel("retomar execução a partir do último checkpoint")
-            .accessibilityHint("reenfileira o job que falhou")
+            .accessibilityLabel("Retomar execução a partir do último checkpoint")
+            .accessibilityHint("Reenfileira o job que falhou")
             .accessibilityAddTraits(.isButton)
             .accessibilitySortPriority(9)
     }
@@ -6321,8 +6321,8 @@ extension ExecutionStateCard {
             style: .secondary,
             reduceMotion: reduceMotion
         ))
-        .accessibilityLabel("redirecionar esta execução")
-        .accessibilityHint("abre instrução para o próximo checkpoint seguro")
+        .accessibilityLabel("Redirecionar esta execução")
+        .accessibilityHint("Abre instrução para o próximo checkpoint seguro")
         .accessibilityAddTraits(.isButton)
     }
 
@@ -7922,7 +7922,7 @@ extension SteerInteractionSheet {
         }
         .accessibilityIdentifier(A11yID.steerScope)
         .accessibilityLabel(spokenScopeLabel(scope))
-        .accessibilityHint("define se a instrução vale o passo atual ou um replanejamento")
+        .accessibilityHint("Define se a instrução vale o passo atual ou um replanejamento")
     }
 }
 
@@ -7950,7 +7950,7 @@ extension SteerInteractionSheet {
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separator, lineWidth: 1))
             .accessibilityIdentifier(A11yID.steerInstruction)
-            .accessibilityHint("descreve o que deve mudar na execução")
+            .accessibilityHint("Descreve o que deve mudar na execução")
     }
 }
 
@@ -8344,8 +8344,8 @@ extension ExecutingStrip {
                 .contentShape(Rectangle())
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("parar execução")
-        .accessibilityHint("interrompe a execução ao vivo")
+        .accessibilityLabel("Parar execução")
+        .accessibilityHint("Interrompe a execução ao vivo")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(9)
     }
@@ -8368,8 +8368,8 @@ extension ExecutingStrip {
                     .contentShape(Rectangle())
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("redirecionar execução")
-            .accessibilityHint("abre opções para redirecionar a execução ao vivo")
+            .accessibilityLabel("Redirecionar execução")
+            .accessibilityHint("Abre opções para redirecionar a execução ao vivo")
             .accessibilityAddTraits(.isButton)
         }
     }
@@ -9390,7 +9390,7 @@ extension ArtifactSheet {
             .font(AtlasFont.serifItalic(14))
             .foregroundStyle(AtlasTheme.domOperacional)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilityLabel("preview falhou, \(message)")
+            .accessibilityLabel("Preview falhou, \(message)")
     }
 }
 
@@ -9720,7 +9720,7 @@ extension ArtifactPreviewContent {
         .frame(maxHeight: 360)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(ArtifactViewerA11y.spokenPreview(item: item))
-        .accessibilityHint("arraste horizontalmente para ler o diff")
+        .accessibilityHint("Arraste horizontalmente para ler o diff")
     }
 }
 

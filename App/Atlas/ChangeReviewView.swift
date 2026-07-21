@@ -254,7 +254,7 @@ extension ChangeReviewRunActions {
         } else {
             ProgressView()
                 .tint(AtlasTheme.accent)
-                .accessibilityLabel("registrando decisão")
+                .accessibilityLabel("Registrando decisão")
         }
     }
 }
@@ -296,8 +296,8 @@ extension ChangeReviewRunActions {
                 acceptButtonLabel
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("aceitar todos os arquivos e concluir revisão")
-            .accessibilityHint("aceita cada arquivo capturado e depois conclui o run")
+            .accessibilityLabel("Aceitar todos os arquivos e concluir revisão")
+            .accessibilityHint("Aceita cada arquivo capturado e depois conclui o run")
             .accessibilityAddTraits(.isButton)
             .accessibilitySortPriority(9)
             .accessibilityIdentifier(A11yID.reviewRunAccept)
@@ -324,8 +324,8 @@ extension ChangeReviewRunActions {
                 rejectButtonLabel
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("rejeitar revisão inteira")
-            .accessibilityHint("rejeita o run de engenharia desta execução")
+            .accessibilityLabel("Rejeitar revisão inteira")
+            .accessibilityHint("Rejeita o run de engenharia desta execução")
             .accessibilityAddTraits(.isButton)
             .accessibilityIdentifier(A11yID.reviewRunReject)
         }
@@ -434,7 +434,7 @@ extension ChangeReviewGovernanceSection {
                 Text("Divergência")
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.accent)
-                    .accessibilityLabel("divergência entre pareceres")
+                    .accessibilityLabel("Divergência entre pareceres")
             }
         }
     }
@@ -763,7 +763,7 @@ extension ChangeReviewPatchCard {
             }
             .buttonStyle(PressableScale())
             .accessibilityLabel(ChangeReviewPatchA11y.spokenDiffToggle(expanded: diffExpanded))
-            .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
+            .accessibilityHint("Mostra ou oculta o conteúdo do diff para este patch")
             .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
             .accessibilityAddTraits(diffExpanded ? [.isButton, .isSelected] : .isButton)
         }
@@ -833,7 +833,7 @@ extension ChangeReviewFileRow {
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel("Aceitar \(displayName)")
-        .accessibilityHint("registra aceite deste arquivo no patch")
+        .accessibilityHint("Registra aceite deste arquivo no patch")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(8)
         .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))
@@ -861,7 +861,7 @@ extension ChangeReviewFileRow {
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel("Rejeitar \(displayName)")
-        .accessibilityHint("registra rejeição deste arquivo no patch")
+        .accessibilityHint("Registra rejeição deste arquivo no patch")
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))
     }
@@ -988,7 +988,7 @@ extension ChangeReviewDiffView {
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 8)
-            .accessibilityLabel("diff indisponível para este patch")
+            .accessibilityLabel("Diff indisponível para este patch")
             .accessibilityIdentifier(A11yID.reviewDiffUnavailable)
     }
 }
@@ -1066,7 +1066,7 @@ extension ChangeReviewDiffView {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("atenção: o hash do diff não confere com o artefato registrado")
+        .accessibilityLabel("Atenção: o hash do diff não confere com o artefato registrado")
         .accessibilityIdentifier(A11yID.reviewHashWarning)
     }
 }
@@ -1330,7 +1330,7 @@ struct ChangeReviewFindingsSection: View {
         VStack(alignment: .leading, spacing: 10) {
             ChangeReviewCaption("Achados · \(findings.count)")
                 .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel("achados, \(findings.count) no total")
+                .accessibilityLabel("Achados, \(findings.count) no total")
             ForEach(groups.keys.sorted(), id: \.self) { axis in
                 axisGroup(axis: axis, axisFindings: groups[axis] ?? [])
             }
