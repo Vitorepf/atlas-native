@@ -1,13 +1,17 @@
 import SwiftUI
+import AtlasCore
 
 /// Hub de um Autônomo do operador — presença → fato → verbo → Evolução.
 /// Vestimenta = `AutonomosHubVestment` canônico (WAVE-007); zero LocalVestment.
 struct AutonomosHubView: View {
     let unit: AutonomosUnit
     let vestment: AutonomosHubVestment
+    let controlFace: AutonomosRunControlFace
+    let controlReceiptLine: String?
     let onNavigate: (AutonomosDestination) -> Void
-    let onPause: () -> Void
-    let onResume: () -> Void
+    let onControl: (AutonomosRunControlAction) -> Void
+    let onLocalCatalogPause: () -> Void
+    let onLocalCatalogResume: () -> Void
     let onEnd: () -> Void
 
     var body: some View {
@@ -21,10 +25,42 @@ struct AutonomosHubView: View {
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.bottom, 28)
+                    .padding(.bottom, 12)
+
+                if controlFace != .unbound {
+                    Text(controlFace.spokenFace)
+                        .font(AtlasFont.mono(11))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .padding(.bottom, 16)
+                        .accessibilityLabel(controlFace.spokenFace)
+                }
 
                 primaryVerb
                     .padding(.bottom, 8)
+
+                if let secondary = AutonomosRunControlJudgment.secondaryAction(for: controlFace) {
+                    AutonomosMapNavLine(
+                        title: secondary.ctaTitle,
+                        meta: controlFace.productWord,
+                        action: { onControl(secondary) }
+                    )
+                }
+
+                if let controlReceiptLine, !controlReceiptLine.isEmpty {
+                    Text(controlReceiptLine)
+                        .font(AtlasFont.serifItalic(13))
+                        .foregroundStyle(
+                            controlReceiptLine.lowercased().contains("não")
+                                || controlReceiptLine.lowercased().contains("erro")
+                                || controlReceiptLine.lowercased().contains("falha")
+                                ? AtlasTheme.domOperacional
+                                : AtlasTheme.textSecondary
+                        )
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 10)
+                        .padding(.bottom, 4)
+                        .accessibilityIdentifier(A11yID.autonomosControlError)
+                }
 
                 AutonomosMapChrome.hairline
                     .padding(.top, 12)
@@ -36,10 +72,10 @@ struct AutonomosHubView: View {
                     action: { onNavigate(.evolution) }
                 )
 
+                catalogPauseLine
+
                 if unit.paused {
                     AutonomosMapNavLine(title: "Encerrar", meta: "", action: onEnd)
-                } else {
-                    AutonomosMapNavLine(title: "Pausar", meta: "", action: onPause)
                 }
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
@@ -57,22 +93,47 @@ struct AutonomosHubView: View {
     }
 
     private var hubSpokenLabel: String {
-        "\(unit.name), \(vestment.spokenFace), \(vestment.heroTitle)"
+        "\(unit.name), \(vestment.spokenFace), \(controlFace.spokenFace), \(vestment.heroTitle)"
     }
 
     @ViewBuilder
     private var primaryVerb: some View {
+        // Precedence: awaiting decisions (026) → wire control (030) → local catalog.
         switch vestment {
-        case .quiet:
-            AutonomosMapChrome.primaryCTA("Retomar", action: onResume)
         case .awaiting(let count):
-            // WAVE-026: "Pede você" without a verb was a lie — CTA opens real decisions.
             AutonomosMapChrome.primaryCTA(
                 AutonomosDecisionJudgment.primaryCTATitle(count: count),
                 action: { onNavigate(.decisions) }
             )
-        case .live:
-            EmptyView()
+        case .live, .quiet:
+            if let action = AutonomosRunControlJudgment.primaryAction(for: controlFace) {
+                AutonomosMapChrome.primaryCTA(action.ctaTitle, action: { onControl(action) })
+            } else if case .quiet = vestment {
+                // Catalog-only resume when loop unbound.
+                AutonomosMapChrome.primaryCTA("Retomar na lista", action: onLocalCatalogResume)
+            } else {
+                EmptyView()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var catalogPauseLine: some View {
+        let demote = AutonomosRunControlJudgment.demoteLocalPause(
+            canControl: controlFace != .unbound && controlFace != .unregistered
+        )
+        if demote {
+            AutonomosMapNavLine(
+                title: unit.paused ? "Retomar na lista" : "Só lista local",
+                meta: unit.paused ? "iPhone · não é o loop" : "não pausa o servidor",
+                action: {
+                    if unit.paused { onLocalCatalogResume() } else { onLocalCatalogPause() }
+                }
+            )
+        } else if unit.paused {
+            AutonomosMapNavLine(title: "Retomar na lista", meta: "catálogo local", action: onLocalCatalogResume)
+        } else {
+            AutonomosMapNavLine(title: "Pausar na lista", meta: "catálogo local", action: onLocalCatalogPause)
         }
     }
 }

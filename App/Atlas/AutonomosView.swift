@@ -145,6 +145,14 @@ extension AutonomosView {
         guard let destination else { return "" }
         switch destination {
         case .hub:
+            // WAVE-030: loop face when area bound; else catalog pause honesty.
+            if model.selectedArea != nil {
+                return AutonomosRunControlJudgment.face(
+                    areaSelected: true,
+                    canControl: model.canControlSelectedArea,
+                    live: model.live
+                ).productWord
+            }
             guard let unit = selectedUnit else { return "" }
             return unit.paused ? "Parado" : "Vivo"
         case .evolution:

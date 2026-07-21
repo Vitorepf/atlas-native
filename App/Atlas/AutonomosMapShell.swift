@@ -14,6 +14,7 @@ struct AutonomosMapShell: View {
     @State private var selfConstructionReceipt: SelfConstructionReceipt?
     @State private var nightly = NightlyProposalController.shared
     @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
+    @State private var pendingRunControl: AutonomosRunControlAction?
 
     private var selectedUnit: AutonomosUnit? {
         guard let selectedUnitID else { return nil }
@@ -99,6 +100,66 @@ struct AutonomosMapShell: View {
             nightly.installDemoIfRequested()
             #endif
         }
+        .task {
+            await bindAreaIfNeeded()
+        }
+        .sheet(item: $pendingRunControl) { action in
+            AutonomosReasonSheet(
+                title: action.reasonSheetTitle,
+                explainer: action.explainer,
+                reasonOptional: action.reasonOptional
+            ) { actor, reason in
+                Task { await applyRunControl(action, actor: actor, reason: reason) }
+            }
+        }
+    }
+
+    private var controlFace: AutonomosRunControlFace {
+        AutonomosRunControlJudgment.face(
+            areaSelected: model.selectedArea != nil,
+            canControl: model.canControlSelectedArea,
+            live: model.live
+        )
+    }
+
+    private var controlReceiptLine: String? {
+        AutonomosRunControlJudgment.receiptLine(
+            receipt: model.lastControlReceipt,
+            startReceipt: model.lastStartRunReceipt,
+            error: model.controlError
+        )
+    }
+
+    private func bindAreaIfNeeded() async {
+        if model.areas.isEmpty {
+            await model.load()
+        }
+        guard model.selectedAreaID == nil else {
+            await model.refreshSelected()
+            return
+        }
+        if let id = AutonomosRunControlJudgment.bindAreaID(areas: model.areas) {
+            await model.selectArea(id)
+        }
+    }
+
+    private func applyRunControl(
+        _ action: AutonomosRunControlAction,
+        actor: String,
+        reason: String
+    ) async {
+        switch action {
+        case .pause:
+            await model.control(.pause, operatorActor: actor, reason: reason)
+        case .resume:
+            await model.control(.resume, operatorActor: actor, reason: reason)
+        case .kill:
+            await model.control(.kill, operatorActor: actor, reason: reason)
+        case .startExecute:
+            await model.startRun(mode: .execute, operatorActor: actor, operatorReason: reason)
+        case .startDryRun:
+            await model.startRun(mode: .dryRun, operatorActor: actor, operatorReason: reason)
+        }
     }
 
     /// Catálogo do operador + baseline Nightly/Ritmo (aprender-com-o-uso).
@@ -167,9 +228,12 @@ struct AutonomosMapShell: View {
                 AutonomosHubView(
                     unit: unit,
                     vestment: organismVestment,
+                    controlFace: controlFace,
+                    controlReceiptLine: controlReceiptLine,
                     onNavigate: { self.destination = $0 },
-                    onPause: { model.setOperatorUnitPaused(id: unit.id, paused: true) },
-                    onResume: { model.setOperatorUnitPaused(id: unit.id, paused: false) },
+                    onControl: { pendingRunControl = $0 },
+                    onLocalCatalogPause: { model.setOperatorUnitPaused(id: unit.id, paused: true) },
+                    onLocalCatalogResume: { model.setOperatorUnitPaused(id: unit.id, paused: false) },
                     onEnd: { confirmEnd = true }
                 )
             } else {
@@ -242,7 +306,15 @@ struct AutonomosMapShell: View {
                 AutonomosAskContext.facts(
                     unit: selectedUnit,
                     destination: destination,
-                    backlog: model.backlog
+                    backlog: model.backlog,
+                    controlFace: AutonomosRunControlJudgment.face(
+                        areaSelected: model.selectedArea != nil,
+                        canControl: model.canControlSelectedArea,
+                        live: model.live
+                    ),
+                    canControl: model.canControlSelectedArea,
+                    live: model.live,
+                    lastControlReceipt: model.lastControlReceipt
                 )
             },
             onThread: { askThreadId = $0 },

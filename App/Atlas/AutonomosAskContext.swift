@@ -48,7 +48,11 @@ enum AutonomosAskContext {
     static func facts(
         unit: AutonomosUnit?,
         destination: AutonomosDestination?,
-        backlog: AtlasAutonomosBacklogResponse? = nil
+        backlog: AtlasAutonomosBacklogResponse? = nil,
+        controlFace: AutonomosRunControlFace = .unbound,
+        canControl: Bool = false,
+        live: AtlasAutonomosLiveResponse? = nil,
+        lastControlReceipt: AtlasAutonomosRunControlResponse? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -57,7 +61,12 @@ enum AutonomosAskContext {
         if let unit {
             anchors.append("autonomo: \(unit.name)")
             facts.append("carta: \(unit.charter)")
-            facts.append(unit.paused ? "estado: pausado (local)" : "estado: no catálogo local deste iPhone")
+            // WAVE-030: never claim local catalog pause is the server loop.
+            facts.append(
+                unit.paused
+                    ? "catalogo_local: pausado no iPhone (≠ loop servidor)"
+                    : "catalogo_local: no iPhone"
+            )
             facts.append("idade_local: \(unit.ageLabel)")
         } else {
             absences.append("lista de Autônomos — nenhum aberto")
@@ -65,6 +74,16 @@ enum AutonomosAskContext {
 
         let subjects = AutonomosDecisionJudgment.packSubjects(from: backlog)
         let decisionCount = AutonomosDecisionJudgment.decisionCount(from: backlog)
+
+        let loop = AutonomosRunControlJudgment.packLoopFacts(
+            face: controlFace,
+            canControl: canControl,
+            live: live,
+            receipt: lastControlReceipt
+        )
+        facts.append(contentsOf: loop.facts)
+        absences.append(contentsOf: loop.absences)
+        anchors.append("loop · \(controlFace.productWord)")
 
         if let destination {
             facts.append("tela: \(destination.navTitle)")
