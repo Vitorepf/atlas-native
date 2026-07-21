@@ -31,7 +31,17 @@ struct LiveNowRow: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spokenLabel(hubIndex: hubIndex, hubCount: hubCount))
         .accessibilityHint(navigable ? "abre conversa desta sessão" : "")
-        .accessibilityAddTraits(navigable ? .isButton : [])
+        .accessibilityAddTraits(liveNowTraits)
+    }
+
+    /// Running sessions update elapsed copy; respect Reduce Motion.
+    private var liveNowTraits: AccessibilityTraits {
+        var traits: AccessibilityTraits = []
+        if navigable { traits.insert(.isButton) }
+        if session.timing == .running && !reduceMotion {
+            traits.insert(.updatesFrequently)
+        }
+        return traits
     }
 
     private var rowContent: some View {
