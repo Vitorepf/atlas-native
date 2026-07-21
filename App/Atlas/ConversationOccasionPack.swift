@@ -2,6 +2,7 @@ import Foundation
 import AtlasCore
 
 // MARK: - Conversation mid-thread occasion (WAVE-029)
+// WAVE-171 density peel — host (slice + shell); Live/Organs peels.
 
 /// Compiles turnFacts for an **open thread** — never Home partida.
 /// Surface purity: `conversation` or `conversation.workspace`.
@@ -92,29 +93,13 @@ enum ConversationOccasionPack {
             absences.append("thread ainda não listada no catálogo local da sessão")
         }
 
-        // Live sessions matching this thread — face product words, not raw phaseTitle lead.
-        let matchingLive = TurnPresence.shared.liveSessions.filter { $0.threadId == threadId }
-            + session.remoteLiveSessions.filter { $0.threadId == threadId }
-        if matchingLive.isEmpty {
-            facts.append("sessoes_vivas_deste_fio: 0")
-        } else {
-            facts.append("sessoes_vivas_deste_fio: \(matchingLive.count)")
-            for s in matchingLive.prefix(4) {
-                let face = ConversationExecutionPhase.face(for: s)
-                let product = ConversationExecutionPhase.primaryProduct(face)
-                anchors.append("live · \(s.title) · \(product)")
-                // phaseTitle as secondary detail only
-                if !s.phaseTitle.isEmpty {
-                    facts.append("live_detail · \(s.title) · \(s.phaseTitle)")
-                }
-            }
-        }
-
-        // Hub-wide live count without claiming other threads are this one.
-        let hubLive = TurnPresence.shared.liveSessions.count
-        if hubLive > matchingLive.count {
-            facts.append("sessoes_vivas_hub_global: \(hubLive) (outras conversas podem estar vivas)")
-        }
+        let matchingLive = appendLiveSessionFacts(
+            session: session,
+            threadId: threadId,
+            into: &facts,
+            anchors: &anchors,
+            absences: &absences
+        )
 
         absences.append("não invente grafo/Arena/Autônomos neste pack de conversa")
 
@@ -127,218 +112,25 @@ enum ConversationOccasionPack {
         facts.append(contentsOf: empty.facts)
         absences.append(contentsOf: empty.absences)
 
-        // WAVE-106: hydrate organs from published model slice when bound.
-        let bubble = published?.presenceBubble
-        let queued = published?.queued ?? []
-        let agents = published?.agents
-            ?? bubble?.agents
-            ?? []
-        let decisionRequired = bubble.map {
-            ConversationDecisionJudgment.isDecisionRequired($0)
-        } ?? false
-        let decisionTitles = bubble.map {
-            ConversationDecisionJudgment.choiceActions(for: $0).map(\.title)
-        } ?? []
-        let hasPlan = bubble?.executionPlan != nil
-            || bubble?.executionProgress != nil
-
-        if published == nil {
-            absences.append("model mid-thread ainda não hidratado neste pack (session-only)")
-        }
-
-        // WAVE-095: can_do matrix + wire organ packFacts (never ongoing-bool alone).
-        let canSignals = ConversationCanDoJudgment.liveSignals(
+        let canDo = appendLiveOrgans(
+            published: published,
             matchingLive: matchingLive,
-            decisionRequired: decisionRequired,
-            decisionActionTitles: decisionTitles,
-            queueCount: queued.count,
-            hasPlan: hasPlan,
-            laneCount: agents.count
+            into: &facts,
+            absences: &absences
         )
-        let canDoPack = ConversationCanDoJudgment.packFacts(canSignals)
-        facts.append(contentsOf: canDoPack.facts)
-        absences.append(contentsOf: canDoPack.absences)
 
-        // Decision — prefer bubble pack when available.
-        if let bubble {
-            let decisionPack = ConversationDecisionJudgment.packFacts(from: bubble)
-            facts.append(contentsOf: decisionPack.facts)
-            absences.append(contentsOf: decisionPack.absences)
-        } else {
-            let decisionPack = ConversationDecisionJudgment.packFacts(
-                decisionRequired: canSignals.hasDecision,
-                actionTitles: canSignals.decisionActionTitles
-            )
-            facts.append(contentsOf: decisionPack.facts)
-            absences.append(contentsOf: decisionPack.absences)
-        }
-
-        let queuePack = ComposerQueueJudgment.packFacts(from: queued)
-        facts.append(contentsOf: queuePack.facts)
-        absences.append(contentsOf: queuePack.absences)
-
-        let planPack = PlanJudgment.packFacts(
-            plan: bubble?.executionPlan,
-            progress: bubble?.executionProgress
+        appendSteerHandoffReviewOrgans(
+            published: published,
+            matchingLive: matchingLive,
+            into: &facts,
+            absences: &absences
         )
-        facts.append(contentsOf: planPack.facts)
-        absences.append(contentsOf: planPack.absences)
-
-        let lanesPack = ConversationAgentLanesJudgment.packFacts(from: agents)
-        facts.append(contentsOf: lanesPack.facts)
-        absences.append(contentsOf: lanesPack.absences)
-
-        let stripFace: ConversationExecutionFace
-        if let bubble {
-            stripFace = ConversationExecutionPhase.face(for: bubble)
-        } else {
-            stripFace = matchingLive.first.map { ConversationExecutionPhase.face(for: $0) } ?? .quiet
-        }
-        let stripPack = ConversationLiveStripJudgment.packFacts(
-            decisionRequired: canSignals.hasDecision,
-            choiceActionCount: canSignals.decisionActionTitles.count,
-            hasSteerHandler: canSignals.hasRunning || canSignals.hasPaused,
-            face: stripFace,
-            showsStop: bubble.map { ConversationExecutionPhase.stripShowsLiveChrome($0) }
-                ?? (stripFace != .finished && stripFace != .quiet)
+        appendComposerEvidenceOrgans(
+            published: published,
+            matchingLive: matchingLive,
+            into: &facts,
+            absences: &absences
         )
-        facts.append(contentsOf: stripPack.facts)
-        absences.append(contentsOf: stripPack.absences)
-
-        // WAVE-160: steer organ — wire hollow packFacts when presence has trace.
-        if let traceId = bubble?.traceId {
-            let steerPack = ConversationSteerJudgment.packFacts(
-                instruction: "",
-                scope: .currentStep,
-                last: published?.lastSteerReceipt,
-                traceId: traceId
-            )
-            facts.append(contentsOf: steerPack.facts)
-            absences.append(contentsOf: steerPack.absences)
-            absences.append("steer draft sheet-local — pack sem instrução até o modal")
-        } else if canSignals.hasRunning || canSignals.hasPaused {
-            absences.append("steer: sem traceId no presence bubble — não invente recibo")
-        }
-
-        // WAVE-161: surface handoff organ (iPhone↔Mac continuity face).
-        let handoffPack = ConversationHandoffJudgment.packFacts(
-            from: published?.latestSurfaceHandoff
-        )
-        facts.append(contentsOf: handoffPack.facts)
-        absences.append(contentsOf: handoffPack.absences)
-
-        // WAVE-163: change-review organs when presence trace has review slice.
-        if bubble?.traceId != nil {
-            let sheetPack = ChangeReviewSheetJudgment.packFacts(
-                loadFinished: published?.changeReviewLoadFinished ?? false,
-                review: published?.changeReview
-            )
-            facts.append(contentsOf: sheetPack.facts)
-            absences.append(contentsOf: sheetPack.absences)
-            let riskPack = ChangeReviewJudgment.packFacts(from: published?.changeReview)
-            facts.append(contentsOf: riskPack.facts)
-            absences.append(contentsOf: riskPack.absences)
-        }
-
-        // WAVE-164: composer draft · effort · stale-read · artifacts list.
-        if let published {
-            let draftPack = ComposerDraftJudgment.packFacts(
-                drafts: published.drafts,
-                uploadPercent: published.uploadPercent
-            )
-            facts.append(contentsOf: draftPack.facts)
-            absences.append(contentsOf: draftPack.absences)
-            let effortPack = ComposerEffortJudgment.packFacts(effort: published.effort)
-            facts.append(contentsOf: effortPack.facts)
-            absences.append(contentsOf: effortPack.absences)
-            let stalePack = ConversationStaleReadJudgment.packFacts(
-                capturedAt: published.cacheCapturedAt
-            )
-            facts.append(contentsOf: stalePack.facts)
-            absences.append(contentsOf: stalePack.absences)
-            let artifactPack = ArtifactListJudgment.packFacts(
-                items: published.artifacts,
-                selectedID: nil
-            )
-            facts.append(contentsOf: artifactPack.facts)
-            absences.append(contentsOf: artifactPack.absences)
-            // WAVE-170: contract-level artifact face + evidence availability.
-            let artFacePack = ArtifactJudgment.packFacts(
-                artifacts: published.artifactsBag,
-                deliveryChecks: []
-            )
-            facts.append(contentsOf: artFacePack.facts)
-            absences.append(contentsOf: artFacePack.absences)
-            let evidencePack = TraceEvidenceJudgment.packFacts(
-                isLoading: published.artifactsBag == nil && bubble?.traceId != nil,
-                reason: published.artifactsBag == nil ? "artifacts_bag_nil" : nil
-            )
-            facts.append(contentsOf: evidencePack.facts)
-            absences.append(contentsOf: evidencePack.absences)
-            // WAVE-169: preview organ idle until sheet selects item.
-            if !published.artifacts.isEmpty {
-                let previewPack = ArtifactPreviewJudgment.packFacts(
-                    preview: .idle,
-                    selected: nil
-                )
-                facts.append(contentsOf: previewPack.facts)
-                absences.append(contentsOf: previewPack.absences)
-                absences.append("artifact_preview: face-only — seleção só no sheet de artefatos")
-            }
-        }
-
-        // WAVE-165: execution proof + editorial signature organs.
-        if let bubble {
-            let proofPack = ExecutionProofJudgment.packFacts(
-                bubble: bubble,
-                artifactItems: published?.artifacts ?? []
-            )
-            facts.append(contentsOf: proofPack.facts)
-            absences.append(contentsOf: proofPack.absences)
-            let editorialPack = EditorialTurnJudgment.packFacts(
-                provider: bubble.provider,
-                model: bubble.model,
-                elapsedMs: bubble.elapsedMs,
-                feedbackAction: nil
-            )
-            facts.append(contentsOf: editorialPack.facts)
-            absences.append(contentsOf: editorialPack.absences)
-        }
-
-        // WAVE-166: outline + composer toolbar organs.
-        if let published {
-            let outlinePack = ConversationOutlineJudgment.packFacts(turnCount: published.turnCount)
-            facts.append(contentsOf: outlinePack.facts)
-            absences.append(contentsOf: outlinePack.absences)
-            let toolbarPack = ComposerToolbarJudgment.packFacts(
-                mode: published.toolbarMode,
-                workspaceName: published.toolbarWorkspaceName,
-                effort: published.effort
-            )
-            facts.append(contentsOf: toolbarPack.facts)
-            absences.append(contentsOf: toolbarPack.absences)
-
-            // WAVE-168: messages face + turn presence + composer sheet organs.
-            let messagesPack = ConversationMessagesJudgment.packFacts(
-                hasLoadError: published.hasLoadError,
-                turnCount: published.turnCount
-            )
-            facts.append(contentsOf: messagesPack.facts)
-            absences.append(contentsOf: messagesPack.absences)
-            let presencePack = TurnPresenceJudgment.packFacts(
-                presence: bubble?.executionPresence,
-                liveSessionCount: matchingLive.count
-            )
-            facts.append(contentsOf: presencePack.facts)
-            absences.append(contentsOf: presencePack.absences)
-            let sheetPack = ComposerSheetJudgment.packFacts(
-                modeKey: published.toolbarMode.isEmpty ? nil : published.toolbarMode,
-                workspaceCount: published.workspaceCatalogCount,
-                currentWorkspace: published.toolbarWorkspaceName
-            )
-            facts.append(contentsOf: sheetPack.facts)
-            absences.append(contentsOf: sheetPack.absences)
-        }
 
         let surface: String
         if workspaceKey != nil {
@@ -353,7 +145,7 @@ enum ConversationOccasionPack {
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: canDoPack.canDo
+            canDo: canDo
         ).render()
     }
 

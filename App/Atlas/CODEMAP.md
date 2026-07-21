@@ -35,7 +35,7 @@
 | **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face · pack API CodeAsk (WAVE-167) |
 | **Proveniência do commit** | `AtlasCodeProvenanceJudgment` → face · pack CodeAsk focus (WAVE-167) |
 | Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
-| Pack mid-thread conversa | `ConversationOccasionPack` (nunca `HomeAskContext` em `.thread`) |
+| Pack mid-thread conversa | `ConversationOccasionPack` host · Live · Organs peels (WAVE-171) |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
 | **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
@@ -83,7 +83,7 @@
 | Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets |
 | **Arena capacidades (confiança)** | `ArenaCapabilitiesJudgment` → measured/improved/regressed one law · rank · pack |
 | **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
-| **Arena pack can_do honesty** | AskContext wires Now+LiveControl packFacts · canDo matrix · canStop one law |
+| **Arena pack can_do honesty** | `ArenaPremiumAskContext` host · Live · Score peels (WAVE-171) · canDo matrix |
 | **Arena organ pack wire (157)** | AskContext → Stop/Pipeline/Start/RunStatus packFacts · RunStatus productWord · `ArenaFleetJudgment` rank≡FleetView |
 | **Arena plano/fila** | `ArenaPlanQueueJudgment` → planFace empty/published/derived_live · queueFace |
 | **Arena live control (corridas)** | `ArenaLiveControlJudgment` → rank · face · canStop |
@@ -186,3 +186,5 @@ View/Shell rota ≤600 · Surface 1 domínio ≤1500 (fail &gt;2000) · um domí
 | **Artifact preview pack (169)** | `ArtifactPreviewJudgment` → OccasionPack idle when list non-empty |
 
 | **Artifact contract + evidence pack (170)** | `ArtifactJudgment` · `TraceEvidenceJudgment` → OccasionPack |
+
+| **Autônomos pack peels (171)** | `AutonomosAskContext` host · `AutonomosAskContextOrgans` |

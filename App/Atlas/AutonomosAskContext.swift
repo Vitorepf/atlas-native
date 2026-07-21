@@ -96,181 +96,65 @@ enum AutonomosAskContext {
         let subjects = AutonomosDecisionJudgment.packSubjects(from: backlog)
         let decisionCount = AutonomosDecisionJudgment.decisionCount(from: backlog)
 
-        let loop = AutonomosRunControlJudgment.packLoopFacts(
-            face: controlFace,
+        appendGlobalOrgans(
+            controlFace: controlFace,
             canControl: canControl,
             live: live,
-            receipt: lastControlReceipt
-        )
-        facts.append(contentsOf: loop.facts)
-        absences.append(contentsOf: loop.absences)
-        anchors.append("loop · \(controlFace.productWord)")
-
-        // WAVE-065: multi-area bind honesty.
-        if !areas.isEmpty || selectedAreaID != nil {
-            let bind = AutonomosAreaBindJudgment.packFacts(
-                areas: areas,
-                selectedAreaID: selectedAreaID
-            )
-            facts.append(contentsOf: bind.facts)
-            absences.append(contentsOf: bind.absences)
-        }
-
-        // WAVE-035: transfer handoff honesty.
-        let transfer = AutonomosTransferJudgment.packFacts(
-            canTransfer: AutonomosTransferJudgment.canTransfer(canControlSelectedArea: canControl),
-            receipt: lastTransferReceipt
-        )
-        facts.append(contentsOf: transfer.facts)
-        absences.append(contentsOf: transfer.absences)
-
-        // WAVE-036: task health / incident honesty.
-        let health = AutonomosTaskHealthJudgment.packFacts(
+            lastControlReceipt: lastControlReceipt,
+            lastTransferReceipt: lastTransferReceipt,
+            taskHealth: taskHealth,
             areaSelected: areaSelected,
-            health: taskHealth
+            fleet: fleet,
+            digest: digest,
+            areas: areas,
+            selectedAreaID: selectedAreaID,
+            into: &facts,
+            absences: &absences,
+            anchors: &anchors
         )
-        facts.append(contentsOf: health.facts)
-        absences.append(contentsOf: health.absences)
-        if AutonomosTaskHealthJudgment.incidentPresent(taskHealth) {
-            anchors.append("incident · present")
-        }
 
-        // WAVE-037: global fleet snapshot honesty.
-        let fleetPack = AutonomosFleetJudgment.packFacts(fleet)
-        facts.append(contentsOf: fleetPack.facts)
-        absences.append(contentsOf: fleetPack.absences)
-
-        // WAVE-038: scheduled digest window honesty.
-        let digestPack = AutonomosDigestJudgment.packFacts(digest)
-        facts.append(contentsOf: digestPack.facts)
-        absences.append(contentsOf: digestPack.absences)
-
-        if let destination {
-            facts.append("tela: \(destination.navTitle)")
-            anchors.append("dest: \(destination.navTitle)")
-            switch destination {
-            case .hub:
-                facts.append("foco: hub do Autônomo — saúde e atalhos locais")
-                if decisionCount > 0 {
-                    facts.append("decisoes_publicadas: \(decisionCount)")
-                    for title in subjects {
-                        facts.append("decisao: \(title)")
-                    }
-                }
-                // WAVE-162: hub face organ (vestment × control × bind × transfer).
-                if let unit {
-                    let hubPack = AutonomosHubJudgment.packFacts(
-                        unitName: unit.name,
-                        vestment: AutonomosHubVestment.resolve(
-                            backlog: backlog,
-                            live: live,
-                            incidentPresent: AutonomosTaskHealthJudgment.incidentPresent(taskHealth),
-                            unitPaused: unit.paused
-                        ),
-                        controlFace: controlFace,
-                        needsAreaBind: AutonomosAreaBindJudgment.face(
-                            areas: areas,
-                            selectedAreaID: selectedAreaID
-                        ).needsChooser,
-                        canTransfer: AutonomosTransferJudgment.canTransfer(
-                            canControlSelectedArea: canControl
-                        ),
-                        hasControlReceipt: lastControlReceipt != nil,
-                        hasTransferReceipt: lastTransferReceipt != nil,
-                        controlApplied: lastControlReceipt?.applied
-                    )
-                    facts.append(contentsOf: hubPack.facts)
-                    absences.append(contentsOf: hubPack.absences)
-                }
-            case .decisions, .decisionInbox, .decisionOrder:
-                facts.append("foco: decisões")
-                if decisionCount > 0 {
-                    facts.append("decisoes_publicadas: \(decisionCount)")
-                    for title in subjects {
-                        facts.append("decisao: \(title)")
-                        anchors.append("decision:\(title)")
-                    }
-                } else if backlog == nil {
-                    absences.append("backlog de decisões não hidratado — não invente inbox")
-                } else {
-                    absences.append("zero itens com decisionRequired / operatorDecisionRequired")
-                }
-            case .evolution:
-                facts.append("foco: evolução")
-                let evo = AutonomosEvolutionJudgment.packFacts(
-                    marcos: AutonomosEvolutionJudgment.marcos(delivered: delivered, cycles: cycles)
-                )
-                facts.append(contentsOf: evo.facts)
-                absences.append(contentsOf: evo.absences)
-            case .moment:
-                facts.append("foco: digest/momento — janela provider-safe")
-            case .incident:
-                facts.append("foco: incidente — só sinais reais da face")
-                // health pack facts already appended above
-            }
-        } else {
-            facts.append("tela: catálogo do operador")
-        }
+        appendDestinationOrgans(
+            unit: unit,
+            destination: destination,
+            backlog: backlog,
+            subjects: subjects,
+            decisionCount: decisionCount,
+            controlFace: controlFace,
+            canControl: canControl,
+            live: live,
+            taskHealth: taskHealth,
+            lastControlReceipt: lastControlReceipt,
+            lastTransferReceipt: lastTransferReceipt,
+            delivered: delivered,
+            cycles: cycles,
+            areas: areas,
+            selectedAreaID: selectedAreaID,
+            into: &facts,
+            absences: &absences,
+            anchors: &anchors
+        )
 
         absences.append("create no servidor ainda pendente (§5)")
         absences.append("catálogo local some se o app for morto — não invente frota 24/7 persistida")
 
-        // WAVE-169: reason-sheet organ — sheet-local actor/reason → honest absence.
-        if canControl {
-            let reasonPack = AutonomosReasonJudgment.packFacts(
-                actionTitle: "controle_loop",
-                actor: "",
-                reason: "",
-                reasonOptional: true
-            )
-            facts.append(contentsOf: reasonPack.facts)
-            absences.append(contentsOf: reasonPack.absences)
-            absences.append("reason_sheet: face-only — actor/motivo só no modal governado")
-        }
-
-        // WAVE-159: self-construction veto organ (merge-proved only).
-        let mergeReceipt = selfConstructionReceipt
-            ?? SelfConstructionVetoJudgment.latestMergeProved(delivered: delivered)
-        let vetoPack = SelfConstructionVetoJudgment.packFacts(
-            receipt: mergeReceipt,
-            canControlSelectedArea: canControl
+        let canRevert = appendVetoNightlyCanDoOrgans(
+            destination: destination,
+            controlFace: controlFace,
+            canControl: canControl,
+            decisionCount: decisionCount,
+            hasUnit: unit != nil,
+            delivered: delivered,
+            selfConstructionReceipt: selfConstructionReceipt,
+            nightlyPending: nightlyPending,
+            nightlyMuted: nightlyMuted,
+            nightlyAutoPaused: nightlyAutoPaused,
+            nightlyWorkspaceText: nightlyWorkspaceText,
+            nightlyMutedUntil: nightlyMutedUntil,
+            into: &facts,
+            absences: &absences,
+            anchors: &anchors
         )
-        facts.append(contentsOf: vetoPack.facts)
-        absences.append(contentsOf: vetoPack.absences)
-        let canRevert = mergeReceipt.map {
-            SelfConstructionVetoJudgment.canRevert(
-                receipt: $0,
-                canControlSelectedArea: canControl
-            )
-        } ?? false
-        if canRevert {
-            anchors.append("veto · merge-proved")
-        }
 
-        // WAVE-159: catalog nightly organ (sync face — no invent).
-        if destination == nil, let nightlyPending {
-            let nightlyPack = NightlyProposalJudgment.packFacts(
-                hasPending: nightlyPending,
-                isMuted: nightlyMuted,
-                autoPaused: nightlyAutoPaused,
-                workspaceText: nightlyWorkspaceText,
-                mutedUntil: nightlyMutedUntil
-            )
-            facts.append(contentsOf: nightlyPack.facts)
-            absences.append(contentsOf: nightlyPack.absences)
-        } else if destination == nil {
-            absences.append("nightly organ não snapshot neste turn")
-        }
-
-        // Rhythm windows are async (actor) — pack never invents sampleDays.
-        if destination == nil {
-            absences.append(
-                "ritmo: janelas async — face RhythmLearningLine carrega sample; pack não inventa windows"
-            )
-        }
-
-        // WAVE-088: can_do matrix honesty (never always faceCTALocal).
-        // WAVE-159: canRevert elevates face CTA honesty.
         let canDoPack = AutonomosCanDoJudgment.packFacts(
             destination: destination,
             controlFace: controlFace,

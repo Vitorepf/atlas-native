@@ -4,6 +4,7 @@ import AtlasCore
 /// Pack de contexto Arena — presentation-only até o contrato Core (§5).
 /// Nunca vaza na cara da pílula; só viaja como `turnFacts` humanos.
 /// Pack = tela/destino atual; intenção cross-world **não** é bloqueada no texto.
+/// WAVE-171 density peel — host invite/canDo + facts shell.
 enum ArenaPremiumAskContext {
     // MARK: - Invite / empty
 
@@ -130,164 +131,28 @@ enum ArenaPremiumAskContext {
 
         facts.append("cobertura_texto: \(model.arenaCoverageText)")
 
-        // WAVE-083: Now + LiveControl packFacts (Judgment law — not ad-hoc phase).
-        let livePhase = model.livePresentation?.phase
-        let nowPack = ArenaNowJudgment.packFacts(
-            loadPhase: model.phase,
-            livePhase: livePhase,
-            compositeNil: model.composite == nil,
-            engineTitle: model.arenaLiveEngineTitle
-        )
-        facts.append(contentsOf: nowPack.facts)
-        absences.append(contentsOf: nowPack.absences)
-
         let liveRuns = model.liveRuns?.runs ?? []
         let primary = model.arenaPrimaryRun
-        let livePack = ArenaLiveControlJudgment.packFacts(runs: liveRuns, primary: primary)
-        facts.append(contentsOf: livePack.facts)
-        absences.append(contentsOf: livePack.absences)
-
-        if let progress = model.livePresentation?.progress {
-            facts.append("progresso: \(progress.completed)/\(progress.total) (\(progress.remaining) restantes)")
-        }
-        if let run = primary {
-            // WAVE-157: RunStatusJudgment productWord — one law with list/detail UI.
-            facts.append(
-                "corrida: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
-            )
-            let statusPack = ArenaRunStatusJudgment.packFacts(for: run.status)
-            facts.append(contentsOf: statusPack.facts)
-            absences.append(contentsOf: statusPack.absences)
-        }
-        let alerts = model.arenaAlertSuiteCount
-        facts.append(alerts == 0 ? "alertas: nenhuma exceção" : "alertas: \(alerts) exceção(ões)")
-        if let narrative = model.report?.narrative, !narrative.isEmpty {
-            facts.append("narrativa: \(narrative)")
-        }
-
         let focusTab = destination == nil ? tab : tabForDestination(destination!)
-        // WAVE-157: fleet pack order ≡ FleetView rank.
-        if focusTab == .fleet || destination == nil && tab == .fleet {
-            let fleetPack = ArenaFleetJudgment.packFacts(engines: model.composite?.engines ?? [])
-            facts.append(contentsOf: fleetPack.facts)
-            absences.append(contentsOf: fleetPack.absences)
-        }
-        if focusTab == .capabilities || destination == nil && tab == .capabilities {
-            // WAVE-094: measured confidence one law — never score-presence as cobertas.
-            let caps = model.selectedCapabilities?.capabilities ?? []
-            let capPack = ArenaCapabilitiesJudgment.packFacts(caps)
-            facts.append(contentsOf: capPack.facts)
-            absences.append(contentsOf: capPack.absences)
-        }
-        if destination == .execution || destination == .queue {
-            facts.append("corridas_live: \(liveRuns.count)")
-            let orderedLive = ArenaLiveControlJudgment.rank(liveRuns)
-            for run in orderedLive.prefix(6) {
-                facts.append(
-                    "live · \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
-                )
-            }
-            if liveRuns.isEmpty {
-                absences.append("nenhuma corrida live publicada")
-            }
-        }
 
-        // WAVE-157: pipeline organ when execution / now live has published runs.
-        if destination == .execution || (destination == nil && tab == .now && !liveRuns.isEmpty) {
-            let planArms = model.activePlan?.arms ?? []
-            let projection = ArenaPipelineJudgment.project(
-                runs: model.arenaPrimaryMeasurementRuns,
-                expectsBare: planArms.contains(.baseline) || model.arenaPrimaryMeasurementRuns.contains { $0.arm == .baseline },
-                expectsAtlas: planArms.contains(.withAtlas) || model.arenaPrimaryMeasurementRuns.contains { $0.arm == .withAtlas },
-                hasReport: model.report != nil
-            )
-            let pipePack = ArenaPipelineJudgment.packFacts(projection)
-            facts.append(contentsOf: pipePack.facts)
-            absences.append(contentsOf: pipePack.absences)
-        }
-
-        // WAVE-157: stop organ — wire when canStop; sheet-local actor/reason → honest absence.
-        if ArenaLiveControlJudgment.canStop(primary: primary) {
-            let hasReceipt = model.lastStopReceipt?.measurementIdPublic == primary?.measurementIdPublic
-            let stopPack = ArenaStopJudgment.packFacts(
-                actor: "",
-                reason: "",
-                hasMatchingReceipt: hasReceipt
-            )
-            facts.append(contentsOf: stopPack.facts)
-            absences.append(contentsOf: stopPack.absences)
-            absences.append("stop_sheet: face-only — actor/motivo só no modal de parada")
-        }
-
-        // WAVE-157: start organ when receipt or run-sheet context (engines/suites published).
-        let enginesPublished = model.engineCatalog?.engines.count
-            ?? model.composite?.engines.count
-            ?? 0
-        let suitesPublished = model.activePlan?.suites.count
-            ?? model.livePresentation?.queuedRuns.count
-            ?? 0
-        if model.lastStartReceipt != nil
-            || destination == .execution
-            || destination == .plan
-            || (destination == nil && tab == .now)
-        {
-            let startPack = ArenaStartJudgment.packFacts(
-                input: nil,
-                receipt: model.lastStartReceipt,
-                enginesPublished: enginesPublished,
-                suitesPublished: suitesPublished
-            )
-            facts.append(contentsOf: startPack.facts)
-            absences.append(contentsOf: startPack.absences)
-        }
-        // WAVE-085: plan/queue faces — never "sem plano" when UI is derived_live.
-        if destination == .plan {
-            let planPack = ArenaPlanQueueJudgment.planPackFacts(
-                activePlan: model.activePlan,
-                measurementRuns: model.arenaPrimaryMeasurementRuns,
-                queuedRuns: model.livePresentation?.queuedRuns ?? []
-            )
-            facts.append(contentsOf: planPack.facts)
-            absences.append(contentsOf: planPack.absences)
-        }
-        if destination == .queue {
-            let queuePack = ArenaPlanQueueJudgment.queuePackFacts(
-                queuedRuns: model.livePresentation?.queuedRuns ?? []
-            )
-            facts.append(contentsOf: queuePack.facts)
-            absences.append(contentsOf: queuePack.absences)
-        }
-
-        // WAVE-166: run-sheet organ (engines × suites ready face).
-        let runSheetPack = ArenaRunSheetJudgment.packFacts(
-            engineCount: enginesPublished,
-            suiteCount: suitesPublished
+        appendLiveControlOrgans(
+            model: model,
+            destination: destination,
+            tab: tab,
+            liveRuns: liveRuns,
+            primary: primary,
+            into: &facts,
+            absences: &absences
         )
-        facts.append(contentsOf: runSheetPack.facts)
-        absences.append(contentsOf: runSheetPack.absences)
-
-        // WAVE-166: suite drill organs when scoreboard published (results/alerts/now).
-        if focusTab == .results || destination == .results || destination == .alerts
-            || (destination == nil && tab == .now)
-        {
-            let suites = model.scoreboard?.suites ?? []
-            if suites.isEmpty {
-                absences.append("scoreboard sem suites publicadas neste recorte")
-            } else {
-                // Regression-first; stable secondary (wire order).
-                let ranked = suites.enumerated().sorted { lhs, rhs in
-                    let l = lhs.element.hasRegression
-                    let r = rhs.element.hasRegression
-                    if l != r { return l && !r }
-                    return lhs.offset < rhs.offset
-                }.map(\.element)
-                for suite in ranked.prefix(4) {
-                    let suitePack = ArenaSuiteJudgment.packFacts(for: suite)
-                    facts.append(contentsOf: suitePack.facts)
-                    absences.append(contentsOf: suitePack.absences)
-                }
-            }
-        }
+        appendScoreOrgans(
+            model: model,
+            destination: destination,
+            tab: tab,
+            focusTab: focusTab,
+            liveRuns: liveRuns,
+            into: &facts,
+            absences: &absences
+        )
 
         let canDo = occasionCanDo(
             tab: tab,
@@ -340,7 +205,7 @@ enum ArenaPremiumAskContext {
         }
     }
 
-    private static func destinationLabel(_ d: ArenaPremiumDestination) -> String {
+    static func destinationLabel(_ d: ArenaPremiumDestination) -> String {
         switch d {
         case .execution: "Execução"
         case .plan: "Plano"
@@ -357,5 +222,4 @@ enum ArenaPremiumAskContext {
         case .results: .results
         }
     }
-
 }
