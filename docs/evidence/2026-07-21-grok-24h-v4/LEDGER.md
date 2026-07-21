@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 20
-- idle_compress_passes: 3
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -35,11 +35,10 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `8fc770ab` · delete dead peels ConversationCockpit husk + ArenaCompositeUI Core-dup
 
 ## Designer
-- designs_proposed: 20
-- designs_open: 0
+- designs_proposed: 24
+- designs_open: 4
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -47,14 +46,13 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| 1 | WAVE-026-autonomos-decision-judgment-instrument | **max** | proposed |
+| 2 | WAVE-027-conversation-presence-primary-chrome | **high** | proposed |
+| 3 | WAVE-028-codigo-commit-map-judgment-instrument | **high** | proposed |
+| 4 | WAVE-029-conversation-occasion-pack-honesty | **high** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- **2026-07-21 · Dual v5 locked:** START `grok-24h-v5-START.md` · canon · A croqui · B fábrica
-  - Fila deve ter 2–5 proposed (hoje: encher com A antes de B)
-  - B rejeita micro-onda; máx 2 idle sem ROI; WAVE própria = barra A (≥120 linhas)
-- **B v5 boot 2026-07-21:** QUEUE vazia · 7+ IDLE-COMPRESS pós-WAVE-025 no git (anti fuse-factory).
-  Um idle canônico §7.1 delete morto (pass 3) · **depois espere A** (não micro-WAVE, não 4º fuse).
+
