@@ -1057,3 +1057,970 @@ enum AtlasCodeWeekUISpokenQuiet {
         return parts.joined(separator: ", ")
     }
 }
+
+
+// Cycle 044 fuse → AtlasCodeFileRow.swift
+
+/// Uma linha por arquivo. O VERBO é a forma do símbolo, não a cor: cor aqui
+/// é reservada ao estado do commit (main/fora/curado) e mentiria se pintasse
+/// tipo de mudança de vermelho dentro de um commit saudável.
+struct AtlasCodeFileRow: View {
+    let file: AtlasCodeFileChange
+    var accessibilityIdentifier: String?
+
+    var body: some View {
+        lead
+            .padding(.vertical, 9)
+            .frame(minHeight: 48, alignment: .center)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
+            .accessibilityIdentifier(accessibilityIdentifier ?? "")
+    }
+}
+
+/// Contagens só quando o payload publica; binário sem inventar linhas.
+
+enum AtlasCodeFileRowA11y {
+    static func spokenFile(_ file: AtlasCodeFileChange) -> String {
+        var parts = [file.path, verb(for: file.status)]
+        if let from = file.renamedFrom { parts.append("de \(from)") }
+        if let additions = file.additions, let deletions = file.deletions {
+            parts.append("\(additions) linhas adicionadas")
+            parts.append("\(deletions) removidas")
+        } else {
+            parts.append("arquivo binário")
+        }
+        return parts.joined(separator: ", ")
+    }
+}
+
+extension AtlasCodeFileRow {
+    var lead: some View {
+        HStack(alignment: .center, spacing: 10) {
+            Image(systemName: symbol)
+                .atlasSans(8.5, .bold)
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .frame(width: 17, height: 17)
+                .background(AtlasTheme.surfaceHi, in: RoundedRectangle(cornerRadius: 5))
+                .accessibilityHidden(true)
+
+            fileNameStack
+
+            Spacer(minLength: 8)
+
+            diffStats
+        }
+    }
+}
+
+extension AtlasCodeFileRow {
+    var fileNameStack: some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text(file.fileName)
+                .atlasSans(12.5, .medium)
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+            if let subtitle {
+                Text(subtitle)
+                    .font(AtlasFont.mono(8.5))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+                    .truncationMode(.head)
+            }
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+extension AtlasCodeFileRow {
+    @ViewBuilder
+    var diffStats: some View {
+        if let additions = file.additions, let deletions = file.deletions {
+            Text("+\(additions) \u{2212}\(deletions)")
+                .font(AtlasFont.mono(9))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .monospacedDigit()
+                .accessibilityHidden(true)
+        } else {
+            Text("binário")
+                .font(AtlasFont.mono(8.5))
+                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension AtlasCodeFileRowA11y {
+    static func verbMutate(for status: AtlasCodeFileStatus) -> String? {
+        switch status {
+        case .added: return "adicionado"
+        case .modified: return "alterado"
+        case .deleted: return "removido"
+        default: return nil
+        }
+    }
+}
+
+extension AtlasCodeFileRowA11y {
+    static func verbRenameCopy(for status: AtlasCodeFileStatus) -> String? {
+        switch status {
+        case .renamed: return "renomeado"
+        case .copied: return "copiado"
+        default: return nil
+        }
+    }
+}
+
+extension AtlasCodeFileRowA11y {
+    static func verbTransform(for status: AtlasCodeFileStatus) -> String {
+        if let rename = verbRenameCopy(for: status) { return rename }
+        switch status {
+        case .typeChanged: return "tipo alterado"
+        case .unknown: return "mudança desconhecida"
+        default: return verbMutate(for: status) ?? "mudança desconhecida"
+        }
+    }
+}
+
+extension AtlasCodeFileRowA11y {
+    static func verb(for status: AtlasCodeFileStatus) -> String {
+        verbMutate(for: status) ?? verbTransform(for: status)
+    }
+}
+
+extension AtlasCodeFileRow {
+    var subtitle: String? {
+        if let from = file.renamedFrom { return "de \(from)" }
+        return file.directory
+    }
+}
+
+extension AtlasCodeFileRow {
+    var symbolMutate: String? {
+        switch file.status {
+        case .added: return "plus"
+        case .modified: return "pencil"
+        case .deleted: return "minus"
+        default: return nil
+        }
+    }
+}
+
+extension AtlasCodeFileRow {
+    var symbolTransform: String? {
+        switch file.status {
+        case .renamed: return "arrow.right"
+        case .copied: return "doc.on.doc"
+        case .typeChanged: return "arrow.triangle.2.circlepath"
+        default: return nil
+        }
+    }
+}
+
+extension AtlasCodeFileRow {
+    var symbol: String {
+        symbolMutate ?? symbolTransform ?? "questionmark"
+    }
+}
+
+
+// Chrome do grafo (status, worktrees, filtros, semana/recibo) — extensão de AtlasCodeView.
+
+extension AtlasCodeView {
+    // MARK: - Status
+
+    @ViewBuilder
+    var statusCapsule: some View {
+        if let pulse = statusPulseCopy {
+            Text(pulse)
+                .font(AtlasFont.serifItalic(13))
+                .foregroundStyle(statusPulseColor)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.bottom, 12)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.scanState)
+                .accessibilityLabel(AtlasCodeGraphA11y.spokenStatus(
+                    scanState: model.scanState, headline: pulse
+                ))
+                .accessibilityIdentifier(A11yID.codeStatus)
+        }
+    }
+
+    /// Uma voz com o model: `statusHeadline` já fala “sem retorno”.
+    var statusPulseCopy: String? {
+        switch model.scanState {
+        case .violating, .unknown: return model.statusHeadline
+        case .clean: return nil
+        }
+    }
+
+    var statusPulseColor: Color {
+        switch model.scanState {
+        case .violating: return AtlasCodePalette.alert
+        case .unknown: return AtlasTheme.textTertiary
+        case .clean: return AtlasTheme.textSecondary
+        }
+    }
+
+    // MARK: - Worktrees
+
+    func worktreesSection(_ worktrees: [AtlasCodeWorktree]) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("WORKTREES")
+                .font(AtlasFont.mono(10))
+                .tracking(1.1)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier(A11yID.codeGraphWorktrees)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(worktrees) { worktree in
+                        worktreeChip(worktree)
+                    }
+                }
+            }
+        }
+    }
+
+    func worktreeChip(_ worktree: AtlasCodeWorktree) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(worktree.pathLabel)
+                .font(.system(.caption, weight: .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(1)
+            HStack(spacing: 5) {
+                if let branch = worktree.branch?.nonEmpty { Text(branch) }
+                if let head = worktree.head?.nonEmpty {
+                    Text(String(head.prefix(8))).monospacedDigit()
+                }
+                if let state = worktree.state?.nonEmpty { Text(state) }
+            }
+            .font(AtlasFont.mono(9))
+            .foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(Capsule().fill(AtlasTheme.bgRecessed))
+        .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(worktreeSpokenLabel(worktree))
+    }
+
+    private func worktreeSpokenLabel(_ worktree: AtlasCodeWorktree) -> String {
+        var parts = [worktree.pathLabel]
+        if let branch = worktree.branch?.nonEmpty { parts.append("branch \(branch)") }
+        if let state = worktree.state?.nonEmpty { parts.append(state) }
+        return parts.joined(separator: ", ")
+    }
+
+    // MARK: - Filter chips
+
+    func graphStateChips(_ graph: AtlasCodeGraphResponse, filterSilence: Bool) -> some View {
+        HStack(spacing: 0) {
+            ForEach(AtlasCodeGraphStateFilter.grafoTabs) { option in
+                let active = graphStateFilter == option
+                let count = option.count(in: graph.nodes, model: model)
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
+                        graphStateFilter = option
+                    }
+                } label: {
+                    VStack(spacing: 8) {
+                        HStack(spacing: 3) {
+                            Text(option.label).atlasSans(11.5, .medium)
+                            Text("\(count)").font(AtlasFont.mono(10)).opacity(0.55)
+                        }
+                        .foregroundStyle(tabForeground(option, active: active))
+                        .monospacedDigit()
+                        Rectangle()
+                            .fill(active ? tabUnderline(option) : Color.clear)
+                            .frame(height: 1.5)
+                            .shadow(
+                                color: active ? tabUnderline(option).opacity(0.35) : .clear,
+                                radius: 4, y: 0
+                            )
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .padding(.top, 4)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(
+                    AtlasCodeGraphA11y.spokenFilterChip(
+                        option, count: count, active: active, silent: active && filterSilence
+                    )
+                )
+                .accessibilityHint(active ? "filtro ativo do grafo" : "filtra commits do grafo")
+                .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
+                .accessibilityIdentifier(A11yID.codeGraphFilter(option.rawValue))
+            }
+        }
+        .overlay(alignment: .bottom) {
+            Rectangle()
+                .fill(AtlasTheme.separator.opacity(0.85))
+                .frame(height: 1)
+        }
+        .accessibilityIdentifier(A11yID.codeGraphFilters)
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: graphStateFilter)
+    }
+
+    private func tabForeground(_ option: AtlasCodeGraphStateFilter, active: Bool) -> Color {
+        guard active else { return AtlasTheme.textTertiary }
+        return option == .violating ? AtlasCodePalette.alert : AtlasTheme.textPrimary
+    }
+
+    private func tabUnderline(_ option: AtlasCodeGraphStateFilter) -> Color {
+        option == .violating ? AtlasCodePalette.alert : AtlasTheme.accent
+    }
+
+    // MARK: - Week
+
+    var weekSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if let week = model.week {
+                weekBody(week)
+            }
+            if model.hasHealReceipt {
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                    showsHealReceipt = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark.seal")
+                            .atlasSans(12)
+                            .foregroundStyle(AtlasCodePalette.healed)
+                            .accessibilityHidden(true)
+                        Text("curado sozinho · ver recibo")
+                            .font(AtlasFont.serifItalic(13))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                            .accessibilityHidden(true)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .atlasSans(10, .semibold)
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                            .accessibilityHidden(true)
+                    }
+                    .padding(.vertical, 11)
+                    .padding(.horizontal, 13)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+                    .background(
+                        AtlasCodePalette.healed.opacity(0.07),
+                        in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
+                            .strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier(A11yID.codeHealReceipt)
+                .accessibilityLabel("curado sozinho, ver recibo de cura")
+                .accessibilityAddTraits(.isButton)
+                .accessibilityHint("abre os passos registrados pelo servidor")
+            }
+        }
+    }
+
+    @ViewBuilder
+    func weekBody(_ week: AtlasCodeWeek) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("A semana")
+                    .font(AtlasFont.serif(18, .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityHidden(true)
+                Spacer()
+                Text(week.window)
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+            }
+            if AtlasCodeWeekUI.isQuiet(week) {
+                Text("semana quieta · sem commits nem curas")
+                    .font(AtlasFont.serifItalic(13))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .accessibilityHidden(true)
+            } else {
+                HStack(spacing: 18) {
+                    if week.commits > 0 { weekMetric("commits", value: week.commits) }
+                    if week.heals > 0 { weekMetric("curas", value: week.heals) }
+                    if week.prevented > 0 { weekMetric("prevenidas", value: week.prevented) }
+                }
+                .accessibilityHidden(true)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(AtlasCodeWeekUI.spokenLabel(week))
+        .accessibilityAddTraits(.isHeader)
+        .accessibilityIdentifier(A11yID.codeWeek)
+        .animation(
+            reduceMotion ? nil : .easeInOut(duration: 0.28),
+            value: AtlasCodeWeekUI.weekPhaseID(week)
+        )
+    }
+
+    func weekMetric(_ label: String, value: Int) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(String(value))
+                .font(AtlasFont.serif(21, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .monospacedDigit()
+            Text(label)
+                .atlasSans(10)
+                .foregroundStyle(AtlasTheme.textTertiary)
+        }
+    }
+}
+
+// MARK: - State filter
+
+enum AtlasCodeGraphStateFilter: String, CaseIterable, Identifiable {
+    case all
+    case onMain
+    case violating
+    case healed
+    case history
+
+    var id: String { rawValue }
+
+    /// Tabs do grafo AX — sem “história” (ruído; o scroll já é história).
+    static let grafoTabs: [AtlasCodeGraphStateFilter] = [.all, .onMain, .violating, .healed]
+
+    var label: String {
+        switch self {
+        case .all: return "todos"
+        case .onMain: return "main"
+        case .violating: return "fora"
+        case .healed: return "curados"
+        case .history: return "história"
+        }
+    }
+
+    var targetState: AtlasCodeNodeState {
+        switch self {
+        case .onMain: return .onMain
+        case .healed: return .healed
+        case .violating: return .violating
+        case .all, .history: return .history
+        }
+    }
+
+    @MainActor
+    func nodes(in nodes: [AtlasCodeGraphNode], model: AtlasCodeModel) -> [AtlasCodeGraphNode] {
+        guard self != .all else { return nodes }
+        let target = targetState
+        return nodes.filter { model.state(for: $0) == target }
+    }
+
+    @MainActor
+    func count(in nodes: [AtlasCodeGraphNode], model: AtlasCodeModel) -> Int {
+        self == .all ? nodes.count : self.nodes(in: nodes, model: model).count
+    }
+}
+
+
+/// H6 · a âncora do grafo.
+///
+/// Isto NÃO é o estado de uma conversa — a conversa é a `ConversationModel`, no
+/// card. Aqui vive só a última leitura determinística do git: os commits que a
+/// resposta citou, que o grafo acende atrás do vidro. Um grafo não tem duas
+/// verdades ao mesmo tempo; perguntar de novo substitui, não empilha.
+///
+/// A divisão de trabalho: este model LÊ o git e ancora o mapa; o agente ENTENDE
+/// e responde. Os fatos daqui viajam no fio como prefixo da pergunta.
+@Observable
+@MainActor
+final class AtlasCodeAskModel {
+    enum Phase: Equatable {
+        case idle
+        case answered(AtlasCodeAskResponse)
+    }
+
+    let client: AtlasClient
+    private(set) var repo: String
+    private(set) var phase: Phase = .idle
+
+    init(client: AtlasClient, repo: String) {
+        self.client = client
+        self.repo = repo
+    }
+
+    func adoptRepo(_ newRepo: String) {
+        guard newRepo != repo else { return }
+        repo = newRepo
+        phase = .idle
+    }
+
+    /// Os commits que a resposta atual cita. O grafo acende só estes.
+    var anchors: Set<String> {
+        if case .answered(let response) = phase { return response.anchorSet }
+        return []
+    }
+
+    /// Verdadeiro quando há resposta apontando para commits: o grafo então
+    /// apaga o resto, porque a resposta é o assunto.
+    var isAnchoring: Bool { !anchors.isEmpty }
+
+    /// A legenda do recorte: "12 de 43 acesos no grafo".
+    ///
+    /// Um mapa com 3/4 da história a 0.26 de opacidade e nenhuma frase dizendo
+    /// o porquê lê como "é só isso" — que é mentira sobre o repositório. O
+    /// servidor calcula `commits_total` e `truncated` exatamente para esta
+    /// frase existir, e ela estava escrita e morta: `anchorNote` não tinha um
+    /// único chamador no app inteiro. Contrato dos dois lados, faltando o Text.
+    var anchorNote: String? {
+        if case .answered(let response) = phase { return response.anchorNote }
+        return nil
+    }
+
+    /// Limpar apaga a âncora: o grafo volta a mostrar tudo.
+    func clear() {
+        phase = .idle
+    }
+
+    /// Os fatos de um turno da conversa, para o agente ler antes de responder.
+    ///
+    /// Efeito colateral deliberado: a mesma leitura ancora o grafo. Quando o
+    /// card fecha, o mapa atrás já está aceso nos commits que sustentaram a
+    /// resposta — perguntar move a topologia, que é o ponto da tela.
+    ///
+    /// `nil` quando o determinístico não sabe (julgamento não é filtro de git) e
+    /// quando a rede cai: o agente responde sem muleta, e falha de rede nunca
+    /// vira fato inventado com ar de autoridade.
+    ///
+    /// `answered` é o que decide se a topologia se move, e a distinção é fina:
+    /// - `answered == false` → o git NÃO foi lido (julgamento, ou git mudo).
+    ///   A leitura não tem opinião sobre o mapa, então o mapa fica como está.
+    ///   Sem esta guarda, "explica melhor" — a coisa mais natural do mundo num
+    ///   card de conversa — apagava em silêncio a resposta anterior, e a tese
+    ///   da tela sobrevivia a exatamente um turno.
+    /// - `answered == true` com zero commits → o git FOI lido e não há o que
+    ///   acender ("nada mudou hoje"). Aí a âncora morre mesmo: a leitura nova é
+    ///   a verdade nova, e segurar o mapa velho seria mentir com mapa.
+    ///
+    /// É a mesma guarda de `AtlasCodeFacts.block`: quem não leu não afirma.
+    func facts(for question: String) async -> String? {
+        guard let response = try? await client.askCode(repo: repo, question: question, mode: .facts),
+              response.answered
+        else { return nil }
+        phase = .answered(response)
+        return AtlasCodeFacts.block(from: response)
+    }
+}
+
+
+// Troca de repositório no grafo — mesmo vocabulário visual do picker da home
+// (AtlasTheme.bg, card, gesto pra fechar). Sem scan de violações (rápido).
+
+struct AtlasCodeRepoPickerSheet: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var model: AtlasCodeWorkspaceModel
+    let currentRepo: String
+    let onPick: (String) -> Void
+
+    init(client: AtlasClient, currentRepo: String, onPick: @escaping (String) -> Void) {
+        let catalog = AtlasCodeWorkspaceModel(client: client)
+        catalog.seedFromCache()
+        _model = State(initialValue: catalog)
+        self.currentRepo = currentRepo
+        self.onPick = onPick
+    }
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                switch model.phase {
+                case .loaded:
+                    if let workspace = model.workspace, workspace.repositoryCount > 0 {
+                        repoScroll(workspace)
+                    } else {
+                        ContentUnavailableView(
+                            "sem repositórios",
+                            systemImage: "folder",
+                            description: Text("o workspace não publicou nenhum repo")
+                        )
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("sem repositórios, o workspace não publicou nenhum repo")
+                    }
+                case .failed:
+                    ContentUnavailableView(
+                        "não consegui ler a frota",
+                        systemImage: "wifi.slash",
+                        description: Text("tente de novo em instantes")
+                    )
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("não consegui ler a frota, tente de novo em instantes")
+                default:
+                    VStack(spacing: 12) {
+                        BreathingDiamond(size: 10, reduceMotion: reduceMotion)
+                        Text("lendo os repositórios do Mac…")
+                            .font(AtlasFont.serifItalic(15))
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("lendo os repositórios do Mac")
+                    .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
+                }
+            }
+            .background(AtlasTheme.bg.ignoresSafeArea())
+            .navigationTitle("Repositório")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.hidden, for: .navigationBar)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                Text("Repositório")
+                    .font(AtlasFont.serif(18))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 10)
+                    .padding(.bottom, 8)
+                    .accessibilityAddTraits(.isHeader)
+            }
+            .task {
+                // Cache hit → phase já .loaded; miss → uma ida à rede.
+                if model.phase == .idle { await model.loadStructure() }
+            }
+            .accessibilityIdentifier(A11yID.codeRepoPicker)
+        }
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+        .presentationBackground(AtlasTheme.bg)
+    }
+
+    private func repoScroll(_ workspace: AtlasCodeWorkspaceResponse) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                if !workspace.recents.isEmpty {
+                    section("recentes", repos: workspace.recents)
+                }
+                ForEach(workspace.folders) { folder in
+                    section(folder.name, repos: folder.repos)
+                }
+                if !workspace.loose.isEmpty {
+                    section("avulsos", repos: workspace.loose)
+                }
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.vertical, 12)
+            .padding(.bottom, 28)
+        }
+    }
+
+    private func section(_ title: String, repos: [AtlasCodeRepoRef]) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title.uppercased())
+                .font(AtlasFont.mono(11, .medium))
+                .tracking(1.6)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(title)
+            VStack(spacing: 0) {
+                ForEach(Array(repos.enumerated()), id: \.element.id) { index, repo in
+                    repoRow(repo)
+                    if index < repos.count - 1 {
+                        Divider().overlay(AtlasTheme.separatorSoft)
+                    }
+                }
+            }
+            .atlasCard()
+        }
+    }
+
+    private func repoRow(_ repo: AtlasCodeRepoRef) -> some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onPick(repo.slug)
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "folder")
+                    .atlasSans(15)
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+                Text(repo.name)
+                    .atlasSans(15, .medium)
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(1)
+                Spacer(minLength: 0)
+                if repo.slug == currentRepo {
+                    Circle()
+                        .fill(AtlasTheme.accent)
+                        .frame(width: 6, height: 6)
+                        .accessibilityHidden(true)
+                }
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .frame(minHeight: 48)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(
+            repo.slug == currentRepo
+                ? "\(repo.name), repositório atual"
+                : repo.name
+        )
+        .accessibilityHint(repo.slug == currentRepo ? "já aberto no grafo" : "abre o grafo deste repositório")
+        .accessibilityAddTraits(repo.slug == currentRepo ? [.isButton, .isSelected] : .isButton)
+        .accessibilityIdentifier(A11yID.codeRepoPickerRow(repo.slug))
+    }
+}
+
+
+// Cycle 043 fuse → AtlasCodeHealReceiptSheet.swift
+
+// MARK: - Folha: Recibo de Cura (C25 — fato consumado, só veto)
+
+struct AtlasCodeHealReceiptSheet: View {
+    let heal: AtlasCodeHealResponse
+    let onUndo: () -> Void
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        ZStack {
+            AtlasTheme.bg.ignoresSafeArea()
+            receiptContent()
+        }
+        .accessibilityIdentifier(A11yID.codeHealReceiptSheet)
+        // Contain without fused sheet label so masthead/steps/undo stay focusable.
+        .accessibilityElement(children: .contain)
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    func spokenMastheadLabel() -> String {
+        hasCompletedHeal
+            ? "curado sozinho, modo \(heal.mode)"
+            : "cura, modo \(heal.mode)"
+    }
+
+    func spokenSilenceLabel() -> String {
+        "você não foi necessário, cura concluída sem portão"
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    func spokenBlockedLabel(_ blocked: String) -> String {
+        "cura bloqueada, \(blocked)"
+    }
+
+    func spokenEmptyStepsLabel() -> String {
+        "recibo sem passos registrados pelo servidor"
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    func spokenStepLabel(_ receipt: AtlasCodeHealStepReceipt) -> String {
+        let outcome = receipt.status == "completed" ? "concluído" : "falhou"
+        var parts = ["passo \(receipt.step)", receipt.action, outcome]
+        if !receipt.result.isEmpty { parts.append(receipt.result) }
+        return parts.joined(separator: ", ")
+    }
+
+    func spokenUndoWindowLabel(_ note: String) -> String {
+        "janela de veto, \(note)"
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    var completedStepCount: Int {
+        heal.stepReceipts.filter { $0.status == "completed" }.count
+    }
+
+    var hasCompletedHeal: Bool { completedStepCount > 0 }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    var undoExpiresAt: String? {
+        heal.stepReceipts.compactMap(\.undoExpiresAt).first
+    }
+
+    var canUndo: Bool {
+        heal.healId != nil && AtlasCodeUndoWindow.isOpen(expiresAt: undoExpiresAt)
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    func spokenUndoButtonLabel() -> String {
+        canUndo ? "desfazer cura com recibo" : "desfazer indisponível"
+    }
+
+    func spokenUndoButtonHint() -> String {
+        canUndo
+            ? "envia veto retroativo auditável para esta cura"
+            : "prazo de veto encerrado ou recibo sem identificador"
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    var masthead: some View {
+        HStack(spacing: 7) {
+            Image(systemName: hasCompletedHeal ? "checkmark" : "exclamationmark.triangle")
+                .atlasSans(10, .bold)
+                .accessibilityHidden(true)
+            Text(hasCompletedHeal
+                 ? "CURADO SOZINHO · \(heal.mode.uppercased())"
+                 : "CURA · \(heal.mode.uppercased())")
+                .atlasSans(9, .bold)
+                .tracking(1.2)
+                .accessibilityHidden(true)
+        }
+        .foregroundStyle(hasCompletedHeal ? AtlasCodePalette.healed : AtlasTheme.textTertiary)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(spokenMastheadLabel())
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    @ViewBuilder
+    func receiptContent() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            masthead
+            healStatusLines
+            receiptStepsOrEmpty
+            receiptUndoFooter
+            Spacer(minLength: 0)
+        }
+        .padding(22)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: canUndo)
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    @ViewBuilder
+    var healStatusLines: some View {
+        if hasCompletedHeal {
+            Text("você não foi necessário")
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(spokenSilenceLabel())
+        }
+
+        if let blocked = heal.blocked, !blocked.isEmpty {
+            Text("bloqueado · \(blocked)")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasCodePalette.alert)
+                .accessibilityLabel(spokenBlockedLabel(blocked))
+        }
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+  @ViewBuilder
+  func stepCopy(_ receipt: AtlasCodeHealStepReceipt) -> some View {
+    VStack(alignment: .leading, spacing: 2) {
+      Text(receipt.action)
+        .atlasSans(13)
+        .foregroundStyle(AtlasTheme.textPrimary)
+        .accessibilityHidden(true)
+      if !receipt.result.isEmpty {
+        Text(receipt.result)
+          .font(AtlasFont.mono(9))
+          .foregroundStyle(AtlasTheme.textTertiary)
+          .accessibilityHidden(true)
+      }
+    }
+  }
+}
+
+extension AtlasCodeHealReceiptSheet {
+  @ViewBuilder
+  func stepRow(index: Int, receipt: AtlasCodeHealStepReceipt) -> some View {
+    HStack(alignment: .top, spacing: 9) {
+      Image(systemName: receipt.status == "completed" ? "checkmark" : "xmark")
+        .atlasSans(10, .semibold)
+        .foregroundStyle(receipt.status == "completed" ? AtlasCodePalette.healed : AtlasCodePalette.alert)
+        .padding(.top, 2)
+        .accessibilityHidden(true)
+      stepCopy(receipt)
+    }
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel(spokenStepLabel(receipt))
+    .accessibilityIdentifier(A11yID.codeHealStep(index))
+  }
+}
+
+extension AtlasCodeHealReceiptSheet {
+  @ViewBuilder
+  func stepsBlock() -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+      ForEach(Array(heal.stepReceipts.enumerated()), id: \.element.id) { index, receipt in
+        stepRow(index: index, receipt: receipt)
+      }
+    }
+    .padding(12)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+    // Contain without fused label: each step row stays focusable.
+    .accessibilityElement(children: .contain)
+  }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    @ViewBuilder
+    var receiptStepsOrEmpty: some View {
+        if heal.stepReceipts.isEmpty {
+            Text("sem passos registrados no recibo")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityLabel(spokenEmptyStepsLabel())
+        } else {
+            stepsBlock()
+        }
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    var undoButton: some View {
+        Button {
+            // Medium: undo with receipt is governed commit.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            onUndo()
+            dismiss()
+        } label: {
+            undoButtonLabel
+        }
+        .buttonStyle(PressableScale())
+        .transition(reduceMotion ? .identity : .opacity)
+        .accessibilityIdentifier(A11yID.codeHealUndo)
+        .accessibilityLabel(spokenUndoButtonLabel())
+        .accessibilityHint(spokenUndoButtonHint())
+        .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(9)
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    @ViewBuilder
+    var receiptUndoFooter: some View {
+        if let note = AtlasCodeUndoWindow.note(expiresAt: undoExpiresAt) {
+            Text(note)
+                .font(AtlasFont.mono(9))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityIdentifier(A11yID.codeHealUndoWindow)
+                .accessibilityLabel(spokenUndoWindowLabel(note))
+        }
+        if canUndo {
+            undoButton
+        }
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    var undoButtonLabel: some View {
+        HStack(spacing: 7) {
+            Image(systemName: "arrow.uturn.backward")
+                .accessibilityHidden(true)
+            Text("Desfazer — com recibo")
+        }
+        .atlasSans(14, .medium)
+        .frame(maxWidth: .infinity, minHeight: 48)
+        .padding(.vertical, 12)
+        .foregroundStyle(AtlasTheme.textSecondary)
+        .contentShape(Rectangle())
+        .atlasCard(cornerRadius: 13)
+    }
+}

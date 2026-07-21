@@ -163,24 +163,6 @@ extension ExecutingStrip {
     }
 }
 
-struct ExecutingStrip: View {
-    let bubble: ChatBubble
-    let reduceMotion: Bool
-    let onStop: () -> Void
-    var onSteer: (() -> Void)? = nil
-
-    var body: some View {
-        HStack(spacing: 8) {
-            stripStatus
-            Spacer(minLength: 0)
-            stripActionButtons
-        }
-        .padding(.horizontal, 6)
-        .lineLimit(1)
-        .accessibilityElement(children: .contain)
-    }
-}
-
 struct ExecutionBanner: View {
     let text: String
     let icon: String

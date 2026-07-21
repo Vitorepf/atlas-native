@@ -3,6 +3,25 @@ import SwiftUI
 
 // Cycle 045 fuse → ExecutingStrip.swift
 
+struct ExecutingStrip: View {
+    let bubble: ChatBubble
+    let reduceMotion: Bool
+    let onStop: () -> Void
+    var onSteer: (() -> Void)? = nil
+
+    var body: some View {
+        HStack(spacing: 8) {
+            stripStatus
+            Spacer(minLength: 0)
+            stripActionButtons
+        }
+        .padding(.horizontal, 6)
+        .lineLimit(1)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(stripAccessibilityLabel)
+    }
+}
+
 extension ExecutingStrip {
     var stripAccessibilityLabel: String {
         var parts: [String] = []
