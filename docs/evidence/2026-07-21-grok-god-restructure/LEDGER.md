@@ -8,14 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: prove
-- focus: Conversa Handoff/Outline/StaleRead chrome fuse
-- domain_index: 1
+- focus: RootView HomeChrome+Route · RootChrome density
+- domain_index: 0
 - pass: 1
 - actionable: open
-- passes: 7
-- last_commit: pending-conversa-judgment-chrome
 - soft_sections_states: 0
-- collapse_host: 0
+- last_commit: pending-rootview-fuse
 
 ## Scope
 - App/Atlas + App/Widgets

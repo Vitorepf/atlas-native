@@ -1,4 +1,8 @@
 import SwiftUI
+import AtlasCore
+import Charts
+
+// GOD-RESTRUCTURE: ArenaPremium primitives + chrome bits fused
 
 // MARK: - Kicker
 
@@ -212,5 +216,349 @@ struct ArenaPremiumEmptyGlyph: View {
         ArenaPremiumIcon(symbol: symbol, tone: tone, role: .hero)
             .background(Circle().fill(AtlasTheme.surface.opacity(0.72)))
             .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
+    }
+}
+// MARK: - ArenaPremiumIcon
+
+enum ArenaPremiumIconRole {
+    case compact
+    case standard
+    case hero
+
+    var pointSize: CGFloat {
+        switch self {
+        case .compact: 12
+        case .standard: 17
+        case .hero: 28
+        }
+    }
+
+    var box: CGFloat {
+        switch self {
+        case .compact: 16
+        case .standard: 24
+        case .hero: 68
+        }
+    }
+}
+
+/// The only renderer for symbols inside the Arena surface.
+struct ArenaPremiumIcon: View {
+    let symbol: String
+    var tone: ArenaPremiumTone = .neutral
+    var role: ArenaPremiumIconRole = .standard
+
+    var body: some View {
+        Image(systemName: symbol)
+            .symbolRenderingMode(.monochrome)
+            .font(.system(size: role.pointSize, weight: .medium))
+            .foregroundStyle(tone.color)
+            .frame(width: role.box, height: role.box, alignment: .center)
+            .accessibilityHidden(true)
+    }
+}
+
+struct ArenaPremiumChevron: View {
+    var body: some View {
+        ArenaPremiumIcon(
+            symbol: ArenaPremiumIconography.disclosure,
+            tone: .muted,
+            role: .compact
+        )
+    }
+}
+
+enum ArenaPremiumIconography {
+    static let action = "play.fill"
+    static let add = "plus"
+    static let alerts = "exclamationmark.triangle"
+    static let blocked = "lock"
+    static let comparison = "arrow.right"
+    static let coverage = "checkmark.seal"
+    static let disclosure = "chevron.right"
+    static let execution = "list.bullet.rectangle"
+    static let next = "calendar.badge.clock"
+    static let plan = "list.bullet.rectangle"
+    static let queue = "tray.full"
+    static let stop = "stop.fill"
+    static let verified = "checkmark.shield"
+
+    static func run(_ status: AtlasArenaRunStatus) -> String {
+        ArenaRunStatusJudgment.sfSymbol(for: status)
+    }
+
+    static func planStatus(_ status: AtlasArenaRunStatus?) -> String {
+        guard let status else { return "circle" }
+        return ArenaRunStatusJudgment.sfSymbol(for: status)
+    }
+
+    static func suite(_ suite: String) -> String {
+        switch suite {
+        case "terminal_bench": "terminal"
+        case "bfcl": "wrench.and.screwdriver"
+        case "inspect_evals": "arrow.triangle.2.circlepath"
+        case "tau2_bench": "function"
+        case "live_code_bench", "swe_bench_live":
+            "chevron.left.forwardslash.chevron.right"
+        default: "diamond"
+        }
+    }
+}
+// MARK: - ArenaPremiumTabBar
+
+struct ArenaPremiumTabBar: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Binding var selection: ArenaPremiumTab
+    @Namespace private var selectionNamespace
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(ArenaPremiumTab.allCases) { tab in
+                Button {
+                    withAnimation(reduceMotion ? nil : AtlasMotion.editorial) { selection = tab }
+                } label: {
+                    // Controle fala sans (canon §C); seleção = pílula neutra
+                    // ELEVADA (padrão do segmented nativo), não véu de ouro —
+                    // ouro é ESTADO, não seleção de controle.
+                    Text(tab.rawValue)
+                        .atlasSans(13, .medium)
+                        .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textTertiary)
+                        .frame(maxWidth: .infinity, minHeight: 38)
+                        .background {
+                            if selection == tab {
+                                Capsule()
+                                    .fill(AtlasTheme.surfaceHi)
+                                    .shadow(color: .black.opacity(0.22), radius: 5, y: 1)
+                                    .matchedGeometryEffect(id: "arena-tab", in: selectionNamespace)
+                            }
+                        }
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(tabAccessibilityLabel(tab))
+                .accessibilityAddTraits(selection == tab ? .isSelected : [])
+                .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.a11yKey))
+            }
+        }
+        .padding(3)
+        .background(Capsule().fill(AtlasTheme.bgRecessed.opacity(0.92)))
+        .overlay(Capsule().stroke(AtlasTheme.separator.opacity(0.7), lineWidth: 1))
+    }
+
+    private func tabAccessibilityLabel(_ tab: ArenaPremiumTab) -> String {
+        switch tab {
+        case .now: "Agora"
+        case .fleet: "Frota"
+        case .capabilities: "Capacidades"
+        case .results: "Motor"
+        }
+    }
+}
+// MARK: - ArenaPremiumChrome
+
+struct ArenaPremiumEngineTitle: View {
+    let engineID: String
+    let options: [String]
+    let onSelect: (String) -> Void
+
+    var body: some View {
+        if options.count > 1 {
+            Menu {
+                ForEach(options, id: \.self) { engine in
+                    Button {
+                        onSelect(engine)
+                    } label: {
+                        if engine == engineID {
+                            Label(ArenaDisplay.engine(engine), systemImage: "checkmark")
+                        } else {
+                            Text(ArenaDisplay.engine(engine))
+                        }
+                    }
+                }
+            } label: {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(ArenaDisplay.engine(engineID))
+                        .font(AtlasFont.serif(33))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .accessibilityHidden(true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+            }
+            .accessibilityLabel(ArenaScoreJudgment.spokenMeasuredEngine(engineID))
+            .accessibilityHint(ArenaScoreJudgment.measuredEngineHint)
+            .accessibilityIdentifier(A11yID.arenaPremiumEnginePicker)
+        } else {
+            Text(ArenaDisplay.engine(engineID))
+                .font(AtlasFont.serif(33))
+                .foregroundStyle(AtlasTheme.textPrimary)
+        }
+    }
+}
+// MARK: - ArenaPremiumLoadFailureView
+
+struct ArenaPremiumLoadFailureView: View {
+    @Bindable var model: ArenaModel
+
+    var body: some View {
+        AtlasOpsFailureEmpty(
+            mode: model.isDomainUnavailable
+                ? .domainUnavailable
+                : .load(
+                    headline: "Não foi possível carregar a medição",
+                    message: "A tela não transformou a falha de rede em estado vazio."
+                ),
+            layout: .leadingEditorial,
+            kicker: model.isDomainUnavailable ? "Arena não publicada" : "Arena indisponível",
+            symbol: model.isDomainUnavailable ? "shippingbox" : "wifi.exclamationmark",
+            topPadding: 0,
+            accessibilityIdentifier: A11yID.arenaPremiumState("failed-load"),
+            retryHint: "tenta carregar a Arena de novo",
+            onRetry: { Task { await model.load() } }
+        )
+    }
+}
+// MARK: - ArenaPremiumGlyphRow
+
+struct ArenaPremiumGlyphRow: View {
+    let glyph: String
+    let title: String
+    let detail: String
+    var tone: ArenaPremiumTone = .neutral
+    var glyphTone: ArenaPremiumTone? = nil
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Text(glyph)
+                    .font(AtlasFont.serif(14))
+                    .foregroundStyle((glyphTone ?? tone).color)
+                    .frame(width: 22, alignment: .center)
+                    .accessibilityHidden(true)
+                Text(title)
+                    .atlasSans(16, .medium)
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Spacer(minLength: 12)
+                Text(detail)
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(tone.color)
+                    .lineLimit(1)
+                Text("›")
+                    .font(AtlasFont.mono(13))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+            }
+            .frame(minHeight: 54)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+struct ArenaPremiumOperationalRows: View {
+    @Bindable var model: ArenaModel
+    let onNavigate: (ArenaPremiumDestination) -> Void
+
+    private var alertCount: Int { model.arenaAlertSuiteCount }
+
+    var body: some View {
+        // Sem exceção: some a seção. Fila/Cobertura/Próxima/Plano moram
+        // DENTRO de Execução — duplicar aqui era a confusão.
+        if alertCount > 0 {
+            VStack(spacing: 0) {
+                ArenaPremiumHairline()
+                ArenaPremiumGlyphRow(
+                    glyph: "※",
+                    title: "Alertas",
+                    detail: alertCount == 1 ? "1 exceção" : "\(alertCount) exceções",
+                    tone: .negative,
+                    glyphTone: .negative
+                ) { onNavigate(.alerts) }
+                .accessibilityIdentifier(A11yID.arenaPremiumAlertsAction)
+            }
+        }
+    }
+}
+// MARK: - ArenaToggleSymbolBounce
+
+struct ArenaToggleSymbolBounce: ViewModifier {
+    let enabled: Bool
+    let isOn: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.symbolEffect(.bounce, value: isOn)
+        } else {
+            content
+        }
+    }
+}
+// MARK: - ArenaFormat
+
+enum ArenaFormat {
+    private static let scoreStyle = FloatingPointFormatStyle<Double>.number
+        .locale(Locale(identifier: "pt_BR"))
+        .grouping(.never)
+        .precision(.fractionLength(0...1))
+
+    private static let multiplierStyle = FloatingPointFormatStyle<Double>.number
+        .locale(Locale(identifier: "pt_BR"))
+        .grouping(.never)
+        .precision(.fractionLength(2))
+
+    static func score(_ value: Double?) -> String {
+        guard let value = AtlasArenaPresentationScale.score(value) else {
+            return "não medido"
+        }
+        return value.formatted(scoreStyle)
+    }
+
+    static func signed(_ value: Double?) -> String {
+        guard let value = AtlasArenaPresentationScale.delta(value) else {
+            return "—"
+        }
+        if abs(value) < 0.05 {
+            return "0"
+        }
+        return "\(value > 0 ? "+" : "")\(value.formatted(scoreStyle))"
+    }
+
+    static func multiplier(_ value: Double?) -> String {
+        guard let value else { return "—" }
+        return "×\(value.formatted(multiplierStyle))"
+    }
+}
+// MARK: - ArenaSuiteSparkline
+
+extension AtlasArenaSuite {
+    var arenaSubtitleText: String {
+        guard isMeasured else { return "não medido" }
+        let rounds = runsTotal == 1 ? "1 rodada" : "\(runsTotal) rodadas"
+        if let relative = ArenaDisplay.relative(lastRunAt) { return "\(rounds) · \(relative)" }
+        return rounds
+    }
+}
+
+struct SuiteSparkline: View {
+    let engine: AtlasArenaSuiteEngine
+
+    var body: some View {
+        Chart(engine.history) { point in
+            if let score = point.score {
+                LineMark(x: .value("rodada", point.roundAt), y: .value("score", score))
+                    .foregroundStyle(point.arm == .withAtlas ? AtlasTheme.accent : AtlasTheme.textSecondary)
+                    .interpolationMethod(.linear)
+            }
+        }
+        .chartXAxis(.hidden)
+        .chartYAxis(.hidden)
+        .chartLegend(.hidden)
+        .accessibilityHidden(true)
     }
 }
