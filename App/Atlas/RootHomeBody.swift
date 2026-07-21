@@ -108,7 +108,7 @@ extension RootHomeBody {
                      count: homeConversationCount,
                      detail: session.auditModeEnabled ? auditDetail : nil,
                      a11yID: A11yID.homeConversasEntry,
-                     spokenOverride: conversasEntrySpokenLabel(),
+                     spokenOverride: spokenConversasEntry(),
                      spokenHint: "abre as conversas sem workspace") {
             onNavigate(.conversas)
         }
@@ -143,7 +143,7 @@ extension RootHomeBody {
             // Home NÃO fala de regressão (ordem 2026-07-18, repetida): a linha
             // é limpa; o assunto vive DENTRO da Arena.
             a11yID: A11yID.arenaHomeEntry,
-            spokenOverride: arenaSpokenLabel(
+            spokenOverride: spokenArena(
                 regression: nil,
                 domainUnavailable: session.arena.isDomainUnavailable
             ),
@@ -175,7 +175,7 @@ extension RootHomeBody {
             name: ws.name,
             count: ws.count > 0 ? ws.count : nil,
             a11yID: A11yID.homeWorkspace(ws.id),
-            spokenOverride: workspaceSpokenLabel(
+            spokenOverride: spokenWorkspace(
                 name: ws.name,
                 count: ws.count > 0 ? ws.count : nil
             ),
@@ -256,7 +256,7 @@ extension RootHomeBody {
         return "auditoria · livres · \(n) threads"
     }
 
-    func conversasEntrySpokenLabel() -> String {
+    func spokenConversasEntry() -> String {
         var parts = ["Conversas livres"]
         let n = homeConversationThreadCount
         if n == 0 {
@@ -270,18 +270,18 @@ extension RootHomeBody {
         return parts.joined(separator: ", ")
     }
 
-    func workspaceSpokenLabel(name: String, count: Int?) -> String {
+    func spokenWorkspace(name: String, count: Int?) -> String {
         guard let count else { return name }
         return "\(name), \(count) conversa\(count == 1 ? "" : "s")"
     }
 
-    func arenaSpokenLabel(regression: String?, domainUnavailable: Bool) -> String {
+    func spokenArena(regression: String?, domainUnavailable: Bool) -> String {
         // WAVE-047: Home never elevates regression (ordem 2026-07-18).
         _ = regression
         return HomeOpsJudgment.arenaFace(domainUnavailable: domainUnavailable).spoken
     }
 
-    static func codeTopBarLabel(hub: AtlasCodeHubModel?) -> String {
+    static func spokenCodeTopBar(hub: AtlasCodeHubModel?) -> String {
         guard let hub else { return "Atlas Código" }
         if let exception = hub.exception {
             return "Atlas Código, \(exception.count) exceções em \(exception.repo)"

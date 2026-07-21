@@ -297,7 +297,7 @@ extension RootView {
         // Sem ponto vermelho (ordem 2026-07-18): a exceção fala DENTRO do
         // Código, com palavra — não com pingo no chrome.
         CircleButton(icon: "point.3.connected.trianglepath.dotted") { path.append(Route.code) }
-            .accessibilityLabel(RootHomeBody.codeTopBarLabel(hub: codeHub))
+            .accessibilityLabel(RootHomeBody.spokenCodeTopBar(hub: codeHub))
             .accessibilityHint("abre radar de repositórios")
             .accessibilityIdentifier(A11yID.topbarCode)
     }
