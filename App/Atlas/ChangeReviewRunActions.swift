@@ -87,6 +87,7 @@ extension ChangeReviewRunActions {
             .accessibilityLabel("aceitar todos os arquivos e concluir revisão")
             .accessibilityHint("aceita cada arquivo capturado e depois conclui o run")
             .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(9)
             .accessibilityIdentifier(A11yID.reviewRunAccept)
         }
     }

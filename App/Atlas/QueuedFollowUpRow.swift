@@ -56,6 +56,7 @@ extension QueuedFollowUpRow {
         .accessibilityLabel(promoteLabel)
         .accessibilityHint(promoteHint)
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(8) // promote is send-class
         .accessibilityIdentifier(A11yID.queuePromote(message.id))
     }
 }

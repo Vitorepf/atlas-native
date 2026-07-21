@@ -46,6 +46,7 @@ extension ChangeReviewFileRow {
         .accessibilityLabel("aceitar \(displayName)")
         .accessibilityHint("registra aceite deste arquivo no patch")
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(8)
         .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))
     }
 }

@@ -244,6 +244,7 @@ extension AtlasCodeHealReceiptSheet {
         .accessibilityLabel(spokenUndoButtonLabel())
         .accessibilityHint(spokenUndoButtonHint())
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(9)
     }
 }
 
