@@ -395,14 +395,22 @@ extension ConversationHandoffReceipt {
     func receiptChrome<Content: View>(_ content: Content) -> some View {
         content
             .padding(.horizontal, 12)
-            .padding(.vertical, 9)
-            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.goldVeil))
-            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+            .padding(.vertical, 10)
+            .frame(minHeight: 44, alignment: .center)
+            .background(
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
+                    .fill(AtlasTheme.goldVeil)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
+                    .stroke(AtlasTheme.goldBorder, lineWidth: 1)
+            )
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 2)
             .padding(.bottom, 8)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(accessibilitySummary)
+            .accessibilityAddTraits(.isStaticText)
             .accessibilityIdentifier(A11yID.continuityHandoffReceipt)
     }
 }
