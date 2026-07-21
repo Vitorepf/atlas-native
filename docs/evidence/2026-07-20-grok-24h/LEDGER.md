@@ -1,14 +1,14 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 044
-- last_commit: 5b6af146
+- phase: D1 cycle 045
+- last_commit: f8b66dfb
 - last_gates: green
-- next_leap: more host collapses OR visual polish on Home/Code/Arena/Autônomos
+- next_leap: visual polish on existing surfaces OR Autônomos/Arena residual peels
 - blocked: none
-- App/Atlas Swift: 354
+- App/Atlas Swift: 224
 
 ## Highlights this resume
-015–043 continuous peel · App/Atlas 1748→354 (−1394)
-FORBIDDEN clean · ConversationModel/Sources untouched · no new domains
-Under 360 Swift files.
+015–044 continuous peel · App/Atlas 1748→224 (−1524)
+FORBIDDEN clean · models multi-file kept · no new domains
+Under 230 Swift files. Largest compression session of the mission.
