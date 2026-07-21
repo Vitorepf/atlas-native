@@ -320,6 +320,9 @@ extension SearchThreadLink {
             ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
         }
         .buttonStyle(.plain)
+        .simultaneousGesture(TapGesture().onEnded {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        })
     }
 }
 

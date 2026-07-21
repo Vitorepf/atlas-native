@@ -297,6 +297,9 @@ extension WorkspaceThreadLink {
             ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
         }
         .buttonStyle(.plain)
+        .simultaneousGesture(TapGesture().onEnded {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        })
         .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
         .accessibilityHint("abre a conversa")
         .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
