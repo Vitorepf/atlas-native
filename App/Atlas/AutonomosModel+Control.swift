@@ -2,40 +2,26 @@ import Foundation
 import Observation
 import AtlasCore
 
-/// Pausar, retomar ou kill — peel de AutonomosModel; transfer/revert → +Transfer.
+/// Start dry-run — peel de AutonomosModel.
+/// Pause/kill/transfer/decide removidos da face v9 (zero call sites).
 extension AutonomosModel {
-    /// Pausar, retomar ou kill só acontece por ação explícita do operador; o
-    /// recibo é relido do servidor para a UI nunca assumir que um signal virou
-    /// parada de processo antes da próxima fronteira do loop.
-    func control(
-        _ action: AtlasAutonomosRunAction,
-        operatorActor: String,
-        reason: String
-    ) async {
-        guard let area = selectedArea else { return }
-        controlError = nil
-        do {
-            let input = AtlasAutonomosRunControlInput(
-                action: action,
-                operatorActor: operatorActor,
-                reason: reason,
-                focus: area.focus
-            )
-            lastControlReceipt = try await client.controlAutonomosRun(area: area.id, input: input)
-            try await loadSelectedDetails()
-        } catch {
-            controlError = Self.publicMessage(error)
-        }
-    }
-
     /// Um recibo `enqueued` não muda a UI para executando. A confirmação vem
     /// exclusivamente do lease relido em `/live` após o comando.
+    /// Sem área efetiva (seleção ou única registrada), falha honesta — nunca no-op.
     func startRun(
         mode: AtlasAutonomosStartRunMode,
         operatorActor: String,
         operatorReason: String
     ) async {
-        guard let area = selectedArea else { return }
+        guard let area = runTargetArea else {
+            let registered = areas.filter(\.registered).count
+            if registered == 0 {
+                controlError = "Nenhuma área registrada no servidor para enfileirar a missão."
+            } else {
+                controlError = "Há várias áreas registradas — o app ainda não escolhe qual usar neste ensaio."
+            }
+            return
+        }
         controlError = nil
         do {
             let input = AtlasAutonomosStartRunInput(
@@ -45,6 +31,8 @@ extension AutonomosModel {
                 focus: area.focus
             )
             lastStartRunReceipt = try await client.startAutonomosRun(area: area.id, input: input)
+            // Ancora a seleção no alvo real do dry-run para o próximo refresh.
+            selectedAreaID = area.id
             try await loadSelectedDetails()
         } catch {
             controlError = Self.publicMessage(error)

@@ -4,7 +4,8 @@ import AtlasCore
 
 /// Motor da área Autônomos. Não conhece Views nem conversa: só projeta o
 /// estado real do Atlas Continuous Stewardship Loop para a casca própria 24/7.
-/// Load → AutonomosModel+Load.swift · comandos → +Control.swift · decisões → +Decide.swift.
+/// Load → AutonomosModel+Load.swift · comandos → +Control.swift.
+/// Transfer/decide peels removidos (ciclo 252) — zero call sites na face v9.
 @MainActor
 @Observable
 final class AutonomosModel {
@@ -27,10 +28,6 @@ final class AutonomosModel {
     /// Digest global governado do Autônomos; agenda ausente permanece ausente.
     var digest: AtlasAutonomosDigestResponse?
     var lastStartRunReceipt: AtlasAutonomosStartRunResponse?
-    var lastTransferReceipt: AtlasAutonomosTransferResponse?
-    var lastRevertReceipt: AtlasAutonomosCycleRevertResponse?
-    var lastControlReceipt: AtlasAutonomosRunControlResponse?
-    var lastDecisionReceipt: AtlasAutonomosOperatorDecisionReceipt?
     var controlError: String?
     /// Catálogo do operador (face Autônomos). Em memória até POST create (§5).
     var operatorUnits: [AutonomosUnit] = []
@@ -43,10 +40,12 @@ final class AutonomosModel {
         areas.first { $0.id == selectedAreaID }
     }
 
-    /// `live.readOnly` descreve somente a consulta GET. Os comandos possuem
-    /// endpoint e recibo próprios; só uma área registrada pode expô-los à UI.
-    var canControlSelectedArea: Bool {
-        selectedArea?.registered == true
+    /// Área efetiva para dry-run: seleção explícita, ou a única registrada.
+    /// Zero registrada / ambígua → nil (startRun fala o erro, sem no-op silencioso).
+    var runTargetArea: AtlasAutonomosArea? {
+        if let selected = selectedArea { return selected }
+        let registered = areas.filter(\.registered)
+        return registered.count == 1 ? registered.first : nil
     }
 
     /// Face Autônomos = catálogo local (instantâneo). Áreas do loop hidratam
@@ -61,17 +60,6 @@ final class AutonomosModel {
         } catch {
             // Catálogo local funciona sem isto; não derruba a superfície.
         }
-    }
-
-    func selectArea(_ id: String) async {
-        guard areas.contains(where: { $0.id == id }) else { return }
-        // Limpa projeção antes do fetch — nunca mostrar backlog de outra área.
-        selectedAreaID = id
-        live = nil
-        cycles = nil
-        delivered = nil
-        backlog = nil
-        await refreshSelected()
     }
 
     func clearSelectionProjection() {

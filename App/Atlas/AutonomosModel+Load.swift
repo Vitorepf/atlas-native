@@ -44,6 +44,7 @@ extension AutonomosModel {
             case .missingRationaleForHighRiskAccept:
                 return "Aceites de risco alto exigem uma justificativa auditável."
             case .missingTransferReason:
+                // Transfer UI removida da face v9; mensagem mantida se o Core ainda emitir o erro.
                 return "Informe o motivo auditável antes de transferir a missão."
             case .missingRevertReason:
                 return "Informe o motivo auditável antes de reverter um ciclo."
