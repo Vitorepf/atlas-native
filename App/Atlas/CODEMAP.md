@@ -99,7 +99,7 @@
 | **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready · pack Ask |
 | **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face · pack Ask |
 | **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` · `AutonomosDecisionFaceBody` → Hub/Map · pack face |
-| **Decisão surface parts** | host · `ListBody` · `DetailBody` · `Sections` |
+| **Decisão surface parts** | `AutonomosDecisionSurface` (face·list·detail fused) |
 | **MapShell parts** | host sheets · `Routes` · `Ask` · `Catalog` · `Actions` |
 | **Controle do loop Autônomos (veto)** | `AutonomosRunControlJudgment` → Hub primaryVerb → ReasonSheet → `model.control` / `startRun` · bind `selectArea` |
 | **Multi-área bind (chooser)** | `AutonomosAreaBindJudgment` → face none/auto/needs_bind/bound · `AutonomosAreaBindChooser` · Hub CTA |
@@ -188,7 +188,7 @@
 | **EditorialTurn** | host · Closing · User · Chrome |
 | **PlanCard** | Body · FlexWrap · Steps |
 | **Autonomos pack organs** | fused in `AutonomosAskContext` (global · veto · destination) |
-| **Residual composition** | PlanCard FlexWrap · StepRow · ModelActions* · FileRowChrome · Decision bodies |
+| **Residual composition** | PlanCard FlexWrap · StepRow · ModelActions* · FileRowChrome · Decision surface fused |
 
 ## BLOCKED (honesto)
 

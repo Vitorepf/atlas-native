@@ -4,16 +4,16 @@
 
 ```yaml
 pass: 1
-domain_index: 5
-last_focus: "Arena Ask Live+Score + LiveTimeline RowView fuse"
-session_commits: 36+
+domain_index: 6
+last_focus: "AutonomosDecisionSurface face/list/detail fuse"
+session_commits: 37+
 ```
 
 ## Soft *Sections*/*States*: **0**
 
 ## Próximo
 
-- Decision bodies · residual peels · domain rotate
+- residual peels · domain rotate pass deepen
 - NEVER Goal Done
 
 ## Proibido

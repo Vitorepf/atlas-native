@@ -28,6 +28,22 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T22:55Z — AutonomosDecisionSurface fuse
+
+```yaml
+phase: prove
+focus: FaceBody+ListBody+DetailBody → Surface
+domain_index: 6
+pass: 1
+commands: |
+  102+48+86+host → AutonomosDecisionSurface ~307
+  gates ✓
+before_after: |
+  −3 peels · hops decision chrome 4→1
+notes: continue residual peels · never Goal Done
+```
+
+
 ### 2026-07-21T22:54Z — Arena Ask + LiveTimeline fuses
 
 ```yaml
