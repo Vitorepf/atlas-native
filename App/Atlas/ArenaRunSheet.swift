@@ -1,15 +1,315 @@
+import AtlasCore
+import Foundation
 import SwiftUI
 import UIKit
-import AtlasCore
 
-/// Nova medição Arena — instrument sheet (WAVE-004 fuse).
-/// Form → +Form · Toggle → +Toggle · Receipt → +Receipt · Spoken → +Spoken
+// IDLE-COMPRESS ArenaRunSheet fused
+
+// --- ArenaRunSheet+Form.swift ---
+extension ArenaRunSheet {
+    @ViewBuilder
+    var formSections: some View {
+        suitesFormSection
+        engineFormSection
+        formGovernanceSections
+    }
+
+    @ViewBuilder
+    var suitesFormSection: some View {
+        section("Suítes") {
+            if installedSuites.isEmpty {
+                Text("nenhuma suite com adapter instalado")
+                    .font(AtlasFont.serifItalic(14))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)
+                    .accessibilityLabel(spokenEmptySuites())
+            } else {
+                ForEach(installedSuites) { suite in
+                    toggleRow(
+                        title: suite.suite,
+                        subtitle: suite.isMeasured ? "\(suite.runsTotal) rodadas" : "não medido",
+                        isOn: selectedSuites.contains(suite.suite)
+                    ) {
+                        if selectedSuites.contains(suite.suite) { selectedSuites.remove(suite.suite) }
+                        else { selectedSuites.insert(suite.suite) }
+                    }
+                    .accessibilityIdentifier("arena-run-suite-\(suite.suite)")
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    var engineFormSection: some View {
+        section("Motores") {
+            if engines.isEmpty {
+                Text("nenhum motor publicado")
+                    .font(AtlasFont.serifItalic(14))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
+                    .accessibilityLabel(spokenEmptyEngines())
+            } else {
+                ForEach(engines, id: \.self) { engine in
+                    toggleRow(
+                        title: ArenaDisplay.engine(engine),
+                        subtitle: nil,
+                        isOn: selectedEngines.contains(engine)
+                    ) {
+                        if selectedEngines.contains(engine) {
+                            selectedEngines.remove(engine)
+                        } else {
+                            selectedEngines.insert(engine)
+                        }
+                    }
+                    .accessibilityIdentifier("arena-run-engine-\(engine)")
+                }
+                if engines.count > 1 {
+                    Text("Escolha 2 ou mais para comparar motor contra motor.")
+                        .font(.system(.caption))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    var formGovernanceSections: some View {
+        section("Comparação") {
+            ForEach(AtlasArenaRunArm.allCases) { arm in
+                toggleRow(title: arm.labelPT, subtitle: armSubtitle(arm), isOn: selectedArms.contains(arm)) {
+                    if selectedArms.contains(arm), selectedArms.count > 1 { selectedArms.remove(arm) }
+                    else { selectedArms.insert(arm) }
+                }
+                .accessibilityIdentifier("arena-run-arm-\(arm.rawValue)")
+            }
+        }
+
+        section("Governança") {
+            fieldLabel("Operador")
+            TextField("quem autoriza esta medição", text: $actor)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .modifier(ArenaFieldChrome())
+                .accessibilityIdentifier(A11yID.arenaRunActor)
+                .accessibilityHint(spokenActorHint())
+            fieldLabel("Motivo")
+            TextField("por que rodar agora (fica no recibo)", text: $reason, axis: .vertical)
+                .lineLimit(2...4)
+                .modifier(ArenaFieldChrome())
+                .accessibilityIdentifier(A11yID.arenaRunReason)
+                .accessibilityHint(spokenReasonHint())
+        }
+    }
+
+    func armSubtitle(_ arm: AtlasArenaRunArm) -> String {
+        switch arm {
+        case .baseline: "o motor puro, como referência"
+        case .withAtlas: "os mesmos casos, com o Atlas"
+        }
+    }
+
+    func fieldLabel(_ text: String) -> some View {
+        Text(text)
+            .atlasSans(12, .medium)
+            .foregroundStyle(AtlasTheme.textSecondary)
+    }
+}
+
+struct ArenaFieldChrome: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.system(.callout))
+            .foregroundStyle(AtlasTheme.textPrimary)
+            .padding(.horizontal, 12).padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
+                    .fill(AtlasTheme.bgRecessed)
+                    .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
+                        .stroke(AtlasTheme.separator, lineWidth: 1)))
+    }
+}
+
+// --- ArenaRunSheet+Receipt.swift ---
+extension ArenaRunSheet {
+    func receiptCard(_ receipt: AtlasArenaStartReceipt) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("recibo \(receipt.receiptHash)")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .accessibilityHidden(true)
+            Text(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
+                .font(.system(.callout, weight: .semibold))
+                .foregroundStyle(AtlasTheme.accent)
+                .accessibilityHidden(true)
+            if model.lastStartEnginesCount > 1 {
+                Text("\(model.lastStartEnginesCount) motores · \(model.lastStartRunsPlannedTotal) runs na fila")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .monospacedDigit()
+                    .accessibilityHidden(true)
+            }
+            if receipt.workerImplemented == false {
+                Text(Self.workerGapCopy)
+                    .font(.system(.caption))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+            }
+        }
+        .padding(14)
+        .atlasCard()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(spokenReceiptLabel(receipt))
+        .accessibilityIdentifier(A11yID.arenaRunReceipt)
+    }
+
+    static let workerGapCopy = "worker de medição desligado no servidor — fila aguardando"
+}
+
+// --- ArenaRunSheet+Spoken.swift ---
+extension ArenaRunSheet {
+    func spokenSheetLabel() -> String {
+        var parts = ["rodar medição Arena"]
+        parts.append(spokenEnginesCount())
+        parts.append(spokenSuitesCount())
+        return parts.joined(separator: ", ")
+    }
+
+    func spokenSheetHint() -> String {
+        "escolhe suites, motor e braços; ator e motivo auditáveis são obrigatórios"
+    }
+
+    func spokenCloseLabel() -> String { "fechar folha de medição" }
+    func spokenCloseHint() -> String { "volta para a Arena sem enviar" }
+
+    func spokenEnginesCount() -> String {
+        if engines.isEmpty { return "nenhum motor publicado" }
+        return "\(engines.count) motor\(engines.count == 1 ? "" : "es")"
+    }
+
+    func spokenSuitesCount() -> String {
+        let suites = installedSuites.count
+        if suites == 0 { return "nenhuma suite com adapter" }
+        return "\(suites) suite\(suites == 1 ? "" : "s") instalada\(suites == 1 ? "" : "s")"
+    }
+
+    func spokenEmptyEngines() -> String {
+        "nenhum motor publicado pelo servidor, rodar medição indisponível"
+    }
+
+    func spokenEmptySuites() -> String {
+        "nenhuma suite com adapter instalado, rodar medição indisponível"
+    }
+
+    func spokenErrorLabel(_ message: String) -> String {
+        "erro: \(message)"
+    }
+
+    func spokenActorHint() -> String {
+        "nome de quem autoriza a medição"
+    }
+
+    func spokenReasonHint() -> String {
+        "motivo auditável registrado no ledger"
+    }
+
+    func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
+        if input.isLocallyValidForSubmission {
+            return "rodar medição"
+        }
+        if enginesEmpty {
+            return "rodar medição indisponível, nenhum motor publicado"
+        }
+        return spokenSubmitMissing(input: input)
+    }
+
+    func spokenSubmitHint(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
+        if input.isLocallyValidForSubmission {
+            return "envia medição governada ao servidor"
+        }
+        if enginesEmpty {
+            return "aguarde o servidor publicar pelo menos um motor"
+        }
+        return "preencha ator, motivo, suites, motor e braços"
+    }
+
+    func spokenSubmitMissing(input: AtlasArenaStartInput) -> String {
+        var missing: [String] = []
+        if input.operatorActor.isEmpty { missing.append("ator") }
+        if input.operatorReason.isEmpty { missing.append("motivo auditável") }
+        if input.suites.selectedValues.isEmpty { missing.append("suites") }
+        if input.engine.isEmpty { missing.append("motor") }
+        if input.arms.isEmpty { missing.append("braços") }
+        if missing.isEmpty { return "rodar medição indisponível" }
+        return "rodar medição indisponível, falta \(missing.joined(separator: ", "))"
+    }
+
+    func spokenReceiptLabel(_ receipt: AtlasArenaStartReceipt) -> String {
+        var parts = ["recibo \(receipt.receiptHash)"]
+        parts.append(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
+        if receipt.workerImplemented == false {
+            parts.append(Self.workerGapCopy)
+        }
+        return parts.joined(separator: ", ")
+    }
+}
+
+// --- ArenaRunSheet+Toggle.swift ---
+extension ArenaRunSheet {
+    func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            ArenaPremiumKicker(text: title)
+                .accessibilityAddTraits(.isHeader)
+            content()
+                .padding(.leading, 2)
+        }
+    }
+
+    func toggleRow(title: String, subtitle: String?, isOn: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 10) {
+                ArenaPremiumIcon(
+                    symbol: isOn ? "checkmark.circle" : "circle",
+                    tone: isOn ? .active : .muted
+                )
+                .modifier(ArenaToggleSymbolBounce(enabled: !reduceMotion, isOn: isOn))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.system(.callout, weight: .medium))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityHidden(true)
+                    if let subtitle {
+                        Text(subtitle)
+                            .font(AtlasFont.mono(10))
+                            .foregroundStyle(AtlasTheme.textTertiary)
+                            .accessibilityHidden(true)
+                    }
+                }
+                Spacer()
+            }
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PressableScale())
+        .accessibilityLabel(toggleAccessibilityLabel(title: title, subtitle: subtitle, isOn: isOn))
+        .accessibilityAddTraits(isOn ? .isSelected : [])
+    }
+
+    func toggleAccessibilityLabel(title: String, subtitle: String?, isOn: Bool) -> String {
+        let state = isOn ? "selecionado" : "não selecionado"
+        if let subtitle { return "\(title), \(subtitle), \(state)" }
+        return "\(title), \(state)"
+    }
+}
+
+// --- ArenaRunSheet.swift ---
 struct ArenaRunSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Bindable var model: ArenaModel
     @State var selectedSuites: Set<String> = []
-    /// Multi-select (goal 1: motor contra motor) — cada motor vira um POST B5.
     @State var selectedEngines: Set<String> = []
     @State var selectedArms: Set<AtlasArenaRunArm> = [.baseline, .withAtlas]
     @State var actor = ""
@@ -119,9 +419,6 @@ struct ArenaRunSheet: View {
         }
     }
 
-    // MARK: - Catalog / payload
-
-    /// Catálogo B6 (motores rodáveis, inclusive nunca medidos) ∪ já medidos.
     var engines: [String] {
         let catalog = model.engineCatalog?.engines.map(\.engine) ?? []
         let composite = model.composite?.engines.map(\.engine) ?? []
@@ -133,12 +430,10 @@ struct ArenaRunSheet: View {
         (model.scoreboard?.suites ?? []).filter(\.adapterInstalled)
     }
 
-    /// Representativo (validação/A11y) — mesmos campos de todos os POSTs.
     var input: AtlasArenaStartInput {
         payload(engine: selectedEngines.sorted().first ?? "")
     }
 
-    /// Um POST B5 por motor selecionado (goal 1: motor contra motor).
     var inputs: [AtlasArenaStartInput] {
         selectedEngines.sorted().map(payload(engine:))
     }
