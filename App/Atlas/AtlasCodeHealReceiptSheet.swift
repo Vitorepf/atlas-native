@@ -18,7 +18,8 @@ struct AtlasCodeHealReceiptSheet: View {
             receiptContent()
         }
         .accessibilityIdentifier(A11yID.codeHealReceiptSheet)
-        .accessibilityLabel(spokenSheetLabel())
+        // Contain without fused sheet label so masthead/steps/undo stay focusable.
+        .accessibilityElement(children: .contain)
     }
 }
 

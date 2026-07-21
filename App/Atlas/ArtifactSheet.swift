@@ -38,8 +38,8 @@ extension ArtifactSheet {
     func artifactSheetA11y<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityIdentifier(A11yID.artifactsSheet)
-            .accessibilityLabel(spokenArtifactsSheetLabel())
-            .accessibilityHint("lista e preview só com itens publicados no contrato")
+            // Contain without fused sheet label so list/preview stay focusable.
+            .accessibilityElement(children: .contain)
     }
 }
 

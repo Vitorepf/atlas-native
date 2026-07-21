@@ -290,8 +290,8 @@ extension ArenaRunSheet {
         content
             .onAppear { seedDefaultsIfNeeded() }
             .accessibilityIdentifier(A11yID.arenaRunSheet)
-            .accessibilityLabel(spokenSheetLabel())
-            .accessibilityHint(spokenSheetHint())
+            // Contain without fused sheet label so toggles/fields stay focusable.
+            .accessibilityElement(children: .contain)
     }
 }
 

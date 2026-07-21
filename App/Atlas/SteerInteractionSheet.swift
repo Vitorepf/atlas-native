@@ -81,8 +81,8 @@ extension SteerInteractionSheet {
     func steerA11yShell<V: View>(_ content: V) -> some View {
         content
             .accessibilityIdentifier(A11yID.steerSheet)
-            .accessibilityLabel("redirecionar execução \(traceId.rawValue)")
-            .accessibilityHint(spokenSheetHint())
+            // Contain without fused sheet label so scope/field/submit stay focusable.
+            .accessibilityElement(children: .contain)
     }
 }
 
