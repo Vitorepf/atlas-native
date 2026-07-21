@@ -1057,6 +1057,7 @@ struct LiveNowSection: View {
         }
         .padding(14)
         .atlasCard()
+        .atlasElevation(radius: 10, y: 3, opacity: 0.14)
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.bottom, 18)
         .accessibilityIdentifier(A11yID.liveNowSection)
@@ -1116,8 +1117,8 @@ struct LiveNowSection: View {
     }
 
     static func spokenSectionLabel(isHub: Bool, count: Int, remoteCount: Int) -> String {
-        guard isHub else { return "vivo agora" }
-        var label = "vivo agora, \(count) sessões vivas"
+        guard isHub else { return "Vivo agora" }
+        var label = "Vivo agora, \(count) sessões vivas"
         if remoteCount > 0 {
             label += ", \(remoteCount) remota\(remoteCount == 1 ? "" : "s") em outra superfície"
         }
