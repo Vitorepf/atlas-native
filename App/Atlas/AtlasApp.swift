@@ -18,7 +18,7 @@ extension AtlasApp {
 
 extension AtlasApp {
     func atlasScenePhaseLifecycle<Content: View>(_ content: Content) -> some View {
-        content.onChange(of: scenePhase) { _, phase in
+        content.onChange(of: scenePhase) { phase in
             session.setLiveSessionsPollingActive(phase == .active)
             if phase == .background {
                 Task {
