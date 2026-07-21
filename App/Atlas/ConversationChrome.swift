@@ -412,9 +412,15 @@ extension ConversationHandoffReceipt {
             .padding(.bottom, 8)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(accessibilitySummary)
-            // Ready handoff is a status landmark; pending stays static text.
-            .accessibilityAddTraits(isReady ? [.isStaticText, .isHeader] : .isStaticText)
+            // Ready = landmark; pending live = updatesFrequently (respect Reduce Motion).
+            .accessibilityAddTraits(handoffAccessibilityTraits)
             .accessibilityIdentifier(A11yID.continuityHandoffReceipt)
+    }
+
+    var handoffAccessibilityTraits: AccessibilityTraits {
+        if isReady { return [.isStaticText, .isHeader] }
+        if isPending && !reduceMotion { return [.isStaticText, .updatesFrequently] }
+        return .isStaticText
     }
 }
 
