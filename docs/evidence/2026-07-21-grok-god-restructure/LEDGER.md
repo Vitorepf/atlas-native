@@ -7,10 +7,10 @@ dual: off
 
 ## State
 - phase: act
-- focus: rename-honesty Grammar+Peel+conversationPresence
-- actionable: 8
+- focus: fuse JudgmentChrome→Judgment
+- actionable: 5
 - passes: 1
-- last_commit: pending
+- last_commit: 1b7d156a
 - collapse_host: 0
 - god_hold_streak: 0
 

@@ -157,7 +157,7 @@
 | **ChangeReview patch peels** | PatchBody · DiffViewBody (WAVE-129) |
 | **Markdown blocks peels** | Blocks · ViewBlocks (WAVE-130) |
 | **A11yID domain peels** | core · Arena · Code · Autonomos (WAVE-131) |
-| **ChangeReview Judgment peels** | core · Chrome spoken (WAVE-132) |
+| **ChangeReview Judgment** | `ChangeReviewJudgment` (risk · rank · spoken · pack · governance) |
 | **SelfConstruction receipt chrome** | Body · BodyChrome · Chrome (sheet veto) |
 | **Root home sections peels** | Body · Live (WAVE-135) |
 | **LiveTimeline narrative peels** | RowView · Chrome (WAVE-136) |
@@ -168,8 +168,8 @@
 | **Code sheets modifiers peels** | Modifiers · Body (WAVE-141) |
 | **AtlasSession peels** | host · Body (WAVE-142) |
 | **Code surface peels** | Surface · Body (WAVE-143) |
-| **ExecutionProof Judgment peels** | core · Chrome (WAVE-144) |
-| **PlanJudgment peels** | core · Chrome (WAVE-145) |
+| **ExecutionProof Judgment** | `ExecutionProofJudgment` (face · spoken · quality · pack) |
+| **PlanJudgment** | `PlanJudgment` (face · spoken · packFacts) |
 | **LiveNowJudgment peels** | core · Row (WAVE-146) |
 | **ComposerDraftJudgment peels** | core · Attach (WAVE-147) |
 | **ChangeReview sections peels** | Sections · SectionsBody (WAVE-148) |

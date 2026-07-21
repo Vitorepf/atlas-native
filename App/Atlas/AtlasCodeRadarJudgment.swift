@@ -4,6 +4,8 @@ import AtlasCore
 // WAVE-024 — fleet judgment helpers (presentation-only; never invent scan totals).
 
 enum AtlasCodeRadarJudgment {
+    // MARK: - Rank
+
     /// Issues-first when scan data exists; otherwise wire order (honesty).
     static func sortedForJudgment(
         _ repos: [AtlasCodeRepoRef],
@@ -60,6 +62,8 @@ enum AtlasCodeRadarJudgment {
     // MARK: Pack workspace shell (WAVE-183)
 
     /// Catalog shell for Radar ask — folders/recents/root honesty only.
+    // MARK: - Pack
+
     static func packWorkspaceFacts(
         workspace: AtlasCodeWorkspaceResponse?
     ) -> (facts: [String], absences: [String], anchors: [String]) {
@@ -138,6 +142,8 @@ enum AtlasCodeRadarJudgment {
     static let repoHint = "abre o grafo do repositório"
 
     // MARK: Folder / row spoken (IDLE · was AtlasCodeRadarA11y)
+
+    // MARK: - Spoken
 
     static func spokenFolder(
         name: String,
