@@ -1841,8 +1841,18 @@ extension SearchRecentSection {
         ForEach(threads) { t in
             SearchThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: saturated)
             if t.id != threads.last?.id {
-                Divider().overlay(AtlasTheme.separator)
-                    .padding(.leading, AtlasTheme.Space.screen + 36)
+                LinearGradient(
+                    colors: [
+                        AtlasTheme.accent.opacity(0),
+                        AtlasTheme.accent.opacity(0.2),
+                        AtlasTheme.separator,
+                        AtlasTheme.separator.opacity(0)
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(height: 1)
+                .padding(.leading, AtlasTheme.Space.screen + 50)
             }
         }
     }
@@ -1863,8 +1873,9 @@ struct SearchRecentSection: View {
 extension SearchRecentSection {
     var recentCaption: some View {
         Text("Recentes")
-            .font(AtlasFont.mono(10, .semibold)).tracking(0.4)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .font(AtlasFont.mono(10, .medium))
+            .tracking(0.3)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
