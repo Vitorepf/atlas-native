@@ -4872,8 +4872,8 @@ extension ReconnectBanner {
     var reconnectActiveTimerLine: some View {
         if let ms = bubble.reconnectActiveTimerMs {
             Text("Ativo \(ExecutionStateCard.clock(ms))")
-                .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(10, .medium))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
@@ -7002,7 +7002,7 @@ extension TimelineFilterChips {
             } label: {
                 chipLabel(option, active: active)
             }
-            .buttonStyle(.plain),
+            .buttonStyle(PressableScale()),
             option: option,
             active: active,
             count: count
