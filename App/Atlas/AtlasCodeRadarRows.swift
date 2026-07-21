@@ -3,6 +3,7 @@ import SwiftUI
 
 /// Linha de repositório do radar — label visual + spoken honesty.
 struct AtlasCodeRepoRow: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let repo: AtlasCodeRepoRef
     let issues: [AtlasCodeIssue]?
     /// Trunk real: a frase da issue fala o nome da linha.
@@ -13,7 +14,10 @@ struct AtlasCodeRepoRow: View {
 
     var body: some View {
         // children:.ignore: nó único com label/id — necessário p/ walk a11y estável.
-        Button(action: onTap) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onTap()
+        } label: {
             HStack(alignment: .center, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 7) {
@@ -62,6 +66,7 @@ struct AtlasCodeRepoRow: View {
                     .accessibilityHidden(true)
             }
             .padding(.vertical, 13)
+            .frame(minHeight: 48, alignment: .center)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
