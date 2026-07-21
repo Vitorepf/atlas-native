@@ -133,7 +133,7 @@ extension ChangeReviewPatchCard {
             .accessibilityLabel(ChangeReviewPatchA11y.spokenDiffToggle(expanded: diffExpanded))
             .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
             .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
-            .accessibilityAddTraits(.isButton)
+            .accessibilityAddTraits(diffExpanded ? [.isButton, .isSelected] : .isButton)
         }
     }
 }

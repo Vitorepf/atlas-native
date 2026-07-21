@@ -289,7 +289,7 @@ extension PlanCard {
         .accessibilityIdentifier(A11yID.planDetailToggle)
         .accessibilityLabel(showDetail ? "ocultar ferramentas agentes e gates" : "mostrar ferramentas agentes e gates")
         .accessibilityHint(showDetail ? "toque para recolher" : "toque para expandir")
-        .accessibilityAddTraits(.isButton)
+        .accessibilityAddTraits(showDetail ? [.isButton, .isSelected] : .isButton)
     }
 
     func planDetail(_ plan: AtlasExecutionPlan) -> some View {
@@ -545,7 +545,7 @@ extension PlanCard {
         .buttonStyle(.plain)
         .accessibilityLabel(spokenRevisionToggle(expanded: showRevisions, count: count))
         .accessibilityHint(showRevisions ? "toque para ocultar" : "toque para expandir")
-        .accessibilityAddTraits(.isButton)
+        .accessibilityAddTraits(showRevisions ? [.isButton, .isSelected] : .isButton)
     }
 }
 

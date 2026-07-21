@@ -66,7 +66,7 @@ extension ExecutionProof {
         .buttonStyle(.plain)
         .accessibilityLabel(spokenCollapsed(expanded: open))
         .accessibilityHint(open ? "toque para fechar a prova" : "toque para expandir a prova")
-        .accessibilityAddTraits(.isButton)
+        .accessibilityAddTraits(open ? [.isButton, .isSelected] : .isButton)
         .accessibilityIdentifier(A11yID.executionProof)
     }
 }
