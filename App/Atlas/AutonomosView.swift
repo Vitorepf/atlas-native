@@ -1509,24 +1509,8 @@ enum AutonomosMapChrome {
     }
 
     static var hairline: some View {
-        Rectangle()
-            .fill(
-                LinearGradient(
-                    // Pure gold-breath — sectionLabel / radar divider family.
-                    colors: [
-                        AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.28),
-                        AtlasTheme.accent.opacity(0.12),
-                        AtlasTheme.accent.opacity(0.28),
-                        AtlasTheme.accent.opacity(0)
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .frame(height: 1)
+        AtlasGoldBreathHairline(peak: .double)
             .padding(.vertical, 4)
-            .accessibilityHidden(true)
     }
 
     static func section(_ text: String) -> some View {

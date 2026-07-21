@@ -1249,17 +1249,7 @@ struct ConversationOutlineRow: View {
             .padding(.vertical, 10)
             .frame(minHeight: 48, alignment: .center)
             .overlay(alignment: .bottom) {
-                LinearGradient(
-                    colors: [
-                        AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.28),
-                        AtlasTheme.accent.opacity(0.12),
-                        AtlasTheme.accent.opacity(0)
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .frame(height: 1)
+                AtlasGoldBreathHairline()
                 .padding(.leading, AtlasTheme.Space.screen + 44)
             }
             .accessibilityIdentifier(A11yID.conversationOutlineRow(index))
@@ -2121,18 +2111,8 @@ extension SheetRow {
 
 extension SheetRow {
     var sheetRowDivider: some View {
-        LinearGradient(
-            colors: [
-                AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0.12),
-                AtlasTheme.accent.opacity(0)
-            ],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-        .frame(height: 1)
-        .padding(.leading, 24)
+        AtlasGoldBreathHairline()
+            .padding(.leading, 24)
     }
 }
 
@@ -2664,19 +2644,8 @@ extension ConversationComposer {
     @ViewBuilder
     var liveExecutionSeparator: some View {
         // Pure gold-breath under live execution chrome — sectionLabel family.
-        LinearGradient(
-            colors: [
-                AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0.12),
-                AtlasTheme.accent.opacity(0)
-            ],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-        .frame(height: 1)
-        .padding(.bottom, expanded ? 0 : 8)
-        .accessibilityHidden(true)
+        AtlasGoldBreathHairline()
+            .padding(.bottom, expanded ? 0 : 8)
     }
 }
 
@@ -8537,19 +8506,8 @@ extension QueuedFollowUpRow {
         .contentShape(Rectangle())
         .accessibilityIdentifier(A11yID.queueRow(index))
         .overlay(alignment: .bottom) {
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.28),
-                    AtlasTheme.accent.opacity(0.12),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(height: 1)
+            AtlasGoldBreathHairline()
             .padding(.leading, 24)
-            .accessibilityHidden(true)
         }
     }
 }

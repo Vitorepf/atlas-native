@@ -144,6 +144,42 @@ extension View {
     }
 }
 
+/// Pure gold-breath 1pt hairline — sectionLabel / radar / sheet divider family (0.28 / 0.12).
+/// Funde gradients duplicados nas views; padding/inset fica no call site.
+struct AtlasGoldBreathHairline: View {
+    enum Peak {
+        /// 0 → 0.28 → 0.12 → 0
+        case single
+        /// 0 → 0.28 → 0.12 → 0.28 → 0 (Autônomos / Arena mid)
+        case double
+        /// 0 → 0.28 → 0.12 (braço esquerdo do sectionLabel)
+        case fadeIn
+        /// 0.12 → 0.28 → 0 (braço direito do sectionLabel)
+        case fadeOut
+    }
+
+    var peak: Peak = .single
+
+    var body: some View {
+        LinearGradient(
+            colors: colors.map { AtlasTheme.accent.opacity($0) },
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(height: 1)
+        .accessibilityHidden(true)
+    }
+
+    private var colors: [Double] {
+        switch peak {
+        case .single: return [0, 0.28, 0.12, 0]
+        case .double: return [0, 0.28, 0.12, 0.28, 0]
+        case .fadeIn: return [0, 0.28, 0.12]
+        case .fadeOut: return [0.12, 0.28, 0]
+        }
+    }
+}
+
 
 // Cycle 044 fuse → AtlasMotion.swift
 

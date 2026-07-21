@@ -1425,17 +1425,7 @@ extension ChangeReviewFindingsSection {
             Text(axis.localizedCapitalized).font(AtlasFont.mono(9)).tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
             // Pure gold-breath — same family as home sectionLabel.
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.28),
-                    AtlasTheme.accent.opacity(0.12),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(height: 1)
+            AtlasGoldBreathHairline()
             Text("\(count)")
                 // Soft gold-quiet axis count.
                 .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.accent.opacity(0.62))

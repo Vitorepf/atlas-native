@@ -3885,19 +3885,7 @@ struct AtlasCodeRadarSectionLabel: View {
 
 struct AtlasCodeRadarRowDivider: View {
     var body: some View {
-        LinearGradient(
-            // Pure gold-breath — no cold separator mid.
-            colors: [
-                AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0.12),
-                AtlasTheme.accent.opacity(0)
-            ],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-        .frame(height: 1)
-        .accessibilityHidden(true)
+        AtlasGoldBreathHairline()
     }
 }
 

@@ -1017,17 +1017,8 @@ struct RootHomeSections: View {
 
     private var rowDivider: some View {
         // Gold-breath fade — inset past 36 icon disk + screen padding.
-        LinearGradient(
-            colors: [
-                AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0.12),
-                AtlasTheme.accent.opacity(0)
-            ],
-            startPoint: .leading, endPoint: .trailing
-        )
-        .frame(height: 1)
-        .padding(.leading, AtlasTheme.Space.screen + 50)
+        AtlasGoldBreathHairline()
+            .padding(.leading, AtlasTheme.Space.screen + 50)
     }
 
     private func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
@@ -1056,19 +1047,8 @@ struct LiveNowSection: View {
             header
             ForEach(Array(sessions.enumerated()), id: \.element.id) { index, session in
                 if isHub, index > 0 {
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0),
-                            AtlasTheme.accent.opacity(0.28),
-                            AtlasTheme.accent.opacity(0.12),
-                            AtlasTheme.accent.opacity(0)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(height: 1)
-                    .padding(.vertical, 10)
-                    .accessibilityHidden(true)
+                    AtlasGoldBreathHairline()
+                        .padding(.vertical, 10)
                 }
                 rowCell(index: index, session: session)
             }
@@ -1500,19 +1480,8 @@ struct SearchViewHeader: View {
                 searchFieldCapsule
             }
             // Pure gold-breath under search chrome — sectionLabel family.
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.28),
-                    AtlasTheme.accent.opacity(0.12),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(height: 1)
-            .padding(.horizontal, 8)
-            .accessibilityHidden(true)
+            AtlasGoldBreathHairline()
+                .padding(.horizontal, 8)
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 4).padding(.bottom, 10)
     }
@@ -2687,29 +2656,13 @@ extension AtlasNetworkFailureEmpty {
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     // Pure gold-breath hairlines — family of masthead accent rule, no cold mid.
     HStack(spacing: 12) {
-        LinearGradient(
-            colors: [
-                AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0.12)
-            ],
-            startPoint: .leading, endPoint: .trailing
-        )
-            .frame(height: 1)
+        AtlasGoldBreathHairline(peak: .fadeIn)
         Text(t)
             .font(AtlasFont.serif(13, .semibold))
             // Soft gold-quiet section title — same family as radar kickers.
             .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .fixedSize()
-        LinearGradient(
-            colors: [
-                AtlasTheme.accent.opacity(0.12),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0)
-            ],
-            startPoint: .leading, endPoint: .trailing
-        )
-            .frame(height: 1)
+        AtlasGoldBreathHairline(peak: .fadeOut)
     }
     .padding(.horizontal, AtlasTheme.Space.screen)
     .padding(.top, 18)
@@ -3406,18 +3359,7 @@ extension AtlasProfileSheet {
     }
 
     private var profileRowHairline: some View {
-        LinearGradient(
-            colors: [
-                AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0.12),
-                AtlasTheme.accent.opacity(0)
-            ],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-        .frame(height: 1)
-        .padding(.leading, 14)
+        AtlasGoldBreathHairline()
     }
 
     private func profileLine(_ label: String, value: String, mono: Bool = false) -> some View {
