@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 64
-- idle_compress_passes: 12
+- idle_compress_passes: 13
 - collapse_host: 0
 
 ## Waves done
@@ -77,24 +77,31 @@ mode: designer + implementer
 - WAVE-069
 
 ## Idle compress
-- pass 1–6 (historical)
-- pass 7 · `426cb439` · peel PlanCard
-- pass 8 · `10b74ff3` · peel ChangeReview Governance+RunActions
-- pass 9 · `876b24e3` · peel ArtifactPreview
-- pass 10 · `4ed17106` · delete dead sheet spoken
-- pass 11 · `43415d1a` · peel AutonomosMapShell
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
+- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
+- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
+- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
+- pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
+- pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow
+- pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
+- pass 9 · `876b24e3` · peel ArtifactPreview → TraceEvidence + Zoom
+- pass 10 · `4ed17106` · delete dead ChangeReview sheet spoken peel
+- pass 11 · `43415d1a` · peel AutonomosMapShell → Routes + Ask
 - pass 12 · `2b6a7f73` · peel ExecutionStateActionStyle
+- pass 13 · `7711e5bb` · peel ArtifactSheet → ArtifactSheetDelivery (633→468)
 
 ## Designer
+- designs_proposed: 64
 - designs_open: 0
 - last_regen: regen-queue.py
 
-## Open queue snapshot
+## Open queue snapshot (must match QUEUE.md)
 
 | # | wave | Δ | status |
 |---|---|---|---|
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-060–069 this factory stretch. Prefer A fill.
-- DEVICE_PENDING. Continuity App Group BLOCKED.
+- WAVE-060–069. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- LEDGER idle list is B-owned; do not strip passes 3–13.
