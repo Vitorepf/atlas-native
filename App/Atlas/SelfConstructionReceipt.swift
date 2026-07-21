@@ -1,7 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// GOD-RESTRUCTURE: SelfConstructionReceipt peels fused
+// GOD-RESTRUCTURE: SelfConstructionReceipt + Sheet fused
+
+// MARK: - Receipt
 
 // MARK: - Host
 
@@ -351,5 +353,25 @@ extension SelfConstructionReceiptSheet {
             vetoActorField
             vetoReasonField
         }
+    }
+}
+
+// MARK: - Sheet
+
+struct SelfConstructionReceiptSheet: View {
+    let receipt: SelfConstructionReceipt
+    var canRevert: Bool = false
+    var revertReceipt: AtlasAutonomosCycleRevertResponse? = nil
+    /// WAVE-033: public control/revert error from model (honesty).
+    var controlError: String? = nil
+    var onRevert: (String, String) -> Void = { _, _ in }
+
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var actor = ""
+    @State var reason = ""
+
+    var body: some View {
+        receiptShell
     }
 }
