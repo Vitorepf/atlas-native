@@ -4,18 +4,21 @@
 
 ```yaml
 pass: 1
-domain_index: 1
-last_focus: "Conversa Handoff/Outline/StaleRead chrome fuse"
-session_commits: 58
+domain_index: 0
+last_focus: "RootView Route+HomeChrome fuse"
+session_commits: 61+
 soft_sections_states: 0
+swift_App_Atlas: 274
 ```
 
-## Hard
+## Hard OK forever
 
-soft Sections/States **0** · density guard OK · gates green
+| Metric | Value |
+|---|---|
+| *Sections*/*States* | 0 |
+| density guard | OK |
+| session commits | 61+ |
 
-## Next
+## Próximo
 
-- RootChrome density recheck (was 700)
-- residual peels · MARK · CODEMAP
-- **never Goal Done**
+deepen · residual peels · MARK · CODEMAP · **never Goal Done / god_hold**

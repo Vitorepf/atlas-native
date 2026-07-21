@@ -7,11 +7,11 @@
 
 | Superfície | Entry / shell | Núcleo vivo (não exaustivo) |
 |---|---|---|
-| Home | `RootView.swift` | `RootChrome*`, `RootHomeBody`, `RootHomeChrome`, `Workspace*` |
-| Conversa | `ConversationView.swift` | `ConversationSurface (chrome·composer·messages fused)`, `ConversationChrome*`, Messages/Cockpit/Composer* |
+| Home | `RootView.swift` | `RootChrome`, `RootHomeBody`, `Workspace*` |
+| Conversa | `ConversationView.swift` | `ConversationSurface fused`, `ConversationChrome*`, Messages/Cockpit/Composer* |
 | Código | `AtlasCodeView.swift` | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
 | Radar (multi-repo) | `AtlasCodeRadarView.swift` | Surface · FolderRow · RepoChrome · AskContext · Judgment |
-| Pílula | (dock por superfície) | `AgenticPill`, `AgenticOccasionPack`, `AgenticAskDock` |
+| Pílula | (dock por superfície) | `AgenticPill`, `AgenticPill`, `AgenticPill` |
 | Arena Premium | `ArenaPremiumShell.swift` | Execution/Fleet/Results/Suite/Run/Score* · NowBody · GlyphRow |
 | Autônomos | `AutonomosHubView.swift` / `AutonomosView.swift` | Hub/Map/List/`AutonomosDecision*`/Chrome* |
 | Continuity | Widgets + ActivityKit | Island/Lock chrome — **App Group data BLOCKED** |
@@ -37,14 +37,14 @@
 | Commit row parts | `AtlasCodeCommitRowBody` · spoken via `AtlasCodeCommitRowJudgment` |
 | **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face · pack API CodeAsk |
 | **Proveniência do commit** | `AtlasCodeProvenanceJudgment` → face · pack CodeAsk focus |
-| Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
+| Pack da pílula / ocasião | `AgenticPill` + hosts Ask |
 | Pack mid-thread conversa | `ConversationOccasionPack` host · Live · Organs parts · thread shell Judgment |
 | **Conversation thread shell** | `ConversationThreadShellJudgment.packFacts` → thread/title/workspace binding |
 | **Workspace catalog shell pack** | `WorkspaceThreadJudgment.packShellFacts` → WorkspaceAsk |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
 | **Search screen (shell)** | `SearchJudgment` → face loading/offline/empty/results · screen a11y · pack |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
-| **Search pílula / pack** | `SearchAskContext` + `SearchView` AgenticAskDock · PartidaCanDo.search |
+| **Search pílula / pack** | `SearchAskContext` + `SearchView` AgenticPill · PartidaCanDo.search |
 | **Workspace screen (lista)** | `WorkspaceJudgment` → face loading/offline/empty/list · screen a11y · pack Ask |
 | **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face · pack Home partida |
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face · `WorkspaceEmptyChrome` glyph/loading/network empty |
