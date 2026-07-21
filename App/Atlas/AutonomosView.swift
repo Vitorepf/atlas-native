@@ -542,6 +542,7 @@ struct AutonomosMapShell: View {
             .frame(minHeight: 56)
             .contentShape(Rectangle())
             .background(AtlasTheme.surface.opacity(0.55))
+            .atlasElevation(radius: 8, y: 2, opacity: 0.14)
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
@@ -2111,6 +2112,7 @@ struct NightlyProposalCard: View {
         .padding(14)
         .atlasCard(cornerRadius: AtlasTheme.Radius.card)
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .atlasElevation(radius: 12, y: 4, opacity: 0.18)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.nightlyProposalCard)
         .task {
