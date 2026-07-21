@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — AgenticPill invite breath (ciclo 302)** · `f0c16dd8` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Arena primary serif CTA (ciclo 301)** · `0bb2318f` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos primary CTA breath (ciclo 300)** · `cdcbcc62` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — radar status HIG 44 (ciclo 299)** · `b6909303` · App/Atlas 36. **Prova:** checks+build exit 0.
