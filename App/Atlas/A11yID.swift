@@ -102,6 +102,8 @@ extension A11yID {
         "autonomos-nav-\(title.lowercased().replacingOccurrences(of: " ", with: "-"))"
     }
     static let autonomosNew = "autonomos-new"
+    static let autonomosNewName = "autonomos-new-name"
+    static let autonomosNewCharter = "autonomos-new-charter"
     static let autonomosEvolution = "autonomos-evolution"
     static let autonomosDecisions = "autonomos-decisions"
     static let autonomosDecision = "autonomos-decision"

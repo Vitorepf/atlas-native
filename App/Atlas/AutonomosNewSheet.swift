@@ -21,20 +21,23 @@ struct AutonomosNewSheet: View {
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityLabel("Um escopo fechado. Ele evolui só nisso.")
 
                     field(
                         label: "Nome",
                         placeholder: "ex.: Agente iOS Dinheiro",
                         text: $name,
                         axis: .horizontal,
-                        a11yHint: "nome curto do Autônomo"
+                        a11yHint: "nome curto do Autônomo",
+                        a11yID: A11yID.autonomosNewName
                     )
                     field(
                         label: "Carta",
                         placeholder: "O que este Autônomo pode e não pode tocar.",
                         text: $charter,
                         axis: .vertical,
-                        a11yHint: "escopo fechado em português claro"
+                        a11yHint: "escopo fechado em português claro",
+                        a11yID: A11yID.autonomosNewCharter
                     )
 
                     AutonomosMapChrome.primaryCTA("Criar", enabled: canCreate, haptic: .medium) {
@@ -61,7 +64,8 @@ struct AutonomosNewSheet: View {
         placeholder: String,
         text: Binding<String>,
         axis: Axis,
-        a11yHint: String
+        a11yHint: String,
+        a11yID: String
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
@@ -91,6 +95,7 @@ struct AutonomosNewSheet: View {
             )
             .accessibilityLabel(label)
             .accessibilityHint(a11yHint)
+            .accessibilityIdentifier(a11yID)
         }
     }
 }
