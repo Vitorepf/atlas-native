@@ -33,6 +33,8 @@ struct ArenaPremiumCapabilityDetail: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Capacidade")
             .navigationBarTitleDisplayMode(.inline)
+            // Contain: title, comparison and provenance stay separately focusable.
+            .accessibilityElement(children: .contain)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
