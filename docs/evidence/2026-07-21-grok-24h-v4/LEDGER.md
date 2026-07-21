@@ -217,5 +217,5 @@ mode: designer + implementer
 ## Notes
 - Device-pending (passcode) = operator.
 - Continuity restore BLOCKED (App Group).
-- WAVE-186: hub-live pack · arena shell · packLiveAnchors deleted.
+- WAVE-186: hub-live · arena shell · dead shim.
 - hollows 0 · open=[] · await A · no invent micro-WAVE.
