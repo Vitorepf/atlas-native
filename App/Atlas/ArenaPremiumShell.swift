@@ -1147,7 +1147,8 @@ struct ArenaPremiumQueueView: View {
             if queued.isEmpty {
                 Text("Fila vazia")
                     .font(AtlasFont.serif(15))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet empty queue honesty.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
             }
         }
@@ -1659,7 +1660,8 @@ struct ArenaPremiumRunningView: View {
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text("/ \(progress.total)")
                         .font(AtlasFont.serif(18))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet progress total scale.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 }
                 Text("Casos confirmados")
                     .font(AtlasFont.mono(11))
@@ -2088,7 +2090,8 @@ struct ArenaPremiumResultsView: View {
                     .foregroundStyle(AtlasTheme.textPrimary)
                 if let delta = engine.delta {
                     Text(ArenaFormat.signed(delta))
-                        .foregroundStyle(delta < 0 ? AtlasTheme.alert : (delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.textSecondary))
+                        // Soft gold-quiet flat delta; coral regress; primary improve.
+                        .foregroundStyle(delta < 0 ? AtlasTheme.alert : (delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.55)))
                 }
             }
             .font(AtlasFont.mono(11, .medium))
@@ -2292,7 +2295,8 @@ struct ArenaPremiumComparison: View {
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(
                     abs(delta) < 0.005
-                        ? AtlasTheme.textSecondary
+                        // Soft gold-quiet flat pair delta.
+                        ? AtlasTheme.accent.opacity(0.55)
                         : (delta > 0 ? AtlasTheme.accent : AtlasTheme.alert)
                 )
                 .padding(.bottom, 2)
@@ -2447,7 +2451,8 @@ struct ArenaPremiumExecutionView: View {
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text("de \(total) casos")
                     .font(AtlasFont.serif(22))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet case scale caption.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 Spacer()
                 Text("\(Int((fraction * 100).rounded(.down)))%")
                     .font(AtlasFont.mono(18, .medium))
@@ -2673,7 +2678,8 @@ struct ArenaPremiumRunDetailView: View {
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text("de \(total) casos")
                         .font(AtlasFont.serif(18))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet progress scale caption.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     Spacer()
                     Text("\(Int((fraction * 100).rounded(.down)))%")
                         .font(AtlasFont.mono(16, .medium))
@@ -3197,7 +3203,8 @@ struct ArenaPremiumCapabilitiesView: View {
             return AtlasTheme.accent.opacity(0.48)
         case .measured:
             guard capability.delta?.significant == true, let value = delta(capability) else {
-                return AtlasTheme.textSecondary
+                // Soft gold-quiet non-significant delta.
+                return AtlasTheme.accent.opacity(0.55)
             }
             return value > 0 ? AtlasTheme.textPrimary : AtlasTheme.alert
         }
@@ -4406,7 +4413,8 @@ struct SuiteSparkline: View {
         Chart(engine.history) { point in
             if let score = point.score {
                 LineMark(x: .value("rodada", point.roundAt), y: .value("score", score))
-                    .foregroundStyle(point.arm == .withAtlas ? AtlasTheme.accent : AtlasTheme.textSecondary)
+                    // Soft gold-quiet without-Atlas history series.
+                    .foregroundStyle(point.arm == .withAtlas ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.4))
                     .interpolationMethod(.linear)
             }
         }
@@ -4653,7 +4661,8 @@ struct ArenaPremiumProgressRing: View {
                     .foregroundStyle(
                         percentage >= 100
                             ? AtlasTheme.accent.opacity(0.9)
-                            : AtlasTheme.textSecondary
+                            // Soft gold-quiet progress % unit.
+                            : AtlasTheme.accent.opacity(0.55)
                     )
                     .baselineOffset(4)
             }

@@ -6809,7 +6809,8 @@ extension ExecutionStateCard {
         if let detail = state.detail {
             Text(detail)
                 .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet execution detail meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
         }
@@ -7420,7 +7421,8 @@ extension NarrativeRowView {
             Text(row.title)
                 .font(row.style == .intent ? AtlasFont.serif(13) : AtlasFont.mono(11))
                 .foregroundStyle(row.style == .intent
-                    ? (isCurrent ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+                    // Soft gold-quiet non-current intent titles.
+                    ? (isCurrent ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.72))
                     // Soft gold-quiet non-intent narrative titles.
                     : AtlasTheme.accent.opacity(0.58))
                 .lineLimit(row.style == .intent ? 3 : 2)

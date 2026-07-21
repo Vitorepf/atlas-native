@@ -2347,7 +2347,8 @@ extension AtlasCodeMirrorCard {
     func headlineHealthyPending(commits: Int) -> some View {
         label(
             commits == 1 ? "1 commit ainda só no Mac" : "\(commits) commits ainda só no Mac",
-            color: AtlasTheme.textSecondary,
+            // Soft gold-quiet mirror healthy secondary label.
+            color: AtlasTheme.accent.opacity(0.65),
             icon: "internaldrive"
         )
     }
@@ -2567,7 +2568,8 @@ extension AtlasCodeWhySheet {
         VStack(alignment: .leading, spacing: 6) {
             Text("Biografia indisponível")
                 .font(AtlasFont.serifItalic(16))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet why failed title.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityHidden(true)
             if let message = model.message, !message.isEmpty {
                 Text(message)
