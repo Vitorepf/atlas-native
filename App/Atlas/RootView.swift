@@ -2608,7 +2608,8 @@ extension AtlasNetworkFailureEmpty {
     var failureHostAndHint: some View {
         Group {
             Text(hasToken ? "\(host):3737" : "ATLAS_TOKEN · Secrets.xcconfig")
-                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(12, .medium))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
                 .accessibilityLabel(hasToken ? "servidor \(host) porta 3737" : "token ATLAS ausente em Secrets")
             Spacer().frame(height: 16)
             Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
