@@ -1,40 +1,23 @@
 import SwiftUI
 import AtlasCore
 
-// IDLE-COMPRESS peel TraceEvidence chrome from ArtifactPreviewChrome (canon §7)
-
-extension TraceEvidenceCopy {
-    static func knownMissingRunReason(_ reason: String) -> String? {
-        switch reason {
-        case "no_workspace": return "sem workspace ligado a esta execução"
-        case "no_run": return "nenhum run de engenharia vinculado"
-        default: return nil
-        }
-    }
-}
-
-extension TraceEvidenceCopy {
-    static func knownUnavailableReason(_ reason: String) -> String? {
-        if let missing = knownMissingRunReason(reason) { return missing }
-        switch reason {
-        case "multiple_runs": return "mais de um run — evidência indisponível"
-        case "ambiguous_linked_runs": return "vínculo ambíguo entre runs"
-        default: return nil
-        }
-    }
-}
+// WAVE-068: TraceEvidence chrome peels → TraceEvidenceJudgment
 
 enum TraceEvidenceCopy {
+    static func knownMissingRunReason(_ reason: String) -> String? {
+        TraceEvidenceJudgment.knownMissingRunReason(reason)
+    }
+
+    static func knownUnavailableReason(_ reason: String) -> String? {
+        TraceEvidenceJudgment.knownUnavailableReason(reason)
+    }
+
     static func unavailableReason(_ reason: String?) -> String? {
-        guard let reason, !reason.isEmpty else { return nil }
-        return knownUnavailableReason(reason)
-            ?? reason.replacingOccurrences(of: "_", with: " ")
+        TraceEvidenceJudgment.unavailableReason(reason)
     }
 
     static func unavailableSpoken(prefix: String, reason: String?) -> String {
-        var parts = [prefix]
-        if let reason = unavailableReason(reason) { parts.append(reason) }
-        return parts.joined(separator: ", ")
+        TraceEvidenceJudgment.spokenUnavailable(prefix: prefix, reason: reason)
     }
 }
 
@@ -51,7 +34,8 @@ struct TraceEvidenceLoading: View {
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(text)
+        .accessibilityLabel(TraceEvidenceJudgment.spokenLoading(text))
+        .accessibilityValue(TraceEvidenceFace.loading.productWord)
     }
 }
 
@@ -104,6 +88,7 @@ struct TraceEvidenceUnavailable: View {
             .padding(36)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spoken)
+            .accessibilityValue(TraceEvidenceFace.unavailable.productWord)
             .accessibilityIdentifier(identifier)
     }
 }

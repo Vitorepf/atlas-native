@@ -69,6 +69,7 @@
 | **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
 | **Preview de artefato** | `ArtifactPreviewJudgment` → face idle/load/loaded/tooLarge/failed |
 | Preview peels | `ArtifactPreviewChrome` host · `TraceEvidenceChrome` · `ArtifactPreviewZoom` |
+| **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
 | **Prova de execução (card recolhido)** | `ExecutionProofJudgment` → face kicker · shouldDisplay · ranked artifacts |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 

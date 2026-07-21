@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 62
+- waves_completed: 63
 - idle_compress_passes: 12
 - collapse_host: 0
 
@@ -73,6 +73,7 @@ mode: designer + implementer
 - WAVE-065
 - WAVE-066
 - WAVE-067
+- WAVE-068
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -89,7 +90,7 @@ mode: designer + implementer
 - pass 12 · `2b6a7f73` · peel ExecutionStateActionStyle
 
 ## Designer
-- designs_proposed: 62
+- designs_proposed: 63
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -100,5 +101,4 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-060–067 shipped. Prefer A fill.
-- DEVICE_PENDING. Continuity App Group BLOCKED.
+- WAVE-060–068. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
