@@ -30,12 +30,12 @@
 | Código grafo parts | `AtlasCodeSurface` host · `AtlasCodeSurfaceGraph` content/list |
 | **Grafo chrome (status/filtros/worktrees/semana)** | `AtlasCodeGraphChrome` status·filter·worktree·week (fused) |
 | **Grafo screen load (Código)** | `AtlasCodeGraphLoadJudgment` → face loading/failed/empty/ready · screen a11y · pack in CodeAsk |
-| **Pílula ask (Código)** | `AtlasCodeAskPillJudgment` → face invite/anchoring/legend · AskContext pack |
-| **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
+| **Pílula ask (Código)** | `AtlasCodeAskPillJudgment` · `AtlasCodeAskContext` (model fused) |
+| **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` (strip fused) · Ask pack face |
 | **Heal veto / undoError** | `AtlasCodeHealVetoJudgment` → ReceiptSheet · canVeto · undo fail line |
 | **Commit row face (grafo)** | `AtlasCodeCommitRowJudgment` → dim/fora/main · pack CodeAsk focus |
-| Commit row parts | `AtlasCodeCommitRowBody` · spoken via `AtlasCodeCommitRowJudgment` |
-| **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face · pack API CodeAsk |
+| Commit row parts | `AtlasCodeCommitRow` (meta fused) · `AtlasCodeCommitRowJudgment` spoken |
+| **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` · `AtlasCodeWhySheet` (model fused) · pack CodeAsk |
 | **Proveniência do commit** | `AtlasCodeProvenanceJudgment` → face · pack CodeAsk focus |
 | Pack da pílula / ocasião | `AgenticPill` + hosts Ask |
 | Pack mid-thread conversa | `ConversationOccasionPack` host · Live · Organs parts · thread shell Judgment |

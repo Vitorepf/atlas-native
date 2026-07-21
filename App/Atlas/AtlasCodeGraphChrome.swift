@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// GOD-RESTRUCTURE: AtlasCodeGraph*Chrome peels fused
+// GOD-RESTRUCTURE: GraphChrome + Lane + StateFilter fused
 
 // MARK: - Status chrome
 
@@ -267,5 +267,92 @@ extension AtlasCodeView {
             .accessibilityLabel(AtlasCodeHealVetoJudgment.curedAloneOpenReceiptLabel)
             .accessibilityHint("abre os passos registrados pelo servidor")
         }
+    }
+}
+// MARK: - AtlasCodeGraphLane
+
+enum AtlasCodeGraphLane {
+    static let gutter: CGFloat = 72
+    static let base: CGFloat = 24
+    static let step: CGFloat = 36
+    static let trunkWidth: CGFloat = 2.2
+    static let sideWidth: CGFloat = 1.85
+    static let nodeRadius: CGFloat = 5.5
+    static let nodeCenterY: CGFloat = 22
+
+    /// 0 = trunk. 1 = exceção (violating + history na MESMA faixa — sem linha cinza solta).
+    static func index(for state: AtlasCodeNodeState) -> Int {
+        switch state {
+        case .onMain, .healed: return 0
+        case .violating, .history: return 1
+        }
+    }
+
+    static func x(for state: AtlasCodeNodeState) -> CGFloat {
+        base + CGFloat(index(for: state)) * step
+    }
+
+    static func x(lane: Int) -> CGFloat {
+        base + CGFloat(max(0, lane)) * step
+    }
+
+    static var sideX: CGFloat { x(lane: 1) }
+
+    /// Curva GitKraken: tangentes verticais no midpoint Y.
+    static func forkPath(from: CGPoint, to: CGPoint) -> Path {
+        Path { path in
+            let midY = (from.y + to.y) / 2
+            path.move(to: from)
+            path.addCurve(
+                to: to,
+                control1: CGPoint(x: from.x, y: midY),
+                control2: CGPoint(x: to.x, y: midY)
+            )
+        }
+    }
+}
+// MARK: - AtlasCodeGraphStateFilter
+
+enum AtlasCodeGraphStateFilter: String, CaseIterable, Identifiable {
+    case all
+    case onMain
+    case violating
+    case healed
+    case history
+
+    var id: String { rawValue }
+
+    /// Tabs do grafo AX — sem “história” (ruído; o scroll já é história).
+    static let grafoTabs: [AtlasCodeGraphStateFilter] = [.all, .onMain, .violating, .healed]
+
+    var label: String {
+        switch self {
+        case .all: return "todos"
+        case .onMain: return "main"
+        case .violating: return "fora"
+        case .healed: return "curados"
+        case .history: return "história"
+        }
+    }
+
+    var targetState: AtlasCodeNodeState {
+        switch self {
+        case .onMain: return .onMain
+        case .healed: return .healed
+        case .violating: return .violating
+        case .all, .history: return .history
+        }
+    }
+
+    @MainActor
+    func nodes(in nodes: [AtlasCodeGraphNode], model: AtlasCodeModel) -> [AtlasCodeGraphNode] {
+        guard self != .all else { return nodes }
+        let target = targetState
+        return nodes.filter { model.state(for: $0) == target }
+    }
+
+    @MainActor
+    func count(in nodes: [AtlasCodeGraphNode], model: AtlasCodeModel) -> Int {
+        self == .all ? nodes.count : self.nodes(in: nodes, model: model).count
     }
 }

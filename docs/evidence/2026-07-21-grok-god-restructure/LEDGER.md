@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: prove
-- focus: ConversationChrome SheetsHost fuse
-- domain_index: 1
+- focus: Código residual peels
+- domain_index: 2
 - pass: 1
 - actionable: open
 - soft_sections_states: 0
-- last_commit: pending-conversation-chrome
+- last_commit: pending-codigo-peels
 
 ## Scope
 - App/Atlas + App/Widgets
@@ -26,6 +26,23 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T23:18Z — Código residual peels fuse
+
+```yaml
+phase: prove
+focus: AskModel · CommitRowMeta · RepoHealthStrip · WhyModel
+domain_index: 2
+pass: 1
+commands: |
+  AskContext+Model ~270 · CommitRow+Meta ~463
+  RepoHealth Judgment+Strip ~315 · WhySheet+Model ~261
+  gates pending
+before_after: |
+  −4 peels Código
+notes: continue residual
+```
+
 
 ### 2026-07-21T23:14Z — ArenaPremiumPrimitives chrome fuse
 
