@@ -3,10 +3,7 @@ import AtlasCore
 
 /// Cena operacional do Fable 5: o estado chega pronto do ledger e só então a
 /// conversa oferece uma ação. Não há botão, prazo ou risco criado pela casca.
-/// Header → +Header · Meta → +Meta · Detail → +Detail · ações → +ActionButtons.
-/// Display → +Display.swift
-/// Chrome → ExecutionStateCard+Chrome.swift
-/// Stack → ExecutionStateCard+Stack.swift
+/// Peel forest fused cycle 020 (host/stack/chrome + presentation/actions/awaiting).
 struct ExecutionStateCard: View {
     let state: AtlasExecutionPresentationState
     let jobId: JobID?
