@@ -4,28 +4,18 @@
 
 ```yaml
 pass: 4
-domain_index: 0
-last_focus: "pass4 start Home re-audit"
-session_commits: 137
+domain_index: 1
+last_focus: "pass4 Home residual skip ROI → Conversa"
+session_commits: 138
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
 ```
 
-## Scoreboard
+## Pass 4 Home
 
-| Metric | Value |
-|---|---|
-| Mission commits | **137** |
-| App/Atlas | **46** |
-| Widgets | **2** |
-| *Sections*/*States* | **0** |
-| Density | OK |
+soft 0 · density OK · fuse ROI <30 (headroom insufficient) · MARK OK
 
-## Pass 4 checklist Home
+## Next
 
-1–6 residual headroom/honesty only
-
-## Proibido
-
-Goal Done · god_hold · WAVE · dual · Core
+Conversa residual · **never Goal Done**
