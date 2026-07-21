@@ -4,18 +4,25 @@
 
 ```yaml
 pass: 1
-domain_index: 1
-last_focus: "ConversationMessages host+scroll+editorial fuse"
+domain_index: 2
+last_focus: "AtlasCodeGraphChrome fuse"
 passes_completed: 0
+session_commits: 17
 ```
 
 ## Soft *Sections*/*States*: **0**
 
-## Session: 13+ GOD-RESTRUCTURE commits
+## Highlights
+
+- Home: RootHomeBody, EmptyChrome, LiveNowJudgment, ThreadRow, RootChrome MARK
+- Conversa: EmptyConversation, ProofBody, ChangeReview, Sheets, Cockpit, Messages, Queue, Toolbar
+- Código: ProvenanceSheetBody, FileRow, GraphChrome
+- Arena/Autonomos: NowBody, GlyphRow, DecisionFaceBody
+- Widgets: dense MARK
 
 ## Próximo
 
-deepen other domains · pass+=1 when cycle closes · never Goal Done
+pass deepen · ConversationSurface peels · Autonomos Ask organs · never Goal Done
 
 ## Proibido
 

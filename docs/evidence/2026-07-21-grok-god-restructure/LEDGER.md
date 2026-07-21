@@ -28,6 +28,15 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### GraphChrome fuse
+
+```yaml
+focus: Filter+Worktree+Week → GraphChrome
+domain_index: 2
+lines: 271
+gates: ok
+```
+
 ### ComposerToolbar fuse
 
 ```yaml
