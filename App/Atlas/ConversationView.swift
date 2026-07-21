@@ -8082,6 +8082,8 @@ extension SteerInteractionSheet {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface.opacity(0.65)))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            // Receipt chip floats above the form surface after steer.
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 

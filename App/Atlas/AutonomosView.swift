@@ -1119,6 +1119,8 @@ struct AutonomosNewSheet: View {
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
                     .strokeBorder(AtlasTheme.separator.opacity(0.55), lineWidth: 1)
             )
+            // Novo Autônomo fields share input plane with Arena governance chrome.
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityLabel(label)
             .accessibilityHint(a11yHint)
             .accessibilityIdentifier(a11yID)
@@ -1946,6 +1948,7 @@ extension SelfConstructionReceiptSheet {
             .padding(10)
             .frame(minHeight: 48, alignment: .center)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityLabel("Quem autoriza o veto")
             .accessibilityHint(spokenActorHint())
     }
@@ -1959,6 +1962,7 @@ extension SelfConstructionReceiptSheet {
             .padding(10)
             .frame(minHeight: 88, alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityLabel("Motivo auditável do veto")
             .accessibilityHint(spokenReasonHint())
     }

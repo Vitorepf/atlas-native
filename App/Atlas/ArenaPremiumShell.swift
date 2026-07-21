@@ -3761,6 +3761,8 @@ struct ArenaFieldChrome: ViewModifier {
                     .fill(AtlasTheme.bgRecessed)
                     .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
                         .stroke(AtlasTheme.separator, lineWidth: 1)))
+            // Governance fields share soft plane with search / steer inputs.
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 
@@ -4450,6 +4452,7 @@ struct ArenaPremiumGlyphRow: View {
                     .frame(width: 28, height: 28)
                     .background(Circle().fill(AtlasTheme.surface.opacity(0.9)))
                     .overlay(Circle().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                    .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                     .accessibilityHidden(true)
                 Text(title)
                     .atlasSans(16, .medium)
