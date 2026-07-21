@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 47
+- waves_completed: 48
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -58,6 +58,7 @@ mode: designer + implementer
 - WAVE-050
 - WAVE-051
 - WAVE-052
+- WAVE-053
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -68,10 +69,9 @@ mode: designer + implementer
 - pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
 
 ## Designer
-- designs_proposed: 47
+- designs_proposed: 48
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -80,6 +80,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-051–052 + idle peel Code sheets. Prefer A 2–5 GOD croquis.
-- DEVICE_PENDING history.
+- WAVE-053 steer judgment. Prefer A fill. DEVICE_PENDING.
 - Continuity restore BLOCKED (App Group).
