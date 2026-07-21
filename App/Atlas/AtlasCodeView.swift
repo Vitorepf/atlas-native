@@ -153,6 +153,7 @@ extension AtlasCodeView {
             )
             .accessibilityHint(AtlasCodeAskPillA11y.pillHint)
             .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(8) // pílula Code surfaces early in VO
             // VO activate must open ask (tap is on the capsule chrome).
             .accessibilityAction { openAskPill() }
             Spacer(minLength: 0)
