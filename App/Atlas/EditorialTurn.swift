@@ -1,9 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// IDLE-COMPRESS fused EditorialTurn · EditorialTurn.swift
+// IDLE-COMPRESS fused
 
-// --- EditorialTurn+A11y+Signature.swift ---
+// --- EditorialTurn.swift ---
 extension EditorialTurnA11y {
   static func spokenSignature(provider: String?, model: String?, elapsedMs: Int?) -> String {
     guard let who = signatureWho(provider: provider, model: model) else { return "" }
@@ -12,7 +12,6 @@ extension EditorialTurnA11y {
   }
 }
 
-// --- EditorialTurn+A11y+UserMessage.swift ---
 extension EditorialTurnA11y {
   static func spokenUserMessage(_ text: String) -> String {
     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -24,10 +23,8 @@ extension EditorialTurnA11y {
   static let copyLongPressHint = "pressionar e segurar copia a resposta"
 }
 
-// --- EditorialTurn+A11y.swift ---
 enum EditorialTurnA11y {}
 
-// --- EditorialTurn+A11yFeedback+Base.swift ---
 extension EditorialTurnA11y {
   static func spokenFeedbackBase(kind: FeedbackKind) -> String {
     switch kind {
@@ -39,7 +36,6 @@ extension EditorialTurnA11y {
   }
 }
 
-// --- EditorialTurn+A11yFeedback.swift ---
 extension EditorialTurnA11y {
   static func spokenFeedbackLabel(kind: FeedbackKind, active: Bool) -> String {
     let base = spokenFeedbackBase(kind: kind)
@@ -51,7 +47,6 @@ extension EditorialTurnA11y {
   }
 }
 
-// --- EditorialTurn+A11yWho.swift ---
 extension EditorialTurnA11y {
   static func signatureWho(provider: String?, model: String?) -> String? {
     if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
@@ -63,7 +58,6 @@ extension EditorialTurnA11y {
   }
 }
 
-// --- EditorialTurn.swift ---
 struct EditorialTurn: View, Equatable {
     let bubble: ChatBubble
     let reduceMotion: Bool
@@ -83,7 +77,6 @@ struct EditorialTurn: View, Equatable {
     }
 }
 
-// --- EditorialTurnChrome+Feedback.swift ---
 struct FeedbackRow: View {
     let active: String?
     let reduceMotion: Bool
@@ -99,7 +92,6 @@ struct FeedbackRow: View {
     }
 }
 
-// --- EditorialTurnChrome+FeedbackChip+A11y.swift ---
 extension FeedbackRow {
     func feedbackChipA11y<Content: View>(
         _ content: Content,
@@ -114,7 +106,6 @@ extension FeedbackRow {
     }
 }
 
-// --- EditorialTurnChrome+FeedbackChip+Label.swift ---
 extension FeedbackRow {
     func feedbackChipLabel(_ kind: FeedbackKind, isActive: Bool) -> some View {
         Text(isActive ? "\(kind.label) ✓" : kind.label)
@@ -130,7 +121,6 @@ extension FeedbackRow {
     }
 }
 
-// --- EditorialTurnChrome+FeedbackChip.swift ---
 extension FeedbackRow {
     func feedbackChip(_ kind: FeedbackKind) -> some View {
         let isActive = active == kind.activeAction
@@ -148,14 +138,12 @@ extension FeedbackRow {
     }
 }
 
-// --- EditorialTurnChrome+Helpers.swift ---
 func humanDuration(_ ms: Int) -> String {
     if ms < 1000 { return "um instante" }
     if ms < 60000 { return String(format: "%.1f s", Double(ms) / 1000).replacingOccurrences(of: ".", with: ",") }
     return "\(ms / 60000) min"
 }
 
-/// claude_cli → "claude", conselho → "conselho", etc. Vazio ≠ fabricar «atlas».
 func providerWord(_ p: String?) -> String {
     guard let p, !p.isEmpty else { return "" }
     let x = p.lowercased()
@@ -167,7 +155,6 @@ func providerWord(_ p: String?) -> String {
     return x
 }
 
-// --- EditorialTurnChrome+Signature.swift ---
 struct SignatureLine: View {
     let provider: String?
     let model: String?
@@ -186,9 +173,7 @@ struct SignatureLine: View {
     }
 }
 
-// --- EditorialTurnChrome+SignatureGate.swift ---
 extension SignatureLine {
-    /// Modelo ou provider reais — nunca fabrica «atlas» quando o contrato não publica quem respondeu.
     static func shouldDisplay(provider: String?, model: String?) -> Bool {
         let hasModel = model.map { !$0.isEmpty && !$0.hasSuffix("_default") } ?? false
         let hasProvider = provider.map { !$0.isEmpty } ?? false
@@ -196,7 +181,6 @@ extension SignatureLine {
     }
 }
 
-// --- EditorialTurnChrome+SignatureText+Body.swift ---
 extension SignatureLine {
     var signature: String {
         let who = signatureWho
@@ -211,7 +195,6 @@ extension SignatureLine {
     }
 }
 
-// --- EditorialTurnChrome+SignatureText+Reveal.swift ---
 extension SignatureLine {
     func revealSignature() {
         if reduceMotion { shown = true; return }
@@ -222,3 +205,205 @@ extension SignatureLine {
     }
 }
 
+// --- EditorialTurn+Body.swift ---
+extension EditorialTurn {
+    func applyArrival<Content: View>(_ content: Content) -> some View {
+        content
+            .opacity(placed ? 1 : 0)
+            .offset(y: placed ? 0 : 12)
+            .onAppear {
+                if reduceMotion { placed = true }
+                else { withAnimation(AtlasMotion.arrival) { placed = true } }
+            }
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantTurn: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            assistantPlanCard
+            assistantExecutionRibbon
+            assistantExecutionBlock
+            assistantClosing
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
+        .onLongPressGesture(minimumDuration: 0.38) { onCopy() }
+        .accessibilityHint(EditorialTurnA11y.copyLongPressHint)
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantExecutionBlock: some View {
+        if let state = bubble.executionPresentationState {
+            assistantExecutionCard(state)
+        }
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    func assistantExecutionCard(_ state: AtlasExecutionPresentationState) -> some View {
+        if ExecutionStateCard.shouldDisplay(state: state) {
+            ExecutionStateCard(
+                state: state,
+                jobId: bubble.executionChoiceJobId,
+                onChoose: onExecutionChoice,
+                retryableJobId: bubble.retryableJobId,
+                onRetry: onRetry,
+                onSteer: assistantSteerHandler
+            )
+        }
+    }
+}
+
+extension EditorialTurn {
+    var assistantSteerHandler: (() -> Void)? {
+        let steerTrace = bubble.executionPresence?.isOngoing == true ? bubble.traceId : nil
+        return steerTrace.map { trace in { onSteer(trace) } }
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantPlanCard: some View {
+        PlanCard(bubble: bubble)
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantExecutionRibbon: some View {
+        if bubble.streaming, bubble.hasLiveExecutionSurface {
+            ExecutionRibbon(bubble: bubble, reduceMotion: reduceMotion, onStop: onStop)
+        }
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var turnBodyAssistantBranch: some View {
+        assistantTurn
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var turnBodyUserBranch: some View {
+        userTurn
+    }
+}
+
+extension EditorialTurn {
+    var turnBody: some View {
+        Group {
+            if bubble.role == "user" {
+                turnBodyUserBranch
+            } else {
+                turnBodyAssistantBranch
+            }
+        }
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantClosing: some View {
+        if !bubble.streaming,
+           ExecutionProof.shouldDisplay(bubble: bubble, artifactItems: artifactItems) {
+            ExecutionProof(bubble: bubble, artifactItems: artifactItems, onOpenArtifacts: onOpenArtifacts)
+            Text("RESPOSTA FINAL")
+                .font(.system(.caption2, weight: .semibold)).tracking(1.6)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.85))
+                .accessibilityLabel(EditorialTurnA11y.spokenFinalAnswerKicker)
+                .accessibilityAddTraits(.isHeader)
+        }
+        assistantClosingTail
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantClosingMeta: some View {
+        if !bubble.streaming {
+            if SignatureLine.shouldDisplay(provider: bubble.provider, model: bubble.model) {
+                SignatureLine(
+                    provider: bubble.provider, model: bubble.model,
+                    elapsedMs: bubble.elapsedMs, reduceMotion: reduceMotion)
+            }
+            FeedbackRow(active: bubble.feedbackAction, reduceMotion: reduceMotion, onFeedback: onFeedback)
+        }
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantClosingTail: some View {
+        if !bubble.text.isEmpty {
+            AtlasMarkdownView(text: bubble.text, streaming: bubble.streaming)
+        }
+        assistantClosingMeta
+    }
+}
+
+extension EditorialTurn {
+    nonisolated static func == (lhs: EditorialTurn, rhs: EditorialTurn) -> Bool {
+        lhs.bubble == rhs.bubble && lhs.reduceMotion == rhs.reduceMotion && lhs.artifactItems == rhs.artifactItems
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var userTurn: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            userQuote
+            userEditResendButton
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+extension EditorialTurn {
+    var userEditResendButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onEditResend()
+        } label: {
+            userEditResendLabel
+        }
+        .buttonStyle(PressableScale())
+        .accessibilityLabel("editar esta mensagem e reenviar como novo turno")
+        .accessibilityHint("abre o compositor com este texto para um novo envio")
+    }
+}
+
+extension EditorialTurn {
+    var userEditResendLabel: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "arrow.turn.down.right")
+                .atlasSans(10, .semibold)
+                .accessibilityHidden(true)
+            Text("editar e reenviar")
+                .atlasSans(11, .medium)
+        }
+        .foregroundStyle(AtlasTheme.textSecondary)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 5)
+        .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+    }
+}
+
+extension EditorialTurn {
+    var userQuote: some View {
+        Text("\"\(bubble.text)\"")
+            .font(AtlasFont.serifItalic(18)).lineSpacing(8).foregroundStyle(AtlasTheme.textPrimary)
+            .padding(.leading, 16)
+            .overlay(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
+                    .accessibilityHidden(true)
+            }
+            .accessibilityLabel(EditorialTurnA11y.spokenUserMessage(bubble.text))
+    }
+}

@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// Botão canônico Fechar/Cancelar com RM haptic — peel CICLO B (elimina dups).
-/// A11yID → AtlasCloseToolbarButton+A11yID.swift
+// IDLE-COMPRESS fused
 
+// --- AtlasCloseToolbarButton.swift ---
 struct AtlasCloseToolbarButton: View {
     var title: String = "Fechar"
     let spokenLabel: String
@@ -16,10 +16,18 @@ struct AtlasCloseToolbarButton: View {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         }
-        // Dispensar nunca é acento: Fechar/Cancelar fala ink neutro (canon §C).
         .tint(AtlasTheme.textSecondary)
         .accessibilityLabel(spokenLabel)
         .accessibilityHint(spokenHint)
         .modifier(CloseToolbarA11yID(accessibilityID))
+    }
+}
+
+// --- AtlasCloseToolbarButton+A11yID.swift ---
+struct CloseToolbarA11yID: ViewModifier {
+    let id: String?
+    init(_ id: String?) { self.id = id }
+    func body(content: Content) -> some View {
+        if let id { content.accessibilityIdentifier(id) } else { content }
     }
 }

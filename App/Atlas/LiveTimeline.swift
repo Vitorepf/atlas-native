@@ -1,16 +1,15 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// WAVE-014 fused LiveTimeline.swift
+// IDLE-COMPRESS fused
 
-// --- LiveTimeline+A11y.swift ---
+// --- LiveTimeline.swift ---
 enum LiveTimelineA11y {
     static func spokenSectionLabel(stepCount: Int) -> String {
         "orquestra ao vivo, \(stepCount) passo\(stepCount == 1 ? "" : "s")"
     }
 }
 
-// --- LiveTimeline+A11yFilterChip.swift ---
 extension LiveTimelineA11y {
     static func spokenFilterChip(_ filter: TimelineReadFilter,
                                  count: Int,
@@ -21,7 +20,6 @@ extension LiveTimelineA11y {
     }
 }
 
-// --- LiveTimeline+A11yFilterChipSuffix.swift ---
 extension LiveTimelineA11y {
     static func spokenFilterChipSuffix(active: Bool, silent: Bool) -> String {
         var suffix = ""
@@ -31,14 +29,12 @@ extension LiveTimelineA11y {
     }
 }
 
-// --- LiveTimeline+A11yFilterHint.swift ---
 extension LiveTimelineA11y {
     static func spokenFilterHint() -> String {
         "altera quais passos da orquestra são exibidos"
     }
 }
 
-// --- LiveTimeline+A11yRow.swift ---
 extension LiveTimelineA11y {
     static func spokenRow(row: NarrativeRow, index: Int, total: Int, isCurrent: Bool) -> String {
         var parts = ["passo \(index + 1) de \(total)", row.title]
@@ -52,21 +48,18 @@ extension LiveTimelineA11y {
     }
 }
 
-// --- LiveTimeline+A11yRowValue.swift ---
 extension LiveTimelineA11y {
     static func rowValue(index: Int, total: Int, isCurrent: Bool) -> String {
         isCurrent ? "passo \(index + 1) de \(total), em andamento" : "passo \(index + 1) de \(total)"
     }
 }
 
-// --- LiveTimeline+A11ySilence.swift ---
 extension LiveTimelineA11y {
     static func spokenFilterSilenceSurface(filter: TimelineReadFilter, totalSteps: Int) -> String {
         "orquestra ao vivo, filtro \(filter.label), nenhum dos \(totalSteps) passos corresponde"
     }
 }
 
-// --- LiveTimeline+ActivityIcon+Intent.swift ---
 func activityIconIntent(_ kind: AtlasAgentActivity.Kind) -> String? {
     switch kind {
     case .understanding: return "text.magnifyingglass"
@@ -78,7 +71,6 @@ func activityIconIntent(_ kind: AtlasAgentActivity.Kind) -> String? {
     }
 }
 
-// --- LiveTimeline+ActivityIcon+Terminal.swift ---
 func activityIconTerminal(_ kind: AtlasAgentActivity.Kind) -> String? {
     switch kind {
     case .completed: return "checkmark.circle.fill"
@@ -88,7 +80,6 @@ func activityIconTerminal(_ kind: AtlasAgentActivity.Kind) -> String? {
     }
 }
 
-// --- LiveTimeline+ActivityIcon+Tool.swift ---
 func activityIconTool(_ kind: AtlasAgentActivity.Kind) -> String? {
     switch kind {
     case .executing: return "chevron.left.forwardslash.chevron.right"
@@ -100,7 +91,6 @@ func activityIconTool(_ kind: AtlasAgentActivity.Kind) -> String? {
     }
 }
 
-// --- LiveTimeline+ActivityIcon.swift ---
 func activityIcon(_ kind: AtlasAgentActivity.Kind) -> String {
     activityIconIntent(kind)
         ?? activityIconTool(kind)
@@ -108,7 +98,6 @@ func activityIcon(_ kind: AtlasAgentActivity.Kind) -> String {
         ?? "ellipsis.circle"
 }
 
-// --- LiveTimeline+FilterApply+AllP90.swift ---
 extension TimelineReadFilter {
     func applyAllOrP90(to rows: [NarrativeRow]) -> [NarrativeRow] {
         switch self {
@@ -122,7 +111,6 @@ extension TimelineReadFilter {
     }
 }
 
-// --- LiveTimeline+FilterApply+Style.swift ---
 extension TimelineReadFilter {
     func applyStyleFilter(to rows: [NarrativeRow]) -> [NarrativeRow]? {
         switch self {
@@ -136,7 +124,6 @@ extension TimelineReadFilter {
     }
 }
 
-// --- LiveTimeline+FilterApply.swift ---
 extension TimelineReadFilter {
     func apply(to rows: [NarrativeRow]) -> [NarrativeRow] {
         if let styled = applyStyleFilter(to: rows) { return styled }
@@ -144,7 +131,6 @@ extension TimelineReadFilter {
     }
 }
 
-// --- LiveTimeline+FilterButton+A11y.swift ---
 extension TimelineFilterChips {
     func filterChipA11y<Content: View>(
         _ content: Content,
@@ -163,7 +149,6 @@ extension TimelineFilterChips {
     }
 }
 
-// --- LiveTimeline+FilterButton+Action.swift ---
 extension TimelineFilterChips {
     func filterChipAction(_ option: TimelineReadFilter) {
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
@@ -173,7 +158,6 @@ extension TimelineFilterChips {
     }
 }
 
-// --- LiveTimeline+FilterButton.swift ---
 extension TimelineFilterChips {
     func filterChipButton(_ option: TimelineReadFilter, active: Bool, count: Int) -> some View {
         filterChipA11y(
@@ -190,7 +174,6 @@ extension TimelineFilterChips {
     }
 }
 
-// --- LiveTimeline+FilterChip.swift ---
 extension TimelineFilterChips {
     func chipLabel(_ option: TimelineReadFilter, active: Bool) -> some View {
         Text(option.label)
@@ -203,7 +186,6 @@ extension TimelineFilterChips {
     }
 }
 
-// --- LiveTimeline+FilterChipLoop.swift ---
 extension TimelineFilterChips {
     @ViewBuilder
     var filterChipLoop: some View {
@@ -215,7 +197,6 @@ extension TimelineFilterChips {
     }
 }
 
-// --- LiveTimeline+FilterEnum+Label.swift ---
 extension TimelineReadFilter {
     var label: String {
         switch self {
@@ -227,7 +208,6 @@ extension TimelineReadFilter {
     }
 }
 
-// --- LiveTimeline+FilterEnum.swift ---
 enum TimelineReadFilter: String, CaseIterable, Identifiable {
     case all
     case intent
@@ -237,7 +217,6 @@ enum TimelineReadFilter: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-// --- LiveTimeline+Filters.swift ---
 struct TimelineFilterChips: View {
     @Binding var filter: TimelineReadFilter
     var baseRows: [NarrativeRow]
@@ -254,7 +233,6 @@ struct TimelineFilterChips: View {
     }
 }
 
-// --- LiveTimeline+NarrativeA11y.swift ---
 extension NarrativeRowView {
     var narrativeA11y: some View {
         narrativeBody
@@ -268,7 +246,6 @@ extension NarrativeRowView {
     }
 }
 
-// --- LiveTimeline+Scroll+AutoScroll.swift ---
 extension LiveTimeline {
     func timelineScrollToLast(_ proxy: ScrollViewProxy) {
         guard let last = rows.last?.id else { return }
@@ -278,7 +255,6 @@ extension LiveTimeline {
     }
 }
 
-// --- LiveTimeline+Scroll.swift ---
 extension LiveTimeline {
     var timelineScroll: some View {
         ScrollViewReader { proxy in
@@ -293,7 +269,6 @@ extension LiveTimeline {
     }
 }
 
-// --- LiveTimeline+ScrollRows.swift ---
 extension LiveTimeline {
     var timelineRows: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -313,7 +288,6 @@ extension LiveTimeline {
     }
 }
 
-// --- LiveTimeline+Surfaces+A11yBind.swift ---
 extension LiveTimeline {
     func filterSilenceA11y<V: View>(_ content: V) -> some View {
         content
@@ -324,7 +298,6 @@ extension LiveTimeline {
     }
 }
 
-// --- LiveTimeline+Surfaces.swift ---
 extension LiveTimeline {
     @ViewBuilder
     var filterSilenceSurface: some View {
@@ -339,7 +312,6 @@ extension LiveTimeline {
     }
 }
 
-// --- LiveTimeline+TimelineSurface.swift ---
 extension LiveTimeline {
     var timelineSurface: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -357,7 +329,6 @@ extension LiveTimeline {
     }
 }
 
-// --- LiveTimeline.swift ---
 struct LiveTimeline: View {
     let activities: [AtlasAgentActivity]
     let reduceMotion: Bool
@@ -368,3 +339,206 @@ struct LiveTimeline: View {
     }
 }
 
+// --- LiveTimeline+Rows.swift ---
+func annotateNarrativeDurations(_ rows: inout [NarrativeRow]) {
+    guard rows.count > 1 else { return }
+    for index in rows.indices.dropLast() {
+        guard let start = rows[index].occurredAt,
+              let end = rows[rows.index(after: index)].occurredAt else { continue }
+        rows[index].durationMs = max(0, Int(end.timeIntervalSince(start) * 1000))
+    }
+    annotateNarrativeP90(&rows)
+}
+
+func isNarrativeIntentKind(_ kind: AtlasAgentActivity.Kind) -> Bool {
+    [.understanding, .planning, .reasoning, .permission,
+     .completed, .warning, .evidence, .verifying].contains(kind)
+}
+
+func annotateNarrativeP90(_ rows: inout [NarrativeRow]) {
+    let durations = rows.compactMap(\.durationMs).sorted()
+    guard !durations.isEmpty else { return }
+    let p90Index = min(durations.count - 1, Int(ceil(Double(durations.count) * 0.9)) - 1)
+    let threshold = durations[max(0, p90Index)]
+    guard threshold > 0 else { return }
+    for index in rows.indices {
+        rows[index].isP90 = (rows[index].durationMs ?? 0) >= threshold
+    }
+}
+
+extension LiveTimeline {
+    @ViewBuilder
+    var timelineBody: some View {
+        if baseRows.isEmpty {
+            EmptyView()
+        } else if rows.isEmpty {
+            filterSilenceSurface
+        } else {
+            timelineSurface
+        }
+    }
+}
+
+extension NarrativeRowView {
+    var narrativeBody: some View {
+        HStack(alignment: .top, spacing: 10) {
+            narrativeSpine
+            narrativeTextStack
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+extension NarrativeRowView {
+    @ViewBuilder
+    var narrativeDetailLine: some View {
+        if let detail = row.detail, !detail.isEmpty {
+            Text(detail).font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .lineLimit(row.style == .intent ? 2 : 1)
+                .truncationMode(.middle)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension NarrativeRowView {
+    @ViewBuilder
+    var narrativeP90Badge: some View {
+        if row.isP90 {
+            Text("p90")
+                .font(AtlasFont.mono(9))
+                .foregroundStyle(AtlasTheme.domOperacional)
+        }
+    }
+}
+
+extension NarrativeRowView {
+    @ViewBuilder
+    var narrativeDurationChip: some View {
+        if let duration = row.durationMs {
+            HStack(spacing: 5) {
+                Text("Δ \(humanDuration(duration))")
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
+                    .monospacedDigit()
+                    .modifier(NumericTextTransition(enabled: !reduceMotion))
+                narrativeP90Badge
+            }
+            .accessibilityHidden(true)
+        }
+    }
+}
+
+extension NarrativeRowView {
+    @ViewBuilder
+    var narrativeDurationMeta: some View {
+        narrativeDurationChip
+    }
+}
+
+extension NarrativeRowView {
+    func narrativePulseLifecycle() -> some View {
+        narrativeA11y
+            .onAppear {
+                if isCurrent && !reduceMotion {
+                    withAnimation(AtlasMotion.breath(0.9)) { pulse = true }
+                }
+            }
+            .onChange(of: isCurrent) { _, now in if !now { pulse = false } }
+    }
+}
+
+struct NarrativeRow: Identifiable, Equatable {
+    enum Style { case intent, single }
+    let id: String
+    let style: Style
+    let title: String
+    let detail: String?
+    let occurredAt: Date?
+    var durationMs: Int? = nil
+    var isP90: Bool = false
+}
+
+extension NarrativeRowView {
+    var narrativeSpine: some View {
+        VStack(spacing: 0) {
+            Circle()
+                .fill(isCurrent ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.4))
+                .frame(width: 7, height: 7)
+                .opacity(isCurrent && pulse && !reduceMotion ? 0.4 : 1)
+                .padding(.top, 5)
+            if !isLast {
+                Rectangle()
+                    .fill(AtlasTheme.accent.opacity(0.22))
+                    .frame(width: 1.5)
+                    .frame(maxHeight: .infinity)
+            }
+        }
+        .frame(width: 10)
+        .accessibilityHidden(true)
+    }
+}
+
+extension NarrativeRowView {
+    var narrativeTextStack: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(row.title)
+                .font(row.style == .intent ? .system(.footnote) : .system(.caption))
+                .foregroundStyle(row.style == .intent
+                    ? (isCurrent ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+                    : AtlasTheme.textTertiary)
+                .lineLimit(row.style == .intent ? 3 : 2)
+                .accessibilityHidden(true)
+            narrativeDetailLine
+            narrativeDurationMeta
+        }
+        .padding(.bottom, 10)
+    }
+}
+
+extension NarrativeRowView {
+    var currentTraits: AccessibilityTraits {
+        guard isCurrent else { return [] }
+        return reduceMotion ? .isSelected : [.isSelected, .updatesFrequently]
+    }
+}
+
+struct NarrativeRowView: View {
+    let row: NarrativeRow
+    let index: Int
+    let total: Int
+    let isCurrent: Bool
+    let isLast: Bool
+    let reduceMotion: Bool
+    @State var pulse = false
+
+    var body: some View {
+        narrativePulseLifecycle()
+    }
+}
+
+extension LiveTimeline {
+    var baseRows: [NarrativeRow] { narrativeRows(from: activities) }
+    var rows: [NarrativeRow] { filter.apply(to: baseRows) }
+    var showsFilterChips: Bool { baseRows.count > 2 }
+    var filterSilence: Bool { showsFilterChips && filter != .all && rows.isEmpty }
+}
+
+func narrativeRowMap(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
+    activities.map { activity in
+        NarrativeRow(
+            id: activity.id,
+            style: isNarrativeIntentKind(activity.kind) ? .intent : .single,
+            title: activity.title,
+            detail: activity.detail,
+            occurredAt: AtlasTime.date(activity.occurredAt)
+        )
+    }
+}
+
+func narrativeRows(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
+    var rows = narrativeRowMap(from: activities)
+    annotateNarrativeDurations(&rows)
+    return rows
+}
