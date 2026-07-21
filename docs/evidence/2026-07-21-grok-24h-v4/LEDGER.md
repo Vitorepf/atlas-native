@@ -41,11 +41,13 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `8fc770ab` · delete dead peels ConversationCockpit husk + ArenaCompositeUI Core-dup
+- pass 3 · PENDING · MARK EditorialTurn agent layout
 
 ## Designer
+- designs_proposed: 26
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -54,6 +56,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- **B v5 factory:** WAVE-026…031 shipped this session.
-- **WAVE-031:** strip Escolher + face honesty attentionRequired → paused · DEVICE_PENDING
-- Fila empty → wait A; idle budget already 3 (no fuse factory).
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+

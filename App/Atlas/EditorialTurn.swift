@@ -1,7 +1,9 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// IDLE-COMPRESS MARK + canonical layout (WAVE-post · agent navigation)
+
+// MARK: - A11y
 
 extension EditorialTurnA11y {
   static func spokenSignature(provider: String?, model: String?, elapsedMs: Int?) -> String {
@@ -57,6 +59,8 @@ extension EditorialTurnA11y {
   }
 }
 
+// MARK: - Types / Inputs
+
 struct EditorialTurn: View, Equatable {
     let bubble: ChatBubble
     let reduceMotion: Bool
@@ -71,10 +75,14 @@ struct EditorialTurn: View, Equatable {
     var onOpenArtifacts: (TraceID) -> Void = { _ in }
     @State var placed = false
 
+    // MARK: Body
+
     var body: some View {
         applyArrival(turnBody)
     }
 }
+
+// MARK: - Feedback
 
 struct FeedbackRow: View {
     let active: String?
@@ -137,6 +145,8 @@ extension FeedbackRow {
     }
 }
 
+// MARK: - Helpers (format)
+
 func humanDuration(_ ms: Int) -> String {
     if ms < 1000 { return "um instante" }
     if ms < 60000 { return String(format: "%.1f s", Double(ms) / 1000).replacingOccurrences(of: ".", with: ",") }
@@ -153,6 +163,8 @@ func providerWord(_ p: String?) -> String {
     }
     return x
 }
+
+// MARK: - Signature
 
 struct SignatureLine: View {
     let provider: String?
@@ -203,6 +215,8 @@ extension SignatureLine {
         }
     }
 }
+
+// MARK: - Body / Sections (assistant)
 
 extension EditorialTurn {
     func applyArrival<Content: View>(_ content: Content) -> some View {
@@ -283,6 +297,8 @@ extension EditorialTurn {
     }
 }
 
+// MARK: - Body branches
+
 extension EditorialTurn {
     @ViewBuilder
     var turnBodyAssistantBranch: some View {
@@ -308,6 +324,8 @@ extension EditorialTurn {
         }
     }
 }
+
+// MARK: - Closing / proof / signature / feedback
 
 extension EditorialTurn {
     @ViewBuilder
@@ -349,11 +367,15 @@ extension EditorialTurn {
     }
 }
 
+// MARK: - Equatable
+
 extension EditorialTurn {
     nonisolated static func == (lhs: EditorialTurn, rhs: EditorialTurn) -> Bool {
         lhs.bubble == rhs.bubble && lhs.reduceMotion == rhs.reduceMotion && lhs.artifactItems == rhs.artifactItems
     }
 }
+
+// MARK: - User branch
 
 extension EditorialTurn {
     @ViewBuilder
