@@ -195,6 +195,38 @@ enum PlanJudgment {
         return "auditoria do plano, \(plan.steps.count) passos planejados, \(executed) de \(progress.total) executados, \(progress.isTerminal ? "terminal" : "em curso")"
     }
 
+    // MARK: Card chrome spoken (WAVE-105)
+
+    static func spokenChipRow(label: String, items: [String]) -> String {
+        "\(label), \(items.count) itens, \(items.joined(separator: ", "))"
+    }
+
+    static func spokenPlanDetail(_ plan: AtlasExecutionPlan) -> String {
+        var parts: [String] = []
+        if !plan.agents.isEmpty {
+            parts.append("agentes, \(plan.agents.map(\.title).joined(separator: ", "))")
+        }
+        if !plan.tools.isEmpty {
+            parts.append("ferramentas, \(plan.tools.map(\.label).joined(separator: ", "))")
+        }
+        if !plan.qualityGates.isEmpty {
+            parts.append("gates, \(plan.qualityGates.map(\.label).joined(separator: ", "))")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    static func spokenRevisionToggle(expanded: Bool, count: Int) -> String {
+        expanded
+            ? "comparar versões do plano, expandido, \(count) versões"
+            : "comparar versões do plano, \(count) versões"
+    }
+
+    static func spokenDetailToggle(showDetail: Bool) -> String {
+        showDetail
+            ? "ocultar ferramentas agentes e gates"
+            : "mostrar ferramentas agentes e gates"
+    }
+
     // MARK: Pack
 
     static func packFacts(

@@ -3,60 +3,7 @@ import SwiftUI
 
 // IDLE-COMPRESS PlanCard host + peels RevisionBody/StepRow (canon §7)
 
-// MARK: - A11y (spoken)
-
-extension PlanCard {
-    func spokenCardLabel(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress?) -> String {
-        PlanJudgment.spokenCard(plan: plan, progress: progress)
-    }
-}
-
-extension PlanCard {
-    func spokenChipRow(label: String, items: [String]) -> String {
-        "\(label), \(items.count) itens, \(items.joined(separator: ", "))"
-    }
-}
-
-extension PlanCard {
-    func spokenAuditTerminal(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress) -> String {
-        PlanJudgment.spokenAuditTerminal(plan: plan, progress: progress)
-    }
-}
-
-extension PlanCard {
-    func spokenPlanDetail(_ plan: AtlasExecutionPlan) -> String {
-        var parts: [String] = []
-        if !plan.agents.isEmpty { parts.append("agentes, \(plan.agents.map(\.title).joined(separator: ", "))") }
-        if !plan.tools.isEmpty { parts.append("ferramentas, \(plan.tools.map(\.label).joined(separator: ", "))") }
-        if !plan.qualityGates.isEmpty { parts.append("gates, \(plan.qualityGates.map(\.label).joined(separator: ", "))") }
-        return parts.joined(separator: ", ")
-    }
-}
-
-extension PlanCard {
-    func spokenRevisionToggle(expanded: Bool, count: Int) -> String {
-        expanded
-            ? "comparar versões do plano, expandido, \(count) versões"
-            : "comparar versões do plano, \(count) versões"
-    }
-}
-
-extension PlanCard {
-    func spokenProgressBadge(_ progress: AtlasExecutionPlan.Progress) -> String {
-        PlanJudgment.spokenProgressBadge(progress)
-    }
-}
-
-extension PlanCard {
-    func spokenStep(
-        step: AtlasExecutionPlan.Step,
-        state: PlanStepState,
-        index: Int,
-        total: Int
-    ) -> String {
-        PlanJudgment.spokenStep(step: step, state: state, index: index, total: total)
-    }
-}
+// WAVE-105: spoken → PlanJudgment only (shims deleted)
 
 extension PlanCard {
     @ViewBuilder
@@ -80,7 +27,7 @@ extension PlanCard {
             .padding(12)
             .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.5)
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(spokenCardLabel(plan: plan, progress: executionProgress))
+            .accessibilityLabel(PlanJudgment.spokenCard(plan: plan, progress: executionProgress))
             .accessibilityIdentifier(A11yID.planCard)
     }
 }
@@ -111,7 +58,7 @@ extension PlanCard {
             .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
-            .accessibilityLabel(spokenProgressBadge(progress))
+            .accessibilityLabel(PlanJudgment.spokenProgressBadge(progress))
             .accessibilityIdentifier(A11yID.planProgress)
     }
 }
@@ -151,7 +98,7 @@ extension PlanCard {
     ) -> some View {
         auditTerminalCopy(plan: plan, progress: progress)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(spokenAuditTerminal(plan: plan, progress: progress))
+            .accessibilityLabel(PlanJudgment.spokenAuditTerminal(plan: plan, progress: progress))
             .accessibilityAddTraits(.isStaticText)
     }
 }
@@ -213,7 +160,7 @@ extension PlanCard {
             PlanFlowChips(items: items)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(spokenChipRow(label: label, items: items))
+        .accessibilityLabel(PlanJudgment.spokenChipRow(label: label, items: items))
     }
 }
 
@@ -252,7 +199,7 @@ extension PlanCard {
             planGatesChips(plan)
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(spokenPlanDetail(plan))
+        .accessibilityLabel(PlanJudgment.spokenPlanDetail(plan))
         .transition(reduceMotion ? .identity : .opacity)
     }
 }
@@ -271,7 +218,7 @@ extension PlanCard {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(A11yID.planDetailToggle)
-        .accessibilityLabel(showDetail ? "ocultar ferramentas agentes e gates" : "mostrar ferramentas agentes e gates")
+        .accessibilityLabel(PlanJudgment.spokenDetailToggle(showDetail: showDetail))
         .accessibilityHint(showDetail ? "toque para recolher" : "toque para expandir")
     }
 }
@@ -425,7 +372,7 @@ extension PlanCard {
                 .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(spokenRevisionToggle(expanded: showRevisions, count: count))
+        .accessibilityLabel(PlanJudgment.spokenRevisionToggle(expanded: showRevisions, count: count))
         .accessibilityHint(showRevisions ? "toque para ocultar" : "toque para expandir")
     }
 }
@@ -459,7 +406,7 @@ extension PlanCard {
             total: total,
             state: state,
             isLast: index == total - 1,
-            spokenLabel: spokenStep(step: step, state: state, index: index, total: total),
+            spokenLabel: PlanJudgment.spokenStep(step: step, state: state, index: index, total: total),
             reduceMotion: reduceMotion
         )
     }

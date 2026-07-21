@@ -98,7 +98,7 @@
 | **Change review governance chrome** | `ChangeReviewJudgment` spokenCouncil/DiffStats/hash · packGovernanceFacts → GovernanceBody |
 | **Change review sheet load** | `ChangeReviewSheetJudgment` → face loading/unavailable/empty/ready |
 | Change review peels | Sections host · Judgment section spoken · GovernanceBody · Patch/Run/Findings |
-| **Plan progresso (card + cockpit)** | `PlanJudgment` → PlanFaceStrip · stepState · strip summary |
+| **Plan progresso (card + cockpit)** | `PlanJudgment` → face/spoken card/detail/chip/revision · PlanFaceStrip |
 | Plan card peels | `PlanCard` host · `PlanCardRevisionBody` · `PlanCardStepRow` |
 | **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
 | **Preview de artefato** | `ArtifactPreviewJudgment` → face idle/load/loaded/tooLarge/failed · viewer spoken/zoom |

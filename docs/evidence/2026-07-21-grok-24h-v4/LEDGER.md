@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 99
-- idle_compress_passes: 34
+- waves_completed: 100
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -110,22 +110,26 @@ mode: designer + implementer
 - WAVE-102
 - WAVE-103
 - WAVE-104
+- WAVE-105
 
 ## Idle compress
-- pass 31-32 · A11y enum wipe (zero enums)
-- pass 33-34 · 3d19487c · last raw accessibilityLabel literals to Judgment
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 99
+- designs_proposed: 100
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
-## Open queue snapshot
+## Open queue snapshot (must match QUEUE.md)
 
-| # | wave | delta | status |
+| # | wave | Δ | status |
 |---|---|---|---|
-| - | (none) | - | - |
+| — | _(none)_ | — | — |
 
 ## Notes
-- Spoken dialect residual closed (enums + raw labels).
-- DEVICE_PENDING. Fila empty - structural density residual only if full-bar.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
