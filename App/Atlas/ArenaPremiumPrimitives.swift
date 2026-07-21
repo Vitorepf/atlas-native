@@ -143,6 +143,7 @@ struct ArenaPremiumAction: View {
                 ? Text("indisponível")
                 : Text(quiet ? "ação secundária" : "ação principal da Arena")
         )
+        .accessibilityAddTraits(.isButton)
     }
 }
 
