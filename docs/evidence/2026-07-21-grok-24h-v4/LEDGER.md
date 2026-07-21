@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 157
-- idle_compress_passes: 2
+- idle_compress_passes: 1
 - collapse_host: 0
 
 ## Waves done
@@ -172,12 +172,12 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `dcd35e3f` MARK dense layout (post WAVE-156)
 
 ## Designer
-- designs_proposed: 156
+- designs_proposed: 157
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -186,7 +186,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
+- Continuity BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-
+- WAVE-156 residual density · WAVE-157–162 pack sovereignty closed.
+- ConversationModel deferred (concurrency).
