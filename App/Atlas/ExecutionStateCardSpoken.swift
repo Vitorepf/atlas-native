@@ -172,8 +172,8 @@ extension ExecutionStateCard {
                 reduceMotion: reduceMotion
             ))
             .accessibilityIdentifier(A11yID.executionRetry)
-            .accessibilityLabel("retomar execução a partir do último checkpoint")
-            .accessibilityHint("reenfileira o job que falhou")
+            .accessibilityLabel(ExecutionStateCardJudgment.retryLabel)
+            .accessibilityHint(ExecutionStateCardJudgment.retryHint)
     }
 }
 
@@ -223,8 +223,8 @@ extension ExecutionStateCard {
             style: .secondary,
             reduceMotion: reduceMotion
         ))
-        .accessibilityLabel("redirecionar esta execução")
-        .accessibilityHint("abre instrução para o próximo checkpoint seguro")
+        .accessibilityLabel(ConversationLiveStripJudgment.spokenSteer())
+        .accessibilityHint(ConversationLiveStripJudgment.spokenSteerHint())
     }
 }
 

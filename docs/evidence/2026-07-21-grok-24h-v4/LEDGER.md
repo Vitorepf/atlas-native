@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 92
-- idle_compress_passes: 19
+- idle_compress_passes: 20
 - collapse_host: 0
 
 ## Waves done
@@ -105,10 +105,10 @@ mode: designer + implementer
 - WAVE-097
 
 ## Idle compress
-- pass 19 · Code repo picker shares WorkspacePickerJudgment spoken/loading
+- pass 20 · ExecutionProof/StateCard/Heal/Findings/Autonomos CTA → Judgment
 
 ## Open queue
-_(none)_
+_(none)_ — max 2 IDLE after WAVE-097 done
 
 ## Notes
-- WAVE-097 picker. DEVICE_PENDING.
+- DEVICE_PENDING. Next residual full-bar or A fill.

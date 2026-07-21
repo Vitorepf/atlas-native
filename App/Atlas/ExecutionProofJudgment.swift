@@ -248,6 +248,30 @@ enum ExecutionProofJudgment {
     static let replayUnavailableSpoken =
         "replay indisponível porque os eventos não têm timestamps"
 
+    // MARK: Chrome spoken (WAVE residual · proof card)
+
+    static let artifactsHint = "abre a lista de artefatos deste trace"
+    static let replayScrubberLabel = "scrubber de replay da execução"
+
+    static func spokenArtifactsCTA(count: Int) -> String {
+        let noun = count == 1 ? "artefato" : "artefatos"
+        return "artefatos desta execução, \(count) \(noun)"
+    }
+
+    static func spokenReason(_ reason: String) -> String {
+        "motivo, \(reason)"
+    }
+
+    static func spokenReplayStep(index: Int, total: Int) -> String {
+        let step = min(max(0, index), max(0, total - 1)) + 1
+        return "replay da execução, passo \(step) de \(total)"
+    }
+
+    static func spokenReplayValue(index: Int, total: Int) -> String {
+        let step = min(max(0, index), max(0, total - 1)) + 1
+        return "passo \(step) de \(total)"
+    }
+
     static func qualityPackFacts(
         _ q: AtlasQualitySummary
     ) -> (facts: [String], absences: [String]) {

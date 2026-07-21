@@ -142,7 +142,7 @@ struct AtlasCodeHealReceiptSheet: View {
                 .foregroundStyle(AtlasCodePalette.alert)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier(A11yID.codeHealUndoError)
-                .accessibilityLabel("falha ao desfazer, \(err)")
+                .accessibilityLabel(AtlasCodeHealVetoJudgment.spokenUndoError(err))
         }
     }
 

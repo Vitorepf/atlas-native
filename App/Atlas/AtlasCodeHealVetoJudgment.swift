@@ -125,6 +125,10 @@ enum AtlasCodeHealVetoJudgment {
         return (facts, absences)
     }
 
+    static func spokenUndoError(_ err: String) -> String {
+        "falha ao desfazer, \(err)"
+    }
+
     static func spokenSheet(
         heal: AtlasCodeHealResponse,
         undoError: String?

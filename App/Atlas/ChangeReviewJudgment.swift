@@ -326,5 +326,9 @@ enum ChangeReviewJudgment {
         guard !flags.isEmpty else { return nil }
         return "alertas \(flags.joined(separator: ", "))"
     }
+
+    static func spokenFindingsSection(count: Int) -> String {
+        "achados, \(count) no total"
+    }
 }
 

@@ -88,4 +88,7 @@ enum ExecutionStateCardJudgment {
     static func productWord(for kind: AtlasExecutionPresentationState.Kind) -> String {
         kind.rawValue
     }
+
+    static let retryLabel = "retomar execução a partir do último checkpoint"
+    static let retryHint = "reenfileira o job que falhou"
 }

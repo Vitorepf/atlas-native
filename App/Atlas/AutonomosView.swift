@@ -241,7 +241,7 @@ extension AutonomosViewHeader {
                 .frame(width: 40, height: 40)
                 .atlasGlassCircle()
         }
-        .accessibilityLabel("Novo Autônomo")
+        .accessibilityLabel(AutonomosListJudgment.createCTA)
         .accessibilityHint("Cria um Autônomo com nome e carta")
         .accessibilityIdentifier(A11yID.autonomosNew)
     }

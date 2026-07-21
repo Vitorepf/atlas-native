@@ -219,8 +219,8 @@ extension ExecutionProof {
         content
             .buttonStyle(.plain)
             .accessibilityIdentifier(A11yID.artifactsRow)
-            .accessibilityLabel("artefatos desta execução, \(count)")
-            .accessibilityHint("abre a lista de artefatos deste trace")
+            .accessibilityLabel(ExecutionProofJudgment.spokenArtifactsCTA(count: count))
+            .accessibilityHint(ExecutionProofJudgment.artifactsHint)
     }
 }
 
@@ -317,7 +317,7 @@ extension ExecutionProof {
             Text("\"\(r)\"")
                 .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
                 .padding(.leading, 23)
-                .accessibilityLabel("motivo, \(r)")
+                .accessibilityLabel(ExecutionProofJudgment.spokenReason(r))
         }
     }
 }
@@ -429,8 +429,12 @@ extension ExecutionProof {
             set: { replayIndex = min(max(0, Int($0.rounded())), stampedCount - 1) }
         ), in: 0...Double(stampedCount - 1), step: 1)
         .tint(AtlasTheme.accent)
-        .accessibilityLabel("scrubber de replay da execução")
-        .accessibilityValue("passo \(min(replayIndex, stampedCount - 1) + 1) de \(stampedCount)")
+        .accessibilityLabel(ExecutionProofJudgment.replayScrubberLabel)
+        .accessibilityValue(
+            ExecutionProofJudgment.spokenReplayValue(
+                index: replayIndex, total: stampedCount
+            )
+        )
     }
 }
 
@@ -441,7 +445,11 @@ extension ExecutionProof {
             set: { replayIndex = min(max(0, $0), stampedCount - 1) }
         ), in: 0...(stampedCount - 1))
         .labelsHidden()
-        .accessibilityLabel("replay da execução, passo \(min(replayIndex, stampedCount - 1) + 1) de \(stampedCount)")
+        .accessibilityLabel(
+            ExecutionProofJudgment.spokenReplayStep(
+                index: replayIndex, total: stampedCount
+            )
+        )
     }
 }
 

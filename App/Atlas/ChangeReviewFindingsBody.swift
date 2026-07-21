@@ -116,7 +116,7 @@ struct ChangeReviewFindingsSection: View {
         VStack(alignment: .leading, spacing: 10) {
             ChangeReviewCaption("ACHADOS · \(findings.count)")
                 .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel("achados, \(findings.count) no total")
+                .accessibilityLabel(ChangeReviewJudgment.spokenFindingsSection(count: findings.count))
             ForEach(rankedGroups, id: \.axis) { group in
                 axisGroup(axis: group.axis, axisFindings: group.findings)
             }
