@@ -86,8 +86,14 @@ extension AtlasProfileSheet {
         }
         .tint(AtlasTheme.accent)
         .padding(.horizontal, 14).padding(.vertical, 12)
+        .frame(minHeight: 48, alignment: .center)
         .atlasCard()
+        .onChange(of: session.auditModeEnabled) { _, _ in
+            // Soft: audit chrome is presentation preference, not governed commit.
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        }
         .accessibilityIdentifier(A11yID.profileAuditToggle)
+        .accessibilityHint("mostra ou oculta detalhes técnicos nas telas")
 
         Text("Atlas \(appVersion)")
             .font(AtlasFont.mono(11))

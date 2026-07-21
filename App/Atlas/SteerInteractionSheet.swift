@@ -107,7 +107,7 @@ extension SteerInteractionSheet {
             }
         }
         .pickerStyle(.segmented)
-        .frame(minHeight: 36)
+        .frame(minHeight: 44) // HIG interactive minimum
         .onChange(of: scope) { _, _ in
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
         }

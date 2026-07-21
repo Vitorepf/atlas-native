@@ -177,7 +177,10 @@ extension DraftThumb {
         framed
             .overlay { stateVeil }
             .onTapGesture {
-                if let m = failedMessage { onFailedTap("falhou: \(m)") }
+                if let m = failedMessage {
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                    onFailedTap("falhou: \(m)")
+                }
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(DraftThumbA11y.spokenThumb(draft))
