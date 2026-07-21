@@ -251,7 +251,8 @@ struct AutonomosViewHeader: View {
 
     private var createButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: primary create entry from catalog chrome.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onCreate()
         } label: {
             Image(systemName: "plus")
@@ -262,7 +263,7 @@ struct AutonomosViewHeader: View {
                 .contentShape(Circle())
         }
         .accessibilityLabel("Novo Autônomo")
-        .accessibilityHint("Cria um Autônomo com nome e carta")
+        .accessibilityHint("abre o formulário para criar um Autônomo")
         .accessibilityIdentifier(A11yID.autonomosNew)
     }
 
