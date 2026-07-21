@@ -1543,7 +1543,7 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
+        configuration.label.font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 14).padding(.vertical, 9)
             .frame(minHeight: 48) // HIG 44+; match primary map CTA breath
             .background(
@@ -1924,7 +1924,7 @@ extension SelfConstructionReceiptSheet {
 extension SelfConstructionReceiptSheet {
     var vetoActorField: some View {
         TextField("Quem autoriza", text: $actor)
-            .font(.system(.callout))
+            .font(AtlasFont.serif(15))
             .textInputAutocapitalization(.never)
             .padding(10)
             .frame(minHeight: 44, alignment: .center)
@@ -1937,7 +1937,7 @@ extension SelfConstructionReceiptSheet {
 extension SelfConstructionReceiptSheet {
     var vetoReasonField: some View {
         TextField("Motivo auditável", text: $reason, axis: .vertical)
-            .font(.system(.callout))
+            .font(AtlasFont.serif(15))
             .lineLimit(2...4)
             .padding(10)
             .frame(minHeight: 88, alignment: .topLeading)
@@ -2165,7 +2165,7 @@ struct NightlyProposalCard: View {
                 onDismiss()
             } label: {
                 Text("hoje não")
-                    .font(.system(.footnote, weight: .semibold))
+                    .font(AtlasFont.serif(13, .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.horizontal, 10)
                     .frame(minHeight: 44)
@@ -2188,7 +2188,7 @@ struct NightlyProposalCard: View {
                 }
             } label: {
                 Text("silenciar")
-                    .font(.system(.footnote, weight: .semibold))
+                    .font(AtlasFont.serif(13, .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .frame(minHeight: 44)
                     .contentShape(Rectangle())

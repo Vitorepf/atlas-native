@@ -1168,7 +1168,7 @@ extension ConversationOutlineRow {
         VStack(alignment: .leading, spacing: 3) {
             outlineLeadRole
             Text(snippet)
-                .font(.system(.footnote))
+                .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(2)
                 .accessibilityHidden(true)
@@ -1189,7 +1189,7 @@ extension ConversationOutlineRow {
 extension ConversationOutlineRow {
     var outlineLeadRole: some View {
         Text(bubble.role == "user" ? "Você" : "Atlas")
-            .font(.system(.caption, weight: .semibold))
+            .font(AtlasFont.mono(10, .semibold))
             .foregroundStyle(AtlasTheme.textPrimary)
             .accessibilityHidden(true)
     }
@@ -1248,7 +1248,7 @@ extension ConversationHandoffReceipt {
     var receiptCopy: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(headline)
-                .font(.system(.footnote, weight: .medium))
+                .font(AtlasFont.serif(13, .medium))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             Text(subline)
@@ -3042,7 +3042,7 @@ extension ComposerToolbar {
             get: { model.draftText },
             set: { model.updateDraft($0) }
         ), axis: .vertical)
-            .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
+            .font(AtlasFont.serif(15)).foregroundStyle(AtlasTheme.textPrimary)
             .tint(AtlasTheme.accent).lineLimit(1...6).focused(focused)
             .accessibilityIdentifier(A11yID.conversationInput)
             .accessibilityLabel(spokenInputLabel())
@@ -3729,7 +3729,7 @@ extension ConversationMessages {
     var changeReviewChipLabel: some View {
         HStack(spacing: 6) {
             Image(systemName: "plus.forwardslash.minus").atlasSans(11)
-            Text("Revisar mudanças").font(.system(.footnote, weight: .medium))
+            Text("Revisar mudanças").font(AtlasFont.serif(13, .medium))
         }
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 13).padding(.vertical, 7)
@@ -4217,7 +4217,7 @@ extension EditorialTurn {
            ExecutionProof.shouldDisplay(bubble: bubble, artifactItems: artifactItems) {
             ExecutionProof(bubble: bubble, artifactItems: artifactItems, onOpenArtifacts: onOpenArtifacts)
             Text("RESPOSTA FINAL")
-                .font(.system(.caption2, weight: .semibold)).tracking(1.6)
+                .font(AtlasFont.mono(9, .semibold)).tracking(1.6)
                 .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityLabel(EditorialTurnA11y.spokenFinalAnswerKicker)
                 .accessibilityAddTraits(.isHeader)
@@ -4351,7 +4351,7 @@ extension ExecutingStrip {
 extension ExecutingStrip {
     var stripStatusIdleLine: some View {
         Text("Seguindo a execução")
-            .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+            .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
             .lineLimit(1)
             .layoutPriority(2)
             .accessibilityHidden(true)
@@ -4367,7 +4367,7 @@ extension ExecutingStrip {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityHidden(true)
             Text(act.title)
-                .font(.system(.footnote))
+                .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.tail)
@@ -4433,7 +4433,7 @@ extension ExecutingStrip {
     var stripStatusProgressLine: some View {
         if let p = bubble.executionProgress {
             Text("\(p.current)/\(p.total) · \(p.title)")
-                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .layoutPriority(2)
@@ -4447,7 +4447,7 @@ extension ExecutingStrip {
     var stripStatusReconnectLine: some View {
         if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
             Text(line)
-                .font(.system(.footnote))
+                .font(AtlasFont.serif(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.tail)
@@ -5009,7 +5009,7 @@ struct PlanCard: View {
                 .atlasSans(12).foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityHidden(true)
             Text(plan.title)
-                .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.textPrimary)
+                .font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(plan.title)
             Spacer(minLength: 0)
@@ -5744,7 +5744,7 @@ extension ExecutionProof {
             collapsedHeaderSummary
             Spacer(minLength: 0)
             Text(open ? "Fechar" : "Abrir")
-                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }
         .frame(minHeight: 44)
@@ -5959,7 +5959,7 @@ extension ExecutionProof {
     func activityRowCopy(_ act: AtlasAgentActivity) -> some View {
         VStack(alignment: .leading, spacing: 1) {
             Text(act.title)
-                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
             if let d = act.detail, !d.isEmpty {
                 Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(2).truncationMode(.middle)
@@ -6179,7 +6179,7 @@ extension ExecutionProof {
     func replayScrubberMeta(selected: (activity: AtlasAgentActivity, date: Date)) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(selected.activity.title)
-                .font(.system(.caption, weight: .semibold))
+                .font(AtlasFont.mono(10, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(2)
                 .accessibilityHidden(true)
@@ -6248,7 +6248,7 @@ extension ExecutionStateCard {
             onChoose(choiceJobId, action.id)
         } label: {
             Text(action.title)
-                .font(.system(.caption, weight: .semibold))
+                .font(AtlasFont.mono(10, .semibold))
                 .lineLimit(1)
                 .padding(.horizontal, 11).padding(.vertical, 8)
                 .frame(maxWidth: .infinity, minHeight: 44)
@@ -6300,7 +6300,7 @@ extension ExecutionStateCard {
 
     var retryFallbackLabel: some View {
         Text("Retomar")
-            .font(.system(.caption, weight: .semibold))
+            .font(AtlasFont.mono(10, .semibold))
             .padding(.horizontal, 11).padding(.vertical, 8)
             .frame(maxWidth: .infinity, minHeight: 44)
             .contentShape(Rectangle())
@@ -6332,7 +6332,7 @@ extension ExecutionStateCard {
 
     var steerButtonLabel: some View {
         Text("Redirecionar")
-            .font(.system(.caption, weight: .semibold))
+            .font(AtlasFont.mono(10, .semibold))
             .lineLimit(1)
             .padding(.horizontal, 11).padding(.vertical, 8)
             .frame(maxWidth: .infinity, minHeight: 44)
@@ -6581,7 +6581,7 @@ extension ExecutionStateCard {
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
             Text(state.title)
-                .font(.system(.footnote, weight: .semibold))
+                .font(AtlasFont.serif(13, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
@@ -6668,7 +6668,7 @@ extension ExecutionStateCard {
     @ViewBuilder var metaKickerLines: some View {
         if let kicker = leaveScreenKicker {
             Text(kicker)
-                .font(.system(.caption, weight: .semibold))
+                .font(AtlasFont.mono(10, .semibold))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }
@@ -7945,7 +7945,7 @@ extension SteerInteractionSheet {
 extension SteerInteractionSheet {
     var instructionField: some View {
         TextField("O que muda a partir daqui?", text: $instruction, axis: .vertical)
-            .font(.system(.callout))
+            .font(AtlasFont.serif(15))
             .foregroundStyle(AtlasTheme.textPrimary)
             .tint(AtlasTheme.accent)
             .lineLimit(3...7)
@@ -8245,7 +8245,7 @@ extension QueuedFollowUpRow {
 extension QueuedFollowUpRow {
     var rowMessagePreview: some View {
         Text(message.text)
-            .font(.system(.callout))
+            .font(AtlasFont.serif(15))
             .foregroundStyle(AtlasTheme.textPrimary)
             .lineLimit(2)
             .accessibilityHidden(true)
@@ -8341,7 +8341,7 @@ extension ExecutingStrip {
             onStop()
         } label: {
             Text("Parar")
-                .font(.system(.footnote, weight: .medium))
+                .font(AtlasFont.serif(13, .medium))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .frame(minHeight: 44)
@@ -8364,7 +8364,7 @@ extension ExecutingStrip {
                 onSteer()
             } label: {
                 Text("Redirecionar")
-                    .font(.system(.footnote, weight: .medium))
+                    .font(AtlasFont.serif(13, .medium))
                     .foregroundStyle(AtlasTheme.accent)
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)

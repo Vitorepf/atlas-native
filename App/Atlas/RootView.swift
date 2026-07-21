@@ -1525,7 +1525,7 @@ extension SearchViewHeader {
         ZStack(alignment: .leading) {
             searchFieldPlaceholder
             TextField("", text: $query)
-                .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
+                .font(AtlasFont.serif(15)).foregroundStyle(AtlasTheme.textPrimary)
                 .tint(AtlasTheme.accent).focused($focused)
                 .submitLabel(.search)
                 .accessibilityLabel(spokenFieldLabel)
@@ -1612,7 +1612,7 @@ struct SearchResultsSection: View {
 extension SearchResultsSection {
     var resultsCaption: some View {
         Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
-            .font(.system(.caption, weight: .semibold)).tracking(1.2)
+            .font(AtlasFont.mono(10, .semibold)).tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
@@ -1841,7 +1841,7 @@ struct SearchRecentSection: View {
 extension SearchRecentSection {
     var recentCaption: some View {
         Text("RECENTES")
-            .font(.system(.caption, weight: .semibold)).tracking(1.4)
+            .font(AtlasFont.mono(10, .semibold)).tracking(1.4)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
@@ -1947,7 +1947,7 @@ extension WorkspaceView {
 extension WorkspaceView {
     func areaFilterChipLabel(_ a: AtlasArea, active: Bool) -> some View {
         Text(a.label)
-            .font(.system(.subheadline, weight: .medium))
+            .font(AtlasFont.serif(14, .medium))
             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
             .padding(.horizontal, 14).padding(.vertical, 7)
             .frame(minHeight: 44) // HIG interactive minimum
@@ -2024,7 +2024,7 @@ extension WorkspaceThreadsSection {
 extension WorkspaceThreadsSection {
     var captionHeader: some View {
         Text(caption.uppercased())
-            .font(.system(.caption, weight: .semibold)).tracking(1.2)
+            .font(AtlasFont.mono(10, .semibold)).tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
@@ -2355,7 +2355,7 @@ extension AtlasEditorialGlyphEmpty {
                 .accessibilityHidden(true)
             if let footnote {
                 Text(footnote)
-                    .font(.system(.footnote)).foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textTertiary)
                     .multilineTextAlignment(.center)
                     .accessibilityHidden(true)
             }
@@ -2479,7 +2479,7 @@ extension AtlasNetworkFailureEmpty {
                 .accessibilityLabel(hasToken ? "servidor \(host) porta 3737" : "token ATLAS ausente em Secrets")
             Spacer().frame(height: 16)
             Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
-                .font(.system(.subheadline)).lineSpacing(5)
+                .font(AtlasFont.serif(14)).lineSpacing(5)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
         }

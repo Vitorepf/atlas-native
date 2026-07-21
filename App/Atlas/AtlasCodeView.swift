@@ -1285,7 +1285,7 @@ extension AtlasCodeView {
     func worktreeChip(_ worktree: AtlasCodeWorktree) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(worktree.pathLabel)
-                .font(.system(.caption, weight: .semibold))
+                .font(AtlasFont.mono(10, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)
             HStack(spacing: 5) {
