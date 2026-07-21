@@ -193,9 +193,18 @@ extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var vetoSection: some View {
         if canRevert {
-            vetoFields
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel("veto retroativo com recibo")
+            VStack(alignment: .leading, spacing: 10) {
+                vetoFields
+                if let controlError, !controlError.isEmpty {
+                    Text(controlError)
+                        .font(AtlasFont.serifItalic(13))
+                        .foregroundStyle(AtlasTheme.domOperacional)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier(A11yID.autonomosControlError)
+                }
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(SelfConstructionVetoJudgment.spokenFace)
         }
     }
 }

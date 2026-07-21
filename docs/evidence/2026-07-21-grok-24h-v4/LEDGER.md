@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 27
+- waves_completed: 28
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -38,6 +38,7 @@ mode: designer + implementer
 - WAVE-030
 - WAVE-031
 - WAVE-032
+- WAVE-033
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -55,6 +56,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- **WAVE-032 self-WAVE** (empty queue · A-bar): workspace/search live-first judgment.
-- Device-pending (passcode) = operator.
-- Wait A for 2–5 open GOD WAVEs; idle budget already 3.
+- WAVE-033 self-WAVE: self-construction veto wired to revertCycle.
+- DEVICE_PENDING. Wait A for queue 2–5.

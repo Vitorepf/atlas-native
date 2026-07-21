@@ -7,6 +7,8 @@ struct SelfConstructionReceiptSheet: View {
     let receipt: SelfConstructionReceipt
     var canRevert: Bool = false
     var revertReceipt: AtlasAutonomosCycleRevertResponse? = nil
+    /// WAVE-033: public control/revert error from model (honesty).
+    var controlError: String? = nil
     var onRevert: (String, String) -> Void = { _, _ in }
 
     @Environment(\.dismiss) var dismiss

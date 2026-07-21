@@ -64,7 +64,25 @@ struct AutonomosMapShell: View {
             )
         }
         .sheet(item: $selfConstructionReceipt) { receipt in
-            SelfConstructionReceiptSheet(receipt: receipt)
+            // WAVE-033: wire veto-with-receipt when merge-proved + area controllable.
+            SelfConstructionReceiptSheet(
+                receipt: receipt,
+                canRevert: SelfConstructionVetoJudgment.canRevert(
+                    receipt: receipt,
+                    canControlSelectedArea: model.canControlSelectedArea
+                ),
+                revertReceipt: model.lastRevertReceipt,
+                controlError: model.controlError,
+                onRevert: { actor, reason in
+                    Task {
+                        await model.revertCycle(
+                            cycle: SelfConstructionVetoJudgment.cycleKey(for: receipt),
+                            operatorActor: actor,
+                            reason: reason
+                        )
+                    }
+                }
+            )
         }
         .sheet(item: $nightlyStartProposal) { proposal in
             AutonomosReasonSheet(
