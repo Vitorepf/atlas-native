@@ -27,24 +27,23 @@ enum WorkspaceAskContext {
         let name = session.workspaces.first(where: { $0.id == workspaceKey })?.name ?? workspaceKey
         let threads = session.threads(inWorkspace: workspaceKey)
         var anchors: [String] = []
-        var facts: [String] = [
-            "workspace_key: \(workspaceKey)",
-            "conversas_neste_workspace: \(threads.count)",
-        ]
+        var facts: [String] = []
         var absences: [String] = []
 
-        if let full = session.workspaceFullPath(forKey: workspaceKey) {
-            facts.append("caminho: \(full)")
-        } else {
-            absences.append("caminho completo do workspace não listado nas threads")
-        }
+        // WAVE-185: workspace shell pack (key · count · path).
+        let shell = WorkspaceThreadJudgment.packShellFacts(
+            workspaceKey: workspaceKey,
+            displayName: name,
+            threadCount: threads.count,
+            fullPath: session.workspaceFullPath(forKey: workspaceKey)
+        )
+        facts.append(contentsOf: shell.facts)
+        absences.append(contentsOf: shell.absences)
+        anchors.append(contentsOf: shell.anchors)
 
         for t in threads.prefix(6) {
             let shown = t.title.trimmingCharacters(in: .whitespacesAndNewlines)
             anchors.append(shown.isEmpty ? "thread sem título" : shown)
-        }
-        if threads.isEmpty {
-            absences.append("ainda não há conversas neste workspace")
         }
 
         let live = TurnPresence.shared.liveSessions
@@ -69,8 +68,6 @@ enum WorkspaceAskContext {
         for subject in scoped.subjects {
             anchors.append("live · \(subject)")
         }
-
-        absences.append("não invente grafo/Arena/frota; pack é só deste workspace")
 
         // WAVE-162: workspace screen face organ (loading/offline/empty/list).
         let showsLoading = (session.phase == .loading || session.phase == .idle) && threads.isEmpty

@@ -36,7 +36,9 @@
 | **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face · pack API CodeAsk (WAVE-167) |
 | **Proveniência do commit** | `AtlasCodeProvenanceJudgment` → face · pack CodeAsk focus (WAVE-167) |
 | Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
-| Pack mid-thread conversa | `ConversationOccasionPack` host · Live · Organs peels (WAVE-171) |
+| Pack mid-thread conversa | `ConversationOccasionPack` host · Live · Organs peels (WAVE-171) · thread shell Judgment (WAVE-185) |
+| **Conversation thread shell** | `ConversationThreadShellJudgment.packFacts` → thread/title/workspace binding (WAVE-185) |
+| **Workspace catalog shell pack** | `WorkspaceThreadJudgment.packShellFacts` → WorkspaceAsk (WAVE-185) |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
 | **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y · pack (WAVE-176) |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |

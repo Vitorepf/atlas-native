@@ -96,7 +96,35 @@ enum WorkspaceThreadJudgment {
         }.map(\.element)
     }
 
-    // MARK: Pack
+    // MARK: Pack shell (WAVE-185)
+
+    /// Workspace catalog shell — key · thread count · path honesty.
+    static func packShellFacts(
+        workspaceKey: String,
+        displayName: String,
+        threadCount: Int,
+        fullPath: String?
+    ) -> (facts: [String], absences: [String], anchors: [String]) {
+        var facts: [String] = [
+            "workspace_key: \(workspaceKey)",
+            "workspace_thread_count: \(threadCount)",
+        ]
+        var absences: [String] = []
+        let anchors: [String] = ["workspace: \(displayName)"]
+
+        if let fullPath, !fullPath.isEmpty {
+            facts.append("workspace_path: \(fullPath)")
+        } else {
+            absences.append("caminho completo do workspace não listado nas threads")
+        }
+        if threadCount == 0 {
+            absences.append("ainda não há conversas neste workspace")
+        }
+        absences.append("não invente grafo/Arena/frota; pack é só deste workspace")
+        return (facts, absences, anchors)
+    }
+
+    // MARK: Pack live scoped
 
     /// Live subjects scoped to a workspace path/key when published.
     @MainActor

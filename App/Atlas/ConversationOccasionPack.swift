@@ -75,26 +75,16 @@ enum ConversationOccasionPack {
         var facts: [String] = []
         var absences: [String] = []
 
-        let subjectTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        let subject = subjectTitle.isEmpty ? "conversa \(threadId.rawValue.prefix(8))" : subjectTitle
-
-        facts.append("thread_id: \(threadId.rawValue)")
-        facts.append("thread_title: \(subject)")
-
-        if let workspaceKey {
-            facts.append("workspace_key: \(workspaceKey)")
-            if let name = session.workspaces.first(where: { $0.id == workspaceKey })?.name {
-                facts.append("workspace_name: \(name)")
-            }
-        } else if let thread = session.threads.first(where: { $0.id == threadId.rawValue }) {
-            if let ws = thread.workspace, !ws.isEmpty {
-                facts.append("workspace_path: \(ws)")
-            } else {
-                absences.append("workspace da thread não publicado no catálogo local")
-            }
-        } else {
-            absences.append("thread ainda não listada no catálogo local da sessão")
-        }
+        // WAVE-185: thread shell identity (one law).
+        let shell = ConversationThreadShellJudgment.packFacts(
+            session: session,
+            threadId: threadId,
+            title: title,
+            workspaceKey: workspaceKey
+        )
+        facts.append(contentsOf: shell.facts)
+        absences.append(contentsOf: shell.absences)
+        let subject = shell.subject
 
         let matchingLive = appendLiveSessionFacts(
             session: session,
@@ -103,8 +93,6 @@ enum ConversationOccasionPack {
             anchors: &anchors,
             absences: &absences
         )
-
-        absences.append("não invente grafo/Arena/Autônomos neste pack de conversa")
 
         // WAVE-084: mid-thread empty editorial (never Home catalog).
         let empty = ConversationEmptyJudgment.packFacts(
