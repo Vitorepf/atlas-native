@@ -2565,7 +2565,7 @@ struct BreathingGlyph: View {
     var body: some View {
         Text("✦")
             .font(AtlasFont.serif(30)).foregroundStyle(AtlasTheme.accent)
-            .shadow(color: AtlasTheme.accent.opacity(0.30), radius: 4, y: 1)
+            .shadow(color: AtlasTheme.accent.opacity(on ? 0.45 : 0.22), radius: on ? 8 : 4, y: 1)
             .scaleEffect(on ? 1.08 : 1).opacity(on ? 0.8 : 1)
             .onAppear {
                 if !reduceMotion {
