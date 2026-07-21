@@ -137,6 +137,8 @@ struct ArenaPremiumExecutionView: View {
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .textCase(.uppercase)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel("Corridas")
                 .padding(.bottom, 10)
             if orderedRuns.isEmpty {
                 Text("Ainda sem corridas publicadas.")

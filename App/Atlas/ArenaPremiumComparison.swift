@@ -106,10 +106,14 @@ struct ArenaPremiumComparison: View {
                 .font(AtlasFont.mono(9))
                 .tracking(1.2)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
             Text(value)
                 .font(AtlasFont.serif(28))
                 .foregroundStyle(gold ? AtlasTheme.accent : AtlasTheme.textPrimary)
+                .accessibilityHidden(true)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label), \(value)")
     }
 
     private func engineMatches(_ candidate: String, _ expected: String?) -> Bool {
