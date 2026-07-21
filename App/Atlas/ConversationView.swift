@@ -5557,12 +5557,22 @@ struct PlanRevisionCompare: View {
         if let comparison = latestComparison, comparison.hasChanges {
             VStack(alignment: .leading, spacing: 7) {
                 Text("v\(comparison.revision.revision) arquivado → plano atual")
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.mono(9, .medium))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.8))
                     .accessibilityHidden(true)
                 comparisonLeftList
                 comparisonEnteredList
             }
+            .padding(10)
+            .background(
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)
+                    .fill(AtlasTheme.bgRecessed.opacity(0.65))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)
+                    .stroke(AtlasTheme.separatorSoft, lineWidth: 1)
+            )
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(comparisonAccessibilityLabel(comparison))
         }
@@ -7123,8 +7133,13 @@ extension NarrativeRowView {
     var narrativeP90Badge: some View {
         if row.isP90 {
             Text("p90")
-                .font(AtlasFont.mono(9))
+                .font(AtlasFont.mono(9, .medium))
                 .foregroundStyle(AtlasTheme.domOperacional)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2)
+                .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
+                .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
+                .atlasElevation(radius: 3, y: 1, opacity: 0.08)
         }
     }
 }
