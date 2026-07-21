@@ -35,9 +35,8 @@ struct LiveNowSection: View {
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.bottom, 18)
         .accessibilityIdentifier(A11yID.liveNowSection)
-        .accessibilityLabel(Self.spokenSectionLabel(
-            isHub: isHub, count: sessions.count, remoteCount: remoteCount
-        ))
+        // Contain without fused section label so each LiveNowRow stays focusable.
+        .accessibilityElement(children: .contain)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: sessions.map(\.id))
     }
 
@@ -48,7 +47,9 @@ struct LiveNowSection: View {
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
-                .accessibilityHidden(true)
+                .accessibilityLabel(Self.spokenSectionLabel(
+                    isHub: isHub, count: sessions.count, remoteCount: remoteCount
+                ))
             if isHub {
                 Text("× \(sessions.count)")
                     .font(AtlasFont.mono(11))
