@@ -1012,12 +1012,18 @@ struct RootHomeSections: View {
     // MARK: - Layout
 
     private var rowDivider: some View {
+        // Gold-breath fade — inset past 36 icon disk + screen padding.
         LinearGradient(
-            colors: [AtlasTheme.separator, AtlasTheme.separator, AtlasTheme.separator.opacity(0)],
+            colors: [
+                AtlasTheme.accent.opacity(0),
+                AtlasTheme.accent.opacity(0.22),
+                AtlasTheme.separator,
+                AtlasTheme.separator.opacity(0)
+            ],
             startPoint: .leading, endPoint: .trailing
         )
         .frame(height: 1)
-        .padding(.leading, AtlasTheme.Space.screen + 42)
+        .padding(.leading, AtlasTheme.Space.screen + 50)
     }
 
     private func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
