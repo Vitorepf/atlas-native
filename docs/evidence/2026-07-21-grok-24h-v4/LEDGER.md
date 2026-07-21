@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 23
+- waves_completed: 24
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -34,6 +34,7 @@ mode: designer + implementer
 - WAVE-026
 - WAVE-027
 - WAVE-028
+- WAVE-029
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -42,7 +43,7 @@ mode: designer + implementer
 
 ## Designer
 - designs_proposed: 24
-- designs_open: 1
+- designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -50,11 +51,11 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-029-conversation-occasion-pack-honesty | high | proposed |
+| — | _(none)_ | — | — |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- **WAVE-026–028 done 2026-07-21** B v5 factory
-- **WAVE-028:** AtlasCodeGraphJudgment default fora + pack slice · DEVICE_PENDING
+- **B v5 factory 2026-07-21:** WAVE-026…029 shipped; queue empty → wait A (no micro-WAVE; idle budget already 3).
+- **WAVE-029:** ConversationOccasionPack mid-thread · residual WAVE-020 closed · DEVICE_PENDING

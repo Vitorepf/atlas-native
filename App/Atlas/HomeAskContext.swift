@@ -35,7 +35,8 @@ enum HomeAskContext {
         } else {
             facts.append("sessoes_vivas: \(live.count)")
             for s in live.prefix(5) {
-                anchors.append("live · \(s.title) · \(s.phaseTitle)")
+                // WAVE-029: face product words (not raw phaseTitle lead).
+                anchors.append(ConversationOccasionPack.liveAnchorLine(s))
             }
         }
 

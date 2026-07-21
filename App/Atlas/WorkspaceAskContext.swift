@@ -53,7 +53,8 @@ enum WorkspaceAskContext {
         } else {
             facts.append("sessoes_vivas_hub_global: \(live.count) (não assumir que são deste workspace)")
             for s in live.prefix(3) {
-                facts.append("hub_live · \(s.title) · \(s.phaseTitle)")
+                // WAVE-029: face product words on hub live lines.
+                facts.append("hub_live · \(ConversationOccasionPack.liveAnchorLine(s))")
             }
         }
 
