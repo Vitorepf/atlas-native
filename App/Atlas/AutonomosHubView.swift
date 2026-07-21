@@ -42,7 +42,7 @@ struct AutonomosHubView: View {
                 )
 
                 if unit.paused {
-                    AutonomosMapNavLine(title: "Encerrar", meta: "", action: onEnd)
+                    AutonomosMapNavLine(title: "Encerrar", meta: "", danger: true, action: onEnd)
                 } else {
                     AutonomosMapNavLine(title: "Pausar", meta: "", action: onPause)
                 }
