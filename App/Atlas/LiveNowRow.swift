@@ -36,12 +36,11 @@ struct LiveNowRow: View {
 
     /// Running sessions update elapsed copy; respect Reduce Motion.
     private var liveNowTraits: AccessibilityTraits {
-        var traits: AccessibilityTraits = []
-        if navigable { traits.insert(.isButton) }
-        if session.timing == .running && !reduceMotion {
-            traits.insert(.updatesFrequently)
+        let live = session.timing == .running && !reduceMotion
+        if navigable {
+            return live ? [.isButton, .updatesFrequently] : .isButton
         }
-        return traits
+        return live ? .updatesFrequently : []
     }
 
     private var rowContent: some View {
