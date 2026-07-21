@@ -1,40 +1,42 @@
 # Atlas Native — CODEMAP (casca)
 
-> Mapa curto para IA. GOD RESTRUCTURE v4 densified hosts. Navigation = `Type.method`.
+> GOD RESTRUCTURE v4. Soft Sections/States = 0. Density: View/Shell≤600 · any≤2000 · Judgment prefer ≤1200.
 
 ## Superfícies → host
 
-| Superfície | Host principal |
+| Superfície | Hosts |
 |---|---|
-| Home | `RootView` · `RootChrome` · `HomeOpsJudgment` |
-| Conversa | `ConversationSurface` · Messages · Composer · Judgments · `ConversationModel` |
+| Home | `RootView` · `RootChrome` · `HomeOpsJudgment` · `RootHomeBody` · `HomeNightlyJudgment` · `LiveNowJudgment` |
+| Conversa | `ConversationSurface` · Messages · Composer · Toolbar · Judgment families · `ConversationModel` |
 | Código | `AtlasCodeSurface` · Radar · Provenance · Graph |
-| Arena | `ArenaPremiumRoot` · Execution · Surfaces · FleetJudgment |
-| Autônomos | `AutonomosHost` · Map · Model · CanDoJudgment |
+| Arena | `ArenaPremiumRoot` · Execution · Surfaces · Fleet/Live/Control Judgments |
+| Autônomos | `AutonomosHost` · Map · Model · CanDo/FleetRun/Organs/Decision Judgments |
 | Workspace/Search | `WorkspaceSurface` · `SearchSurface` |
 | Continuity | `TurnPresence` · Widgets Host A/B |
-| Design system | inside `RootChrome` (Theme/A11y) |
 
 ## Onde muda X
 
-| Intenção | Host |
+| X | Host |
 |---|---|
-| LiveNow / Home ops | `HomeOpsJudgment` |
-| Mid-thread conversation | `ConversationSurface` / `ConversationMessagesJudgment` |
-| Composer | `ConversationComposer` / `ComposerToolbar` |
-| Execution proof card | `ExecutionStateCard` |
+| LiveNow | `LiveNowJudgment` · `RootHomeBody` |
+| Home nightly | `HomeNightlyJudgment` |
+| Mid-thread | `ConversationSurface` · `ConversationMessagesJudgment` |
+| Steer | `ConversationSteerJudgment` |
+| Outline | `ConversationOutlineJudgments` |
+| Composer | `ConversationComposer` · `ComposerToolbar` |
+| Execution card | `ExecutionStateCard` |
 | Plan | `PlanCard` |
-| Change review | `ChangeReviewSurface` / `ChangeReviewJudgment` |
+| Change review | `ChangeReviewSurface` · Judgment · Body · Governance |
 | Radar | `AtlasCodeRadarSurface` |
-| Provenance/Why | `AtlasCodeProvenanceSheet` |
-| Grafo | `AtlasCodeSurface` / `AtlasCodeGraph` |
-| Arena | `ArenaPremiumRoot` / `ArenaPremiumSurfaces` / `ArenaFleetJudgment` |
-| Autônomos | `AutonomosHost` / `AutonomosMap` / `AutonomosCanDoJudgment` |
+| Provenance | `AtlasCodeProvenanceSheet` |
+| Graph | `AtlasCodeGraph` · `AtlasCodeSurface` |
+| Arena | `ArenaPremiumRoot` · Surfaces · Fleet/Live/Control |
+| Autônomos | `AutonomosHost` · CanDo/FleetRun/Organs |
 
 ## BLOCKED
 
-Sources/** · ConversationModel/AtlasSession **logic** · App Group data · WAVE produto
+Sources · ConversationModel/AtlasSession **logic** · App Group data · WAVE produto
 
-## Densidade
+## Proibido restructure
 
-route View/Shell ≤600 · any ≤2000 · soft Sections/States = 0
+Goal Done · god_hold · dual · Core paths
