@@ -235,6 +235,7 @@ extension EditorialTurn {
         .contentShape(Rectangle())
         .onLongPressGesture(minimumDuration: 0.38) { onCopy() }
         .accessibilityHint(EditorialTurnA11y.copyLongPressHint)
+        .accessibilityAction(named: "Copiar resposta") { onCopy() }
     }
 }
 

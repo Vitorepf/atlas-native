@@ -216,6 +216,8 @@ private struct CommitRowAskChrome<Label: View>: View {
         .accessibilityHint(accessibilityHint)
         .accessibilityIdentifier(accessibilityID)
         .accessibilityAddTraits(.isButton)
+        .accessibilityAction(named: "Opções do commit") { onLongPress() }
+        .modifier(CommitRowAskA11yAction(onAsk: onAsk))
         .onLongPressGesture(minimumDuration: 0.45, perform: onLongPress)
         .simultaneousGesture(askDrag)
     }
@@ -248,6 +250,19 @@ private struct CommitRowAskChrome<Label: View>: View {
                     suppressTap = false
                 }
             }
+    }
+}
+
+/// VoiceOver secondary: swipe-to-ask when the row exposes onAsk.
+private struct CommitRowAskA11yAction: ViewModifier {
+    let onAsk: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if let onAsk {
+            content.accessibilityAction(named: "Perguntar na pílula") { onAsk() }
+        } else {
+            content
+        }
     }
 }
 

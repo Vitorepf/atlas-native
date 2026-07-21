@@ -73,6 +73,10 @@ extension RootView {
     .accessibilityHint(mastheadSpokenHint())
     .accessibilityIdentifier(A11yID.auditMasthead)
     .accessibilityAddTraits(.isHeader)
+    .accessibilityAction(named: session.auditModeEnabled ? "Desligar auditoria" : "Ligar auditoria") {
+      AtlasMotion.softImpact(reduceMotion: reduceMotion)
+      session.auditModeEnabled.toggle()
+    }
     .onLongPressGesture(minimumDuration: 0.55) {
       // Soft: audit chrome is presentation preference (matches profile toggle).
       AtlasMotion.softImpact(reduceMotion: reduceMotion)

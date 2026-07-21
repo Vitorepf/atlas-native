@@ -120,6 +120,15 @@ extension AtlasCodeView {
         return "\(hash) · \(short)"
     }
 
+    func openAskPill() {
+        // Soft: ask pill is invitation (same class as AgenticPill).
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        if askFocusNode == nil {
+            askDraft = ""
+        }
+        showsAskCard = true
+    }
+
     /// Lei 7: a pílula nunca some — nem aqui. E agora ela responde.
     var askPill: some View {
         HStack(spacing: 9) {
@@ -144,6 +153,8 @@ extension AtlasCodeView {
             )
             .accessibilityHint(AtlasCodeAskPillA11y.pillHint)
             .accessibilityAddTraits(.isButton)
+            // VO activate must open ask (tap is on the capsule chrome).
+            .accessibilityAction { openAskPill() }
             Spacer(minLength: 0)
             askPillClearButton
             Image(systemName: "chevron.up")
@@ -160,14 +171,7 @@ extension AtlasCodeView {
         )
         .shadow(color: .black.opacity(0.22), radius: 10, y: 4)
         .contentShape(Capsule())
-        .onTapGesture {
-            // Soft: ask pill is invitation (same class as AgenticPill).
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            if askFocusNode == nil {
-                askDraft = ""
-            }
-            showsAskCard = true
-        }
+        .onTapGesture { openAskPill() }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.bottom, 10)
         .animation(
