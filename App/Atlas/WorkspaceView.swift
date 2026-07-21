@@ -128,8 +128,13 @@ extension WorkspaceView {
             newPillLabel
         }
         .buttonStyle(.plain)
+        .simultaneousGesture(TapGesture().onEnded {
+            // Soft: workspace write pill is invitation (AgenticPill class).
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        })
         .accessibilityLabel("nova conversa")
         .accessibilityHint("abre o compositor para escrever ao Atlas")
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
