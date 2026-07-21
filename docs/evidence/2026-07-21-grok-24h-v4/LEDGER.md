@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 47
-- idle_compress_passes: 5
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -62,14 +62,12 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
-- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
-- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
 - designs_proposed: 47
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -78,5 +76,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-051 queue head + WAVE-052 StateCard judgment. Prefer A fill.
-- DEVICE_PENDING history.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
