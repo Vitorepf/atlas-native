@@ -31,6 +31,8 @@ struct AtlasCodeRepoPickerSheet: View {
                             systemImage: "folder",
                             description: Text("o workspace não publicou nenhum repo")
                         )
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("sem repositórios, o workspace não publicou nenhum repo")
                     }
                 case .failed:
                     ContentUnavailableView(
@@ -38,6 +40,8 @@ struct AtlasCodeRepoPickerSheet: View {
                         systemImage: "wifi.slash",
                         description: Text("tente de novo em instantes")
                     )
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("não consegui ler a frota, tente de novo em instantes")
                 default:
                     VStack(spacing: 12) {
                         BreathingDiamond(size: 10, reduceMotion: reduceMotion)
@@ -46,6 +50,8 @@ struct AtlasCodeRepoPickerSheet: View {
                             .foregroundStyle(AtlasTheme.textTertiary)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("lendo os repositórios do Mac")
                 }
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
@@ -97,6 +103,7 @@ struct AtlasCodeRepoPickerSheet: View {
                 .font(AtlasFont.mono(11, .medium))
                 .tracking(1.6)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
             VStack(spacing: 0) {
                 ForEach(Array(repos.enumerated()), id: \.element.id) { index, repo in
                     repoRow(repo)
