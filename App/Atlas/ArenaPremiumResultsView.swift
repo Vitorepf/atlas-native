@@ -40,7 +40,7 @@ struct ArenaPremiumResultsView: View {
             )
             if let narrative = model.report?.narrative {
                 Text(narrative)
-                    .font(.system(.callout))
+                    .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -171,7 +171,7 @@ struct ArenaPremiumResultsView: View {
                 .font(AtlasFont.serif(31))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text("O primeiro resultado aparecerá quando uma suíte concluir.")
-                .font(.system(.body))
+                .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
     }

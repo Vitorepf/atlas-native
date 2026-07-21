@@ -67,7 +67,7 @@ struct ArenaPremiumFleetView: View {
                 .font(AtlasFont.serif(28))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text("Rode uma medição com pelo menos um motor para ver o ranking da frota.")
-                .font(.system(.callout))
+                .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }

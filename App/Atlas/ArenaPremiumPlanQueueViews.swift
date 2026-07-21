@@ -114,7 +114,7 @@ struct ArenaPremiumPlanView: View {
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text("Crie uma medição para organizar suítes, motores e braços.")
-                .font(.system(.callout))
+                .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
     }
@@ -204,7 +204,7 @@ struct ArenaPremiumQueueView: View {
             }
             if queued.isEmpty {
                 Text("Fila vazia")
-                    .font(.system(.callout))
+                    .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
             }

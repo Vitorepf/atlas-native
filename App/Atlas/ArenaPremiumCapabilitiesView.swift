@@ -126,7 +126,7 @@ struct ArenaPremiumCapabilitiesView: View {
                     HStack(spacing: 10) {
                         VStack(alignment: .leading, spacing: 3) {
                             Text(capability.labelPt)
-                                .font(.system(.callout))
+                                .font(AtlasFont.serifItalic(15))
                                 .foregroundStyle(AtlasTheme.textPrimary)
                             if let caption = shortConfidence(capability) {
                                 Text(caption)
@@ -163,7 +163,7 @@ struct ArenaPremiumCapabilitiesView: View {
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text("Ausência permanece ausência — nenhuma barra começa em zero.")
-                .font(.system(.callout))
+                .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
     }

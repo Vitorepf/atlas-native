@@ -69,7 +69,7 @@ struct ArenaPremiumAlertsView: View {
                     )
                     Text("Nenhuma regressão ou falha publicada")
                 }
-                    .font(.system(.callout))
+                    .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity, minHeight: 86, alignment: .leading)
             }
