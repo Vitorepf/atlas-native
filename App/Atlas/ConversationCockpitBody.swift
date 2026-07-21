@@ -384,52 +384,7 @@ struct ReconnectBanner: View {
     }
 }
 
-// --- ConversationCockpit+Ribbon.swift ---
-struct ExecutionRibbon: View {
-    let bubble: ChatBubble
-    let reduceMotion: Bool
-    let onStop: () -> Void
-    var body: some View {
-        executionRibbonCard(executionRibbonStack)
-    }
-}
-
-// --- ConversationCockpit+RibbonDecide.swift ---
-extension ExecutionRibbon {
-    @ViewBuilder
-    var decideStrategyLine: some View {
-        if let strat = bubble.decideStrategy {
-            Text("atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
-        }
-    }
-}
-
-// --- ConversationCockpit+RibbonLanes.swift ---
-extension ExecutionRibbon {
-    @ViewBuilder
-    var agentLanes: some View {
-        if !bubble.agents.isEmpty {
-            VStack(alignment: .leading, spacing: 6) {
-                agentLanesCaption
-                ForEach(bubble.agents) { AgentRow(agent: $0, compactLane: bubble.agents.count >= 2) }
-            }.padding(.leading, 24)
-        }
-    }
-}
-
-// --- ConversationCockpit+RibbonLanesCaption.swift ---
-extension ExecutionRibbon {
-    @ViewBuilder
-    var agentLanesCaption: some View {
-        if bubble.agents.count >= 2 {
-            Text("LANES")
-                .font(AtlasFont.mono(10))
-                .tracking(1.1)
-                .foregroundStyle(AtlasTheme.textTertiary)
-        }
-    }
-}
+// ExecutionRibbon → ExecutionRibbon.swift (IDLE-COMPRESS)
 
 // --- ConversationCockpit+Watchdog.swift ---
 struct SilenceWatchdog: View {
