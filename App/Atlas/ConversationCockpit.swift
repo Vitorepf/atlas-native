@@ -16,6 +16,8 @@ extension ExecutingStrip {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(stripAccessibilityLabel)
+        // Live elapsed/activity copy moves; Reduce Motion keeps it static.
+        .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
     }
 }
 
