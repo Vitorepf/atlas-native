@@ -9,7 +9,7 @@
 |---|---|---|
 | Home | `RootView.swift` | `RootChrome`, `RootHomeBody`, `Workspace*` |
 | Conversa | `ConversationView.swift` | `ConversationSurface fused`, `ConversationChrome*`, Messages/Cockpit/Composer* |
-| Código | `AtlasCodeView.swift` | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
+| Código | `AtlasCodeSurface.swift` (entry AtlasCodeView) | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
 | Radar (multi-repo) | `AtlasCodeRadarView.swift` | Surface · FolderRow · RepoChrome · AskContext · Judgment |
 | Pílula | (dock por superfície) | `AgenticPill`, `AgenticPill`, `AgenticPill` |
 | Arena Premium | `ArenaPremiumShell.swift` | Execution/Fleet/Results/Suite/Run/Score* · NowBody · GlyphRow |
@@ -44,7 +44,7 @@
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
 | **Search screen (shell)** | `SearchJudgment` → face loading/offline/empty/results · screen a11y · pack |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
-| **Search pílula / pack** | `SearchAskContext` + `SearchView` AgenticPill · PartidaCanDo.search |
+| **Search pílula / pack** | `SearchAskContext` + `SearchSurface` / SearchView AgenticPill · PartidaCanDo.search |
 | **Workspace screen (lista)** | `WorkspaceJudgment` → face loading/offline/empty/list · screen a11y · pack Ask |
 | **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face · pack Home partida |
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face · `WorkspaceEmptyChrome` glyph/loading/network empty |
