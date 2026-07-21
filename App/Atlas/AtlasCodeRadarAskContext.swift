@@ -34,8 +34,16 @@ enum AtlasCodeRadarAskContext {
             let recentCount = workspace.recents.count
             lines.append("folders: \(folderCount)")
             lines.append("recents: \(recentCount)")
+            if let root = workspace.workspaceRoot, !root.isEmpty {
+                lines.append("workspace_root: \(root)")
+            } else if let slug = workspace.recents.first?.slug {
+                lines.append("workspace_wire_fallback: \(slug) (primeiro recente)")
+            } else {
+                lines.append("absences: sem workspace_root nem recentes para o wire")
+            }
         } else {
             lines.append("workspace: ainda não carregado")
+            lines.append("absences: workspace wire nil até load")
         }
 
         let scanned = model.issuesBySlug.count

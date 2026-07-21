@@ -185,7 +185,8 @@ enum ArenaPremiumAskContext {
         }
     }
 
-    private static func tabForDestination(_ d: ArenaPremiumDestination) -> ArenaPremiumTab {
+    /// Tab canônica para um destino (nunca forçar Agora na cara do pack de destinos).
+    static func tabForDestination(_ d: ArenaPremiumDestination) -> ArenaPremiumTab {
         switch d {
         case .execution, .queue, .plan, .alerts: .now
         case .results: .results

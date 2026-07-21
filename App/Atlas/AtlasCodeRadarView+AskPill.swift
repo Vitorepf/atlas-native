@@ -35,7 +35,8 @@ extension AtlasCodeRadarView {
             emptyPrompt: AtlasCodeRadarAskContext.emptyPrompt(headline: model.headline),
             emptySuggestions: AtlasCodeRadarAskContext.emptySuggestions,
             taskKind: "code",
-            workspace: nil,
+            // Prefer root; senão primeiro recente; nil + absence no pack se vazio.
+            workspace: radarWireWorkspace,
             draft: askDraft,
             turnFacts: { [model] _ in
                 AtlasCodeRadarAskContext.facts(model: model)
@@ -47,5 +48,17 @@ extension AtlasCodeRadarView {
         .presentationDragIndicator(.hidden)
         .presentationBackground(AtlasTheme.bg)
         .presentationCornerRadius(28)
+    }
+
+    /// Wire workspace honesto — só o que o model já expõe (WAVE-002).
+    var radarWireWorkspace: String? {
+        if let root = model.workspace?.workspaceRoot?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !root.isEmpty {
+            return root
+        }
+        if let slug = model.workspace?.recents.first?.slug, !slug.isEmpty {
+            return slug
+        }
+        return nil
     }
 }

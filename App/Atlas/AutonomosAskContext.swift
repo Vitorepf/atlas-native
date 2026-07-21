@@ -59,6 +59,20 @@ enum AutonomosAskContext {
         }
         if let destination {
             lines.append("Tela: \(destination.navTitle).")
+            switch destination {
+            case .hub:
+                lines.append("Foco: hub do Autônomo — saúde e atalhos locais.")
+            case .decisions, .decisionInbox, .decisionOrder:
+                lines.append("Foco: decisões. Só o que a face mostra; não invente backlog servidor.")
+            case .evolution:
+                lines.append("Foco: evolução. Ausência: motor de evolução por unit ainda não ligado no wire.")
+            case .moment:
+                lines.append("Foco: momento. Ausência: feed de momentos pode estar vazio sem inventar.")
+            case .incident:
+                lines.append("Foco: incidente. Só sinais reais da face.")
+            }
+        } else {
+            lines.append("Tela: catálogo do operador.")
         }
         lines.append("Create no servidor ainda pendente (§5). Catálogo local some se o app for morto — não invente frota 24/7 persistida.")
         lines.append("Pause/retomar/encerrar: controles da face; NL de chat ainda não autoriza tools de escrita no wire.")

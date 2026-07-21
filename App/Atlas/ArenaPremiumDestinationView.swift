@@ -33,7 +33,10 @@ struct ArenaPremiumDestinationView: View {
                 .frame(height: 28)
                 .allowsHitTesting(false)
                 ArenaPremiumAskPill(
-                    invite: ArenaPremiumAskContext.invite(tab: .now, destination: target)
+                    invite: ArenaPremiumAskContext.invite(
+                        tab: ArenaPremiumAskContext.tabForDestination(target),
+                        destination: target
+                    )
                 ) {
                     askDraft = ""
                     showingAsk = true
@@ -47,13 +50,23 @@ struct ArenaPremiumDestinationView: View {
                 client: session.client,
                 threadId: askThreadId,
                 title: "Arena · \(title)",
-                emptyPrompt: ArenaPremiumAskContext.invite(tab: .now, destination: target),
-                emptySuggestions: ArenaPremiumAskContext.emptySuggestions(tab: .now, destination: target),
+                emptyPrompt: ArenaPremiumAskContext.invite(
+                    tab: ArenaPremiumAskContext.tabForDestination(target),
+                    destination: target
+                ),
+                emptySuggestions: ArenaPremiumAskContext.emptySuggestions(
+                    tab: ArenaPremiumAskContext.tabForDestination(target),
+                    destination: target
+                ),
                 taskKind: "arena",
                 workspace: nil,
                 draft: askDraft,
                 turnFacts: { [model, target] _ in
-                    ArenaPremiumAskContext.facts(model: model, tab: .now, destination: target)
+                    ArenaPremiumAskContext.facts(
+                        model: model,
+                        tab: ArenaPremiumAskContext.tabForDestination(target),
+                        destination: target
+                    )
                 },
                 onThread: { askThreadId = $0 },
                 hidesNavigationBack: true

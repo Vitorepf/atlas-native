@@ -1,10 +1,10 @@
 # Grok 24h v3.1 GOD WAVES
 
 Started: 2026-07-21T12:37:30Z
-phase: W0_council
-active_wave: null
-design_path: null
-design_approved: false
+phase: W2_implement
+active_wave: WAVE-002-occasion-pack-ops
+design_path: docs/evidence/2026-07-21-grok-24h-v3/WAVE-002-design.md
+design_approved: true
 
 ## Score
 - waves_completed: 1
@@ -14,17 +14,15 @@ design_approved: false
 - guard_failures: 0
 
 ## Session notes
-- v2 leaps STOPPED. Goal v3.1 GOD WAVES HARDENED.
-- Loop: 45m (scheduler 019f84aef88e) continues active phase only.
-- WAVE-001 completed: 47e82ea0 (W2) + 916721d9 (W3 −429 LOC).
+- WAVE-001 completed: 47e82ea0 + 916721d9 (−429 LOC W3).
+- W0 #2 chose WAVE-002 occasion-pack-ops (pack law; Workspace≠Home).
 
-## Candidates
-(pending — W0 explore for next ENORMOUS wave after WAVE-001)
+## Candidates (W0 #2)
+1. WAVE-002-occasion-pack-ops — CHOSEN
+2. WAVE-003-conversation-sink
+3. WAVE-004-arena-runsheet-instrument
+4. WAVE-005-ops-pill-chrome-one
 
 ## Waves
-### WAVE-001-grafo-soberano-casca
-- status: **completed**
-- design: `docs/evidence/2026-07-21-grok-24h-v3/WAVE-001-design.md`
-- compress: `docs/evidence/2026-07-21-grok-24h-v3/WAVE-001-compress.md`
-- commits: `47e82ea0`, `916721d9`
-- W3 net: −429 LOC honest
+### WAVE-001-grafo-soberano-casca — completed
+### WAVE-002-occasion-pack-ops — W2_implement
