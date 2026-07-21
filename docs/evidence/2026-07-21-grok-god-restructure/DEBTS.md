@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 605
-domain_index: 7
-last_focus: "Continuity/Código residual spoken* Steer+AskPill+screenHint"
-session_commits: 180
+pass: 606
+domain_index: 0
+last_focus: "residual spoken*/product sweep + spokenClose family"
+session_commits: 183
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,11 +14,10 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **180** · soft **0** · density OK · 46+2 · gates green
+commits **183** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
 **never Goal Done**
 
-Honesty spoken*/product* sweep domains 0–6. Soft 0. Densify headroom ~0.
-Pass wrap → domain 0; hunt residual dead + honesty outliers.
+Honesty sweep continues. Soft 0. Densify headroom ~0.
