@@ -131,8 +131,12 @@ struct AutonomosFleetFailureEmpty: View {
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
-                .atlasSans(24)
-                .foregroundStyle(AtlasTheme.domOperacional.opacity(0.9))
+                .atlasSans(22)
+                .foregroundStyle(AtlasTheme.domOperacional)
+                .frame(width: 56, height: 56)
+                .background(Circle().fill(AtlasTheme.domOperacional.opacity(0.1)))
+                .overlay(Circle().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
+                .atlasElevation(radius: 8, y: 2, opacity: 0.12)
                 .accessibilityHidden(true)
             Text("Catálogo fora de alcance.")
                 .font(AtlasFont.serif(20, .semibold))

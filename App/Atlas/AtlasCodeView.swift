@@ -3568,8 +3568,12 @@ struct AtlasCodeLoadFailureEmpty: View {
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
-                .atlasSans(24)
+                .atlasSans(22)
                 .foregroundStyle(AtlasCodePalette.alert)
+                .frame(width: 56, height: 56)
+                .background(Circle().fill(AtlasCodePalette.alert.opacity(0.1)))
+                .overlay(Circle().stroke(AtlasCodePalette.alert.opacity(0.4), lineWidth: 1))
+                .atlasElevation(radius: 8, y: 2, opacity: 0.12)
                 .accessibilityHidden(true)
             Text(headline)
                 .font(AtlasFont.serif(20, .semibold))
