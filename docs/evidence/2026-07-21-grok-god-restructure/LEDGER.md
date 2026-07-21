@@ -12,8 +12,8 @@ god_hold: **forbidden** (v4)
 - domain_index: 1
 - pass: 1
 - actionable: open
-- passes: 9
-- last_commit: pending-planrevision-fuse
+- passes: 10
+- last_commit: pending-planrevision-rename
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,23 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T22:51Z — PlanRevisionCompare rename honesty
+
+```yaml
+phase: prove
+focus: PlanCardRevisionBody → PlanRevisionCompare
+domain_index: 1
+pass: 1
+commands: |
+  git mv honesty rename after A11y+Archive fuse
+  gates pending commit
+before_after: |
+  dishonest *RevisionBody* host → PlanRevisionCompare.swift ~254
+  CODEMAP Plan card revision path
+notes: next PlanCard Steps fuse
+```
+
 
 ### 2026-07-21T22:49Z — PlanRevision peels fuse
 

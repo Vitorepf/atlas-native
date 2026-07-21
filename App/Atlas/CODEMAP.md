@@ -119,7 +119,7 @@
 | **Change review sheet load** | `ChangeReviewSheetJudgment` → face loading/unavailable/empty/ready |
 | Change review parts | Sections host · Judgment section spoken · GovernanceBody · Patch/Run/Findings |
 | **Plan progresso (card + cockpit)** | `PlanJudgment` → face/spoken card/detail/chip/revision · PlanFaceStrip |
-| Plan card parts | `PlanCard` host · `PlanCardRevisionBody` (compare·archive·a11y fused) · `PlanCardStepRow` |
+| Plan card parts | `PlanCard` host · `PlanRevisionCompare` (archive·a11y fused) · `PlanCardStepRow` |
 | **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
 | **Preview de artefato** | `ArtifactPreviewJudgment` → face idle/load/loaded/tooLarge/failed · viewer spoken/zoom |
 | Artifact sheet parts | `ArtifactSheet` host/list · `+Chrome` · `+Preview` · Delivery |
@@ -146,7 +146,7 @@
 | **Commit row parts** | Body · Meta |
 | **Conversation composer sheets** | `ConversationComposerSheetsModifier` (API · host · camera; was 4 peels) |
 | **Search surface parts** | Surface/Header · Results |
-| **Plan card parts** | PlanCard host · RevisionBody fused · Steps · StepRow · FlexWrap |
+| **Plan card parts** | PlanCard host · `PlanRevisionCompare` · Steps · StepRow · FlexWrap |
 | **Workspace surface parts** | Surface · Body/threads |
 | **Composer toolbar parts** | Chrome · ChromeBody |
 | **Provenance sheet body** | `AtlasCodeProvenanceSheetBody` (was Sections*) · WhyTarget |

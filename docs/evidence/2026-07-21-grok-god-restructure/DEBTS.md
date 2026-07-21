@@ -5,8 +5,8 @@
 ```yaml
 pass: 1
 domain_index: 1
-last_focus: "PlanCardRevision A11y+Archive+Body fuse"
-session_commits: 28+
+last_focus: "PlanRevisionCompare rename honesty"
+session_commits: 30+
 ```
 
 ## Soft *Sections*/*States*: **0**
@@ -14,7 +14,7 @@ session_commits: 28+
 ## Próximo
 
 - PlanCard Steps → host · Decision bodies · Governance Body+Chrome
-- RootChrome 699 density (route ceiling)
+- RootChrome density if still over route ceiling
 - MARK residual dense · CODEMAP Type.method
 - NEVER Goal Done
 
