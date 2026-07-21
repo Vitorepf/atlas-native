@@ -188,8 +188,31 @@ extension DraftThumb {
             .accessibilityValue(failedMessage.map { DraftThumbA11y.spokenFailedValue($0) } ?? "")
             .accessibilityHint(failedMessage != nil ? DraftThumbA11y.failedHint : "")
             .accessibilityAddTraits(failedMessage != nil ? .isButton : [])
+            .modifier(DraftThumbFailedA11yAction(
+                failedMessage: failedMessage,
+                reduceMotion: reduceMotion,
+                onFailedTap: onFailedTap
+            ))
             .accessibilityIdentifier(A11yID.draft(draft.id))
             .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: draft.state)
+    }
+}
+
+/// VO activate for failed draft (mirrors onTapGesture retry path).
+private struct DraftThumbFailedA11yAction: ViewModifier {
+    let failedMessage: String?
+    let reduceMotion: Bool
+    let onFailedTap: (String) -> Void
+
+    func body(content: Content) -> some View {
+        if let m = failedMessage {
+            content.accessibilityAction(named: "Ver falha do anexo") {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onFailedTap("falhou: \(m)")
+            }
+        } else {
+            content
+        }
     }
 }
 
