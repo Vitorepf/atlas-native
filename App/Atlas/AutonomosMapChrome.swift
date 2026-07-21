@@ -1,4 +1,6 @@
+import AtlasCore
 import SwiftUI
+
 
 /// Chrome tipográfico do mapa Autônomos v5 — sem cards, sem chips, sem ouro de chrome.
 enum AutonomosMapChrome {
@@ -85,5 +87,25 @@ enum AutonomosMapChrome {
                 )
         }
         .buttonStyle(.plain)
+    }
+}
+
+// Cycle 046 fused AutonomosChrome+Buttons.swift
+
+struct AutonomosPrimaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
+            .padding(.horizontal, 14).padding(.vertical, 9)
+            .background(
+                Capsule().fill(
+                    AtlasTheme.accent.opacity(
+                        configuration.isPressed && !reduceMotion ? 0.72 : 1
+                    )
+                )
+            )
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }

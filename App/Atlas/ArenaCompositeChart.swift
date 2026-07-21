@@ -1,6 +1,7 @@
-import SwiftUI
-import Charts
 import AtlasCore
+import Charts
+import SwiftUI
+
 
 /// Gráfico de histórico do índice (composto / com Atlas / sem Atlas).
 struct ArenaCompositeChart: View {
@@ -70,5 +71,14 @@ enum ArenaCompositeChartA11y {
         if plotted.contains(where: { $0.withAtlas != nil }) { parts.append("linha com Atlas") }
         if plotted.contains(where: { $0.withoutAtlas != nil }) { parts.append("linha sem Atlas") }
         return parts.joined(separator: ", ")
+    }
+}
+
+// Cycle 046 fused ArenaComposite+UI.swift
+
+extension AtlasArenaCompositeEngine {
+    /// Cobertura incompleta — casca só rotula «parcial» com prova do contrato.
+    var isPartialCoverage: Bool {
+        coverage < 1.0
     }
 }
