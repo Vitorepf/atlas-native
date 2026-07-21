@@ -7,7 +7,7 @@ dual: off
 god_hold: **forbidden** (v4)
 
 ## State
-- phase: prove
+- phase: act
 - focus: TraceEvidence Judgment+Chrome fuse
 - domain_index: 1
 - pass: 1
