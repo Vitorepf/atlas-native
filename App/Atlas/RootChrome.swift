@@ -373,6 +373,12 @@ extension ThreadRow {
                 )
             )
             .accessibilityHint(RootChromeRowA11y.threadHint(isRunning: isRunning))
+            // Running rows re-speak presence; Reduce Motion keeps static copy.
+            .accessibilityAddTraits(
+                isRunning && !reduceMotion
+                    ? [.isButton, .updatesFrequently]
+                    : .isButton
+            )
     }
 }
 
