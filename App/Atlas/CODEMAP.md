@@ -188,3 +188,8 @@ View/Shell rota ≤600 · Surface 1 domínio ≤1500 (fail &gt;2000) · um domí
 | **Artifact contract + evidence pack (170)** | `ArtifactJudgment` · `TraceEvidenceJudgment` → OccasionPack |
 
 | **Autônomos pack peels (171)** | `AutonomosAskContext` host · `AutonomosAskContextOrgans` |
+
+| **Markdown peels (172)** | `AtlasMarkdownSurface` · Code · Lists · `CodeBlockView` |
+| **EditorialTurn peels (172)** | host · Closing · User |
+| **PlanCard peels (172)** | Body · FlexWrap · Steps |
+| **Autonomos pack organ peels (172)** | Global · Destination · Veto |
