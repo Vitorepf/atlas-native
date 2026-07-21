@@ -51,8 +51,8 @@ extension ComposerAttachmentsSheet {
             attachmentOptions
         }
         .accessibilityIdentifier(A11yID.attachmentsSheet)
-        .accessibilityLabel(ComposerAttachmentsA11y.spokenSheet)
-        .accessibilityHint(ComposerAttachmentsA11y.spokenSheetHint)
+        .accessibilityLabel(ComposerDraftJudgment.spokenAttachSheet)
+        .accessibilityHint(ComposerDraftJudgment.spokenAttachSheetHint)
         .onChange(of: pickedPhoto) { _, photo in
             if photo != nil { dismiss() }
         }
@@ -76,10 +76,10 @@ extension ComposerAttachmentsSheet {
     func pasteButtonA11y<V: View>(_ button: V) -> some View {
         button
             .disabled(pasteboardText == nil)
-            .accessibilityLabel(ComposerAttachmentsA11y.spokenPaste(hasText: pasteboardText != nil))
+            .accessibilityLabel(ComposerDraftJudgment.spokenPaste(hasText: pasteboardText != nil))
             .accessibilityHint(pasteboardText == nil
-                ? ComposerAttachmentsA11y.spokenPasteDisabledHint
-                : ComposerAttachmentsA11y.spokenPasteHint)
+                ? ComposerDraftJudgment.spokenPasteDisabledHint
+                : ComposerDraftJudgment.spokenPasteHint)
             .accessibilityIdentifier(A11yID.attachmentPaste)
     }
 }
@@ -99,8 +99,8 @@ extension ComposerAttachmentsSheet {
             ComposerAttachmentRow(icon: "doc", title: "Arquivo", subtitle: "PDF, texto, código ou dados")
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(ComposerAttachmentsA11y.spokenFile)
-        .accessibilityHint(ComposerAttachmentsA11y.spokenFileHint)
+        .accessibilityLabel(ComposerDraftJudgment.spokenFile)
+        .accessibilityHint(ComposerDraftJudgment.spokenFileHint)
         .accessibilityIdentifier(A11yID.attachmentFile)
     }
 }
@@ -161,8 +161,8 @@ extension ComposerAttachmentsSheet {
             ComposerAttachmentRow(icon: "photo", title: "Foto", subtitle: "Escolher da biblioteca")
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(ComposerAttachmentsA11y.spokenPhoto)
-        .accessibilityHint(ComposerAttachmentsA11y.spokenPhotoHint)
+        .accessibilityLabel(ComposerDraftJudgment.spokenPhoto)
+        .accessibilityHint(ComposerDraftJudgment.spokenPhotoHint)
         .accessibilityIdentifier(A11yID.attachmentPhoto)
     }
 }

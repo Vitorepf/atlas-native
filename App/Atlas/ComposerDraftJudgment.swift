@@ -215,4 +215,23 @@ enum ComposerDraftJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Attach sheet spoken (IDLE · was ComposerAttachmentsA11y)
+
+    static let spokenAttachSheet = "adicionar anexo à mensagem"
+    static let spokenAttachSheetHint =
+        "foto, câmera, arquivo ou texto colado no próximo envio"
+    static let spokenPhoto = "escolher foto da biblioteca"
+    static let spokenPhotoHint =
+        "abre a biblioteca de fotos; nada é anexado até escolher"
+    static let spokenFile = "escolher arquivo"
+    static let spokenFileHint = "PDF, texto, código ou dados do dispositivo"
+    static let spokenPasteHint = "adiciona o texto copiado como contexto da mensagem"
+    static let spokenPasteDisabledHint = "copie texto antes de colar como contexto"
+
+    static func spokenPaste(hasText: Bool) -> String {
+        hasText
+            ? "colar contexto da área de transferência"
+            : "colar indisponível, área de transferência vazia"
+    }
 }
