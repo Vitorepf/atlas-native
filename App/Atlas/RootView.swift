@@ -3509,12 +3509,19 @@ struct AtlasWorkspacePickerSheet: View {
                     Task { await model.load() }
                 } label: {
                     Text("Tentar de novo")
-                        .atlasSans(15, .medium)
+                        .font(AtlasFont.serifItalic(16))
                         .foregroundStyle(AtlasTheme.accent)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 12)
                         .frame(minHeight: 48)
-                        .contentShape(Rectangle())
+                        .background(
+                            Capsule().fill(AtlasTheme.goldVeil)
+                                .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+                        )
+                        .atlasElevation(radius: 8, y: 2, opacity: 0.14)
+                        .contentShape(Capsule())
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .accessibilityLabel("Tentar de novo")
                 .accessibilityHint("Relê os repositórios do Mac")
                 .accessibilityAddTraits(.isButton)
