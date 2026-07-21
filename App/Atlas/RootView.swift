@@ -450,7 +450,7 @@ extension RootView {
                 Text("✦")
                     .font(AtlasFont.serif(16))
                     .foregroundStyle(AtlasTheme.accent)
-                    .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 5, y: 0)
+                    .shadow(color: AtlasTheme.accent.opacity(on ? 0.5 : 0.25), radius: on ? 7 : 4, y: 0)
             }
             .frame(width: 30, height: 30)
             .onAppear {
