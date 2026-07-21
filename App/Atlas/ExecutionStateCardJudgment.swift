@@ -85,8 +85,41 @@ enum ExecutionStateCardJudgment {
         }
     }
 
+    /// Provider-safe product word (wire Kind raw) — pack ≡ chrome vocabulary.
     static func productWord(for kind: AtlasExecutionPresentationState.Kind) -> String {
         kind.rawValue
+    }
+
+    // MARK: Pack (WAVE-180)
+
+    /// Mid-thread pack for StateCard kind — never invents presentation state.
+    static func packFacts(
+        state: AtlasExecutionPresentationState?
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        guard let state else {
+            absences.append("execution presentation state não publicado neste recorte")
+            return (facts, absences)
+        }
+        let kind = state.kind
+        facts.append("state_card_kind: \(productWord(for: kind))")
+        facts.append(
+            "state_card_freezes_timer: \(freezesTimer(for: kind) ? "yes" : "no")"
+        )
+        if let badge = badge(for: kind) {
+            facts.append("state_card_badge: \(badge)")
+        }
+        if !state.title.isEmpty {
+            facts.append("state_card_title: \(state.title)")
+        } else {
+            absences.append("presentation state sem title publicado")
+        }
+        // Attention overlay product (Phase grammar) when mappable.
+        if let attention = ConversationExecutionPhase.attention(for: state) {
+            facts.append("state_card_attention: \(attention.rawValue)")
+        }
+        return (facts, absences)
     }
 
     static let retryLabel = "retomar execução a partir do último checkpoint"

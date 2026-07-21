@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 174
+- waves_completed: 175
 - idle_compress_passes: 5
 - collapse_host: 0
 
@@ -185,6 +185,7 @@ mode: designer + implementer
 - WAVE-177
 - WAVE-178
 - WAVE-179
+- WAVE-180
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -194,11 +195,11 @@ mode: designer + implementer
 - pass 5 · `542f30fa` · MARK residual densos post-179
 
 ## Designer
-- designs_proposed: 174
+- designs_proposed: 175
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
-- note: concurrent LEDGER wipes observed — B rewrites full truth after each close
+- note: concurrent LEDGER wipes — B rewrites full truth after each close
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -210,6 +211,5 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-174–179 pack/face sovereignty closed · hollows 0 · face-sans-pack none.
-- open=[] · 2 consecutive IDLE after WAVE-179 · **await A** rank-1 §WAVE.
-- No invent micro-WAVE. ConversationModel deferred.
+- WAVE-180: StateCard kind pack mid-thread (strip+card pack honesty).
+- WAVE-174–179 pack/face campaign · hollows 0.

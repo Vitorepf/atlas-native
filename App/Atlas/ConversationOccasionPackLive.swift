@@ -124,6 +124,13 @@ extension ConversationOccasionPack {
         facts.append(contentsOf: stripPack.facts)
         absences.append(contentsOf: stripPack.absences)
 
+        // WAVE-180: StateCard kind pack (strip phase alone is not enough).
+        let statePack = ExecutionStateCardJudgment.packFacts(
+            state: bubble?.executionPresentationState
+        )
+        facts.append(contentsOf: statePack.facts)
+        absences.append(contentsOf: statePack.absences)
+
         // WAVE-174: timeline narrative + filter open recorte (chip filter is UI-local).
         let activities = bubble?.activities ?? []
         let narrativePack = LiveTimelineNarrativeJudgment.packFacts(from: activities)
