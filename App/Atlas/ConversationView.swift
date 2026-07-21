@@ -4570,10 +4570,11 @@ extension ExecutionRibbon {
     @ViewBuilder
     var agentLanesCaption: some View {
         if bubble.agents.count >= 2 {
-            Text("LANES")
+            Text("Lanes")
                 .font(AtlasFont.mono(10))
-                .tracking(1.1)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
         }
     }
 }
@@ -5140,9 +5141,9 @@ extension PlanCard {
     }
 
     var auditCaption: some View {
-        Text("AUDITORIA")
+        Text("Auditoria")
             .font(AtlasFont.mono(9))
-            .tracking(0.8)
+            .tracking(0.4)
             .foregroundStyle(AtlasTheme.domOperacional)
             .accessibilityHidden(true)
     }
@@ -6138,10 +6139,10 @@ extension ExecutionProof {
             let selected = stamped[index]
             replayScrubberChrome(index: index, total: stamped.count, selected: selected)
         } else if !bubble.activities.isEmpty {
-            Text("REPLAY indisponível · eventos sem timestamps")
+            Text("Replay indisponível · eventos sem timestamps")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityLabel("replay indisponível porque os eventos não têm timestamps")
+                .accessibilityLabel("Replay indisponível porque os eventos não têm timestamps")
         }
     }
 }
@@ -6149,9 +6150,9 @@ extension ExecutionProof {
 extension ExecutionProof {
     func replayScrubberTitle(index: Int, total: Int) -> some View {
         HStack {
-            Text("REPLAY")
+            Text("Replay")
                 .font(AtlasFont.mono(10))
-                .tracking(1.1)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
             Spacer()
@@ -9502,8 +9503,8 @@ extension ArtifactSheet {
 extension ArtifactSheet {
     var mountCounterText: some View {
         HStack(spacing: 8) {
-            Text("MONTAGEM")
-                .font(AtlasFont.mono(10)).tracking(1.0)
+            Text("Montagem")
+                .font(AtlasFont.mono(10)).tracking(0.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Text("·")

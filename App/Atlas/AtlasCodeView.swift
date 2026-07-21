@@ -1266,9 +1266,9 @@ extension AtlasCodeView {
 
     func worktreesSection(_ worktrees: [AtlasCodeWorktree]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("WORKTREES")
+            Text("Worktrees")
                 .font(AtlasFont.mono(10))
-                .tracking(1.1)
+                .tracking(0.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier(A11yID.codeGraphWorktrees)
@@ -3282,9 +3282,9 @@ extension AtlasCodeProvenanceSheet {
 
 extension AtlasCodeProvenanceSheet {
     var filesSectionHeader: some View {
-        Text("ARQUIVOS")
+        Text("Arquivos")
             .atlasSans(8.5, .semibold)
-            .tracking(1.2)
+            .tracking(0.4)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)
             .accessibilityIdentifier(A11yID.codeCommitFiles)
