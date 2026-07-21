@@ -170,6 +170,7 @@ struct ArenaPremiumShell: View {
                     .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                     .contentShape(Circle())
             }
+            .buttonStyle(PressableScale())
             .accessibilityLabel("Nova medição")
             .accessibilityHint("Escolhe motores, suítes e braços")
             .accessibilityIdentifier(A11yID.arenaPremiumAdd)

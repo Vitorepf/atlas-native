@@ -1624,7 +1624,7 @@ extension ComposerAttachmentsSheet {
         Button { choose(onChooseFile) } label: {
             ComposerAttachmentRow(icon: "doc", title: "Arquivo", subtitle: "PDF, texto, código ou dados")
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(ComposerAttachmentsA11y.spokenFile)
         .accessibilityHint(ComposerAttachmentsA11y.spokenFileHint)
         .accessibilityIdentifier(A11yID.attachmentFile)
@@ -1653,7 +1653,7 @@ extension ComposerAttachmentsSheet {
             } label: {
                 pasteButtonLabel
             }
-            .buttonStyle(.plain)
+            .buttonStyle(PressableScale())
         )
     }
 }
@@ -1675,7 +1675,7 @@ extension ComposerAttachmentsSheet {
         Button { choose(onChooseCamera) } label: {
             ComposerAttachmentRow(icon: "camera", title: "Câmera", subtitle: "Capturar agora")
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(CameraPickerA11y.spokenChooseCamera)
         .accessibilityHint(CameraPickerA11y.spokenChooseCameraHint)
         .accessibilityIdentifier(A11yID.cameraPicker)
@@ -1688,7 +1688,7 @@ extension ComposerAttachmentsSheet {
         PhotosPicker(selection: $pickedPhoto, matching: .images) {
             ComposerAttachmentRow(icon: "photo", title: "Foto", subtitle: "Escolher da biblioteca")
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(ComposerAttachmentsA11y.spokenPhoto)
         .accessibilityHint(ComposerAttachmentsA11y.spokenPhotoHint)
         .accessibilityIdentifier(A11yID.attachmentPhoto)
@@ -2928,7 +2928,7 @@ extension DraftThumb {
                 } label: {
                     removeButtonChrome
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .offset(x: 12, y: -12)
             )
         }
@@ -3518,7 +3518,7 @@ extension ComposerToolbar {
                 .frame(width: 48, height: 48)
                 .contentShape(Circle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .keyboardShortcut(.return, modifiers: .command)
         .accessibilityLabel(spokenSendLabel(canSubmit: true))
         .accessibilityHint(spokenSendHint(canSubmit: true))

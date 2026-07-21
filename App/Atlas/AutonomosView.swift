@@ -270,6 +270,7 @@ struct AutonomosViewHeader: View {
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
+        .buttonStyle(PressableScale())
         .accessibilityLabel("Voltar")
         .accessibilityHint("Volta um nível no mapa Autônomos")
         .accessibilityIdentifier(A11yID.autonomosBack)
@@ -290,6 +291,7 @@ struct AutonomosViewHeader: View {
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
+        .buttonStyle(PressableScale())
         .accessibilityLabel("Novo Autônomo")
         .accessibilityHint("Abre o formulário para criar um Autônomo")
         .accessibilityIdentifier(A11yID.autonomosNew)
@@ -315,6 +317,7 @@ struct AutonomosViewHeader: View {
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
+        .buttonStyle(PressableScale())
         .disabled(!canRefresh)
         .opacity(canRefresh ? 1 : 0.45)
         .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: canRefresh)
@@ -1360,7 +1363,7 @@ struct AutonomosRhythmSheet: View {
                             .frame(minHeight: 48, alignment: .leading)
                             .contentShape(Rectangle())
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableScale())
                     .accessibilityLabel("Reativar propostas noturnas")
                     .accessibilityHint("Volta a mostrar a proposta das 21h quando o Atlas tiver algo a dizer")
                     .accessibilityIdentifier(A11yID.autonomosRhythmUnmute)

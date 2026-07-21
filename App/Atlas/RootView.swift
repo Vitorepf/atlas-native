@@ -2915,7 +2915,7 @@ struct WorkspaceRow: View {
         } label: {
             rowContent
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         // Sem accessibilityElement(children:) aqui: Button JÁ é elemento de
         // a11y; recriar o elemento gera um invólucro `Other` e emudece o botão.
         .accessibilityLabel(spokenOverride ?? RootChromeRowA11y.workspaceSpoken(name: name, count: count, detail: detail, badge: badge))
@@ -3550,7 +3550,7 @@ extension AtlasWorkspacePickerSheet {
             .atlasCard()
             .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel("Sem repositório")
         .accessibilityHint("Conversa geral com o Atlas, sem projeto")
         .accessibilityIdentifier(A11yID.workspacePickerNoRepo)
@@ -3618,7 +3618,7 @@ extension AtlasWorkspacePickerSheet {
             .frame(minHeight: 48)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel("\(repo.folder.map { "\($0), " } ?? "")\(repo.name)")
         .accessibilityHint("Abre o workspace deste repositório")
         .accessibilityIdentifier(A11yID.workspacePickerRow(repo.slug))
