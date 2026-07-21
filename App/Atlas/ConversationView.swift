@@ -1660,9 +1660,12 @@ struct ComposerAttachmentsSheet: View {
 extension ComposerAttachmentRow {
     var attachmentRowIcon: some View {
         Image(systemName: icon)
-            .atlasSans(17, .medium)
+            .atlasSans(15, .medium)
             .foregroundStyle(AtlasTheme.accent)
-            .frame(width: 28)
+            .frame(width: 36, height: 36)
+            .background(Circle().fill(AtlasTheme.goldVeil))
+            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1))
+            .atlasElevation(radius: 4, y: 1, opacity: 0.1)
             .accessibilityHidden(true)
     }
 }
@@ -1684,11 +1687,29 @@ extension ComposerAttachmentRow {
             attachmentRowIcon
             attachmentRowTextStack
             Spacer()
+            Image(systemName: "chevron.right")
+                .atlasSans(12, .semibold)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.42))
+                .accessibilityHidden(true)
         }
         .padding(.horizontal, 24).padding(.vertical, 15)
         .frame(minHeight: 56)
         .contentShape(Rectangle())
-        .overlay(alignment: .bottom) { Divider().overlay(AtlasTheme.separator).padding(.leading, 24) }
+        .overlay(alignment: .bottom) {
+            // Gold-quiet hairline family (home sectionLabel / Autônomos map).
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.22),
+                    AtlasTheme.separator,
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 1)
+            .padding(.leading, 24)
+        }
     }
 }
 
