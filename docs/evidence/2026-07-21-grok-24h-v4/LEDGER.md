@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 106
-- idle_compress_passes: 2
+- idle_compress_passes: 36
 - collapse_host: 0
 
 ## Waves done
@@ -119,23 +119,19 @@ mode: designer + implementer
 - WAVE-111
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
+- pass 35 · cd8ad03f · Search spoken wrappers
+- pass 36 · 4192d39d · ArenaRunSheet spoken wrappers to Judgment
 
 ## Designer
 - designs_proposed: 106
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
-## Open queue snapshot (must match QUEUE.md)
+## Open queue snapshot
 
-| # | wave | Δ | status |
+| # | wave | delta | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| - | (none) | - | - |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-111 density + IDLE-36. DEVICE_PENDING. Fila empty.
