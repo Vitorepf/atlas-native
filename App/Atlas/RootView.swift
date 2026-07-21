@@ -196,7 +196,7 @@ extension RootView {
             Image(systemName: "person.fill")
                 .atlasSans(18)
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 48, height: 48)
                 .atlasGlassCircle()
                 .contentShape(Circle())
         }
