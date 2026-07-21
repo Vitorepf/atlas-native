@@ -15,7 +15,7 @@ extension AtlasCodeView {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, 12)
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.scanState)
-                .accessibilityLabel(AtlasCodeGraphA11y.spokenStatus(
+                .accessibilityLabel(AtlasCodeGraphJudgment.spokenStatus(
                     scanState: model.scanState, headline: pulse
                 ))
                 .accessibilityIdentifier(A11yID.codeStatus)
@@ -57,7 +57,7 @@ extension AtlasCodeView {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(
-                    AtlasCodeGraphA11y.spokenFilterChip(
+                    AtlasCodeGraphJudgment.spokenFilterChip(
                         option, count: count, active: active, silent: active && filterSilence
                     )
                 )

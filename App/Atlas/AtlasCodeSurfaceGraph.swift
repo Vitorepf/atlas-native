@@ -3,33 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS peel AtlasCode graph content/list from Surface (canon §7 · same domain)
 
-enum AtlasCodeGraphA11y {
-    static func spokenStatus(scanState: AtlasCodeScanState, headline: String) -> String {
-        switch scanState {
-        case .clean, .unknown:
-            return headline
-        case .violating:
-            return "atenção, \(headline)"
-        }
-    }
-}
-
-extension AtlasCodeGraphA11y {
-    static func spokenFilterChip(
-        _ option: AtlasCodeGraphStateFilter,
-        count: Int,
-        active: Bool,
-        silent: Bool
-    ) -> String {
-        var label = "filtrar grafo por \(option.label), \(count) commits"
-        if active { label += ", selecionado" }
-        if silent { label += ", nenhum commit neste filtro" }
-        return label
-    }
-
-    static let emptyGraph = "grafo sem commits nesta janela"
-}
-
 extension AtlasCodeView {
     @ViewBuilder
     var graphLoadedContent: some View {
@@ -38,7 +11,7 @@ extension AtlasCodeView {
         } else {
             Color.clear
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .accessibilityLabel(AtlasCodeGraphA11y.emptyGraph)
+                .accessibilityLabel(AtlasCodeGraphJudgment.emptyGraph)
         }
     }
 }

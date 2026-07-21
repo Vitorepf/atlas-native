@@ -109,4 +109,29 @@ enum AtlasCodeGraphJudgment {
     static func spokenRepoTitle(_ repo: String) -> String {
         "repositório \(repo)"
     }
+
+    // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
+
+    static let emptyGraph = "grafo sem commits nesta janela"
+
+    static func spokenStatus(scanState: AtlasCodeScanState, headline: String) -> String {
+        switch scanState {
+        case .clean, .unknown:
+            return headline
+        case .violating:
+            return "atenção, \(headline)"
+        }
+    }
+
+    static func spokenFilterChip(
+        _ option: AtlasCodeGraphStateFilter,
+        count: Int,
+        active: Bool,
+        silent: Bool
+    ) -> String {
+        var label = "filtrar grafo por \(option.label), \(count) commits"
+        if active { label += ", selecionado" }
+        if silent { label += ", nenhum commit neste filtro" }
+        return label
+    }
 }
