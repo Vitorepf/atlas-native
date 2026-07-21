@@ -11,7 +11,24 @@ struct LiveNowSection: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var sessions: [LiveSessionSnapshot] {
-        Self.merged(local: localSessions, remote: remoteSessions)
+        // WAVE-023: judgment order — running/paused before finished.
+        let merged = Self.merged(local: localSessions, remote: remoteSessions)
+        return merged.enumerated().sorted { lhs, rhs in
+            let lf = ConversationExecutionPhase.face(for: lhs.element)
+            let rf = ConversationExecutionPhase.face(for: rhs.element)
+            let rank: (ConversationExecutionFace) -> Int = {
+                switch $0 {
+                case .running, .multiAgent: return 0
+                case .paused, .reconnect: return 1
+                case .finished: return 2
+                case .quiet: return 3
+                }
+            }
+            let lr = rank(lf)
+            let rr = rank(rf)
+            if lr != rr { return lr < rr }
+            return lhs.offset < rhs.offset
+        }.map(\.element)
     }
     var isHub: Bool { sessions.count >= 2 }
     var remoteCount: Int { sessions.filter(\.isRemote).count }
