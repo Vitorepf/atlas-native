@@ -2023,6 +2023,7 @@ extension WorkspaceView {
         HStack(spacing: 12) {
             Text("✦").font(AtlasFont.serif(16))
                 .foregroundStyle(AtlasTheme.accent)
+                .shadow(color: AtlasTheme.accent.opacity(0.4), radius: 6, y: 0)
                 .frame(width: 30, height: 30)
                 .accessibilityHidden(true)
             Text("Escreva ao Atlas")
@@ -2037,6 +2038,21 @@ extension WorkspaceView {
         .contentShape(Capsule())
         .atlasGlassCapsule()
         .atlasElevation(radius: 12, y: 4, opacity: 0.18)
+        .overlay(
+            Capsule()
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0.26),
+                            AtlasTheme.accent.opacity(0.05),
+                            AtlasTheme.accent.opacity(0.14)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 0.75
+                )
+        )
     }
 }
 
