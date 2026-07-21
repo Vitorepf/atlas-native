@@ -18,8 +18,9 @@ struct ArenaPremiumLoadFailureView: View {
                     ? "Nenhum índice, progresso ou resultado foi presumido."
                     : "A tela não transformou a falha de rede em estado vazio."
             )
-            .font(.system(.callout))
+            .font(AtlasFont.serifItalic(16))
             .foregroundStyle(AtlasTheme.textSecondary)
+            .fixedSize(horizontal: false, vertical: true)
             ArenaPremiumAction(title: "Tentar novamente", symbol: "arrow.clockwise") {
                 Task { await model.load() }
             }

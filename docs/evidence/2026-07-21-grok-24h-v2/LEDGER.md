@@ -4,20 +4,15 @@ Started: 2026-07-21T12:15:18Z
 Constraint: leap-first; no god-files; no collapse-host
 
 ## Score
-- leaps_completed: 6
+- leaps_completed: 7
 - compress_cycles: 1
 - splits_for_budget: 1
 - last_gates: AtlasCoreChecks ✓ · make build ✓
 - top_hosts_wc: max ~288; budget OK
-- next: LEAP #7 Continuity casca OR more dead delete OR grafo glance
+- next: LEAP #8 more Arena form type OR compress dead OR Continuity
 
 ## Leaps log
-1. pausar
-2. pill chrome unificado
-3. graph pill Home + Arena destination pack
-4. Autônomos local honesty
-5. empty defaults HomeAskContext
-6. Home new conversation turnFacts + invite/suggestions
+1–6 previous · 7 Arena instrument idle/terminal/failure serif body
 
 ## Compress log
 ### COMPRESS-001 dead StatusCapsule peels

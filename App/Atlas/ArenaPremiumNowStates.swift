@@ -15,7 +15,7 @@ struct ArenaPremiumIdleView: View {
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text("Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado.")
-                .font(.system(.body))
+                .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             ArenaPremiumAction(title: "Rodar medição", symbol: "play.fill", action: onRun)
@@ -115,8 +115,9 @@ struct ArenaPremiumTerminalView: View {
                 .font(AtlasFont.serif(33))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(configuration.1)
-                .font(.system(.body))
+                .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
             if let progress = model.livePresentation?.progress {
                 HStack(alignment: .lastTextBaseline, spacing: 7) {
                     Text("\(progress.completed)")
