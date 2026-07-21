@@ -2984,7 +2984,10 @@ extension ThreadRow {
 extension ThreadRow {
     @ViewBuilder
     var rowTrailingRunning: some View {
-        Text("Executando").font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
+        Text("Executando")
+            .font(AtlasFont.serifItalic(13))
+            .foregroundStyle(AtlasTheme.accent)
+            .shadow(color: AtlasTheme.accent.opacity(0.25), radius: 4, y: 0)
             .accessibilityHidden(true)
     }
 }
