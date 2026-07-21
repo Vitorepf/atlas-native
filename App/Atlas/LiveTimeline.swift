@@ -1,10 +1,23 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 025 fuse → LiveTimeline.swift
+
+extension LiveTimeline {
+    @ViewBuilder
+    var timelineBody: some View {
+        if baseRows.isEmpty {
+            EmptyView()
+        } else if rows.isEmpty {
+            filterSilenceSurface
+        } else {
+            timelineSurface
+        }
+    }
+}
 
 // A narrativa viva da execução: cada linha espelha um `AtlasAgentActivity`
 // real do contrato C5. Sem agregação inventada, sem placeholder quando vazio.
-// Surfaces → LiveTimeline+Surfaces.swift
-// Pipeline → LiveTimeline+RowPipeline.swift · Body → LiveTimeline+BodyGate.swift
 struct LiveTimeline: View {
     let activities: [AtlasAgentActivity]
     let reduceMotion: Bool
