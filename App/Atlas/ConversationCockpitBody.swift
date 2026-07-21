@@ -47,7 +47,8 @@ extension AgentRow {
     var agentRowContent: some View {
         HStack(spacing: 8) {
             Circle().fill(statusColor).frame(width: 6, height: 6)
-            Text(agent.agent ?? providerWord(agent.provider))
+            // WAVE-049: label via lanes judgment (shared with pack).
+            Text(ConversationAgentLanesJudgment.label(for: agent))
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
             agentModelLabel
             Spacer()
@@ -55,6 +56,10 @@ extension AgentRow {
                 Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            "\(ConversationAgentLanesJudgment.label(for: agent)), \(statusWord ?? agent.status)"
+        )
     }
 }
 

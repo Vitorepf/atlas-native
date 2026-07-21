@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 43
+- waves_completed: 44
 - idle_compress_passes: 5
 - collapse_host: 0
 
@@ -54,6 +54,7 @@ mode: designer + implementer
 - WAVE-046
 - WAVE-047
 - WAVE-048
+- WAVE-049
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -63,7 +64,7 @@ mode: designer + implementer
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
-- designs_proposed: 43
+- designs_proposed: 44
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -74,5 +75,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-048 heal veto honesty (undoError was dark). Prefer A fill.
+- WAVE-048 heal veto + WAVE-049 agent lanes (A runner-ups). Prefer A fill.
 - DEVICE_PENDING history.

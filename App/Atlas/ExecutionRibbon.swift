@@ -51,15 +51,24 @@ struct ExecutionRibbon: View {
 
     @ViewBuilder
     var agentLanes: some View {
-        if !bubble.agents.isEmpty {
+        // WAVE-049: attention-ranked lanes (failed/awaiting first).
+        let ranked = ConversationAgentLanesJudgment.rank(bubble.agents)
+        let lanesFace = ConversationAgentLanesJudgment.face(from: bubble.agents)
+        if !ranked.isEmpty {
             VStack(alignment: .leading, spacing: 6) {
-                if face == .multiAgent || bubble.agents.count >= 2 {
-                    Text("LANES")
+                if let kicker = lanesFace.kicker {
+                    Text(kicker)
                         .font(AtlasFont.mono(10))
                         .tracking(1.1)
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .foregroundStyle(
+                            lanesFace.productWord == "attention"
+                                ? AtlasTheme.domOperacional
+                                : AtlasTheme.textTertiary
+                        )
+                        .accessibilityLabel(lanesFace.spokenFace)
+                        .accessibilityIdentifier(A11yID.executionAgentLanes)
                 }
-                ForEach(bubble.agents) { AgentRow(agent: $0, compactLane: bubble.agents.count >= 2) }
+                ForEach(ranked) { AgentRow(agent: $0, compactLane: ranked.count >= 2) }
             }.padding(.leading, 24)
         }
     }

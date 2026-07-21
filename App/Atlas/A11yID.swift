@@ -290,6 +290,7 @@ extension A11yID {
 
 extension A11yID {
     static let executionLiveStrip = "execution-live-strip"
+    static let executionAgentLanes = "execution-agent-lanes"
     static let executionReconnectBanner = "execution-reconnect-banner"
     static let executionSilenceWatchdog = "execution-silence-watchdog"
     static let executionReplayScrubber = "execution-replay-scrubber"
