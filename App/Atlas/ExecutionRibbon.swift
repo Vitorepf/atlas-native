@@ -1,35 +1,45 @@
 import SwiftUI
 import AtlasCore
 
-// Execution ribbon — IDLE-COMPRESS (peels + cockpit host co-located).
+// WAVE-022 — Execution ribbon consumes ConversationExecutionPhase faces.
 
 struct ExecutionRibbon: View {
     let bubble: ChatBubble
     let reduceMotion: Bool
     let onStop: () -> Void
 
+    private var face: ConversationExecutionFace {
+        ConversationExecutionPhase.face(for: bubble)
+    }
+
     var body: some View {
         executionRibbonStack
             .padding(.vertical, 10).padding(.horizontal, 14)
             .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.5)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(ConversationExecutionPhase.spokenFace(face))
     }
 
     var executionRibbonStack: some View {
         VStack(alignment: .leading, spacing: 8) {
             reconnectBannerStack
-            activitiesTimelineBlock
-            agentLanes
-            decideStrategyLine
+            if face != .finished && face != .quiet {
+                activitiesTimelineBlock
+                agentLanes
+                decideStrategyLine
+            }
         }
     }
 
     @ViewBuilder
     var reconnectBannerStack: some View {
-        // WAVE-012 dual-surface: strip owns primary reconnect while streaming.
-        if !(bubble.streaming && bubble.showsReconnectSurface) {
+        // WAVE-012 + WAVE-022: dual-surface primary is strip; ribbon silence when streaming.
+        if ConversationExecutionPhase.ribbonShowsReconnectBanner(bubble) {
             ReconnectBanner(bubble: bubble, reduceMotion: reduceMotion)
         }
-        SilenceWatchdog(bubble: bubble, reduceMotion: reduceMotion)
+        if ConversationExecutionPhase.ribbonShowsSilenceWatchdog(bubble) {
+            SilenceWatchdog(bubble: bubble, reduceMotion: reduceMotion)
+        }
     }
 
     @ViewBuilder
@@ -43,7 +53,7 @@ struct ExecutionRibbon: View {
     var agentLanes: some View {
         if !bubble.agents.isEmpty {
             VStack(alignment: .leading, spacing: 6) {
-                if bubble.agents.count >= 2 {
+                if face == .multiAgent || bubble.agents.count >= 2 {
                     Text("LANES")
                         .font(AtlasFont.mono(10))
                         .tracking(1.1)
