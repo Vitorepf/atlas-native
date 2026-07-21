@@ -1,8 +1,8 @@
 import SwiftUI
 import AtlasCore
 
-// Empty state — peel de ConversationMessages+Rows.
-// Body → ConversationMessages+EmptyBody.swift
+// Empty / load-fail da lista de mensagens (WAVE-003).
+// Load fail = AtlasNetworkFailureEmpty. Idle empty = EmptyConversation.
 
 extension ConversationMessages {
     @ViewBuilder
@@ -18,7 +18,15 @@ extension ConversationMessages {
                 onRetry: { Task { await model.load() } }
             )
         } else {
-            emptyConversationBody
+            EmptyConversation(
+                reduceMotion: reduceMotion,
+                prompt: emptyPrompt,
+                suggestions: emptySuggestions
+            ) { suggestion in
+                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+                let effort = model.effort
+                Task { await model.send(suggestion, effort: effort) }
+            }
         }
     }
 }
