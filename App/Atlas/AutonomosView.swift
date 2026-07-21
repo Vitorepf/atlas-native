@@ -662,7 +662,7 @@ struct AutonomosRhythmLearningLine: View {
                     .accessibilityHidden(true)
             }
             .foregroundStyle(AtlasTheme.textTertiary)
-            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -1922,7 +1922,7 @@ extension SelfConstructionReceiptSheet {
             .font(AtlasFont.serif(15))
             .textInputAutocapitalization(.never)
             .padding(10)
-            .frame(minHeight: 44, alignment: .center)
+            .frame(minHeight: 48, alignment: .center)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
             .accessibilityLabel("quem autoriza o veto")
             .accessibilityHint(spokenActorHint())
@@ -2159,11 +2159,11 @@ struct NightlyProposalCard: View {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onDismiss()
             } label: {
-                Text("hoje não")
+                Text("Hoje não")
                     .font(AtlasFont.serif(13, .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.horizontal, 10)
-                    .frame(minHeight: 44)
+                    .frame(minHeight: 48)
                     .contentShape(Rectangle())
             }
             .buttonStyle(PressableScale())
@@ -2182,10 +2182,10 @@ struct NightlyProposalCard: View {
                     .accessibilityHint(Self.spokenMuteOptionHint())
                 }
             } label: {
-                Text("silenciar")
+                Text("Silenciar")
                     .font(AtlasFont.serif(13, .semibold))
                     .foregroundStyle(AtlasTheme.textTertiary)
-                    .frame(minHeight: 44)
+                    .frame(minHeight: 48)
                     .contentShape(Rectangle())
             }
             .accessibilityIdentifier(A11yID.nightlyProposalMute)
@@ -2201,7 +2201,7 @@ struct NightlyProposalCard: View {
     static func spokenAcceptHint() -> String {
         "abre o ensaio governado da missão noturna"
     }
-    static func spokenDismissLabel() -> String { "hoje não" }
+    static func spokenDismissLabel() -> String { "Hoje não" }
     static func spokenDismissHint() -> String {
         "descarta a proposta em silêncio, sem confirmação"
     }

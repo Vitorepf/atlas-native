@@ -1404,7 +1404,7 @@ extension AtlasCodeView {
                     }
                     .padding(.vertical, 11)
                     .padding(.horizontal, 13)
-                    .frame(minHeight: 44)
+                    .frame(minHeight: 48)
                     .contentShape(Rectangle())
                     .background(
                         AtlasCodePalette.healed.opacity(0.07),
@@ -3696,7 +3696,7 @@ struct AtlasCodeRadarStatusCapsule: View {
             }
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered), value: model.scanState)
-        .frame(maxWidth: .infinity, minHeight: 44, alignment: .center)
+        .frame(maxWidth: .infinity, minHeight: 48, alignment: .center)
         .accessibilityLabel(spokenStatus)
         .accessibilityAddTraits(model.scanState == .violating ? .isHeader : [])
         .accessibilityIdentifier(A11yID.radarStatus)
