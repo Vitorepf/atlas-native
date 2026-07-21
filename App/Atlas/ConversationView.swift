@@ -4304,7 +4304,11 @@ extension EditorialTurn {
         .padding(.vertical, 5)
         .frame(minHeight: 48, alignment: .leading)
         .contentShape(Rectangle())
-        .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        .background(
+            Capsule().fill(AtlasTheme.surface.opacity(0.5))
+                .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        )
+        .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 
