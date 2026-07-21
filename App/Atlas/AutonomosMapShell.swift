@@ -122,6 +122,8 @@ struct AutonomosMapShell: View {
                 onCreate: { showNewSheet = true }
             )
         }
+        // Contain: banner, rhythm, list/empty stay separately focusable.
+        .accessibilityElement(children: .contain)
     }
 
     private func selfConstructionBanner(_ receipt: SelfConstructionReceipt) -> some View {
