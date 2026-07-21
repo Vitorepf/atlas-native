@@ -152,7 +152,8 @@ extension AtlasCodeView {
         .shadow(color: .black.opacity(0.22), radius: 10, y: 4)
         .contentShape(Capsule())
         .onTapGesture {
-            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            // Soft: ask pill is invitation (same class as AgenticPill).
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             if askFocusNode == nil {
                 askDraft = ""
             }
@@ -189,6 +190,8 @@ extension AtlasCodeView {
                 Text("limpar")
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textSecondary)
+                    .frame(minHeight: 44, alignment: .center)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel("Limpar referência do commit")
@@ -202,6 +205,8 @@ extension AtlasCodeView {
                 Text("mostrar tudo")
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textSecondary)
+                    .frame(minHeight: 44, alignment: .center)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel(AtlasCodeAskPillA11y.clearLabel)
