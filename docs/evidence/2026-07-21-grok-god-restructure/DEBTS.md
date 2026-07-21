@@ -4,27 +4,27 @@
 
 ```yaml
 pass: 1
-domain_index: 4
-last_focus: "ArenaRunSheet into Surfaces"
-session_commits: 107
+domain_index: 7
+last_focus: "CodeGraph + ChangeReviewSurface"
+session_commits: 111
 soft_sections_states: 0
-swift_App_Atlas: 40
+swift_App_Atlas: 36
 ```
 
 ## Scoreboard
 
 | Metric | Value |
 |---|---|
-| Mission commits | **107** |
-| App/Atlas .swift | **40** |
+| Mission commits | **111** |
+| App/Atlas .swift | **36** |
 | *Sections*/*States* | **0** |
 | Density | OK |
-| Session / ConversationModel | untouched |
+| Session/ConversationModel | untouched |
 
-## Residual room (under caps)
+## Residual
 
-Most hosts 1.5–1.9k — fuse only with measured headroom.
+Hosts near 1.9k — only fuse with measured headroom ≤2000.
 
 ## Next
 
-continue residual · CODEMAP · pass · **never Goal Done**
+continue · CODEMAP · **never Goal Done**
