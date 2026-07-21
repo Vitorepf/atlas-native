@@ -1328,7 +1328,8 @@ extension AtlasCodeView {
                 } label: {
                     VStack(spacing: 8) {
                         HStack(spacing: 3) {
-                            Text(option.label).atlasSans(11.5, .medium)
+                            Text(option.label)
+                                .font(active ? AtlasFont.serif(12, .semibold) : AtlasFont.serif(12))
                             Text("\(count)").font(AtlasFont.mono(10)).opacity(0.55)
                         }
                         .foregroundStyle(tabForeground(option, active: active))
@@ -1341,7 +1342,7 @@ extension AtlasCodeView {
                                 radius: 4, y: 0
                             )
                     }
-                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .frame(maxWidth: .infinity, minHeight: 48)
                     .padding(.top, 4)
                     .contentShape(Rectangle())
                 }
