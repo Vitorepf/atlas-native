@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 17
-- idle_compress_passes: 2
+- idle_compress_passes: 25
 - collapse_host: 0
 
 ## Waves done
