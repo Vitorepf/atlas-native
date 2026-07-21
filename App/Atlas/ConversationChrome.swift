@@ -453,7 +453,8 @@ extension StaleReadSeal {
     @ViewBuilder
     func sealChrome(now: Date) -> some View {
         sealCaptionRow(now: now)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: 28, alignment: .leading)
+            .padding(.vertical, 2)
             .scaleEffect(confirming && !reduceMotion ? 1.045 : 1)
             .opacity(confirming && !reduceMotion ? 0.72 : 1)
             .animation(confirming && !reduceMotion ? .easeInOut(duration: 0.32) : nil, value: confirming)

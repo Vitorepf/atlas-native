@@ -39,7 +39,7 @@ struct AutonomosNewSheet: View {
                     )
 
                     AutonomosMapChrome.primaryCTA("Criar", enabled: canCreate) {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                        // softImpact lives in primaryCTA — avoid double impact.
                         onCreate(name, charter)
                     }
                     .accessibilityHint(canCreate ? "cria o Autônomo no catálogo" : "digite um nome para criar")
@@ -84,7 +84,7 @@ struct AutonomosNewSheet: View {
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
-            .frame(minHeight: axis == .horizontal ? 48 : nil, alignment: .center)
+            .frame(minHeight: axis == .horizontal ? 48 : 88, alignment: .topLeading)
             .background(AtlasTheme.bgRecessed, in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)

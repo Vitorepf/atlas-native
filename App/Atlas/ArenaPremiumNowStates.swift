@@ -49,6 +49,7 @@ struct ArenaPremiumQueuedView: View {
             Text("Medição programada")
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.mono(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
