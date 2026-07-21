@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos dead transfer/decide + honest startRun (ciclo 252)** ·  · App/Atlas 211. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — HomeAskContext + residual APIs (ciclo 251)** · `9a2283a2` · App/Atlas 213. **Prova:** `swift run AtlasCoreChecks` + `cd App && make build` exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — dead suite/spine/motion helpers (ciclo 250)** · `82ceedab` · −65 LOC; App/Atlas 214. **Prova:** `swift run AtlasCoreChecks` + `cd App && make build` exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — self-construction banner a11y (ciclo 147)** · `69d17e6e` · App/Atlas 214. **Prova:** checks+build.

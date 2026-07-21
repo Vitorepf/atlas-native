@@ -1,17 +1,17 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 252
-- last_commit: 9a2283a2
+- phase: D1 cycle 253
+- last_commit: 954bc298
 - last_gates: green
-- App/Atlas Swift: 213
-- next_leap: Autônomos dead transfer/decide model methods
+- App/Atlas Swift: 211
+- next_leap: surface controlError on Autônomos dry-run + residual delete
 - blocked: none
 
 ## Resume
-**1748 → 213 (−1535)** · cycles 015–251 · FORBIDDEN clean · **not done**
+**1748 → 211** · cycles 015–252 · FORBIDDEN clean · **not done**
 
-## Cycle 251
-- deleted HomeAskContext.swift + radarShellSpoken + verified + invalidate + refreshArtifacts + ceremonial/sacred
-- polish: 9a2283a2
-- gates green
+## Cycle 252
+- deleted AutonomosModel+Transfer/Decide; control/selectArea; transfer receipts
+- honest startRun via runTargetArea
+- polish: 954bc298
