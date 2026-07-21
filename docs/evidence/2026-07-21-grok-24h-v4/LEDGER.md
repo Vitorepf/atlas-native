@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 68
-- idle_compress_passes: 14
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -81,12 +81,14 @@ mode: designer + implementer
 - WAVE-073
 
 ## Idle compress
-- pass 13 · `9f8583e4` · peel ArtifactSheet Delivery
-- pass 14 · `33b1356e` · peel AtlasCodeSurface Graph
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
 
 ## Designer
+- designs_proposed: 68
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -95,4 +97,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-070–073. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
