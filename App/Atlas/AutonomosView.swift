@@ -249,6 +249,7 @@ struct AutonomosViewHeader: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
+                .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .accessibilityLabel("Voltar")
@@ -268,6 +269,7 @@ struct AutonomosViewHeader: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
+                .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .accessibilityLabel("Novo Autônomo")
@@ -287,6 +289,7 @@ struct AutonomosViewHeader: View {
                 .foregroundStyle(canRefresh ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
+                .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .disabled(!canRefresh)

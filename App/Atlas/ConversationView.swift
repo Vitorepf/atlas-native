@@ -365,7 +365,7 @@ extension ConversationView {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 48, height: 48).atlasGlassCircle()
+                .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .accessibilityLabel("Voltar")
@@ -399,7 +399,7 @@ extension ConversationView {
     var continuityMenuLabel: some View {
         Image(systemName: "ellipsis")
             .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
-            .frame(width: 48, height: 48).atlasGlassCircle()
+            .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
             .contentShape(Circle())
     }
 }
@@ -429,7 +429,7 @@ extension ConversationView {
             } label: {
                 Image(systemName: "list.bullet.rectangle")
                     .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 48, height: 48).atlasGlassCircle()
+                    .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
                     .contentShape(Circle())
             }
             .accessibilityLabel(ConversationViewA11y.spokenOutlineLabel(turnCount: model.bubbles.count))

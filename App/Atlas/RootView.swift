@@ -1460,7 +1460,7 @@ extension SearchViewHeader {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 48, height: 48).atlasGlassCircle()
+                .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .accessibilityLabel("Voltar")
@@ -2209,7 +2209,7 @@ extension WorkspaceView {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 48, height: 48).atlasGlassCircle()
+                .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .accessibilityLabel("Voltar")
@@ -2582,8 +2582,7 @@ extension CircleButton {
     var circleButtonLabel: some View {
         Image(systemName: icon)
             .atlasSans(16, .medium).foregroundStyle(AtlasTheme.textSecondary)
-            .frame(width: 48, height: 48).atlasGlassCircle()
-            .atlasElevation(radius: 6, y: 2, opacity: 0.14)
+            .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
             .overlay(alignment: .topTrailing) {
                 badgeOverlay
             }
