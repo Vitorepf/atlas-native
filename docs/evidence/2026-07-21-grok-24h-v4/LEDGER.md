@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 75
+- waves_completed: 76
 - idle_compress_passes: 18
 - collapse_host: 0
 
@@ -86,6 +86,7 @@ mode: designer + implementer
 - WAVE-078
 - WAVE-079
 - WAVE-080
+- WAVE-081
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -105,7 +106,7 @@ mode: designer + implementer
 - pass 15 · `44810009` · peel ExecutionStateCard spoken
 - pass 16 · `3c63dc3a` · peel LiveTimeline FilterChrome
 - pass 17 · `d8653fc7` · peel ConversationOutlineSheet
-- pass 18 · `5c9fec5d` · peel ChromeExtras Handoff+StaleRead seals (333→148)
+- pass 18 · `7e64e20c` · peel ChromeExtras Handoff+StaleRead
 
 ## Designer
 - designs_open: 0
@@ -118,5 +119,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-070–080. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
-- LEDGER idle B-owned; concurrent strips of 3–17 are invalid.
+- WAVE-081 composer mode/workspace sheets. Prefer A fill. DEVICE_PENDING.
+- LEDGER idle B-owned; do not strip passes 3–18.

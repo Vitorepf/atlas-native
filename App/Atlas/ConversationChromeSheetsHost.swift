@@ -61,12 +61,10 @@ extension ModeSheet {
 }
 
 extension ModeSheet {
-    static let modes = [
-        ("geral", "Geral"),
-        ("operacional", "Operacional"),
-        ("autônomos", "Autônomos"),
-        ("programação", "Programação"),
-    ]
+    /// WAVE-081: single source on ComposerSheetJudgment.
+    static var modes: [(String, String)] {
+        ComposerSheetJudgment.modes.map { ($0.key, $0.title) }
+    }
 }
 
 struct WorkspaceSheet: View {
@@ -85,7 +83,10 @@ struct WorkspaceSheet: View {
             }
         }
         .accessibilityIdentifier(A11yID.workspaceSheet)
-        .accessibilityLabel("workspace da conversa")
+        .accessibilityLabel(ComposerSheetJudgment.workspaceSheetSpokenLabel)
+        .accessibilityValue(
+            ComposerSheetJudgment.workspaceSheetFace(count: workspaces.count).productWord
+        )
         .accessibilityHint(ComposerSheetA11y.workspaceSheetHint)
     }
 }
@@ -114,7 +115,7 @@ extension WorkspaceSheet {
     }
 
     func workspaceCountLine(_ count: Int) -> String {
-        count == 1 ? "1 conversa carregada" : "\(count) conversas carregadas"
+        ComposerSheetJudgment.workspaceCountLine(count)
     }
 }
 
@@ -171,7 +172,8 @@ struct ModeSheet: View {
             modeRows
         }
         .accessibilityIdentifier(A11yID.modeSheet)
-        .accessibilityLabel("modo da conversa")
+        .accessibilityLabel(ComposerSheetJudgment.modeSheetSpokenLabel)
+        .accessibilityValue(ComposerSheetJudgment.modeFace(key: selected).productWord)
         .accessibilityHint(ComposerSheetA11y.modeSheetHint)
     }
 }

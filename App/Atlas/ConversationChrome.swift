@@ -187,24 +187,20 @@ struct ComposerAttachmentsSheet: View {
     }
 }
 
+/// WAVE-076/081: sheet a11y peels → Effort + Sheet judgments.
 enum ComposerSheetA11y {
-    static let modeFootnote =
-        "rótulo local; ainda não altera roteamento nem payload"
-    static let modeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
+    static var modeFootnote: String { ComposerSheetJudgment.modeFootnote }
+    static var modeSheetHint: String { ComposerSheetJudgment.modeSheetHint }
     static var effortSheetHint: String { ComposerEffortJudgment.effortSheetHint }
-    static let workspaceSheetHint = "escolhe a pasta do próximo envio entre as conversas carregadas"
-    static let workspaceEmpty =
-        "nenhum workspace nas conversas carregadas; abra uma conversa com pasta ou volte à home"
+    static var workspaceSheetHint: String { ComposerSheetJudgment.workspaceSheetHint }
+    static var workspaceEmpty: String { ComposerSheetJudgment.workspaceEmpty }
 
     static func modeLabel(_ key: String, title: String, selected: Bool) -> String {
-        let state = selected ? "selecionado" : "disponível"
-        return "modo \(title), \(state), \(modeFootnote)"
+        ComposerSheetJudgment.modeLabel(key: key, title: title, selected: selected)
     }
 
     static func workspaceLabel(name: String, count: Int, selected: Bool) -> String {
-        let noun = count == 1 ? "conversa" : "conversas"
-        let state = selected ? "workspace atual" : "disponível"
-        return "\(name), \(count) \(noun) carregadas, \(state)"
+        ComposerSheetJudgment.workspaceLabel(name: name, count: count, selected: selected)
     }
 
     /// WAVE-076: effort sheet spoken from ComposerEffortJudgment.
