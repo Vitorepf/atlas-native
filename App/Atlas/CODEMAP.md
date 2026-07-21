@@ -38,7 +38,7 @@
 | **Task health / incidente frota** | `AutonomosTaskHealthJudgment` → IncidentSurface · vestment incidentPresent |
 | **Frota global (agentes vivos)** | `AutonomosFleetJudgment` → FleetStrip no catálogo |
 | **Digest / momento (janela)** | `AutonomosDigestJudgment` → DigestSurface · `.moment("digest")` |
-| **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + Findings/Patches rank · sheet spoken |
+| **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + FindingsBody/PatchBody · sheet spoken |
 | **Plan progresso (card + cockpit)** | `PlanJudgment` → PlanFaceStrip · stepState · strip summary |
 | **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
 | **Prova de execução (card recolhido)** | `ExecutionProofJudgment` → face kicker · shouldDisplay · ranked artifacts |

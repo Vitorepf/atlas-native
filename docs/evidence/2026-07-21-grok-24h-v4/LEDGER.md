@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 37
-- idle_compress_passes: 4
+- idle_compress_passes: 5
 - collapse_host: 0
 
 ## Waves done
@@ -54,6 +54,7 @@ mode: designer + implementer
 - pass 2 · `85be3450`
 - pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
 - pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
+- pass 5 · `0f6a7143` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
 - designs_proposed: 37
