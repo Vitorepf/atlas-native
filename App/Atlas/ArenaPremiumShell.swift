@@ -3488,6 +3488,7 @@ extension ArenaRunSheet {
         }
         .padding(14)
         .atlasCard()
+        .atlasElevation(radius: 8, y: 2, opacity: 0.14)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenReceiptLabel(receipt))
         .accessibilityIdentifier(A11yID.arenaRunReceipt)
