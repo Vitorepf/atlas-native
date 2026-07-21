@@ -99,7 +99,7 @@ extension ConversationComposer {
         if reduceMotion {
             focused.wrappedValue = false
         } else {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused.wrappedValue = false }
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.82)) { focused.wrappedValue = false }
         }
     }
 }
@@ -148,8 +148,8 @@ extension ConversationComposer {
         }
         .padding(composerCardPadding)
         .background(composerSurface)
-        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: expanded)
-        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.82), value: expanded)
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.82), value: model.drafts)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(composerCardSpokenLabel)
         .accessibilityHint(ConversationComposerA11y.cardHint)
