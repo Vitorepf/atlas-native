@@ -1,0 +1,1317 @@
+import SwiftUI
+import AtlasCore
+
+// GOD-RESTRUCTURE: Arena tab surfaces fused (fleet/alerts/results/capabilities)
+
+// MARK: - ArenaPremiumFleetView
+
+struct ArenaPremiumFleetView: View {
+    @Bindable var model: ArenaModel
+
+    /// WAVE-157: rank/best from ArenaFleetJudgment (pack ≡ UI).
+    private var engines: [AtlasArenaCompositeEngine] {
+        ArenaFleetJudgment.rank(model.composite?.engines ?? [])
+    }
+
+    private var best: AtlasArenaCompositeEngine? {
+        ArenaFleetJudgment.best(in: engines)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            header
+            if engines.isEmpty {
+                empty
+            } else {
+                ForEach(engines) { engine in
+                    fleetRow(engine, highlight: engine.id == best?.id)
+                }
+            }
+        }
+        .accessibilityIdentifier(A11yID.arenaPremiumFleet)
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ArenaPremiumKicker(
+                text: ArenaScoreJudgment.fleetKicker(engineCount: engines.count)
+            )
+            Text("Onde o Atlas sobe")
+                .font(AtlasFont.serif(31))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+            if let best, let mult = best.atlasMultiplier {
+                Text("melhor ganho · \(ArenaDisplay.engine(best.engine)) · \(ArenaFormat.multiplier(mult))")
+                    .font(AtlasFont.serifItalic(15))
+                    .foregroundStyle(AtlasTheme.accent)
+            }
+        }
+    }
+
+    private var empty: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            ArenaPremiumEmptyGlyph(symbol: "gauge.with.dots.needle.33percent")
+            Text("Nenhum motor medido")
+                .font(AtlasFont.serif(28))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text("Rode uma medição com pelo menos um motor para ver o ranking da frota.")
+                .font(AtlasFont.serifItalic(15))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.top, 12)
+    }
+
+    private func fleetRow(_ engine: AtlasArenaCompositeEngine, highlight: Bool) -> some View {
+        let without = engine.withoutAtlasComposite
+        let withAtlas = engine.withAtlasComposite
+        let maxScore = max(without ?? 0, withAtlas ?? 0, 10)
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                Text(ArenaDisplay.engine(engine.engine))
+                    .atlasSans(15, .medium)
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(1)
+                Spacer(minLength: 8)
+                multiplierLabel(engine)
+            }
+            if without != nil || withAtlas != nil {
+                bar(label: "sem", value: without, ceiling: maxScore, atlas: false)
+                bar(label: "Atlas", value: withAtlas, ceiling: maxScore, atlas: true)
+            } else {
+                Text(ArenaScoreJudgment.unmeasuredLabel)
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            }
+            ArenaPremiumHairline()
+        }
+        .padding(.top, highlight ? 2 : 0)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(fleetSpoken(engine))
+        .accessibilityIdentifier(A11yID.arenaPremiumFleetRow(engine.engine))
+    }
+
+    @ViewBuilder
+    private func multiplierLabel(_ engine: AtlasArenaCompositeEngine) -> some View {
+        if let mult = engine.atlasMultiplier {
+            Text(ArenaFormat.multiplier(mult))
+                .font(AtlasFont.mono(11, .medium))
+                .foregroundStyle(mult >= 1 ? AtlasTheme.accent : AtlasTheme.alert)
+        } else if engine.composite == nil {
+            Text(ArenaScoreJudgment.unmeasuredLabel)
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+        }
+    }
+
+    private func bar(label: String, value: Double?, ceiling: Double, atlas: Bool) -> some View {
+        let fraction: CGFloat = {
+            guard let value, ceiling > 0 else { return 0 }
+            return CGFloat(min(Swift.max(value / ceiling, 0), 1))
+        }()
+        return HStack(spacing: 10) {
+            Text(label)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .frame(width: 44, alignment: .leading)
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Color.white.opacity(0.06))
+                        .frame(height: 2)
+                    Capsule()
+                        .fill(atlas ? AtlasTheme.accent : AtlasTheme.textSecondary.opacity(0.55))
+                        .frame(width: Swift.max(geo.size.width * fraction, value == nil ? 0 : 2), height: 2)
+                }
+                .frame(maxHeight: .infinity, alignment: .center)
+            }
+            .frame(height: 14)
+            Text(ArenaFormat.score(value))
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .frame(width: 36, alignment: .trailing)
+        }
+        .accessibilityHidden(true)
+    }
+
+    private func fleetSpoken(_ engine: AtlasArenaCompositeEngine) -> String {
+        ArenaScoreJudgment.spokenEngine(engine)
+    }
+}
+// MARK: - ArenaPremiumAlertsView
+
+struct ArenaPremiumAlertsView: View {
+    @Bindable var model: ArenaModel
+    let onSuite: (AtlasArenaSuite) -> Void
+
+    private var reportAlertSuites: Set<String> {
+        Set(reportAlerts.map(\.suite))
+    }
+
+    private var regressions: [AtlasArenaSuite] {
+        model.scoreboard?.suites.filter {
+            $0.hasRegression && !reportAlertSuites.contains($0.suite)
+        } ?? []
+    }
+
+    private var reportAlerts: [AtlasArenaReportSuite] {
+        model.report?.attentionSuites ?? []
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            let kicker = ArenaScoreJudgment.alertsKicker(hasAlerts: hasAlerts)
+            ArenaPremiumKicker(text: kicker.text, tone: kicker.tone)
+            .accessibilityIdentifier(A11yID.arenaPremiumAlerts)
+            HStack(alignment: .lastTextBaseline, spacing: 7) {
+                Text("\(regressions.count + reportAlerts.count)")
+                    .font(AtlasFont.serif(58))
+                    .foregroundStyle(hasAlerts ? AtlasTheme.alert : AtlasTheme.textPrimary)
+                Text("alertas")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+            alertRows
+            blockers
+        }
+    }
+
+    private var alertRows: some View {
+        VStack(spacing: 0) {
+            ArenaPremiumHairline()
+            ForEach(regressions) { suite in
+                Button { onSuite(suite) } label: {
+                    alertRow(
+                        title: ArenaDisplay.suite(suite.suite),
+                        detail: regressionDetail(suite),
+                        symbol: "arrow.down.right"
+                    )
+                }
+                .buttonStyle(.plain)
+                ArenaPremiumHairline()
+            }
+            ForEach(reportAlerts) { report in
+                alertRow(
+                    title: ArenaDisplay.suite(report.suite),
+                    detail: report.status.displayPT,
+                    symbol: "exclamationmark.triangle"
+                )
+                ArenaPremiumHairline()
+            }
+            if !hasAlerts {
+                HStack(spacing: 10) {
+                    ArenaPremiumIcon(
+                        symbol: ArenaPremiumIconography.coverage,
+                        tone: .positive
+                    )
+                    Text("Nenhuma regressão ou falha publicada")
+                }
+                    .font(AtlasFont.serifItalic(15))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .frame(maxWidth: .infinity, minHeight: 86, alignment: .leading)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var blockers: some View {
+        if let blockers = model.report?.claimBlockers, !blockers.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                ArenaPremiumKicker(text: "Publicação bloqueada")
+                ForEach(blockers, id: \.self) { blocker in
+                    HStack(spacing: 8) {
+                        ArenaPremiumIcon(
+                            symbol: ArenaPremiumIconography.blocked,
+                            tone: .neutral,
+                            role: .compact
+                        )
+                        Text(publicBlocker(blocker))
+                    }
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                }
+            }
+        }
+    }
+
+    private var hasAlerts: Bool { !regressions.isEmpty || !reportAlerts.isEmpty }
+
+    private func alertRow(title: String, detail: String, symbol: String) -> some View {
+        HStack(spacing: 14) {
+            ArenaPremiumIcon(symbol: symbol, tone: .negative)
+            Text(title)
+                .atlasSans(16, .medium)
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Spacer()
+            Text(detail)
+                .font(AtlasFont.mono(10, .medium))
+                .foregroundStyle(AtlasTheme.alert)
+                .multilineTextAlignment(.trailing)
+            ArenaPremiumChevron()
+        }
+        .frame(minHeight: 58)
+        .contentShape(Rectangle())
+    }
+
+    private func regressionDetail(_ suite: AtlasArenaSuite) -> String {
+        let delta = suite.engines.first(where: \.regressed)?.delta
+        return ArenaScoreJudgment.regressionDetail(delta: delta)
+    }
+
+    private func publicBlocker(_ raw: String) -> String {
+        switch raw {
+        case "missing_data": "há dados incompletos"
+        case "pipeline_invalid": "a validação do pipeline falhou"
+        case "suite_failed": "uma suíte não concluiu"
+        default: "resultado ainda não pode ser afirmado"
+        }
+    }
+}
+// MARK: - ArenaPremiumResultsView
+
+struct ArenaPremiumResultsView: View {
+    @Bindable var model: ArenaModel
+    let reduceMotion: Bool
+    let onSuite: (AtlasArenaSuite) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            if let engine = model.arenaPrimaryEngine {
+                resultHeader(engine)
+                resultMetrics(engine)
+                if !engine.history.isEmpty {
+                    ArenaPremiumKicker(text: "Índice por rodada")
+                    ArenaCompositeChart(engine: engine, reduceMotion: reduceMotion)
+                        .frame(height: 190)
+                }
+                suiteList
+            } else {
+                empty
+            }
+        }
+    }
+
+    private var measuredEngineOptions: [String] {
+        model.composite?.engines.map(\.engine) ?? []
+    }
+
+    private func resultHeader(_ engine: AtlasArenaCompositeEngine) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ArenaPremiumKicker(
+                text: ArenaScoreJudgment.resultsKicker(claimAllowed: model.report?.claimAllowed)
+            )
+            .accessibilityIdentifier(A11yID.arenaPremiumResults)
+            ArenaPremiumEngineTitle(
+                engineID: engine.engine,
+                options: measuredEngineOptions,
+                onSelect: { model.capabilitiesEngineSelection = $0 }
+            )
+            if let narrative = model.report?.narrative {
+                Text(narrative)
+                    .font(AtlasFont.serifItalic(15))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private func resultMetrics(_ engine: AtlasArenaCompositeEngine) -> some View {
+        let atlasDelta = ArenaScoreJudgment.pairedDelta(engine: engine)
+        let judgment = ArenaScoreJudgment.state(
+            engine: engine,
+            claimAllowed: model.report?.claimAllowed
+        )
+        return VStack(alignment: .leading, spacing: 18) {
+            HStack(alignment: .lastTextBaseline) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Índice").font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    HStack(alignment: .lastTextBaseline, spacing: 4) {
+                        Text(ArenaFormat.score(engine.composite))
+                            .font(AtlasFont.serif(62))
+                        Text("/10")
+                            .font(AtlasFont.mono(13, .medium))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                    }
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(ArenaScoreJudgment.spokenScore(engine.composite))
+                }
+                Spacer()
+                // Δ só com par publicado (WAVE-021 — never fabricate 0).
+                if let atlasDelta, judgment == .published || judgment == .partial || judgment == .regressed {
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text(ArenaFormat.signed(atlasDelta))
+                            .font(AtlasFont.serifItalic(18))
+                            .foregroundStyle(atlasDelta >= 0 ? AtlasTheme.accent : AtlasTheme.alert)
+                        Text("vs. sem Atlas")
+                            .font(AtlasFont.mono(10))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                    }
+                }
+            }
+            ArenaPremiumHairline()
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 28) {
+                    smallMetric("Sem Atlas", ArenaFormat.score(engine.withoutAtlasComposite))
+                    smallMetric("Com Atlas", ArenaFormat.score(engine.withAtlasComposite), tone: .active)
+                    smallMetric("Multiplicador", ArenaFormat.multiplier(engine.atlasMultiplier), tone: .active)
+                }
+                VStack(alignment: .leading, spacing: 12) {
+                    smallMetric("Sem Atlas", ArenaFormat.score(engine.withoutAtlasComposite))
+                    smallMetric("Com Atlas", ArenaFormat.score(engine.withAtlasComposite), tone: .active)
+                    smallMetric("Multiplicador", ArenaFormat.multiplier(engine.atlasMultiplier), tone: .active)
+                }
+            }
+            Text("cobertura \(model.arenaCoverageText) · \(judgment.rawValue) · \(ArenaScoreJudgment.scaleCaption)")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textSecondary)
+        }
+    }
+
+    private var suiteList: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ArenaPremiumKicker(text: "Por suíte")
+                .padding(.bottom, 8)
+            ForEach(model.scoreboard?.suites ?? []) { suite in
+                Button { onSuite(suite) } label: {
+                    HStack(spacing: 13) {
+                        ArenaPremiumIcon(
+                            symbol: ArenaPremiumIconography.suite(suite.suite),
+                            tone: suite.hasRegression ? .negative : .neutral
+                        )
+                        Text(ArenaDisplay.suite(suite.suite))
+                            .font(AtlasFont.serif(17))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        Spacer()
+                        suiteMetric(suite)
+                        ArenaPremiumChevron()
+                    }
+                    .frame(minHeight: 54)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier(A11yID.arenaPremiumResultSuite(suite.suite))
+                ArenaPremiumHairline()
+            }
+            Text(ArenaScoreJudgment.absenceNeverZero)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .padding(.top, 16)
+        }
+    }
+
+    @ViewBuilder
+    private func suiteMetric(_ suite: AtlasArenaSuite) -> some View {
+        if let engine = suite.engines.first(where: { $0.engine == model.arenaSelectedEngineID })
+            ?? suite.engines.first {
+            HStack(spacing: 6) {
+                Text(ArenaFormat.score(engine.score))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                if let delta = engine.delta {
+                    Text(ArenaFormat.signed(delta))
+                        .foregroundStyle(delta < 0 ? AtlasTheme.alert : (delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.textSecondary))
+                }
+            }
+            .font(AtlasFont.mono(11, .medium))
+        } else {
+            Text(ArenaScoreJudgment.unmeasuredLabel)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+        }
+    }
+
+    private func smallMetric(
+        _ label: String,
+        _ value: String,
+        tone: ArenaPremiumTone = .neutral
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
+            Text(value).font(AtlasFont.mono(18, .medium)).foregroundStyle(tone.color)
+        }
+    }
+
+    private var empty: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            ArenaPremiumEmptyGlyph(symbol: "chart.xyaxis.line")
+            Text("Nenhum resultado medido")
+                .font(AtlasFont.serif(31))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text("O primeiro resultado aparecerá quando uma suíte concluir.")
+                .font(AtlasFont.serifItalic(16))
+                .foregroundStyle(AtlasTheme.textSecondary)
+        }
+    }
+}
+// MARK: - ArenaPremiumCapabilitiesView
+
+// MARK: - Capabilities surface
+struct ArenaPremiumCapabilitiesView: View {
+    @Bindable var model: ArenaModel
+    let onCapability: (AtlasArenaCapability) -> Void
+
+    private var capabilities: [AtlasArenaCapability] {
+        model.selectedCapabilities?.capabilities ?? []
+    }
+
+    private var counts: ArenaCapabilitiesCounts {
+        ArenaCapabilitiesJudgment.counts(of: capabilities)
+    }
+
+    private var face: ArenaCapabilitiesFace {
+        ArenaCapabilitiesJudgment.face(capabilities)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            capabilityHeader
+            if face == .empty {
+                empty
+            } else {
+                summary
+                trackLegend
+                rows
+            }
+        }
+        // Ao abrir a aba, re-busca do servidor: o poll de 10s não recarrega
+        // capacidades, então sem isto a tela ficava com dado velho (o -8,3
+        // falso onde o servidor já diz "não medido").
+        .task { await model.refreshCapabilities() }
+        .accessibilityValue(face.productWord)
+    }
+
+    // MARK: Sections
+    private var capabilityHeader: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ArenaPremiumKicker(text: ArenaScoreJudgment.capabilitiesKicker())
+                .accessibilityIdentifier(A11yID.arenaPremiumCapabilities)
+            ArenaPremiumEngineTitle(
+                engineID: model.selectedCapabilities?.engine
+                    ?? model.preferredEngine
+                    ?? "motor",
+                options: model.capabilityEngineOptions,
+                onSelect: { model.capabilitiesEngineSelection = $0 }
+            )
+            HStack(alignment: .lastTextBaseline, spacing: 4) {
+                Text("\(counts.measured)")
+                    .font(AtlasFont.serif(56))
+                Text("/\(counts.total)")
+                    .font(AtlasFont.serif(29))
+                Text(ArenaCapabilitiesJudgment.coveredLabel)
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .padding(.leading, 6)
+            }
+            .foregroundStyle(AtlasTheme.textPrimary)
+            .accessibilityLabel(
+                "\(counts.measured) de \(counts.total) \(ArenaCapabilitiesJudgment.coveredLabel), medido com confiança"
+            )
+        }
+    }
+
+    private var trackLegend: some View {
+        HStack(spacing: 16) {
+            HStack(spacing: 6) {
+                Circle()
+                    .stroke(AtlasTheme.textSecondary, lineWidth: 1.5)
+                    .frame(width: 8, height: 8)
+                Text("sem Atlas")
+            }
+            HStack(spacing: 5) {
+                Text("✦")
+                    .font(AtlasFont.serif(11))
+                    .foregroundStyle(AtlasTheme.accent)
+                Text("com Atlas")
+            }
+        }
+        .font(AtlasFont.mono(10))
+        .foregroundStyle(AtlasTheme.textTertiary)
+        .accessibilityHidden(true)
+    }
+
+    private var summary: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 24) {
+                summaryMetric(counts.improved, "melhoraram", .positive)
+                summaryMetric(counts.stable, "estáveis", .neutral)
+                summaryMetric(counts.regressed, "regrediram", .negative)
+            }
+            VStack(alignment: .leading, spacing: 10) {
+                summaryMetric(counts.improved, "melhoraram", .positive)
+                summaryMetric(counts.stable, "estáveis", .neutral)
+                summaryMetric(counts.regressed, "regrediram", .negative)
+            }
+        }
+    }
+
+    private var rows: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if let area = model.selectedCapabilities?.areaLabelPt, !area.isEmpty {
+                Text(area.uppercased())
+                    .font(AtlasFont.mono(10, .medium))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .padding(.bottom, 10)
+            }
+            ForEach(ArenaCapabilitiesJudgment.groupOrder, id: \.self) { groupKey in
+                let members = ArenaCapabilitiesJudgment.members(
+                    in: groupKey,
+                    capabilities: capabilities
+                )
+                if !members.isEmpty {
+                    Text(model.selectedCapabilities?.groupsPt?[groupKey] ?? groupKey)
+                        .font(AtlasFont.serif(17))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .padding(.top, 14)
+                        .padding(.bottom, 4)
+                    groupRows(members)
+                }
+            }
+            Text(
+                ArenaCapabilitiesJudgment.capabilitiesCaption(
+                    engineOptionCount: model.capabilityEngineOptions.count
+                )
+            )
+            .font(AtlasFont.mono(10))
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .padding(.top, 16)
+        }
+    }
+
+    private func groupRows(_ members: [AtlasArenaCapability]) -> some View {
+        VStack(spacing: 0) {
+            ArenaPremiumHairline()
+            ForEach(members) { capability in
+                Button { onCapability(capability) } label: {
+                    // Sem numeral: a lista não é sequência — número que não
+                    // codifica nada é ruído (régua da casa).
+                    HStack(spacing: 10) {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(capability.labelPt)
+                                .font(AtlasFont.serifItalic(15))
+                                .foregroundStyle(AtlasTheme.textPrimary)
+                            if let caption = ArenaCapabilitiesJudgment.shortConfidence(capability) {
+                                Text(caption)
+                                    .font(AtlasFont.mono(9))
+                                    .foregroundStyle(AtlasTheme.textTertiary)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.8)
+                            }
+                        }
+                        .frame(maxWidth: 170, alignment: .leading)
+                        ArenaCapabilityTrack(
+                            baseline: capability.score,
+                            withAtlas: capability.withAtlas
+                        )
+                        .frame(minWidth: 86)
+                        deltaLabel(capability)
+                        ArenaPremiumChevron()
+                    }
+                    .frame(minHeight: 58)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(ArenaCapabilitiesJudgment.spokenRow(capability))
+                .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
+                ArenaPremiumHairline()
+            }
+        }
+    }
+
+    // MARK: Empty / metrics
+    private var empty: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ArenaPremiumEmptyGlyph(symbol: "shield.lefthalf.filled")
+            Text(ArenaCapabilitiesJudgment.emptyTitle)
+                .font(AtlasFont.serif(29))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text(ArenaCapabilitiesJudgment.emptyBody)
+                .font(AtlasFont.serifItalic(15))
+                .foregroundStyle(AtlasTheme.textSecondary)
+        }
+        .accessibilityLabel(face.spokenFace)
+    }
+
+    private func summaryMetric(_ value: Int, _ label: String, _ tone: ArenaPremiumTone) -> some View {
+        HStack(spacing: 6) {
+            Text("\(value)").font(AtlasFont.serif(25)).foregroundStyle(tone.color)
+            Text(label).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textSecondary)
+        }
+    }
+
+    private func deltaLabel(_ capability: AtlasArenaCapability) -> some View {
+        Text(ArenaCapabilitiesJudgment.deltaDisplayText(capability))
+            .font(AtlasFont.mono(10, .medium))
+            .foregroundStyle(ArenaCapabilitiesJudgment.deltaColor(capability))
+            .frame(width: 44, alignment: .trailing)
+    }
+}
+
+// MARK: - Track row
+struct ArenaCapabilityTrack: View {
+    let baseline: Double?
+    let withAtlas: Double?
+
+    var body: some View {
+        GeometryReader { proxy in
+            let w = proxy.size.width
+            ZStack(alignment: .leading) {
+                Capsule().fill(AtlasTheme.separator).frame(height: 2)
+                // sem Atlas = anel quieto; com Atlas = ✦ da casa (não bola).
+                if let baseline {
+                    Circle()
+                        .fill(AtlasTheme.bg)
+                        .overlay(Circle().stroke(AtlasTheme.textSecondary, lineWidth: 1.5))
+                        .frame(width: 10, height: 10)
+                        .offset(x: max(0, min(w - 10, w * baseline - 5)))
+                }
+                if let withAtlas {
+                    Text("✦")
+                        .font(AtlasFont.serif(13))
+                        .foregroundStyle(AtlasTheme.accent)
+                        .offset(x: max(0, min(w - 13, w * withAtlas - 6.5)))
+                }
+            }
+        }
+        .frame(height: 18)
+        .accessibilityHidden(true)
+    }
+}
+// MARK: - ArenaPremiumCapabilityDetail
+
+struct ArenaPremiumCapabilityDetail: View {
+    @Environment(\.dismiss) private var dismiss
+    let capability: AtlasArenaCapability
+    let scoreboard: AtlasArenaScoreboard?
+    let engineId: String?
+
+    private var delta: Double? {
+        guard let baseline = capability.score, let withAtlas = capability.withAtlas else { return nil }
+        return withAtlas - baseline
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+            ArenaPremiumKicker(text: "Capacidade medida · escala 0–10")
+                        .accessibilityIdentifier(A11yID.arenaPremiumCapabilityDetail)
+                    Text(capability.labelPt)
+                        .font(AtlasFont.serif(34))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    comparison
+                    contribution
+                    provenance
+                }
+                .padding(AtlasTheme.Space.screen)
+            }
+            .scrollIndicators(.hidden)
+            .background(AtlasTheme.bg.ignoresSafeArea())
+            .navigationTitle("Capacidade")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    AtlasCloseToolbarButton(
+                        spokenLabel: "fechar capacidade",
+                        spokenHint: "volta para o perfil",
+                        reduceMotion: UIAccessibility.isReduceMotionEnabled
+                    ) { dismiss() }
+                }
+            }
+        }
+    }
+
+    private var comparison: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 30) {
+                    metric("Sem Atlas", capability.score)
+                    ArenaPremiumIcon(
+                        symbol: ArenaPremiumIconography.comparison,
+                        tone: .muted,
+                        role: .compact
+                    )
+                    metric("Com Atlas", capability.withAtlas, tone: .active)
+                    Spacer()
+                    Text(ArenaFormat.signed(delta))
+                        .font(AtlasFont.mono(16, .medium))
+                        .foregroundStyle(deltaColor)
+                }
+                VStack(alignment: .leading, spacing: 14) {
+                    metric("Sem Atlas", capability.score)
+                    metric("Com Atlas", capability.withAtlas, tone: .active)
+                    Text("diferença \(ArenaFormat.signed(delta))")
+                        .font(AtlasFont.mono(12, .medium))
+                        .foregroundStyle(deltaColor)
+                }
+            }
+            ArenaCapabilityTrack(baseline: capability.score, withAtlas: capability.withAtlas)
+                .frame(height: 24)
+        }
+    }
+
+    private var contribution: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ArenaPremiumKicker(text: "Suítes que contribuíram")
+                .padding(.bottom, 10)
+            ArenaPremiumHairline()
+            ForEach(capability.suitesContributing, id: \.self) { suite in
+                HStack {
+                    ArenaPremiumIcon(
+                        symbol: ArenaPremiumIconography.suite(suite)
+                    )
+                    Text(ArenaDisplay.suite(suite))
+                        .atlasSans(16, .medium)
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    Spacer()
+                    Text(suiteCases(suite))
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                }
+                .padding(.vertical, 14)
+                ArenaPremiumHairline()
+            }
+        }
+    }
+
+    private var provenance: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ArenaPremiumKicker(text: "Proveniência")
+            // "denominador" é jargão de estatístico — português direto.
+            Text("\(capability.casesTotal.map(String.init) ?? "—") casos somados na conta publicada")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textSecondary)
+            Text("Ausência de um braço permanece não medida.")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+        }
+    }
+
+    private var deltaColor: Color {
+        guard let delta else { return AtlasTheme.textTertiary }
+        if abs(delta) <= 0.005 { return AtlasTheme.textSecondary }
+        return delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.alert
+    }
+
+    private func metric(_ label: String, _ value: Double?, tone: ArenaPremiumTone = .neutral) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(ArenaFormat.score(value))
+                .font(AtlasFont.serif(34))
+                .foregroundStyle(tone.color)
+            Text(label)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textSecondary)
+        }
+    }
+
+    private func suiteCases(_ suite: String) -> String {
+        guard let engines = scoreboard?.suites.first(where: { $0.suite == suite })?.engines,
+              let total = (engines.first(where: { $0.engine == engineId }) ?? engines.first)?
+                .casesTotal else { return "casos não publicados" }
+        return "\(total) casos"
+    }
+}
+// MARK: - ArenaPremiumComparison
+
+struct ArenaPremiumComparison: View {
+    @Bindable var model: ArenaModel
+    let provisional: Bool
+
+    /// Par publicado: suíte da corrida → qualquer suíte do motor → composto.
+    private var pair: PublishedPair? {
+        if let suiteEngine = suiteEnginePair,
+           let without = suiteEngine.withoutAtlasScore,
+           let withAtlas = suiteEngine.withAtlasScore {
+            return PublishedPair(
+                without: without,
+                withAtlas: withAtlas,
+                source: .suite
+            )
+        }
+        if let engine = model.arenaPrimaryEngine,
+           let without = engine.withoutAtlasComposite,
+           let withAtlas = engine.withAtlasComposite {
+            return PublishedPair(without: without, withAtlas: withAtlas, source: .composite)
+        }
+        return nil
+    }
+
+    private var suiteEnginePair: AtlasArenaSuiteEngine? {
+        let engineID = resolvedEngineID
+        let suites = model.scoreboard?.suites ?? []
+        if let run = model.arenaPrimaryRun {
+            if let match = suites.first(where: { $0.suite == run.suite })?
+                .engines.first(where: { engineMatches($0.engine, engineID) }),
+               match.withoutAtlasScore != nil,
+               match.withAtlasScore != nil {
+                return match
+            }
+        }
+        // Último par publicado do mesmo motor (suíte da corrida pode ainda
+        // não ter scoreboard — a medição ao vivo não apaga o histórico).
+        return suites
+            .flatMap(\.engines)
+            .first {
+                engineMatches($0.engine, engineID)
+                    && $0.withoutAtlasScore != nil
+                    && $0.withAtlasScore != nil
+            }
+    }
+
+    private var resolvedEngineID: String? {
+        if let engine = model.arenaPrimaryRun?.engine, !engine.isEmpty { return engine }
+        return model.preferredEngine ?? model.arenaPrimaryEngine?.engine
+    }
+
+    var body: some View {
+        Group {
+            if let pair {
+                VStack(alignment: .leading, spacing: 12) {
+                    ArenaPremiumHairline()
+                    ArenaPremiumKicker(text: kickerTitle(for: pair))
+                    values(pair)
+                }
+            }
+            // Sem par publicado: some a seção inteira — kicker órfão era mentira
+            // visual (título sem 6,0 → 7,6).
+        }
+    }
+
+    private func kickerTitle(for pair: PublishedPair) -> String {
+        // WAVE-021: Comparison silence law is the global kicker grammar.
+        ArenaScoreJudgment.comparisonKicker(
+            provisional: provisional,
+            sourceSuite: pair.source == .suite
+        )
+    }
+
+    private func values(_ pair: PublishedPair) -> some View {
+        let delta = pair.withAtlas - pair.without
+        return HStack(alignment: .lastTextBaseline, spacing: 14) {
+            metric(ArenaFormat.score(pair.without), "Sem Atlas", gold: false)
+            Text("→")
+                .font(AtlasFont.serif(15))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .padding(.bottom, 2)
+            metric(ArenaFormat.score(pair.withAtlas), "Com Atlas", gold: true)
+            Spacer(minLength: 4)
+            Text(ArenaFormat.signed(delta))
+                .font(AtlasFont.serifItalic(15))
+                .foregroundStyle(
+                    abs(delta) < 0.005
+                        ? AtlasTheme.textSecondary
+                        : (delta > 0 ? AtlasTheme.accent : AtlasTheme.alert)
+                )
+                .padding(.bottom, 2)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            ArenaScoreJudgment.spokenPair(without: pair.without, withAtlas: pair.withAtlas)
+        )
+    }
+
+    private func metric(_ value: String, _ label: String, gold: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(label.uppercased())
+                .font(AtlasFont.mono(9))
+                .tracking(1.2)
+                .foregroundStyle(AtlasTheme.textTertiary)
+            Text(value)
+                .font(AtlasFont.serif(28))
+                .foregroundStyle(gold ? AtlasTheme.accent : AtlasTheme.textPrimary)
+        }
+    }
+
+    private func engineMatches(_ candidate: String, _ expected: String?) -> Bool {
+        guard let expected, !expected.isEmpty else { return true }
+        return candidate == expected
+    }
+
+    private struct PublishedPair {
+        enum Source { case suite, composite }
+        let without: Double
+        let withAtlas: Double
+        let source: Source
+    }
+}
+
+// MARK: - ArenaPremiumStopSheet
+
+struct ArenaPremiumStopSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Bindable var model: ArenaModel
+    let run: AtlasArenaLiveRun
+    @State private var actor = ""
+    @State private var reason = ""
+
+    private var stopFace: ArenaStopFace {
+        ArenaStopJudgment.face(actor: actor, reason: reason)
+    }
+
+    private var valid: Bool {
+        ArenaStopJudgment.canSubmit(actor: actor, reason: reason)
+    }
+
+    private var isConfirmed: Bool {
+        model.lastStopReceipt?.measurementIdPublic == run.measurementIdPublic
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    ArenaPremiumEmptyGlyph(symbol: "stop.circle", tone: .negative)
+                    ArenaPremiumKicker(text: ArenaStopJudgment.kicker, tone: .negative)
+                        .accessibilityIdentifier(A11yID.arenaPremiumStopSheet)
+                    Text(ArenaStopJudgment.heroTitle)
+                        .font(AtlasFont.serif(34))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    Text(ArenaStopJudgment.bodyCopy)
+                        .font(.system(.body))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    fields
+                    receipt
+                    confirm
+                }
+                .padding(AtlasTheme.Space.screen)
+            }
+            .scrollIndicators(.hidden)
+            .background(AtlasTheme.bg.ignoresSafeArea())
+            .navigationTitle(ArenaStopJudgment.navigationTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    AtlasCloseToolbarButton(
+                        spokenLabel: ArenaStopJudgment.closeSpoken,
+                        spokenHint: ArenaStopJudgment.closeHint,
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
+                }
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(
+                ArenaStopJudgment.spokenSheet(
+                    actor: actor,
+                    reason: reason,
+                    suite: ArenaDisplay.suite(run.suite)
+                )
+            )
+            .accessibilityValue(stopFace.productWord)
+        }
+        .onAppear { model.controlError = nil }
+    }
+
+    private var fields: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            // Chrome da casa: .roundedBorder rendia caixas BRANCAS no dark
+            // (a mesma quebra já corrigida na folha de rodar) — ink neutro.
+            fieldLabel(ArenaStopJudgment.actorLabel)
+            TextField(ArenaStopJudgment.actorPlaceholder, text: $actor)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .modifier(ArenaFieldChrome())
+                .accessibilityIdentifier(A11yID.arenaPremiumStopActor)
+            fieldLabel(ArenaStopJudgment.reasonLabel)
+            TextField(ArenaStopJudgment.reasonPlaceholder, text: $reason, axis: .vertical)
+                .lineLimit(2...4)
+                .modifier(ArenaFieldChrome())
+                .accessibilityIdentifier(A11yID.arenaPremiumStopReason)
+        }
+    }
+
+    private func fieldLabel(_ text: String) -> some View {
+        Text(text)
+            .atlasSans(12, .medium)
+            .foregroundStyle(AtlasTheme.textSecondary)
+    }
+
+    @ViewBuilder
+    private var receipt: some View {
+        if let value = model.lastStopReceipt,
+           value.measurementIdPublic == run.measurementIdPublic {
+            VStack(alignment: .leading, spacing: 6) {
+                Label(
+                    value.accepted ? "Solicitação confirmada" : "Medição já havia terminado",
+                    systemImage: value.accepted ? "checkmark.seal" : "info.circle"
+                )
+                    .font(.system(.callout, weight: .semibold))
+                    .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+                Text(value.stopsAfterCurrentCase ? "parada após o caso atual" : value.status.rawValue)
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+            .accessibilityIdentifier(A11yID.arenaPremiumStopReceipt)
+            .accessibilityLabel(ArenaStopJudgment.spokenReceipt(value))
+        }
+        if let error = model.controlError {
+            Text(error)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.alert)
+        }
+    }
+
+    private var confirm: some View {
+        Button {
+            guard let measurementId = run.measurementIdPublic else { return }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            Task {
+                await model.stopMeasurement(
+                    measurementId: measurementId,
+                    operatorActor: actor,
+                    operatorReason: reason
+                )
+            }
+        } label: {
+            HStack(spacing: 9) {
+                ArenaPremiumIcon(
+                    symbol: ArenaPremiumIconography.stop,
+                    tone: valid && !isConfirmed ? .negative : .muted
+                )
+                Text(model.isStoppingMeasurement ? "Solicitando…" : ArenaStopJudgment.confirmTitle)
+            }
+                .font(.system(.body, weight: .semibold))
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .foregroundStyle(valid && !isConfirmed ? AtlasTheme.alert : AtlasTheme.textTertiary)
+                .background(Capsule().fill(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.08 : 0.03)))
+                .overlay(Capsule().stroke(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.5 : 0.15), lineWidth: 1))
+        }
+        .buttonStyle(PressableScale())
+        .disabled(!valid || model.isStoppingMeasurement || isConfirmed)
+        .accessibilityIdentifier(A11yID.arenaPremiumStopConfirm)
+        .accessibilityLabel(ArenaStopJudgment.spokenConfirm(actor: actor, reason: reason))
+        .accessibilityHint(ArenaStopJudgment.confirmHint)
+    }
+}
+
+// MARK: - ArenaPremiumPlanQueueViews
+
+// MARK: - Plan view
+struct ArenaPremiumPlanView: View {
+    @Bindable var model: ArenaModel
+
+    /// WAVE-085: live ∪ queue merge from Judgment.
+    private var liveRuns: [AtlasArenaLiveRun] {
+        ArenaPlanQueueJudgment.mergedLiveRuns(
+            measurementRuns: model.arenaPrimaryMeasurementRuns,
+            queuedRuns: model.livePresentation?.queuedRuns ?? []
+        )
+    }
+
+    private var liveSuites: [String] {
+        ArenaPlanQueueJudgment.liveSuites(from: liveRuns)
+    }
+
+    private var planFace: ArenaPlanFace {
+        ArenaPlanQueueJudgment.planFace(
+            activePlan: model.activePlan,
+            liveSuites: liveSuites
+        )
+    }
+
+    private var liveArmsText: String {
+        var seen = Set<String>()
+        return liveRuns.compactMap(\.arm)
+            .compactMap { seen.insert($0.rawValue).inserted ? $0.labelPT : nil }
+            .joined(separator: " → ")
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            ArenaPremiumKicker(text: "Ordem de medição")
+                .accessibilityIdentifier(A11yID.arenaPremiumPlan)
+            Text("Plano")
+                .font(AtlasFont.serif(36))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityValue(planFace.productWord)
+            switch planFace {
+            case .published:
+                if let plan = model.activePlan {
+                    headline(
+                        engines: plan.engines.count,
+                        suites: plan.suites.count,
+                        arms: plan.arms.count,
+                        runs: plan.runsPlanned
+                    )
+                    suiteSequence(
+                        plan.suites,
+                        armsText: plan.arms.map(\.labelPT).joined(separator: " → "),
+                        footer: planFace.footer
+                    )
+                }
+            case .derivedLive:
+                headline(
+                    engines: Set(liveRuns.map(\.engineDisplayName)).count,
+                    suites: liveSuites.count,
+                    arms: Set(liveRuns.compactMap { $0.arm?.rawValue }).count,
+                    runs: liveRuns.count
+                )
+                suiteSequence(
+                    liveSuites,
+                    armsText: liveArmsText,
+                    footer: planFace.footer
+                )
+            case .empty:
+                empty
+            }
+        }
+    }
+
+    // MARK: Plan sections
+    private func headline(engines: Int, suites: Int, arms: Int, runs: Int) -> some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 28) {
+                metric(engines, "motores")
+                metric(suites, "suítes")
+                metric(arms, "braços")
+                metric(runs, "corridas")
+            }
+            VStack(alignment: .leading, spacing: 12) {
+                metric(engines, "motores")
+                metric(suites, "suítes")
+                metric(runs, "corridas")
+            }
+        }
+    }
+
+    private func suiteSequence(_ suites: [String], armsText: String, footer: String) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ArenaPremiumHairline()
+            ForEach(Array(suites.enumerated()), id: \.element) { index, suite in
+                let status = ArenaPlanQueueJudgment.suiteStatus(
+                    suite: suite,
+                    measurementRuns: model.arenaPrimaryMeasurementRuns
+                )
+                HStack(spacing: 14) {
+                    Text(String(format: "%02d", index + 1))
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .frame(width: 28, alignment: .leading)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(ArenaDisplay.suite(suite))
+                            .atlasSans(16, .medium)
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        Text(armsText)
+                            .font(AtlasFont.mono(10))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                    }
+                    Spacer()
+                    ArenaPremiumIcon(
+                        symbol: ArenaPremiumIconography.planStatus(status),
+                        tone: ArenaPlanQueueJudgment.suiteTone(status)
+                    )
+                }
+                .padding(.vertical, 14)
+                .accessibilityIdentifier(A11yID.arenaPremiumPlanRow(suite))
+                ArenaPremiumHairline()
+            }
+            Text(footer)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .padding(.top, 16)
+        }
+    }
+
+    private var empty: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ArenaPremiumEmptyGlyph(symbol: "list.bullet.rectangle")
+            Text("Nenhum plano ativo")
+                .font(AtlasFont.serif(29))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text(ArenaPlanFace.empty.footer)
+                .font(AtlasFont.serifItalic(15))
+                .foregroundStyle(AtlasTheme.textSecondary)
+        }
+        .accessibilityValue(ArenaPlanFace.empty.productWord)
+    }
+
+    private func metric(_ value: Int, _ label: String) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text("\(value)").font(AtlasFont.serif(30)).foregroundStyle(AtlasTheme.textPrimary)
+            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
+        }
+    }
+}
+
+// MARK: - Queue view
+struct ArenaPremiumQueueView: View {
+    @Bindable var model: ArenaModel
+
+    private var queued: [AtlasArenaLiveRun] {
+        model.livePresentation?.queuedRuns ?? []
+    }
+
+    private var queuedSuites: [String] {
+        ArenaPlanQueueJudgment.liveSuites(from: queued)
+    }
+
+    private var queueFace: ArenaQueueFace {
+        ArenaPlanQueueJudgment.queueFace(queuedSuiteCount: queuedSuites.count)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            ArenaPremiumKicker(
+                text: "Aguardando execução",
+                tone: queueFace.productWord == "empty" ? .neutral : .active,
+                showsLiveMark: queueFace.productWord != "empty"
+            )
+            .accessibilityIdentifier(A11yID.arenaPremiumQueue)
+            HStack(alignment: .lastTextBaseline) {
+                Text("\(queuedSuites.count)")
+                    .font(AtlasFont.serif(58))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text(queuedSuites.count == 1 ? "suíte na fila" : "suítes na fila")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+            .accessibilityValue(queueFace.productWord)
+            .accessibilityLabel(queueFace.spokenFace)
+            queueRows
+        }
+    }
+
+    // MARK: Queue rows
+    private var queueRows: some View {
+        VStack(spacing: 0) {
+            ArenaPremiumHairline()
+            ForEach(Array(queuedSuites.enumerated()), id: \.element) { index, suite in
+                HStack(spacing: 14) {
+                    Text("\(index + 1)")
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .frame(width: 26, alignment: .leading)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(ArenaDisplay.suite(suite))
+                            .atlasSans(16, .medium)
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        Text(queueDetail(suite))
+                            .font(AtlasFont.mono(10))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                    }
+                    Spacer()
+                    ArenaPremiumIcon(symbol: "clock", tone: .muted)
+                }
+                .padding(.vertical, 14)
+                .accessibilityIdentifier(A11yID.arenaPremiumQueueRow(suite))
+                ArenaPremiumHairline()
+            }
+            if case .empty = queueFace {
+                Text("Fila vazia")
+                    .font(AtlasFont.serifItalic(15))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
+                    .accessibilityValue(ArenaQueueFace.empty.productWord)
+            }
+        }
+    }
+
+    private func queueDetail(_ suite: String) -> String {
+        let runs = queued.filter { $0.suite == suite }
+        var seenArms = Set<String>()
+        let arms = runs.compactMap(\.arm)
+            .compactMap { seenArms.insert($0.rawValue).inserted ? $0.labelPT : nil }
+        let engine = runs.first.map { ArenaDisplay.engine($0.engineDisplayName) }
+        return ([engine] + arms).compactMap(\.self).joined(separator: " · ")
+    }
+}
