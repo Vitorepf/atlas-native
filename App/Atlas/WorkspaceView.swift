@@ -302,6 +302,7 @@ extension WorkspaceThreadLink {
         })
         .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
         .accessibilityHint("abre a conversa")
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
         .transition(threadTransition)
     }

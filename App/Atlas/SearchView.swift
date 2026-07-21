@@ -331,6 +331,7 @@ extension SearchThreadLink {
         content
             .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
             .accessibilityHint("abre a conversa")
+            .accessibilityAddTraits(.isButton)
             .accessibilityIdentifier(A11yID.searchResult(thread.id))
             .transition(reduceMotion ? .opacity : .asymmetric(
                 insertion: .opacity.combined(with: .offset(y: 6)),

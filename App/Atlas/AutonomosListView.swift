@@ -91,6 +91,7 @@ struct AutonomosListView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spoken(unit))
         .accessibilityHint("abre o hub deste Autônomo")
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.autonomosUnit(unit.id))
     }
 
