@@ -4,32 +4,19 @@ import AtlasCore
 // Conteúdo visual do input pill — peel de RootView+InputBar.
 
 extension RootView {
-    // A pílula agêntica: ✦ vivo + Liquid Glass + fio de ouro artesanal.
+    // A pílula agêntica: ✦ vivo + chrome canônico Home (atlasAgenticPillChrome).
     var inputBarContent: some View {
         HStack(spacing: 12) {
             HomeComposerStar()
-            Text("Escreva ao Atlas")
+            Text(HomeAskContext.invite)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textTertiary)
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityHidden(true)
-            Spacer(minLength: 0)
         }
-        .padding(.horizontal, 18).padding(.vertical, 12)
-        .atlasGlassCapsule()
-        .overlay(
-            Capsule()
-                .strokeBorder(
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0.22),
-                            AtlasTheme.accent.opacity(0.04),
-                            AtlasTheme.accent.opacity(0.12)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    lineWidth: 0.75
-                )
-        )
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .atlasAgenticPillChrome()
     }
 }

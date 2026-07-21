@@ -25,25 +25,7 @@ struct AgenticPill: View {
             }
             .padding(.horizontal, 18)
             .padding(.vertical, 12)
-            // Vidro no background do label — glassEffect.interactive no iOS 26
-            // aplicado como modifier de conteúdo às vezes engole o identifier.
-            .background { Capsule().fill(AtlasTheme.bgRecessed.opacity(0.01)) }
-            .atlasGlassCapsule()
-            .overlay(
-                Capsule()
-                    .strokeBorder(
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0.22),
-                                AtlasTheme.accent.opacity(0.04),
-                                AtlasTheme.accent.opacity(0.12)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: 0.75
-                    )
-            )
+            .atlasAgenticPillChrome()
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)

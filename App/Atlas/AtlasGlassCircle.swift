@@ -32,8 +32,38 @@ struct AtlasGlassCapsule: ViewModifier {
     }
 }
 
+/// Chrome único da pílula agêntica = craft Home (lei pétrea pílula §2).
+/// Vidro + fio de ouro artesanal. Só o convite muda por superfície.
+struct AtlasAgenticPillChrome: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            // Hit-test friendly fill sob glass no iOS 26 (identifier não some).
+            .background { Capsule().fill(AtlasTheme.bgRecessed.opacity(0.01)) }
+            .atlasGlassCapsule()
+            .overlay(
+                Capsule()
+                    .strokeBorder(Self.goldFilament, lineWidth: 0.75)
+            )
+    }
+
+    /// Fio de ouro da home — não goldBorder chapado, não shadow solto.
+    static var goldFilament: LinearGradient {
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0.22),
+                AtlasTheme.accent.opacity(0.04),
+                AtlasTheme.accent.opacity(0.12)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+}
+
 extension View {
     func atlasGlassCircle() -> some View { modifier(AtlasGlassCircle()) }
     /// Mesma lei para pílulas/cápsulas de chrome (composer da home, new pill).
     func atlasGlassCapsule() -> some View { modifier(AtlasGlassCapsule()) }
+    /// Chrome canônico da pílula: glass + fio de ouro Home. Use em toda superfície.
+    func atlasAgenticPillChrome() -> some View { modifier(AtlasAgenticPillChrome()) }
 }

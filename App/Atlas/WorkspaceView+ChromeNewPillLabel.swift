@@ -4,19 +4,19 @@ import AtlasCore
 // New pill label — peel de WorkspaceView+ChromeNewPill.
 
 extension WorkspaceView {
-    // Mesma pílula agêntica da home: ✦ ouro + vidro (padrão §6). Sem mic —
-    // voz está fora EM DEFINITIVO (canon §6).
+    // Mesma pílula agêntica da home: ✦ + chrome canônico. Sem mic (canon §6).
     var newPillLabel: some View {
-        HStack(spacing: 10) {
-            Text("✦").font(AtlasFont.serif(16))
-                .foregroundStyle(AtlasTheme.accent)
-                .frame(width: 30, height: 30)
+        HStack(spacing: 12) {
+            RootView.HomeComposerStar()
+            Text(HomeAskContext.invite)
+                .font(AtlasFont.serifItalic(16))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityHidden(true)
-            Text("Escreva ao Atlas").font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
-            Spacer()
         }
-        .padding(.horizontal, 14).padding(.vertical, 10)
-        .atlasGlassCapsule()
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .atlasAgenticPillChrome()
     }
 }
