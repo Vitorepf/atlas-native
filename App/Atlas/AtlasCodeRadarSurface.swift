@@ -131,64 +131,45 @@ extension AtlasCodeRadarStatusCapsule {
 }
 
 extension AtlasCodeRadarView {
+    /// WAVE-067: exclusive radar screen face from published phase + repo count.
+    var radarScreenFace: AtlasCodeRadarScreenFace {
+        let fail: String? = {
+            if case .failed(let message) = model.phase { return message }
+            return nil
+        }()
+        return AtlasCodeRadarScreenJudgment.face(
+            phase: model.phase,
+            repositoryCount: model.workspace?.repositoryCount,
+            failMessage: fail
+        )
+    }
+
     var contentPhaseID: String {
-        contentPhaseBusyID ?? contentPhaseLoadedID
-    }
-
-    var contentPhaseBusyID: String? {
-        switch model.phase {
-        case .idle: return "idle"
-        case .loading: return "loading"
-        case .failed: return "failed"
-        default: return nil
-        }
-    }
-
-    var contentPhaseLoadedID: String {
-        guard let workspace = model.workspace else { return "loaded-nil" }
-        if workspace.repositoryCount == 0 { return "loaded-empty" }
-        return "loaded-\(workspace.repositoryCount)"
+        // idle maps to loading phaseID (honesty: not a distinct product face).
+        if case .idle = model.phase { return "idle" }
+        return radarScreenFace.phaseID
     }
 
     var radarShellSpokenLabel: String {
-        var parts = ["Código, workspace do operador"]
-        if let busy = radarShellBusyParts() {
-            parts.append(contentsOf: busy)
-        } else {
-            parts.append(contentsOf: radarShellLoadedParts())
-        }
-        return parts.joined(separator: ", ")
+        AtlasCodeRadarScreenJudgment.spokenShell(face: radarScreenFace)
     }
 
-    func radarShellBusyParts() -> [String]? {
-        switch model.phase {
-        case .idle, .loading:
-            return [spokenLoading()]
-        case .failed(let message):
-            return [spokenFailed(message)]
-        default:
-            return nil
-        }
+    static var shellHint: String { AtlasCodeRadarScreenJudgment.shellHint }
+
+    func spokenEmptyWorkspace() -> String {
+        AtlasCodeRadarScreenFace.empty.spokenFace
     }
 
-    func radarShellLoadedParts() -> [String] {
-        if let workspace = model.workspace, workspace.repositoryCount > 0 {
-            let n = workspace.repositoryCount
-            return ["\(n) repositório\(n == 1 ? "" : "s")"]
-        }
-        return [spokenEmptyWorkspace()]
+    func spokenLoading() -> String {
+        AtlasCodeRadarScreenFace.loading.spokenFace
     }
-
-    func spokenEmptyWorkspace() -> String { "nenhum repositório neste workspace" }
-
-    static let shellHint = "pastas, recentes e sem retorno verificados do seu código"
-
-    func spokenLoading() -> String { "lendo o workspace" }
 
     func spokenFailed(_ message: String) -> String {
-        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return "workspace indisponível" }
-        return "workspace indisponível, \(trimmed)"
+        AtlasCodeRadarScreenFace.failed(
+            message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? nil
+                : message.trimmingCharacters(in: .whitespacesAndNewlines)
+        ).spokenFace
     }
 }
 
@@ -284,6 +265,7 @@ extension AtlasCodeRadarView {
             .accessibilityIdentifier(A11yID.radarScreen)
             .accessibilityElement(children: .contain)
             .accessibilityLabel(radarShellSpokenLabel)
+            .accessibilityValue(radarScreenFace.productWord)
             .accessibilityHint(Self.shellHint)
     }
 }
