@@ -69,6 +69,7 @@ struct AutonomosHubView: View {
         switch vestment {
         case .quiet:
             AutonomosMapChrome.primaryCTA("Retomar", haptic: .medium, action: onResume)
+                .accessibilityHint("retoma este Autônomo a partir da pausa")
         case .live:
             EmptyView()
         }
