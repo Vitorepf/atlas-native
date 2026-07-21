@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 175
-- idle_compress_passes: 5
+- idle_compress_passes: 6
 - collapse_host: 0
 
 ## Waves done
@@ -193,6 +193,7 @@ mode: designer + implementer
 - pass 3 · `dc3204e1` · MARK densos post-174
 - pass 4 · `34a8d100` · MARK ConversationExecutionPhase
 - pass 5 · `542f30fa` · MARK residual densos post-179
+- pass 6 · `7d186855` · delete duplicate imports post-180
 
 ## Designer
 - designs_proposed: 175
