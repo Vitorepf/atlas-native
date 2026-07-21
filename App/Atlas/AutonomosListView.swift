@@ -17,10 +17,21 @@ struct AutonomosListView: View {
         .accessibilityIdentifier(A11yID.autonomosList)
     }
 
+    /// WAVE-025: live catalog units first; quiet/paused last (judgment order).
+    private var judgmentUnits: [AutonomosUnit] {
+        units.enumerated().sorted { lhs, rhs in
+            let l = AutonomosHubVestment.listFace(unitPaused: lhs.element.paused)
+            let r = AutonomosHubVestment.listFace(unitPaused: rhs.element.paused)
+            if l == .quiet && r != .quiet { return false }
+            if l != .quiet && r == .quiet { return true }
+            return lhs.offset < rhs.offset
+        }.map(\.element)
+    }
+
     private var list: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
-                ForEach(units) { unit in
+                ForEach(judgmentUnits) { unit in
                     unitRow(unit)
                 }
             }
