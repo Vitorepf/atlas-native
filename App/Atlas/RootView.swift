@@ -3162,7 +3162,7 @@ struct AtlasProfileSheet: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text("operador do Atlas")
-                .atlasSans(13)
+                .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
         .frame(maxWidth: .infinity)
@@ -3190,14 +3190,17 @@ extension AtlasProfileSheet {
 
         Toggle(isOn: $session.auditModeEnabled) {
             VStack(alignment: .leading, spacing: 3) {
-                Text("Modo auditoria").atlasSans(15, .medium)
+                Text("Modo auditoria")
+                    .font(AtlasFont.serif(15, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text("mostra detalhes técnicos nas telas")
-                    .atlasSans(12).foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.serif(13))
+                    .foregroundStyle(AtlasTheme.textTertiary)
             }
         }
         .tint(AtlasTheme.accent)
         .padding(.horizontal, 14).padding(.vertical, 12)
+        .frame(minHeight: 56)
         .frame(minHeight: 48, alignment: .center)
         .atlasCard()
         .onChange(of: session.auditModeEnabled) { _, _ in
