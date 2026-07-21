@@ -281,7 +281,7 @@ struct ArenaPremiumTabBar: View {
                     // ELEVADA (padrão do segmented nativo), não véu de ouro —
                     // ouro é ESTADO, não seleção de controle.
                     Text(tab.rawValue)
-                        .atlasSans(13, .medium)
+                        .font(selection == tab ? AtlasFont.serif(14, .semibold) : AtlasFont.serif(14))
                         .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textTertiary)
                         .frame(maxWidth: .infinity, minHeight: 48) // HIG 44+; match primary CTA breath
                         .background {
