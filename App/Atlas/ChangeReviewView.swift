@@ -118,9 +118,31 @@ extension ChangeReviewSheet {
             // Fundo como .background: destrava o scroll-edge material da barra.
             content
                 .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Revisar mudanças")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { reviewToolbar }
+            .toolbar {
+                reviewToolbar
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 4) {
+                        Text("Revisar mudanças")
+                            .font(AtlasFont.serif(17, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        LinearGradient(
+                            colors: [
+                                AtlasTheme.accent.opacity(0),
+                                AtlasTheme.accent.opacity(0.5),
+                                AtlasTheme.accent.opacity(0)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(width: 56, height: 1.5)
+                        .accessibilityHidden(true)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Revisar mudanças")
+                }
+            }
             .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }
             .accessibilityIdentifier(A11yID.reviewSheet)
             // Contain without fused sheet label so patches/actions stay focusable.
