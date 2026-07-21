@@ -5,19 +5,25 @@
 ```yaml
 pass: 1
 domain_index: 1
-last_focus: "PlanRevisionCompare rename honesty"
-session_commits: 30+
+last_focus: "Steer+SearchSurface fuse"
+session_commits: 33+
+soft_sections_states: 0
 ```
 
-## Soft *Sections*/*States*: **0**
+## Hard density
 
-## Próximo
+- *View/*Shell route >600: none
+- any >2000: none
+- *Sections*/*States* files: **0**
 
-- PlanCard Steps → host · Decision bodies · Governance Body+Chrome
-- RootChrome density if still over route ceiling
-- MARK residual dense · CODEMAP Type.method
-- NEVER Goal Done
+## Continues
+
+1. more same-host peels (ChangeReview *Body* family optional coalesce)
+2. MARK residual dense
+3. CODEMAP Type.method completeness  
+4. dead code scan
+5. domain_index cycle / pass+=1
 
 ## Proibido
 
-Goal Done · god_hold · WAVE · dual · Core
+Goal Done · god_hold · WAVE · dual · Core · Sources

@@ -28,6 +28,13 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### Steer+SearchSurface fuse
+
+```yaml
+gates: ok
+session_commits: 33+
+```
+
 ### 2026-07-21T22:51Z — PlanRevisionCompare rename honesty
 
 ```yaml
