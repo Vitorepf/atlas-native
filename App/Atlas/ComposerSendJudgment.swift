@@ -76,17 +76,11 @@ enum ComposerSendJudgment {
     }
 
     static func hasFailedDraft(_ drafts: [LocalDraft]) -> Bool {
-        drafts.contains {
-            if case .falhou = $0.state { return true }
-            return false
-        }
+        ComposerDraftJudgment.hasFailed(drafts)
     }
 
     static func hasUploadingDraft(_ drafts: [LocalDraft]) -> Bool {
-        drafts.contains {
-            if case .subindo = $0.state { return true }
-            return false
-        }
+        ComposerDraftJudgment.hasUploading(drafts)
     }
 
     static func hasReadyDraft(_ drafts: [LocalDraft]) -> Bool {
@@ -96,23 +90,13 @@ enum ComposerSendJudgment {
         }
     }
 
-    /// Failed-first attention, then uploading, then pronto, wire-stable.
+    /// WAVE-086: rank owned by Draft judgment (failed-first).
     static func rankDrafts(_ drafts: [LocalDraft]) -> [LocalDraft] {
-        drafts.enumerated().sorted { lhs, rhs in
-            let lr = draftAttentionRank(lhs.element)
-            let rr = draftAttentionRank(rhs.element)
-            if lr != rr { return lr < rr }
-            return lhs.offset < rhs.offset
-        }.map(\.element)
+        ComposerDraftJudgment.rankDrafts(drafts)
     }
 
-    /// 0 failed · 1 uploading · 2 pronto · 3 other
     static func draftAttentionRank(_ draft: LocalDraft) -> Int {
-        switch draft.state {
-        case .falhou: return 0
-        case .subindo: return 1
-        case .pronto: return 2
-        }
+        ComposerDraftJudgment.draftAttentionRank(draft)
     }
 
     static func face(

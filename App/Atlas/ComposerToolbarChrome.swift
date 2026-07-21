@@ -79,11 +79,21 @@ extension ComposerToolbar {
 }
 
 extension AttachmentStrip {
+    /// WAVE-086: exclusive strip face from draft + upload percent.
+    var stripFace: ComposerDraftStripFace {
+        ComposerDraftJudgment.stripFace(drafts: drafts, uploadPercent: uploadPercent)
+    }
+
     @ViewBuilder
     var attachmentDraftBranch: some View {
         if !drafts.isEmpty {
-            DraftStrip(drafts: drafts, reduceMotion: reduceMotion,
-                       onRemove: onRemove, onFailedTap: onFailedTap)
+            DraftStrip(
+                drafts: drafts,
+                reduceMotion: reduceMotion,
+                onRemove: onRemove,
+                onFailedTap: onFailedTap,
+                uploadPercent: uploadPercent
+            )
         }
     }
 }
@@ -102,6 +112,7 @@ struct AttachmentStrip: View {
                 uploadProgressRow
             }
             .accessibilityIdentifier(A11yID.composerAttachmentStrip)
+            .accessibilityValue(stripFace.productWord)
         }
     }
 }
@@ -136,7 +147,7 @@ extension AttachmentStrip {
     func uploadProgressA11y<Content: View>(_ content: Content, percent: Double) -> some View {
         content
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("enviando anexos, \(Int(percent * 100)) por cento")
+            .accessibilityLabel(ComposerDraftJudgment.spokenUploadPercent(percent))
     }
 }
 
@@ -158,7 +169,9 @@ extension AttachmentStrip {
 }
 
 extension AttachmentStrip {
-    var isVisible: Bool { !drafts.isEmpty || uploadPercent != nil }
+    var isVisible: Bool {
+        ComposerDraftJudgment.isStripVisible(drafts: drafts, uploadPercent: uploadPercent)
+    }
 }
 
 extension ComposerToolbar {

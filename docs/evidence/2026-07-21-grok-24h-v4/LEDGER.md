@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 80
+- waves_completed: 81
 - idle_compress_passes: 4
 - collapse_host: 0
 
@@ -91,15 +91,16 @@ mode: designer + implementer
 - WAVE-083
 - WAVE-084
 - WAVE-085
+- WAVE-086
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-
-- pass 4 · CommitRow A11y peel · delete ComposerSheetA11y shim · Judgment-only sheets
+- pass 3 · Messages scroll+editorial peel · Surface MARKs
+- pass 4 · CommitRow A11y peel · delete ComposerSheetA11y shim
 
 ## Designer
-- designs_proposed: 80
+- designs_proposed: 81
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -111,7 +112,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
+- WAVE-086 self-WAVE residual (composer draft/attachment) after 2 IDLE.
+- WAVE-084 empty editorial shipped prior.
+- DEVICE_PENDING for device screenshots.
 - Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-

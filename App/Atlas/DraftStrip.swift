@@ -2,22 +2,27 @@ import SwiftUI
 import UIKit
 import AtlasCore
 
-// Strip de anexos do composer — LocalDraft only (IDLE-COMPRESS).
+// Strip de anexos do composer — LocalDraft only (WAVE-086 Judgment).
 
 struct DraftStrip: View {
     let drafts: [LocalDraft]
     let reduceMotion: Bool
     let onRemove: (String) -> Void
     let onFailedTap: (String) -> Void
+    var uploadPercent: Double? = nil
+
+    private var stripFace: ComposerDraftStripFace {
+        ComposerDraftJudgment.stripFace(drafts: drafts, uploadPercent: uploadPercent)
+    }
 
     var body: some View {
-        if drafts.isEmpty {
+        if stripFace == .silence {
             EmptyView()
         } else {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
-                    // WAVE-046: failed-first attention rank.
-                    ForEach(ComposerSendJudgment.rankDrafts(drafts)) { d in
+                    // WAVE-046/086: failed-first attention rank.
+                    ForEach(ComposerDraftJudgment.rankDrafts(drafts)) { d in
                         DraftThumb(
                             draft: d,
                             reduceMotion: reduceMotion,
@@ -35,18 +40,14 @@ struct DraftStrip: View {
             }
             .scrollClipDisabled()
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(DraftStripA11y.spokenStrip(draftCount: drafts.count))
+            .accessibilityLabel(
+                ComposerDraftJudgment.spokenStrip(drafts: drafts, uploadPercent: uploadPercent)
+            )
+            .accessibilityValue(stripFace.productWord)
             .animation(
                 reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.86),
                 value: drafts.map(\.id)
             )
         }
-    }
-}
-
-enum DraftStripA11y {
-    static func spokenStrip(draftCount: Int) -> String {
-        let noun = draftCount == 1 ? "anexo" : "anexos"
-        return "\(draftCount) \(noun) no composer"
     }
 }

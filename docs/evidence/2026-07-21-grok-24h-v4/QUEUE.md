@@ -103,4 +103,5 @@ _(no open proposed WAVEs)_
 - WAVE-083 done
 - WAVE-084 done
 - WAVE-085 done
+- WAVE-086 done
 
