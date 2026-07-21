@@ -4382,7 +4382,13 @@ struct ArenaPremiumHairline: View {
         Rectangle()
             .fill(
                 LinearGradient(
-                    colors: [AtlasTheme.separator.opacity(0.2), AtlasTheme.separator, AtlasTheme.separator.opacity(0.2)],
+                    colors: [
+                        AtlasTheme.accent.opacity(0),
+                        AtlasTheme.accent.opacity(0.22),
+                        AtlasTheme.separator,
+                        AtlasTheme.accent.opacity(0.22),
+                        AtlasTheme.accent.opacity(0)
+                    ],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
