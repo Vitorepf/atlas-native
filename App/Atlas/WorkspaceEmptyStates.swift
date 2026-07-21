@@ -239,8 +239,10 @@ extension AtlasNetworkFailureEmpty {
     var retryLabel: some View {
         Text("Tentar de novo")
             .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.accent)
-            .padding(.horizontal, 22).padding(.vertical, 10)
+            .padding(.horizontal, 22).padding(.vertical, 12)
+            .frame(minHeight: 44)
             .background(Capsule().fill(AtlasTheme.goldVeil)
                 .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+            .contentShape(Capsule())
     }
 }
