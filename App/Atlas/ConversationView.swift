@@ -330,30 +330,43 @@ extension ConversationView {
 
 extension ConversationView {
     var header: some View {
-        HStack(spacing: 12) {
-            if hidesNavigationBack {
-                Color.clear.frame(width: 48, height: 48)
-            } else {
-                headerBackButton
+        VStack(spacing: 5) {
+            HStack(spacing: 12) {
+                if hidesNavigationBack {
+                    Color.clear.frame(width: 48, height: 48)
+                } else {
+                    headerBackButton
+                }
+                Spacer(minLength: 0)
+                Text(title)
+                    .font(AtlasFont.serif(17, .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(1)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel(spokenConversationScreenLabel())
+                    .accessibilityHint(
+                        hidesNavigationBack
+                            ? "arraste para baixo para fechar"
+                            : ConversationViewA11y.screenHint
+                    )
+                Spacer(minLength: 0)
+                headerTrailing
             }
-            Spacer(minLength: 0)
-            Text(title)
-                .font(AtlasFont.serif(17, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .lineLimit(1)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel(spokenConversationScreenLabel())
-                .accessibilityHint(
-                    hidesNavigationBack
-                        ? "arraste para baixo para fechar"
-                        : ConversationViewA11y.screenHint
-                )
-            Spacer(minLength: 0)
-            headerTrailing
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.5),
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: 48, height: 1.5)
+            .accessibilityHidden(true)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 4)
-        .padding(.bottom, 4)
+        .padding(.bottom, 6)
     }
 }
 
