@@ -280,6 +280,7 @@ struct AutonomosMapShell: View {
                     transferReceiptLine: AutonomosTransferJudgment.receiptLine(model.lastTransferReceipt)
                         ?? model.controlError,
                     incidentMeta: AutonomosTaskHealthJudgment.hubIncidentMeta(health: model.taskHealth),
+                    digestMeta: AutonomosDigestJudgment.hubMeta(from: model.digest),
                     onNavigate: { self.destination = $0 },
                     onControl: { pendingRunControl = $0 },
                     onTransfer: { showTransferSheet = true },
@@ -312,17 +313,8 @@ struct AutonomosMapShell: View {
                 health: model.taskHealth
             )
         case .moment:
-            // Moment feed still no discrete projection — silence, not invent.
-            VStack(alignment: .leading, spacing: 12) {
-                AutonomosMapChrome.heroTitle("Momento", size: 26)
-                Text("Sem feed de momentos publicado para este Autônomo. Nada aqui inventa timeline.")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding(AtlasTheme.Space.screen)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .accessibilityLabel("sem feed de momentos publicado")
+            // WAVE-038: scheduled digest window (provider-safe) — not invent.
+            AutonomosDigestSurface(digest: model.digest)
         }
     }
 
@@ -383,7 +375,8 @@ struct AutonomosMapShell: View {
                     lastTransferReceipt: model.lastTransferReceipt,
                     taskHealth: model.taskHealth,
                     areaSelected: model.selectedArea != nil,
-                    fleet: model.fleet
+                    fleet: model.fleet,
+                    digest: model.digest
                 )
             },
             onThread: { askThreadId = $0 },

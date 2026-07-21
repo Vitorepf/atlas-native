@@ -15,6 +15,8 @@ struct AutonomosHubView: View {
     var transferReceiptLine: String? = nil
     /// WAVE-036: task-health incident nav meta when present.
     var incidentMeta: String? = nil
+    /// WAVE-038: digest/moment nav meta when published.
+    var digestMeta: String? = nil
     let onNavigate: (AutonomosDestination) -> Void
     let onControl: (AutonomosRunControlAction) -> Void
     var onTransfer: () -> Void = {}
@@ -94,6 +96,14 @@ struct AutonomosHubView: View {
                         title: "Precisa de você",
                         meta: incidentMeta,
                         action: { onNavigate(.incident) }
+                    )
+                }
+
+                if let digestMeta {
+                    AutonomosMapNavLine(
+                        title: "Digest",
+                        meta: digestMeta,
+                        action: { onNavigate(.moment("digest")) }
                     )
                 }
 

@@ -58,7 +58,8 @@ enum AutonomosAskContext {
         lastTransferReceipt: AtlasAutonomosTransferResponse? = nil,
         taskHealth: AtlasAutonomosTaskHealthResponse? = nil,
         areaSelected: Bool = false,
-        fleet: AtlasAutonomosFleetResponse? = nil
+        fleet: AtlasAutonomosFleetResponse? = nil,
+        digest: AtlasAutonomosDigestResponse? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -115,6 +116,11 @@ enum AutonomosAskContext {
         facts.append(contentsOf: fleetPack.facts)
         absences.append(contentsOf: fleetPack.absences)
 
+        // WAVE-038: scheduled digest window honesty.
+        let digestPack = AutonomosDigestJudgment.packFacts(digest)
+        facts.append(contentsOf: digestPack.facts)
+        absences.append(contentsOf: digestPack.absences)
+
         if let destination {
             facts.append("tela: \(destination.navTitle)")
             anchors.append("dest: \(destination.navTitle)")
@@ -148,8 +154,7 @@ enum AutonomosAskContext {
                 facts.append(contentsOf: evo.facts)
                 absences.append(contentsOf: evo.absences)
             case .moment:
-                facts.append("foco: momento")
-                absences.append("feed de momentos pode estar vazio sem inventar")
+                facts.append("foco: digest/momento — janela provider-safe")
             case .incident:
                 facts.append("foco: incidente — só sinais reais da face")
                 // health pack facts already appended above
