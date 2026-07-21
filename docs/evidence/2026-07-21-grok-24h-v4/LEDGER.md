@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 173
-- idle_compress_passes: 2
+- idle_compress_passes: 4
 - collapse_host: 0
 
 ## Waves done
@@ -188,6 +188,8 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `dc3204e1` · MARK densos post-174
+- pass 4 · `34a8d100` · MARK ConversationExecutionPhase
 
 ## Designer
 - designs_proposed: 173
@@ -202,7 +204,9 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-
+- Continuity restore BLOCKED (App Group).
+- WAVE-178: composer send face pack.
+- WAVE-177: rhythm pack · packFacts hollows = 0.
+- WAVE-176: Search pill · WAVE-175: review assinatura · WAVE-174: timeline+md.
+- Residual ROI diminishing · await A for strip/card unify full-bar.
