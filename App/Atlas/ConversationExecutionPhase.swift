@@ -4,6 +4,8 @@ import AtlasCore
 // WAVE-022/023 — exclusive execution face for in-app presence (pairs with WAVE-018 glance).
 // Product words: finished | reconnect | paused | multi | running | quiet
 
+// MARK: - Face · attention types
+
 enum ConversationExecutionFace: String, Equatable {
     case finished
     case reconnect
@@ -34,7 +36,11 @@ enum ConversationExecutionAttention: String, Equatable {
     case decision
 }
 
+// MARK: - Phase grammar
+
 enum ConversationExecutionPhase {
+    // MARK: Face resolution
+
     /// Priority: finished → reconnect → paused → multiAgent → running → quiet.
     static func face(for bubble: ChatBubble) -> ConversationExecutionFace {
         if !bubble.streaming, bubble.executionPresentationState == nil, bubble.agents.isEmpty {
@@ -120,10 +126,14 @@ enum ConversationExecutionPhase {
     }
 
     /// Strip: finished silences live chrome noise.
+    // MARK: Strip chrome
+
     static func stripShowsLiveChrome(_ bubble: ChatBubble) -> Bool {
         let face = face(for: bubble)
         return face != .finished && face != .quiet
     }
+
+    // MARK: Spoken
 
     static func spokenFace(_ face: ConversationExecutionFace) -> String {
         switch face {
