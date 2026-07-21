@@ -28,7 +28,8 @@ extension AtlasCodeRepoRow {
                     showsFolder: showsFolder,
                     issues: issues,
                     trunk: trunk,
-                    lastCommitAt: repo.lastCommitAt
+                    lastCommitAt: repo.lastCommitAt,
+                    isMute: isMute
                 )
             )
             .accessibilityHint(AtlasCodeRadarRowsA11y.repoHint)
@@ -67,11 +68,16 @@ extension AtlasCodeRadarRowsA11y {
         showsFolder: Bool,
         issues: [AtlasCodeIssue]?,
         trunk: String?,
-        lastCommitAt: Int?
+        lastCommitAt: Int?,
+        isMute: Bool = false
     ) -> String {
         var parts = [name]
         parts.append(contentsOf: spokenRepoFolder(folder: folder, showsFolder: showsFolder))
-        parts.append(contentsOf: spokenRepoIssues(issues: issues, trunk: trunk))
+        if isMute {
+            parts.append(AtlasCodeRadarJudgment.muteSpoken)
+        } else {
+            parts.append(contentsOf: spokenRepoIssues(issues: issues, trunk: trunk))
+        }
         if let age = spokenRepoCommitAge(lastCommitAt: lastCommitAt) {
             parts.append(age)
         }
