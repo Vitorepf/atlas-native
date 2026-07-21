@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 177
+- waves_completed: 178
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -188,6 +188,7 @@ mode: designer + implementer
 - WAVE-180
 - WAVE-181
 - WAVE-182
+- WAVE-183
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -198,7 +199,7 @@ mode: designer + implementer
 - pass 6 · `7d186855` · delete duplicate imports post-180
 
 ## Designer
-- designs_proposed: 177
+- designs_proposed: 178
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -211,11 +212,8 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-182: Radar attention pack + Arena host score dedupe.
-- WAVE-180–181: StateCard + ArenaScore packs.
-- hollows 0 · face-sans-pack none · density fails none.
-- open=[] · await A rank-1 §WAVE · no invent micro-WAVE.
-- ConversationModel deferred.
+- Continuity restore BLOCKED (App Group).
+- WAVE-183: radar workspace shell pack + LiveNow packFacts.
+- WAVE-174–182 pack/face campaign · hollows 0.
+- open=[] · await A · no invent micro-WAVE.

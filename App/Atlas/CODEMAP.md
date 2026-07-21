@@ -20,7 +20,8 @@
 
 | Intenção | Comece em |
 |---|---|
-| Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View · pack attention (WAVE-182) |
+| Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View · pack attention (WAVE-182) · pack workspace shell (WAVE-183) |
+| **LiveNow pack (Home)** | `LiveNowJudgment.packFacts` (ex-packLiveAnchors) · HomeAsk (WAVE-183) |
 | **Radar screen load (frota)** | `AtlasCodeRadarScreenJudgment` → face loading/failed/empty/ready · shell a11y · pack Ask (WAVE-162) |
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
@@ -46,7 +47,7 @@
 | **Ops failure (multi-superfície)** | `AtlasOpsFailureJudgment` → face network/domain/load · FailureEmpty |
 | Phase grammar execução (strip/presence) | `ConversationExecutionPhase` → strip/StateCard/LiveNow/composer `selectPresenceBubble` |
 | **Execution proof + editorial pack (165)** | `ExecutionProofJudgment` · `EditorialTurnJudgment` → OccasionPack mid-thread |
-| **LiveNow attention (Home hub)** | `LiveNowJudgment` → rank · headForOpen (Seguir) · pack anchors · section face |
+| **LiveNow attention (Home hub)** | `LiveNowJudgment` → rank · headForOpen (Seguir) · packFacts (WAVE-183) · section face |
 | **StateCard kind chrome** | `ExecutionStateCardJudgment` → icon/badge/spoken/tint/timer freeze · pack mid-thread (WAVE-180) |
 | **Narrativa viva (timeline face)** | `LiveTimelineNarrativeJudgment` → face live/filterSilence (chrono sagrado) · pack mid-thread (WAVE-174) |
 | **Filtro de leitura (timeline)** | `LiveTimelineFilterJudgment` → face open/active/silent · chip/silence spoken · pack open recorte (WAVE-174) |

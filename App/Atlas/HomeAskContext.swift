@@ -30,7 +30,8 @@ enum HomeAskContext {
         facts.append("conversas_conhecidas: \(threads.count)")
 
         // WAVE-064: live anchors follow LiveNow attention rank (not wire order).
-        let livePack = LiveNowJudgment.packLiveAnchors(
+        // WAVE-183: packFacts canon (packLiveAnchors shim remains).
+        let livePack = LiveNowJudgment.packFacts(
             local: TurnPresence.shared.liveSessions,
             remote: session.remoteLiveSessions,
             limit: 5

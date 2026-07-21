@@ -31,21 +31,13 @@ enum AtlasCodeRadarAskContext {
         var absences: [String] = []
         var anchors: [String] = []
 
-        if let workspace = model.workspace {
-            facts.append("folders: \(workspace.folders.count)")
-            facts.append("recents: \(workspace.recents.count)")
-            if let root = workspace.workspaceRoot, !root.isEmpty {
-                facts.append("workspace_root: \(root)")
-                anchors.append("root: \(root)")
-            } else if let slug = workspace.recents.first?.slug {
-                facts.append("workspace_wire_fallback: \(slug) (primeiro recente)")
-            } else {
-                absences.append("sem workspace_root nem recentes para o wire")
-            }
-        } else {
-            facts.append("workspace: ainda não carregado")
-            absences.append("workspace wire nil até load")
-        }
+        // WAVE-183: catalog shell pack (folders/recents/root).
+        let shellPack = AtlasCodeRadarJudgment.packWorkspaceFacts(
+            workspace: model.workspace
+        )
+        facts.append(contentsOf: shellPack.facts)
+        absences.append(contentsOf: shellPack.absences)
+        anchors.append(contentsOf: shellPack.anchors)
 
         // WAVE-182: fleet attention pack (one law with topAttention rank).
         let attentionPack = AtlasCodeRadarJudgment.packFacts(

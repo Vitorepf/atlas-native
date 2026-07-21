@@ -122,11 +122,11 @@ extension LiveNowJudgment {
             : "tempo ativo \(clock)"
     }
 
-    // MARK: Pack
+    // MARK: Pack (WAVE-183 · packFacts canon)
 
     /// Ranked live anchors for HomeAskContext (product face words via occasion pack).
     @MainActor
-    static func packLiveAnchors(
+    static func packFacts(
         local: [LiveSessionSnapshot],
         remote: [LiveSessionSnapshot] = [],
         limit: Int = 5
@@ -145,6 +145,16 @@ extension LiveNowJudgment {
             }
         }
         return (facts, anchors, absences)
+    }
+
+    /// Compat shim — prefer `packFacts`.
+    @MainActor
+    static func packLiveAnchors(
+        local: [LiveSessionSnapshot],
+        remote: [LiveSessionSnapshot] = [],
+        limit: Int = 5
+    ) -> (facts: [String], anchors: [String], absences: [String]) {
+        packFacts(local: local, remote: remote, limit: limit)
     }
 
 }

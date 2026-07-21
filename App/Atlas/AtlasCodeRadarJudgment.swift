@@ -57,7 +57,34 @@ enum AtlasCodeRadarJudgment {
             .map { (slug: $0.0, count: $0.1) }
     }
 
-    // MARK: Pack (WAVE-182)
+    // MARK: Pack workspace shell (WAVE-183)
+
+    /// Catalog shell for Radar ask — folders/recents/root honesty only.
+    static func packWorkspaceFacts(
+        workspace: AtlasCodeWorkspaceResponse?
+    ) -> (facts: [String], absences: [String], anchors: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        var anchors: [String] = []
+        guard let workspace else {
+            facts.append("radar_workspace: not_loaded")
+            absences.append("workspace wire nil até load")
+            return (facts, absences, anchors)
+        }
+        facts.append("radar_folders: \(workspace.folders.count)")
+        facts.append("radar_recents: \(workspace.recents.count)")
+        if let root = workspace.workspaceRoot, !root.isEmpty {
+            facts.append("radar_workspace_root: \(root)")
+            anchors.append("root: \(root)")
+        } else if let slug = workspace.recents.first?.slug {
+            facts.append("radar_workspace_wire_fallback: \(slug) (primeiro recente)")
+        } else {
+            absences.append("sem workspace_root nem recentes para o wire")
+        }
+        return (facts, absences, anchors)
+    }
+
+    // MARK: Pack attention (WAVE-182)
 
     /// Fleet attention pack — never invents scan totals.
     static func packFacts(
