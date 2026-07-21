@@ -37,8 +37,7 @@ struct AutonomosNewSheet: View {
                         a11yHint: "escopo fechado em português claro"
                     )
 
-                    AutonomosMapChrome.primaryCTA("Criar", enabled: canCreate) {
-                        // softImpact lives in primaryCTA — avoid double impact.
+                    AutonomosMapChrome.primaryCTA("Criar", enabled: canCreate, haptic: .medium) {
                         onCreate(name, charter)
                     }
                     .accessibilityHint(canCreate ? "cria o Autônomo no catálogo" : "digite um nome para criar")
