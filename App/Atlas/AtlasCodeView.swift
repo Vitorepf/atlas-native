@@ -4689,6 +4689,7 @@ struct AtlasCodeChipRow: View {
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .frame(minHeight: 28)
+                    .background(Capsule().fill(AtlasCodePalette.healed.opacity(0.08)))
                     .overlay(
                         Capsule().strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
                     )
