@@ -11,9 +11,9 @@ mode: designer + implementer
 - collapse_host: 0
 
 ## Designer
-- designs_proposed: 5
-- last_wave: WAVE-010-arena-suitesheet-instrument
-- last_cycle: W0 council + WAVE-006..010 designs + QUEUE seed
+- designs_proposed: 6
+- last_wave: WAVE-011-radar-fleet-glance
+- last_cycle: W0 council + WAVE-006..011 designs + QUEUE seed
 - explores: 3 (Code/Grafo · Pill/Chat/Arena · Island/Autonomos/Home)
 
 ## Candidates (snapshot)
@@ -25,6 +25,7 @@ mode: designer + implementer
 | 3 | WAVE-008-ops-failure-empty-canon | high | proposed |
 | 4 | WAVE-009-codigo-depth-instrument | high | proposed |
 | 5 | WAVE-010-arena-suitesheet-instrument | med+ | proposed |
+| 6 | WAVE-011-radar-fleet-glance | med-high | proposed |
 
 ## Notes
 - Prefer QUEUE over inventing micros

@@ -66,6 +66,17 @@ approved_at: null
 note: "SuiteSheet ~18→5–7 like WAVE-004 RunSheet. No Agora redesign."
 ```
 
+```yaml
+id: WAVE-011-radar-fleet-glance
+status: proposed
+rank: 6
+delta_patamar: med-high
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-011-design.md
+created_by: designer
+approved_at: null
+note: "Radar 5s multi-repo judgment; mute honesty; severe first; pack top attention."
+```
+
 ## Candidates ranked (W0 council · 3 explores · 2026-07-21)
 
 | Rank | id | Δ | §B | note |
@@ -75,7 +86,7 @@ note: "SuiteSheet ~18→5–7 like WAVE-004 RunSheet. No Agora redesign."
 | **3** | WAVE-008 ops-failure-empty-canon | **high** | PASS | 4 dialects transversal |
 | **4** | WAVE-009 codigo-depth-instrument | **high** | PASS | secondary judgment post WAVE-001 |
 | **5** | WAVE-010 arena-suitesheet-instrument | **med+** | PASS | last Arena fog tower |
-| — | radar-fleet-glance | med–high | PASS later | after 009; multi-repo glance |
+| **6** | WAVE-011 radar-fleet-glance | **med–high** | PASS | multi-repo 5s judgment |
 | — | continuity-presence-restore | high if portal | **BLOCKED** | App Group entitlement off |
 | — | codigo-mandar-cura | high | **Core** | tool_permissions write |
 | — | WAVE-005 pill machine | — | done-in-tree | AgenticAskDock live; ledger v3 stale |
@@ -93,4 +104,4 @@ note: "SuiteSheet ~18→5–7 like WAVE-004 RunSheet. No Agora redesign."
 ## History
 - WAVE-001..004 completed under v3.1 (`docs/evidence/2026-07-21-grok-24h-v3/`) — do not redo
 - WAVE-005 agentic-pill-one-machine: **implemented in tree** (`AgenticAskDock`, Home/Code/Arena/Autônomos consumers); v3 ledger may still say design — treat as done for v4 ranking
-- WAVE-006..010 proposed by Designer v4 (this file)
+- WAVE-006..011 proposed by Designer v4 (this file)
