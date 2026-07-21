@@ -1,8 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Menu de opções do trailing — peel de ComposerToolbar+Trailing.
-// Buttons → ComposerToolbar+OptionsButtons.swift
+// Cycle 030 fuse → ComposerToolbar+Options.swift
 
 extension ComposerToolbar {
     @ViewBuilder var trailingOptionsMenu: some View {
@@ -18,5 +17,51 @@ extension ComposerToolbar {
         .accessibilityLabel("opções da conversa")
         .accessibilityHint(spokenOptionsHint())
         .accessibilityIdentifier(A11yID.conversationOptions)
+    }
+}
+
+extension ComposerToolbar {
+    @ViewBuilder
+    var optionsMenuButtons: some View {
+        optionsWorkspaceButton
+        optionsModeButton
+        optionsEffortButton
+    }
+}
+
+extension ComposerToolbar {
+    var optionsEffortButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onShowEffort()
+        } label: {
+            Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
+        }
+        .accessibilityLabel(spokenEffortLabel(model.effort))
+        .accessibilityHint(spokenEffortHint())
+    }
+}
+
+extension ComposerToolbar {
+    var optionsModeButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onShowMode()
+        } label: {
+            Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
+        }
+        .accessibilityLabel("modo, \(mode)")
+    }
+}
+
+extension ComposerToolbar {
+    var optionsWorkspaceButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onShowWorkspace()
+        } label: {
+            Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
+        }
+        .accessibilityLabel("workspace, \(model.workspaceName ?? "Atlas")")
     }
 }
