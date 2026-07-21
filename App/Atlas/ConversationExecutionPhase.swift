@@ -58,7 +58,10 @@ enum ConversationExecutionPhase {
             return .finished
         case .recovering:
             return .reconnect
-        case .replanning, .awaitingExternal, .attentionRequired:
+        case .attentionRequired:
+            // WAVE-031: Core treats choice as paused attention — not live-run dialect.
+            return .paused
+        case .replanning, .awaitingExternal:
             return .running
         }
     }
@@ -152,8 +155,36 @@ enum ConversationExecutionPhase {
     // MARK: - WAVE-027 primary chrome + presence-ongoing selection
 
     /// Primary kicker = spoken face words (strip / card / LiveNow lead).
-    static func primarySpoken(_ face: ConversationExecutionFace) -> String {
-        spokenFace(face)
+    /// WAVE-031: when attention is decision, lead with decision product words.
+    static func primarySpoken(
+        _ face: ConversationExecutionFace,
+        attention: ConversationExecutionAttention? = nil
+    ) -> String {
+        if attention == .decision {
+            return spokenAttention(.decision)
+        }
+        return spokenFace(face)
+    }
+
+    static func primarySpoken(for bubble: ChatBubble) -> String {
+        let face = face(for: bubble)
+        let attention: ConversationExecutionAttention? = {
+            guard let state = bubble.executionPresentationState else { return nil }
+            return self.attention(for: state)
+        }()
+        if ConversationDecisionJudgment.isDecisionRequired(bubble) {
+            return ConversationDecisionJudgment.spokenLead
+        }
+        return primarySpoken(face, attention: attention)
+    }
+
+    static func primarySpoken(for state: AtlasExecutionPresentationState) -> String {
+        let face = face(for: state)
+        let attention = attention(for: state)
+        if attention == .decision {
+            return spokenAttention(.decision)
+        }
+        return primarySpoken(face, attention: attention)
     }
 
     /// Product word for mono chrome (uppercase in UI when needed).

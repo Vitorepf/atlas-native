@@ -75,17 +75,27 @@ struct ExecutingStrip: View {
     let reduceMotion: Bool
     let onStop: () -> Void
     var onSteer: (() -> Void)? = nil
+    /// WAVE-031: same path as StateCard — resolveExecutionChoice(jobId, optionId).
+    var onChoose: ((JobID, String) -> Void)? = nil
 
     /// WAVE-023: strip branches on exclusive face (not bool soup alone).
     private var face: ConversationExecutionFace {
         ConversationExecutionPhase.face(for: bubble)
     }
 
+    private var decisionRequired: Bool {
+        ConversationDecisionJudgment.isDecisionRequired(bubble)
+    }
+
+    private var choiceActions: [AtlasExecutionPresentationState.Action] {
+        ConversationDecisionJudgment.choiceActions(for: bubble)
+    }
+
     var body: some View {
         HStack(spacing: 8) {
             stripStatus
             Spacer(minLength: 0)
-            if ConversationExecutionPhase.stripShowsLiveChrome(bubble) {
+            if ConversationExecutionPhase.stripShowsLiveChrome(bubble) || decisionRequired {
                 stripActionButtons
             }
         }
@@ -136,14 +146,16 @@ struct ExecutingStrip: View {
 
     @ViewBuilder
     var stripStatusTitle: some View {
-        // WAVE-027: primary kicker = face spoken; progress/activity/reconnect = detail.
+        // WAVE-027/031: primary kicker = face/decision spoken; detail secondary.
         HStack(spacing: 6) {
-            Text(ConversationExecutionPhase.primarySpoken(face))
+            Text(ConversationExecutionPhase.primarySpoken(for: bubble))
                 .font(AtlasFont.mono(11, .semibold))
                 .foregroundStyle(
-                    face == .quiet || face == .finished
-                        ? AtlasTheme.textTertiary
-                        : AtlasTheme.textSecondary
+                    decisionRequired
+                        ? AtlasTheme.accent
+                        : (face == .quiet || face == .finished
+                            ? AtlasTheme.textTertiary
+                            : AtlasTheme.textSecondary)
                 )
                 .lineLimit(1)
                 .layoutPriority(3)
@@ -212,7 +224,47 @@ struct ExecutingStrip: View {
 
     @ViewBuilder
     var stripActionButtons: some View {
-        if let onSteer {
+        // WAVE-031: elevate choice when published; stop/steer secondary.
+        if decisionRequired, let jobId = bubble.executionChoiceJobId, let onChoose {
+            if choiceActions.count == 1, let only = choiceActions.first {
+                Button {
+                    onChoose(jobId, only.id)
+                } label: {
+                    Text(ConversationDecisionJudgment.stripChooseLabel(
+                        actionCount: 1,
+                        firstTitle: only.title
+                    ))
+                    .font(.system(.footnote, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.accent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.82)
+                }
+                .buttonStyle(PressableScale())
+                .accessibilityIdentifier(A11yID.executionActionChoice(only.id))
+                .accessibilityLabel(only.title)
+                .accessibilityHint("confirma a decisão publicada pelo servidor")
+            } else {
+                Menu {
+                    ForEach(choiceActions) { action in
+                        Button(action.title) {
+                            onChoose(jobId, action.id)
+                        }
+                    }
+                } label: {
+                    Text(ConversationDecisionJudgment.stripChooseLabel(
+                        actionCount: choiceActions.count,
+                        firstTitle: choiceActions.first?.title
+                    ))
+                    .font(.system(.footnote, weight: .semibold))
+                    .foregroundStyle(AtlasTheme.accent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.82)
+                }
+                .accessibilityLabel(ConversationDecisionJudgment.spokenLead)
+                .accessibilityHint("abre as ações de decisão publicadas")
+            }
+        }
+        if !decisionRequired, let onSteer {
             Button(action: onSteer) {
                 Text("Redirecionar")
                     .font(.system(.footnote, weight: .medium))
@@ -238,7 +290,10 @@ struct ExecutingStrip: View {
     // MARK: A11y (phase-aligned compound label)
 
     var stripAccessibilityLabel: String {
-        var parts: [String] = [ConversationExecutionPhase.spokenFace(face)]
+        var parts: [String] = [ConversationExecutionPhase.primarySpoken(for: bubble)]
+        if decisionRequired {
+            parts.append("\(choiceActions.count) ação\(choiceActions.count == 1 ? "" : "ões") disponíveis")
+        }
         if face == .reconnect {
             parts.append(bubble.reconnectSpokenLabel)
         } else if let p = bubble.executionProgress, face == .running || face == .multiAgent {

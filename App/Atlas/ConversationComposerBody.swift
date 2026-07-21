@@ -132,7 +132,10 @@ extension ConversationComposer {
                 bubble: live,
                 reduceMotion: reduceMotion,
                 onStop: { model.cancel() },
-                onSteer: live.traceId.map { trace in { steerTrace = ConversationSteerTraceRef(id: trace) } }
+                onSteer: live.traceId.map { trace in { steerTrace = ConversationSteerTraceRef(id: trace) } },
+                onChoose: { jobId, optionId in
+                    Task { await model.resolveExecutionChoice(jobId: jobId, optionId: optionId) }
+                }
             )
             .padding(.top, expanded ? 0 : 4)
             .padding(.bottom, expanded ? 0 : 8)

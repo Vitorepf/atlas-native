@@ -58,7 +58,7 @@ extension ExecutionStateCard {
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
-                Text(ConversationExecutionPhase.primarySpoken(presenceFace))
+                Text(ConversationExecutionPhase.primarySpoken(for: state))
                     .font(AtlasFont.mono(11, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
@@ -71,11 +71,16 @@ extension ExecutionStateCard {
                 }
             }
             Spacer(minLength: 0)
-            Text(ConversationExecutionPhase.primaryProduct(presenceFace).uppercased())
-                .font(AtlasFont.mono(9))
-                .tracking(0.6)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+            Text(
+                (presenceAttention == .decision
+                    ? ConversationDecisionJudgment.productWord
+                    : ConversationExecutionPhase.primaryProduct(presenceFace)
+                ).uppercased()
+            )
+            .font(AtlasFont.mono(9))
+            .tracking(0.6)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .accessibilityHidden(true)
             stateHeaderBadge
         }
     }
@@ -289,8 +294,8 @@ extension ExecutionStateCard {
 extension ExecutionStateCard {
     func spokenSummaryLead(into parts: inout [String]) {
         // WAVE-023: face vocabulary first (spoken ≡ visual product word).
-        parts.append(ConversationExecutionPhase.spokenFace(presenceFace))
-        if let attention = presenceAttention {
+        parts.append(ConversationExecutionPhase.primarySpoken(for: state))
+        if let attention = presenceAttention, attention != .decision {
             parts.append(ConversationExecutionPhase.spokenAttention(attention))
         }
         if let kind = spokenKind { parts.append(kind) }

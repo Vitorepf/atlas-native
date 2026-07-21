@@ -14,21 +14,12 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-```yaml
-id: WAVE-031-conversation-decision-control-instrument
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-031-design.md
-created_by: designer
-approved_at: null
-```
+_(no open proposed WAVEs)_
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-031-conversation-decision-control-instrument | **max** | `WAVE-031-design.md` |
 
 ## History (done)
 
@@ -57,4 +48,5 @@ approved_at: null
 - WAVE-028 done
 - WAVE-029 done
 - WAVE-030 done
+- WAVE-031 done
 
