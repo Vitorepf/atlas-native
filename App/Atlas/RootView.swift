@@ -2947,11 +2947,17 @@ extension ThreadRow {
     @ViewBuilder
     var rowLead: some View {
         if isRunning {
-            BreathingDiamond(size: 9, reduceMotion: reduceMotion).frame(width: 22)
+            BreathingDiamond(size: 9, reduceMotion: reduceMotion)
+                .frame(width: 36, height: 36)
                 .accessibilityHidden(true)
         } else {
             Image(systemName: "bubble.left")
-                .atlasSans(17).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+                .atlasSans(14, .medium)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.9))
+                .frame(width: 36, height: 36)
+                .background(Circle().fill(AtlasTheme.goldVeil))
+                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1))
+                .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                 .accessibilityHidden(true)
         }
     }
