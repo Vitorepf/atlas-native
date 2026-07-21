@@ -418,12 +418,7 @@ extension RootView {
 
 extension RootView {
     var inputBarBackground: some View {
-        LinearGradient(
-            colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .ignoresSafeArea()
+        AtlasGoldChrome.screenBgVeil
     }
 }
 
@@ -2008,8 +2003,7 @@ extension WorkspaceView {
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
-            LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
+            AtlasGoldChrome.screenBgVeil
         )
     }
 }

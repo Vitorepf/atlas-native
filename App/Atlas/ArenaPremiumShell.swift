@@ -83,13 +83,7 @@ struct ArenaPremiumShell: View {
 
     private var askPillDock: some View {
         VStack(spacing: 0) {
-            LinearGradient(
-                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 28)
-            .allowsHitTesting(false)
+            AtlasGoldChrome.askDockFade
             AgenticPill(
                 invite: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination),
                 accessibilityId: A11yID.arenaPremiumAskPill
@@ -831,13 +825,7 @@ struct ArenaPremiumDestinationView: View {
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(spacing: 0) {
-                LinearGradient(
-                    colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(height: 28)
-                .allowsHitTesting(false)
+                AtlasGoldChrome.askDockFade
                 AgenticPill(
                     invite: ArenaPremiumAskContext.invite(tab: .now, destination: target),
                     accessibilityId: A11yID.arenaPremiumAskPill

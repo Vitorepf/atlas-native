@@ -616,13 +616,7 @@ struct AutonomosMapShell: View {
 
     private var askPillDock: some View {
         VStack(spacing: 0) {
-            LinearGradient(
-                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 28)
-            .allowsHitTesting(false)
+            AtlasGoldChrome.askDockFade
             AgenticPill(
                 invite: AutonomosAskContext.invite(destination: destination, vestment: vestmentForAsk),
                 accessibilityId: A11yID.autonomosAskPill

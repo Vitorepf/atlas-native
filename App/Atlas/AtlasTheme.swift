@@ -247,6 +247,29 @@ enum AtlasGoldChrome {
             .frame(height: 1)
             .accessibilityHidden(true)
     }
+
+    /// Fade under floating AgenticPill dock (Autônomos / Arena).
+    static var askDockFade: some View {
+        LinearGradient(
+            colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .frame(height: 28)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+
+    /// Full-screen bg veil for composer/workspace shells.
+    static var screenBgVeil: some View {
+        LinearGradient(
+            colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .ignoresSafeArea()
+        .accessibilityHidden(true)
+    }
 }
 
 
