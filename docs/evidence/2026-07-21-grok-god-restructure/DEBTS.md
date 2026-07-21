@@ -4,24 +4,27 @@
 
 ```yaml
 pass: 3
-domain_index: 1
-last_focus: "Home residual OK → Conversa residual"
-session_commits: 134
+domain_index: 2
+last_focus: "pass3 Conversa residual OK → Código"
+session_commits: 135
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
 ```
 
-## Policy
+## Pass 3 residual log
 
-- Soft Sections/States **0**
-- any ≤2000 · route View/Shell ≤600 · Judgment prefer ≤1200
-- CODEMAP true
+| Dom | Status |
+|---|---|
+| 0 Home | residual OK · MARKs · spoken |
+| 1 Conversa | residual OK · soft 0 · densos under caps |
+| 2 Código | **in progress** |
+| 3–7 | pending this pass |
 
 ## Scoreboard
 
-commits **134** · App/Atlas **46** · Widgets **2** · soft **0** · gates green
+commits **135** · App/Atlas **46** · Widgets **2** · soft **0** · gates green
 
-## Next
+## Proibido
 
-domain 1 Conversa residual · honesty · headroom fuses · **never Goal Done**
+Goal Done · god_hold · WAVE · dual · Core
