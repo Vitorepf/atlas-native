@@ -900,9 +900,9 @@ extension EmptyConversation {
 extension EmptyConversation {
     var heroGlyph: some View {
         Text("✦")
-            .font(AtlasFont.serif(32)).foregroundStyle(AtlasTheme.accent)
-            .shadow(color: AtlasTheme.accent.opacity(breathe ? 0.48 : 0.22), radius: breathe ? 10 : 4, y: 1)
-            .scaleEffect(breathe ? 1.06 : 1).opacity(breathe ? 0.85 : 1)
+            .font(AtlasFont.serif(34)).foregroundStyle(AtlasTheme.accent)
+            .shadow(color: AtlasTheme.accent.opacity(breathe ? 0.55 : 0.28), radius: breathe ? 12 : 5, y: 1)
+            .scaleEffect(breathe ? 1.07 : 1).opacity(breathe ? 0.9 : 1)
             .accessibilityHidden(true)
     }
 }
@@ -911,7 +911,8 @@ extension EmptyConversation {
     var heroPromptBlock: some View {
         Text("\u{201C}\(prompt ?? "O que você quer pensar agora?")\u{201D}")
             .font(AtlasFont.serifItalic(22)).lineSpacing(10)
-            .multilineTextAlignment(.center).foregroundStyle(AtlasTheme.textPrimary)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(AtlasTheme.textPrimary)
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityLabel(EmptyConversationA11y.spokenPrompt(prompt))
             .accessibilityAddTraits(.isHeader)
