@@ -138,9 +138,11 @@ struct AutonomosMapShell: View {
                     Text("O Atlas melhorou o próprio app")
                         .font(AtlasFont.serif(15, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityHidden(true)
                     Text("Merge comprovado · toque o recibo")
                         .font(AtlasFont.serifItalic(13))
                         .foregroundStyle(AtlasTheme.textSecondary)
+                        .accessibilityHidden(true)
                 }
                 Spacer(minLength: 0)
             }
@@ -151,8 +153,10 @@ struct AutonomosMapShell: View {
             .background(AtlasTheme.surface.opacity(0.55))
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
         .accessibilityHint("abre o recibo de auto-construção")
+        .accessibilityAddTraits(.isButton)
     }
 
     @ViewBuilder
