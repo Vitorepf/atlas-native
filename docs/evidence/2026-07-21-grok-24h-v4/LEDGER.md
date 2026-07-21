@@ -210,8 +210,10 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Device-pending (passcode) = operator.
+- Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
-- WAVE-181: ArenaScore pack primary engine.
-- WAVE-180: StateCard kind pack.
-- WAVE-174–179 pack/face campaign · hollows 0.
+- Device-pending (passcode) = operator.
+- WAVE-181: ArenaScore pack · WAVE-180: StateCard kind pack.
+- Pack/face sovereignty: hollows 0 · face-sans-pack none · density fails none.
+- open=[] · await A rank-1 §WAVE · no invent micro-WAVE.
+- ConversationModel deferred.
