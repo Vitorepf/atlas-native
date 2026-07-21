@@ -5,19 +5,17 @@
 ```yaml
 pass: 1
 domain_index: 1
-last_focus: "ConversationCockpit AgentRow+Strip fuse"
+last_focus: "ConversationMessages host+scroll+editorial fuse"
 passes_completed: 0
 ```
 
-## Soft
+## Soft *Sections*/*States*: **0**
 
-*Sections*/*States*: **0**
-
-## Session commits: 12+
+## Session: 13+ GOD-RESTRUCTURE commits
 
 ## Próximo
 
-deepen · pass cycle · Messages peels · CODEMAP · dead scan
+deepen other domains · pass+=1 when cycle closes · never Goal Done
 
 ## Proibido
 

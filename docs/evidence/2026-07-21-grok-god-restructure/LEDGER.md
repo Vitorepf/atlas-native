@@ -28,6 +28,16 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-22T00:00Z — ConversationMessages fuse
+
+```yaml
+phase: prove
+focus: Messages host+scroll+editorial → one file (~462)
+domain_index: 1
+pass: 1
+commands: gates ✓ · −2 peels
+```
+
 ### 2026-07-21T23:55Z — Cockpit AgentRow + Strip fuse
 
 ```yaml

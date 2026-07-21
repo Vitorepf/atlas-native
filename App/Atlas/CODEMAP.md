@@ -67,7 +67,7 @@
 | **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
 | **Stale-read cache seal** | `ConversationStaleReadJudgment` → face · pack mid-thread |
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face · pack mid-thread |
-| Messages parts | `ConversationMessages` host · `ConversationMessagesScroll` · `ConversationMessagesEditorial` |
+| Messages parts | `ConversationMessages` host (scroll·editorial fused) · Judgment |
 | **Empty editorial (partida)** | `ConversationEmptyJudgment` → face · `EmptyConversation` chrome |
 | **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · sheet · pack mid-thread |
 | **Home OPERAÇÃO attention** | `HomeOpsJudgment` → Autônomos door face · Arena door · pack · packCatalogFacts |
@@ -83,7 +83,7 @@
 | **Live strip parts** | `ConversationCockpitStrip` (ExecutingStrip) · `ConversationCockpitAgentRow` · Banners |
 | **Live strip CTAs** | `ConversationLiveStripJudgment` → stop/steer/choose spoken · compound strip · pack |
 | **Conversation can_do pack** | `ConversationCanDoJudgment` → matrix live×decision · OccasionPack wire |
-| Cockpit parts | `ConversationCockpitBody` (strip·lanes) · `ConversationCockpitBanners` (banner·reconnect·silence) |
+| Cockpit parts | `ConversationCockpitStrip` · `ConversationCockpitAgentRow` · `ConversationCockpitBanners` |
 | **Steer / redirecionar** | `ConversationSteerJudgment` → receipt face · scope PT · allowsSubmit |
 | **Steer pack mid-thread** | OccasionPack → `ConversationSteerJudgment.packFacts` + strip stop honesty |
 | **Agent lanes (multi)** | `ConversationAgentLanesJudgment` → ExecutionRibbon rank failed-first |
