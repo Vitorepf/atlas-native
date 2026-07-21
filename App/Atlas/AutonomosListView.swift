@@ -44,6 +44,9 @@ struct AutonomosListView: View {
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .accessibilityLabel(
+                    "Crie um Autônomo com escopo fechado. Ele evolui só nisso, 24 por 7."
+                )
             // Medium: primary entry into create flow on empty catalog.
             AutonomosMapChrome.primaryCTA("Novo Autônomo", haptic: .medium, action: onCreate)
                 .accessibilityHint("abre o formulário para criar um Autônomo")
@@ -53,6 +56,7 @@ struct AutonomosListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         // Contain: hero speaks as header; Novo CTA remains a separate target.
         .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(A11yID.autonomosListEmpty)
     }
 
     private func unitRow(_ unit: AutonomosUnit) -> some View {
