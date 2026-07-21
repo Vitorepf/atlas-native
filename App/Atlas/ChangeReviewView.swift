@@ -238,9 +238,9 @@ struct ChangeReviewRunActions: View {
 extension ChangeReviewRunActions {
     var acceptButtonLabel: some View {
         Text("Aceitar tudo")
-            .font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.bg)
-            .padding(.horizontal, 18).padding(.vertical, 10)
-            .frame(minHeight: 44)
+            .font(AtlasFont.serif(14, .semibold)).foregroundStyle(AtlasTheme.bg)
+            .padding(.horizontal, 18).padding(.vertical, 11)
+            .frame(minHeight: 48)
             .background(Capsule().fill(AtlasTheme.accent))
             .contentShape(Capsule())
     }
@@ -335,9 +335,9 @@ extension ChangeReviewRunActions {
 extension ChangeReviewRunActions {
     var rejectButtonLabel: some View {
         Text("Rejeitar")
-            .font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.domOperacional)
-            .padding(.horizontal, 18).padding(.vertical, 10)
-            .frame(minHeight: 44)
+            .font(AtlasFont.serif(14, .semibold)).foregroundStyle(AtlasTheme.domOperacional)
+            .padding(.horizontal, 18).padding(.vertical, 11)
+            .frame(minHeight: 48)
             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
             .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
             .contentShape(Capsule())
