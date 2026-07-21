@@ -1,9 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// Renderiza markdown na tipografia do Atlas — porte de EditorialMarkdown.tsx.
-// Parse → AtlasMarkdownView+Parse.swift · Rendering → +Rendering · Code → +CodeBlock
-// Block → AtlasMarkdownView+BlockView.swift · Refresh → +ParseRefresh.swift
+// WAVE-017 markdown host
+
+// --- AtlasMarkdownView.swift ---
 struct AtlasMarkdownView: View {
     let text: String
     var streaming: Bool = false
@@ -27,3 +27,4 @@ struct AtlasMarkdownView: View {
         )
     }
 }
+
