@@ -1038,7 +1038,7 @@ extension SheetRow {
             accessibilityLabel ?? SheetShellA11y.spokenRow(label: label, sub: sub, selected: selected)
         )
         .accessibilityHint(accessibilityHint ?? "")
-        .accessibilityAddTraits(selected ? .isSelected : [])
+        .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
         .modifier(OptionalAccessibilityIdentifier(id: accessibilityIdentifier))
         .overlay(alignment: .bottom) { sheetRowDivider }
     }
