@@ -8678,6 +8678,7 @@ extension CodeBlockView {
     var codeBlockBackground: some View {
         RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface)
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separator, lineWidth: 1))
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 
@@ -8692,8 +8693,8 @@ extension CodeBlockView {
 
 extension CodeBlockView {
     var copyButtonTitle: String {
-        guard canCopy else { return "copiar" }
-        return copied ? "copiado" : "copiar"
+        guard canCopy else { return "Copiar" }
+        return copied ? "Copiado" : "Copiar"
     }
 
     var copyForeground: Color {
