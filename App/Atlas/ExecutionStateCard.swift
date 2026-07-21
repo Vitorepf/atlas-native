@@ -70,6 +70,7 @@ extension ExecutionStateCard {
         .accessibilityLabel(action.title)
         .accessibilityHint("ação declarada pelo servidor")
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(action.style == .primary || action.style == .destructive ? 9 : 0)
     }
 
     @ViewBuilder
@@ -102,6 +103,7 @@ extension ExecutionStateCard {
             .accessibilityLabel("retomar execução a partir do último checkpoint")
             .accessibilityHint("reenfileira o job que falhou")
             .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(9)
     }
 
     var retryFallbackLabel: some View {
