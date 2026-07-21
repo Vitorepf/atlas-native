@@ -69,6 +69,10 @@ struct ArenaRunSheet: View {
 
     var body: some View {
         runSheetA11y(runNavShell)
+            .onChange(of: model.lastStartReceipt?.receiptHash) { _, hash in
+                guard hash != nil else { return }
+                AtlasMotion.successNotification(reduceMotion: reduceMotion)
+            }
     }
 }
 
