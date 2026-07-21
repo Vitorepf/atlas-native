@@ -4,27 +4,19 @@
 
 ```yaml
 pass: 1
-domain_index: 5
-last_focus: "AutonomosDecisionSurface fuse"
+domain_index: 1
+last_focus: "ComposerDraftJudgmentAttach fuse"
 session_commits: 38+
-soft_sections_states: 0
-swift_files_App_Atlas: 315
 ```
 
-## Hard
+## Soft *Sections*/*States*: **0**
 
-- *Sections*/*States* files: **0**
-- route *View/*Shell >600: none (guard OK)
-- any casca >2000: none (guard OK)
+## Próximo
 
-## Domains advanced
+- RootChrome 699 density split (route ceiling)
+- residual peels · pass deepen
+- NEVER Goal Done
 
-0 Home · 1 Conversa · 2 Código · 4 Arena · 5 Autônomos · 6 Widgets · soft cross-cut
+## Proibido
 
-## Próximo (never stop)
-
-- pass deepen MARK residual
-- more host peels if ROI
-- CODEMAP truth
-- pass+=1 / domain_index cycle
-- **PROIBIDO Goal Done / god_hold**
+Goal Done · god_hold · WAVE · dual · Core

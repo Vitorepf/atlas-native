@@ -171,7 +171,7 @@
 | **ExecutionProof Judgment** | `ExecutionProofJudgment` (face · spoken · quality · pack) |
 | **PlanJudgment** | `PlanJudgment` (face · spoken · packFacts) |
 | **LiveNowJudgment** | single file: merge · rank · spoken · pack (was core+Row peels) |
-| **ComposerDraftJudgment parts** | core · Attach |
+| **ComposerDraftJudgment parts** | core · attach spoken fused |
 | **ChangeReview body / sheet** | `ChangeReviewBody` (controls/tests/decided/run) · `ChangeReviewSheetBody` |
 | **ArenaSuiteSheet parts** | Sheet · Body |
 | **RootChrome parts** | Chrome · Lifecycle · DeepLink · ConversationRoutes (ThreadRow own file) |

@@ -28,6 +28,22 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T22:56Z — ComposerDraftJudgmentAttach fuse
+
+```yaml
+phase: prove
+focus: ComposerDraftJudgmentAttach → ComposerDraftJudgment
+domain_index: 1
+pass: 1
+commands: |
+  Attach 44 → host ~260
+  gates ✓
+before_after: |
+  −1 peel · hops attach spoken 2→1
+notes: next RootChrome density or residual
+```
+
+
 ### 2026-07-21T22:55Z — AutonomosDecisionSurface fuse
 
 ```yaml
