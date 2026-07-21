@@ -1153,11 +1153,13 @@ struct AutonomosReasonSheet: View {
             Form {
                 Section("Ação governada") {
                     Text(title).accessibilityAddTraits(.isHeader)
-                    Text(explainer).font(.footnote).foregroundStyle(.secondary)
+                    Text(explainer)
+                        .font(AtlasFont.serif(13))
+                        .foregroundStyle(AtlasTheme.textSecondary)
                 }
                 Section("Operador") {
                     TextField("Quem autoriza", text: $actor)
-                        .frame(minHeight: 44)
+                        .frame(minHeight: 48)
                         .accessibilityIdentifier(A11yID.autonomosReasonActor)
                         .accessibilityHint("nome de quem autoriza a ação governada")
                 }
