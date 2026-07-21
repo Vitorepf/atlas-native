@@ -3361,6 +3361,7 @@ extension ComposerToolbar {
             Image(systemName: "arrow.up.circle.fill")
                 .atlasSans(30)
                 .foregroundStyle(AtlasTheme.accent)
+                .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 6, y: 1)
                 .frame(width: 48, height: 48)
                 .contentShape(Circle())
         }
