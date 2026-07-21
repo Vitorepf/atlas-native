@@ -1,10 +1,10 @@
-import SwiftUI
 import AtlasCore
+import Foundation
+import SwiftUI
 
-/// "O ritmo do seu dia" — a explicação do aprender-com-o-uso. Mostra o que o
-/// Atlas aprendeu (janelas do dia), o que observou hoje e o que faz com isso
-/// (proposta noturna). Só afirma o que está provado no registro local (C13).
-/// Copy → AutonomosRhythmSheet+Copy.swift
+// IDLE-COMPRESS fused
+
+// --- AutonomosRhythmSheet.swift ---
 struct AutonomosRhythmSheet: View {
     let windows: AtlasDayRhythm.Windows
     @State private var today: AtlasDayRhythm.DaySummary?
@@ -88,5 +88,70 @@ struct AutonomosRhythmSheet: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
         }
         .accessibilityElement(children: .combine)
+    }
+}
+
+// --- AutonomosRhythmSheet+Copy.swift ---
+enum AutonomosRhythmCopy {
+    static func line(_ windows: AtlasDayRhythm.Windows, paused: Bool = false) -> String {
+        let base: String
+        if windows.sampleDays < 4 {
+            base = "aprendendo seu ritmo · dia \(max(1, windows.sampleDays)) de 4"
+        } else if let dayEnd = hour(windows.dayEnd) {
+            base = "ritmo aprendido · seu dia termina ~\(dayEnd)"
+        } else {
+            base = "ritmo aprendido · \(windows.sampleDays) dias de uso"
+        }
+        return paused ? "\(base) · propostas em pausa" : base
+    }
+
+    static func spokenLine(_ windows: AtlasDayRhythm.Windows, paused: Bool = false) -> String {
+        let base: String
+        if windows.sampleDays < 4 {
+            base = "aprendendo seu ritmo, dia \(max(1, windows.sampleDays)) de 4"
+        } else if let dayEnd = hour(windows.dayEnd) {
+            base = "ritmo aprendido: seu dia costuma terminar perto das \(dayEnd)"
+        } else {
+            base = "ritmo aprendido em \(windows.sampleDays) dias de uso"
+        }
+        return paused ? "\(base). Propostas noturnas em pausa" : base
+    }
+
+    static func learnedParagraph(_ windows: AtlasDayRhythm.Windows) -> String {
+        if windows.sampleDays < 4 {
+            return "O Atlas observa quando seu dia de trabalho começa e termina. Faltam \(4 - windows.sampleDays) \(4 - windows.sampleDays == 1 ? "dia" : "dias") para ele conhecer seu ritmo."
+        }
+        return "O Atlas aprendeu seu ritmo observando o uso real — a mediana dos seus últimos dias de trabalho."
+    }
+
+    static func whatHappensParagraph(_ windows: AtlasDayRhythm.Windows) -> String {
+        if windows.sampleDays < 4 {
+            return "Quando o ritmo estiver aprendido, no fim do seu dia o Atlas vai propor uma missão noturna — a frota continua enquanto você descansa."
+        }
+        return "No fim do seu dia, se houve trabalho, o Atlas propõe uma missão noturna — a frota continua enquanto você descansa, e de manhã o resultado espera por você."
+    }
+
+    static func todayLine(_ today: AtlasDayRhythm.DaySummary?) -> String {
+        guard let today, !today.workspaces.isEmpty else {
+            return "nenhum trabalho registrado ainda"
+        }
+        return today.workspaces.joined(separator: " · ")
+    }
+
+    static func scoreLine(_ score: (accepted: Int, dismissed: Int)) -> String? {
+        guard score.accepted + score.dismissed > 0 else { return nil }
+        let aceitas = "\(score.accepted) \(score.accepted == 1 ? "aceita" : "aceitas")"
+        let recusadas = "\(score.dismissed) \(score.dismissed == 1 ? "recusada" : "recusadas")"
+        return "\(aceitas) · \(recusadas)"
+    }
+
+    static func adjustmentLine(_ minutes: Int) -> String? {
+        guard minutes > 0 else { return nil }
+        return "+\(minutes) min — seu horário real de resposta"
+    }
+
+    static func hour(_ components: DateComponents?) -> String? {
+        guard let hour = components?.hour else { return nil }
+        return String(format: "%02d:%02d", hour, components?.minute ?? 0)
     }
 }
