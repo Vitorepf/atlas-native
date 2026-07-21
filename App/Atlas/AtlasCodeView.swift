@@ -1398,7 +1398,7 @@ extension AtlasCodeView {
 
     private func tabForeground(_ option: AtlasCodeGraphStateFilter, active: Bool) -> Color {
         guard active else { return AtlasTheme.textTertiary }
-        return option == .violating ? AtlasCodePalette.alert : AtlasTheme.textPrimary
+        return option == .violating ? AtlasCodePalette.alert : AtlasTheme.accent
     }
 
     private func tabUnderline(_ option: AtlasCodeGraphStateFilter) -> Color {
