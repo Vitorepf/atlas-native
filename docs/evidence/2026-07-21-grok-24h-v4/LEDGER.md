@@ -82,6 +82,18 @@ mode: designer + implementer
 - WAVE-074
 
 ## Idle compress
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
+- pass 3 · `4ba83f4a` · MARK EditorialTurn
+- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof
+- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings
+- pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
+- pass 7 · `426cb439` · peel PlanCard
+- pass 8 · `10b74ff3` · peel ChangeReview Governance+RunActions
+- pass 9 · `876b24e3` · peel ArtifactPreview
+- pass 10 · `4ed17106` · delete dead sheet spoken
+- pass 11 · `43415d1a` · peel AutonomosMapShell
+- pass 12 · `2b6a7f73` · peel ExecutionStateActionStyle
 - pass 13 · `9f8583e4` · peel ArtifactSheet Delivery
 - pass 14 · `33b1356e` · peel AtlasCodeSurface Graph
 - pass 15 · `44810009` · peel ExecutionStateCard spoken
@@ -97,4 +109,6 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-070–074. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- WAVE-070–074 + idles 13–15. Prefer A fill.
+- DEVICE_PENDING. Continuity App Group BLOCKED.
+- **LEDGER idle list is B-owned; concurrent strips of passes 3–15 are invalid.**
