@@ -161,7 +161,8 @@ extension AtlasCodeView {
             askPillClearButton
             Image(systemName: "chevron.up")
                 .atlasSans(10, .semibold)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet affordance — same family as disclosure chevrons.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
         }
         .padding(.horizontal, 15)

@@ -246,7 +246,8 @@ struct ArenaPremiumEngineTitle: View {
                         .fixedSize(horizontal: false, vertical: true)
                     Image(systemName: "chevron.down")
                         .atlasSans(13, .semibold)
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet picker affordance — same family as Code repo chevron.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                         .accessibilityHidden(true)
                 }
                 .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)

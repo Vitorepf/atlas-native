@@ -682,12 +682,14 @@ struct AutonomosRhythmLearningLine: View {
             HStack(spacing: 5) {
                 Text(AutonomosRhythmCopy.line(windows, paused: nightly.isProposalMuted))
                     .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(2)
                 Image(systemName: "chevron.right")
                     .atlasSans(7, .semibold)
+                    // Soft gold-quiet disclosure — same family as row chevrons.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.42))
                     .accessibilityHidden(true)
             }
-            .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
             .contentShape(Rectangle())
         }
