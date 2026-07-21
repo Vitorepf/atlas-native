@@ -1561,6 +1561,7 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
                     )
                 )
             )
+            .atlasElevation(radius: 8, y: 2, opacity: configuration.isPressed ? 0.08 : 0.18)
             .contentShape(Capsule())
             .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
             .animation(
