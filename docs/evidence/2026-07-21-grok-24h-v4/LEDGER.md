@@ -215,5 +215,6 @@ mode: designer + implementer
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
 - WAVE-182: Radar attention pack + Arena host score dedupe.
-- WAVE-181: ArenaScore · WAVE-180: StateCard kind.
+- WAVE-180–181: StateCard + ArenaScore packs.
 - hollows 0 · face-sans-pack none · density fails none.
+- open=[] · await A rank-1 §WAVE · no invent micro-WAVE.
