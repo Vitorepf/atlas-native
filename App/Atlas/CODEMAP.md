@@ -137,6 +137,7 @@
 | **ChangeReview patch peels** | PatchBody · DiffViewBody (WAVE-129) |
 | **Markdown blocks peels** | Blocks · ViewBlocks (WAVE-130) |
 | **A11yID domain peels** | core · Arena · Code · Autonomos (WAVE-131) |
+| **ChangeReview Judgment peels** | core · Chrome spoken (WAVE-132) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
