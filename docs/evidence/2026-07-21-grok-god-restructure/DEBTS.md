@@ -4,23 +4,23 @@
 
 ```yaml
 pass: 1
-domain_index: 7
-last_focus: "co-locate to ~47 hosts under density caps"
-session_commits: 102
+domain_index: 5
+last_focus: "AutonomosMap + RhythmSheet"
+session_commits: 105
 soft_sections_states: 0
-swift_App_Atlas: 47
+swift_App_Atlas: 41
 ```
 
 ## Scoreboard
 
 | Metric | Value |
 |---|---|
-| Mission commits | **102** |
-| App/Atlas .swift | **47** |
+| Mission commits | **105** |
+| App/Atlas .swift | **41** |
 | *Sections*/*States* | **0** |
-| Density | OK |
-| Core-adjacent | Session/ConversationModel untouched |
+| Density guard | OK |
+| Session/ConversationModel | untouched |
 
 ## Next
 
-residual under caps · CODEMAP · pass · **never Goal Done**
+residual under caps · CODEMAP · **never Goal Done**
