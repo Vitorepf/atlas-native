@@ -6,19 +6,16 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 3
+- waves_completed: 4
 - idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
-- WAVE-006 conversation-live-composer-instrument · `528a4c1a`
-- WAVE-007 autonomos-organism-truth · `b012de30`
-- WAVE-008 ops-failure-empty-canon · pending this commit
-
-## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
+- WAVE-006 · `528a4c1a`
+- WAVE-007 · `b012de30`
+- WAVE-008 · `15cd21cd`
+- WAVE-009 codigo-depth · pending commit
 
 ## Notes
-- Next: WAVE-009 codigo-depth-instrument (rank 4, high Δ)
-- Device-pending: operator passcode; casca gates Mac-only
+- Next: WAVE-010 Arena SuiteSheet or Designer 011+
+- Device-pending (passcode)
