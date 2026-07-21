@@ -78,13 +78,21 @@ enum AtlasCodeRadarAskContext {
 
         absences.append("não inventar merges ou cures; julgamento soberano do workspace")
 
+        // WAVE-158: can_do matrix — radar list has no local heal CTA; honesty via absences.
+        let attentionCount = AtlasCodeRadarJudgment.topAttention(issuesBySlug: model.issuesBySlug).count
+        let partida = PartidaCanDoJudgment.radar(
+            hasHealFaceCTA: false,
+            attentionCount: attentionCount
+        )
+        absences.append(contentsOf: partida.absences)
+
         return AgenticOccasionPack(
             surface: "code.radar",
             subject: "workspace do operador",
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: .readChat
+            canDo: partida.canDo
         ).render()
     }
 }

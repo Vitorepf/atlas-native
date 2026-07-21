@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 152
+- waves_completed: 153
 - idle_compress_passes: 2
 - collapse_host: 0
 
@@ -163,6 +163,7 @@ mode: designer + implementer
 - WAVE-155
 - WAVE-156
 - WAVE-157
+- WAVE-158
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -170,7 +171,7 @@ mode: designer + implementer
 
 ## Designer
 - designs_proposed: 153
-- designs_open: 1
+- designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -178,7 +179,7 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument | **max** | proposed |
+| — | _(none)_ | — | — |
 
 ## Notes
 - Re-run regen after every done wave or new design.

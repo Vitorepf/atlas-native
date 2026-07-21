@@ -63,13 +63,25 @@ enum HomeAskContext {
         facts.append(contentsOf: empty.facts)
         absences.append(contentsOf: empty.absences)
 
+        // WAVE-158: can_do matrix — never bare readChat hardcode; no stop invent.
+        let liveCount = LiveNowJudgment.rank(
+            local: TurnPresence.shared.liveSessions,
+            remote: session.remoteLiveSessions
+        ).count
+        let autonomosFace = HomeOpsJudgment.autonomosFace(model: session.autonomos)
+        let partida = PartidaCanDoJudgment.home(
+            autonomosFace: autonomosFace,
+            liveCount: liveCount
+        )
+        absences.append(contentsOf: partida.absences)
+
         return AgenticOccasionPack(
             surface: "home",
             subject: "partida do operador",
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: .readChat
+            canDo: partida.canDo
         ).render()
     }
 }

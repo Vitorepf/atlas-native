@@ -72,13 +72,20 @@ enum WorkspaceAskContext {
 
         absences.append("não invente grafo/Arena/frota; pack é só deste workspace")
 
+        // WAVE-158: can_do matrix — scoped live never invents stop on workspace pack.
+        let scopedLiveCount = WorkspaceThreadJudgment.rank(threads, remote: session.remoteLiveSessions)
+            .filter { WorkspaceThreadJudgment.isRunning(thread: $0, remote: session.remoteLiveSessions) }
+            .count
+        let partida = PartidaCanDoJudgment.workspace(scopedLiveCount: scopedLiveCount)
+        absences.append(contentsOf: partida.absences)
+
         return AgenticOccasionPack(
             surface: "workspace",
             subject: name,
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: .readChat
+            canDo: partida.canDo
         ).render()
     }
 

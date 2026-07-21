@@ -14,21 +14,12 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-```yaml
-id: WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-158-design.md
-created_by: designer
-approved_at: null
-```
+_(no open proposed WAVEs)_
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument | **max** | `WAVE-158-design.md` |
 
 ## History (done)
 
@@ -184,4 +175,5 @@ approved_at: null
 - WAVE-155 done
 - WAVE-156 done
 - WAVE-157 done
+- WAVE-158 done
 
