@@ -1575,11 +1575,13 @@ private struct AutonomosMapPrimaryCTA: View {
         } label: {
             Text(title)
                 .atlasSans(14, .medium)
-                .foregroundStyle(AtlasTheme.textPrimary.opacity(enabled ? 1 : 0.35))
+                // Soft gold-quiet primary map CTA label when armed.
+                .foregroundStyle(enabled ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.38))
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: 48)
-                .background(AtlasTheme.textPrimary.opacity(enabled ? 0.055 : 0.03), in: Capsule())
-                .overlay(Capsule().strokeBorder(AtlasTheme.textPrimary.opacity(enabled ? 0.12 : 0.05), lineWidth: 1))
+                // Soft gold-quiet primary map CTA fill/rim.
+                .background(AtlasTheme.goldVeil.opacity(enabled ? 1 : 0.35), in: Capsule())
+                .overlay(Capsule().strokeBorder(AtlasTheme.goldBorder.opacity(enabled ? 0.85 : 0.35), lineWidth: 1))
                 .atlasElevation(radius: 10, y: 3, opacity: enabled ? 0.16 : 0.06)
                 .contentShape(Capsule())
         }

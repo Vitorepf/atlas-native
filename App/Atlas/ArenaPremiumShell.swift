@@ -1306,7 +1306,8 @@ struct ArenaPremiumFleetView: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(AtlasTheme.textPrimary.opacity(0.06))
+                        // Soft gold-quiet fleet bar rail.
+                        .fill(AtlasTheme.accent.opacity(0.1))
                         .frame(height: 2)
                     Capsule()
                         // Soft gold-quiet without-Atlas bar; full accent with Atlas.
@@ -4570,14 +4571,16 @@ struct ArenaPremiumAction: View {
                     Capsule().fill(
                         quiet || disabled
                             ? Color.clear
-                            : AtlasTheme.textPrimary.opacity(0.055)
+                            // Soft gold-quiet primary CTA fill.
+                            : AtlasTheme.goldVeil
                     )
                 )
                 .overlay(
                     Capsule().stroke(
                         quiet
                             ? AtlasTheme.goldBorder.opacity(disabled ? 0.22 : 0.45)
-                            : AtlasTheme.textPrimary.opacity(disabled ? 0.05 : 0.12),
+                            // Soft gold-quiet primary CTA rim.
+                            : AtlasTheme.goldBorder.opacity(disabled ? 0.28 : 0.85),
                         lineWidth: 1
                     )
                 )
@@ -4647,7 +4650,8 @@ struct ArenaPremiumProgressRing: View {
             ZStack {
                 Circle()
                     .trim(from: 0.08, to: 0.92)
-                    .stroke(AtlasTheme.textPrimary.opacity(0.06), style: StrokeStyle(lineWidth: 3.5, lineCap: .round))
+                    // Soft gold-quiet progress ring track.
+                    .stroke(AtlasTheme.accent.opacity(0.12), style: StrokeStyle(lineWidth: 3.5, lineCap: .round))
                 if let progress {
                     Circle()
                         .trim(from: 0.08, to: 0.08 + 0.84 * min(max(progress, 0), 1))
