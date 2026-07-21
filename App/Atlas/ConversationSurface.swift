@@ -257,7 +257,7 @@ extension ConversationView {
         setToast("mensagem no composer para novo turno")
     }
 
-    func copy(_ text: String, label: String) {
+    func copyToClipboard(_ text: String, label: String) {
         UIPasteboard.general.string = text
         AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
         setToast("\(label) copiada")
@@ -625,7 +625,7 @@ extension ConversationView {
             artifactTrace: $artifactTrace,
             steerTrace: $steerTrace,
             onEditResend: editAndResend,
-            onCopy: copy
+            onCopy: copyToClipboard
         )
     }
 }
