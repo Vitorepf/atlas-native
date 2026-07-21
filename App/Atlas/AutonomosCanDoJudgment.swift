@@ -388,7 +388,7 @@ enum AutonomosEvolutionJudgment {
         "\(title), \(meta)"
     }
 
-    static func marcoHint(mergeProved: Bool) -> String {
+    static func spokenMarcoHint(mergeProved: Bool) -> String {
         mergeProved ? "abre o recibo de auto-construção" : ""
     }
 
@@ -483,11 +483,11 @@ enum AutonomosReasonJudgment {
         }
     }
 
-    static func reasonSectionTitle(reasonOptional: Bool) -> String {
+    static func productReasonSection(reasonOptional: Bool) -> String {
         reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo"
     }
 
-    static func reasonFieldHint(reasonOptional: Bool) -> String {
+    static func spokenReasonFieldHint(reasonOptional: Bool) -> String {
         reasonOptional ? reasonHintOptional : reasonHintRequired
     }
 
