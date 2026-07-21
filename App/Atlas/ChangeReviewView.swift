@@ -649,7 +649,7 @@ enum ChangeReviewPatchA11y {
 
 enum ChangeReviewPatchA11yCard {
     static func spokenDiffState(expanded: Bool) -> String {
-        expanded ? "diff expandido" : "diff recolhido"
+        expanded ? "Diff expandido" : "Diff recolhido"
     }
 
     static func spokenFileCounts(changed: Int, created: Int, deleted: Int) -> String? {
@@ -664,11 +664,11 @@ enum ChangeReviewPatchA11yCard {
 
     static func spokenRiskFlags(_ flags: [String]) -> String? {
         guard !flags.isEmpty else { return nil }
-        return "alertas \(flags.joined(separator: ", "))"
+        return "Alertas \(flags.joined(separator: ", "))"
     }
 
     static func spokenCard(patch: AtlasTraceChangeReview.Patch, diffExpanded: Bool) -> String {
-        var parts = ["patch \(String(patch.id.prefix(8)))"]
+        var parts = ["Patch \(String(patch.id.prefix(8)))"]
         if let files = spokenFileCounts(
             changed: patch.changedFiles.count,
             created: patch.createdFiles.count,
@@ -686,11 +686,11 @@ enum ChangeReviewPatchA11yCard {
 
 enum ChangeReviewPatchA11yToggle {
     static func spokenDiffToggle(expanded: Bool) -> String {
-        expanded ? "fechar diff do patch" : "ver diff do patch"
+        expanded ? "Fechar diff do patch" : "Ver diff do patch"
     }
 
     static func spokenRiskFlags(_ flags: [String]) -> String {
-        "alertas de risco, \(flags.joined(separator: ", "))"
+        "Alertas de risco, \(flags.joined(separator: ", "))"
     }
 }
 
@@ -1090,7 +1090,7 @@ struct ChangeReviewRunHeader: View {
 
 enum ChangeReviewSectionsA11y {
     static func spokenCaption(_ text: String) -> String {
-        text.lowercased()
+        text // captions are already natural-case visual + VO
     }
 }
 
@@ -1125,7 +1125,7 @@ extension ChangeReviewSectionsA11y {
 
 extension ChangeReviewSectionsA11y {
     static func spokenToast(_ text: String) -> String {
-        "aviso, \(text)"
+        "Aviso, \(text)"
     }
 }
 
@@ -1355,7 +1355,7 @@ extension ChangeReviewFindingsSection {
     func axisHeaderLabel(axis: String, count: Int) -> String {
         let name = axis == "GERAIS" ? "gerais" : axis.lowercased()
         let noun = count == 1 ? "achado" : "achados"
-        return "eixo \(name), \(count) \(noun)"
+        return "Eixo \(name), \(count) \(noun)"
     }
 }
 
