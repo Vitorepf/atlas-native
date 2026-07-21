@@ -252,7 +252,7 @@ extension AutonomosMapShell {
     var askPillDock: some View {
         AgenticAskDock {
             AgenticPill(
-                invite: AutonomosAskContext.invite(destination: destination, vestment: vestmentForAsk),
+                invite: AutonomosAskContext.productInvite(destination: destination, vestment: vestmentForAsk),
                 accessibilityId: A11yID.autonomosAskPill
             ) {
                 showingAsk = true
@@ -265,7 +265,7 @@ extension AutonomosMapShell {
             client: session.client,
             threadId: askThreadId,
             title: selectedUnit?.name ?? "Autônomos",
-            emptyPrompt: AutonomosAskContext.invite(destination: destination, vestment: vestmentForAsk),
+            emptyPrompt: AutonomosAskContext.productInvite(destination: destination, vestment: vestmentForAsk),
             emptySuggestions: AutonomosAskContext.emptySuggestions(destination: destination),
             taskKind: "autonomos",
             workspace: nil,

@@ -954,7 +954,7 @@ enum SelfConstructionVetoJudgment {
 // MARK: - Host
 
 enum AutonomosAskContext {
-    static func invite(destination: AutonomosDestination?, vestment: AutonomosHubVestment) -> String {
+    static func productInvite(destination: AutonomosDestination?, vestment: AutonomosHubVestment) -> String {
         if let destination {
             switch destination {
             case .hub:
@@ -1607,11 +1607,11 @@ enum AutonomosDecisionJudgment {
 
     // MARK: - Product words / spoken
 
-    static func primaryCTATitle(count: Int) -> String {
+    static func productPrimaryCTA(count: Int) -> String {
         count == 1 ? "Ver 1 decisão" : "Ver \(count) decisões"
     }
 
-    static func rowMeta(_ item: AutonomosDecisionItem) -> String {
+    static func productRowMeta(_ item: AutonomosDecisionItem) -> String {
         let risk = item.riskLevel.trimmingCharacters(in: .whitespacesAndNewlines)
         let route = item.route.trimmingCharacters(in: .whitespacesAndNewlines)
         var parts: [String] = []
@@ -1625,7 +1625,7 @@ enum AutonomosDecisionJudgment {
     }
 
     static func spokenItem(_ item: AutonomosDecisionItem) -> String {
-        "\(item.title), \(rowMeta(item))"
+        "\(item.title), \(productRowMeta(item))"
     }
 
     /// Map published option strings + defaults to operator decisions.
@@ -1659,7 +1659,7 @@ enum AutonomosDecisionJudgment {
         return out.isEmpty ? [.accept, .reject, .deferDecision, .requestChanges] : out
     }
 
-    static func decisionLabel(_ decision: AtlasAutonomosOperatorDecision) -> String {
+    static func productDecision(_ decision: AtlasAutonomosOperatorDecision) -> String {
         switch decision {
         case .accept: return "Aceitar"
         case .reject: return "Rejeitar"

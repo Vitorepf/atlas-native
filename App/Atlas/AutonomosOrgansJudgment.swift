@@ -457,7 +457,7 @@ enum AutonomosHubJudgment {
 
     // MARK: Kicker / spoken
 
-    static func kickerLine(vestment: AutonomosHubVestment, ageLabel: String) -> String {
+    static func productKickerLine(vestment: AutonomosHubVestment, ageLabel: String) -> String {
         "\(vestment.kicker) · \(ageLabel)"
     }
 

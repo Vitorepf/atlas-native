@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 602
-domain_index: 3
-last_focus: "Código spoken*/product honesty Provenance+Markdown"
-session_commits: 174
+pass: 603
+domain_index: 5
+last_focus: "Autônomos product* honesty kicker/rowMeta/invite"
+session_commits: 175
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,10 +14,10 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **174** · soft **0** · density OK · 46+2 · gates green · last domain2 Código honesty
+commits **175** · soft **0** · density OK · 46+2 · gates green · domain4/5 Autônomos honesty
 
 ## Continuous residual
 
 **never Goal Done**
 
-Soft 0. Densify headroom ~0. Residual honesty spoken*/product* across domains 0–7.
+Soft 0. Residual honesty spoken*/product* · Widgets/Continuity · Search invite residual · Surfaces near 2000.

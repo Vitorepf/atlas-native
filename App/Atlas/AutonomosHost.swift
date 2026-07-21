@@ -366,36 +366,9 @@ extension AutonomosView {
     }
 }
 
-extension AutonomosView {
-    func spokenScreenBusyLabel() -> String? {
-        switch model.phase {
-        case .idle, .loading:
-            return "Autônomos, abrindo catálogo"
-        case .failed:
-            return "Autônomos, falha ao abrir catálogo"
-        default:
-            return nil
-        }
-    }
-}
-
-extension AutonomosView {
-    func spokenScreenPhaseLabel() -> String {
-        if let busy = spokenScreenBusyLabel() { return busy }
-        if isHeaderHealthy {
-            return "Autônomos, catálogo quieto"
-        }
-        return "Autônomos, catálogo carregado"
-    }
-}
-
-extension AutonomosView {
-    func spokenScreenLabel() -> String {
-        spokenScreenPhaseLabel()
-    }
-
-    static let screenHint = "catálogo local neste iPhone; pergunta e manda só pela pílula"
-}
+// Screen-level spoken collapse intentionally absent: autonomosLifecycleScreenA11y
+// uses accessibilityElement(children: .contain) so list/header identifiers stay
+// first-class in the a11y tree (not one fused screen label).
 
 struct AutonomosFleetFailureEmpty: View {
     let message: String
@@ -940,7 +913,7 @@ struct AutonomosEvolutionView: View {
         .overlay(alignment: .bottom) { AutonomosMapChrome.hairline }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(AutonomosEvolutionJudgment.spokenMarco(title: marco.title, meta: marco.meta))
-        .accessibilityHint(AutonomosEvolutionJudgment.marcoHint(mergeProved: marco.mergeProved))
+        .accessibilityHint(AutonomosEvolutionJudgment.spokenMarcoHint(mergeProved: marco.mergeProved))
     }
 }
 
@@ -1132,7 +1105,7 @@ struct AutonomosHubView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                AutonomosMapChrome.kicker(kickerLine, live: vestment.kickerLive)
+                AutonomosMapChrome.kicker(productKickerLine, live: vestment.kickerLive)
                     .padding(.bottom, 14)
                 AutonomosMapChrome.heroTitle(vestment.heroTitle)
                     .padding(.bottom, 10)
@@ -1248,8 +1221,8 @@ struct AutonomosHubView: View {
         AutonomosHubJudgment.face(vestment: vestment, needsAreaBind: needsAreaBind)
     }
 
-    private var kickerLine: String {
-        AutonomosHubJudgment.kickerLine(vestment: vestment, ageLabel: unit.ageLabel)
+    private var productKickerLine: String {
+        AutonomosHubJudgment.productKickerLine(vestment: vestment, ageLabel: unit.ageLabel)
     }
 
     private var hubSpokenLabel: String {
@@ -1271,7 +1244,7 @@ struct AutonomosHubView: View {
         switch vestment {
         case .awaiting(let count):
             AutonomosMapChrome.primaryCTA(
-                AutonomosDecisionJudgment.primaryCTATitle(count: count),
+                AutonomosDecisionJudgment.productPrimaryCTA(count: count),
                 action: { onNavigate(.decisions) }
             )
         case .live, .quiet:
@@ -1445,7 +1418,7 @@ struct AutonomosDecisionSurface: View {
         .accessibilityIdentifier(A11yID.autonomosDecisions)
         .sheet(item: $pendingDecision) { pending in
             AutonomosReasonSheet(
-                title: AutonomosDecisionJudgment.decisionLabel(pending.decision),
+                title: AutonomosDecisionJudgment.productDecision(pending.decision),
                 explainer: pending.explainer,
                 reasonOptional: !pending.requiresRationale
             ) { actor, reason in
@@ -1479,7 +1452,7 @@ struct PendingDecision: Identifiable {
     var id: String { "\(item.id)|\(decision.rawValue)" }
 
     var explainer: String {
-        "Registra \(AutonomosDecisionJudgment.decisionLabel(decision).lowercased()) sobre «\(item.title)». Não inicia execução sozinho — só o julgamento do operador."
+        "Registra \(AutonomosDecisionJudgment.productDecision(decision).lowercased()) sobre «\(item.title)». Não inicia execução sozinho — só o julgamento do operador."
     }
 }
 // MARK: - AutonomosDecisionFaceBody
@@ -1523,7 +1496,7 @@ extension AutonomosDecisionSurface {
                         .font(AtlasFont.serif(18, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .multilineTextAlignment(.leading)
-                    Text(AutonomosDecisionJudgment.rowMeta(item))
+                    Text(AutonomosDecisionJudgment.productRowMeta(item))
                         .font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .multilineTextAlignment(.leading)
@@ -1548,7 +1521,7 @@ extension AutonomosDecisionSurface {
 
     func receiptLine(_ receipt: AtlasAutonomosOperatorDecisionReceipt) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Recibo · \(AutonomosDecisionJudgment.decisionLabel(receipt.decision))")
+            Text("Recibo · \(AutonomosDecisionJudgment.productDecision(receipt.decision))")
                 .font(AtlasFont.serif(14, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(
@@ -1564,7 +1537,7 @@ extension AutonomosDecisionSurface {
         .background(AtlasTheme.surface.opacity(0.55))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
-            "recibo \(AutonomosDecisionJudgment.decisionLabel(receipt.decision)), \(receipt.isRecordedDecisionOnly ? "decisão gravada sem execução" : receipt.nextAllowedAction)"
+            "recibo \(AutonomosDecisionJudgment.productDecision(receipt.decision)), \(receipt.isRecordedDecisionOnly ? "decisão gravada sem execução" : receipt.nextAllowedAction)"
         )
     }
 
@@ -1643,7 +1616,7 @@ extension AutonomosDecisionSurface {
                         .padding(.bottom, 14)
                     AutonomosMapChrome.heroTitle(item.title, size: 28)
                         .padding(.bottom, 8)
-                    Text(AutonomosDecisionJudgment.rowMeta(item))
+                    Text(AutonomosDecisionJudgment.productRowMeta(item))
                         .font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .padding(.bottom, 20)
@@ -1672,7 +1645,7 @@ extension AutonomosDecisionSurface {
 
                     ForEach(AutonomosDecisionJudgment.allowedDecisions(for: item), id: \.id) { decision in
                         AutonomosMapNavLine(
-                            title: AutonomosDecisionJudgment.decisionLabel(decision),
+                            title: AutonomosDecisionJudgment.productDecision(decision),
                             meta: decisionMeta(decision, item: item),
                             action: {
                                 pendingDecision = PendingDecision(
@@ -1852,7 +1825,7 @@ struct AutonomosReasonSheet: View {
                         .accessibilityIdentifier(A11yID.autonomosReasonActor)
                         .accessibilityHint(AutonomosReasonJudgment.actorHint)
                 }
-                Section(AutonomosReasonJudgment.reasonSectionTitle(reasonOptional: reasonOptional)) {
+                Section(AutonomosReasonJudgment.productReasonSection(reasonOptional: reasonOptional)) {
                     TextField(
                         AutonomosReasonJudgment.reasonPlaceholder,
                         text: $reason,
@@ -1861,7 +1834,7 @@ struct AutonomosReasonSheet: View {
                     .lineLimit(3...6)
                     .accessibilityIdentifier(A11yID.autonomosReasonField)
                     .accessibilityHint(
-                        AutonomosReasonJudgment.reasonFieldHint(reasonOptional: reasonOptional)
+                        AutonomosReasonJudgment.spokenReasonFieldHint(reasonOptional: reasonOptional)
                     )
                 }
             }
