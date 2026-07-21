@@ -358,8 +358,30 @@ struct AtlasArenaView: View {
 extension AtlasArenaView {
     func arenaLifecycleA11y<Content: View>(_ content: Content) -> some View {
         content
-            .navigationTitle("Arena")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 4) {
+                        Text("Arena")
+                            .font(AtlasFont.serif(20, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        LinearGradient(
+                            colors: [
+                                AtlasTheme.accent.opacity(0),
+                                AtlasTheme.accent.opacity(0.5),
+                                AtlasTheme.accent.opacity(0)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(width: 44, height: 1.5)
+                        .accessibilityHidden(true)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Arena")
+                }
+            }
             // O título de navegação já anuncia a superfície. Label/ID no
             // container inteiro substituía o nome e o ID de cada tab e CTA.
     }
