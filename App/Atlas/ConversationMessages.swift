@@ -328,6 +328,7 @@ extension ConversationMessages {
         )
         .accessibilityHint(ConversationMessagesA11y.changeReviewHint)
         .accessibilityIdentifier(A11yID.reviewChip(trace.rawValue))
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -467,6 +468,7 @@ extension ConversationMessages {
             .accessibilityLabel(ConversationMessagesA11y.scrollFABLabel)
             .accessibilityHint(ConversationMessagesA11y.scrollFABHint)
             .accessibilityIdentifier(A11yID.conversationScrollFAB)
+            .accessibilityAddTraits(.isButton)
     }
 }
 

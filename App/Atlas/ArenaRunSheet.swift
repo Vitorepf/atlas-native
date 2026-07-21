@@ -376,7 +376,7 @@ extension ArenaRunSheet {
         .buttonStyle(PressableScale())
         .accessibilityLabel(toggleAccessibilityLabel(title: title, subtitle: subtitle, isOn: isOn))
         .accessibilityHint(isOn ? "desmarca esta opção" : "marca esta opção")
-        .accessibilityAddTraits(isOn ? .isSelected : [])
+        .accessibilityAddTraits(isOn ? [.isButton, .isSelected] : .isButton)
     }
 }
 
@@ -671,5 +671,6 @@ extension ArenaRunSheet {
         .accessibilityIdentifier(A11yID.arenaRunSubmit)
         .accessibilityLabel(spokenSubmitLabel(input: input, enginesEmpty: engines.isEmpty))
         .accessibilityHint(spokenSubmitHint(input: input, enginesEmpty: engines.isEmpty))
+        .accessibilityAddTraits(.isButton)
     }
 }

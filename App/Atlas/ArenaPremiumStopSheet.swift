@@ -138,5 +138,16 @@ struct ArenaPremiumStopSheet: View {
         .buttonStyle(PressableScale())
         .disabled(!valid || model.isStoppingMeasurement || isConfirmed)
         .accessibilityIdentifier(A11yID.arenaPremiumStopConfirm)
+        .accessibilityLabel(
+            isConfirmed
+                ? "parada já confirmada"
+                : (valid ? "parar após o caso atual" : "parar indisponível, preencha operador e motivo")
+        )
+        .accessibilityHint(
+            valid && !isConfirmed
+                ? "solicita parada governada após o caso em andamento"
+                : ""
+        )
+        .accessibilityAddTraits(.isButton)
     }
 }

@@ -80,6 +80,7 @@ struct AutonomosReasonSheet: View {
                             ? "confirmar \(title.lowercased())"
                             : "confirmar indisponível, preencha operador e motivo"
                     )
+                    .accessibilityAddTraits(.isButton)
                 }
             }
             .accessibilityIdentifier(A11yID.autonomosReasonSheet)

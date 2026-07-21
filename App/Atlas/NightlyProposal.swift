@@ -186,6 +186,7 @@ struct NightlyProposalCard: View {
             .accessibilityIdentifier(A11yID.nightlyProposalAccept)
             .accessibilityLabel(Self.spokenAcceptLabel())
             .accessibilityHint(Self.spokenAcceptHint())
+            .accessibilityAddTraits(.isButton)
 
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
@@ -202,6 +203,7 @@ struct NightlyProposalCard: View {
             .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
             .accessibilityLabel(Self.spokenDismissLabel())
             .accessibilityHint(Self.spokenDismissHint())
+            .accessibilityAddTraits(.isButton)
 
             Menu {
                 ForEach(Self.muteDays, id: \.self) { days in
@@ -222,6 +224,7 @@ struct NightlyProposalCard: View {
             .accessibilityIdentifier(A11yID.nightlyProposalMute)
             .accessibilityLabel(Self.spokenMuteMenuLabel())
             .accessibilityHint(Self.spokenMuteMenuHint())
+            .accessibilityAddTraits(.isButton)
         }
     }
 

@@ -241,7 +241,7 @@ extension ArtifactSheet {
         .buttonStyle(.plain)
         .accessibilityIdentifier(A11yID.artifactsItem(index))
         .accessibilityLabel("\(item.name), \(ArtifactViewer.byteLabel(item.byteSize)), \(ArtifactViewer.kindLabel(item.kind))")
-        .accessibilityAddTraits(item.id == selected?.id ? .isSelected : [])
+        .accessibilityAddTraits(item.id == selected?.id ? [.isButton, .isSelected] : .isButton)
         .accessibilityHint(item.id == selected?.id ? "selecionado no preview" : "abre o preview deste artefato")
     }
 }

@@ -375,6 +375,7 @@ extension CodeBlockView {
         .accessibilityLabel(MarkdownCodeBlockA11y.spokenCopyButton(copied: copied, canCopy: canCopy))
         .accessibilityHint(MarkdownCodeBlockA11y.copyHint(canCopy: canCopy))
         .accessibilityIdentifier(A11yID.markdownCodeCopy(blockIndex))
+        .accessibilityAddTraits(.isButton)
     }
 }
 

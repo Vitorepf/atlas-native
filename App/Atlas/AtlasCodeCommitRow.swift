@@ -215,6 +215,7 @@ private struct CommitRowAskChrome<Label: View>: View {
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
         .accessibilityIdentifier(accessibilityID)
+        .accessibilityAddTraits(.isButton)
         .onLongPressGesture(minimumDuration: 0.45, perform: onLongPress)
         .simultaneousGesture(askDrag)
     }

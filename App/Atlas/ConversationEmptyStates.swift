@@ -158,5 +158,6 @@ extension EmptyConversation {
             EmptyConversationA11y.spokenSuggestion(s, index: index, total: suggestions.count)
         )
         .accessibilityHint(EmptyConversationA11y.suggestionHint)
+        .accessibilityAddTraits(.isButton)
     }
 }

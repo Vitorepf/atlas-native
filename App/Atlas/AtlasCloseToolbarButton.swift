@@ -19,6 +19,7 @@ struct AtlasCloseToolbarButton: View {
         .tint(AtlasTheme.textSecondary)
         .accessibilityLabel(spokenLabel)
         .accessibilityHint(spokenHint)
+        .accessibilityAddTraits(.isButton)
         .modifier(CloseToolbarA11yID(accessibilityID))
     }
 }

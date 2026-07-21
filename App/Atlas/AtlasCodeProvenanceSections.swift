@@ -121,6 +121,7 @@ extension AtlasCodeProvenanceSheet {
         .accessibilityIdentifier(A11yID.codeProvenanceAsk)
         .accessibilityLabel("perguntar ao Atlas sobre este commit")
         .accessibilityHint(Self.askHint)
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -175,6 +176,7 @@ extension AtlasCodeProvenanceSheet {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(A11yID.whyFileRow(index))
+        .accessibilityAddTraits(.isButton)
     }
 }
 
