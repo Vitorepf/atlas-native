@@ -1559,7 +1559,8 @@ struct ArenaPremiumNowView: View {
         if reduceMotion {
             Text("Carregando…")
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet reduce-motion loading meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         } else {
             ProgressView()
@@ -1654,7 +1655,8 @@ struct ArenaPremiumRunningView: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
                 Text("\(progress.remaining) restantes")
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet remaining meta.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .padding(.top, 2)
             } else {
                 Text("Progresso indeterminado")
@@ -1662,7 +1664,8 @@ struct ArenaPremiumRunningView: View {
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text("Denominador ainda não publicado")
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet honesty when total unknown.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             }
         }
         .accessibilityElement(children: .combine)
@@ -1763,7 +1766,8 @@ struct ArenaPremiumQueuedView: View {
             }
             Text("Ainda não iniciado · nenhum progresso foi presumido.")
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet not-started honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             ArenaPremiumAction(title: "Ver execução", tone: .neutral) {
                 onNavigate(.execution)
             }
@@ -2259,7 +2263,8 @@ struct ArenaPremiumComparison: View {
             metric(ArenaFormat.score(pair.without), "Sem Atlas", gold: false)
             Text("→")
                 .font(AtlasFont.serif(15))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet pair arrow.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .padding(.bottom, 2)
                 .accessibilityHidden(true)
             metric(ArenaFormat.score(pair.withAtlas), "Com Atlas", gold: true)
@@ -2283,7 +2288,8 @@ struct ArenaPremiumComparison: View {
         VStack(alignment: .leading, spacing: 5) {
             Text(label)
                 .font(AtlasFont.serif(12, .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet pair metric label.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .accessibilityHidden(true)
             Text(value)
                 .font(AtlasFont.serif(28))
@@ -2442,13 +2448,15 @@ struct ArenaPremiumExecutionView: View {
             Text("Corridas")
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet section kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityAddTraits(.isHeader)
                 .padding(.bottom, 10)
             if orderedRuns.isEmpty {
                 Text("Ainda sem corridas publicadas.")
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet empty honesty.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .accessibilityLabel("Ainda sem corridas publicadas.")
             } else {
                 ForEach(orderedRuns) { run in
@@ -2662,7 +2670,8 @@ struct ArenaPremiumRunDetailView: View {
             Text("Casos")
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet section kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityAddTraits(.isHeader)
             Text("Lista por teste ainda não publicada pelo servidor. Quando o contrato chegar, cada caso aparece aqui — feitos, ao vivo e a seguir.")
                 .font(AtlasFont.mono(12))
@@ -2815,7 +2824,8 @@ struct ArenaPremiumExecutionPipeline: View {
             Text("Pipeline")
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet section kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityAddTraits(.isHeader)
             HStack(alignment: .top, spacing: 0) {
                 ForEach(ArenaPremiumPipelineStep.allCases) { step in
@@ -2987,7 +2997,8 @@ struct ArenaPremiumCapabilitiesView: View {
                 Text(area)
                     .font(AtlasFont.mono(10, .medium))
                     .tracking(0.4)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet capability area kicker.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                     .accessibilityAddTraits(.isHeader)
                     .padding(.bottom, 10)
             }
@@ -3004,7 +3015,8 @@ struct ArenaPremiumCapabilitiesView: View {
             }
             Text(capabilitiesCaption)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet capabilities footnote.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .padding(.top, 16)
         }
     }
@@ -3027,7 +3039,8 @@ struct ArenaPremiumCapabilitiesView: View {
                             if let caption = shortConfidence(capability) {
                                 Text(caption)
                                     .font(AtlasFont.mono(9))
-                                    .foregroundStyle(AtlasTheme.textTertiary)
+                                    // Soft gold-quiet confidence caption.
+                                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.8)
                             }
@@ -3320,7 +3333,8 @@ struct ArenaPremiumCapabilityDetail: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
             Text("Ausência de um braço permanece não medida.")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet arm honesty footnote.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
         }
     }
 
@@ -3678,7 +3692,8 @@ extension ArenaRunSheet {
             // false hoje = worker desligado no servidor (ATLAS_ARENA_WORKER_ENABLED).
             Text("Worker de medição desligado no servidor — fila aguardando")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet worker-off honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         }
     }
@@ -3775,7 +3790,8 @@ extension ArenaRunSheet {
         if let subtitle {
             Text(subtitle)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet run form subtitle.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityHidden(true)
         }
     }
@@ -3795,7 +3811,8 @@ extension ArenaRunSheet {
     var engineFormEmpty: some View {
         Text("Nenhum motor publicado")
             .font(AtlasFont.serif(14))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet empty engines honesty.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
             .accessibilityLabel(spokenEmptyEngines())
     }
@@ -3825,7 +3842,8 @@ extension ArenaRunSheet {
                 if engines.count > 1 {
                     Text("Escolha 2 ou mais para comparar motor contra motor.")
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet comparison hint.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                         .accessibilityHidden(true)
                 }
             }
@@ -3931,7 +3949,8 @@ extension ArenaRunSheet {
     var suitesEmptyLabel: some View {
         Text("Nenhuma suite com adapter instalado")
             .font(AtlasFont.serif(14))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet empty suites honesty.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)
             .accessibilityLabel(spokenEmptySuites())
     }
