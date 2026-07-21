@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 77
-- idle_compress_passes: 2
+- idle_compress_passes: 20
 - collapse_host: 0
 
 ## Waves done
@@ -90,23 +90,19 @@ mode: designer + implementer
 - WAVE-082
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
+- pass 1–18 (see history)
+- pass 19 · `d6e96bd1` · ComposerSheetPrimitives rename
+- pass 20 · `9c41d416` · peel RootChromeDeepLink
 
 ## Designer
-- designs_proposed: 78
-- designs_open: 1
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- designs_open: 0
+- last_regen: regen-queue.py
 
 ## Open queue snapshot (must match QUEUE.md)
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-083-arena-live-can-do-pack-honesty-instrument | **max** | proposed |
+| — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-081–082. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.

@@ -370,35 +370,21 @@ extension ExecutionProof {
 }
 
 extension ExecutionProof {
+    /// WAVE-082: activity/quality spoken owned by ExecutionProofJudgment.
     func activitySpoken(_ act: AtlasAgentActivity) -> String {
-        var parts = [act.title]
-        if let d = act.detail, !d.isEmpty { parts.append(d) }
-        return parts.joined(separator: ", ")
+        ExecutionProofJudgment.activitySpoken(act)
     }
-}
 
-extension ExecutionProof {
     func qualityLineFlags(_ q: AtlasQualitySummary, base: String) -> String {
-        var out = base
-        if q.flagCount > 0 { out += " · \(q.flagCount) alertas" }
-        if q.actionCount > 0 { out += " · \(q.actionCount) ações" }
-        return out
+        ExecutionProofJudgment.qualityLineFlags(q, base: base)
     }
-}
 
-extension ExecutionProof {
     func qualityLine(_ q: AtlasQualitySummary) -> String {
-        let base = "quality \(String(format: "%.1f", q.score)) · \(q.status)"
-        return qualityLineFlags(q, base: base)
+        ExecutionProofJudgment.qualityLine(q)
     }
-}
 
-extension ExecutionProof {
     func qualitySpoken(_ q: AtlasQualitySummary) -> String {
-        var parts = ["qualidade \(String(format: "%.1f", q.score)), status \(q.status)"]
-        if q.flagCount > 0 { parts.append("\(q.flagCount) alertas") }
-        if q.actionCount > 0 { parts.append("\(q.actionCount) ações de correção") }
-        return parts.joined(separator: ", ")
+        ExecutionProofJudgment.qualitySpoken(q)
     }
 }
 
@@ -411,10 +397,10 @@ extension ExecutionProof {
             let selected = stamped[index]
             replayScrubberChrome(index: index, total: stamped.count, selected: selected)
         } else if !bubble.activities.isEmpty {
-            Text("REPLAY indisponível · eventos sem timestamps")
+            Text(ExecutionProofJudgment.replayUnavailableLabel)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityLabel("replay indisponível porque os eventos não têm timestamps")
+                .accessibilityLabel(ExecutionProofJudgment.replayUnavailableSpoken)
         }
     }
 }

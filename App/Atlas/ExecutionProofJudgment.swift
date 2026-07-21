@@ -199,8 +199,9 @@ enum ExecutionProofJudgment {
             absences.append("sem decisão de atlas publicada")
         }
         if let q = bubble.qualitySummary {
-            facts.append("quality_score: \(String(format: "%.2f", q.score))")
-            facts.append("quality_status: \(q.status)")
+            let quality = qualityPackFacts(q)
+            facts.append(contentsOf: quality.facts)
+            absences.append(contentsOf: quality.absences)
         } else {
             absences.append("sem quality summary")
         }
@@ -212,6 +213,50 @@ enum ExecutionProofJudgment {
                 facts.append("artifact: \(item.kind.rawValue) · \(item.name)")
             }
         }
+        return (facts, absences)
+    }
+
+    // MARK: - WAVE-082 quality · activity · replay absence
+
+    static func qualityLineFlags(_ q: AtlasQualitySummary, base: String) -> String {
+        var out = base
+        if q.flagCount > 0 { out += " · \(q.flagCount) alertas" }
+        if q.actionCount > 0 { out += " · \(q.actionCount) ações" }
+        return out
+    }
+
+    static func qualityLine(_ q: AtlasQualitySummary) -> String {
+        let base = "quality \(String(format: "%.1f", q.score)) · \(q.status)"
+        return qualityLineFlags(q, base: base)
+    }
+
+    static func qualitySpoken(_ q: AtlasQualitySummary) -> String {
+        var parts = ["qualidade \(String(format: "%.1f", q.score)), status \(q.status)"]
+        if q.flagCount > 0 { parts.append("\(q.flagCount) alertas") }
+        if q.actionCount > 0 { parts.append("\(q.actionCount) ações de correção") }
+        return parts.joined(separator: ", ")
+    }
+
+    static func activitySpoken(_ act: AtlasAgentActivity) -> String {
+        var parts = [act.title]
+        if let d = act.detail, !d.isEmpty { parts.append(d) }
+        return parts.joined(separator: ", ")
+    }
+
+    static let replayUnavailableLabel =
+        "REPLAY indisponível · eventos sem timestamps"
+    static let replayUnavailableSpoken =
+        "replay indisponível porque os eventos não têm timestamps"
+
+    static func qualityPackFacts(
+        _ q: AtlasQualitySummary
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        let absences: [String] = []
+        facts.append("quality_score: \(String(format: "%.2f", q.score))")
+        facts.append("quality_status: \(q.status)")
+        if q.flagCount > 0 { facts.append("quality_flags: \(q.flagCount)") }
+        if q.actionCount > 0 { facts.append("quality_actions: \(q.actionCount)") }
         return (facts, absences)
     }
 }
