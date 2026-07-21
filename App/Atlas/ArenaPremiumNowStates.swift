@@ -19,6 +19,9 @@ struct ArenaPremiumIdleView: View {
                 .font(.system(.body))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .accessibilityLabel(
+                    "Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado."
+                )
             ArenaPremiumAction(title: "Rodar medição", symbol: "play.fill", action: onRun)
             if model.arenaPrimaryEngine != nil {
                 ArenaPremiumHairline()
