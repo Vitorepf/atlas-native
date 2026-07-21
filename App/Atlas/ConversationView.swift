@@ -3943,7 +3943,7 @@ extension ConversationMessages {
             .frame(width: 48, height: 48)
             .background(Circle().fill(AtlasTheme.surfaceHi)
                 .overlay(Circle().stroke(AtlasTheme.goldBorder, lineWidth: 1))
-                .atlasElevation(radius: 8, y: 2, opacity: 0.25))
+                .atlasElevation(radius: 8, y: 2, opacity: 0.16))
             .contentShape(Circle())
     }
 }

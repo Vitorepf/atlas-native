@@ -148,6 +148,10 @@ extension View {
     }
 }
 
+// Gold chrome primitives (fundir residual):
+//   AtlasGoldBreathHairline · AtlasGoldGrabber · AtlasGoldTitleRule · AtlasGoldChrome
+// Prefer these over ad-hoc LinearGradient / Rectangle gold rules in views.
+
 /// Pure gold-breath 1pt hairline — sectionLabel / radar / sheet divider family (0.28 / 0.12).
 /// Funde gradients duplicados nas views; padding/inset fica no call site.
 struct AtlasGoldBreathHairline: View {
