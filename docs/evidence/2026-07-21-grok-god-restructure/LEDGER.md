@@ -7,16 +7,14 @@ dual: off
 god_hold: **forbidden** (v4)
 
 ## State
-- phase: act
-- focus: continuous grind
+- phase: prove
+- focus: Conversa Handoff/Outline/StaleRead chrome fuse
 - domain_index: 1
 - pass: 1
 - actionable: open
-- passes: 6
-- last_commit: 41d62279
-- session_commits: 48
+- passes: 7
+- last_commit: pending-conversa-judgment-chrome
 - soft_sections_states: 0
-- swift_App_Atlas: 303
 - collapse_host: 0
 
 ## Scope

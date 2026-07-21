@@ -57,7 +57,7 @@
 | **Filtro de leitura (timeline)** | `LiveTimelineFilterJudgment` → face open/active/silent · chip/silence spoken · pack open recorte |
 | **Markdown block kinds (pack)** | `AtlasMarkdownJudgment.packFacts(from:)` → list\|quote\|code mid-thread |
 | Timeline filter parts | `LiveTimelineFilterChrome` (ReadFilter + FilterChips) |
-| **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other · pack mid-thread |
+| **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` (receipt fused) → face ready/pending/other · pack mid-thread |
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank · pack mid-thread |
 | **Composer draft/anexos** | `ComposerDraftJudgment` → strip · DraftStrip · pack mid-thread |
 | **Composer toolbar** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |
@@ -65,11 +65,11 @@
 | **Composer folhas modo/workspace** | `ComposerSheetJudgment` → mode face · workspace sheet empty/list |
 | Composer sheet parts | `ComposerSheetPrimitives` (EffortSheet · SheetRow · NewMarker) · SheetsHost |
 | **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
-| **Stale-read cache seal** | `ConversationStaleReadJudgment` → face · pack mid-thread |
+| **Stale-read cache seal** | `ConversationStaleReadJudgment` (seal chrome fused) → face · pack mid-thread |
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face · pack mid-thread |
 | Messages parts | `ConversationMessages` host (scroll·editorial fused) · Judgment |
 | **Empty editorial (partida)** | `ConversationEmptyJudgment` → face · `EmptyConversation` chrome |
-| **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · sheet · pack mid-thread |
+| **Índice da conversa (outline)** | `ConversationOutlineJudgment` (sheet fused) → face empty/turns · pack mid-thread |
 | **Home OPERAÇÃO attention** | `HomeOpsJudgment` → Autônomos door face · Arena door · pack · packCatalogFacts |
 | **Autônomos unit focus pack** | `AutonomosListJudgment.packUnitFocusFacts` → Ask host |
 | **Partida can_do (Home/WS/Radar)** | `PartidaCanDoJudgment` → HomeAskContext · WorkspaceAskContext · RadarAskContext |

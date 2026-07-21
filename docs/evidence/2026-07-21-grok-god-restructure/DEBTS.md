@@ -4,11 +4,10 @@
 
 ```yaml
 pass: 1
-domain_index: 3
-last_focus: "AgenticPill fuse"
-session_commits: 57
+domain_index: 1
+last_focus: "Conversa Handoff/Outline/StaleRead chrome fuse"
+session_commits: 58
 soft_sections_states: 0
-swift_App_Atlas: 281
 ```
 
 ## Hard
@@ -17,4 +16,6 @@ soft Sections/States **0** · density guard OK · gates green
 
 ## Next
 
-continue residual peels · MARK · CODEMAP · **never Goal Done**
+- RootChrome density recheck (was 700)
+- residual peels · MARK · CODEMAP
+- **never Goal Done**
