@@ -2530,12 +2530,11 @@ extension AtlasNetworkFailureEmpty {
 @MainActor
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     // A linha premium do site: hairlines em fade ladeando o rótulo natural.
-    let spoken = sectionSpokenLabel(t)
-    return HStack(spacing: 12) {
+    HStack(spacing: 12) {
         LinearGradient(colors: [AtlasTheme.separator.opacity(0), AtlasTheme.separator],
                        startPoint: .leading, endPoint: .trailing)
             .frame(height: 1)
-        Text(spoken)
+        Text(t)
             .font(AtlasFont.serif(13, .semibold))
             .foregroundStyle(AtlasTheme.textTertiary)
             .fixedSize()
@@ -2548,18 +2547,8 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     .padding(.bottom, 11)
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(.isHeader)
-    .accessibilityLabel(spoken)
+    .accessibilityLabel(t)
     .homeSectionA11yID(accessibilityID)
-}
-
-/// Canonical natural Portuguese for home section headers (accepts legacy UPPERCASE).
-private func sectionSpokenLabel(_ t: String) -> String {
-    switch t.uppercased() {
-    case "CONVERSAS": return "Conversas"
-    case "OPERAÇÃO", "OPERACAO": return "Operação"
-    case "WORKSPACES": return "Workspaces"
-    default: return t
-    }
 }
 
 /// O ✦ respirando — a marca viva do Atlas nos estados de espera.
