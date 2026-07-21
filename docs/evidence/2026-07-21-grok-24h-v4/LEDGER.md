@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 94
-- idle_compress_passes: 24
+- waves_completed: 95
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -105,13 +105,14 @@ mode: designer + implementer
 - WAVE-097
 - WAVE-098
 - WAVE-099
+- WAVE-100
 
 ## Idle compress
-- pass 21–22 · multi-surface chrome → Judgment (max 2 after WAVE-098)
-- pass 23 · `3427812c` · ChangeReviewSectionsA11y → Judgment (delete shim)
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 94
+- designs_proposed: 95
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -123,6 +124,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-099 governance + IDLE-23 sections spoken. DEVICE_PENDING.
+- Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
-- Concurrent LEDGER strips → B rewrites full truth.
+- Device-pending (passcode) = operator.
+

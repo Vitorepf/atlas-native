@@ -2,20 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // IDLE-COMPRESS peel ZoomableArtifactImage from ArtifactPreviewChrome (canon §7)
-
-enum ArtifactViewerZoomA11y {
-    static func spokenImage(name: String, scale: CGFloat) -> String {
-        if scale <= 1.01 {
-            return "imagem \(name), tamanho normal"
-        }
-        let pct = Int((scale * 100).rounded())
-        return "imagem \(name), ampliada \(pct) por cento"
-    }
-
-    static let zoomHint = "pinça para aproximar, arraste quando ampliada, toque duas vezes ou use ações para redefinir"
-
-    static let resetAction = "Redefinir zoom"
-}
+// WAVE-100: zoom spoken → ArtifactPreviewJudgment
 
 struct ZoomableArtifactImage: View {
     let image: UIImage
@@ -34,8 +21,8 @@ struct ZoomableArtifactImage: View {
 extension ZoomableArtifactImage {
     func applyZoomAccessibility<Content: View>(_ content: Content) -> some View {
         content
-            .accessibilityLabel(ArtifactViewerZoomA11y.spokenImage(name: name, scale: scale))
-            .accessibilityHint(ArtifactViewerZoomA11y.zoomHint)
+            .accessibilityLabel(ArtifactPreviewJudgment.spokenZoomImage(name: name, scale: scale))
+            .accessibilityHint(ArtifactPreviewJudgment.zoomHint)
             .accessibilityIdentifier(A11yID.artifactsZoomImage)
             .accessibilityZoomAction { action in
                 switch action.direction {
@@ -47,7 +34,7 @@ extension ZoomableArtifactImage {
                     break
                 }
             }
-            .accessibilityAction(named: ArtifactViewerZoomA11y.resetAction) { resetZoom() }
+            .accessibilityAction(named: ArtifactPreviewJudgment.zoomResetAction) { resetZoom() }
     }
 }
 

@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 import AtlasCore
 
 // MARK: - Types
@@ -30,7 +31,7 @@ enum ArtifactPreviewFace: Equatable {
         case .loaded(let kind, let name):
             return "preview \(kind) \(name)"
         case .tooLarge(let name, let bytes):
-            return ArtifactViewerA11y.spokenTooLarge(name: name, bytes: bytes)
+            return ArtifactPreviewJudgment.spokenTooLarge(name: name, bytes: bytes)
         case .failed(let message):
             let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
             if trimmed.isEmpty { return "preview falhou" }
@@ -72,14 +73,67 @@ enum ArtifactPreviewJudgment {
         face(preview, selectedName: selectedName).spokenFace
     }
 
-    /// Loaded content spoken — prefers rich kind lines from ArtifactViewerA11y.
+    /// Loaded content spoken — kind-aware lines (WAVE-100 · was ArtifactViewerA11y).
     static func spokenLoaded(
         item: AtlasTraceArtifacts.Item,
         content: AtlasArtifactContent
     ) -> String {
         _ = content
-        return ArtifactViewerA11y.spokenPreview(item: item)
+        return spokenPreview(item: item)
     }
+
+    // MARK: Viewer chrome spoken (WAVE-100)
+
+    static func spokenFicha(name: String, subtitle: String) -> String {
+        "\(name), \(subtitle)"
+    }
+
+    static func spokenDecodeFailure(name: String, bytes: Int) -> String {
+        "imagem \(name) não pôde ser decodificada, \(ArtifactViewer.byteLabel(bytes))"
+    }
+
+    static func spokenTooLarge(name: String, bytes: Int) -> String {
+        "\(name), grande demais para visualizar aqui, \(ArtifactViewer.byteLabel(bytes))"
+    }
+
+    static func spokenPreview(item: AtlasTraceArtifacts.Item) -> String {
+        let kind = ArtifactViewer.kindLabel(item.kind)
+        let size = ArtifactViewer.byteLabel(item.byteSize)
+        return spokenPreviewDocument(item: item, size: size)
+            ?? spokenPreviewFile(item: item, kind: kind, size: size)
+    }
+
+    static func spokenPreviewDocument(item: AtlasTraceArtifacts.Item, size: String) -> String? {
+        switch item.kind {
+        case .image:
+            return "preview de imagem \(item.name), \(size)"
+        case .markdown:
+            return "preview markdown \(item.name), \(size)"
+        case .text:
+            return "preview de texto \(item.name), \(size)"
+        case .diff:
+            return "preview de diff \(item.name), \(size)"
+        default:
+            return nil
+        }
+    }
+
+    static func spokenPreviewFile(item: AtlasTraceArtifacts.Item, kind: String, size: String) -> String {
+        let sha = String(item.sha256.prefix(12))
+        return "arquivo \(item.name), \(kind), \(size), sha \(sha)"
+    }
+
+    static func spokenZoomImage(name: String, scale: CGFloat) -> String {
+        if scale <= 1.01 {
+            return "imagem \(name), tamanho normal"
+        }
+        let pct = Int((scale * 100).rounded())
+        return "imagem \(name), ampliada \(pct) por cento"
+    }
+
+    static let zoomHint =
+        "pinça para aproximar, arraste quando ampliada, toque duas vezes ou use ações para redefinir"
+    static let zoomResetAction = "Redefinir zoom"
 
     static func packFacts(
         preview: ArtifactPreviewState,
