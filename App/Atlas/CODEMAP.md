@@ -128,6 +128,9 @@
 | **Search surface peels** | Surface/Header · Results (WAVE-120) |
 | **Plan card peels** | PlanCard host · PlanCardBody (WAVE-121) |
 | **Workspace surface peels** | Surface · Body/threads (WAVE-122) |
+| **Composer toolbar peels** | Chrome · ChromeBody (WAVE-123) |
+| **Provenance sections peels** | Sections · SectionsBody (WAVE-124) |
+| **Surface graph peels** | Graph · GraphBody (WAVE-125) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
