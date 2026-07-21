@@ -144,6 +144,7 @@
 | **AutonomosDecision Judgment peels** | core · Grammar (WAVE-137) |
 | **ArenaModel peels** | host · Actions (WAVE-138) |
 | **AutonomosModel peels** | host · Actions (WAVE-139) |
+| **ChangeReview governance peels** | Body · Chrome (WAVE-140) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
