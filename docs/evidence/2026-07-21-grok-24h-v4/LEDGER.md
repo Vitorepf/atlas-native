@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 46
+- waves_completed: 47
 - idle_compress_passes: 5
 - collapse_host: 0
 
@@ -57,6 +57,7 @@ mode: designer + implementer
 - WAVE-049
 - WAVE-050
 - WAVE-051
+- WAVE-052
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -66,7 +67,7 @@ mode: designer + implementer
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
-- designs_proposed: 46
+- designs_proposed: 47
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -77,4 +78,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-051 queue head judgment. Prefer A fill. DEVICE_PENDING.
+- WAVE-051 queue head + WAVE-052 StateCard judgment. Prefer A fill.
+- DEVICE_PENDING history.

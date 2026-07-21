@@ -97,23 +97,18 @@ extension ExecutionStateCard {
 }
 
 extension ExecutionStateCard {
+    /// WAVE-052: completed stays badge-silent (parity); others from Judgment.
     var kindBadge: String? {
         switch state.kind {
-        case .failed: return "FALHOU"
         case .completed: return nil
-        default: return kindBadgeAttention
+        default: return ExecutionStateCardJudgment.badge(for: state.kind)
         }
     }
 }
 
 extension ExecutionStateCard {
     var tint: Color {
-        if let attention = tintAttention { return attention }
-        switch state.kind {
-        case .failed: return AtlasTheme.domOperacional
-        case .replanning, .completed: return AtlasTheme.domAutonomos
-        default: return AtlasTheme.accent
-        }
+        ExecutionStateCardJudgment.tint(for: state.kind)
     }
 }
 
@@ -389,52 +384,41 @@ extension ExecutionStateCard {
 }
 
 extension ExecutionStateCard {
+    /// WAVE-052: chrome maps owned by Judgment.
     var iconWait: String? {
         switch state.kind {
-        case .attentionRequired: return "exclamationmark.shield"
-        case .awaitingExternal: return "hourglass"
+        case .attentionRequired, .awaitingExternal:
+            return ExecutionStateCardJudgment.iconName(for: state.kind)
         default: return nil
         }
     }
-}
 
-extension ExecutionStateCard {
     var iconAttention: String? {
         if let wait = iconWait { return wait }
         switch state.kind {
-        case .recovering: return "arrow.triangle.2.circlepath"
-        case .replanning: return "arrow.triangle.branch"
+        case .recovering, .replanning:
+            return ExecutionStateCardJudgment.iconName(for: state.kind)
         default: return nil
         }
     }
-}
 
-extension ExecutionStateCard {
     var iconTerminal: String {
-        switch state.kind {
-        case .failed: return "xmark.octagon"
-        case .completed: return "checkmark.seal"
-        default: return iconAttention ?? "exclamationmark.shield"
-        }
+        ExecutionStateCardJudgment.iconName(for: state.kind)
     }
-}
 
-extension ExecutionStateCard {
     var kindBadgeWait: String? {
         switch state.kind {
-        case .attentionRequired: return "PAUSADO"
-        case .awaitingExternal: return "AGUARDANDO"
+        case .attentionRequired, .awaitingExternal:
+            return ExecutionStateCardJudgment.badge(for: state.kind)
         default: return nil
         }
     }
-}
 
-extension ExecutionStateCard {
     var kindBadgeAttention: String? {
         if let wait = kindBadgeWait { return wait }
         switch state.kind {
-        case .recovering: return "RECONECTANDO"
-        case .replanning: return "REPLANEJANDO"
+        case .recovering, .replanning:
+            return ExecutionStateCardJudgment.badge(for: state.kind)
         default: return nil
         }
     }
@@ -514,49 +498,34 @@ extension ExecutionStateCard {
 }
 
 extension ExecutionStateCard {
+    /// WAVE-052: spoken/tint from Judgment.
     var spokenKindWait: String? {
         switch state.kind {
-        case .attentionRequired: return "execução pausada, aguardando decisão"
-        case .awaitingExternal: return "aguardando sistema externo"
+        case .attentionRequired, .awaitingExternal:
+            return ExecutionStateCardJudgment.spoken(for: state.kind)
         default: return nil
         }
     }
-}
 
-extension ExecutionStateCard {
     var spokenKindAttention: String? {
         if let wait = spokenKindWait { return wait }
         switch state.kind {
-        case .recovering: return "reconectando"
-        case .replanning: return "replanejando"
+        case .recovering, .replanning:
+            return ExecutionStateCardJudgment.spoken(for: state.kind)
         default: return nil
         }
     }
-}
 
-extension ExecutionStateCard {
     var spokenKindTerminal: String {
-        switch state.kind {
-        case .failed: return "execução falhou"
-        case .completed: return "execução concluída"
-        default: return spokenKindAttention ?? "execução"
-        }
+        ExecutionStateCardJudgment.spoken(for: state.kind)
     }
-}
 
-extension ExecutionStateCard {
     var spokenKind: String? {
-        spokenKindAttention ?? spokenKindTerminal
+        ExecutionStateCardJudgment.spoken(for: state.kind)
     }
-}
 
-extension ExecutionStateCard {
     var tintAttention: Color? {
-        switch state.kind {
-        case .attentionRequired: return AtlasTheme.accent
-        case .awaitingExternal, .recovering: return AtlasTheme.textSecondary
-        default: return nil
-        }
+        ExecutionStateCardJudgment.attentionTint(for: state.kind)
     }
 }
 
@@ -645,24 +614,16 @@ extension ExecutionStateCard {
 extension ExecutionStateCard {
     var frozenTimerText: String? {
         guard let timer = state.timer, timer.timing == .paused else { return nil }
-        switch state.kind {
-        case .attentionRequired, .awaitingExternal:
-            return "‖ \(Self.clock(timer.elapsedActiveMilliseconds))"
-        default:
-            return nil
-        }
+        guard ExecutionStateCardJudgment.freezesTimer(for: state.kind) else { return nil }
+        return "‖ \(Self.clock(timer.elapsedActiveMilliseconds))"
     }
 }
 
 extension ExecutionStateCard {
     var frozenTimerA11y: String? {
         guard let timer = state.timer, timer.timing == .paused else { return nil }
-        switch state.kind {
-        case .attentionRequired, .awaitingExternal:
-            return "tempo ativo congelado em \(Self.clock(timer.elapsedActiveMilliseconds))"
-        default:
-            return nil
-        }
+        guard ExecutionStateCardJudgment.freezesTimer(for: state.kind) else { return nil }
+        return "tempo ativo congelado em \(Self.clock(timer.elapsedActiveMilliseconds))"
     }
 }
 
