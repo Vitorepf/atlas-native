@@ -67,6 +67,21 @@ enum WorkspaceScreenJudgment {
         freeOnly ? "conversas sem workspace" : "conversas deste workspace"
     }
 
+    // MARK: Chrome (header / filter / pill)
+
+    static let backLabel = "voltar"
+    static let areaFilterHint = "filtra conversas já carregadas"
+    static let newConversationLabel = "nova conversa"
+    static let newConversationHint = "abre o compositor para escrever ao Atlas"
+
+    static func spokenAreaFilter(_ label: String) -> String {
+        "área \(label)"
+    }
+
+    static func spokenHeaderTitle(title: String, freeOnly: Bool) -> String {
+        freeOnly ? "conversas sem projeto" : title
+    }
+
     static func packFacts(
         title: String,
         showsLoadingShell: Bool,

@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 87
-- idle_compress_passes: 13
+- idle_compress_passes: 14
 - collapse_host: 0
 
 ## Waves done
@@ -100,10 +100,11 @@ mode: designer + implementer
 - WAVE-092
 
 ## Idle compress
-- pass 13 · ChangeReview run/patch action spoken → Judgment
+- pass 13 · ChangeReview action spoken
+- pass 14 · Workspace chrome spoken → ScreenJudgment
 
 ## Open queue
-_(none)_
+_(none)_ — max 2 IDLE after WAVE-092 done
 
 ## Notes
-- WAVE-092 shipped. DEVICE_PENDING.
+- DEVICE_PENDING. Awaiting A fill or full-bar residual only.

@@ -80,12 +80,11 @@ extension WorkspaceView {
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
-        .accessibilityLabel("voltar")
+        .accessibilityLabel(WorkspaceScreenJudgment.backLabel)
     }
 
     var headerSpokenTitle: String {
-        if freeOnly { return "conversas sem projeto" }
-        return title
+        WorkspaceScreenJudgment.spokenHeaderTitle(title: title, freeOnly: freeOnly)
     }
 }
 
@@ -123,8 +122,8 @@ extension WorkspaceView {
             areaFilterChipLabel(a, active: active)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("área \(a.label)")
-        .accessibilityHint("filtra conversas já carregadas")
+        .accessibilityLabel(WorkspaceScreenJudgment.spokenAreaFilter(a.label))
+        .accessibilityHint(WorkspaceScreenJudgment.areaFilterHint)
         .accessibilityAddTraits(active ? .isSelected : [])
     }
 }
@@ -150,8 +149,8 @@ extension WorkspaceView {
             AgenticPillFace(invite: workspacePillInvite)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("nova conversa")
-        .accessibilityHint("abre o compositor para escrever ao Atlas")
+        .accessibilityLabel(WorkspaceScreenJudgment.newConversationLabel)
+        .accessibilityHint(WorkspaceScreenJudgment.newConversationHint)
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
