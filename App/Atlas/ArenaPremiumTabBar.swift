@@ -32,7 +32,7 @@ struct ArenaPremiumTabBar: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(Text(tabAccessibilityLabel(tab)))
-                .accessibilityAddTraits(selection == tab ? .isSelected : [])
+                .accessibilityAddTraits(selection == tab ? [.isButton, .isSelected] : .isButton)
                 .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.a11yKey))
                 .accessibilityHint(selection == tab ? Text("selecionado") : Text("troca aba da Arena"))
             }
