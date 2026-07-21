@@ -29,35 +29,24 @@ extension ArenaPremiumAskContext {
         facts.append(contentsOf: livePack.facts)
         absences.append(contentsOf: livePack.absences)
 
-        if let progress = model.livePresentation?.progress {
-            facts.append("progresso: \(progress.completed)/\(progress.total) (\(progress.remaining) restantes)")
-        }
-        if let run = primary {
-            facts.append(
-                "corrida: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
-            )
-            let statusPack = ArenaRunStatusJudgment.packFacts(for: run.status)
+        if let primary {
+            let statusPack = ArenaRunStatusJudgment.packFacts(for: primary.status)
             facts.append(contentsOf: statusPack.facts)
             absences.append(contentsOf: statusPack.absences)
         }
-        let alerts = model.arenaAlertSuiteCount
-        facts.append(alerts == 0 ? "alertas: nenhuma exceção" : "alertas: \(alerts) exceção(ões)")
-        if let narrative = model.report?.narrative, !narrative.isEmpty {
-            facts.append("narrativa: \(narrative)")
-        }
 
-        if destination == .execution || destination == .queue {
-            facts.append("corridas_live: \(liveRuns.count)")
-            let orderedLive = ArenaLiveControlJudgment.rank(liveRuns)
-            for run in orderedLive.prefix(6) {
-                facts.append(
-                    "live · \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
-                )
-            }
-            if liveRuns.isEmpty {
-                absences.append("nenhuma corrida live publicada")
-            }
-        }
+        // WAVE-187: measurement presentation (progress · primary · alerts · narrative · list).
+        let includeLiveList = destination == .execution || destination == .queue
+        let measurement = ArenaLiveControlJudgment.packMeasurementFacts(
+            progress: model.livePresentation?.progress,
+            primary: primary,
+            alertSuiteCount: model.arenaAlertSuiteCount,
+            narrative: model.report?.narrative,
+            liveRuns: liveRuns,
+            includeLiveList: includeLiveList
+        )
+        facts.append(contentsOf: measurement.facts)
+        absences.append(contentsOf: measurement.absences)
 
         if destination == .execution || (destination == nil && tab == .now && !liveRuns.isEmpty) {
             let planArms = model.activePlan?.arms ?? []

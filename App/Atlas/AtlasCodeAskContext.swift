@@ -132,26 +132,10 @@ enum AtlasCodeAskContext {
         facts.append(contentsOf: pill.facts)
         absences.append(contentsOf: pill.absences)
 
-        if let trunk = model.graph?.defaultBranch, !trunk.isEmpty {
-            facts.append("trunk: \(trunk)")
-        } else {
-            absences.append("trunk/default_branch não publicado neste load")
-        }
-        if let head = model.graph?.head, !head.isEmpty {
-            facts.append("head: \(String(head.prefix(7)))")
-        }
-        if let trunkHead = model.graph?.trunkHead, !trunkHead.isEmpty {
-            facts.append("trunk_head: \(String(trunkHead.prefix(7)))")
-        }
-
-        let nodes = model.graph?.nodes ?? []
-        if !nodes.isEmpty {
-            facts.append("commits_loaded: \(nodes.count)")
-            let violating = nodes.filter { model.state(for: $0) == .violating }.count
-            facts.append("sem_retorno_signals: \(violating)")
-        } else {
-            absences.append("grafo sem nós (load vazio ou ainda carregando)")
-        }
+        // WAVE-187: graph identity (trunk/head/commits/phase).
+        let identity = AtlasCodeGraphJudgment.packIdentityFacts(model: model)
+        facts.append(contentsOf: identity.facts)
+        absences.append(contentsOf: identity.absences)
 
         // WAVE-028: filter · status · worktrees · slice (same fatia as chips/list).
         let slice = AtlasCodeGraphJudgment.packSliceFacts(model: model, filter: graphStateFilter)
@@ -170,16 +154,6 @@ enum AtlasCodeAskContext {
         )
         facts.append(contentsOf: veto.facts)
         absences.append(contentsOf: veto.absences)
-
-        switch model.phase {
-        case .loading, .idle:
-            facts.append("phase: loading")
-        case .failed(let message):
-            facts.append("phase: failed")
-            if !message.isEmpty { facts.append("failure: \(message)") }
-        case .loaded:
-            facts.append("phase: loaded")
-        }
 
         absences.append("dual-count obra/branch vs issues não reconciliado na casca (Core §5 se faltar DTO)")
         absences.append("filtro por agente não exposto no pack (sem DTO de filter)")

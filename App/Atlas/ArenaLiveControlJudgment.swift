@@ -132,4 +132,63 @@ enum ArenaLiveControlJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Measurement presentation (WAVE-187)
+
+    /// Progress · primary line · alerts · narrative · execution live list.
+    /// Never invents cases or report text.
+    static func packMeasurementFacts(
+        progress: AtlasArenaLiveProgress?,
+        primary: AtlasArenaLiveRun?,
+        alertSuiteCount: Int,
+        narrative: String?,
+        liveRuns: [AtlasArenaLiveRun],
+        includeLiveList: Bool
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+
+        if let progress {
+            facts.append(
+                "measurement_progress: \(progress.completed)/\(progress.total) (\(progress.remaining) restantes)"
+            )
+        } else {
+            absences.append("progresso de casos não publicado neste recorte")
+        }
+
+        if let run = primary {
+            facts.append(
+                "measurement_primary: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
+            )
+        } else {
+            absences.append("corrida primary não publicada para medição")
+        }
+
+        facts.append(
+            alertSuiteCount == 0
+                ? "measurement_alerts: nenhuma exceção"
+                : "measurement_alerts: \(alertSuiteCount) exceção(ões)"
+        )
+
+        if let narrative, !narrative.isEmpty {
+            facts.append("measurement_narrative: \(narrative)")
+        } else {
+            absences.append("narrativa de relatório não publicada")
+        }
+
+        if includeLiveList {
+            facts.append("measurement_live_runs: \(liveRuns.count)")
+            let orderedLive = rank(liveRuns)
+            for run in orderedLive.prefix(6) {
+                facts.append(
+                    "measurement_live: \(ArenaDisplay.suite(run.suite)) · \(run.arm?.labelPT ?? "braço") · \(ArenaRunStatusJudgment.productWord(for: run.status))"
+                )
+            }
+            if liveRuns.isEmpty {
+                absences.append("nenhuma corrida live publicada")
+            }
+        }
+
+        return (facts, absences)
+    }
 }

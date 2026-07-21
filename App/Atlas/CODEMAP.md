@@ -24,7 +24,8 @@
 | **LiveNow pack (Home)** | `LiveNowJudgment.packFacts` · HomeAsk (WAVE-183) · packHubFacts Workspace (WAVE-186) |
 | **Arena shell pack** | `ArenaPremiumAskContext.packShellFacts` · tela/aba/cobertura (WAVE-186) |
 | **Radar screen load (frota)** | `AtlasCodeRadarScreenJudgment` → face loading/failed/empty/ready · shell a11y · pack Ask (WAVE-162) |
-| Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
+| Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack · packIdentityFacts (WAVE-187) |
+| **Arena live measurement pack** | `ArenaLiveControlJudgment.packMeasurementFacts` → progress/alerts/narrative/list (WAVE-187) |
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
 | Código grafo peels | `AtlasCodeSurface` host · `AtlasCodeSurfaceGraph` content/list |
 | **Grafo chrome (status/filtros/worktrees/semana)** | `AtlasCodeGraphChrome` status · `FilterChrome` · `WorktreeChrome` · `WeekChrome` (WAVE-156) |

@@ -58,6 +58,50 @@ enum AtlasCodeGraphJudgment {
         }.map(\.element)
     }
 
+    // MARK: Pack identity (WAVE-187)
+
+    /// Graph identity — trunk/head/commits/phase · never invents hashes.
+    @MainActor
+    static func packIdentityFacts(
+        model: AtlasCodeModel
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+
+        if let trunk = model.graph?.defaultBranch, !trunk.isEmpty {
+            facts.append("graph_trunk: \(trunk)")
+        } else {
+            absences.append("trunk/default_branch não publicado neste load")
+        }
+        if let head = model.graph?.head, !head.isEmpty {
+            facts.append("graph_head: \(String(head.prefix(7)))")
+        }
+        if let trunkHead = model.graph?.trunkHead, !trunkHead.isEmpty {
+            facts.append("graph_trunk_head: \(String(trunkHead.prefix(7)))")
+        }
+
+        let nodes = model.graph?.nodes ?? []
+        if !nodes.isEmpty {
+            facts.append("graph_commits_loaded: \(nodes.count)")
+            let violating = nodes.filter { model.state(for: $0) == .violating }.count
+            facts.append("graph_sem_retorno_signals: \(violating)")
+        } else {
+            absences.append("grafo sem nós (load vazio ou ainda carregando)")
+        }
+
+        switch model.phase {
+        case .loading, .idle:
+            facts.append("graph_phase: loading")
+        case .failed(let message):
+            facts.append("graph_phase: failed")
+            if !message.isEmpty { facts.append("graph_failure: \(message)") }
+        case .loaded:
+            facts.append("graph_phase: loaded")
+        }
+
+        return (facts, absences)
+    }
+
     // MARK: Pack slice facts
 
     @MainActor

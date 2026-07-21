@@ -204,4 +204,5 @@ _(no open proposed WAVEs)_
 - WAVE-184 done
 - WAVE-185 done
 - WAVE-186 done
+- WAVE-187 done
 
