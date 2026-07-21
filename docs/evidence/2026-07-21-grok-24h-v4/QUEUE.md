@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-085-arena-plan-queue-judgment-instrument
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-085-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-084-conversation-empty-editorial-judgment-instrument
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: high
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-084-design.md
 created_by: designer
@@ -38,8 +28,7 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-085-arena-plan-queue-judgment-instrument | **max** | `WAVE-085-design.md` |
-| **2** | WAVE-084-conversation-empty-editorial-judgment-instrument | **high** | `WAVE-084-design.md` |
+| **1** | WAVE-084-conversation-empty-editorial-judgment-instrument | **high** | `WAVE-084-design.md` |
 
 ## History (done)
 
@@ -121,4 +110,5 @@ approved_at: null
 - WAVE-081 done
 - WAVE-082 done
 - WAVE-083 done
+- WAVE-085 done
 

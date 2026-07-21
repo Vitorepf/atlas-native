@@ -4,20 +4,23 @@ import AtlasCore
 struct ArenaPremiumPlanView: View {
     @Bindable var model: ArenaModel
 
+    /// WAVE-085: live ∪ queue merge from Judgment.
     private var liveRuns: [AtlasArenaLiveRun] {
-        // União medição + fila (dedup por suíte+braço): o Plano nunca fica
-        // mais magro que a Fila, mesmo se o measurementId não casar em toda
-        // corrida enfileirada. Corridas vivas primeiro, fila depois.
-        var seen = Set<String>()
-        return (model.arenaPrimaryMeasurementRuns + (model.livePresentation?.queuedRuns ?? []))
-            .compactMap { run in
-                seen.insert("\(run.suite)|\(run.arm?.rawValue ?? "")").inserted ? run : nil
-            }
+        ArenaPlanQueueJudgment.mergedLiveRuns(
+            measurementRuns: model.arenaPrimaryMeasurementRuns,
+            queuedRuns: model.livePresentation?.queuedRuns ?? []
+        )
     }
 
     private var liveSuites: [String] {
-        var seen = Set<String>()
-        return liveRuns.compactMap { seen.insert($0.suite).inserted ? $0.suite : nil }
+        ArenaPlanQueueJudgment.liveSuites(from: liveRuns)
+    }
+
+    private var planFace: ArenaPlanFace {
+        ArenaPlanQueueJudgment.planFace(
+            activePlan: model.activePlan,
+            liveSuites: liveSuites
+        )
     }
 
     private var liveArmsText: String {
@@ -34,24 +37,35 @@ struct ArenaPremiumPlanView: View {
             Text("Plano")
                 .font(AtlasFont.serif(36))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            if let plan = model.activePlan {
-                headline(engines: plan.engines.count, suites: plan.suites.count,
-                         arms: plan.arms.count, runs: plan.runsPlanned)
-                suiteSequence(plan.suites,
-                              armsText: plan.arms.map(\.labelPT).joined(separator: " → "),
-                              footer: "A seleção enviada pode avançar; casos concluídos não são reabertos.")
-            } else if !liveSuites.isEmpty {
-                // Medição viva sem plano explícito (veio do servidor): a
-                // medição É o plano — derivar das corridas reais. Dizer
-                // "nenhum plano" com suítes na fila era a contradição.
-                headline(engines: Set(liveRuns.map(\.engineDisplayName)).count,
-                         suites: liveSuites.count,
-                         arms: Set(liveRuns.compactMap { $0.arm?.rawValue }).count,
-                         runs: liveRuns.count)
-                suiteSequence(liveSuites,
-                              armsText: liveArmsText,
-                              footer: "Ordem derivada da medição em curso; casos concluídos não são reabertos.")
-            } else {
+                .accessibilityValue(planFace.productWord)
+            switch planFace {
+            case .published:
+                if let plan = model.activePlan {
+                    headline(
+                        engines: plan.engines.count,
+                        suites: plan.suites.count,
+                        arms: plan.arms.count,
+                        runs: plan.runsPlanned
+                    )
+                    suiteSequence(
+                        plan.suites,
+                        armsText: plan.arms.map(\.labelPT).joined(separator: " → "),
+                        footer: planFace.footer
+                    )
+                }
+            case .derivedLive:
+                headline(
+                    engines: Set(liveRuns.map(\.engineDisplayName)).count,
+                    suites: liveSuites.count,
+                    arms: Set(liveRuns.compactMap { $0.arm?.rawValue }).count,
+                    runs: liveRuns.count
+                )
+                suiteSequence(
+                    liveSuites,
+                    armsText: liveArmsText,
+                    footer: planFace.footer
+                )
+            case .empty:
                 empty
             }
         }
@@ -77,6 +91,10 @@ struct ArenaPremiumPlanView: View {
         VStack(alignment: .leading, spacing: 0) {
             ArenaPremiumHairline()
             ForEach(Array(suites.enumerated()), id: \.element) { index, suite in
+                let status = ArenaPlanQueueJudgment.suiteStatus(
+                    suite: suite,
+                    measurementRuns: model.arenaPrimaryMeasurementRuns
+                )
                 HStack(spacing: 14) {
                     Text(String(format: "%02d", index + 1))
                         .font(AtlasFont.mono(10))
@@ -92,8 +110,8 @@ struct ArenaPremiumPlanView: View {
                     }
                     Spacer()
                     ArenaPremiumIcon(
-                        symbol: ArenaPremiumIconography.planStatus(planStatus(suite)),
-                        tone: planTone(suite)
+                        symbol: ArenaPremiumIconography.planStatus(status),
+                        tone: ArenaPlanQueueJudgment.suiteTone(status)
                     )
                 }
                 .padding(.vertical, 14)
@@ -113,10 +131,11 @@ struct ArenaPremiumPlanView: View {
             Text("Nenhum plano ativo")
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text("Crie uma medição para organizar suítes, motores e braços.")
+            Text(ArenaPlanFace.empty.footer)
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
+        .accessibilityValue(ArenaPlanFace.empty.productWord)
     }
 
     private func metric(_ value: Int, _ label: String) -> some View {
@@ -125,27 +144,6 @@ struct ArenaPremiumPlanView: View {
             Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
         }
     }
-
-    private func planStatus(_ suite: String) -> AtlasArenaRunStatus? {
-        let statuses = model.arenaPrimaryMeasurementRuns.filter { $0.suite == suite }.map(\.status)
-        if statuses.contains(.running) { return .running }
-        if statuses.contains(.stopping) { return .stopping }
-        if statuses.contains(.queued) { return .queued }
-        if statuses.contains(.failed) { return .failed }
-        if !statuses.isEmpty, statuses.allSatisfy({ $0 == .completed }) { return .completed }
-        if statuses.contains(.stopped) { return .stopped }
-        return nil
-    }
-
-    private func planTone(_ suite: String) -> ArenaPremiumTone {
-        switch planStatus(suite) {
-        case .running, .stopping, .queued: .active
-        case .completed: .positive
-        case .failed: .negative
-        case .stopped, .unknown, nil: .neutral
-        }
-    }
-
 }
 
 struct ArenaPremiumQueueView: View {
@@ -156,14 +154,21 @@ struct ArenaPremiumQueueView: View {
     }
 
     private var queuedSuites: [String] {
-        var seen = Set<String>()
-        return queued.compactMap { seen.insert($0.suite).inserted ? $0.suite : nil }
+        ArenaPlanQueueJudgment.liveSuites(from: queued)
+    }
+
+    private var queueFace: ArenaQueueFace {
+        ArenaPlanQueueJudgment.queueFace(queuedSuiteCount: queuedSuites.count)
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(text: "Aguardando execução", tone: queued.isEmpty ? .neutral : .active, showsLiveMark: !queued.isEmpty)
-                .accessibilityIdentifier(A11yID.arenaPremiumQueue)
+            ArenaPremiumKicker(
+                text: "Aguardando execução",
+                tone: queueFace.productWord == "empty" ? .neutral : .active,
+                showsLiveMark: queueFace.productWord != "empty"
+            )
+            .accessibilityIdentifier(A11yID.arenaPremiumQueue)
             HStack(alignment: .lastTextBaseline) {
                 Text("\(queuedSuites.count)")
                     .font(AtlasFont.serif(58))
@@ -172,8 +177,8 @@ struct ArenaPremiumQueueView: View {
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
-            // Sem rodapé-manual: o kicker "aguardando execução" + o relógio
-            // por linha já dizem o estado — meta-copy é ruído.
+            .accessibilityValue(queueFace.productWord)
+            .accessibilityLabel(queueFace.spokenFace)
             queueRows
         }
     }
@@ -202,19 +207,18 @@ struct ArenaPremiumQueueView: View {
                 .accessibilityIdentifier(A11yID.arenaPremiumQueueRow(suite))
                 ArenaPremiumHairline()
             }
-            if queued.isEmpty {
+            if case .empty = queueFace {
                 Text("Fila vazia")
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
+                    .accessibilityValue(ArenaQueueFace.empty.productWord)
             }
         }
     }
 
     private func queueDetail(_ suite: String) -> String {
         let runs = queued.filter { $0.suite == suite }
-        // Dedup dos braços: 2 motores × 2 braços rendia "sem Atlas · com
-        // Atlas · sem Atlas · com Atlas" (a quebra da Fila) — cada braço uma vez.
         var seenArms = Set<String>()
         let arms = runs.compactMap(\.arm)
             .compactMap { seenArms.insert($0.rawValue).inserted ? $0.labelPT : nil }

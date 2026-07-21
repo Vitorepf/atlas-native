@@ -184,12 +184,22 @@ enum ArenaPremiumAskContext {
                 absences.append("nenhuma corrida live publicada")
             }
         }
+        // WAVE-085: plan/queue faces — never "sem plano" when UI is derived_live.
         if destination == .plan {
-            if model.activePlan != nil {
-                facts.append("plano_ativo: sim")
-            } else {
-                absences.append("sem plano multi-suíte publicado (não invente progresso de plano)")
-            }
+            let planPack = ArenaPlanQueueJudgment.planPackFacts(
+                activePlan: model.activePlan,
+                measurementRuns: model.arenaPrimaryMeasurementRuns,
+                queuedRuns: model.livePresentation?.queuedRuns ?? []
+            )
+            facts.append(contentsOf: planPack.facts)
+            absences.append(contentsOf: planPack.absences)
+        }
+        if destination == .queue {
+            let queuePack = ArenaPlanQueueJudgment.queuePackFacts(
+                queuedRuns: model.livePresentation?.queuedRuns ?? []
+            )
+            facts.append(contentsOf: queuePack.facts)
+            absences.append(contentsOf: queuePack.absences)
         }
 
         let canDo = occasionCanDo(

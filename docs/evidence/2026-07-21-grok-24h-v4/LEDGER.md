@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 78
+- waves_completed: 79
 - idle_compress_passes: 20
 - collapse_host: 0
 
@@ -89,10 +89,10 @@ mode: designer + implementer
 - WAVE-081
 - WAVE-082
 - WAVE-083
+- WAVE-085
 
 ## Idle compress
-- pass 19 · `d6e96bd1` · ComposerSheetPrimitives
-- pass 20 · `9c41d416` · RootChromeDeepLink
+- pass 19–20 (ComposerSheetPrimitives · RootChromeDeepLink)
 
 ## Designer
 - designs_open: 1
@@ -105,5 +105,5 @@ mode: designer + implementer
 | 1 | WAVE-084 | high | proposed |
 
 ## Notes
-- WAVE-083 A fill can_do pack. Next: WAVE-084. Prefer A fill.
+- WAVE-083–085 A fills. Next: WAVE-084 conversation-empty. Prefer A.
 - DEVICE_PENDING. Continuity BLOCKED.
