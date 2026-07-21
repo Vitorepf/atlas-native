@@ -1527,7 +1527,7 @@ private struct AutonomosMapQuietCTA: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(title))
-        .accessibilityHint(Text(danger ? "ação destrutiva" : "ação secundária, \(title.lowercased())"))
+        .atlasAccessibilityHint(danger ? "Ação destrutiva" : "Ação secundária, \(title)")
         .accessibilityAddTraits(.isButton)
     }
 }

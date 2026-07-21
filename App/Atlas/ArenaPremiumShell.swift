@@ -288,7 +288,7 @@ struct ArenaPremiumTabBar: View {
                             if selection == tab {
                                 Capsule()
                                     .fill(AtlasTheme.surfaceHi)
-                                    .shadow(color: .black.opacity(0.22), radius: 5, y: 1)
+                                    .atlasElevation(radius: 5, y: 1)
                                     .matchedGeometryEffect(id: "arena-tab", in: selectionNamespace)
                             }
                         }

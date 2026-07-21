@@ -131,6 +131,11 @@ extension View {
             self
         }
     }
+
+    /// Soft elevation shadow — shared depth for glass pills and elevated chrome.
+    func atlasElevation(radius: CGFloat = 10, y: CGFloat = 4, opacity: Double = 0.22) -> some View {
+        shadow(color: .black.opacity(opacity), radius: radius, y: y)
+    }
 }
 
 

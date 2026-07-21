@@ -2171,7 +2171,7 @@ extension ConversationComposer {
                     RoundedRectangle(cornerRadius: 26, style: .continuous)
                         .strokeBorder(AtlasTheme.separator.opacity(0.95), lineWidth: 1)
                 )
-                .shadow(color: .black.opacity(0.16), radius: 12, y: 4)
+                .atlasElevation(radius: 12, y: 4, opacity: 0.16)
         } else {
             Capsule(style: .continuous)
                 .fill(AtlasTheme.surface)
@@ -3847,7 +3847,7 @@ extension ConversationMessages {
             .frame(width: 44, height: 44)
             .background(Circle().fill(AtlasTheme.surfaceHi)
                 .overlay(Circle().stroke(AtlasTheme.goldBorder, lineWidth: 1))
-                .shadow(color: .black.opacity(0.25), radius: 8, y: 2))
+                .atlasElevation(radius: 8, y: 2, opacity: 0.25))
             .contentShape(Circle())
     }
 }

@@ -3086,8 +3086,8 @@ struct AgenticPill: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(invite))
-        .accessibilityHint(Text(accessibilityHintText))
+        .accessibilityLabel(invite)
+        .atlasAccessibilityHint(accessibilityHintText)
         .accessibilityIdentifier(accessibilityId)
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(8) // chrome único da pílula — cedo no rotor

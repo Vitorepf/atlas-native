@@ -171,7 +171,7 @@ extension AtlasCodeView {
             Capsule()
                 .strokeBorder(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 0.5)
         )
-        .shadow(color: .black.opacity(0.22), radius: 10, y: 4)
+        .atlasElevation(radius: 10, y: 4)
         .contentShape(Capsule())
         .onTapGesture { openAskPill() }
         .padding(.horizontal, AtlasTheme.Space.screen)
