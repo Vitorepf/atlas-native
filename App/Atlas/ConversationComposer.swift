@@ -446,7 +446,7 @@ extension ConversationComposer {
         instruction: String,
         scope: AtlasInteractionSteerScope
     ) {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        // Haptic lives on SteerInteractionSheet Enviar (medium) — avoid double fire.
         Task {
             await model.steerInteraction(traceId: traceId, instruction: instruction, scope: scope)
             if let receipt = steerReceipt(for: traceId) {

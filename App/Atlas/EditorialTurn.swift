@@ -397,6 +397,8 @@ extension EditorialTurn {
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 9)
         .padding(.vertical, 5)
+        .frame(minHeight: 44, alignment: .leading)
+        .contentShape(Rectangle())
         .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
     }
 }

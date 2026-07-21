@@ -41,8 +41,8 @@ extension ExecutingStrip {
     var stripActionButtons: some View {
         steerActionButton
         Button {
-            // Soft: stop is deliberate, not send/commit (medium lives on composer).
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: interrupts live execution (control commit class).
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onStop()
         } label: {
             Text("Parar")
