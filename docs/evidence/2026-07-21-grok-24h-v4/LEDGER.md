@@ -209,7 +209,6 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-174–179 pack/face sovereignty campaign closed.
-- Face-sans-pack: none · packFacts hollows: 0.
-- Residual full-bar requires A (strip/card unify) — no invent micro-WAVE.
-- After 2 consecutive IDLE without WAVE: wait A (pass 5 is 2nd after WAVE-179).
+- WAVE-174–179 pack/face sovereignty closed · hollows 0 · face-sans-pack none.
+- open=[] · 2 consecutive IDLE after WAVE-179 · **await A** rank-1 §WAVE.
+- No invent micro-WAVE. ConversationModel deferred.
