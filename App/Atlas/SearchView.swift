@@ -330,10 +330,15 @@ extension SearchThreadLink {
 
 extension SearchThreadLink {
     func threadLinkTransition<Content: View>(_ content: Content) -> some View {
-        content
+        let running = TurnPresence.shared.runningTitles.contains(thread.title)
+        return content
             .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
-            .accessibilityHint("abre a conversa")
-            .accessibilityAddTraits(.isButton)
+            .accessibilityHint(running ? "Atlas executando nesta conversa" : "abre a conversa")
+            .accessibilityAddTraits(
+                running && !reduceMotion
+                    ? [.isButton, .updatesFrequently]
+                    : .isButton
+            )
             .accessibilityIdentifier(A11yID.searchResult(thread.id))
             .transition(reduceMotion ? .opacity : .asymmetric(
                 insertion: .opacity.combined(with: .offset(y: 6)),
