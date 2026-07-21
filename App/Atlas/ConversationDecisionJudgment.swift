@@ -41,4 +41,43 @@ enum ConversationDecisionJudgment {
         }
         return "Escolher"
     }
+
+    // MARK: Pack (WAVE-095)
+
+    static func packFacts(from bubble: ChatBubble?) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        guard let bubble, isDecisionRequired(bubble) else {
+            absences.append("sem decisão Escolher publicada neste recorte")
+            return (facts, absences)
+        }
+        let actions = choiceActions(for: bubble)
+        facts.append("decision_face: \(productWord)")
+        facts.append("decision_action_count: \(actions.count)")
+        for action in actions.prefix(8) {
+            facts.append("decision_action: \(action.title)")
+        }
+        if let jobId = bubble.executionChoiceJobId {
+            facts.append("decision_job: \(jobId.rawValue)")
+        }
+        return (facts, absences)
+    }
+
+    static func packFacts(
+        decisionRequired: Bool,
+        actionTitles: [String]
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        guard decisionRequired, !actionTitles.isEmpty else {
+            absences.append("sem decisão Escolher publicada neste recorte")
+            return (facts, absences)
+        }
+        facts.append("decision_face: \(productWord)")
+        facts.append("decision_action_count: \(actionTitles.count)")
+        for title in actionTitles.prefix(8) {
+            facts.append("decision_action: \(title)")
+        }
+        return (facts, absences)
+    }
 }

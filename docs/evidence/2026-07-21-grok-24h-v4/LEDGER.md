@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 89
-- idle_compress_passes: 2
+- waves_completed: 90
+- idle_compress_passes: 14
 - collapse_host: 0
 
 ## Waves done
@@ -100,25 +100,9 @@ mode: designer + implementer
 - WAVE-092
 - WAVE-093
 - WAVE-094
-
-## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
-
-## Designer
-- designs_proposed: 89
-- designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
-
-## Open queue snapshot (must match QUEUE.md)
-
-| # | wave | Δ | status |
-|---|---|---|---|
-| — | _(none)_ | — | — |
+- WAVE-095
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-094 capabilities · WAVE-095 conversation can_do (A 093 re-file).
+- B WAVE-093 = live-strip CTAs (DONE). A design file 093 text = can_do croqui.
+- DEVICE_PENDING.

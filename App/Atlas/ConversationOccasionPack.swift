@@ -75,7 +75,6 @@ enum ConversationOccasionPack {
         }
 
         absences.append("não invente grafo/Arena/Autônomos neste pack de conversa")
-        absences.append("NL não autoriza tool write — stop/steer/fila só via CTA da face se publicados")
 
         // WAVE-084: mid-thread empty editorial (never Home catalog).
         let empty = ConversationEmptyJudgment.packFacts(
@@ -86,6 +85,43 @@ enum ConversationOccasionPack {
         facts.append(contentsOf: empty.facts)
         absences.append(contentsOf: empty.absences)
 
+        // WAVE-095: can_do matrix + wire organ packFacts (never ongoing-bool alone).
+        let canSignals = ConversationCanDoJudgment.liveSignals(
+            matchingLive: matchingLive
+        )
+        let canDoPack = ConversationCanDoJudgment.packFacts(canSignals)
+        facts.append(contentsOf: canDoPack.facts)
+        absences.append(contentsOf: canDoPack.absences)
+
+        // Decision / queue / plan / lanes / strip — selective when published.
+        let decisionPack = ConversationDecisionJudgment.packFacts(
+            decisionRequired: canSignals.hasDecision,
+            actionTitles: canSignals.decisionActionTitles
+        )
+        facts.append(contentsOf: decisionPack.facts)
+        absences.append(contentsOf: decisionPack.absences)
+
+        let queuePack = ComposerQueueJudgment.packFacts(from: [])
+        facts.append(contentsOf: queuePack.facts)
+        absences.append(contentsOf: queuePack.absences)
+
+        let planPack = PlanJudgment.packFacts(plan: nil, progress: nil)
+        facts.append(contentsOf: planPack.facts)
+        absences.append(contentsOf: planPack.absences)
+
+        let lanesPack = ConversationAgentLanesJudgment.packFacts(from: [])
+        facts.append(contentsOf: lanesPack.facts)
+        absences.append(contentsOf: lanesPack.absences)
+
+        let stripPack = ConversationLiveStripJudgment.packFacts(
+            decisionRequired: canSignals.hasDecision,
+            choiceActionCount: canSignals.decisionActionTitles.count,
+            hasSteerHandler: canSignals.hasRunning || canSignals.hasPaused,
+            face: matchingLive.first.map { ConversationExecutionPhase.face(for: $0) } ?? .quiet
+        )
+        facts.append(contentsOf: stripPack.facts)
+        absences.append(contentsOf: stripPack.absences)
+
         let surface: String
         if workspaceKey != nil {
             surface = "conversation.workspace"
@@ -93,16 +129,13 @@ enum ConversationOccasionPack {
             surface = "conversation"
         }
 
-        let ongoing = matchingLive.contains { $0.timing != .finished }
-        let canDo: AgenticOccasionPack.CanDo = ongoing ? .faceCTALocal : .readChat
-
         return AgenticOccasionPack(
             surface: surface,
             subject: subject,
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: canDo
+            canDo: canDoPack.canDo
         ).render()
     }
 

@@ -66,6 +66,7 @@
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |
 | **Live strip CTAs** | `ConversationLiveStripJudgment` → stop/steer/choose spoken · compound strip · pack |
+| **Conversation can_do pack** | `ConversationCanDoJudgment` → matrix live×decision · OccasionPack wire |
 | Cockpit peels | `ConversationCockpitBody` (strip·lanes) · `ConversationCockpitBanners` (banner·reconnect·silence) |
 | **Steer / redirecionar** | `ConversationSteerJudgment` → receipt face · scope PT · allowsSubmit |
 | **Agent lanes (multi)** | `ConversationAgentLanesJudgment` → ExecutionRibbon rank failed-first |
