@@ -74,6 +74,7 @@ struct AtlasCodeRepoRow: View {
         .accessibilityLabel(spokenLabel)
         .accessibilityHint("abre o grafo do repositório")
         .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
+        .accessibilityAddTraits(.isButton)
     }
 
     /// Desvios só com `issues` publicados; nil = silêncio, nunca fabrica limpo.

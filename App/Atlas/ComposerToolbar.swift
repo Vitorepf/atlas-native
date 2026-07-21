@@ -315,6 +315,7 @@ extension ComposerToolbar {
         .accessibilityLabel("opções da conversa")
         .accessibilityHint(spokenOptionsHint())
         .accessibilityIdentifier(A11yID.conversationOptions)
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -337,6 +338,7 @@ extension ComposerToolbar {
         }
         .accessibilityLabel(spokenEffortLabel(model.effort))
         .accessibilityHint(spokenEffortHint())
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -349,6 +351,7 @@ extension ComposerToolbar {
             Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
         }
         .accessibilityLabel("modo, \(mode)")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -361,6 +364,7 @@ extension ComposerToolbar {
             Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
         }
         .accessibilityLabel("workspace, \(model.workspaceName ?? "Atlas")")
+        .accessibilityAddTraits(.isButton)
     }
 }
 

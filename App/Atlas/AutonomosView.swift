@@ -154,6 +154,7 @@ struct AutonomosFleetFailureEmpty: View {
                 .accessibilityIdentifier(A11yID.autonomosRetry)
                 .accessibilityLabel("tentar de novo")
                 .accessibilityHint("tenta reabrir o catálogo Autônomos")
+                .accessibilityAddTraits(.isButton)
         }
         .padding(.horizontal, 32)
         .padding(.vertical, 28)
@@ -247,6 +248,7 @@ struct AutonomosViewHeader: View {
         .accessibilityLabel("voltar")
         .accessibilityHint("volta um nível no mapa Autônomos")
         .accessibilityIdentifier(A11yID.autonomosBack)
+        .accessibilityAddTraits(.isButton)
     }
 
     private var createButton: some View {
@@ -265,6 +267,7 @@ struct AutonomosViewHeader: View {
         .accessibilityLabel("Novo Autônomo")
         .accessibilityHint("abre o formulário para criar um Autônomo")
         .accessibilityIdentifier(A11yID.autonomosNew)
+        .accessibilityAddTraits(.isButton)
     }
 
     private var refreshButton: some View {
@@ -291,6 +294,7 @@ struct AutonomosViewHeader: View {
             canRefresh ? "recarrega estado da área selecionada" : "nenhuma instância selecionada"
         )
         .accessibilityIdentifier(A11yID.autonomosRefresh)
+        .accessibilityAddTraits(.isButton)
     }
 
     private func spokenTitle() -> String {

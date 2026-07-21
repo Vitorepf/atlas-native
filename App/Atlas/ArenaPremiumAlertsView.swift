@@ -59,6 +59,7 @@ struct ArenaPremiumAlertsView: View {
                     "\(ArenaDisplay.suite(suite.suite)), \(regressionDetail(suite))"
                 )
                 .accessibilityHint("abre a suíte com regressão")
+                .accessibilityAddTraits(.isButton)
                 ArenaPremiumHairline()
             }
             ForEach(reportAlerts) { report in

@@ -251,6 +251,7 @@ extension SelfConstructionReceiptSheet {
         .accessibilityIdentifier(A11yID.selfReceiptVeto)
         .accessibilityLabel(spokenVetoSubmitLabel(canSubmit: canSubmitRevert))
         .accessibilityHint(spokenVetoSubmitHint(canSubmit: canSubmitRevert))
+        .accessibilityAddTraits(.isButton)
     }
 }
 

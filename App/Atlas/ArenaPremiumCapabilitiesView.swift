@@ -158,6 +158,7 @@ struct ArenaPremiumCapabilitiesView: View {
                 .accessibilityLabel(capabilitySpoken(capability))
                 .accessibilityHint("abre o detalhe desta capacidade")
                 .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
+                .accessibilityAddTraits(.isButton)
                 ArenaPremiumHairline()
             }
         }

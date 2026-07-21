@@ -147,6 +147,7 @@ extension AtlasNetworkFailureEmpty {
             .buttonStyle(PressableScale())
             .accessibilityLabel("tentar de novo")
             .accessibilityHint(retryHint)
+            .accessibilityAddTraits(.isButton)
         )
     }
 }

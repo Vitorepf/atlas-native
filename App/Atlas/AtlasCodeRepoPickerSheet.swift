@@ -150,7 +150,7 @@ struct AtlasCodeRepoPickerSheet: View {
                 : repo.name
         )
         .accessibilityHint(repo.slug == currentRepo ? "já aberto no grafo" : "abre o grafo deste repositório")
-        .accessibilityAddTraits(repo.slug == currentRepo ? .isSelected : [])
+        .accessibilityAddTraits(repo.slug == currentRepo ? [.isButton, .isSelected] : .isButton)
         .accessibilityIdentifier(A11yID.codeRepoPickerRow(repo.slug))
     }
 }

@@ -362,6 +362,7 @@ extension ConversationView {
         }
         .accessibilityLabel("voltar")
         .accessibilityHint("fecha a conversa")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -400,6 +401,7 @@ extension ConversationView {
         .accessibilityLabel(ConversationViewA11y.headerContinuityLabel)
         .accessibilityHint(ConversationViewA11y.headerContinuityHint)
         .accessibilityIdentifier(A11yID.conversationHeaderContinuity)
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -419,6 +421,7 @@ extension ConversationView {
             .accessibilityLabel(ConversationViewA11y.spokenOutlineLabel(turnCount: model.bubbles.count))
             .accessibilityHint(ConversationViewA11y.outlineHint)
             .accessibilityIdentifier(A11yID.conversationOutline)
+            .accessibilityAddTraits(.isButton)
         }
     }
 }

@@ -87,6 +87,7 @@ extension AtlasWorkspacePickerSheet {
         .accessibilityLabel("sem repositório")
         .accessibilityHint("conversa geral com o Atlas, sem projeto")
         .accessibilityIdentifier(A11yID.workspacePickerNoRepo)
+        .accessibilityAddTraits(.isButton)
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 12)
     }
@@ -147,6 +148,7 @@ extension AtlasWorkspacePickerSheet {
         .accessibilityLabel("\(repo.folder.map { "\($0), " } ?? "")\(repo.name)")
         .accessibilityHint("abre o workspace deste repositório")
         .accessibilityIdentifier(A11yID.workspacePickerRow(repo.slug))
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -236,6 +238,7 @@ struct AtlasWorkspacePickerSheet: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("tentar de novo")
                 .accessibilityHint("relê os repositórios do Mac")
+                .accessibilityAddTraits(.isButton)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         default:

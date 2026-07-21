@@ -560,6 +560,7 @@ extension ComposerAttachmentsSheet {
                 ? ComposerAttachmentsA11y.spokenPasteDisabledHint
                 : ComposerAttachmentsA11y.spokenPasteHint)
             .accessibilityIdentifier(A11yID.attachmentPaste)
+            .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -581,6 +582,7 @@ extension ComposerAttachmentsSheet {
         .accessibilityLabel(ComposerAttachmentsA11y.spokenFile)
         .accessibilityHint(ComposerAttachmentsA11y.spokenFileHint)
         .accessibilityIdentifier(A11yID.attachmentFile)
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -631,6 +633,7 @@ extension ComposerAttachmentsSheet {
         .accessibilityLabel(CameraPickerA11y.spokenChooseCamera)
         .accessibilityHint(CameraPickerA11y.spokenChooseCameraHint)
         .accessibilityIdentifier(A11yID.cameraPicker)
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -643,6 +646,7 @@ extension ComposerAttachmentsSheet {
         .accessibilityLabel(ComposerAttachmentsA11y.spokenPhoto)
         .accessibilityHint(ComposerAttachmentsA11y.spokenPhotoHint)
         .accessibilityIdentifier(A11yID.attachmentPhoto)
+        .accessibilityAddTraits(.isButton)
     }
 }
 

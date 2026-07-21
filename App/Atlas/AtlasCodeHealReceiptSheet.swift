@@ -243,6 +243,7 @@ extension AtlasCodeHealReceiptSheet {
         .accessibilityIdentifier(A11yID.codeHealUndo)
         .accessibilityLabel(spokenUndoButtonLabel())
         .accessibilityHint(spokenUndoButtonHint())
+        .accessibilityAddTraits(.isButton)
     }
 }
 

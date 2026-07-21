@@ -70,6 +70,7 @@ struct AutonomosRhythmSheet: View {
                     .accessibilityLabel("reativar propostas noturnas")
                     .accessibilityHint("volta a mostrar a proposta das 21h quando o Atlas tiver algo a dizer")
                     .accessibilityIdentifier(A11yID.autonomosRhythmUnmute)
+                    .accessibilityAddTraits(.isButton)
                 }
             }
 

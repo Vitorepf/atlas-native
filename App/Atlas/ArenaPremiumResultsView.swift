@@ -127,6 +127,7 @@ struct ArenaPremiumResultsView: View {
                         : "abre o detalhe da suíte"
                 )
                 .accessibilityIdentifier(A11yID.arenaPremiumResultSuite(suite.suite))
+                .accessibilityAddTraits(.isButton)
                 ArenaPremiumHairline()
             }
             Text("Resultados ausentes aparecem como não medidos, nunca como zero.")

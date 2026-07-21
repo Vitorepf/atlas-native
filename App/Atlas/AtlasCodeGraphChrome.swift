@@ -127,7 +127,7 @@ extension AtlasCodeView {
                         option, count: count, active: active, silent: active && filterSilence
                     )
                 )
-                .accessibilityAddTraits(active ? .isSelected : [])
+                .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
                 .accessibilityIdentifier(A11yID.codeGraphFilter(option.rawValue))
             }
         }
@@ -192,6 +192,7 @@ extension AtlasCodeView {
                 .buttonStyle(.plain)
                 .accessibilityIdentifier(A11yID.codeHealReceipt)
                 .accessibilityLabel("curado sozinho, ver recibo de cura")
+                .accessibilityAddTraits(.isButton)
                 .accessibilityHint("abre os passos registrados pelo servidor")
             }
         }

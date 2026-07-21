@@ -247,6 +247,7 @@ struct WorkspaceRow: View {
         .accessibilityLabel(spokenOverride ?? RootChromeRowA11y.workspaceSpoken(name: name, count: count, detail: detail, badge: badge))
         .accessibilityHint(spokenHint ?? "abre \(name)")
         .accessibilityIdentifier(a11yID ?? "")
+        .accessibilityAddTraits(.isButton)
     }
 }
 

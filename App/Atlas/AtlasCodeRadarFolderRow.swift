@@ -70,7 +70,7 @@ struct AtlasCodeFolderRow: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenFolderLabel)
             .accessibilityHint(isExpanded ? "recolhe a pasta" : "expande a pasta")
-            .accessibilityAddTraits(isExpanded ? .isSelected : [])
+            .accessibilityAddTraits(isExpanded ? [.isButton, .isSelected] : .isButton)
             .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
 
             if isExpanded {
