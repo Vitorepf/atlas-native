@@ -444,18 +444,18 @@ extension RootView {
             ZStack {
                 Circle()
                     .fill(AtlasTheme.goldVeil)
-                    .blur(radius: 6)
-                    .scaleEffect(on ? 1.18 : 0.92)
-                    .opacity(on ? 0.95 : 0.4)
+                    .blur(radius: on ? 8 : 5)
+                    .scaleEffect(on ? 1.22 : 0.9)
+                    .opacity(on ? 1 : 0.45)
                 Text("✦")
-                    .font(AtlasFont.serif(16))
+                    .font(AtlasFont.serif(17))
                     .foregroundStyle(AtlasTheme.accent)
-                    .shadow(color: AtlasTheme.accent.opacity(on ? 0.5 : 0.25), radius: on ? 7 : 4, y: 0)
+                    .shadow(color: AtlasTheme.accent.opacity(on ? 0.58 : 0.28), radius: on ? 9 : 4, y: 0)
             }
             .frame(width: 30, height: 30)
             .onAppear {
                 guard !reduceMotion else { return }
-                withAnimation(AtlasMotion.breath(2.8)) { on = true }
+                withAnimation(AtlasMotion.breath(2.6)) { on = true }
             }
             .accessibilityHidden(true)
         }
