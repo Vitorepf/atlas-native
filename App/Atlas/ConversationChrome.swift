@@ -191,7 +191,7 @@ enum ComposerSheetA11y {
     static let modeFootnote =
         "rótulo local; ainda não altera roteamento nem payload"
     static let modeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
-    static let effortSheetHint = "escolhe o esforço computacional do próximo envio"
+    static var effortSheetHint: String { ComposerEffortJudgment.effortSheetHint }
     static let workspaceSheetHint = "escolhe a pasta do próximo envio entre as conversas carregadas"
     static let workspaceEmpty =
         "nenhum workspace nas conversas carregadas; abra uma conversa com pasta ou volte à home"
@@ -207,29 +207,17 @@ enum ComposerSheetA11y {
         return "\(name), \(count) \(noun) carregadas, \(state)"
     }
 
+    /// WAVE-076: effort sheet spoken from ComposerEffortJudgment.
     static func effortLabel(_ effort: AtlasComputeEffort, selected: Bool) -> String {
-        let state = selected ? "selecionado" : "disponível"
-        return "\(spokenEffort(effort)), \(state)"
+        ComposerEffortJudgment.spokenSheetLabel(effort, selected: selected)
     }
 
     static func spokenEffort(_ effort: AtlasComputeEffort) -> String {
-        switch effort {
-        case .auto: return "esforço automático"
-        case .fast: return "esforço rápido"
-        case .balanced: return "esforço normal"
-        case .deep: return "esforço profundo"
-        case .max: return "esforço máximo"
-        }
+        ComposerEffortJudgment.spokenSheet(effort)
     }
 
     static func effortSubtitle(_ effort: AtlasComputeEffort) -> String {
-        switch effort {
-        case .auto: return "Atlas Decide escolhe; nada vai no payload"
-        case .fast: return "força rápido no próximo envio"
-        case .balanced: return "força normal no próximo envio"
-        case .deep: return "força profundo no próximo envio"
-        case .max: return "força máximo no próximo envio"
-        }
+        ComposerEffortJudgment.subtitle(effort)
     }
 }
 

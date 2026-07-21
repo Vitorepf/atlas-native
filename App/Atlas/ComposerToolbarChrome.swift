@@ -33,52 +33,43 @@ extension ComposerToolbar {
 }
 
 extension ComposerToolbar {
-    func spokenEffortLightLabel(_ effort: AtlasComputeEffort) -> String? {
-        switch effort {
-        case .auto: return "esforço automático, Atlas Decide escolhe"
-        case .fast: return "esforço rápido"
-        case .balanced: return "esforço normal"
-        default: return nil
-        }
+    /// WAVE-076: exclusive effort face from published model.effort.
+    var effortFace: ComposerEffortFace {
+        ComposerEffortJudgment.face(model.effort)
     }
-}
 
-extension ComposerToolbar {
     func spokenEffortLabel(_ effort: AtlasComputeEffort) -> String {
-        if let light = spokenEffortLightLabel(effort) { return light }
-        switch effort {
-        case .deep: return "esforço profundo"
-        case .max: return "esforço máximo"
-        default: return "esforço automático, Atlas Decide escolhe"
-        }
+        ComposerEffortJudgment.spokenToolbar(effort)
     }
-}
 
-extension ComposerToolbar {
     func spokenEffortHint() -> String {
-        "abre opções de esforço computacional para o próximo envio"
+        ComposerEffortJudgment.effortHint
     }
 
     func spokenOptionsHint() -> String {
-        "modo, esforço e workspace; \(spokenSendHint(canSubmit: false).lowercased())"
+        ComposerEffortJudgment.spokenOptionsHint(
+            sendHint: spokenSendHint(canSubmit: false)
+        )
     }
 }
 
 extension ComposerToolbar {
     func spokenInputLabel() -> String {
-        model.bubbles.isEmpty ? "mensagem para o Atlas" : "continuar conversa com o Atlas"
+        ComposerEffortJudgment.spokenInputLabel(bubblesEmpty: model.bubbles.isEmpty)
     }
 
     func spokenInputHint() -> String {
-        if canSubmit {
-            return isExecuting ? "texto para a fila do próximo turno" : "texto do próximo envio"
-        }
-        return "escreva aqui para habilitar o envio"
+        ComposerEffortJudgment.spokenInputHint(
+            canSubmit: canSubmit,
+            isExecuting: isExecuting
+        )
     }
 }
 
 extension ComposerToolbar {
-    func spokenProcessingLabel() -> String { "Atlas processando" }
+    func spokenProcessingLabel() -> String {
+        ComposerEffortJudgment.processingLabel
+    }
 }
 
 extension ComposerToolbar {
@@ -261,6 +252,7 @@ extension ComposerToolbar {
             Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
         }
         .accessibilityLabel(spokenEffortLabel(model.effort))
+        .accessibilityValue(effortFace.productWord)
         .accessibilityHint(spokenEffortHint())
     }
 }

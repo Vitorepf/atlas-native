@@ -93,4 +93,5 @@ _(no open proposed WAVEs)_
 - WAVE-073 done
 - WAVE-074 done
 - WAVE-075 done
+- WAVE-076 done
 
