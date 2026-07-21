@@ -247,7 +247,7 @@ struct ArenaPremiumEngineTitle: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .accessibilityHidden(true)
                 }
-                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())
             }
             .accessibilityLabel("Motor medido, \(ArenaDisplay.engine(engineID))")

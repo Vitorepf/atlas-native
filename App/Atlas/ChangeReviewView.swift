@@ -261,10 +261,10 @@ extension ChangeReviewRunActions {
 
 extension ChangeReviewRunActions {
     var applyingStaticLabel: some View {
-        Text("registrando…")
+        Text("Registrando…")
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
-            .accessibilityLabel("registrando decisão")
+            .accessibilityLabel("Registrando decisão")
     }
 }
 
@@ -758,7 +758,7 @@ extension ChangeReviewPatchCard {
                 Text(diffExpanded ? "Fechar diff" : "Ver diff")
                     .font(AtlasFont.serif(13, .medium))
                     .foregroundStyle(AtlasTheme.accent)
-                    .frame(minHeight: 44)
+                    .frame(minHeight: 48)
                     .contentShape(Rectangle())
             }
             .buttonStyle(PressableScale())
@@ -824,15 +824,15 @@ extension ChangeReviewFileRow {
                 )
             }
         } label: {
-            Text("aceitar")
+            Text("Aceitar")
                 .font(AtlasFont.mono(10, .medium))
                 .foregroundStyle(AtlasTheme.accent)
-                .frame(minHeight: 44)
+                .frame(minHeight: 48)
                 .padding(.horizontal, 4)
                 .contentShape(Rectangle())
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("aceitar \(displayName)")
+        .accessibilityLabel("Aceitar \(displayName)")
         .accessibilityHint("registra aceite deste arquivo no patch")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(8)
@@ -852,15 +852,15 @@ extension ChangeReviewFileRow {
                 )
             }
         } label: {
-            Text("rejeitar")
+            Text("Rejeitar")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .frame(minHeight: 44)
+                .frame(minHeight: 48)
                 .padding(.horizontal, 4)
                 .contentShape(Rectangle())
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("rejeitar \(displayName)")
+        .accessibilityLabel("Rejeitar \(displayName)")
         .accessibilityHint("registra rejeição deste arquivo no patch")
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))

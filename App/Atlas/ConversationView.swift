@@ -6247,7 +6247,7 @@ extension ExecutionStateCard {
                 .font(AtlasFont.mono(10, .semibold))
                 .lineLimit(1)
                 .padding(.horizontal, 11).padding(.vertical, 8)
-                .frame(maxWidth: .infinity, minHeight: 44)
+                .frame(maxWidth: .infinity, minHeight: 48)
                 .contentShape(Rectangle())
         }
         .buttonStyle(ExecutionStateActionStyle(
@@ -6950,7 +6950,7 @@ extension TimelineFilterChips {
             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .frame(minHeight: 44) // HIG interactive minimum
+            .frame(minHeight: 48) // HIG 44+; match filter chip breath
             .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
             .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
             .contentShape(Capsule())
@@ -8340,7 +8340,7 @@ extension ExecutingStrip {
                 .font(AtlasFont.serif(13, .medium))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
-                .frame(minHeight: 44)
+                .frame(minHeight: 48)
                 .contentShape(Rectangle())
         }
         .buttonStyle(PressableScale())
@@ -8364,7 +8364,7 @@ extension ExecutingStrip {
                     .foregroundStyle(AtlasTheme.accent)
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)
-                    .frame(minHeight: 44)
+                    .frame(minHeight: 48)
                     .contentShape(Rectangle())
             }
             .buttonStyle(PressableScale())
