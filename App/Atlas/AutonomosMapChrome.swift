@@ -25,6 +25,7 @@ enum AutonomosMapChrome {
             .foregroundStyle(AtlasTheme.textPrimary)
             .lineSpacing(2)
             .fixedSize(horizontal: false, vertical: true)
+            .accessibilityAddTraits(.isHeader)
     }
 
     static func heroSub(_ text: String) -> some View {
@@ -56,6 +57,7 @@ enum AutonomosMapChrome {
             .font(AtlasFont.mono(10))
             .tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
+            .accessibilityAddTraits(.isHeader)
     }
 
     @MainActor
