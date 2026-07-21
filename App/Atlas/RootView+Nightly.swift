@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Nightly open + bootstrap tasks — peel de RootView.
+// Cycle 023 fuse → RootView+Nightly.swift
 
 extension RootView {
     func registerNightlyOpen() {

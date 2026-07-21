@@ -1,12 +1,59 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Root lifecycle tasks — peel de RootView.
-// Threads → RootView+Lifecycle+Threads.swift
-// CodeHub → RootView+Lifecycle+CodeHub.swift
-// Arena → RootView+Lifecycle+Arena.swift
-// DeepLink → RootView+Lifecycle+DeepLink.swift
-// TintAppear → RootView+Lifecycle+TintAppear.swift
+// Cycle 023 fuse → RootView+Lifecycle.swift
+
+extension RootView {
+    func rootLifecycleArena<Content: View>(_ content: Content) -> some View {
+        content.task {
+#if DEBUG
+            // Harness ANTES de qualquer rede — UITest não espera Mac/servidor.
+            if ProcessInfo.processInfo.arguments.contains("-atlas.uitest.newConversation") {
+                if path.isEmpty { path.append(Route.new(workspaceKey: nil)) }
+                return
+            }
+            if session.arena.installVisualScenarioIfRequested() {
+                if path.isEmpty { path.append(Route.arena) }
+                return
+            }
+#endif
+            if case .idle = session.arena.phase {
+                await session.arena.refreshSummaryKeepingSnapshot()
+            }
+        }
+    }
+}
+
+extension RootView {
+    func rootLifecycleCodeHub<Content: View>(_ content: Content) -> some View {
+        content.task {
+            // A linha CÓDIGO só fala com dado real: sem resposta, ela cala.
+            let hub = codeHub ?? AtlasCodeHubModel(client: session.client)
+            codeHub = hub
+            await hub.refresh()
+        }
+    }
+}
+
+extension RootView {
+    func rootLifecycleDeepLink<Content: View>(_ content: Content) -> some View {
+        content.onOpenURL { handleDeepLink($0) }
+    }
+}
+
+extension RootView {
+    func rootLifecycleThreads<Content: View>(_ content: Content) -> some View {
+        content.task { if session.phase == .idle { await session.loadThreads() } }
+    }
+}
+
+extension RootView {
+    func rootLifecycleTintAppear<Content: View>(_ content: Content) -> some View {
+        content
+            .tint(AtlasTheme.accent)
+            .onAppear { registerNightlyOpen() }
+    }
+}
 
 extension RootView {
     func rootLifecycleChrome<Content: View>(_ content: Content) -> some View {
