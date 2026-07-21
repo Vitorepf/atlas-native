@@ -526,7 +526,10 @@ extension ComposerAttachmentsSheet {
         .accessibilityLabel(ComposerAttachmentsA11y.spokenSheet)
         .accessibilityHint(ComposerAttachmentsA11y.spokenSheetHint)
         .onChange(of: pickedPhoto) { _, photo in
-            if photo != nil { dismiss() }
+            if photo != nil {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                dismiss()
+            }
         }
     }
 }
@@ -689,6 +692,7 @@ extension ComposerAttachmentRow {
             Spacer()
         }
         .padding(.horizontal, 24).padding(.vertical, 15)
+        .frame(minHeight: 56)
         .contentShape(Rectangle())
         .overlay(alignment: .bottom) { Divider().overlay(AtlasTheme.separator).padding(.leading, 24) }
     }

@@ -72,7 +72,7 @@ extension DraftThumb {
         Image(systemName: "xmark.circle.fill")
             .atlasSans(18)
             .foregroundStyle(AtlasTheme.textPrimary, AtlasTheme.bgRecessed)
-            .padding(8)
+            .frame(width: 44, height: 44)
             .contentShape(Circle())
     }
 }

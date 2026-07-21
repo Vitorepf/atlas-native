@@ -202,6 +202,7 @@ private struct CommitRowAskChrome<Label: View>: View {
     var body: some View {
         Button {
             guard !suppressTap else { return }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onTap()
         } label: {
             label()
