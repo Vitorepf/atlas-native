@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 92
+- waves_completed: 93
 - idle_compress_passes: 20
 - collapse_host: 0
 
@@ -103,12 +103,8 @@ mode: designer + implementer
 - WAVE-095
 - WAVE-096
 - WAVE-097
-
-## Idle compress
-- pass 20 · ExecutionProof/StateCard/Heal/Findings/Autonomos CTA → Judgment
-
-## Open queue
-_(none)_ — max 2 IDLE after WAVE-097 done
+- WAVE-098
 
 ## Notes
-- DEVICE_PENDING. Next residual full-bar or A fill.
+- WAVE-098 autonomos reason. IDLE 19–20 prior.
+- DEVICE_PENDING.

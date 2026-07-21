@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// Folha padrão de governança: quem autoriza + motivo auditável.
-/// Compacta (era floresta de peels) — um arquivo, contrato de a11y estável.
+/// Folha padrão de governança: quem autoriza + motivo auditável (WAVE-098 Judgment).
 struct AutonomosReasonSheet: View {
     let title: String
     let explainer: String
@@ -26,46 +25,55 @@ struct AutonomosReasonSheet: View {
         _reason = State(initialValue: initialReason)
     }
 
+    private var reasonFace: AutonomosReasonFace {
+        AutonomosReasonJudgment.face(
+            actor: actor, reason: reason, reasonOptional: reasonOptional
+        )
+    }
+
     private var canSubmit: Bool {
-        !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            && (reasonOptional || !reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        AutonomosReasonJudgment.canSubmit(
+            actor: actor, reason: reason, reasonOptional: reasonOptional
+        )
     }
 
     var body: some View {
         NavigationStack {
             Form {
-                Section("Ação governada") {
+                Section(AutonomosReasonJudgment.sectionAction) {
                     Text(title).accessibilityAddTraits(.isHeader)
                     Text(explainer).font(.footnote).foregroundStyle(.secondary)
                 }
-                Section("Operador") {
-                    TextField("Quem autoriza", text: $actor)
+                Section(AutonomosReasonJudgment.sectionOperator) {
+                    TextField(AutonomosReasonJudgment.actorPlaceholder, text: $actor)
                         .accessibilityIdentifier(A11yID.autonomosReasonActor)
-                        .accessibilityHint("nome de quem autoriza a ação governada")
+                        .accessibilityHint(AutonomosReasonJudgment.actorHint)
                 }
-                Section(reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo") {
-                    TextField("Motivo auditável", text: $reason, axis: .vertical)
-                        .lineLimit(3...6)
-                        .accessibilityIdentifier(A11yID.autonomosReasonField)
-                        .accessibilityHint(
-                            reasonOptional
-                                ? "motivo auditável opcional no ensaio"
-                                : "motivo auditável registrado no ledger"
-                        )
+                Section(AutonomosReasonJudgment.reasonSectionTitle(reasonOptional: reasonOptional)) {
+                    TextField(
+                        AutonomosReasonJudgment.reasonPlaceholder,
+                        text: $reason,
+                        axis: .vertical
+                    )
+                    .lineLimit(3...6)
+                    .accessibilityIdentifier(A11yID.autonomosReasonField)
+                    .accessibilityHint(
+                        AutonomosReasonJudgment.reasonFieldHint(reasonOptional: reasonOptional)
+                    )
                 }
             }
-            .navigationTitle("Confirmar ação")
+            .navigationTitle(AutonomosReasonJudgment.navigationTitle)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     AtlasCloseToolbarButton(
-                        title: "Cancelar",
-                        spokenLabel: "cancelar ação governada",
-                        spokenHint: "fecha sem registrar recibo",
+                        title: AutonomosReasonJudgment.cancelTitle,
+                        spokenLabel: AutonomosReasonJudgment.cancelSpoken,
+                        spokenHint: AutonomosReasonJudgment.cancelHint,
                         reduceMotion: reduceMotion
                     ) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Confirmar") {
+                    Button(AutonomosReasonJudgment.confirmTitle) {
                         AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onConfirm(actor, reason)
                         dismiss()
@@ -73,14 +81,19 @@ struct AutonomosReasonSheet: View {
                     .disabled(!canSubmit)
                     .accessibilityIdentifier(A11yID.autonomosReasonSubmit)
                     .accessibilityLabel(
-                        canSubmit
-                            ? "confirmar \(title.lowercased())"
-                            : "confirmar indisponível, preencha operador e motivo"
+                        AutonomosReasonJudgment.spokenConfirm(
+                            actionTitle: title,
+                            actor: actor,
+                            reason: reason,
+                            reasonOptional: reasonOptional
+                        )
                     )
+                    .accessibilityValue(reasonFace.productWord)
                 }
             }
             .accessibilityIdentifier(A11yID.autonomosReasonSheet)
-            .accessibilityLabel("confirmar ação governada, \(title.lowercased())")
+            .accessibilityLabel(AutonomosReasonJudgment.spokenSheet(actionTitle: title))
+            .accessibilityValue(reasonFace.productWord)
         }
     }
 }
