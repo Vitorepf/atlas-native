@@ -6930,7 +6930,8 @@ extension ExecutionStateCard {
         if let kicker = leaveScreenKicker {
             Text(kicker)
                 .font(AtlasFont.mono(10, .semibold))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet leave-screen kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
         }
         if let checkpoint = state.checkpoint {
@@ -9341,7 +9342,8 @@ extension AtlasMarkdownView {
     func listItemMarker(ordered: Bool, index: Int) -> some View {
         if ordered {
             Text("\(index + 1).")
-                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet ordered list markers.
+                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .frame(width: 26, alignment: .leading).padding(.top, 3)
                 .accessibilityHidden(true)
         } else {

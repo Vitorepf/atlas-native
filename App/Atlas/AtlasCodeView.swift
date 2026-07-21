@@ -2753,7 +2753,8 @@ extension AtlasCodeWhySheet {
                 .accessibilityHidden(true)
             Text(file)
                 .font(AtlasFont.mono(12))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet why file path.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .lineLimit(2)
                 .truncationMode(.middle)
                 .accessibilityHidden(true)

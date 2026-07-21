@@ -749,7 +749,8 @@ struct ArenaPremiumStopSheet: View {
                     .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
                 Text(value.stopsAfterCurrentCase ? "Parada após o caso atual" : value.status.rawValue)
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet stop receipt meta.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             }
             .accessibilityIdentifier(A11yID.arenaPremiumStopReceipt)
         }
@@ -1107,7 +1108,8 @@ struct ArenaPremiumQueueView: View {
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text(queuedSuites.count == 1 ? "suíte na fila" : "suítes na fila")
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet queue count caption.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             }
             // Sem rodapé-manual: o kicker "aguardando execução" + o relógio
             // por linha já dizem o estado — meta-copy é ruído.
@@ -1131,7 +1133,8 @@ struct ArenaPremiumQueueView: View {
                             .foregroundStyle(AtlasTheme.textPrimary)
                         Text(queueDetail(suite))
                             .font(AtlasFont.mono(10))
-                            .foregroundStyle(AtlasTheme.textSecondary)
+                            // Soft gold-quiet queue row detail.
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     }
                     Spacer()
                     ArenaPremiumIcon(symbol: "clock", tone: .muted)
@@ -1308,7 +1311,8 @@ struct ArenaPremiumFleetView: View {
             .frame(height: 14)
             Text(ArenaFormat.score(value))
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet fleet bar score.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .frame(width: 36, alignment: .trailing)
         }
         .accessibilityHidden(true)
@@ -1356,7 +1360,8 @@ struct ArenaPremiumAlertsView: View {
                     .foregroundStyle(hasAlerts ? AtlasTheme.alert : AtlasTheme.textPrimary)
                 Text("Alertas")
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet alerts count caption.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             }
             alertRows
             blockers
@@ -1426,7 +1431,8 @@ struct ArenaPremiumAlertsView: View {
                         Text(publicBlocker(blocker))
                     }
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet blocker meta.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 }
             }
         }

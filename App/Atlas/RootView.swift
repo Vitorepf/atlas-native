@@ -2991,7 +2991,8 @@ extension WorkspaceRow {
         if let detail, !detail.isEmpty {
             Text(detail)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet workspace detail meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }

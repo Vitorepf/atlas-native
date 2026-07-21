@@ -774,7 +774,8 @@ struct AutonomosEvolutionView: View {
                 if let unit {
                     Text(unit.ageLabel)
                         .font(AtlasFont.mono(28, .semibold))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet evolution age hero meta.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
                         .monospacedDigit()
                         .padding(.bottom, 8)
                         .accessibilityAddTraits(.isHeader)
