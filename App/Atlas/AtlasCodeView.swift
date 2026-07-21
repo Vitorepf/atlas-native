@@ -2334,7 +2334,8 @@ extension AtlasCodeMirrorCard {
 extension AtlasCodeMirrorCard {
     @ViewBuilder
     var headlineHealthyMirrored: some View {
-        label("tudo espelhado · a verdade fica no Mac", color: AtlasTheme.textSecondary, icon: "checkmark")
+        // Soft gold-quiet healthy mirror honesty.
+        label("tudo espelhado · a verdade fica no Mac", color: AtlasTheme.accent.opacity(0.72), icon: "checkmark")
     }
 }
 

@@ -1551,7 +1551,8 @@ struct ArenaPremiumNowView: View {
             loadingIndicator
             Text("Índice, execução e capacidades chegam por contratos independentes.")
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet preparing caption.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 24)
@@ -1621,7 +1622,8 @@ struct ArenaPremiumRunningView: View {
             if !subtitle.isEmpty {
                 Text(subtitle)
                     .font(AtlasFont.mono(12))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet live subtitle meta.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             }
         }
         .accessibilityElement(children: .combine)
@@ -1659,7 +1661,8 @@ struct ArenaPremiumRunningView: View {
                 }
                 Text("Casos confirmados")
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet progress caption.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 Text("\(progress.remaining) restantes")
                     .font(AtlasFont.mono(10))
                     // Soft gold-quiet remaining meta.
@@ -1759,7 +1762,8 @@ struct ArenaPremiumQueuedView: View {
                 .accessibilityAddTraits(.isHeader)
             Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.mono(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet queued engine title meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 28) {
                     queuedMetric("\(Set(queuedRuns.map(\.suite)).count)", "suítes")
@@ -1785,7 +1789,8 @@ struct ArenaPremiumQueuedView: View {
     private func queuedMetric(_ value: String, _ label: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(value).font(AtlasFont.serif(32)).foregroundStyle(AtlasTheme.textPrimary)
-            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet queued metric caption.
+            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.65))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(value) \(label)")
@@ -1836,7 +1841,8 @@ struct ArenaPremiumTerminalView: View {
                         .font(AtlasFont.serif(44))
                     Text("de \(progress.total) casos confirmados")
                         .font(AtlasFont.mono(11))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet terminal progress caption.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 }
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityElement(children: .combine)
@@ -1988,7 +1994,8 @@ struct ArenaPremiumResultsView: View {
                             .font(AtlasFont.serif(62))
                         Text("/10")
                             .font(AtlasFont.mono(13, .medium))
-                            .foregroundStyle(AtlasTheme.textSecondary)
+                            // Soft gold-quiet index scale unit.
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     }
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityElement(children: .ignore)
@@ -2002,7 +2009,8 @@ struct ArenaPremiumResultsView: View {
                             .foregroundStyle(atlasDelta >= 0 ? AtlasTheme.accent : AtlasTheme.alert)
                         Text("vs. sem Atlas")
                             .font(AtlasFont.mono(10))
-                            .foregroundStyle(AtlasTheme.textSecondary)
+                            // Soft gold-quiet delta caption.
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     }
                 }
             }
@@ -2021,7 +2029,8 @@ struct ArenaPremiumResultsView: View {
             }
             Text("Cobertura \(model.arenaCoverageText) · \(model.report?.claimAllowed == true ? "resultado final" : "resultado parcial")")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet coverage honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
     }
 
@@ -2095,7 +2104,8 @@ struct ArenaPremiumResultsView: View {
         tone: ArenaPremiumTone = .neutral
     ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet small-metric label.
+            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.65))
             Text(value).font(AtlasFont.mono(18, .medium)).foregroundStyle(tone.color)
         }
     }
@@ -2384,7 +2394,8 @@ struct ArenaPremiumExecutionView: View {
                 .accessibilityAddTraits(.isHeader)
             Text("Ordem, estado e progresso confirmados pelo servidor.")
                 .font(AtlasFont.mono(12))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet execution honesty caption.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(statusLabel), \(model.arenaLiveEngineTitle)")
@@ -2412,13 +2423,15 @@ struct ArenaPremiumExecutionView: View {
             } else {
                 Text("Casos ainda sem denominador nesta corrida.")
                     .font(AtlasFont.mono(12))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet denominator honesty.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .accessibilityLabel("Casos ainda sem denominador nesta corrida.")
             }
         } else if runs.isEmpty {
             Text("Nenhuma corrida nesta medição.")
                 .font(AtlasFont.mono(12))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet empty runs honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .accessibilityLabel("Nenhuma corrida nesta medição.")
                 .accessibilityIdentifier(A11yID.arenaPremiumState("execution-empty"))
         }
@@ -2493,7 +2506,8 @@ struct ArenaPremiumExecutionView: View {
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text(rowDetail(run))
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet run row detail.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             }
             Spacer(minLength: 8)
             Text(rowTrailing(run))
@@ -2640,7 +2654,8 @@ struct ArenaPremiumRunDetailView: View {
             if let arm = run.arm?.labelPT {
                 Text(arm)
                     .font(AtlasFont.mono(12))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet arm meta under suite title.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             }
         }
     }
@@ -2663,12 +2678,14 @@ struct ArenaPremiumRunDetailView: View {
                 }
                 Text(summaryLine(done: min(done, total), total: total))
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet progress summary.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             }
         } else {
             Text("Denominador de casos ainda não publicado nesta corrida.")
                 .font(AtlasFont.mono(12))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet denominator honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
         }
     }
 
@@ -2682,7 +2699,8 @@ struct ArenaPremiumRunDetailView: View {
                 .accessibilityAddTraits(.isHeader)
             Text("Lista por teste ainda não publicada pelo servidor. Quando o contrato chegar, cada caso aparece aqui — feitos, ao vivo e a seguir.")
                 .font(AtlasFont.mono(12))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet cases contract honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityIdentifier(A11yID.arenaPremiumRunDetailCases)
@@ -2952,7 +2970,8 @@ struct ArenaPremiumCapabilitiesView: View {
                     .font(AtlasFont.serif(29))
                 Text("Capacidades cobertas")
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet coverage caption.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                     .padding(.leading, 6)
             }
             .foregroundStyle(AtlasTheme.textPrimary)

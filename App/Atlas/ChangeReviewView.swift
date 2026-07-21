@@ -515,7 +515,8 @@ extension ChangeReviewGovernanceSection {
                 .accessibilityHidden(true)
             Text(stats.headline)
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet governance stats headline.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityLabel("\(stats.filesTouched) arquivos, mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
         }
     }
@@ -569,7 +570,8 @@ extension ChangeReviewCouncilMemberRow {
             providerOutcomeGlyph
             Text(member.provider)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet council provider meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .accessibilityHidden(true)
             providerModelLabel
             Spacer()
