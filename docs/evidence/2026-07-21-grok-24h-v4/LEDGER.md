@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 20
-- idle_compress_passes: 40
+- idle_compress_passes: 3
 - collapse_host: 0
 
 ## Waves done
@@ -35,6 +35,7 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `be124541` · delete dead peels ConversationCockpit husk + ArenaCompositeUI Core-dup
 
 ## Designer
 - designs_proposed: 20
@@ -52,4 +53,8 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-
+- **2026-07-21 · Dual v5 locked:** START `grok-24h-v5-START.md` · canon · A croqui · B fábrica
+  - Fila deve ter 2–5 proposed (hoje: encher com A antes de B)
+  - B rejeita micro-onda; máx 2 idle sem ROI; WAVE própria = barra A (≥120 linhas)
+- **B v5 boot 2026-07-21:** QUEUE vazia · 7+ IDLE-COMPRESS pós-WAVE-025 no git (anti fuse-factory).
+  Um idle canônico §7.1 delete morto (pass 3) · **depois espere A** (não micro-WAVE, não 4º fuse).
