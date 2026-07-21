@@ -168,8 +168,8 @@ mode: designer + implementer
 - pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 151
-- designs_open: 0
+- designs_proposed: 153
+- designs_open: 2
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -177,7 +177,8 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| 1 | WAVE-157-arena-occasion-organ-pack-wire-instrument | **max** | proposed |
+| 2 | WAVE-158-home-workspace-radar-can-do-pack-honesty-instrument | **max** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
