@@ -60,9 +60,26 @@ enum AutonomosMapChrome {
 
     @MainActor
     static func primaryCTA(_ title: String, enabled: Bool = true, action: @escaping () -> Void) -> some View {
+        AutonomosMapPrimaryCTA(title: title, enabled: enabled, action: action)
+    }
+
+    @MainActor
+    static func quietCTA(_ title: String, danger: Bool = false, action: @escaping () -> Void) -> some View {
+        AutonomosMapQuietCTA(title: title, danger: danger, action: action)
+    }
+}
+
+/// Primary map CTA — Environment Reduce Motion (not UIAccessibility global).
+private struct AutonomosMapPrimaryCTA: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    let title: String
+    var enabled: Bool = true
+    let action: () -> Void
+
+    var body: some View {
         Button {
             if enabled {
-                AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
             }
             action()
         } label: {
@@ -79,11 +96,17 @@ enum AutonomosMapChrome {
         .disabled(!enabled)
         .accessibilityLabel(Text(title))
     }
+}
 
-    @MainActor
-    static func quietCTA(_ title: String, danger: Bool = false, action: @escaping () -> Void) -> some View {
+private struct AutonomosMapQuietCTA: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    let title: String
+    var danger: Bool = false
+    let action: () -> Void
+
+    var body: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         } label: {
             Text(title)

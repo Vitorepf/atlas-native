@@ -611,7 +611,7 @@ extension AtlasCodeView {
 
     func graphCommitRowLongPress(_ node: AtlasCodeGraphNode) {
         guard visibleAnchors.contains(node.hash) else { return }
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        // softImpact only when why opens (openWhyBiographyIfAvailable) — no double tap.
         Task { await openWhyBiographyIfAvailable(for: node) }
     }
 }
