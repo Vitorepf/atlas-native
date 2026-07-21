@@ -105,7 +105,12 @@ struct ArenaPremiumAction: View {
     var body: some View {
         Button {
             guard !disabled else { return }
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Quiet = secondary soft; filled = primary medium (map: ação primária).
+            if quiet {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            } else {
+                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            }
             action()
         } label: {
             Text(title)
