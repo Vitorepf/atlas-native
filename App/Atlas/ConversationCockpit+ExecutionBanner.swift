@@ -1,7 +1,6 @@
 import SwiftUI
 
-// Banner mono de execução — peel de ConversationCockpit+Agents (CICLO C).
-// Chrome → ConversationCockpit+ExecutionBannerChrome.swift
+// Banner mono de execução (WAVE-003 W3 fuse chrome).
 
 struct ExecutionBanner: View {
     let text: String
@@ -13,10 +12,25 @@ struct ExecutionBanner: View {
     var accessibilityIdentifier: String?
 
     var body: some View {
-        bannerChrome
-            .accessibilityElement(children: .ignore)
-            .accessibilityHidden(embedInParent)
-            .accessibilityLabel(ExecutionBannerA11y.spoken(text: text))
-            .accessibilityIdentifier(accessibilityIdentifier ?? "")
+        HStack(spacing: 7) {
+            Image(systemName: icon)
+                .atlasSans(11, .semibold)
+                .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
+                .accessibilityHidden(true)
+            Text(text)
+                .font(AtlasFont.mono(10))
+                .lineLimit(3)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .foregroundStyle(tint)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(tint.opacity(0.10)))
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(tint.opacity(0.35), lineWidth: 1))
+        .accessibilityElement(children: .ignore)
+        .accessibilityHidden(embedInParent)
+        .accessibilityLabel(ExecutionBannerA11y.spoken(text: text))
+        .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 }
