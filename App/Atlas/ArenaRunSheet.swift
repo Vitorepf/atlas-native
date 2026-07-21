@@ -21,7 +21,7 @@ extension ArenaRunSheet {
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)
-                    .accessibilityLabel(spokenEmptySuites())
+                    .accessibilityLabel(ArenaRunSheetJudgment.spokenEmptySuites())
             } else {
                 ForEach(installedSuites) { suite in
                     toggleRow(
@@ -46,7 +46,7 @@ extension ArenaRunSheet {
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
-                    .accessibilityLabel(spokenEmptyEngines())
+                    .accessibilityLabel(ArenaRunSheetJudgment.spokenEmptyEngines())
             } else {
                 ForEach(engines, id: \.self) { engine in
                     toggleRow(
@@ -91,13 +91,13 @@ extension ArenaRunSheet {
                 .autocorrectionDisabled()
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaRunActor)
-                .accessibilityHint(spokenActorHint())
+                .accessibilityHint(ArenaRunSheetJudgment.actorHint)
             fieldLabel("Motivo")
             TextField("por que rodar agora (fica no recibo)", text: $reason, axis: .vertical)
                 .lineLimit(2...4)
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaRunReason)
-                .accessibilityHint(spokenReasonHint())
+                .accessibilityHint(ArenaRunSheetJudgment.reasonHint)
         }
     }
 
@@ -165,7 +165,7 @@ extension ArenaRunSheet {
         .padding(14)
         .atlasCard()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(spokenReceiptLabel(receipt))
+        .accessibilityLabel(ArenaStartJudgment.spokenReceipt(receipt, enginesCount: model.lastStartEnginesCount, runsPlannedTotal: model.lastStartRunsPlannedTotal))
         .accessibilityValue(face.productWord)
         .accessibilityIdentifier(A11yID.arenaRunReceipt)
     }
@@ -180,55 +180,6 @@ extension ArenaRunSheet {
         )
     }
 
-    func spokenSheetLabel() -> String {
-        ArenaRunSheetJudgment.spokenSheet(face: runSheetFace)
-    }
-
-    func spokenSheetHint() -> String { ArenaRunSheetJudgment.sheetHint }
-
-    func spokenCloseLabel() -> String { ArenaRunSheetJudgment.closeLabel }
-    func spokenCloseHint() -> String { ArenaRunSheetJudgment.closeHint }
-
-    func spokenEmptyEngines() -> String {
-        ArenaRunSheetJudgment.spokenEmptyEngines()
-    }
-
-    func spokenEmptySuites() -> String {
-        ArenaRunSheetJudgment.spokenEmptySuites()
-    }
-
-    func spokenErrorLabel(_ message: String) -> String {
-        ArenaRunSheetJudgment.spokenErrorLabel(message)
-    }
-
-    func spokenActorHint() -> String { ArenaRunSheetJudgment.actorHint }
-
-    func spokenReasonHint() -> String { ArenaRunSheetJudgment.reasonHint }
-
-    /// WAVE-055: submit/receipt spoken from Judgment.
-    func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
-        ArenaStartJudgment.submitFace(
-            input: input,
-            enginesEmpty: enginesEmpty,
-            suitesEmpty: installedSuites.isEmpty
-        ).spokenLabel
-    }
-
-    func spokenSubmitHint(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
-        ArenaStartJudgment.submitFace(
-            input: input,
-            enginesEmpty: enginesEmpty,
-            suitesEmpty: installedSuites.isEmpty
-        ).spokenHint
-    }
-
-    func spokenReceiptLabel(_ receipt: AtlasArenaStartReceipt) -> String {
-        ArenaStartJudgment.spokenReceipt(
-            receipt,
-            enginesCount: model.lastStartEnginesCount,
-            runsPlannedTotal: model.lastStartRunsPlannedTotal
-        )
-    }
 }
 
 extension ArenaRunSheet {
@@ -294,9 +245,9 @@ struct ArenaRunSheet: View {
         }
         .onAppear { seedDefaultsIfNeeded() }
         .accessibilityIdentifier(A11yID.arenaRunSheet)
-        .accessibilityLabel(spokenSheetLabel())
+        .accessibilityLabel(ArenaRunSheetJudgment.spokenSheet(face: runSheetFace))
         .accessibilityValue(runSheetFace.productWord)
-        .accessibilityHint(spokenSheetHint())
+        .accessibilityHint(ArenaRunSheetJudgment.sheetHint)
     }
 
     var runScrollBody: some View {
@@ -353,7 +304,7 @@ struct ArenaRunSheet: View {
             Text(error)
                 .font(.system(.callout))
                 .foregroundStyle(AtlasTheme.alert)
-                .accessibilityLabel(spokenErrorLabel(error))
+                .accessibilityLabel(ArenaRunSheetJudgment.spokenErrorLabel(error))
                 .transition(reduceMotion ? .identity : .opacity)
         }
         if let receipt = model.lastStartReceipt {
@@ -378,16 +329,16 @@ struct ArenaRunSheet: View {
         .foregroundStyle(input.isLocallyValidForSubmission ? AtlasTheme.accent : AtlasTheme.textTertiary)
         .disabled(!input.isLocallyValidForSubmission)
         .accessibilityIdentifier(A11yID.arenaRunSubmit)
-        .accessibilityLabel(spokenSubmitLabel(input: input, enginesEmpty: engines.isEmpty))
-        .accessibilityHint(spokenSubmitHint(input: input, enginesEmpty: engines.isEmpty))
+        .accessibilityLabel(ArenaStartJudgment.submitFace(input: input, enginesEmpty: engines.isEmpty, suitesEmpty: installedSuites.isEmpty).spokenLabel)
+        .accessibilityHint(ArenaStartJudgment.submitFace(input: input, enginesEmpty: engines.isEmpty, suitesEmpty: installedSuites.isEmpty).spokenHint)
     }
 
     @ToolbarContentBuilder
     var runToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             AtlasCloseToolbarButton(
-                spokenLabel: spokenCloseLabel(),
-                spokenHint: spokenCloseHint(),
+                spokenLabel: ArenaRunSheetJudgment.closeLabel,
+                spokenHint: ArenaRunSheetJudgment.closeHint,
                 reduceMotion: reduceMotion
             ) { dismiss() }
         }
