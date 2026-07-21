@@ -1611,7 +1611,7 @@ struct SearchResultsSection: View {
 extension SearchResultsSection {
     var resultsCaption: some View {
         Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
-            .font(AtlasFont.mono(10, .semibold)).tracking(0.6)
+            .font(AtlasFont.mono(10, .semibold)).tracking(0.4)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
@@ -1840,7 +1840,7 @@ struct SearchRecentSection: View {
 extension SearchRecentSection {
     var recentCaption: some View {
         Text("Recentes")
-            .font(AtlasFont.mono(10, .semibold)).tracking(0.6)
+            .font(AtlasFont.mono(10, .semibold)).tracking(0.4)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
@@ -3347,7 +3347,7 @@ extension AtlasWorkspacePickerSheet {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Repositórios")
-                    .font(AtlasFont.mono(11, .medium)).tracking(0.6)
+                    .font(AtlasFont.mono(11, .medium)).tracking(0.4)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AtlasTheme.Space.screen)
