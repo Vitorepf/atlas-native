@@ -512,9 +512,8 @@ extension LiveTimeline {
 extension LiveTimeline {
     func filterSilenceA11y<V: View>(_ content: V) -> some View {
         content
+            // Contain without fused label: filter chips stay selectable.
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(LiveTimelineA11y.spokenFilterSilenceSurface(filter: filter,
-                                                                            totalSteps: baseRows.count))
             .accessibilityIdentifier(A11yID.liveTimelineFilterSilence)
     }
 }
@@ -544,8 +543,8 @@ extension LiveTimeline {
             }
             timelineScroll
         }
+        // Contain without fused label: chips + step rows stay focusable.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(LiveTimelineA11y.spokenSectionLabel(stepCount: rows.count))
         .accessibilityIdentifier(A11yID.liveTimeline)
     }
 }

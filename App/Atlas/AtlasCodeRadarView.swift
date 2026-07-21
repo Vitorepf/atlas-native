@@ -38,8 +38,8 @@ struct AtlasCodeRadarView: View {
             .refreshable { await model.load() }
             .background(AtlasTheme.bg.ignoresSafeArea())
             .accessibilityIdentifier(A11yID.radarScreen)
+            // Contain without fused label: folder/repo rows stay focusable.
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(radarShellSpokenLabel)
             .accessibilityHint(Self.shellHint)
     }
 
