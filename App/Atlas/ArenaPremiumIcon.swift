@@ -46,6 +46,7 @@ struct ArenaPremiumChevron: View {
             tone: .muted,
             role: .compact
         )
+        .accessibilityHidden(true)
     }
 }
 

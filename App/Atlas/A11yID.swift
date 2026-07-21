@@ -95,6 +95,9 @@ extension A11yID {
     static let autonomosHub = "autonomos-hub"
     static let autonomosList = "autonomos-list"
     static func autonomosUnit(_ id: String) -> String { "autonomos-unit-\(id)" }
+    static func autonomosNav(_ title: String) -> String {
+        "autonomos-nav-\(title.lowercased().replacingOccurrences(of: " ", with: "-"))"
+    }
     static let autonomosNew = "autonomos-new"
     static let autonomosEvolution = "autonomos-evolution"
     static let autonomosDecisions = "autonomos-decisions"

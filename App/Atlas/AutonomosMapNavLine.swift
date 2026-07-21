@@ -37,5 +37,6 @@ struct AutonomosMapNavLine: View {
         .accessibilityLabel(meta.isEmpty ? title : "\(title), \(meta)")
         .accessibilityHint("abre \(title.lowercased())")
         .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier(A11yID.autonomosNav(title))
     }
 }
