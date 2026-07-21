@@ -218,3 +218,4 @@ mode: designer + implementer
 - WAVE-180–181: StateCard + ArenaScore packs.
 - hollows 0 · face-sans-pack none · density fails none.
 - open=[] · await A rank-1 §WAVE · no invent micro-WAVE.
+- ConversationModel deferred.
