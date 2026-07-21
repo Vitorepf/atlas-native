@@ -156,9 +156,9 @@ extension AtlasNetworkFailureEmpty {
         content
             .padding(.horizontal, 44).padding(.top, topPadding)
             .frame(maxWidth: .infinity)
+            // Contain without container label so retry stays focusable.
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(accessibilityIdentifier)
-            .accessibilityLabel("\(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken)). \(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))")
     }
 }
 
@@ -195,7 +195,7 @@ extension AtlasNetworkFailureEmpty {
             Text(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken))
                 .font(AtlasFont.serif(22, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
                 .multilineTextAlignment(.center)
-                .accessibilityHidden(true)
+                .accessibilityAddTraits(.isHeader)
             Spacer().frame(height: 12)
             failureHostAndHint
         }
@@ -207,13 +207,12 @@ extension AtlasNetworkFailureEmpty {
         Group {
             Text(hasToken ? "\(host):3737" : "ATLAS_TOKEN · Secrets.xcconfig")
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+                .accessibilityLabel(hasToken ? "servidor \(host) porta 3737" : "token ATLAS ausente em Secrets")
             Spacer().frame(height: 16)
             Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
                 .font(.system(.subheadline)).lineSpacing(5)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
-                .accessibilityHidden(true)
         }
     }
 }
