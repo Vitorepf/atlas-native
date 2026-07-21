@@ -32,8 +32,9 @@ struct ArenaPremiumDestinationView: View {
                 )
                 .frame(height: 28)
                 .allowsHitTesting(false)
-                ArenaPremiumAskPill(
-                    invite: ArenaPremiumAskContext.invite(tab: .now, destination: target)
+                AgenticPill(
+                    invite: ArenaPremiumAskContext.invite(tab: .now, destination: target),
+                    accessibilityId: A11yID.arenaPremiumAskPill
                 ) {
                     askDraft = ""
                     showingAsk = true

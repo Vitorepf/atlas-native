@@ -1,18 +1,27 @@
 import SwiftUI
 
 /// Falha de carregamento do catálogo Autônomos.
-/// Copy → AutonomosView+FailureCopy.swift
-/// Icon → AutonomosView+Failure+Icon.swift
-/// Retry → AutonomosView+Failure+RetryButton.swift
 struct AutonomosFleetFailureEmpty: View {
     let message: String
     let onRetry: () -> Void
 
     var body: some View {
         VStack(spacing: 14) {
-            failureIcon
-            failureCopy
-            failureRetryButton
+            Image(systemName: "exclamationmark.triangle")
+                .font(.title2)
+                .foregroundStyle(AtlasTheme.domOperacional)
+                .accessibilityHidden(true)
+            Text("Catálogo fora de alcance.")
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text(message)
+                .font(.footnote)
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .multilineTextAlignment(.center)
+            Button("Tentar de novo", action: onRetry)
+                .buttonStyle(AutonomosPrimaryButtonStyle())
+                .accessibilityIdentifier(A11yID.autonomosRetry)
+                .accessibilityHint("tenta reabrir o catálogo Autônomos")
         }
         .padding(32)
         .accessibilityElement(children: .combine)
