@@ -3354,6 +3354,7 @@ extension ComposerToolbar {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(spokenProcessingLabel()), \(spokenSendLabel(canSubmit: false))")
         .accessibilityHint(spokenSendHint(canSubmit: false))
+        .accessibilityAddTraits(reduceMotion ? [] : .updatesFrequently)
         .accessibilityIdentifier(A11yID.conversationSend)
     }
 }
