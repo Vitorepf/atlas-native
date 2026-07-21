@@ -4465,7 +4465,7 @@ struct ArenaPremiumGlyphRow: View {
                     .accessibilityHidden(true)
                 Text("›")
                     .font(AtlasFont.mono(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.42))
                     .accessibilityHidden(true)
             }
             .frame(minHeight: 54)

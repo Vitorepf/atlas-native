@@ -2539,17 +2539,29 @@ extension AtlasNetworkFailureEmpty {
 /// Label de seção da home (Conversas / Operação / Workspaces) — natural-case visual + VO.
 @MainActor
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
-    // A linha premium do site: hairlines em fade ladeando o rótulo natural.
+    // Hairlines with a quiet gold breath — family of masthead accent rule.
     HStack(spacing: 12) {
-        LinearGradient(colors: [AtlasTheme.separator.opacity(0), AtlasTheme.separator],
-                       startPoint: .leading, endPoint: .trailing)
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0),
+                AtlasTheme.accent.opacity(0.22),
+                AtlasTheme.separator
+            ],
+            startPoint: .leading, endPoint: .trailing
+        )
             .frame(height: 1)
         Text(t)
             .font(AtlasFont.serif(13, .semibold))
             .foregroundStyle(AtlasTheme.textTertiary)
             .fixedSize()
-        LinearGradient(colors: [AtlasTheme.separator, AtlasTheme.separator.opacity(0)],
-                       startPoint: .leading, endPoint: .trailing)
+        LinearGradient(
+            colors: [
+                AtlasTheme.separator,
+                AtlasTheme.accent.opacity(0.22),
+                AtlasTheme.accent.opacity(0)
+            ],
+            startPoint: .leading, endPoint: .trailing
+        )
             .frame(height: 1)
     }
     .padding(.horizontal, AtlasTheme.Space.screen)
