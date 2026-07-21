@@ -242,6 +242,7 @@ extension ChangeReviewRunActions {
             .padding(.horizontal, 18).padding(.vertical, 11)
             .frame(minHeight: 48)
             .background(Capsule().fill(AtlasTheme.accent))
+            .atlasElevation(radius: 10, y: 3, opacity: 0.2)
             .contentShape(Capsule())
     }
 }
@@ -340,6 +341,7 @@ extension ChangeReviewRunActions {
             .frame(minHeight: 48)
             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
             .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
             .contentShape(Capsule())
     }
 }
