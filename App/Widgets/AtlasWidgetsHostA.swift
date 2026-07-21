@@ -756,7 +756,7 @@ extension LockAccessorySnapshotView {
         incident ? "!" : (attention ? "‖" : "◆")
     }
 
-    func circularGaugeValueLabel(count: Int, incident: Bool) -> String {
+    func productGaugeValue(count: Int, incident: Bool) -> String {
         incident ? "!" : "\(count)"
     }
 }
@@ -766,7 +766,7 @@ extension LockAccessorySnapshotView {
         Gauge(value: Double(min(count, 5)), in: 0...5) {
             Text(circularGaugeSymbol(incident: incident, attention: attention))
         } currentValueLabel: {
-            Text(circularGaugeValueLabel(count: count, incident: incident))
+            Text(productGaugeValue(count: count, incident: incident))
                 .foregroundStyle(incident || attention ? Ink.alert : Ink.ink)
         }
         .gaugeStyle(.accessoryCircular)

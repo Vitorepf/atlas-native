@@ -1,18 +1,19 @@
 # Atlas Native — CODEMAP (casca)
 
-> GOD RESTRUCTURE v4. Soft Sections/States = 0. Density: View/Shell≤600 · any≤2000 · Judgment prefer ≤1200.
+> GOD RESTRUCTURE v4 residual. Soft Sections/States = **0**. Density OK (View/Shell≤600 · any≤2000). Vocabulary: `spoken*` · `product*` · `pack*` · `rank*` · `format*`.
 
 ## Superfícies → host
 
 | Superfície | Hosts |
 |---|---|
-| Home | `RootView` · `RootChrome` · `HomeOpsJudgment` · `RootHomeBody` · `HomeNightlyJudgment` · `LiveNowJudgment` |
+| Home | `RootView` · `RootChrome` · `RootHomeBody` · `HomeOpsJudgment` · `HomeNightlyJudgment` · `LiveNowJudgment` |
 | Conversa | `ConversationSurface` · Messages · Composer · Toolbar · Judgment families · `ConversationModel` |
-| Código | `AtlasCodeSurface` · Radar · Provenance · Graph |
+| Código | `AtlasCodeSurface` · Radar · Provenance · Graph · MarkdownRender |
 | Arena | `ArenaPremiumRoot` · Execution · Surfaces · Fleet/Live/Control Judgments |
-| Autônomos | `AutonomosHost` · Map · Model · CanDo/FleetRun/Organs/Decision Judgments |
+| Autônomos | `AutonomosHost` · Map · Model · CanDo/FleetRun/Organs Judgments |
 | Workspace/Search | `WorkspaceSurface` · `SearchSurface` |
-| Continuity | `TurnPresence` · Widgets Host A/B |
+| Review/Plan/Exec | `ChangeReview*` · `PlanCard` · `ExecutionStateCard` · `ArtifactSheet` |
+| Continuity | `TurnPresence` · Widgets Host A/B · Activity attributes |
 
 ## Onde muda X
 
@@ -20,18 +21,14 @@
 |---|---|
 | LiveNow | `LiveNowJudgment` · `RootHomeBody` |
 | Home nightly | `HomeNightlyJudgment` |
-| Mid-thread | `ConversationSurface` · `ConversationMessagesJudgment` |
-| Steer | `ConversationSteerJudgment` |
-| Outline | `ConversationOutlineJudgments` |
+| Mid-thread / steer / outline | `ConversationSurface` · Messages/Steer/Outline Judgments |
 | Composer | `ConversationComposer` · `ComposerToolbar` |
-| Execution card | `ExecutionStateCard` |
-| Plan | `PlanCard` |
+| Execution / Plan | `ExecutionStateCard` · `PlanCard` |
 | Change review | `ChangeReviewSurface` · Judgment · Body · Governance |
-| Radar | `AtlasCodeRadarSurface` |
-| Provenance | `AtlasCodeProvenanceSheet` |
-| Graph | `AtlasCodeGraph` · `AtlasCodeSurface` |
+| Radar / Provenance / Graph | `AtlasCodeRadarSurface` · ProvenanceSheet · Graph · Surface |
 | Arena | `ArenaPremiumRoot` · Surfaces · Fleet/Live/Control |
-| Autônomos | `AutonomosHost` · CanDo/FleetRun/Organs |
+| Autônomos | `AutonomosHost` · Map · CanDo/FleetRun/Organs |
+| Widgets | `AtlasWidgetsHostA` · `AtlasWidgetsHostB` |
 
 ## BLOCKED
 
