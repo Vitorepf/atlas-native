@@ -28,6 +28,14 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### ConversationSurface fuse
+
+```yaml
+focus: Surface+Chrome+Composer+Messages → ConversationSurface ~664
+domain_index: 1
+gates: ok
+```
+
 ### GraphChrome fuse
 
 ```yaml

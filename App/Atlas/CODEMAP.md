@@ -8,7 +8,7 @@
 | Superfície | Entry / shell | Núcleo vivo (não exaustivo) |
 |---|---|---|
 | Home | `RootView.swift` | `RootChrome*`, `RootHomeBody`, `RootHomeChrome`, `Workspace*` |
-| Conversa | `ConversationView.swift` | `ConversationSurface (+Composer/+Chrome parts)`, `ConversationChrome*`, Messages/Cockpit/Composer* |
+| Conversa | `ConversationView.swift` | `ConversationSurface (chrome·composer·messages fused)`, `ConversationChrome*`, Messages/Cockpit/Composer* |
 | Código | `AtlasCodeView.swift` | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
 | Radar (multi-repo) | `AtlasCodeRadarView.swift` | Surface · FolderRow · RepoChrome · AskContext · Judgment |
 | Pílula | (dock por superfície) | `AgenticPill`, `AgenticOccasionPack`, `AgenticAskDock` |
