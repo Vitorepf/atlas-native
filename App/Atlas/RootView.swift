@@ -2683,7 +2683,8 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
             .frame(height: 1)
         Text(t)
             .font(AtlasFont.serif(13, .semibold))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet section title — same family as radar kickers.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .fixedSize()
         LinearGradient(
             colors: [
@@ -3361,7 +3362,8 @@ extension AtlasProfileSheet {
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text("Mostra detalhes técnicos nas telas")
                     .font(AtlasFont.serif(13))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet profile caption under audit title.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             }
         }
         .tint(AtlasTheme.accent)

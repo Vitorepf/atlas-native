@@ -1306,7 +1306,8 @@ extension ConversationHandoffReceipt {
                 .accessibilityHidden(true)
             Text(subline)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet handoff meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .lineLimit(2)
                 .accessibilityHidden(true)
         }
@@ -1317,7 +1318,8 @@ extension ConversationHandoffReceipt {
     var receiptIcon: some View {
         Image(systemName: isReady ? "checkmark.circle.fill" : "arrow.triangle.2.circlepath")
             .atlasSans(12, .semibold)
-            .foregroundStyle(isReady ? AtlasTheme.accent : AtlasTheme.textTertiary)
+            // Soft gold-quiet pending spin; ready stays full accent.
+            .foregroundStyle(isReady ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.55))
             .modifier(ReceiptSpinEffect(active: isPending && !reduceMotion))
             .accessibilityHidden(true)
     }
@@ -8496,9 +8498,11 @@ extension QueuedFollowUpRow {
         } label: {
             Image(systemName: "trash")
                 .atlasSans(14)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet queue remove — secondary chrome, not coral.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .frame(width: 48, height: 48)
                 .background(Circle().fill(AtlasTheme.surfaceHi))
+                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }

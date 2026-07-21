@@ -1127,7 +1127,8 @@ struct AutonomosNewSheet: View {
             Text(label)
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet field kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 // Visual only — TextField carries accessibilityLabel(label).
                 .accessibilityHidden(true)
             Group {
@@ -1466,7 +1467,8 @@ enum AutonomosMapChrome {
             }
             Text(text)
                 .font(AtlasFont.serif(13, .semibold))
-                .foregroundStyle(alert ? AtlasTheme.alert : (live ? AtlasTheme.accent : AtlasTheme.textTertiary))
+                // Soft gold-quiet when idle; full accent when live; alert stays coral.
+                .foregroundStyle(alert ? AtlasTheme.alert : (live ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.55)))
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
@@ -1822,7 +1824,8 @@ extension SelfConstructionReceiptSheet {
             Text("Regra citada")
                 .font(AtlasFont.mono(10))
                 .tracking(0.3)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet meta kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .accessibilityHidden(true)
             Text("“\(receipt.ruleLabel)”")
                 .font(AtlasFont.serifItalic(14))
@@ -1944,7 +1947,8 @@ extension SelfConstructionReceiptSheet {
             Text("Veto retroativo · com recibo")
                 .font(AtlasFont.mono(10))
                 .tracking(0.3)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet governance kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .accessibilityAddTraits(.isHeader)
             vetoTextFields
             vetoSubmitButton
@@ -1984,7 +1988,8 @@ extension SelfConstructionReceiptSheet {
         Text("Prova")
             .font(AtlasFont.mono(10))
             .tracking(0.3)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet proof kicker.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             .accessibilityHidden(true)
     }
 }
