@@ -163,7 +163,11 @@ struct ConversationOutlineSheet: View {
     var body: some View {
         outlineA11yBind(
             SheetShell(title: "Índice da conversa") {
-                outlineSheetContent
+                if bubbles.isEmpty {
+                    outlineEmpty
+                } else {
+                    outlineRowList
+                }
             }
         )
     }
