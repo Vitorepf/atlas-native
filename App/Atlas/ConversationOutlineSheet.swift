@@ -20,7 +20,7 @@ struct ConversationOutlineSheet: View {
     func outlineA11yBind<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityIdentifier(A11yID.conversationOutlineSheet)
-            .accessibilityLabel(ConversationOutlineA11y.spokenSheetLabel(turnCount: bubbles.count))
+            .accessibilityLabel(ConversationOutlineJudgment.spokenSheetLabel(turnCount: bubbles.count))
             .accessibilityValue(
                 ConversationOutlineJudgment.face(turnCount: bubbles.count).productWord
             )
@@ -43,7 +43,7 @@ struct ConversationOutlineSheet: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.vertical, 12)
-            .accessibilityLabel(ConversationOutlineA11y.spokenEmptySheet())
+            .accessibilityLabel(ConversationOutlineJudgment.spokenEmptySheet())
             .accessibilityAddTraits(.isStaticText)
     }
 
@@ -68,12 +68,12 @@ struct ConversationOutlineRow: View {
             .accessibilityIdentifier(A11yID.conversationOutlineRow(index))
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
-                ConversationOutlineA11y.spokenRow(index: index, role: bubble.role, snippet: snippet)
+                ConversationOutlineJudgment.spokenRow(index: index, role: bubble.role, snippet: snippet)
             )
     }
 
     var snippet: String {
-        ConversationOutlineA11y.spokenSnippet(from: bubble.text)
+        ConversationOutlineJudgment.spokenSnippet(from: bubble.text)
     }
 
     var outlineLead: some View {
@@ -111,26 +111,4 @@ struct ConversationOutlineRow: View {
     }
 }
 
-/// WAVE-079: spoken labels do índice → ConversationOutlineJudgment.
-enum ConversationOutlineA11y {
-    static func spokenSheetLabel(turnCount: Int) -> String {
-        ConversationOutlineJudgment.spokenSheetLabel(turnCount: turnCount)
-    }
-
-    static func spokenEmptySheet() -> String {
-        ConversationOutlineJudgment.spokenEmptySheet()
-    }
-
-    static func spokenRole(_ role: String) -> String {
-        ConversationOutlineJudgment.spokenRole(role)
-    }
-
-    static func spokenSnippet(from text: String) -> String {
-        ConversationOutlineJudgment.spokenSnippet(from: text)
-    }
-
-    static func spokenRow(index: Int, role: String, snippet: String) -> String {
-        ConversationOutlineJudgment.spokenRow(index: index, role: role, snippet: snippet)
-    }
-}
 

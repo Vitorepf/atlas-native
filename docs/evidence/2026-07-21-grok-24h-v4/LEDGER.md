@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 85
-- idle_compress_passes: 9
+- idle_compress_passes: 10
 - collapse_host: 0
 
 ## Waves done
@@ -98,11 +98,12 @@ mode: designer + implementer
 - WAVE-090
 
 ## Idle compress
-- pass 5–8 · prior
-- pass 9 · delete EditorialTurnA11y shim → Judgment-only
+- pass 9 · EditorialTurnA11y delete
+- pass 10 · OutlineA11y delete
 
 ## Open queue
 _(none)_
 
 ## Notes
-- WAVE-090 shipped. DEVICE_PENDING.
+- Max 2 consecutive IDLE after WAVE-090 (9–10). Next A fill or full-bar residual.
+- DEVICE_PENDING.
