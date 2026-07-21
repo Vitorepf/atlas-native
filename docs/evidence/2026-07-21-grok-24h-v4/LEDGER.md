@@ -6,29 +6,17 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 1
+- waves_completed: 2
 - idle_compress_passes: 2
 - collapse_host: 0
 
-## Designer
-- designs_proposed: 5+ (006–010 on disk)
-- last_wave: WAVE-010
+## Waves done
+- WAVE-006 conversation-live-composer-instrument · `528a4c1a`
+- WAVE-007 autonomos-organism-truth · pending commit
 
-## Waves
-### WAVE-006-conversation-live-composer-instrument — done
-- auto-approved rank 1
-- ExecutingStrip = live instrument (stop/steer/progress/reconnect a11y)
-- Composer 39→8 structural files
-- Reconnect peels fused; bubble helpers fused
-- PROVA: build + checks + guard; `WAVE-006-compress.md`
-
-## Idle compress log
-### pass 1 · `419bedf3`
-- WorkspaceEmpty + Chrome Receipt/Outline peels
-### pass 2 · `85be3450`
-- RootChrome + LiveNow peels; v4 guard
+## Idle compress
+- pass 1 · `419bedf3` WorkspaceEmpty + Chrome peels
+- pass 2 · `85be3450` RootChrome + LiveNow + v4 guard
 
 ## Notes
-- Prefer QUEUE over inventing micros
-- App/** only Implementer
-- Next: WAVE-007 rank2 auto-approve
+- Next: WAVE-008 rank 3 (ops-failure-empty-canon) — not auto-approve by rank; still high Δ

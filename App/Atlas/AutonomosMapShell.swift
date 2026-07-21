@@ -20,10 +20,19 @@ struct AutonomosMapShell: View {
         return model.operatorUnit(id: selectedUnitID)
     }
 
-    private var vestmentForAsk: AutonomosHubVestment {
-        guard let unit = selectedUnit else { return .quiet }
-        return unit.paused ? .quiet : .live
+    /// Mesma resolve do hub — ask e hub nunca divergem (WAVE-007).
+    private var organismVestment: AutonomosHubVestment {
+        // incidentPresent: model still has no discrete incident projection —
+        // never invent; backlog decisions alone drive awaiting.
+        AutonomosHubVestment.resolve(
+            backlog: model.backlog,
+            live: model.live,
+            incidentPresent: false,
+            unitPaused: selectedUnit?.paused ?? false
+        )
     }
+
+    private var vestmentForAsk: AutonomosHubVestment { organismVestment }
 
     /// Só ciclos com merge real — nunca fabrica “melhorou”.
     private var latestMergeProvedReceipt: SelfConstructionReceipt? {
@@ -152,6 +161,7 @@ struct AutonomosMapShell: View {
             if let unit = selectedUnit {
                 AutonomosHubView(
                     unit: unit,
+                    vestment: organismVestment,
                     onNavigate: { self.destination = $0 },
                     onPause: { model.setOperatorUnitPaused(id: unit.id, paused: true) },
                     onResume: { model.setOperatorUnitPaused(id: unit.id, paused: false) },
@@ -163,14 +173,17 @@ struct AutonomosMapShell: View {
         case .evolution:
             AutonomosEvolutionView(unit: selectedUnit)
         case .decisions, .decisionInbox, .decisionOrder, .moment, .incident:
+            // Empty honesto único — zero contagens inventadas (WAVE-007).
             VStack(alignment: .leading, spacing: 12) {
                 AutonomosMapChrome.heroTitle("Ainda no escopo local", size: 26)
-                Text("Decisões e momentos do motor chegam quando o create no Server existir.")
+                Text("Create no servidor ainda não liga decisões, momentos nem incidentes a este Autônomo. Nada aqui inventa inbox.")
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .padding(AtlasTheme.Space.screen)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .accessibilityLabel("ainda no escopo local, create no servidor pendente, sem contagens inventadas")
         }
     }
 

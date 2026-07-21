@@ -1,24 +1,21 @@
 import SwiftUI
 
 /// Hub de um Autônomo do operador — presença → fato → verbo → Evolução.
-/// Sem backlog de área de sistema. Sem número mentiroso.
+/// Vestimenta = `AutonomosHubVestment` canônico (WAVE-007); zero LocalVestment.
 struct AutonomosHubView: View {
     let unit: AutonomosUnit
+    let vestment: AutonomosHubVestment
     let onNavigate: (AutonomosDestination) -> Void
     let onPause: () -> Void
     let onResume: () -> Void
     let onEnd: () -> Void
 
-    private var vestment: LocalVestment {
-        unit.paused ? .quiet : .live
-    }
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                AutonomosMapChrome.kicker(kickerLine, live: !unit.paused)
+                AutonomosMapChrome.kicker(kickerLine, live: vestment.kickerLive)
                     .padding(.bottom, 14)
-                AutonomosMapChrome.heroTitle(vestment.hero)
+                AutonomosMapChrome.heroTitle(vestment.heroTitle)
                     .padding(.bottom, 10)
                 Text(unit.charter)
                     .font(AtlasFont.serifItalic(16))
@@ -52,10 +49,15 @@ struct AutonomosHubView: View {
         }
         .scrollIndicators(.hidden)
         .accessibilityIdentifier(A11yID.autonomosHub)
+        .accessibilityLabel(hubSpokenLabel)
     }
 
     private var kickerLine: String {
         "\(vestment.kicker) · \(unit.ageLabel)"
+    }
+
+    private var hubSpokenLabel: String {
+        "\(unit.name), \(vestment.kicker), \(vestment.heroTitle)"
     }
 
     @ViewBuilder
@@ -63,27 +65,8 @@ struct AutonomosHubView: View {
         switch vestment {
         case .quiet:
             AutonomosMapChrome.primaryCTA("Retomar", action: onResume)
-        case .live:
+        case .live, .awaiting:
             EmptyView()
-        }
-    }
-
-    private enum LocalVestment {
-        case live
-        case quiet
-
-        var kicker: String {
-            switch self {
-            case .live: "Vivo"
-            case .quiet: "Parado"
-            }
-        }
-
-        var hero: String {
-            switch self {
-            case .live: "No escopo"
-            case .quiet: "Em pausa"
-            }
         }
     }
 }
