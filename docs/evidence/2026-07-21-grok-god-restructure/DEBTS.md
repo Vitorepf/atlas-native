@@ -4,33 +4,32 @@
 
 ```yaml
 pass: 1
-domain_index: 2
-last_focus: "AtlasCodeProvenanceSections* → SheetBody"
+domain_index: 5
+last_focus: "soft *Sections*/*States* zeroed (Arena+Autonomos)"
 passes_completed: 0
 ```
 
-## Domínios
+## Domínios pass1
 
-| # | Domínio | Status pass1 |
+| # | Domínio | Status |
 |---|---|---|
-| 0 | Home | **closed** |
+| 0 | Home | **closed** fuse+rename+spoken+MARK |
 | 1 | Conversa | EmptyConversation · ProofBody · ChangeReview Body/SheetBody |
-| 2 | Código | ProvenanceSheetBody fuse · continue Radar/Graph peels |
-| 3 | Pílula | pending |
-| 4 | Arena | soft *States* remaining |
-| 5 | Autônomos | soft DecisionSections remaining |
-| 6–7 | Continuity / Cross | pending |
+| 2 | Código | ProvenanceSheetBody |
+| 3 | Pílula | open deepen |
+| 4 | Arena | NowBody · GlyphRow (States killed) |
+| 5 | Autônomos | DecisionFaceBody (Sections killed) |
+| 6 | Continuity | open |
+| 7 | Cross-cut | soft *Sections*/*States* **zero** casca |
 
-## Soft global remaining
+## Soft global
 
-- ArenaPremiumNowStates · ArenaPremiumStates  
-- AutonomosDecisionSections  
+```
+find App/Atlas App/Widgets -name '*Sections*.swift' -o -name '*States*.swift'
+# → empty
+```
 
-(zero *Sections* in Home/Conversa/Código after this commit)
-
-## Próximo
-
-Arena *States* rename (domain 4) **ou** AutonomosDecisionSections (domain 5) **ou** deepen Código.
+**Próximo:** domain deepen (MARK dense · Conversation peels · Pílula · Widgets) · pass may continue domain_index cycle.
 
 ## Proibido
 

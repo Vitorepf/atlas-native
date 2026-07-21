@@ -12,7 +12,7 @@
 | Código | `AtlasCodeView.swift` | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
 | Radar (multi-repo) | `AtlasCodeRadarView.swift` | Surface · FolderRow · RepoChrome · AskContext · Judgment |
 | Pílula | (dock por superfície) | `AgenticPill`, `AgenticOccasionPack`, `AgenticAskDock` |
-| Arena Premium | `ArenaPremiumShell.swift` | Execution/Fleet/Results/Suite/Run/Score* |
+| Arena Premium | `ArenaPremiumShell.swift` | Execution/Fleet/Results/Suite/Run/Score* · NowBody · GlyphRow |
 | Autônomos | `AutonomosHubView.swift` / `AutonomosView.swift` | Hub/Map/List/`AutonomosDecision*`/Chrome* |
 | Continuity | Widgets + ActivityKit | Island/Lock chrome — **App Group data BLOCKED** |
 
@@ -90,7 +90,7 @@
 | Island/Lock phase chrome | `AtlasTurnGlanceJudgment` · Widgets Live/Lock* (sem inventar App Group) |
 | Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets · pack primary engine |
 | **Arena capacidades (confiança)** | `ArenaCapabilitiesJudgment` → measured/improved/regressed one law · rank · pack |
-| **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
+| **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · `ArenaPremiumNowBody` |
 | **Arena pack can_do honesty** | `ArenaPremiumAskContext` host · Live · Score parts · canDo matrix |
 | **Arena organ pack wire** | AskContext → Stop/Pipeline/Start/RunStatus packFacts · RunStatus productWord · `ArenaFleetJudgment` rank≡FleetView |
 | **Arena plano/fila** | `ArenaPlanQueueJudgment` → planFace empty/published/derived_live · queueFace |
@@ -98,7 +98,7 @@
 | **Arena start / recibo rodar** | `ArenaStartJudgment` → submit face · receipt face · worker gap |
 | **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready · pack Ask |
 | **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face · pack Ask |
-| **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` → Hub CTA / MapShell `.decisions` / `AutonomosModel.decide` · pack face |
+| **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` · `AutonomosDecisionFaceBody` → Hub/Map · pack face |
 | **Decisão surface parts** | host · `ListBody` · `DetailBody` · `Sections` |
 | **MapShell parts** | host sheets · `Routes` · `Ask` · `Catalog` · `Actions` |
 | **Controle do loop Autônomos (veto)** | `AutonomosRunControlJudgment` → Hub primaryVerb → ReasonSheet → `model.control` / `startRun` · bind `selectArea` |

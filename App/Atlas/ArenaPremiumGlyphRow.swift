@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// IDLE-COMPRESS Arena peels
+// GOD-RESTRUCTURE: was ArenaPremiumStates — GlyphRow + OperationalRows
 
 struct ArenaPremiumGlyphRow: View {
     let glyph: String

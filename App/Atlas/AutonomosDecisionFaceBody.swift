@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-156 density peel — decision sections (chrome/row/receipt)
+// GOD-RESTRUCTURE: was AutonomosDecisionSections — face chrome/row/receipt
 
 extension AutonomosDecisionSurface {
     // MARK: - Sections

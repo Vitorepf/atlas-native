@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: Arena States or Autonomos Sections
-- domain_index: 2
+- focus: deepen Conversation peels / Pílula / Widgets
+- domain_index: 1
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-prov
+- last_commit: pending-soft-zero
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,25 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T23:30Z — soft *Sections*/*States* zero
+
+```yaml
+phase: prove
+focus: Arena NowBody+GlyphRow · Autonomos DecisionFaceBody
+domain_index: 4–5
+pass: 1
+commands: |
+  git mv ArenaPremiumNowStates→NowBody · States→GlyphRow
+  git mv AutonomosDecisionSections→DecisionFaceBody
+  find *Sections*/*States* → 0
+  gates ✓
+before_after: |
+  soft global forbidden suffixes cleared in casca
+  CODEMAP Arena/Autonomos paths
+notes: |
+  deepen next domains; never Goal Done
+```
 
 ### 2026-07-21T23:20Z — ProvenanceSheetBody fuse · domain 2
 

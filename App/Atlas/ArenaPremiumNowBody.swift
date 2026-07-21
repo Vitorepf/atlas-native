@@ -1,6 +1,8 @@
 import SwiftUI
 import AtlasCore
 
+// GOD-RESTRUCTURE: was ArenaPremiumNowStates — Idle/Queued/Terminal body
+
 // MARK: - Host
 
 struct ArenaPremiumIdleView: View {
