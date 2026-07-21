@@ -82,7 +82,7 @@
 | **Steer pack mid-thread (160)** | OccasionPack → `ConversationSteerJudgment.packFacts` + strip stop honesty |
 | **Agent lanes (multi)** | `ConversationAgentLanesJudgment` → ExecutionRibbon rank failed-first |
 | Island/Lock phase chrome | Widgets Live/Lock* (sem inventar App Group) |
-| Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets |
+| Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets · pack primary engine (WAVE-181) |
 | **Arena capacidades (confiança)** | `ArenaCapabilitiesJudgment` → measured/improved/regressed one law · rank · pack |
 | **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
 | **Arena pack can_do honesty** | `ArenaPremiumAskContext` host · Live · Score peels (WAVE-171) · canDo matrix |

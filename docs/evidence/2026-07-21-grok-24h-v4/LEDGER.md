@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 175
+- waves_completed: 176
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -186,6 +186,7 @@ mode: designer + implementer
 - WAVE-178
 - WAVE-179
 - WAVE-180
+- WAVE-181
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -196,7 +197,7 @@ mode: designer + implementer
 - pass 6 · `7d186855` · delete duplicate imports post-180
 
 ## Designer
-- designs_proposed: 175
+- designs_proposed: 176
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -209,9 +210,8 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-180: StateCard kind pack mid-thread.
-- WAVE-174–179 pack/face sovereignty · hollows 0 · face-sans-pack none.
-- open=[] · after WAVE-180 · IDLE6 (1 consecutive) · residual full-bar only if §WAVE · no invent micro.
+- Continuity restore BLOCKED (App Group).
+- WAVE-181: ArenaScore pack primary engine.
+- WAVE-180: StateCard kind pack.
+- WAVE-174–179 pack/face campaign · hollows 0.

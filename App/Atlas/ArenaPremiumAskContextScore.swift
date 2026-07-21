@@ -41,6 +41,18 @@ extension ArenaPremiumAskContext {
         facts.append(contentsOf: runSheetPack.facts)
         absences.append(contentsOf: runSheetPack.absences)
 
+        // WAVE-181: primary engine score judgment (never invent 0 / incomplete Δ).
+        let suites = model.scoreboard?.suites ?? []
+        let regressionCount = suites.filter(\.hasRegression).count
+        let scorePack = ArenaScoreJudgment.packFacts(
+            engine: model.arenaPrimaryEngine,
+            claimAllowed: model.report?.claimAllowed,
+            regressionCount: regressionCount,
+            attentionCount: 0
+        )
+        facts.append(contentsOf: scorePack.facts)
+        absences.append(contentsOf: scorePack.absences)
+
         if focusTab == .results || destination == .results || destination == .alerts
             || (destination == nil && tab == .now)
         {

@@ -145,4 +145,66 @@ enum ArenaScoreJudgment {
         }
         return "\(name), \(spokenPair(without: engine.withoutAtlasComposite, withAtlas: engine.withAtlasComposite))"
     }
+
+    // MARK: Pack (WAVE-181)
+
+    /// Mid-pack scoreboard state — never fabricates 0 or incomplete Δ.
+    static func packFacts(
+        engine: AtlasArenaCompositeEngine?,
+        claimAllowed: Bool?,
+        regressionCount: Int = 0,
+        attentionCount: Int = 0
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+
+        guard let engine else {
+            facts.append("score_state: \(ArenaScoreJudgmentState.unmeasured.rawValue)")
+            absences.append(unmeasuredLabel)
+            absences.append(absenceNeverZero)
+            return (facts, absences)
+        }
+
+        let face = state(engine: engine, claimAllowed: claimAllowed)
+        // Host suite regressions elevate state without inventing engine flags.
+        let scoreState: ArenaScoreJudgmentState =
+            (regressionCount > 0 || attentionCount > 0) ? .regressed : face
+
+        facts.append("score_state: \(scoreState.rawValue)")
+        facts.append("score_engine: \(ArenaDisplay.engine(engine.engine))")
+        if let composite = engine.composite {
+            facts.append("score_composite: \(ArenaFormat.score(composite))")
+        } else {
+            absences.append("composite \(unmeasuredLabel)")
+        }
+        if let without = engine.withoutAtlasComposite {
+            facts.append("score_without_atlas: \(ArenaFormat.score(without))")
+        } else {
+            absences.append("braço sem Atlas \(unmeasuredLabel)")
+        }
+        if let withAtlas = engine.withAtlasComposite {
+            facts.append("score_with_atlas: \(ArenaFormat.score(withAtlas))")
+        } else {
+            absences.append("braço com Atlas \(unmeasuredLabel)")
+        }
+        if let delta = pairedDelta(engine: engine) {
+            facts.append("score_delta_atlas: \(ArenaFormat.signed(delta))")
+        } else {
+            absences.append("par com/sem Atlas incompleto — sem Δ inventado")
+        }
+        if let mult = engine.atlasMultiplier {
+            facts.append("score_multiplier: \(ArenaFormat.multiplier(mult))")
+        }
+        if engine.isPartialCoverage {
+            facts.append("score_coverage: partial")
+        }
+        if claimAllowed == false {
+            absences.append("claim_allowed=false — medição parcial, não trate como veredito final")
+        }
+        if regressionCount > 0 {
+            facts.append("score_suite_regressions: \(regressionCount)")
+        }
+        absences.append(absenceNeverZero)
+        return (facts, absences)
+    }
 }
