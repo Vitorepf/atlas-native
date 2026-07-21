@@ -4,22 +4,22 @@
 
 ```yaml
 pass: 3
-domain_index: 0
-last_focus: "pass3 density-split Judgment megas (landed)"
-session_commits: 124
+domain_index: 2
+last_focus: "pass3 Código residual — headroom only / densify hold"
+session_commits: 130
 soft_sections_states: 0
-swift_App_Atlas: 46
-judgment_over_1200: 0
+swift_App_Atlas: 35
+swift_Widgets: 2
 ```
 
-## Scoreboard
+## Densified host set (App/Atlas = 35)
 
-| Metric | Value |
-|---|---|
-| App/Atlas | **46** |
-| Judgment >1200 | **0** (none) |
-| *Sections*/*States* | **0** |
+ArenaFleetJudgment · ArenaPremiumExecution · ArenaPremiumRoot · ArenaPremiumSurfaces · ArtifactSheet · AtlasApp · AtlasCodeGraph · AtlasCodeProvenanceSheet · AtlasCodeRadarSurface · AtlasCodeSurface · AtlasMarkdownRender · AtlasSession · AtlasSessionBody · AtlasActivityAttributes · AtlasTurnAttributes+ContentState · AutonomosCanDoJudgment · AutonomosHost · AutonomosMap · AutonomosModel · ChangeReviewJudgment · ChangeReviewSurface · ComposerToolbar · ConversationComposer · ConversationMessages · ConversationMessagesJudgment · ConversationModel · ConversationSurface · ExecutionStateCard · HomeOpsJudgment · PlanCard · RootChrome · RootView · SearchSurface · TurnPresence · WorkspaceSurface
 
-## Next
+## Residual
 
-Surfaces near 2000 · CODEMAP · **never Goal Done**
+Fuse headroom ~0 for safe pairs. Soft = 0. Gates green.
+
+## Proibido
+
+Goal Done · god_hold · WAVE · dual · Core · re-split densified hosts without ROI
