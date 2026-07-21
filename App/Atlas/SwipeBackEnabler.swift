@@ -8,7 +8,7 @@ import UIKit
 // @objc — override em extension é legal): é o único anexo que o NavigationStack
 // do iOS 18+ não re-seta. O shim embutido por tela (SwipeBackEnabler) nunca
 // segurava o delegate e foi removido — provado por AtlasSwipeBackTests.
-extension UINavigationController: UIGestureRecognizerDelegate {
+extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self

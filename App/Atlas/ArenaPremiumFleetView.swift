@@ -75,6 +75,7 @@ struct ArenaPremiumFleetView: View {
         .padding(.top, 12)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Nenhum motor medido. Rode uma medição com pelo menos um motor para ver o ranking da frota.")
+        .accessibilityIdentifier(A11yID.arenaPremiumState("fleet-empty"))
     }
 
     private func fleetRow(_ engine: AtlasArenaCompositeEngine, highlight: Bool) -> some View {
