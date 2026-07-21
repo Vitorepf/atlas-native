@@ -3796,9 +3796,9 @@ struct AtlasCodeRadarSectionLabel: View {
 
     var body: some View {
         Text(text)
-            .atlasSans(10, .semibold)
+            .atlasSans(10, .medium)
             .tracking(0.3)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
             .padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
             .atlasAccessibilityIdentifier(accessibilityID ?? text)
@@ -3807,9 +3807,18 @@ struct AtlasCodeRadarSectionLabel: View {
 
 struct AtlasCodeRadarRowDivider: View {
     var body: some View {
-        Rectangle()
-            .fill(AtlasTheme.separator.opacity(0.5))
-            .frame(height: 0.5)
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0),
+                AtlasTheme.accent.opacity(0.2),
+                AtlasTheme.separator.opacity(0.7),
+                AtlasTheme.accent.opacity(0)
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(height: 1)
+        .accessibilityHidden(true)
     }
 }
 
