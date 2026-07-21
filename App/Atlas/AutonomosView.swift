@@ -505,6 +505,8 @@ struct AutonomosMapShell: View {
             .frame(minHeight: 48)
             .contentShape(Rectangle())
             .background(AtlasTheme.alert.opacity(0.08))
+            .overlay(Rectangle().fill(AtlasTheme.alert.opacity(0.35)).frame(height: 1), alignment: .bottom)
+            .atlasElevation(radius: 6, y: 2, opacity: 0.12)
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
