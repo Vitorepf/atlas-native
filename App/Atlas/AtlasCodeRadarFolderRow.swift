@@ -63,12 +63,14 @@ struct AtlasCodeFolderRow: View {
                         .accessibilityHidden(true)
                 }
                 .padding(.vertical, 14)
+                .frame(minHeight: 48, alignment: .center)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenFolderLabel)
             .accessibilityHint(isExpanded ? "recolhe a pasta" : "expande a pasta")
+            .accessibilityAddTraits(isExpanded ? .isSelected : [])
             .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
 
             if isExpanded {
