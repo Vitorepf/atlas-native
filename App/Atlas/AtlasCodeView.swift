@@ -3957,9 +3957,12 @@ struct AtlasCodeFolderRow: View {
                 HStack(spacing: 12) {
                     HStack(spacing: 12) {
                         Image(systemName: "folder")
-                            .atlasSans(15)
-                            .foregroundStyle(AtlasTheme.textSecondary)
-                            .frame(width: 20)
+                            .atlasSans(14, .medium)
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.9))
+                            .frame(width: 32, height: 32)
+                            .background(Circle().fill(AtlasTheme.goldVeil))
+                            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1))
+                            .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 3) {
                             Text(folder.name)
@@ -3969,7 +3972,7 @@ struct AtlasCodeFolderRow: View {
                                  ? "1 repositório"
                                  : "\(folder.repositories) repositórios")
                                 .atlasSans(11.5)
-                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .foregroundStyle(AtlasTheme.accent.opacity(0.7))
                         }
                         .accessibilityHidden(true)
                     }
