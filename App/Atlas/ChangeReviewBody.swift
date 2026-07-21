@@ -324,13 +324,13 @@ extension ChangeReviewFindingsSection {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isHeader)
-        .accessibilityLabel(axisHeaderLabel(axis: axis, count: count))
+        .accessibilityLabel(spokenAxisHeader(axis: axis, count: count))
         .accessibilityIdentifier(A11yID.reviewFindingAxis(axis))
     }
 }
 
 extension ChangeReviewFindingsSection {
-    func axisHeaderLabel(axis: String, count: Int) -> String {
+    func spokenAxisHeader(axis: String, count: Int) -> String {
         let name = axis == "GERAIS" ? "gerais" : axis.lowercased()
         let noun = count == 1 ? "achado" : "achados"
         return "eixo \(name), \(count) \(noun)"

@@ -32,7 +32,7 @@ extension SearchView {
             .accessibilityIdentifier(A11yID.searchScreen)
             .accessibilityLabel(SearchJudgment.spokenScreen(face: searchScreenFace, trimmedQuery: trimmedQuery))
             .accessibilityValue(searchScreenFace.productWord)
-            .accessibilityHint(SearchJudgment.screenHint)
+            .accessibilityHint(SearchJudgment.spokenScreenHint)
             .onAppear { focused = true }
     }
 }
@@ -73,8 +73,8 @@ extension SearchViewHeader {
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
-        .accessibilityLabel(SearchJudgment.backLabel)
-        .accessibilityHint(SearchJudgment.backHint)
+        .accessibilityLabel(SearchJudgment.spokenBack)
+        .accessibilityHint(SearchJudgment.spokenBackHint)
     }
 }
 
@@ -102,8 +102,8 @@ extension SearchViewHeader {
     func searchClearA11y<Content: View>(_ content: Content) -> some View {
         content
             .buttonStyle(.plain)
-            .accessibilityLabel(SearchJudgment.clearLabel)
-            .accessibilityHint(SearchJudgment.clearHint)
+            .accessibilityLabel(SearchJudgment.spokenClear)
+            .accessibilityHint(SearchJudgment.spokenClearHint)
             .accessibilityIdentifier(A11yID.searchClear)
     }
 }
@@ -589,11 +589,11 @@ enum SearchScreenFace: Equatable {
 /// Pure search-screen grammar — face · spoken · pack.
 enum SearchJudgment {
 
-    static let screenHint = "busca local nas conversas já carregadas na sessão"
-    static let backLabel = "voltar"
-    static let backHint = "fecha a busca"
-    static let clearLabel = "limpar busca"
-    static let clearHint = "remove o texto e volta aos recentes"
+    static let spokenScreenHint = "busca local nas conversas já carregadas na sessão"
+    static let spokenBack = "voltar"
+    static let spokenBackHint = "fecha a busca"
+    static let spokenClear = "limpar busca"
+    static let spokenClearHint = "remove o texto e volta aos recentes"
 
     static func face(
         showsLoadingShell: Bool,

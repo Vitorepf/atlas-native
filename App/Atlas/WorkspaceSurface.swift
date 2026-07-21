@@ -25,8 +25,8 @@ extension WorkspaceView {
         )
     }
 
-    var workspaceScreenHint: String {
-        WorkspaceJudgment.screenHint(freeOnly: freeOnly)
+    var spokenWorkspaceScreenHint: String {
+        WorkspaceJudgment.spokenScreenHint(freeOnly: freeOnly)
     }
 }
 
@@ -55,7 +55,7 @@ extension WorkspaceView {
             .accessibilityIdentifier(A11yID.workspaceScreen)
             .accessibilityLabel(spokenWorkspaceScreenLabel())
             .accessibilityValue(workspaceScreenFace.productWord)
-            .accessibilityHint(workspaceScreenHint)
+            .accessibilityHint(spokenWorkspaceScreenHint)
     }
 }
 
@@ -84,7 +84,7 @@ extension WorkspaceView {
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
-        .accessibilityLabel(WorkspaceJudgment.backLabel)
+        .accessibilityLabel(WorkspaceJudgment.spokenBack)
     }
 
     var headerSpokenTitle: String {
@@ -127,7 +127,7 @@ extension WorkspaceView {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(WorkspaceJudgment.spokenAreaFilter(a.label))
-        .accessibilityHint(WorkspaceJudgment.areaFilterHint)
+        .accessibilityHint(WorkspaceJudgment.spokenAreaFilterHint)
         .accessibilityAddTraits(active ? .isSelected : [])
     }
 }
@@ -153,8 +153,8 @@ extension WorkspaceView {
             AgenticPillFace(invite: workspacePillInvite)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(WorkspaceJudgment.newConversationLabel)
-        .accessibilityHint(WorkspaceJudgment.newConversationHint)
+        .accessibilityLabel(WorkspaceJudgment.productNewConversation)
+        .accessibilityHint(WorkspaceJudgment.spokenNewConversationHint)
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
@@ -447,7 +447,7 @@ struct ThreadRow: View {
                     hasWorkspace: workspaceTint != nil
                 )
             )
-            .accessibilityHint(WorkspaceThreadJudgment.threadHint(isRunning: isRunning))
+            .accessibilityHint(WorkspaceThreadJudgment.spokenThreadHint(isRunning: isRunning))
     }
 
     var rowContent: some View {
@@ -767,16 +767,16 @@ enum WorkspaceJudgment {
         }
     }
 
-    static func screenHint(freeOnly: Bool) -> String {
+    static func spokenScreenHint(freeOnly: Bool) -> String {
         freeOnly ? "conversas sem workspace" : "conversas deste workspace"
     }
 
     // MARK: Chrome (header / filter / pill)
 
-    static let backLabel = "voltar"
-    static let areaFilterHint = "filtra conversas já carregadas"
-    static let newConversationLabel = "nova conversa"
-    static let newConversationHint = "abre o compositor para escrever ao Atlas"
+    static let spokenBack = "voltar"
+    static let spokenAreaFilterHint = "filtra conversas já carregadas"
+    static let productNewConversation = "nova conversa"
+    static let spokenNewConversationHint = "abre o compositor para escrever ao Atlas"
 
     static func spokenAreaFilter(_ label: String) -> String {
         "área \(label)"
@@ -1569,7 +1569,7 @@ enum WorkspaceThreadJudgment {
         return parts.joined(separator: ", ")
     }
 
-    static func threadHint(isRunning: Bool) -> String {
+    static func spokenThreadHint(isRunning: Bool) -> String {
         isRunning ? "Atlas executando nesta conversa" : "abre a conversa"
     }
 }
