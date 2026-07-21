@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 83
-- idle_compress_passes: 5
+- idle_compress_passes: 6
 - collapse_host: 0
 
 ## Waves done
@@ -96,23 +96,16 @@ mode: designer + implementer
 - WAVE-088
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
-- pass 3 · Messages scroll+editorial peel · Surface MARKs
-- pass 4 · CommitRow A11y peel · ComposerSheetA11y delete
-- pass 5 · Cockpit banners peel · AskPillA11y shim delete
+- pass 1–4 · prior
+- pass 5 · Cockpit banners peel · AskPillA11y delete
+- pass 6 · ChangeReviewSectionsA11y peel · Search hint Judgment-only
 
 ## Designer
-- designs_proposed: 83
 - designs_open: 0
-- last_regen: regen-queue.py
 
-## Open queue snapshot
-
-| # | wave | Δ | status |
-|---|---|---|---|
-| — | _(none)_ | — | — |
+## Open queue
+_(none)_
 
 ## Notes
-- Fila vazia · IDLE-COMPRESS pass 5 (canon §7 peel + delete morto).
-- DEVICE_PENDING. Continuity BLOCKED.
+- Max 2 consecutive IDLE after WAVE — next: A fill or full-bar residual only.
+- DEVICE_PENDING.

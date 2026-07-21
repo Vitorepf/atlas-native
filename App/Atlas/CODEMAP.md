@@ -87,6 +87,7 @@
 | **Digest / momento (janela)** | `AutonomosDigestJudgment` → DigestSurface · `.moment("digest")` |
 | **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + FindingsBody/PatchBody · sheet spoken |
 | **Change review sheet load** | `ChangeReviewSheetJudgment` → face loading/unavailable/empty/ready |
+| Change review peels | Sections host · `ChangeReviewSectionsA11y` spoken · Governance/Patch bodies |
 | Change review peels | Sections host · GovernanceBody · RunActionsBody · PatchBody · FindingsBody |
 | **Plan progresso (card + cockpit)** | `PlanJudgment` → PlanFaceStrip · stepState · strip summary |
 | Plan card peels | `PlanCard` host · `PlanCardRevisionBody` · `PlanCardStepRow` |

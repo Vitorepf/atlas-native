@@ -48,11 +48,6 @@ struct ChangeReviewDiffView: View {
     }
 }
 
-extension ChangeReviewSectionsA11y {
-    static func spokenToast(_ text: String) -> String {
-        "aviso, \(text)"
-    }
-}
 
 // MARK: - ChangeReview chrome (peel de ChangeReviewSections)
 // Toast → ChangeReviewSections+Toast.swift

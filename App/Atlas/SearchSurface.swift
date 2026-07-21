@@ -23,7 +23,6 @@ extension SearchView {
         )
     }
 
-    static var searchScreenHint: String { SearchScreenJudgment.screenHint }
 }
 
 extension SearchView {
@@ -33,7 +32,7 @@ extension SearchView {
             .accessibilityIdentifier(A11yID.searchScreen)
             .accessibilityLabel(spokenSearchScreenLabel())
             .accessibilityValue(searchScreenFace.productWord)
-            .accessibilityHint(Self.searchScreenHint)
+            .accessibilityHint(SearchScreenJudgment.screenHint)
             .onAppear { focused = true }
     }
 }
