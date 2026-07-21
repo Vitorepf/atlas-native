@@ -311,7 +311,8 @@ extension ConversationView {
 
     func copy(_ text: String, label: String) {
         UIPasteboard.general.string = text
-        AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+        // Success: copy completed (same class as markdown copy).
+        AtlasMotion.successNotification(reduceMotion: reduceMotion)
         setToast("\(label) copiada")
     }
 }

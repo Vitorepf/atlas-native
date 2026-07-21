@@ -27,6 +27,7 @@ struct AutonomosHubView: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom, 28)
+                    .accessibilityLabel(unit.charter)
 
                 primaryVerb
                     .padding(.bottom, 8)
@@ -55,6 +56,7 @@ struct AutonomosHubView: View {
         }
         .scrollIndicators(.hidden)
         .accessibilityIdentifier(A11yID.autonomosHub)
+        // Contain: hero, charter, Retomar/nav lines stay separately focusable.
         .accessibilityElement(children: .contain)
     }
 
