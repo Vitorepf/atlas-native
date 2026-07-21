@@ -274,7 +274,10 @@ extension EditorialTurn {
 extension EditorialTurn {
     @ViewBuilder
     var assistantExecutionRibbon: some View {
-        if bubble.streaming, bubble.hasLiveExecutionSurface {
+        // WAVE-027: presence-ongoing keeps ribbon; not streaming-only (sink ≡ strip).
+        // WAVE-012 dual-surface reconnect silence remains inside ExecutionRibbon.
+        if bubble.hasLiveExecutionSurface,
+           ConversationExecutionPhase.isPresenceOngoing(bubble) {
             ExecutionRibbon(bubble: bubble, reduceMotion: reduceMotion, onStop: onStop)
         }
     }

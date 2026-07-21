@@ -36,8 +36,10 @@ struct ConversationComposer: View {
     // deixava o operador sem botão de enviar. Estado de composição ⊃ estado de foco.
     var expanded: Bool { focused.wrappedValue || !model.drafts.isEmpty }
 
-    /// Turno vivo (streaming) — dirige a faixa de execução dentro do composer.
-    var liveBubble: ChatBubble? { model.bubbles.last(where: { $0.streaming }) }
+    /// Presence-ongoing bubble (WAVE-027) — not streaming-only (paused/reconnect keep strip).
+    var liveBubble: ChatBubble? {
+        ConversationExecutionPhase.selectPresenceBubble(from: model.bubbles)
+    }
 
     var composerFadeBackground: some View {
         LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)

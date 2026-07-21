@@ -51,18 +51,27 @@ extension ExecutionStateCard {
 
 extension ExecutionStateCard {
     var stateHeader: some View {
+        // WAVE-027: primary = face spoken; server title = detail only.
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: icon)
                 .atlasSans(13, .semibold)
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
-            Text(state.title)
-                .font(AtlasFont.mono(11, .semibold))
-                .foregroundStyle(AtlasTheme.textPrimary)
-                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(ConversationExecutionPhase.primarySpoken(presenceFace))
+                    .font(AtlasFont.mono(11, .semibold))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityHidden(true)
+                if !state.title.isEmpty {
+                    Text(state.title)
+                        .font(AtlasFont.serifItalic(12))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .lineLimit(2)
+                        .accessibilityHidden(true)
+                }
+            }
             Spacer(minLength: 0)
-            // Face word (product vocabulary) — attention overlays stay on kindBadge.
-            Text(presenceFace.productWord.uppercased())
+            Text(ConversationExecutionPhase.primaryProduct(presenceFace).uppercased())
                 .font(AtlasFont.mono(9))
                 .tracking(0.6)
                 .foregroundStyle(AtlasTheme.textTertiary)

@@ -148,4 +148,102 @@ enum ConversationExecutionPhase {
         guard let ms, ms >= 0 else { return nil }
         return AtlasTime.formatActiveDuration(milliseconds: ms)
     }
+
+    // MARK: - WAVE-027 primary chrome + presence-ongoing selection
+
+    /// Primary kicker = spoken face words (strip / card / LiveNow lead).
+    static func primarySpoken(_ face: ConversationExecutionFace) -> String {
+        spokenFace(face)
+    }
+
+    /// Product word for mono chrome (uppercase in UI when needed).
+    static func primaryProduct(_ face: ConversationExecutionFace) -> String {
+        face.productWord
+    }
+
+    /// Presence still demands operator attention chrome (not finished/quiet).
+    static func isPresenceOngoing(_ bubble: ChatBubble) -> Bool {
+        if let presence = bubble.executionPresence, presence.isOngoing {
+            return true
+        }
+        if bubble.streaming { return true }
+        let face = face(for: bubble)
+        switch face {
+        case .finished, .quiet:
+            return false
+        case .reconnect, .paused, .multiAgent, .running:
+            return true
+        }
+    }
+
+    /// Composer / strip selection: ongoing presence first, not streaming-only.
+    /// Fallback: last streaming, then last bubble with live strip chrome.
+    static func selectPresenceBubble(from bubbles: [ChatBubble]) -> ChatBubble? {
+        if let ongoing = bubbles.reversed().first(where: { bubble in
+            bubble.traceId != nil && bubble.executionPresence?.isOngoing == true
+        }) {
+            return ongoing
+        }
+        if let streaming = bubbles.last(where: \.streaming) {
+            return streaming
+        }
+        return bubbles.reversed().first(where: { isPresenceOngoing($0) && stripShowsLiveChrome($0) })
+    }
+
+    /// Agent lane vocabulary under multi/running — attention words or silence.
+    /// Avoids parallel “processando/na fila” dialect fighting the face.
+    static func agentStatusWord(rawStatus: String) -> String? {
+        switch AtlasTurnStatus(rawValue: rawStatus) {
+        case .queued, .processing:
+            return nil // silence — face carries running/multi
+        case .awaitingUserChoice:
+            return spokenAttention(.decision)
+        case .awaitingExternal:
+            return spokenAttention(.awaiting)
+        case .succeeded:
+            return primaryProduct(.finished)
+        case .failed:
+            return spokenAttention(.failed)
+        case .cancelled:
+            return "cancelado"
+        case .unknown(let raw):
+            return raw.isEmpty ? nil : raw
+        }
+    }
+
+    // MARK: Glance ↔ face adapter (WAVE-018 / 027 honesty)
+
+    /// Maps in-app face → glance ContentState vocabulary.
+    /// reconnect/quiet have **no** dedicated glance kind — honesty absence, not invention.
+    enum GlanceAdapter {
+        case finished
+        case multiSession
+        case paused
+        case running
+        /// No ContentState field — do not invent glance chrome.
+        case unmapped(reason: String)
+
+        static func map(_ face: ConversationExecutionFace) -> GlanceAdapter {
+            switch face {
+            case .finished: return .finished
+            case .multiAgent: return .multiSession
+            case .paused: return .paused
+            case .running: return .running
+            case .reconnect:
+                return .unmapped(reason: "reconnect is strip-primary dual-surface; glance has no reconnect kind")
+            case .quiet:
+                return .unmapped(reason: "quiet is silence; glance omits quiet as a distinct kind")
+            }
+        }
+
+        var productWord: String {
+            switch self {
+            case .finished: return "finished"
+            case .multiSession: return "multi"
+            case .paused: return "paused"
+            case .running: return "running"
+            case .unmapped: return "—"
+            }
+        }
+    }
 }

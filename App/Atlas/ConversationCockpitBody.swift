@@ -37,18 +37,9 @@ extension AgentRow {
         }
     }
 
-    var statusWord: String {
-        switch turnStatus {
-        case .queued: return "na fila"
-        case .processing: return "processando"
-        case .awaitingUserChoice: return "aguardando"
-        case .awaitingExternal: return "aguardando externo"
-        case .succeeded: return "pronto"
-        case .failed: return "falhou"
-        case .cancelled: return "cancelado"
-        case .unknown(let raw): return raw
-        default: return "—"
-        }
+    /// WAVE-027: face/attention vocabulary or silence — no parallel “processando” dialect.
+    var statusWord: String? {
+        ConversationExecutionPhase.agentStatusWord(rawStatus: agent.status)
     }
 }
 
@@ -60,7 +51,9 @@ extension AgentRow {
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
             agentModelLabel
             Spacer()
-            Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
+            if let statusWord {
+                Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
+            }
         }
     }
 }
@@ -143,78 +136,55 @@ struct ExecutingStrip: View {
 
     @ViewBuilder
     var stripStatusTitle: some View {
+        // WAVE-027: primary kicker = face spoken; progress/activity/reconnect = detail.
+        HStack(spacing: 6) {
+            Text(ConversationExecutionPhase.primarySpoken(face))
+                .font(AtlasFont.mono(11, .semibold))
+                .foregroundStyle(
+                    face == .quiet || face == .finished
+                        ? AtlasTheme.textTertiary
+                        : AtlasTheme.textSecondary
+                )
+                .lineLimit(1)
+                .layoutPriority(3)
+                .accessibilityHidden(true)
+            stripStatusDetail
+        }
+    }
+
+    @ViewBuilder
+    var stripStatusDetail: some View {
         switch face {
         case .reconnect:
-            stripStatusReconnectOrProgress
-        case .finished:
-            Text(ConversationExecutionPhase.spokenFace(.finished))
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(1)
-                .accessibilityHidden(true)
-        case .paused:
-            Text(ConversationExecutionPhase.spokenFace(.paused))
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(1)
-                .accessibilityHidden(true)
-        case .multiAgent, .running:
-            if bubble.executionProgress != nil {
-                stripStatusReconnectOrProgress
-            } else {
-                stripStatusActivityOrIdle
-            }
-        case .quiet:
-            Text(ConversationExecutionPhase.spokenFace(.quiet))
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(1)
-                .accessibilityHidden(true)
-        }
-    }
-
-    @ViewBuilder
-    var stripStatusReconnectOrProgress: some View {
-        if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
-            Text(line)
-                .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(1)
-                .truncationMode(.tail)
-                .layoutPriority(2)
-                .accessibilityHidden(true)
-        } else if let p = bubble.executionProgress {
-            Text("\(p.current)/\(p.total) · \(p.title)")
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(1)
-                .truncationMode(.tail)
-                .layoutPriority(2)
-                .accessibilityHidden(true)
-        }
-    }
-
-    @ViewBuilder
-    var stripStatusActivityOrIdle: some View {
-        if let act = bubble.currentActivity {
-            HStack(spacing: 5) {
-                Image(systemName: activityIcon(act.kind))
-                    .atlasSans(10, .semibold)
-                    .foregroundStyle(AtlasTheme.accent.opacity(0.85))
-                    .accessibilityHidden(true)
-                Text(act.title)
+            if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
+                Text(line)
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .layoutPriority(2)
                     .accessibilityHidden(true)
             }
-        } else {
-            Text("Seguindo a execução")
-                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(1)
-                .layoutPriority(2)
-                .accessibilityHidden(true)
+        case .multiAgent, .running:
+            if let p = bubble.executionProgress {
+                Text("\(p.current)/\(p.total) · \(p.title)")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .layoutPriority(2)
+                    .accessibilityHidden(true)
+            } else if let act = bubble.currentActivity {
+                Text(act.title)
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .layoutPriority(2)
+                    .accessibilityHidden(true)
+            }
+        case .finished, .paused, .quiet:
+            EmptyView()
         }
     }
 

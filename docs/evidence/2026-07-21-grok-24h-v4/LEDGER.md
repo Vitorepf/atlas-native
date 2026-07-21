@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 21
-- idle_compress_passes: 2
+- waves_completed: 22
+- idle_compress_passes: 3
 - collapse_host: 0
 
 ## Waves done
@@ -32,14 +32,16 @@ mode: designer + implementer
 - WAVE-024
 - WAVE-025
 - WAVE-026
+- WAVE-027
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `8fc770ab` · delete dead peels ConversationCockpit husk + ArenaCompositeUI Core-dup
 
 ## Designer
 - designs_proposed: 24
-- designs_open: 3
+- designs_open: 2
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -47,12 +49,13 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-027-conversation-presence-primary-chrome | **high** | proposed |
-| 2 | WAVE-028-codigo-commit-map-judgment-instrument | **high** | proposed |
-| 3 | WAVE-029-conversation-occasion-pack-honesty | **high** | proposed |
+| 1 | WAVE-028-codigo-commit-map-judgment-instrument | high | proposed |
+| 2 | WAVE-029-conversation-occasion-pack-honesty | high | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-
+- **Dual v5:** A croqui · B fábrica · máx 2 idle sem ROI
+- **WAVE-026 done:** decision instrument Autônomos
+- **WAVE-027 done 2026-07-21:** presence primary chrome · selectPresenceBubble · face lead strip/card/LiveNow · ribbon ongoing · DEVICE_PENDING

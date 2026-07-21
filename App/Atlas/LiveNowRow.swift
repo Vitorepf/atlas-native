@@ -43,14 +43,23 @@ struct LiveNowRow: View {
                             .foregroundStyle(AtlasTheme.textPrimary)
                             .lineLimit(2)
                             .layoutPriority(1)
+                        // WAVE-027: face spoken is the lead; phaseTitle is detail only.
                         HStack(spacing: 6) {
-                            Text(session.phaseTitle)
-                                .font(AtlasFont.serifItalic(13))
-                                .foregroundStyle(AtlasTheme.textSecondary)
-                                .lineLimit(1)
+                            Text(ConversationExecutionPhase.primarySpoken(
+                                ConversationExecutionPhase.face(for: session)
+                            ))
+                            .font(AtlasFont.mono(12, .semibold))
+                            .foregroundStyle(AtlasTheme.textSecondary)
+                            .lineLimit(1)
                             if session.isRemote {
                                 remoteBadge
                             }
+                        }
+                        if !session.phaseTitle.isEmpty {
+                            Text(session.phaseTitle)
+                                .font(AtlasFont.serifItalic(12))
+                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .lineLimit(1)
                         }
                         timingLine(now: context.date)
                     }
@@ -130,26 +139,28 @@ extension LiveNowRow {
     }
 
     func spokenRunningLabel(prefix: String, now: Date) -> String {
-        // WAVE-023: same face words as ribbon/strip.
-        let faceWord = ConversationExecutionPhase.spokenFace(.running)
+        // WAVE-027: face lead, phaseTitle detail.
+        let faceWord = ConversationExecutionPhase.primarySpoken(.running)
+        let detail = session.phaseTitle
         if let clock = spokenClock(now: now) {
-            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord) há \(clock)"
+            return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), há \(clock)"
         }
-        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord), tempo ativo indisponível"
+        return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), tempo ativo indisponível"
     }
 
     func spokenPausedLabel(prefix: String, now: Date) -> String {
-        let faceWord = ConversationExecutionPhase.spokenFace(.paused)
+        let faceWord = ConversationExecutionPhase.primarySpoken(.paused)
+        let detail = session.phaseTitle
         let age = pauseAgeHours(now: now).map { ", há \($0) horas" } ?? ""
         if let clock = spokenClock(now: now) {
-            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord) em \(clock)\(age)"
+            return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), em \(clock)\(age)"
         }
-        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord), tempo ativo indisponível\(age)"
+        return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), tempo ativo indisponível\(age)"
     }
 
     func spokenFinishedLabel(prefix: String) -> String {
-        let faceWord = ConversationExecutionPhase.spokenFace(.finished)
-        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord)"
+        let faceWord = ConversationExecutionPhase.primarySpoken(.finished)
+        return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(session.phaseTitle)"
     }
 }
 
@@ -177,8 +188,10 @@ extension LiveNowRow {
     }
 
     var timingWord: String {
-        // WAVE-023 product face words (visual ≡ spoken vocabulary).
-        ConversationExecutionPhase.spokenFace(ConversationExecutionPhase.face(for: session))
+        // WAVE-027 product mono line (same vocabulary as strip/card).
+        ConversationExecutionPhase.primaryProduct(
+            ConversationExecutionPhase.face(for: session)
+        )
     }
 
     var timingColor: Color {
