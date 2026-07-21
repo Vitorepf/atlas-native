@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 58
-- idle_compress_passes: 10
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -73,27 +73,22 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
-- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
-- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
-- pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
-- pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow
-- pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
-- pass 9 · `876b24e3` · peel ArtifactPreview → TraceEvidence + Zoom
-- pass 10 · `9d4dac9c` · delete dead spokenReviewSheetAvailableLabel after WAVE-063
 
 ## Designer
-- designs_proposed: 58
-- designs_open: 0
-- last_regen: regen-queue.py
+- designs_proposed: 60
+- designs_open: 2
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| 1 | WAVE-064-home-live-now-attention-judgment-instrument | **max** | proposed |
+| 2 | WAVE-065-autonomos-multi-area-bind-chooser-instrument | **max** | proposed |
 
 ## Notes
-- WAVE-060–063 + idle peels 7–9. Prefer A fill.
-- DEVICE_PENDING. Continuity App Group BLOCKED.
-- LEDGER idle list is B-owned; do not strip passes 3–9.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
