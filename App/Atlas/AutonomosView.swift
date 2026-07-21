@@ -217,15 +217,15 @@ struct AutonomosViewHeader: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             if !subtitle.isEmpty {
-                Text(subtitle.uppercased())
-                    .font(AtlasFont.mono(10)).tracking(1.2)
+                Text(subtitle)
+                    .font(AtlasFont.serif(12, .semibold))
                     .foregroundStyle(subtitleLive ? AtlasTheme.accent : AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
             if auditModeEnabled {
-                Text("MODO AUDITORIA")
-                    .font(AtlasFont.mono(9)).tracking(1.0)
+                Text("Modo auditoria")
+                    .font(AtlasFont.serif(11, .semibold))
                     .foregroundStyle(AtlasTheme.domOperacional)
                     .accessibilityHidden(true)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
@@ -1397,14 +1397,12 @@ enum AutonomosMapChrome {
                     .foregroundStyle(alert ? AtlasTheme.alert : AtlasTheme.accent)
                     .accessibilityHidden(true)
             }
-            Text(text.uppercased())
-                .font(AtlasFont.mono(10))
-                .tracking(1.4)
+            Text(text)
+                .font(AtlasFont.serif(13, .semibold))
                 .foregroundStyle(alert ? AtlasTheme.alert : (live ? AtlasTheme.accent : AtlasTheme.textTertiary))
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
-        // Spoken title stays natural case — uppercase tracking is visual only.
         .accessibilityLabel(text)
     }
 
@@ -1436,12 +1434,10 @@ enum AutonomosMapChrome {
     }
 
     static func section(_ text: String) -> some View {
-        Text(text.uppercased())
-            .font(AtlasFont.mono(10))
-            .tracking(1.2)
+        Text(text)
+            .font(AtlasFont.serif(13, .semibold))
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)
-            // Spoken title stays natural case — uppercase tracking is visual only.
             .accessibilityLabel(text)
     }
 
