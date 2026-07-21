@@ -123,6 +123,7 @@
 | **Root chrome routes peels** | Face · ConversationRoutes · Lifecycle (WAVE-115) |
 | **TurnPresence peels** | host · Activity · Runtime (WAVE-116) |
 | **LiveTimeline peels** | host · NarrativeRow · NarrativeRowView (WAVE-117) |
+| **Commit row peels** | Body · Meta (WAVE-118) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
