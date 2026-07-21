@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 600
-domain_index: 0
-last_focus: "continuous residual soft-hold pass 600"
-session_commits: 171
+pass: 601
+domain_index: 1
+last_focus: "Home spoken* honesty (conversas/workspace/arena/codeTopBar)"
+session_commits: 172
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,8 +14,11 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **171** · soft **0** · density OK · 46+2 · gates green
+commits **172** · soft **0** · density OK · 46+2 · gates green · last **2b6f7093**
 
 ## Continuous residual
 
 **never Goal Done**
+
+Domains 0–7 rotate. Soft *Sections*/*States* = 0. Densify headroom ~0 under caps.
+Next: domain 1 Conversa / residual honesty (spoken* · productLabel · MARK) when ROI ≥ rename-proof.

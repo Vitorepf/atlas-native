@@ -8,17 +8,23 @@ product_waves: forbidden
 
 ## State
 - phase: act
-- focus: continuous residual
-- domain_index: 0
-- pass: 100
-- last_commit: 58b8f4b2
-- session_commits: 161
+- focus: continuous residual domain 1
+- domain_index: 1
+- pass: 601
+- last_commit: 2b6f7093
+- session_commits: 172
 - soft_sections_states: 0
 - swift_App_Atlas: 46
 - swift_Widgets: 2
 
 ## Scoreboard
-commits 161 · soft 0 · density OK · 46+2 hosts · gates green
+commits 172 · soft 0 · density OK · 46+2 hosts · gates green
+
+## Last proof
+- AtlasCoreChecks ✓
+- App make build ✓
+- grok-god-wave-guard ✓
+- polish(ui): GOD-RESTRUCTURE Home spoken* honesty (domain 0)
 
 ## notes
 Goal until cancel. Loop 15m. Never Goal Done. Never god_hold.
