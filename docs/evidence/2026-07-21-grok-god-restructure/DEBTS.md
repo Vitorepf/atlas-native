@@ -4,9 +4,9 @@
 
 ```yaml
 pass: 1
-domain_index: 1
-last_focus: "ComposerDraftJudgmentAttach fuse"
-session_commits: 38+
+domain_index: 0
+last_focus: "NightlyProposal Block+Schedule fuse · AtlasApp onChange fix"
+session_commits: 40+
 ```
 
 ## Soft *Sections*/*States*: **0**

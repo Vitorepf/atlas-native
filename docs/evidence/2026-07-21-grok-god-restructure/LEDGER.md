@@ -28,6 +28,23 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T22:57Z — NightlyProposal fuse · AtlasApp fix
+
+```yaml
+phase: prove
+focus: NightlyProposal Block+Schedule · AtlasApp onChange 1-arg
+domain_index: 0
+pass: 1
+commands: |
+  Block+Schedule → NightlyProposal ~338
+  AtlasApp onChange(of:) { phase in } (iOS17 single-arg)
+  gates ✓
+before_after: |
+  −2 peels · HALT_FIX build
+notes: next RootChrome density
+```
+
+
 ### 2026-07-21T22:56Z — ComposerDraftJudgmentAttach fuse
 
 ```yaml

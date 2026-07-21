@@ -104,7 +104,7 @@
 | **Controle do loop Autônomos (veto)** | `AutonomosRunControlJudgment` → Hub primaryVerb → ReasonSheet → `model.control` / `startRun` · bind `selectArea` |
 | **Multi-área bind (chooser)** | `AutonomosAreaBindJudgment` → face none/auto/needs_bind/bound · `AutonomosAreaBindChooser` · Hub CTA |
 | **Proposta noturna** | `NightlyProposalJudgment` → face pending/muted/muted_auto/hidden · Block/Card/Rhythm |
-| **Nightly schedule** | `NightlyProposalController` host · `NightlyProposalSchedule` |
+| **Nightly schedule** | `NightlyProposal` host (controller·block·schedule fused) |
 | **Ritmo do dia (aprender)** | `AutonomosRhythmJudgment` → face learning/learned/paused · line/sheet · pack Ask catalog |
 | **Veto retroativo self-construction** | `SelfConstructionVetoJudgment` → ReceiptSheet canRevert → `model.revertCycle` |
 | **Veto + nightly pack** | `SelfConstructionVetoJudgment.packFacts` · Nightly pack on catalog · can_do canRevert → AskContext |
