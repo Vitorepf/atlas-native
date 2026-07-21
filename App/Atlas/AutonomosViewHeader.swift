@@ -10,7 +10,7 @@ extension AutonomosViewHeader {
         return parts.joined(separator: ", ")
     }
 
-    func spokenBackLabel() -> String { WorkspaceScreenJudgment.backLabel }
+    func spokenBackLabel() -> String { WorkspaceJudgment.backLabel }
 
     func spokenBackHint() -> String { "volta" }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-061: graph screen face → AtlasCodeGraphScreenJudgment
+// WAVE-061: graph screen face → AtlasCodeGraphLoadJudgment
 
 extension AtlasCodeView {
     /// WAVE-061: exclusive graph-screen face from published phase + nodes.
@@ -11,7 +11,7 @@ extension AtlasCodeView {
             if case .failed(let message) = model.phase { return message }
             return nil
         }()
-        return AtlasCodeGraphScreenJudgment.face(
+        return AtlasCodeGraphLoadJudgment.face(
             phase: model.phase,
             nodeCount: model.graph?.nodes.count ?? 0,
             failMessage: fail
@@ -19,7 +19,7 @@ extension AtlasCodeView {
     }
 
     func spokenCodeScreenLabel() -> String {
-        AtlasCodeGraphScreenJudgment.spokenScreen(
+        AtlasCodeGraphLoadJudgment.spokenScreen(
             repo: model.repo,
             face: graphScreenFace
         )

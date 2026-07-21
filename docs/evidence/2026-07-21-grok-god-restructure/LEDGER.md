@@ -7,10 +7,10 @@ dual: off
 
 ## State
 - phase: act
-- focus: fuse JudgmentChrome→Judgment
-- actionable: 5
-- passes: 1
-- last_commit: 1b7d156a
+- focus: rename ScreenJudgment + Face files
+- actionable: 3
+- passes: 2
+- last_commit: 9a36eaf4
 - collapse_host: 0
 - god_hold_streak: 0
 

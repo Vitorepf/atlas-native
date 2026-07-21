@@ -55,7 +55,7 @@ enum AtlasCodeRadarAskContext {
             return nil
         }()
         let repoCount = model.workspace.map { $0.folders.reduce(0) { $0 + $1.repos.count } + $0.recents.count }
-        let screenPack = AtlasCodeRadarScreenJudgment.packFacts(
+        let screenPack = AtlasCodeRadarLoadJudgment.packFacts(
             phase: model.phase,
             repositoryCount: repoCount,
             failMessage: failMsg

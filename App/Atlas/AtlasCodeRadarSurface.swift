@@ -77,7 +77,7 @@ extension AtlasCodeRadarView {
             if case .failed(let message) = model.phase { return message }
             return nil
         }()
-        return AtlasCodeRadarScreenJudgment.face(
+        return AtlasCodeRadarLoadJudgment.face(
             phase: model.phase,
             repositoryCount: model.workspace?.repositoryCount,
             failMessage: fail
@@ -91,10 +91,10 @@ extension AtlasCodeRadarView {
     }
 
     var radarShellSpokenLabel: String {
-        AtlasCodeRadarScreenJudgment.spokenShell(face: radarScreenFace)
+        AtlasCodeRadarLoadJudgment.spokenShell(face: radarScreenFace)
     }
 
-    static var shellHint: String { AtlasCodeRadarScreenJudgment.shellHint }
+    static var shellHint: String { AtlasCodeRadarLoadJudgment.shellHint }
 
     func spokenEmptyWorkspace() -> String {
         AtlasCodeRadarScreenFace.empty.spokenFace

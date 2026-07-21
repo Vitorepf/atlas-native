@@ -33,7 +33,7 @@ enum WorkspaceScreenFace: Equatable {
 // MARK: - Judgment
 
 /// Pure workspace-screen grammar — face · spoken · pack.
-enum WorkspaceScreenJudgment {
+enum WorkspaceJudgment {
 
     static func face(
         showsLoadingShell: Bool,

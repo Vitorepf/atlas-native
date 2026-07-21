@@ -1,14 +1,14 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-071: search screen face → SearchScreenJudgment
+// WAVE-071: search screen face → SearchJudgment
 
 // MARK: - Screen face · a11y
 
 extension SearchView {
     /// WAVE-071: exclusive search face from published shell + counts.
     var searchScreenFace: SearchScreenFace {
-        SearchScreenJudgment.face(
+        SearchJudgment.face(
             showsLoadingShell: showsLoadingShell,
             showsNetworkFailure: showsNetworkFailure,
             isBrowsingRecent: isBrowsingRecent,
@@ -26,9 +26,9 @@ extension SearchView {
         content
             .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.searchScreen)
-            .accessibilityLabel(SearchScreenJudgment.spokenScreen(face: searchScreenFace, trimmedQuery: trimmedQuery))
+            .accessibilityLabel(SearchJudgment.spokenScreen(face: searchScreenFace, trimmedQuery: trimmedQuery))
             .accessibilityValue(searchScreenFace.productWord)
-            .accessibilityHint(SearchScreenJudgment.screenHint)
+            .accessibilityHint(SearchJudgment.screenHint)
             .onAppear { focused = true }
     }
 }
@@ -69,8 +69,8 @@ extension SearchViewHeader {
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
-        .accessibilityLabel(SearchScreenJudgment.backLabel)
-        .accessibilityHint(SearchScreenJudgment.backHint)
+        .accessibilityLabel(SearchJudgment.backLabel)
+        .accessibilityHint(SearchJudgment.backHint)
     }
 }
 
@@ -98,8 +98,8 @@ extension SearchViewHeader {
     func searchClearA11y<Content: View>(_ content: Content) -> some View {
         content
             .buttonStyle(.plain)
-            .accessibilityLabel(SearchScreenJudgment.clearLabel)
-            .accessibilityHint(SearchScreenJudgment.clearHint)
+            .accessibilityLabel(SearchJudgment.clearLabel)
+            .accessibilityHint(SearchJudgment.clearHint)
             .accessibilityIdentifier(A11yID.searchClear)
     }
 }

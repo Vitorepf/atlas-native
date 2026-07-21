@@ -38,7 +38,7 @@ enum AtlasCodeGraphScreenFace: Equatable {
 // MARK: - Judgment
 
 /// Pure graph-screen load grammar — face · spoken · pack.
-enum AtlasCodeGraphScreenJudgment {
+enum AtlasCodeGraphLoadJudgment {
 
     static func face(
         phase: LoadPhase,

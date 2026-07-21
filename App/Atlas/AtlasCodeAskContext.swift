@@ -114,7 +114,7 @@ enum AtlasCodeAskContext {
             if case .failed(let m) = model.phase { return m }
             return nil
         }()
-        let screenPack = AtlasCodeGraphScreenJudgment.packFacts(
+        let screenPack = AtlasCodeGraphLoadJudgment.packFacts(
             repo: model.repo,
             phase: model.phase,
             nodeCount: model.graph?.nodes.count ?? 0,

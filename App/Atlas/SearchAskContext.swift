@@ -4,7 +4,7 @@ import AtlasCore
 // MARK: - Invite · empty
 
 /// Pack de ocasião Search — WAVE-176 agentic door (pill + pack).
-/// Casca only · SearchScreenJudgment.packFacts sovereignty · never invents threads.
+/// Casca only · SearchJudgment.packFacts sovereignty · never invents threads.
 enum SearchAskContext {
     static let invite = "o que você procura?"
 
@@ -61,7 +61,7 @@ enum SearchAskContext {
         facts.append("tela: busca")
         anchors.append("surface: search")
 
-        let screen = SearchScreenJudgment.packFacts(
+        let screen = SearchJudgment.packFacts(
             showsLoadingShell: showsLoadingShell,
             showsNetworkFailure: showsNetworkFailure,
             isBrowsingRecent: isBrowsingRecent,
@@ -101,7 +101,7 @@ enum SearchAskContext {
 
         let empty = ConversationEmptyJudgment.packFacts(
             prompt: emptyPrompt(
-                face: SearchScreenJudgment.face(
+                face: SearchJudgment.face(
                     showsLoadingShell: showsLoadingShell,
                     showsNetworkFailure: showsNetworkFailure,
                     isBrowsingRecent: isBrowsingRecent,

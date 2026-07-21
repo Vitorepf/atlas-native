@@ -1,12 +1,12 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-073: workspace screen face → WorkspaceScreenJudgment
+// WAVE-073: workspace screen face → WorkspaceJudgment
 
 extension WorkspaceView {
     /// WAVE-073: exclusive workspace face from published shell + counts.
     var workspaceScreenFace: WorkspaceScreenFace {
-        WorkspaceScreenJudgment.face(
+        WorkspaceJudgment.face(
             showsLoadingShell: showsLoadingShell,
             showsNetworkFailure: showsNetworkFailure,
             threadCount: threads.count
@@ -14,7 +14,7 @@ extension WorkspaceView {
     }
 
     func spokenWorkspaceScreenLabel() -> String {
-        WorkspaceScreenJudgment.spokenScreen(
+        WorkspaceJudgment.spokenScreen(
             title: title,
             face: workspaceScreenFace,
             areaLabel: area.label
@@ -22,7 +22,7 @@ extension WorkspaceView {
     }
 
     var workspaceScreenHint: String {
-        WorkspaceScreenJudgment.screenHint(freeOnly: freeOnly)
+        WorkspaceJudgment.screenHint(freeOnly: freeOnly)
     }
 }
 
@@ -80,11 +80,11 @@ extension WorkspaceView {
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
-        .accessibilityLabel(WorkspaceScreenJudgment.backLabel)
+        .accessibilityLabel(WorkspaceJudgment.backLabel)
     }
 
     var headerSpokenTitle: String {
-        WorkspaceScreenJudgment.spokenHeaderTitle(title: title, freeOnly: freeOnly)
+        WorkspaceJudgment.spokenHeaderTitle(title: title, freeOnly: freeOnly)
     }
 }
 
@@ -122,8 +122,8 @@ extension WorkspaceView {
             areaFilterChipLabel(a, active: active)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(WorkspaceScreenJudgment.spokenAreaFilter(a.label))
-        .accessibilityHint(WorkspaceScreenJudgment.areaFilterHint)
+        .accessibilityLabel(WorkspaceJudgment.spokenAreaFilter(a.label))
+        .accessibilityHint(WorkspaceJudgment.areaFilterHint)
         .accessibilityAddTraits(active ? .isSelected : [])
     }
 }
@@ -149,8 +149,8 @@ extension WorkspaceView {
             AgenticPillFace(invite: workspacePillInvite)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(WorkspaceScreenJudgment.newConversationLabel)
-        .accessibilityHint(WorkspaceScreenJudgment.newConversationHint)
+        .accessibilityLabel(WorkspaceJudgment.newConversationLabel)
+        .accessibilityHint(WorkspaceJudgment.newConversationHint)
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(

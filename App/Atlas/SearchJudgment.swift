@@ -43,7 +43,7 @@ enum SearchScreenFace: Equatable {
 // MARK: - Judgment
 
 /// Pure search-screen grammar — face · spoken · pack.
-enum SearchScreenJudgment {
+enum SearchJudgment {
 
     static let screenHint = "busca local nas conversas já carregadas na sessão"
     static let backLabel = "voltar"

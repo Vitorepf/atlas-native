@@ -100,7 +100,7 @@ extension ConversationView {
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
-        .accessibilityLabel(WorkspaceScreenJudgment.backLabel)
+        .accessibilityLabel(WorkspaceJudgment.backLabel)
         .accessibilityHint("fecha a conversa")
     }
 }

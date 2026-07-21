@@ -23,13 +23,13 @@
 | Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View · pack attention (WAVE-182) · pack workspace shell (WAVE-183) |
 | **LiveNow pack (Home)** | `LiveNowJudgment.packFacts` · HomeAsk (WAVE-183) · packHubFacts Workspace (WAVE-186) |
 | **Arena shell pack** | `ArenaPremiumAskContext.packShellFacts` · tela/aba/cobertura (WAVE-186) |
-| **Radar screen load (frota)** | `AtlasCodeRadarScreenJudgment` → face loading/failed/empty/ready · shell a11y · pack Ask (WAVE-162) |
+| **Radar screen load (frota)** | `AtlasCodeRadarLoadJudgment` → face loading/failed/empty/ready · shell a11y · pack Ask (WAVE-162) |
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack · packIdentityFacts (WAVE-187) |
 | **Arena live measurement pack** | `ArenaLiveControlJudgment.packMeasurementFacts` → progress/alerts/narrative/list (WAVE-187) |
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
 | Código grafo peels | `AtlasCodeSurface` host · `AtlasCodeSurfaceGraph` content/list |
 | **Grafo chrome (status/filtros/worktrees/semana)** | `AtlasCodeGraphChrome` status · `FilterChrome` · `WorktreeChrome` · `WeekChrome` (WAVE-156) |
-| **Grafo screen load (Código)** | `AtlasCodeGraphScreenJudgment` → face loading/failed/empty/ready · screen a11y · pack in CodeAsk (WAVE-161) |
+| **Grafo screen load (Código)** | `AtlasCodeGraphLoadJudgment` → face loading/failed/empty/ready · screen a11y · pack in CodeAsk (WAVE-161) |
 | **Pílula ask (Código)** | `AtlasCodeAskPillJudgment` → face invite/anchoring/legend · AskContext pack |
 | **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
 | **Heal veto / undoError** | `AtlasCodeHealVetoJudgment` → ReceiptSheet · canVeto · undo fail line |
@@ -42,10 +42,10 @@
 | **Conversation thread shell** | `ConversationThreadShellJudgment.packFacts` → thread/title/workspace binding (WAVE-185) |
 | **Workspace catalog shell pack** | `WorkspaceThreadJudgment.packShellFacts` → WorkspaceAsk (WAVE-185) |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
-| **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y · pack (WAVE-176) |
+| **Search screen (shell)** | `SearchJudgment` → face loading/offline/empty/results · screen a11y · pack (WAVE-176) |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
 | **Search pílula / pack** | `SearchAskContext` + `SearchView` AgenticAskDock · PartidaCanDo.search (WAVE-176) |
-| **Workspace screen (lista)** | `WorkspaceScreenJudgment` → face loading/offline/empty/list · screen a11y · pack Ask (WAVE-162) |
+| **Workspace screen (lista)** | `WorkspaceJudgment` → face loading/offline/empty/list · screen a11y · pack Ask (WAVE-162) |
 | **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face · pack Home partida (WAVE-170) |
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |
 | **Ops failure (multi-superfície)** | `AtlasOpsFailureJudgment` → face network/domain/load · FailureEmpty |

@@ -47,7 +47,7 @@ enum AtlasCodeRadarScreenFace: Equatable {
 // MARK: - Judgment
 
 /// Pure Radar screen load grammar — face · spoken · phaseID · pack.
-enum AtlasCodeRadarScreenJudgment {
+enum AtlasCodeRadarLoadJudgment {
 
     static let shellHint = "pastas, recentes e sem retorno verificados do seu código"
 

@@ -71,7 +71,7 @@ enum WorkspaceAskContext {
             if case .failed = session.phase { return threads.isEmpty }
             return false
         }()
-        let screenPack = WorkspaceScreenJudgment.packFacts(
+        let screenPack = WorkspaceJudgment.packFacts(
             title: name,
             showsLoadingShell: showsLoading,
             showsNetworkFailure: showsOffline,
