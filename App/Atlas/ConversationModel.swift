@@ -6,7 +6,6 @@ import UniformTypeIdentifiers
 
 // IDLE-COMPRESS ConversationModel fused host
 
-// --- ConversationModel+AttachmentsAdd.swift ---
 @MainActor
 extension ConversationModel {
     func addImage(
@@ -62,7 +61,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+AttachmentsDraft.swift ---
 @MainActor
 extension ConversationModel {
     struct PendingAttachmentPreparation {
@@ -120,7 +118,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+AttachmentsFile.swift ---
 @MainActor
 extension ConversationModel {
     func addFile(url: URL) {
@@ -166,7 +163,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Continuity.swift ---
 @MainActor
 extension ConversationModel {
     func handoffToSurface(_ destination: AtlasAiSurfaceDestination) async {
@@ -220,7 +216,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Draft.swift ---
 extension ConversationModel {
     func cycleEffort() {
         setEffort(effort.next)
@@ -270,7 +265,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+DraftScope.swift ---
 @MainActor
 extension ConversationModel {
     func adoptDraftScope(_ canonicalScope: String) {
@@ -287,7 +281,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Execute.swift ---
 @MainActor
 extension ConversationModel {
     func execute(
@@ -361,7 +354,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Execution.swift ---
 @MainActor
 extension ConversationModel {
     var currentExecutionPresence: AtlasExecutionPresence? {
@@ -431,7 +423,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+ExecutionHistory.swift ---
 @MainActor
 extension ConversationModel {
     func loadExecutionHistory() async {
@@ -495,7 +486,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Load.swift ---
 extension ConversationModel {
     func load() async {
         await loadQueuedMessages()
@@ -567,7 +557,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Queue.swift ---
 @MainActor
 extension ConversationModel {
     func queue(text: String) async {
@@ -644,7 +633,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+ReadCache.swift ---
 extension ConversationModel {
     func hydrateFromCache(threadId: ThreadID) async -> Bool {
         guard let snapshot = await readCache.load(threadId: threadId.rawValue) else {
@@ -669,7 +657,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+ReadCacheBubbles.swift ---
 extension ConversationModel {
     static func bubbles(from messages: [AtlasAiMessage]) -> [ChatBubble] {
         messages.map { message in
@@ -754,7 +741,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Recover.swift ---
 @MainActor
 extension ConversationModel {
     func recoverPendingIfNeeded() async {
@@ -803,7 +789,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Send.swift ---
 @MainActor
 extension ConversationModel {
     @discardableResult
@@ -895,7 +880,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+SendPayload.swift ---
 @MainActor
 extension ConversationModel {
     func buildSendTurnInput(
@@ -946,7 +930,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+SendUpload.swift ---
 @MainActor
 extension ConversationModel {
     func uploadForSendTurn(
@@ -986,7 +969,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel+Steering.swift ---
 @MainActor
 extension ConversationModel {
     func steerInteraction(
@@ -1009,7 +991,6 @@ extension ConversationModel {
     }
 }
 
-// --- ConversationModel.swift ---
 @MainActor
 @Observable
 final class ConversationModel {

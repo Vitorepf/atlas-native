@@ -4,7 +4,6 @@ import AtlasCore
 // WAVE-009 fused Provenance sections
 // Single-feature peel fusion for Code depth instrument.
 
-// --- fused from AtlasCodeProvenanceSections+Ask.swift ---
 extension AtlasCodeProvenanceSheet {
     /// A porta para o agente, com o commit já no assunto.
     var askButton: some View {
@@ -21,7 +20,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+AskLabel+Lead.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     var askButtonLabelLead: some View {
@@ -36,7 +34,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+AskLabel+Trailing.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     var askButtonLabelTrailing: some View {
@@ -48,7 +45,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+AskLabel.swift ---
 extension AtlasCodeProvenanceSheet {
     var askButtonLabel: some View {
         HStack(spacing: 8) {
@@ -62,7 +58,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Block.swift ---
 extension AtlasCodeProvenanceSheet {
     func block(_ title: String, @ViewBuilder body: () -> some View) -> some View {
         VStack(alignment: .leading, spacing: 7) {
@@ -79,7 +74,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Content+Loading.swift ---
 extension AtlasCodeProvenanceSheet {
     var provenanceLoadingContent: some View {
         TraceEvidenceLoading(text: "lendo o ledger…", reduceMotion: reduceMotion)
@@ -87,7 +81,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Content.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceContent(whyTarget: Binding<AtlasCodeProvenanceWhyTarget?>) -> some View {
@@ -102,7 +95,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Failed+Detail.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceFailedDetail(_ message: String) -> some View {
@@ -115,7 +107,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Failed+Stack+A11y.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceFailedA11y<Content: View>(_ content: Content, message: String) -> some View {
@@ -125,7 +116,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Failed+Stack+Body.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceFailedBody(_ message: String) -> some View {
@@ -136,7 +126,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Failed+Stack.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceFailedStack(_ message: String) -> some View {
@@ -144,7 +133,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Failed+Title.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     var provenanceFailedTitle: some View {
@@ -155,7 +143,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Failed.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceFailed(_ message: String) -> some View {
@@ -163,7 +150,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+FileButton.swift ---
 extension AtlasCodeProvenanceSheet {
     func provenanceFileButton(
         _ file: AtlasCodeFileChange,
@@ -181,7 +167,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Files.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func filesSection(
@@ -194,7 +179,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+FilesBody.swift ---
 extension AtlasCodeProvenanceSheet {
     func filesSectionBody(
         _ provenance: AtlasCodeProvenance,
@@ -207,7 +191,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+FilesHeader.swift ---
 extension AtlasCodeProvenanceSheet {
     var filesSectionHeader: some View {
         Text("ARQUIVOS")
@@ -219,7 +202,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+FilesList.swift ---
 extension AtlasCodeProvenanceSheet {
     func provenanceFilesList(
         _ provenance: AtlasCodeProvenance,
@@ -239,7 +221,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+LawBody+Canon.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func lawCanonText(_ ruleCanon: String) -> some View {
@@ -252,7 +233,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+LawBody+Rule.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func lawRuleText(_ ruleId: String) -> some View {
@@ -263,7 +243,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+LawBody.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func lawCitationBody(ruleId: String) -> some View {
@@ -278,7 +257,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+LawChrome.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     var lawCitationChrome: some View {
@@ -288,7 +266,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+LawChromePad.swift ---
 extension AtlasCodeProvenanceSheet {
     func lawCitationChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -305,7 +282,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Loaded+GatesObra.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceGatesObra(_ provenance: AtlasCodeProvenance) -> some View {
@@ -318,7 +294,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+Loaded.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceLoadedBody(_ provenance: AtlasCodeProvenance, whyTarget: Binding<AtlasCodeProvenanceWhyTarget?>) -> some View {
@@ -332,7 +307,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+LoadedProse.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func provenanceProseBlocks(_ provenance: AtlasCodeProvenance) -> some View {
@@ -351,7 +325,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+PullQuote+Bar.swift ---
 extension AtlasCodeProvenanceSheet {
     var pullQuoteBar: some View {
         Rectangle()
@@ -360,7 +333,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+PullQuote+QuoteStack.swift ---
 extension AtlasCodeProvenanceSheet {
     func pullQuoteStack(_ quote: String) -> some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -375,7 +347,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections+PullQuote.swift ---
 extension AtlasCodeProvenanceSheet {
     func pullQuote(_ quote: String) -> some View {
         HStack(alignment: .top, spacing: 11) {
@@ -387,7 +358,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSections.swift ---
 // MARK: - Seções da folha de proveniência (C23)
 // Ask → AtlasCodeProvenanceSections+Ask.swift
 // WhyTarget → AtlasCodeProvenanceWhyTarget.swift
@@ -400,5 +370,4 @@ extension AtlasCodeProvenanceSheet {
         lawCitationChrome
     }
 }
-
 

@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS host
 
-// --- ConversationSheets.swift ---
 extension View {
     func conversationComposerSheets(
         model: ConversationModel,

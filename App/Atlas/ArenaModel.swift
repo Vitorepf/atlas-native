@@ -4,7 +4,6 @@ import Observation
 
 // IDLE-COMPRESS ArenaModel fused
 
-// --- ArenaModel+Control.swift ---
 extension ArenaModel {
     func refreshSummaryKeepingSnapshot(quiet: Bool = false) async {
         if !quiet { controlError = nil }
@@ -99,7 +98,6 @@ extension ArenaModel {
     }
 }
 
-// --- ArenaModel+HomeSummary.swift ---
 extension ArenaModel {
     var regressionSummary: String? {
         let n = scoreboard?.suites.filter { suite in
@@ -110,7 +108,6 @@ extension ArenaModel {
     }
 }
 
-// --- ArenaModel+LivePolling.swift ---
 extension ArenaModel {
     var shouldPollLiveRuns: Bool {
 #if DEBUG
@@ -155,7 +152,6 @@ extension ArenaModel {
     }
 }
 
-// --- ArenaModel+VisualScenario.swift ---
 #if DEBUG
 
 extension ArenaModel {
@@ -198,7 +194,6 @@ private extension Array where Element == String {
 }
 #endif
 
-// --- ArenaModel.swift ---
 @MainActor
 @Observable
 final class ArenaModel {

@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-017 markdown host
 
-// --- AtlasMarkdownView.swift ---
 struct AtlasMarkdownView: View {
     let text: String
     var streaming: Bool = false

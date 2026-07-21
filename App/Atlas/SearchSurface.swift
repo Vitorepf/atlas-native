@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- SearchView+A11y+Results.swift ---
 extension SearchView {
     func spokenSearchResultsLabel() -> String {
         if isBrowsingRecent {
@@ -17,7 +16,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+A11y+Shell.swift ---
 extension SearchView {
     func spokenSearchShellLabel() -> String? {
         if showsLoadingShell { return "busca, carregando conversas" }
@@ -26,7 +24,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+A11y.swift ---
 extension SearchView {
     func spokenSearchScreenLabel() -> String {
         spokenSearchShellLabel() ?? spokenSearchResultsLabel()
@@ -35,7 +32,6 @@ extension SearchView {
     static let searchScreenHint = "busca local nas conversas já carregadas na sessão"
 }
 
-// --- SearchView+A11yChrome.swift ---
 extension SearchView {
     func searchA11yChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -47,7 +43,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+BackgroundShell.swift ---
 extension SearchView {
     var searchBackgroundShell: some View {
         ZStack {
@@ -57,7 +52,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+Header.swift ---
 struct SearchViewHeader: View {
     @Binding var query: String
     @FocusState.Binding var focused: Bool
@@ -73,7 +67,6 @@ struct SearchViewHeader: View {
     }
 }
 
-// --- SearchView+HeaderBack.swift ---
 extension SearchViewHeader {
     var searchBackButton: some View {
         Button {
@@ -89,7 +82,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderClear+Action.swift ---
 extension SearchViewHeader {
     func clearSearchQuery() {
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
@@ -97,7 +89,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderClear.swift ---
 extension SearchViewHeader {
     @ViewBuilder
     var searchClearButton: some View {
@@ -111,7 +102,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderClearA11y.swift ---
 extension SearchViewHeader {
     func searchClearA11y<Content: View>(_ content: Content) -> some View {
         content
@@ -122,7 +112,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderClearIcon.swift ---
 extension SearchViewHeader {
     var searchClearIcon: some View {
         Image(systemName: "xmark.circle.fill")
@@ -130,7 +119,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderField.swift ---
 extension SearchViewHeader {
     var searchFieldCapsule: some View {
         searchFieldLeading
@@ -142,7 +130,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderFieldLeading+FieldInput.swift ---
 extension SearchViewHeader {
     var searchFieldInput: some View {
         ZStack(alignment: .leading) {
@@ -158,7 +145,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderFieldLeading.swift ---
 extension SearchViewHeader {
     var searchFieldLeading: some View {
         HStack(spacing: 8) {
@@ -171,7 +157,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderFieldPlaceholder.swift ---
 extension SearchViewHeader {
     var searchFieldPlaceholder: some View {
         Text("Buscar conversas")
@@ -181,7 +166,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+HeaderSpoken.swift ---
 extension SearchViewHeader {
     var spokenFieldLabel: String {
         let trimmed = query.trimmingCharacters(in: .whitespaces)
@@ -190,7 +174,6 @@ extension SearchViewHeader {
     }
 }
 
-// --- SearchView+List+RecentLoop.swift ---
 extension SearchRecentSection {
     /// Mesma régua da lista de Conversas: saturado silencia em bloco.
     var newBadgeSaturated: Bool {
@@ -211,7 +194,6 @@ extension SearchRecentSection {
     }
 }
 
-// --- SearchView+List.swift ---
 struct SearchRecentSection: View {
     let threads: [AtlasAiThread]
     let reduceMotion: Bool
@@ -224,7 +206,6 @@ struct SearchRecentSection: View {
     }
 }
 
-// --- SearchView+ListCaption.swift ---
 extension SearchRecentSection {
     var recentCaption: some View {
         Text("RECENTES")
@@ -238,7 +219,6 @@ extension SearchRecentSection {
     }
 }
 
-// --- SearchView+Miss.swift ---
 struct SearchMissEmpty: View {
     let query: String
     let loadedThreadCount: Int
@@ -257,7 +237,6 @@ struct SearchMissEmpty: View {
     }
 }
 
-// --- SearchView+Query+Recent.swift ---
 extension SearchView {
     /// Só threads já carregadas na sessão — zero placeholder ou sugestão inventada.
     var recentThreads: [AtlasAiThread] {
@@ -265,7 +244,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+Query+Trim.swift ---
 extension SearchView {
     var trimmedQuery: String {
         query.trimmingCharacters(in: .whitespaces)
@@ -274,7 +252,6 @@ extension SearchView {
     var isBrowsingRecent: Bool { trimmedQuery.isEmpty }
 }
 
-// --- SearchView+QueryPhase+LoadingShell.swift ---
 extension SearchView {
     var showsLoadingShell: Bool {
         guard session.threads.isEmpty else { return false }
@@ -285,7 +262,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+QueryPhase+NetworkFailure.swift ---
 extension SearchView {
     /// Sessão sem threads e load falhou → offline/rede, não silêncio nem «sem recentes».
     var showsNetworkFailure: Bool {
@@ -295,7 +271,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+QueryResults.swift ---
 extension SearchView {
     var searchResults: [AtlasAiThread] {
         let q = trimmedQuery.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
@@ -307,7 +282,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+Results+ThreadLoop.swift ---
 extension SearchResultsSection {
     /// Mesma régua da lista de Conversas: "novo" na maioria de 6+ linhas
     /// não discrimina — silencia em bloco.
@@ -329,7 +303,6 @@ extension SearchResultsSection {
     }
 }
 
-// --- SearchView+Results.swift ---
 struct SearchResultsSection: View {
     let results: [AtlasAiThread]
     let query: String
@@ -343,7 +316,6 @@ struct SearchResultsSection: View {
     }
 }
 
-// --- SearchView+ResultsCaption.swift ---
 extension SearchResultsSection {
     var resultsCaption: some View {
         Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
@@ -357,7 +329,6 @@ extension SearchResultsSection {
     }
 }
 
-// --- SearchView+Scroll.swift ---
 extension SearchView {
     var list: some View {
         ScrollView {
@@ -374,7 +345,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+ScrollQuery.swift ---
 extension SearchView {
     @ViewBuilder
     var listQueryContent: some View {
@@ -390,7 +360,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+ScrollShell+Loading.swift ---
 extension SearchView {
     @ViewBuilder
     var searchLoadingShell: some View {
@@ -399,7 +368,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+ScrollShell+Offline.swift ---
 extension SearchView {
     @ViewBuilder
     var searchOfflineShell: some View {
@@ -415,7 +383,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+ScrollShell.swift ---
 extension SearchView {
     @ViewBuilder
     var listShellContent: some View {
@@ -429,7 +396,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+SearchLayout.swift ---
 extension SearchView {
     var searchLayout: some View {
         VStack(spacing: 0) {
@@ -439,7 +405,6 @@ extension SearchView {
     }
 }
 
-// --- SearchView+ThreadLink+Nav.swift ---
 extension SearchThreadLink {
     var threadNavigationLink: some View {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
@@ -449,7 +414,6 @@ extension SearchThreadLink {
     }
 }
 
-// --- SearchView+ThreadLink+Transition.swift ---
 extension SearchThreadLink {
     func threadLinkTransition<Content: View>(_ content: Content) -> some View {
         content
@@ -463,7 +427,6 @@ extension SearchThreadLink {
     }
 }
 
-// --- SearchView+ThreadLink.swift ---
 struct SearchThreadLink: View {
     let thread: AtlasAiThread
     let reduceMotion: Bool
@@ -474,7 +437,6 @@ struct SearchThreadLink: View {
     }
 }
 
-// --- SearchView+ThreadLinkSpoken.swift ---
 extension SearchThreadLink {
     static func spokenLabel(_ thread: AtlasAiThread) -> String {
         var parts = [thread.title, "\(thread.messageCount) mensagens"]

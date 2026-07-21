@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused AtlasFailureCopy
 
-// --- AtlasFailureCopy+AuthServer.swift ---
 extension AtlasFailureCopy {
     static func authServerHeadline(kind: AtlasNetworkFailureKind) -> String {
         switch kind {
@@ -15,7 +14,6 @@ extension AtlasFailureCopy {
     }
 }
 
-// --- AtlasFailureCopy+Hint+AuthServer.swift ---
 extension AtlasFailureCopy {
     static func authServerHint(kind: AtlasNetworkFailureKind) -> String {
         switch kind {
@@ -27,7 +25,6 @@ extension AtlasFailureCopy {
     }
 }
 
-// --- AtlasFailureCopy+Hint+Network+Offline.swift ---
 extension AtlasFailureCopy {
     static func networkOfflineHint(kind: AtlasNetworkFailureKind) -> String? {
         switch kind {
@@ -38,7 +35,6 @@ extension AtlasFailureCopy {
     }
 }
 
-// --- AtlasFailureCopy+Hint+Network.swift ---
 extension AtlasFailureCopy {
     static func networkHint(kind: AtlasNetworkFailureKind) -> String? {
         if let offline = networkOfflineHint(kind: kind) { return offline }
@@ -50,7 +46,6 @@ extension AtlasFailureCopy {
     }
 }
 
-// --- AtlasFailureCopy+Hint.swift ---
 extension AtlasFailureCopy {
     static func hint(kind: AtlasNetworkFailureKind?, hasToken: Bool) -> String {
         guard hasToken else { return "Configure o token no Mac e reinstale — nada foi perdido." }
@@ -61,7 +56,6 @@ extension AtlasFailureCopy {
     }
 }
 
-// --- AtlasFailureCopy+Network+Offline.swift ---
 extension AtlasFailureCopy {
     static func networkOfflineHeadline(kind: AtlasNetworkFailureKind) -> String? {
         switch kind {
@@ -72,7 +66,6 @@ extension AtlasFailureCopy {
     }
 }
 
-// --- AtlasFailureCopy+Network.swift ---
 extension AtlasFailureCopy {
     static func networkHeadline(kind: AtlasNetworkFailureKind) -> String? {
         if let offline = networkOfflineHeadline(kind: kind) { return offline }
@@ -84,7 +77,6 @@ extension AtlasFailureCopy {
     }
 }
 
-// --- AtlasFailureCopy.swift ---
 enum AtlasFailureCopy {
     static func headline(kind: AtlasNetworkFailureKind?, hasToken: Bool) -> String {
         guard hasToken else { return "Falta a chave do Atlas." }

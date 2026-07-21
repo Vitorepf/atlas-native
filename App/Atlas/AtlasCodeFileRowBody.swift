@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- AtlasCodeFileRow+A11y.swift ---
 enum AtlasCodeFileRowA11y {
     static func spokenFile(_ file: AtlasCodeFileChange) -> String {
         var parts = [file.path, verb(for: file.status)]
@@ -18,7 +17,6 @@ enum AtlasCodeFileRowA11y {
     }
 }
 
-// --- AtlasCodeFileRow+A11yVerb+Mutate.swift ---
 extension AtlasCodeFileRowA11y {
     static func verbMutate(for status: AtlasCodeFileStatus) -> String? {
         switch status {
@@ -30,7 +28,6 @@ extension AtlasCodeFileRowA11y {
     }
 }
 
-// --- AtlasCodeFileRow+A11yVerb+Transform+RenameCopy.swift ---
 extension AtlasCodeFileRowA11y {
     static func verbRenameCopy(for status: AtlasCodeFileStatus) -> String? {
         switch status {
@@ -41,7 +38,6 @@ extension AtlasCodeFileRowA11y {
     }
 }
 
-// --- AtlasCodeFileRow+A11yVerb+Transform.swift ---
 extension AtlasCodeFileRowA11y {
     static func verbTransform(for status: AtlasCodeFileStatus) -> String {
         if let rename = verbRenameCopy(for: status) { return rename }
@@ -53,14 +49,12 @@ extension AtlasCodeFileRowA11y {
     }
 }
 
-// --- AtlasCodeFileRow+A11yVerb.swift ---
 extension AtlasCodeFileRowA11y {
     static func verb(for status: AtlasCodeFileStatus) -> String {
         verbMutate(for: status) ?? verbTransform(for: status)
     }
 }
 
-// --- AtlasCodeFileRow+Lead.swift ---
 extension AtlasCodeFileRow {
     var lead: some View {
         HStack(alignment: .center, spacing: 10) {
@@ -80,7 +74,6 @@ extension AtlasCodeFileRow {
     }
 }
 
-// --- AtlasCodeFileRow+LeadName.swift ---
 extension AtlasCodeFileRow {
     var fileNameStack: some View {
         VStack(alignment: .leading, spacing: 1) {
@@ -101,7 +94,6 @@ extension AtlasCodeFileRow {
     }
 }
 
-// --- AtlasCodeFileRow+Meta+Subtitle.swift ---
 extension AtlasCodeFileRow {
     var subtitle: String? {
         if let from = file.renamedFrom { return "de \(from)" }
@@ -109,7 +101,6 @@ extension AtlasCodeFileRow {
     }
 }
 
-// --- AtlasCodeFileRow+Meta+Symbol+Mutate.swift ---
 extension AtlasCodeFileRow {
     var symbolMutate: String? {
         switch file.status {
@@ -121,7 +112,6 @@ extension AtlasCodeFileRow {
     }
 }
 
-// --- AtlasCodeFileRow+Meta+Symbol+Transform.swift ---
 extension AtlasCodeFileRow {
     var symbolTransform: String? {
         switch file.status {
@@ -133,14 +123,12 @@ extension AtlasCodeFileRow {
     }
 }
 
-// --- AtlasCodeFileRow+Meta+Symbol.swift ---
 extension AtlasCodeFileRow {
     var symbol: String {
         symbolMutate ?? symbolTransform ?? "questionmark"
     }
 }
 
-// --- AtlasCodeFileRow+Stats.swift ---
 extension AtlasCodeFileRow {
     @ViewBuilder
     var diffStats: some View {

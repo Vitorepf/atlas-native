@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS host
 
-// --- AtlasCodeView.swift ---
 struct AtlasCodeView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion

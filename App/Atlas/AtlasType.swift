@@ -3,7 +3,6 @@ import UIKit
 
 // IDLE-COMPRESS fused
 
-// --- AtlasType+Anchor+Large.swift ---
 extension AtlasFont {
     static func anchorLarge(_ size: CGFloat) -> Font.TextStyle? {
         switch size {
@@ -15,7 +14,6 @@ extension AtlasFont {
     }
 }
 
-// --- AtlasType+Anchor+Small.swift ---
 extension AtlasFont {
     static func anchorSmall(_ size: CGFloat) -> Font.TextStyle {
         switch size {
@@ -26,14 +24,12 @@ extension AtlasFont {
     }
 }
 
-// --- AtlasType+Anchor.swift ---
 extension AtlasFont {
     static func anchor(_ size: CGFloat) -> Font.TextStyle {
         anchorLarge(size) ?? anchorSmall(size)
     }
 }
 
-// --- AtlasType+Sans.swift ---
 extension View {
     func atlasSans(_ size: CGFloat, _ weight: Font.Weight = .regular) -> some View {
         modifier(AtlasSansFont(size: size, weight: weight))
@@ -58,7 +54,6 @@ extension AtlasFont {
     }
 }
 
-// --- AtlasType+SansBridge.swift ---
 extension AtlasFont {
     static func uiTextStyle(_ style: Font.TextStyle) -> UIFont.TextStyle {
         switch style {
@@ -95,7 +90,6 @@ extension AtlasFont {
     }
 }
 
-// --- AtlasType+SansScale.swift ---
 @MainActor
 enum AtlasSansScale {
     private static var table: [UIFont.TextStyle: [DynamicTypeSize: CGFloat]] = [:]
@@ -124,7 +118,6 @@ enum AtlasSansScale {
     }
 }
 
-// --- AtlasType.swift ---
 enum AtlasFont {
     static func serif(_ size: CGFloat, _ weight: Font.Weight = .semibold) -> Font {
         let name: String

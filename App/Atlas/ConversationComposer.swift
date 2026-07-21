@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS host
 
-// --- ConversationComposer.swift ---
 struct ConversationComposer: View {
     var model: ConversationModel
     var session: AtlasSession

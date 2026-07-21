@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-015 fused
 
-// --- RootView+Chrome+A11yHome+InputPill.swift ---
 extension RootView {
     func inputPillSpokenLabel() -> String {
         "Escreva ao Atlas, nova conversa"
@@ -14,14 +13,12 @@ extension RootView {
     }
 }
 
-// --- RootView+Chrome+A11yHome+SearchNew.swift ---
 extension RootView {
     func searchSpokenLabel() -> String {
         "buscar conversas"
     }
 }
 
-// --- RootView+DeepLinksExecutionHome.swift ---
 extension RootView {
     func handleExecutionHomeDeepLink() {
         // Widget "Seguir" sem trace: home; se há sessão viva real com
@@ -36,7 +33,6 @@ extension RootView {
     }
 }
 
-// --- RootView+HomeAtmosphere.swift ---
 extension RootView {
     var homeAtmosphere: some View {
         ZStack {
@@ -59,7 +55,6 @@ extension RootView {
     }
 }
 
-// --- RootView+HomeChrome.swift ---
 extension RootView {
     // A11y no CONTAINER carimbava identifier/label em todos os filhos (composer
     // virava "Atlas, início"; linhas de OPERAÇÃO ficavam mudas no VoiceOver).
@@ -71,7 +66,6 @@ extension RootView {
     }
 }
 
-// --- RootView+HomeStack.swift ---
 extension RootView {
     var rootHomeStack: some View {
         rootHomeNavChrome(
@@ -84,7 +78,6 @@ extension RootView {
     }
 }
 
-// --- RootView+HomeStackSections.swift ---
 extension RootView {
     @ViewBuilder
     var rootHomeSectionsStack: some View {
@@ -103,7 +96,6 @@ extension RootView {
     }
 }
 
-// --- RootView+InputBar.swift ---
 extension RootView {
     @ViewBuilder
     var inputBar: some View {
@@ -122,7 +114,6 @@ extension RootView {
     }
 }
 
-// --- RootView+InputBarBackground.swift ---
 extension RootView {
     var inputBarBackground: some View {
         LinearGradient(
@@ -134,7 +125,6 @@ extension RootView {
     }
 }
 
-// --- RootView+InputBarContent+Star.swift ---
 extension RootView {
     struct HomeComposerStar: View {
         @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -162,7 +152,6 @@ extension RootView {
     }
 }
 
-// --- RootView+InputBarContent.swift ---
 extension RootView {
     // WAVE-016: face canônica (mesmo órgão que Arena/Autônomos/Workspace).
     var inputBarContent: some View {

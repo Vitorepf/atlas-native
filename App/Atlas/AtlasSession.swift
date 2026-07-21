@@ -5,7 +5,6 @@ import SwiftUI
 
 // IDLE-COMPRESS AtlasSession fused
 
-// --- AtlasSession+LiveSessions.swift ---
 extension AtlasSession {
     func setLiveSessionsPollingActive(_ active: Bool) {
         guard active, hasToken else {
@@ -70,7 +69,6 @@ private extension Optional where Wrapped == AtlasAiLiveSessionTiming {
     }
 }
 
-// --- AtlasSession+Nightly.swift ---
 extension AtlasSession {
     static func nightlyProposalMutedUntil(now: Date = .init()) -> Date? {
         guard let until = UserDefaults.standard.object(forKey: nightlyProposalMuteKey) as? Date else {
@@ -99,7 +97,6 @@ extension AtlasSession {
     }
 }
 
-// --- AtlasSession+NightlyDecisions.swift ---
 extension AtlasSession {
     static let nightlyDismissStreakKey = "atlas.nightlyProposal.dismissStreak"
     static let nightlyAcceptTotalKey = "atlas.nightlyProposal.acceptedTotal"
@@ -155,7 +152,6 @@ extension AtlasSession {
     }
 }
 
-// --- AtlasSession+RecentWorkspaces.swift ---
 extension AtlasSession {
     func recentWorkspaces(_ limit: Int) -> [Workspace] {
         let ranked = workspaces.sorted { a, b in
@@ -170,7 +166,6 @@ extension AtlasSession {
     }
 }
 
-// --- AtlasSession+Workspaces.swift ---
 extension AtlasSession {
     var workspaces: [Workspace] {
         var groups: [String: (name: String, count: Int)] = [:]
@@ -203,7 +198,6 @@ extension AtlasSession {
     }
 }
 
-// --- AtlasSession.swift ---
 @MainActor
 @Observable
 final class AtlasSession {

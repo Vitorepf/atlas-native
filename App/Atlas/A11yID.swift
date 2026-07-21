@@ -2,7 +2,6 @@ import Foundation
 
 // IDLE-COMPRESS fused
 
-// --- A11yID.swift ---
 enum A11yID {
     static let topbarCode = "topbar-code"
     static let auditMasthead = "audit-masthead"
@@ -23,7 +22,6 @@ enum A11yID {
     static let continuityHandoffReceipt = "continuity-handoff-receipt"
 }
 
-// --- A11yID+Surfaces.swift ---
 extension A11yID {
     static let arenaHomeEntry = "arena-home-entry"
     static let arenaScreen = "arena-screen"

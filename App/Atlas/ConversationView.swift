@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS fused ConversationView · ConversationView.swift
 
-// --- ConversationView.swift ---
 struct ConversationView: View {
     let title: String
     @Environment(\.dismiss) var dismiss
@@ -73,7 +72,6 @@ struct ConversationView: View {
 
 }
 
-// --- ConversationView+A11y.swift ---
 enum ConversationViewA11y {
     static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
 
@@ -88,7 +86,6 @@ enum ConversationViewA11y {
     static let screenHint = "turnos e composer só com dados da sessão e do model"
 }
 
-// --- ConversationView+A11yEmpty.swift ---
 extension ConversationView {
     func spokenConversationEmptyPrefix() -> String? {
         if model.loadError != nil, model.bubbles.isEmpty {
@@ -101,7 +98,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+A11yScreen.swift ---
 extension ConversationView {
     func spokenConversationScreenLabel() -> String {
         if let empty = spokenConversationEmptyPrefix() { return empty }
@@ -112,7 +108,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+A11yToast.swift ---
 extension ConversationView {
     func setToast(_ message: String) {
         if reduceMotion { model.toast = message }
@@ -126,7 +121,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+Page.swift ---
 extension ConversationView {
     @ViewBuilder
     var conversationPage: some View {
@@ -140,7 +134,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageChrome.swift ---
 extension ConversationView {
     func conversationPageChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -158,14 +151,12 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposer.swift ---
 extension ConversationView {
     var conversationComposerBind: some View {
         conversationComposerCard
     }
 }
 
-// --- ConversationView+PageComposerArgs+Bindings+Aggregate.swift ---
 extension ConversationView {
     var conversationComposerSheetTraceAggregate: (
         mode: Binding<String>,

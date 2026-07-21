@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- SelfConstructionReceipt.swift ---
 struct SelfConstructionReceipt: Identifiable {
     let cycle: AtlasAutonomosCycle
     let finding: AtlasAutonomosFinding?
@@ -15,7 +14,6 @@ struct SelfConstructionReceipt: Identifiable {
     }
 }
 
-// --- SelfConstructionReceipt+Copy.swift ---
 extension SelfConstructionReceipt {
     var title: String {
         if let findingTitle = finding?.title.nonEmpty { return findingTitle }
@@ -32,7 +30,6 @@ extension SelfConstructionReceipt {
     }
 }
 
-// --- SelfConstructionReceipt+Proof.swift ---
 extension SelfConstructionReceipt {
     var proofLine: String {
         let integrity = cycle.loopReceiptIntegrity.nonEmpty ?? "integridade não publicada"

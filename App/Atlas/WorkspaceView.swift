@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS host
 
-// --- WorkspaceView.swift ---
 struct WorkspaceView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss

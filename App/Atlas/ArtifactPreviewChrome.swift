@@ -3,21 +3,18 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- ArtifactViewer+A11y.swift ---
 enum ArtifactViewerA11y {
     static func spokenFicha(name: String, subtitle: String) -> String {
         "\(name), \(subtitle)"
     }
 }
 
-// --- ArtifactViewer+A11yDecodeFailure.swift ---
 extension ArtifactViewerA11y {
     static func spokenDecodeFailure(name: String, bytes: Int) -> String {
         "imagem \(name) não pôde ser decodificada, \(ArtifactViewer.byteLabel(bytes))"
     }
 }
 
-// --- ArtifactViewer+A11yPreview+Document+ImageMarkdown.swift ---
 extension ArtifactViewerA11y {
     static func spokenPreviewImageMarkdown(item: AtlasTraceArtifacts.Item, size: String) -> String? {
         switch item.kind {
@@ -31,7 +28,6 @@ extension ArtifactViewerA11y {
     }
 }
 
-// --- ArtifactViewer+A11yPreview+Document.swift ---
 extension ArtifactViewerA11y {
     static func spokenPreviewDocument(item: AtlasTraceArtifacts.Item, size: String) -> String? {
         if let imageMd = spokenPreviewImageMarkdown(item: item, size: size) { return imageMd }
@@ -46,7 +42,6 @@ extension ArtifactViewerA11y {
     }
 }
 
-// --- ArtifactViewer+A11yPreview+File.swift ---
 extension ArtifactViewerA11y {
     static func spokenPreviewFile(item: AtlasTraceArtifacts.Item, kind: String, size: String) -> String {
         let sha = String(item.sha256.prefix(12))
@@ -54,7 +49,6 @@ extension ArtifactViewerA11y {
     }
 }
 
-// --- ArtifactViewer+A11yPreview.swift ---
 extension ArtifactViewerA11y {
     static func spokenPreview(item: AtlasTraceArtifacts.Item) -> String {
         let kind = ArtifactViewer.kindLabel(item.kind)
@@ -64,14 +58,12 @@ extension ArtifactViewerA11y {
     }
 }
 
-// --- ArtifactViewer+A11yTooLarge.swift ---
 extension ArtifactViewerA11y {
     static func spokenTooLarge(name: String, bytes: Int) -> String {
         "\(name), grande demais para visualizar aqui, \(ArtifactViewer.byteLabel(bytes))"
     }
 }
 
-// --- ArtifactViewer+ByteLabel.swift ---
 extension ArtifactViewer {
     static func byteLabel(_ bytes: Int) -> String {
         if bytes < 1_024 { return "\(bytes) B" }
@@ -81,7 +73,6 @@ extension ArtifactViewer {
     }
 }
 
-// --- ArtifactViewer+DiffPreview.swift ---
 extension ArtifactPreviewContent {
     @ViewBuilder
     var diffPreview: some View {
@@ -98,7 +89,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+KindLabel+Document+ImageMarkdown.swift ---
 extension ArtifactViewer {
     static func kindLabelImageMarkdown(_ kind: AtlasTraceArtifacts.Item.Kind) -> String? {
         switch kind {
@@ -109,7 +99,6 @@ extension ArtifactViewer {
     }
 }
 
-// --- ArtifactViewer+KindLabel+Document.swift ---
 extension ArtifactViewer {
     static func kindLabelDocument(_ kind: AtlasTraceArtifacts.Item.Kind) -> String? {
         if let imageMd = kindLabelImageMarkdown(kind) { return imageMd }
@@ -121,14 +110,12 @@ extension ArtifactViewer {
     }
 }
 
-// --- ArtifactViewer+KindLabel.swift ---
 extension ArtifactViewer {
     static func kindLabel(_ kind: AtlasTraceArtifacts.Item.Kind) -> String {
         kindLabelDocument(kind) ?? "arquivo"
     }
 }
 
-// --- ArtifactViewer+Preview.swift ---
 struct ArtifactPreviewContent: View {
     let item: AtlasTraceArtifacts.Item
     let content: AtlasArtifactContent
@@ -138,7 +125,6 @@ struct ArtifactPreviewContent: View {
     }
 }
 
-// --- ArtifactViewer+PreviewDecode.swift ---
 extension ArtifactPreviewContent {
     var imageDecodeFailure: some View {
         ArtifactFileFicha(
@@ -151,7 +137,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+PreviewImage.swift ---
 extension ArtifactPreviewContent {
     @ViewBuilder
     var imagePreviewBranch: some View {
@@ -163,7 +148,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+PreviewSwitch.swift ---
 extension ArtifactPreviewContent {
     @ViewBuilder
     var previewSwitch: some View {
@@ -176,7 +160,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+TextPreview+Document.swift ---
 extension ArtifactPreviewContent {
     @ViewBuilder
     var textishDocumentPreview: some View {
@@ -191,7 +174,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+TextPreview+File.swift ---
 extension ArtifactPreviewContent {
     @ViewBuilder
     var textishFilePreview: some View {
@@ -202,7 +184,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+TextPreview+Markdown.swift ---
 extension ArtifactPreviewContent {
     @ViewBuilder
     func textishMarkdownPreview(_ content: Data) -> some View {
@@ -210,7 +191,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+TextPreview.swift ---
 extension ArtifactPreviewContent {
     @ViewBuilder
     var textishPreview: some View {
@@ -225,7 +205,6 @@ extension ArtifactPreviewContent {
     }
 }
 
-// --- ArtifactViewer+TraceEvidence+Known+Missing.swift ---
 extension TraceEvidenceCopy {
     static func knownMissingRunReason(_ reason: String) -> String? {
         switch reason {
@@ -236,7 +215,6 @@ extension TraceEvidenceCopy {
     }
 }
 
-// --- ArtifactViewer+TraceEvidence+Known.swift ---
 extension TraceEvidenceCopy {
     static func knownUnavailableReason(_ reason: String) -> String? {
         if let missing = knownMissingRunReason(reason) { return missing }
@@ -248,7 +226,6 @@ extension TraceEvidenceCopy {
     }
 }
 
-// --- ArtifactViewer+TraceEvidence.swift ---
 enum TraceEvidenceCopy {
     static func unavailableReason(_ reason: String?) -> String? {
         guard let reason, !reason.isEmpty else { return nil }
@@ -263,7 +240,6 @@ enum TraceEvidenceCopy {
     }
 }
 
-// --- ArtifactViewer+TraceEvidenceLoading.swift ---
 struct TraceEvidenceLoading: View {
     let text: String
     let reduceMotion: Bool
@@ -281,7 +257,6 @@ struct TraceEvidenceLoading: View {
     }
 }
 
-// --- ArtifactViewer+TraceEvidenceStack+IconTitle.swift ---
 extension TraceEvidenceUnavailable {
     @ViewBuilder
     var unavailableIconTitle: some View {
@@ -297,7 +272,6 @@ extension TraceEvidenceUnavailable {
     }
 }
 
-// --- ArtifactViewer+TraceEvidenceStack+Subtitle.swift ---
 extension TraceEvidenceUnavailable {
     @ViewBuilder
     var unavailableSubtitle: some View {
@@ -311,7 +285,6 @@ extension TraceEvidenceUnavailable {
     }
 }
 
-// --- ArtifactViewer+TraceEvidenceStack.swift ---
 extension TraceEvidenceUnavailable {
     var unavailableStack: some View {
         VStack(spacing: 12) {
@@ -321,7 +294,6 @@ extension TraceEvidenceUnavailable {
     }
 }
 
-// --- ArtifactViewer+TraceEvidenceUnavailable.swift ---
 struct TraceEvidenceUnavailable: View {
     let title: String
     let subtitle: String?
@@ -338,7 +310,6 @@ struct TraceEvidenceUnavailable: View {
     }
 }
 
-// --- ArtifactViewer+Zoom+A11y.swift ---
 enum ArtifactViewerZoomA11y {
     static func spokenImage(name: String, scale: CGFloat) -> String {
         if scale <= 1.01 {
@@ -353,7 +324,6 @@ enum ArtifactViewerZoomA11y {
     static let resetAction = "Redefinir zoom"
 }
 
-// --- ArtifactViewer+Zoom.swift ---
 struct ZoomableArtifactImage: View {
     let image: UIImage
     let name: String
@@ -368,7 +338,6 @@ struct ZoomableArtifactImage: View {
     }
 }
 
-// --- ArtifactViewer+ZoomA11y.swift ---
 extension ZoomableArtifactImage {
     func applyZoomAccessibility<Content: View>(_ content: Content) -> some View {
         content
@@ -389,14 +358,12 @@ extension ZoomableArtifactImage {
     }
 }
 
-// --- ArtifactViewer+ZoomClamp.swift ---
 extension ZoomableArtifactImage {
     func clamped(_ value: CGFloat) -> CGFloat {
         min(4, max(1, value))
     }
 }
 
-// --- ArtifactViewer+ZoomCore.swift ---
 extension ZoomableArtifactImage {
     var zoomImageCore: some View {
         Image(uiImage: image)
@@ -414,7 +381,6 @@ extension ZoomableArtifactImage {
     }
 }
 
-// --- ArtifactViewer+ZoomDrag.swift ---
 extension ZoomableArtifactImage {
     var dragGesture: some Gesture {
         DragGesture()
@@ -431,7 +397,6 @@ extension ZoomableArtifactImage {
     }
 }
 
-// --- ArtifactViewer+ZoomGestures.swift ---
 extension ZoomableArtifactImage {
     var zoomGesture: some Gesture {
         MagnificationGesture()
@@ -445,7 +410,6 @@ extension ZoomableArtifactImage {
     }
 }
 
-// --- ArtifactViewer+ZoomOffset.swift ---
 extension ZoomableArtifactImage {
     func resetOffset() {
         offset = .zero
@@ -453,7 +417,6 @@ extension ZoomableArtifactImage {
     }
 }
 
-// --- ArtifactViewer+ZoomReset.swift ---
 extension ZoomableArtifactImage {
     func resetZoom() {
         scale = 1
@@ -462,7 +425,6 @@ extension ZoomableArtifactImage {
     }
 }
 
-// --- ArtifactViewer+ZoomScale.swift ---
 extension ZoomableArtifactImage {
     func setScale(_ value: CGFloat) {
         scale = clamped(value)

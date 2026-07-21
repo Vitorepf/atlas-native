@@ -4,7 +4,6 @@ import Observation
 
 // IDLE-COMPRESS AtlasCodeWorkspaceModel fused
 
-// --- AtlasCodeWorkspaceModel+Scan.swift ---
 extension AtlasCodeWorkspaceModel {
     func scan(_ slugs: [String]) async {
         for slug in slugs where issuesBySlug[slug] == nil {
@@ -76,7 +75,6 @@ enum AtlasCodeISO {
     }
 }
 
-// --- AtlasCodeWorkspaceModel.swift ---
 @MainActor
 @Observable
 final class AtlasCodeWorkspaceModel {

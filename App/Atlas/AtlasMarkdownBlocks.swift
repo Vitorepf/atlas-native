@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-017 markdown
 
-// --- AtlasMarkdownView+CodeBlock+ToolbarCopy.swift ---
 extension CodeBlockView {
     @ViewBuilder
     var codeBlockCopyButton: some View {
@@ -20,7 +19,6 @@ extension CodeBlockView {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock.swift ---
 struct CodeBlockView: View {
     let code: String
     let lang: String?
@@ -34,7 +32,6 @@ struct CodeBlockView: View {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlockScroll.swift ---
 extension CodeBlockView {
     var codeBlockScroll: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -47,7 +44,6 @@ extension CodeBlockView {
     }
 }
 
-// --- AtlasMarkdownView+HeadingDefault.swift ---
 extension AtlasMarkdownView {
     func headingDefault(_ spans: [InlineSpan]) -> some View {
         Text(inline(spans, base: .init(font: AtlasFont.sans(14, weight: .semibold, at: typeSize), size: 14, color: AtlasTheme.textPrimary, typeSize: typeSize)))
@@ -55,7 +51,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+HeadingOne.swift ---
 extension AtlasMarkdownView {
     func headingOne(_ spans: [InlineSpan]) -> some View {
         Text(inline(spans, base: .init(font: AtlasFont.serif(22, .semibold), size: 22, color: AtlasTheme.textPrimary, typeSize: typeSize)))
@@ -63,7 +58,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+HeadingTwo.swift ---
 extension AtlasMarkdownView {
     func headingTwo(_ spans: [InlineSpan]) -> some View {
         Text(plain(spans).uppercased())
@@ -73,7 +67,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Inline.swift ---
 extension AtlasMarkdownView {
     func inline(_ spans: [InlineSpan], base: InlineBase) -> AttributedString {
         var out = AttributedString()
@@ -84,7 +77,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMark+Fallback.swift ---
 extension AtlasMarkdownView {
     func inlineMarkTextFallback(_ span: InlineSpan, base: InlineBase) -> AttributedString {
         switch span {
@@ -96,7 +88,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMark+Text.swift ---
 extension AtlasMarkdownView {
     func inlineTextMark(_ text: String, base: InlineBase) -> AttributedString {
         var piece = AttributedString(text)
@@ -106,7 +97,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMark.swift ---
 extension AtlasMarkdownView {
     func inlineMark(_ span: InlineSpan, base: InlineBase) -> AttributedString {
         if let decorated = inlineDecoratedMark(span, base: base) {
@@ -119,7 +109,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMarkDecorated+Code.swift ---
 extension AtlasMarkdownView {
     func inlineCodeMark(_ text: String) -> AttributedString {
         var piece = AttributedString(" \(text) ")
@@ -130,7 +119,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMarkDecorated+Link.swift ---
 extension AtlasMarkdownView {
     func inlineLinkMark(_ text: String, url: String, base: InlineBase) -> AttributedString {
         var piece = AttributedString(text)
@@ -142,7 +130,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMarkDecorated.swift ---
 extension AtlasMarkdownView {
     func inlineDecoratedMark(_ span: InlineSpan, base: InlineBase) -> AttributedString? {
         switch span {
@@ -156,7 +143,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMarkEmphasis+Bold.swift ---
 extension AtlasMarkdownView {
     func inlineBoldMark(_ text: String, base: InlineBase) -> AttributedString {
         var piece = AttributedString(text)
@@ -166,7 +152,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMarkEmphasis+Italic.swift ---
 extension AtlasMarkdownView {
     func inlineItalicMark(_ text: String, base: InlineBase) -> AttributedString {
         var piece = AttributedString(text)
@@ -176,7 +161,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+InlineMarkEmphasis.swift ---
 extension AtlasMarkdownView {
     func inlineEmphasisMark(_ span: InlineSpan, base: InlineBase) -> AttributedString? {
         switch span {
@@ -190,7 +174,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+ListMarker.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func listItemMarker(ordered: Bool, index: Int) -> some View {
@@ -208,7 +191,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Parse.swift ---
 extension AtlasMarkdownView {
     func refreshBlocks(force: Bool) {
         let count = text.count
@@ -228,7 +210,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+ParseBoundary.swift ---
 extension AtlasMarkdownView {
     /// Fronteira barata: parágrafo novo ou fence fechando — re-parse imediato.
     static func isBlockBoundary(_ text: String) -> Bool {
@@ -236,7 +217,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+ParseRefresh.swift ---
 extension AtlasMarkdownView {
     func parseRefreshLifecycle<Content: View>(_ content: Content) -> some View {
         content
@@ -248,7 +228,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Plain.swift ---
 extension AtlasMarkdownView {
     func plain(_ spans: [InlineSpan]) -> String {
         spans.map {
@@ -260,7 +239,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Quote.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func quoteBlock(_ spans: [InlineSpan]) -> some View {
@@ -278,7 +256,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Rendering.swift ---
 extension AtlasMarkdownView {
     struct InlineBase {
         let font: Font
@@ -299,7 +276,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Table+DataRows.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func tableDataRows(_ rows: [[[InlineSpan]]], colCount: Int) -> some View {
@@ -316,7 +292,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Table.swift ---
 extension AtlasMarkdownView {
     func tableView(_ headers: [[InlineSpan]], _ rows: [[[InlineSpan]]]) -> some View {
         let colCount = max(headers.count, rows.map { $0.count }.max() ?? 0)
@@ -328,7 +303,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+TableHeader.swift ---
 extension AtlasMarkdownView {
     func tableHeaderRow(_ headers: [[InlineSpan]], colCount: Int) -> some View {
         HStack(spacing: 0) {

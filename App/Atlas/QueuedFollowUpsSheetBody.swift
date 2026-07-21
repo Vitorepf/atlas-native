@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- QueuedFollowUpsSheet+A11yShell.swift ---
 extension QueuedFollowUpsSheet {
     func queueSheetA11yShell<V: View>(_ content: V) -> some View {
         content
@@ -13,7 +12,6 @@ extension QueuedFollowUpsSheet {
     }
 }
 
-// --- QueuedFollowUpsSheet+Caption.swift ---
 extension QueuedFollowUpsSheet {
     @ViewBuilder
     func queueOrderCaption(total: Int) -> some View {
@@ -32,7 +30,6 @@ extension QueuedFollowUpsSheet {
     }
 }
 
-// --- QueuedFollowUpsSheet+Content+MessageRows.swift ---
 extension QueuedFollowUpsSheet {
     @ViewBuilder
     func queueMessageRows(messages: [QueuedMessage]) -> some View {
@@ -51,7 +48,6 @@ extension QueuedFollowUpsSheet {
     }
 }
 
-// --- QueuedFollowUpsSheet+Content.swift ---
 extension QueuedFollowUpsSheet {
     var sheetContent: some View {
         let messages = model.queuedMessages
@@ -63,7 +59,6 @@ extension QueuedFollowUpsSheet {
     }
 }
 
-// --- QueuedFollowUpsSheet+EmptyBranch.swift ---
 extension QueuedFollowUpsSheet {
     @ViewBuilder
     var queueSheetBodyBranch: some View {
@@ -75,14 +70,12 @@ extension QueuedFollowUpsSheet {
     }
 }
 
-// --- QueuedFollowUpsSheet+EmptyDismiss.swift ---
 extension QueuedFollowUpsSheet {
     var emptyQueueDismiss: some View {
         Color.clear.onAppear { dismiss() }
     }
 }
 
-// --- QueuedFollowUpsSheet+Titles.swift ---
 extension QueuedFollowUpsSheet {
     func sheetTitle(count: Int) -> String {
         count == 1 ? "Fila · 1" : "Fila · \(count)"

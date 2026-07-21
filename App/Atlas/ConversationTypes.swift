@@ -3,12 +3,10 @@ import Foundation
 
 // IDLE-COMPRESS fused
 
-// --- ConversationTypes+ChatBubble+Activity.swift ---
 extension ChatBubble {
     var currentActivity: AtlasAgentActivity? { atlasCurrentAgentActivity(from: activities) }
 }
 
-// --- ConversationTypes+ChatBubble+LiveSurface.swift ---
 extension ChatBubble {
     var hasLiveExecutionSurface: Bool {
         showsReconnectSurface
@@ -18,7 +16,6 @@ extension ChatBubble {
     }
 }
 
-// --- ConversationTypes+ChatBubble+Presence.swift ---
 extension ChatBubble {
     var executionPresence: AtlasExecutionPresence? {
         AtlasExecutionPresence(
@@ -29,7 +26,6 @@ extension ChatBubble {
     }
 }
 
-// --- ConversationTypes+ExecAgent.swift ---
 struct ExecAgent: Equatable, Identifiable {
     let id: String
     let agent: String?     // orquestrador / atlas / …
@@ -38,7 +34,6 @@ struct ExecAgent: Equatable, Identifiable {
     let status: String     // queued / processing / succeeded / failed / …
 }
 
-// --- ConversationTypes+Feedback+ActiveAction.swift ---
 extension FeedbackKind {
     var activeAction: String {
         switch self {
@@ -50,7 +45,6 @@ extension FeedbackKind {
     }
 }
 
-// --- ConversationTypes+Feedback+Label.swift ---
 extension FeedbackKind {
     var label: String {
         switch self {
@@ -62,7 +56,6 @@ extension FeedbackKind {
     }
 }
 
-// --- ConversationTypes+Feedback+Payload.swift ---
 extension FeedbackKind {
     var payload: FeedbackAiInteractionInput {
         switch self {
@@ -78,13 +71,11 @@ extension FeedbackKind {
     }
 }
 
-// --- ConversationTypes+Feedback.swift ---
 enum FeedbackKind: String, CaseIterable, Identifiable {
     case util, contexto, longo, fraco
     var id: String { rawValue }
 }
 
-// --- ConversationTypes+LocalDraft.swift ---
 struct LocalDraft: Identifiable, Equatable {
     enum State: Equatable { case pronto, subindo, falhou(String) }
     let id: String
@@ -96,7 +87,6 @@ struct LocalDraft: Identifiable, Equatable {
     var state: State = .pronto
 }
 
-// --- ConversationTypes.swift ---
 struct ChatBubble: Identifiable, Equatable {
     let id: String
     let role: String

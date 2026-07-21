@@ -2,7 +2,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AtlasCloseToolbarButton.swift ---
 struct AtlasCloseToolbarButton: View {
     var title: String = "Fechar"
     let spokenLabel: String
@@ -23,7 +22,6 @@ struct AtlasCloseToolbarButton: View {
     }
 }
 
-// --- AtlasCloseToolbarButton+A11yID.swift ---
 struct CloseToolbarA11yID: ViewModifier {
     let id: String?
     init(_ id: String?) { self.id = id }

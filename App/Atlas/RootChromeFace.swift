@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-015 fused
 
-// --- RootView+Chrome+A11y.swift ---
 extension RootView {
     func mastheadSpokenLabel(auditModeEnabled: Bool) -> String {
         auditModeEnabled ? "Atlas, modo auditoria" : "Atlas"
@@ -14,7 +13,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Chrome+Masthead.swift ---
 extension RootView {
   @ViewBuilder
   var mastheadOverlay: some View {
@@ -32,7 +30,6 @@ extension RootView {
   }
 }
 
-// --- RootView+Chrome+MastheadAudit.swift ---
 extension RootView {
     @ViewBuilder
     var mastheadAuditBadge: some View {
@@ -46,7 +43,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Chrome+MastheadTitle+AccentRule.swift ---
 extension RootView {
   // A linha premium do site no clímax dela: ouro em fade nas duas pontas.
   var mastheadAccentRule: some View {
@@ -60,7 +56,6 @@ extension RootView {
   }
 }
 
-// --- RootView+Chrome+MastheadTitle+BrandRow.swift ---
 extension RootView {
   var mastheadBrandRow: some View {
     HStack(spacing: 7) {
@@ -82,7 +77,6 @@ extension RootView {
   }
 }
 
-// --- RootView+Chrome+MastheadTitle.swift ---
 extension RootView {
   var mastheadTitleStack: some View {
     VStack(spacing: 5) {
@@ -93,7 +87,6 @@ extension RootView {
   }
 }
 
-// --- RootView+Chrome+Trailing.swift ---
 extension RootView {
     var topBarTrailing: some View {
         // Só busca: o "+" saiu — a pílula "Escreva ao Atlas" é o único ponto
@@ -106,7 +99,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Chrome.swift ---
 extension RootView {
   @ViewBuilder
   var topBar: some View {
@@ -120,7 +112,6 @@ extension RootView {
   }
 }
 
-// --- RootView+ChromeAvatar.swift ---
 extension RootView {
     var topBarAvatar: some View {
         Button {
@@ -139,7 +130,6 @@ extension RootView {
     }
 }
 
-// --- RootView+ChromeCodeButton.swift ---
 extension RootView {
     var topBarCodeButton: some View {
         // Sem ponto vermelho (ordem 2026-07-18): a exceção fala DENTRO do
@@ -151,7 +141,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinks+ExecutionFamily.swift ---
 extension RootView {
     func handleExecutionFamilyDeepLink(_ link: AtlasDeepLink) {
         switch link {
@@ -165,7 +154,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinks+Surface.swift ---
 extension RootView {
     func handleSurfaceOrCodeDeepLink(_ link: AtlasDeepLink) {
         switch link {
@@ -177,7 +165,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinks.swift ---
 extension RootView {
     func handleDeepLink(_ url: URL) {
         guard let link = AtlasDeepLink.parse(url) else { return }
@@ -190,7 +177,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinksExecution.swift ---
 extension RootView {
     func handleExecutionDeepLink(traceId: String) {
         Task { @MainActor in
@@ -204,7 +190,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinksSurface+CodeGraph.swift ---
 extension RootView {
     func handleCodeGraphDeepLink(_ link: AtlasDeepLink) {
         if case .code(let repo) = link {
@@ -213,7 +198,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinksSurface+Hub+ArenaCode.swift ---
 extension RootView {
     func handleArenaOrCodeDeepLink(_ link: AtlasDeepLink) {
         switch link {
@@ -229,7 +213,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinksSurface+Hub+Autonomos.swift ---
 extension RootView {
     func handleAutonomosDeepLink() {
         path = NavigationPath()
@@ -237,7 +220,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinksSurface+Hub.swift ---
 extension RootView {
     func handleHubDeepLink(_ link: AtlasDeepLink) {
         switch link {
@@ -251,7 +233,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DeepLinksSurface.swift ---
 extension RootView {
     func handleSurfaceDeepLink(_ link: AtlasDeepLink) {
         handleHubDeepLink(link)
@@ -259,7 +240,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Destinations+ConversationRoutes.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationRoutes(for route: Route) -> some View {
@@ -272,7 +252,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Destinations+DomainRoutes+AutonomosArena.swift ---
 extension RootView {
     @ViewBuilder
     func rootAutonomosArenaDestination(for route: Route) -> some View {
@@ -287,7 +266,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Destinations+DomainRoutes.swift ---
 extension RootView {
     @ViewBuilder
     func rootDomainDestination(for route: Route) -> some View {
@@ -302,7 +280,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Destinations.swift ---
 extension RootView {
     @ViewBuilder
     func rootDestination(for route: Route) -> some View {
@@ -315,7 +292,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsCode.swift ---
 extension RootView {
     @ViewBuilder
     func rootCodeDestination(for route: Route) -> some View {
@@ -334,7 +310,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+Conversas.swift ---
 extension RootView {
     @ViewBuilder
     var rootConversationConversasDestination: some View {
@@ -342,7 +317,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+HubRoutes+NewConversas.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationNewConversasRoutes(for route: Route) -> some View {
@@ -357,7 +331,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+HubRoutes.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationHubRoutes(for route: Route) -> some View {
@@ -372,7 +345,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+New.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationNewDestination(workspaceKey: String?) -> some View {
@@ -412,7 +384,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+Search.swift ---
 extension RootView {
     @ViewBuilder
     var rootConversationSearchDestination: some View {
@@ -420,7 +391,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+Thread.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationThreadDestination(id: ThreadID, title: String) -> some View {
@@ -428,7 +398,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+ThreadRoutes.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationThreadRoutes(for route: Route) -> some View {
@@ -443,7 +412,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation+Workspace.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationWorkspaceDestination(key: String?, title: String) -> some View {
@@ -451,7 +419,6 @@ extension RootView {
     }
 }
 
-// --- RootView+DestinationsConversation.swift ---
 extension RootView {
     @ViewBuilder
     func rootConversationDestination(for route: Route) -> some View {
@@ -466,7 +433,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Lifecycle+Arena.swift ---
 extension RootView {
     func rootLifecycleArena<Content: View>(_ content: Content) -> some View {
         content.task {
@@ -488,7 +454,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Lifecycle+CodeHub.swift ---
 extension RootView {
     func rootLifecycleCodeHub<Content: View>(_ content: Content) -> some View {
         content.task {
@@ -500,21 +465,18 @@ extension RootView {
     }
 }
 
-// --- RootView+Lifecycle+DeepLink.swift ---
 extension RootView {
     func rootLifecycleDeepLink<Content: View>(_ content: Content) -> some View {
         content.onOpenURL { handleDeepLink($0) }
     }
 }
 
-// --- RootView+Lifecycle+Threads.swift ---
 extension RootView {
     func rootLifecycleThreads<Content: View>(_ content: Content) -> some View {
         content.task { if session.phase == .idle { await session.loadThreads() } }
     }
 }
 
-// --- RootView+Lifecycle+TintAppear.swift ---
 extension RootView {
     func rootLifecycleTintAppear<Content: View>(_ content: Content) -> some View {
         content
@@ -523,7 +485,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Lifecycle.swift ---
 extension RootView {
     func rootLifecycleChrome<Content: View>(_ content: Content) -> some View {
         rootLifecycleDeepLink(
@@ -538,7 +499,6 @@ extension RootView {
     }
 }
 
-// --- RootView+Nightly.swift ---
 extension RootView {
     func registerNightlyOpen() {
         nightly.registerOpenAutonomos {

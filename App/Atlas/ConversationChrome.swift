@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS ConversationChrome
 
-// --- ConversationChrome.swift ---
 struct SheetShell<Content: View>: View {
     let title: String
     @ViewBuilder var content: Content
@@ -46,7 +45,6 @@ struct SheetShell<Content: View>: View {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsChrome.swift ---
 extension ComposerAttachmentsSheet {
     var attachmentsSheetChrome: some View {
         SheetShell(title: "Adicionar") {
@@ -61,7 +59,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+Options.swift ---
 extension ComposerAttachmentsSheet {
     var pasteboardText: String? {
         UIPasteboard.general.string?
@@ -75,7 +72,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+Paste+A11y.swift ---
 extension ComposerAttachmentsSheet {
     func pasteButtonA11y<V: View>(_ button: V) -> some View {
         button
@@ -88,7 +84,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+Paste+Action.swift ---
 extension ComposerAttachmentsSheet {
     func pasteButtonAction() {
         guard let text = pasteboardText else { return }
@@ -98,7 +93,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+Paste+FileOption.swift ---
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentFileOption: some View {
         Button { choose(onChooseFile) } label: {
@@ -111,7 +105,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+Paste.swift ---
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentFileAndPaste: some View {
         attachmentFileOption
@@ -125,7 +118,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+PasteButton.swift ---
 extension ComposerAttachmentsSheet {
     @ViewBuilder var pasteButton: some View {
         pasteButtonA11y(
@@ -139,7 +131,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+PasteLabel.swift ---
 extension ComposerAttachmentsSheet {
     var pasteButtonLabel: some View {
         ComposerAttachmentRow(
@@ -152,7 +143,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+PhotoOptions+Camera.swift ---
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentCameraOption: some View {
         Button { choose(onChooseCamera) } label: {
@@ -165,7 +155,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+PhotoOptions+Photo.swift ---
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentPhotoOption: some View {
         PhotosPicker(selection: $pickedPhoto, matching: .images) {
@@ -178,7 +167,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet+PhotoOptions.swift ---
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentPhotoOptions: some View {
         attachmentPhotoOption
@@ -186,7 +174,6 @@ extension ComposerAttachmentsSheet {
     }
 }
 
-// --- ConversationChrome+ComposerAttachmentsSheet.swift ---
 struct ComposerAttachmentsSheet: View {
     @Binding var pickedPhoto: PhotosPickerItem?
     let onChooseFile: @MainActor () -> Void
@@ -200,7 +187,6 @@ struct ComposerAttachmentsSheet: View {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+A11y.swift ---
 enum ComposerSheetA11y {
     static let modeFootnote =
         "rótulo local; ainda não altera roteamento nem payload"
@@ -247,7 +233,6 @@ enum ComposerSheetA11y {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+AttachmentCopy+Icon.swift ---
 extension ComposerAttachmentRow {
     var attachmentRowIcon: some View {
         Image(systemName: icon)
@@ -258,7 +243,6 @@ extension ComposerAttachmentRow {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+AttachmentCopy+TextStack.swift ---
 extension ComposerAttachmentRow {
     var attachmentRowTextStack: some View {
         VStack(alignment: .leading, spacing: 2) {

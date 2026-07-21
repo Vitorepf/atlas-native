@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused
 
-// --- NightlyProposalCard+A11yShell.swift ---
 extension NightlyProposalCard {
     var cardA11y: some View {
         cardChrome
@@ -14,7 +13,6 @@ extension NightlyProposalCard {
     }
 }
 
-// --- NightlyProposalCard+Actions.swift ---
 extension NightlyProposalCard {
     var actionRow: some View {
         HStack(spacing: 10) {
@@ -32,7 +30,6 @@ extension NightlyProposalCard {
     }
 }
 
-// --- NightlyProposalCard+Chrome.swift ---
 extension NightlyProposalCard {
     var cardChrome: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -46,7 +43,6 @@ extension NightlyProposalCard {
     }
 }
 
-// --- NightlyProposalCard+Copy.swift ---
 extension NightlyProposalCard {
     var masthead: some View {
         HStack(spacing: 8) {
@@ -62,7 +58,6 @@ extension NightlyProposalCard {
     }
 }
 
-// --- NightlyProposalCard+CopyBody.swift ---
 extension NightlyProposalCard {
     var copyBlock: some View {
         Group {
@@ -80,7 +75,6 @@ extension NightlyProposalCard {
     }
 }
 
-// --- NightlyProposalCard+Dismiss.swift ---
 extension NightlyProposalCard {
     var dismissButton: some View {
         Button("hoje não") {
@@ -96,7 +90,6 @@ extension NightlyProposalCard {
     }
 }
 
-// --- NightlyProposalCard+Mute.swift ---
 extension NightlyProposalCard {
     var muteMenu: some View {
         Menu("pausar") {
@@ -117,7 +110,6 @@ extension NightlyProposalCard {
     }
 }
 
-// --- NightlyProposalCard+A11y spoken (IDLE-COMPRESS) ---
 extension NightlyProposalCard {
     static func spokenCardLabel(workspaceText: String) -> String {
         "missão noturna proposta. Hoje você trabalhou em \(workspaceText). "

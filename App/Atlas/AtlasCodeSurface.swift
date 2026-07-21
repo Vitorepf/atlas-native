@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- AtlasCodeView+A11y+Busy.swift ---
 extension AtlasCodeView {
     func spokenCodeScreenBusyLabel() -> String? {
         switch model.phase {
@@ -17,7 +16,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+A11y+Loaded.swift ---
 extension AtlasCodeView {
     func spokenCodeScreenLoadedLabel() -> String {
         let n = model.graph?.nodes.count ?? 0
@@ -26,7 +24,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+A11y.swift ---
 extension AtlasCodeView {
     func spokenCodeScreenLabel() -> String {
         spokenCodeScreenBusyLabel() ?? spokenCodeScreenLoadedLabel()
@@ -35,7 +32,6 @@ extension AtlasCodeView {
     static let codeScreenHint = "mapa governado; pílula e proveniência só com dados publicados"
 }
 
-// --- AtlasCodeView+Anchors.swift ---
 extension AtlasCodeView {
     struct WhyFileTarget: Identifiable {
         let path: String
@@ -82,7 +78,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+Ask.swift ---
 extension AtlasCodeView {
     /// Swipe ou “perguntar” na proveniência: refina a pílula, NÃO abre modal.
     func anchorAskOnCommit(_ node: AtlasCodeGraphNode) {
@@ -131,7 +126,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+AskPill.swift ---
 extension AtlasCodeView {
     /// Lei 7: a pílula nunca some — nem aqui. E agora ela responde.
     var askPill: some View {
@@ -230,7 +224,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+AskPillA11y.swift ---
 enum AtlasCodeAskPillA11y {
     static func pillPhaseID(isAnchoring: Bool, anchorLegend: String?) -> String {
         isAnchoring ? "anchoring-\(anchorLegend ?? "default")" : "invite"
@@ -252,7 +245,6 @@ enum AtlasCodeAskPillA11y {
     }
 }
 
-// --- AtlasCodeView+Chrome.swift ---
 extension AtlasCodeView {
     func codeScreenChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -290,7 +282,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+CommitDim.swift ---
 extension AtlasCodeView {
     /// Swipe-focus ou resposta da pílula: o resto do mapa recua.
     func commitRowIsDimmed(_ node: AtlasCodeGraphNode) -> Bool {
@@ -301,7 +292,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+Graph+A11y.swift ---
 enum AtlasCodeGraphA11y {
     static func spokenStatus(scanState: AtlasCodeScanState, headline: String) -> String {
         switch scanState {
@@ -313,7 +303,6 @@ enum AtlasCodeGraphA11y {
     }
 }
 
-// --- AtlasCodeView+Graph+A11yFilter.swift ---
 extension AtlasCodeGraphA11y {
     static func spokenFilterChip(
         _ option: AtlasCodeGraphStateFilter,
@@ -330,7 +319,6 @@ extension AtlasCodeGraphA11y {
     static let emptyGraph = "grafo sem commits nesta janela"
 }
 
-// --- AtlasCodeView+Graph+Loaded.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     var graphLoadedContent: some View {
@@ -344,7 +332,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+Graph+Loading.swift ---
 extension AtlasCodeView {
     var graphLoadingContent: some View {
         TraceEvidenceLoading(text: "lendo a topologia do repositório…", reduceMotion: reduceMotion)
@@ -352,7 +339,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+Graph.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     var content: some View {
@@ -367,7 +353,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphList.swift ---
 extension AtlasCodeView {
     func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
         let filteredNodes = graphStateFilter.nodes(in: graph.nodes, model: model)
@@ -381,14 +366,12 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListRows+CommitRow+Rotor.swift ---
 extension AtlasCodeView {
     func graphCommitRowRotor<Row: View>(_ row: Row, node: AtlasCodeGraphNode) -> some View {
         row.accessibilityRotorEntry(id: node.id, in: graphRotor)
     }
 }
 
-// --- AtlasCodeView+GraphListRows+CommitRow+RowBuild+Handlers.swift ---
 extension AtlasCodeView {
     func graphCommitRowHandlers(for node: AtlasCodeGraphNode) -> (
         onSelect: () -> Void,
@@ -403,7 +386,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListRows+CommitRow+RowBuild+Init.swift ---
 extension AtlasCodeView {
     func graphCommitRowInit(
         node: AtlasCodeGraphNode,
@@ -441,7 +423,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListRows+CommitRow+RowBuild.swift ---
 extension AtlasCodeView {
     func graphCommitRowView(
         node: AtlasCodeGraphNode,
@@ -473,7 +454,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListRows+CommitRow.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphCommitRow(
@@ -494,7 +474,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListRows+CommitRowHandlers.swift ---
 extension AtlasCodeView {
     func graphCommitRowSelect(_ node: AtlasCodeGraphNode) {
         selectedNode = node
@@ -507,7 +486,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListRows.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphCommitRows(_ filteredNodes: [AtlasCodeGraphNode]) -> some View {
@@ -522,7 +500,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListScroll+Refresh.swift ---
 extension AtlasCodeView {
     func graphListScrollRefresh() async {
         await model.load()
@@ -530,7 +507,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListScroll.swift ---
 extension AtlasCodeView {
     func graphListScroll(
         graph: AtlasCodeGraphResponse,
@@ -548,7 +524,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListScrollBody.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphListScrollBody(
@@ -567,7 +542,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListScrollHead.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphListScrollHead(
@@ -586,7 +560,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListTail+Mirror.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     var graphListMirrorCard: some View {
@@ -597,7 +570,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListTail+Truncation.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphListTruncationCaption(_ graph: AtlasCodeGraphResponse) -> some View {
@@ -612,7 +584,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListTail+WeekTail.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     var graphListWeekTail: some View {
@@ -623,7 +594,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphListTail.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphListTail(graph: AtlasCodeGraphResponse) -> some View {
@@ -633,7 +603,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphRotors+Filter.swift ---
 extension AtlasCodeView {
     func nodes(in graph: AtlasCodeGraphResponse, matching state: AtlasCodeNodeState) -> [AtlasCodeGraphNode] {
         graph.nodes.filter { model.state(for: $0) == state }
@@ -644,7 +613,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphRotors+WhyOpen.swift ---
 extension AtlasCodeView {
     func openWhyBiographyIfAvailable(for node: AtlasCodeGraphNode) async {
         await provenanceModel.load(hash: node.hash)
@@ -655,7 +623,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphRotorsA11y.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphAccessibilityRotors(graph: AtlasCodeGraphResponse, content: some View) -> some View {
@@ -673,7 +640,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+GraphStates.swift ---
 extension AtlasCodeView {
     @ViewBuilder
     func graphFailure(_ message: String) -> some View {
@@ -685,10 +651,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+Init.swift ---
-
-
-// --- AtlasCodeView+ScreenZStack.swift ---
 extension AtlasCodeView {
     var codeScreenZStack: some View {
         // Fundo como .background: destrava o scroll-edge material da barra.
@@ -700,7 +662,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+Sheets+AskConversation.swift ---
 extension AtlasCodeAskWhySheetsModifier {
     var askConversationSheet: some View {
         ConversationView(
@@ -732,7 +693,6 @@ extension AtlasCodeAskWhySheetsModifier {
     }
 }
 
-// --- AtlasCodeView+Sheets+AskWhy+AskSheet.swift ---
 extension AtlasCodeAskWhySheetsModifier {
     func askWhyAskSheet<Content: View>(on content: Content) -> some View {
         content
@@ -742,7 +702,6 @@ extension AtlasCodeAskWhySheetsModifier {
     }
 }
 
-// --- AtlasCodeView+Sheets+AskWhy+WhySheet.swift ---
 extension AtlasCodeAskWhySheetsModifier {
     func askWhyWhySheet<Content: View>(on content: Content) -> some View {
         content
@@ -754,7 +713,6 @@ extension AtlasCodeAskWhySheetsModifier {
     }
 }
 
-// --- AtlasCodeView+Sheets+AskWhy.swift ---
 struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   let session: AtlasSession
   let model: AtlasCodeModel
@@ -770,7 +728,6 @@ struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   }
 }
 
-// --- AtlasCodeView+Sheets+Heal+Provenance stack ---
 extension AtlasCodeSheetsModifier {
   @ViewBuilder
   func healReceiptSheet<Content: View>(on content: Content) -> some View {
@@ -790,7 +747,6 @@ extension AtlasCodeSheetsModifier {
   }
 }
 
-// --- AtlasCodeView+Sheets+ProvenanceBind+Content.swift ---
 extension AtlasCodeSheetsModifier {
     func provenanceSheetContent(for node: AtlasCodeGraphNode) -> AtlasCodeProvenanceSheet {
         AtlasCodeProvenanceSheet(
@@ -807,7 +763,6 @@ extension AtlasCodeSheetsModifier {
     }
 }
 
-// --- AtlasCodeView+Sheets+ProvenanceBind+Present.swift ---
 extension AtlasCodeSheetsModifier {
     func provenanceSheetPresent<Content: View>(_ sheet: Content) -> some View {
         sheet
@@ -816,7 +771,6 @@ extension AtlasCodeSheetsModifier {
     }
 }
 
-// --- AtlasCodeView+Sheets+ProvenanceBind.swift ---
 extension AtlasCodeSheetsModifier {
     @ViewBuilder
     func provenanceSheetBind<Content: View>(on content: Content) -> some View {
@@ -827,7 +781,6 @@ extension AtlasCodeSheetsModifier {
     }
 }
 
-// --- AtlasCodeView+Sheets + modifier (WAVE-019 W3: one entry, no forward/wrap peels) ---
 struct AtlasCodeSheetsModifier: ViewModifier {
   let session: AtlasSession
   let model: AtlasCodeModel
@@ -911,7 +864,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+SwitchRepo.swift ---
 extension AtlasCodeView {
     func switchToRepo(_ slug: String) async {
         guard slug != model.repo else { return }
@@ -936,7 +888,6 @@ extension AtlasCodeView {
     }
 }
 
-// --- AtlasCodeView+Toolbar.swift ---
 extension AtlasCodeView {
     var codeToolbar: some ToolbarContent {
         ToolbarItem(placement: .principal) {

@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AtlasApp+Lifecycle+Bootstrap.swift ---
 extension AtlasApp {
     func atlasSceneBootstrap<Content: View>(_ content: Content) -> some View {
         content.task {
@@ -17,7 +16,6 @@ extension AtlasApp {
     }
 }
 
-// --- AtlasApp+Lifecycle+ScenePhase.swift ---
 extension AtlasApp {
     func atlasScenePhaseLifecycle<Content: View>(_ content: Content) -> some View {
         content.onChange(of: scenePhase) { _, phase in
@@ -32,14 +30,12 @@ extension AtlasApp {
     }
 }
 
-// --- AtlasApp+Lifecycle.swift ---
 extension AtlasApp {
     func atlasSceneLifecycle<Content: View>(_ content: Content) -> some View {
         atlasScenePhaseLifecycle(atlasSceneBootstrap(content))
     }
 }
 
-// --- AtlasApp.swift ---
 @main
 struct AtlasApp: App {
     @Environment(\.scenePhase) var scenePhase

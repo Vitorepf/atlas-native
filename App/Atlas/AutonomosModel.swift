@@ -4,7 +4,6 @@ import Observation
 
 // IDLE-COMPRESS AutonomosModel fused
 
-// --- AutonomosModel+Control.swift ---
 extension AutonomosModel {
     func control(
         _ action: AtlasAutonomosRunAction,
@@ -49,7 +48,6 @@ extension AutonomosModel {
     }
 }
 
-// --- AutonomosModel+Decide.swift ---
 extension AutonomosModel {
     func refreshDigest() async {
         do {
@@ -90,7 +88,6 @@ extension AutonomosModel {
     }
 }
 
-// --- AutonomosModel+Load.swift ---
 extension AutonomosModel {
     func loadSelectedDetails() async throws {
         guard let area = selectedArea else {
@@ -154,7 +151,6 @@ extension AutonomosModel {
     }
 }
 
-// --- AutonomosModel+OperatorCatalog.swift ---
 extension AutonomosModel {
     func operatorUnit(id: String) -> AutonomosUnit? {
         operatorUnits.first { $0.id == id }
@@ -185,7 +181,6 @@ extension AutonomosModel {
     }
 }
 
-// --- AutonomosModel+Transfer.swift ---
 extension AutonomosModel {
     func transfer(
         operatorActor: String,
@@ -240,7 +235,6 @@ extension AutonomosModel {
     }
 }
 
-// --- AutonomosModel.swift ---
 @MainActor
 @Observable
 final class AutonomosModel {

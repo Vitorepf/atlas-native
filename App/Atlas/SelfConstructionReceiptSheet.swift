@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused
 
-// --- SelfConstructionReceiptSheet.swift ---
 struct SelfConstructionReceiptSheet: View {
     let receipt: SelfConstructionReceipt
     var canRevert: Bool = false

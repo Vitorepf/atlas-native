@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused
 
-// --- AtlasCodeCommitRow+A11y+RowIdentity.swift ---
 enum AtlasCodeCommitRowA11yRowIdentity {
     static func parts(
         node: AtlasCodeGraphNode,
@@ -25,7 +24,6 @@ enum AtlasCodeCommitRowA11yRowIdentity {
     }
 }
 
-// --- AtlasCodeCommitRow+A11y+SpokenRow.swift ---
 extension AtlasCodeCommitRowA11y {
     static func spokenCommitRow(
         node: AtlasCodeGraphNode,
@@ -48,17 +46,14 @@ extension AtlasCodeCommitRowA11y {
     }
 }
 
-// --- AtlasCodeCommitRow+A11y.swift ---
 enum AtlasCodeCommitRowA11y {}
 
-// --- AtlasCodeCommitRow+A11yBranch+Healed.swift ---
 extension AtlasCodeCommitRowA11yState {
     static func healedParts(title: String, author: String) -> [String] {
         [title, "por \(author)", "curado"]
     }
 }
 
-// --- AtlasCodeCommitRow+A11yBranch+Healthy.swift ---
 extension AtlasCodeCommitRowA11yState {
     static func branchPartsHealthy(
         title: String,
@@ -77,21 +72,18 @@ extension AtlasCodeCommitRowA11yState {
     }
 }
 
-// --- AtlasCodeCommitRow+A11yBranch+History.swift ---
 extension AtlasCodeCommitRowA11yState {
     static func historyParts(title: String, author: String) -> [String] {
         [title, "por \(author)", "história"]
     }
 }
 
-// --- AtlasCodeCommitRow+A11yBranch+OnMain.swift ---
 extension AtlasCodeCommitRowA11yState {
     static func onMainParts(title: String, author: String, linha: String) -> [String] {
         [title, "por \(author)", "na \(linha)"]
     }
 }
 
-// --- AtlasCodeCommitRow+A11yBranch.swift ---
 extension AtlasCodeCommitRowA11yState {
     static func branchParts(
         title: String,
@@ -113,7 +105,6 @@ extension AtlasCodeCommitRowA11yState {
     }
 }
 
-// --- AtlasCodeCommitRow+A11yChrome.swift ---
 extension AtlasCodeCommitRow {
     var commitRowA11yChrome: some View {
         CommitRowAskChrome(
@@ -197,7 +188,6 @@ private struct CommitRowAskChrome<Label: View>: View {
     }
 }
 
-// --- AtlasCodeCommitRow+A11yCommitTail.swift ---
 extension AtlasCodeCommitRowA11y {
     static func spokenCommitTail(authoredAt: Int, isDimmed: Bool) -> [String] {
         var parts: [String] = []
@@ -208,7 +198,6 @@ extension AtlasCodeCommitRowA11y {
     }
 }
 
-// --- AtlasCodeCommitRow+A11yState.swift ---
 enum AtlasCodeCommitRowA11yState {
     static func stateParts(
         title: String,
@@ -233,7 +222,6 @@ enum AtlasCodeCommitRowA11yState {
     }
 }
 
-// --- AtlasCodeCommitRow+A11yViolating.swift ---
 extension AtlasCodeCommitRowA11yState {
     static func violatingParts(
         title: String,
@@ -248,7 +236,6 @@ extension AtlasCodeCommitRowA11yState {
     }
 }
 
-// --- AtlasCodeCommitRow+BranchMeta.swift ---
 extension AtlasCodeCommitRow {
     /// Nome de branch publicado no tip, se o git decorou este nó.
     static func tipBranch(from refs: [String], excluding: String?) -> String? {
@@ -284,7 +271,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Conventional.swift ---
 extension AtlasCodeCommitRow {
     /// Manchete: mensagem completa (tipo vive aqui). Sem mensagem → hash.
     var titleText: String {
@@ -295,7 +281,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Hint.swift ---
 extension AtlasCodeCommitRow {
     var commitAccessibilityHint: String {
         guard !isDimmed else { return "" }
@@ -307,7 +292,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Label+TextStack.swift ---
 extension AtlasCodeCommitRow {
     var commitRowTextStack: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -337,7 +321,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Label.swift ---
 extension AtlasCodeCommitRow {
     var commitRowLabel: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -350,14 +333,12 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+LongPress.swift ---
 extension AtlasCodeCommitRow {
     func commitLongPress() {
         onLongPress?()
     }
 }
 
-// --- AtlasCodeCommitRow+Meta+AuthorTime.swift ---
 extension AtlasCodeCommitRow {
     @ViewBuilder
     var commitMetaAuthorTime: some View {
@@ -384,7 +365,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Meta.swift ---
 extension AtlasCodeCommitRow {
     var commitMetaLine: some View {
         HStack(spacing: 6) {
@@ -402,7 +382,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Spine+A11y.swift ---
 extension View {
     /// Silencia conectores e nó; VoiceOver só ouve a linha do commit.
     func atlasCodeGraphSpineDecorative() -> some View {
@@ -412,7 +391,6 @@ extension View {
     }
 }
 
-// --- AtlasCodeCommitRow+Spine+Column+Connectors.swift ---
 extension AtlasCodeCommitRow {
     @ViewBuilder
     func spineColumnConnectors(spineTint: Color, motion: Animation?) -> some View {
@@ -518,7 +496,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Spine+Column+Frame.swift ---
 extension AtlasCodeCommitRow {
     @ViewBuilder
     func spineColumnFrame<Content: View>(_ content: Content, motion: Animation?) -> some View {
@@ -532,7 +509,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Spine+Column.swift ---
 extension AtlasCodeCommitRow {
     @ViewBuilder
     func spineColumn(spineTint: Color, motion: Animation?) -> some View {
@@ -543,7 +519,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+Spine.swift ---
 extension AtlasCodeCommitRow {
     /// Linha contínua + nó. Cor via `AtlasCodePalette` (contrato); sem spoken.
     @ViewBuilder
@@ -554,7 +529,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+SpineNode+CoreDot.swift ---
 extension AtlasCodeCommitRow {
     @ViewBuilder
     var spineCoreDot: some View {
@@ -580,7 +554,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+SpineNode+ViolatingRing.swift ---
 extension AtlasCodeCommitRow {
     @ViewBuilder
     func spineViolatingRing(motion: Animation?) -> some View {
@@ -588,7 +561,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+SpineNode.swift ---
 extension AtlasCodeCommitRow {
     @ViewBuilder
     func spineNode(motion: Animation?) -> some View {
@@ -601,7 +573,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// --- AtlasCodeCommitRow+SpineParts.swift ---
 extension AtlasCodeCommitRow {
     func spineConnector(fill: Color) -> some View {
         Rectangle()

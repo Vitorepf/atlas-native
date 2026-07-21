@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- ExecutionStateCard.swift ---
 extension ExecutionStateCard {
     @ViewBuilder
     var choiceButtonsStack: some View {
@@ -139,7 +138,6 @@ struct ExecutionStateCard: View {
     }
 }
 
-// --- ExecutionStateCard+Presentation.swift ---
 extension ExecutionStateCard {
     @ViewBuilder
     var actionButtons: some View {

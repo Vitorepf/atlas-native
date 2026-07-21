@@ -4,7 +4,6 @@ import WidgetKit
 
 // IDLE-COMPRESS fused
 
-// --- AtlasNativeSnapshotWriter+ProjectionFleet.swift ---
 extension AtlasNativeSnapshotWriter {
     static func fleet(from model: AutonomosModel) -> AtlasNativeSnapshot.Fleet? {
         guard model.taskHealth != nil || model.delivered != nil else { return nil }
@@ -40,7 +39,6 @@ extension AtlasNativeSnapshotWriter {
     }
 }
 
-// --- AtlasNativeSnapshotWriter+ProjectionLiveSessions.swift ---
 extension AtlasNativeSnapshotWriter {
     static func liveSessions(from sessions: [LiveSessionSnapshot]) -> [AtlasNativeSnapshot.LiveSession]? {
         let projected = sessions.map { session in
@@ -64,7 +62,6 @@ extension AtlasNativeSnapshotWriter {
     }
 }
 
-// --- AtlasNativeSnapshotWriter.swift ---
 @MainActor
 final class AtlasNativeSnapshotWriter {
     static let shared = AtlasNativeSnapshotWriter()

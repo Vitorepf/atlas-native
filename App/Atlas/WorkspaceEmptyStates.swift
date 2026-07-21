@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- WorkspaceEmptyStates+Editorial.swift ---
 struct WorkspaceEditorialEmpty: View {
     let area: AtlasArea
     let freeOnly: Bool
@@ -98,7 +97,6 @@ struct AtlasEditorialGlyphEmpty: View {
     }
 }
 
-// --- WorkspaceEmptyStates+Loading.swift ---
 struct WorkspaceLoadingEmpty: View {
     var reduceMotion: Bool
     var text: String = "abrindo conversas…"
@@ -117,7 +115,6 @@ struct WorkspaceLoadingEmpty: View {
     }
 }
 
-// --- WorkspaceEmptyStates.swift ---
 struct AtlasNetworkFailureEmpty: View {
     let kind: AtlasNetworkFailureKind?
     let hasToken: Bool

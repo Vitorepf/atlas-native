@@ -3,7 +3,6 @@ import Observation
 
 // IDLE-COMPRESS AtlasCodeModel fused
 
-// --- AtlasCodeModel+State.swift ---
 extension AtlasCodeModel {
 
     func matches(_ node: AtlasCodeGraphNode, target rawTarget: String) -> Bool {
@@ -81,7 +80,6 @@ extension AtlasCodeModel {
     }
 }
 
-// --- AtlasCodeModel.swift ---
 @MainActor
 @Observable
 final class AtlasCodeModel {

@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused
 
-// --- SelfConstructionReceiptSheet+A11y+RuleProof.swift ---
 extension SelfConstructionReceiptSheet {
     func spokenRuleLabel() -> String {
         "regra citada, \(receipt.ruleLabel)"
@@ -14,7 +13,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+A11y+Sheet.swift ---
 extension SelfConstructionReceiptSheet {
     func spokenSheetLabel() -> String {
         var parts = ["recibo de auto-construção", "ciclo \(receipt.cycle.cycleIndex)"]
@@ -23,7 +21,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+A11ySilence.swift ---
 extension SelfConstructionReceiptSheet {
     func spokenHumanSilenceLabel() -> String {
         "você não foi necessário, entrega sem portão"
@@ -34,7 +31,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Body+Stack.swift ---
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var proofBlockStack: some View {
@@ -45,7 +41,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Body+Title.swift ---
 extension SelfConstructionReceiptSheet {
     var proofBlockTitle: some View {
         Text("Prova")
@@ -56,7 +51,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Body.swift ---
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var proofBlock: some View {
@@ -64,7 +58,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Header.swift ---
 extension SelfConstructionReceiptSheet {
     var receiptSealHeader: some View {
         HStack(spacing: 7) {
@@ -80,7 +73,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Predicates.swift ---
 extension SelfConstructionReceiptSheet {
     var canSubmitRevert: Bool {
         !actor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -88,7 +80,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+ProofChrome.swift ---
 extension SelfConstructionReceiptSheet {
     func proofChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -100,7 +91,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+ProofCopy.swift ---
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var proofCopyBlock: some View {
@@ -112,7 +102,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+RevertBanner.swift ---
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var revertQueueBanner: some View {
@@ -130,7 +119,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Rule.swift ---
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var ruleBlock: some View {
@@ -151,7 +139,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Shell.swift ---
 extension SelfConstructionReceiptSheet {
     var receiptShell: some View {
         ZStack {
@@ -163,7 +150,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Silence.swift ---
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var humanSilenceLine: some View {
@@ -176,7 +162,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Stack.swift ---
 extension SelfConstructionReceiptSheet {
     var receiptBody: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -194,7 +179,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Title.swift ---
 extension SelfConstructionReceiptSheet {
     var receiptTitleBlock: some View {
         Text(receipt.title)
@@ -205,7 +189,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+Veto.swift ---
 extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var vetoSection: some View {
@@ -217,7 +200,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoA11y+FieldHints.swift ---
 extension SelfConstructionReceiptSheet {
     func spokenActorHint() -> String {
         "nome de quem autoriza o veto retroativo"
@@ -228,7 +210,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoA11y+Submit.swift ---
 extension SelfConstructionReceiptSheet {
     func spokenVetoSubmitLabel(canSubmit: Bool) -> String {
         canSubmit ? "desfazer com recibo" : "desfazer indisponível, preencha autor e motivo"
@@ -241,7 +222,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoButton.swift ---
 extension SelfConstructionReceiptSheet {
     var vetoSubmitButton: some View {
         Button {
@@ -258,7 +238,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoFields.swift ---
 extension SelfConstructionReceiptSheet {
     var vetoFields: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -273,7 +252,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoLabel.swift ---
 extension SelfConstructionReceiptSheet {
     var vetoSubmitLabel: some View {
         HStack(spacing: 7) {
@@ -289,7 +267,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoTextFields+Actor.swift ---
 extension SelfConstructionReceiptSheet {
     var vetoActorField: some View {
         TextField("Quem autoriza", text: $actor)
@@ -302,7 +279,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoTextFields+Reason.swift ---
 extension SelfConstructionReceiptSheet {
     var vetoReasonField: some View {
         TextField("Motivo auditável", text: $reason, axis: .vertical)
@@ -315,7 +291,6 @@ extension SelfConstructionReceiptSheet {
     }
 }
 
-// --- SelfConstructionReceiptSheet+VetoTextFields.swift ---
 extension SelfConstructionReceiptSheet {
     var vetoTextFields: some View {
         Group {

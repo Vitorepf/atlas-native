@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-017 markdown
 
-// --- AtlasMarkdownView+BlockView.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockView(_ block: MarkdownBlock, index: Int) -> some View {
@@ -11,7 +10,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewBody.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewBody(_ block: MarkdownBlock, index: Int) -> some View {
@@ -24,7 +22,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewInline.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewInline(_ block: MarkdownBlock) -> some View {
@@ -40,7 +37,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+Code.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewCodeBlock(_ block: MarkdownBlock, index: Int) -> some View {
@@ -50,7 +46,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+CodeTable+Code.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewStructuralCode(_ block: MarkdownBlock, index: Int) -> some View {
@@ -60,7 +55,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+CodeTable.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewStructuralCodeTable(_ block: MarkdownBlock, index: Int) -> some View {
@@ -77,7 +71,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+Divider.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     var blockViewDividerBlock: some View {
@@ -85,7 +78,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+List.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewListBlock(_ block: MarkdownBlock) -> some View {
@@ -95,7 +87,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+ListQuote.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewStructuralListQuote(_ block: MarkdownBlock, index: Int) -> some View {
@@ -110,7 +101,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+Quote.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewQuoteBlock(_ block: MarkdownBlock) -> some View {
@@ -120,7 +110,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural+Table.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewTableBlock(_ block: MarkdownBlock) -> some View {
@@ -130,7 +119,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+BlockViewStructural.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockViewStructural(_ block: MarkdownBlock, index: Int) -> some View {
@@ -145,7 +133,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Blocks+A11y.swift ---
 enum MarkdownBlocksA11y {
     static func spokenListItem(ordered: Bool, index: Int, plain: String) -> String {
         let trimmed = plain.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -160,7 +147,6 @@ enum MarkdownBlocksA11y {
     }
 }
 
-// --- AtlasMarkdownView+Blocks+A11yQuote.swift ---
 enum MarkdownBlocksA11yQuote {
     static func spokenQuote(_ plain: String) -> String {
         let trimmed = plain.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -168,7 +154,6 @@ enum MarkdownBlocksA11yQuote {
     }
 }
 
-// --- AtlasMarkdownView+Blocks+ListItem.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func listBlockItem(ordered: Bool, index: Int, item: [InlineSpan]) -> some View {
@@ -184,7 +169,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+Blocks.swift ---
 extension AtlasMarkdownView {
     @ViewBuilder
     func listBlock(ordered: Bool, items: [[InlineSpan]]) -> some View {
@@ -196,7 +180,6 @@ extension AtlasMarkdownView {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+A11y.swift ---
 enum MarkdownCodeBlockA11y {
     static func spokenBlock(lang: String?, lineCount: Int) -> String {
         var parts = ["bloco de código"]
@@ -214,7 +197,6 @@ enum MarkdownCodeBlockA11y {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+A11yCopy.swift ---
 extension MarkdownCodeBlockA11y {
     static func spokenCopyButton(copied: Bool, canCopy: Bool) -> String {
         if !canCopy { return "copiar indisponível, bloco vazio" }
@@ -231,7 +213,6 @@ extension MarkdownCodeBlockA11y {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+Background.swift ---
 extension CodeBlockView {
     var codeBlockBackground: some View {
         RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface)
@@ -239,7 +220,6 @@ extension CodeBlockView {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+Copy+Metrics.swift ---
 extension CodeBlockView {
     var lineCount: Int {
         guard !code.isEmpty else { return 0 }
@@ -249,7 +229,6 @@ extension CodeBlockView {
     var canCopy: Bool { !code.isEmpty }
 }
 
-// --- AtlasMarkdownView+CodeBlock+Copy+Style.swift ---
 extension CodeBlockView {
     var copyButtonTitle: String {
         guard canCopy else { return "copiar" }
@@ -262,7 +241,6 @@ extension CodeBlockView {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+CopyAction.swift ---
 extension CodeBlockView {
     func copyCode() {
         guard canCopy else { return }
@@ -282,7 +260,6 @@ extension CodeBlockView {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+Shell+Frame.swift ---
 extension CodeBlockView {
     @ViewBuilder
     var codeBlockShellFrame: some View {
@@ -294,7 +271,6 @@ extension CodeBlockView {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+Shell+Stack.swift ---
 extension CodeBlockView {
     @ViewBuilder
     var codeBlockShellStack: some View {
@@ -305,14 +281,12 @@ extension CodeBlockView {
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+Shell.swift ---
 extension CodeBlockView {
     var codeBlockShell: some View {
         codeBlockShellFrame
     }
 }
 
-// --- AtlasMarkdownView+CodeBlock+Toolbar.swift ---
 extension CodeBlockView {
     var codeBlockToolbar: some View {
         HStack {

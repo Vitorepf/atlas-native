@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AtlasWorkspacePickerSheet.swift ---
 struct AtlasWorkspacePickerSheet: View {
     @Environment(\.dismiss) var dismiss
     @State var model: AtlasCodeWorkspaceModel
@@ -74,7 +73,6 @@ struct AtlasWorkspacePickerSheet: View {
     }
 }
 
-// --- AtlasWorkspacePickerSheet+Rows.swift ---
 extension AtlasWorkspacePickerSheet {
     var pickerRepos: [AtlasCodeRepoRef] {
         guard let ws = model.workspace else { return [] }

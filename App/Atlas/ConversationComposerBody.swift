@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS body
 
-// --- ConversationComposer+A11y.swift ---
 enum ConversationComposerA11y {
     static func spokenCard(expanded: Bool, draftCount: Int, queueCount: Int, isSending: Bool) -> String {
         var parts = ["compositor"]
@@ -22,7 +21,6 @@ enum ConversationComposerA11y {
     static let cardHint = "escreve, anexa e envia; fila e execução viva aparecem quando publicadas"
 }
 
-// --- ConversationComposer+Actions.swift ---
 extension ConversationComposer {
     func send() {
         AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
@@ -41,7 +39,6 @@ extension ConversationComposer {
     }
 }
 
-// --- ConversationComposer+Card.swift ---
 extension ConversationComposer {
     var composerCard: some View {
         composerCardSheets(composerCardSurface)
@@ -127,7 +124,6 @@ extension ConversationComposer {
     }
 }
 
-// --- ConversationComposer+LiveStrip.swift ---
 extension ConversationComposer {
     @ViewBuilder
     var liveExecutionSection: some View {
@@ -148,7 +144,6 @@ extension ConversationComposer {
     }
 }
 
-// --- ConversationComposer+Queue.swift ---
 extension ConversationComposer {
     @ViewBuilder
     var queueChipSection: some View {
@@ -185,7 +180,6 @@ extension ConversationComposer {
     }
 }
 
-// --- ConversationComposer+SheetsBind.swift ---
 extension ConversationComposer {
     func composerCardSheets<V: View>(_ card: V) -> some View {
         card.conversationComposerSheets(
@@ -208,7 +202,6 @@ extension ConversationComposer {
     }
 }
 
-// --- ConversationComposer+Steer.swift ---
 extension ConversationComposer {
     func submitSteer(
         traceId: TraceID,

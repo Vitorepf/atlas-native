@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-013 fused ChangeReviewView+Sections.swift
 
-// --- ChangeReviewCouncilRow+A11y.swift ---
 extension AtlasTraceGovernance.CouncilMember {
     var spokenCouncilLine: String {
         var parts = [provider]
@@ -18,7 +17,6 @@ extension AtlasTraceGovernance.CouncilMember {
     }
 }
 
-// --- ChangeReviewCouncilRow+A11ySection.swift ---
 enum ChangeReviewCouncilA11y {
     static func spokenSection(memberCount: Int, diverged: Bool) -> String {
         var parts = ["conselho, \(memberCount) \(memberCount == 1 ? "membro" : "membros")"]
@@ -27,7 +25,6 @@ enum ChangeReviewCouncilA11y {
     }
 }
 
-// --- ChangeReviewCouncilRow+Header+ProviderGlyph.swift ---
 extension ChangeReviewCouncilMemberRow {
     var providerOutcomeGlyph: some View {
         Image(systemName: member.succeeded ? "checkmark" : "xmark")
@@ -37,7 +34,6 @@ extension ChangeReviewCouncilMemberRow {
     }
 }
 
-// --- ChangeReviewCouncilRow+Header.swift ---
 extension ChangeReviewCouncilMemberRow {
     var providerHeader: some View {
         HStack(spacing: 7) {
@@ -53,7 +49,6 @@ extension ChangeReviewCouncilMemberRow {
     }
 }
 
-// --- ChangeReviewCouncilRow+HeaderStatus.swift ---
 extension ChangeReviewCouncilMemberRow {
     var providerStatus: some View {
         Text(member.status)
@@ -63,7 +58,6 @@ extension ChangeReviewCouncilMemberRow {
     }
 }
 
-// --- ChangeReviewCouncilRow+Meta.swift ---
 extension ChangeReviewCouncilMemberRow {
     @ViewBuilder
     var metaRow: some View {
@@ -74,7 +68,6 @@ extension ChangeReviewCouncilMemberRow {
     }
 }
 
-// --- ChangeReviewCouncilRow+MetaHash.swift ---
 extension ChangeReviewCouncilMemberRow {
     @ViewBuilder
     var metaHashCode: some View {
@@ -93,7 +86,6 @@ extension ChangeReviewCouncilMemberRow {
     }
 }
 
-// --- ChangeReviewCouncilRow+MetaLatency.swift ---
 extension ChangeReviewCouncilMemberRow {
     @ViewBuilder
     var metaLatency: some View {
@@ -107,7 +99,6 @@ extension ChangeReviewCouncilMemberRow {
     }
 }
 
-// --- ChangeReviewCouncilRow.swift ---
 struct ChangeReviewCouncilMemberRow: View {
     let member: AtlasTraceGovernance.CouncilMember
 
@@ -122,7 +113,6 @@ struct ChangeReviewCouncilMemberRow: View {
     }
 }
 
-// --- ChangeReviewCouncilSection+Block.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func councilBlock(_ council: [AtlasTraceGovernance.CouncilMember]) -> some View {
@@ -141,7 +131,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewCouncilSection+BlockHeader.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func councilBlockHeader(diverged: Bool) -> some View {
@@ -160,7 +149,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewCouncilSection+Content+Stack.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func governanceContentStack(
@@ -178,7 +166,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewCouncilSection+Content.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func governanceContent(
@@ -198,7 +185,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewCouncilSection+ContentCouncil.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func governanceCouncilBlock(_ council: [AtlasTraceGovernance.CouncilMember]) -> some View {
@@ -208,7 +194,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewCouncilSection+RevisionsLine.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func governanceRevisionsLine(_ revisions: [AtlasTraceGovernance.PlanRevision]) -> some View {
@@ -228,7 +213,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewCouncilSection+StatsLine.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func governanceStatsLine(_ stats: AtlasTraceGovernance.DiffStats) -> some View {
@@ -245,7 +229,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewCouncilSection.swift ---
 // MARK: - Governance / Conselho (C18 · C19 · C21)
 // Stats/Revisions → +StatsLine/+RevisionsLine · Council block → +Block.swift
 // Chrome → ChangeReviewCouncilSection+Chrome.swift
@@ -265,7 +248,6 @@ struct ChangeReviewGovernanceSection: View {
     }
 }
 
-// --- ChangeReviewDiffSection+A11y.swift ---
 enum ChangeReviewPatchA11y {
     static func spokenCard(patch: AtlasTraceChangeReview.Patch, diffExpanded: Bool) -> String {
         ChangeReviewPatchA11yCard.spokenCard(patch: patch, diffExpanded: diffExpanded)
@@ -280,7 +262,6 @@ enum ChangeReviewPatchA11y {
     }
 }
 
-// --- ChangeReviewDiffSection+A11yCard.swift ---
 enum ChangeReviewPatchA11yCard {
     static func spokenCard(patch: AtlasTraceChangeReview.Patch, diffExpanded: Bool) -> String {
         var parts = ["patch \(String(patch.id.prefix(8)))"]
@@ -299,7 +280,6 @@ enum ChangeReviewPatchA11yCard {
     }
 }
 
-// --- ChangeReviewDiffSection+A11yToggle.swift ---
 enum ChangeReviewPatchA11yToggle {
     static func spokenDiffToggle(expanded: Bool) -> String {
         expanded ? "fechar diff do patch" : "ver diff do patch"
@@ -310,7 +290,6 @@ enum ChangeReviewPatchA11yToggle {
     }
 }
 
-// --- ChangeReviewDiffSection+Body.swift ---
 extension ChangeReviewPatchCard {
     @ViewBuilder
     var patchCardBody: some View {
@@ -328,12 +307,10 @@ extension ChangeReviewPatchCard {
     }
 }
 
-// --- ChangeReviewDiffSection+Expanded.swift ---
 extension ChangeReviewPatchCard {
     var diffExpanded: Bool { expandedDiffPatch == patch.id }
 }
 
-// --- ChangeReviewDiffSection+Header.swift ---
 extension ChangeReviewPatchCard {
     var patchHeader: some View {
         HStack {
@@ -350,7 +327,6 @@ extension ChangeReviewPatchCard {
     }
 }
 
-// --- ChangeReviewDiffSection+RiskFlags.swift ---
 extension ChangeReviewPatchCard {
     var patchRiskFlags: some View {
         Group {
@@ -370,7 +346,6 @@ extension ChangeReviewPatchCard {
     }
 }
 
-// --- ChangeReviewDiffSection+Toggle.swift ---
 extension ChangeReviewPatchCard {
     func toggleDiff() {
         if diffExpanded {
@@ -382,7 +357,6 @@ extension ChangeReviewPatchCard {
     }
 }
 
-// --- ChangeReviewDiffSection.swift ---
 // MARK: - Patch / Diff (C15 · C16)
 // DiffView → ChangeReviewDiffView.swift · Toggle → +Toggle · Header → +Header
 // Chrome → ChangeReviewDiffSection+Chrome.swift
@@ -402,7 +376,6 @@ struct ChangeReviewPatchCard: View {
     }
 }
 
-// --- ChangeReviewDiffView+Body+Loading.swift ---
 extension ChangeReviewDiffView {
     @ViewBuilder
     var diffBodyLoading: some View {
@@ -412,7 +385,6 @@ extension ChangeReviewDiffView {
     }
 }
 
-// --- ChangeReviewDiffView+Body+Unavailable.swift ---
 extension ChangeReviewDiffView {
     @ViewBuilder
     var diffBodyUnavailable: some View {
@@ -426,7 +398,6 @@ extension ChangeReviewDiffView {
     }
 }
 
-// --- ChangeReviewDiffView+Body.swift ---
 extension ChangeReviewDiffView {
     @ViewBuilder
     func diffBody(response: AtlasTraceChangeReviewDiffResponse?) -> some View {
@@ -440,7 +411,6 @@ extension ChangeReviewDiffView {
     }
 }
 
-// --- ChangeReviewDiffView+LoadTask.swift ---
 extension ChangeReviewDiffView {
     func diffLoadTask() async {
         loadSettled = false
@@ -451,7 +421,6 @@ extension ChangeReviewDiffView {
     }
 }
 
-// --- ChangeReviewDiffView+Loaded+DiffScroll.swift ---
 extension ChangeReviewDiffView {
     @ViewBuilder
     func loadedDiffScroll(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
@@ -467,7 +436,6 @@ extension ChangeReviewDiffView {
     }
 }
 
-// --- ChangeReviewDiffView+Loaded.swift ---
 extension ChangeReviewDiffView {
     @ViewBuilder
     func loadedDiff(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
@@ -479,7 +447,6 @@ extension ChangeReviewDiffView {
     }
 }
 
-// --- ChangeReviewDiffView+LoadedWarnings.swift ---
 extension ChangeReviewDiffView {
     @ViewBuilder
     func loadedDiffWarnings(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
@@ -493,7 +460,6 @@ extension ChangeReviewDiffView {
     }
 }
 
-// --- ChangeReviewFileRow+A11y.swift ---
 struct ChangeReviewFileRowA11y: ViewModifier {
     let decidedLabel: String?
     let identifier: String
@@ -512,7 +478,6 @@ struct ChangeReviewFileRowA11y: ViewModifier {
     }
 }
 
-// --- ChangeReviewFileRow+A11ySpoken.swift ---
 extension ChangeReviewFileRowA11y {
     static func spoken(
         displayName: String,
@@ -526,7 +491,6 @@ extension ChangeReviewFileRowA11y {
     }
 }
 
-// --- ChangeReviewFileRow+Actions.swift ---
 extension ChangeReviewFileRow {
     var acceptButton: some View {
         Button("aceitar") {
@@ -546,7 +510,6 @@ extension ChangeReviewFileRow {
     }
 }
 
-// --- ChangeReviewFileRow+Meta+Derived.swift ---
 extension ChangeReviewFileRow {
     var decided: AtlasTraceChangeReview.FileReview? {
         patch.fileReviews.first { $0.filePath == file }
@@ -561,14 +524,12 @@ extension ChangeReviewFileRow {
     }
 }
 
-// --- ChangeReviewFileRow+Meta.swift ---
 extension ChangeReviewFileRow {
     var fileLeading: some View {
         fileLeadingRow
     }
 }
 
-// --- ChangeReviewFileRow+MetaLeading.swift ---
 extension ChangeReviewFileRow {
     var fileLeadingRow: some View {
         HStack(spacing: 8) {
@@ -586,7 +547,6 @@ extension ChangeReviewFileRow {
     }
 }
 
-// --- ChangeReviewFileRow+Reject.swift ---
 extension ChangeReviewFileRow {
     var rejectButton: some View {
         Button("rejeitar") {
@@ -606,7 +566,6 @@ extension ChangeReviewFileRow {
     }
 }
 
-// --- ChangeReviewFileRow+Trailing.swift ---
 extension ChangeReviewFileRow {
     @ViewBuilder
     var fileTrailing: some View {
@@ -622,7 +581,6 @@ extension ChangeReviewFileRow {
     }
 }
 
-// --- ChangeReviewFileRow.swift ---
 struct ChangeReviewFileRow: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -642,7 +600,6 @@ struct ChangeReviewFileRow: View {
     }
 }
 
-// --- ChangeReviewFindingRow+A11y.swift ---
 extension ChangeReviewFindingRow {
     var rowAccessibilityLabel: String {
         var parts: [String] = []
@@ -661,7 +618,6 @@ extension ChangeReviewFindingRow {
     }
 }
 
-// --- ChangeReviewFindingRow+Body.swift ---
 extension ChangeReviewFindingRow {
     var findingBody: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -681,7 +637,6 @@ extension ChangeReviewFindingRow {
     }
 }
 
-// --- ChangeReviewFindingRow+Path.swift ---
 extension ChangeReviewFindingRow {
     @ViewBuilder
     var findingPathAndRecommendation: some View {
@@ -698,7 +653,6 @@ extension ChangeReviewFindingRow {
     }
 }
 
-// --- ChangeReviewFindingRow+SeverityColor.swift ---
 extension ChangeReviewFindingRow {
     static func severityColor(_ s: String) -> Color {
         switch s.lowercased() {
@@ -709,7 +663,6 @@ extension ChangeReviewFindingRow {
     }
 }
 
-// --- ChangeReviewFindingRow+SeveritySpoken+High.swift ---
 extension ChangeReviewFindingRow {
     static func severitySpokenHigh(_ s: String) -> String? {
         switch s.lowercased() {
@@ -720,7 +673,6 @@ extension ChangeReviewFindingRow {
     }
 }
 
-// --- ChangeReviewFindingRow+SeveritySpoken.swift ---
 extension ChangeReviewFindingRow {
     static func severitySpoken(_ s: String) -> String {
         if let high = severitySpokenHigh(s) { return high }
@@ -732,7 +684,6 @@ extension ChangeReviewFindingRow {
     }
 }
 
-// --- ChangeReviewFindingRow.swift ---
 struct ChangeReviewFindingRow: View {
     let finding: AtlasTraceChangeReview.Finding
 
@@ -744,7 +695,6 @@ struct ChangeReviewFindingRow: View {
     }
 }
 
-// --- ChangeReviewFindingsSection+Axis.swift ---
 extension ChangeReviewFindingsSection {
     func axisGroup(axis: String, axisFindings: [AtlasTraceChangeReview.Finding]) -> some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -756,7 +706,6 @@ extension ChangeReviewFindingsSection {
     }
 }
 
-// --- ChangeReviewFindingsSection+AxisHeader.swift ---
 extension ChangeReviewFindingsSection {
     func axisHeaderRow(axis: String, count: Int) -> some View {
         HStack(spacing: 8) {
@@ -773,7 +722,6 @@ extension ChangeReviewFindingsSection {
     }
 }
 
-// --- ChangeReviewFindingsSection+AxisLabel.swift ---
 extension ChangeReviewFindingsSection {
     func axisHeaderLabel(axis: String, count: Int) -> String {
         let name = axis == "GERAIS" ? "gerais" : axis.lowercased()
@@ -782,14 +730,12 @@ extension ChangeReviewFindingsSection {
     }
 }
 
-// --- ChangeReviewFindingsSection+Groups.swift ---
 extension ChangeReviewFindingsSection {
     var groups: [String: [AtlasTraceChangeReview.Finding]] {
         Dictionary(grouping: findings) { $0.category?.uppercased() ?? "GERAIS" }
     }
 }
 
-// --- ChangeReviewFindingsSection.swift ---
 struct ChangeReviewFindingsSection: View {
     let findings: [AtlasTraceChangeReview.Finding]
 
@@ -807,7 +753,6 @@ struct ChangeReviewFindingsSection: View {
     }
 }
 
-// --- ChangeReviewGovernanceSection+TraceGate.swift ---
 extension ChangeReviewGovernanceSection {
     @ViewBuilder
     var governanceTraceGate: some View {
@@ -820,7 +765,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewHashWarning.swift ---
 struct ChangeReviewHashWarning: View {
     var body: some View {
         HStack(alignment: .top, spacing: 6) {
@@ -839,14 +783,12 @@ struct ChangeReviewHashWarning: View {
     }
 }
 
-// --- ChangeReviewPatchA11yCard+DiffState.swift ---
 extension ChangeReviewPatchA11yCard {
     static func spokenDiffState(expanded: Bool) -> String {
         expanded ? "diff expandido" : "diff recolhido"
     }
 }
 
-// --- ChangeReviewPatchA11yCard+Files.swift ---
 extension ChangeReviewPatchA11yCard {
     static func spokenFileCounts(changed: Int, created: Int, deleted: Int) -> String? {
         let total = changed + created + deleted
@@ -859,7 +801,6 @@ extension ChangeReviewPatchA11yCard {
     }
 }
 
-// --- ChangeReviewPatchA11yCard+Risk.swift ---
 extension ChangeReviewPatchA11yCard {
     static func spokenRiskFlags(_ flags: [String]) -> String? {
         guard !flags.isEmpty else { return nil }
@@ -867,7 +808,6 @@ extension ChangeReviewPatchA11yCard {
     }
 }
 
-// --- ChangeReviewRunActions+AcceptLabel.swift ---
 extension ChangeReviewRunActions {
     var acceptButtonLabel: some View {
         Text("Aceitar tudo")
@@ -877,7 +817,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+Applying.swift ---
 extension ChangeReviewRunActions {
     @ViewBuilder
     var applyingIndicator: some View {
@@ -891,7 +830,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+ApplyingStatic.swift ---
 extension ChangeReviewRunActions {
     var applyingStaticLabel: some View {
         Text("registrando…")
@@ -901,7 +839,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+ButtonRow.swift ---
 extension ChangeReviewRunActions {
     @ViewBuilder
     func runActionButtonRow(available: [AtlasTraceChangeReview.Action]) -> some View {
@@ -913,7 +850,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+Buttons+AcceptAction.swift ---
 extension ChangeReviewRunActions {
     func performAccept() {
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
@@ -922,7 +858,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+Buttons+AcceptButton.swift ---
 extension ChangeReviewRunActions {
     @ViewBuilder
     func acceptButton(available: [AtlasTraceChangeReview.Action]) -> some View {
@@ -938,7 +873,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+Reject+Action.swift ---
 extension ChangeReviewRunActions {
     func rejectReviewAction() {
         applying = true
@@ -946,7 +880,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+Reject+Button.swift ---
 extension ChangeReviewRunActions {
     @ViewBuilder
     func rejectButton(available: [AtlasTraceChangeReview.Action]) -> some View {
@@ -965,7 +898,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions+Reject+Label.swift ---
 extension ChangeReviewRunActions {
     var rejectButtonLabel: some View {
         Text("Rejeitar")
@@ -976,7 +908,6 @@ extension ChangeReviewRunActions {
     }
 }
 
-// --- ChangeReviewRunActions.swift ---
 struct ChangeReviewRunActions: View {
     let review: AtlasTraceChangeReview
     let reviews: ChangeReviewModel
@@ -995,14 +926,12 @@ struct ChangeReviewRunActions: View {
     }
 }
 
-// --- ChangeReviewSections+A11y.swift ---
 enum ChangeReviewSectionsA11y {
     static func spokenCaption(_ text: String) -> String {
         text.lowercased()
     }
 }
 
-// --- ChangeReviewSections+A11yControls.swift ---
 extension ChangeReviewSectionsA11y {
     static func spokenControl(_ control: AtlasTraceChangeReview.Control) -> String {
         "\(control.slug), status \(control.status), \(control.signalSummary)"
@@ -1016,14 +945,12 @@ extension ChangeReviewSectionsA11y {
     }
 }
 
-// --- ChangeReviewSections+A11yDecided+Test.swift ---
 extension ChangeReviewSectionsA11y {
     static func spokenTest(_ test: AtlasTraceChangeReview.TestRun) -> String {
         "\(test.command ?? "teste"), status \(test.status)"
     }
 }
 
-// --- ChangeReviewSections+A11yDecided+TestsSection.swift ---
 extension ChangeReviewSectionsA11y {
     static func spokenTestsSection(_ tests: [AtlasTraceChangeReview.TestRun]) -> String {
         let passed = tests.filter { $0.status == "passed" }.count
@@ -1033,7 +960,6 @@ extension ChangeReviewSectionsA11y {
     }
 }
 
-// --- ChangeReviewSections+A11yDecidedAction.swift ---
 extension ChangeReviewSectionsA11y {
     static func spokenDecidedAction(_ action: AtlasTraceChangeReview.OperatorAction) -> String {
         var parts = [action.action == .accept ? "aceito" : "rejeitado"]
@@ -1042,7 +968,6 @@ extension ChangeReviewSectionsA11y {
     }
 }
 
-// --- ChangeReviewSections+A11yDecidedSection.swift ---
 extension ChangeReviewSectionsA11y {
     static func spokenDecidedSection(_ actions: [AtlasTraceChangeReview.OperatorAction]) -> String {
         let accepted = actions.filter { $0.action == .accept }.count
@@ -1052,7 +977,6 @@ extension ChangeReviewSectionsA11y {
     }
 }
 
-// --- ChangeReviewSections+A11yRunHeader.swift ---
 extension ChangeReviewSectionsA11y {
     static func spokenRunHeader(run: AtlasTraceChangeReview.Run) -> String {
         var parts = [run.decision ?? run.status ?? "revisão"]
@@ -1062,7 +986,6 @@ extension ChangeReviewSectionsA11y {
     }
 }
 
-// --- ChangeReviewSections+Checks.swift ---
 struct ChangeReviewControlsSection: View {
     let controls: [AtlasTraceChangeReview.Control]
 
@@ -1079,7 +1002,6 @@ struct ChangeReviewControlsSection: View {
     }
 }
 
-// --- ChangeReviewSections+ControlRow.swift ---
 extension ChangeReviewControlsSection {
     func controlRow(_ c: AtlasTraceChangeReview.Control) -> some View {
         HStack(spacing: 8) {
@@ -1097,7 +1019,6 @@ extension ChangeReviewControlsSection {
     }
 }
 
-// --- ChangeReviewSections+Decided.swift ---
 struct ChangeReviewDecidedSection: View {
     let actions: [AtlasTraceChangeReview.OperatorAction]
 
@@ -1114,7 +1035,6 @@ struct ChangeReviewDecidedSection: View {
     }
 }
 
-// --- ChangeReviewSections+DecidedRow.swift ---
 extension ChangeReviewDecidedSection {
     func decidedActionRow(_ a: AtlasTraceChangeReview.OperatorAction) -> some View {
         HStack(spacing: 8) {
@@ -1131,7 +1051,6 @@ extension ChangeReviewDecidedSection {
     }
 }
 
-// --- ChangeReviewSections+RunFields+Score.swift ---
 extension ChangeReviewRunHeader {
     @ViewBuilder
     var runHeaderScore: some View {
@@ -1142,7 +1061,6 @@ extension ChangeReviewRunHeader {
     }
 }
 
-// --- ChangeReviewSections+RunFields+TitleStack.swift ---
 extension ChangeReviewRunHeader {
     @ViewBuilder
     var runHeaderTitleStack: some View {
@@ -1158,7 +1076,6 @@ extension ChangeReviewRunHeader {
     }
 }
 
-// --- ChangeReviewSections+RunFields.swift ---
 extension ChangeReviewRunHeader {
     @ViewBuilder
     var runHeaderFields: some View {
@@ -1170,7 +1087,6 @@ extension ChangeReviewRunHeader {
     }
 }
 
-// --- ChangeReviewSections+TestRow.swift ---
 extension ChangeReviewTestsSection {
     func testRow(_ t: AtlasTraceChangeReview.TestRun) -> some View {
         HStack(spacing: 8) {
@@ -1187,7 +1103,6 @@ extension ChangeReviewTestsSection {
     }
 }
 
-// --- ChangeReviewSections+Tests.swift ---
 struct ChangeReviewTestsSection: View {
     let tests: [AtlasTraceChangeReview.TestRun]
 
@@ -1204,7 +1119,6 @@ struct ChangeReviewTestsSection: View {
     }
 }
 
-// --- ChangeReviewSections.swift ---
 // MARK: - Seções remanescentes da ChangeReviewSheet (C15 · C16)
 // Diff → ChangeReviewDiffSection · Conselho → ChangeReviewCouncilSection.
 // Checks → ChangeReviewSections+Checks.swift
@@ -1221,7 +1135,6 @@ struct ChangeReviewRunHeader: View {
     }
 }
 
-// --- ChangeReviewView+A11y+Load.swift ---
 extension ChangeReviewSheet {
     func spokenReviewSheetLoadLabel() -> String? {
         if !loadFinished, review == nil { return "revisão de mudanças, consultando" }
@@ -1230,7 +1143,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+A11y.swift ---
 extension ChangeReviewSheet {
     func spokenReviewSheetLabel() -> String {
         if let load = spokenReviewSheetLoadLabel() { return load }
@@ -1241,7 +1153,6 @@ extension ChangeReviewSheet {
     static let reviewSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
 }
 
-// --- ChangeReviewView+Content.swift ---
 extension ChangeReviewSheet {
     @ViewBuilder
     var content: some View {
@@ -1253,7 +1164,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+Load.swift ---
 extension ChangeReviewSheet {
     func refreshReviewTask() async {
         await reviews.refreshChangeReview(traceId: traceId)
@@ -1261,7 +1171,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+Sections.swift ---
 extension ChangeReviewAvailableContent {
     @ViewBuilder
     var reviewSections: some View {
@@ -1271,7 +1180,6 @@ extension ChangeReviewAvailableContent {
     }
 }
 
-// --- ChangeReviewView+SectionsAfter.swift ---
 extension ChangeReviewAvailableContent {
     @ViewBuilder
     var reviewSectionsAfterPatches: some View {
@@ -1290,7 +1198,6 @@ extension ChangeReviewAvailableContent {
     }
 }
 
-// --- ChangeReviewView+SectionsTail.swift ---
 extension ChangeReviewAvailableContent {
     @ViewBuilder
     var reviewPatchTail: some View {
@@ -1306,7 +1213,6 @@ extension ChangeReviewAvailableContent {
     }
 }
 
-// --- ChangeReviewView+Surface.swift ---
 extension ChangeReviewSheet {
     /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.
     static func hasReviewSurface(_ review: AtlasTraceChangeReview) -> Bool {
@@ -1319,7 +1225,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+Toolbar.swift ---
 extension ChangeReviewSheet {
     var reviewToolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
@@ -1332,7 +1237,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+Unavailable.swift ---
 extension ChangeReviewSheet {
     @ViewBuilder
     var reviewUnavailableContent: some View {
@@ -1349,7 +1253,6 @@ extension ChangeReviewSheet {
         }
     }
 }
-
 
 // Provider model label — peel de ChangeReviewCouncilRow+Header.
 

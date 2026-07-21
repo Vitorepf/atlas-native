@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS Arena peels
 
-// --- ArenaPremiumEngineTitle.swift ---
 struct ArenaPremiumEngineTitle: View {
     let engineID: String
     let options: [String]

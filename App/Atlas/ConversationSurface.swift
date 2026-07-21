@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS fused ConversationView · ConversationSurface.swift
 
-// --- ConversationView+Init+ModelState.swift ---
 extension ConversationView {
     static func initModelState(
         client: AtlasClient,
@@ -25,10 +24,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+Init.swift ---
-
-
-// --- ConversationView+InitSeed.swift ---
 extension ConversationView {
     static func seededModel(
         client: AtlasClient,
@@ -47,7 +42,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+InitSeedDraft.swift ---
 extension ConversationView {
     static func seedDraft(on model: ConversationModel, draft: String) {
         guard !draft.isEmpty else { return }
@@ -55,7 +49,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+InitSeedWorkspace.swift ---
 extension ConversationView {
     static func seedWorkspace(on model: ConversationModel, workspace: String?) {
         guard let workspace else { return }
@@ -64,7 +57,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+Lifecycle+SendHaptic.swift ---
 extension ConversationView {
     func applySendHaptic<Content: View>(_ content: Content) -> some View {
         content
@@ -74,7 +66,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+Lifecycle.swift ---
 extension ConversationView {
     func conversationLifecycleModifiers<Content: View>(_ content: Content) -> some View {
         conversationOutlineSheet(
@@ -88,7 +79,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+LifecycleCache.swift ---
 extension ConversationView {
     func applyCacheLifecycleModifiers<Content: View>(_ content: Content) -> some View {
         content
@@ -105,7 +95,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+LifecycleOutline.swift ---
 extension ConversationView {
     func conversationOutlineSheet<Content: View>(_ content: Content) -> some View {
         content.sheet(isPresented: $showOutline) {
@@ -114,7 +103,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+LifecyclePresence+Appear.swift ---
 extension ConversationView {
     func conversationPresenceOnAppear() {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: model.threadId)
@@ -126,7 +114,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+LifecyclePresence+Disappear.swift ---
 extension ConversationView {
     func conversationPresenceOnDisappear() {
         TurnPresence.shared.setVisible(model, visible: false)
@@ -134,7 +121,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+LifecyclePresence+ThreadChange.swift ---
 extension ConversationView {
     func conversationPresenceOnThreadChange(_ now: ThreadID?) {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: now)
@@ -143,7 +129,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+LifecyclePresence.swift ---
 extension ConversationView {
     func conversationPresenceModifiers<Content: View>(_ content: Content) -> some View {
         content
@@ -153,7 +138,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposerArgs+Bindings+Sheets.swift ---
 extension ConversationView {
     var conversationComposerSheetFlagBindings: (
         mode: Binding<String>,
@@ -180,7 +164,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposerArgs+Bindings+Trace.swift ---
 extension ConversationView {
     var conversationComposerTraceBindings: (
         reviewTrace: Binding<ConversationReviewTraceRef?>,
@@ -195,7 +178,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposerArgs+Bindings.swift ---
 extension ConversationView {
     var conversationComposerSheetBindings: (
         mode: Binding<String>,
@@ -215,7 +197,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposerArgs+Core+ComposerInit.swift ---
 extension ConversationView {
     func conversationComposerInit(
         sessionArgs: (
@@ -260,7 +241,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposerArgs+Core+Session.swift ---
 extension ConversationView {
     func conversationComposerSessionArgs(
         focused: FocusState<Bool>.Binding
@@ -279,7 +259,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposerArgs+Core.swift ---
 extension ConversationView {
     func conversationComposerCoreArgs(
         bindings: (
@@ -304,21 +283,18 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageComposerArgs.swift ---
 extension ConversationView {
     var conversationComposerArgs: ConversationComposer {
         conversationComposerCoreArgs(bindings: conversationComposerSheetBindings)
     }
 }
 
-// --- ConversationView+PageComposerCard.swift ---
 extension ConversationView {
     var conversationComposerCard: some View {
         conversationComposerArgs
     }
 }
 
-// --- ConversationView+PageMessages+Model.swift ---
 extension ConversationView {
     var conversationMessagesModelArgs: (
         model: ConversationModel,
@@ -335,7 +311,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageMessages+Trace.swift ---
 extension ConversationView {
     var conversationMessagesTraceArgs: (
         awayFromBottom: Binding<Bool>,
@@ -360,7 +335,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageMessages.swift ---
 extension ConversationView {
     var conversationMessagesView: some View {
         let modelArgs = conversationMessagesModelArgs
@@ -382,7 +356,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+PageParts.swift ---
 extension ConversationView {
     var conversationMessagesStack: some View {
         VStack(spacing: 0) {
@@ -394,7 +367,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+SheetFlags+Composer.swift ---
 extension ConversationView {
     /// Folhas de modo/esforço/fila/anexo/câmera/arquivo.
     var hasOpenComposerSheet: Bool {
@@ -403,7 +375,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+SheetFlags+Trace.swift ---
 extension ConversationView {
     /// Folhas de revisão/artefato/steer abertas pelo composer/cockpit.
     var hasOpenTraceSheet: Bool {
@@ -411,10 +382,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationView+SheetFlags.swift ---
-
-
-// --- ConversationViewChrome+ConfirmingSeal.swift ---
 extension ConversationView {
     @ViewBuilder
     var confirmingCacheSeal: some View {
@@ -432,7 +399,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+EditCopy.swift ---
 extension ConversationView {
     func editAndResend(_ bubble: ChatBubble) {
         guard bubble.role == "user" else { return }
@@ -449,7 +415,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+Handoff.swift ---
 extension ConversationView {
     @ViewBuilder var handoffReceipt: some View {
         if let handoff = model.latestSurfaceHandoff {
@@ -458,7 +423,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+Header.swift ---
 extension ConversationView {
     var header: some View {
         HStack(spacing: 12) {
@@ -483,7 +447,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+HeaderBack.swift ---
 extension ConversationView {
     var headerBackButton: some View {
         Button {
@@ -499,7 +462,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+HeaderContinuity+MenuActions.swift ---
 extension ConversationView {
     @ViewBuilder
     var continuityMenuActions: some View {
@@ -512,7 +474,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+HeaderContinuity+MenuLabel.swift ---
 extension ConversationView {
     var continuityMenuLabel: some View {
         Image(systemName: "ellipsis")
@@ -521,7 +482,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+HeaderContinuity.swift ---
 extension ConversationView {
     @ViewBuilder
     var continuityMenu: some View {
@@ -536,7 +496,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+HeaderOutline.swift ---
 extension ConversationView {
     @ViewBuilder
     var outlineHeaderButton: some View {
@@ -556,7 +515,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+HeaderTrailing.swift ---
 extension ConversationView {
     @ViewBuilder
     var headerTrailing: some View {
@@ -572,7 +530,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+Toast.swift ---
 extension ConversationView {
     @ViewBuilder var toast: some View {
         if let t = model.toast {
@@ -590,7 +547,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome+ToastDismiss.swift ---
 extension ConversationView {
     func dismissToastAfterDelay() async {
         try? await Task.sleep(nanoseconds: 1_400_000_000)
@@ -598,7 +554,6 @@ extension ConversationView {
     }
 }
 
-// --- ConversationViewChrome.swift ---
 extension ConversationView {
     // MARK: - Cache seal
 

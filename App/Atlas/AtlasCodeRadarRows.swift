@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-011 fused
 
-// --- AtlasCodeRadarAskContext.swift (WAVE-020 grammar) ---
 enum AtlasCodeRadarAskContext {
     static let invite = "pergunte sobre o workspace"
 
@@ -90,7 +89,6 @@ enum AtlasCodeRadarAskContext {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Badge.swift ---
 extension AtlasCodeFolderRow {
     @ViewBuilder
     var exceptionBadge: some View {
@@ -108,7 +106,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Count.swift ---
 extension AtlasCodeFolderRow {
     /// Só violações de repos já varridos — nil = ainda não medido, nunca conta.
     var verifiedExceptionCount: Int {
@@ -119,7 +116,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Expanded.swift ---
 extension AtlasCodeFolderRow {
     @ViewBuilder var expandedRepos: some View {
         if isExpanded {
@@ -128,7 +124,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+ExpandedList.swift ---
 extension AtlasCodeFolderRow {
     /// WAVE-024: issues-first inside folder when scan data present via issuesFor.
     var judgmentFolderRepos: [AtlasCodeRepoRef] {
@@ -165,7 +160,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Separator.swift ---
 extension AtlasCodeFolderRow {
     @ViewBuilder
     func expandedRepoSeparator(after repo: AtlasCodeRepoRef, in ordered: [AtlasCodeRepoRef]) -> some View {
@@ -179,7 +173,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Toggle.swift ---
 extension AtlasCodeFolderRow {
     var folderToggleButton: some View {
         folderToggleA11y(
@@ -194,7 +187,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow.swift ---
 struct AtlasCodeFolderRow: View {
     let folder: AtlasCodeFolder
     let isExpanded: Bool
@@ -214,7 +206,6 @@ struct AtlasCodeFolderRow: View {
     }
 }
 
-// --- AtlasCodeRadarRows+Label+Layout.swift ---
 extension AtlasCodeRepoRow {
     var repoRowLabel: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -227,7 +218,6 @@ extension AtlasCodeRepoRow {
     }
 }
 
-// --- AtlasCodeRadarRows+Label+Leading.swift ---
 extension AtlasCodeRepoRow {
     var repoRowLeading: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -243,7 +233,6 @@ extension AtlasCodeRepoRow {
     }
 }
 
-// --- AtlasCodeRadarRows+LabelBadge.swift ---
 extension AtlasCodeRepoRow {
     @ViewBuilder
     var repoFolderBadge: some View {
@@ -259,7 +248,6 @@ extension AtlasCodeRepoRow {
     }
 }
 
-// --- AtlasCodeRadarRows+LabelExtras.swift ---
 extension AtlasCodeRepoRow {
     @ViewBuilder
     var repoRowIssues: some View {
@@ -291,7 +279,6 @@ extension AtlasCodeRepoRow {
     }
 }
 
-// --- AtlasCodeRadarRows+LabelTrailing.swift ---
 extension AtlasCodeRepoRow {
     @ViewBuilder
     var repoRowTrailing: some View {
@@ -309,7 +296,6 @@ extension AtlasCodeRepoRow {
     }
 }
 
-// --- AtlasCodeRadarRows.swift ---
 struct AtlasCodeRepoRow: View {
     let repo: AtlasCodeRepoRef
     let issues: [AtlasCodeIssue]?
@@ -326,7 +312,6 @@ struct AtlasCodeRepoRow: View {
     }
 }
 
-// --- AtlasCodeRadarSections+AlarmCapsule.swift ---
 extension AtlasCodeRadarStatusCapsule {
     var alarmCapsule: some View {
         HStack(spacing: 7) {
@@ -346,7 +331,6 @@ extension AtlasCodeRadarStatusCapsule {
     }
 }
 
-// --- AtlasCodeRadarSections+Capsules.swift ---
 extension AtlasCodeRadarStatusCapsule {
     /// Caption baixa — mesmo padrão da frota («frota» / «fila») sem incidente.
     var silentCaption: some View {
@@ -359,7 +343,6 @@ extension AtlasCodeRadarStatusCapsule {
     }
 }
 
-// --- AtlasCodeRadarSections+Labels.swift ---
 struct AtlasCodeRadarSectionLabel: View {
     let text: String
     var accessibilityID: String? = nil
@@ -375,7 +358,6 @@ struct AtlasCodeRadarSectionLabel: View {
     }
 }
 
-// --- AtlasCodeRadarSections+LabelsDivider.swift ---
 struct AtlasCodeRadarRowDivider: View {
     var body: some View {
         Rectangle()
@@ -384,7 +366,6 @@ struct AtlasCodeRadarRowDivider: View {
     }
 }
 
-// --- AtlasCodeRadarSections+StatusSwitch.swift ---
 extension AtlasCodeRadarStatusCapsule {
     @ViewBuilder
     var statusSwitchBody: some View {
@@ -399,7 +380,6 @@ extension AtlasCodeRadarStatusCapsule {
     }
 }
 
-// --- AtlasCodeRadarSections.swift ---
 // MARK: - Chrome do AtlasCodeRadarView (peel de AtlasCodeRadarSections)
 // Capsules → +Capsules · Labels → +Labels
 
@@ -418,7 +398,6 @@ struct AtlasCodeRadarStatusCapsule: View {
     }
 }
 
-// --- AtlasCodeRadarView+AskPill.swift ---
 extension AtlasCodeRadarView {
     var askPillDock: some View {
         AgenticAskDock {
@@ -465,7 +444,4 @@ extension AtlasCodeRadarView {
         return nil
     }
 }
-
-// --- AtlasCodeRadarView+Init.swift ---
-
 

@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused AutonomosView · AutonomosView.swift
 
-// --- AutonomosView.swift ---
 struct AutonomosView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
@@ -24,7 +23,6 @@ struct AutonomosView: View {
     }
 }
 
-// --- AutonomosView+Content+PhaseRouter+Busy.swift ---
 extension AutonomosView {
     @ViewBuilder
     var autonomosBusyPhaseRouter: some View {
@@ -39,7 +37,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+Content+PhaseRouter.swift ---
 extension AutonomosView {
     @ViewBuilder
     var autonomosPhaseRouter: some View {
@@ -52,7 +49,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+Content.swift ---
 extension AutonomosView {
     @ViewBuilder
     var content: some View {
@@ -60,7 +56,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+ContentFailed.swift ---
 extension AutonomosView {
     func failedContent(message: String) -> some View {
         VStack {
@@ -73,7 +68,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+ContentLoaded.swift ---
 extension AutonomosView {
     var loadedContent: some View {
         AutonomosMapShell(
@@ -85,7 +79,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+ContentShell+Loading.swift ---
 extension AutonomosView {
     var loadingContent: some View {
         VStack {
@@ -96,7 +89,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+HeaderStack+ContentAnim.swift ---
 extension AutonomosView {
     var autonomosContentAnimated: some View {
         content
@@ -105,7 +97,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+HeaderStack.swift ---
 extension AutonomosView {
     var autonomosHeaderStack: some View {
         VStack(spacing: 0) {
@@ -173,7 +164,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosViewHeader+A11y.swift ---
 extension AutonomosViewHeader {
     func spokenTitle(isHealthy: Bool, auditModeEnabled: Bool) -> String {
         var parts = [title, subtitle]
@@ -186,7 +176,6 @@ extension AutonomosViewHeader {
     func spokenBackHint() -> String { "volta" }
 }
 
-// --- AutonomosViewHeader+A11yRefresh.swift ---
 extension AutonomosViewHeader {
     func spokenRefreshLabel(canRefresh: Bool) -> String {
         canRefresh
@@ -199,7 +188,6 @@ extension AutonomosViewHeader {
     }
 }
 
-// --- AutonomosViewHeader+Buttons.swift ---
 extension AutonomosViewHeader {
     var backButton: some View {
         Button {
@@ -218,7 +206,6 @@ extension AutonomosViewHeader {
     }
 }
 
-// --- AutonomosViewHeader+Create.swift ---
 extension AutonomosViewHeader {
     var createButton: some View {
         Button {
@@ -237,7 +224,6 @@ extension AutonomosViewHeader {
     }
 }
 
-// --- AutonomosViewHeader+Layout.swift ---
 extension AutonomosViewHeader {
     var headerLayout: some View {
         HStack(spacing: 12) {
@@ -262,7 +248,6 @@ extension AutonomosViewHeader {
     }
 }
 
-// --- AutonomosViewHeader+Refresh.swift ---
 extension AutonomosViewHeader {
     var refreshButton: some View {
         Button {
@@ -284,7 +269,6 @@ extension AutonomosViewHeader {
     }
 }
 
-// --- AutonomosViewHeader+Title.swift ---
 extension AutonomosViewHeader {
     var titleBlock: some View {
         VStack(alignment: .leading, spacing: 2) {

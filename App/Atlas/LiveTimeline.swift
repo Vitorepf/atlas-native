@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- LiveTimeline.swift ---
 enum LiveTimelineA11y {
     static func spokenSectionLabel(stepCount: Int) -> String {
         "orquestra ao vivo, \(stepCount) passo\(stepCount == 1 ? "" : "s")"
@@ -339,7 +338,6 @@ struct LiveTimeline: View {
     }
 }
 
-// --- LiveTimeline+Rows.swift ---
 func annotateNarrativeDurations(_ rows: inout [NarrativeRow]) {
     guard rows.count > 1 else { return }
     for index in rows.indices.dropLast() {

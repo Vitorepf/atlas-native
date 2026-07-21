@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS Arena peels
 
-// --- ArenaPremiumGlyphRow.swift ---
 struct ArenaPremiumGlyphRow: View {
     let glyph: String
     let title: String
@@ -40,7 +39,6 @@ struct ArenaPremiumGlyphRow: View {
     }
 }
 
-// --- ArenaPremiumOperationalRows.swift ---
 struct ArenaPremiumOperationalRows: View {
     @Bindable var model: ArenaModel
     let onNavigate: (ArenaPremiumDestination) -> Void

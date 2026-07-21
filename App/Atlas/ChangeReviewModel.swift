@@ -4,7 +4,6 @@ import Observation
 
 // IDLE-COMPRESS ChangeReviewModel fused
 
-// --- ChangeReviewModel+Apply.swift ---
 extension ChangeReviewModel {
     func applyChangeReview(
         traceId: TraceID,
@@ -78,7 +77,6 @@ extension ChangeReviewModel {
     }
 }
 
-// --- ChangeReviewModel+Refresh.swift ---
 extension ChangeReviewModel {
     func refreshChangeReview(traceId: TraceID) async {
         if changeReviewsByTrace[traceId] != nil { return }
@@ -158,7 +156,6 @@ extension ChangeReviewModel {
     }
 }
 
-// --- ChangeReviewModel.swift ---
 @MainActor
 @Observable
 final class ChangeReviewModel {

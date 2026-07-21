@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS fused DraftThumb · DraftThumb.swift
 
-// --- DraftThumb+A11y.swift ---
 enum DraftThumbA11y {
     static func spokenRemove(_ draft: LocalDraft) -> String {
         DraftThumbA11yHints.spokenRemove(draft)
@@ -18,7 +17,6 @@ enum DraftThumbA11y {
     }
 }
 
-// --- DraftThumb+A11yHints.swift ---
 enum DraftThumbA11yHints {
     static let removeHint = "remove este anexo antes do envio"
     static let failedHint = "toque para ver o erro completo no aviso"
@@ -32,7 +30,6 @@ enum DraftThumbA11yHints {
     }
 }
 
-// --- DraftThumb+A11yThumb+Size.swift ---
 extension DraftThumbA11y {
     static func spokenThumbSizeParts(_ draft: LocalDraft) -> [String] {
         guard draft.bytes > 0 else { return [] }
@@ -41,7 +38,6 @@ extension DraftThumbA11y {
     }
 }
 
-// --- DraftThumb+A11yThumb+State+Ready.swift ---
 extension DraftThumbA11y {
     static func spokenThumbReadyParts(_ draft: LocalDraft) -> [String]? {
         switch draft.state {
@@ -52,7 +48,6 @@ extension DraftThumbA11y {
     }
 }
 
-// --- DraftThumb+A11yThumb+State.swift ---
 extension DraftThumbA11y {
     static func spokenThumbStateParts(_ draft: LocalDraft) -> [String] {
         if let ready = spokenThumbReadyParts(draft) { return ready }
@@ -65,7 +60,6 @@ extension DraftThumbA11y {
     }
 }
 
-// --- DraftThumb+A11yThumb.swift ---
 extension DraftThumbA11y {
     static func spokenThumb(_ draft: LocalDraft) -> String {
         let noun = draft.kind == .image ? "imagem" : "arquivo"
@@ -76,7 +70,6 @@ extension DraftThumbA11y {
     }
 }
 
-// --- DraftThumb+Cache.swift ---
 @MainActor
 enum DraftThumbCache {
     static let store = NSCache<NSString, UIImage>()
@@ -87,7 +80,6 @@ enum DraftThumbCache {
     }
 }
 
-// --- DraftThumb+Chrome+A11y.swift ---
 extension DraftThumb {
     func removeButtonA11y<Content: View>(_ content: Content) -> some View {
         content
@@ -97,7 +89,6 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb+Chrome+Button.swift ---
 extension DraftThumb {
     @ViewBuilder
     var removeButtonChrome: some View {
@@ -109,7 +100,6 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb+Chrome.swift ---
 extension DraftThumb {
     @ViewBuilder var removeButton: some View {
         if draft.state != .subindo {
@@ -127,7 +117,6 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb+ChromeVeil.swift ---
 extension DraftThumb {
     @ViewBuilder var stateVeil: some View {
         if draft.state == .subindo {
@@ -145,7 +134,6 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb+Content+A11y.swift ---
 extension DraftThumb {
     func thumbContentA11y<V: View>(_ framed: V) -> some View {
         framed
@@ -163,7 +151,6 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb+Content+Frame.swift ---
 extension DraftThumb {
     var thumbFrame: some View {
         thumb
@@ -181,14 +168,12 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb+Content.swift ---
 extension DraftThumb {
     var thumbContent: some View {
         thumbContentA11y(thumbFrame)
     }
 }
 
-// --- DraftThumb+Failed.swift ---
 extension DraftThumb {
     var failedMessage: String? {
         if case .falhou(let m) = draft.state { return m }
@@ -196,7 +181,6 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb+Image.swift ---
 extension DraftThumb {
     @ViewBuilder var thumb: some View {
         if draft.kind == .image, let ui = DraftThumbCache.image(for: draft) {
@@ -211,7 +195,6 @@ extension DraftThumb {
     }
 }
 
-// --- DraftThumb.swift ---
 struct DraftThumb: View {
     let draft: LocalDraft
     let reduceMotion: Bool

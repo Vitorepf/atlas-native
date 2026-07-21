@@ -3,7 +3,6 @@ import UIKit
 
 // IDLE-COMPRESS fused
 
-// --- AtlasMotion+Haptics+Impact.swift ---
 extension AtlasMotion {
     static func softImpact(reduceMotion: Bool) {
         guard !reduceMotion else { return }
@@ -21,7 +20,6 @@ extension AtlasMotion {
     }
 }
 
-// --- AtlasMotion+Haptics+Notification.swift ---
 extension AtlasMotion {
     static func successNotification(reduceMotion: Bool) {
         guard !reduceMotion else { return }
@@ -29,7 +27,6 @@ extension AtlasMotion {
     }
 }
 
-// --- AtlasMotion+Presentation.swift ---
 struct NumericTextTransition: ViewModifier {
     let enabled: Bool
 
@@ -42,7 +39,6 @@ struct NumericTextTransition: ViewModifier {
     }
 }
 
-// --- AtlasMotion+PresentationHelpers.swift ---
 @MainActor
 enum AtlasMotionPresentation {
     static func editorial(reduceMotion: Bool) -> Animation? {
@@ -60,7 +56,6 @@ extension View {
     }
 }
 
-// --- AtlasMotion.swift ---
 enum AtlasMotion {
     static let instinct: Double = 0.18
     static let considered: Double = 0.32

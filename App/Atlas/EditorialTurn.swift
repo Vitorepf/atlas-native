@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- EditorialTurn.swift ---
 extension EditorialTurnA11y {
   static func spokenSignature(provider: String?, model: String?, elapsedMs: Int?) -> String {
     guard let who = signatureWho(provider: provider, model: model) else { return "" }
@@ -205,7 +204,6 @@ extension SignatureLine {
     }
 }
 
-// --- EditorialTurn+Body.swift ---
 extension EditorialTurn {
     func applyArrival<Content: View>(_ content: Content) -> some View {
         content

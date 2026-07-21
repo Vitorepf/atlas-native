@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AtlasArenaView+Lifecycle+A11y.swift ---
 extension AtlasArenaView {
     func arenaLifecycleA11y<Content: View>(_ content: Content) -> some View {
         content
@@ -12,7 +11,6 @@ extension AtlasArenaView {
     }
 }
 
-// --- AtlasArenaView+Lifecycle+Tasks.swift ---
 extension AtlasArenaView {
     func arenaLifecycleTasks<Content: View>(_ content: Content) -> some View {
         content
@@ -27,14 +25,12 @@ extension AtlasArenaView {
     }
 }
 
-// --- AtlasArenaView+Lifecycle.swift ---
 extension AtlasArenaView {
     func arenaLifecycleChrome<Content: View>(_ content: Content) -> some View {
         arenaLifecycleTasks(arenaLifecycleA11y(content))
     }
 }
 
-// --- AtlasArenaView+Sheets.swift ---
 extension AtlasArenaView {
     func arenaSheets<Content: View>(on content: Content) -> some View {
         content
@@ -44,7 +40,6 @@ extension AtlasArenaView {
     }
 }
 
-// --- AtlasArenaView.swift ---
 struct AtlasArenaView: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Environment(AtlasSession.self) var session

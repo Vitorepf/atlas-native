@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- ConversationMessages.swift ---
 struct ConversationMessages: View {
     var model: ConversationModel
     var reduceMotion: Bool
@@ -155,7 +154,6 @@ extension ConversationMessages {
     }
 }
 
-// --- ConversationMessages+Body.swift ---
 enum ConversationMessagesA11y {
     static let scrollFABLabel = ConversationMessagesA11yFAB.scrollFABLabel
     static let scrollFABHint = ConversationMessagesA11yFAB.scrollFABHint

@@ -2,7 +2,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- BreathingDiamond+AnimatedShape.swift ---
 extension BreathingDiamond {
     var breathingDiamondShape: some View {
         RoundedRectangle(cornerRadius: 2)
@@ -15,7 +14,6 @@ extension BreathingDiamond {
     }
 }
 
-// --- BreathingDiamond+Handlers.swift ---
 extension BreathingDiamond {
     func applyBreathHandlers<Content: View>(_ content: Content) -> some View {
         content
@@ -36,7 +34,6 @@ extension BreathingDiamond {
     }
 }
 
-// --- BreathingDiamond.swift ---
 struct BreathingDiamond: View {
     let size: CGFloat
     var reduceMotion: Bool? = nil

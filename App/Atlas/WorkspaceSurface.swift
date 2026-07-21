@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- WorkspaceView+A11y.swift ---
 extension WorkspaceView {
     func spokenWorkspaceScreenLabel() -> String {
         if showsLoadingShell { return "\(title), carregando" }
@@ -18,7 +17,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+Body.swift ---
 extension WorkspaceView {
     var workspaceBodyStack: some View {
         ZStack(alignment: .bottom) {
@@ -37,7 +35,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+Chrome.swift ---
 extension WorkspaceView {
     func workspaceScreenChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -48,7 +45,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ChromeBack.swift ---
 extension WorkspaceView {
     /// Header composto (reconstruído pós-merge: o peel deixou só as folhas).
     var header: some View {
@@ -83,7 +79,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ChromeFilter+ChipRow.swift ---
 extension WorkspaceView {
     var areaFilterChipRow: some View {
         HStack(spacing: 8) {
@@ -95,7 +90,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ChromeFilter.swift ---
 extension WorkspaceView {
     var areaFilter: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -107,7 +101,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ChromeFilterChip.swift ---
 extension WorkspaceView {
     func areaFilterChip(_ a: AtlasArea, active: Bool) -> some View {
         Button {
@@ -126,7 +119,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ChromeFilterLabel.swift ---
 extension WorkspaceView {
     func areaFilterChipLabel(_ a: AtlasArea, active: Bool) -> some View {
         Text(a.label)
@@ -140,7 +132,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ChromeNewPill.swift ---
 extension WorkspaceView {
     var newPill: some View {
         // A conversa nova nasce NESTE workspace (livres → sem workspace).
@@ -170,7 +161,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+List+ThreadRows+Loop.swift ---
 extension WorkspaceThreadsSection {
     @ViewBuilder
     func threadRowLoop(_ t: AtlasAiThread, newBadgeSuppressed: Bool = false) -> some View {
@@ -179,7 +169,6 @@ extension WorkspaceThreadsSection {
     }
 }
 
-// --- WorkspaceView+List+ThreadRows+Separator.swift ---
 extension WorkspaceThreadsSection {
     @ViewBuilder
     func threadRowSeparator(after thread: AtlasAiThread) -> some View {
@@ -190,7 +179,6 @@ extension WorkspaceThreadsSection {
     }
 }
 
-// --- WorkspaceView+List+ThreadRows.swift ---
 extension WorkspaceThreadsSection {
     /// Badge "novo" saturado (maioria de 6+ linhas) perde o poder de
     /// discriminar — silencia em bloco; a ordenação já diz recência.
@@ -208,7 +196,6 @@ extension WorkspaceThreadsSection {
     }
 }
 
-// --- WorkspaceView+List.swift ---
 struct WorkspaceThreadsSection: View {
     let threads: [AtlasAiThread]
     let area: AtlasArea
@@ -223,7 +210,6 @@ struct WorkspaceThreadsSection: View {
     }
 }
 
-// --- WorkspaceView+ListCaption+Caption.swift ---
 extension WorkspaceThreadsSection {
     var caption: String {
         if area == .tudo {
@@ -233,7 +219,6 @@ extension WorkspaceThreadsSection {
     }
 }
 
-// --- WorkspaceView+ListCaption+Spoken.swift ---
 extension WorkspaceThreadsSection {
     var spokenCaption: String {
         if area == .tudo {
@@ -243,7 +228,6 @@ extension WorkspaceThreadsSection {
     }
 }
 
-// --- WorkspaceView+ListCaptionHeader.swift ---
 extension WorkspaceThreadsSection {
     var captionHeader: some View {
         Text(caption.uppercased())
@@ -257,7 +241,6 @@ extension WorkspaceThreadsSection {
     }
 }
 
-// --- WorkspaceView+Predicates+LoadingShell.swift ---
 extension WorkspaceView {
     var showsLoadingShell: Bool {
         guard session.threads.isEmpty else { return false }
@@ -268,7 +251,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+Predicates+NetworkFailure.swift ---
 extension WorkspaceView {
     /// Sessão sem threads e load falhou → offline/rede, não "vazio editorial".
     var showsNetworkFailure: Bool {
@@ -278,7 +260,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+Scroll.swift ---
 extension WorkspaceView {
     var listView: some View {
         ScrollView {
@@ -293,7 +274,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ScrollChrome.swift ---
 extension WorkspaceView {
     func workspaceListChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -303,7 +283,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ScrollFailure.swift ---
 extension WorkspaceView {
     var listNetworkFailure: some View {
         AtlasNetworkFailureEmpty(
@@ -318,7 +297,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ScrollLoaded.swift ---
 extension WorkspaceView {
     @ViewBuilder
     var listLoadedContent: some View {
@@ -335,7 +313,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ScrollPhases.swift ---
 extension WorkspaceView {
     @ViewBuilder
     var scrollPhaseContent: some View {
@@ -350,7 +327,6 @@ extension WorkspaceView {
     }
 }
 
-// --- WorkspaceView+ThreadLink.swift ---
 struct WorkspaceThreadLink: View {
     let thread: AtlasAiThread
     let reduceMotion: Bool
@@ -361,7 +337,6 @@ struct WorkspaceThreadLink: View {
     }
 }
 
-// --- WorkspaceView+ThreadLinkA11y.swift ---
 extension WorkspaceThreadLink {
     var threadLinkA11y: some View {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
@@ -375,7 +350,6 @@ extension WorkspaceThreadLink {
     }
 }
 
-// --- WorkspaceView+ThreadLinkTransition.swift ---
 extension WorkspaceThreadLink {
     var threadTransition: AnyTransition {
         reduceMotion ? .opacity : .asymmetric(
@@ -385,7 +359,6 @@ extension WorkspaceThreadLink {
     }
 }
 
-// --- WorkspaceView+Threads.swift ---
 extension WorkspaceView {
     var threads: [AtlasAiThread] {
         let base = freeOnly

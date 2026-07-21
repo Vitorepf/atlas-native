@@ -3,10 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- SteerInteractionSheet+A11y.swift ---
-
-
-// --- SteerInteractionSheet+A11yReceipt.swift ---
 extension SteerInteractionSheet {
     func spokenReceiptLabel(_ receipt: AtlasInteractionSteerResponse) -> String {
         if receipt.isAccepted {
@@ -17,7 +13,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+A11yScope.swift ---
 extension SteerInteractionSheet {
     func spokenScopeLabel(_ scope: AtlasInteractionSteerScope) -> String {
         switch scope {
@@ -27,21 +22,18 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+A11ySheetHint.swift ---
 extension SteerInteractionSheet {
     func spokenSheetHint() -> String {
         "instrução entra no próximo checkpoint seguro; o Atlas pode recusar"
     }
 }
 
-// --- SteerInteractionSheet+A11ySubmit.swift ---
 extension SteerInteractionSheet {
     func spokenSubmitLabel(canSubmit: Bool) -> String {
         canSubmit ? "enviar instrução de redirecionamento" : "enviar indisponível, instrução vazia"
     }
 }
 
-// --- SteerInteractionSheet+A11ySubmitHint.swift ---
 extension SteerInteractionSheet {
     func spokenSubmitHint(canSubmit: Bool) -> String {
         canSubmit
@@ -50,7 +42,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+AccessibilityShell.swift ---
 extension SteerInteractionSheet {
     func steerA11yShell<V: View>(_ content: V) -> some View {
         content
@@ -60,7 +51,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+Form.swift ---
 extension SteerInteractionSheet {
     var formContent: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -74,7 +64,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+FormHeader.swift ---
 extension SteerInteractionSheet {
     var formHeader: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -92,7 +81,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+FormPicker.swift ---
 extension SteerInteractionSheet {
     var formScopePicker: some View {
         Picker("Escopo", selection: $scope) {
@@ -106,7 +94,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+FormReceipt.swift ---
 extension SteerInteractionSheet {
     @ViewBuilder
     var formReceiptLine: some View {
@@ -119,7 +106,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+Instruction.swift ---
 extension SteerInteractionSheet {
     var instructionField: some View {
         TextField("O que muda a partir daqui?", text: $instruction, axis: .vertical)
@@ -135,7 +121,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+Navigation.swift ---
 extension SteerInteractionSheet {
     var steerNavigationStack: some View {
         NavigationStack {
@@ -149,7 +134,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+Predicates.swift ---
 extension SteerInteractionSheet {
     var canSubmit: Bool {
         !instruction.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -162,7 +146,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+Receipt.swift ---
 extension SteerInteractionSheet {
     func receiptLine(_ receipt: AtlasInteractionSteerResponse) -> some View {
         let text = receipt.isAccepted
@@ -179,7 +162,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+Toolbar.swift ---
 extension SteerInteractionSheet {
     @ToolbarContentBuilder
     var steerToolbar: some ToolbarContent {
@@ -188,7 +170,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+ToolbarCancel.swift ---
 extension SteerInteractionSheet {
     @ToolbarContentBuilder
     var steerCancelItem: some ToolbarContent {
@@ -203,7 +184,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+ToolbarSubmit.swift ---
 extension SteerInteractionSheet {
     @ToolbarContentBuilder
     var steerSubmitItem: some ToolbarContent {
@@ -213,7 +193,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// --- SteerInteractionSheet+ToolbarSubmitButton.swift ---
 extension SteerInteractionSheet {
     var steerSubmitButton: some View {
         Button("Enviar") {

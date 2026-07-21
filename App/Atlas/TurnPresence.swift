@@ -8,7 +8,6 @@ import UserNotifications
 
 // IDLE-COMPRESS TurnPresence fused (casca LA/notifications)
 
-// --- TurnPresence+Broadcast+Count.swift ---
 #if canImport(ActivityKit)
 #endif
 
@@ -30,7 +29,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Broadcast+EndActivities.swift ---
 #if canImport(ActivityKit)
 #endif
 
@@ -58,7 +56,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Broadcast.swift ---
 #if canImport(ActivityKit)
 #endif
 
@@ -84,7 +81,6 @@ extension TurnPresence {
 
 }
 
-// --- TurnPresence+Entry.swift ---
 extension TurnPresence {
     final class Entry {
         weak var model: ConversationModel?
@@ -103,7 +99,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+LiveActivity+Update.swift ---
 #if canImport(ActivityKit)
 #endif
 
@@ -124,7 +119,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+LiveActivity.swift ---
 #if canImport(ActivityKit)
 #endif
 
@@ -154,7 +148,6 @@ extension TurnPresence {
 
 }
 
-// --- TurnPresence+LiveActivityState+Clock.swift ---
 @MainActor
 extension TurnPresence {
     static func clock(_ ms: Int) -> String {
@@ -162,7 +155,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+LiveActivityState+Timing.swift ---
 @MainActor
 extension TurnPresence {
     static func timingAnchor(
@@ -189,7 +181,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+LiveActivityState.swift ---
 #if canImport(ActivityKit)
 #endif
 
@@ -213,7 +204,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+LiveSessions+SnapshotLoop.swift ---
 @MainActor
 extension TurnPresence {
     func liveSessionSnapshot(from entry: Entry) -> LiveSessionSnapshot? {
@@ -235,7 +225,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+LiveSessions+SnapshotPhase.swift ---
 @MainActor
 extension TurnPresence {
     func liveSessionPhaseTitle(model: ConversationModel, trace: TraceID, presence: AtlasExecutionPresence) -> String {
@@ -248,7 +237,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+LiveSessions.swift ---
 @MainActor
 extension TurnPresence {
     func publishLiveSessions() {
@@ -261,7 +249,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Notifications+A11y.swift ---
 @MainActor
 enum TurnPresenceNotificationA11y {
     static func isTerminal(_ presence: AtlasExecutionPresence) -> Bool {
@@ -289,7 +276,6 @@ enum TurnPresenceNotificationA11y {
     }
 }
 
-// --- TurnPresence+Notifications+A11yBody.swift ---
 @MainActor
 enum TurnPresenceNotificationA11yBody {
     static func body(
@@ -312,7 +298,6 @@ enum TurnPresenceNotificationA11yBody {
     }
 }
 
-// --- TurnPresence+Notifications+A11ySpoken.swift ---
 enum TurnPresenceNotificationA11ySpoken {
     static func spoken(title: String, subtitle: String, body: String?) -> String {
         guard let body, !body.isEmpty else { return "\(title), \(subtitle)" }
@@ -320,7 +305,6 @@ enum TurnPresenceNotificationA11ySpoken {
     }
 }
 
-// --- TurnPresence+Notifications+A11yTerminal.swift ---
 enum TurnPresenceNotificationA11yTerminal {
     static func isTerminal(_ presence: AtlasExecutionPresence) -> Bool {
         presence.timing == .finished
@@ -332,7 +316,6 @@ enum TurnPresenceNotificationA11yTerminal {
     }
 }
 
-// --- TurnPresence+Notifications+Away.swift ---
 @MainActor
 extension TurnPresence {
     func notifyIfAway(_ entry: Entry, model: ConversationModel,
@@ -354,7 +337,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Notifications+BuildContent.swift ---
 @MainActor
 extension TurnPresence {
     func buildAwayNotificationContent(
@@ -377,7 +359,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Notifications+LockScreenText.swift ---
 @MainActor
 extension TurnPresence {
     static func lockScreenText(_ value: String, limit: Int) -> String {
@@ -389,7 +370,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Notifications+Permission.swift ---
 @MainActor
 extension TurnPresence {
     func requestPermissionOnce() async {
@@ -399,7 +379,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Tick.swift ---
 @MainActor
 extension TurnPresence {
     func tick(_ id: ObjectIdentifier) {
@@ -421,7 +400,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+TickFinished.swift ---
 @MainActor
 extension TurnPresence {
     func tickFinished(_ entry: Entry, model: ConversationModel) {
@@ -446,7 +424,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+TickRunning.swift ---
 @MainActor
 extension TurnPresence {
     func tickRunning(_ entry: Entry, model: ConversationModel, trace: TraceID,
@@ -466,7 +443,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Watch+Cleanup.swift ---
 extension TurnPresence {
     func cleanup(_ id: ObjectIdentifier) {
         guard let entry = entries.removeValue(forKey: id) else { return }
@@ -476,7 +452,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+Watch+Observe.swift ---
 extension TurnPresence {
     func observe(_ id: ObjectIdentifier) {
         guard let entry = entries[id], let model = entry.model else {
@@ -495,7 +470,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence+WatchRegister.swift ---
 extension TurnPresence {
     func watch(_ model: ConversationModel, threadTitle: String, threadId: ThreadID? = nil) {
         let id = ObjectIdentifier(model)
@@ -515,7 +489,6 @@ extension TurnPresence {
     }
 }
 
-// --- TurnPresence.swift ---
 @Observable @MainActor
 final class TurnPresence {
     static let shared = TurnPresence()

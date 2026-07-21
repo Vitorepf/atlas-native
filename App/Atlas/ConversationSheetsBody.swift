@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS body
 
-// --- ConversationSheets+Attachments.swift ---
 extension ConversationComposerSheetsModifier {
     @ViewBuilder
     func attachmentModifiers<Content: View>(on content: Content) -> some View {
@@ -12,7 +11,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+AttachmentsImporters.swift ---
 extension ConversationComposerSheetsModifier {
     @ViewBuilder
     func attachmentImporters<Content: View>(on content: Content) -> some View {
@@ -28,7 +26,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+AttachmentsPhoto.swift ---
 extension ConversationComposerSheetsModifier {
     func handlePickedPhotoChange() {
         guard let item = pickedPhoto else { return }
@@ -44,7 +41,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+AttachmentsSheets+Picker.swift ---
 extension ConversationComposerSheetsModifier {
     @ViewBuilder
     func attachmentPickerSheet<Content: View>(on content: Content) -> some View {
@@ -60,7 +56,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+AttachmentsSheets.swift ---
 extension ConversationComposerSheetsModifier {
     @ViewBuilder
     func attachmentSheets<Content: View>(on content: Content) -> some View {
@@ -70,7 +65,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+AttachmentsWorkspace.swift ---
 extension ConversationComposerSheetsModifier {
     @ViewBuilder
     func workspacePickerSheet<Content: View>(on content: Content) -> some View {
@@ -85,14 +79,12 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+CameraCover.swift ---
 extension View {
     func conversationCameraCover(model: ConversationModel, showCamera: Binding<Bool>) -> some View {
         modifier(ConversationCameraCoverModifier(model: model, showCamera: showCamera))
     }
 }
 
-// --- ConversationSheets+CameraCoverA11y.swift ---
 extension ConversationCameraCoverModifier {
     func cameraCoverA11y<Content: View>(_ content: Content) -> some View {
         content
@@ -106,7 +98,6 @@ extension ConversationCameraCoverModifier {
     }
 }
 
-// --- ConversationSheets+CameraCoverContent+Capture.swift ---
 extension ConversationCameraCoverModifier {
     func cameraCoverOnCapture(data: Data) {
         model.addImage(
@@ -119,14 +110,12 @@ extension ConversationCameraCoverModifier {
     }
 }
 
-// --- ConversationSheets+CameraCoverContent+Fail.swift ---
 extension ConversationCameraCoverModifier {
     func cameraCoverOnCaptureFailed() {
         model.toast = CameraPickerA11y.captureFailedToast
     }
 }
 
-// --- ConversationSheets+CameraCoverContent.swift ---
 extension ConversationCameraCoverModifier {
     var cameraCoverContent: some View {
         cameraCoverA11y(
@@ -139,7 +128,6 @@ extension ConversationCameraCoverModifier {
     }
 }
 
-// --- ConversationSheets+CameraCoverModifier.swift ---
 struct ConversationCameraCoverModifier: ViewModifier {
     var model: ConversationModel
     @Binding var showCamera: Bool
@@ -153,7 +141,6 @@ struct ConversationCameraCoverModifier: ViewModifier {
     }
 }
 
-// --- ConversationSheets+Modifier.swift ---
 struct ConversationComposerSheetsModifier: ViewModifier {
     var model: ConversationModel
     var session: AtlasSession
@@ -176,7 +163,6 @@ struct ConversationComposerSheetsModifier: ViewModifier {
     }
 }
 
-// --- ConversationSheets+ModifierAPI.swift ---
 extension View {
     func conversationComposerSheetsModifier(
         model: ConversationModel,
@@ -215,7 +201,6 @@ extension View {
     }
 }
 
-// --- ConversationSheets+ModifierChain.swift ---
 extension ConversationComposerSheetsModifier {
     func modifierChain(on content: Content) -> some View {
         handoffAndQueueObservers(on:
@@ -228,7 +213,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+ModifierMode.swift ---
 extension ConversationComposerSheetsModifier {
     func modeEffortSheets<Content: View>(on content: Content) -> some View {
         content
@@ -237,7 +221,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+ModifierObservers.swift ---
 extension ConversationComposerSheetsModifier {
     func handoffAndQueueObservers<Content: View>(on content: Content) -> some View {
         content
@@ -252,7 +235,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+ModifierReview+ChangeReview.swift ---
 extension ConversationComposerSheetsModifier {
     func changeReviewSheets<Content: View>(on content: Content) -> some View {
         content
@@ -265,7 +247,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+ModifierReview+Queue.swift ---
 extension ConversationComposerSheetsModifier {
     func queueSheet<Content: View>(on content: Content) -> some View {
         content
@@ -275,14 +256,12 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+ModifierReview.swift ---
 extension ConversationComposerSheetsModifier {
     func reviewSteerQueueSheets<Content: View>(on content: Content) -> some View {
         steerSheet(on: queueSheet(on: changeReviewSheets(on: content)))
     }
 }
 
-// --- ConversationSheets+ModifierSteer.swift ---
 extension ConversationComposerSheetsModifier {
     func steerSheet<Content: View>(on content: Content) -> some View {
         content
@@ -299,7 +278,6 @@ extension ConversationComposerSheetsModifier {
     }
 }
 
-// --- ConversationSheets+ModifierWrap+Init.swift ---
 extension View {
     func conversationComposerSheetsModifierInit(
         model: ConversationModel,
@@ -338,7 +316,6 @@ extension View {
     }
 }
 
-// --- ConversationSheets+ModifierWrap.swift ---
 extension View {
     func conversationComposerSheetsModifierWrap(
         model: ConversationModel,
@@ -377,7 +354,6 @@ extension View {
     }
 }
 
-// --- ConversationSheets+Sheets+ModifierForward.swift ---
 extension View {
     func conversationComposerSheetsModifierForward(
         model: ConversationModel,
@@ -416,7 +392,6 @@ extension View {
     }
 }
 
-// --- ConversationSheets+TraceRefs.swift ---
 struct ConversationReviewTraceRef: Identifiable { let id: TraceID }
 struct ConversationSteerTraceRef: Identifiable { let id: TraceID }
 

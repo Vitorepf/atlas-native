@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS host
 
-// --- RootHomeSections.swift ---
 struct RootHomeSections: View {
     @Environment(AtlasSession.self) var session
     var reduceMotion: Bool

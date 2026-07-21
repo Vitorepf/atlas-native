@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS ArenaSuiteSheet fused
 
-// --- ArenaSuiteSheet+A11y.swift ---
 enum ArenaSuiteSheetA11y {
     static func spokenSuiteTitle(_ suite: String) -> String {
         "suite \(suite)"
@@ -55,7 +54,6 @@ extension ArenaSuiteSheetA11y {
     }
 }
 
-// --- ArenaSuiteSheet+Engines.swift ---
 extension ArenaSuiteSheet {
     @ViewBuilder
     func engineCasesCaption(_ engine: AtlasArenaSuiteEngine) -> some View {
@@ -210,7 +208,6 @@ extension ArenaSuiteSheet {
     }
 }
 
-// --- ArenaSuiteSheet.swift ---
 extension ArenaSuiteSheet {
     var suiteBodyTitle: some View {
         VStack(alignment: .leading, spacing: 8) {

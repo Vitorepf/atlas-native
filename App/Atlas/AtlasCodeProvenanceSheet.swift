@@ -4,7 +4,6 @@ import AtlasCore
 // WAVE-009 fused Provenance sheet host + a11y
 // Single-feature peel fusion for Code depth instrument.
 
-// --- fused from AtlasCodeProvenanceSheet+A11y+LoadedBody.swift ---
 extension AtlasCodeProvenanceSheet {
     func hasLoadedBody(_ provenance: AtlasCodeProvenance) -> Bool {
         provenance.commitBody?.nonEmpty != nil
@@ -15,14 +14,12 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11y+LoadedPhaseID.swift ---
 extension AtlasCodeProvenanceSheet {
     func provenanceLoadedPhaseID(_ provenance: AtlasCodeProvenance) -> String {
         hasLoadedBody(provenance) ? "loaded-\(provenance.files.count)" : "loaded-empty"
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11y.swift ---
 extension AtlasCodeProvenanceSheet {
     var provenanceContentPhaseID: String {
         switch phase {
@@ -34,7 +31,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11yHints.swift ---
 extension AtlasCodeProvenanceSheet {
     func spokenLoading() -> String { "lendo proveniência do commit" }
 
@@ -48,7 +44,6 @@ extension AtlasCodeProvenanceSheet {
     static let askHint = "abre conversa com este commit no assunto"
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11yKickers+State+Healthy.swift ---
 extension AtlasCodeProvenanceSheet {
     func spokenStateKickerHealthy() -> String? {
         switch state {
@@ -59,7 +54,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11yKickers+State.swift ---
 extension AtlasCodeProvenanceSheet {
     func spokenStateKicker() -> String {
         if let healthy = spokenStateKickerHealthy() { return healthy }
@@ -71,14 +65,12 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11yKickers.swift ---
 extension AtlasCodeProvenanceSheet {
     func spokenHeaderTitle() -> String {
         node.message?.nonEmpty ?? String(node.hash.prefix(8))
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11ySpoken+Phase+Loaded.swift ---
 extension AtlasCodeProvenanceSheet {
     func provenanceSheetLoadedParts(_ provenance: AtlasCodeProvenance) -> [String] {
         if let headline = provenance.diffHeadline { return [headline] }
@@ -87,7 +79,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11ySpoken+Phase.swift ---
 extension AtlasCodeProvenanceSheet {
     func provenanceSheetPhaseParts() -> [String] {
         switch phase {
@@ -101,7 +92,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11ySpoken.swift ---
 extension AtlasCodeProvenanceSheet {
     var provenanceSheetSpokenLabel: String {
         var parts = ["proveniência do commit", spokenHeaderTitle(), spokenStateKicker()]
@@ -110,7 +100,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11ySpokenCopy+Dateline.swift ---
 extension AtlasCodeProvenanceSheet {
     func spokenDateline() -> String {
         let author = node.authorName.isEmpty ? node.authorEmail : node.authorName
@@ -123,7 +112,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+A11ySpokenCopy+Law.swift ---
 extension AtlasCodeProvenanceSheet {
     func spokenLawCitation() -> String? {
         guard state == .violating, let ruleId else { return nil }
@@ -133,14 +121,12 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+BodyShell.swift ---
 extension AtlasCodeProvenanceSheet {
     var provenanceBodyShell: some View {
         provenanceSheetChrome(provenanceSurface)
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+Chrome.swift ---
 extension AtlasCodeProvenanceSheet {
     func provenanceSheetChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -155,7 +141,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+Scroll.swift ---
 extension AtlasCodeProvenanceSheet {
     var provenanceScrollStack: some View {
         ScrollView {
@@ -174,7 +159,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet+Surface.swift ---
 extension AtlasCodeProvenanceSheet {
     var provenanceSurface: some View {
         ZStack {
@@ -184,7 +168,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceSheet.swift ---
 // MARK: - Folha: por que esta linha existe (C23)
 
 /// A folha responde, em ordem, as perguntas de quem abre um commit: em que
@@ -214,5 +197,4 @@ struct AtlasCodeProvenanceSheet: View {
         provenanceBodyShell
     }
 }
-
 

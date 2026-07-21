@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AtlasProfileSheet.swift ---
 struct AtlasProfileSheet: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
@@ -53,7 +52,6 @@ struct AtlasProfileSheet: View {
     }
 }
 
-// --- AtlasProfileSheet+Rows.swift ---
 extension AtlasProfileSheet {
     @ViewBuilder
     var profileRows: some View {

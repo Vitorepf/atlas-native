@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-013 fused ChangeReviewView.swift
 
-// --- ChangeReviewCouncilSection+Chrome.swift ---
 extension ChangeReviewGovernanceSection {
     func governanceChrome<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content()
@@ -14,7 +13,6 @@ extension ChangeReviewGovernanceSection {
     }
 }
 
-// --- ChangeReviewDiffSection+Chrome.swift ---
 extension ChangeReviewPatchCard {
     func patchCardChrome<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content()
@@ -27,14 +25,12 @@ extension ChangeReviewPatchCard {
     }
 }
 
-// --- ChangeReviewDiffSection+Shell.swift ---
 extension ChangeReviewPatchCard {
     var patchCardShell: some View {
         patchCardChrome { patchCardBody }
     }
 }
 
-// --- ChangeReviewDiffView.swift ---
 struct ChangeReviewDiffView: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -52,14 +48,12 @@ struct ChangeReviewDiffView: View {
     }
 }
 
-// --- ChangeReviewSections+A11yToastLabel.swift ---
 extension ChangeReviewSectionsA11y {
     static func spokenToast(_ text: String) -> String {
         "aviso, \(text)"
     }
 }
 
-// --- ChangeReviewSections+Chrome.swift ---
 // MARK: - ChangeReview chrome (peel de ChangeReviewSections)
 // Toast → ChangeReviewSections+Toast.swift
 
@@ -74,7 +68,6 @@ struct ChangeReviewCaption: View {
     }
 }
 
-// --- ChangeReviewSections+RunChrome.swift ---
 extension ChangeReviewRunHeader {
     func runHeaderChrome<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content()
@@ -87,7 +80,6 @@ extension ChangeReviewRunHeader {
     }
 }
 
-// --- ChangeReviewSections+Toast.swift ---
 struct ChangeReviewToast: View {
     let reviews: ChangeReviewModel
     var reduceMotion: Bool = false
@@ -103,7 +95,6 @@ struct ChangeReviewToast: View {
     }
 }
 
-// --- ChangeReviewSections+ToastLifecycle.swift ---
 extension ChangeReviewToast {
     func dismissToastAfterDelay() async {
         try? await Task.sleep(nanoseconds: 1_400_000_000)
@@ -112,7 +103,6 @@ extension ChangeReviewToast {
     }
 }
 
-// --- ChangeReviewToast+CapsuleChrome.swift ---
 extension ChangeReviewToast {
     func toastCapsule(_ text: String) -> some View {
         Text(text)
@@ -123,7 +113,6 @@ extension ChangeReviewToast {
     }
 }
 
-// --- ChangeReviewView+A11y+Available+Surface.swift ---
 extension ChangeReviewSheet {
     func spokenReviewSheetSurfaceLabel(_ review: AtlasTraceChangeReview) -> String {
         if Self.hasReviewSurface(review) {
@@ -134,7 +123,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+A11y+Available.swift ---
 extension ChangeReviewSheet {
     func spokenReviewSheetAvailableLabel(_ review: AtlasTraceChangeReview) -> String {
         switch review.state {
@@ -146,7 +134,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+Available.swift ---
 extension ChangeReviewSheet {
     @ViewBuilder
     func reviewAvailableContent(_ review: AtlasTraceChangeReview) -> some View {
@@ -159,7 +146,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+AvailableBranch.swift ---
 extension ChangeReviewSheet {
     @ViewBuilder
     func reviewAvailableBranch(_ review: AtlasTraceChangeReview) -> some View {
@@ -177,7 +163,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+AvailableContent.swift ---
 struct ChangeReviewAvailableContent: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -190,7 +175,6 @@ struct ChangeReviewAvailableContent: View {
     }
 }
 
-// --- ChangeReviewView+AvailableEmpty.swift ---
 extension ChangeReviewSheet {
     func reviewUnavailableContent(_ review: AtlasTraceChangeReview) -> some View {
         TraceEvidenceUnavailable(
@@ -206,7 +190,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+AvailableEmptySurface.swift ---
 extension ChangeReviewSheet {
     func reviewEmptySurface() -> some View {
         TraceEvidenceUnavailable(
@@ -219,7 +202,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView+Chrome.swift ---
 extension ChangeReviewSheet {
     var reviewSheetChrome: some View {
         NavigationStack {
@@ -237,7 +219,6 @@ extension ChangeReviewSheet {
     }
 }
 
-// --- ChangeReviewView.swift ---
 struct ChangeReviewSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID

@@ -3,10 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
-// --- RootHomeSections+A11y.swift ---
-
-
-// --- RootHomeSections+A11yArena.swift ---
 extension RootHomeSections {
     func arenaSpokenLabel(regression: String?, domainUnavailable: Bool) -> String {
         if let regression { return "Arena, \(regression)" }
@@ -15,7 +11,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+A11yCodeBar.swift ---
 extension RootHomeSections {
     static func codeTopBarLabel(hub: AtlasCodeHubModel?) -> String {
         guard let hub else { return "Atlas Código" }
@@ -26,13 +21,11 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+A11yVisibility.swift ---
 extension RootHomeSections {
     /// WORKSPACES some quando não há pastas reais.
     var showsWorkspacesSection: Bool { !session.workspaces.isEmpty }
 }
 
-// --- RootHomeSections+A11yWorkspaceLabel.swift ---
 extension RootHomeSections {
     func workspaceSpokenLabel(name: String, count: Int?) -> String {
         guard let count else { return name }
@@ -40,7 +33,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+AddWorkspace.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var addWorkspaceRow: some View {
@@ -60,7 +52,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+ArenaEntry.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var arenaEntryRow: some View {
@@ -82,7 +73,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Conversas.swift ---
 extension RootHomeSections {
     // Modelo mental do operador: conversa é LIVRE ou pertence a um workspace.
     // Uma linha aqui, workspaces na seção deles — zero filtro, zero duplicata.
@@ -100,7 +90,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Conversation+A11yEntry.swift ---
 extension RootHomeSections {
     func conversasEntrySpokenLabel() -> String {
         var parts = ["Conversas livres"]
@@ -117,10 +106,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Conversation.swift ---
-
-
-// --- RootHomeSections+ConversationAudit.swift ---
 extension RootHomeSections {
     var auditDetail: String {
         let n = homeConversationCount ?? 0
@@ -128,19 +113,16 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+ConversationCounts.swift ---
 extension RootHomeSections {
     var homeConversationThreadCount: Int { freeThreadCount }
 }
 
-// --- RootHomeSections+ConversationFree.swift ---
 extension RootHomeSections {
     var freeThreadCount: Int {
         session.threads.filter { $0.workspace == nil }.count
     }
 }
 
-// --- RootHomeSections+ConversationOptional.swift ---
 extension RootHomeSections {
     var homeConversationCount: Int? {
         let n = homeConversationThreadCount
@@ -148,7 +130,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Failure.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var failureSection: some View {
@@ -167,7 +148,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Layout.swift ---
 extension RootHomeSections {
     // Hairline com fade no fim — a linha premium do site, em miniatura.
     var rowDivider: some View {
@@ -184,7 +164,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Loaded.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var loadedHome: some View {
@@ -196,7 +175,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+LoadedLiveNow.swift ---
 extension RootHomeSections {
     var showsLiveNowSection: Bool {
         !TurnPresence.shared.liveSessions.isEmpty || !session.remoteLiveSessions.isEmpty
@@ -214,7 +192,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+LoadedStack.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var loadedHomeStack: some View {
@@ -232,7 +209,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Loading.swift ---
 extension RootHomeSections {
     var loadingHome: some View {
         centered {
@@ -247,7 +223,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Operacao.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var operacaoSection: some View {
@@ -266,7 +241,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+PhaseBody+LoadingGate.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var homeLoadingGate: some View {
@@ -281,7 +255,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+PhaseBody.swift ---
 extension RootHomeSections {
     @ViewBuilder
     var phaseBody: some View {
@@ -289,7 +262,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+WorkspaceFolderRow.swift ---
 extension RootHomeSections {
     func workspaceFolderRow(_ ws: Workspace) -> some View {
         WorkspaceRow(
@@ -308,7 +280,6 @@ extension RootHomeSections {
     }
 }
 
-// --- RootHomeSections+Workspaces.swift ---
 extension RootHomeSections {
     // Cursor-parity (ordem 2026-07-18): os 3 mais recentes + Adicionar.
     // Sem "Todas as conversas": agregado duplicava livres + workspaces.

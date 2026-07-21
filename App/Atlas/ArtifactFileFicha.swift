@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- ArtifactFileFicha+A11yBind.swift ---
 extension ArtifactFileFicha {
     func fichaA11yBind<Content: View>(_ content: Content) -> some View {
         content
@@ -13,7 +12,6 @@ extension ArtifactFileFicha {
     }
 }
 
-// --- ArtifactFileFicha+NameStack.swift ---
 extension ArtifactFileFicha {
     var fichaNameStack: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -29,7 +27,6 @@ extension ArtifactFileFicha {
     }
 }
 
-// --- ArtifactFileFicha.swift ---
 struct ArtifactFileFicha: View {
     let name: String
     let subtitle: String

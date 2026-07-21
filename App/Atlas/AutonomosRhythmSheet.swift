@@ -4,7 +4,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AutonomosRhythmSheet.swift ---
 struct AutonomosRhythmSheet: View {
     let windows: AtlasDayRhythm.Windows
     @State private var today: AtlasDayRhythm.DaySummary?
@@ -91,7 +90,6 @@ struct AutonomosRhythmSheet: View {
     }
 }
 
-// --- AutonomosRhythmSheet+Copy.swift ---
 enum AutonomosRhythmCopy {
     static func line(_ windows: AtlasDayRhythm.Windows, paused: Bool = false) -> String {
         let base: String

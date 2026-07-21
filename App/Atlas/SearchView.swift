@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS host
 
-// --- SearchView.swift ---
 struct SearchView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss

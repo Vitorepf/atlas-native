@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS ConversationChrome
 
-// --- ConversationChrome+ComposerSheets+AttachmentCopy.swift ---
 extension ComposerAttachmentRow {
     var attachmentRowCopy: some View {
         HStack(spacing: 14) {
@@ -18,7 +17,6 @@ extension ComposerAttachmentRow {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+AttachmentRow.swift ---
 struct ComposerAttachmentRow: View {
     let icon: String
     let title: String
@@ -31,7 +29,6 @@ struct ComposerAttachmentRow: View {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+ModeFootnote.swift ---
 extension ModeSheet {
     var modeFootnote: some View {
         Text(ComposerSheetA11y.modeFootnote)
@@ -44,7 +41,6 @@ extension ModeSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+ModeRows.swift ---
 extension ModeSheet {
     var modeRows: some View {
         ForEach(Self.modes, id: \.0) { key, label in
@@ -64,7 +60,6 @@ extension ModeSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+Modes.swift ---
 extension ModeSheet {
     static let modes = [
         ("geral", "Geral"),
@@ -74,7 +69,6 @@ extension ModeSheet {
     ]
 }
 
-// --- ConversationChrome+ComposerSheets+Rows.swift ---
 struct WorkspaceSheet: View {
     let workspaces: [Workspace]
     let current: String?
@@ -96,7 +90,6 @@ struct WorkspaceSheet: View {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+WorkspaceEmpty.swift ---
 extension WorkspaceSheet {
     var workspaceEmptyLabel: some View {
         Text("Nenhum workspace nas conversas carregadas")
@@ -109,7 +102,6 @@ extension WorkspaceSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+WorkspaceHeader.swift ---
 extension WorkspaceSheet {
     var workspaceListHeader: some View {
         Text("pastas das conversas carregadas · vale no próximo envio")
@@ -126,7 +118,6 @@ extension WorkspaceSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+WorkspaceList.swift ---
 extension WorkspaceSheet {
     @ViewBuilder
     var workspaceList: some View {
@@ -137,7 +128,6 @@ extension WorkspaceSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+WorkspaceRows+Pick.swift ---
 extension WorkspaceSheet {
     func workspaceRowPick(_ ws: Workspace) {
         onPick(ws)
@@ -146,7 +136,6 @@ extension WorkspaceSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+WorkspaceRows+RowBuild.swift ---
 extension WorkspaceSheet {
     @ViewBuilder
     func workspaceRowBuild(_ ws: Workspace, isSelected: Bool) -> some View {
@@ -164,7 +153,6 @@ extension WorkspaceSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets+WorkspaceRows.swift ---
 extension WorkspaceSheet {
     @ViewBuilder
     func workspaceRow(_ ws: Workspace) -> some View {
@@ -172,7 +160,6 @@ extension WorkspaceSheet {
     }
 }
 
-// --- ConversationChrome+ComposerSheets.swift ---
 struct ModeSheet: View {
     @Binding var selected: String
     @Environment(\.dismiss) var dismiss  // interno: peels em outros arquivos usam
@@ -189,7 +176,6 @@ struct ModeSheet: View {
     }
 }
 
-// --- ConversationChrome+EffortSheet+A11yBind.swift ---
 extension EffortSheet {
     func effortA11yBind<Content: View>(_ content: Content) -> some View {
         content
@@ -199,7 +185,6 @@ extension EffortSheet {
     }
 }
 
-// --- ConversationChrome+EffortSheet+FootnoteCopy.swift ---
 extension EffortSheet {
     var effortFootnoteCopy: some View {
         Text("vale para o próximo envio; automático deixa o Atlas Decide escolher")

@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- ExecutionProof.swift ---
 extension ExecutionProof {
     func proofChrome<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content()
@@ -166,7 +165,6 @@ struct ExecutionProof: View {
     }
 }
 
-// --- ExecutionProof+Expanded.swift ---
 extension ExecutionProof {
     func activityRowCopy(_ act: AtlasAgentActivity) -> some View {
         VStack(alignment: .leading, spacing: 1) {

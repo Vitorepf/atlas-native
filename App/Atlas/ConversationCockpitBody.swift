@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS Cockpit body
 
-// --- ConversationCockpit+AgentChrome.swift ---
 extension AgentRow {
     func agentRowChrome<Content: View>(_ content: Content) -> some View {
         content
@@ -17,7 +16,6 @@ extension AgentRow {
     }
 }
 
-// --- ConversationCockpit+AgentModel.swift ---
 extension AgentRow {
     @ViewBuilder
     var agentModelLabel: some View {
@@ -27,7 +25,6 @@ extension AgentRow {
     }
 }
 
-// --- ConversationCockpit+AgentStatus.swift ---
 extension AgentRow {
     var turnStatus: AtlasTurnStatus { AtlasTurnStatus(rawValue: agent.status) }
 
@@ -55,7 +52,6 @@ extension AgentRow {
     }
 }
 
-// --- ConversationCockpit+Agents+Content.swift ---
 extension AgentRow {
     var agentRowContent: some View {
         HStack(spacing: 8) {
@@ -69,7 +65,6 @@ extension AgentRow {
     }
 }
 
-// --- ConversationCockpit+Agents.swift ---
 struct AgentRow: View {
     let agent: ExecAgent
     var compactLane = false
@@ -78,7 +73,6 @@ struct AgentRow: View {
     }
 }
 
-// --- ConversationCockpit+ExecutingStrip.swift ---
 // MARK: - Conversation live instrument (WAVE-006)
 // Uma árvore visual: live · progress · reconnect · stop · steer.
 // Reconnect banner (cockpit) e silence watchdog continuam secondary surfaces.
@@ -297,7 +291,6 @@ struct ExecutingStrip: View {
     }
 }
 
-// --- ConversationCockpit+ExecutionBanner.swift ---
 struct ExecutionBanner: View {
     let text: String
     let icon: String
@@ -331,7 +324,6 @@ struct ExecutionBanner: View {
     }
 }
 
-// --- ConversationCockpit+Reconnect+Bubble.swift ---
 extension ChatBubble {
     var showsReconnectSurface: Bool {
         reconnectNotice != nil
@@ -388,7 +380,6 @@ extension ChatBubble {
     }
 }
 
-// --- ConversationCockpit+Reconnect.swift ---
 struct ReconnectBanner: View {
     let bubble: ChatBubble
     let reduceMotion: Bool
@@ -429,7 +420,6 @@ struct ReconnectBanner: View {
 
 // ExecutionRibbon → ExecutionRibbon.swift (IDLE-COMPRESS)
 
-// --- ConversationCockpit+Watchdog.swift ---
 struct SilenceWatchdog: View {
     let bubble: ChatBubble
     let reduceMotion: Bool
@@ -477,7 +467,6 @@ enum SilenceWatchdogA11y {
         "execução ao vivo sem novos eventos há \(seconds) segundos"
     }
 }
-
 
 // IDLE-COMPRESS ExecutionBanner a11y
 enum ExecutionBannerA11y {

@@ -13,7 +13,6 @@ struct LiveSessionWidgetTimer: View {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+TimerActive.swift ---
 extension LiveSessionWidgetTimer {
     @ViewBuilder
     func activeClock(since: Date) -> some View {
@@ -27,7 +26,6 @@ extension LiveSessionWidgetTimer {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+TimerFallback.swift ---
 extension LiveSessionWidgetTimer {
     @ViewBuilder
     var timerFallbackBody: some View {
@@ -39,7 +37,6 @@ extension LiveSessionWidgetTimer {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+TimerHelpers.swift ---
 extension LiveSessionWidgetTimer {
     func elapsedMs(since: Date, now: Date) -> Int {
         Int(max(0, now.timeIntervalSince(since)) * 1000)
@@ -50,7 +47,6 @@ extension LiveSessionWidgetTimer {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Titles+Title.swift ---
 extension LiveSessionWidgetView {
     func liveSessionTitleLine(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
         Text(live.title)
@@ -61,7 +57,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Titles.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionTitles(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
@@ -75,7 +70,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession.swift ---
 struct LiveSessionWidgetView: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     let entry: SnapshotEntry

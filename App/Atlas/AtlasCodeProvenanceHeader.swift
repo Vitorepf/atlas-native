@@ -4,7 +4,6 @@ import AtlasCore
 // WAVE-009 fused Provenance header
 // Single-feature peel fusion for Code depth instrument.
 
-// --- fused from AtlasCodeProvenanceHeader+Dateline+StateLabel+Healthy.swift ---
 extension AtlasCodeProvenanceSheet {
     var stateLabelHealthy: String? {
         switch state {
@@ -15,14 +14,12 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+Dateline+StateLabel+Violating.swift ---
 extension AtlasCodeProvenanceSheet {
     var stateLabelViolating: String {
         ruleId.map { "FORA DA LINHA · \(AtlasCodeIssue.law($0, trunk: trunk).uppercased())" } ?? "FORA DA LINHA"
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+Dateline+StateLabel.swift ---
 extension AtlasCodeProvenanceSheet {
     var stateLabel: String {
         if let healthy = stateLabelHealthy { return healthy }
@@ -34,7 +31,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+Dateline.swift ---
 extension AtlasCodeProvenanceSheet {
     /// Autor · agente · quando. O agente só aparece quando o ledger respondeu.
     var dateline: String {
@@ -48,7 +44,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+DatelineBlock.swift ---
 extension AtlasCodeProvenanceSheet {
     var headerDatelineBlock: some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -65,7 +60,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+Meta.swift ---
 extension AtlasCodeProvenanceSheet {
     var hashFooter: some View {
         Text(node.hash)
@@ -77,7 +71,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+StateKicker+Glyph.swift ---
 extension AtlasCodeProvenanceSheet {
     var headerStateKickerGlyph: some View {
         HStack(spacing: 6) {
@@ -94,7 +87,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+StateKicker.swift ---
 extension AtlasCodeProvenanceSheet {
     var headerStateKicker: some View {
         headerStateKickerGlyph
@@ -104,7 +96,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader+Title.swift ---
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     var headerTitle: some View {
@@ -123,7 +114,6 @@ extension AtlasCodeProvenanceSheet {
     }
 }
 
-// --- fused from AtlasCodeProvenanceHeader.swift ---
 // MARK: - Cabeçalho da folha de proveniência (C23)
 // Meta → AtlasCodeProvenanceHeader+Meta.swift · Dateline → +Dateline.swift
 // Title → AtlasCodeProvenanceHeader+Title.swift
@@ -141,5 +131,4 @@ extension AtlasCodeProvenanceSheet {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
-
 

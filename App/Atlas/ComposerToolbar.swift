@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused
 
-// --- ComposerToolbar.swift ---
 struct ComposerToolbar: View {
     var model: ConversationModel
     var reduceMotion: Bool

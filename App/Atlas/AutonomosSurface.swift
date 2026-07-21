@@ -3,13 +3,11 @@ import AtlasCore
 
 // IDLE-COMPRESS fused AutonomosView · AutonomosSurface.swift
 
-// --- AutonomosView+A11y.swift ---
 extension AutonomosView {
     /// Face = catálogo local; masthead quieto (sem frota/backlog de sistema).
     var isHeaderHealthy: Bool { true }
 }
 
-// --- AutonomosView+A11yPhase+Busy.swift ---
 extension AutonomosView {
     var contentPhaseBusyID: String? {
         switch model.phase {
@@ -20,7 +18,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+A11yPhase.swift ---
 extension AutonomosView {
     var contentPhaseID: String {
         if let busy = contentPhaseBusyID { return busy }
@@ -32,7 +29,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+A11ySpoken+Phase+Busy.swift ---
 extension AutonomosView {
     func spokenScreenBusyLabel() -> String? {
         switch model.phase {
@@ -46,7 +42,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+A11ySpoken+Phase.swift ---
 extension AutonomosView {
     func spokenScreenPhaseLabel() -> String {
         if let busy = spokenScreenBusyLabel() { return busy }
@@ -57,7 +52,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosView+A11ySpoken.swift ---
 extension AutonomosView {
     func spokenScreenLabel() -> String {
         spokenScreenPhaseLabel()
@@ -66,7 +60,6 @@ extension AutonomosView {
     static let screenHint = "catálogo local neste iPhone; pergunta e manda só pela pílula"
 }
 
-// --- AutonomosView+Failure.swift ---
 struct AutonomosFleetFailureEmpty: View {
     let message: String
     let onRetry: () -> Void
@@ -87,14 +80,12 @@ struct AutonomosFleetFailureEmpty: View {
     }
 }
 
-// --- AutonomosView+Lifecycle.swift ---
 extension AutonomosView {
     func autonomosLifecycleChrome<Content: View>(_ content: Content) -> some View {
         autonomosLifecycleScreenA11y(content)
     }
 }
 
-// --- AutonomosView+LifecycleScreenA11y.swift ---
 extension AutonomosView {
     func autonomosLifecycleScreenA11y<Content: View>(_ content: Content) -> some View {
         content
@@ -107,7 +98,6 @@ extension AutonomosView {
     }
 }
 
-// --- AutonomosViewHeader+TitleBadges.swift ---
 extension AutonomosViewHeader {
     @ViewBuilder
     var titleBadges: some View {
@@ -128,7 +118,6 @@ extension AutonomosViewHeader {
     }
 }
 
-// --- AutonomosViewHeader.swift ---
 struct AutonomosViewHeader: View {
     enum Trailing {
         case none

@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- ArtifactSheet.swift ---
 extension ArtifactSheet {
     func spokenArtifactsSheetAvailableLabel(_ artifacts: AtlasTraceArtifacts) -> String {
         switch artifacts.state {
@@ -138,7 +137,6 @@ struct ArtifactSheet: View {
     }
 }
 
-// --- ArtifactSheet+Content.swift ---
 extension ArtifactSheet {
     @ViewBuilder
     var content: some View {

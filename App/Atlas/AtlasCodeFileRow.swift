@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS host
 
-// --- AtlasCodeFileRow.swift ---
 struct AtlasCodeFileRow: View {
     let file: AtlasCodeFileChange
     var accessibilityIdentifier: String?

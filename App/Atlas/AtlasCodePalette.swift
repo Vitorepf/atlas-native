@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AtlasCodePalette+Color+Healthy.swift ---
 extension AtlasCodePalette {
     static func colorHealthy(for state: AtlasCodeNodeState) -> Color? {
         switch state {
@@ -14,7 +13,6 @@ extension AtlasCodePalette {
     }
 }
 
-// --- AtlasCodePalette+Color.swift ---
 extension AtlasCodePalette {
     static func color(for state: AtlasCodeNodeState) -> Color {
         if let healthy = colorHealthy(for: state) { return healthy }
@@ -26,7 +24,6 @@ extension AtlasCodePalette {
     }
 }
 
-// --- AtlasCodePalette.swift ---
 enum AtlasCodePalette {
     static let onMain = AtlasTheme.accent
     static let alert = Color(hex: 0xE08C8C)

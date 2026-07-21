@@ -3,7 +3,6 @@ import Foundation
 
 // IDLE-COMPRESS fused
 
-// --- AtlasUserMessage+API.swift ---
 func atlasUserMessage(forAPI error: Error) -> String? {
     guard let api = error as? AtlasApiError else { return nil }
     switch api.status {
@@ -14,13 +13,11 @@ func atlasUserMessage(forAPI error: Error) -> String? {
     }
 }
 
-// --- AtlasUserMessage+Stream.swift ---
 func atlasUserMessage(forStream error: Error) -> String? {
     guard error is AtlasInteractionStreamError else { return nil }
     return "A conexão com a execução caiu. O Atlas retomará este turno automaticamente."
 }
 
-// --- AtlasUserMessage+URL.swift ---
 func atlasUserMessage(forURL error: Error) -> String? {
     guard let urlError = error as? URLError else { return nil }
     switch urlError.code {
@@ -32,7 +29,6 @@ func atlasUserMessage(forURL error: Error) -> String? {
     }
 }
 
-// --- AtlasUserMessage.swift ---
 func atlasUserMessage(for error: Error) -> String {
     if let message = atlasUserMessage(forStream: error) { return message }
     if let message = atlasUserMessage(forURL: error) { return message }

@@ -4,7 +4,6 @@ import PhotosUI
 
 // IDLE-COMPRESS ConversationChrome
 
-// --- ConversationChrome+EffortSheet+Pick.swift ---
 extension EffortSheet {
     func pick(_ effort: AtlasComputeEffort) {
         // Persistência é do MODEL (boundary): a View nunca toca storage.
@@ -14,7 +13,6 @@ extension EffortSheet {
     }
 }
 
-// --- ConversationChrome+EffortSheet+Rows.swift ---
 extension EffortSheet {
     var effortRows: some View {
         ForEach(AtlasComputeEffort.allCases, id: \.self) { effort in
@@ -32,7 +30,6 @@ extension EffortSheet {
     }
 }
 
-// --- ConversationChrome+EffortSheet+SheetContent.swift ---
 extension EffortSheet {
     @ViewBuilder
     var effortSheetContent: some View {
@@ -41,7 +38,6 @@ extension EffortSheet {
     }
 }
 
-// --- ConversationChrome+EffortSheet.swift ---
 struct EffortSheet: View {
     var model: ConversationModel
     @Environment(\.dismiss) var dismiss
@@ -56,7 +52,6 @@ struct EffortSheet: View {
     }
 }
 
-// --- ConversationChrome+SheetRow.swift ---
 struct SheetRow: View {
     let label: String
     var sub: String? = nil
@@ -132,7 +127,6 @@ enum SheetShellA11y {
     }
 }
 
-// --- ConversationChromeSheets+NewMarker.swift ---
 struct NewSinceLastVisitMarker: View {
     var body: some View {
         HStack(spacing: 8) {
@@ -153,7 +147,6 @@ struct NewSinceLastVisitMarker: View {
     }
 }
 
-// --- ConversationChromeSheets+Outline.swift ---
 // MARK: - Índice da conversa (fusão idle dos peels Outline*)
 
 struct ConversationOutlineSheet: View {
@@ -289,7 +282,6 @@ enum ConversationOutlineA11y {
     }
 }
 
-// --- ConversationChromeSheets+Receipt.swift ---
 struct ConversationHandoffReceipt: View {
     let handoff: AtlasAiSurfaceHandoff
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -411,7 +403,6 @@ private struct ReceiptSpinEffect: ViewModifier {
     }
 }
 
-// --- ConversationChromeSheets+SealBody.swift ---
 extension StaleReadSeal {
     @ViewBuilder
     func sealBody(now: Date) -> some View {
@@ -426,7 +417,6 @@ extension StaleReadSeal {
     }
 }
 
-// --- ConversationChromeSheets+SealCaption.swift ---
 extension StaleReadSeal {
     func sealCaptionRow(now: Date) -> some View {
         HStack(spacing: 6) {
@@ -447,7 +437,6 @@ extension StaleReadSeal {
     }
 }
 
-// --- ConversationChromeSheets+SealChrome.swift ---
 extension StaleReadSeal {
     @ViewBuilder
     func sealChrome(now: Date) -> some View {
@@ -459,7 +448,6 @@ extension StaleReadSeal {
     }
 }
 
-// --- ConversationChromeSheets+Seals+A11y.swift ---
 enum StaleReadSealA11y {
     static func spokenLabel(
         capturedAt: Date,
@@ -476,7 +464,6 @@ enum StaleReadSealA11y {
     }
 }
 
-// --- ConversationChromeSheets+Seals+A11yCaption.swift ---
 extension StaleReadSealA11y {
     static func displayCaption(
         capturedAt: Date,
@@ -491,7 +478,6 @@ extension StaleReadSealA11y {
     }
 }
 
-// --- ConversationChromeSheets+Seals+TimelineGate.swift ---
 extension StaleReadSeal {
     @ViewBuilder
     func sealTimelineGate(now: Date) -> some View {
@@ -505,7 +491,6 @@ extension StaleReadSeal {
     }
 }
 
-// --- ConversationChromeSheets+Seals.swift ---
 struct StaleReadSeal: View {
     let capturedAt: Date
     let confirming: Bool
@@ -517,7 +502,4 @@ struct StaleReadSeal: View {
             .accessibilityAddTraits(confirming || reduceMotion ? .isStaticText : .updatesFrequently)
     }
 }
-
-// --- ConversationChromeSheets.swift ---
-
 

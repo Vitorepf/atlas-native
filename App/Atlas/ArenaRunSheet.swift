@@ -5,7 +5,6 @@ import UIKit
 
 // IDLE-COMPRESS ArenaRunSheet fused
 
-// --- ArenaRunSheet+Form.swift ---
 extension ArenaRunSheet {
     @ViewBuilder
     var formSections: some View {
@@ -130,7 +129,6 @@ struct ArenaFieldChrome: ViewModifier {
     }
 }
 
-// --- ArenaRunSheet+Receipt.swift ---
 extension ArenaRunSheet {
     func receiptCard(_ receipt: AtlasArenaStartReceipt) -> some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -168,7 +166,6 @@ extension ArenaRunSheet {
     static let workerGapCopy = "worker de medição desligado no servidor — fila aguardando"
 }
 
-// --- ArenaRunSheet+Spoken.swift ---
 extension ArenaRunSheet {
     func spokenSheetLabel() -> String {
         var parts = ["rodar medição Arena"]
@@ -256,7 +253,6 @@ extension ArenaRunSheet {
     }
 }
 
-// --- ArenaRunSheet+Toggle.swift ---
 extension ArenaRunSheet {
     func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -304,7 +300,6 @@ extension ArenaRunSheet {
     }
 }
 
-// --- ArenaRunSheet.swift ---
 struct ArenaRunSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion

@@ -4,7 +4,6 @@ import Foundation
 
 // IDLE-COMPRESS fused
 
-// --- LiveActivityRemoteBridge+BridgeEnd.swift ---
 #if canImport(ActivityKit)
 
 extension LiveActivityRemoteBridge {
@@ -24,7 +23,6 @@ extension LiveActivityRemoteBridge {
 }
 #endif
 
-// --- LiveActivityRemoteBridge+BridgeObserve.swift ---
 #if canImport(ActivityKit)
 
 extension LiveActivityRemoteBridge {
@@ -57,7 +55,6 @@ extension LiveActivityRemoteBridge {
 }
 #endif
 
-// --- LiveActivityRemoteBridge+BridgeWait.swift ---
 #if canImport(ActivityKit)
 
 extension LiveActivityRemoteBridge {
@@ -80,7 +77,6 @@ extension LiveActivityRemoteBridge {
 }
 #endif
 
-// --- LiveActivityRemoteBridge+Hex.swift ---
 #if canImport(ActivityKit)
 extension Data {
     var atlasHex: String {
@@ -89,7 +85,6 @@ extension Data {
 }
 #endif
 
-// --- LiveActivityRemoteBridge+Remote.swift ---
 #if canImport(ActivityKit)
 
 extension LiveActivityRemoteBridge {
@@ -100,7 +95,6 @@ extension LiveActivityRemoteBridge {
 }
 #endif
 
-// --- LiveActivityRemoteBridge+RemoteBootstrap.swift ---
 #if canImport(ActivityKit)
 
 extension LiveActivityRemoteBridge {
@@ -121,7 +115,6 @@ extension LiveActivityRemoteBridge {
 }
 #endif
 
-// --- LiveActivityRemoteBridge+RemoteObserve.swift ---
 #if canImport(ActivityKit)
 
 extension LiveActivityRemoteBridge {
@@ -166,7 +159,6 @@ extension LiveActivityRemoteBridge {
 }
 #endif
 
-// --- LiveActivityRemoteBridge.swift ---
 #if canImport(ActivityKit)
 
 @MainActor

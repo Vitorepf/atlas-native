@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- PlanCard.swift ---
 extension PlanCard {
     func spokenCardLabel(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress?) -> String {
         var parts = ["plano da obra, \(plan.title), \(plan.steps.count) passos"]
@@ -220,7 +219,6 @@ struct PlanCard: View {
     }
 }
 
-// --- PlanCard+Content.swift ---
 extension PlanCard {
     func auditTerminalLine(
         plan: AtlasExecutionPlan,

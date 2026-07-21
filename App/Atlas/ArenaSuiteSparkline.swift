@@ -4,7 +4,6 @@ import AtlasCore
 
 // WAVE-010 fused Suite sparkline
 
-// --- ArenaSuiteSparkline+Subtitle.swift ---
 extension AtlasArenaSuite {
     var arenaSubtitleText: String {
         guard isMeasured else { return "não medido" }
@@ -14,7 +13,6 @@ extension AtlasArenaSuite {
     }
 }
 
-// --- ArenaSuiteSparkline.swift ---
 struct SuiteSparkline: View {
     let engine: AtlasArenaSuiteEngine
 

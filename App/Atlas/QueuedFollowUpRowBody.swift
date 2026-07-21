@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused
 
-// --- QueuedFollowUpRow+Actions+ButtonLabels.swift ---
 extension QueuedFollowUpRow {
     var promoteLabel: String { "enviar agora, \(positionCaption): \(message.text)" }
     var promoteHint: String { "torna esta mensagem a próxima instrução; o turno atual continua" }
@@ -11,7 +10,6 @@ extension QueuedFollowUpRow {
     var removeHint: String { "remove da fila sem enviar" }
 }
 
-// --- QueuedFollowUpRow+Actions+Position.swift ---
 extension QueuedFollowUpRow {
     var positionCaption: String {
         let ordinal = index + 1
@@ -27,7 +25,6 @@ extension QueuedFollowUpRow {
     }
 }
 
-// --- QueuedFollowUpRow+Buttons.swift ---
 extension QueuedFollowUpRow {
     var promoteButton: some View {
         Button {
@@ -47,7 +44,6 @@ extension QueuedFollowUpRow {
     }
 }
 
-// --- QueuedFollowUpRow+Layout.swift ---
 extension QueuedFollowUpRow {
     var rowLayout: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -65,7 +61,6 @@ extension QueuedFollowUpRow {
     }
 }
 
-// --- QueuedFollowUpRow+Remove.swift ---
 extension QueuedFollowUpRow {
     var removeButton: some View {
         Button {
@@ -85,7 +80,6 @@ extension QueuedFollowUpRow {
     }
 }
 
-// --- QueuedFollowUpRow+Text+Message.swift ---
 extension QueuedFollowUpRow {
     var rowMessagePreview: some View {
         Text(message.text)
@@ -96,7 +90,6 @@ extension QueuedFollowUpRow {
     }
 }
 
-// --- QueuedFollowUpRow+Text+Position.swift ---
 extension QueuedFollowUpRow {
     @ViewBuilder
     var rowPositionCaption: some View {
@@ -109,7 +102,6 @@ extension QueuedFollowUpRow {
     }
 }
 
-// --- QueuedFollowUpRow+Text.swift ---
 extension QueuedFollowUpRow {
     var rowText: some View {
         VStack(alignment: .leading, spacing: 4) {

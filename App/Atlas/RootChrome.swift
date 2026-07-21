@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- RootChrome.swift ---
 @MainActor
 @ViewBuilder
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
@@ -92,7 +91,6 @@ func threadWorkspaceColor(_ workspace: String) -> Color {
     return palette[abs(total) % palette.count]
 }
 
-// --- RootChrome+Rows.swift ---
 struct WorkspaceRow: View {
     let icon: String
     let name: String
@@ -206,7 +204,6 @@ enum RootChromeRowA11y {
     }
 }
 
-// --- RootChrome+ThreadRow.swift ---
 struct ThreadRow: View {
     let thread: AtlasAiThread
     var newBadgeSuppressed: Bool = false

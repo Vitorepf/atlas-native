@@ -3,7 +3,6 @@ import AtlasCore
 
 // IDLE-COMPRESS fused
 
-// --- ComposerToolbar+A11y.swift ---
 extension ComposerToolbar {
     var isExecuting: Bool { model.isSending || liveBubble != nil }
 
@@ -17,14 +16,12 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+A11yHint.swift ---
 extension ComposerToolbar {
     func spokenSendHint(canSubmit: Bool) -> String {
         canSubmit ? spokenSendHintReady() : spokenSendHintBlocked()
     }
 }
 
-// --- ComposerToolbar+A11yInput+Effort+Light.swift ---
 extension ComposerToolbar {
     func spokenEffortLightLabel(_ effort: AtlasComputeEffort) -> String? {
         switch effort {
@@ -36,7 +33,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+A11yInput+Effort.swift ---
 extension ComposerToolbar {
     func spokenEffortLabel(_ effort: AtlasComputeEffort) -> String {
         if let light = spokenEffortLightLabel(effort) { return light }
@@ -48,7 +44,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+A11yInput+Hints.swift ---
 extension ComposerToolbar {
     func spokenEffortHint() -> String {
         "abre opções de esforço computacional para o próximo envio"
@@ -59,10 +54,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+A11yInput.swift ---
-
-
-// --- ComposerToolbar+A11yInputField.swift ---
 extension ComposerToolbar {
     func spokenInputLabel() -> String {
         model.bubbles.isEmpty ? "mensagem para o Atlas" : "continuar conversa com o Atlas"
@@ -76,12 +67,10 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+A11yProcessingLabel.swift ---
 extension ComposerToolbar {
     func spokenProcessingLabel() -> String { "Atlas processando" }
 }
 
-// --- ComposerToolbar+A11ySendHintBlocked.swift ---
 extension ComposerToolbar {
     func spokenSendHintBlocked() -> String {
         if isExecuting {
@@ -94,7 +83,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+A11ySendHintReady.swift ---
 extension ComposerToolbar {
     func spokenSendHintReady() -> String {
         isExecuting
@@ -103,7 +91,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+AttachmentStrip+DraftBranch.swift ---
 extension AttachmentStrip {
     @ViewBuilder
     var attachmentDraftBranch: some View {
@@ -114,7 +101,6 @@ extension AttachmentStrip {
     }
 }
 
-// --- ComposerToolbar+AttachmentStrip.swift ---
 struct AttachmentStrip: View {
     let drafts: [LocalDraft]
     let reduceMotion: Bool
@@ -133,7 +119,6 @@ struct AttachmentStrip: View {
     }
 }
 
-// --- ComposerToolbar+AttachmentStripUpload+PercentLabel.swift ---
 extension AttachmentStrip {
     func uploadPercentLabel(_ p: Double) -> some View {
         Text("\(Int(p * 100))%")
@@ -143,7 +128,6 @@ extension AttachmentStrip {
     }
 }
 
-// --- ComposerToolbar+AttachmentStripUpload+ProgressBar.swift ---
 extension AttachmentStrip {
     @ViewBuilder
     func uploadProgressBar(_ p: Double) -> some View {
@@ -151,7 +135,6 @@ extension AttachmentStrip {
     }
 }
 
-// --- ComposerToolbar+AttachmentStripUpload+ProgressRow.swift ---
 extension AttachmentStrip {
     @ViewBuilder
     var uploadProgressRow: some View {
@@ -161,7 +144,6 @@ extension AttachmentStrip {
     }
 }
 
-// --- ComposerToolbar+AttachmentStripUpload+ProgressStack+A11y.swift ---
 extension AttachmentStrip {
     @ViewBuilder
     func uploadProgressA11y<Content: View>(_ content: Content, percent: Double) -> some View {
@@ -171,7 +153,6 @@ extension AttachmentStrip {
     }
 }
 
-// --- ComposerToolbar+AttachmentStripUpload+ProgressStack+Row.swift ---
 extension AttachmentStrip {
     @ViewBuilder
     func uploadProgressRow(_ p: Double) -> some View {
@@ -182,7 +163,6 @@ extension AttachmentStrip {
     }
 }
 
-// --- ComposerToolbar+AttachmentStripUpload+ProgressStack.swift ---
 extension AttachmentStrip {
     @ViewBuilder
     func uploadProgressStack(_ p: Double) -> some View {
@@ -190,12 +170,10 @@ extension AttachmentStrip {
     }
 }
 
-// --- ComposerToolbar+AttachmentStripUpload+Visibility.swift ---
 extension AttachmentStrip {
     var isVisible: Bool { !drafts.isEmpty || uploadPercent != nil }
 }
 
-// --- ComposerToolbar+CanSubmit+DraftEmpty.swift ---
 extension ComposerToolbar {
     var canSubmitFromDraft: Bool {
         let hasText = !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -203,14 +181,12 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+CanSubmit+Sending.swift ---
 extension ComposerToolbar {
     var canSubmitWhileSending: Bool {
         !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
-// --- ComposerToolbar+CanSubmit.swift ---
 extension ComposerToolbar {
     var canSubmit: Bool {
         if model.isSending || liveBubble != nil {
@@ -220,7 +196,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Field+Placeholder.swift ---
 extension ComposerToolbar {
     @ViewBuilder
     var composerFieldPlaceholder: some View {
@@ -232,7 +207,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Field+TextFieldInput.swift ---
 extension ComposerToolbar {
     var composerTextFieldInput: some View {
         TextField("", text: Binding(
@@ -247,7 +221,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Field.swift ---
 extension ComposerToolbar {
     var composerTextField: some View {
         ZStack(alignment: .topLeading) {
@@ -257,7 +230,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+FieldAttach.swift ---
 extension ComposerToolbar {
     var attachButton: some View {
         Button {
@@ -275,7 +247,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Options.swift ---
 extension ComposerToolbar {
     @ViewBuilder var trailingOptionsMenu: some View {
         Menu {
@@ -293,7 +264,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+OptionsButtons.swift ---
 extension ComposerToolbar {
     @ViewBuilder
     var optionsMenuButtons: some View {
@@ -303,7 +273,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+OptionsEffort.swift ---
 extension ComposerToolbar {
     var optionsEffortButton: some View {
         Button {
@@ -317,10 +286,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+OptionsItems.swift ---
-
-
-// --- ComposerToolbar+OptionsMode.swift ---
 extension ComposerToolbar {
     var optionsModeButton: some View {
         Button {
@@ -333,7 +298,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+OptionsWorkspace.swift ---
 extension ComposerToolbar {
     var optionsWorkspaceButton: some View {
         Button {
@@ -346,7 +310,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Row+Attach.swift ---
 extension ComposerToolbar {
     @ViewBuilder
     var toolbarRowAttach: some View {
@@ -354,7 +317,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Row+Field.swift ---
 extension ComposerToolbar {
     @ViewBuilder
     var toolbarRowField: some View {
@@ -362,7 +324,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Row+Trailing.swift ---
 extension ComposerToolbar {
     @ViewBuilder
     var toolbarRowTrailing: some View {
@@ -370,7 +331,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Row.swift ---
 extension ComposerToolbar {
     var toolbarRow: some View {
         HStack(spacing: 10) {
@@ -382,7 +342,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Trailing+Branch.swift ---
 extension ComposerToolbar {
     @ViewBuilder
     var trailingControlBranch: some View {
@@ -396,7 +355,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+Trailing.swift ---
 extension ComposerToolbar {
     // Contexto fica atrás de uma única ação real. O modo, o esforço e o
     // workspace continuam disponíveis, sem disputar a atenção da escrita.
@@ -405,7 +363,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+TrailingProcessing.swift ---
 extension ComposerToolbar {
     var trailingProcessing: some View {
         ZStack {
@@ -424,7 +381,6 @@ extension ComposerToolbar {
     }
 }
 
-// --- ComposerToolbar+TrailingSend.swift ---
 extension ComposerToolbar {
     var trailingSendButton: some View {
         Button(action: onSend) {

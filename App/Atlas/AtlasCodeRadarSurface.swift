@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-011 radar surface extensions
 
-// --- AtlasCodeRadarRows+A11yChrome+Button.swift ---
 extension AtlasCodeRepoRow {
     var repoRowButton: some View {
         Button(action: onTap) {
@@ -13,7 +12,6 @@ extension AtlasCodeRepoRow {
     }
 }
 
-// --- AtlasCodeRadarRows+A11yChrome+SpokenBind.swift ---
 extension AtlasCodeRepoRow {
     func repoRowSpokenBind<V: View>(_ button: V) -> some View {
         // children:.ignore cria um nó único (Other) com label/id — remover
@@ -37,14 +35,12 @@ extension AtlasCodeRepoRow {
     }
 }
 
-// --- AtlasCodeRadarRows+A11yChrome.swift ---
 extension AtlasCodeRepoRow {
     var repoRowA11yChrome: some View {
         repoRowSpokenBind(repoRowButton)
     }
 }
 
-// --- AtlasCodeRadarRows+A11yRepo+CommitAge.swift ---
 extension AtlasCodeRadarRowsA11y {
     static func spokenRepoCommitAge(lastCommitAt: Int?) -> String? {
         guard let age = AtlasCodeAge.short(from: lastCommitAt) else { return nil }
@@ -52,7 +48,6 @@ extension AtlasCodeRadarRowsA11y {
     }
 }
 
-// --- AtlasCodeRadarRows+A11yRepo+Folder.swift ---
 extension AtlasCodeRadarRowsA11y {
     static func spokenRepoFolder(folder: String?, showsFolder: Bool) -> [String] {
         guard showsFolder, let folder, !folder.isEmpty else { return [] }
@@ -60,7 +55,6 @@ extension AtlasCodeRadarRowsA11y {
     }
 }
 
-// --- AtlasCodeRadarRows+A11yRepo.swift ---
 extension AtlasCodeRadarRowsA11y {
     static func spokenRepo(
         name: String,
@@ -85,7 +79,6 @@ extension AtlasCodeRadarRowsA11y {
     }
 }
 
-// --- AtlasCodeRadarRows+A11yRepoIssues+First.swift ---
 extension AtlasCodeRadarRowsA11y {
     static func spokenRepoIssueFirst(
         issues: [AtlasCodeIssue],
@@ -98,7 +91,6 @@ extension AtlasCodeRadarRowsA11y {
     }
 }
 
-// --- AtlasCodeRadarRows+A11yRepoIssues+More.swift ---
 extension AtlasCodeRadarRowsA11y {
     static func spokenRepoIssueMore(issues: [AtlasCodeIssue]) -> [String] {
         guard issues.count > 1 else { return [] }
@@ -107,7 +99,6 @@ extension AtlasCodeRadarRowsA11y {
     }
 }
 
-// --- AtlasCodeRadarRows+A11yRepoIssues.swift ---
 extension AtlasCodeRadarRowsA11y {
     static func spokenRepoIssues(
         issues: [AtlasCodeIssue]?,
@@ -119,7 +110,6 @@ extension AtlasCodeRadarRowsA11y {
     }
 }
 
-// --- AtlasCodeRadarStatusCapsule+A11y+Quiet.swift ---
 extension AtlasCodeRadarStatusCapsule {
     func spokenStatusQuiet(model: AtlasCodeWorkspaceModel) -> String? {
         switch model.scanState {
@@ -133,7 +123,6 @@ extension AtlasCodeRadarStatusCapsule {
     }
 }
 
-// --- AtlasCodeRadarStatusCapsule+A11y.swift ---
 extension AtlasCodeRadarStatusCapsule {
     /// Frota quieta = caption mínima; alarme só com violação verificada no scan.
     func spokenStatus(model: AtlasCodeWorkspaceModel) -> String {
@@ -141,7 +130,6 @@ extension AtlasCodeRadarStatusCapsule {
     }
 }
 
-// --- AtlasCodeRadarView+A11y.swift ---
 extension AtlasCodeRadarView {
     var contentPhaseID: String {
         contentPhaseBusyID ?? contentPhaseLoadedID
@@ -204,7 +192,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView+Content+Busy.swift ---
 extension AtlasCodeRadarView {
     @ViewBuilder
     var radarContentBusy: some View {
@@ -219,7 +206,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView+Content+Loading.swift ---
 extension AtlasCodeRadarView {
     var radarLoadingContent: some View {
         TraceEvidenceLoading(text: "lendo o seu workspace…", reduceMotion: reduceMotion)
@@ -228,7 +214,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView+Content.swift ---
 extension AtlasCodeRadarView {
     @ViewBuilder
     var radarContent: some View {
@@ -241,7 +226,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView+ContentBranches.swift ---
 extension AtlasCodeRadarView {
     @ViewBuilder
     var radarLoadedOrEmpty: some View {
@@ -255,7 +239,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView+ContentFailed.swift ---
 extension AtlasCodeRadarView {
     @ViewBuilder
     func radarFailed(_ message: String) -> some View {
@@ -270,7 +253,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView+ContentShell.swift ---
 extension AtlasCodeRadarView {
     var radarContentShell: some View {
         // Fundo como .background: a barra nativa precisa enxergar o scroll
@@ -291,7 +273,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView+NavShell.swift ---
 extension AtlasCodeRadarView {
     @ViewBuilder
     func radarNavShell<Content: View>(_ content: Content) -> some View {
@@ -307,7 +288,6 @@ extension AtlasCodeRadarView {
     }
 }
 
-// --- AtlasCodeRadarView.swift ---
 struct AtlasCodeRadarView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion

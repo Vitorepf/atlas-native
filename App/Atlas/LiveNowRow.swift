@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- LiveNowRow.swift ---
 struct LiveNowRow: View {
     let session: LiveSessionSnapshot
     let hubMode: Bool
@@ -89,7 +88,6 @@ struct LiveNowRow: View {
     }
 }
 
-// --- LiveNowRow+Spoken.swift ---
 extension LiveNowRow {
     var remoteSuffix: String {
         session.isRemote ? ", remota em outra superfície" : ""
@@ -155,7 +153,6 @@ extension LiveNowRow {
     }
 }
 
-// --- LiveNowRow+Timing.swift ---
 extension LiveNowRow {
     func timingLine(now: Date) -> some View {
         HStack(spacing: 6) {

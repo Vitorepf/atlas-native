@@ -3,7 +3,6 @@ import AtlasCore
 
 // WAVE-011 fused
 
-// --- AtlasCodeRadarFolderRow+A11y.swift ---
 enum AtlasCodeFolderRowA11y {
     static func spokenFolder(
         name: String,
@@ -20,7 +19,6 @@ enum AtlasCodeFolderRowA11y {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+A11yExceptions.swift ---
 enum AtlasCodeFolderRowA11yExceptions {
     static func exceptionPhrase(_ verifiedExceptionCount: Int) -> String? {
         guard verifiedExceptionCount > 0 else { return nil }
@@ -28,28 +26,24 @@ enum AtlasCodeFolderRowA11yExceptions {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+A11yFolderExpanded.swift ---
 extension AtlasCodeFolderRowA11y {
     static func spokenFolderExpanded(_ isExpanded: Bool) -> String? {
         isExpanded ? "expandida" : nil
     }
 }
 
-// --- AtlasCodeRadarFolderRow+A11yHint.swift ---
 extension AtlasCodeFolderRowA11y {
     static func spokenHint(isExpanded: Bool) -> String {
         isExpanded ? "recolhe a pasta" : "expande a pasta"
     }
 }
 
-// --- AtlasCodeRadarFolderRow+A11yRepoCount.swift ---
 extension AtlasCodeFolderRowA11y {
     static func spokenRepoCount(_ repositoryCount: Int) -> String {
         repositoryCount == 1 ? "1 repositório" : "\(repositoryCount) repositórios"
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Header+Leading.swift ---
 extension AtlasCodeFolderRow {
     var folderHeaderLeading: some View {
         HStack(spacing: 12) {
@@ -63,7 +57,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Header+Trailing.swift ---
 extension AtlasCodeFolderRow {
     var folderHeaderTrailing: some View {
         HStack(spacing: 0) {
@@ -74,7 +67,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Header.swift ---
 extension AtlasCodeFolderRow {
     var folderHeaderLabel: some View {
         HStack(spacing: 12) {
@@ -86,7 +78,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+HeaderChevron.swift ---
 extension AtlasCodeFolderRow {
     @ViewBuilder
     var folderHeaderChevron: some View {
@@ -98,7 +89,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+HeaderTitle.swift ---
 extension AtlasCodeFolderRow {
     var folderTitleStack: some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -115,7 +105,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarFolderRow+Toggle+A11y.swift ---
 extension AtlasCodeFolderRow {
     func folderToggleA11y<Content: View>(_ content: Content) -> some View {
         content
@@ -133,7 +122,6 @@ extension AtlasCodeFolderRow {
     }
 }
 
-// --- AtlasCodeRadarLoadedContent+Folders+Header.swift ---
 extension AtlasCodeRadarLoadedContent {
     @ViewBuilder
     var radarFoldersHeader: some View {
@@ -144,7 +132,6 @@ extension AtlasCodeRadarLoadedContent {
     }
 }
 
-// --- AtlasCodeRadarLoadedContent+Folders+Loop.swift ---
 extension AtlasCodeRadarLoadedContent {
     @ViewBuilder
     var radarFoldersLoop: some View {
@@ -165,7 +152,6 @@ extension AtlasCodeRadarLoadedContent {
     }
 }
 
-// --- AtlasCodeRadarLoadedContent+Folders.swift ---
 extension AtlasCodeRadarLoadedContent {
     @ViewBuilder
     var radarFoldersAndLoose: some View {
@@ -175,7 +161,6 @@ extension AtlasCodeRadarLoadedContent {
     }
 }
 
-// --- AtlasCodeRadarLoadedContent+Loose.swift ---
 extension AtlasCodeRadarLoadedContent {
     /// WAVE-024: issues-first judgment order when scan hydrated.
     var judgmentLoose: [AtlasCodeRepoRef] {
@@ -207,7 +192,6 @@ extension AtlasCodeRadarLoadedContent {
     }
 }
 
-// --- AtlasCodeRadarLoadedContent+Sections+Recents.swift ---
 extension AtlasCodeRadarLoadedContent {
     var judgmentRecents: [AtlasCodeRepoRef] {
         AtlasCodeRadarJudgment.sortedForJudgment(
@@ -237,7 +221,6 @@ extension AtlasCodeRadarLoadedContent {
     }
 }
 
-// --- AtlasCodeRadarLoadedContent+Sections.swift ---
 extension AtlasCodeRadarLoadedContent {
     @ViewBuilder
     var radarSections: some View {
@@ -250,7 +233,6 @@ extension AtlasCodeRadarLoadedContent {
     }
 }
 
-// --- AtlasCodeRadarLoadedContent.swift ---
 struct AtlasCodeRadarLoadedContent: View {
     let workspace: AtlasCodeWorkspaceResponse
     let model: AtlasCodeWorkspaceModel
@@ -268,7 +250,6 @@ struct AtlasCodeRadarLoadedContent: View {
     }
 }
 
-// --- AtlasCodeRadarRows+A11y.swift ---
 enum AtlasCodeRadarRowsA11y {
     static let repoHint = "abre o grafo do repositório"
 }

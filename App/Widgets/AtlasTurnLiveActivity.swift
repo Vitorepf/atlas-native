@@ -5,7 +5,6 @@ import WidgetKit
 
 // WAVE-018/IDLE Island fused host
 
-// --- AtlasTurnLiveActivity.swift ---
 struct AtlasTurnLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: AtlasTurnAttributes.self) { context in
@@ -19,7 +18,6 @@ struct AtlasTurnLiveActivity: Widget {
     }
 }
 
-// --- AtlasTurnLiveActivity+Island.swift ---
 extension AtlasTurnLiveActivity {
     func dynamicIslandContent(context: ActivityViewContext<AtlasTurnAttributes>) -> DynamicIsland {
         DynamicIsland {
@@ -44,7 +42,6 @@ extension AtlasTurnLiveActivity {
     }
 }
 
-// --- AtlasTurnLiveActivity+IslandCompact.swift ---
 struct AtlasTurnIslandCompactLeading: View {
     let context: ActivityViewContext<AtlasTurnAttributes>
 
@@ -107,7 +104,6 @@ struct AtlasTurnIslandCompactTrailing: View {
     }
 }
 
-// --- AtlasTurnLiveActivity+IslandExpanded.swift ---
 struct AtlasTurnIslandCenter: View {
     let context: ActivityViewContext<AtlasTurnAttributes>
 
@@ -172,7 +168,6 @@ struct AtlasTurnIslandTrailing: View {
     }
 }
 
-// --- AtlasTurnLiveActivity+IslandMinimal.swift ---
 struct AtlasTurnIslandMinimal: View {
     let context: ActivityViewContext<AtlasTurnAttributes>
 

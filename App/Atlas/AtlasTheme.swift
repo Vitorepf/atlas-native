@@ -3,7 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
-// --- AtlasTheme+Card.swift ---
 extension Color {
     init(hex: UInt, alpha: Double = 1) {
         self.init(
@@ -16,7 +15,6 @@ extension Color {
     }
 }
 
-// --- AtlasTheme+CardModifier.swift ---
 private struct AtlasCardModifier: ViewModifier {
     let cornerRadius: CGFloat
     let fillOpacity: Double
@@ -34,7 +32,6 @@ extension View {
     }
 }
 
-// --- AtlasTheme+Domain.swift ---
 extension AtlasTheme {
     static let domOperacional = Color(hex: 0x9B7A3F) // bronze
     static let domAutonomos = Color(hex: 0x6FA06A)   // verde (moss clareado p/ dark)
@@ -45,7 +42,6 @@ extension AtlasTheme {
     }
 }
 
-// --- AtlasTheme+Ink.swift ---
 extension AtlasTheme {
     static let textPrimary = Color(hex: 0xD6DDE2)
     static let textSecondary = Color(hex: 0x95A3AC)
@@ -57,7 +53,6 @@ extension AtlasTheme {
     static let alert = Color(hex: 0xE08C8C)
 }
 
-// --- AtlasTheme+Radius.swift ---
 extension AtlasTheme {
     enum Radius {
         static let card: CGFloat = 14
@@ -66,7 +61,6 @@ extension AtlasTheme {
     }
 }
 
-// --- AtlasTheme+Surfaces.swift ---
 extension AtlasTheme {
     static let bg = Color(hex: 0x1D2B34)
     static let bgRecessed = Color(hex: 0x15212A)
@@ -76,5 +70,4 @@ extension AtlasTheme {
     static let separatorSoft = Color(hex: 0x27353E)
 }
 
-// --- AtlasTheme.swift ---
 enum AtlasTheme {}
