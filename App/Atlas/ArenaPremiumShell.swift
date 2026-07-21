@@ -38,6 +38,8 @@ struct ArenaPremiumShell: View {
             .scrollIndicators(.hidden)
         }
         .background(AtlasTheme.bg.ignoresSafeArea())
+        // Contain: tab bar, tab content and ask pill stay separately focusable.
+        .accessibilityElement(children: .contain)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if destination == nil {
                 askPillDock
