@@ -731,7 +731,7 @@ struct ArenaPremiumStopSheet: View {
                 Text(model.isStoppingMeasurement ? "Solicitando…" : "Parar após o caso atual")
             }
                 .font(AtlasFont.serif(16, .semibold))
-                .frame(maxWidth: .infinity, minHeight: 50)
+                .frame(maxWidth: .infinity, minHeight: 52)
                 .foregroundStyle(valid && !isConfirmed ? AtlasTheme.alert : AtlasTheme.textTertiary)
                 .background(Capsule().fill(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.08 : 0.03)))
                 .overlay(Capsule().stroke(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.5 : 0.15), lineWidth: 1))
