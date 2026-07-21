@@ -4293,6 +4293,7 @@ struct ArenaPremiumAction: View {
                         lineWidth: 1
                     )
                 )
+                .atlasElevation(radius: 10, y: 3, opacity: quiet || disabled ? 0.06 : 0.16)
                 .contentShape(Capsule())
         }
         .buttonStyle(PressableScale())

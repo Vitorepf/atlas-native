@@ -1485,6 +1485,7 @@ private struct AutonomosMapPrimaryCTA: View {
                 .frame(minHeight: 48)
                 .background(AtlasTheme.textPrimary.opacity(enabled ? 0.055 : 0.03), in: Capsule())
                 .overlay(Capsule().strokeBorder(AtlasTheme.textPrimary.opacity(enabled ? 0.12 : 0.05), lineWidth: 1))
+                .atlasElevation(radius: 10, y: 3, opacity: enabled ? 0.16 : 0.06)
                 .contentShape(Capsule())
         }
         .buttonStyle(.plain)
