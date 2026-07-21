@@ -1,8 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// Faixa de execução viva — peel de ConversationComposer.
-// Separator → ConversationComposer+LiveStrip+Separator.swift
+// Live instrument host no composer — WAVE-006. Thin wrapper → ExecutingStrip.
 
 extension ConversationComposer {
     @ViewBuilder
@@ -14,10 +13,12 @@ extension ConversationComposer {
                 onStop: { model.cancel() },
                 onSteer: live.traceId.map { trace in { steerTrace = ConversationSteerTraceRef(id: trace) } }
             )
-                .padding(.top, expanded ? 0 : 4)
+            .padding(.top, expanded ? 0 : 4)
+            .padding(.bottom, expanded ? 0 : 8)
+            .transition(.opacity)
+            Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
                 .padding(.bottom, expanded ? 0 : 8)
-                .transition(.opacity)
-            liveExecutionSeparator
+                .accessibilityHidden(true)
         }
     }
 }

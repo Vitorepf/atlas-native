@@ -1,6 +1,6 @@
 import Foundation
 
-/// Spoken labels do composer — peel de ConversationComposer (CICLO C residual).
+/// Spoken labels do composer — WAVE-006.
 
 enum ConversationComposerA11y {
     static func spokenCard(expanded: Bool, draftCount: Int, queueCount: Int, isSending: Bool) -> String {

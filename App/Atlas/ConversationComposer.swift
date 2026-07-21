@@ -2,10 +2,9 @@ import SwiftUI
 import PhotosUI
 import AtlasCore
 
-// Composer da conversa — peel de ConversationView (régua anti-inchaço).
-// Card → +Card · LiveStrip → +LiveStrip · Actions → +Actions · Fade → +Fade.
-// Helpers → ConversationComposer+Helpers.swift
-// Shell → ConversationComposer+Shell.swift
+// Composer da conversa — WAVE-006 structural host.
+// Card → +Card · Live → +LiveStrip · Queue → +Queue · Actions → +Actions
+// Steer → +Steer · A11y → +A11y · Sheets → +SheetsBind · Surface helpers inline.
 
 struct ConversationComposer: View {
     var model: ConversationModel
@@ -27,6 +26,24 @@ struct ConversationComposer: View {
     @Binding var steerTrace: ConversationSteerTraceRef?
 
     var body: some View {
-        composerShell
+        VStack(alignment: .leading, spacing: 0) {
+            composerCard
+        }
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.25), value: model.isSending)
+        .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
+        .background(composerFadeBackground)
+    }
+
+    // Anexo presente = card aberto: sem isso, anexar com o composer colapsado
+    // deixava o operador sem botão de enviar. Estado de composição ⊃ estado de foco.
+    var expanded: Bool { focused.wrappedValue || !model.drafts.isEmpty }
+
+    /// Turno vivo (streaming) — dirige a faixa de execução dentro do composer.
+    var liveBubble: ChatBubble? { model.bubbles.last(where: { $0.streaming }) }
+
+    var composerFadeBackground: some View {
+        LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
+            .ignoresSafeArea()
+            .accessibilityHidden(true)
     }
 }

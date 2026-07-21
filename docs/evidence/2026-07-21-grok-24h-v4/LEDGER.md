@@ -1,35 +1,34 @@
 # Grok 24h v4 Dual — LEDGER
 
-Started: 2026-07-21T~ (designer session)
+Started: 2026-07-21T13:20:00Z
 mode: designer + implementer
 
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 0
-- idle_compress_passes: 0
+- waves_completed: 1
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Designer
-- designs_proposed: 6
-- last_wave: WAVE-011-radar-fleet-glance
-- last_cycle: W0 council + WAVE-006..011 designs + QUEUE seed
-- explores: 3 (Code/Grafo · Pill/Chat/Arena · Island/Autonomos/Home)
+- designs_proposed: 5+ (006–010 on disk)
+- last_wave: WAVE-010
 
-## Candidates (snapshot)
+## Waves
+### WAVE-006-conversation-live-composer-instrument — done
+- auto-approved rank 1
+- ExecutingStrip = live instrument (stop/steer/progress/reconnect a11y)
+- Composer 39→8 structural files
+- Reconnect peels fused; bubble helpers fused
+- PROVA: build + checks + guard; `WAVE-006-compress.md`
 
-| # | wave | Δ | status |
-|---|---|---|---|
-| 1 | WAVE-006-conversation-live-composer-instrument | max | proposed |
-| 2 | WAVE-007-autonomos-organism-truth | high | proposed |
-| 3 | WAVE-008-ops-failure-empty-canon | high | proposed |
-| 4 | WAVE-009-codigo-depth-instrument | high | proposed |
-| 5 | WAVE-010-arena-suitesheet-instrument | med+ | proposed |
-| 6 | WAVE-011-radar-fleet-glance | med-high | proposed |
+## Idle compress log
+### pass 1 · `419bedf3`
+- WorkspaceEmpty + Chrome Receipt/Outline peels
+### pass 2 · `85be3450`
+- RootChrome + LiveNow peels; v4 guard
 
 ## Notes
 - Prefer QUEUE over inventing micros
 - App/** only Implementer
-- WAVE-005 pill machine is live in App — do not re-propose
-- Continuity high-Δ blocked on App Group portal (operator)
-- Next Designer cycle: re-rank after Implementer lands 006/007; consider radar-fleet-glance
+- Next: WAVE-007 rank2 auto-approve
