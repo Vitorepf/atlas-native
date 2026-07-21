@@ -264,6 +264,10 @@ extension ArenaSuiteSheet {
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            "\(label), \(signed ? ArenaFormat.signed(value) : ArenaFormat.score(value))"
+        )
     }
 
     private func engineEvidence(_ engine: AtlasArenaSuiteEngine) -> some View {
@@ -285,6 +289,8 @@ extension ArenaSuiteSheet {
             ArenaPremiumIcon(symbol: symbol, tone: .neutral, role: .compact)
             Text(text)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(text)
     }
 
     private func pairedDelta(_ engine: AtlasArenaSuiteEngine) -> Double? {
