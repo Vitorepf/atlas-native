@@ -5859,7 +5859,7 @@ extension ExecutionProof {
     var artifactsChevron: some View {
         Image(systemName: "chevron.right")
             .atlasSans(10, .semibold)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.42))
             .accessibilityHidden(true)
     }
 }

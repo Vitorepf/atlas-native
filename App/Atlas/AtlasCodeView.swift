@@ -1401,7 +1401,7 @@ extension AtlasCodeView {
                         Spacer()
                         Image(systemName: "chevron.right")
                             .atlasSans(10, .semibold)
-                            .foregroundStyle(AtlasTheme.textTertiary)
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.42))
                             .accessibilityHidden(true)
                     }
                     .padding(.vertical, 11)
@@ -3822,7 +3822,7 @@ struct AtlasCodeRepoRow: View {
                 }
                 Image(systemName: "chevron.right")
                     .atlasSans(12, .semibold)
-                    .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.42))
                     .accessibilityHidden(true)
             }
             .padding(.vertical, 13)
@@ -3918,7 +3918,7 @@ struct AtlasCodeFolderRow: View {
                     }
                     Image(systemName: "chevron.right")
                         .atlasSans(12, .semibold)
-                        .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.42))
                         .rotationEffect(.degrees(isExpanded ? 90 : 0))
                         .accessibilityHidden(true)
                 }

@@ -1617,7 +1617,7 @@ struct AutonomosMapNavLine: View {
                 }
                 Text("›")
                     .atlasSans(13)
-                    .foregroundStyle(danger ? AtlasTheme.alert.opacity(0.7) : AtlasTheme.textTertiary)
+                    .foregroundStyle(danger ? AtlasTheme.alert.opacity(0.7) : AtlasTheme.accent.opacity(0.42))
                     .accessibilityHidden(true)
             }
             .padding(.vertical, 14)

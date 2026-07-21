@@ -1203,7 +1203,7 @@ struct LiveNowRow: View {
                 if navigable {
                     Image(systemName: "chevron.right")
                         .atlasSans(12, .semibold)
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.42))
                         .accessibilityHidden(true)
                 }
             }
@@ -2971,7 +2971,8 @@ extension ThreadRow {
     var rowTrailing: some View {
         rowTrailingStatus
         Image(systemName: "chevron.right")
-            .atlasSans(13, .semibold).foregroundStyle(AtlasTheme.textTertiary)
+            .atlasSans(13, .semibold)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.42))
             .accessibilityHidden(true)
     }
 }
@@ -3337,7 +3338,7 @@ extension AtlasWorkspacePickerSheet {
                 }
                 Spacer()
                 Image(systemName: "chevron.right").atlasSans(13, .semibold)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.42))
                     .accessibilityHidden(true)
             }
             .padding(.horizontal, 14).padding(.vertical, 14)
