@@ -40,6 +40,7 @@
 | **Digest / momento (janela)** | `AutonomosDigestJudgment` → DigestSurface · `.moment("digest")` |
 | **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + Findings/Patches rank · sheet spoken |
 | **Plan progresso (card + cockpit)** | `PlanJudgment` → PlanFaceStrip · stepState · strip summary |
+| **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)

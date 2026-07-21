@@ -58,4 +58,5 @@ _(no open proposed WAVEs)_
 - WAVE-038 done
 - WAVE-039 done
 - WAVE-040 done
+- WAVE-041 done
 

@@ -5,14 +5,11 @@ import SwiftUI
 
 extension ArtifactSheet {
     func spokenArtifactsSheetAvailableLabel(_ artifacts: AtlasTraceArtifacts) -> String {
-        switch artifacts.state {
-        case .unavailable:
-            return "artefatos da execução indisponíveis"
-        case .available:
-            let n = items.count
-            if n == 0 { return "artefatos da execução, sem itens publicados" }
-            return "artefatos da execução, \(n) item\(n == 1 ? "" : "s")"
-        }
+        // WAVE-041: face-aware spoken (not count-only).
+        ArtifactJudgment.spokenSheet(
+            artifacts: artifacts,
+            deliveryChecks: deliveryChecks
+        )
     }
 }
 
@@ -154,11 +151,17 @@ extension ArtifactSheet {
 
 extension ArtifactSheet {
     var loadedArtifactsHeader: some View {
-        Text("ARTEFATOS DO TURNO · \(artifacts?.workspaceLabel ?? "workspace")")
-            .font(AtlasFont.mono(10)).tracking(1.0)
-            .foregroundStyle(AtlasTheme.textTertiary)
-            .padding(.horizontal, AtlasTheme.Space.screen)
-            .padding(.top, 14)
+        VStack(alignment: .leading, spacing: 8) {
+            Text("ARTEFATOS DO TURNO · \(artifacts?.workspaceLabel ?? "workspace")")
+                .font(AtlasFont.mono(10)).tracking(1.0)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.top, 14)
+            ArtifactFaceStrip(
+                artifacts: artifacts,
+                deliveryChecks: deliveryChecks
+            )
+        }
     }
 }
 
@@ -426,7 +429,12 @@ extension ArtifactSheet {
 
 extension ArtifactSheet {
     var changeReview: AtlasTraceChangeReview? { reviews.changeReviewsByTrace[traceId] }
-    var deliveryChecks: [ArtifactDeliveryCheck] { ArtifactDeliveryProof.checks(from: changeReview) }
+    /// WAVE-041: fail-first delivery proof order.
+    var deliveryChecks: [ArtifactDeliveryCheck] {
+        ArtifactJudgment.rankDeliveryChecks(
+            ArtifactDeliveryProof.checks(from: changeReview)
+        )
+    }
     var hasDeliveryProof: Bool { !deliveryChecks.isEmpty }
     var mountComplete: Bool { !hasDeliveryProof || mountRevealed >= deliveryChecks.count }
 }
@@ -561,9 +569,10 @@ extension ArtifactSheet {
 
 extension ArtifactSheet {
     var artifacts: AtlasTraceArtifacts? { reviews.artifactsByTrace[traceId] }
+    /// WAVE-041: kind-attention rank (image/diff first); selection by id.
     var items: [AtlasTraceArtifacts.Item] {
         guard artifacts?.state == .available else { return [] }
-        return artifacts?.items ?? []
+        return ArtifactJudgment.rankItems(artifacts?.items ?? [])
     }
     var selected: AtlasTraceArtifacts.Item? {
         items.first { $0.id == selectedID } ?? items.first

@@ -107,6 +107,7 @@ extension A11yID {
 extension A11yID {
     static let artifactsRow = "artifacts-row"
     static let artifactsSheet = "artifacts-sheet"
+    static let artifactsFace = "artifacts-face"
     static let artifactsEmpty = "artifacts-empty"
     static let artifactsUnavailable = "artifacts-unavailable"
     static let artifactsLoadFailure = "artifacts-load-failure"
