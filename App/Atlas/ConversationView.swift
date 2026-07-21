@@ -6974,6 +6974,7 @@ extension TimelineFilterChips {
             .frame(minHeight: 48) // HIG 44+; match filter chip breath
             .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
             .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+            .atlasElevation(radius: 4, y: 1, opacity: active ? 0.12 : 0.04)
             .contentShape(Capsule())
     }
 }
