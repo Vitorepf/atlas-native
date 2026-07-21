@@ -24,11 +24,22 @@ created_by: designer
 approved_at: null
 ```
 
+```yaml
+id: WAVE-031-conversation-decision-control-instrument
+status: proposed
+rank: 2
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-031-design.md
+created_by: designer
+approved_at: null
+```
+
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
 | **1** | WAVE-030-autonomos-run-control-judgment-instrument | **max** | `WAVE-030-design.md` |
+| **2** | WAVE-031-conversation-decision-control-instrument | **max** | `WAVE-031-design.md` |
 
 ## History (done)
 

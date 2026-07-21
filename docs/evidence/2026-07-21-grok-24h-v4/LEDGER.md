@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 24
-- idle_compress_passes: 3
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -39,11 +39,10 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `8fc770ab` · delete dead peels ConversationCockpit husk + ArenaCompositeUI Core-dup
 
 ## Designer
-- designs_proposed: 24
-- designs_open: 0
+- designs_proposed: 26
+- designs_open: 2
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -51,11 +50,11 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| 1 | WAVE-030-autonomos-run-control-judgment-instrument | **max** | proposed |
+| 2 | WAVE-031-conversation-decision-control-instrument | **max** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- **B v5 factory 2026-07-21:** WAVE-026…029 shipped; queue empty → wait A (no micro-WAVE; idle budget already 3).
-- **WAVE-029:** ConversationOccasionPack mid-thread · residual WAVE-020 closed · DEVICE_PENDING
+
