@@ -1,31 +1,31 @@
 import SwiftUI
 import AtlasCore
 
-/// Shell Autônomos v9 — catálogo do operador → hub → evolução · pílula · Novo.
+/// Shell Autônomos v9 — host (routes/ask peels). Catálogo → hub · pílula · Novo.
 struct AutonomosMapShell: View {
-    @Environment(AtlasSession.self) private var session
+    @Environment(AtlasSession.self) var session
     let model: AutonomosModel
     @Binding var destination: AutonomosDestination?
     @Binding var selectedUnitID: String?
     @Binding var showNewSheet: Bool
-    @State private var showingAsk = false
-    @State private var askThreadId: ThreadID?
-    @State private var confirmEnd = false
-    @State private var selfConstructionReceipt: SelfConstructionReceipt?
-    @State private var nightly = NightlyProposalController.shared
-    @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
-    @State private var pendingRunControl: AutonomosRunControlAction?
-    @State private var showTransferSheet = false
+    @State var showingAsk = false
+    @State var askThreadId: ThreadID?
+    @State var confirmEnd = false
+    @State var selfConstructionReceipt: SelfConstructionReceipt?
+    @State var nightly = NightlyProposalController.shared
+    @State var nightlyStartProposal: NightlyProposalController.ProposalPayload?
+    @State var pendingRunControl: AutonomosRunControlAction?
+    @State var showTransferSheet = false
     /// WAVE-065: multi-area bind chooser when N registered and unbound.
-    @State private var showAreaBindChooser = false
+    @State var showAreaBindChooser = false
 
-    private var selectedUnit: AutonomosUnit? {
+    var selectedUnit: AutonomosUnit? {
         guard let selectedUnitID else { return nil }
         return model.operatorUnit(id: selectedUnitID)
     }
 
     /// Mesma resolve do hub — ask e hub nunca divergem (WAVE-007).
-    private var organismVestment: AutonomosHubVestment {
+    var organismVestment: AutonomosHubVestment {
         // WAVE-036: incidentPresent from published taskHealth (never invent).
         AutonomosHubVestment.resolve(
             backlog: model.backlog,
@@ -35,10 +35,10 @@ struct AutonomosMapShell: View {
         )
     }
 
-    private var vestmentForAsk: AutonomosHubVestment { organismVestment }
+    var vestmentForAsk: AutonomosHubVestment { organismVestment }
 
     /// Só ciclos com merge real — nunca fabrica “melhorou”.
-    private var latestMergeProvedReceipt: SelfConstructionReceipt? {
+    var latestMergeProvedReceipt: SelfConstructionReceipt? {
         guard let cycles = model.delivered?.delivered else { return nil }
         guard let cycle = cycles.first(where: { $0.mergePerformed && !$0.mergeHash.isEmpty }) else {
             return nil
@@ -158,14 +158,14 @@ struct AutonomosMapShell: View {
         }
     }
 
-    private var areaBindFace: AutonomosAreaBindFace {
+    var areaBindFace: AutonomosAreaBindFace {
         AutonomosAreaBindJudgment.face(
             areas: model.areas,
             selectedAreaID: model.selectedAreaID
         )
     }
 
-    private var controlFace: AutonomosRunControlFace {
+    var controlFace: AutonomosRunControlFace {
         AutonomosRunControlJudgment.face(
             areaSelected: model.selectedArea != nil,
             canControl: model.canControlSelectedArea,
@@ -173,7 +173,7 @@ struct AutonomosMapShell: View {
         )
     }
 
-    private var controlReceiptLine: String? {
+    var controlReceiptLine: String? {
         AutonomosRunControlJudgment.receiptLine(
             receipt: model.lastControlReceipt,
             startReceipt: model.lastStartRunReceipt,
@@ -181,7 +181,7 @@ struct AutonomosMapShell: View {
         )
     }
 
-    private func bindAreaIfNeeded() async {
+    func bindAreaIfNeeded() async {
         if model.areas.isEmpty {
             await model.load()
         }
@@ -200,7 +200,7 @@ struct AutonomosMapShell: View {
         }
     }
 
-    private func applyRunControl(
+    func applyRunControl(
         _ action: AutonomosRunControlAction,
         actor: String,
         reason: String
@@ -220,7 +220,7 @@ struct AutonomosMapShell: View {
     }
 
     /// Catálogo do operador + baseline Nightly/Ritmo (aprender-com-o-uso).
-    private var catalogFace: some View {
+    var catalogFace: some View {
         VStack(spacing: 0) {
             if let receipt = latestMergeProvedReceipt {
                 selfConstructionBanner(receipt)
@@ -257,7 +257,7 @@ struct AutonomosMapShell: View {
         }
     }
 
-    private func selfConstructionBanner(_ receipt: SelfConstructionReceipt) -> some View {
+    func selfConstructionBanner(_ receipt: SelfConstructionReceipt) -> some View {
         Button {
             selfConstructionReceipt = receipt
         } label: {
@@ -281,138 +281,5 @@ struct AutonomosMapShell: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
-    }
-
-    @ViewBuilder
-    private func route(_ destination: AutonomosDestination) -> some View {
-        switch destination {
-        case .hub:
-            if let unit = selectedUnit {
-                AutonomosHubView(
-                    unit: unit,
-                    vestment: organismVestment,
-                    controlFace: controlFace,
-                    controlReceiptLine: controlReceiptLine,
-                    evolutionMeta: AutonomosEvolutionJudgment.hubEvolutionMeta(
-                        marcos: AutonomosEvolutionJudgment.marcos(
-                            delivered: model.delivered,
-                            cycles: model.cycles
-                        ),
-                        areaSelected: model.selectedArea != nil
-                    ),
-                    canTransfer: AutonomosTransferJudgment.canTransfer(
-                        canControlSelectedArea: model.canControlSelectedArea
-                    ),
-                    transferReceiptLine: AutonomosTransferJudgment.receiptLine(model.lastTransferReceipt)
-                        ?? model.controlError,
-                    incidentMeta: AutonomosTaskHealthJudgment.hubIncidentMeta(health: model.taskHealth),
-                    digestMeta: AutonomosDigestJudgment.hubMeta(from: model.digest),
-                    needsAreaBind: areaBindFace.needsChooser,
-                    registeredAreaCount: AutonomosAreaBindJudgment.registeredAreas(model.areas).count,
-                    onChooseArea: { showAreaBindChooser = true },
-                    onNavigate: { self.destination = $0 },
-                    onControl: { pendingRunControl = $0 },
-                    onTransfer: { showTransferSheet = true },
-                    onLocalCatalogPause: { model.setOperatorUnitPaused(id: unit.id, paused: true) },
-                    onLocalCatalogResume: { model.setOperatorUnitPaused(id: unit.id, paused: false) },
-                    onEnd: { confirmEnd = true }
-                )
-            } else {
-                missingUnit
-            }
-        case .evolution:
-            AutonomosEvolutionView(
-                unit: selectedUnit,
-                areaSelected: model.selectedArea != nil,
-                delivered: model.delivered,
-                cycles: model.cycles,
-                onOpenReceipt: { selfConstructionReceipt = $0 }
-            )
-        case .decisions, .decisionInbox, .decisionOrder:
-            // WAVE-026: published backlog → decision surface; silence if empty.
-            AutonomosDecisionSurface(
-                model: model,
-                destination: destination,
-                onNavigate: { self.destination = $0 }
-            )
-        case .incident:
-            // WAVE-036: task health → incident surface (published flags only).
-            AutonomosIncidentSurface(
-                areaSelected: model.selectedArea != nil,
-                health: model.taskHealth
-            )
-        case .moment:
-            // WAVE-038: scheduled digest window (provider-safe) — not invent.
-            AutonomosDigestSurface(digest: model.digest)
-        }
-    }
-
-    private var missingUnit: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            AutonomosMapChrome.heroTitle("Autônomo ausente", size: 26)
-            Text("Volte à lista e abra de novo.")
-                .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
-        }
-        .padding(AtlasTheme.Space.screen)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    }
-
-    private func deleteSelected() {
-        guard let id = selectedUnitID else { return }
-        model.removeOperatorUnit(id: id)
-        selectedUnitID = nil
-        destination = nil
-    }
-
-    private var askPillDock: some View {
-        AgenticAskDock {
-            AgenticPill(
-                invite: AutonomosAskContext.invite(destination: destination, vestment: vestmentForAsk),
-                accessibilityId: A11yID.autonomosAskPill
-            ) {
-                showingAsk = true
-            }
-        }
-    }
-
-    private var askConversationSheet: some View {
-        ConversationView(
-            client: session.client,
-            threadId: askThreadId,
-            title: selectedUnit?.name ?? "Autônomos",
-            emptyPrompt: AutonomosAskContext.invite(destination: destination, vestment: vestmentForAsk),
-            emptySuggestions: AutonomosAskContext.emptySuggestions(destination: destination),
-            taskKind: "autonomos",
-            workspace: nil,
-            draft: "",
-            turnFacts: { [selectedUnit, destination, model] _ in
-                AutonomosAskContext.facts(
-                    unit: selectedUnit,
-                    destination: destination,
-                    backlog: model.backlog,
-                    controlFace: AutonomosRunControlJudgment.face(
-                        areaSelected: model.selectedArea != nil,
-                        canControl: model.canControlSelectedArea,
-                        live: model.live
-                    ),
-                    canControl: model.canControlSelectedArea,
-                    live: model.live,
-                    lastControlReceipt: model.lastControlReceipt,
-                    delivered: model.delivered,
-                    cycles: model.cycles,
-                    lastTransferReceipt: model.lastTransferReceipt,
-                    taskHealth: model.taskHealth,
-                    areaSelected: model.selectedArea != nil,
-                    fleet: model.fleet,
-                    digest: model.digest,
-                    areas: model.areas,
-                    selectedAreaID: model.selectedAreaID
-                )
-            },
-            onThread: { askThreadId = $0 },
-            hidesNavigationBack: true
-        )
-        .agenticAskSheetPresentation()
     }
 }

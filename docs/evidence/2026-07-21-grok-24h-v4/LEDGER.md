@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 60
-- idle_compress_passes: 10
+- idle_compress_passes: 11
 - collapse_host: 0
 
 ## Waves done
@@ -83,6 +83,7 @@ mode: designer + implementer
 - pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
 - pass 9 · `876b24e3` · peel ArtifactPreview → TraceEvidence + Zoom
 - pass 10 · `4ed17106` · delete dead ChangeReview sheet spoken peel
+- pass 11 · `99576dfc` · peel AutonomosMapShell → Routes + Ask (418→285 host; guard ≤400)
 
 ## Designer
 - designs_proposed: 60
