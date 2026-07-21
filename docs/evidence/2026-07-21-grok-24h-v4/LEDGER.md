@@ -41,7 +41,7 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · PENDING · MARK EditorialTurn agent layout
+- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
 
 ## Designer
 - designs_proposed: 26
