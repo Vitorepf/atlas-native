@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// GOD-RESTRUCTURE: PlanRevisionCompare peels fused (A11y · Archive · Body)
+// GOD-RESTRUCTURE: PlanRevisionCompare host (was PlanCardRevisionBody peels)
 
 // MARK: - Types / Helpers
 
