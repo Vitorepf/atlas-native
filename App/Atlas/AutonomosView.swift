@@ -1508,11 +1508,12 @@ enum AutonomosMapChrome {
         Rectangle()
             .fill(
                 LinearGradient(
+                    // Pure gold-breath — no cold separator mid.
                     colors: [
                         AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.28),
-                        AtlasTheme.separator.opacity(0.9),
-                        AtlasTheme.accent.opacity(0.28),
+                        AtlasTheme.accent.opacity(0.32),
+                        AtlasTheme.accent.opacity(0.14),
+                        AtlasTheme.accent.opacity(0.32),
                         AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,

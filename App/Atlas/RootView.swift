@@ -2682,13 +2682,13 @@ extension AtlasNetworkFailureEmpty {
 /// Label de seção da home (Conversas / Operação / Workspaces) — natural-case visual + VO.
 @MainActor
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
-    // Hairlines with a quiet gold breath — family of masthead accent rule.
+    // Pure gold-breath hairlines — family of masthead accent rule, no cold mid.
     HStack(spacing: 12) {
         LinearGradient(
             colors: [
                 AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.22),
-                AtlasTheme.separator
+                AtlasTheme.accent.opacity(0.28),
+                AtlasTheme.accent.opacity(0.12)
             ],
             startPoint: .leading, endPoint: .trailing
         )
@@ -2700,8 +2700,8 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
             .fixedSize()
         LinearGradient(
             colors: [
-                AtlasTheme.separator,
-                AtlasTheme.accent.opacity(0.22),
+                AtlasTheme.accent.opacity(0.12),
+                AtlasTheme.accent.opacity(0.28),
                 AtlasTheme.accent.opacity(0)
             ],
             startPoint: .leading, endPoint: .trailing

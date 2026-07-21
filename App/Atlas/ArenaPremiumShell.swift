@@ -4491,11 +4491,12 @@ struct ArenaPremiumHairline: View {
         Rectangle()
             .fill(
                 LinearGradient(
+                    // Pure gold-breath — no cold separator mid.
                     colors: [
                         AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.22),
-                        AtlasTheme.separator,
-                        AtlasTheme.accent.opacity(0.22),
+                        AtlasTheme.accent.opacity(0.28),
+                        AtlasTheme.accent.opacity(0.12),
+                        AtlasTheme.accent.opacity(0.28),
                         AtlasTheme.accent.opacity(0)
                     ],
                     startPoint: .leading,
