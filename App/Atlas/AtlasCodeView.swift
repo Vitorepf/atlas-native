@@ -3785,6 +3785,7 @@ struct AtlasCodeRepoRow: View {
                                 .padding(.vertical, 1.5)
                                 .background(Capsule().fill(AtlasTheme.surface))
                                 .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                                .atlasElevation(radius: 3, y: 1, opacity: 0.08)
                         }
                     }
                     if let issues, let first = issues.first {
@@ -3794,6 +3795,11 @@ struct AtlasCodeRepoRow: View {
                                       ? AtlasCodePalette.alert
                                       : AtlasCodePalette.alert.opacity(0.45))
                                 .frame(width: 4.5, height: 4.5)
+                                .shadow(
+                                    color: AtlasCodePalette.alert.opacity(first.isSevere ? 0.4 : 0.18),
+                                    radius: first.isSevere ? 3 : 2,
+                                    y: 0
+                                )
                             Text(
                                 issues.count == 1
                                     ? first.headline(trunk: trunk)
@@ -4704,6 +4710,7 @@ struct AtlasCodeChipRow: View {
                     .overlay(
                         Capsule().strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
                     )
+                    .atlasElevation(radius: 3, y: 1, opacity: 0.08)
             }
         }
         .accessibilityElement(children: .ignore)

@@ -4634,6 +4634,12 @@ extension AgentRow {
     var agentRowContent: some View {
         HStack(spacing: 8) {
             Circle().fill(statusColor).frame(width: 6, height: 6)
+                // Soft live bloom when the agent is actively processing.
+                .shadow(
+                    color: statusColor.opacity(statusColorActive != nil ? 0.45 : 0.12),
+                    radius: statusColorActive != nil ? 3 : 1,
+                    y: 0
+                )
             Text(agent.agent ?? providerWord(agent.provider))
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
             agentModelLabel
@@ -5287,6 +5293,7 @@ struct PlanFlowChips: View {
                 Capsule().fill(AtlasTheme.surface.opacity(0.55))
                     .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
             )
+            .atlasElevation(radius: 3, y: 1, opacity: 0.06)
             .lineLimit(1)
             .accessibilityHidden(true)
     }
