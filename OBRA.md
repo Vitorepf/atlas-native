@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — Code section natural-case titles (ciclo 330)** · `d18e4323` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — natural-case workspace/Arena kickers (ciclo 329)** · `3ffe2bc9` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos natural-case kickers (ciclo 328)** · `fdfa9776` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos hub nav lines serif (ciclo 327)** · `89138ed4` · App/Atlas 36. **Prova:** checks+build exit 0.
