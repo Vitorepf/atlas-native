@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 98
-- idle_compress_passes: 2
+- idle_compress_passes: 32
 - collapse_host: 0
 
 ## Waves done
@@ -111,23 +111,22 @@ mode: designer + implementer
 - WAVE-103
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
+- pass 29 · afc5f194 · ConversationViewA11y
+- pass 30 · 241771b3 · CameraPickerA11y
+- pass 31 · 4d654a23 · cockpit banner A11y to LiveStripJudgment
+- pass 32 · cffea599 · ArenaCompositeChartA11y to SuiteJudgment (zero A11y enums)
 
 ## Designer
 - designs_proposed: 98
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
-## Open queue snapshot (must match QUEUE.md)
+## Open queue snapshot
 
-| # | wave | Δ | status |
+| # | wave | delta | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| - | (none) | - | - |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-103 + IDLE 31-32. Zero enum *A11y left in App/Atlas.
+- DEVICE_PENDING. Continuity App Group BLOCKED.
