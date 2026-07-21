@@ -19,6 +19,8 @@ enum LiveSessionWidgetA11y {
     }
 }
 
+// MARK: - A11y chrome
+
 extension LiveSessionWidgetView {
     func liveSessionA11yPhaseID<Content: View>(
         _ content: Content,
@@ -73,6 +75,8 @@ extension LiveSessionWidgetView {
     }
 }
 
+// MARK: - A11y ids / spoken
+
 extension LiveSessionWidgetA11y {
     static func contentPhaseID(
         snapshot: AtlasNativeSnapshot,
@@ -124,6 +128,8 @@ extension LiveSessionWidgetA11y {
         return parts.joined(separator: ", ")
     }
 }
+
+// MARK: - Spoken bind
 
 extension LiveSessionWidgetView {
     func liveSessionSpokenCombine<Content: View>(_ content: Content) -> some View {
@@ -183,7 +189,9 @@ extension LiveSessionWidgetView {
 
 extension LiveSessionWidgetView {
     @ViewBuilder
-    func liveSessionTimerBlock(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
+    // MARK: - Body / timer
+
+func liveSessionTimerBlock(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
         liveSessionTimerRow(live)
     }
 }
@@ -216,7 +224,9 @@ extension LiveSessionWidgetView {
 
 extension LiveSessionWidgetView {
     @ViewBuilder
-    func liveSessionContent(snapshot: AtlasNativeSnapshot, live: AtlasNativeSnapshot.LiveSession?, stale: Bool) -> some View {
+    // MARK: - Content shell
+
+func liveSessionContent(snapshot: AtlasNativeSnapshot, live: AtlasNativeSnapshot.LiveSession?, stale: Bool) -> some View {
         liveSessionA11yChrome(
             liveSessionContentStack(snapshot: snapshot, live: live, stale: stale),
             snapshot: snapshot,

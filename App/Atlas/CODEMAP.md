@@ -144,7 +144,7 @@
 | **TurnPresence parts** | host · Activity · Runtime |
 | **LiveTimeline parts** | host · NarrativeRow · NarrativeRowView |
 | **Commit row parts** | Body · Meta |
-| **Conversation sheets parts** | SheetsBody · ComposerSheetsModifier |
+| **Conversation composer sheets** | `ConversationComposerSheetsModifier` (API · host · camera; was 4 peels) |
 | **Search surface parts** | Surface/Header · Results |
 | **Plan card parts** | PlanCard host · PlanCardBody |
 | **Workspace surface parts** | Surface · Body/threads |

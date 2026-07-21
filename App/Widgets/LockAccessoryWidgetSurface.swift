@@ -4,6 +4,8 @@ import AtlasCore
 
 // IDLE-COMPRESS — Lock accessory widgets fused (presentation-only).
 
+// MARK: - Circular gauge
+
 extension LockAccessorySnapshotView {
     func circularGaugeSymbol(incident: Bool, attention: Bool) -> String {
         incident ? "!" : (attention ? "‖" : "◆")
@@ -111,7 +113,9 @@ extension LockAccessoryA11y {}
 
 extension LockAccessorySnapshotView {
     @ViewBuilder
-    func lockAccessoryFamilyBranch(_ snapshot: AtlasNativeSnapshot) -> some View {
+    // MARK: - Family branches
+
+func lockAccessoryFamilyBranch(_ snapshot: AtlasNativeSnapshot) -> some View {
         if family == .accessoryCircular {
             lockAccessoryCircularContent(snapshot)
         } else if family == .accessoryInline {
@@ -159,7 +163,9 @@ extension LockAccessorySnapshotView {
 
 extension LockAccessorySnapshotView {
     @ViewBuilder
-    var snapshotBranch: some View {
+    // MARK: - Snapshot shell
+
+var snapshotBranch: some View {
         if let snapshot = entry.snapshot {
             lockAccessoryContent(snapshot)
         } else {

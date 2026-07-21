@@ -12,6 +12,8 @@ enum FleetWidgetA11y {
     }
 }
 
+// MARK: - A11y chrome
+
 extension FleetWidgetView {
     func fleetA11yPhaseSpoken<Content: View>(
         _ content: Content,
@@ -74,6 +76,8 @@ extension FleetWidgetView {
         fleetA11yPhaseBind(content, snapshot: snapshot, stale: stale)
     }
 }
+
+// MARK: - A11y ids / spoken
 
 extension FleetWidgetA11y {
     static func deliveryCaption(_ delivery: AtlasNativeSnapshot.Fleet.LastDelivery) -> String? {
@@ -160,7 +164,9 @@ extension FleetWidgetView {
 
 extension FleetWidgetView {
     @ViewBuilder
-    func fleetBodyDeliveryRow(_ snapshot: AtlasNativeSnapshot) -> some View {
+    // MARK: - Body rows
+
+func fleetBodyDeliveryRow(_ snapshot: AtlasNativeSnapshot) -> some View {
         fleetDeliveryCaption(snapshot)
     }
 }
@@ -200,7 +206,9 @@ extension FleetWidgetView {
 
 extension FleetWidgetView {
     @ViewBuilder
-    func fleetBody(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
+    // MARK: - Body shell
+
+func fleetBody(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
         fleetA11yChrome(
             fleetBodyStack(snapshot: snapshot, stale: stale),
             snapshot: snapshot,

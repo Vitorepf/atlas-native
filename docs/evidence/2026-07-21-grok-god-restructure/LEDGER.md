@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: deepen next domain
-- domain_index: 3
+- focus: pass deepen cycle
+- domain_index: 7
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-sheets
+- last_commit: pending-widgets-mark
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,21 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T23:50Z — Widgets dense MARK
+
+```yaml
+phase: prove
+focus: Continuity Widgets MARK LiveSession/Fleet/Lock/Island
+domain_index: 6
+pass: 1
+commands: |
+  MARK A11y/Body/Island on 4 dense widget surfaces
+  gates ✓
+before_after: |
+  LiveSession 1→6 · Fleet 2→6 · Lock 2→5 · Island 0→5 MARKs
+notes: soft Sections/States still 0; next pass deepen
+```
 
 ### 2026-07-21T23:40Z — ConversationComposerSheetsModifier fuse
 
