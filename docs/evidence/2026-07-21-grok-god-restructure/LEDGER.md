@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: ChangeReviewSections rename/fuse
+- focus: Conversa peels or Código Provenance
 - domain_index: 1
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-ep-body
+- last_commit: pending-cr
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,23 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T23:10Z — ChangeReview Body + SheetBody
+
+```yaml
+phase: prove
+focus: ChangeReviewSections* → ChangeReviewBody + ChangeReviewSheetBody
+domain_index: 1
+pass: 1
+commands: |
+  split honesty: section cards vs sheet content
+  gates ✓
+  remaining *Sections*/*States*: Arena · Provenance · Autonomos
+before_after: |
+  ChangeReviewSections+Body (152+126) → Body + SheetBody
+  CODEMAP ChangeReview body/sheet paths
+notes: next Conversation peels or domain 2 Provenance
+```
 
 ### 2026-07-21T23:00Z — ExecutionProofBody fuse
 

@@ -1,20 +1,12 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-149
+// GOD-RESTRUCTURE: was ChangeReviewSectionsBody — sheet content · available · unavailable
 
-struct ChangeReviewRunHeader: View {
-    let run: AtlasTraceChangeReview.Run
-
-    var body: some View {
-        runHeaderChrome {
-            runHeaderFields
-        }
-    }
-}
+// MARK: - Sheet face / spoken
 
 extension ChangeReviewSheet {
-    /// WAVE-063: exclusive sheet face from loadFinished + review.
+    /// Exclusive sheet face from loadFinished + review.
     var reviewSheetFace: ChangeReviewSheetFace {
         ChangeReviewSheetJudgment.face(loadFinished: loadFinished, review: review)
     }
@@ -24,78 +16,17 @@ extension ChangeReviewSheet {
     }
 
     static var reviewSheetHint: String { ChangeReviewSheetJudgment.sheetHint }
-}
 
-extension ChangeReviewSheet {
-    @ViewBuilder
-    var content: some View {
-        if review == nil {
-            reviewUnavailableContent
-        } else if let review {
-            reviewAvailableContent(review)
-        }
-    }
-}
-
-extension ChangeReviewSheet {
-    func refreshReviewTask() async {
-        await reviews.refreshChangeReview(traceId: traceId)
-        loadFinished = true
-    }
-}
-
-extension ChangeReviewAvailableContent {
-    @ViewBuilder
-    var reviewSections: some View {
-        if let run = review.run { ChangeReviewRunHeader(run: run) }
-        ChangeReviewRiskStrip(review: review)
-        ChangeReviewGovernanceSection(reviews: reviews, traceId: traceId)
-        reviewPatchTail
-    }
-}
-
-extension ChangeReviewAvailableContent {
-    @ViewBuilder
-    var reviewSectionsAfterPatches: some View {
-        if !review.controls.isEmpty { ChangeReviewControlsSection(controls: review.controls) }
-        if !review.testRuns.isEmpty { ChangeReviewTestsSection(tests: review.testRuns) }
-        if !review.review.findings.isEmpty { ChangeReviewFindingsSection(findings: review.review.findings) }
-        if !review.review.operatorActions.isEmpty {
-            ChangeReviewDecidedSection(actions: review.review.operatorActions)
-        }
-        ChangeReviewRunActions(
-            review: review,
-            reviews: reviews,
-            traceId: traceId,
-            applying: $applying
-        )
-    }
-}
-
-extension ChangeReviewAvailableContent {
-    @ViewBuilder
-    var reviewPatchTail: some View {
-        // WAVE-039: riskFlags-first patches before quiet ones.
-        ForEach(ChangeReviewJudgment.rankPatches(review.patches)) { patch in
-            ChangeReviewPatchCard(
-                reviews: reviews,
-                traceId: traceId,
-                patch: patch,
-                expandedDiffPatch: $expandedDiffPatch
-            )
-        }
-        reviewSectionsAfterPatches
-    }
-}
-
-extension ChangeReviewSheet {
     /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.
     static func hasReviewSurface(_ review: AtlasTraceChangeReview) -> Bool {
         ChangeReviewJudgment.hasReviewSurface(review)
     }
-}
 
-extension ChangeReviewSheet {
+    func refreshReviewTask() async {
+        await reviews.refreshChangeReview(traceId: traceId)
+        loadFinished = true
+    }
+
     var reviewToolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
             AtlasCloseToolbarButton(
@@ -105,9 +36,16 @@ extension ChangeReviewSheet {
             ) { dismiss() }
         }
     }
-}
 
-extension ChangeReviewSheet {
+    @ViewBuilder
+    var content: some View {
+        if review == nil {
+            reviewUnavailableContent
+        } else if let review {
+            reviewAvailableContent(review)
+        }
+    }
+
     @ViewBuilder
     var reviewUnavailableContent: some View {
         if !loadFinished, review == nil {
@@ -124,3 +62,44 @@ extension ChangeReviewSheet {
     }
 }
 
+// MARK: - Available content sections
+
+extension ChangeReviewAvailableContent {
+    @ViewBuilder
+    var reviewSections: some View {
+        if let run = review.run { ChangeReviewRunHeader(run: run) }
+        ChangeReviewRiskStrip(review: review)
+        ChangeReviewGovernanceSection(reviews: reviews, traceId: traceId)
+        reviewPatchTail
+    }
+
+    @ViewBuilder
+    var reviewSectionsAfterPatches: some View {
+        if !review.controls.isEmpty { ChangeReviewControlsSection(controls: review.controls) }
+        if !review.testRuns.isEmpty { ChangeReviewTestsSection(tests: review.testRuns) }
+        if !review.review.findings.isEmpty { ChangeReviewFindingsSection(findings: review.review.findings) }
+        if !review.review.operatorActions.isEmpty {
+            ChangeReviewDecidedSection(actions: review.review.operatorActions)
+        }
+        ChangeReviewRunActions(
+            review: review,
+            reviews: reviews,
+            traceId: traceId,
+            applying: $applying
+        )
+    }
+
+    @ViewBuilder
+    var reviewPatchTail: some View {
+        // riskFlags-first patches before quiet ones.
+        ForEach(ChangeReviewJudgment.rankPatches(review.patches)) { patch in
+            ChangeReviewPatchCard(
+                reviews: reviews,
+                traceId: traceId,
+                patch: patch,
+                expandedDiffPatch: $expandedDiffPatch
+            )
+        }
+        reviewSectionsAfterPatches
+    }
+}

@@ -1,7 +1,9 @@
 import AtlasCore
 import SwiftUI
 
-// ChangeReview sections host — controls · tests · decided (A11y peel)
+// GOD-RESTRUCTURE: was ChangeReviewSections — controls · tests · decided · run header
+
+// MARK: - Controls
 
 struct ChangeReviewControlsSection: View {
     let controls: [AtlasTraceChangeReview.Control]
@@ -21,9 +23,7 @@ struct ChangeReviewControlsSection: View {
         .accessibilityLabel(ChangeReviewJudgment.spokenControlsSection(ranked))
         .accessibilityIdentifier(A11yID.reviewControlsSection)
     }
-}
 
-extension ChangeReviewControlsSection {
     func controlRow(_ c: AtlasTraceChangeReview.Control) -> some View {
         HStack(spacing: 8) {
             Text(c.slug).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textPrimary)
@@ -40,6 +40,8 @@ extension ChangeReviewControlsSection {
     }
 }
 
+// MARK: - Decided actions
+
 struct ChangeReviewDecidedSection: View {
     let actions: [AtlasTraceChangeReview.OperatorAction]
 
@@ -54,9 +56,7 @@ struct ChangeReviewDecidedSection: View {
         .accessibilityLabel(ChangeReviewJudgment.spokenDecidedSection(actions))
         .accessibilityIdentifier(A11yID.reviewDecidedSection)
     }
-}
 
-extension ChangeReviewDecidedSection {
     func decidedActionRow(_ a: AtlasTraceChangeReview.OperatorAction) -> some View {
         HStack(spacing: 8) {
             Text(a.action == .accept ? "aceito" : "rejeitado")
@@ -72,57 +72,7 @@ extension ChangeReviewDecidedSection {
     }
 }
 
-extension ChangeReviewRunHeader {
-    @ViewBuilder
-    var runHeaderScore: some View {
-        if let score = run.score {
-            Text("\(score)").font(AtlasFont.mono(20)).foregroundStyle(AtlasTheme.accent)
-                .accessibilityHidden(true)
-        }
-    }
-}
-
-extension ChangeReviewRunHeader {
-    @ViewBuilder
-    var runHeaderTitleStack: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(run.decision ?? run.status ?? "revisão")
-                .font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
-                .accessibilityHidden(true)
-            if let finished = run.finishedAt {
-                Text(finished).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-                    .accessibilityHidden(true)
-            }
-        }
-    }
-}
-
-extension ChangeReviewRunHeader {
-    @ViewBuilder
-    var runHeaderFields: some View {
-        HStack(spacing: 12) {
-            runHeaderTitleStack
-            Spacer()
-            runHeaderScore
-        }
-    }
-}
-
-extension ChangeReviewTestsSection {
-    func testRow(_ t: AtlasTraceChangeReview.TestRun) -> some View {
-        HStack(spacing: 8) {
-            Text(t.command ?? "teste").font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
-                .accessibilityHidden(true)
-            Spacer()
-            Text(t.status).font(AtlasFont.mono(10))
-                .foregroundStyle(t.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
-                .accessibilityHidden(true)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ChangeReviewJudgment.spokenTest(t))
-    }
-}
+// MARK: - Tests
 
 struct ChangeReviewTestsSection: View {
     let tests: [AtlasTraceChangeReview.TestRun]
@@ -142,11 +92,60 @@ struct ChangeReviewTestsSection: View {
         .accessibilityLabel(ChangeReviewJudgment.spokenTestsSection(ranked))
         .accessibilityIdentifier(A11yID.reviewTestsSection)
     }
+
+    func testRow(_ t: AtlasTraceChangeReview.TestRun) -> some View {
+        HStack(spacing: 8) {
+            Text(t.command ?? "teste").font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                .accessibilityHidden(true)
+            Spacer()
+            Text(t.status).font(AtlasFont.mono(10))
+                .foregroundStyle(t.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
+                .accessibilityHidden(true)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ChangeReviewJudgment.spokenTest(t))
+    }
 }
 
-// MARK: - Seções remanescentes da ChangeReviewSheet (C15 · C16)
-// Diff → ChangeReviewDiffSection · Conselho → ChangeReviewCouncilSection.
-// Checks → ChangeReviewSections+Checks.swift
-// Chrome → ChangeReviewSections+RunChrome.swift
-// Fields → ChangeReviewSections+RunFields.swift
+// MARK: - Run header
 
+struct ChangeReviewRunHeader: View {
+    let run: AtlasTraceChangeReview.Run
+
+    var body: some View {
+        runHeaderChrome {
+            runHeaderFields
+        }
+    }
+
+    @ViewBuilder
+    var runHeaderFields: some View {
+        HStack(spacing: 12) {
+            runHeaderTitleStack
+            Spacer()
+            runHeaderScore
+        }
+    }
+
+    @ViewBuilder
+    var runHeaderTitleStack: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(run.decision ?? run.status ?? "revisão")
+                .font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityHidden(true)
+            if let finished = run.finishedAt {
+                Text(finished).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+            }
+        }
+    }
+
+    @ViewBuilder
+    var runHeaderScore: some View {
+        if let score = run.score {
+            Text("\(score)").font(AtlasFont.mono(20)).foregroundStyle(AtlasTheme.accent)
+                .accessibilityHidden(true)
+        }
+    }
+}

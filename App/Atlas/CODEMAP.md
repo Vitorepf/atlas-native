@@ -172,7 +172,7 @@
 | **PlanJudgment** | `PlanJudgment` (face · spoken · packFacts) |
 | **LiveNowJudgment** | single file: merge · rank · spoken · pack (was core+Row peels) |
 | **ComposerDraftJudgment parts** | core · Attach |
-| **ChangeReview sections parts** | Sections · SectionsBody |
+| **ChangeReview body / sheet** | `ChangeReviewBody` (controls/tests/decided/run) · `ChangeReviewSheetBody` |
 | **ArenaSuiteSheet parts** | Sheet · Body |
 | **RootChrome parts** | Chrome · Lifecycle · DeepLink · ConversationRoutes (ThreadRow own file) |
 | **ExecutionStateCardSpoken parts** | Spoken · Body |
