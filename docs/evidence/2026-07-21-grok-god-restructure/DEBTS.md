@@ -4,27 +4,31 @@
 
 ```yaml
 pass: 3
-domain_index: 2
-last_focus: "pass3 Conversa residual OK → Código"
-session_commits: 135
+domain_index: 0
+last_focus: "pass3 all domains residual OK — cycle wrap"
+session_commits: 136
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
 ```
 
-## Pass 3 residual log
+## Pass 3 residual (all domains)
 
 | Dom | Status |
 |---|---|
-| 0 Home | residual OK · MARKs · spoken |
-| 1 Conversa | residual OK · soft 0 · densos under caps |
-| 2 Código | **in progress** |
-| 3–7 | pending this pass |
+| 0 Home | OK |
+| 1 Conversa | OK |
+| 2 Código | OK (Surface/Radar/Provenance/Graph under 2000) |
+| 3 Pílula | OK (in RootView) |
+| 4 Arena | OK (Root/Execution/Surfaces/Fleet*) |
+| 5 Autônomos | OK (Host/Map/Model/CanDo/FleetRun/Organs) |
+| 6 Continuity | OK (TurnPresence + Widgets A/B) |
+| 7 Cross-cut | OK (CODEMAP · soft 0) |
 
 ## Scoreboard
 
-commits **135** · App/Atlas **46** · Widgets **2** · soft **0** · gates green
+commits **136** · App/Atlas **46** · Widgets **2** · soft **0** · density OK
 
-## Proibido
+## Next pass
 
-Goal Done · god_hold · WAVE · dual · Core
+pass+=1 when operator continues; residual honesty/fuses with headroom; **never Goal Done**
