@@ -1,13 +1,10 @@
+import Foundation
 import AtlasCore
-import Observation
-import SwiftUI
 
-/// A exceção do domínio Código, resolvida de dado real.
-///
-/// O hub NÃO repete a área (decisão do operador, 15/07): a única porta do
-/// Atlas Código é o ícone da barra, à esquerda do masthead. Este model
-/// alimenta o ponto vermelho desse ícone — estado por exceção: sem violação
-/// real, nenhum sinal; e ele some sozinho quando o Atlas cura.
+// GOD-RESTRUCTURE: Code hub+provenance models fused
+
+// MARK: - Hub
+
 @MainActor
 @Observable
 final class AtlasCodeHubModel {
@@ -49,5 +46,51 @@ final class AtlasCodeHubModel {
             }
         }
         if scanned { exception = nil }
+    }
+}
+
+// MARK: - Provenance
+
+@MainActor
+@Observable
+final class AtlasCodeProvenanceModel {
+    enum Phase: Equatable {
+        case idle, loading, loaded(AtlasCodeProvenance), failed(String)
+    }
+
+    let client: AtlasClient
+    private(set) var repo: String
+    private(set) var phase: Phase = .idle
+    /// O commit que a folha ABERTA pediu. Resposta de pedido velho não grava.
+    private var wanted: String?
+
+    init(client: AtlasClient, repo: String) {
+        self.client = client
+        self.repo = repo
+    }
+
+    func adoptRepo(_ newRepo: String) {
+        guard newRepo != repo else { return }
+        repo = newRepo
+        phase = .idle
+        wanted = nil
+    }
+
+    func load(hash: String) async {
+        // A corrida real: o operador toca no commit A, fecha, toca no B — e a
+        // resposta de A chega DEPOIS da de B. Sem correlacionar, a folha do B
+        // mostrava a proveniência do A: autor, arquivos e "sua frase" do commit
+        // errado, na tela em que o operador decide se apaga trabalho. Só a
+        // resposta do pedido mais recente pode escrever o estado.
+        wanted = hash
+        phase = .loading
+        do {
+            let provenance = try await client.getCodeProvenance(hash: hash, repo: repo)
+            guard wanted == hash else { return }
+            phase = .loaded(provenance)
+        } catch {
+            guard wanted == hash else { return }
+            phase = .failed(String(describing: error))
+        }
     }
 }
