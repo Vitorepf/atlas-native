@@ -1,7 +1,8 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Scroll de turnos + FAB de retorno ao fim — peel de ConversationView (régua <300).
+// Cycle 029 fuse → ConversationMessages.swift
+
 // Scroll chrome: ConversationMessages+Scroll.swift
 // Empty + bubbles: ConversationMessages+List.swift
 
@@ -22,5 +23,62 @@ struct ConversationMessages: View {
 
     var body: some View {
         messagesReaderBody
+    }
+}
+
+extension ConversationMessages {
+    @ViewBuilder
+    func messagesList() -> some View {
+        if model.bubbles.isEmpty {
+            emptyMessages()
+        } else {
+            bubblesStack
+        }
+    }
+}
+
+extension ConversationMessages {
+    var messagesReaderBody: some View {
+        ScrollViewReader { proxy in
+            scrollChrome(proxy: proxy) {
+                ScrollView {
+                    messagesList()
+                }
+            }
+        }
+    }
+}
+
+extension ConversationMessages {
+    @ViewBuilder
+    func emptyMessages() -> some View {
+        if model.loadError != nil {
+            AtlasNetworkFailureEmpty(
+                kind: model.loadFailureKind,
+                hasToken: session.hasToken,
+                host: session.host,
+                topPadding: 100,
+                retryHint: "reconecta e recarrega esta conversa",
+                accessibilityIdentifier: A11yID.conversationLoadFailure,
+                onRetry: { Task { await model.load() } }
+            )
+        } else {
+            emptyConversationBody
+        }
+    }
+}
+
+extension ConversationMessages {
+    @ViewBuilder
+    var emptyConversationBody: some View {
+        EmptyConversation(
+            reduceMotion: reduceMotion,
+            prompt: emptyPrompt,
+            suggestions: emptySuggestions
+        ) { suggestion in
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            let effort = model.effort
+            Task { await model.send(suggestion, effort: effort) }
+        }
     }
 }
