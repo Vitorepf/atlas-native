@@ -141,7 +141,9 @@ struct ArenaPremiumAction: View {
         .accessibilityHint(
             disabled
                 ? Text("indisponível")
-                : Text(quiet ? "ação secundária" : "ação principal da Arena")
+                : Text(quiet
+                    ? "ação secundária da Arena, \(title.lowercased())"
+                    : "ação principal da Arena, \(title.lowercased())")
         )
         .accessibilityAddTraits(.isButton)
     }
