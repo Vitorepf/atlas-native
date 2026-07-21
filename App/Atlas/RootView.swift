@@ -471,8 +471,9 @@ extension RootView {
         HStack(spacing: 12) {
             HomeComposerStar()
             Text("Escreva ao Atlas")
+                // Soft gold-quiet home invite placeholder.
                 .font(AtlasFont.serifItalic(16))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
         }
@@ -2089,8 +2090,9 @@ extension WorkspaceView {
                 .frame(width: 30, height: 30)
                 .accessibilityHidden(true)
             Text("Escreva ao Atlas")
+                // Soft gold-quiet workspace invite placeholder.
                 .font(AtlasFont.serifItalic(17))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
             Spacer()
         }
@@ -2495,7 +2497,8 @@ extension AtlasEditorialGlyphEmpty {
                 .accessibilityHidden(true)
             if let footnote {
                 Text(footnote)
-                    .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet empty footnote under editorial headline.
+                    .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .multilineTextAlignment(.center)
                     .accessibilityHidden(true)
             }
@@ -3023,7 +3026,8 @@ extension WorkspaceRow {
             // Número é meta: mono editorial quieto (ausência = ausência).
             Text("\(count)")
                 .font(AtlasFont.mono(12, .medium))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet workspace count meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
@@ -3143,7 +3147,8 @@ extension ThreadRow {
     var rowTrailingCount: some View {
         Text("\(thread.messageCount)")
             .atlasSans(16)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet thread count meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
             .accessibilityHidden(true)
@@ -3224,8 +3229,9 @@ struct AgenticPill: View {
             HStack(spacing: 12) {
                 RootView.HomeComposerStar()
                 Text(invite)
+                    // Soft gold-quiet agentic pill invite copy.
                     .font(AtlasFont.serifItalic(17))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -3695,8 +3701,9 @@ struct AtlasWorkspacePickerSheet: View {
             VStack(spacing: 12) {
                 BreathingDiamond(size: 10, reduceMotion: reduceMotion)
                 Text("Lendo os repositórios do Mac…")
+                    // Soft gold-quiet picker loading caption.
                     .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityElement(children: .combine)

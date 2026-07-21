@@ -1297,7 +1297,8 @@ extension AtlasCodeView {
             Text("Worktrees")
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet worktrees section kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier(A11yID.codeGraphWorktrees)
             ScrollView(.horizontal, showsIndicators: false) {
@@ -1324,7 +1325,8 @@ extension AtlasCodeView {
                 if let state = worktree.state?.nonEmpty { Text(state) }
             }
             .font(AtlasFont.mono(9))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet worktree branch/head meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
@@ -1992,7 +1994,8 @@ extension AtlasCodeHealReceiptSheet {
       if !receipt.result.isEmpty {
         Text(receipt.result)
           .font(AtlasFont.mono(9))
-          .foregroundStyle(AtlasTheme.textTertiary)
+          // Soft gold-quiet heal step result meta.
+          .foregroundStyle(AtlasTheme.accent.opacity(0.58))
           .accessibilityHidden(true)
       }
     }
@@ -2074,7 +2077,8 @@ extension AtlasCodeHealReceiptSheet {
         if let note = AtlasCodeUndoWindow.note(expiresAt: undoExpiresAt) {
             Text(note)
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet undo window meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityIdentifier(A11yID.codeHealUndoWindow)
                 .accessibilityLabel(spokenUndoWindowLabel(note))
         }
@@ -2189,7 +2193,8 @@ extension AtlasCodeMirrorCard {
             if let host = response.mirror?.host {
                 Text(host)
                     .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet mirror host meta.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .accessibilityHidden(true)
             }
         }
@@ -3287,7 +3292,8 @@ extension AtlasCodeProvenanceSheet {
         VStack(alignment: .leading, spacing: 7) {
             Text(title)
                 .font(AtlasFont.serif(12, .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet provenance block kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityHidden(true)
             body()
         }
@@ -3369,7 +3375,8 @@ extension AtlasCodeProvenanceSheet {
         Text("Arquivos")
             .atlasSans(8.5, .semibold)
             .tracking(0.4)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet files section kicker.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             .accessibilityAddTraits(.isHeader)
             .accessibilityIdentifier(A11yID.codeCommitFiles)
     }
@@ -3671,7 +3678,8 @@ struct AtlasCodeLoadFailureEmpty: View {
                 .accessibilityAddTraits(.isHeader)
             Text(message)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet failure meta under headline.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 28)
             Button {
@@ -3791,7 +3799,8 @@ struct AtlasCodeRadarStatusCapsule: View {
                     .foregroundStyle(
                         model.scanState == .clean
                             ? AtlasTheme.accent.opacity(0.75)
-                            : AtlasTheme.textTertiary
+                            // Soft gold-quiet unknown scan headline.
+                            : AtlasTheme.accent.opacity(0.48)
                     )
                     .padding(.vertical, 7)
                     .accessibilityHidden(true)
@@ -4176,7 +4185,8 @@ struct AtlasCodeCommitRow: View {
             }
         }
         .font(AtlasFont.mono(9))
-        .foregroundStyle(AtlasTheme.textTertiary)
+        // Soft gold-quiet commit meta line.
+        .foregroundStyle(AtlasTheme.accent.opacity(0.58))
     }
 
     @ViewBuilder
