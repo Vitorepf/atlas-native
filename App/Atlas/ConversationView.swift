@@ -4104,7 +4104,8 @@ extension FeedbackRow {
     func feedbackChipLabel(_ kind: FeedbackKind, isActive: Bool) -> some View {
         Text(isActive ? "\(kind.label) ✓" : kind.label)
             .font(AtlasFont.serifItalic(13))
-            .foregroundStyle(isActive ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
+            // Soft gold-quiet inactive feedback; active stays moss.
+            .foregroundStyle(isActive ? AtlasTheme.domAutonomos : AtlasTheme.accent.opacity(0.55))
             .padding(.horizontal, 12).padding(.vertical, 6)
             .frame(minHeight: 48)
             .contentShape(Capsule())
@@ -4112,7 +4113,7 @@ extension FeedbackRow {
                 Capsule().fill(isActive ? AtlasTheme.domAutonomos.opacity(0.08) : AtlasTheme.surface.opacity(0.4))
                     .overlay(
                         Capsule().stroke(
-                            isActive ? AtlasTheme.domAutonomos.opacity(0.5) : AtlasTheme.separator,
+                            isActive ? AtlasTheme.domAutonomos.opacity(0.5) : AtlasTheme.goldBorder.opacity(0.4),
                             lineWidth: 1
                         )
                     )
@@ -5545,7 +5546,8 @@ struct PlanStepRowView: View {
     var stepTitleColumn: some View {
         Text(step.title)
             .font(AtlasFont.mono(10))
-            .foregroundStyle(state == .pending ? AtlasTheme.textTertiary
+            // Soft gold-quiet pending steps; current/done keep hierarchy.
+            .foregroundStyle(state == .pending ? AtlasTheme.accent.opacity(0.48)
                              : state == .current ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
             .lineLimit(2)
             .accessibilityHidden(true)
@@ -5859,7 +5861,8 @@ struct PlanRevisionCompare: View {
         if let archivedAt = rev.archivedAt {
             Text(editorialArchivedAt(archivedAt))
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet archive timestamp.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
@@ -5870,7 +5873,8 @@ struct PlanRevisionCompare: View {
         if !rev.stepTitles.isEmpty {
             Text(rev.stepTitles.joined(separator: " · "))
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet archived step titles.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .lineLimit(2)
                 .accessibilityHidden(true)
         }
@@ -6195,7 +6199,8 @@ extension ExecutionProof {
             Text(act.title)
                 .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
             if let d = act.detail, !d.isEmpty {
-                Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet activity detail meta.
+                Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .lineLimit(2).truncationMode(.middle)
             }
         }
@@ -6424,7 +6429,8 @@ extension ExecutionProof {
                 .accessibilityHidden(true)
             Text(selected.activity.occurredAt ?? "")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet replay timestamp.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
@@ -6929,7 +6935,8 @@ extension ExecutionStateCard {
         if let checkpoint = state.checkpoint {
             Text("Checkpoint · \(checkpoint)")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet checkpoint meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
@@ -6949,7 +6956,8 @@ extension ExecutionStateCard {
         if let deadline = publishedExternalDeadline {
             Text("Próxima mudança: \(deadline)")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet external deadline meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
@@ -6962,7 +6970,8 @@ extension ExecutionStateCard {
         if let frozen = frozenTimerText {
             Text(frozen)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet frozen timer.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }
@@ -6975,7 +6984,8 @@ extension ExecutionStateCard {
         if frozenTimerText == nil, let active = recoveringTimerText {
             Text(active)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet recovering timer.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }
@@ -8553,7 +8563,8 @@ extension QueuedFollowUpRow {
         if total > 1 {
             Text(positionCaption)
                 .font(AtlasFont.mono(10, .medium))
-                .foregroundStyle(index == 0 ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                // Soft gold-quiet queue position; head stays full accent.
+                .foregroundStyle(index == 0 ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.55))
                 .padding(.horizontal, index == 0 ? 8 : 0)
                 .padding(.vertical, index == 0 ? 3 : 0)
                 .background {
@@ -9563,7 +9574,8 @@ extension ArtifactSheet {
     var loadedArtifactsHeader: some View {
         Text("Artefatos do turno · \(artifacts?.workspaceLabel ?? "workspace")")
             .font(AtlasFont.mono(10)).tracking(0.4)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet artifacts section kicker.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             .accessibilityAddTraits(.isHeader)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 14)
@@ -9634,7 +9646,8 @@ extension ArtifactSheet {
     func artifactListRowLeading(item: AtlasTraceArtifacts.Item) -> some View {
         Text("▸")
             .font(AtlasFont.mono(11))
-            .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.textTertiary)
+            // Soft gold-quiet list caret; selected stays full accent.
+            .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.45))
             .accessibilityHidden(true)
         // Linha de lista fala em sans (canon §C: serif é masthead/título).
         Text(item.name)
@@ -9671,7 +9684,8 @@ extension ArtifactSheet {
     func artifactListRowMeta(item: AtlasTraceArtifacts.Item) -> some View {
         Text("\(ArtifactViewer.byteLabel(item.byteSize))  \(ArtifactViewer.kindLabel(item.kind))")
             .font(AtlasFont.mono(10))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet artifact size/kind meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             .accessibilityHidden(true)
     }
 }
@@ -9708,7 +9722,8 @@ extension ArtifactSheet {
     var emptyVisualizable: some View {
         Text("Nenhum artefato visualizável")
             .font(AtlasFont.serifItalic(15))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet empty artifacts honesty.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityIdentifier(A11yID.artifactsEmpty)
             .accessibilityLabel("Sem artefatos visualizáveis nesta execução")
@@ -9889,10 +9904,11 @@ extension ArtifactSheet {
         HStack(spacing: 8) {
             Text("Montagem")
                 .font(AtlasFont.mono(10)).tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet mount kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityHidden(true)
             Text("·")
-                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
                 .accessibilityHidden(true)
             Text("\(min(mountRevealed, deliveryChecks.count))/\(deliveryChecks.count)")
                 .font(AtlasFont.mono(10))
