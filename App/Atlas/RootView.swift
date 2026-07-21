@@ -3149,7 +3149,7 @@ struct AtlasProfileSheet: View {
                 .font(AtlasFont.serif(24, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
-            Text("operador do Atlas")
+            Text("Operador do Atlas")
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -3181,7 +3181,7 @@ extension AtlasProfileSheet {
                 Text("Modo auditoria")
                     .font(AtlasFont.serif(15, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text("mostra detalhes técnicos nas telas")
+                Text("Mostra detalhes técnicos nas telas")
                     .font(AtlasFont.serif(13))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
@@ -3321,7 +3321,7 @@ extension AtlasWorkspacePickerSheet {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Sem repositório").atlasSans(16, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text("conversar ou pesquisar, sem projeto").atlasSans(13)
+                    Text("Conversar ou pesquisar, sem projeto").atlasSans(13)
                         .foregroundStyle(AtlasTheme.textTertiary)
                 }
                 Spacer()
@@ -3464,13 +3464,13 @@ struct AtlasWorkspacePickerSheet: View {
         case .idle, .loading:
             VStack(spacing: 12) {
                 BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-                Text("lendo os repositórios do Mac…")
+                Text("Lendo os repositórios do Mac…")
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("lendo os repositórios do Mac")
+            .accessibilityLabel("Lendo os repositórios do Mac")
             .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
         case .failed:
             VStack(spacing: 10) {

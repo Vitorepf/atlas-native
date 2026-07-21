@@ -3637,7 +3637,7 @@ extension ArenaRunSheet {
 extension ArenaRunSheet {
     @ViewBuilder
     var engineFormEmpty: some View {
-        Text("nenhum motor publicado")
+        Text("Nenhum motor publicado")
             .font(AtlasFont.serif(14))
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
@@ -3769,7 +3769,7 @@ extension ArenaRunSheet {
 
 extension ArenaRunSheet {
     var suitesEmptyLabel: some View {
-        Text("nenhuma suite com adapter instalado")
+        Text("Nenhuma suite com adapter instalado")
             .font(AtlasFont.serif(14))
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)

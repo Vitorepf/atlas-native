@@ -1638,31 +1638,31 @@ struct AtlasCodeRepoPickerSheet: View {
                         repoScroll(workspace)
                     } else {
                         ContentUnavailableView(
-                            "sem repositórios",
+                            "Sem repositórios",
                             systemImage: "folder",
-                            description: Text("o workspace não publicou nenhum repo")
+                            description: Text("O workspace não publicou nenhum repo")
                         )
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("sem repositórios, o workspace não publicou nenhum repo")
+                        .accessibilityLabel("Sem repositórios, o workspace não publicou nenhum repo")
                     }
                 case .failed:
                     ContentUnavailableView(
-                        "não consegui ler a frota",
+                        "Não consegui ler a frota",
                         systemImage: "wifi.slash",
-                        description: Text("tente de novo em instantes")
+                        description: Text("Tente de novo em instantes")
                     )
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("não consegui ler a frota, tente de novo em instantes")
+                    .accessibilityLabel("Não consegui ler a frota, tente de novo em instantes")
                 default:
                     VStack(spacing: 12) {
                         BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-                        Text("lendo os repositórios do Mac…")
+                        Text("Lendo os repositórios do Mac…")
                             .font(AtlasFont.serifItalic(15))
                             .foregroundStyle(AtlasTheme.textTertiary)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("lendo os repositórios do Mac")
+                    .accessibilityLabel("Lendo os repositórios do Mac")
                     .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
                 }
             }
