@@ -38,7 +38,7 @@ extension ArtifactSheet {
         content
             .accessibilityIdentifier(A11yID.artifactsSheet)
             .accessibilityLabel(spokenArtifactsSheetLabel())
-            .accessibilityHint("lista e preview só com itens publicados no contrato")
+            .accessibilityHint(ArtifactListJudgment.sheetHint)
     }
 }
 
@@ -50,8 +50,8 @@ extension ArtifactSheet {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     AtlasCloseToolbarButton(
-                        spokenLabel: "fechar artefatos",
-                        spokenHint: "volta para a conversa",
+                        spokenLabel: ArtifactListJudgment.closeLabel,
+                        spokenHint: ArtifactListJudgment.closeHint,
                         reduceMotion: reduceMotion
                     ) { dismiss() }
                 }
@@ -76,7 +76,7 @@ extension ArtifactSheet {
                 title: "Não foi possível consultar artefatos.",
                 subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
                 identifier: A11yID.artifactsLoadFailure,
-                spoken: "não foi possível consultar artefatos"
+                spoken: ArtifactListJudgment.loadFailSpoken
             )
         } else {
             artifactsUnavailable
@@ -96,12 +96,13 @@ extension ArtifactSheet {
 extension ArtifactSheet {
     @ViewBuilder
     var emptyVisualizable: some View {
-        Text("nenhum artefato visualizável")
+        Text(ArtifactListJudgment.emptyVisualizableCopy)
             .font(AtlasFont.serifItalic(15))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityIdentifier(A11yID.artifactsEmpty)
-            .accessibilityLabel("sem artefatos visualizáveis nesta execução")
+            .accessibilityLabel(ArtifactListJudgment.spokenEmptyVisualizable())
+            .accessibilityValue(ArtifactListFace.silence.productWord)
     }
 }
 
@@ -236,13 +237,15 @@ extension ArtifactSheet {
         .padding(.horizontal, 12)
         .atlasCard()
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("lista de artefatos, \(items.count) itens")
+        .accessibilityLabel(ArtifactListJudgment.spokenList(itemCount: items.count))
+        .accessibilityValue(ArtifactListJudgment.listFace(itemCount: items.count).productWord)
     }
 }
 
 extension ArtifactSheet {
     @ViewBuilder
     func artifactListRow(index: Int, item: AtlasTraceArtifacts.Item) -> some View {
+        let selected = item.id == selected?.id
         Button {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             selectedID = item.id
@@ -251,9 +254,9 @@ extension ArtifactSheet {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(A11yID.artifactsItem(index))
-        .accessibilityLabel("\(item.name), \(ArtifactViewer.byteLabel(item.byteSize)), \(ArtifactViewer.kindLabel(item.kind))")
-        .accessibilityAddTraits(item.id == selected?.id ? .isSelected : [])
-        .accessibilityHint(item.id == selected?.id ? "selecionado no preview" : "abre o preview deste artefato")
+        .accessibilityLabel(ArtifactListJudgment.spokenRow(item: item, selected: selected))
+        .accessibilityAddTraits(selected ? .isSelected : [])
+        .accessibilityHint(ArtifactListJudgment.rowHint(selected: selected))
     }
 }
 
@@ -422,7 +425,7 @@ extension ArtifactSheet {
     /// WAVE-041: kind-attention rank (image/diff first); selection by id.
     var items: [AtlasTraceArtifacts.Item] {
         guard artifacts?.state == .available else { return [] }
-        return ArtifactJudgment.rankItems(artifacts?.items ?? [])
+        return ArtifactListJudgment.rankItems(artifacts?.items ?? [])
     }
     var selected: AtlasTraceArtifacts.Item? {
         items.first { $0.id == selectedID } ?? items.first

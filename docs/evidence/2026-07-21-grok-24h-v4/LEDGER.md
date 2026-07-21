@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 86
+- waves_completed: 87
 - idle_compress_passes: 12
 - collapse_host: 0
 
@@ -97,13 +97,14 @@ mode: designer + implementer
 - WAVE-089
 - WAVE-090
 - WAVE-091
+- WAVE-092
 
 ## Idle compress
-- pass 11 · Timeline/Suite/StaleRead A11y delete
-- pass 12 · Composer card spoken → ToolbarJudgment
+- pass 11–12 · A11y shims (Timeline/Suite/StaleRead · Composer card)
 
 ## Open queue
-_(none)_ — max 2 IDLE after WAVE-091 done
+_(none)_
 
 ## Notes
-- DEVICE_PENDING. Awaiting A fill or full-bar residual only.
+- WAVE-092 artifact list/row residual.
+- DEVICE_PENDING.

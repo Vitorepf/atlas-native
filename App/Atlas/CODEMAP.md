@@ -100,6 +100,7 @@
 | Preview peels | `ArtifactPreviewChrome` host · `TraceEvidenceChrome` · `ArtifactPreviewZoom` |
 | **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
 | **Prova de execução (card recolhido)** | `ExecutionProofJudgment` → face kicker · qualityLine/spoken · activity · replay absence |
+| **Artefatos lista/row** | `ArtifactListJudgment` → list silence/list(N) · row · empty visualizable · close |
 | **Assinatura editorial (turno)** | `EditorialTurnJudgment` → signature present/absent · feedback spoken · pack |
 | EditorialTurn peels | `EditorialTurn` host · `EditorialTurnChrome` (FeedbackRow · SignatureLine) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
