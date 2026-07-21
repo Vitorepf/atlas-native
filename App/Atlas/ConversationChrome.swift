@@ -179,6 +179,7 @@ extension ConversationOutlineSheet {
             .padding(.vertical, 12)
             .accessibilityLabel(ConversationOutlineA11y.spokenEmptySheet())
             .accessibilityAddTraits(.isStaticText)
+            .accessibilityIdentifier(A11yID.conversationOutlineEmpty)
     }
 }
 
@@ -243,6 +244,7 @@ struct ConversationOutlineRow: View {
         outlineLead
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.vertical, 10)
+            .frame(minHeight: 48, alignment: .center)
             .accessibilityIdentifier(A11yID.conversationOutlineRow(index))
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
