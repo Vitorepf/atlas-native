@@ -1487,7 +1487,8 @@ extension ChangeReviewFindingRow {
                 .accessibilityHidden(true)
         }
         if let rec = finding.recommendation {
-            Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet finding recommendation.
+            Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(3).padding(.top, 1)
                 .accessibilityHidden(true)
         }

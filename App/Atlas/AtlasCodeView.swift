@@ -3516,7 +3516,8 @@ extension AtlasCodeProvenanceSheet {
         if let body = provenance.commitBody?.nonEmpty {
             Text(AtlasCodeCommitBody.prose(body))
                 .font(AtlasFont.serif(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet commit body prose.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier(A11yID.codeCommitBody)

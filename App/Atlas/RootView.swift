@@ -2631,7 +2631,8 @@ extension AtlasNetworkFailureEmpty {
             Spacer().frame(height: 16)
             Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
                 .font(AtlasFont.serif(14)).lineSpacing(5)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet network failure honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .multilineTextAlignment(.center)
         }
     }

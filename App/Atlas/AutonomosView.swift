@@ -784,7 +784,8 @@ struct AutonomosEvolutionView: View {
                         .accessibilityLabel("Evolução de \(unit.name), \(unit.ageLabel)")
                     Text(unit.charter)
                         .font(AtlasFont.serifItalic(15))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet charter identity under evolution age.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                         .padding(.bottom, 28)
                         .accessibilityLabel(unit.charter)
                 }
@@ -848,7 +849,8 @@ struct AutonomosHubView: View {
                     .accessibilityAddTraits(.isHeader)
                 Text(unit.charter)
                     .font(AtlasFont.serifItalic(16))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet charter identity under hub hero.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom, 28)
                     .accessibilityLabel(unit.charter)
@@ -1315,7 +1317,8 @@ struct AutonomosRhythmSheet: View {
 
             Text(AutonomosRhythmCopy.learnedParagraph(windows))
                 .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet rhythm learning prose.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .fixedSize(horizontal: false, vertical: true)
 
             VStack(alignment: .leading, spacing: 6) {
@@ -1337,7 +1340,8 @@ struct AutonomosRhythmSheet: View {
 
             Text(AutonomosRhythmCopy.whatHappensParagraph(windows))
                 .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet rhythm what-happens prose.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .fixedSize(horizontal: false, vertical: true)
 
             if let muted = nightly.spokenMuteStatus() {
@@ -1847,7 +1851,8 @@ extension SelfConstructionReceiptSheet {
                 .accessibilityHidden(true)
             Text("“\(receipt.ruleLabel)”")
                 .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet cited rule quote.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
         }
@@ -2243,7 +2248,8 @@ struct NightlyProposalCard: View {
                 .fixedSize(horizontal: false, vertical: true)
             Text("A frota pode continuar enquanto você descansa.")
                 .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet nightly invite line.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
