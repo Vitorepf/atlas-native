@@ -237,37 +237,21 @@ extension AtlasCodeCommitRowA11yState {
 }
 
 extension AtlasCodeCommitRow {
-    /// Nome de branch publicado no tip, se o git decorou este nó.
+    /// WAVE-054: tip/display from CommitRowJudgment (pure).
     static func tipBranch(from refs: [String], excluding: String?) -> String? {
-        for ref in refs {
-            let name = ref
-                .replacingOccurrences(of: "HEAD -> ", with: "")
-                .replacingOccurrences(of: "origin/", with: "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            if name.isEmpty || name == "HEAD" { continue }
-            if let excluding, name == excluding { continue }
-            return name
-        }
-        return nil
+        AtlasCodeCommitRowJudgment.tipBranch(from: refs, excluding: excluding)
+    }
+
+    var rowFace: AtlasCodeCommitRowFace {
+        AtlasCodeCommitRowJudgment.face(state: state, isDimmed: isDimmed)
     }
 
     var displayBranch: String {
-        if let tip = Self.tipBranch(from: node.refs, excluding: trunk) {
-            return tip
-        }
-        if let tip = Self.tipBranch(from: node.refs, excluding: nil) {
-            return tip
-        }
-        if state == .onMain || state == .healed {
-            return trunk ?? "main"
-        }
-        return trunk ?? "—"
+        AtlasCodeCommitRowJudgment.displayBranch(node: node, state: state, trunk: trunk)
     }
 
     var displayAuthor: String {
-        if !node.authorName.isEmpty { return node.authorName }
-        if !node.authorEmail.isEmpty { return node.authorEmail }
-        return "—"
+        AtlasCodeCommitRowJudgment.displayAuthor(node: node)
     }
 }
 
@@ -357,11 +341,8 @@ extension AtlasCodeCommitRow {
     }
 
     private var branchMetaColor: Color {
-        switch state {
-        case .violating: return AtlasCodePalette.alert
-        case .onMain, .healed: return AtlasTheme.accent
-        case .history: return AtlasTheme.prussian
-        }
+        // WAVE-054: meta tint from Judgment.
+        AtlasCodeCommitRowJudgment.branchMetaColor(for: state)
     }
 }
 

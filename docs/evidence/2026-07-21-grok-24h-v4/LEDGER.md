@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 48
+- waves_completed: 49
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -59,6 +59,7 @@ mode: designer + implementer
 - WAVE-051
 - WAVE-052
 - WAVE-053
+- WAVE-054
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -69,7 +70,7 @@ mode: designer + implementer
 - pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
 
 ## Designer
-- designs_proposed: 48
+- designs_proposed: 49
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -80,5 +81,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-053 steer judgment. Prefer A fill. DEVICE_PENDING.
-- Continuity restore BLOCKED (App Group).
+- WAVE-053 steer + WAVE-054 commit row face. Prefer A fill.
+- DEVICE_PENDING. Continuity App Group BLOCKED.
