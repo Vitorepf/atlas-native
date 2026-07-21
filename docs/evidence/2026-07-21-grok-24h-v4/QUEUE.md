@@ -88,4 +88,5 @@ _(no open proposed WAVEs)_
 - WAVE-068 done
 - WAVE-069 done
 - WAVE-070 done
+- WAVE-071 done
 

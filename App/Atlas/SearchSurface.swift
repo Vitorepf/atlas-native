@@ -1,35 +1,29 @@
 import SwiftUI
 import AtlasCore
 
-// IDLE-COMPRESS body
+// WAVE-071: search screen face → SearchScreenJudgment
 
 extension SearchView {
-    func spokenSearchResultsLabel() -> String {
-        if isBrowsingRecent {
-            let n = recentThreads.count
-            if n == 0 { return "busca, sem recentes neste recorte" }
-            return "busca, \(n) recente\(n == 1 ? "" : "s")"
-        }
-        let n = searchResults.count
-        if n == 0 { return "busca, nada com \(trimmedQuery)" }
-        return "busca, \(n) resultado\(n == 1 ? "" : "s") para \(trimmedQuery)"
+    /// WAVE-071: exclusive search face from published shell + counts.
+    var searchScreenFace: SearchScreenFace {
+        SearchScreenJudgment.face(
+            showsLoadingShell: showsLoadingShell,
+            showsNetworkFailure: showsNetworkFailure,
+            isBrowsingRecent: isBrowsingRecent,
+            recentCount: recentThreads.count,
+            resultCount: searchResults.count,
+            trimmedQuery: trimmedQuery
+        )
     }
-}
 
-extension SearchView {
-    func spokenSearchShellLabel() -> String? {
-        if showsLoadingShell { return "busca, carregando conversas" }
-        if showsNetworkFailure { return "busca, offline" }
-        return nil
-    }
-}
-
-extension SearchView {
     func spokenSearchScreenLabel() -> String {
-        spokenSearchShellLabel() ?? spokenSearchResultsLabel()
+        SearchScreenJudgment.spokenScreen(
+            face: searchScreenFace,
+            trimmedQuery: trimmedQuery
+        )
     }
 
-    static let searchScreenHint = "busca local nas conversas já carregadas na sessão"
+    static var searchScreenHint: String { SearchScreenJudgment.screenHint }
 }
 
 extension SearchView {
@@ -38,6 +32,7 @@ extension SearchView {
             .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.searchScreen)
             .accessibilityLabel(spokenSearchScreenLabel())
+            .accessibilityValue(searchScreenFace.productWord)
             .accessibilityHint(Self.searchScreenHint)
             .onAppear { focused = true }
     }
