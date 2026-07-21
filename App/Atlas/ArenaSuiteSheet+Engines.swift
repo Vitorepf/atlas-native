@@ -1,11 +1,76 @@
 import SwiftUI
 import AtlasCore
 
-// Engine card — peel de ArenaSuiteSheet.
-// Captions → ArenaSuiteSheet+EngineCaptions.swift
-// Score → ArenaSuiteSheet+EngineScore.swift
-// Header → ArenaSuiteSheet+EngineCard+Header.swift
+// WAVE-010 fused SuiteSheet engines+captions
 
+// --- ArenaSuiteSheet+EngineCaptions+Cases.swift ---
+extension ArenaSuiteSheet {
+    @ViewBuilder
+    func engineCasesCaption(_ engine: AtlasArenaSuiteEngine) -> some View {
+        if let cases = ArenaSuiteSheetA11yCaptions.casesCaption(for: engine) {
+            Text(cases)
+                .font(AtlasFont.mono(12))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+// --- ArenaSuiteSheet+EngineCaptions+Duration.swift ---
+extension ArenaSuiteSheet {
+    @ViewBuilder
+    func engineDurationCaption(_ engine: AtlasArenaSuiteEngine) -> some View {
+        if let duration = ArenaSuiteSheetA11yCaptions.durationCaption(for: engine) {
+            Text(duration)
+                .font(AtlasFont.mono(12))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+// --- ArenaSuiteSheet+EngineCaptions+Sparkline.swift ---
+extension ArenaSuiteSheet {
+    @ViewBuilder
+    func engineHistorySparkline(_ engine: AtlasArenaSuiteEngine) -> some View {
+        if !engine.history.isEmpty {
+            SuiteSparkline(engine: engine).frame(height: 90)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+// --- ArenaSuiteSheet+EngineCaptions.swift ---
+extension ArenaSuiteSheet {
+    @ViewBuilder
+    func engineCardCaptions(_ engine: AtlasArenaSuiteEngine) -> some View {
+        engineCasesCaption(engine)
+        engineDurationCaption(engine)
+        engineHistorySparkline(engine)
+    }
+}
+
+// --- ArenaSuiteSheet+EngineCard+Header.swift ---
+extension ArenaSuiteSheet {
+    @ViewBuilder
+    func engineCardHeader(_ engine: AtlasArenaSuiteEngine) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(ArenaDisplay.engine(engine.engine))
+                    .font(AtlasFont.serif(21))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text("Índice da suíte · escala 0–10")
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+            .accessibilityHidden(true)
+            Spacer()
+            engineCardScore(engine)
+        }
+    }
+}
+
+// --- ArenaSuiteSheet+EngineCard.swift ---
 extension ArenaSuiteSheet {
     func engineCard(_ engine: AtlasArenaSuiteEngine) -> some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -81,3 +146,21 @@ extension ArenaSuiteSheet {
         return delta > 0 ? .positive : .negative
     }
 }
+
+// --- ArenaSuiteSheet+EngineScore.swift ---
+extension ArenaSuiteSheet {
+    func engineCardScore(_ engine: AtlasArenaSuiteEngine) -> some View {
+        HStack(alignment: .lastTextBaseline, spacing: 3) {
+            Text(ArenaFormat.score(engine.score))
+                .font(AtlasFont.serif(38))
+            if engine.score != nil {
+                Text("/10")
+                    .font(AtlasFont.mono(9, .medium))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+        }
+            .foregroundStyle(engine.score == nil ? AtlasTheme.textTertiary : AtlasTheme.textPrimary)
+            .accessibilityHidden(true)
+    }
+}
+
