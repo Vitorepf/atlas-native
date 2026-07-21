@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: deepen Conversation peels / Pílula / Widgets
-- domain_index: 1
+- focus: deepen next domain
+- domain_index: 3
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-soft-zero
+- last_commit: pending-sheets
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,22 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T23:40Z — ConversationComposerSheetsModifier fuse
+
+```yaml
+phase: prove
+focus: ConversationSheets* + ComposerSheetsModifier* → one file
+domain_index: 1
+pass: 1
+commands: |
+  4 peels → ConversationComposerSheetsModifier.swift ~442
+  gates ✓
+before_after: |
+  ConversationSheets · SheetsBody · Modifier · ModifierBody → 1
+  hops sheets API 4→1
+notes: next Pílula or Continuity or cockpit fuse
+```
 
 ### 2026-07-21T23:30Z — soft *Sections*/*States* zero
 
