@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — dead Arena A11yIDs (ciclo 255)** · `cbd03b94` · App/Atlas 211. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — slim Autônomos load + dead A11y (ciclo 254)** · `bc8525ed` · App/Atlas 211. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos controlError banner (ciclo 253)** ·  · App/Atlas 211. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos dead transfer/decide + honest startRun (ciclo 252)** ·  · App/Atlas 211. **Prova:** checks+build exit 0.
