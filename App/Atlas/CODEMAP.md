@@ -39,6 +39,7 @@
 | **Frota global (agentes vivos)** | `AutonomosFleetJudgment` → FleetStrip no catálogo |
 | **Digest / momento (janela)** | `AutonomosDigestJudgment` → DigestSurface · `.moment("digest")` |
 | **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + Findings/Patches rank · sheet spoken |
+| **Plan progresso (card + cockpit)** | `PlanJudgment` → PlanFaceStrip · stepState · strip summary |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)

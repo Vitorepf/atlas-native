@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 34
+- waves_completed: 35
 - idle_compress_passes: 4
 - collapse_host: 0
 
@@ -45,6 +45,7 @@ mode: designer + implementer
 - WAVE-037
 - WAVE-038
 - WAVE-039
+- WAVE-040
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -53,7 +54,7 @@ mode: designer + implementer
 - pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
 
 ## Designer
-- designs_proposed: 34
+- designs_proposed: 35
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 
@@ -64,6 +65,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-039 done: change-review risk Judgment + RiskStrip + ranks.
-- Queue empty again. Prefer A fill; self-WAVE only at full A bar.
+- WAVE-039 + WAVE-040 self-WAVEs (A starved). Prefer A fill next.
 - DEVICE_PENDING history (passcode).

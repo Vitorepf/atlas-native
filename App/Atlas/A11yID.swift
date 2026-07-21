@@ -364,6 +364,7 @@ extension A11yID {
     static let planDetailToggle = "plan-detail-toggle"
     static let planSteps = "plan-steps"
     static let planProgress = "plan-progress"
+    static let planFace = "plan-face"
     static let planStepPrefix = "plan-step-"
     static func planStep(_ index: Int) -> String { planStepPrefix + String(index) }
 }

@@ -7,14 +7,7 @@ import SwiftUI
 
 extension PlanCard {
     func spokenCardLabel(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress?) -> String {
-        var parts = ["plano da obra, \(plan.title), \(plan.steps.count) passos"]
-        if let progress {
-            parts.append("checkpoint \(progress.current) de \(progress.total), \(progress.title)")
-            if progress.isTerminal { parts.append("concluído") }
-        } else {
-            parts.append("nenhum checkpoint observado, passos pendentes")
-        }
-        return parts.joined(separator: ", ")
+        PlanJudgment.spokenCard(plan: plan, progress: progress)
     }
 }
 
@@ -26,7 +19,7 @@ extension PlanCard {
 
 extension PlanCard {
     func spokenAuditTerminal(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress) -> String {
-        "auditoria do plano, \(plan.steps.count) passos planejados, \(min(progress.current, progress.total)) de \(progress.total) executados, \(progress.isTerminal ? "terminal" : "em curso")"
+        PlanJudgment.spokenAuditTerminal(plan: plan, progress: progress)
     }
 }
 
@@ -50,30 +43,18 @@ extension PlanCard {
 
 extension PlanCard {
     func spokenProgressBadge(_ progress: AtlasExecutionPlan.Progress) -> String {
-        "\(progress.current) de \(progress.total) passos, \(progress.title)"
+        PlanJudgment.spokenProgressBadge(progress)
     }
 }
 
 extension PlanCard {
     func spokenStep(
         step: AtlasExecutionPlan.Step,
-        state: StepState,
+        state: PlanStepState,
         index: Int,
         total: Int
     ) -> String {
-        var parts = ["passo \(index + 1) de \(total)", step.title]
-        parts.append(Self.spokenStepState(state))
-        return parts.joined(separator: ", ")
-    }
-}
-
-extension PlanCard {
-    static func spokenStepState(_ state: StepState) -> String {
-        switch state {
-        case .done: "concluído"
-        case .current: "em curso"
-        case .pending: "pendente"
-        }
+        PlanJudgment.spokenStep(step: step, state: state, index: index, total: total)
     }
 }
 
@@ -81,6 +62,7 @@ extension PlanCard {
     @ViewBuilder
     func planBody(plan: AtlasExecutionPlan) -> some View {
         planHeader(plan: plan)
+        PlanFaceStrip(plan: plan, progress: executionProgress)
         planStepsList(plan: plan)
         if session.auditModeEnabled, isTerminal, let progress = executionProgress {
             auditTerminalLine(plan: plan, progress: progress)
@@ -125,7 +107,7 @@ extension PlanCard {
 extension PlanCard {
     @ViewBuilder
     func planHeaderProgress(_ progress: AtlasExecutionPlan.Progress) -> some View {
-        Text("\(progress.current)/\(progress.total)")
+        Text(PlanJudgment.progressBadge(progress))
             .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
@@ -713,7 +695,7 @@ struct PlanStepRowView: View {
     let step: AtlasExecutionPlan.Step
     let index: Int
     let total: Int
-    let state: PlanCard.StepState
+    let state: PlanStepState
     let isLast: Bool
     let spokenLabel: String
     let reduceMotion: Bool
@@ -736,7 +718,7 @@ extension PlanStepRowView {
 }
 
 extension PlanStepRowView {
-    func dotFill(_ s: PlanCard.StepState) -> Color {
+    func dotFill(_ s: PlanStepState) -> Color {
         switch s {
         case .done: return AtlasTheme.accent
         case .current: return AtlasTheme.accent
@@ -809,18 +791,17 @@ extension PlanStepRowView {
 // MARK: - Steps (state + list)
 
 extension PlanCard {
-    func stepState(_ idx: Int) -> StepState {
-        guard let c = currentIndex else { return .pending }
-        if isTerminal { return .done }
-        if idx + 1 < c { return .done }
-        if idx + 1 == c { return .current }
-        return .pending
+    /// WAVE-040: step lifecycle owned by PlanJudgment.
+    func stepState(_ idx: Int) -> PlanStepState {
+        PlanJudgment.stepState(
+            index: idx,
+            progress: executionProgress,
+            isTerminal: isTerminal
+        )
     }
 }
 
 extension PlanCard {
-    enum StepState { case done, current, pending }
-
     func planStepsList(plan: AtlasExecutionPlan) -> some View {
         planStepsRows(plan: plan)
             .accessibilityIdentifier(A11yID.planSteps)

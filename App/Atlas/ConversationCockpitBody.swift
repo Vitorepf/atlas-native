@@ -178,8 +178,9 @@ struct ExecutingStrip: View {
                     .accessibilityHidden(true)
             }
         case .multiAgent, .running:
-            if let p = bubble.executionProgress {
-                Text("\(p.current)/\(p.total) · \(p.title)")
+            // WAVE-040: shared plan progress grammar with PlanCard.
+            if bubble.executionPlan != nil || bubble.executionProgress != nil {
+                Text(PlanJudgment.summaryLine(bubble: bubble))
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
