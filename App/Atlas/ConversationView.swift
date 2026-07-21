@@ -1155,8 +1155,12 @@ extension ConversationOutlineRow {
 extension ConversationOutlineRow {
     var outlineLeadIndex: some View {
         Text(String(format: "%02d", index))
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(11, .medium))
             .foregroundStyle(AtlasTheme.accent)
+            .frame(width: 32, height: 32)
+            .background(Circle().fill(AtlasTheme.goldVeil))
+            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1))
+            .atlasElevation(radius: 3, y: 1, opacity: 0.1)
             .modifier(NumericTextTransition(enabled: !reduceMotion))
             .accessibilityHidden(true)
     }
@@ -1177,7 +1181,7 @@ extension ConversationOutlineRow {
 
 extension ConversationOutlineRow {
     var outlineLeadMeta: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
+        HStack(alignment: .center, spacing: 12) {
             outlineLeadIndex
             outlineLeadSnippetStack
             Spacer(minLength: 0)
@@ -1189,7 +1193,11 @@ extension ConversationOutlineRow {
     var outlineLeadRole: some View {
         Text(bubble.role == "user" ? "Você" : "Atlas")
             .font(AtlasFont.mono(10, .semibold))
-            .foregroundStyle(AtlasTheme.textPrimary)
+            .foregroundStyle(
+                bubble.role == "user"
+                    ? AtlasTheme.textPrimary
+                    : AtlasTheme.accent.opacity(0.9)
+            )
             .accessibilityHidden(true)
     }
 }
@@ -1204,6 +1212,20 @@ struct ConversationOutlineRow: View {
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.vertical, 10)
             .frame(minHeight: 48, alignment: .center)
+            .overlay(alignment: .bottom) {
+                LinearGradient(
+                    colors: [
+                        AtlasTheme.accent.opacity(0),
+                        AtlasTheme.accent.opacity(0.18),
+                        AtlasTheme.separator,
+                        AtlasTheme.accent.opacity(0)
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(height: 1)
+                .padding(.leading, AtlasTheme.Space.screen + 44)
+            }
             .accessibilityIdentifier(A11yID.conversationOutlineRow(index))
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
