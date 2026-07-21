@@ -49,6 +49,7 @@ struct AtlasProfileSheet: View {
             Text("Vitor")
                 .font(AtlasFont.serif(24, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text("operador do Atlas")
                 .atlasSans(13)
                 .foregroundStyle(AtlasTheme.textTertiary)

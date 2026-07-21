@@ -44,7 +44,8 @@ struct AutonomosHubView: View {
                 if unit.paused {
                     AutonomosMapNavLine(title: "Encerrar", meta: "", danger: true, action: onEnd)
                 } else {
-                    AutonomosMapNavLine(title: "Pausar", meta: "", action: onPause)
+                    // Medium: Pausar is a governed presence commit (mirrors Retomar).
+                    AutonomosMapNavLine(title: "Pausar", meta: "", haptic: .medium, action: onPause)
                 }
             }
             .padding(.horizontal, AtlasTheme.Space.screen)

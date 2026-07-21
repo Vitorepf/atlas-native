@@ -6,11 +6,16 @@ struct AutonomosMapNavLine: View {
     let title: String
     let meta: String
     var danger: Bool = false
+    /// Soft default (nav); medium for governed state commits (e.g. Pausar).
+    var haptic: AutonomosMapChrome.CTAHaptic = .soft
     let action: () -> Void
 
     var body: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            switch haptic {
+            case .soft: AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            case .medium: AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            }
             action()
         } label: {
             HStack(spacing: 10) {

@@ -38,6 +38,7 @@ struct ArenaPremiumRunDetailView: View {
             Text(ArenaDisplay.suite(run.suite))
                 .font(AtlasFont.serif(28))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             if let arm = run.arm?.labelPT {
                 Text(arm)
                     .font(AtlasFont.mono(12))

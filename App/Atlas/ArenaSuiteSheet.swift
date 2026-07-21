@@ -160,6 +160,7 @@ extension ArenaSuiteSheet {
             Text(ArenaDisplay.suite(suite.suite))
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             HStack(spacing: 12) {
                 metadata("\(suite.runsTotal) rodadas", symbol: "circle.grid.2x2")
                 if let last = ArenaDisplay.relative(suite.lastRunAt) {
