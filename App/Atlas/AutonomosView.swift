@@ -534,7 +534,7 @@ struct AutonomosMapShell: View {
             .overlay(Rectangle().fill(AtlasTheme.alert.opacity(0.35)).frame(height: 1), alignment: .bottom)
             .atlasElevation(radius: 6, y: 2, opacity: 0.12)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(error)
         .accessibilityHint("Toque para dispensar")
@@ -573,7 +573,7 @@ struct AutonomosMapShell: View {
             .background(AtlasTheme.surface.opacity(0.55))
             .atlasElevation(radius: 8, y: 2, opacity: 0.14)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
         .accessibilityHint("Abre o recibo de auto-construção")
@@ -702,7 +702,7 @@ struct AutonomosRhythmLearningLine: View {
             .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(AutonomosRhythmCopy.spokenLine(windows, paused: nightly.isProposalMuted))
         .accessibilityHint("Mostra o que o Atlas aprendeu do seu dia")
         .accessibilityAddTraits(.isButton)
@@ -1023,7 +1023,7 @@ struct AutonomosListView: View {
             .contentShape(Rectangle())
             .opacity(unit.paused ? 0.55 : 1)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .overlay(alignment: .bottom) {
             AutonomosMapChrome.hairline
         }
@@ -1706,7 +1706,7 @@ struct AutonomosMapNavLine: View {
             .frame(minHeight: 52, alignment: .center)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .overlay(alignment: .bottom) { AutonomosMapChrome.hairline.padding(.vertical, 0) }
         .accessibilityLabel(meta.isEmpty ? title : "\(title), \(meta)")
         .accessibilityHint(danger ? "abre confirmação de \(title.lowercased())" : "abre \(title.lowercased())")

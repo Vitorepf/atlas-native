@@ -1558,7 +1558,7 @@ extension SearchViewHeader {
 extension SearchViewHeader {
     func searchClearA11y<Content: View>(_ content: Content) -> some View {
         content
-            .buttonStyle(.plain)
+            .buttonStyle(PressableScale())
             .accessibilityLabel("Limpar busca")
             .accessibilityHint("Remove o texto e volta aos recentes")
             .accessibilityIdentifier(A11yID.searchClear)
@@ -1777,7 +1777,7 @@ extension SearchThreadLink {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
             ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed, ownsAccessibility: false)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .simultaneousGesture(TapGesture().onEnded {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
         })
@@ -2253,7 +2253,7 @@ extension WorkspaceThreadLink {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
             ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed, ownsAccessibility: false)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .simultaneousGesture(TapGesture().onEnded {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
         })

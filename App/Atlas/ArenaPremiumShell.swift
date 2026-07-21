@@ -1393,7 +1393,7 @@ struct ArenaPremiumAlertsView: View {
                         symbol: "arrow.down.right"
                     )
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .accessibilityLabel(
                     "\(ArenaDisplay.suite(suite.suite)), \(regressionDetail(suite))"
                 )
@@ -2073,7 +2073,7 @@ struct ArenaPremiumResultsView: View {
                     .frame(minHeight: 54)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .accessibilityLabel(ArenaDisplay.suite(suite.suite))
                 .accessibilityHint(
                     suite.hasRegression
@@ -2506,7 +2506,7 @@ struct ArenaPremiumExecutionView: View {
                     } label: {
                         runRow(run)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableScale())
                     .accessibilityAddTraits(.isButton)
                     ArenaPremiumHairline()
                 }
@@ -3110,7 +3110,7 @@ struct ArenaPremiumCapabilitiesView: View {
                     .frame(minHeight: 58)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .accessibilityLabel(capabilitySpoken(capability))
                 .accessibilityHint("Abre o detalhe desta capacidade")
                 .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
@@ -4636,7 +4636,7 @@ struct ArenaPremiumDisclosureRow: View {
             .frame(minHeight: 54)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(title), \(detail)")
         .accessibilityHint("Abre \(title)")
@@ -4760,7 +4760,7 @@ struct ArenaPremiumGlyphRow: View {
             .frame(minHeight: 54)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(title), \(detail)")
         .accessibilityHint("Abre \(title)")

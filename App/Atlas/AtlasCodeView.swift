@@ -783,7 +783,7 @@ extension AtlasCodeView {
             .atlasGlassCapsule()
             .atlasElevation(radius: 8, y: 2, opacity: 0.16)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel("Repositório \(model.repo)")
         .accessibilityHint("Troca de repositório")
         .accessibilityIdentifier(A11yID.codeRepoSwitcher)
@@ -1835,7 +1835,7 @@ struct AtlasCodeRepoPickerSheet: View {
             .frame(minHeight: 48)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(
             repo.slug == currentRepo
                 ? "\(repo.name), repositório atual"
@@ -3358,7 +3358,7 @@ extension AtlasCodeProvenanceSheet {
         } label: {
             AtlasCodeFileRow(file: file, accessibilityIdentifier: A11yID.whyFileRow(index))
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
         .accessibilityHint("Abre o porquê deste arquivo no commit")
@@ -4078,7 +4078,7 @@ struct AtlasCodeFolderRow: View {
                 .frame(minHeight: 48, alignment: .center)
                 .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
+            .buttonStyle(PressableScale())
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenFolderLabel)
             .accessibilityHint(isExpanded ? "recolhe a pasta" : "expande a pasta")
@@ -4335,7 +4335,7 @@ private struct CommitRowAskChrome<Label: View>: View {
         } label: {
             label()
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .offset(x: offset)
         .opacity(isDimmed ? 0.26 : 1)
         .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered), value: isDimmed)

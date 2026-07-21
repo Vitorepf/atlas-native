@@ -5967,7 +5967,7 @@ extension ExecutionProof {
         } label: {
             collapsedHeaderLabel
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(spokenCollapsed(expanded: open))
         .accessibilityHint(open ? "toque para fechar a prova" : "toque para expandir a prova")
         .accessibilityAddTraits(open ? [.isButton, .isSelected] : .isButton)
@@ -6046,7 +6046,7 @@ extension ExecutionProof {
 extension ExecutionProof {
     func artifactsButtonA11y<Content: View>(_ content: Content, count: Int) -> some View {
         content
-            .buttonStyle(.plain)
+            .buttonStyle(PressableScale())
             .accessibilityIdentifier(A11yID.artifactsRow)
             .accessibilityLabel("Artefatos desta execução, \(count)")
             .accessibilityHint("Abre a lista de artefatos deste trace")
@@ -9654,7 +9654,7 @@ extension ArtifactSheet {
         } label: {
             artifactListRowLabel(item: item)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.artifactsItem(index))
         .accessibilityLabel("\(item.name), \(ArtifactViewer.byteLabel(item.byteSize)), \(ArtifactViewer.kindLabel(item.kind))")
         .accessibilityAddTraits(item.id == selected?.id ? [.isButton, .isSelected] : .isButton)
