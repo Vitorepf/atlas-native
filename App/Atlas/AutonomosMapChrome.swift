@@ -115,7 +115,7 @@ private struct AutonomosMapPrimaryCTA: View {
         .buttonStyle(.plain)
         .disabled(!enabled)
         .accessibilityLabel(Text(title))
-        .accessibilityHint(Text(enabled ? "" : "indisponível"))
+        .accessibilityHint(Text(enabled ? "confirma \(title.lowercased())" : "indisponível"))
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -151,7 +151,7 @@ private struct AutonomosMapQuietCTA: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(title))
-        .accessibilityHint(Text(danger ? "ação destrutiva" : ""))
+        .accessibilityHint(Text(danger ? "ação destrutiva" : "ação secundária, \(title.lowercased())"))
         .accessibilityAddTraits(.isButton)
     }
 }
