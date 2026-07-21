@@ -402,18 +402,18 @@ enum ArenaPremiumAskContext {
     static func invite(tab: ArenaPremiumTab, destination: ArenaPremiumDestination?) -> String {
         if let destination {
             switch destination {
-            case .execution: return "pergunte sobre esta execução"
-            case .queue: return "pergunte sobre a fila"
-            case .alerts: return "pergunte sobre estes alertas"
-            case .plan: return "pergunte sobre este plano"
-            case .results: return "pergunte sobre este motor"
+            case .execution: return "Pergunte sobre esta execução"
+            case .queue: return "Pergunte sobre a fila"
+            case .alerts: return "Pergunte sobre estes alertas"
+            case .plan: return "Pergunte sobre este plano"
+            case .results: return "Pergunte sobre este motor"
             }
         }
         switch tab {
-        case .now: return "pergunte sobre esta medição"
-        case .fleet: return "pergunte sobre a frota medida"
-        case .capabilities: return "pergunte sobre estas capacidades"
-        case .results: return "pergunte sobre este motor"
+        case .now: return "Pergunte sobre esta medição"
+        case .fleet: return "Pergunte sobre a frota medida"
+        case .capabilities: return "Pergunte sobre estas capacidades"
+        case .results: return "Pergunte sobre este motor"
         }
     }
 
@@ -531,7 +531,7 @@ enum ArenaPremiumAskContext {
         if focusTab == .fleet || destination == nil && tab == .fleet, let composite = model.composite {
             lines.append("Frota (\(composite.engines.count) motores), ordenada por ganho Atlas:")
             for engine in composite.engines.prefix(8) {
-                let mult = engine.atlasMultiplier.map(ArenaFormat.multiplier) ?? "não medido"
+                let mult = engine.atlasMultiplier.map(ArenaFormat.multiplier) ?? "Não medido"
                 lines.append("- \(ArenaDisplay.engine(engine.engine)): \(mult) (sem \(ArenaFormat.score(engine.withoutAtlasComposite)) → com \(ArenaFormat.score(engine.withAtlasComposite)))")
             }
         }
@@ -1236,7 +1236,7 @@ struct ArenaPremiumFleetView: View {
         if let mult = engine.atlasMultiplier {
             return "\(name), multiplicador \(ArenaFormat.multiplier(mult)), sem Atlas \(ArenaFormat.score(engine.withoutAtlasComposite)), com Atlas \(ArenaFormat.score(engine.withAtlasComposite))"
         }
-        return "\(name), não medido"
+        return "\(name), Não medido"
     }
 }
 
@@ -3783,7 +3783,7 @@ extension ArenaRunSheet {
         ForEach(installedSuites) { suite in
             toggleRow(
                 title: suite.suite,
-                subtitle: suite.isMeasured ? "\(suite.runsTotal) rodadas" : "não medido",
+                subtitle: suite.isMeasured ? "\(suite.runsTotal) rodadas" : "Não medido",
                 isOn: selectedSuites.contains(suite.suite)
             ) {
                 if selectedSuites.contains(suite.suite) { selectedSuites.remove(suite.suite) }
@@ -5157,7 +5157,7 @@ enum ArenaFormat {
 
     static func score(_ value: Double?) -> String {
         guard let value = AtlasArenaPresentationScale.score(value) else {
-            return "não medido"
+            return "Não medido"
         }
         return value.formatted(scoreStyle)
     }
