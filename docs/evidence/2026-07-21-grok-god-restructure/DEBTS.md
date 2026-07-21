@@ -4,8 +4,8 @@
 
 ```yaml
 pass: 2
-domain_index: 7
-last_focus: "Arena primitives → Root; pass2 residual headroom-only"
+domain_index: 0
+last_focus: "pass2 cycle Home→… residual headroom only"
 session_commits: 119
 soft_sections_states: 0
 swift_App_Atlas: 35
