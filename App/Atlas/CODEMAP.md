@@ -127,7 +127,7 @@
 | **Provenance file-row spoken** | `AtlasCodeProvenanceJudgment` spokenFile/verb/packFile → FileRow |
 | **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
 | **Turn presence away notify** | `TurnPresenceJudgment` isTerminal/title/body/spoken · TurnPresence host |
-| **Prova de execução (card recolhido)** | `ExecutionProofJudgment` · parts Chrome/host/Sections |
+| **Prova de execução (card recolhido)** | `ExecutionProofJudgment` · host · Chrome · `ExecutionProofBody` |
 | **Artefatos lista/row** | `ArtifactListJudgment` → list silence/list(N) · row · empty visualizable · close |
 | **Assinatura editorial (turno)** | `EditorialTurnJudgment` → signature present/absent · feedback spoken · pack |
 | EditorialTurn parts | `EditorialTurn` host · `EditorialTurnChrome` (FeedbackRow · SignatureLine) |
@@ -177,7 +177,7 @@
 | **RootChrome parts** | Chrome · Lifecycle · DeepLink · ConversationRoutes (ThreadRow own file) |
 | **ExecutionStateCardSpoken parts** | Spoken · Body |
 | **Composer sheets modifier parts** | Modifier · Body |
-| **ExecutionProof sections parts** | Sections · Body |
+| **ExecutionProof body** | `ExecutionProofBody` decision/quality/replay (was Sections*) |
 | **Markdown view blocks parts** | ViewBlocks · Body |
 | **SelfConstruction veto spoken** | `SelfConstructionVetoJudgment` · Receipt Chrome fields |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |

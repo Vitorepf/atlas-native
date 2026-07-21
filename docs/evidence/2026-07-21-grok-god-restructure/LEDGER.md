@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: Conversa Sections rename
+- focus: ChangeReviewSections rename/fuse
 - domain_index: 1
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-empty-conversation
+- last_commit: pending-ep-body
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,22 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T23:00Z — ExecutionProofBody fuse
+
+```yaml
+phase: prove
+focus: ExecutionProofSections* → ExecutionProofBody
+domain_index: 1
+pass: 1
+commands: |
+  fuse Sections+SectionsBody → ExecutionProofBody (237 LOC MARKed)
+  gates ✓
+before_after: |
+  151+111 Sections peels → ExecutionProofBody.swift
+  CODEMAP ExecutionProof body path
+notes: next ChangeReviewSections*
+```
 
 ### 2026-07-21T22:55Z — EmptyConversation rename · domain→1
 
