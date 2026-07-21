@@ -156,7 +156,8 @@ extension ConversationView {
             let published = ConversationOccasionPack.PublishedSlice(
                 presenceBubble: bubble,
                 queued: model.queuedMessages,
-                agents: bubble?.agents ?? []
+                agents: bubble?.agents ?? [],
+                lastSteerReceipt: model.lastSteerReceipt
             )
             return ConversationOccasionPack.facts(
                 session: session,

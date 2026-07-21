@@ -177,4 +177,5 @@ _(no open proposed WAVEs)_
 - WAVE-157 done
 - WAVE-158 done
 - WAVE-159 done
+- WAVE-160 done
 

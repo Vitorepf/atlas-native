@@ -23,6 +23,8 @@ enum ConversationOccasionPack {
         var presenceBubble: ChatBubble?
         var queued: [QueuedMessage]
         var agents: [ExecAgent]
+        /// WAVE-160: last steer receipt from model (nil → absence).
+        var lastSteerReceipt: AtlasInteractionSteerResponse? = nil
 
         static let unbound = PublishedSlice(
             presenceBubble: nil,
@@ -174,10 +176,27 @@ enum ConversationOccasionPack {
             decisionRequired: canSignals.hasDecision,
             choiceActionCount: canSignals.decisionActionTitles.count,
             hasSteerHandler: canSignals.hasRunning || canSignals.hasPaused,
-            face: stripFace
+            face: stripFace,
+            showsStop: bubble.map { ConversationExecutionPhase.stripShowsLiveChrome($0) }
+                ?? (stripFace != .finished && stripFace != .quiet)
         )
         facts.append(contentsOf: stripPack.facts)
         absences.append(contentsOf: stripPack.absences)
+
+        // WAVE-160: steer organ — wire hollow packFacts when presence has trace.
+        if let traceId = bubble?.traceId {
+            let steerPack = ConversationSteerJudgment.packFacts(
+                instruction: "",
+                scope: .currentStep,
+                last: published?.lastSteerReceipt,
+                traceId: traceId
+            )
+            facts.append(contentsOf: steerPack.facts)
+            absences.append(contentsOf: steerPack.absences)
+            absences.append("steer draft sheet-local — pack sem instrução até o modal")
+        } else if canSignals.hasRunning || canSignals.hasPaused {
+            absences.append("steer: sem traceId no presence bubble — não invente recibo")
+        }
 
         let surface: String
         if workspaceKey != nil {

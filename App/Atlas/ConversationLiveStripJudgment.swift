@@ -78,13 +78,19 @@ enum ConversationLiveStripJudgment {
         decisionRequired: Bool,
         choiceActionCount: Int,
         hasSteerHandler: Bool,
-        face: ConversationExecutionFace
+        face: ConversationExecutionFace,
+        /// WAVE-160: stop only when strip shows live chrome (not finished/quiet).
+        showsStop: Bool = true
     ) -> (facts: [String], absences: [String]) {
         var facts: [String] = []
         var absences: [String] = []
         facts.append("live_strip_phase: \(face.rawValue)")
         facts.append("live_strip_decision_required: \(decisionRequired ? "yes" : "no")")
-        facts.append("live_strip_stop: available")
+        if showsStop {
+            facts.append("live_strip_stop: available")
+        } else {
+            absences.append("stop oculto — strip sem chrome live (face finished/quiet)")
+        }
         if showsChooseCTA(decisionRequired: decisionRequired, actionCount: choiceActionCount) {
             facts.append("live_strip_cta: choose")
             facts.append("live_strip_choice_count: \(choiceActionCount)")

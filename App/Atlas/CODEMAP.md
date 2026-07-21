@@ -75,6 +75,7 @@
 | **Conversation can_do pack** | `ConversationCanDoJudgment` → matrix live×decision · OccasionPack wire |
 | Cockpit peels | `ConversationCockpitBody` (strip·lanes) · `ConversationCockpitBanners` (banner·reconnect·silence) |
 | **Steer / redirecionar** | `ConversationSteerJudgment` → receipt face · scope PT · allowsSubmit |
+| **Steer pack mid-thread (160)** | OccasionPack → `ConversationSteerJudgment.packFacts` + strip stop honesty |
 | **Agent lanes (multi)** | `ConversationAgentLanesJudgment` → ExecutionRibbon rank failed-first |
 | Island/Lock phase chrome | Widgets Live/Lock* (sem inventar App Group) |
 | Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets |
