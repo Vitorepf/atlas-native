@@ -7,7 +7,7 @@
 
 | Superfície | Entry / shell | Núcleo vivo (não exaustivo) |
 |---|---|---|
-| Home | `RootView.swift` | `RootChrome*`, `RootHome*`, `Workspace*` |
+| Home | `RootView.swift` | `RootChrome*`, `RootHomeBody`, `RootHomeChrome`, `Workspace*` |
 | Conversa | `ConversationView.swift` | `ConversationSurface (+Composer/+Chrome parts)`, `ConversationChrome*`, Messages/Cockpit/Composer* |
 | Código | `AtlasCodeView.swift` | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
 | Radar (multi-repo) | `AtlasCodeRadarView.swift` | Surface · FolderRow · RepoChrome · AskContext · Judgment |
