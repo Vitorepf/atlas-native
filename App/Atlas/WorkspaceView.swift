@@ -332,7 +332,7 @@ extension WorkspaceView {
                 .lineLimit(1)
                 .accessibilityLabel(headerSpokenTitle)
             Spacer()
-            Color.clear.frame(width: 40, height: 40)
+            Color.clear.frame(width: 44, height: 44)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 4)
@@ -340,12 +340,17 @@ extension WorkspaceView {
     }
 
     var headerBackButton: some View {
-        Button { dismiss() } label: {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            dismiss()
+        } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 40, height: 40).atlasGlassCircle()
+                .frame(width: 44, height: 44).atlasGlassCircle()
+                .contentShape(Circle())
         }
         .accessibilityLabel("voltar")
+        .accessibilityHint("fecha o workspace")
     }
 
     var headerSpokenTitle: String {

@@ -328,7 +328,7 @@ extension ConversationView {
     var header: some View {
         HStack(spacing: 12) {
             if hidesNavigationBack {
-                Color.clear.frame(width: 40, height: 40)
+                Color.clear.frame(width: 44, height: 44)
             } else {
                 headerBackButton
             }
@@ -356,7 +356,8 @@ extension ConversationView {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 40, height: 40).atlasGlassCircle()
+                .frame(width: 44, height: 44).atlasGlassCircle()
+                .contentShape(Circle())
         }
         .accessibilityLabel("voltar")
         .accessibilityHint("fecha a conversa")
@@ -367,9 +368,11 @@ extension ConversationView {
     @ViewBuilder
     var continuityMenuActions: some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.desktop) }
         } label: { Label("Continuar no Mac", systemImage: "desktopcomputer") }
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.terminal) }
         } label: { Label("Continuar no Terminal", systemImage: "terminal") }
     }
@@ -379,7 +382,8 @@ extension ConversationView {
     var continuityMenuLabel: some View {
         Image(systemName: "ellipsis")
             .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
-            .frame(width: 40, height: 40).atlasGlassCircle()
+            .frame(width: 44, height: 44).atlasGlassCircle()
+            .contentShape(Circle())
     }
 }
 
@@ -407,7 +411,8 @@ extension ConversationView {
             } label: {
                 Image(systemName: "list.bullet.rectangle")
                     .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 40, height: 40).atlasGlassCircle()
+                    .frame(width: 44, height: 44).atlasGlassCircle()
+                    .contentShape(Circle())
             }
             .accessibilityLabel(ConversationViewA11y.spokenOutlineLabel(turnCount: model.bubbles.count))
             .accessibilityHint(ConversationViewA11y.outlineHint)
@@ -425,7 +430,7 @@ extension ConversationView {
                 continuityMenu
             }
         } else {
-            Color.clear.frame(width: 40, height: 40)
+            Color.clear.frame(width: 44, height: 44)
                 .accessibilityHidden(true)
         }
     }

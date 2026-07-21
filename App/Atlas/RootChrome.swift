@@ -235,7 +235,10 @@ struct WorkspaceRow: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            action()
+        } label: {
             rowContent
         }
         .buttonStyle(.plain)

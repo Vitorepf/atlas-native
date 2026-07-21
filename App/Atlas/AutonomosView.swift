@@ -237,8 +237,9 @@ struct AutonomosViewHeader: View {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold)
                 .foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 40, height: 40)
+                .frame(width: 44, height: 44)
                 .atlasGlassCircle()
+                .contentShape(Circle())
         }
         .accessibilityLabel("voltar")
         .accessibilityHint("volta")
@@ -253,8 +254,9 @@ struct AutonomosViewHeader: View {
             Image(systemName: "plus")
                 .atlasSans(17, .semibold)
                 .foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 40, height: 40)
+                .frame(width: 44, height: 44)
                 .atlasGlassCircle()
+                .contentShape(Circle())
         }
         .accessibilityLabel("Novo Autônomo")
         .accessibilityHint("Cria um Autônomo com nome e carta")
@@ -269,8 +271,9 @@ struct AutonomosViewHeader: View {
             Image(systemName: "arrow.clockwise")
                 .atlasSans(15, .medium)
                 .foregroundStyle(canRefresh ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
-                .frame(width: 40, height: 40)
+                .frame(width: 44, height: 44)
                 .atlasGlassCircle()
+                .contentShape(Circle())
         }
         .disabled(!canRefresh)
         .opacity(canRefresh ? 1 : 0.45)
