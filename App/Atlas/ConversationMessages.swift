@@ -282,11 +282,6 @@ enum ConversationMessagesA11y {
     static let scrollFABLabel = ConversationMessagesA11yFAB.scrollFABLabel
     static let scrollFABHint = ConversationMessagesA11yFAB.scrollFABHint
 
-    static func spokenMessages(turnCount: Int) -> String {
-        let noun = turnCount == 1 ? "turno" : "turnos"
-        return "conversa, \(turnCount) \(noun)"
-    }
-
     static func spokenChangeReview(patchCount: Int) -> String {
         ConversationMessagesA11yReview.spokenChangeReview(patchCount: patchCount)
     }

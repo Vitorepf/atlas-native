@@ -231,15 +231,6 @@ struct NightlyProposalCard: View {
 
     // MARK: - Spoken
 
-    static func spokenCardLabel(workspaceText: String) -> String {
-        "missão noturna proposta. Hoje você trabalhou em \(workspaceText). "
-            + "A frota pode continuar enquanto você descansa."
-    }
-
-    static func spokenCardHint() -> String {
-        "preparar, descartar em silêncio ou silenciar por dias"
-    }
-
     static func spokenAcceptLabel() -> String { "preparar missão noturna" }
     static func spokenAcceptHint() -> String {
         "abre o ensaio governado da missão noturna"

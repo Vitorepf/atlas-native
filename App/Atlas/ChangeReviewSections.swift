@@ -28,13 +28,6 @@ extension ChangeReviewSectionsA11y {
     static func spokenControl(_ control: AtlasTraceChangeReview.Control) -> String {
         "\(control.slug), status \(control.status), \(control.signalSummary)"
     }
-
-    static func spokenControlsSection(_ controls: [AtlasTraceChangeReview.Control]) -> String {
-        let passed = controls.filter { $0.status == "pass" || $0.status == "passed" }.count
-        var parts = ["controles, \(controls.count) no total"]
-        if passed > 0 { parts.append("\(passed) aprovado\(passed == 1 ? "" : "s")") }
-        return parts.joined(separator: ", ")
-    }
 }
 
 extension ChangeReviewSectionsA11y {
@@ -44,27 +37,9 @@ extension ChangeReviewSectionsA11y {
 }
 
 extension ChangeReviewSectionsA11y {
-    static func spokenTestsSection(_ tests: [AtlasTraceChangeReview.TestRun]) -> String {
-        let passed = tests.filter { $0.status == "passed" }.count
-        var parts = ["testes, \(tests.count) no total"]
-        if passed > 0 { parts.append("\(passed) passou\(passed == 1 ? "" : "ram")") }
-        return parts.joined(separator: ", ")
-    }
-}
-
-extension ChangeReviewSectionsA11y {
     static func spokenDecidedAction(_ action: AtlasTraceChangeReview.OperatorAction) -> String {
         var parts = [action.action == .accept ? "aceito" : "rejeitado"]
         if let at = action.actedAt?.nonEmpty { parts.append(at) }
-        return parts.joined(separator: ", ")
-    }
-}
-
-extension ChangeReviewSectionsA11y {
-    static func spokenDecidedSection(_ actions: [AtlasTraceChangeReview.OperatorAction]) -> String {
-        let accepted = actions.filter { $0.action == .accept }.count
-        var parts = ["decisões registradas, \(actions.count) no total"]
-        if accepted > 0 { parts.append("\(accepted) aceita\(accepted == 1 ? "" : "s")") }
         return parts.joined(separator: ", ")
     }
 }

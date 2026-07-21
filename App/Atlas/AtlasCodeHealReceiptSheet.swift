@@ -59,12 +59,6 @@ extension AtlasCodeHealReceiptSheet {
 }
 
 extension AtlasCodeHealReceiptSheet {
-    func spokenStepsSummaryLabel() -> String {
-        "\(heal.stepReceipts.count) passo\(heal.stepReceipts.count == 1 ? "" : "s") no recibo"
-    }
-}
-
-extension AtlasCodeHealReceiptSheet {
     var completedStepCount: Int {
         heal.stepReceipts.filter { $0.status == "completed" }.count
     }

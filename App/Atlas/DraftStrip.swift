@@ -22,13 +22,6 @@ struct DraftStrip: View {
     }
 }
 
-enum DraftStripA11y {
-    static func spokenStrip(draftCount: Int) -> String {
-        let noun = draftCount == 1 ? "anexo" : "anexos"
-        return "\(draftCount) \(noun) no composer"
-    }
-}
-
 extension DraftStrip {
     var draftThumbLoop: some View {
         HStack(spacing: 12) {

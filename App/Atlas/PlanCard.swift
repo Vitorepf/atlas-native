@@ -149,17 +149,6 @@ struct PlanCard: View {
 // A11y e spoken labels do PlanCard.
 
 extension PlanCard {
-    func spokenCardLabel(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress?) -> String {
-        var parts = ["plano da obra, \(plan.title), \(plan.steps.count) passos"]
-        if let progress {
-            parts.append("checkpoint \(progress.current) de \(progress.total), \(progress.title)")
-            if progress.isTerminal { parts.append("concluído") }
-        } else {
-            parts.append("nenhum checkpoint observado, passos pendentes")
-        }
-        return parts.joined(separator: ", ")
-    }
-
     func spokenStep(
         step: AtlasExecutionPlan.Step,
         state: StepState,
@@ -189,14 +178,6 @@ extension PlanCard {
 
     func spokenAuditTerminal(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress) -> String {
         "auditoria do plano, \(plan.steps.count) passos planejados, \(min(progress.current, progress.total)) de \(progress.total) executados, \(progress.isTerminal ? "terminal" : "em curso")"
-    }
-
-    func spokenPlanDetail(_ plan: AtlasExecutionPlan) -> String {
-        var parts: [String] = []
-        if !plan.agents.isEmpty { parts.append("agentes, \(plan.agents.map(\.title).joined(separator: ", "))") }
-        if !plan.tools.isEmpty { parts.append("ferramentas, \(plan.tools.map(\.label).joined(separator: ", "))") }
-        if !plan.qualityGates.isEmpty { parts.append("gates, \(plan.qualityGates.map(\.label).joined(separator: ", "))") }
-        return parts.joined(separator: ", ")
     }
 
     func spokenRevisionToggle(expanded: Bool, count: Int) -> String {
