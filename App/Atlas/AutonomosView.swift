@@ -262,7 +262,7 @@ struct AutonomosViewHeader: View {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold)
-                .foregroundStyle(AtlasTheme.textPrimary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
