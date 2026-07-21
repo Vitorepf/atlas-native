@@ -6,13 +6,13 @@ product_waves: forbidden
 dual: off
 
 ## State
-- phase: act
-- focus: MARK Widgets dense + CODEMAP Root chrome
-- actionable: 1
-- passes: 3
-- last_commit: fcfebaca
+- phase: god_hold
+- focus: null
+- actionable: 0
+- passes: 5
+- last_commit: 24fa8349
 - collapse_host: 0
-- god_hold_streak: 0
+- god_hold_streak: 2
 
 ## Scope
 - App/Atlas + App/Widgets
@@ -24,29 +24,29 @@ dual: off
 
 ## commands
 ```
-# AUDIT after pass 3
-View/Shell>600 → 0
-any>2000 → 0
-JudgmentGrammar|Peel|conversationPresence → 0
-forbidden Grammar|Peel|JudgmentChrome|ScreenJudgment|*Face.swift → 0
-MARK missing >200 (casca, skip Core Model) → 4 Widgets → FIXED this pass
-Sections/States loose filenames → residual soft (hosts still named Sections/States; rename=low ROI without hop gain)
-lowercase density peel comments → soft dialect not capital-Peel bar
+# AUDIT empty #1 → actionable 0 (god_hold_streak=1)
+# AUDIT empty #2 → actionable 0 (god_hold_streak=2) → GOD_HOLD
 
-# PROVE pass 4
-swift run AtlasCoreChecks → exit 0
-make build → exit 0
-./scripts/grok-god-wave-guard.sh → GUARD OK
+rg 'JudgmentGrammar|Peel|conversationPresence' → 0
+forbidden Grammar|Peel|JudgmentChrome|ScreenJudgment|*Face.swift → 0
+View/Shell>600 → 0
+any>2000 casca → 0
+MARK>200 casca → 0
+AtlasCoreChecks exit 0
+make build exit 0
+./scripts/grok-god-wave-guard.sh → GUARD OK mode=restructure
 ```
 
 ## before_after
 ```
-pass1 1b7d156a: Grammar+Peel+presence rename/fuse
-pass2 9a36eaf4: JudgmentChrome×3 → host Judgment
-pass3 fcfebaca: ScreenJudgment×4 + Face honesty
-pass4: MARK CodeWeek/Fleet/Lock/LiveSession Widget surfaces; CODEMAP Root chrome
+1b7d156a polish(ui): GOD-RESTRUCTURE rename-honesty Grammar Peel presence
+9a36eaf4 polish(ui): GOD-RESTRUCTURE fuse JudgmentChrome into Judgment
+fcfebaca polish(ui): GOD-RESTRUCTURE ScreenJudgment and Face honesty
+e9fe40c5 polish(ui): GOD-RESTRUCTURE MARK dense Widget surfaces
+24fa8349 polish(ui): GOD-RESTRUCTURE CODEMAP SelfConstructionReceiptChrome
 ```
 
 ## notes
-- Next AUDIT: if only soft comments / Sections-States hosts left below ROI → actionable 0
-- Empty audit ×2 → god_hold
+- **GOD_HOLD** — two consecutive empty audits. Stop editing. Wait for operator.
+- Soft deferred (below ROI / not invent): `*Sections.swift` / `*States.swift` filename renames; historical lowercase "density peel" comments.
+- ConversationModel 1067 LOC = Core seam OOS.
