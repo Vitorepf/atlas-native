@@ -339,7 +339,12 @@ extension ConversationView {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1)
                 .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel(title)
+                .accessibilityLabel(spokenConversationScreenLabel())
+                .accessibilityHint(
+                    hidesNavigationBack
+                        ? "arraste para baixo para fechar"
+                        : ConversationViewA11y.screenHint
+                )
             Spacer(minLength: 0)
             headerTrailing
         }
@@ -509,12 +514,9 @@ extension ConversationView {
             .toolbar(.hidden, for: .navigationBar)
             .scrollDismissesKeyboard(.interactively)
             .accessibilityIdentifier(A11yID.conversationScreen)
-            .accessibilityLabel(spokenConversationScreenLabel())
-            .accessibilityHint(
-                hidesNavigationBack
-                    ? "arraste para baixo para fechar"
-                    : ConversationViewA11y.screenHint
-            )
+            // Contain without fused screen label so messages/composer stay focusable.
+            // Screen summary lives on the header title.
+            .accessibilityElement(children: .contain)
             .overlay(alignment: .top) { toast }
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.toast)
     }
