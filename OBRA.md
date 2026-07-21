@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — profile fact rows serif (ciclo 312)** · `7052f19a` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — profile sheet editorial type (ciclo 311)** · `fe2ab623` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Arena tab bar serif (ciclo 310)** · `e608e25b` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Arena stop confirm 52pt (ciclo 309)** · `5b65038e` · App/Atlas 36. **Prova:** checks+build exit 0.
