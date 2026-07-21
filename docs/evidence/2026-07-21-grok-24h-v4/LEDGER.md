@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 174
-- idle_compress_passes: 4
+- idle_compress_passes: 5
 - collapse_host: 0
 
 ## Waves done
@@ -187,10 +187,11 @@ mode: designer + implementer
 - WAVE-179
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
-- pass 3 · `dc3204e1` · MARK densos post-174
-- pass 4 · `34a8d100` · MARK ConversationExecutionPhase
+- pass 1 · 
+- pass 2 · 
+- pass 3 ·  · MARK densos post-174
+- pass 4 ·  · MARK ConversationExecutionPhase
+- pass 5 ·  · MARK residual densos post-179
 
 ## Designer
 - designs_proposed: 174
@@ -208,5 +209,6 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-179: AutonomosDecision face pack.
-- WAVE-178: send pack · 177 rhythm · 176 Search · 175 review · 174 timeline.
+- WAVE-174–179 pack/face sovereignty campaign closed.
+- Face-sans-pack: none · packFacts hollows: 0.
+- Residual full-bar requires A (strip/card unify) or new §WAVE — no invent micro.
