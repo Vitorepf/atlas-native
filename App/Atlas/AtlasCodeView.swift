@@ -492,7 +492,8 @@ extension AtlasCodeView {
         if graph.pagination.hasMore {
             Text("\(graph.nodes.count) commits mais recentes — há mais história")
                 .font(AtlasFont.serifItalic(12))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet truncation honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 16)
                 .accessibilityIdentifier(A11yID.codeGraphTruncated)
@@ -1149,7 +1150,8 @@ extension AtlasCodeFileRow {
             if let subtitle {
                 Text(subtitle)
                     .font(AtlasFont.mono(8.5))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet file path meta.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .lineLimit(1)
                     .truncationMode(.head)
             }
@@ -1164,13 +1166,14 @@ extension AtlasCodeFileRow {
         if let additions = file.additions, let deletions = file.deletions {
             Text("+\(additions) \u{2212}\(deletions)")
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet diff stats.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .monospacedDigit()
                 .accessibilityHidden(true)
         } else {
             Text("Binário")
                 .font(AtlasFont.mono(8.5))
-                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.45))
                 .accessibilityHidden(true)
         }
     }
@@ -1709,8 +1712,9 @@ struct AtlasCodeRepoPickerSheet: View {
                     VStack(spacing: 12) {
                         BreathingDiamond(size: 10, reduceMotion: reduceMotion)
                         Text("Lendo os repositórios do Mac…")
+                            // Soft gold-quiet loading caption under diamond.
                             .font(AtlasFont.serifItalic(15))
-                            .foregroundStyle(AtlasTheme.textTertiary)
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .accessibilityElement(children: .combine)
@@ -1780,7 +1784,8 @@ struct AtlasCodeRepoPickerSheet: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(AtlasFont.serif(13, .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet picker section kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(title)
             VStack(spacing: 0) {
@@ -2034,7 +2039,8 @@ extension AtlasCodeHealReceiptSheet {
         if heal.stepReceipts.isEmpty {
             Text("Sem passos registrados no recibo")
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet empty heal receipt meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityLabel(spokenEmptyStepsLabel())
         } else {
             stepsBlock()
@@ -3106,11 +3112,12 @@ extension AtlasCodeProvenanceSheet {
         VStack(alignment: .leading, spacing: 3) {
             Text(dateline)
                 .font(AtlasFont.mono(9.5))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet provenance dateline.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             if case .loaded(let provenance) = phase, let headline = provenance.diffHeadline {
                 Text(headline)
                     .font(AtlasFont.mono(9.5))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .monospacedDigit()
             }
         }
@@ -3168,7 +3175,8 @@ extension AtlasCodeProvenanceSheet {
             .accessibilityHidden(true)
         Text("Perguntar sobre este commit")
             .font(AtlasFont.serifItalic(14))
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet ask invite copy.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.78))
             .accessibilityHidden(true)
     }
 }

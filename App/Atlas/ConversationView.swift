@@ -1164,7 +1164,8 @@ extension ConversationOutlineSheet {
     var outlineEmpty: some View {
         Text("Nenhum turno carregado nesta thread.")
             .font(AtlasFont.mono(11))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet empty outline meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.vertical, 12)
@@ -3157,7 +3158,8 @@ extension ComposerToolbar {
     @ViewBuilder
     var composerFieldPlaceholder: some View {
         Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
-            .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet composer placeholder invite.
+            .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.accent.opacity(0.48))
             .allowsHitTesting(false).opacity(model.draftText.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
             .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.considered), value: model.draftText.isEmpty)
             .accessibilityHidden(true)
@@ -3328,7 +3330,8 @@ struct AttachmentStrip: View {
 extension AttachmentStrip {
     func uploadPercentLabel(_ p: Double) -> some View {
         Text("\(Int(p * 100))%")
-            .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet upload progress meta.
+            .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.7))
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
     }
@@ -5322,7 +5325,8 @@ extension PlanCard {
     ) -> some View {
         Text("Planejado \(plan.steps.count) · executado \(min(progress.current, progress.total))/\(progress.total)")
             .font(AtlasFont.mono(10))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet plan audit meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             .monospacedDigit()
             .accessibilityHidden(true)
     }
@@ -5330,7 +5334,7 @@ extension PlanCard {
     func auditStatusWord(progress: AtlasExecutionPlan.Progress) -> some View {
         Text(progress.isTerminal ? "terminal" : "em curso")
             .font(AtlasFont.mono(9))
-            .foregroundStyle(progress.isTerminal ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
+            .foregroundStyle(progress.isTerminal ? AtlasTheme.domAutonomos : AtlasTheme.accent.opacity(0.62))
             .accessibilityHidden(true)
     }
 }
@@ -5404,7 +5408,8 @@ extension PlanCard {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
                 .font(AtlasFont.serif(12, .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet chip-row kicker.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .accessibilityHidden(true)
             PlanFlowChips(items: items)
         }
@@ -5978,7 +5983,8 @@ extension ExecutionProof {
                 .accessibilityHidden(true)
             if !summaryLine.isEmpty {
                 Text(summaryLine)
-                    .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet collapsed proof summary.
+                    .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.68))
                     .lineLimit(1)
                     .accessibilityHidden(true)
             }
@@ -6361,7 +6367,8 @@ extension ExecutionProof {
         } else if !bubble.activities.isEmpty {
             Text("Replay indisponível · eventos sem timestamps")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet replay honesty meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityLabel("Replay indisponível porque os eventos não têm timestamps")
         }
     }
@@ -6378,7 +6385,8 @@ extension ExecutionProof {
             Spacer()
             Text("\(index + 1)/\(total)")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet replay counter.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
         }
