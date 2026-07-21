@@ -132,22 +132,26 @@ extension LiveNowRow {
     }
 
     func spokenRunningLabel(prefix: String, now: Date) -> String {
+        // WAVE-023: same face words as ribbon/strip.
+        let faceWord = ConversationExecutionPhase.spokenFace(.running)
         if let clock = spokenClock(now: now) {
-            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), em execução há \(clock)"
+            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord) há \(clock)"
         }
-        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), em execução, tempo ativo indisponível"
+        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord), tempo ativo indisponível"
     }
 
     func spokenPausedLabel(prefix: String, now: Date) -> String {
+        let faceWord = ConversationExecutionPhase.spokenFace(.paused)
         let age = pauseAgeHours(now: now).map { ", há \($0) horas" } ?? ""
         if let clock = spokenClock(now: now) {
-            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), pausado em \(clock)\(age)"
+            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord) em \(clock)\(age)"
         }
-        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), pausado, tempo ativo indisponível\(age)"
+        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord), tempo ativo indisponível\(age)"
     }
 
     func spokenFinishedLabel(prefix: String) -> String {
-        "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), concluído"
+        let faceWord = ConversationExecutionPhase.spokenFace(.finished)
+        return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), \(faceWord)"
     }
 }
 
@@ -176,11 +180,8 @@ extension LiveNowRow {
     }
 
     var timingWord: String {
-        switch session.timing {
-        case .running: return "em execução"
-        case .paused: return "pausado"
-        case .finished: return "concluído"
-        }
+        // WAVE-023 product face words (visual ≡ spoken vocabulary).
+        ConversationExecutionPhase.spokenFace(ConversationExecutionPhase.face(for: session))
     }
 
     var timingColor: Color {

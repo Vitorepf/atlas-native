@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-023-execution-presence-one-voice
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-023-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-024-radar-fleet-judgment-instrument
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: high
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-024-design.md
 created_by: designer
@@ -38,8 +28,7 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-023-execution-presence-one-voice | **max** | `WAVE-023-design.md` |
-| **2** | WAVE-024-radar-fleet-judgment-instrument | **high** | `WAVE-024-design.md` |
+| **1** | WAVE-024-radar-fleet-judgment-instrument | **high** | `WAVE-024-design.md` |
 
 ## History (done)
 
@@ -60,4 +49,5 @@ approved_at: null
 - WAVE-020 done
 - WAVE-021 done
 - WAVE-022 done
+- WAVE-023 done
 

@@ -62,6 +62,12 @@ extension ExecutionStateCard {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
+            // Face word (product vocabulary) — attention overlays stay on kindBadge.
+            Text(presenceFace.productWord.uppercased())
+                .font(AtlasFont.mono(9))
+                .tracking(0.6)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
             stateHeaderBadge
         }
     }
@@ -118,6 +124,15 @@ struct ExecutionStateCard: View {
     var onSteer: (() -> Void)? = nil
 
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    /// WAVE-023: exclusive face + attention overlay (not parallel dialects).
+    var presenceFace: ConversationExecutionFace {
+        ConversationExecutionPhase.face(for: state)
+    }
+
+    var presenceAttention: ConversationExecutionAttention? {
+        ConversationExecutionPhase.attention(for: state)
+    }
 
     var body: some View {
         stateCardChrome { stateCardStack }

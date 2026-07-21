@@ -89,11 +89,18 @@ struct ExecutingStrip: View {
     let onStop: () -> Void
     var onSteer: (() -> Void)? = nil
 
+    /// WAVE-023: strip branches on exclusive face (not bool soup alone).
+    private var face: ConversationExecutionFace {
+        ConversationExecutionPhase.face(for: bubble)
+    }
+
     var body: some View {
         HStack(spacing: 8) {
             stripStatus
             Spacer(minLength: 0)
-            stripActionButtons
+            if ConversationExecutionPhase.stripShowsLiveChrome(bubble) {
+                stripActionButtons
+            }
         }
         .padding(.horizontal, 6)
         .lineLimit(1)
@@ -108,7 +115,9 @@ struct ExecutingStrip: View {
         HStack(spacing: 8) {
             stripStatusLeading
             stripStatusTitle
-            stripStatusMeta
+            if face != .finished && face != .quiet {
+                stripStatusMeta
+            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(stripAccessibilityLabel)
@@ -116,11 +125,22 @@ struct ExecutingStrip: View {
 
     @ViewBuilder
     var stripStatusLeading: some View {
-        if bubble.showsReconnectSurface {
+        // Face reconnect (includes dual-surface primary ownership for WAVE-012).
+        if face == .reconnect {
             Image(systemName: bubble.reconnectBannerIcon)
                 .atlasSans(10, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
+                .accessibilityHidden(true)
+        } else if face == .paused {
+            Text("‖")
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .accessibilityHidden(true)
+        } else if face == .finished {
+            Image(systemName: "checkmark")
+                .atlasSans(10, .bold)
+                .foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
         } else {
             BreathingDiamond(size: 8, reduceMotion: reduceMotion)
@@ -129,10 +149,33 @@ struct ExecutingStrip: View {
 
     @ViewBuilder
     var stripStatusTitle: some View {
-        if bubble.showsReconnectSurface || bubble.executionProgress != nil {
+        switch face {
+        case .reconnect:
             stripStatusReconnectOrProgress
-        } else {
-            stripStatusActivityOrIdle
+        case .finished:
+            Text(ConversationExecutionPhase.spokenFace(.finished))
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(1)
+                .accessibilityHidden(true)
+        case .paused:
+            Text(ConversationExecutionPhase.spokenFace(.paused))
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(1)
+                .accessibilityHidden(true)
+        case .multiAgent, .running:
+            if bubble.executionProgress != nil {
+                stripStatusReconnectOrProgress
+            } else {
+                stripStatusActivityOrIdle
+            }
+        case .quiet:
+            Text(ConversationExecutionPhase.spokenFace(.quiet))
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .lineLimit(1)
+                .accessibilityHidden(true)
         }
     }
 
@@ -231,21 +274,21 @@ struct ExecutingStrip: View {
     // MARK: A11y (phase-aligned compound label)
 
     var stripAccessibilityLabel: String {
-        var parts: [String] = []
-        if bubble.showsReconnectSurface {
+        var parts: [String] = [ConversationExecutionPhase.spokenFace(face)]
+        if face == .reconnect {
             parts.append(bubble.reconnectSpokenLabel)
-        } else if let p = bubble.executionProgress {
-            parts.append("execução ao vivo, passo \(p.current) de \(p.total), \(p.title)")
-        } else if let act = bubble.currentActivity {
-            parts.append("execução ao vivo, \(act.title)")
-        } else {
-            parts.append("seguindo a execução")
+        } else if let p = bubble.executionProgress, face == .running || face == .multiAgent {
+            parts.append("passo \(p.current) de \(p.total), \(p.title)")
+        } else if let act = bubble.currentActivity, face == .running || face == .multiAgent {
+            parts.append(act.title)
         }
-        let events = bubble.activities.count
-        parts.append("\(events) evento\(events == 1 ? "" : "s")")
-        if let started = bubble.startedAt {
-            let secs = max(0, Int(Date().timeIntervalSince(started)))
-            parts.append("\(secs) segundos decorridos")
+        if face != .finished && face != .quiet {
+            let events = bubble.activities.count
+            parts.append("\(events) evento\(events == 1 ? "" : "s")")
+            if let started = bubble.startedAt {
+                let secs = max(0, Int(Date().timeIntervalSince(started)))
+                parts.append("\(secs) segundos decorridos")
+            }
         }
         if let stats = bubble.diffStats {
             parts.append("mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
