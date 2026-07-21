@@ -22,16 +22,20 @@ enum AtlasMotion {
 }
 
 extension AtlasMotion {
+    /// Haptics are UI-only; isolate on MainActor for StrictConcurrency.
+    @MainActor
     static func softImpact(reduceMotion: Bool) {
         guard !reduceMotion else { return }
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
     }
 
+    @MainActor
     static func mediumImpact(reduceMotion: Bool) {
         guard !reduceMotion else { return }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
 
+    @MainActor
     static func lightImpact(reduceMotion: Bool) {
         guard !reduceMotion else { return }
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -39,6 +43,7 @@ extension AtlasMotion {
 }
 
 extension AtlasMotion {
+    @MainActor
     static func successNotification(reduceMotion: Bool) {
         guard !reduceMotion else { return }
         UINotificationFeedbackGenerator().notificationOccurred(.success)
