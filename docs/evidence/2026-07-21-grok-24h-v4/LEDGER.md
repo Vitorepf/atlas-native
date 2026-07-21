@@ -7,17 +7,18 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 12
-- idle_compress_passes: 9
+- idle_compress_passes: 10
 - collapse_host: 0
 
-## Product
-- WAVE-006..017 done
-- WAVE-018 Continuity: deferred (peel-merge type collisions; needs careful phase grammar)
+## Product waves done
+006-017 (016 pill machine, 017 editorial sink)
 
-## Idle 9
-- Host-first fuse: Search, ArtifactViewer, Workspace, CodeView, RootHomeSections,
-  ConversationSheets, Steer, FileRow, QueuedFollowUps, Composer
+## WAVE-018
+Deferred careful: naive Island/Lock peel concatenation causes type redeclarations.
+Needs shared phase grammar extracted without re-exporting intermediate structs.
+
+## Idle
+passes 1–10; App/Atlas ~383 files
 
 ## Notes
-- App/Atlas ~383 Swift files
-- Device-pending
+Device-pending; queue open only WAVE-018
