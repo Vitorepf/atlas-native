@@ -148,7 +148,10 @@ extension WorkspaceView {
                 .accessibilityHidden(true)
             Spacer()
         }
-        .padding(.horizontal, 14).padding(.vertical, 10)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 13)
+        .frame(minHeight: 48) // HIG 44pt; same breath as AgenticPill
+        .contentShape(Capsule())
         .atlasGlassCapsule()
     }
 }

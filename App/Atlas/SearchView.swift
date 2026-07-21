@@ -60,7 +60,8 @@ extension SearchViewHeader {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 40, height: 40).atlasGlassCircle()
+                .frame(width: 44, height: 44).atlasGlassCircle()
+                .contentShape(Circle())
         }
         .accessibilityLabel("voltar")
         .accessibilityHint("fecha a busca")
@@ -101,6 +102,8 @@ extension SearchViewHeader {
     var searchClearIcon: some View {
         Image(systemName: "xmark.circle.fill")
             .atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
+            .frame(width: 44, height: 44)
+            .contentShape(Circle())
     }
 }
 

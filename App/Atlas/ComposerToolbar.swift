@@ -120,7 +120,8 @@ extension ComposerToolbar {
             Image(systemName: "paperclip")
                 .atlasSans(17, .medium)
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 32, height: 32)
+                .frame(width: 44, height: 44)
+                .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel("adicionar anexo")
@@ -307,7 +308,7 @@ extension ComposerToolbar {
             Image(systemName: "ellipsis")
                 .atlasSans(17, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 32, height: 32)
+                .frame(width: 44, height: 44)
                 .contentShape(Circle())
         }
         .accessibilityLabel("opções da conversa")
@@ -393,7 +394,7 @@ extension ComposerToolbar {
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.38))
                 .accessibilityHidden(true)
         }
-        .frame(width: 32, height: 32)
+        .frame(width: 44, height: 44)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(spokenProcessingLabel()), \(spokenSendLabel(canSubmit: false))")
         .accessibilityHint(spokenSendHint(canSubmit: false))
