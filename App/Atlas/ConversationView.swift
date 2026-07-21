@@ -2289,7 +2289,8 @@ extension ConversationComposer {
                 .fill(AtlasTheme.surface)
                 .overlay(
                     RoundedRectangle(cornerRadius: 26, style: .continuous)
-                        .strokeBorder(AtlasTheme.separator.opacity(0.95), lineWidth: 1)
+                        // Soft gold-quiet expanded composer rim.
+                        .strokeBorder(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1)
                 )
                 .atlasElevation(radius: 12, y: 4, opacity: 0.16)
         } else {
@@ -2297,7 +2298,8 @@ extension ConversationComposer {
                 .fill(AtlasTheme.surface)
                 .overlay(
                     Capsule(style: .continuous)
-                        .strokeBorder(AtlasTheme.separator, lineWidth: 1)
+                        // Soft gold-quiet collapsed invite rim — match AgenticPill.
+                        .strokeBorder(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1)
                 )
                 // Collapsed invite shares floating plane with home AgenticPill.
                 .atlasElevation(radius: 10, y: 3, opacity: 0.14)
@@ -5695,7 +5697,8 @@ struct PlanRevisionCompare: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)
-                    .stroke(AtlasTheme.separatorSoft, lineWidth: 1)
+                    // Soft gold-quiet comparison panel.
+                    .stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1)
             )
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityElement(children: .ignore)
@@ -5789,7 +5792,8 @@ struct PlanRevisionCompare: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)
-                .stroke(AtlasTheme.separatorSoft, lineWidth: 1)
+                // Soft gold-quiet revision archive card.
+                .stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1)
         )
         .atlasElevation(radius: 4, y: 1, opacity: 0.08)
         .accessibilityElement(children: .ignore)
@@ -5893,7 +5897,8 @@ extension ExecutionProof {
             .padding(.vertical, 8).padding(.horizontal, 12)
             .background(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.35))
-                    .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                    // Soft gold-quiet proof panel chrome.
+                    .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             )
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
@@ -6327,7 +6332,8 @@ extension ExecutionProof {
         }
         .padding(10)
         .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.bgRecessed))
-        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        // Soft gold-quiet replay scrubber chrome.
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
         // Scrubber rides above proof chrome without competing with primary CTAs.
         .atlasElevation(radius: 4, y: 1, opacity: 0.08)
         .accessibilityIdentifier(A11yID.executionReplayScrubber)
@@ -8190,7 +8196,8 @@ extension SteerInteractionSheet {
             .padding(12)
             .frame(minHeight: 88, alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface))
-            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separator, lineWidth: 1))
+            // Soft gold-quiet steer field — match composer/search inputs.
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
             // Soft field lift — same plane as search glass / primary inputs.
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityIdentifier(A11yID.steerInstruction)
@@ -8282,7 +8289,8 @@ extension SteerInteractionSheet {
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface.opacity(0.65)))
-            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            // Soft gold-quiet steer receipt chip.
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             // Receipt chip floats above the form surface after steer.
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
@@ -8932,7 +8940,8 @@ extension AtlasMarkdownView {
 extension CodeBlockView {
     var codeBlockBackground: some View {
         RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface)
-            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separator, lineWidth: 1))
+            // Soft gold-quiet code block chrome.
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }

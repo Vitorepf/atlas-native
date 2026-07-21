@@ -14,7 +14,8 @@ private struct AtlasCardModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(RoundedRectangle(cornerRadius: cornerRadius).fill(AtlasTheme.surface.opacity(fillOpacity)))
-            .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(AtlasTheme.separator, lineWidth: 1))
+            // Soft gold-quiet card chrome — shared plane for atlasCard surfaces.
+            .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(AtlasTheme.goldBorder.opacity(0.85), lineWidth: 1))
     }
 }
 
@@ -103,7 +104,8 @@ struct AtlasGlassCapsule: ViewModifier {
         } else {
             content.background(
                 Capsule().fill(AtlasTheme.bgRecessed.opacity(0.82))
-                    .overlay(Capsule().stroke(AtlasTheme.separator.opacity(0.9), lineWidth: 1)))
+                    // Soft gold-quiet glass fallback — match Liquid Glass gold rim family.
+                    .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1)))
         }
     }
 }
