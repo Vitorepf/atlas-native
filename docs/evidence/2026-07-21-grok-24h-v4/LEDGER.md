@@ -127,6 +127,5 @@ mode: designer + implementer
 | - | (none) | - | - |
 
 ## Notes
-- WAVE-104 + idle residual wipe complete for spoken dialect.
-- Zero enum *A11y · zero raw accessibilityLabel(" in App/Atlas.
-- DEVICE_PENDING. Fila empty - wait A or structural density residual only.
+- Spoken dialect residual closed (enums + raw labels).
+- DEVICE_PENDING. Fila empty - structural density residual only if full-bar.
