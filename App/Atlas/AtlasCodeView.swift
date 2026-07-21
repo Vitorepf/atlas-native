@@ -3581,6 +3581,8 @@ struct AtlasCodeLoadFailureEmpty: View {
                         Capsule().fill(AtlasTheme.goldVeil)
                             .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
                     )
+                    // Match network-failure empty CTA plane — recovery chrome floats.
+                    .atlasElevation(radius: 8, y: 2, opacity: 0.14)
                     .contentShape(Capsule())
             }
             .buttonStyle(PressableScale())
@@ -3697,6 +3699,8 @@ struct AtlasCodeRadarStatusCapsule: View {
                 .padding(.vertical, 7)
                 .background(Capsule().fill(AtlasCodePalette.alert.opacity(0.09)))
                 .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.35), lineWidth: 1))
+                // Soft lift when the radar is asking for attention.
+                .atlasElevation(radius: 6, y: 2, opacity: 0.12)
             }
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered), value: model.scanState)

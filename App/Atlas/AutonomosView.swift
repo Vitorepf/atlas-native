@@ -1541,6 +1541,8 @@ private struct AutonomosMapQuietCTA: View {
                         lineWidth: 1
                     )
                 )
+                // Quiet secondary still shares chrome depth with primary map CTAs.
+                .atlasElevation(radius: 8, y: 2, opacity: danger ? 0.12 : 0.06)
                 .contentShape(Capsule())
         }
         .buttonStyle(.plain)
