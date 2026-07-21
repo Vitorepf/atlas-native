@@ -81,6 +81,7 @@ extension ExecutionProof {
                 .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }
+        .frame(minHeight: 44)
         .contentShape(Rectangle())
     }
 }
@@ -158,6 +159,7 @@ extension ExecutionProof {
             artifactsButtonLead(count: count)
             artifactsChevron
         }
+        .frame(minHeight: 44, alignment: .leading)
         .contentShape(Rectangle())
     }
 }

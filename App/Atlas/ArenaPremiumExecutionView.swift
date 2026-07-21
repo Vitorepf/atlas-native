@@ -61,10 +61,13 @@ struct ArenaPremiumExecutionView: View {
             Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text("Ordem, estado e progresso confirmados pelo servidor.")
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(statusLabel), \(model.arenaLiveEngineTitle)")
     }
 
     @ViewBuilder
