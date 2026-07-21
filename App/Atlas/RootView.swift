@@ -3217,25 +3217,25 @@ struct AgenticPill: View {
             // aplicado como modifier de conteúdo às vezes engole o identifier.
             .background { Capsule().fill(AtlasTheme.bgRecessed.opacity(0.01)) }
             .atlasGlassCapsule()
-            .atlasElevation(radius: 12, y: 4, opacity: 0.18)
+            .atlasElevation(radius: 12, y: 4, opacity: 0.2)
             .overlay(
                 Capsule()
                     .strokeBorder(
                         LinearGradient(
                             colors: [
-                                AtlasTheme.accent.opacity(0.26),
-                                AtlasTheme.accent.opacity(0.05),
-                                AtlasTheme.accent.opacity(0.14)
+                                AtlasTheme.accent.opacity(0.32),
+                                AtlasTheme.accent.opacity(0.06),
+                                AtlasTheme.accent.opacity(0.18)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         ),
-                        lineWidth: 0.75
+                        lineWidth: 0.85
                     )
             )
             .contentShape(Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(invite)
         .atlasAccessibilityHint(accessibilityHintText)
