@@ -60,6 +60,8 @@ extension FeedbackRow {
             .font(AtlasFont.serifItalic(13))
             .foregroundStyle(isActive ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
             .padding(.horizontal, 12).padding(.vertical, 6)
+            .frame(minHeight: 44)
+            .contentShape(Capsule())
             .overlay(
                 Capsule().stroke(
                     isActive ? AtlasTheme.domAutonomos.opacity(0.5) : AtlasTheme.separator,

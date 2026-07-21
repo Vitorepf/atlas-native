@@ -339,6 +339,7 @@ extension ConversationComposer {
             .accessibilityLabel(queueAccessibilityLabel)
             .accessibilityHint("abre a folha para enviar agora ou remover da fila")
             .accessibilityIdentifier(A11yID.queueChip)
+            .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -374,6 +375,8 @@ extension ConversationComposer {
         Text(queueChipLabel)
             .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
             .padding(.horizontal, 12).padding(.vertical, 5)
+            .frame(minHeight: 44)
+            .contentShape(Capsule())
             .background(Capsule().fill(AtlasTheme.goldVeil)
                 .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
     }
@@ -384,8 +387,7 @@ extension ConversationComposer {
         RoundedRectangle(cornerRadius: 3)
             .fill(AtlasTheme.textTertiary.opacity(0.55))
             .frame(width: 42, height: 5)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 9)
+            .frame(maxWidth: .infinity, minHeight: 44) // HIG hit target for dismiss
             .contentShape(Rectangle())
     }
 }
