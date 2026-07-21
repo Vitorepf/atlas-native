@@ -421,7 +421,7 @@ extension SearchThreadLink {
     func threadLinkTransition<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityLabel(SearchListJudgment.spokenRow(thread: thread))
-            .accessibilityHint(SearchListJudgment.openThreadHint)
+            .accessibilityHint(SearchListJudgment.spokenOpenThreadHint)
             .accessibilityIdentifier(A11yID.searchResult(thread.id))
             .transition(reduceMotion ? .opacity : .asymmetric(
                 insertion: .opacity.combined(with: .offset(y: 6)),
@@ -725,7 +725,7 @@ enum SearchListFace: Equatable {
 /// Pure search-list grammar — list face · field · captions · row · miss · pack.
 enum SearchListJudgment {
 
-    static let openThreadHint = "abre a conversa"
+    static let spokenOpenThreadHint = "abre a conversa"
     static let fieldPlaceholder = "Buscar conversas"
 
     // MARK: Face
@@ -1072,7 +1072,7 @@ extension TimelineFilterChips {
                 active: active,
                 silent: active && filterSilence
             ))
-            .accessibilityHint(LiveTimelineFilterJudgment.filterHint)
+            .accessibilityHint(LiveTimelineFilterJudgment.spokenFilterHint)
             .accessibilityAddTraits(active ? .isSelected : [])
             .accessibilityIdentifier(A11yID.liveTimelineFilter(option.rawValue))
     }
@@ -1198,7 +1198,7 @@ enum LiveTimelineFilterFace: Equatable {
 /// Does **not** reorder narrative (chrono sagrado · WAVE-042/044).
 enum LiveTimelineFilterJudgment {
 
-    static let filterHint = "altera quais passos da orquestra são exibidos"
+    static let spokenFilterHint = "altera quais passos da orquestra são exibidos"
 
     static func face(
         filter: TimelineReadFilter,

@@ -1353,7 +1353,7 @@ struct AtlasCodeRepoPickerSheet: View {
                         repoScroll(workspace)
                     } else {
                         ContentUnavailableView(
-                            WorkspacePickerJudgment.noRepoLabel,
+                            WorkspacePickerJudgment.productNoRepo,
                             systemImage: "folder",
                             description: Text("o workspace não publicou nenhum repo")
                         )
@@ -1453,7 +1453,7 @@ struct AtlasCodeRepoPickerSheet: View {
                     Circle()
                         .fill(AtlasTheme.accent)
                         .frame(width: 6, height: 6)
-                        .accessibilityLabel(WorkspacePickerJudgment.currentRepoBadgeLabel)
+                        .accessibilityLabel(WorkspacePickerJudgment.productCurrentRepoBadge)
                 }
             }
             .padding(.horizontal, 14)

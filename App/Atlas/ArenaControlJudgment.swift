@@ -37,19 +37,19 @@ enum ArenaStopFace: Equatable {
 /// Pure Arena stop governance grammar — face · spoken · pack.
 enum ArenaStopJudgment {
 
-    static let navigationTitle = "Parar"
+    static let productNavigationTitle = "Parar"
     static let kicker = "Ação governada"
-    static let heroTitle = "Parar a medição?"
+    static let productHeroTitle = "Parar a medição?"
     static let bodyCopy =
         "O caso atual termina antes da parada. Casos concluídos e resultados parciais são preservados."
-    static let actorLabel = "Operador"
-    static let reasonLabel = "Motivo"
+    static let productActor = "Operador"
+    static let productReason = "Motivo"
     static let actorPlaceholder = "quem autoriza"
     static let reasonPlaceholder = "por que parar agora"
-    static let confirmTitle = "Confirmar parada"
+    static let productConfirm = "Confirmar parada"
     static let spokenClose = "fechar confirmação"
     static let spokenCloseHint = "mantém a medição em execução"
-    static let confirmHint = "envia a parada governada com operador e motivo"
+    static let spokenConfirmHint = "envia a parada governada com operador e motivo"
 
     static func trimmed(_ value: String) -> String {
         value.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -166,9 +166,9 @@ struct ArenaCapabilitiesCounts: Equatable {
 /// Pure capabilities confidence grammar — face · counts · rank · spoken · pack.
 enum ArenaCapabilitiesJudgment {
 
-    static let emptyTitle = "Capacidades ainda não medidas"
+    static let productEmptyTitle = "Capacidades ainda não medidas"
     static let emptyBody = "Ausência permanece ausência — nenhuma barra começa em zero."
-    static let coveredLabel = "capacidades cobertas"
+    static let productCovered = "capacidades cobertas"
     static let groupOrder = ["construction", "comprehension", "quality", "agentic"]
 
     // MARK: Face / counts

@@ -1188,7 +1188,7 @@ extension EditorialTurn {
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
         .onLongPressGesture(minimumDuration: 0.38) { onCopy() }
-        .accessibilityHint(EditorialTurnJudgment.copyLongPressHint)
+        .accessibilityHint(EditorialTurnJudgment.spokenCopyLongPressHint)
     }
 }
 
@@ -1306,7 +1306,7 @@ extension FeedbackRow {
     ) -> some View {
         content
             .accessibilityLabel(EditorialTurnJudgment.spokenFeedbackLabel(kind: kind, active: isActive))
-            .accessibilityHint(EditorialTurnJudgment.feedbackHint)
+            .accessibilityHint(EditorialTurnJudgment.spokenFeedbackHint)
             .accessibilityAddTraits(isActive ? .isSelected : [])
             .accessibilityIdentifier(A11yID.editorialTurnFeedback(kind.rawValue))
     }
@@ -1430,7 +1430,7 @@ extension EditorialTurn {
             userEditResendLabel
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel(EditorialTurnJudgment.editResendLabel)
+        .accessibilityLabel(EditorialTurnJudgment.spokenEditResend)
         .accessibilityHint("abre o compositor com este texto para um novo envio")
     }
 }
@@ -1537,8 +1537,8 @@ enum EditorialSignatureFace: Equatable {
 enum EditorialTurnJudgment {
 
     static let spokenFinalAnswerKicker = "resposta final"
-    static let copyLongPressHint = "pressionar e segurar copia a resposta"
-    static let feedbackHint = "envia feedback ao roteamento do Atlas para este turno"
+    static let spokenCopyLongPressHint = "pressionar e segurar copia a resposta"
+    static let spokenFeedbackHint = "envia feedback ao roteamento do Atlas para este turno"
 
     static func signatureWho(provider: String?, model: String?) -> String? {
         if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
@@ -1639,5 +1639,5 @@ enum EditorialTurnJudgment {
         return (facts, absences)
     }
 
-    static let editResendLabel = "editar esta mensagem e reenviar como novo turno"
+    static let spokenEditResend = "editar esta mensagem e reenviar como novo turno"
 }

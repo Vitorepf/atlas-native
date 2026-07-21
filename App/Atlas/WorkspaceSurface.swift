@@ -601,7 +601,7 @@ struct AtlasWorkspacePickerSheet: View {
                 Text(WorkspacePickerJudgment.failedHeadline)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Button(WorkspacePickerJudgment.retryLabel) { Task { await model.load() } }
+                Button(WorkspacePickerJudgment.productRetry) { Task { await model.load() } }
                     .atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.accent)
             }
@@ -624,7 +624,7 @@ extension AtlasWorkspacePickerSheet {
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 22)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(WorkspacePickerJudgment.noRepoTitle).atlasSans(16, .medium)
+                    Text(WorkspacePickerJudgment.productNoRepoTitle).atlasSans(16, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text(WorkspacePickerJudgment.noRepoSubtitle).atlasSans(13)
                         .foregroundStyle(AtlasTheme.textTertiary)
@@ -639,7 +639,7 @@ extension AtlasWorkspacePickerSheet {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(WorkspacePickerJudgment.spokenNoRepo())
-        .accessibilityHint(WorkspacePickerJudgment.noRepoHint)
+        .accessibilityHint(WorkspacePickerJudgment.spokenNoRepoHint)
         .accessibilityIdentifier(A11yID.workspacePickerNoRepo)
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 12)
@@ -696,7 +696,7 @@ extension AtlasWorkspacePickerSheet {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(WorkspacePickerJudgment.spokenRow(repo))
-        .accessibilityHint(WorkspacePickerJudgment.rowHint)
+        .accessibilityHint(WorkspacePickerJudgment.spokenRowHint)
         .accessibilityIdentifier(A11yID.workspacePickerRow(repo.slug))
     }
 }
@@ -1237,15 +1237,15 @@ enum WorkspacePickerJudgment {
 
     static let loadingCopy = "lendo os repositórios do Mac…"
     static let failedHeadline = "O Mac não respondeu."
-    static let retryLabel = "Tentar de novo"
-    static let noRepoLabel = "sem repositório"
-    static let noRepoHint = "conversa geral com o Atlas, sem projeto"
-    static let noRepoTitle = "Sem repositório"
+    static let productRetry = "Tentar de novo"
+    static let productNoRepo = "sem repositório"
+    static let spokenNoRepoHint = "conversa geral com o Atlas, sem projeto"
+    static let productNoRepoTitle = "Sem repositório"
     static let noRepoSubtitle = "conversar ou pesquisar, sem projeto"
     static let reposCaption = "REPOSITÓRIOS"
     static let searchPrompt = "Buscar repositórios"
-    static let rowHint = "abre o workspace deste repositório"
-    static let currentRepoBadgeLabel = "atual"
+    static let spokenRowHint = "abre o workspace deste repositório"
+    static let productCurrentRepoBadge = "atual"
     static let spokenClose = "Fechar"
 
     // MARK: Face
@@ -1316,7 +1316,7 @@ enum WorkspacePickerJudgment {
 
     static func spokenFailed() -> String { failedHeadline }
 
-    static func spokenNoRepo() -> String { noRepoLabel }
+    static func spokenNoRepo() -> String { productNoRepo }
 
     static func spokenRow(folder: String?, name: String) -> String {
         if let folder, !folder.isEmpty {
@@ -1523,8 +1523,8 @@ enum WorkspaceThreadJudgment {
 
     // MARK: Catalog chrome spoken (IDLE · was RootChromeRowA11y)
 
-    static let profileLabel = "perfil do operador"
-    static let profileHint = "abre seu perfil e o estado da sessão"
+    static let spokenProfile = "perfil do operador"
+    static let spokenProfileHint = "abre seu perfil e o estado da sessão"
 
     static func workspaceSpoken(
         name: String,

@@ -498,14 +498,14 @@ struct ArenaPremiumCapabilitiesView: View {
                     .font(AtlasFont.serif(56))
                 Text("/\(counts.total)")
                     .font(AtlasFont.serif(29))
-                Text(ArenaCapabilitiesJudgment.coveredLabel)
+                Text(ArenaCapabilitiesJudgment.productCovered)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .padding(.leading, 6)
             }
             .foregroundStyle(AtlasTheme.textPrimary)
             .accessibilityLabel(
-                "\(counts.measured) de \(counts.total) \(ArenaCapabilitiesJudgment.coveredLabel), medido com confiança"
+                "\(counts.measured) de \(counts.total) \(ArenaCapabilitiesJudgment.productCovered), medido com confiança"
             )
         }
     }
@@ -622,7 +622,7 @@ struct ArenaPremiumCapabilitiesView: View {
     private var empty: some View {
         VStack(alignment: .leading, spacing: 16) {
             ArenaPremiumEmptyGlyph(symbol: "shield.lefthalf.filled")
-            Text(ArenaCapabilitiesJudgment.emptyTitle)
+            Text(ArenaCapabilitiesJudgment.productEmptyTitle)
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(ArenaCapabilitiesJudgment.emptyBody)
@@ -964,7 +964,7 @@ struct ArenaPremiumStopSheet: View {
                     ArenaPremiumEmptyGlyph(symbol: "stop.circle", tone: .negative)
                     ArenaPremiumKicker(text: ArenaStopJudgment.kicker, tone: .negative)
                         .accessibilityIdentifier(A11yID.arenaPremiumStopSheet)
-                    Text(ArenaStopJudgment.heroTitle)
+                    Text(ArenaStopJudgment.productHeroTitle)
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text(ArenaStopJudgment.bodyCopy)
@@ -979,7 +979,7 @@ struct ArenaPremiumStopSheet: View {
             }
             .scrollIndicators(.hidden)
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle(ArenaStopJudgment.navigationTitle)
+            .navigationTitle(ArenaStopJudgment.productNavigationTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -1007,13 +1007,13 @@ struct ArenaPremiumStopSheet: View {
         VStack(alignment: .leading, spacing: 14) {
             // Chrome da casa: .roundedBorder rendia caixas BRANCAS no dark
             // (a mesma quebra já corrigida na folha de rodar) — ink neutro.
-            fieldLabel(ArenaStopJudgment.actorLabel)
+            fieldLabel(ArenaStopJudgment.productActor)
             TextField(ArenaStopJudgment.actorPlaceholder, text: $actor)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaPremiumStopActor)
-            fieldLabel(ArenaStopJudgment.reasonLabel)
+            fieldLabel(ArenaStopJudgment.productReason)
             TextField(ArenaStopJudgment.reasonPlaceholder, text: $reason, axis: .vertical)
                 .lineLimit(2...4)
                 .modifier(ArenaFieldChrome())
@@ -1069,7 +1069,7 @@ struct ArenaPremiumStopSheet: View {
                     symbol: ArenaPremiumIconography.stop,
                     tone: valid && !isConfirmed ? .negative : .muted
                 )
-                Text(model.isStoppingMeasurement ? "Solicitando…" : ArenaStopJudgment.confirmTitle)
+                Text(model.isStoppingMeasurement ? "Solicitando…" : ArenaStopJudgment.productConfirm)
             }
                 .font(.system(.body, weight: .semibold))
                 .frame(maxWidth: .infinity, minHeight: 50)
@@ -1081,7 +1081,7 @@ struct ArenaPremiumStopSheet: View {
         .disabled(!valid || model.isStoppingMeasurement || isConfirmed)
         .accessibilityIdentifier(A11yID.arenaPremiumStopConfirm)
         .accessibilityLabel(ArenaStopJudgment.spokenConfirm(actor: actor, reason: reason))
-        .accessibilityHint(ArenaStopJudgment.confirmHint)
+        .accessibilityHint(ArenaStopJudgment.spokenConfirmHint)
     }
 }
 

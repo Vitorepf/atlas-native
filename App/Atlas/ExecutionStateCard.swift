@@ -517,8 +517,8 @@ extension ExecutionStateCard {
                 reduceMotion: reduceMotion
             ))
             .accessibilityIdentifier(A11yID.executionRetry)
-            .accessibilityLabel(ExecutionStateCardJudgment.retryLabel)
-            .accessibilityHint(ExecutionStateCardJudgment.retryHint)
+            .accessibilityLabel(ExecutionStateCardJudgment.spokenRetry)
+            .accessibilityHint(ExecutionStateCardJudgment.spokenRetryHint)
     }
 }
 
@@ -771,8 +771,8 @@ enum ExecutionStateCardJudgment {
         return (facts, absences)
     }
 
-    static let retryLabel = "retomar execução a partir do último checkpoint"
-    static let retryHint = "reenfileira o job que falhou"
+    static let spokenRetry = "retomar execução a partir do último checkpoint"
+    static let spokenRetryHint = "reenfileira o job que falhou"
 }
 
 // MARK: - ExecutionProof
@@ -859,7 +859,7 @@ extension ExecutionProof {
             .buttonStyle(.plain)
             .accessibilityIdentifier(A11yID.artifactsRow)
             .accessibilityLabel(ExecutionProofJudgment.spokenArtifactsCTA(count: count))
-            .accessibilityHint(ExecutionProofJudgment.artifactsHint)
+            .accessibilityHint(ExecutionProofJudgment.spokenArtifactsHint)
     }
 }
 
@@ -1032,7 +1032,7 @@ extension ExecutionProof {
             let selected = stamped[index]
             replayScrubberChrome(index: index, total: stamped.count, selected: selected)
         } else if !bubble.activities.isEmpty {
-            Text(ExecutionProofJudgment.replayUnavailableLabel)
+            Text(ExecutionProofJudgment.spokenReplayUnavailable)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityLabel(ExecutionProofJudgment.replayUnavailableSpoken)
@@ -1111,7 +1111,7 @@ extension ExecutionProof {
             set: { replayIndex = min(max(0, Int($0.rounded())), stampedCount - 1) }
         ), in: 0...Double(stampedCount - 1), step: 1)
         .tint(AtlasTheme.accent)
-        .accessibilityLabel(ExecutionProofJudgment.replayScrubberLabel)
+        .accessibilityLabel(ExecutionProofJudgment.spokenReplayScrubber)
         .accessibilityValue(
             ExecutionProofJudgment.spokenReplayValue(
                 index: replayIndex, total: stampedCount
@@ -1599,15 +1599,15 @@ enum ExecutionProofJudgment {
         return parts.joined(separator: ", ")
     }
 
-    static let replayUnavailableLabel =
+    static let spokenReplayUnavailable =
         "REPLAY indisponível · eventos sem timestamps"
     static let replayUnavailableSpoken =
         "replay indisponível porque os eventos não têm timestamps"
 
     // MARK: Chrome spoken (WAVE residual · proof card)
 
-    static let artifactsHint = "abre a lista de artefatos deste trace"
-    static let replayScrubberLabel = "scrubber de replay da execução"
+    static let spokenArtifactsHint = "abre a lista de artefatos deste trace"
+    static let spokenReplayScrubber = "scrubber de replay da execução"
 
     static func spokenArtifactsCTA(count: Int) -> String {
         let noun = count == 1 ? "artefato" : "artefatos"
