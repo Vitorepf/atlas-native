@@ -92,7 +92,8 @@ struct AutonomosListView: View {
         .overlay(alignment: .bottom) {
             AutonomosMapChrome.hairline
         }
-        .accessibilityElement(children: .combine)
+        // Ignore children so spoken(unit) is the single VO node (no double name/charter).
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(spoken(unit))
         .accessibilityHint("abre o hub deste Autônomo")
         .accessibilityAddTraits(.isButton)
