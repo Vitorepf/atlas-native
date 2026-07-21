@@ -5226,21 +5226,21 @@ extension PlanCard {
     @ViewBuilder
     func planAgentsChips(_ plan: AtlasExecutionPlan) -> some View {
         if !plan.agents.isEmpty {
-            chipRow(label: "agentes", items: plan.agents.map(\.title))
+            chipRow(label: "Agentes", items: plan.agents.map(\.title))
         }
     }
 
     @ViewBuilder
     func planToolsChips(_ plan: AtlasExecutionPlan) -> some View {
         if !plan.tools.isEmpty {
-            chipRow(label: "ferramentas", items: plan.tools.map(\.label))
+            chipRow(label: "Ferramentas", items: plan.tools.map(\.label))
         }
     }
 
     @ViewBuilder
     func planGatesChips(_ plan: AtlasExecutionPlan) -> some View {
         if !plan.qualityGates.isEmpty {
-            chipRow(label: "gates", items: plan.qualityGates.map(\.label))
+            chipRow(label: "Gates", items: plan.qualityGates.map(\.label))
         }
     }
 
@@ -5278,7 +5278,10 @@ struct PlanFlowChips: View {
         Text(item)
             .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textSecondary)
             .padding(.horizontal, 7).padding(.vertical, 3)
-            .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            .background(
+                Capsule().fill(AtlasTheme.surface.opacity(0.55))
+                    .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            )
             .lineLimit(1)
             .accessibilityHidden(true)
     }
