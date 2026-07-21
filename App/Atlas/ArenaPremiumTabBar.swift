@@ -9,6 +9,8 @@ struct ArenaPremiumTabBar: View {
         HStack(spacing: 0) {
             ForEach(ArenaPremiumTab.allCases) { tab in
                 Button {
+                    guard selection != tab else { return }
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     withAnimation(reduceMotion ? nil : AtlasMotion.editorial) { selection = tab }
                 } label: {
                     // Controle fala sans (canon §C); seleção = pílula neutra
@@ -17,7 +19,7 @@ struct ArenaPremiumTabBar: View {
                     Text(tab.rawValue)
                         .atlasSans(13, .medium)
                         .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textTertiary)
-                        .frame(maxWidth: .infinity, minHeight: 38)
+                        .frame(maxWidth: .infinity, minHeight: 40)
                         .background {
                             if selection == tab {
                                 Capsule()
@@ -29,9 +31,10 @@ struct ArenaPremiumTabBar: View {
                         .contentShape(Capsule())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(tabAccessibilityLabel(tab))
+                .accessibilityLabel(Text(tabAccessibilityLabel(tab)))
                 .accessibilityAddTraits(selection == tab ? .isSelected : [])
                 .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.a11yKey))
+                .accessibilityHint(selection == tab ? Text("selecionado") : Text("troca aba da Arena"))
             }
         }
         .padding(3)
