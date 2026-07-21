@@ -182,6 +182,7 @@ extension RootView {
         .accessibilityIdentifier(A11yID.topbarProfile)
         .accessibilityLabel("perfil do operador")
         .accessibilityHint("abre seu perfil e o estado da sessão")
+        .accessibilityAddTraits(.isButton)
         .sheet(isPresented: $showingProfile) { AtlasProfileSheet() }
     }
 }

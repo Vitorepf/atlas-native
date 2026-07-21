@@ -63,6 +63,7 @@ extension DraftThumb {
             .accessibilityLabel(DraftThumbA11y.spokenRemove(draft))
             .accessibilityHint(DraftThumbA11y.removeHint)
             .accessibilityIdentifier(A11yID.draftRemove(draft.id))
+            .accessibilityAddTraits(.isButton)
     }
 }
 

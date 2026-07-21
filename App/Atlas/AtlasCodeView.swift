@@ -199,6 +199,7 @@ extension AtlasCodeView {
             .accessibilityLabel("Limpar referência do commit")
             .accessibilityHint("Remove o commit da pílula")
             .accessibilityIdentifier(A11yID.codeAskClear)
+            .accessibilityAddTraits(.isButton)
         } else if askModel.isAnchoring {
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
@@ -214,6 +215,7 @@ extension AtlasCodeView {
             .accessibilityLabel(AtlasCodeAskPillA11y.clearLabel)
             .accessibilityHint(AtlasCodeAskPillA11y.clearHint)
             .accessibilityIdentifier(A11yID.codeAskClear)
+            .accessibilityAddTraits(.isButton)
         }
     }
 }
@@ -751,6 +753,7 @@ extension AtlasCodeView {
         .accessibilityLabel("repositório \(model.repo)")
         .accessibilityHint("troca de repositório")
         .accessibilityIdentifier(A11yID.codeRepoSwitcher)
+        .accessibilityAddTraits(.isButton)
     }
 }
 

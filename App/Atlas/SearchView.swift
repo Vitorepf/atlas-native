@@ -65,6 +65,7 @@ extension SearchViewHeader {
         }
         .accessibilityLabel("voltar")
         .accessibilityHint("fecha a busca")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -95,6 +96,7 @@ extension SearchViewHeader {
             .accessibilityLabel("limpar busca")
             .accessibilityHint("remove o texto e volta aos recentes")
             .accessibilityIdentifier(A11yID.searchClear)
+            .accessibilityAddTraits(.isButton)
     }
 }
 
