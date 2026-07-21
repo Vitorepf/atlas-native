@@ -36,6 +36,7 @@
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
 | **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y |
 | **Workspace screen (lista)** | `WorkspaceScreenJudgment` → face loading/offline/empty/list · screen a11y |
+| **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |
 | Phase grammar execução (strip/presence) | `ConversationExecutionPhase` → strip/StateCard/LiveNow/composer `selectPresenceBubble` |
 | **LiveNow attention (Home hub)** | `LiveNowJudgment` → rank · headForOpen (Seguir) · pack anchors · section face |
 | **StateCard kind chrome** | `ExecutionStateCardJudgment` → icon/badge/spoken/tint/timer freeze |

@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 72
+- waves_completed: 73
 - idle_compress_passes: 16
 - collapse_host: 0
 
@@ -83,9 +83,9 @@ mode: designer + implementer
 - WAVE-075
 - WAVE-076
 - WAVE-077
+- WAVE-078
 
 ## Idle compress
-- pass 1–15 (see prior commits)
 - pass 16 · `3c63dc3a` · peel LiveTimeline FilterChrome
 
 ## Designer
@@ -99,5 +99,4 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-076–077 (effort · rhythm). Prefer A fill. DEVICE_PENDING.
-- LEDGER idle B-owned; do not strip.
+- WAVE-076–078. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.

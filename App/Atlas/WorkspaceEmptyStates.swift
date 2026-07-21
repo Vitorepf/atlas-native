@@ -8,6 +8,13 @@ struct WorkspaceEditorialEmpty: View {
     let freeOnly: Bool
     let screenTitle: String
 
+    /// WAVE-078: exclusive editorial-empty face.
+    var emptyFace: WorkspaceEmptyFace {
+        WorkspaceEmptyJudgment.face(
+            area: area, freeOnly: freeOnly, screenTitle: screenTitle
+        )
+    }
+
     var body: some View {
         editorialGlyph
     }
@@ -17,40 +24,34 @@ struct WorkspaceEditorialEmpty: View {
             headline: headline,
             footnote: footnote,
             accessibilityIdentifier: A11yID.workspaceEmpty,
-            spokenLabel: spokenLabel
+            spokenLabel: spokenLabel,
+            accessibilityValue: emptyFace.productWord
         )
     }
 
-    var headline: String { editorialHeadline }
-    var footnote: String { editorialFootnote }
-
-    var editorialHeadline: String {
-        if area != .tudo {
-            return "“Nada em \(area.label) — por enquanto.”"
-        }
-        if freeOnly {
-            return "“Nenhuma conversa sem projeto ainda.”"
-        }
-        return "“Nenhuma conversa em \(screenTitle) ainda.”"
+    var headline: String {
+        WorkspaceEmptyJudgment.headline(face: emptyFace)
     }
 
-    var editorialFootnote: String {
-        if freeOnly {
-            return "perguntas e pensamento livre começam abaixo"
-        }
-        return "comece uma abaixo — o projeto é opcional"
+    var footnote: String {
+        WorkspaceEmptyJudgment.footnote(face: emptyFace)
     }
 
     var spokenLabel: String {
-        let lead: String
-        if area != .tudo {
-            lead = "nada em \(area.label) em \(screenTitle)"
-        } else if freeOnly {
-            lead = "nenhuma conversa sem projeto ainda"
+        WorkspaceEmptyJudgment.spokenLabel(
+            area: area, freeOnly: freeOnly, screenTitle: screenTitle
+        )
+    }
+}
+
+private struct OptionalAccessibilityValue: ViewModifier {
+    let value: String?
+    func body(content: Content) -> some View {
+        if let value {
+            content.accessibilityValue(value)
         } else {
-            lead = "nenhuma conversa em \(screenTitle) ainda"
+            content
         }
-        return "\(lead). \(footnote)"
     }
 }
 
@@ -59,12 +60,14 @@ struct AtlasEditorialGlyphEmpty: View {
     var footnote: String? = nil
     let accessibilityIdentifier: String
     var spokenLabel: String? = nil
+    var accessibilityValue: String? = nil
 
     var body: some View {
         editorialStack
             .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenLabel ?? headline)
+            .modifier(OptionalAccessibilityValue(value: accessibilityValue))
             .accessibilityIdentifier(accessibilityIdentifier)
     }
 
