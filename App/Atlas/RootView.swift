@@ -1,6 +1,7 @@
 import AtlasCore
 import SwiftUI
 import UIKit
+import Foundation
 
 // Cycle 044 fuse → RootView.swift
 
@@ -1019,5 +1020,1499 @@ struct RootHomeSections: View {
 
     private func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
         VStack { Spacer(); v(); Spacer() }.frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+
+/// "VIVO AGORA" — home vira cockpit quando há sessão neste processo.
+/// Sem sessões a seção não existe. Com 2+ = Session Hub (zero Route nova).
+struct LiveNowSection: View {
+    let localSessions: [LiveSessionSnapshot]
+    let remoteSessions: [LiveSessionSnapshot]
+    let onOpen: (ThreadID, String) -> Void
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var sessions: [LiveSessionSnapshot] {
+        Self.merged(local: localSessions, remote: remoteSessions)
+    }
+
+    var isHub: Bool { sessions.count >= 2 }
+    var remoteCount: Int { sessions.filter(\.isRemote).count }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: isHub ? 0 : 12) {
+            header
+            ForEach(Array(sessions.enumerated()), id: \.element.id) { index, session in
+                if isHub, index > 0 {
+                    Rectangle()
+                        .fill(AtlasTheme.separator.opacity(0.55))
+                        .frame(height: 1)
+                        .padding(.vertical, 10)
+                        .accessibilityHidden(true)
+                }
+                rowCell(index: index, session: session)
+            }
+        }
+        .padding(14)
+        .atlasCard()
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.bottom, 18)
+        .accessibilityIdentifier(A11yID.liveNowSection)
+        // Contain without fused section label so each LiveNowRow stays focusable.
+        .accessibilityElement(children: .contain)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: sessions.map(\.id))
+    }
+
+    private var header: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Text("VIVO AGORA")
+                .font(AtlasFont.mono(11))
+                .tracking(1.4)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(Self.spokenSectionLabel(
+                    isHub: isHub, count: sessions.count, remoteCount: remoteCount
+                ))
+            if isHub {
+                Text("× \(sessions.count)")
+                    .font(AtlasFont.mono(11))
+                    .foregroundStyle(AtlasTheme.accent)
+                    .accessibilityHidden(true)
+                if remoteCount > 0 {
+                    Text("· \(remoteCount) remota\(remoteCount == 1 ? "" : "s")")
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.bottom, isHub ? 12 : 0)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Self.spokenSectionLabel(
+            isHub: isHub, count: sessions.count, remoteCount: remoteCount
+        ))
+    }
+
+    private func rowCell(index: Int, session: LiveSessionSnapshot) -> some View {
+        LiveNowRow(
+            session: session,
+            hubMode: isHub,
+            hubIndex: isHub ? index : nil,
+            hubCount: isHub ? sessions.count : nil,
+            reduceMotion: reduceMotion,
+            remoteBadgeID: session.isRemote ? A11yID.liveNowRemoteBadge(index) : nil
+        ) {
+            // Soft haptic already fires in LiveNowRow — avoid double impact.
+            guard let threadId = session.threadId else { return }
+            onOpen(threadId, session.title)
+        }
+        .accessibilityIdentifier(A11yID.liveNowRow(index))
+        .transition(reduceMotion ? .opacity : .asymmetric(
+            insertion: .opacity.combined(with: .offset(y: 8)),
+            removal: .opacity
+        ))
+    }
+
+    static func spokenSectionLabel(isHub: Bool, count: Int, remoteCount: Int) -> String {
+        guard isHub else { return "vivo agora" }
+        var label = "vivo agora, \(count) sessões vivas"
+        if remoteCount > 0 {
+            label += ", \(remoteCount) remota\(remoteCount == 1 ? "" : "s") em outra superfície"
+        }
+        return label
+    }
+
+    static func merged(local: [LiveSessionSnapshot], remote: [LiveSessionSnapshot]) -> [LiveSessionSnapshot] {
+        local + filteredRemote(local: local, remote: remote)
+    }
+
+    static func filteredRemote(
+        local: [LiveSessionSnapshot],
+        remote: [LiveSessionSnapshot]
+    ) -> [LiveSessionSnapshot] {
+        var seenThreads = Set(local.compactMap { $0.threadId?.rawValue })
+        var seenRemoteIDs: Set<String> = []
+        return remote.filter { session in
+            if let thread = session.threadId?.rawValue {
+                guard !seenThreads.contains(thread) else { return false }
+                seenThreads.insert(thread)
+                return true
+            }
+            return seenRemoteIDs.insert(session.id).inserted
+        }
+    }
+}
+
+
+/// Uma linha do Session Hub / VIVO AGORA — title, phase, timing, elapsed.
+struct LiveNowRow: View {
+    let session: LiveSessionSnapshot
+    let hubMode: Bool
+    let hubIndex: Int?
+    let hubCount: Int?
+    let reduceMotion: Bool
+    let remoteBadgeID: String?
+    let onTap: () -> Void
+
+    var navigable: Bool { session.threadId != nil }
+
+    var body: some View {
+        Group {
+            if navigable {
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                    onTap()
+                } label: {
+                    rowContent
+                }
+                .buttonStyle(PressableScale())
+            } else {
+                rowContent
+            }
+        }
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(spokenLabel(hubIndex: hubIndex, hubCount: hubCount))
+        .accessibilityHint(navigable ? "abre conversa desta sessão" : "")
+        .accessibilityAddTraits(liveNowTraits)
+    }
+
+    /// Running sessions update elapsed copy; respect Reduce Motion.
+    private var liveNowTraits: AccessibilityTraits {
+        let live = session.timing == .running && !reduceMotion
+        if navigable {
+            return live ? [.isButton, .updatesFrequently] : .isButton
+        }
+        return live ? .updatesFrequently : []
+    }
+
+    private var rowContent: some View {
+        TimelineView(.periodic(from: .now, by: 60)) { context in
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                HStack(alignment: .firstTextBaseline, spacing: 10) {
+                    BreathingDiamond(
+                        size: 8,
+                        reduceMotion: reduceMotion || session.timing != .running
+                    )
+                    titleStack(now: context.date)
+                }
+                Spacer(minLength: 0)
+                if navigable {
+                    Image(systemName: "chevron.right")
+                        .atlasSans(12, .semibold)
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
+                }
+            }
+            .padding(.vertical, 4)
+            .frame(minHeight: 44, alignment: .center)
+            .opacity(isLongPaused(now: context.date) ? 0.58 : 1)
+        }
+    }
+
+    private func titleStack(now: Date) -> some View {
+        VStack(alignment: .leading, spacing: hubMode ? 4 : 3) {
+            Text(session.title)
+                .font(AtlasFont.serif(16, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(2)
+                .layoutPriority(1)
+            HStack(spacing: 6) {
+                Text(session.phaseTitle)
+                    .font(AtlasFont.serifItalic(13))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .lineLimit(1)
+                if session.isRemote { remoteBadge }
+            }
+            timingLine(now: now)
+        }
+    }
+
+    private var remoteBadge: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "arrow.triangle.branch")
+                .atlasSans(8, .semibold)
+                .accessibilityHidden(true)
+            Text("remota")
+                .font(AtlasFont.mono(9))
+                .tracking(0.4)
+                .accessibilityHidden(true)
+        }
+        .foregroundStyle(AtlasTheme.accent)
+        .padding(.horizontal, 6)
+        .padding(.vertical, 3)
+        .background(Capsule().fill(AtlasTheme.goldVeil))
+        .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("sessão remota em outra superfície")
+        .accessibilityIdentifier(remoteBadgeID ?? "")
+    }
+
+    private func timingLine(now: Date) -> some View {
+        HStack(spacing: 6) {
+            Text(timingWord)
+                .font(AtlasFont.mono(10))
+                .tracking(0.3)
+                .foregroundStyle(timingColor)
+            if session.timing != .finished {
+                Text("·")
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+                clockView(now: now)
+                    .accessibilityLabel(clockAccessibilityLabel(now: now))
+            }
+            if session.timing == .paused, let age = pauseAgeHours(now: now) {
+                Text("· há \(age)h")
+                    .font(AtlasFont.serifItalic(12))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+            }
+        }
+    }
+
+    private var timingWord: String {
+        switch session.timing {
+        case .running: "em execução"
+        case .paused: "pausado"
+        case .finished: "concluído"
+        }
+    }
+
+    private var timingColor: Color {
+        switch session.timing {
+        case .running: AtlasTheme.accent
+        case .paused: AtlasTheme.textTertiary
+        case .finished: AtlasTheme.textSecondary
+        }
+    }
+
+    @ViewBuilder
+    private func clockView(now: Date) -> some View {
+        switch session.timing {
+        case .running:
+            TimelineView(.periodic(from: .now, by: reduceMotion ? 60 : 1)) { context in
+                clockText(Self.formatClock(
+                    elapsedMs: session.elapsedActiveMs,
+                    runningSince: session.runningSince,
+                    now: context.date,
+                    paused: false
+                ))
+            }
+        case .paused:
+            clockText(Self.formatClock(
+                elapsedMs: session.elapsedActiveMs,
+                runningSince: nil,
+                now: now,
+                paused: true
+            ))
+        case .finished:
+            EmptyView()
+        }
+    }
+
+    private func clockText(_ value: String) -> some View {
+        Text(value)
+            .font(AtlasFont.serifItalic(13))
+            .foregroundStyle(AtlasTheme.textSecondary)
+            .monospacedDigit()
+            .modifier(NumericTextTransition(enabled: !reduceMotion))
+    }
+
+    private func clockAccessibilityLabel(now: Date) -> String {
+        guard let clock = spokenClock(now: now) else {
+            return "tempo ativo indisponível"
+        }
+        return session.timing == .paused
+            ? "tempo ativo congelado em \(clock)"
+            : "tempo ativo \(clock)"
+    }
+
+    // MARK: - Spoken
+
+    private func spokenLabel(hubIndex: Int?, hubCount: Int?, now: Date = .now) -> String {
+        let prefix = hubPositionPrefix(index: hubIndex, count: hubCount)
+        switch session.timing {
+        case .running:
+            if let clock = spokenClock(now: now) {
+                return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), em execução há \(clock)"
+            }
+            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), em execução, tempo ativo indisponível"
+        case .paused:
+            let age = pauseAgeHours(now: now).map { ", há \($0) horas" } ?? ""
+            if let clock = spokenClock(now: now) {
+                return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), pausado em \(clock)\(age)"
+            }
+            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), pausado, tempo ativo indisponível\(age)"
+        case .finished:
+            return "\(prefix)\(session.title), \(session.phaseTitle)\(remoteSuffix), concluído"
+        }
+    }
+
+    private var remoteSuffix: String {
+        session.isRemote ? ", sessão remota em outra superfície" : ""
+    }
+
+    private func hubPositionPrefix(index: Int?, count: Int?) -> String {
+        guard let index, let count, count >= 2 else { return "" }
+        return "sessão \(index + 1) de \(count), "
+    }
+
+    private func spokenClock(now: Date) -> String? {
+        guard session.elapsedActiveMs != nil else { return nil }
+        return Self.formatClock(
+            elapsedMs: session.elapsedActiveMs,
+            runningSince: session.runningSince,
+            now: now,
+            paused: session.timing == .paused
+        )
+    }
+
+    // MARK: - Pause / clock math
+
+    func pauseAgeHours(now: Date) -> Int? {
+        guard session.timing == .paused, let pauseTimestamp = session.pauseTimestamp else { return nil }
+        let seconds = max(0, now.timeIntervalSince(pauseTimestamp))
+        guard seconds >= 30 * 60 else { return nil }
+        return max(1, Int(seconds / 3600))
+    }
+
+    func isLongPaused(now: Date) -> Bool {
+        pauseAgeHours(now: now) != nil
+    }
+
+    /// Relógio canônico: `elapsedActiveMs` + (now − runningSince) quando running.
+    static func formatClock(
+        elapsedMs: Int?,
+        runningSince: Date?,
+        now: Date,
+        paused: Bool
+    ) -> String {
+        guard let base = elapsedMs else { return "—" }
+        var ms = base
+        if !paused, let since = runningSince {
+            ms += max(0, Int(now.timeIntervalSince(since) * 1000))
+        }
+        let s = ms / 1000
+        return s >= 3600
+            ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
+            : String(format: "%d:%02d", s / 60, s % 60)
+    }
+}
+
+
+// Cycle 044 fuse → SearchView.swift
+
+// Busca REAL sobre as conversas (o dado já vive na sessão — filtro local,
+// zero rede na casca). Sem query: recentes reais ou silêncio. Com query:
+// título folded (caso+acento insensível). Offline ≠ vazio editorial.
+struct SearchView: View {
+    @Environment(AtlasSession.self) var session
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var query = ""
+    @FocusState var focused: Bool
+
+    var body: some View {
+        searchA11yChrome(searchBackgroundShell)
+    }
+}
+
+extension SearchView {
+    var searchBackgroundShell: some View {
+        ZStack {
+            AtlasTheme.bg.ignoresSafeArea()
+            searchLayout
+        }
+    }
+}
+
+extension SearchView {
+    var searchLayout: some View {
+        VStack(spacing: 0) {
+            SearchViewHeader(query: $query, focused: $focused)
+            list
+        }
+    }
+}
+
+struct SearchViewHeader: View {
+    @Binding var query: String
+    @FocusState.Binding var focused: Bool
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        HStack(spacing: 12) {
+            searchBackButton
+            searchFieldCapsule
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 4).padding(.bottom, 10)
+    }
+}
+
+extension SearchViewHeader {
+    var searchBackButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            dismiss()
+        } label: {
+            Image(systemName: "chevron.left")
+                .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
+                .frame(width: 44, height: 44).atlasGlassCircle()
+                .contentShape(Circle())
+        }
+        .accessibilityLabel("voltar")
+        .accessibilityHint("fecha a busca")
+        .accessibilityAddTraits(.isButton)
+    }
+}
+
+extension SearchViewHeader {
+    func clearSearchQuery() {
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        query = ""
+    }
+}
+
+extension SearchViewHeader {
+    @ViewBuilder
+    var searchClearButton: some View {
+        if !query.isEmpty {
+            searchClearA11y(
+                Button(action: clearSearchQuery) {
+                    searchClearIcon
+                }
+            )
+        }
+    }
+}
+
+extension SearchViewHeader {
+    func searchClearA11y<Content: View>(_ content: Content) -> some View {
+        content
+            .buttonStyle(.plain)
+            .accessibilityLabel("limpar busca")
+            .accessibilityHint("remove o texto e volta aos recentes")
+            .accessibilityIdentifier(A11yID.searchClear)
+            .accessibilityAddTraits(.isButton)
+    }
+}
+
+extension SearchViewHeader {
+    var searchClearIcon: some View {
+        Image(systemName: "xmark.circle.fill")
+            .atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
+            .frame(width: 44, height: 44)
+            .contentShape(Circle())
+    }
+}
+
+extension SearchViewHeader {
+    var searchFieldCapsule: some View {
+        searchFieldLeading
+            .padding(.horizontal, 14).padding(.vertical, 9)
+            .frame(minHeight: 44) // HIG interactive minimum
+            .background(Capsule().fill(AtlasTheme.surface)
+                .overlay(Capsule().stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1)))
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: focused)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: query.isEmpty)
+    }
+}
+
+extension SearchViewHeader {
+    var searchFieldInput: some View {
+        ZStack(alignment: .leading) {
+            searchFieldPlaceholder
+            TextField("", text: $query)
+                .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
+                .tint(AtlasTheme.accent).focused($focused)
+                .submitLabel(.search)
+                .accessibilityLabel(spokenFieldLabel)
+                .accessibilityHint("filtra só conversas já carregadas na sessão")
+                .accessibilityIdentifier(A11yID.searchField)
+        }
+    }
+}
+
+extension SearchViewHeader {
+    var searchFieldLeading: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            searchFieldInput
+            searchClearButton
+        }
+    }
+}
+
+extension SearchViewHeader {
+    var searchFieldPlaceholder: some View {
+        Text("Buscar conversas")
+            .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
+            .opacity(query.isEmpty ? 1 : 0).allowsHitTesting(false)
+            .accessibilityHidden(true)
+    }
+}
+
+extension SearchViewHeader {
+    var spokenFieldLabel: String {
+        let trimmed = query.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty { return "buscar conversas" }
+        return "buscar conversas, \(trimmed)"
+    }
+}
+
+extension SearchView {
+    func searchA11yChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .toolbar(.hidden, for: .navigationBar)
+            .accessibilityIdentifier(A11yID.searchScreen)
+            // Contain without fused screen label so field/results stay focusable.
+            .accessibilityElement(children: .contain)
+            .onAppear { focused = true }
+    }
+}
+
+extension SearchResultsSection {
+    /// Mesma régua da lista de Conversas: "novo" na maioria de 6+ linhas
+    /// não discrimina — silencia em bloco.
+    var newBadgeSaturated: Bool {
+        results.count >= 6
+            && results.lazy.filter(ConversationModel.hasNewerContent).count * 2 > results.count
+    }
+
+    @ViewBuilder
+    var resultsThreadLoop: some View {
+        let saturated = newBadgeSaturated
+        ForEach(results) { t in
+            SearchThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: saturated)
+            if t.id != results.last?.id {
+                Divider().overlay(AtlasTheme.separator)
+                    .padding(.leading, AtlasTheme.Space.screen + 36)
+            }
+        }
+    }
+}
+
+struct SearchResultsSection: View {
+    let results: [AtlasAiThread]
+    let query: String
+    let reduceMotion: Bool
+
+    var body: some View {
+        Group {
+            resultsCaption
+            resultsThreadLoop
+        }
+    }
+}
+
+extension SearchResultsSection {
+    var resultsCaption: some View {
+        Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
+            .font(.system(.caption, weight: .semibold)).tracking(1.2)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityLabel("\(results.count) conversa\(results.count == 1 ? "" : "s") com ‘\(query)’")
+            .accessibilityIdentifier(A11yID.searchResultsCaption)
+    }
+}
+
+extension SearchView {
+    /// Só threads já carregadas na sessão — zero placeholder ou sugestão inventada.
+    var recentThreads: [AtlasAiThread] {
+        Array(session.threads.prefix(12))
+    }
+}
+
+extension SearchView {
+    var trimmedQuery: String {
+        query.trimmingCharacters(in: .whitespaces)
+    }
+
+    var isBrowsingRecent: Bool { trimmedQuery.isEmpty }
+}
+
+extension SearchView {
+    var showsLoadingShell: Bool {
+        guard session.threads.isEmpty else { return false }
+        switch session.phase {
+        case .idle, .loading: return true
+        default: return false
+        }
+    }
+}
+
+extension SearchView {
+    var showsNetworkFailure: Bool {
+        guard session.threads.isEmpty else { return false }
+        if case .failed = session.phase { return true }
+        return false
+    }
+}
+
+extension SearchView {
+    var searchResults: [AtlasAiThread] {
+        let q = trimmedQuery.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+        guard !q.isEmpty else { return [] }
+        return session.threads.filter {
+            $0.title.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                .contains(q)
+        }
+    }
+}
+
+struct SearchMissEmpty: View {
+    let query: String
+    let loadedThreadCount: Int
+
+    private var headline: String {
+        loadedThreadCount >= 100
+            ? "“Nada com ‘\(query)’ nas 100 conversas mais recentes.”"
+            : "“Nada com ‘\(query)’.”"
+    }
+
+    var body: some View {
+        AtlasEditorialGlyphEmpty(
+            headline: headline,
+            footnote: "tente outra frase · a busca olha títulos e trechos recentes",
+            accessibilityIdentifier: A11yID.searchEmpty,
+            spokenLabel: "\(headline) tente outra frase"
+        )
+    }
+}
+
+extension SearchThreadLink {
+    var threadNavigationLink: some View {
+        NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
+            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed, ownsAccessibility: false)
+        }
+        .buttonStyle(.plain)
+        .simultaneousGesture(TapGesture().onEnded {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        })
+    }
+}
+
+extension SearchThreadLink {
+    func threadLinkTransition<Content: View>(_ content: Content) -> some View {
+        let running = TurnPresence.shared.runningTitles.contains(thread.title)
+        return content
+            .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
+            .accessibilityHint(running ? "Atlas executando nesta conversa" : "abre a conversa")
+            .accessibilityAddTraits(
+                running && !reduceMotion
+                    ? [.isButton, .updatesFrequently]
+                    : .isButton
+            )
+            .accessibilityIdentifier(A11yID.searchResult(thread.id))
+            .transition(reduceMotion ? .opacity : .asymmetric(
+                insertion: .opacity.combined(with: .offset(y: 6)),
+                removal: .opacity
+            ))
+    }
+}
+
+struct SearchThreadLink: View {
+    let thread: AtlasAiThread
+    let reduceMotion: Bool
+    var newBadgeSuppressed: Bool = false
+
+    var body: some View {
+        threadLinkTransition(threadNavigationLink)
+    }
+}
+
+extension SearchThreadLink {
+    static func spokenLabel(_ thread: AtlasAiThread) -> String {
+        var parts = [thread.title, "\(thread.messageCount) mensagens"]
+        if TurnPresence.shared.runningTitles.contains(thread.title) {
+            parts.append("executando")
+        } else if ConversationModel.hasNewerContent(thread) {
+            parts.append("novo desde a última visita")
+        }
+        return parts.joined(separator: ", ")
+    }
+}
+
+extension SearchView {
+    var list: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                listShellContent
+            }
+            .padding(.bottom, 40)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: trimmedQuery)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: session.threads.map(\.id))
+        }
+        .scrollIndicators(.hidden)
+        .scrollDismissesKeyboard(.immediately)
+        .refreshable { await session.loadThreads() }
+    }
+}
+
+extension SearchView {
+    @ViewBuilder
+    var listQueryContent: some View {
+        if isBrowsingRecent {
+            if !recentThreads.isEmpty {
+                SearchRecentSection(threads: recentThreads, reduceMotion: reduceMotion)
+            }
+        } else if searchResults.isEmpty {
+            SearchMissEmpty(query: trimmedQuery, loadedThreadCount: session.threads.count)
+        } else {
+            SearchResultsSection(results: searchResults, query: trimmedQuery, reduceMotion: reduceMotion)
+        }
+    }
+}
+
+extension SearchView {
+    @ViewBuilder
+    var searchLoadingShell: some View {
+        WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
+            .accessibilityIdentifier(A11yID.searchLoading)
+    }
+}
+
+extension SearchView {
+    @ViewBuilder
+    var searchOfflineShell: some View {
+        AtlasNetworkFailureEmpty(
+            kind: session.failureKind,
+            hasToken: session.hasToken,
+            host: session.host,
+            topPadding: 56,
+            retryHint: "reconecta e recarrega conversas para buscar",
+            accessibilityIdentifier: A11yID.searchOffline,
+            onRetry: { Task { await session.loadThreads() } }
+        )
+    }
+}
+
+extension SearchView {
+    @ViewBuilder
+    var listShellContent: some View {
+        if showsLoadingShell {
+            searchLoadingShell
+        } else if showsNetworkFailure {
+            searchOfflineShell
+        } else {
+            listQueryContent
+        }
+    }
+}
+
+extension SearchRecentSection {
+    /// Mesma régua da lista de Conversas: saturado silencia em bloco.
+    var newBadgeSaturated: Bool {
+        threads.count >= 6
+            && threads.lazy.filter(ConversationModel.hasNewerContent).count * 2 > threads.count
+    }
+
+    @ViewBuilder
+    var recentThreadLoop: some View {
+        let saturated = newBadgeSaturated
+        ForEach(threads) { t in
+            SearchThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: saturated)
+            if t.id != threads.last?.id {
+                Divider().overlay(AtlasTheme.separator)
+                    .padding(.leading, AtlasTheme.Space.screen + 36)
+            }
+        }
+    }
+}
+
+struct SearchRecentSection: View {
+    let threads: [AtlasAiThread]
+    let reduceMotion: Bool
+
+    var body: some View {
+        Group {
+            recentCaption
+            recentThreadLoop
+        }
+    }
+}
+
+extension SearchRecentSection {
+    var recentCaption: some View {
+        Text("RECENTES")
+            .font(.system(.caption, weight: .semibold)).tracking(1.4)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityLabel("recentes, \(threads.count) conversa\(threads.count == 1 ? "" : "s") carregada\(threads.count == 1 ? "" : "s")")
+            .accessibilityIdentifier(A11yID.searchRecentCaption)
+    }
+}
+
+
+// Cycle 044 fuse → WorkspaceView.swift
+
+// Dentro de um workspace (repo): as conversas dele, com filtro de área no topo
+// (Tudo / Operacional / Autônomos / Programação). Título em Fraunces serif.
+// Vazio ≠ offline: falha de rede usa a mesma voz da home (`AtlasFailureCopy`).
+// Chrome: +Chrome · lista: +Scroll · spoken: +A11y · empty: WorkspaceEmptyStates
+struct WorkspaceView: View {
+    @Environment(AtlasSession.self) var session
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    let workspaceKey: String?
+    let title: String
+    /// Modo sem projeto: só conversas com workspace nulo (perguntas, pesquisas,
+    /// pensamento livre — o uso GPT-no-iPhone). O projeto é opcional, não regra.
+    var freeOnly: Bool = false
+    @State var area: AtlasArea = .tudo
+
+    var body: some View {
+        workspaceScreenChrome(workspaceBodyStack)
+    }
+}
+
+extension WorkspaceView {
+    var workspaceBodyStack: some View {
+        ZStack(alignment: .bottom) {
+            AtlasTheme.bg.ignoresSafeArea()
+            VStack(spacing: 0) {
+                header
+                if !showsNetworkFailure && !showsLoadingShell && hasThreadsToFilter {
+                    areaFilter
+                }
+                listView
+            }
+            if !showsNetworkFailure && !showsLoadingShell {
+                newPill
+            }
+        }
+    }
+}
+
+extension WorkspaceView {
+    func workspaceScreenChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .toolbar(.hidden, for: .navigationBar)
+            .accessibilityIdentifier(A11yID.workspaceScreen)
+            // Contain without fused screen label so filter/list/pill stay focusable.
+            .accessibilityElement(children: .contain)
+    }
+}
+
+extension WorkspaceView {
+    var areaFilterChipRow: some View {
+        HStack(spacing: 8) {
+            ForEach(AtlasArea.allCases) { a in
+                areaFilterChip(a, active: a == area)
+            }
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen)
+    }
+}
+
+extension WorkspaceView {
+    var areaFilter: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            areaFilterChipRow
+        }
+        .padding(.vertical, 10)
+        .accessibilityIdentifier(A11yID.workspaceAreaFilter)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: area)
+    }
+}
+
+extension WorkspaceView {
+    func areaFilterChip(_ a: AtlasArea, active: Bool) -> some View {
+        Button {
+            guard area != a else { return }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            if reduceMotion {
+                area = a
+            } else {
+                withAnimation(AtlasMotion.editorial) { area = a }
+            }
+        } label: {
+            areaFilterChipLabel(a, active: active)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("área \(a.label)")
+        .accessibilityHint("filtra conversas já carregadas")
+        .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
+    }
+}
+
+extension WorkspaceView {
+    func areaFilterChipLabel(_ a: AtlasArea, active: Bool) -> some View {
+        Text(a.label)
+            .font(.system(.subheadline, weight: .medium))
+            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
+            .padding(.horizontal, 14).padding(.vertical, 7)
+            .frame(minHeight: 44) // HIG interactive minimum
+            .contentShape(Capsule())
+            .background(
+                Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface)
+                    .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+            )
+    }
+}
+
+extension WorkspaceView {
+    var newPill: some View {
+        NavigationLink(value: Route.new(workspaceKey: freeOnly ? nil : workspaceKey)) {
+            newPillLabel
+        }
+        .buttonStyle(.plain)
+        .simultaneousGesture(TapGesture().onEnded {
+            // Soft: workspace write pill is invitation (AgenticPill class).
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        })
+        .accessibilityLabel("nova conversa")
+        .accessibilityHint("abre o compositor para escrever ao Atlas")
+        .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(10) // primary write pill surfaces early in VO
+        .accessibilityIdentifier(A11yID.workspaceNewPill)
+        .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
+        .background(
+            LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
+        )
+    }
+}
+
+extension WorkspaceView {
+    // Mesma pílula agêntica da home: ✦ ouro + vidro (padrão §6). Sem mic —
+    // voz está fora EM DEFINITIVO (canon §6).
+    var newPillLabel: some View {
+        HStack(spacing: 10) {
+            Text("✦").font(AtlasFont.serif(16))
+                .foregroundStyle(AtlasTheme.accent)
+                .frame(width: 30, height: 30)
+                .accessibilityHidden(true)
+            Text("Escreva ao Atlas").font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            Spacer()
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 13)
+        .frame(minHeight: 48) // HIG 44pt; same breath as AgenticPill
+        .contentShape(Capsule())
+        .atlasGlassCapsule()
+    }
+}
+
+extension WorkspaceThreadsSection {
+    var caption: String {
+        if area == .tudo {
+            return "\(threads.count) conversa\(threads.count == 1 ? "" : "s")"
+        }
+        return "\(threads.count) em \(area.label)"
+    }
+}
+
+extension WorkspaceThreadsSection {
+    var spokenCaption: String {
+        if area == .tudo {
+            return "\(threads.count) conversa\(threads.count == 1 ? "" : "s") em \(screenTitle)"
+        }
+        return "\(threads.count) conversa\(threads.count == 1 ? "" : "s") em \(area.label), \(screenTitle)"
+    }
+}
+
+extension WorkspaceThreadsSection {
+    var captionHeader: some View {
+        Text(caption.uppercased())
+            .font(.system(.caption, weight: .semibold)).tracking(1.2)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityLabel(spokenCaption)
+            .accessibilityIdentifier(A11yID.workspaceThreadsCaption)
+    }
+}
+
+extension WorkspaceView {
+    var showsLoadingShell: Bool {
+        guard session.threads.isEmpty else { return false }
+        switch session.phase {
+        case .idle, .loading: return true
+        default: return false
+        }
+    }
+}
+
+extension WorkspaceView {
+    var showsNetworkFailure: Bool {
+        guard session.threads.isEmpty else { return false }
+        if case .failed = session.phase { return true }
+        return false
+    }
+}
+
+extension WorkspaceView {
+    var listView: some View {
+        ScrollView {
+            workspaceListChrome(
+                LazyVStack(spacing: 0) {
+                    scrollPhaseContent
+                }
+            )
+        }
+        .scrollIndicators(.hidden)
+        .refreshable { await session.loadThreads() }
+    }
+}
+
+extension WorkspaceView {
+    func workspaceListChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .padding(.bottom, 96)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: area)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: threads.map(\.id))
+    }
+}
+
+extension WorkspaceView {
+    var listNetworkFailure: some View {
+        AtlasNetworkFailureEmpty(
+            kind: session.failureKind,
+            hasToken: session.hasToken,
+            host: session.host,
+            retryHint: "reconecta e recarrega conversas deste workspace",
+            retryAccessibilityIdentifier: A11yID.workspaceRetry,
+            accessibilityIdentifier: A11yID.workspaceOffline,
+            onRetry: { Task { await session.loadThreads() } }
+        )
+    }
+}
+
+extension WorkspaceView {
+    @ViewBuilder
+    var listLoadedContent: some View {
+        if threads.isEmpty {
+            WorkspaceEditorialEmpty(area: area, freeOnly: freeOnly, screenTitle: title)
+        } else {
+            WorkspaceThreadsSection(
+                threads: threads,
+                area: area,
+                screenTitle: title,
+                reduceMotion: reduceMotion
+            )
+        }
+    }
+}
+
+extension WorkspaceView {
+    @ViewBuilder
+    var scrollPhaseContent: some View {
+        if showsLoadingShell {
+            WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
+                .accessibilityIdentifier(A11yID.workspaceLoading)
+        } else if showsNetworkFailure {
+            listNetworkFailure
+        } else {
+            listLoadedContent
+        }
+    }
+}
+
+struct WorkspaceThreadLink: View {
+    let thread: AtlasAiThread
+    let reduceMotion: Bool
+    var newBadgeSuppressed: Bool = false
+
+    var body: some View {
+        threadLinkA11y
+    }
+}
+
+extension WorkspaceThreadLink {
+    var threadLinkA11y: some View {
+        NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
+            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed, ownsAccessibility: false)
+        }
+        .buttonStyle(.plain)
+        .simultaneousGesture(TapGesture().onEnded {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        })
+        .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
+        .accessibilityHint(
+            TurnPresence.shared.runningTitles.contains(thread.title)
+                ? "Atlas executando nesta conversa"
+                : "abre a conversa"
+        )
+        .accessibilityAddTraits(
+            TurnPresence.shared.runningTitles.contains(thread.title) && !reduceMotion
+                ? [.isButton, .updatesFrequently]
+                : .isButton
+        )
+        .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
+        .transition(threadTransition)
+    }
+}
+
+extension WorkspaceThreadLink {
+    var threadTransition: AnyTransition {
+        reduceMotion ? .opacity : .asymmetric(
+            insertion: .opacity.combined(with: .offset(y: 6)),
+            removal: .opacity
+        )
+    }
+}
+
+extension WorkspaceView {
+    var threads: [AtlasAiThread] {
+        let base = freeOnly
+            ? session.threads.filter { $0.workspace == nil }
+            : session.threads(inWorkspace: workspaceKey)
+        return area == .tudo ? base : base.filter { AtlasArea.of($0) == area }
+    }
+
+    /// Filtro só existe quando há o que filtrar: chips numa lista vazia
+    /// são ruído (regra da casa: controle sem efeito não aparece).
+    var hasThreadsToFilter: Bool {
+        freeOnly
+            ? session.threads.contains { $0.workspace == nil }
+            : !session.threads(inWorkspace: workspaceKey).isEmpty
+    }
+}
+
+extension WorkspaceView {
+    var header: some View {
+        HStack(spacing: 12) {
+            headerBackButton
+            Spacer()
+            Text(title)
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(1)
+                .accessibilityLabel(headerSpokenTitle)
+            Spacer()
+            Color.clear.frame(width: 44, height: 44)
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.top, 4)
+        .padding(.bottom, 4)
+    }
+
+    var headerBackButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            dismiss()
+        } label: {
+            Image(systemName: "chevron.left")
+                .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
+                .frame(width: 44, height: 44).atlasGlassCircle()
+                .contentShape(Circle())
+        }
+        .accessibilityLabel("voltar")
+        .accessibilityHint("fecha o workspace")
+    }
+
+    var headerSpokenTitle: String {
+        if freeOnly { return "conversas sem projeto" }
+        return title
+    }
+}
+
+extension WorkspaceThreadsSection {
+    @ViewBuilder
+    func threadRowLoop(_ t: AtlasAiThread, newBadgeSuppressed: Bool = false) -> some View {
+        WorkspaceThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: newBadgeSuppressed)
+        threadRowSeparator(after: t)
+    }
+}
+
+extension WorkspaceThreadsSection {
+    @ViewBuilder
+    func threadRowSeparator(after thread: AtlasAiThread) -> some View {
+        if thread.id != threads.last?.id {
+            Divider().overlay(AtlasTheme.separator)
+                .padding(.leading, AtlasTheme.Space.screen + 36)
+        }
+    }
+}
+
+extension WorkspaceThreadsSection {
+    /// Badge "novo" saturado (maioria de 6+ linhas) perde o poder de
+    /// discriminar — silencia em bloco; a ordenação já diz recência.
+    var newBadgeSaturated: Bool {
+        threads.count >= 6
+            && threads.lazy.filter(ConversationModel.hasNewerContent).count * 2 > threads.count
+    }
+
+    @ViewBuilder
+    var threadRows: some View {
+        let saturated = newBadgeSaturated
+        ForEach(threads) { t in
+            threadRowLoop(t, newBadgeSuppressed: saturated)
+        }
+    }
+}
+
+struct WorkspaceThreadsSection: View {
+    let threads: [AtlasAiThread]
+    let area: AtlasArea
+    let screenTitle: String
+    let reduceMotion: Bool
+
+    var body: some View {
+        Group {
+            captionHeader
+            threadRows
+        }
+    }
+}
+
+
+// Cycle 044 fuse → WorkspaceEmptyStates.swift
+
+// Estados vazios do WorkspaceView (offline) —
+
+/// Falha de rede compartilhada — home, workspace e conversa (voz via `AtlasFailureCopy`).
+struct AtlasNetworkFailureEmpty: View {
+    let kind: AtlasNetworkFailureKind?
+    let hasToken: Bool
+    let host: String
+    var topPadding: CGFloat = 56
+    var retryHint: String = "reconecta ao servidor Atlas"
+    var retryAccessibilityIdentifier: String?
+    let accessibilityIdentifier: String
+    let onRetry: () -> Void
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        failureChrome(failureCopyBlock)
+    }
+}
+
+extension WorkspaceEditorialEmpty {
+    var editorialFootnote: String {
+        if freeOnly {
+            return "perguntas e pensamento livre começam abaixo"
+        }
+        return "comece uma abaixo — o projeto é opcional"
+    }
+}
+
+extension WorkspaceEditorialEmpty {
+    var editorialHeadline: String {
+        if area != .tudo {
+            return "“Nada em \(area.label) — por enquanto.”"
+        }
+        if freeOnly {
+            return "“Nenhuma conversa sem projeto ainda.”"
+        }
+        return "“Nenhuma conversa em \(screenTitle) ainda.”"
+    }
+}
+
+extension WorkspaceEditorialEmpty {
+    var headline: String { editorialHeadline }
+    var footnote: String { editorialFootnote }
+}
+
+/// ✦ + headline editorial compartilhado — workspace vazio e search miss.
+struct AtlasEditorialGlyphEmpty: View {
+    let headline: String
+    var footnote: String? = nil
+    let accessibilityIdentifier: String
+    var spokenLabel: String? = nil
+
+    var body: some View {
+        editorialStack
+            .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(spokenLabel ?? headline)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier(accessibilityIdentifier)
+    }
+}
+
+extension WorkspaceEditorialEmpty {
+    var spokenLabel: String {
+        let lead: String
+        if area != .tudo {
+            lead = "nada em \(area.label) em \(screenTitle)"
+        } else if freeOnly {
+            lead = "nenhuma conversa sem projeto ainda"
+        } else {
+            lead = "nenhuma conversa em \(screenTitle) ainda"
+        }
+        return "\(lead). \(footnote)"
+    }
+}
+
+extension AtlasEditorialGlyphEmpty {
+    var editorialCopyStack: some View {
+        VStack(spacing: 8) {
+            Text(headline)
+                .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
+                .multilineTextAlignment(.center)
+                .accessibilityHidden(true)
+            if let footnote {
+                Text(footnote)
+                    .font(.system(.footnote)).foregroundStyle(AtlasTheme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .accessibilityHidden(true)
+            }
+        }
+    }
+}
+
+extension AtlasEditorialGlyphEmpty {
+    var editorialGlyph: some View {
+        Text("✦")
+            .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
+            .accessibilityHidden(true)
+    }
+}
+
+extension AtlasEditorialGlyphEmpty {
+    var editorialStack: some View {
+        VStack(spacing: 14) {
+            editorialGlyph
+            editorialCopyStack
+        }
+    }
+}
+
+struct WorkspaceEditorialEmpty: View {
+    let area: AtlasArea
+    let freeOnly: Bool
+    let screenTitle: String
+
+    var body: some View {
+        editorialGlyph
+    }
+}
+
+extension AtlasNetworkFailureEmpty {
+    @ViewBuilder
+    func retryButtonWithIdentifier<Content: View>(_ button: Content) -> some View {
+        if let retryAccessibilityIdentifier {
+            button.accessibilityIdentifier(retryAccessibilityIdentifier)
+        } else {
+            button
+        }
+    }
+}
+
+extension AtlasNetworkFailureEmpty {
+    @ViewBuilder
+    var retryButton: some View {
+        retryButtonWithIdentifier(
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onRetry()
+            } label: {
+                retryLabel
+            }
+            .buttonStyle(PressableScale())
+            .accessibilityLabel("tentar de novo")
+            .accessibilityHint(retryHint)
+            .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(8)
+        )
+    }
+}
+
+extension AtlasNetworkFailureEmpty {
+    func failureChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .padding(.horizontal, 44).padding(.top, topPadding)
+            .frame(maxWidth: .infinity)
+            // Contain without container label so retry stays focusable.
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(accessibilityIdentifier)
+    }
+}
+
+extension WorkspaceEditorialEmpty {
+    var editorialGlyph: some View {
+        AtlasEditorialGlyphEmpty(
+            headline: headline,
+            footnote: footnote,
+            accessibilityIdentifier: A11yID.workspaceEmpty,
+            spokenLabel: spokenLabel
+        )
+    }
+}
+
+extension AtlasNetworkFailureEmpty {
+    var failureCopyBlock: some View {
+        VStack(spacing: 0) {
+            failureCopyText
+            if hasToken {
+                Spacer().frame(height: 28)
+                retryButton
+            }
+        }
+    }
+}
+
+extension AtlasNetworkFailureEmpty {
+    var failureCopyText: some View {
+        VStack(spacing: 0) {
+            Text("✦")
+                .font(AtlasFont.serif(28)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
+                .accessibilityHidden(true)
+            Spacer().frame(height: 28)
+            Text(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken))
+                .font(AtlasFont.serif(22, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
+                .multilineTextAlignment(.center)
+                .accessibilityAddTraits(.isHeader)
+            Spacer().frame(height: 12)
+            failureHostAndHint
+        }
+    }
+}
+
+extension AtlasNetworkFailureEmpty {
+    var failureHostAndHint: some View {
+        Group {
+            Text(hasToken ? "\(host):3737" : "ATLAS_TOKEN · Secrets.xcconfig")
+                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityLabel(hasToken ? "servidor \(host) porta 3737" : "token ATLAS ausente em Secrets")
+            Spacer().frame(height: 16)
+            Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
+                .font(.system(.subheadline)).lineSpacing(5)
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .multilineTextAlignment(.center)
+        }
+    }
+}
+
+struct WorkspaceLoadingEmpty: View {
+    var reduceMotion: Bool
+    var text: String = "abrindo conversas…"
+    var spoken: String? = nil
+    var topPadding: CGFloat = 72
+
+    var body: some View {
+        VStack(spacing: 18) {
+            BreathingGlyph(reduceMotion: reduceMotion)
+            Text(text)
+                .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .frame(maxWidth: .infinity).padding(.top, topPadding)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(spoken ?? text)
+        .accessibilityAddTraits(.isHeader)
+    }
+}
+
+extension AtlasNetworkFailureEmpty {
+    var retryLabel: some View {
+        Text("Tentar de novo")
+            .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.accent)
+            .padding(.horizontal, 22).padding(.vertical, 12)
+            .frame(minHeight: 48) // match primary CTA breath
+            .background(Capsule().fill(AtlasTheme.goldVeil)
+                .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+            .contentShape(Capsule())
     }
 }
