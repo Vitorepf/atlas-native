@@ -1,8 +1,9 @@
 import AtlasCore
+import Foundation
 import SwiftUI
 import UIKit
 
-// Cycle 027 fuse → ArtifactSheet.swift
+// Cycle 044 fuse → ArtifactSheet.swift
 
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
@@ -126,5 +127,491 @@ extension ArtifactSheet {
                     else { withAnimation(AtlasMotion.editorial) { reviews.toast = nil } }
                 }
         }
+    }
+}
+
+extension ArtifactSheet {
+    func spokenArtifactsSheetAvailableLabel(_ artifacts: AtlasTraceArtifacts) -> String {
+        switch artifacts.state {
+        case .unavailable:
+            return "artefatos da execução indisponíveis"
+        case .available:
+            let n = items.count
+            if n == 0 { return "artefatos da execução, sem itens publicados" }
+            return "artefatos da execução, \(n) item\(n == 1 ? "" : "s")"
+        }
+    }
+}
+
+extension ArtifactSheet {
+    func spokenArtifactsSheetLoadLabel() -> String? {
+        if !loadFinished, artifacts == nil {
+            return "artefatos da execução, consultando"
+        }
+        if loadFinished, artifacts == nil {
+            return "artefatos da execução, indisponível"
+        }
+        return nil
+    }
+}
+
+extension ArtifactSheet {
+    func spokenArtifactsSheetLabel() -> String {
+        if let load = spokenArtifactsSheetLoadLabel() { return load }
+        guard let artifacts else { return "artefatos da execução" }
+        return spokenArtifactsSheetAvailableLabel(artifacts)
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var content: some View {
+        if showsEmptyOrUnavailable {
+            emptyOrUnavailable
+        } else if hasDeliveryProof, !mountComplete {
+            artifactMount
+                .padding(.horizontal, AtlasTheme.Space.screen)
+                .padding(.top, 14)
+        } else {
+            loadedArtifactsBody
+        }
+    }
+}
+
+extension ArtifactSheet {
+    var loadedArtifactsHeader: some View {
+        Text("ARTEFATOS DO TURNO · \(artifacts?.workspaceLabel ?? "workspace")")
+            .font(AtlasFont.mono(10)).tracking(1.0)
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.top, 14)
+    }
+}
+
+extension ArtifactSheet {
+    var loadedArtifactsScroll: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 12) {
+                artifactList
+                previewPane
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.bottom, 24)
+        }
+        .scrollIndicators(.hidden)
+    }
+}
+
+extension ArtifactSheet {
+    var loadedArtifactsBody: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            loadedArtifactsHeader
+            loadedArtifactsScroll
+        }
+    }
+}
+
+extension ArtifactSheet {
+    var artifactList: some View {
+        VStack(spacing: 0) {
+            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                artifactListRow(index: index, item: item)
+                if index < items.count - 1 {
+                    Divider().overlay(AtlasTheme.separatorSoft)
+                        .accessibilityHidden(true)
+                }
+            }
+        }
+        .padding(.horizontal, 12)
+        .atlasCard()
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("lista de artefatos, \(items.count) itens")
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    func artifactListRow(index: Int, item: AtlasTraceArtifacts.Item) -> some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            selectedID = item.id
+        } label: {
+            artifactListRowLabel(item: item)
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(A11yID.artifactsItem(index))
+        .accessibilityLabel("\(item.name), \(ArtifactViewer.byteLabel(item.byteSize)), \(ArtifactViewer.kindLabel(item.kind))")
+        .accessibilityAddTraits(item.id == selected?.id ? .isSelected : [])
+        .accessibilityHint(item.id == selected?.id ? "selecionado no preview" : "abre o preview deste artefato")
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    func artifactListRowLeading(item: AtlasTraceArtifacts.Item) -> some View {
+        Text("▸")
+            .font(AtlasFont.mono(11))
+            .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.textTertiary)
+            .accessibilityHidden(true)
+        // Linha de lista fala em sans (canon §C: serif é masthead/título).
+        Text(item.name)
+            .atlasSans(15, .medium)
+            .foregroundStyle(AtlasTheme.textPrimary)
+            .lineLimit(1)
+            .accessibilityHidden(true)
+    }
+}
+
+extension ArtifactSheet {
+    func artifactListRowLabel(item: AtlasTraceArtifacts.Item) -> some View {
+        HStack(spacing: 10) {
+            artifactListRowLeading(item: item)
+            Spacer()
+            artifactListRowMeta(item: item)
+        }
+        .padding(.vertical, 10)
+        .contentShape(Rectangle())
+    }
+}
+
+extension ArtifactSheet {
+    func artifactListRowMeta(item: AtlasTraceArtifacts.Item) -> some View {
+        Text("\(ArtifactViewer.byteLabel(item.byteSize))  \(ArtifactViewer.kindLabel(item.kind))")
+            .font(AtlasFont.mono(10))
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .accessibilityHidden(true)
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var emptyOrUnavailable: some View {
+        if !loadFinished, artifacts == nil {
+            TraceEvidenceLoading(text: "consultando artefatos…", reduceMotion: reduceMotion)
+        } else if loadFinished, artifacts == nil {
+            TraceEvidenceUnavailable(
+                title: "Não foi possível consultar artefatos.",
+                subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
+                identifier: A11yID.artifactsLoadFailure,
+                spoken: "não foi possível consultar artefatos"
+            )
+        } else {
+            artifactsUnavailable
+        }
+    }
+}
+
+extension ArtifactSheet {
+    var showsEmptyOrUnavailable: Bool {
+        (!loadFinished && artifacts == nil)
+            || (loadFinished && artifacts == nil)
+            || artifacts?.state == .unavailable
+            || items.isEmpty
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var emptyVisualizable: some View {
+        Text("nenhum artefato visualizável")
+            .font(AtlasFont.serifItalic(15))
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityIdentifier(A11yID.artifactsEmpty)
+            .accessibilityLabel("sem artefatos visualizáveis nesta execução")
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var artifactsUnavailable: some View {
+        if artifacts?.state == .unavailable {
+            TraceEvidenceUnavailable(
+                title: "Sem artefatos nesta execução.",
+                subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
+                identifier: A11yID.artifactsUnavailable,
+                spoken: TraceEvidenceCopy.unavailableSpoken(
+                    prefix: "sem artefatos nesta execução",
+                    reason: artifacts?.reason
+                )
+            )
+        } else if items.isEmpty {
+            emptyVisualizable
+        }
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var previewPane: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            previewPaneStates
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .atlasCard()
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    func previewPaneFailure(bytes: Int? = nil, message: String? = nil) -> some View {
+        if let bytes {
+            previewTooLarge(bytes: bytes)
+        } else if let message {
+            previewMessageFailure(message)
+        }
+    }
+}
+
+extension ArtifactSheet {
+    func load(_ item: AtlasTraceArtifacts.Item) async {
+        preview = .loading
+        do {
+            let content = try await reviews.loadArtifactContent(traceId: traceId, item: item)
+            preview = .loaded(item, content)
+        } catch let api as AtlasApiError where api.status == 413 {
+            preview = .tooLarge(item.byteSize)
+        } catch {
+            preview = .failed(atlasUserMessage(for: error))
+        }
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    func previewMessageFailure(_ message: String) -> some View {
+        Text(message)
+            .font(AtlasFont.serifItalic(14))
+            .foregroundStyle(AtlasTheme.domOperacional)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityLabel("preview falhou, \(message)")
+    }
+}
+
+extension ArtifactSheet {
+    var previewPaneLoading: some View {
+        TraceEvidenceLoading(text: "carregando preview…", reduceMotion: reduceMotion)
+            .frame(maxWidth: .infinity, minHeight: 180)
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var previewPaneBusyOrFailed: some View {
+        switch preview {
+        case .idle, .loading:
+            previewPaneLoading
+        case .tooLarge(let bytes):
+            previewPaneFailure(bytes: bytes)
+        case .failed(let message):
+            previewPaneFailure(message: message)
+        default:
+            EmptyView()
+        }
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var previewPaneLoaded: some View {
+        if case .loaded(let item, let content) = preview {
+            ArtifactPreviewContent(item: item, content: content)
+        }
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var previewPaneStates: some View {
+        switch preview {
+        case .idle, .loading, .tooLarge, .failed:
+            previewPaneBusyOrFailed
+        case .loaded:
+            previewPaneLoaded
+        }
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    func previewTooLarge(bytes: Int) -> some View {
+        ArtifactFileFicha(
+            name: selected?.name ?? "artefato",
+            subtitle: "grande demais para visualizar aqui · \(ArtifactViewer.byteLabel(bytes))"
+        )
+        .accessibilityLabel(
+            ArtifactViewerA11y.spokenTooLarge(
+                name: selected?.name ?? "artefato",
+                bytes: bytes
+            )
+        )
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    func mountCheckRowTexts(check: ArtifactDeliveryCheck) -> some View {
+        Text(check.label)
+            .font(AtlasFont.mono(10))
+            .foregroundStyle(AtlasTheme.textPrimary)
+            .lineLimit(1)
+            .accessibilityHidden(true)
+        Spacer(minLength: 0)
+        Text(check.status)
+            .font(AtlasFont.mono(10))
+            .foregroundStyle(check.isPassing ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
+            .accessibilityHidden(true)
+    }
+}
+
+extension ArtifactSheet {
+    func mountCheckRow(index: Int, check: ArtifactDeliveryCheck) -> some View {
+        HStack(spacing: 8) {
+            mountCheckRowTexts(check: check)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(check.spoken)
+        .accessibilityIdentifier(A11yID.artifactsMountCheck(index))
+        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+    }
+}
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var mountChecks: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            ForEach(Array(deliveryChecks.enumerated()), id: \.element.id) { index, check in
+                if index < mountRevealed {
+                    mountCheckRow(index: index, check: check)
+                }
+            }
+        }
+    }
+}
+
+extension ArtifactSheet {
+    var mountCounterText: some View {
+        HStack(spacing: 8) {
+            Text("MONTAGEM")
+                .font(AtlasFont.mono(10)).tracking(1.0)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            Text("·")
+                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            Text("\(min(mountRevealed, deliveryChecks.count))/\(deliveryChecks.count)")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.accent)
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension ArtifactSheet {
+    var mountHeaderCounter: some View {
+        HStack(spacing: 8) {
+            mountCounterText
+            if !mountComplete {
+                BreathingDiamond(size: 8, reduceMotion: reduceMotion)
+                    .accessibilityHidden(true)
+            }
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+extension ArtifactSheet {
+    func runMountAnimation() async {
+        guard hasDeliveryProof else {
+            mountRevealed = deliveryChecks.count
+            return
+        }
+        if reduceMotion {
+            mountRevealed = deliveryChecks.count
+            return
+        }
+        mountRevealed = 0
+        for step in 1...deliveryChecks.count {
+            try? await Task.sleep(nanoseconds: 280_000_000)
+            guard !Task.isCancelled else { return }
+            withAnimation(AtlasMotion.editorial) { mountRevealed = step }
+        }
+    }
+}
+
+extension ArtifactSheet {
+    var mountSpoken: String {
+        let n = min(mountRevealed, deliveryChecks.count)
+        let tail = mountComplete ? "entrega liberada" : "montando provas"
+        return "montagem da entrega, prova \(n) de \(deliveryChecks.count), \(tail)"
+    }
+}
+
+// Montagem animada da entrega — só quando o contrato publica provas reais.
+
+extension ArtifactSheet {
+    @ViewBuilder
+    var artifactMount: some View {
+        artifactMountStack
+    }
+}
+
+extension ArtifactSheet {
+    var mountHeader: some View {
+        mountHeaderCounter
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(mountSpoken)
+    }
+}
+
+extension ArtifactSheet {
+    var changeReview: AtlasTraceChangeReview? { reviews.changeReviewsByTrace[traceId] }
+    var deliveryChecks: [ArtifactDeliveryCheck] { ArtifactDeliveryProof.checks(from: changeReview) }
+    var hasDeliveryProof: Bool { !deliveryChecks.isEmpty }
+    var mountComplete: Bool { !hasDeliveryProof || mountRevealed >= deliveryChecks.count }
+}
+
+extension ArtifactSheet {
+    var artifactMountStack: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            mountHeader
+            mountChecks
+        }
+        .padding(14)
+        .atlasCard()
+        .accessibilityIdentifier(A11yID.artifactsMount)
+    }
+}
+
+extension ArtifactDeliveryCheck {
+    var isPassing: Bool {
+        let s = status.lowercased()
+        return s == "pass" || s == "passed"
+    }
+
+    var spoken: String { "\(label), status \(status)" }
+}
+
+// Provas de montagem — só controles/testes reais do contrato C15 (nunca inventa 0/3).
+
+struct ArtifactDeliveryCheck: Identifiable, Equatable {
+    let id: String
+    let label: String
+    let status: String
+}
+
+enum ArtifactDeliveryProof {
+    /// Controles + testRuns publicados na revisão trace-scoped — vazio = silêncio na montagem.
+    static func checks(from review: AtlasTraceChangeReview?) -> [ArtifactDeliveryCheck] {
+        guard review?.state == .available, let review else { return [] }
+        let controls = review.controls.map {
+            ArtifactDeliveryCheck(id: "control-\($0.id)", label: $0.slug, status: $0.status)
+        }
+        let tests = review.testRuns.map {
+            ArtifactDeliveryCheck(id: "test-\($0.id)", label: $0.command ?? "teste", status: $0.status)
+        }
+        return controls + tests
     }
 }

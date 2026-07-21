@@ -3,7 +3,7 @@ import Foundation
 import PhotosUI
 import SwiftUI
 
-// Cycle 041 fuse → ConversationComposer.swift
+// Cycle 044 fuse → ConversationComposer.swift
 
 struct ConversationComposer: View {
     var model: ConversationModel
@@ -128,4 +128,344 @@ enum ConversationComposerA11y {
     }
 
     static let cardHint = "escreve, anexa e envia; fila e execução viva aparecem quando publicadas"
+}
+
+extension ConversationComposer {
+    var composerCardSpokenLabel: String {
+        ConversationComposerA11y.spokenCard(
+            expanded: expanded,
+            draftCount: model.drafts.count,
+            queueCount: model.queuedMessages.count,
+            isSending: model.isSending
+        )
+    }
+}
+
+extension ConversationComposer {
+    var composerCardSurface: some View {
+        VStack(alignment: .leading, spacing: expanded ? 12 : 0) {
+            composerCardBody
+        }
+        .padding(composerCardPadding)
+        .background(composerSurface)
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: expanded)
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.86), value: model.drafts)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(composerCardSpokenLabel)
+        .accessibilityHint(ConversationComposerA11y.cardHint)
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerAttachmentOnly: some View {
+        composerAttachmentStrip
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerToolbarOnly: some View {
+        ComposerToolbar(
+            model: model,
+            reduceMotion: reduceMotion,
+            focused: focused,
+            expanded: expanded,
+            mode: mode,
+            liveBubble: liveBubble,
+            onAttach: { showAttachmentSheet = true },
+            onShowWorkspace: { showWorkspaceSheet = true },
+            onShowMode: { showModeSheet = true },
+            onShowEffort: { showEffortSheet = true },
+            onSend: send
+        )
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerStripToolbar: some View {
+        composerAttachmentOnly
+        composerToolbarOnly
+    }
+}
+
+// Keyboard grabber — morto. Teclado dispensa no scroll / gesto da sheet.
+// (A barra "fechar" lia como chrome de card e quebrava a pílula do grafo.)
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerCardBodyGrabber: some View {
+        EmptyView()
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerCardBodyLive: some View {
+        liveExecutionSection
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerCardBodyQueue: some View {
+        queueChipSection
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerCardBodyStrip: some View {
+        composerStripToolbar
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var composerCardBody: some View {
+        composerCardBodyLive
+        composerCardBodyQueue
+        composerCardBodyGrabber
+        composerCardBodyStrip
+    }
+}
+
+extension ConversationComposer {
+    var composerCardSheetFlagArgs: (
+        mode: Binding<String>,
+        showModeSheet: Binding<Bool>,
+        showWorkspaceSheet: Binding<Bool>,
+        showEffortSheet: Binding<Bool>,
+        showQueueSheet: Binding<Bool>,
+        showAttachmentSheet: Binding<Bool>,
+        showCamera: Binding<Bool>,
+        showFileImporter: Binding<Bool>,
+        pickedPhoto: Binding<PhotosPickerItem?>
+    ) {
+        (
+            mode: $mode,
+            showModeSheet: $showModeSheet,
+            showWorkspaceSheet: $showWorkspaceSheet,
+            showEffortSheet: $showEffortSheet,
+            showQueueSheet: $showQueueSheet,
+            showAttachmentSheet: $showAttachmentSheet,
+            showCamera: $showCamera,
+            showFileImporter: $showFileImporter,
+            pickedPhoto: $pickedPhoto
+        )
+    }
+}
+
+extension ConversationComposer {
+    var composerCardSheetTraceArgs: (
+        reviewTrace: Binding<ConversationReviewTraceRef?>,
+        artifactTrace: Binding<ConversationReviewTraceRef?>,
+        steerTrace: Binding<ConversationSteerTraceRef?>
+    ) {
+        (
+            reviewTrace: $reviewTrace,
+            artifactTrace: $artifactTrace,
+            steerTrace: $steerTrace
+        )
+    }
+}
+
+extension ConversationComposer {
+    func composerCardSheets<V: View>(_ card: V) -> some View {
+        let flags = composerCardSheetFlagArgs
+        let traces = composerCardSheetTraceArgs
+        return card.conversationComposerSheets(
+            model: model,
+            session: session,
+            mode: flags.mode,
+            showModeSheet: flags.showModeSheet,
+            showWorkspaceSheet: flags.showWorkspaceSheet,
+            showEffortSheet: flags.showEffortSheet,
+            showQueueSheet: flags.showQueueSheet,
+            showAttachmentSheet: flags.showAttachmentSheet,
+            showCamera: flags.showCamera,
+            showFileImporter: flags.showFileImporter,
+            pickedPhoto: flags.pickedPhoto,
+            reviewTrace: traces.reviewTrace,
+            artifactTrace: traces.artifactTrace,
+            steerTrace: traces.steerTrace,
+            onSteerSubmit: submitSteer
+        )
+    }
+}
+
+extension ConversationComposer {
+    var composerCardPadding: EdgeInsets {
+        expanded
+            ? EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18)
+            : EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
+    }
+}
+
+extension ConversationComposer {
+    var composerAttachmentStrip: some View {
+        AttachmentStrip(
+            drafts: model.drafts,
+            reduceMotion: reduceMotion,
+            uploadPercent: model.uploadPercent,
+            onRemove: { model.removeDraft($0) },
+            onFailedTap: { model.toast = $0 }
+        )
+    }
+}
+
+extension ConversationComposer {
+    var composerCard: some View {
+        composerCardSheets(composerCardSurface)
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var queueChipSection: some View {
+        if !model.queuedMessages.isEmpty {
+            queueChipA11y(queueChipButton)
+        }
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    func queueChipA11y<V: View>(_ button: V) -> some View {
+        button
+            .padding(.bottom, expanded ? 0 : 8)
+            .transition(reduceMotion ? .identity : .opacity)
+            .accessibilityLabel(queueAccessibilityLabel)
+            .accessibilityHint("abre a folha para enviar agora ou remover da fila")
+            .accessibilityIdentifier(A11yID.queueChip)
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var queueChipButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            showQueueSheet = true
+        } label: {
+            queueChipLabelView
+        }
+        .buttonStyle(PressableScale())
+    }
+}
+
+extension ConversationComposer {
+    var queueChipLabel: String {
+        let n = model.queuedMessages.count
+        return n == 1 ? "Fila · 1" : "Fila · \(n)"
+    }
+
+    var queueAccessibilityLabel: String {
+        let n = model.queuedMessages.count
+        return n == 1
+            ? "1 mensagem na fila durante a execução"
+            : "\(n) mensagens na fila durante a execução"
+    }
+}
+
+extension ConversationComposer {
+    var queueChipLabelView: some View {
+        Text(queueChipLabel)
+            .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
+            .padding(.horizontal, 12).padding(.vertical, 5)
+            .background(Capsule().fill(AtlasTheme.goldVeil)
+                .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+    }
+}
+
+extension ConversationComposer {
+    var keyboardGrabberBar: some View {
+        RoundedRectangle(cornerRadius: 3)
+            .fill(AtlasTheme.textTertiary.opacity(0.55))
+            .frame(width: 42, height: 5)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 9)
+            .contentShape(Rectangle())
+    }
+}
+
+extension ConversationComposer {
+    func keyboardGrabberGestures<V: View>(_ bar: V) -> some View {
+        bar
+            .onTapGesture { dismissKeyboard() }
+            .gesture(
+                DragGesture(minimumDistance: 6)
+                    .onEnded { if $0.translation.height > 8 { dismissKeyboard() } }
+            )
+            .accessibilityLabel("fechar teclado")
+            .accessibilityHint("toque ou arraste para baixo para dispensar o teclado")
+            .accessibilityAddTraits(.isButton)
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var keyboardGrabber: some View {
+        if focused.wrappedValue {
+            keyboardGrabberGestures(keyboardGrabberBar)
+        }
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var liveExecutionSeparator: some View {
+        Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
+            .padding(.bottom, expanded ? 0 : 8)
+            .accessibilityHidden(true)
+    }
+}
+
+extension ConversationComposer {
+    @ViewBuilder
+    var liveExecutionSection: some View {
+        if let live = liveBubble {
+            ExecutingStrip(
+                bubble: live,
+                reduceMotion: reduceMotion,
+                onStop: { model.cancel() },
+                onSteer: live.traceId.map { trace in { steerTrace = ConversationSteerTraceRef(id: trace) } }
+            )
+                .padding(.top, expanded ? 0 : 4)
+                .padding(.bottom, expanded ? 0 : 8)
+                .transition(.opacity)
+            liveExecutionSeparator
+        }
+    }
+}
+
+extension ConversationComposer {
+    func submitSteer(
+        traceId: TraceID,
+        instruction: String,
+        scope: AtlasInteractionSteerScope
+    ) {
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        Task {
+            await model.steerInteraction(traceId: traceId, instruction: instruction, scope: scope)
+            if let receipt = steerReceipt(for: traceId) {
+                model.toast = steerReceiptText(receipt)
+            }
+        }
+    }
+}
+
+extension ConversationComposer {
+    func steerReceipt(for traceId: TraceID) -> AtlasInteractionSteerResponse? {
+        guard let receipt = model.lastSteerReceipt else { return nil }
+        if let receiptTrace = receipt.traceId, receiptTrace != traceId.rawValue { return nil }
+        return receipt
+    }
+
+    func steerReceiptText(_ receipt: AtlasInteractionSteerResponse) -> String {
+        receipt.isAccepted
+            ? "na fila do próximo checkpoint"
+            : "rejeitado · \(receipt.reason?.rawValue ?? "motivo_indisponivel")"
+    }
 }

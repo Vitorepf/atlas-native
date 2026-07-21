@@ -1,9 +1,10 @@
-import SwiftUI
-import Charts
 import AtlasCore
+import Charts
+import SwiftUI
+
+// Cycle 044 fuse → ArenaSuiteSparkline.swift
 
 /// Sparkline compartilhado pela row e por `ArenaSuiteSheet` (módulo interno).
-/// Subtitle → ArenaSuiteSparkline+Subtitle.swift
 struct SuiteSparkline: View {
     let engine: AtlasArenaSuiteEngine
 
@@ -19,5 +20,14 @@ struct SuiteSparkline: View {
         .chartYAxis(.hidden)
         .chartLegend(.hidden)
         .accessibilityHidden(true)
+    }
+}
+
+extension AtlasArenaSuite {
+    var arenaSubtitleText: String {
+        guard isMeasured else { return "não medido" }
+        let rounds = runsTotal == 1 ? "1 rodada" : "\(runsTotal) rodadas"
+        if let relative = ArenaDisplay.relative(lastRunAt) { return "\(rounds) · \(relative)" }
+        return rounds
     }
 }

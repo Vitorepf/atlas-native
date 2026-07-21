@@ -1,6 +1,7 @@
 import SwiftUI
+import UIKit
 
-// Cycle 041 fuse → AtlasMotion.swift
+// Cycle 044 fuse → AtlasMotion.swift
 
 // Fundação de motion do Atlas — porte dos tokens editoriais (tokens.ts). Ritmo
 // calmo, nunca overshoot Material: curva editorial + springs damping ≥0.8.
@@ -17,5 +18,61 @@ enum AtlasMotion {
     /// Respiração de streaming / breath do send.
     static func breath(_ duration: Double = 0.9) -> Animation {
         .easeInOut(duration: duration).repeatForever(autoreverses: true)
+    }
+}
+
+extension AtlasMotion {
+    static func softImpact(reduceMotion: Bool) {
+        guard !reduceMotion else { return }
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+    }
+
+    static func mediumImpact(reduceMotion: Bool) {
+        guard !reduceMotion else { return }
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+
+    static func lightImpact(reduceMotion: Bool) {
+        guard !reduceMotion else { return }
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+}
+
+extension AtlasMotion {
+    static func successNotification(reduceMotion: Bool) {
+        guard !reduceMotion else { return }
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+    }
+}
+
+/// Numeric text morph só quando Reduce Motion está desligado.
+struct NumericTextTransition: ViewModifier {
+    let enabled: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.contentTransition(.numericText())
+        } else {
+            content
+        }
+    }
+}
+
+@MainActor
+enum AtlasMotionPresentation {
+    /// Transição editorial condicional — nil com Reduce Motion.
+    static func editorial(reduceMotion: Bool) -> Animation? {
+        reduceMotion ? nil : AtlasMotion.editorial
+    }
+
+    /// Identidade com Reduce Motion; editorial caso contrário.
+    static func rowTransition(reduceMotion: Bool) -> AnyTransition {
+        reduceMotion ? .identity : .opacity.combined(with: .move(edge: .top))
+    }
+}
+
+extension View {
+    func atlasNumericTransition(reduceMotion: Bool) -> some View {
+        modifier(NumericTextTransition(enabled: !reduceMotion))
     }
 }
