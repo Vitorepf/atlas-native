@@ -2528,7 +2528,6 @@ extension AtlasNetworkFailureEmpty {
 
 /// Label de seção da home (CONVERSAS / OPERAÇÃO / WORKSPACES).
 @MainActor
-@ViewBuilder
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     // A linha premium do site: hairlines em fade ladeando o rótulo natural.
     let spoken = sectionSpokenLabel(t)
