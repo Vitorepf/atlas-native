@@ -4,6 +4,8 @@ import AtlasCore
 
 // IDLE-COMPRESS — Fleet accessory widget fused
 
+// MARK: - Types
+
 enum FleetWidgetA11y {
     static func incidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
         LockAccessoryA11y.incidentLine(incident)
@@ -339,6 +341,8 @@ struct FleetWidgetView: View {
     @Environment(\.widgetFamily) var family
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     let entry: SnapshotEntry
+
+    // MARK: - Body
 
     var body: some View {
         SnapshotContainer {

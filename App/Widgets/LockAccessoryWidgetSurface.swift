@@ -39,6 +39,8 @@ extension LockAccessorySnapshotView {
     }
 }
 
+// MARK: - Types
+
 enum LockAccessoryA11y {
     static func hasAttention(_ snapshot: AtlasNativeSnapshot) -> Bool {
         snapshot.liveSessions?.contains { $0.timing == .paused } == true
@@ -244,6 +246,8 @@ struct LockAccessorySnapshotView: View {
     @Environment(\.widgetFamily) var family
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     let entry: SnapshotEntry
+
+    // MARK: - Body
 
     var body: some View {
         Group { snapshotBranch }

@@ -4,6 +4,8 @@ import AtlasCore
 
 // IDLE-COMPRESS — LiveSession home widget fused host.
 
+// MARK: - Types
+
 enum LiveSessionWidgetA11y {
     static func silenceDetail(_ snapshot: AtlasNativeSnapshot) -> String {
         guard let delivery = snapshot.fleet?.lastDelivery else {

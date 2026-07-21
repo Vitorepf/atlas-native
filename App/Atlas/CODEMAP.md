@@ -140,7 +140,7 @@
 | **LiveNow row spoken** | `LiveNowJudgment` spokenRow/clock · LiveNowRow (WAVE-110) |
 | **Artifact sheet peels** | host/list · Chrome · Preview · Delivery (WAVE-112) |
 | **Radar rows peels** | FolderRow · RepoChrome · AskContext (WAVE-114) |
-| **Root chrome routes peels** | Face · ConversationRoutes · Lifecycle (WAVE-115) |
+| **Root chrome** | `RootChrome` · ConversationRoutes · Lifecycle · `RootHomeChrome` |
 | **TurnPresence peels** | host · Activity · Runtime (WAVE-116) |
 | **LiveTimeline peels** | host · NarrativeRow · NarrativeRowView (WAVE-117) |
 | **Commit row peels** | Body · Meta (WAVE-118) |

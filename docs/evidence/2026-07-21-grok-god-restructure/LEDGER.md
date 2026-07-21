@@ -7,10 +7,10 @@ dual: off
 
 ## State
 - phase: act
-- focus: rename ScreenJudgment + Face files
-- actionable: 3
-- passes: 2
-- last_commit: 9a36eaf4
+- focus: MARK Widgets dense + CODEMAP Root chrome
+- actionable: 1
+- passes: 3
+- last_commit: fcfebaca
 - collapse_host: 0
 - god_hold_streak: 0
 
@@ -24,34 +24,29 @@ dual: off
 
 ## commands
 ```
-# AUDIT #1 (boot)
-rg JudgmentGrammar|files *Grammar* → AutonomosDecisionJudgmentGrammar + AtlasTurnGlanceGrammar
-rg Peel|conversationPresence → SelfConstructionReceiptChromePeel + conversationPresence* + MARK: - Peels ×9
-find LOC View/Shell>600 → 0 (ConversationModel 1067 out of scope Core)
-find LOC any>2000 → 0
-MARK missing >200 → RadarJudgment + 4 Widgets (soft)
-JudgmentChrome files → ChangeReview/ExecutionProof/Plan (next)
-ScreenJudgment · Face.swift · Sections/States soltos → residual vocab
+# AUDIT after pass 3
+View/Shell>600 → 0
+any>2000 → 0
+JudgmentGrammar|Peel|conversationPresence → 0
+forbidden Grammar|Peel|JudgmentChrome|ScreenJudgment|*Face.swift → 0
+MARK missing >200 (casca, skip Core Model) → 4 Widgets → FIXED this pass
+Sections/States loose filenames → residual soft (hosts still named Sections/States; rename=low ROI without hop gain)
+lowercase density peel comments → soft dialect not capital-Peel bar
 
-# PROVE pass 1
-rg 'JudgmentGrammar|Peel|conversationPresence' App/{Atlas,Widgets} --glob '*.swift' → 0
-find *Grammar*|*Peel* → 0
+# PROVE pass 4
 swift run AtlasCoreChecks → exit 0
-cd App && make build → exit 0
-./scripts/grok-god-wave-guard.sh → GUARD OK mode=restructure
+make build → exit 0
+./scripts/grok-god-wave-guard.sh → GUARD OK
 ```
 
 ## before_after
 ```
-AutonomosDecisionJudgmentGrammar.swift (133) → fused into AutonomosDecisionJudgment (228→353)
-SelfConstructionReceiptChromePeel.swift → SelfConstructionReceiptChrome.swift
-AtlasTurnGlanceGrammar.swift → AtlasTurnGlanceJudgment.swift
-conversationPresenceOnAppear/Disappear/OnThreadChange/Modifiers → presence*
-MARK: - Peels ×9 → Types|Sections|Helpers|A11y
-CODEMAP: Grammar/Peel rows → Judgment/Chrome honest
+pass1 1b7d156a: Grammar+Peel+presence rename/fuse
+pass2 9a36eaf4: JudgmentChrome×3 → host Judgment
+pass3 fcfebaca: ScreenJudgment×4 + Face honesty
+pass4: MARK CodeWeek/Fleet/Lock/LiveSession Widget surfaces; CODEMAP Root chrome
 ```
 
 ## notes
-- Pass 1 ROI: rename-honesty + fuse same-domain Grammar (P2/P5). Zero product.
-- Remaining actionable (AUDIT residual): JudgmentChrome×3, ScreenJudgment×4, Face.swift×2, MARK dense widgets, soft lowercase peel comments, CODEMAP sub-names (FilterChrome etc. exist as Graph*Chrome).
-- Do not invent fuse for empty debt.
+- Next AUDIT: if only soft comments / Sections-States hosts left below ROI → actionable 0
+- Empty audit ×2 → god_hold

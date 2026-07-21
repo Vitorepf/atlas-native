@@ -4,6 +4,8 @@ import AtlasCore
 
 // IDLE-COMPRESS — CodeWeek accessory widget fused
 
+// MARK: - Types
+
 enum CodeWeekWidgetA11y {}
 
 extension CodeWeekWidgetA11y {
@@ -209,6 +211,8 @@ extension CodeWeekWidgetView {
 struct CodeWeekWidgetView: View {
     @Environment(\.widgetFamily) var family
     let entry: SnapshotEntry
+
+    // MARK: - Body
 
     var body: some View {
         SnapshotContainer {
