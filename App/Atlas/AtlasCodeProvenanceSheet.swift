@@ -6,6 +6,12 @@ import SwiftUI
 
 // MARK: - Folha: por que esta linha existe (C23)
 
+/// Alvo do sheet “por quê” a partir de um path de arquivo da proveniência.
+struct AtlasCodeProvenanceWhyTarget: Identifiable {
+    let path: String
+    var id: String { path }
+}
+
 /// A folha responde, em ordem, as perguntas de quem abre um commit: em que
 /// estado ele está, o que ele diz, por que existe, e o que ele tocou.
 /// O hash fecha a folha — máquina embaixo do vidro (lei 6).
