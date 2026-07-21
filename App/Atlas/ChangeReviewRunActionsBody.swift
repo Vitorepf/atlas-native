@@ -20,7 +20,7 @@ extension ChangeReviewRunActions {
         } else {
             ProgressView()
                 .tint(AtlasTheme.accent)
-                .accessibilityLabel("registrando decisão")
+                .accessibilityLabel(ChangeReviewJudgment.applyingLabel)
         }
     }
 }
@@ -30,7 +30,7 @@ extension ChangeReviewRunActions {
         Text("registrando…")
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
-            .accessibilityLabel("registrando decisão")
+            .accessibilityLabel(ChangeReviewJudgment.applyingLabel)
     }
 }
 
@@ -61,8 +61,8 @@ extension ChangeReviewRunActions {
                 acceptButtonLabel
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("aceitar todos os arquivos e concluir revisão")
-            .accessibilityHint("aceita cada arquivo capturado e depois conclui o run")
+            .accessibilityLabel(ChangeReviewJudgment.acceptLabel)
+            .accessibilityHint(ChangeReviewJudgment.acceptHint)
             .accessibilityIdentifier(A11yID.reviewRunAccept)
         }
     }
@@ -86,8 +86,8 @@ extension ChangeReviewRunActions {
                 rejectButtonLabel
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("rejeitar revisão inteira")
-            .accessibilityHint("rejeita o run de engenharia desta execução")
+            .accessibilityLabel(ChangeReviewJudgment.rejectLabel)
+            .accessibilityHint(ChangeReviewJudgment.rejectHint)
             .accessibilityIdentifier(A11yID.reviewRunReject)
         }
     }

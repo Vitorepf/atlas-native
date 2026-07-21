@@ -168,7 +168,7 @@ extension ChangeReviewDiffView {
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 8)
-            .accessibilityLabel("diff indisponível para este patch")
+            .accessibilityLabel(ChangeReviewJudgment.diffUnavailableLabel)
             .accessibilityIdentifier(A11yID.reviewDiffUnavailable)
     }
 }
@@ -279,7 +279,7 @@ extension ChangeReviewFileRow {
         }
         .buttonStyle(PressableScale())
         .font(AtlasFont.mono(10, .medium)).foregroundStyle(AtlasTheme.accent)
-        .accessibilityLabel("aceitar \(displayName)")
+        .accessibilityLabel(ChangeReviewJudgment.spokenAcceptPatch(displayName))
         .accessibilityHint("registra aceite deste arquivo no patch")
         .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))
     }
@@ -335,7 +335,7 @@ extension ChangeReviewFileRow {
         }
         .buttonStyle(PressableScale())
         .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
-        .accessibilityLabel("rejeitar \(displayName)")
+        .accessibilityLabel(ChangeReviewJudgment.spokenRejectPatch(displayName))
         .accessibilityHint("registra rejeição deste arquivo no patch")
         .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))
     }

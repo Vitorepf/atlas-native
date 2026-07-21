@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 87
-- idle_compress_passes: 12
+- idle_compress_passes: 13
 - collapse_host: 0
 
 ## Waves done
@@ -100,11 +100,10 @@ mode: designer + implementer
 - WAVE-092
 
 ## Idle compress
-- pass 11–12 · A11y shims (Timeline/Suite/StaleRead · Composer card)
+- pass 13 · ChangeReview run/patch action spoken → Judgment
 
 ## Open queue
 _(none)_
 
 ## Notes
-- WAVE-092 artifact list/row residual.
-- DEVICE_PENDING.
+- WAVE-092 shipped. DEVICE_PENDING.

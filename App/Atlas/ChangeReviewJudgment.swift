@@ -268,4 +268,22 @@ enum ChangeReviewJudgment {
             return face.spokenFace
         }
     }
+
+    // MARK: Run actions (WAVE post · run CTA chrome)
+
+    static let applyingLabel = "registrando decisão"
+    static let acceptLabel = "aceitar todos os arquivos e concluir revisão"
+    static let acceptHint = "aceita cada arquivo capturado e depois conclui o run"
+    static let rejectLabel = "rejeitar revisão inteira"
+    static let rejectHint = "rejeita o run de engenharia desta execução"
+    static let diffUnavailableLabel = "diff indisponível para este patch"
+
+    static func spokenAcceptPatch(_ displayName: String) -> String {
+        "aceitar \(displayName)"
+    }
+
+    static func spokenRejectPatch(_ displayName: String) -> String {
+        "rejeitar \(displayName)"
+    }
 }
+
