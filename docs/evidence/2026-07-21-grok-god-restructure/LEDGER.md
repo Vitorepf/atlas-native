@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: domain0 residual or Conversa
-- domain_index: 0
+- focus: Conversa Sections rename
+- domain_index: 1
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-rootchrome
+- last_commit: pending-empty-conversation
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,24 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T22:55Z — EmptyConversation rename · domain→1
+
+```yaml
+phase: prove
+focus: ConversationEmptyStates → EmptyConversation
+domain_index: 1
+pass: 1
+commands: |
+  domain 0 closed with 4 commits
+  git mv ConversationEmptyStates → EmptyConversation
+  gates ✓
+before_after: |
+  States suffix killed for Conversa empty chrome
+  CODEMAP Empty editorial → EmptyConversation
+notes: |
+  domain_index=1; next ChangeReviewSections / ExecutionProofSections / Conversation peels
+```
 
 ### 2026-07-21T22:50Z — RootChrome MARK + ThreadRow rename
 

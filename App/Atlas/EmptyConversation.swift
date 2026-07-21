@@ -1,8 +1,10 @@
 import SwiftUI
 import AtlasCore
 
-// Empty state vivo da conversa (WAVE-003 fuse · WAVE-084 editorial Judgment).
-// Load fail fica em ConversationMessages+Empty → AtlasNetworkFailureEmpty.
+// GOD-RESTRUCTURE: was ConversationEmptyStates — EmptyConversation chrome
+// Load fail: ConversationMessages → AtlasNetworkFailureEmpty
+
+// MARK: - Host
 
 struct EmptyConversation: View {
     let reduceMotion: Bool

@@ -68,7 +68,7 @@
 | **Stale-read cache seal** | `ConversationStaleReadJudgment` → face · pack mid-thread |
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face · pack mid-thread |
 | Messages parts | `ConversationMessages` host · `ConversationMessagesScroll` · `ConversationMessagesEditorial` |
-| **Empty editorial (partida)** | `ConversationEmptyJudgment` → face silence/default_prompt/custom_prompt/suggestions(N) · EmptyStates |
+| **Empty editorial (partida)** | `ConversationEmptyJudgment` → face · `EmptyConversation` chrome |
 | **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · sheet · pack mid-thread |
 | **Home OPERAÇÃO attention** | `HomeOpsJudgment` → Autônomos door face · Arena door · pack · packCatalogFacts |
 | **Autônomos unit focus pack** | `AutonomosListJudgment.packUnitFocusFacts` → Ask host |

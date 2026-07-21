@@ -1,45 +1,38 @@
 # GOD RESTRUCTURE — DEBTS (fila mecânica · 24h)
 
-> Cursor de trabalho. Grok **sempre** tem próximo foco aqui.
-
 ## State
 
 ```yaml
 pass: 1
-domain_index: 0
-last_focus: "RootChrome MARK + RootChromeBody→ThreadRow"
+domain_index: 1
+last_focus: "Conversa ConversationEmptyStates→EmptyConversation"
 passes_completed: 0
 ```
 
 ## Domínios
 
-| # | Domínio | Glob |
+| # | Domínio | Status pass1 |
 |---|---|---|
-| 0 | Home / Root | Root* Home* Workspace* |
-| 1 | Conversa | Conversation* |
-| 2 | Código / Radar | AtlasCode* *Radar* |
-| 3 | Pílula | Agentic* |
-| 4 | Arena | Arena* |
-| 5 | Autônomos | Autonomos* |
-| 6 | Continuity / Widgets | Live* Widgets |
-| 7 | Cross-cut | CODEMAP spoken packFacts |
+| 0 | Home / Root | **closed** rename+fuse+spoken+MARK+CODEMAP |
+| 1 | Conversa | **in progress** EmptyConversation done |
+| 2–7 | … | pending |
 
-## Checklist domain 0 Home (pass 1)
+## Checklist domain 1 Conversa
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Delete morto | skip ROI soft (no 0-ref dead types found) |
-| 2 | Rename honesty | **done** RootHomeBody · EmptyChrome · ThreadRow |
-| 3 | spoken/packFacts/rank | **done** LiveNowJudgment |
-| 4 | MARK >200 | **done** RootChrome · RootHomeBody · LiveNowJudgment; residual WorkspaceSurfaceBody/Search* minor |
-| 5 | Fuse peels | **done** RootHome · LiveNowJudgment |
-| 6 | CODEMAP | **done** Home hot paths this pass |
+| 1 | Delete morto | open |
+| 2 | Rename honesty | **done** EmptyConversation · open ChangeReviewSections* ExecutionProofSections* |
+| 3 | spoken/packFacts | open |
+| 4 | MARK >200 | open |
+| 5 | Fuse peels <120 | open (many Conversation* thin peels) |
+| 6 | CODEMAP | partial EmptyConversation |
 
-**Próximo após commit:** residual Workspace/Search MARK polish **ou** domain_index→1 Conversa (soft *EmptyStates*).
+**Próximo:** ChangeReviewSections* / ExecutionProofSections* rename **ou** fuse ConversationSheets peels.
 
-## Soft global remaining
+## Soft global
 
-ConversationEmptyStates · Arena*States · ChangeReviewSections* · ExecutionProofSections* · AtlasCodeProvenanceSections* · AutonomosDecisionSections
+Still: Arena*States · ChangeReviewSections* · ExecutionProofSections* · AtlasCodeProvenanceSections* · AutonomosDecisionSections
 
 ## Proibido
 
