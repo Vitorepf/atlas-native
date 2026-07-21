@@ -549,6 +549,7 @@ struct ArenaFieldChrome: ViewModifier {
             .font(.system(.callout))
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 12).padding(.vertical, 10)
+            .frame(minHeight: 48, alignment: .center)
             .background(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
                     .fill(AtlasTheme.bgRecessed)
