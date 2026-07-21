@@ -13,7 +13,7 @@ extension ChangeReviewFindingRow {
                         .foregroundStyle(Self.severityColor(severity))
                         .accessibilityHidden(true)
                 }
-                Text(finding.title ?? "finding").font(.footnote).foregroundStyle(AtlasTheme.textPrimary)
+                Text(finding.title ?? "finding").font(AtlasFont.serif(14)).foregroundStyle(AtlasTheme.textPrimary)
                     .lineLimit(2)
                     .accessibilityHidden(true)
             }

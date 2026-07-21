@@ -9,7 +9,7 @@ struct ChangeReviewHashWarning: View {
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
             Text("atenção: o hash do diff não confere com o artefato registrado")
-                .font(.caption)
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .fixedSize(horizontal: false, vertical: true)
         }

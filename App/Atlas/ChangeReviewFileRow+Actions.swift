@@ -16,7 +16,7 @@ extension ChangeReviewFileRow {
             }
         }
         .buttonStyle(PressableScale())
-        .font(.system(.caption, weight: .medium)).foregroundStyle(AtlasTheme.accent)
+        .font(AtlasFont.mono(10, .medium)).foregroundStyle(AtlasTheme.accent)
         .accessibilityLabel("aceitar \(displayName)")
         .accessibilityHint("registra aceite deste arquivo no patch")
         .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))

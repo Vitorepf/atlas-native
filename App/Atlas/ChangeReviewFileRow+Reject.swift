@@ -15,7 +15,7 @@ extension ChangeReviewFileRow {
             }
         }
         .buttonStyle(PressableScale())
-        .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
+        .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
         .accessibilityLabel("rejeitar \(displayName)")
         .accessibilityHint("registra rejeição deste arquivo no patch")
         .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))

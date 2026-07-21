@@ -11,7 +11,7 @@ extension ChangeReviewPatchCard {
                 .accessibilityHidden(true)
             Spacer()
             Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
-                .font(.system(.footnote, weight: .medium)).foregroundStyle(AtlasTheme.accent)
+                .font(AtlasFont.mono(11, .medium)).foregroundStyle(AtlasTheme.accent)
                 .accessibilityLabel(ChangeReviewPatchA11y.spokenDiffToggle(expanded: diffExpanded))
                 .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
                 .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
