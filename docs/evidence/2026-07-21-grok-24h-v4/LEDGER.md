@@ -179,6 +179,7 @@ mode: designer + implementer
 - WAVE-171
 
 ## Idle compress
+- pass 4 · `21b78488` MARK WAVE-171 peels
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
 

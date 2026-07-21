@@ -4,6 +4,7 @@ import AtlasCore
 // WAVE-171 density peel — Autônomos pack organs
 
 extension AutonomosAskContext {
+    // MARK: - Global loop · bind · transfer · health · fleet
     static func appendGlobalOrgans(
         controlFace: AutonomosRunControlFace,
         canControl: Bool,
@@ -65,6 +66,7 @@ extension AutonomosAskContext {
         absences.append(contentsOf: digestPack.absences)
     }
 
+    // MARK: - Destination drill
     static func appendDestinationOrgans(
         unit: AutonomosUnit?,
         destination: AutonomosDestination?,
@@ -152,6 +154,7 @@ extension AutonomosAskContext {
     }
 
     /// Returns canRevert for can_do elevation.
+    // MARK: - Veto · nightly · can_do prep
     static func appendVetoNightlyCanDoOrgans(
         destination: AutonomosDestination?,
         controlFace: AutonomosRunControlFace,

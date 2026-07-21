@@ -6,6 +6,7 @@ import AtlasCore
 
 extension ConversationOccasionPack {
     @MainActor
+    // MARK: - Handoff · review · proof
     static func appendSteerHandoffReviewOrgans(
         published: PublishedSlice?,
         matchingLive: [LiveSessionSnapshot],
@@ -51,6 +52,7 @@ extension ConversationOccasionPack {
     }
 
     @MainActor
+    // MARK: - Composer · evidence · messages
     static func appendComposerEvidenceOrgans(
         published: PublishedSlice?,
         matchingLive: [LiveSessionSnapshot],

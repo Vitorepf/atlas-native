@@ -6,6 +6,7 @@ import AtlasCore
 extension ConversationOccasionPack {
     /// Matching live sessions + hub count. Returns matching list for later organs.
     @MainActor
+    // MARK: - Live sessions
     static func appendLiveSessionFacts(
         session: AtlasSession,
         threadId: ThreadID,
@@ -37,6 +38,7 @@ extension ConversationOccasionPack {
 
     /// Can-do · decision · queue · plan · lanes · strip. Returns canDo for render.
     @MainActor
+    // MARK: - Live organs (can_do · strip)
     static func appendLiveOrgans(
         published: PublishedSlice?,
         matchingLive: [LiveSessionSnapshot],

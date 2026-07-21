@@ -5,6 +5,7 @@ import AtlasCore
 
 extension ArenaPremiumAskContext {
     @MainActor
+    // MARK: - Fleet · capabilities · run sheet · suites
     static func appendScoreOrgans(
         model: ArenaModel,
         destination: ArenaPremiumDestination?,
