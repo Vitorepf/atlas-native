@@ -285,5 +285,46 @@ enum ChangeReviewJudgment {
     static func spokenRejectPatch(_ displayName: String) -> String {
         "rejeitar \(displayName)"
     }
+
+    // MARK: Patch card spoken (IDLE peel from PatchBody A11y)
+
+    static func spokenPatchCard(patch: AtlasTraceChangeReview.Patch, diffExpanded: Bool) -> String {
+        var parts = ["patch \(String(patch.id.prefix(8)))"]
+        if let files = spokenPatchFileCounts(
+            changed: patch.changedFiles.count,
+            created: patch.createdFiles.count,
+            deleted: patch.deletedFiles.count
+        ) {
+            parts.append(files)
+        }
+        if let risk = spokenPatchRiskFlagsOptional(patch.riskFlags) {
+            parts.append(risk)
+        }
+        parts.append(diffExpanded ? "diff expandido" : "diff recolhido")
+        return parts.joined(separator: ", ")
+    }
+
+    static func spokenDiffToggle(expanded: Bool) -> String {
+        expanded ? "fechar diff do patch" : "ver diff do patch"
+    }
+
+    static func spokenRiskFlagsLabel(_ flags: [String]) -> String {
+        "alertas de risco, \(flags.joined(separator: ", "))"
+    }
+
+    static func spokenPatchFileCounts(changed: Int, created: Int, deleted: Int) -> String? {
+        let total = changed + created + deleted
+        guard total > 0 else { return nil }
+        var fileParts: [String] = []
+        if changed > 0 { fileParts.append("\(changed) alterado\(changed == 1 ? "" : "s")") }
+        if created > 0 { fileParts.append("\(created) novo\(created == 1 ? "" : "s")") }
+        if deleted > 0 { fileParts.append("\(deleted) removido\(deleted == 1 ? "" : "s")") }
+        return fileParts.joined(separator: ", ")
+    }
+
+    static func spokenPatchRiskFlagsOptional(_ flags: [String]) -> String? {
+        guard !flags.isEmpty else { return nil }
+        return "alertas \(flags.joined(separator: ", "))"
+    }
 }
 

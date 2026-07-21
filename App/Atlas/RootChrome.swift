@@ -156,6 +156,9 @@ struct WorkspaceRow: View {
 }
 
 enum RootChromeRowA11y {
+    static let profileLabel = "perfil do operador"
+    static let profileHint = "abre seu perfil e o estado da sessão"
+
     static func workspaceSpoken(
         name: String,
         count: Int?,

@@ -46,6 +46,10 @@ enum SearchScreenFace: Equatable {
 enum SearchScreenJudgment {
 
     static let screenHint = "busca local nas conversas já carregadas na sessão"
+    static let backLabel = "voltar"
+    static let backHint = "fecha a busca"
+    static let clearLabel = "limpar busca"
+    static let clearHint = "remove o texto e volta aos recentes"
 
     static func face(
         showsLoadingShell: Bool,

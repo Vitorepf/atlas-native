@@ -3,68 +3,6 @@ import SwiftUI
 
 // IDLE-COMPRESS peel from ChangeReviewSections (canon §7.2 · same domain)
 
-enum ChangeReviewPatchA11y {
-    static func spokenCard(patch: AtlasTraceChangeReview.Patch, diffExpanded: Bool) -> String {
-        ChangeReviewPatchA11yCard.spokenCard(patch: patch, diffExpanded: diffExpanded)
-    }
-
-    static func spokenDiffToggle(expanded: Bool) -> String {
-        ChangeReviewPatchA11yToggle.spokenDiffToggle(expanded: expanded)
-    }
-
-    static func spokenRiskFlags(_ flags: [String]) -> String {
-        ChangeReviewPatchA11yToggle.spokenRiskFlags(flags)
-    }
-}
-
-enum ChangeReviewPatchA11yCard {
-    static func spokenCard(patch: AtlasTraceChangeReview.Patch, diffExpanded: Bool) -> String {
-        var parts = ["patch \(String(patch.id.prefix(8)))"]
-        if let files = spokenFileCounts(
-            changed: patch.changedFiles.count,
-            created: patch.createdFiles.count,
-            deleted: patch.deletedFiles.count
-        ) {
-            parts.append(files)
-        }
-        if let risk = spokenRiskFlags(patch.riskFlags) {
-            parts.append(risk)
-        }
-        parts.append(spokenDiffState(expanded: diffExpanded))
-        return parts.joined(separator: ", ")
-    }
-
-    static func spokenDiffState(expanded: Bool) -> String {
-        expanded ? "diff expandido" : "diff recolhido"
-    }
-
-    static func spokenFileCounts(changed: Int, created: Int, deleted: Int) -> String? {
-        let total = changed + created + deleted
-        guard total > 0 else { return nil }
-        var fileParts: [String] = []
-        if changed > 0 { fileParts.append("\(changed) alterado\(changed == 1 ? "" : "s")") }
-        if created > 0 { fileParts.append("\(created) novo\(created == 1 ? "" : "s")") }
-        if deleted > 0 { fileParts.append("\(deleted) removido\(deleted == 1 ? "" : "s")") }
-        return fileParts.joined(separator: ", ")
-    }
-
-    /// Optional flags list for patch card spoken (distinct from Toggle risk label).
-    static func spokenRiskFlags(_ flags: [String]) -> String? {
-        guard !flags.isEmpty else { return nil }
-        return "alertas \(flags.joined(separator: ", "))"
-    }
-}
-
-enum ChangeReviewPatchA11yToggle {
-    static func spokenDiffToggle(expanded: Bool) -> String {
-        expanded ? "fechar diff do patch" : "ver diff do patch"
-    }
-
-    static func spokenRiskFlags(_ flags: [String]) -> String {
-        "alertas de risco, \(flags.joined(separator: ", "))"
-    }
-}
-
 extension ChangeReviewPatchCard {
     @ViewBuilder
     var patchCardBody: some View {
@@ -95,7 +33,7 @@ extension ChangeReviewPatchCard {
             Spacer()
             Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
                 .font(AtlasFont.mono(11, .medium)).foregroundStyle(AtlasTheme.accent)
-                .accessibilityLabel(ChangeReviewPatchA11y.spokenDiffToggle(expanded: diffExpanded))
+                .accessibilityLabel(ChangeReviewJudgment.spokenDiffToggle(expanded: diffExpanded))
                 .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
                 .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
         }
@@ -115,7 +53,7 @@ extension ChangeReviewPatchCard {
                     }
                 }
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel(ChangeReviewPatchA11y.spokenRiskFlags(patch.riskFlags))
+                .accessibilityLabel(ChangeReviewJudgment.spokenRiskFlagsLabel(patch.riskFlags))
             }
         }
     }

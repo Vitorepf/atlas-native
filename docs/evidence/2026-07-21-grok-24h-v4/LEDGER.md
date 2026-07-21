@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 90
-- idle_compress_passes: 14
+- idle_compress_passes: 15
 - collapse_host: 0
 
 ## Waves done
@@ -102,7 +102,11 @@ mode: designer + implementer
 - WAVE-094
 - WAVE-095
 
+## Idle compress
+- pass 15 · Search chrome · Root profile · Patch spoken → Judgment
+
+## Open queue
+_(none)_
+
 ## Notes
-- WAVE-094 capabilities · WAVE-095 conversation can_do (A 093 re-file).
-- B WAVE-093 = live-strip CTAs (DONE). A design file 093 text = can_do croqui.
-- DEVICE_PENDING.
+- Pós WAVE-095. DEVICE_PENDING.

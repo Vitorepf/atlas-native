@@ -71,8 +71,8 @@ extension SearchViewHeader {
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
-        .accessibilityLabel("voltar")
-        .accessibilityHint("fecha a busca")
+        .accessibilityLabel(SearchScreenJudgment.backLabel)
+        .accessibilityHint(SearchScreenJudgment.backHint)
     }
 }
 
@@ -100,8 +100,8 @@ extension SearchViewHeader {
     func searchClearA11y<Content: View>(_ content: Content) -> some View {
         content
             .buttonStyle(.plain)
-            .accessibilityLabel("limpar busca")
-            .accessibilityHint("remove o texto e volta aos recentes")
+            .accessibilityLabel(SearchScreenJudgment.clearLabel)
+            .accessibilityHint(SearchScreenJudgment.clearHint)
             .accessibilityIdentifier(A11yID.searchClear)
     }
 }
