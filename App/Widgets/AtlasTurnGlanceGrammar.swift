@@ -11,6 +11,16 @@ enum AtlasTurnGlanceFace: String, Equatable {
     case multiSession
     case paused
     case running
+
+    /// WAVE-023 product vocabulary (multiSession ↔ multi).
+    var productWord: String {
+        switch self {
+        case .finished: return "finished"
+        case .multiSession: return "multi"
+        case .paused: return "paused"
+        case .running: return "running"
+        }
+    }
 }
 
 extension AtlasTurnAttributes.ContentState {
