@@ -123,7 +123,7 @@ struct AtlasCodeRepoPickerSheet: View {
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "folder")
-                    .font(.system(size: 15))
+                    .atlasSans(15)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
                 Text(repo.name)

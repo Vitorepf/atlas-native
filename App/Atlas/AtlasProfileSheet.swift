@@ -94,6 +94,7 @@ extension AtlasProfileSheet {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
         }
         .accessibilityIdentifier(A11yID.profileAuditToggle)
+        .accessibilityLabel("Modo auditoria")
         .accessibilityHint("mostra ou oculta detalhes técnicos nas telas")
 
         Text("Atlas \(appVersion)")

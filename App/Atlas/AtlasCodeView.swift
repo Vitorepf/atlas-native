@@ -738,7 +738,7 @@ extension AtlasCodeView {
                     .font(AtlasFont.mono(10.5))
                     .lineLimit(1)
                 Image(systemName: "chevron.down")
-                    .font(.system(size: 8, weight: .semibold))
+                    .atlasSans(8, .semibold)
                     .opacity(0.55)
                     .accessibilityHidden(true)
             }

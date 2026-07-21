@@ -32,7 +32,7 @@ enum AutonomosMapChrome {
 
     static func heroSub(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 14))
+            .atlasSans(14)
             .foregroundStyle(AtlasTheme.textSecondary)
             .fixedSize(horizontal: false, vertical: true)
     }
@@ -103,7 +103,7 @@ private struct AutonomosMapPrimaryCTA: View {
             action()
         } label: {
             Text(title)
-                .font(.system(size: 14, weight: .medium))
+                .atlasSans(14, .medium)
                 .foregroundStyle(AtlasTheme.textPrimary.opacity(enabled ? 1 : 0.35))
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: 48)
@@ -136,7 +136,7 @@ private struct AutonomosMapQuietCTA: View {
             action()
         } label: {
             Text(title)
-                .font(.system(size: 14))
+                .atlasSans(14)
                 .foregroundStyle(danger ? AtlasTheme.alert : AtlasTheme.textSecondary)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: 48)

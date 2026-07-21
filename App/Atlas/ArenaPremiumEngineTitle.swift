@@ -32,7 +32,7 @@ struct ArenaPremiumEngineTitle: View {
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 13, weight: .semibold))
+                        .atlasSans(13, .semibold)
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .accessibilityHidden(true)
                 }

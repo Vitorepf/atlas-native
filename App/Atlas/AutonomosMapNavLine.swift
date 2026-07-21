@@ -20,7 +20,7 @@ struct AutonomosMapNavLine: View {
         } label: {
             HStack(spacing: 10) {
                 Text(title)
-                    .font(.system(size: 15.5, weight: .medium))
+                    .atlasSans(15.5, .medium)
                     .foregroundStyle(danger ? AtlasTheme.alert : AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 if !meta.isEmpty {
@@ -30,7 +30,7 @@ struct AutonomosMapNavLine: View {
                         .lineLimit(1)
                 }
                 Text("›")
-                    .font(.system(size: 13))
+                    .atlasSans(13)
                     .foregroundStyle(danger ? AtlasTheme.alert.opacity(0.7) : AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
             }
