@@ -1205,11 +1205,27 @@ struct LiveNowRow: View {
 
     private var rowContent: some View {
         TimelineView(.periodic(from: .now, by: 60)) { context in
-            HStack(alignment: .firstTextBaseline, spacing: 10) {
-                HStack(alignment: .firstTextBaseline, spacing: 10) {
+            HStack(alignment: .center, spacing: 10) {
+                HStack(alignment: .center, spacing: 10) {
                     BreathingDiamond(
                         size: 8,
                         reduceMotion: reduceMotion || session.timing != .running
+                    )
+                    .frame(width: 28, height: 28)
+                    .background(
+                        Circle().fill(
+                            session.timing == .running
+                                ? AtlasTheme.goldVeil
+                                : AtlasTheme.surface.opacity(0.5)
+                        )
+                    )
+                    .overlay(
+                        Circle().stroke(
+                            session.timing == .running
+                                ? AtlasTheme.goldBorder.opacity(0.55)
+                                : AtlasTheme.separatorSoft,
+                            lineWidth: 1
+                        )
                     )
                     titleStack(now: context.date)
                 }
