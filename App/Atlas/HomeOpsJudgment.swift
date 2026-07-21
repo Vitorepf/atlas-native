@@ -188,7 +188,7 @@ enum HomeOpsJudgment {
 
     // MARK: Profile spoken (WAVE-104)
 
-    static let operatorProfileSpoken = "Vitor, operador do Atlas"
+    static let spokenOperatorProfile = "Vitor, operador do Atlas"
 
     static func spokenProfileLine(label: String, value: String) -> String {
         "\(label), \(value)"
@@ -199,7 +199,7 @@ enum HomeOpsJudgment {
 // MARK: - Ask context
 
 enum HomeAskContext {
-    static let invite = "Escreva ao Atlas"
+    static let productInvite = "Escreva ao Atlas"
 
     static func emptySuggestions(hasWorkspaces: Bool) -> [String] {
         if hasWorkspaces {
@@ -251,7 +251,7 @@ enum HomeAskContext {
 
         // WAVE-084: empty editorial face for Home partida (catalog honesty).
         let empty = ConversationEmptyJudgment.packFacts(
-            prompt: invite,
+            prompt: productInvite,
             suggestions: emptySuggestions(hasWorkspaces: !workspaces.isEmpty),
             isHomePartida: true,
             hasWorkspaces: !workspaces.isEmpty

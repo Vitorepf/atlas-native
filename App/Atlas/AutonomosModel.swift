@@ -811,7 +811,7 @@ extension SelfConstructionReceiptSheet {
             .textInputAutocapitalization(.never)
             .padding(10)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
-            .accessibilityLabel(AutonomosReasonJudgment.actorPlaceholder)
+            .accessibilityLabel(AutonomosReasonJudgment.productActorPlaceholder)
             .accessibilityHint(spokenActorHint())
     }
 }
@@ -823,7 +823,7 @@ extension SelfConstructionReceiptSheet {
             .lineLimit(2...4)
             .padding(10)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
-            .accessibilityLabel(AutonomosReasonJudgment.reasonPlaceholder)
+            .accessibilityLabel(AutonomosReasonJudgment.productReasonPlaceholder)
             .accessibilityHint(spokenReasonHint())
     }
 }

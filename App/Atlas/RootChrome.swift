@@ -624,7 +624,7 @@ extension RootView {
                 client: session.client,
                 threadId: nil,
                 title: "Nova conversa",
-                emptyPrompt: HomeAskContext.invite,
+                emptyPrompt: HomeAskContext.productInvite,
                 emptySuggestions: HomeAskContext.emptySuggestions(
                     hasWorkspaces: !session.workspaces.isEmpty
                 ),
@@ -796,7 +796,7 @@ struct AtlasProfileSheet: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(HomeOpsJudgment.operatorProfileSpoken)
+        .accessibilityLabel(HomeOpsJudgment.spokenOperatorProfile)
     }
 }
 

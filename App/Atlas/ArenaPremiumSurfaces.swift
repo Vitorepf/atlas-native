@@ -962,7 +962,7 @@ struct ArenaPremiumStopSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     ArenaPremiumEmptyGlyph(symbol: "stop.circle", tone: .negative)
-                    ArenaPremiumKicker(text: ArenaStopJudgment.kicker, tone: .negative)
+                    ArenaPremiumKicker(text: ArenaStopJudgment.productKicker, tone: .negative)
                         .accessibilityIdentifier(A11yID.arenaPremiumStopSheet)
                     Text(ArenaStopJudgment.productHeroTitle)
                         .font(AtlasFont.serif(34))
@@ -1008,13 +1008,13 @@ struct ArenaPremiumStopSheet: View {
             // Chrome da casa: .roundedBorder rendia caixas BRANCAS no dark
             // (a mesma quebra já corrigida na folha de rodar) — ink neutro.
             fieldLabel(ArenaStopJudgment.productActor)
-            TextField(ArenaStopJudgment.actorPlaceholder, text: $actor)
+            TextField(ArenaStopJudgment.productActorPlaceholder, text: $actor)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaPremiumStopActor)
             fieldLabel(ArenaStopJudgment.productReason)
-            TextField(ArenaStopJudgment.reasonPlaceholder, text: $reason, axis: .vertical)
+            TextField(ArenaStopJudgment.productReasonPlaceholder, text: $reason, axis: .vertical)
                 .lineLimit(2...4)
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaPremiumStopReason)

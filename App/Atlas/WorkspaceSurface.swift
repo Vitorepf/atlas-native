@@ -170,7 +170,7 @@ extension WorkspaceView {
         if let workspaceKey {
             return WorkspaceAskContext.invite(workspaceName: title.isEmpty ? workspaceKey : title)
         }
-        return HomeAskContext.invite
+        return HomeAskContext.productInvite
     }
 }
 

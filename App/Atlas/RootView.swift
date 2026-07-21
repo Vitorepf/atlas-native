@@ -208,7 +208,7 @@ extension RootView {
 extension RootView {
     // WAVE-016: face canônica (mesmo órgão que Arena/Autônomos/Workspace).
     var inputBarContent: some View {
-        AgenticPillFace(invite: HomeAskContext.invite)
+        AgenticPillFace(invite: HomeAskContext.productInvite)
     }
 }
 

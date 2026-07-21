@@ -149,7 +149,7 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
         }
 
         static let productMorningTitle = "Resumo da missão noturna"
-        static let morningBody = "Abra Autônomos para ver o que a frota entregou com prova."
+        static let productMorningBody = "Abra Autônomos para ver o que a frota entregou com prova."
     }
 
     // MARK: - UNUserNotificationCenterDelegate
@@ -293,7 +293,7 @@ extension NightlyProposalController {
 
         let content = UNMutableNotificationContent()
         content.title = NotificationCopy.productMorningTitle
-        content.body = NotificationCopy.morningBody
+        content.body = NotificationCopy.productMorningBody
         content.sound = .default
         content.userInfo = ["atlas.route": "autonomos"]
 

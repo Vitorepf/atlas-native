@@ -270,7 +270,7 @@ extension AutonomosViewHeader {
                 .frame(width: 40, height: 40)
                 .atlasGlassCircle()
         }
-        .accessibilityLabel(AutonomosListJudgment.createCTA)
+        .accessibilityLabel(AutonomosListJudgment.productCreateCTA)
         .accessibilityHint("Cria um Autônomo com nome e carta")
         .accessibilityIdentifier(A11yID.autonomosNew)
     }
@@ -507,7 +507,7 @@ struct AutonomosListView: View {
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
-            AutonomosMapChrome.primaryCTA(AutonomosListJudgment.createCTA, action: onCreate)
+            AutonomosMapChrome.primaryCTA(AutonomosListJudgment.productCreateCTA, action: onCreate)
             Spacer(minLength: 0)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
@@ -1064,7 +1064,7 @@ struct AutonomosAreaBindCTA: View {
             .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.55)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(AutonomosAreaBindJudgment.ctaSpoken)
+        .accessibilityLabel(AutonomosAreaBindJudgment.spokenCTA)
         .accessibilityHint(AutonomosAreaBindJudgment.spokenChooserHint)
         .accessibilityValue(AutonomosAreaBindFace.needsBind(registeredCount).productWord)
         .accessibilityIdentifier(A11yID.autonomosAreaBindCTA)
@@ -1816,18 +1816,18 @@ struct AutonomosReasonSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(AutonomosReasonJudgment.sectionAction) {
+                Section(AutonomosReasonJudgment.productSectionAction) {
                     Text(title).accessibilityAddTraits(.isHeader)
                     Text(explainer).font(.footnote).foregroundStyle(.secondary)
                 }
-                Section(AutonomosReasonJudgment.sectionOperator) {
-                    TextField(AutonomosReasonJudgment.actorPlaceholder, text: $actor)
+                Section(AutonomosReasonJudgment.productSectionOperator) {
+                    TextField(AutonomosReasonJudgment.productActorPlaceholder, text: $actor)
                         .accessibilityIdentifier(A11yID.autonomosReasonActor)
                         .accessibilityHint(AutonomosReasonJudgment.spokenActorHint)
                 }
                 Section(AutonomosReasonJudgment.productReasonSection(reasonOptional: reasonOptional)) {
                     TextField(
-                        AutonomosReasonJudgment.reasonPlaceholder,
+                        AutonomosReasonJudgment.productReasonPlaceholder,
                         text: $reason,
                         axis: .vertical
                     )

@@ -283,7 +283,7 @@ enum AutonomosListJudgment {
     static let emptyFootnote =
         "Create no servidor ainda pendente — sem frota 24/7 inventada."
     static let emptyHero = "Nenhum ainda"
-    static let createCTA = "Novo Autônomo"
+    static let productCreateCTA = "Novo Autônomo"
 
     // MARK: Face
 

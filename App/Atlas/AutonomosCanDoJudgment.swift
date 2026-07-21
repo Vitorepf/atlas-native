@@ -216,7 +216,7 @@ enum AutonomosAreaBindJudgment {
 
     static let spokenChooserHint = "liga a frota a uma área registrada no motor"
     static let productCTA = "Escolher área"
-    static let ctaSpoken = "escolher área do loop Autônomos"
+    static let spokenCTA = "escolher área do loop Autônomos"
 
     static func packFacts(
         areas: [AtlasAutonomosArea],
@@ -425,17 +425,17 @@ enum AutonomosReasonFace: Equatable {
 enum AutonomosReasonJudgment {
 
     static let productNavigationTitle = "Confirmar ação"
-    static let sectionAction = "Ação governada"
-    static let sectionOperator = "Operador"
-    static let actorPlaceholder = "Quem autoriza"
-    static let reasonPlaceholder = "Motivo auditável"
+    static let productSectionAction = "Ação governada"
+    static let productSectionOperator = "Operador"
+    static let productActorPlaceholder = "Quem autoriza"
+    static let productReasonPlaceholder = "Motivo auditável"
     static let productConfirm = "Confirmar"
     static let productCancel = "Cancelar"
     static let spokenCancel = "cancelar ação governada"
     static let spokenCancelHint = "fecha sem registrar recibo"
     static let spokenActorHint = "nome de quem autoriza a ação governada"
-    static let reasonHintRequired = "motivo auditável registrado no ledger"
-    static let reasonHintOptional = "motivo auditável opcional no ensaio"
+    static let spokenReasonHintRequired = "motivo auditável registrado no ledger"
+    static let spokenReasonHintOptional = "motivo auditável opcional no ensaio"
 
     // MARK: Face / submit
 
@@ -488,7 +488,7 @@ enum AutonomosReasonJudgment {
     }
 
     static func spokenReasonFieldHint(reasonOptional: Bool) -> String {
-        reasonOptional ? reasonHintOptional : reasonHintRequired
+        reasonOptional ? spokenReasonHintOptional : spokenReasonHintRequired
     }
 
     // MARK: Pack

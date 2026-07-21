@@ -38,14 +38,14 @@ enum ArenaStopFace: Equatable {
 enum ArenaStopJudgment {
 
     static let productNavigationTitle = "Parar"
-    static let kicker = "Ação governada"
+    static let productKicker = "Ação governada"
     static let productHeroTitle = "Parar a medição?"
     static let bodyCopy =
         "O caso atual termina antes da parada. Casos concluídos e resultados parciais são preservados."
     static let productActor = "Operador"
     static let productReason = "Motivo"
-    static let actorPlaceholder = "quem autoriza"
-    static let reasonPlaceholder = "por que parar agora"
+    static let productActorPlaceholder = "quem autoriza"
+    static let productReasonPlaceholder = "por que parar agora"
     static let productConfirm = "Confirmar parada"
     static let spokenClose = "fechar confirmação"
     static let spokenCloseHint = "mantém a medição em execução"
