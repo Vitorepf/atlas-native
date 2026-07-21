@@ -303,8 +303,8 @@ extension ConversationView {
 extension ConversationView {
     func editAndResend(_ bubble: ChatBubble) {
         guard bubble.role == "user" else { return }
+        // Soft owned by EditorialTurn button — avoid double fire.
         model.updateDraft(bubble.text)
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         focused = true
         setToast("mensagem no composer para novo turno")
     }

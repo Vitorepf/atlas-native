@@ -63,7 +63,7 @@ struct AutonomosRhythmSheet: View {
                         Text("Reativar propostas noturnas")
                             .font(AtlasFont.mono(11, .semibold))
                             .foregroundStyle(AtlasTheme.accent)
-                            .frame(minHeight: 44, alignment: .leading)
+                            .frame(minHeight: 48, alignment: .leading)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)

@@ -69,7 +69,8 @@ struct AutonomosNewSheet: View {
                 .tracking(0.8)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .textCase(.uppercase)
-                .accessibilityAddTraits(.isHeader)
+                // Visual only — TextField carries accessibilityLabel(label).
+                .accessibilityHidden(true)
             Group {
                 if axis == .vertical {
                     TextField(placeholder, text: text, axis: .vertical)
