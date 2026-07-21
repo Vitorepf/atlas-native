@@ -211,5 +211,5 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-180: StateCard kind pack mid-thread (strip+card pack honesty).
-- WAVE-174–179 pack/face campaign · hollows 0.
+- WAVE-180: StateCard kind pack mid-thread.
+- WAVE-174–179 pack/face sovereignty · hollows 0 · face-sans-pack none.

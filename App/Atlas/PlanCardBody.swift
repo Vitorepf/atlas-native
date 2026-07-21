@@ -3,8 +3,6 @@ import AtlasCore
 
 // WAVE-172 density peel — PlanCard detail host
 
-import AtlasCore
-import SwiftUI
 
 // WAVE-121 PlanCard body peel
 

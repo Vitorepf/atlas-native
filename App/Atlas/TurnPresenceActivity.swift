@@ -1,6 +1,5 @@
 import ActivityKit
 import AtlasCore
-import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteira
 import Foundation
 import SwiftUI
 import UIKit
