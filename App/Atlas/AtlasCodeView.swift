@@ -361,7 +361,7 @@ extension AtlasCodeGraphA11y {
         active: Bool,
         silent: Bool
     ) -> String {
-        var label = "filtrar grafo por \(option.label), \(count) commits"
+        var label = "Filtrar grafo por \(option.label), \(count) commits"
         if active { label += ", selecionado" }
         if silent { label += ", nenhum commit neste filtro" }
         return label
