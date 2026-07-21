@@ -1,5 +1,6 @@
 import SwiftUI
 import AtlasCore
+import Charts
 
 // GOD-RESTRUCTURE: Arena tab surfaces fused (fleet/alerts/results/capabilities)
 
