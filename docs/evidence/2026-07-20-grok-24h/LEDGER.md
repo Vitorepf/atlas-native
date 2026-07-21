@@ -1,13 +1,13 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 030
-- last_commit: 44b3db77
+- phase: D1 cycle 031
+- last_commit: 98e41cc0
 - last_gates: green
-- next_leap: ComposerToolbar OR ConversationComposer OR SearchView OR Continuity
+- next_leap: SearchView OR ConversationComposer OR ArtifactViewer OR Continuity
 - blocked: none
-- App/Atlas Swift: 1148
+- App/Atlas Swift: 1112
 
 ## Highlights this resume
-015–029 continuous peel · App/Atlas 1748→1148 (−600)
+015–030 continuous peel · App/Atlas 1748→1112 (−636)
 FORBIDDEN clean · no new domains · casca only
