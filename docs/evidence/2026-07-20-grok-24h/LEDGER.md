@@ -1,14 +1,14 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 038
-- last_commit: f2dcc509
+- phase: D1 cycle 039
+- last_commit: e3679fcf
 - last_gates: green
-- next_leap: TurnPresence careful OR A11yID OR AtlasCodeProvenance OR remaining peels
+- next_leap: A11yID OR remaining Code peels OR Arena residual OR Continuity polish
 - blocked: none
-- App/Atlas Swift: 847
+- App/Atlas Swift: 752
 
 ## Highlights this resume
-015–037 continuous peel · App/Atlas 1748→847 (−901)
-FORBIDDEN clean · no new domains · casca only
-Crossed under 850 Swift files.
+015–038 continuous peel · App/Atlas 1748→752 (−996)
+FORBIDDEN clean · ConversationModel untouched · no new domains
+Crossed under 760 Swift files. Approaching −1000 file delta.
