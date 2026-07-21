@@ -61,6 +61,7 @@ struct ArenaPremiumHairline: View {
 }
 
 struct ArenaPremiumAction: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let title: String
     var symbol: String? = nil
     var tone: ArenaPremiumTone = .neutral
@@ -101,10 +102,15 @@ struct ArenaPremiumAction: View {
     }
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            if !disabled {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            }
+            action()
+        } label: {
             Text(title)
                 .atlasSans(14, quiet ? .regular : .medium)
-                .frame(maxWidth: .infinity, minHeight: 46)
+                .frame(maxWidth: .infinity, minHeight: 48)
                 .padding(.horizontal, 20)
                 .foregroundStyle(disabled ? AtlasTheme.textTertiary : (quiet ? AtlasTheme.textSecondary : AtlasTheme.textPrimary))
                 .background(
@@ -118,7 +124,7 @@ struct ArenaPremiumAction: View {
                     Capsule().stroke(
                         quiet
                             ? AtlasTheme.separator.opacity(disabled ? 0.35 : 0.7)
-                            : Color.white.opacity(disabled ? 0.04 : 0.08),
+                            : Color.white.opacity(disabled ? 0.04 : 0.1),
                         lineWidth: 1
                     )
                 )
@@ -126,7 +132,8 @@ struct ArenaPremiumAction: View {
         }
         .buttonStyle(PressableScale())
         .disabled(disabled)
-        .accessibilityLabel(title)
+        .accessibilityLabel(Text(title))
+        .accessibilityHint(disabled ? Text("indisponível") : Text(""))
     }
 }
 
