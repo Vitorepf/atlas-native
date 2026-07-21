@@ -90,8 +90,8 @@ extension ConversationCameraCoverModifier {
         content
             .ignoresSafeArea()
             .accessibilityIdentifier(A11yID.cameraPicker)
-            .accessibilityLabel(CameraPickerA11y.spokenSurface)
-            .accessibilityHint(CameraPickerA11y.spokenHint)
+            .accessibilityLabel(ComposerDraftJudgment.spokenCameraSurface)
+            .accessibilityHint(ComposerDraftJudgment.spokenCameraHint)
             .transaction { txn in
                 if reduceMotion { txn.disablesAnimations = true }
             }
@@ -112,7 +112,7 @@ extension ConversationCameraCoverModifier {
 
 extension ConversationCameraCoverModifier {
     func cameraCoverOnCaptureFailed() {
-        model.toast = CameraPickerA11y.captureFailedToast
+        model.toast = ComposerDraftJudgment.captureFailedToast
     }
 }
 

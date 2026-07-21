@@ -234,4 +234,14 @@ enum ComposerDraftJudgment {
             ? "colar contexto da área de transferência"
             : "colar indisponível, área de transferência vazia"
     }
+
+    // MARK: Camera attach spoken (IDLE · was CameraPickerA11y)
+
+    static let spokenCameraSurface = "câmera para anexar foto"
+    static let spokenCameraHint =
+        "confirme a captura para anexar; cancelar não adiciona nada"
+    static let captureFailedToast = "não consegui capturar a foto"
+    static let spokenChooseCamera = "capturar foto na câmera"
+    static let spokenChooseCameraHint =
+        "abre a câmera; nada é anexado até confirmar a captura"
 }

@@ -149,8 +149,8 @@ extension ComposerAttachmentsSheet {
             ComposerAttachmentRow(icon: "camera", title: "Câmera", subtitle: "Capturar agora")
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(CameraPickerA11y.spokenChooseCamera)
-        .accessibilityHint(CameraPickerA11y.spokenChooseCameraHint)
+        .accessibilityLabel(ComposerDraftJudgment.spokenChooseCamera)
+        .accessibilityHint(ComposerDraftJudgment.spokenChooseCameraHint)
         .accessibilityIdentifier(A11yID.cameraPicker)
     }
 }
