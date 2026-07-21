@@ -9,12 +9,15 @@ struct AutonomosEvolutionView: View {
             VStack(alignment: .leading, spacing: 0) {
                 AutonomosMapChrome.kicker("Evolução", live: unit?.paused == false)
                     .padding(.bottom, 14)
+                    .accessibilityHidden(true)
                 if let unit {
                     Text(unit.ageLabel)
                         .font(AtlasFont.mono(28, .semibold))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .monospacedDigit()
                         .padding(.bottom, 8)
+                        .accessibilityAddTraits(.isHeader)
+                        .accessibilityLabel("Evolução de \(unit.name), \(unit.ageLabel)")
                     Text(unit.charter)
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
@@ -23,6 +26,7 @@ struct AutonomosEvolutionView: View {
 
                 AutonomosMapChrome.section("Marcos")
                     .padding(.bottom, 12)
+                    .accessibilityAddTraits(.isHeader)
 
                 Text("Ainda sem prova publicada neste Autônomo.")
                     .font(AtlasFont.serifItalic(16))
@@ -42,5 +46,14 @@ struct AutonomosEvolutionView: View {
         }
         .scrollIndicators(.hidden)
         .accessibilityIdentifier(A11yID.autonomosEvolution)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(spokenEvolution)
+    }
+
+    private var spokenEvolution: String {
+        if let unit {
+            return "Evolução de \(unit.name). \(unit.ageLabel). Ainda sem prova publicada neste Autônomo."
+        }
+        return "Evolução. Ainda sem prova publicada neste Autônomo."
     }
 }
