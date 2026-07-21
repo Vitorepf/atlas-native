@@ -215,6 +215,19 @@ enum AutonomosAskContext {
         absences.append("create no servidor ainda pendente (§5)")
         absences.append("catálogo local some se o app for morto — não invente frota 24/7 persistida")
 
+        // WAVE-169: reason-sheet organ — sheet-local actor/reason → honest absence.
+        if canControl {
+            let reasonPack = AutonomosReasonJudgment.packFacts(
+                actionTitle: "controle_loop",
+                actor: "",
+                reason: "",
+                reasonOptional: true
+            )
+            facts.append(contentsOf: reasonPack.facts)
+            absences.append(contentsOf: reasonPack.absences)
+            absences.append("reason_sheet: face-only — actor/motivo só no modal governado")
+        }
+
         // WAVE-159: self-construction veto organ (merge-proved only).
         let mergeReceipt = selfConstructionReceipt
             ?? SelfConstructionVetoJudgment.latestMergeProved(delivered: delivered)

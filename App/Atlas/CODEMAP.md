@@ -68,7 +68,7 @@
 | **Autônomos can_do honesty** | `AutonomosCanDoJudgment` → matrix dest×control×canControl · AskContext pack |
 | **Autônomos lista/row** | `AutonomosListJudgment` → list empty/list(N) · row awaiting/live/quiet · pack |
 | **Autônomos hub** | `AutonomosHubJudgment` → hubFace · spokenHub · receiptTone · pack Ask .hub (WAVE-162) |
-| **Autônomos razão governada** | `AutonomosReasonJudgment` → face blocked/ready · ReasonSheet |
+| **Autônomos razão governada** | `AutonomosReasonJudgment` → face · ReasonSheet · pack when canControl (WAVE-169) |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
 | **Turn presence pack (168)** | `TurnPresenceJudgment.packFacts` → OccasionPack mid-thread |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |
@@ -182,3 +182,5 @@
 ## Densidade (lembrete)
 
 View/Shell rota ≤600 · Surface 1 domínio ≤1500 (fail &gt;2000) · um domínio por arquivo.
+
+| **Artifact preview pack (169)** | `ArtifactPreviewJudgment` → OccasionPack idle when list non-empty |

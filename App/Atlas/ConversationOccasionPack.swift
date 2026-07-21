@@ -260,6 +260,16 @@ enum ConversationOccasionPack {
             )
             facts.append(contentsOf: artifactPack.facts)
             absences.append(contentsOf: artifactPack.absences)
+            // WAVE-169: preview organ idle until sheet selects item.
+            if !published.artifacts.isEmpty {
+                let previewPack = ArtifactPreviewJudgment.packFacts(
+                    preview: .idle,
+                    selected: nil
+                )
+                facts.append(contentsOf: previewPack.facts)
+                absences.append(contentsOf: previewPack.absences)
+                absences.append("artifact_preview: face-only — seleção só no sheet de artefatos")
+            }
         }
 
         // WAVE-165: execution proof + editorial signature organs.
