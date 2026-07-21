@@ -107,8 +107,13 @@ extension SteerInteractionSheet {
             }
         }
         .pickerStyle(.segmented)
+        .frame(minHeight: 36)
+        .onChange(of: scope) { _, _ in
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        }
         .accessibilityIdentifier(A11yID.steerScope)
         .accessibilityLabel(spokenScopeLabel(scope))
+        .accessibilityHint("define se a instrução vale o passo atual ou um replanejamento")
     }
 }
 
