@@ -1,12 +1,12 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 275
-- last_commit: be251c75
+- phase: D1 cycle 276
+- last_commit: f65533b4
 - last_gates: green
-- App/Atlas Swift: 168
+- App/Atlas Swift: 164
 - next_leap: residual compress / craft
 - blocked: none
 
 ## Resume
-**1748 → 168 (−1580)** · cycles 015–274 · FORBIDDEN clean · **not done**
+**1748 → 164 (−1584)** · cycles 015–275 · FORBIDDEN clean · **not done**
