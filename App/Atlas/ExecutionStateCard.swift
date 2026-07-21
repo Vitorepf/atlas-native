@@ -69,6 +69,7 @@ extension ExecutionStateCard {
         .accessibilityIdentifier(A11yID.executionActionChoice(action.id))
         .accessibilityLabel(action.title)
         .accessibilityHint("ação declarada pelo servidor")
+        .accessibilityAddTraits(.isButton)
     }
 
     @ViewBuilder
@@ -100,6 +101,7 @@ extension ExecutionStateCard {
             .accessibilityIdentifier(A11yID.executionRetry)
             .accessibilityLabel("retomar execução a partir do último checkpoint")
             .accessibilityHint("reenfileira o job que falhou")
+            .accessibilityAddTraits(.isButton)
     }
 
     var retryFallbackLabel: some View {
@@ -131,6 +133,7 @@ extension ExecutionStateCard {
         ))
         .accessibilityLabel("redirecionar esta execução")
         .accessibilityHint("abre instrução para o próximo checkpoint seguro")
+        .accessibilityAddTraits(.isButton)
     }
 
     var steerButtonLabel: some View {

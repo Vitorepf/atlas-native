@@ -66,6 +66,7 @@ extension ExecutionProof {
         .buttonStyle(.plain)
         .accessibilityLabel(spokenCollapsed(expanded: open))
         .accessibilityHint(open ? "toque para fechar a prova" : "toque para expandir a prova")
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.executionProof)
     }
 }
@@ -141,6 +142,7 @@ extension ExecutionProof {
             .accessibilityIdentifier(A11yID.artifactsRow)
             .accessibilityLabel("artefatos desta execução, \(count)")
             .accessibilityHint("abre a lista de artefatos deste trace")
+            .accessibilityAddTraits(.isButton)
     }
 }
 
