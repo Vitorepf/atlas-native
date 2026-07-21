@@ -1986,18 +1986,20 @@ extension WorkspaceView {
     // Mesma pílula agêntica da home: ✦ ouro + vidro (padrão §6). Sem mic —
     // voz está fora EM DEFINITIVO (canon §6).
     var newPillLabel: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 12) {
             Text("✦").font(AtlasFont.serif(16))
                 .foregroundStyle(AtlasTheme.accent)
                 .frame(width: 30, height: 30)
                 .accessibilityHidden(true)
-            Text("Escreva ao Atlas").font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
+            Text("Escreva ao Atlas")
+                .font(AtlasFont.serifItalic(17))
+                .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Spacer()
         }
         .padding(.horizontal, 18)
-        .padding(.vertical, 13)
-        .frame(minHeight: 48) // HIG 44pt; same breath as AgenticPill
+        .padding(.vertical, 14)
+        .frame(minHeight: 52) // match AgenticPill invite breath
         .contentShape(Capsule())
         .atlasGlassCapsule()
     }
