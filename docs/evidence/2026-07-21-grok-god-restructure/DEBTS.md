@@ -5,28 +5,31 @@
 ```yaml
 pass: 2
 domain_index: 0
-last_focus: "pass 2 start — soft re-audit Home"
-session_commits: 115
+last_focus: "pass2 soft re-audit all domains — clean"
+session_commits: 117
 soft_sections_states: 0
 swift_App_Atlas: 36
 swift_Widgets: 2
 ```
 
-## Pass 1 closed (structural)
+## Pass 2 audit (all domains)
 
-- Soft *Sections*/*States* **0**
-- Casca densified to **36** App/Atlas + **2** Widgets hosts
-- Density guard OK · gates green
-- Session/ConversationModel untouched
+| # | Domínio | Soft Sections/States | Density | Note |
+|---|---|---|---|---|
+| 0 | Home | 0 | OK | HomeOps densified |
+| 1 | Conversa | 0 | OK | Surface/Messages/Composer hosts |
+| 2 | Código | 0 | OK | Surface/Radar/Provenance/Graph |
+| 3 | Pílula | 0 | OK | in RootView |
+| 4 | Arena | 0 | OK | Root/Execution/Surfaces |
+| 5 | Autônomos | 0 | OK | Host/Map/Model/CanDo |
+| 6 | Continuity | 0 | OK | TurnPresence + Widgets A/B |
+| 7 | Cross-cut | 0 | OK | CODEMAP short true |
 
-## Pass 2 checklist (Home first)
+## Residual actionable
 
-1. Delete morto — scan Root* Home* Workspace* for 0-ref  
-2. Rename honesty residual  
-3. spoken/packFacts unify residual  
-4. MARK densos  
-5. Fuse only with measured headroom  
-6. CODEMAP Type.method  
+- Fuse only with measured headroom (most hosts 1.5–1.97k)
+- ConversationModel MARK blocked by guard (Core-adjacent)
+- Pass 2 deepen: copy honesty / spoken overload review (overloads OK)
 
 ## Proibido
 

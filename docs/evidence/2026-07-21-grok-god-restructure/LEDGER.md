@@ -27,6 +27,16 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### pass2 soft re-audit
+```yaml
+phase: audit
+pass: 2
+soft_sections_states: 0
+density: OK
+gates: green
+notes: all domains clean soft; residual fuse headroom only
+```
+
 ### saturation
 ```yaml
 phase: act
