@@ -117,5 +117,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-076–080. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
-- LEDGER idle B-owned; do not strip passes 3–17.
+- WAVE-070–080. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- LEDGER idle B-owned; concurrent strips of 3–17 are invalid.
