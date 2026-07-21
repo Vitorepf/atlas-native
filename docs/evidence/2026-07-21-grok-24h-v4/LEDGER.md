@@ -201,7 +201,7 @@ mode: designer + implementer
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
-- note: concurrent LEDGER wipes — B rewrites full truth after each close
+- note: concurrent LEDGER wipes observed — B rewrites full truth (do not trust idle_compress_passes if 2 after wave 180+)
 
 ## Open queue snapshot (must match QUEUE.md)
 
