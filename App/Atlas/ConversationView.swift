@@ -1436,10 +1436,10 @@ enum StaleReadSealA11y {
     ) -> String {
         if confirming {
             return reduceMotion
-                ? "histórico salvo atualizado"
-                : "histórico salvo atualizado após sincronizar"
+                ? "Histórico salvo atualizado"
+                : "Histórico salvo atualizado após sincronizar"
         }
-        return "histórico salvo visto há \(atlasRelativeAgePT(since: capturedAt, now: now))"
+        return "Histórico salvo visto há \(atlasRelativeAgePT(since: capturedAt, now: now))"
     }
 }
 
@@ -4976,6 +4976,7 @@ struct PlanCard: View {
         content()
             .padding(12)
             .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.5)
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
             // Contain without fused label: detail/revisions toggles stay focusable.
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(A11yID.planCard)
