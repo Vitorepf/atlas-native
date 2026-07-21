@@ -26,7 +26,6 @@ struct AutonomosEvolutionView: View {
 
                 AutonomosMapChrome.section("Marcos")
                     .padding(.bottom, 12)
-                    .accessibilityAddTraits(.isHeader)
 
                 Text("Ainda sem prova publicada neste Autônomo.")
                     .font(AtlasFont.serifItalic(16))

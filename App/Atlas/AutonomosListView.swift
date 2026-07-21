@@ -40,7 +40,6 @@ struct AutonomosListView: View {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
             AutonomosMapChrome.heroTitle("Nenhum ainda", size: 32)
-                .accessibilityAddTraits(.isHeader)
             Text("Crie um Autônomo com escopo fechado. Ele evolui só nisso — 24/7.")
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)

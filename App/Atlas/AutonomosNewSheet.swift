@@ -17,7 +17,6 @@ struct AutonomosNewSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     AutonomosMapChrome.heroTitle("Novo Autônomo", size: 28)
-                        .accessibilityAddTraits(.isHeader)
                     Text("Um escopo fechado. Ele evolui só nisso.")
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
