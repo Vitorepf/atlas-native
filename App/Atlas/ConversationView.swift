@@ -2057,14 +2057,27 @@ extension SheetRow {
 
 extension SheetRow {
     var sheetRowDivider: some View {
-        Divider().overlay(AtlasTheme.separator).padding(.leading, 24)
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0),
+                AtlasTheme.accent.opacity(0.18),
+                AtlasTheme.separator,
+                AtlasTheme.accent.opacity(0)
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(height: 1)
+        .padding(.leading, 24)
     }
 }
 
 extension SheetRow {
     var sheetRowLeading: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(label).atlasSans(17).foregroundStyle(AtlasTheme.textPrimary)
+            Text(label)
+                .atlasSans(17, selected ? .semibold : .regular)
+                .foregroundStyle(selected ? AtlasTheme.accent : AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             if let sub {
                 Text(sub).atlasSans(13).foregroundStyle(AtlasTheme.textTertiary)
@@ -2078,8 +2091,13 @@ extension SheetRow {
     @ViewBuilder
     var sheetRowTrailing: some View {
         if selected {
-            Image(systemName: "checkmark").atlasSans(15, .semibold)
+            Image(systemName: "checkmark")
+                .atlasSans(14, .semibold)
                 .foregroundStyle(AtlasTheme.accent)
+                .frame(width: 28, height: 28)
+                .background(Circle().fill(AtlasTheme.goldVeil))
+                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.6), lineWidth: 1))
+                .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                 .accessibilityHidden(true)
         }
     }
@@ -2094,6 +2112,7 @@ extension SheetRow {
         }
         .padding(.horizontal, 24).padding(.vertical, 15)
         .frame(minHeight: 48)
+        .background(selected ? AtlasTheme.goldVeil.opacity(0.55) : Color.clear)
         .contentShape(Rectangle())
     }
 }
