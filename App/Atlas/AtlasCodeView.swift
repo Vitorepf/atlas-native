@@ -58,9 +58,9 @@ struct AtlasCodeView: View {
 // Pílula de pergunta do grafo + âncora (swipe/proveniência). Lei 7: nunca some.
 
 enum AtlasCodeAskPillA11y {
-    static let pillHint = "abre conversa sobre este repositório"
-    static let clearLabel = "mostrar tudo no grafo"
-    static let clearHint = "remove o recorte dos commits da resposta"
+    static let pillHint = "Abre conversa sobre este repositório"
+    static let clearLabel = "Mostrar tudo no grafo"
+    static let clearHint = "Remove o recorte dos commits da resposta"
 
     static func pillPhaseID(isAnchoring: Bool, anchorLegend: String?) -> String {
         isAnchoring ? "anchoring-\(anchorLegend ?? "default")" : "invite"
@@ -252,7 +252,7 @@ extension AtlasCodeView {
         spokenCodeScreenBusyLabel() ?? spokenCodeScreenLoadedLabel()
     }
 
-    static let codeScreenHint = "mapa governado; pílula e proveniência só com dados publicados"
+    static let codeScreenHint = "Mapa governado; pílula e proveniência só com dados publicados"
 }
 
 // Legenda da pílula + âncoras visíveis na janela do grafo.
@@ -2078,7 +2078,7 @@ extension AtlasCodeMirrorCard {
         return parts.joined(separator: ", ")
     }
 
-    static let mirrorHint = "cópia remota do repositório e varredura de segredos no Mac"
+    static let mirrorHint = "Cópia remota do repositório e varredura de segredos no Mac"
 }
 
 extension AtlasCodeMirrorCard {
@@ -2400,7 +2400,7 @@ extension AtlasCodeWhySheet {
         return parts.joined(separator: ", ")
     }
 
-    static let sheetHint = "histórico de commits e proveniência registrada pelo Atlas"
+    static let sheetHint = "Histórico de commits e proveniência registrada pelo Atlas"
 }
 
 extension AtlasCodeWhySheet {
@@ -2783,8 +2783,8 @@ extension AtlasCodeProvenanceSheet {
         return "Proveniência indisponível, \(trimmed)"
     }
 
-    static let sheetHint = "estado do commit, lei aplicável e o que o ledger registrou"
-    static let askHint = "abre conversa com este commit no assunto"
+    static let sheetHint = "Estado do commit, lei aplicável e o que o ledger registrou"
+    static let askHint = "Abre conversa com este commit no assunto"
 }
 
 extension AtlasCodeProvenanceSheet {
@@ -3473,7 +3473,7 @@ struct AtlasCodeRadarView: View {
         }
     }
 
-    private static let shellHint = "pastas, recentes e sem retorno verificados do seu código"
+    private static let shellHint = "Pastas, recentes e sem retorno verificados do seu código"
 
     var body: some View {
         radarContent
