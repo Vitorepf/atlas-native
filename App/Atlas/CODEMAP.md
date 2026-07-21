@@ -145,6 +145,9 @@
 | **ArenaModel peels** | host · Actions (WAVE-138) |
 | **AutonomosModel peels** | host · Actions (WAVE-139) |
 | **ChangeReview governance peels** | Body · Chrome (WAVE-140) |
+| **Code sheets modifiers peels** | Modifiers · Body (WAVE-141) |
+| **AtlasSession peels** | host · Body (WAVE-142) |
+| **Code surface peels** | Surface · Body (WAVE-143) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
