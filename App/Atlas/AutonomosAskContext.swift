@@ -54,7 +54,8 @@ enum AutonomosAskContext {
         live: AtlasAutonomosLiveResponse? = nil,
         lastControlReceipt: AtlasAutonomosRunControlResponse? = nil,
         delivered: AtlasAutonomosDeliveredResponse? = nil,
-        cycles: AtlasAutonomosCyclesResponse? = nil
+        cycles: AtlasAutonomosCyclesResponse? = nil,
+        lastTransferReceipt: AtlasAutonomosTransferResponse? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -86,6 +87,14 @@ enum AutonomosAskContext {
         facts.append(contentsOf: loop.facts)
         absences.append(contentsOf: loop.absences)
         anchors.append("loop · \(controlFace.productWord)")
+
+        // WAVE-035: transfer handoff honesty.
+        let transfer = AutonomosTransferJudgment.packFacts(
+            canTransfer: AutonomosTransferJudgment.canTransfer(canControlSelectedArea: canControl),
+            receipt: lastTransferReceipt
+        )
+        facts.append(contentsOf: transfer.facts)
+        absences.append(contentsOf: transfer.absences)
 
         if let destination {
             facts.append("tela: \(destination.navTitle)")

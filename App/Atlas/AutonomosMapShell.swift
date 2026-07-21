@@ -15,6 +15,7 @@ struct AutonomosMapShell: View {
     @State private var nightly = NightlyProposalController.shared
     @State private var nightlyStartProposal: NightlyProposalController.ProposalPayload?
     @State private var pendingRunControl: AutonomosRunControlAction?
+    @State private var showTransferSheet = false
 
     private var selectedUnit: AutonomosUnit? {
         guard let selectedUnitID else { return nil }
@@ -128,6 +129,19 @@ struct AutonomosMapShell: View {
                 reasonOptional: action.reasonOptional
             ) { actor, reason in
                 Task { await applyRunControl(action, actor: actor, reason: reason) }
+            }
+        }
+        .sheet(isPresented: $showTransferSheet) {
+            // WAVE-035: mission transfer handoff (server chooses target worker).
+            AutonomosReasonSheet(
+                title: AutonomosTransferJudgment.reasonTitle,
+                explainer: AutonomosTransferJudgment.reasonExplainer,
+                reasonOptional: false
+            ) { actor, reason in
+                Task {
+                    await model.transfer(operatorActor: actor, reason: reason)
+                    await model.refreshTransferStatus()
+                }
             }
         }
     }
@@ -255,8 +269,14 @@ struct AutonomosMapShell: View {
                         ),
                         areaSelected: model.selectedArea != nil
                     ),
+                    canTransfer: AutonomosTransferJudgment.canTransfer(
+                        canControlSelectedArea: model.canControlSelectedArea
+                    ),
+                    transferReceiptLine: AutonomosTransferJudgment.receiptLine(model.lastTransferReceipt)
+                        ?? model.controlError,
                     onNavigate: { self.destination = $0 },
                     onControl: { pendingRunControl = $0 },
+                    onTransfer: { showTransferSheet = true },
                     onLocalCatalogPause: { model.setOperatorUnitPaused(id: unit.id, paused: true) },
                     onLocalCatalogResume: { model.setOperatorUnitPaused(id: unit.id, paused: false) },
                     onEnd: { confirmEnd = true }
@@ -347,7 +367,8 @@ struct AutonomosMapShell: View {
                     live: model.live,
                     lastControlReceipt: model.lastControlReceipt,
                     delivered: model.delivered,
-                    cycles: model.cycles
+                    cycles: model.cycles,
+                    lastTransferReceipt: model.lastTransferReceipt
                 )
             },
             onThread: { askThreadId = $0 },

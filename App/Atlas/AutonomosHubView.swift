@@ -10,8 +10,12 @@ struct AutonomosHubView: View {
     let controlReceiptLine: String?
     /// WAVE-034: Evolução nav meta from delivered judgment.
     var evolutionMeta: String = "sem provas"
+    /// WAVE-035: mission transfer when area canControl.
+    var canTransfer: Bool = false
+    var transferReceiptLine: String? = nil
     let onNavigate: (AutonomosDestination) -> Void
     let onControl: (AutonomosRunControlAction) -> Void
+    var onTransfer: () -> Void = {}
     let onLocalCatalogPause: () -> Void
     let onLocalCatalogResume: () -> Void
     let onEnd: () -> Void
@@ -64,6 +68,15 @@ struct AutonomosHubView: View {
                         .accessibilityIdentifier(A11yID.autonomosControlError)
                 }
 
+                if let transferReceiptLine, !transferReceiptLine.isEmpty {
+                    Text(transferReceiptLine)
+                        .font(AtlasFont.serifItalic(13))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 6)
+                        .accessibilityLabel(transferReceiptLine)
+                }
+
                 AutonomosMapChrome.hairline
                     .padding(.top, 12)
                     .padding(.bottom, 10)
@@ -73,6 +86,14 @@ struct AutonomosHubView: View {
                     meta: evolutionMeta,
                     action: { onNavigate(.evolution) }
                 )
+
+                if canTransfer {
+                    AutonomosMapNavLine(
+                        title: AutonomosTransferJudgment.ctaTitle,
+                        meta: AutonomosTransferJudgment.productWord,
+                        action: onTransfer
+                    )
+                }
 
                 catalogPauseLine
 
