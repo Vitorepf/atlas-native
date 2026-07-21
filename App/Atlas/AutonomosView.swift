@@ -215,11 +215,23 @@ struct AutonomosViewHeader: View {
     }
 
     private var titleBlock: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(AtlasFont.serif(21, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
+            // Quiet gold rule under the title — masthead family across surfaces.
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0.55),
+                    AtlasTheme.accent.opacity(0.12),
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: 52, height: 1.5)
+            .accessibilityHidden(true)
             if !subtitle.isEmpty {
                 Text(subtitle)
                     .font(AtlasFont.serif(12, .semibold))
