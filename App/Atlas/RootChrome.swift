@@ -1,14 +1,12 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Presentation-only chrome shared by RootView / WorkspaceView / SearchView.
-// Route + navigation stay in RootView. Rows: RootChrome+Rows / +ThreadRow.
+// IDLE-COMPRESS fused
 
-/// Label de seção da home (CONVERSAS / OPERAÇÃO / WORKSPACES).
+// --- RootChrome.swift ---
 @MainActor
 @ViewBuilder
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
-    // A linha premium do site: hairlines em fade ladeando o rótulo.
     HStack(spacing: 12) {
         LinearGradient(colors: [AtlasTheme.separator.opacity(0), AtlasTheme.separator],
                        startPoint: .leading, endPoint: .trailing)
@@ -47,7 +45,6 @@ extension View {
     }
 }
 
-/// O ✦ respirando — a marca viva do Atlas nos estados de espera.
 struct BreathingGlyph: View {
     let reduceMotion: Bool
     @State var on = false
@@ -67,8 +64,6 @@ struct BreathingGlyph: View {
 
 struct CircleButton: View {
     let icon: String
-    /// Ponto de exceção: só aparece quando existe algo que fala. Silêncio é o
-    /// estado normal — o botão não carrega contador decorativo.
     var badge: Bool = false
     let action: () -> Void
     var body: some View {
@@ -95,4 +90,213 @@ func threadWorkspaceColor(_ workspace: String) -> Color {
     let palette = [AtlasTheme.accent, AtlasTheme.prussian, AtlasTheme.domAutonomos, AtlasTheme.domOperacional]
     let total = workspace.unicodeScalars.reduce(0) { $0 + Int($1.value) }
     return palette[abs(total) % palette.count]
+}
+
+// --- RootChrome+Rows.swift ---
+struct WorkspaceRow: View {
+    let icon: String
+    let name: String
+    let count: Int?
+    var detail: String?
+    var badge: Bool = false
+    var a11yID: String?
+    var spokenOverride: String?
+    var spokenHint: String?
+    let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        Button(action: action) {
+            rowContent
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(spokenOverride ?? RootChromeRowA11y.workspaceSpoken(name: name, count: count, detail: detail, badge: badge))
+        .accessibilityHint(spokenHint ?? "abre \(name)")
+        .accessibilityIdentifier(a11yID ?? "")
+    }
+
+    var rowContent: some View {
+        HStack(spacing: 14) {
+            Image(systemName: icon)
+                .symbolRenderingMode(.hierarchical)
+                .atlasSans(18).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(name).font(.system(.body)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                    .accessibilityHidden(true)
+                if let detail, !detail.isEmpty {
+                    Text(detail)
+                        .font(.system(.caption))
+                        .foregroundStyle(AtlasTheme.textSecondary)
+                        .lineLimit(1)
+                        .accessibilityHidden(true)
+                }
+            }
+            Spacer(minLength: 8)
+            if badge {
+                Circle()
+                    .fill(AtlasTheme.alert)
+                    .frame(width: 8, height: 8)
+                    .accessibilityHidden(true)
+            }
+            if let count {
+                Text("\(count)")
+                    .font(AtlasFont.mono(12, .medium))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .monospacedDigit()
+                    .modifier(NumericTextTransition(enabled: !reduceMotion))
+                    .accessibilityHidden(true)
+            }
+            Image(systemName: "chevron.right")
+                .atlasSans(11, .semibold)
+                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.55))
+                .accessibilityHidden(true)
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
+        .contentShape(Rectangle())
+    }
+}
+
+enum RootChromeRowA11y {
+    static func workspaceSpoken(
+        name: String,
+        count: Int?,
+        detail: String?,
+        badge: Bool
+    ) -> String {
+        var parts = [name]
+        if let count {
+            parts.append(count == 0 ? "nenhuma conversa" : "\(count) conversa\(count == 1 ? "" : "s")")
+        }
+        if let detail, !detail.isEmpty {
+            parts.append(detail)
+        }
+        if badge {
+            parts.append("atenção necessária")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    static func threadSpoken(
+        title: String,
+        messageCount: Int,
+        isRunning: Bool,
+        isNew: Bool,
+        hasWorkspace: Bool
+    ) -> String {
+        var parts = [title]
+        if isRunning {
+            parts.append("Atlas executando")
+        } else if messageCount == 0 {
+            parts.append("nenhuma mensagem")
+        } else {
+            parts.append("\(messageCount) mensagem\(messageCount == 1 ? "" : "ns")")
+        }
+        if isNew && !isRunning {
+            parts.append("novo desde a última visita")
+        }
+        if hasWorkspace {
+            parts.append("com workspace")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    static func threadHint(isRunning: Bool) -> String {
+        isRunning ? "Atlas executando nesta conversa" : "abre a conversa"
+    }
+}
+
+// --- RootChrome+ThreadRow.swift ---
+struct ThreadRow: View {
+    let thread: AtlasAiThread
+    var newBadgeSuppressed: Bool = false
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var isRunning: Bool { TurnPresence.shared.runningTitles.contains(thread.title) }
+    var isNew: Bool { !newBadgeSuppressed && ConversationModel.hasNewerContent(thread) }
+    var workspaceTint: Color? { thread.workspace.map(threadWorkspaceColor) }
+
+    var body: some View {
+        rowContent
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(
+                RootChromeRowA11y.threadSpoken(
+                    title: thread.title,
+                    messageCount: thread.messageCount,
+                    isRunning: isRunning,
+                    isNew: isNew,
+                    hasWorkspace: workspaceTint != nil
+                )
+            )
+            .accessibilityHint(RootChromeRowA11y.threadHint(isRunning: isRunning))
+    }
+
+    var rowContent: some View {
+        HStack(spacing: 14) {
+            rowLead
+            Text(thread.title).font(AtlasFont.serif(16)).foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(1).truncationMode(.tail)
+                .accessibilityHidden(true)
+            Spacer(minLength: 8)
+            rowTrailing
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
+        .overlay(alignment: .leading) { rowWorkspaceTint }
+        .contentShape(Rectangle())
+    }
+
+    @ViewBuilder
+    var rowLead: some View {
+        if isRunning {
+            BreathingDiamond(size: 9, reduceMotion: reduceMotion).frame(width: 22)
+                .accessibilityHidden(true)
+        } else {
+            Image(systemName: "bubble.left")
+                .atlasSans(17).foregroundStyle(AtlasTheme.textSecondary).frame(width: 22)
+                .accessibilityHidden(true)
+        }
+    }
+
+    @ViewBuilder
+    var rowWorkspaceTint: some View {
+        if let workspaceTint {
+            Rectangle()
+                .fill(workspaceTint.opacity(0.85))
+                .frame(width: 2)
+                .padding(.vertical, 10)
+                .accessibilityHidden(true)
+        }
+    }
+
+    @ViewBuilder
+    var rowTrailing: some View {
+        newThreadBadge
+        if isRunning {
+            Text("executando").font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
+                .accessibilityHidden(true)
+        } else {
+            Text("\(thread.messageCount)")
+                .atlasSans(16)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .monospacedDigit()
+                .modifier(NumericTextTransition(enabled: !reduceMotion))
+                .accessibilityHidden(true)
+        }
+        Image(systemName: "chevron.right")
+            .atlasSans(13, .semibold).foregroundStyle(AtlasTheme.textTertiary)
+            .accessibilityHidden(true)
+    }
+
+    @ViewBuilder
+    var newThreadBadge: some View {
+        if isNew && !isRunning {
+            Text("novo")
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.accent)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 3)
+                .background(Capsule().fill(AtlasTheme.goldVeil))
+                .accessibilityHidden(true)
+        }
+    }
 }
