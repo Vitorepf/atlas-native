@@ -249,6 +249,7 @@ struct ArenaPremiumEngineTitle: View {
                 .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())
             }
+            .buttonStyle(PressableScale())
             .accessibilityLabel("Motor medido, \(ArenaDisplay.engine(engineID))")
             .accessibilityHint("Abre a lista dos outros motores medidos")
             .accessibilityAddTraits(.isButton)

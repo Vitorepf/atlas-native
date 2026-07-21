@@ -417,6 +417,7 @@ extension ConversationView {
         } label: {
             continuityMenuLabel
         }
+        .buttonStyle(PressableScale())
         .accessibilityLabel(ConversationViewA11y.headerContinuityLabel)
         .accessibilityHint(ConversationViewA11y.headerContinuityHint)
         .accessibilityIdentifier(A11yID.conversationHeaderContinuity)
@@ -3339,6 +3340,7 @@ extension ComposerToolbar {
                 .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                 .contentShape(Circle())
         }
+        .buttonStyle(PressableScale())
         .accessibilityLabel("Opções da conversa")
         .accessibilityHint(spokenOptionsHint())
         .accessibilityIdentifier(A11yID.conversationOptions)

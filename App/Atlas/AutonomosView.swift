@@ -2276,9 +2276,10 @@ struct NightlyProposalCard: View {
                     .frame(minHeight: 48)
                     .background(Capsule().fill(AtlasTheme.surface.opacity(0.55)))
                     .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
-                    .atlasElevation(radius: 4, y: 1, opacity: 0.08)
+                    .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                     .contentShape(Capsule())
             }
+            .buttonStyle(PressableScale())
             .accessibilityIdentifier(A11yID.nightlyProposalMute)
             .accessibilityLabel(Self.spokenMuteMenuLabel())
             .accessibilityHint(Self.spokenMuteMenuHint())
