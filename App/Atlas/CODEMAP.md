@@ -44,6 +44,7 @@
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |
 | **Ops failure (multi-superfície)** | `AtlasOpsFailureJudgment` → face network/domain/load · FailureEmpty |
 | Phase grammar execução (strip/presence) | `ConversationExecutionPhase` → strip/StateCard/LiveNow/composer `selectPresenceBubble` |
+| **Execution proof + editorial pack (165)** | `ExecutionProofJudgment` · `EditorialTurnJudgment` → OccasionPack mid-thread |
 | **LiveNow attention (Home hub)** | `LiveNowJudgment` → rank · headForOpen (Seguir) · pack anchors · section face |
 | **StateCard kind chrome** | `ExecutionStateCardJudgment` → icon/badge/spoken/tint/timer freeze |
 | **Narrativa viva (timeline face)** | `LiveTimelineNarrativeJudgment` → face live/filterSilence (chrono sagrado) |

@@ -255,6 +255,24 @@ enum ConversationOccasionPack {
             absences.append(contentsOf: artifactPack.absences)
         }
 
+        // WAVE-165: execution proof + editorial signature organs.
+        if let bubble {
+            let proofPack = ExecutionProofJudgment.packFacts(
+                bubble: bubble,
+                artifactItems: published?.artifacts ?? []
+            )
+            facts.append(contentsOf: proofPack.facts)
+            absences.append(contentsOf: proofPack.absences)
+            let editorialPack = EditorialTurnJudgment.packFacts(
+                provider: bubble.provider,
+                model: bubble.model,
+                elapsedMs: bubble.elapsedMs,
+                feedbackAction: nil
+            )
+            facts.append(contentsOf: editorialPack.facts)
+            absences.append(contentsOf: editorialPack.absences)
+        }
+
         let surface: String
         if workspaceKey != nil {
             surface = "conversation.workspace"
