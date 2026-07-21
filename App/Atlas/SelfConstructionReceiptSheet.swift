@@ -1,9 +1,8 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Stack → SelfConstructionReceiptSheet+Stack.swift
-// Predicates → SelfConstructionReceiptSheet+Predicates.swift
-// Shell → SelfConstructionReceiptSheet+Shell.swift
+// Cycle 038 fuse → SelfConstructionReceiptSheet.swift
+
 struct SelfConstructionReceiptSheet: View {
     let receipt: SelfConstructionReceipt
     var canRevert: Bool = false
