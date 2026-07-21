@@ -1226,7 +1226,8 @@ struct LiveNowRow: View {
                         Circle().stroke(
                             session.timing == .running
                                 ? AtlasTheme.goldBorder.opacity(0.55)
-                                : AtlasTheme.separatorSoft,
+                                // Soft gold-quiet idle disk — still quieter than live.
+                                : AtlasTheme.goldBorder.opacity(0.32),
                             lineWidth: 1
                         )
                     )
@@ -1576,7 +1577,8 @@ extension SearchViewHeader {
             .padding(.horizontal, 14).padding(.vertical, 10)
             .frame(minHeight: 48) // HIG 44+; match primary chrome breath
             .background(Capsule().fill(AtlasTheme.surface)
-                .overlay(Capsule().stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1)))
+                // Soft gold-quiet unfocused; full goldBorder when focused.
+                .overlay(Capsule().stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1)))
             // Float with back glass circle — search chrome shares one elevation plane.
             .atlasElevation(radius: focused ? 10 : 6, y: focused ? 3 : 2, opacity: focused ? 0.16 : 0.12)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: focused)
@@ -2036,13 +2038,14 @@ extension WorkspaceView {
     func areaFilterChipLabel(_ a: AtlasArea, active: Bool) -> some View {
         Text(a.label)
             .font(active ? AtlasFont.serif(14, .semibold) : AtlasFont.serif(14))
-            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
+            // Soft gold-quiet inactive area chips — active stays full accent.
+            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.65))
             .padding(.horizontal, 14).padding(.vertical, 8)
             .frame(minHeight: 48) // HIG 44+; match primary filter breath
             .contentShape(Capsule())
             .background(
                 Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface.opacity(0.85))
-                    .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+                    .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             )
             .atlasElevation(radius: 5, y: 1, opacity: active ? 0.14 : 0.06)
     }

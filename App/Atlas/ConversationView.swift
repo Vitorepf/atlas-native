@@ -2959,7 +2959,8 @@ extension DraftThumb {
                     .atlasSans(20)
                     .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 Text((draft.fileName as NSString).pathExtension.uppercased())
-                    .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet file meta under doc glyph.
+                    .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
             }.frame(maxWidth: .infinity, maxHeight: .infinity).background(AtlasTheme.surfaceHi)
         }
     }
@@ -3477,7 +3478,8 @@ extension ComposerToolbar {
                 .accessibilityHidden(true)
             Image(systemName: "arrow.up.circle.fill")
                 .atlasSans(29)
-                .foregroundStyle(AtlasTheme.textTertiary.opacity(0.38))
+                // Soft gold-quiet ghost send — honest disabled, still on brand.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.28))
                 .accessibilityHidden(true)
         }
         .frame(width: 48, height: 48)
@@ -7179,12 +7181,13 @@ extension TimelineFilterChips {
     func chipLabel(_ option: TimelineReadFilter, active: Bool) -> some View {
         Text(option.label)
             .font(AtlasFont.mono(9))
-            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
+            // Soft gold-quiet inactive filters — active stays full accent.
+            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.55))
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .frame(minHeight: 48) // HIG 44+; match filter chip breath
             .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
-            .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+            .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.35), lineWidth: 1))
             .atlasElevation(radius: 4, y: 1, opacity: active ? 0.12 : 0.04)
             .contentShape(Capsule())
     }
@@ -9057,8 +9060,9 @@ extension CodeBlockView {
                 .overlay(
                     Capsule().stroke(
                         canCopy
-                            ? (copied ? AtlasTheme.goldBorder : AtlasTheme.separator)
-                            : AtlasTheme.separatorSoft,
+                            // Soft gold-quiet ready; full goldBorder when copied.
+                            ? (copied ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.45))
+                            : AtlasTheme.goldBorder.opacity(0.22),
                         lineWidth: 1
                     )
                 )
