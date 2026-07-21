@@ -49,9 +49,11 @@ extension DraftStrip {
             draftThumbLoop
         }
         .scrollClipDisabled()   // o ✕ vaza do thumb; sem isto o clip corta o alvo
+        // Contain without strip label: each DraftThumb keeps its own a11y node.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(DraftStripA11y.spokenStrip(draftCount: drafts.count))
-        .animation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.86),
-                   value: drafts.map(\.id))
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.82),
+            value: drafts.map(\.id)
+        )
     }
 }
