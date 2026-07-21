@@ -88,6 +88,16 @@ enum HomeAskContext {
             absences.append(contentsOf: failPack.absences)
         }
 
+        // WAVE-170: workspace picker face (catalog doors from Home).
+        let pickerPack = WorkspacePickerJudgment.packFacts(
+            phase: session.phase,
+            repoCount: workspaces.count,
+            query: "",
+            showsNoRepo: workspaces.isEmpty
+        )
+        facts.append(contentsOf: pickerPack.facts)
+        absences.append(contentsOf: pickerPack.absences)
+
         return AgenticOccasionPack(
             surface: "home",
             subject: "partida do operador",

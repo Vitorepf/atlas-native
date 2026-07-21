@@ -159,11 +159,11 @@ extension ConversationView {
             let reviewFinished = presenceTrace.map { tid in
                 review != nil || !model.reviews.changeReviewInFlight.contains(tid)
             } ?? false
-            let artifacts: [AtlasTraceArtifacts.Item] = {
-                guard let tid = presenceTrace,
-                      let bag = model.reviews.artifactsByTrace[tid] else { return [] }
-                return bag.items
+            let artifactsBag: AtlasTraceArtifacts? = {
+                guard let tid = presenceTrace else { return nil }
+                return model.reviews.artifactsByTrace[tid]
             }()
+            let artifacts: [AtlasTraceArtifacts.Item] = artifactsBag?.items ?? []
             let published = ConversationOccasionPack.PublishedSlice(
                 presenceBubble: bubble,
                 queued: model.queuedMessages,
@@ -180,6 +180,7 @@ extension ConversationView {
                 effort: model.effort,
                 cacheCapturedAt: model.cacheCapturedAt,
                 artifacts: artifacts,
+                artifactsBag: artifactsBag,
                 turnCount: model.bubbles.count,
                 toolbarMode: model.taskKind ?? "",
                 toolbarWorkspaceName: model.workspacePath,

@@ -40,7 +40,7 @@
 | **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
 | **Workspace screen (lista)** | `WorkspaceScreenJudgment` → face loading/offline/empty/list · screen a11y · pack Ask (WAVE-162) |
-| **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face loading/failed/empty/list/miss · rank · pack |
+| **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face · pack Home partida (WAVE-170) |
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |
 | **Ops failure (multi-superfície)** | `AtlasOpsFailureJudgment` → face network/domain/load · FailureEmpty |
 | Phase grammar execução (strip/presence) | `ConversationExecutionPhase` → strip/StateCard/LiveNow/composer `selectPresenceBubble` |
@@ -184,3 +184,5 @@
 View/Shell rota ≤600 · Surface 1 domínio ≤1500 (fail &gt;2000) · um domínio por arquivo.
 
 | **Artifact preview pack (169)** | `ArtifactPreviewJudgment` → OccasionPack idle when list non-empty |
+
+| **Artifact contract + evidence pack (170)** | `ArtifactJudgment` · `TraceEvidenceJudgment` → OccasionPack |

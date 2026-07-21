@@ -38,6 +38,8 @@ enum ConversationOccasionPack {
         var effort: AtlasComputeEffort = .auto
         var cacheCapturedAt: Date? = nil
         var artifacts: [AtlasTraceArtifacts.Item] = []
+        /// WAVE-170: full artifacts bag when published for ArtifactJudgment.
+        var artifactsBag: AtlasTraceArtifacts? = nil
         /// WAVE-166: outline turn count + toolbar chrome.
         var turnCount: Int = 0
         var toolbarMode: String = ""
@@ -260,6 +262,19 @@ enum ConversationOccasionPack {
             )
             facts.append(contentsOf: artifactPack.facts)
             absences.append(contentsOf: artifactPack.absences)
+            // WAVE-170: contract-level artifact face + evidence availability.
+            let artFacePack = ArtifactJudgment.packFacts(
+                artifacts: published.artifactsBag,
+                deliveryChecks: []
+            )
+            facts.append(contentsOf: artFacePack.facts)
+            absences.append(contentsOf: artFacePack.absences)
+            let evidencePack = TraceEvidenceJudgment.packFacts(
+                isLoading: published.artifactsBag == nil && bubble?.traceId != nil,
+                reason: published.artifactsBag == nil ? "artifacts_bag_nil" : nil
+            )
+            facts.append(contentsOf: evidencePack.facts)
+            absences.append(contentsOf: evidencePack.absences)
             // WAVE-169: preview organ idle until sheet selects item.
             if !published.artifacts.isEmpty {
                 let previewPack = ArtifactPreviewJudgment.packFacts(
