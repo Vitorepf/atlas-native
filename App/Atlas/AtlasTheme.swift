@@ -209,8 +209,9 @@ struct PressableScale: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.96 : 1))
-            .opacity(reduceMotion ? 1 : (configuration.isPressed ? 0.88 : 1))
+            // Soft press — 0.97 scale + 0.92 opacity keeps gold chrome readable under finger.
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
+            .opacity(reduceMotion ? 1 : (configuration.isPressed ? 0.92 : 1))
             .animation(
                 reduceMotion
                     ? nil

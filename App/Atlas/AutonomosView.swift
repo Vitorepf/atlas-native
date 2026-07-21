@@ -1003,6 +1003,7 @@ struct AutonomosListView: View {
                 .padding(.vertical, 3)
                 .background(Capsule().fill(AtlasTheme.surface))
                 .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                .atlasElevation(radius: 3, y: 1, opacity: 0.08)
                 .padding(.top, 4)
                 // Row VO combines spoken(unit); visual kicker is decoration only.
                 .accessibilityHidden(true)

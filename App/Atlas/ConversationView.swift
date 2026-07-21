@@ -4662,6 +4662,7 @@ extension AgentRow {
                         .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
                 }
             }
+            .atlasElevation(radius: 4, y: 1, opacity: compactLane ? 0.08 : 0)
     }
 }
 
@@ -5763,6 +5764,8 @@ extension ExecutionProof {
     var collapsedHeaderLabel: some View {
         HStack(spacing: 10) {
             Circle().fill(AtlasTheme.accent).frame(width: 10, height: 10)
+                // Soft gold bloom — marks completed work without faking a pulse.
+                .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 4, y: 0)
                 .accessibilityHidden(true)
             collapsedHeaderSummary
             Spacer(minLength: 0)
@@ -8235,7 +8238,10 @@ extension QueuedFollowUpRow {
                 .atlasSans(15, .semibold)
                 .foregroundStyle(AtlasTheme.accent)
                 .frame(width: 48, height: 48)
-                .background(Circle().fill(AtlasTheme.goldVeil))
+                .background(Circle().fill(AtlasTheme.goldVeil)
+                    .overlay(Circle().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+                // Match scroll FAB / recovery chrome — send-class promote floats.
+                .atlasElevation(radius: 8, y: 2, opacity: 0.16)
                 .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
