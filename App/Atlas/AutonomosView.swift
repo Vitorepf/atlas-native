@@ -147,7 +147,7 @@ struct AutonomosFleetFailureEmpty: View {
                 onRetry()
             } label: {
                 Text("Tentar de novo")
-                    .frame(minWidth: 160, minHeight: 44)
+                    .frame(minWidth: 160, minHeight: 48)
             }
                 .buttonStyle(AutonomosPrimaryButtonStyle())
                 .accessibilityIdentifier(A11yID.autonomosRetry)

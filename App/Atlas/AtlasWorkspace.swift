@@ -230,7 +230,7 @@ struct AtlasWorkspacePickerSheet: View {
                     Text("Tentar de novo")
                         .atlasSans(15, .medium)
                         .foregroundStyle(AtlasTheme.accent)
-                        .frame(minHeight: 44)
+                        .frame(minHeight: 48)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)

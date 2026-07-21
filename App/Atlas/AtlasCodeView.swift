@@ -741,7 +741,7 @@ extension AtlasCodeView {
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 12)
             .padding(.vertical, 7)
-            .frame(minHeight: 44)
+            .frame(minHeight: 48) // HIG 44+; match chrome pill breath
             .contentShape(Capsule())
             .atlasGlassCapsule()
         }
