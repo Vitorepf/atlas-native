@@ -2693,7 +2693,7 @@ extension RootChromeRowA11y {
 extension RootChromeRowA11y {
     static func spokenThreadMessageCount(_ messageCount: Int) -> [String] {
         if messageCount == 0 {
-            return ["nenhuma mensagem"]
+            return ["Nenhuma mensagem"]
         }
         return ["\(messageCount) mensagem\(messageCount == 1 ? "" : "ns")"]
     }
@@ -2701,7 +2701,7 @@ extension RootChromeRowA11y {
 
 extension RootChromeRowA11y {
     static func threadHint(isRunning: Bool) -> String {
-        isRunning ? "Atlas executando nesta conversa" : "abre a conversa"
+        isRunning ? "Atlas executando nesta conversa" : "Abre a conversa"
     }
 }
 

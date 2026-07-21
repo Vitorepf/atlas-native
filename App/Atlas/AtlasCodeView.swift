@@ -2184,7 +2184,7 @@ extension AtlasCodeMirrorCard {
 extension AtlasCodeMirrorCard {
     func spokenMirrorMirroredParts() -> [String]? {
         if case .mirrored = response.state {
-            return ["tudo espelhado, verdade no Mac"]
+            return ["Tudo espelhado, verdade no Mac"]
         }
         return nil
     }
@@ -2213,7 +2213,7 @@ extension AtlasCodeMirrorCard {
         case .blocked(let rules):
             return spokenMirrorBlockedParts(rules: rules)
         default:
-            return ["estado ainda não conhecido"]
+            return ["Estado ainda não conhecido"]
         }
     }
 }
@@ -2873,7 +2873,7 @@ extension AtlasCodeProvenanceSheet {
 extension AtlasCodeProvenanceSheet {
     func provenanceSheetLoadedParts(_ provenance: AtlasCodeProvenance) -> [String] {
         if let headline = provenance.diffHeadline { return [headline] }
-        if !hasLoadedBody(provenance) { return ["ledger sem detalhe neste recorte"] }
+        if !hasLoadedBody(provenance) { return ["Ledger sem detalhe neste recorte"] }
         return []
     }
 }
