@@ -197,7 +197,7 @@ struct ArenaPremiumLoadFailureView: View {
                     ? "Nenhum índice, progresso ou resultado foi presumido."
                     : "A tela não transformou a falha de rede em estado vazio."
             )
-            .font(.system(.callout))
+            .font(AtlasFont.serif(15))
             .foregroundStyle(AtlasTheme.textSecondary)
             ArenaPremiumAction(title: "Tentar novamente", symbol: "arrow.clockwise") {
                 Task { await model.load() }
@@ -629,7 +629,7 @@ struct ArenaPremiumStopSheet: View {
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .accessibilityAddTraits(.isHeader)
                     Text("O caso atual termina antes da parada. Casos concluídos e resultados parciais são preservados.")
-                        .font(.system(.body))
+                        .font(AtlasFont.serif(16))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                     fields
@@ -695,7 +695,7 @@ struct ArenaPremiumStopSheet: View {
                     value.accepted ? "Solicitação confirmada" : "Medição já havia terminado",
                     systemImage: value.accepted ? "checkmark.seal" : "info.circle"
                 )
-                    .font(.system(.callout, weight: .semibold))
+                    .font(AtlasFont.serif(15, .semibold))
                     .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
                 Text(value.stopsAfterCurrentCase ? "parada após o caso atual" : value.status.rawValue)
                     .font(AtlasFont.mono(10))
@@ -730,7 +730,7 @@ struct ArenaPremiumStopSheet: View {
                 )
                 Text(model.isStoppingMeasurement ? "Solicitando…" : "Parar após o caso atual")
             }
-                .font(.system(.body, weight: .semibold))
+                .font(AtlasFont.serif(16, .semibold))
                 .frame(maxWidth: .infinity, minHeight: 50)
                 .foregroundStyle(valid && !isConfirmed ? AtlasTheme.alert : AtlasTheme.textTertiary)
                 .background(Capsule().fill(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.08 : 0.03)))
@@ -967,7 +967,7 @@ struct ArenaPremiumPlanView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text("Crie uma medição para organizar suítes, motores e braços.")
-                .font(.system(.callout))
+                .font(AtlasFont.serif(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityElement(children: .combine)
@@ -1062,7 +1062,7 @@ struct ArenaPremiumQueueView: View {
             }
             if queued.isEmpty {
                 Text("Fila vazia")
-                    .font(.system(.callout))
+                    .font(AtlasFont.serif(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
             }
@@ -1149,7 +1149,7 @@ struct ArenaPremiumFleetView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text("Rode uma medição com pelo menos um motor para ver o ranking da frota.")
-                .font(.system(.callout))
+                .font(AtlasFont.serif(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -1318,7 +1318,7 @@ struct ArenaPremiumAlertsView: View {
                     )
                     Text("Nenhuma regressão ou falha publicada")
                 }
-                    .font(.system(.callout))
+                    .font(AtlasFont.serif(15))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity, minHeight: 86, alignment: .leading)
                     .accessibilityElement(children: .combine)
@@ -1628,7 +1628,7 @@ struct ArenaPremiumIdleView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text("Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado.")
-                .font(.system(.body))
+                .font(AtlasFont.serif(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityLabel(
@@ -1735,7 +1735,7 @@ struct ArenaPremiumTerminalView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text(configuration.1)
-                .font(.system(.body))
+                .font(AtlasFont.serif(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
             if let progress = model.livePresentation?.progress {
                 HStack(alignment: .lastTextBaseline, spacing: 7) {
@@ -1876,7 +1876,7 @@ struct ArenaPremiumResultsView: View {
             )
             if let narrative = model.report?.narrative {
                 Text(narrative)
-                    .font(.system(.callout))
+                    .font(AtlasFont.serif(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -2018,7 +2018,7 @@ struct ArenaPremiumResultsView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text("O primeiro resultado aparecerá quando uma suíte concluir.")
-                .font(.system(.body))
+                .font(AtlasFont.serif(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityElement(children: .combine)
@@ -2915,7 +2915,7 @@ struct ArenaPremiumCapabilitiesView: View {
                     HStack(spacing: 10) {
                         VStack(alignment: .leading, spacing: 3) {
                             Text(capability.labelPt)
-                                .font(.system(.callout))
+                                .font(AtlasFont.serif(15))
                                 .foregroundStyle(AtlasTheme.textPrimary)
                             if let caption = shortConfidence(capability) {
                                 Text(caption)
@@ -2955,7 +2955,7 @@ struct ArenaPremiumCapabilitiesView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text("Ausência permanece ausência — nenhuma barra começa em zero.")
-                .font(.system(.callout))
+                .font(AtlasFont.serif(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityElement(children: .combine)
@@ -3236,7 +3236,7 @@ extension ArenaRunSheet {
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .accessibilityAddTraits(.isHeader)
                     Text("Escolha somente o necessário. A ordem e o progresso aparecem na Arena assim que o servidor confirmar.")
-                        .font(.system(.callout))
+                        .font(AtlasFont.serif(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -3339,7 +3339,7 @@ extension ArenaRunSheet {
     var statusBlocks: some View {
         if let error = model.controlError {
             Text(error)
-                .font(.system(.callout))
+                .font(AtlasFont.serif(15))
                 .foregroundStyle(AtlasTheme.alert)
                 .accessibilityLabel(spokenErrorLabel(error))
                 .transition(reduceMotion ? .identity : .opacity)
@@ -3510,7 +3510,7 @@ extension ArenaRunSheet {
     @ViewBuilder
     func receiptStatusCopy(_ receipt: AtlasArenaStartReceipt) -> some View {
         Text(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
-            .font(.system(.callout, weight: .semibold))
+            .font(AtlasFont.serif(15, .semibold))
             .foregroundStyle(AtlasTheme.accent)
             .accessibilityHidden(true)
     }
@@ -3522,7 +3522,7 @@ extension ArenaRunSheet {
         if receipt.workerImplemented == false {
             // false hoje = worker desligado no servidor (ATLAS_ARENA_WORKER_ENABLED).
             Text("worker de medição desligado no servidor — fila aguardando")
-                .font(.system(.caption))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
         }
@@ -3594,7 +3594,7 @@ extension ArenaRunSheet {
     func toggleLabelTitleStack(title: String, subtitle: String?) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
-                .font(.system(.callout, weight: .medium))
+                .font(AtlasFont.serif(15, .medium))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             toggleSubtitle(subtitle)
@@ -3639,7 +3639,7 @@ extension ArenaRunSheet {
     @ViewBuilder
     var engineFormEmpty: some View {
         Text("nenhum motor publicado")
-            .font(.system(.subheadline))
+            .font(AtlasFont.serif(14))
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
             .accessibilityLabel(spokenEmptyEngines())
@@ -3669,7 +3669,7 @@ extension ArenaRunSheet {
                 }
                 if engines.count > 1 {
                     Text("Escolha 2 ou mais para comparar motor contra motor.")
-                        .font(.system(.caption))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .accessibilityHidden(true)
                 }
@@ -3740,7 +3740,7 @@ struct ArenaFieldChrome: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .font(.system(.callout))
+            .font(AtlasFont.serif(15))
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 12).padding(.vertical, 10)
             .frame(
@@ -3771,7 +3771,7 @@ extension ArenaRunSheet {
 extension ArenaRunSheet {
     var suitesEmptyLabel: some View {
         Text("nenhuma suite com adapter instalado")
-            .font(.system(.subheadline))
+            .font(AtlasFont.serif(14))
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)
             .accessibilityLabel(spokenEmptySuites())
@@ -3837,7 +3837,7 @@ extension ArenaRunSheet {
 extension ArenaRunSheet {
     var submitButtonLabel: some View {
         Text("Rodar medição")
-            .font(.system(.body, weight: .semibold))
+            .font(AtlasFont.serif(16, .semibold))
             .frame(maxWidth: .infinity)
             .frame(minHeight: 52)
             .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))

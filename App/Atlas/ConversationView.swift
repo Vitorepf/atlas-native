@@ -5354,7 +5354,7 @@ struct PlanStepRowView: View {
 
     var stepTitleColumn: some View {
         Text(step.title)
-            .font(.system(.caption))
+            .font(AtlasFont.mono(10))
             .foregroundStyle(state == .pending ? AtlasTheme.textTertiary
                              : state == .current ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
             .lineLimit(2)
@@ -5757,12 +5757,12 @@ extension ExecutionProof {
     var collapsedHeaderSummary: some View {
         VStack(alignment: .leading, spacing: 1) {
             Text("Obra concluída")
-                .font(.system(.subheadline, weight: .semibold))
+                .font(AtlasFont.serif(14, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             if !summaryLine.isEmpty {
                 Text(summaryLine)
-                    .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .accessibilityHidden(true)
             }

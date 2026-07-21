@@ -238,7 +238,7 @@ struct ChangeReviewRunActions: View {
 extension ChangeReviewRunActions {
     var acceptButtonLabel: some View {
         Text("Aceitar tudo")
-            .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
+            .font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 18).padding(.vertical, 10)
             .frame(minHeight: 44)
             .background(Capsule().fill(AtlasTheme.accent))
@@ -335,7 +335,7 @@ extension ChangeReviewRunActions {
 extension ChangeReviewRunActions {
     var rejectButtonLabel: some View {
         Text("Rejeitar")
-            .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.domOperacional)
+            .font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.domOperacional)
             .padding(.horizontal, 18).padding(.vertical, 10)
             .frame(minHeight: 44)
             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
@@ -756,7 +756,7 @@ extension ChangeReviewPatchCard {
                 toggleDiff()
             } label: {
                 Text(diffExpanded ? "Fechar diff" : "Ver diff")
-                    .font(.system(.footnote, weight: .medium))
+                    .font(AtlasFont.serif(13, .medium))
                     .foregroundStyle(AtlasTheme.accent)
                     .frame(minHeight: 44)
                     .contentShape(Rectangle())
@@ -825,7 +825,7 @@ extension ChangeReviewFileRow {
             }
         } label: {
             Text("aceitar")
-                .font(.system(.caption, weight: .medium))
+                .font(AtlasFont.mono(10, .medium))
                 .foregroundStyle(AtlasTheme.accent)
                 .frame(minHeight: 44)
                 .padding(.horizontal, 4)
@@ -853,7 +853,7 @@ extension ChangeReviewFileRow {
             }
         } label: {
             Text("rejeitar")
-                .font(.system(.caption))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .frame(minHeight: 44)
                 .padding(.horizontal, 4)
