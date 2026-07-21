@@ -126,6 +126,7 @@
 | **Commit row peels** | Body · Meta (WAVE-118) |
 | **Conversation sheets peels** | SheetsBody · ComposerSheetsModifier (WAVE-119) |
 | **Search surface peels** | Surface/Header · Results (WAVE-120) |
+| **Plan card peels** | PlanCard host · PlanCardBody (WAVE-121) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
