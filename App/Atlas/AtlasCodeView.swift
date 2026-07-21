@@ -3773,6 +3773,7 @@ struct AtlasCodeRepoRow: View {
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 1.5)
                                 .background(Capsule().fill(AtlasTheme.surface))
+                                .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
                         }
                     }
                     if let issues, let first = issues.first {
