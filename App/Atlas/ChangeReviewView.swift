@@ -718,6 +718,7 @@ extension ChangeReviewPatchCard {
         content()
             .padding(14)
             .atlasCard()
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
             // Contain without fused label: Ver/Fechar diff stays a button.
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(A11yID.reviewPatchCard(patch.id))
