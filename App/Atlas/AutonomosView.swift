@@ -1588,7 +1588,7 @@ struct AutonomosMapNavLine: View {
         } label: {
             HStack(spacing: 10) {
                 Text(title)
-                    .atlasSans(15.5, .medium)
+                    .font(danger ? AtlasFont.serif(16, .semibold) : AtlasFont.serif(16, .medium))
                     .foregroundStyle(danger ? AtlasTheme.alert : AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 if !meta.isEmpty {
@@ -1603,7 +1603,7 @@ struct AutonomosMapNavLine: View {
                     .accessibilityHidden(true)
             }
             .padding(.vertical, 14)
-            .frame(minHeight: 48, alignment: .center)
+            .frame(minHeight: 52, alignment: .center)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
