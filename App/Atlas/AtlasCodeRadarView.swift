@@ -67,9 +67,13 @@ struct AtlasCodeRadarView: View {
                     onOpenRepo: onOpenRepo
                 )
             } else {
-                Color.clear
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .accessibilityLabel(spokenEmptyWorkspace())
+                AtlasEditorialGlyphEmpty(
+                    headline: "“Workspace sem repositórios legíveis.”",
+                    footnote: "o Mac respondeu, mas nenhuma pasta de produto veio nesta leitura",
+                    accessibilityIdentifier: A11yID.radarEmpty,
+                    spokenLabel: spokenEmptyWorkspace()
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
     }

@@ -193,24 +193,33 @@ struct ArenaPremiumProgressRing: View {
                 }
             }
             .rotationEffect(.degrees(90))
-            if let percentage {
-                HStack(alignment: .lastTextBaseline, spacing: 1) {
-                    Text("\(percentage)")
-                        .font(AtlasFont.serif(42))
-                    Text("%")
-                        .font(AtlasFont.mono(13))
-                        .foregroundStyle(AtlasTheme.textSecondary)
-                        .baselineOffset(4)
-                }
-                .foregroundStyle(AtlasTheme.textPrimary)
-            } else {
-                Text("✦")
-                    .font(AtlasFont.serif(24))
-                    .foregroundStyle(AtlasTheme.accent)
-            }
+            progressCenter
         }
         .frame(width: 142, height: 142)
         .accessibilityHidden(true)
+    }
+
+    @ViewBuilder
+    private var progressCenter: some View {
+        if let percentage {
+            HStack(alignment: .lastTextBaseline, spacing: 1) {
+                Text("\(percentage)")
+                    .font(AtlasFont.serif(42))
+                Text("%")
+                    .font(AtlasFont.mono(13))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .baselineOffset(4)
+            }
+            .foregroundStyle(AtlasTheme.textPrimary)
+        } else if progress == nil {
+            // Indeterminate: ✦ is mark, not a fake 0% ring.
+            Text("✦")
+                .font(AtlasFont.serif(24))
+                .foregroundStyle(AtlasTheme.accent)
+        } else {
+            // Progress without percentage stays visual-only (parent speaks counts).
+            EmptyView()
+        }
     }
 }
 

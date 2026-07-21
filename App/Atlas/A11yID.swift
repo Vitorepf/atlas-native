@@ -225,6 +225,7 @@ extension A11yID {
     static let codeScreen = "code-screen"
     static let radarLoading = "code-radar-loading"
     static let radarFailure = "code-radar-failure"
+    static let radarEmpty = "code-radar-empty"
     static let codeLoadFailure = "code-load-failure"
     static let codeLoadRetry = "code-load-retry"
     static let radarStatus = "radar-status"

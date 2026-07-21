@@ -442,11 +442,13 @@ extension ConversationView {
             Text(t)
                 .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
                 .padding(.horizontal, 16).padding(.vertical, 9)
+                .frame(minHeight: 44)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel(ConversationViewA11y.spokenToast(t))
+                .accessibilityAddTraits(.updatesFrequently)
                 .accessibilityIdentifier(A11yID.conversationToast)
                 .task { await dismissToastAfterDelay() }
         }
