@@ -7180,7 +7180,7 @@ struct NarrativeRowView: View {
 
 enum LiveTimelineA11y {
     static func spokenSectionLabel(stepCount: Int) -> String {
-        "orquestra ao vivo, \(stepCount) passo\(stepCount == 1 ? "" : "s")"
+        "Orquestra ao vivo, \(stepCount) passo\(stepCount == 1 ? "" : "s")"
     }
 }
 
@@ -7189,7 +7189,7 @@ extension LiveTimelineA11y {
                                  count: Int,
                                  active: Bool,
                                  silent: Bool) -> String {
-        "filtrar timeline por \(filter.label), \(count) passo\(count == 1 ? "" : "s")"
+        "Filtrar timeline por \(filter.label), \(count) passo\(count == 1 ? "" : "s")"
             + spokenFilterChipSuffix(active: active, silent: silent)
     }
 }
@@ -7205,13 +7205,13 @@ extension LiveTimelineA11y {
 
 extension LiveTimelineA11y {
     static func spokenFilterHint() -> String {
-        "altera quais passos da orquestra são exibidos"
+        "Altera quais passos da orquestra são exibidos"
     }
 }
 
 extension LiveTimelineA11y {
     static func spokenRow(row: NarrativeRow, index: Int, total: Int, isCurrent: Bool) -> String {
-        var parts = ["passo \(index + 1) de \(total)", row.title]
+        var parts = ["Passo \(index + 1) de \(total)", row.title]
         if let detail = row.detail, !detail.isEmpty { parts.append(detail) }
         if let duration = row.durationMs {
             parts.append("duração \(humanDuration(duration))")
@@ -7224,7 +7224,7 @@ extension LiveTimelineA11y {
 
 extension LiveTimelineA11y {
     static func rowValue(index: Int, total: Int, isCurrent: Bool) -> String {
-        isCurrent ? "passo \(index + 1) de \(total), em andamento" : "passo \(index + 1) de \(total)"
+        isCurrent ? "Passo \(index + 1) de \(total), em andamento" : "Passo \(index + 1) de \(total)"
     }
 }
 
