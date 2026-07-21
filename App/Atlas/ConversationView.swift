@@ -944,6 +944,7 @@ extension EmptyConversation {
                             )
                         )
                 )
+                .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         }
         .buttonStyle(PressableScale())
         // Identifier = texto da sugestão (UITests + Voice Control estáveis).
