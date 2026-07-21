@@ -19,14 +19,6 @@ extension AtlasTraceGovernance.CouncilMember {
     }
 }
 
-enum ChangeReviewCouncilA11y {
-    static func spokenSection(memberCount: Int, diverged: Bool) -> String {
-        var parts = ["conselho, \(memberCount) \(memberCount == 1 ? "membro" : "membros")"]
-        if diverged { parts.append("divergência entre pareceres") }
-        return parts.joined(separator: ", ")
-    }
-}
-
 extension ChangeReviewCouncilMemberRow {
     var providerOutcomeGlyph: some View {
         Image(systemName: member.succeeded ? "checkmark" : "xmark")
@@ -127,7 +119,7 @@ extension ChangeReviewGovernanceSection {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewCouncilA11y.spokenSection(memberCount: council.count, diverged: diverged))
+        .accessibilityLabel(ChangeReviewJudgment.spokenCouncilSection(memberCount: council.count, diverged: diverged))
         .accessibilityIdentifier(A11yID.reviewCouncil)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: council.map(\.id))
     }
@@ -145,7 +137,7 @@ extension ChangeReviewGovernanceSection {
                 Text("divergência")
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.accent)
-                    .accessibilityLabel("divergência entre pareceres")
+                    .accessibilityLabel(ChangeReviewJudgment.councilDivergenceLabel)
             }
         }
     }
@@ -176,6 +168,12 @@ extension ChangeReviewGovernanceSection {
         council: [AtlasTraceGovernance.CouncilMember]
     ) -> some View {
         if stats != nil || !revisions.isEmpty || !council.isEmpty {
+            let pack = ChangeReviewJudgment.packGovernanceFacts(
+                stats: stats,
+                revisionCount: revisions.count,
+                councilCount: council.count,
+                diverged: AtlasTraceGovernance.councilDiverged(council)
+            )
             governanceChrome {
                 governanceContentStack(
                     stats: stats,
@@ -183,6 +181,10 @@ extension ChangeReviewGovernanceSection {
                     council: council
                 )
             }
+            .accessibilityValue(
+                (pack.facts + pack.absences.map { "ausência: \($0)" })
+                    .joined(separator: "; ")
+            )
         }
     }
 }
@@ -226,7 +228,7 @@ extension ChangeReviewGovernanceSection {
             Text(stats.headline)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .accessibilityLabel("\(stats.filesTouched) arquivos, mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
+                .accessibilityLabel(ChangeReviewJudgment.spokenDiffStats(stats))
         }
     }
 }
@@ -270,13 +272,13 @@ struct ChangeReviewHashWarning: View {
                 .atlasSans(11, .semibold)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
-            Text("atenção: o hash do diff não confere com o artefato registrado")
+            Text(ChangeReviewJudgment.hashWarningLabel)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("atenção: o hash do diff não confere com o artefato registrado")
+        .accessibilityLabel(ChangeReviewJudgment.hashWarningLabel)
         .accessibilityIdentifier(A11yID.reviewHashWarning)
     }
 }

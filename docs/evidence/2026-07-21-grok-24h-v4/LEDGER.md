@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 93
+- waves_completed: 94
 - idle_compress_passes: 22
 - collapse_host: 0
 
@@ -104,12 +104,23 @@ mode: designer + implementer
 - WAVE-096
 - WAVE-097
 - WAVE-098
+- WAVE-099
 
 ## Idle compress
 - pass 21–22 · multi-surface chrome → Judgment (max 2 after WAVE-098)
 
-## Open queue
-_(none)_ — next A fill or full-bar residual only
+## Designer
+- designs_proposed: 94
+- designs_open: 0
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
+
+## Open queue snapshot (must match QUEUE.md)
+
+| # | wave | Δ | status |
+|---|---|---|---|
+| — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-098 reason. DEVICE_PENDING.
+- WAVE-099 governance chrome. DEVICE_PENDING.
+- Continuity restore BLOCKED (App Group).

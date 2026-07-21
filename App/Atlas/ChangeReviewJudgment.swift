@@ -330,5 +330,49 @@ enum ChangeReviewJudgment {
     static func spokenFindingsSection(count: Int) -> String {
         "achados, \(count) no total"
     }
+
+    // MARK: Governance chrome (WAVE-099)
+
+    static let hashWarningLabel =
+        "atenção: o hash do diff não confere com o artefato registrado"
+    static let councilDivergenceLabel = "divergência entre pareceres"
+
+    static func spokenCouncilSection(memberCount: Int, diverged: Bool) -> String {
+        var parts = [
+            "conselho, \(memberCount) \(memberCount == 1 ? "membro" : "membros")"
+        ]
+        if diverged { parts.append(councilDivergenceLabel) }
+        return parts.joined(separator: ", ")
+    }
+
+    static func spokenDiffStats(_ stats: AtlasTraceGovernance.DiffStats) -> String {
+        "\(stats.filesTouched) arquivos, mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas"
+    }
+
+    static func packGovernanceFacts(
+        stats: AtlasTraceGovernance.DiffStats?,
+        revisionCount: Int,
+        councilCount: Int,
+        diverged: Bool
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        if let stats {
+            facts.append("gov_files: \(stats.filesTouched)")
+            facts.append("gov_lines_added: \(stats.linesAdded)")
+            facts.append("gov_lines_removed: \(stats.linesRemoved)")
+        } else {
+            absences.append("diff stats de governança não publicados")
+        }
+        facts.append("gov_plan_revisions: \(revisionCount)")
+        facts.append("gov_council_members: \(councilCount)")
+        if diverged {
+            facts.append("gov_council_diverged: true")
+        }
+        if councilCount == 0 {
+            absences.append("sem conselho publicado neste recorte")
+        }
+        return (facts, absences)
+    }
 }
 
