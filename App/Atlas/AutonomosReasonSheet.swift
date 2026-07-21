@@ -66,7 +66,8 @@ struct AutonomosReasonSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirmar") {
-                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                        // Medium: governed pause/end with operator receipt.
+                        AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
                         onConfirm(actor, reason)
                         dismiss()
                     }

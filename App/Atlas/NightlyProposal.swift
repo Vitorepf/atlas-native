@@ -180,7 +180,8 @@ struct NightlyProposalCard: View {
     private var actionRow: some View {
         HStack(spacing: 10) {
             Button("Preparar missão noturna") {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                // Medium: primary accept of the nightly mission.
+                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
                 onAccept()
             }
             .buttonStyle(AutonomosPrimaryButtonStyle())

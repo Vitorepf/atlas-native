@@ -69,7 +69,8 @@ extension ChangeReviewRunActions {
 
 extension ChangeReviewRunActions {
     func performAccept() {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+        // Medium: accept-all is primary governed commit.
+        AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
         applying = true
         Task { await reviews.applyChangeReview(traceId: traceId, action: .accept); applying = false }
     }

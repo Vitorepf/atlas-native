@@ -198,7 +198,8 @@ extension SteerInteractionSheet {
 extension SteerInteractionSheet {
     var steerSubmitButton: some View {
         Button("Enviar") {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: primary governed redirect (same class as composer send).
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onSubmit(instruction, scope)
         }
         .disabled(!canSubmit)

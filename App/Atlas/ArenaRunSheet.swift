@@ -641,7 +641,8 @@ extension ArenaRunSheet {
 extension ArenaRunSheet {
     var submitButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: primary run commit (not tab/navigation soft).
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task { await model.startRuns(inputs: inputs) }
         } label: {
             submitButtonLabel

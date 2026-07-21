@@ -107,7 +107,8 @@ struct ArenaPremiumStopSheet: View {
     private var confirm: some View {
         Button {
             guard let measurementId = run.measurementIdPublic else { return }
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: governed stop commits operator actor+reason.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task {
                 await model.stopMeasurement(
                     measurementId: measurementId,
