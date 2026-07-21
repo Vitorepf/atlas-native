@@ -124,8 +124,8 @@ extension RootView {
                 .atlasGlassCircle()
         }
         .accessibilityIdentifier(A11yID.topbarProfile)
-        .accessibilityLabel(RootChromeRowA11y.profileLabel)
-        .accessibilityHint(RootChromeRowA11y.profileHint)
+        .accessibilityLabel(WorkspaceThreadJudgment.profileLabel)
+        .accessibilityHint(WorkspaceThreadJudgment.profileHint)
         .sheet(isPresented: $showingProfile) { AtlasProfileSheet() }
     }
 }
