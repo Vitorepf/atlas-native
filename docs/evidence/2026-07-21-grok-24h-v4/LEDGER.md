@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 79
+- waves_completed: 80
 - idle_compress_passes: 20
 - collapse_host: 0
 
@@ -89,21 +89,10 @@ mode: designer + implementer
 - WAVE-081
 - WAVE-082
 - WAVE-083
+- WAVE-084
 - WAVE-085
 
-## Idle compress
-- pass 19–20 (ComposerSheetPrimitives · RootChromeDeepLink)
-
-## Designer
-- designs_open: 1
-- last_regen: regen-queue.py
-
-## Open queue snapshot (must match QUEUE.md)
-
-| # | wave | Δ | status |
-|---|---|---|---|
-| 1 | WAVE-084 | high | proposed |
-
 ## Notes
-- WAVE-083–085 A fills. Next: WAVE-084 conversation-empty. Prefer A.
-- DEVICE_PENDING. Continuity BLOCKED.
+- WAVE-084 conversation-empty-editorial-judgment-instrument shipped (casca).
+- Open queue after regen: see QUEUE.md.
+- DEVICE_PENDING for device screenshots.

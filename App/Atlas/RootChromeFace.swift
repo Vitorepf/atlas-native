@@ -277,6 +277,7 @@ extension RootView {
                 emptySuggestions: HomeAskContext.emptySuggestions(
                     hasWorkspaces: !session.workspaces.isEmpty
                 ),
+                isHomePartida: true,
                 workspace: nil,
                 turnFacts: { [session] _ in
                     HomeAskContext.facts(session: session)

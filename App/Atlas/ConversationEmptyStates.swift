@@ -1,14 +1,17 @@
 import SwiftUI
 import AtlasCore
 
-// Empty state vivo da conversa (WAVE-003 fuse).
+// Empty state vivo da conversa (WAVE-003 fuse · WAVE-084 editorial Judgment).
 // Load fail fica em ConversationMessages+Empty → AtlasNetworkFailureEmpty.
 
 struct EmptyConversation: View {
     let reduceMotion: Bool
-    /// Assunto da conversa. Ausente = a conversa do Atlas, que é sobre tudo.
+    /// Assunto da conversa. Ausente = quote default via Judgment.
     var prompt: String? = nil
     var suggestionsOverride: [String]? = nil
+    /// Home partida only — unlocks default catalog when suggestions nil.
+    var isHomePartida: Bool = false
+    var hasWorkspaces: Bool = false
     let onSuggestion: (String) -> Void
     @State private var breathe = false
 
@@ -16,12 +19,37 @@ struct EmptyConversation: View {
         reduceMotion: Bool,
         prompt: String? = nil,
         suggestions: [String]? = nil,
+        isHomePartida: Bool = false,
+        hasWorkspaces: Bool = false,
         onSuggestion: @escaping (String) -> Void
     ) {
         self.reduceMotion = reduceMotion
         self.prompt = prompt
         self.suggestionsOverride = suggestions
+        self.isHomePartida = isHomePartida
+        self.hasWorkspaces = hasWorkspaces
         self.onSuggestion = onSuggestion
+    }
+
+    private var face: ConversationEmptyFace {
+        ConversationEmptyJudgment.face(
+            prompt: prompt,
+            suggestions: suggestionsOverride,
+            isHomePartida: isHomePartida,
+            hasWorkspaces: hasWorkspaces
+        )
+    }
+
+    private var displayPrompt: String {
+        ConversationEmptyJudgment.resolvedPrompt(prompt)
+    }
+
+    private var suggestions: [String] {
+        ConversationEmptyJudgment.resolvedSuggestions(
+            suggestions: suggestionsOverride,
+            isHomePartida: isHomePartida,
+            hasWorkspaces: hasWorkspaces
+        )
     }
 
     var body: some View {
@@ -32,31 +60,36 @@ struct EmptyConversation: View {
                 .scaleEffect(breathe ? 1.06 : 1).opacity(breathe ? 0.85 : 1)
                 .accessibilityHidden(true)
             Spacer().frame(height: 40)
-            Text("\u{201C}\(prompt ?? "O que você quer pensar agora?")\u{201D}")
+            Text("\u{201C}\(displayPrompt)\u{201D}")
                 .font(AtlasFont.serifItalic(22)).lineSpacing(10)
                 .multilineTextAlignment(.center).foregroundStyle(AtlasTheme.textPrimary)
-                .accessibilityLabel(EmptyConversationA11y.spokenPrompt(prompt))
+                .accessibilityLabel(ConversationEmptyJudgment.spokenPrompt(prompt))
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityValue(face.productWord)
             Spacer().frame(height: 44)
-            VStack(spacing: 10) {
-                ForEach(Array(suggestions.enumerated()), id: \.element) { index, s in
-                    Button { onSuggestion(s) } label: {
-                        Text(s)
-                            .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
-                            .padding(.horizontal, 18).padding(.vertical, 10)
-                            .frame(maxWidth: .infinity)
-                            .background(Capsule().fill(AtlasTheme.surface)
-                                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
+            if !suggestions.isEmpty {
+                VStack(spacing: 10) {
+                    ForEach(Array(suggestions.enumerated()), id: \.element) { index, s in
+                        Button { onSuggestion(s) } label: {
+                            Text(s)
+                                .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
+                                .padding(.horizontal, 18).padding(.vertical, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(Capsule().fill(AtlasTheme.surface)
+                                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1)))
+                        }
+                        .buttonStyle(PressableScale())
+                        .accessibilityIdentifier(s)
+                        .accessibilityLabel(
+                            ConversationEmptyJudgment.spokenSuggestion(
+                                s, index: index, total: suggestions.count
+                            )
+                        )
+                        .accessibilityHint(ConversationEmptyJudgment.suggestionHint)
                     }
-                    .buttonStyle(PressableScale())
-                    .accessibilityIdentifier(s)
-                    .accessibilityLabel(
-                        EmptyConversationA11y.spokenSuggestion(s, index: index, total: suggestions.count)
-                    )
-                    .accessibilityHint(EmptyConversationA11y.suggestionHint)
                 }
+                .padding(.horizontal, 12)
             }
-            .padding(.horizontal, 12)
         }
         .padding(.horizontal, 32).padding(.top, 56)
         .frame(maxWidth: .infinity)
@@ -68,27 +101,6 @@ struct EmptyConversation: View {
             }
         }
         .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("conversation.empty.\(face.productWord)")
     }
-
-    private var suggestions: [String] {
-        // Defaults = partida Home. Superfícies com pack próprio passam override.
-        suggestionsOverride ?? HomeAskContext.emptySuggestions(hasWorkspaces: false)
-    }
-}
-
-/// Spoken labels do empty conversation.
-enum EmptyConversationA11y {
-    static func spokenPrompt(_ prompt: String?) -> String {
-        let text = prompt?.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let text, !text.isEmpty {
-            return "conversa vazia, \(text)"
-        }
-        return "conversa vazia, o que você quer pensar agora?"
-    }
-
-    static func spokenSuggestion(_ text: String, index: Int, total: Int) -> String {
-        "sugestão \(index + 1) de \(total), \(text)"
-    }
-
-    static let suggestionHint = "envia esta pergunta agora"
 }

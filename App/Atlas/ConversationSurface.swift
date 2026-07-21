@@ -300,13 +300,17 @@ extension ConversationView {
         model: ConversationModel,
         reduceMotion: Bool,
         emptyPrompt: String?,
-        emptySuggestions: [String]?
+        emptySuggestions: [String]?,
+        isHomePartida: Bool,
+        hasWorkspaces: Bool
     ) {
         (
             model: model,
             reduceMotion: reduceMotion,
             emptyPrompt: emptyPrompt,
-            emptySuggestions: emptySuggestions
+            emptySuggestions: emptySuggestions,
+            isHomePartida: isHomePartida,
+            hasWorkspaces: !session.workspaces.isEmpty
         )
     }
 }
@@ -344,6 +348,8 @@ extension ConversationView {
             reduceMotion: modelArgs.reduceMotion,
             emptyPrompt: modelArgs.emptyPrompt,
             emptySuggestions: modelArgs.emptySuggestions,
+            isHomePartida: modelArgs.isHomePartida,
+            hasWorkspaces: modelArgs.hasWorkspaces,
             awayFromBottom: traceArgs.awayFromBottom,
             lastScrollAt: traceArgs.lastScrollAt,
             lastScrollBubbleCount: traceArgs.lastScrollBubbleCount,

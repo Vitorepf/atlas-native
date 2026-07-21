@@ -52,6 +52,7 @@
 | **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
 | **Stale-read cache seal** | `ConversationStaleReadJudgment` → face confirming/fresh/aged/stale |
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face load_fail/empty/messages · list a11y |
+| **Empty editorial (partida)** | `ConversationEmptyJudgment` → face silence/default_prompt/custom_prompt/suggestions(N) · EmptyStates |
 | **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · `ConversationOutlineSheet` |
 | **Home OPERAÇÃO attention** | `HomeOpsJudgment` → Autônomos door face · Arena door · pack |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |

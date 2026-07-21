@@ -77,6 +77,15 @@ enum ConversationOccasionPack {
         absences.append("não invente grafo/Arena/Autônomos neste pack de conversa")
         absences.append("NL não autoriza tool write — stop/steer/fila só via CTA da face se publicados")
 
+        // WAVE-084: mid-thread empty editorial (never Home catalog).
+        let empty = ConversationEmptyJudgment.packFacts(
+            prompt: invite,
+            suggestions: emptySuggestions,
+            isHomePartida: false
+        )
+        facts.append(contentsOf: empty.facts)
+        absences.append(contentsOf: empty.absences)
+
         let surface: String
         if workspaceKey != nil {
             surface = "conversation.workspace"

@@ -8,6 +8,9 @@ struct ConversationMessages: View {
     var reduceMotion: Bool
     var emptyPrompt: String?
     var emptySuggestions: [String]?
+    /// Home partida only — Judgment unlocks default catalog (WAVE-084).
+    var isHomePartida: Bool = false
+    var hasWorkspaces: Bool = false
     @Environment(AtlasSession.self) var session
     @Binding var awayFromBottom: Bool
     @Binding var lastScrollAt: CFAbsoluteTime
@@ -26,7 +29,12 @@ struct ConversationMessages: View {
 extension ConversationMessages {
     @ViewBuilder
     func emptyMessages() -> some View {
-        if model.loadError != nil {
+        // WAVE-072 surface face; WAVE-084 editorial organ inside empty branch.
+        let surface = ConversationMessagesJudgment.face(
+            hasLoadError: model.loadError != nil,
+            turnCount: model.bubbles.count
+        )
+        if surface == .loadFail {
             AtlasNetworkFailureEmpty(
                 kind: model.loadFailureKind,
                 hasToken: session.hasToken,
@@ -40,7 +48,9 @@ extension ConversationMessages {
             EmptyConversation(
                 reduceMotion: reduceMotion,
                 prompt: emptyPrompt,
-                suggestions: emptySuggestions
+                suggestions: emptySuggestions,
+                isHomePartida: isHomePartida,
+                hasWorkspaces: hasWorkspaces
             ) { suggestion in
                 AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
                 let effort = model.effort

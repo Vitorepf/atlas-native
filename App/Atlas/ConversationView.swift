@@ -33,6 +33,8 @@ struct ConversationView: View {
     let startFocused: Bool
     let emptyPrompt: String?
     let emptySuggestions: [String]?
+    /// Home partida only — unlocks default empty catalog via Judgment (WAVE-084).
+    let isHomePartida: Bool
     let onThread: ((ThreadID) -> Void)?
     /// Sheet do grafo: sem chevron — o gesto de arrastar fecha.
     let hidesNavigationBack: Bool
@@ -47,6 +49,7 @@ struct ConversationView: View {
         title: String,
         emptyPrompt: String? = nil,
         emptySuggestions: [String]? = nil,
+        isHomePartida: Bool = false,
         taskKind: String? = nil,
         workspace: String? = nil,
         draft: String = "",
@@ -58,6 +61,7 @@ struct ConversationView: View {
         self.startFocused = threadId == nil
         self.emptyPrompt = emptyPrompt
         self.emptySuggestions = emptySuggestions
+        self.isHomePartida = isHomePartida
         self.onThread = onThread
         self.hidesNavigationBack = hidesNavigationBack
         _model = Self.initModelState(
@@ -92,7 +96,13 @@ extension ConversationView {
             return "\(title), falha ao carregar"
         }
         if model.bubbles.isEmpty {
-            return "\(title), conversa vazia"
+            let organ = ConversationEmptyJudgment.spokenEmptyOrgan(
+                prompt: emptyPrompt,
+                suggestions: emptySuggestions,
+                isHomePartida: isHomePartida,
+                hasWorkspaces: !session.workspaces.isEmpty
+            )
+            return "\(title), \(organ)"
         }
         return nil
     }

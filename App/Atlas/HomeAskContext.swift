@@ -53,6 +53,16 @@ enum HomeAskContext {
         facts.append(contentsOf: ops.facts)
         absences.append(contentsOf: ops.absences)
 
+        // WAVE-084: empty editorial face for Home partida (catalog honesty).
+        let empty = ConversationEmptyJudgment.packFacts(
+            prompt: invite,
+            suggestions: emptySuggestions(hasWorkspaces: !workspaces.isEmpty),
+            isHomePartida: true,
+            hasWorkspaces: !workspaces.isEmpty
+        )
+        facts.append(contentsOf: empty.facts)
+        absences.append(contentsOf: empty.absences)
+
         return AgenticOccasionPack(
             surface: "home",
             subject: "partida do operador",
