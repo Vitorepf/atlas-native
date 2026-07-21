@@ -2094,6 +2094,7 @@ extension AtlasCodeMirrorCard {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(background, in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.card))
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).strokeBorder(borderColor, lineWidth: 1))
+        .atlasElevation(radius: 10, y: 3, opacity: 0.14)
         .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered), value: mirrorStatePhaseID)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenMirrorLabel())
