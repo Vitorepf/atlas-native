@@ -32,7 +32,19 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     .padding(.bottom, 11)
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(.isHeader)
+    // Spoken title stays natural case — visual tracking is uppercase.
+    .accessibilityLabel(sectionSpokenLabel(t))
     .homeSectionA11yID(accessibilityID)
+}
+
+/// Home section labels are visual UPPERCASE; VO hears natural Portuguese.
+private func sectionSpokenLabel(_ t: String) -> String {
+    switch t.uppercased() {
+    case "CONVERSAS": return "Conversas"
+    case "OPERAÇÃO", "OPERACAO": return "Operação"
+    case "WORKSPACES": return "Workspaces"
+    default: return t.capitalized
+    }
 }
 
 /// O ✦ respirando — a marca viva do Atlas nos estados de espera.
