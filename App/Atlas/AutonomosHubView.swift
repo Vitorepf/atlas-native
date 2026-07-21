@@ -49,7 +49,7 @@ struct AutonomosHubView: View {
                     .padding(.bottom, 16)
                 }
 
-                if controlFace != .unbound {
+                if AutonomosHubJudgment.showsControlFaceLine(controlFace) {
                     Text(controlFace.spokenFace)
                         .font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textTertiary)
@@ -72,9 +72,7 @@ struct AutonomosHubView: View {
                     Text(controlReceiptLine)
                         .font(AtlasFont.serifItalic(13))
                         .foregroundStyle(
-                            controlReceiptLine.lowercased().contains("não")
-                                || controlReceiptLine.lowercased().contains("erro")
-                                || controlReceiptLine.lowercased().contains("falha")
+                            controlReceiptTone == .error
                                 ? AtlasTheme.domOperacional
                                 : AtlasTheme.textSecondary
                         )
@@ -82,6 +80,7 @@ struct AutonomosHubView: View {
                         .padding(.top, 10)
                         .padding(.bottom, 4)
                         .accessibilityIdentifier(A11yID.autonomosControlError)
+                        .accessibilityValue(controlReceiptTone.productWord)
                 }
 
                 if let transferReceiptLine, !transferReceiptLine.isEmpty {
@@ -141,14 +140,28 @@ struct AutonomosHubView: View {
         .scrollIndicators(.hidden)
         .accessibilityIdentifier(A11yID.autonomosHub)
         .accessibilityLabel(hubSpokenLabel)
+        .accessibilityValue(hubFace.productWord)
+    }
+
+    private var hubFace: AutonomosHubFace {
+        AutonomosHubJudgment.face(vestment: vestment, needsAreaBind: needsAreaBind)
     }
 
     private var kickerLine: String {
-        "\(vestment.kicker) · \(unit.ageLabel)"
+        AutonomosHubJudgment.kickerLine(vestment: vestment, ageLabel: unit.ageLabel)
     }
 
     private var hubSpokenLabel: String {
-        "\(unit.name), \(vestment.spokenFace), \(controlFace.spokenFace), \(vestment.heroTitle)"
+        AutonomosHubJudgment.spokenHub(
+            name: unit.name,
+            vestment: vestment,
+            controlFace: controlFace,
+            needsAreaBind: needsAreaBind
+        )
+    }
+
+    private var controlReceiptTone: AutonomosReceiptTone {
+        AutonomosHubJudgment.receiptTone(line: controlReceiptLine)
     }
 
     @ViewBuilder

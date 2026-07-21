@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 90
+- waves_completed: 91
 - idle_compress_passes: 16
 - collapse_host: 0
 
@@ -101,13 +101,8 @@ mode: designer + implementer
 - WAVE-093
 - WAVE-094
 - WAVE-095
-
-## Idle compress
-- pass 15 · Search/Root/Patch Judgment
-- pass 16 · Radar A11y peel consolidate
-
-## Open queue
-_(none)_ — max 2 IDLE after WAVE-095 done
+- WAVE-096
 
 ## Notes
-- DEVICE_PENDING. Awaiting A fill or full-bar residual.
+- WAVE-096 autonomos hub face. IDLE 15–16 prior.
+- DEVICE_PENDING.
