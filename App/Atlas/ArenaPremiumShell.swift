@@ -4180,6 +4180,7 @@ struct ArenaPremiumKicker: View {
                 Text("✦")
                     .font(AtlasFont.serif(11))
                     .foregroundStyle(tone.color)
+                    .shadow(color: tone.color.opacity(0.35), radius: 4, y: 0)
                     .modifier(ArenaLiveBreath())
                     .accessibilityHidden(true)
             }
