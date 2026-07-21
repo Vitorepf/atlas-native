@@ -5,7 +5,7 @@ import AtlasCore
 /// Motor da área Autônomos. Não conhece Views nem conversa: só projeta o
 /// estado real do Atlas Continuous Stewardship Loop para a casca própria 24/7.
 /// Load → AutonomosModel+Load.swift · comandos → +Control.swift.
-/// Transfer/decide peels removidos (ciclo 252) — zero call sites na face v9.
+/// Face v9: catálogo local + delivered (recibo merge) + taskHealth (snapshot).
 @MainActor
 @Observable
 final class AutonomosModel {
@@ -15,18 +15,10 @@ final class AutonomosModel {
     var phase: LoadPhase = .loaded
     var areas: [AtlasAutonomosArea] = []
     var selectedAreaID: String?
-    var live: AtlasAutonomosLiveResponse?
-    var cycles: AtlasAutonomosCyclesResponse?
+    /// Ciclos entregues da área efetiva — banner de merge comprovado.
     var delivered: AtlasAutonomosDeliveredResponse?
-    var backlog: AtlasAutonomosBacklogResponse?
-    /// Estado global da frota; não é associado artificialmente à área selecionada.
-    var fleet: AtlasAutonomosFleetResponse?
-    var fleetHistory: AtlasAutonomosFleetHistoryResponse?
-    /// Saúde global da fila do músculo externo; não é um progresso estimado
-    /// nem é atribuída artificialmente à área selecionada.
+    /// Saúde global da fila do músculo externo (widgets / snapshot).
     var taskHealth: AtlasAutonomosTaskHealthResponse?
-    /// Digest global governado do Autônomos; agenda ausente permanece ausente.
-    var digest: AtlasAutonomosDigestResponse?
     var lastStartRunReceipt: AtlasAutonomosStartRunResponse?
     var controlError: String?
     /// Catálogo do operador (face Autônomos). Em memória até POST create (§5).
@@ -49,7 +41,7 @@ final class AutonomosModel {
     }
 
     /// Face Autônomos = catálogo local (instantâneo). Áreas do loop hidratam
-    /// em segundo plano sem bloquear nem selecionar backlog (anti-badge mentiroso).
+    /// em segundo plano; surfaces globais (taskHealth) alimentam Continuity.
     func load() async {
         clearSelectionProjection()
         phase = .loaded
@@ -60,25 +52,20 @@ final class AutonomosModel {
         } catch {
             // Catálogo local funciona sem isto; não derruba a superfície.
         }
+        // Uma área registrada: ancora e carrega delivered para o banner.
+        if let sole = runTargetArea {
+            selectedAreaID = sole.id
+        }
+        await refreshSelected()
     }
 
     func clearSelectionProjection() {
         selectedAreaID = nil
-        live = nil
-        cycles = nil
         delivered = nil
-        backlog = nil
-        fleet = nil
-        fleetHistory = nil
         taskHealth = nil
-        digest = nil
     }
 
     func refreshSelected() async {
-        guard selectedAreaID != nil else {
-            await load()
-            return
-        }
         controlError = nil
         do {
             try await loadSelectedDetails()
