@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — collapse casca surfaces into hosts (ciclo 285)** · `5a27fa35` · App/Atlas 54. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse review/live/queue/arena/empties (ciclo 284)** · `2f3ee090` · App/Atlas 88. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse Arena premium + Autônomos surfaces (ciclo 283)** · `63fcb883` · App/Atlas 105. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse Code/Arena hosts + strip repair (ciclo 282)** · `3d2b3502` · App/Atlas 121. **Prova:** checks+build exit 0.
