@@ -3350,7 +3350,7 @@ extension ComposerToolbar {
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.38))
                 .accessibilityHidden(true)
         }
-        .frame(width: 44, height: 44)
+        .frame(width: 48, height: 48)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(spokenProcessingLabel()), \(spokenSendLabel(canSubmit: false))")
         .accessibilityHint(spokenSendHint(canSubmit: false))
@@ -3365,9 +3365,9 @@ extension ComposerToolbar {
             onSend()
         } label: {
             Image(systemName: "arrow.up.circle.fill")
-                .atlasSans(29)
+                .atlasSans(30)
                 .foregroundStyle(AtlasTheme.accent)
-                .frame(width: 44, height: 44)
+                .frame(width: 48, height: 48)
                 .contentShape(Circle())
         }
         .buttonStyle(.plain)
