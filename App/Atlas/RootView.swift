@@ -410,7 +410,7 @@ extension RootView {
         } label: {
             inputBarContent
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .keyboardShortcut("n", modifiers: .command)
         .accessibilityLabel(inputPillSpokenLabel())
         .accessibilityHint(inputPillSpokenHint())
@@ -478,20 +478,20 @@ extension RootView {
         .frame(minHeight: 52) // match AgenticPill / workspace invite breath
         .contentShape(Capsule())
         .atlasGlassCapsule()
-        .atlasElevation(radius: 12, y: 4, opacity: 0.18)
+        .atlasElevation(radius: 12, y: 4, opacity: 0.2)
         .overlay(
             Capsule()
                 .strokeBorder(
                     LinearGradient(
                         colors: [
-                            AtlasTheme.accent.opacity(0.22),
-                            AtlasTheme.accent.opacity(0.04),
-                            AtlasTheme.accent.opacity(0.12)
+                            AtlasTheme.accent.opacity(0.32),
+                            AtlasTheme.accent.opacity(0.06),
+                            AtlasTheme.accent.opacity(0.18)
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ),
-                    lineWidth: 0.75
+                    lineWidth: 0.85
                 )
         )
     }
