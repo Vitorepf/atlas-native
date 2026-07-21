@@ -1678,9 +1678,9 @@ struct SearchMissEmpty: View {
     var body: some View {
         AtlasEditorialGlyphEmpty(
             headline: headline,
-            footnote: "tente outra frase · a busca olha títulos e trechos recentes",
+            footnote: "Tente outra frase · a busca olha títulos e trechos recentes",
             accessibilityIdentifier: A11yID.searchEmpty,
-            spokenLabel: "\(headline) tente outra frase"
+            spokenLabel: "\(headline) Tente outra frase"
         )
     }
 }
@@ -3335,8 +3335,8 @@ extension AtlasWorkspacePickerSheet {
             .atlasCard()
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("sem repositório")
-        .accessibilityHint("conversa geral com o Atlas, sem projeto")
+        .accessibilityLabel("Sem repositório")
+        .accessibilityHint("Conversa geral com o Atlas, sem projeto")
         .accessibilityIdentifier(A11yID.workspacePickerNoRepo)
         .accessibilityAddTraits(.isButton)
         .padding(.horizontal, AtlasTheme.Space.screen)

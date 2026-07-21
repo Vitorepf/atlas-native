@@ -385,7 +385,7 @@ extension AtlasCodeView {
 
 extension AtlasCodeView {
     var graphLoadingContent: some View {
-        TraceEvidenceLoading(text: "lendo a topologia do repositório…", reduceMotion: reduceMotion)
+        TraceEvidenceLoading(text: "Lendo a topologia do repositório…", reduceMotion: reduceMotion)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
@@ -673,7 +673,7 @@ extension AtlasCodeView {
     @ViewBuilder
     func graphFailure(_ message: String) -> some View {
         AtlasCodeLoadFailureEmpty(
-            headline: "não consegui ler este repositório",
+            headline: "Não consegui ler este repositório",
             message: message,
             onRetry: { Task { await model.load() } }
         )
@@ -2195,9 +2195,9 @@ extension AtlasCodeMirrorCard {
         if let mirrored = spokenMirrorMirroredParts() { return mirrored }
         switch response.state {
         case .noMirror:
-            return ["sem espelho configurado"]
+            return ["Sem espelho configurado"]
         case .unknown:
-            return ["estado ainda não conhecido"]
+            return ["Estado ainda não conhecido"]
         default:
             return nil
         }
@@ -2266,7 +2266,7 @@ extension AtlasCodeMirrorCard {
 extension AtlasCodeMirrorCard {
     @ViewBuilder
     var headlineHealthyNoMirror: some View {
-        label("sem espelho configurado", color: AtlasTheme.textTertiary, icon: "circle.dashed")
+        label("Sem espelho configurado", color: AtlasTheme.textTertiary, icon: "circle.dashed")
     }
 
     @ViewBuilder
@@ -2388,7 +2388,7 @@ extension AtlasCodeWhySheet {
         if let quote = commit.provenance?.quote, !quote.isEmpty {
             parts.append(quote)
         } else {
-            parts.append("sem proveniência registrada")
+            parts.append("Sem proveniência registrada")
         }
         parts.append(commit.agentLabel)
         if let when = commit.when {
@@ -2404,16 +2404,16 @@ extension AtlasCodeWhySheet {
 }
 
 extension AtlasCodeWhySheet {
-    func spokenLoading() -> String { "lendo a história do arquivo" }
+    func spokenLoading() -> String { "Lendo a história do arquivo" }
 
     func spokenFailed() -> String {
         if let message = model.message, !message.isEmpty {
-            return "biografia indisponível, \(message)"
+            return "Biografia indisponível, \(message)"
         }
-        return "biografia indisponível"
+        return "Biografia indisponível"
     }
 
-    func spokenEmptyHistory() -> String { "este arquivo não tem história neste recorte" }
+    func spokenEmptyHistory() -> String { "Este arquivo não tem história neste recorte" }
 }
 
 extension AtlasCodeWhySheet {
@@ -2775,12 +2775,12 @@ extension AtlasCodeProvenanceSheet {
 }
 
 extension AtlasCodeProvenanceSheet {
-    func spokenLoading() -> String { "lendo proveniência do commit" }
+    func spokenLoading() -> String { "Lendo proveniência do commit" }
 
     func spokenFailed(_ message: String) -> String {
         let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return "proveniência indisponível" }
-        return "proveniência indisponível, \(trimmed)"
+        guard !trimmed.isEmpty else { return "Proveniência indisponível" }
+        return "Proveniência indisponível, \(trimmed)"
     }
 
     static let sheetHint = "estado do commit, lei aplicável e o que o ledger registrou"
@@ -3216,7 +3216,7 @@ extension AtlasCodeProvenanceSheet {
 
 extension AtlasCodeProvenanceSheet {
     var provenanceLoadingContent: some View {
-        TraceEvidenceLoading(text: "lendo o ledger…", reduceMotion: reduceMotion)
+        TraceEvidenceLoading(text: "Lendo o ledger…", reduceMotion: reduceMotion)
             .padding(.top, 2)
     }
 }
@@ -3494,12 +3494,12 @@ struct AtlasCodeRadarView: View {
     private var radarContent: some View {
         switch model.phase {
         case .idle, .loading:
-            TraceEvidenceLoading(text: "lendo o seu workspace…", reduceMotion: reduceMotion)
+            TraceEvidenceLoading(text: "Lendo o seu workspace…", reduceMotion: reduceMotion)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .accessibilityIdentifier(A11yID.radarLoading)
         case .failed(let message):
             AtlasCodeLoadFailureEmpty(
-                headline: "não consegui ler o workspace",
+                headline: "Não consegui ler o workspace",
                 message: message.trimmingCharacters(in: .whitespacesAndNewlines),
                 onRetry: { Task { await model.load() } }
             )
@@ -4768,7 +4768,7 @@ final class AtlasCodeModel {
             // veto mantém o recibo na tela; a cura ainda está lá para ser
             // vetada. Silêncio de falha não pode apagar a única ação humana
             // desta tela.
-            undoError = "não consegui desfazer agora — a cura continua aqui, tente de novo."
+            undoError = "Não consegui desfazer agora — a cura continua aqui, tente de novo."
         }
     }
 
@@ -4852,7 +4852,7 @@ extension AtlasCodeModel {
     var statusHeadline: String {
         let linha = violations?.trunk
         guard let violations else {
-            return linha.map { "não consegui varrer a \($0)" } ?? "não consegui varrer a linha principal"
+            return linha.map { "Não consegui varrer a \($0)" } ?? "Não consegui varrer a linha principal"
         }
         if violations.violations.count > 0 {
             let quantos = violations.violations.count
@@ -4991,7 +4991,7 @@ extension AtlasCodeWorkspaceModel {
                 let mudos = failedSlugs.count
                 return mudos == 1 ? "1 repositório não respondeu" : "\(mudos) repositórios não responderam"
             }
-            return issuesBySlug.isEmpty ? "lendo o workspace…" : "nada pede você"
+            return issuesBySlug.isEmpty ? "Lendo o workspace…" : "Nada pede você"
         }
         var byRule: [String: AtlasCodeIssue] = [:]
         for issue in all {
@@ -5007,7 +5007,7 @@ extension AtlasCodeWorkspaceModel {
             }
         }
         let worst = byRule.values.sorted { ($0.isSevere ? 0 : 1, -$0.count) < ($1.isSevere ? 0 : 1, -$1.count) }
-        return worst.first?.headline ?? "nada pede você"
+        return worst.first?.headline ?? "Nada pede você"
     }
 
     var hasException: Bool { issuesBySlug.values.contains { !$0.isEmpty } }
