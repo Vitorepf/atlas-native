@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 12
+pass: 13
 domain_index: 0
-last_focus: "pass12 continuous residual"
-session_commits: 150
+last_focus: "pass12 soft/hard clean · open pass 13"
+session_commits: 151
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,8 +14,8 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **150** · soft **0** · density OK · 46+2 hosts · gates green
+commits **151** · soft **0** · density outliers 0 · gates expected green
 
 ## Continuous residual
 
-headroom fuses · honesty · CODEMAP · **never Goal Done**
+**never Goal Done** · headroom fuses · honesty · CODEMAP
