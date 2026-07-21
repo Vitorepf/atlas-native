@@ -1271,7 +1271,7 @@ struct ArenaPremiumAlertsView: View {
                 Text("\(regressions.count + reportAlerts.count)")
                     .font(AtlasFont.serif(58))
                     .foregroundStyle(hasAlerts ? AtlasTheme.alert : AtlasTheme.textPrimary)
-                Text("alertas")
+                Text("Alertas")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
@@ -1475,7 +1475,7 @@ struct ArenaPremiumNowView: View {
     @ViewBuilder
     private var loadingIndicator: some View {
         if reduceMotion {
-            Text("carregando…")
+            Text("Carregando…")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)

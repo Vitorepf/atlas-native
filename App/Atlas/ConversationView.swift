@@ -4287,7 +4287,7 @@ extension EditorialTurn {
                 .accessibilityHidden(true)
             // Ação fala em sans (mono é hash/recibo/meta — canon §C);
             // secondary dá affordance de ação sem gritar.
-            Text("editar e reenviar")
+            Text("Editar e reenviar")
                 .atlasSans(11, .medium)
         }
         .foregroundStyle(AtlasTheme.textSecondary)
@@ -5181,7 +5181,7 @@ extension PlanCard {
             }
         } label: {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
-            Text(showDetail ? "menos" : "ferramentas · agentes · gates")
+            Text(showDetail ? "Menos" : "Ferramentas · agentes · gates")
                 .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
                 .frame(minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())
@@ -5439,7 +5439,7 @@ extension PlanCard {
             }
         } label: {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
-            Text(showRevisions ? "ocultar versões" : "comparar versões · \(count)")
+            Text(showRevisions ? "Ocultar versões" : "Comparar versões · \(count)")
                 .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
                 .frame(minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())

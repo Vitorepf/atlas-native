@@ -2938,7 +2938,7 @@ extension ThreadRow {
     @ViewBuilder
     var newThreadBadge: some View {
         if isNew && !isRunning {
-            Text("novo")
+            Text("Novo")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.accent)
                 .padding(.horizontal, 7)
@@ -2986,7 +2986,7 @@ extension ThreadRow {
 extension ThreadRow {
     @ViewBuilder
     var rowTrailingRunning: some View {
-        Text("executando").font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
+        Text("Executando").font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
             .accessibilityHidden(true)
     }
 }
