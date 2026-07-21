@@ -8,34 +8,29 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: pass3 residual cycle
-- domain_index: 1
+- focus: densified hosts defense + residual cycle
+- domain_index: 0
 - pass: 3
 - actionable: residual-headroom-only
-- passes: 3
-- last_commit: e6dfba69
-- session_commits: 126
+- last_commit: 41a445c7
+- session_commits: 128
 - soft_sections_states: 0
 - swift_App_Atlas: 35
 - swift_Widgets: 2
-- collapse_host: 0
 
 ## Scope
-- App/Atlas + App/Widgets
-- DEBTS: docs/evidence/2026-07-21-grok-god-restructure/DEBTS.md
-- Canon: docs/prompts/grok-god-code-canon.md
+App/Atlas + App/Widgets · DEBTS · CODEMAP · canon v4
 
 ## Out of scope
-- Sources/** · ConversationModel/AtlasSession logic · WAVE produto · dual · Goal Done · god_hold
+Sources/** · ConversationModel/AtlasSession logic · WAVE · dual · Goal Done · god_hold
 
-## Cycle log (summary)
-
-Pass 1: soft Sections/States → 0; densify casca to agent-optimal hosts (~35 App/Atlas + 2 Widgets).
-Pass 2: soft re-audit all domains clean.
-Pass 3: honesty renames (spokenTitle, copyToClipboard); residual fuse headroom ~0.
-
-Gates green after each polish(ui): GOD-RESTRUCTURE commit.
+## Scoreboard
+- ~128 commits this mission stream
+- Soft *Sections*/*States*: **0**
+- Casca densified: **35** App/Atlas + **2** Widgets hosts
+- Density guard OK · AtlasCoreChecks OK · make build OK
 
 ## notes
-- Goal until cancel. Loop 15m. Always next domain/pass.
+- Goal until cancel. Loop 15m reacorda.
+- If peel re-splits appear untracked, restore densified tree (HEAD App/Atlas) — density is the win.
 - Never Goal Done. Never god_hold.
