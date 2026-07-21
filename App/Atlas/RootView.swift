@@ -3623,10 +3623,30 @@ struct AtlasWorkspacePickerSheet: View {
                 pickerContent
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $query, prompt: "Buscar repositórios")
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 4) {
+                        Text(title)
+                            .font(AtlasFont.serif(17, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        LinearGradient(
+                            colors: [
+                                AtlasTheme.accent.opacity(0),
+                                AtlasTheme.accent.opacity(0.5),
+                                AtlasTheme.accent.opacity(0)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(width: 56, height: 1.5)
+                        .accessibilityHidden(true)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel(title)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
                         spokenLabel: "fechar seletor de workspace",
