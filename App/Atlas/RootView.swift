@@ -1970,7 +1970,7 @@ extension WorkspaceView {
         } label: {
             areaFilterChipLabel(a, active: active)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel("Área \(a.label)")
         .accessibilityHint("Filtra conversas já carregadas")
         .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
@@ -1986,10 +1986,10 @@ extension WorkspaceView {
             .frame(minHeight: 48) // HIG 44+; match primary filter breath
             .contentShape(Capsule())
             .background(
-                Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface)
+                Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface.opacity(0.85))
                     .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
             )
-            .atlasElevation(radius: 4, y: 1, opacity: active ? 0.12 : 0.04)
+            .atlasElevation(radius: 5, y: 1, opacity: active ? 0.14 : 0.06)
     }
 }
 
