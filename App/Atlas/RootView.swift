@@ -2375,8 +2375,9 @@ extension AtlasEditorialGlyphEmpty {
 extension AtlasEditorialGlyphEmpty {
     var editorialGlyph: some View {
         Text("✦")
-            .font(AtlasFont.serif(24)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
-            .shadow(color: AtlasTheme.accent.opacity(0.2), radius: 8, y: 1)
+            .font(AtlasFont.serif(24))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
+            .shadow(color: AtlasTheme.accent.opacity(0.32), radius: 10, y: 1)
             .accessibilityHidden(true)
     }
 }
@@ -2468,7 +2469,9 @@ extension AtlasNetworkFailureEmpty {
     var failureCopyText: some View {
         VStack(spacing: 0) {
             Text("✦")
-                .font(AtlasFont.serif(28)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
+                .font(AtlasFont.serif(28))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
+                .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 10, y: 1)
                 .accessibilityHidden(true)
             Spacer().frame(height: 28)
             Text(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken))
