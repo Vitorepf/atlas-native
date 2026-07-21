@@ -154,7 +154,7 @@ struct ArenaPremiumShell: View {
                     .atlasSans(17, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
             }
-            .accessibilityLabel(ArenaStartJudgment.newMeasurementLabel)
+            .accessibilityLabel(ArenaStartJudgment.productNewMeasurement)
             .accessibilityHint("Escolhe motores, suítes e braços")
             .accessibilityIdentifier(A11yID.arenaPremiumAdd)
         }
@@ -898,7 +898,7 @@ struct ArenaPremiumEngineTitle: View {
                 .contentShape(Rectangle())
             }
             .accessibilityLabel(ArenaScoreJudgment.spokenMeasuredEngine(engineID))
-            .accessibilityHint(ArenaScoreJudgment.measuredEngineHint)
+            .accessibilityHint(ArenaScoreJudgment.spokenMeasuredEngineHint)
             .accessibilityIdentifier(A11yID.arenaPremiumEnginePicker)
         } else {
             Text(ArenaDisplay.engine(engineID))

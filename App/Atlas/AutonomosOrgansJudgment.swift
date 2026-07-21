@@ -167,10 +167,10 @@ enum AutonomosTaskHealthJudgment {
 enum AutonomosTransferJudgment {
 
     static let productWord = "transfer"
-    static let ctaTitle = "Transferir missão"
+    static let productCTA = "Transferir missão"
     static let spokenFace = "transferência de missão com recibo"
 
-    static let reasonTitle = "Transferir missão"
+    static let productReasonTitle = "Transferir missão"
     static let reasonExplainer =
         "Preserva a mesma missão (área + foco). O target começa desconhecido — a fila escolhe o worker; só o lock dele comprova claimed. Não inicia execução no destino sozinho."
 
@@ -277,7 +277,7 @@ enum AutonomosListRowFace: Equatable {
 /// Pure Autônomos catalog list grammar — list face · row face · rank · spoken · pack.
 enum AutonomosListJudgment {
 
-    static let emptyHint = "Abre a folha para definir nome e carta"
+    static let spokenEmptyHint = "Abre a folha para definir nome e carta"
     static let emptyBody =
         "Defina um Autônomo com escopo fechado. Por agora o catálogo vive só neste iPhone — some se o app for morto."
     static let emptyFootnote =

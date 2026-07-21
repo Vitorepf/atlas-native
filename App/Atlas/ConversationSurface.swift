@@ -360,7 +360,7 @@ extension ConversationView {
                     .frame(width: 40, height: 40).atlasGlassCircle()
             }
             .accessibilityLabel(ConversationOutlineJudgment.spokenOutlineControl(turnCount: model.bubbles.count))
-            .accessibilityHint(ConversationOutlineJudgment.outlineControlHint)
+            .accessibilityHint(ConversationOutlineJudgment.spokenOutlineControlHint)
             .accessibilityIdentifier(A11yID.conversationOutline)
         }
     }

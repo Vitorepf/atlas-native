@@ -96,7 +96,7 @@ enum ConversationSteerJudgment {
         }
     }
 
-    static func scopeLabel(_ scope: AtlasInteractionSteerScope) -> String {
+    static func productScope(_ scope: AtlasInteractionSteerScope) -> String {
         switch scope {
         case .currentStep: return "passo atual"
         case .replan: return "replanejar"
@@ -104,7 +104,7 @@ enum ConversationSteerJudgment {
     }
 
     static func spokenScope(_ scope: AtlasInteractionSteerScope) -> String {
-        "escopo \(scopeLabel(scope))"
+        "escopo \(productScope(scope))"
     }
 
     // MARK: Receipt
@@ -113,10 +113,10 @@ enum ConversationSteerJudgment {
         if receipt.isAccepted {
             return "na fila do próximo checkpoint"
         }
-        return "rejeitado · \(rejectionReasonLabel(receipt.reason))"
+        return "rejeitado · \(productRejectionReason(receipt.reason))"
     }
 
-    static func rejectionReasonLabel(
+    static func productRejectionReason(
         _ reason: AtlasInteractionSteerRejectionReason?
     ) -> String {
         guard let reason else { return "motivo indisponível" }
@@ -132,7 +132,7 @@ enum ConversationSteerJudgment {
         if receipt.isAccepted {
             return "último recibo, instrução enfileirada para o próximo checkpoint seguro"
         }
-        return "último recibo, steering rejeitado, \(rejectionReasonLabel(receipt.reason))"
+        return "último recibo, steering rejeitado, \(productRejectionReason(receipt.reason))"
     }
 
     // MARK: Sheet chrome
@@ -522,7 +522,7 @@ enum ConversationEmptyFace: Equatable {
 enum ConversationEmptyJudgment {
 
     static let defaultPromptQuote = "O que você quer pensar agora?"
-    static let suggestionHint = "envia esta pergunta agora"
+    static let spokenSuggestionHint = "envia esta pergunta agora"
 
     // MARK: Resolve
 

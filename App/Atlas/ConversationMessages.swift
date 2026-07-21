@@ -546,7 +546,7 @@ struct EmptyConversation: View {
                                 s, index: index, total: suggestions.count
                             )
                         )
-                        .accessibilityHint(ConversationEmptyJudgment.suggestionHint)
+                        .accessibilityHint(ConversationEmptyJudgment.spokenSuggestionHint)
                     }
                 }
                 .padding(.horizontal, 12)
@@ -668,7 +668,7 @@ extension SteerInteractionSheet {
         // WAVE-053: product PT labels (not wire raw current_step/replan).
         Picker("Escopo", selection: $scope) {
             ForEach(AtlasInteractionSteerScope.allCases, id: \.self) { scope in
-                Text(ConversationSteerJudgment.scopeLabel(scope)).tag(scope)
+                Text(ConversationSteerJudgment.productScope(scope)).tag(scope)
             }
         }
         .pickerStyle(.segmented)

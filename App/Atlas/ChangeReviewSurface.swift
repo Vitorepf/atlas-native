@@ -314,7 +314,7 @@ extension ChangeReviewSheet {
         ChangeReviewSheetJudgment.spokenSheet(loadFinished: loadFinished, review: review)
     }
 
-    static var reviewSheetHint: String { ChangeReviewSheetJudgment.sheetHint }
+    static var reviewSheetHint: String { ChangeReviewSheetJudgment.spokenSheetHint }
 
     /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.
     static func hasReviewSurface(_ review: AtlasTraceChangeReview) -> Bool {

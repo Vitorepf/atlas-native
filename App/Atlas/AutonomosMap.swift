@@ -138,7 +138,7 @@ struct AutonomosMapShell: View {
         .sheet(isPresented: $showTransferSheet) {
             // WAVE-035: mission transfer handoff (server chooses target worker).
             AutonomosReasonSheet(
-                title: AutonomosTransferJudgment.reasonTitle,
+                title: AutonomosTransferJudgment.productReasonTitle,
                 explainer: AutonomosTransferJudgment.reasonExplainer,
                 reasonOptional: false
             ) { actor, reason in

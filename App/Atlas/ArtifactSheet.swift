@@ -146,7 +146,7 @@ extension ArtifactSheet {
         .accessibilityIdentifier(A11yID.artifactsItem(index))
         .accessibilityLabel(ArtifactListJudgment.spokenRow(item: item, selected: selected))
         .accessibilityAddTraits(selected ? .isSelected : [])
-        .accessibilityHint(ArtifactListJudgment.rowHint(selected: selected))
+        .accessibilityHint(ArtifactListJudgment.spokenRowHint(selected: selected))
     }
 }
 
@@ -223,7 +223,7 @@ extension ArtifactSheet {
         content
             .accessibilityIdentifier(A11yID.artifactsSheet)
             .accessibilityLabel(spokenArtifactsSheetLabel())
-            .accessibilityHint(ArtifactListJudgment.sheetHint)
+            .accessibilityHint(ArtifactListJudgment.spokenSheetHint)
     }
 }
 
@@ -286,7 +286,7 @@ extension ArtifactSheet {
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityIdentifier(A11yID.artifactsEmpty)
-            .accessibilityLabel(ArtifactListJudgment.spokenEmptyVisualizable())
+            .accessibilityLabel(ArtifactListJudgment.spokenEmptyVisualizable)
             .accessibilityValue(ArtifactListFace.silence.productWord)
     }
 }
@@ -1121,12 +1121,12 @@ enum ArtifactListJudgment {
 
     static let spokenClose = "fechar artefatos"
     static let spokenCloseHint = "volta para a conversa"
-    static let sheetHint = "lista e preview só com itens publicados no contrato"
-    static let emptyVisualizableLabel = "sem artefatos visualizáveis nesta execução"
+    static let spokenSheetHint = "lista e preview só com itens publicados no contrato"
+    static let spokenEmptyVisualizable = "sem artefatos visualizáveis nesta execução"
     static let emptyVisualizableCopy = "nenhum artefato visualizável"
     static let loadFailSpoken = "não foi possível consultar artefatos"
-    static let selectedHint = "selecionado no preview"
-    static let openHint = "abre o preview deste artefato"
+    static let spokenSelectedHint = "selecionado no preview"
+    static let spokenOpenHint = "abre o preview deste artefato"
 
     // MARK: Face
 
@@ -1173,12 +1173,8 @@ enum ArtifactListJudgment {
         )
     }
 
-    static func rowHint(selected: Bool) -> String {
-        selected ? selectedHint : openHint
-    }
-
-    static func spokenEmptyVisualizable() -> String {
-        emptyVisualizableLabel
+    static func spokenRowHint(selected: Bool) -> String {
+        selected ? spokenSelectedHint : spokenOpenHint
     }
 
     // MARK: Pack

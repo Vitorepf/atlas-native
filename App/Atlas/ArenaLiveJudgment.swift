@@ -395,7 +395,7 @@ enum ArenaScoreJudgmentState: String, Equatable {
 enum ArenaScoreJudgment {
     /// Escala canônica — uma voz em todas as faces.
     static let scaleCaption = "escala 0–10"
-    static let unmeasuredLabel = "não medido"
+    static let productUnmeasured = "não medido"
     static let absenceNeverZero =
         "Resultados ausentes aparecem como não medidos, nunca como zero."
 
@@ -480,7 +480,7 @@ enum ArenaScoreJudgment {
         "Motor medido, \(ArenaDisplay.engine(engineID))"
     }
 
-    static let measuredEngineHint = "Abre a lista dos outros motores medidos"
+    static let spokenMeasuredEngineHint = "Abre a lista dos outros motores medidos"
 
     static func capabilitiesKicker() -> String {
         "Perfil medido · \(scaleCaption)"
@@ -501,13 +501,13 @@ enum ArenaScoreJudgment {
     // MARK: - Spoken (≡ visual)
 
     static func spokenScore(_ value: Double?) -> String {
-        guard value != nil else { return unmeasuredLabel }
+        guard value != nil else { return productUnmeasured }
         return "\(ArenaFormat.score(value)) de 10"
     }
 
     static func spokenPair(without: Double?, withAtlas: Double?) -> String {
         guard shouldShowComparison(without: without, withAtlas: withAtlas) else {
-            return "par com/sem Atlas \(unmeasuredLabel)"
+            return "par com/sem Atlas \(productUnmeasured)"
         }
         let d = pairedDelta(without: without, withAtlas: withAtlas)
         return "Sem Atlas \(ArenaFormat.score(without)), com Atlas \(ArenaFormat.score(withAtlas)), diferença \(ArenaFormat.signed(d))"
@@ -519,7 +519,7 @@ enum ArenaScoreJudgment {
             return "\(name), multiplicador \(ArenaFormat.multiplier(mult)), \(spokenPair(without: engine.withoutAtlasComposite, withAtlas: engine.withAtlasComposite))"
         }
         if engine.composite == nil && engine.withoutAtlasComposite == nil && engine.withAtlasComposite == nil {
-            return "\(name), \(unmeasuredLabel)"
+            return "\(name), \(productUnmeasured)"
         }
         return "\(name), \(spokenPair(without: engine.withoutAtlasComposite, withAtlas: engine.withAtlasComposite))"
     }
@@ -538,7 +538,7 @@ enum ArenaScoreJudgment {
 
         guard let engine else {
             facts.append("score_state: \(ArenaScoreJudgmentState.unmeasured.rawValue)")
-            absences.append(unmeasuredLabel)
+            absences.append(productUnmeasured)
             absences.append(absenceNeverZero)
             return (facts, absences)
         }
@@ -553,17 +553,17 @@ enum ArenaScoreJudgment {
         if let composite = engine.composite {
             facts.append("score_composite: \(ArenaFormat.score(composite))")
         } else {
-            absences.append("composite \(unmeasuredLabel)")
+            absences.append("composite \(productUnmeasured)")
         }
         if let without = engine.withoutAtlasComposite {
             facts.append("score_without_atlas: \(ArenaFormat.score(without))")
         } else {
-            absences.append("braço sem Atlas \(unmeasuredLabel)")
+            absences.append("braço sem Atlas \(productUnmeasured)")
         }
         if let withAtlas = engine.withAtlasComposite {
             facts.append("score_with_atlas: \(ArenaFormat.score(withAtlas))")
         } else {
-            absences.append("braço com Atlas \(unmeasuredLabel)")
+            absences.append("braço com Atlas \(productUnmeasured)")
         }
         if let delta = pairedDelta(engine: engine) {
             facts.append("score_delta_atlas: \(ArenaFormat.signed(delta))")
@@ -696,7 +696,7 @@ enum ArenaStartJudgment {
 
     static let workerGapCopy =
         "worker de medição desligado no servidor — fila aguardando"
-    static let newMeasurementLabel = "Nova medição"
+    static let productNewMeasurement = "Nova medição"
 
     // MARK: Submit
 
@@ -851,7 +851,7 @@ enum ArenaSuiteJudgment {
 
     static let spokenClose = "fechar detalhes da suite"
     static let spokenCloseHint = "volta para a Arena"
-    static let sheetHint = "scores, casos e duração só quando o servidor publica"
+    static let spokenSheetHint = "scores, casos e duração só quando o servidor publica"
 
     static func spokenSuiteTitle(_ suite: String) -> String {
         "suite \(suite)"

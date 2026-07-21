@@ -95,7 +95,7 @@ extension ComposerToolbar {
 
 extension ComposerToolbar {
     func spokenProcessingLabel() -> String {
-        ComposerEffortJudgment.processingLabel
+        ComposerEffortJudgment.spokenProcessing
     }
 }
 
@@ -554,7 +554,7 @@ struct NewSinceLastVisitMarker: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityIdentifier(A11yID.conversationNewMarker)
-        .accessibilityLabel(ComposerSheetJudgment.newSinceLastVisitLabel)
+        .accessibilityLabel(ComposerSheetJudgment.spokenNewSinceLastVisit)
         .accessibilityAddTraits(.isStaticText)
     }
 }
@@ -762,9 +762,9 @@ enum ComposerEffortFace: Equatable {
 enum ComposerEffortJudgment {
 
     static let spokenEffortHint = "abre opções de esforço computacional para o próximo envio"
-    static let effortSheetHint = "escolhe o esforço computacional do próximo envio"
-    static let effortSheetLabel = "esforço computacional"
-    static let processingLabel = "Atlas processando"
+    static let spokenEffortSheetHint = "escolhe o esforço computacional do próximo envio"
+    static let spokenEffortSheet = "esforço computacional"
+    static let spokenProcessing = "Atlas processando"
 
     static func face(_ effort: AtlasComputeEffort) -> ComposerEffortFace {
         switch effort {
@@ -1199,8 +1199,8 @@ enum ComposerDraftThumbFace: Equatable {
 /// WAVE-046 send face stays exclusive for CTA; this organ is strip/thumb only.
 enum ComposerDraftJudgment {
 
-    static let removeHint = "remove este anexo antes do envio"
-    static let failedHint = "toque para ver o erro completo no aviso"
+    static let spokenRemoveHint = "remove este anexo antes do envio"
+    static let spokenFailedHint = "toque para ver o erro completo no aviso"
 
     // MARK: Rank (failed-first · shared with Send)
 
@@ -1467,13 +1467,13 @@ enum ComposerSheetJudgment {
 
     static let modeFootnote =
         "rótulo local; ainda não altera roteamento nem payload"
-    static let modeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
-    static let workspaceSheetHint =
+    static let spokenModeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
+    static let spokenWorkspaceSheetHint =
         "escolhe a pasta do próximo envio entre as conversas carregadas"
     static let workspaceEmpty =
         "nenhum workspace nas conversas carregadas; abra uma conversa com pasta ou volte à home"
-    static let workspaceSheetSpokenLabel = "workspace da conversa"
-    static let modeSheetSpokenLabel = "modo da conversa"
+    static let spokenWorkspaceSheet = "workspace da conversa"
+    static let spokenModeSheet = "modo da conversa"
 
     /// Canonical mode table (single source for ModeSheet).
     static let modes: [(key: String, title: String)] = [
@@ -1493,22 +1493,22 @@ enum ComposerSheetJudgment {
         }
     }
 
-    static func modeLabel(key: String, title: String, selected: Bool) -> String {
+    static func spokenModeLabel(key: String, title: String, selected: Bool) -> String {
         let state = selected ? "selecionado" : "disponível"
         return "modo \(title), \(state), \(modeFootnote)"
     }
 
-    static func modeLabel(key: String, selected: Bool) -> String {
+    static func spokenModeLabel(key: String, selected: Bool) -> String {
         let face = modeFace(key: key)
         let title = modes.first(where: { $0.key == key })?.title ?? face.title
-        return modeLabel(key: key, title: title, selected: selected)
+        return spokenModeLabel(key: key, title: title, selected: selected)
     }
 
     static func workspaceSheetFace(count: Int) -> ComposerWorkspaceSheetFace {
         count <= 0 ? .empty : .list(count)
     }
 
-    static func workspaceLabel(name: String, count: Int, selected: Bool) -> String {
+    static func spokenWorkspaceLabel(name: String, count: Int, selected: Bool) -> String {
         let noun = count == 1 ? "conversa" : "conversas"
         let state = selected ? "workspace atual" : "disponível"
         return "\(name), \(count) \(noun) carregadas, \(state)"
@@ -1526,7 +1526,7 @@ enum ComposerSheetJudgment {
         return parts.joined(separator: ", ")
     }
 
-    static let newSinceLastVisitLabel = "novo desde a última visita"
+    static let spokenNewSinceLastVisit = "novo desde a última visita"
 
     static func packFacts(
         modeKey: String?,

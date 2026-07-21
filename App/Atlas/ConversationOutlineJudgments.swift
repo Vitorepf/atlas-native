@@ -97,7 +97,7 @@ enum ConversationOutlineJudgment {
         return "índice da conversa, \(turnCount) \(noun)"
     }
 
-    static let outlineControlHint = "abre o índice editorial dos turnos desta conversa"
+    static let spokenOutlineControlHint = "abre o índice editorial dos turnos desta conversa"
 }
 
 // MARK: - Sheet

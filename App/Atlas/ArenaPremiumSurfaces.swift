@@ -80,7 +80,7 @@ struct ArenaPremiumFleetView: View {
                 bar(label: "sem", value: without, ceiling: maxScore, atlas: false)
                 bar(label: "Atlas", value: withAtlas, ceiling: maxScore, atlas: true)
             } else {
-                Text(ArenaScoreJudgment.unmeasuredLabel)
+                Text(ArenaScoreJudgment.productUnmeasured)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
@@ -99,7 +99,7 @@ struct ArenaPremiumFleetView: View {
                 .font(AtlasFont.mono(11, .medium))
                 .foregroundStyle(mult >= 1 ? AtlasTheme.accent : AtlasTheme.alert)
         } else if engine.composite == nil {
-            Text(ArenaScoreJudgment.unmeasuredLabel)
+            Text(ArenaScoreJudgment.productUnmeasured)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -415,7 +415,7 @@ struct ArenaPremiumResultsView: View {
             }
             .font(AtlasFont.mono(11, .medium))
         } else {
-            Text(ArenaScoreJudgment.unmeasuredLabel)
+            Text(ArenaScoreJudgment.productUnmeasured)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }

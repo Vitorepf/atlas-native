@@ -514,7 +514,7 @@ struct AutonomosListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(AutonomosListJudgment.spokenEmpty())
-        .accessibilityHint(AutonomosListJudgment.emptyHint)
+        .accessibilityHint(AutonomosListJudgment.spokenEmptyHint)
         .accessibilityValue(listFace.productWord)
     }
 
@@ -1194,7 +1194,7 @@ struct AutonomosHubView: View {
 
                 if canTransfer {
                     AutonomosMapNavLine(
-                        title: AutonomosTransferJudgment.ctaTitle,
+                        title: AutonomosTransferJudgment.productCTA,
                         meta: AutonomosTransferJudgment.productWord,
                         action: onTransfer
                     )

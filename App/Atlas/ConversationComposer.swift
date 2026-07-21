@@ -346,7 +346,7 @@ extension DraftThumb {
     func removeButtonA11y<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityLabel(ComposerDraftJudgment.spokenRemove(draft))
-            .accessibilityHint(ComposerDraftJudgment.removeHint)
+            .accessibilityHint(ComposerDraftJudgment.spokenRemoveHint)
             .accessibilityIdentifier(A11yID.draftRemove(draft.id))
     }
 }
@@ -408,7 +408,7 @@ extension DraftThumb {
             .accessibilityValue(
                 failedMessage.map { ComposerDraftJudgment.spokenFailedValue($0) } ?? thumbFace.productWord
             )
-            .accessibilityHint(failedMessage != nil ? ComposerDraftJudgment.failedHint : "")
+            .accessibilityHint(failedMessage != nil ? ComposerDraftJudgment.spokenFailedHint : "")
             .accessibilityAddTraits(failedMessage != nil ? .isButton : [])
             .accessibilityIdentifier(A11yID.draft(draft.id))
             .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: draft.state)
@@ -736,7 +736,7 @@ extension ModeSheet {
                 label: label,
                 sub: ComposerSheetJudgment.modeFootnote,
                 selected: isSelected,
-                accessibilityLabel: ComposerSheetJudgment.modeLabel(key: key, title: label, selected: isSelected),
+                accessibilityLabel: ComposerSheetJudgment.spokenModeLabel(key: key, title: label, selected: isSelected),
                 accessibilityIdentifier: A11yID.modeRow(key)
             ) {
                 selected = key
@@ -772,11 +772,11 @@ struct WorkspaceSheet: View {
             }
         }
         .accessibilityIdentifier(A11yID.workspaceSheet)
-        .accessibilityLabel(ComposerSheetJudgment.workspaceSheetSpokenLabel)
+        .accessibilityLabel(ComposerSheetJudgment.spokenWorkspaceSheet)
         .accessibilityValue(
             ComposerSheetJudgment.workspaceSheetFace(count: workspaces.count).productWord
         )
-        .accessibilityHint(ComposerSheetJudgment.workspaceSheetHint)
+        .accessibilityHint(ComposerSheetJudgment.spokenWorkspaceSheetHint)
     }
 }
 
@@ -833,7 +833,7 @@ extension WorkspaceSheet {
             label: ws.name,
             sub: workspaceCountLine(ws.count),
             selected: isSelected,
-            accessibilityLabel: ComposerSheetJudgment.workspaceLabel(
+            accessibilityLabel: ComposerSheetJudgment.spokenWorkspaceLabel(
                 name: ws.name, count: ws.count, selected: isSelected
             ),
             accessibilityIdentifier: A11yID.workspaceRow(ws.id)
@@ -863,9 +863,9 @@ struct ModeSheet: View {
             modeRows
         }
         .accessibilityIdentifier(A11yID.modeSheet)
-        .accessibilityLabel(ComposerSheetJudgment.modeSheetSpokenLabel)
+        .accessibilityLabel(ComposerSheetJudgment.spokenModeSheet)
         .accessibilityValue(ComposerSheetJudgment.modeFace(key: selected).productWord)
-        .accessibilityHint(ComposerSheetJudgment.modeSheetHint)
+        .accessibilityHint(ComposerSheetJudgment.spokenModeSheetHint)
     }
 }
 
@@ -873,8 +873,8 @@ extension EffortSheet {
     func effortA11yBind<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityIdentifier(A11yID.effortSheet)
-            .accessibilityLabel(ComposerEffortJudgment.effortSheetLabel)
-            .accessibilityHint(ComposerEffortJudgment.effortSheetHint)
+            .accessibilityLabel(ComposerEffortJudgment.spokenEffortSheet)
+            .accessibilityHint(ComposerEffortJudgment.spokenEffortSheetHint)
     }
 }
 

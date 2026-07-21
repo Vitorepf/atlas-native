@@ -470,7 +470,7 @@ enum ChangeReviewSheetFace: Equatable {
 /// Pure change-review sheet load grammar — face · spoken · pack.
 enum ChangeReviewSheetJudgment {
 
-    static let sheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
+    static let spokenSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
 
     static func face(
         loadFinished: Bool,

@@ -29,8 +29,8 @@ extension AtlasCodeProvenanceSheet {
         AtlasCodeProvenanceFace.failed(message).spokenFace
     }
 
-    static let sheetHint = "estado do commit, lei aplicável e o que o ledger registrou"
-    static let askHint = "abre conversa com este commit no assunto"
+    static let spokenSheetHint = "estado do commit, lei aplicável e o que o ledger registrou"
+    static let spokenAskHint = "abre conversa com este commit no assunto"
 
     func spokenStateKicker() -> String {
         AtlasCodeProvenanceJudgment.spokenStateKicker(state: state, trunk: trunk)
@@ -82,7 +82,7 @@ extension AtlasCodeProvenanceSheet {
         content
             .accessibilityElement(children: .contain)
             .accessibilityLabel(provenanceSheetSpokenLabel)
-            .accessibilityHint(Self.sheetHint)
+            .accessibilityHint(Self.spokenSheetHint)
             .sheet(item: $whyTarget) { target in
                 AtlasCodeWhySheet(client: client, repo: repo, file: target.path)
                     .presentationDetents([.large])
@@ -164,7 +164,7 @@ extension AtlasCodeProvenanceSheet {
         .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.codeProvenanceAsk)
         .accessibilityLabel(AtlasCodeAskPillJudgment.spokenAskCommit)
-        .accessibilityHint(Self.askHint)
+        .accessibilityHint(Self.spokenAskHint)
     }
 }
 
@@ -1138,7 +1138,7 @@ struct AtlasCodeWhySheet: View {
         .task { if model.phase == .idle { await model.load(repo: repo, file: file) } }
         .accessibilityIdentifier(A11yID.whySheet)
         .accessibilityLabel(whySheetSpokenLabel)
-        .accessibilityHint(Self.sheetHint)
+        .accessibilityHint(Self.spokenSheetHint)
     }
 
     // MARK: - Header
@@ -1329,7 +1329,7 @@ struct AtlasCodeWhySheet: View {
         return parts.joined(separator: ", ")
     }
 
-    static let sheetHint = "histórico de commits e proveniência registrada pelo Atlas"
+    static let spokenSheetHint = "histórico de commits e proveniência registrada pelo Atlas"
 }
 
 // MARK: - Model

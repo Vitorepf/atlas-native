@@ -745,9 +745,9 @@ enum AtlasOpsFailureJudgment {
 
     static let domainHeadline = "A medição ainda não existe neste servidor"
     static let domainFootnote = "Nenhum índice, progresso ou resultado foi presumido."
-    static let domainKicker = "Arena não publicada"
-    static let retryLabelCentered = "Tentar de novo"
-    static let retryLabelEditorial = "Tentar novamente"
+    static let productDomainKicker = "Arena não publicada"
+    static let productRetryCentered = "Tentar de novo"
+    static let productRetryEditorial = "Tentar novamente"
     static let retrySpoken = "tentar de novo"
 
     static func face(mode: AtlasOpsFailureMode) -> AtlasOpsFailureFace {
@@ -780,8 +780,8 @@ enum AtlasOpsFailureJudgment {
         }
     }
 
-    static func defaultKicker(mode: AtlasOpsFailureMode) -> String? {
-        if case .domainUnavailable = mode { return domainKicker }
+    static func productDefaultKicker(mode: AtlasOpsFailureMode) -> String? {
+        if case .domainUnavailable = mode { return productDomainKicker }
         return nil
     }
 
@@ -807,7 +807,7 @@ enum AtlasOpsFailureJudgment {
     ) -> String {
         if let spokenOverride { return spokenOverride }
         var parts: [String] = []
-        let resolvedKicker = kicker ?? defaultKicker(mode: mode)
+        let resolvedKicker = kicker ?? productDefaultKicker(mode: mode)
         if let k = resolvedKicker { parts.append(k) }
         parts.append(headline(mode: mode))
         if let footnote = footnote(mode: mode) {
@@ -1010,7 +1010,7 @@ struct AtlasOpsFailureEmpty: View {
     }
 
     private var resolvedKicker: String? {
-        kicker ?? AtlasOpsFailureJudgment.defaultKicker(mode: mode)
+        kicker ?? AtlasOpsFailureJudgment.productDefaultKicker(mode: mode)
     }
 
     private var showsRetry: Bool {
@@ -1087,7 +1087,7 @@ extension AtlasFailureCopy {
 }
 
 extension AtlasFailureCopy {
-    static func authServerHint(kind: AtlasNetworkFailureKind) -> String {
+    static func spokenAuthServerHint(kind: AtlasNetworkFailureKind) -> String {
         switch kind {
         case .unauthorized: return "O ATLAS_TOKEN mudou no servidor. Atualize o Secrets.xcconfig e reinstale."
         case .maintenance: return "O servidor pediu uma pausa via Retry-After. O app aguarda você tentar de novo quando a janela terminar."
@@ -1098,7 +1098,7 @@ extension AtlasFailureCopy {
 }
 
 extension AtlasFailureCopy {
-    static func networkOfflineHint(kind: AtlasNetworkFailureKind) -> String? {
+    static func spokenNetworkOfflineHint(kind: AtlasNetworkFailureKind) -> String? {
         switch kind {
         case .offline: return "Sem rede no iPhone. O Atlas volta sozinho assim que a conexão voltar."
         case .timedOut: return "Confira se o Mac está acordado e o Tailscale ligado — a conversa continua de onde parou."
@@ -1108,8 +1108,8 @@ extension AtlasFailureCopy {
 }
 
 extension AtlasFailureCopy {
-    static func networkHint(kind: AtlasNetworkFailureKind) -> String? {
-        if let offline = networkOfflineHint(kind: kind) { return offline }
+    static func spokenNetworkHint(kind: AtlasNetworkFailureKind) -> String? {
+        if let offline = spokenNetworkOfflineHint(kind: kind) { return offline }
         switch kind {
         case .connectionRefused: return "No Mac, suba o servidor: o container atlas-backend parou."
         case .connectionLost: return "Instabilidade momentânea — tentar de novo costuma resolver."
@@ -1124,7 +1124,7 @@ extension AtlasFailureCopy {
         guard let kind else {
             return "Confira se o Mac está acordado e o Tailscale ligado — a conversa continua de onde parou."
         }
-        return networkHint(kind: kind) ?? authServerHint(kind: kind)
+        return spokenNetworkHint(kind: kind) ?? spokenAuthServerHint(kind: kind)
     }
 }
 
