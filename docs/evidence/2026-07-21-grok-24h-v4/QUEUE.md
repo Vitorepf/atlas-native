@@ -128,4 +128,5 @@ _(no open proposed WAVEs)_
 - WAVE-108 done
 - WAVE-109 done
 - WAVE-110 done
+- WAVE-111 done
 
