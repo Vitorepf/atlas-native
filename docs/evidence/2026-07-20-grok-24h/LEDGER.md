@@ -1,14 +1,14 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 043
-- last_commit: 62156118
+- phase: D1 cycle 044
+- last_commit: 5b6af146
 - last_gates: green
-- next_leap: careful peels (QueuedFollowUpRow, DraftStrip, CameraPicker…) OR visual polish on existing surfaces
+- next_leap: more host collapses OR visual polish on Home/Code/Arena/Autônomos
 - blocked: none
-- App/Atlas Swift: 393
+- App/Atlas Swift: 354
 
 ## Highlights this resume
-015–042 continuous peel · App/Atlas 1748→393 (−1355)
+015–043 continuous peel · App/Atlas 1748→354 (−1394)
 FORBIDDEN clean · ConversationModel/Sources untouched · no new domains
-Under 400 Swift files. Bulk host+UI rejected when it broke types; only proven fuses kept.
+Under 360 Swift files.
