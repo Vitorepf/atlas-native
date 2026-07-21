@@ -290,6 +290,7 @@ extension WorkspaceRow {
     var rowContent: some View {
         workspaceRowHBox
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
+            .frame(minHeight: 48, alignment: .center)
             .contentShape(Rectangle())
     }
 }
@@ -376,6 +377,7 @@ extension ThreadRow {
             rowTrailing
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
+        .frame(minHeight: 48, alignment: .center)
         .overlay(alignment: .leading) { rowWorkspaceTint }
         .contentShape(Rectangle())
     }
