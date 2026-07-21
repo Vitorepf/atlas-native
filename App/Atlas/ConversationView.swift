@@ -4524,7 +4524,7 @@ extension ExecutingStrip {
         if bubble.showsReconnectSurface {
             Image(systemName: bubble.reconnectBannerIcon)
                 .atlasSans(10, .semibold)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                 .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
                 .accessibilityHidden(true)
         } else {
