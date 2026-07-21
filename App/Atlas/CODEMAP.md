@@ -7,13 +7,13 @@
 
 | Superfície | Entry / shell | Núcleo vivo (não exaustivo) |
 |---|---|---|
-| Home | `RootView.swift` | `RootChrome`, `RootHomeBody`, `Workspace*` |
+| Home | `RootView.swift` | `RootChrome`, `RootHomeBody`, `WorkspaceSurface`/`WorkspaceJudgment` |
 | Conversa | `ConversationView.swift` | `ConversationSurface fused`, `ConversationChrome*`, Messages/Cockpit/Composer* |
-| Código | `AtlasCodeSurface.swift` (entry AtlasCodeView) | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
+| Código | `AtlasCodeSurface.swift` | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
 | Radar (multi-repo) | `AtlasCodeRadarView.swift` | Surface · FolderRow · RepoChrome · AskContext · Judgment |
 | Pílula | (dock por superfície) | `AgenticPill`, `AgenticPill`, `AgenticPill` |
 | Arena Premium | `ArenaPremiumShell.swift` | Execution/Fleet/Results/Suite/Run/Score* · NowBody · GlyphRow |
-| Autônomos | `AutonomosHubView.swift` / `AutonomosView.swift` | Hub/Map/List/`AutonomosDecision*`/Chrome* |
+| Autônomos | `AutonomosHost.swift` | `AutonomosMapShell`, Decision, Model, CanDoJudgment |
 | Continuity | Widgets + ActivityKit | Island/Lock chrome — **App Group data BLOCKED** |
 
 ## Onde muda X
