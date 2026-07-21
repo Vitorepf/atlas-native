@@ -499,7 +499,8 @@ extension ChangeReviewGovernanceSection {
                      ? "plano v1 arquivado — \(last.humanReason)"
                      : "\(revisions.count) versões de plano arquivadas — \(last.humanReason)")
                     .atlasSans(12)
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet governance revision line.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             }
         }
     }

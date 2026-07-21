@@ -746,7 +746,8 @@ struct ArenaPremiumStopSheet: View {
                     systemImage: value.accepted ? "checkmark.seal" : "info.circle"
                 )
                     .font(AtlasFont.serif(15, .semibold))
-                    .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+                    // Soft gold-quiet non-accepted receipt title.
+                    .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.78))
                 Text(value.stopsAfterCurrentCase ? "Parada após o caso atual" : value.status.rawValue)
                     .font(AtlasFont.mono(10))
                     // Soft gold-quiet stop receipt meta.
@@ -2986,7 +2987,8 @@ struct ArenaPremiumCapabilitiesView: View {
         HStack(spacing: 16) {
             HStack(spacing: 6) {
                 Circle()
-                    .stroke(AtlasTheme.textSecondary, lineWidth: 1.5)
+                    // Soft gold-quiet without-Atlas legend ring.
+                    .stroke(AtlasTheme.accent.opacity(0.55), lineWidth: 1.5)
                     .frame(width: 8, height: 8)
                 Text("Sem Atlas")
             }
@@ -3221,7 +3223,8 @@ struct ArenaCapabilityTrack: View {
                 if let baseline {
                     Circle()
                         .fill(AtlasTheme.bg)
-                        .overlay(Circle().stroke(AtlasTheme.textSecondary, lineWidth: 1.5))
+                        // Soft gold-quiet without-Atlas baseline ring.
+                        .overlay(Circle().stroke(AtlasTheme.accent.opacity(0.55), lineWidth: 1.5))
                         .frame(width: 10, height: 10)
                         .offset(x: max(0, min(w - 10, w * baseline - 5)))
                 }

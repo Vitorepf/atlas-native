@@ -557,7 +557,8 @@ struct AutonomosMapShell: View {
                         .accessibilityHidden(true)
                     Text("Merge comprovado · toque o recibo")
                         .font(AtlasFont.serifItalic(13))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet self-construction invite caption.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                         .accessibilityHidden(true)
                 }
                 Spacer(minLength: 0)

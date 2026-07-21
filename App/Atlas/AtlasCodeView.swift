@@ -3276,7 +3276,8 @@ extension AtlasCodeProvenanceSheet {
     var provenanceFailedTitle: some View {
         Text("Proveniência indisponível")
             .font(AtlasFont.serifItalic(15))
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet failed provenance title.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             .accessibilityHidden(true)
     }
 }

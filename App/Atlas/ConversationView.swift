@@ -1205,7 +1205,8 @@ extension ConversationOutlineRow {
             outlineLeadRole
             Text(snippet)
                 .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet outline snippet meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(2)
                 .accessibilityHidden(true)
         }
@@ -2195,8 +2196,8 @@ struct AtlasCloseToolbarButton: View {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         }
-        // Dispensar nunca é acento: Fechar/Cancelar fala ink neutro (canon §C).
-        .tint(AtlasTheme.textSecondary)
+        // Soft gold-quiet dismiss chrome — never principal gold CTA.
+        .tint(AtlasTheme.accent.opacity(0.72))
         .accessibilityLabel(spokenLabel)
         .accessibilityHint(spokenHint)
         .accessibilityAddTraits(.isButton)
@@ -4999,7 +5000,8 @@ extension ReconnectBanner {
             ExecutionBanner(
                 text: primary,
                 icon: bubble.reconnectBannerIcon,
-                tint: AtlasTheme.textSecondary,
+                // Soft gold-quiet reconnect banner tint.
+                tint: AtlasTheme.accent.opacity(0.72),
                 reduceMotion: reduceMotion,
                 embedInParent: true
             )
@@ -5550,7 +5552,7 @@ struct PlanStepRowView: View {
             .font(AtlasFont.mono(10))
             // Soft gold-quiet pending steps; current/done keep hierarchy.
             .foregroundStyle(state == .pending ? AtlasTheme.accent.opacity(0.48)
-                             : state == .current ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+                             : state == .current ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.72))
             .lineLimit(2)
             .accessibilityHidden(true)
             .padding(.bottom, isLast ? 0 : 9)
@@ -5852,7 +5854,8 @@ struct PlanRevisionCompare: View {
         if let reason = rev.reason, !reason.isEmpty {
             Text(rev.humanReason)
                 .atlasSans(12)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet archive reason meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
         }
@@ -5979,7 +5982,8 @@ extension ExecutionProof {
             collapsedHeaderSummary
             Spacer(minLength: 0)
             Text(open ? "Fechar" : "Abrir")
-                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet proof toggle affordance.
+                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
         }
         .frame(minHeight: 48)
@@ -7047,7 +7051,8 @@ extension ExecutionStateCard {
     var tintAttention: Color? {
         switch state.kind {
         case .attentionRequired: return AtlasTheme.accent
-        case .awaitingExternal, .recovering: return AtlasTheme.textSecondary
+        // Soft gold-quiet awaiting/recovering attention tint.
+        case .awaitingExternal, .recovering: return AtlasTheme.accent.opacity(0.65)
         default: return nil
         }
     }
@@ -8961,7 +8966,8 @@ extension AtlasMarkdownView {
     func headingTwo(_ spans: [InlineSpan]) -> some View {
         Text(plain(spans))
             .atlasSans(11, .medium).tracking(0.2)
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet markdown H2 kicker.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityAddTraits(.isHeader)
             .padding(.top, 6).padding(.bottom, 2)
     }
@@ -10274,7 +10280,8 @@ extension TraceEvidenceUnavailable {
         if let subtitle, !subtitle.isEmpty {
             Text(subtitle)
                 .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet unavailable subtitle.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .multilineTextAlignment(.center)
                 .accessibilityHidden(true)
         }
