@@ -103,9 +103,8 @@ struct ArenaPremiumAction: View {
 
     var body: some View {
         Button {
-            if !disabled {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
-            }
+            guard !disabled else { return }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         } label: {
             Text(title)

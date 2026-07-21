@@ -94,6 +94,7 @@ extension A11yID {
     static let autonomosRhythmUnmute = "autonomos-rhythm-unmute"
     static let autonomosHub = "autonomos-hub"
     static let autonomosList = "autonomos-list"
+    static func autonomosUnit(_ id: String) -> String { "autonomos-unit-\(id)" }
     static let autonomosNew = "autonomos-new"
     static let autonomosEvolution = "autonomos-evolution"
     static let autonomosDecisions = "autonomos-decisions"
