@@ -1273,7 +1273,7 @@ extension ChangeReviewControlsSection {
                 .foregroundStyle(c.status == "pass" || c.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Spacer()
-            Text(c.signalSummary).font(.caption2).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+            Text(c.signalSummary).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)

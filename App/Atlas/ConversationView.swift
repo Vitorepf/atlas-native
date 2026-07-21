@@ -7129,7 +7129,7 @@ extension NarrativeRowView {
     var narrativeTextStack: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(row.title)
-                .font(row.style == .intent ? .system(.footnote) : .system(.caption))
+                .font(row.style == .intent ? AtlasFont.serif(13) : AtlasFont.mono(11))
                 .foregroundStyle(row.style == .intent
                     ? (isCurrent ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
                     : AtlasTheme.textTertiary)
@@ -9843,7 +9843,7 @@ extension TraceEvidenceUnavailable {
     @ViewBuilder
     var unavailableIconTitle: some View {
         Image(systemName: systemImage)
-            .font(.title2)
+            .atlasSans(22)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
         Text(title)
