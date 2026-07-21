@@ -3,6 +3,7 @@ import AtlasCore
 
 // WAVE-129 density peel
 
+// MARK: - Diff body states
 extension ChangeReviewDiffView {
     @ViewBuilder
     var diffBodyLoading: some View {
@@ -38,6 +39,7 @@ extension ChangeReviewDiffView {
     }
 }
 
+// MARK: - Load task
 extension ChangeReviewDiffView {
     func diffLoadTask() async {
         loadSettled = false
@@ -48,6 +50,7 @@ extension ChangeReviewDiffView {
     }
 }
 
+// MARK: - Loaded diff
 extension ChangeReviewDiffView {
     @ViewBuilder
     func loadedDiffScroll(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
@@ -87,6 +90,7 @@ extension ChangeReviewDiffView {
     }
 }
 
+// MARK: - File row a11y
 struct ChangeReviewFileRowA11y: ViewModifier {
     let decidedLabel: String?
     let identifier: String
@@ -118,6 +122,7 @@ extension ChangeReviewFileRowA11y {
     }
 }
 
+// MARK: - File row chrome
 extension ChangeReviewFileRow {
     var acceptButton: some View {
         Button("aceitar") {

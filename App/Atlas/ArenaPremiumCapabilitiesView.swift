@@ -1,6 +1,7 @@
 import SwiftUI
 import AtlasCore
 
+// MARK: - Capabilities surface
 struct ArenaPremiumCapabilitiesView: View {
     @Bindable var model: ArenaModel
     let onCapability: (AtlasArenaCapability) -> Void
@@ -35,6 +36,7 @@ struct ArenaPremiumCapabilitiesView: View {
         .accessibilityValue(face.productWord)
     }
 
+    // MARK: Sections
     private var capabilityHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(text: ArenaScoreJudgment.capabilitiesKicker())
@@ -171,6 +173,7 @@ struct ArenaPremiumCapabilitiesView: View {
         }
     }
 
+    // MARK: Empty / metrics
     private var empty: some View {
         VStack(alignment: .leading, spacing: 16) {
             ArenaPremiumEmptyGlyph(symbol: "shield.lefthalf.filled")
@@ -199,6 +202,7 @@ struct ArenaPremiumCapabilitiesView: View {
     }
 }
 
+// MARK: - Track row
 struct ArenaCapabilityTrack: View {
     let baseline: Double?
     let withAtlas: Double?

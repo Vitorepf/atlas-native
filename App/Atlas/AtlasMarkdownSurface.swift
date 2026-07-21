@@ -3,6 +3,8 @@ import AtlasCore
 
 // WAVE-017 markdown
 
+// MARK: - Block dispatch
+
 extension AtlasMarkdownView {
     @ViewBuilder
     func blockView(_ block: MarkdownBlock, index: Int) -> some View {
@@ -36,6 +38,8 @@ extension AtlasMarkdownView {
         }
     }
 }
+
+// MARK: - Code blocks
 
 extension AtlasMarkdownView {
     @ViewBuilder
@@ -77,6 +81,8 @@ extension AtlasMarkdownView {
         Rectangle().fill(AtlasTheme.separator).frame(height: 1).padding(.vertical, 2)
     }
 }
+
+// MARK: - Lists / quotes / tables
 
 extension AtlasMarkdownView {
     @ViewBuilder
@@ -158,6 +164,8 @@ extension AtlasMarkdownView {
         }
     }
 }
+
+// MARK: - CodeBlockView
 
 extension CodeBlockView {
     var codeBlockBackground: some View {

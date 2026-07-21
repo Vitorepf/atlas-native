@@ -12,6 +12,7 @@ import UserNotifications
 #endif
 
 @MainActor
+// MARK: - Broadcast / lifecycle
 extension TurnPresence {
     func broadcastCount() {
         #if canImport(ActivityKit)
@@ -33,6 +34,7 @@ extension TurnPresence {
 #endif
 
 @MainActor
+// MARK: - End activities
 extension TurnPresence {
     func endActivities(
         key: TraceID,
@@ -60,6 +62,7 @@ extension TurnPresence {
 #endif
 
 @MainActor
+// MARK: - Finish activity
 extension TurnPresence {
     func finishActivity(_ entry: Entry, presence: AtlasExecutionPresence?,
                         phaseOverride: String? = nil) {
@@ -87,6 +90,7 @@ extension TurnPresence {
 #endif
 
 @MainActor
+// MARK: - Update activity
 extension TurnPresence {
     func updateActivity(_ entry: Entry, presence: AtlasExecutionPresence,
                         phaseOverride: String? = nil) {
@@ -109,6 +113,7 @@ extension TurnPresence {
 @MainActor
 extension TurnPresence {
 
+// MARK: - Start activity
     func startActivity(_ entry: Entry, traceId: TraceID, presence: AtlasExecutionPresence,
                        phaseOverride: String? = nil) {
         #if canImport(ActivityKit)
@@ -133,6 +138,7 @@ extension TurnPresence {
 }
 
 @MainActor
+// MARK: - Clock / timing
 extension TurnPresence {
     static func clock(_ ms: Int) -> String {
         AtlasTime.formatActiveDuration(milliseconds: ms)
@@ -169,6 +175,7 @@ extension TurnPresence {
 #endif
 
 @MainActor
+// MARK: - Content state
 extension TurnPresence {
     func contentState(_ entry: Entry, presence p: AtlasExecutionPresence?,
                       finished: Bool, phaseOverride: String? = nil,
@@ -189,6 +196,7 @@ extension TurnPresence {
 }
 
 @MainActor
+// MARK: - Live session publish
 extension TurnPresence {
     func liveSessionSnapshot(from entry: Entry) -> LiveSessionSnapshot? {
         guard let model = entry.model,

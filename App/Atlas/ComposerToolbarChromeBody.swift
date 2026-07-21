@@ -3,6 +3,7 @@ import AtlasCore
 
 // WAVE-123 ComposerToolbar chrome peel B
 
+// MARK: - Attachment strip
 extension AttachmentStrip {
     var isVisible: Bool {
         ComposerDraftJudgment.isStripVisible(drafts: drafts, uploadPercent: uploadPercent)
@@ -11,9 +12,11 @@ extension AttachmentStrip {
 
 extension ComposerToolbar {
     /// WAVE-046: gold/queue only when face allows — never with failed/uploading drafts.
+// MARK: - Send readiness
     var canSubmit: Bool { sendFace.allowsSend }
 }
 
+// MARK: - Field
 extension ComposerToolbar {
     @ViewBuilder
     var composerFieldPlaceholder: some View {
@@ -48,6 +51,7 @@ extension ComposerToolbar {
     }
 }
 
+// MARK: - Attach / options
 extension ComposerToolbar {
     var attachButton: some View {
         Button {
@@ -134,6 +138,7 @@ extension ComposerToolbar {
     }
 }
 
+// MARK: - Toolbar row layout
 extension ComposerToolbar {
     @ViewBuilder
     var toolbarRowAttach: some View {

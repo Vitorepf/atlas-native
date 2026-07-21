@@ -5,6 +5,8 @@ import AtlasCore
 /// Nunca vaza na cara da pílula; só viaja como `turnFacts` humanos.
 /// Pack = tela/destino atual; intenção cross-world **não** é bloqueada no texto.
 enum ArenaPremiumAskContext {
+    // MARK: - Invite / empty
+
     static func invite(tab: ArenaPremiumTab, destination: ArenaPremiumDestination?) -> String {
         if let destination {
             switch destination {
@@ -91,6 +93,8 @@ enum ArenaPremiumAskContext {
     }
 
     /// Pack WAVE-020 — tab **e** destination (nunca forçar Agora em destinos).
+    // MARK: - Facts pack
+
     @MainActor
     static func facts(
         model: ArenaModel,
@@ -220,6 +224,8 @@ enum ArenaPremiumAskContext {
     }
 
     /// WAVE-083: can_do from live face — never always ctaOnlyRunStop.
+    // MARK: - Can-do / destinations
+
     static func occasionCanDo(
         tab: ArenaPremiumTab,
         destination: ArenaPremiumDestination?,

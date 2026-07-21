@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 151
-- idle_compress_passes: 2
+- idle_compress_passes: 1
 - collapse_host: 0
 
 ## Waves done
@@ -166,6 +166,7 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `4b39165a` MARK dense layout (post WAVE-156)
 
 ## Designer
 - designs_proposed: 153

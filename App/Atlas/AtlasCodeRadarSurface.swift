@@ -3,6 +3,7 @@ import AtlasCore
 
 // WAVE-011 radar surface extensions
 
+// MARK: - Repo row
 extension AtlasCodeRepoRow {
     var repoRowButton: some View {
         Button(action: onTap) {
@@ -47,6 +48,7 @@ extension AtlasCodeRepoRow {
 
 
 
+// MARK: - Status capsule spoken
 extension AtlasCodeRadarStatusCapsule {
     func spokenStatusQuiet(model: AtlasCodeWorkspaceModel) -> String? {
         switch model.scanState {
@@ -69,6 +71,7 @@ extension AtlasCodeRadarStatusCapsule {
 
 extension AtlasCodeRadarView {
     /// WAVE-067: exclusive radar screen face from published phase + repo count.
+// MARK: - Radar screen face
     var radarScreenFace: AtlasCodeRadarScreenFace {
         let fail: String? = {
             if case .failed(let message) = model.phase { return message }
@@ -110,6 +113,7 @@ extension AtlasCodeRadarView {
     }
 }
 
+// MARK: - Radar content states
 extension AtlasCodeRadarView {
     @ViewBuilder
     var radarContentBusy: some View {

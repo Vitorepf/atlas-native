@@ -3,6 +3,7 @@ import SwiftUI
 
 // IDLE-COMPRESS peel PlanRevisionCompare from PlanCard (canon §7 · same domain)
 
+// MARK: - A11y labels
 extension PlanRevisionCompare {
     func comparisonAccessibilityLabel(_ comparison: RevisionComparison) -> String {
         var parts = ["comparação do plano, versão \(comparison.revision.revision) arquivada"]
@@ -32,6 +33,7 @@ extension PlanRevisionCompare {
     }
 }
 
+// MARK: - Archive chrome
 extension PlanRevisionCompare {
     func revisionArchiveHeader(_ rev: AtlasTraceGovernance.PlanRevision) -> some View {
         HStack(spacing: 6) {
@@ -110,6 +112,7 @@ extension PlanRevisionCompare {
     }
 }
 
+// MARK: - Comparison helpers
 extension PlanRevisionCompare {
     var latestComparison: RevisionComparison? {
         guard let revision = revisions.last(where: { !$0.stepTitles.isEmpty }) else { return nil }

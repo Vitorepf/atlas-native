@@ -3,6 +3,7 @@ import AtlasCore
 
 // WAVE-118 CommitRow body peel B
 
+// MARK: - Meta line
 extension AtlasCodeCommitRow {
     var commitMetaLine: some View {
         HStack(spacing: 6) {
@@ -22,6 +23,7 @@ extension AtlasCodeCommitRow {
 
 extension View {
     /// Silencia conectores e nó; VoiceOver só ouve a linha do commit.
+// MARK: - Spine decorative
     func atlasCodeGraphSpineDecorative() -> some View {
         self
             .accessibilityElement(children: .ignore)
@@ -29,6 +31,7 @@ extension View {
     }
 }
 
+// MARK: - Spine connectors
 extension AtlasCodeCommitRow {
     @ViewBuilder
     func spineColumnConnectors(spineTint: Color, motion: Animation?) -> some View {

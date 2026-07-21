@@ -1,6 +1,7 @@
 import SwiftUI
 import AtlasCore
 
+// MARK: - Plan view
 struct ArenaPremiumPlanView: View {
     @Bindable var model: ArenaModel
 
@@ -71,6 +72,7 @@ struct ArenaPremiumPlanView: View {
         }
     }
 
+    // MARK: Plan sections
     private func headline(engines: Int, suites: Int, arms: Int, runs: Int) -> some View {
         ViewThatFits(in: .horizontal) {
             HStack(spacing: 28) {
@@ -146,6 +148,7 @@ struct ArenaPremiumPlanView: View {
     }
 }
 
+// MARK: - Queue view
 struct ArenaPremiumQueueView: View {
     @Bindable var model: ArenaModel
 
@@ -183,6 +186,7 @@ struct ArenaPremiumQueueView: View {
         }
     }
 
+    // MARK: Queue rows
     private var queueRows: some View {
         VStack(spacing: 0) {
             ArenaPremiumHairline()

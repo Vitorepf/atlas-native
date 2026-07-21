@@ -3,6 +3,7 @@ import AtlasCore
 
 // WAVE-120 search results · miss · thread link peels
 
+// MARK: - Miss empty
 struct SearchMissEmpty: View {
     let query: String
     let loadedThreadCount: Int
@@ -23,6 +24,7 @@ struct SearchMissEmpty: View {
 extension SearchView {
     /// Só threads já carregadas na sessão — zero placeholder ou sugestão inventada.
     /// WAVE-032: live-first among recents.
+// MARK: - Search query / face
     var recentThreads: [AtlasAiThread] {
         let head = Array(session.threads.prefix(12))
         return WorkspaceThreadJudgment.rank(head, remote: session.remoteLiveSessions)
@@ -90,6 +92,7 @@ extension SearchResultsSection {
     }
 }
 
+// MARK: - Results section
 struct SearchResultsSection: View {
     let results: [AtlasAiThread]
     let query: String
@@ -119,6 +122,7 @@ extension SearchResultsSection {
     }
 }
 
+// MARK: - List shell
 extension SearchView {
     var list: some View {
         ScrollView {

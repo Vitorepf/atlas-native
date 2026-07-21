@@ -5,6 +5,7 @@ import AtlasCore
 
 extension AtlasCodeView {
     /// WAVE-061: exclusive graph-screen face from published phase + nodes.
+// MARK: - Screen face / spoken
     var graphScreenFace: AtlasCodeGraphScreenFace {
         let fail: String? = {
             if case .failed(let message) = model.phase { return message }
@@ -39,6 +40,7 @@ extension AtlasCodeView {
     /// commit de três meses atrás é âncora legítima e não está aqui. Sem cruzar
     /// os dois, a tela apagava o mapa inteiro enquanto a pílula anunciava acesos.
     /// Interseção vazia = o mapa não finge: fica inteiro.
+// MARK: - Anchors / legend
     var visibleAnchors: Set<String> {
         guard askModel.isAnchoring, let nodes = model.graph?.nodes else { return [] }
         return askModel.anchors.intersection(nodes.map(\.hash))
@@ -75,6 +77,7 @@ extension AtlasCodeView {
 
 extension AtlasCodeView {
     /// Swipe ou “perguntar” na proveniência: refina a pílula, NÃO abre modal.
+// MARK: - Ask focus actions
     func anchorAskOnCommit(_ node: AtlasCodeGraphNode) {
         selectedNode = nil
         askFocusNode = node
@@ -123,6 +126,7 @@ extension AtlasCodeView {
 
 extension AtlasCodeView {
     /// Lei 7: a pílula nunca some — nem aqui. E agora ela responde.
+// MARK: - Ask pill chrome
     var askPill: some View {
         askPillA11yTraits(
             askPillPaddingAnimation(

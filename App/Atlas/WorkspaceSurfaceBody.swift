@@ -3,6 +3,7 @@ import AtlasCore
 
 // WAVE-122 WorkspaceSurface peel B
 
+// MARK: - Thread rows
 extension WorkspaceThreadsSection {
     @ViewBuilder
     func threadRowLoop(_ t: AtlasAiThread, newBadgeSuppressed: Bool = false) -> some View {
@@ -38,6 +39,7 @@ extension WorkspaceThreadsSection {
     }
 }
 
+// MARK: - Threads section
 struct WorkspaceThreadsSection: View {
     let threads: [AtlasAiThread]
     let area: AtlasArea
@@ -83,6 +85,7 @@ extension WorkspaceThreadsSection {
     }
 }
 
+// MARK: - Workspace list shell
 extension WorkspaceView {
     var showsLoadingShell: Bool {
         guard session.threads.isEmpty else { return false }
@@ -169,6 +172,7 @@ extension WorkspaceView {
     }
 }
 
+// MARK: - Thread link
 struct WorkspaceThreadLink: View {
     let thread: AtlasAiThread
     let reduceMotion: Bool

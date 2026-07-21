@@ -6,6 +6,7 @@ import Observation
 
 // WAVE-139 AutonomosModel actions peel
 
+// MARK: - Run control / start
 extension AutonomosModel {
     func control(
         _ action: AtlasAutonomosRunAction,
@@ -50,6 +51,7 @@ extension AutonomosModel {
     }
 }
 
+// MARK: - Decide / digest
 extension AutonomosModel {
     func refreshDigest() async {
         do {
@@ -90,6 +92,7 @@ extension AutonomosModel {
     }
 }
 
+// MARK: - Load selected / errors
 extension AutonomosModel {
     func loadSelectedDetails() async throws {
         guard let area = selectedArea else {
@@ -153,6 +156,7 @@ extension AutonomosModel {
     }
 }
 
+// MARK: - Operator units
 extension AutonomosModel {
     func operatorUnit(id: String) -> AutonomosUnit? {
         operatorUnits.first { $0.id == id }
@@ -183,6 +187,7 @@ extension AutonomosModel {
     }
 }
 
+// MARK: - Transfer / revert
 extension AutonomosModel {
     func transfer(
         operatorActor: String,
