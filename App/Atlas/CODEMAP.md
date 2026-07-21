@@ -120,6 +120,7 @@
 | **LiveNow row spoken** | `LiveNowJudgment` spokenRow/clock · LiveNowRow (WAVE-110) |
 | **Artifact sheet peels** | host/list · Chrome · Preview · Delivery (WAVE-112) |
 | **Radar rows peels** | FolderRow · RepoChrome · AskContext (WAVE-114) |
+| **Root chrome routes peels** | Face · ConversationRoutes · Lifecycle (WAVE-115) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
