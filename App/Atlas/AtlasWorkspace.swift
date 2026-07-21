@@ -221,6 +221,7 @@ struct AtlasWorkspacePickerSheet: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityElement(children: .combine)
             .accessibilityLabel("lendo os repositórios do Mac")
+            .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
         case .failed:
             VStack(spacing: 10) {
                 Text("O Mac não respondeu.")

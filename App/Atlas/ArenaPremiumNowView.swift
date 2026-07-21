@@ -85,6 +85,7 @@ struct ArenaPremiumNowView: View {
         .padding(.vertical, 24)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Preparando a Arena. Organizando as medições.")
+        .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
         .accessibilityIdentifier(A11yID.arenaPremiumState("loading"))
     }
 

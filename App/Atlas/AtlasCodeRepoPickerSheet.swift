@@ -52,6 +52,7 @@ struct AtlasCodeRepoPickerSheet: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("lendo os repositórios do Mac")
+                    .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
                 }
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
