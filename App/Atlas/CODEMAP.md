@@ -47,7 +47,7 @@
 | **Search pílula / pack** | `SearchAskContext` + `SearchView` AgenticAskDock · PartidaCanDo.search |
 | **Workspace screen (lista)** | `WorkspaceJudgment` → face loading/offline/empty/list · screen a11y · pack Ask |
 | **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face · pack Home partida |
-| **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |
+| **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face · `WorkspaceEmptyChrome` glyph/loading/network empty |
 | **Ops failure (multi-superfície)** | `AtlasOpsFailureJudgment` → face network/domain/load · FailureEmpty |
 | Phase execução (strip/presence) | `ConversationExecutionPhase` → strip/StateCard/LiveNow/composer `selectPresenceBubble` |
 | **Execution proof + editorial pack** | `ExecutionProofJudgment` · `EditorialTurnJudgment` → OccasionPack mid-thread |

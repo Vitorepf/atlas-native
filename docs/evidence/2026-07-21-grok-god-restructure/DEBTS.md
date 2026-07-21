@@ -8,7 +8,7 @@
 ```yaml
 pass: 1
 domain_index: 0
-last_focus: "Home RootHomeSections* → RootHomeBody fuse"
+last_focus: "Home WorkspaceEmptyStates → WorkspaceEmptyChrome"
 passes_completed: 0
 ```
 
@@ -31,26 +31,18 @@ Atacar **um domínio por ciclo** na ordem. Ao terminar o #7, `pass += 1` e volta
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Delete morto | open — soft scan next |
-| 2 | Rename honesty Sections/States | **done** RootHome* · **open** WorkspaceEmptyStates |
+| 1 | Delete morto | open — soft scan |
+| 2 | Rename honesty Sections/States | **done** RootHomeBody + WorkspaceEmptyChrome |
 | 3 | Unificar spoken/packFacts/rank | open |
-| 4 | MARK >200 LOC | partial (RootHomeBody MARK · RootChrome 355) |
-| 5 | Fuse peels <120 same host | **done** RootHome 3→1 |
-| 6 | CODEMAP Type.method | partial — Home entry updated |
+| 4 | MARK >200 LOC | open RootChrome/WorkspaceSurfaceBody/LiveNowRow/Search* |
+| 5 | Fuse peels <120 same host | **done** RootHome; review RootChrome peels |
+| 6 | CODEMAP Type.method | partial |
 
-**Próximo foco:** `WorkspaceEmptyStates.swift` → rename honesty (`WorkspaceEmptyChrome` / Body).
+**Próximo foco:** Home spoken/packFacts unify (LiveNow + Workspace + Search + HomeOps) **ou** MARK RootChrome.
 
-## Soft global (sempre actionable)
+## Soft global
 
-```
-# rode e cole no LEDGER
-find App/Atlas App/Widgets -name '*Sections*.swift' -o -name '*States*.swift'
-rg -n 'func (spoken|label|title|copy)' App/Atlas --glob '*Judgment*.swift' | head -40
-rg -n 'WAVE-[0-9]' App/Atlas/CODEMAP.md || true
-```
-
-Home still has: `WorkspaceEmptyStates.swift`  
-Other domains: ConversationEmptyStates, Arena*States, ChangeReviewSections*, etc.
+Home *Sections*/*States* cleared. Other domains still have ConversationEmptyStates, Arena*States, ChangeReviewSections*, etc.
 
 ## Proibido
 

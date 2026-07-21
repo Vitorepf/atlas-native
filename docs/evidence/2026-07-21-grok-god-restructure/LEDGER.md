@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: act
-- focus: WorkspaceEmptyStates rename (Home)
+- focus: Home spoken/packFacts unify
 - domain_index: 0
 - pass: 1
 - actionable: open
 - passes: 6
-- last_commit: pending-this-cycle
+- last_commit: pending-empty-chrome
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,25 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+
+### 2026-07-21T22:35Z — WorkspaceEmptyChrome rename
+
+```yaml
+phase: prove
+focus: WorkspaceEmptyStates → WorkspaceEmptyChrome
+domain_index: 0
+pass: 1
+commands: |
+  git mv WorkspaceEmptyStates.swift WorkspaceEmptyChrome.swift
+  AtlasCoreChecks ✓ · make build ✓ · wave-guard OK
+before_after: |
+  file suffix States → Chrome (types unchanged: Editorial/Loading/Network empty)
+  CODEMAP Workspace empty → WorkspaceEmptyChrome
+notes: |
+  Home rename checklist #2 closed for Home-owned *States*
+  Next: spoken/packFacts or MARK dense Home files
+```
 
 ### 2026-07-21T22:30Z — Home RootHomeBody fuse
 

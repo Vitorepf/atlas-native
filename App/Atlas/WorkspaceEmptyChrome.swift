@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// GOD-RESTRUCTURE: was WorkspaceEmptyStates — empty chrome (editorial/loading/network)
 
 struct WorkspaceEditorialEmpty: View {
     let area: AtlasArea
