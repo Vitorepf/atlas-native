@@ -82,6 +82,7 @@ struct ArenaPremiumComparison: View {
                 .font(AtlasFont.serif(15))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.bottom, 2)
+                .accessibilityHidden(true)
             metric(ArenaFormat.score(pair.withAtlas), "Com Atlas", gold: true)
             Spacer(minLength: 4)
             Text(ArenaFormat.signed(delta))

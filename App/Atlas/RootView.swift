@@ -446,7 +446,10 @@ extension RootView {
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
         }
-        .padding(.horizontal, 18).padding(.vertical, 12)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 13)
+        .frame(minHeight: 48) // HIG 44pt; same breath as AgenticPill / workspace pill
+        .contentShape(Capsule())
         .atlasGlassCapsule()
         .overlay(
             Capsule()
