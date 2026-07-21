@@ -965,8 +965,11 @@ extension EmptyConversation {
 
 extension SheetShell {
     var sheetHandle: some View {
-        RoundedRectangle(cornerRadius: 3).fill(AtlasTheme.textTertiary.opacity(0.5))
-            .frame(width: 40, height: 5).padding(.top, 10).padding(.bottom, 16)
+        // Soft gold-tinted grabber — quiet luxury, not pure slate bar.
+        RoundedRectangle(cornerRadius: 3)
+            .fill(AtlasTheme.accent.opacity(0.28))
+            .frame(width: 42, height: 5)
+            .padding(.top, 10).padding(.bottom, 16)
             .accessibilityHidden(true)
     }
 
@@ -2498,8 +2501,9 @@ extension ConversationComposer {
 
 extension ConversationComposer {
     var keyboardGrabberBar: some View {
+        // Match SheetShell grabber tone — gold-quiet, not slate-only.
         RoundedRectangle(cornerRadius: 3)
-            .fill(AtlasTheme.textTertiary.opacity(0.55))
+            .fill(AtlasTheme.accent.opacity(0.28))
             .frame(width: 42, height: 5)
             .frame(maxWidth: .infinity, minHeight: 48) // HIG hit target for dismiss
             .contentShape(Rectangle())
@@ -3261,6 +3265,9 @@ extension ComposerToolbar {
                 .atlasSans(17, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 48, height: 48)
+                // Match attach soft circle — secondary composer chrome plane.
+                .background(Circle().fill(AtlasTheme.surfaceHi.opacity(0.55)))
+                .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                 .contentShape(Circle())
         }
         .accessibilityLabel("Opções da conversa")
