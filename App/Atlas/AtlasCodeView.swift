@@ -3884,8 +3884,8 @@ struct AtlasCodeRepoRow: View {
                 Spacer(minLength: 6)
                 if let age = AtlasCodeAge.short(from: repo.lastCommitAt) {
                     Text(age)
-                        .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .font(AtlasFont.mono(10, .medium))
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.7))
                         .monospacedDigit()
                         .accessibilityHidden(true)
                 }
@@ -3898,7 +3898,7 @@ struct AtlasCodeRepoRow: View {
             .frame(minHeight: 48, alignment: .center)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenLabel)
         .accessibilityHint("Abre o grafo do repositório")
