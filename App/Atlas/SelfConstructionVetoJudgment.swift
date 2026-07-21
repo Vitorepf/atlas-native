@@ -47,4 +47,44 @@ enum SelfConstructionVetoJudgment {
         }
         return out
     }
+
+    // MARK: Pack (WAVE-159)
+
+    /// Pack organ for merge-proved self-construction + veto CTA honesty.
+    static func packFacts(
+        receipt: SelfConstructionReceipt?,
+        canControlSelectedArea: Bool
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        let absences = SelfConstructionVetoJudgment.absences(
+            receipt: receipt,
+            canControlSelectedArea: canControlSelectedArea
+        )
+        guard let receipt else {
+            return (facts, absences)
+        }
+        facts.append("self_construction_face: \(productWord)")
+        facts.append("self_construction_merge_proved: \(receipt.hasMergeProof ? "yes" : "no")")
+        if !receipt.cycle.mergeHash.isEmpty {
+            facts.append("self_construction_merge_hash: \(receipt.cycle.mergeHash)")
+        }
+        facts.append("self_construction_cycle: \(cycleKey(for: receipt))")
+        let can = canRevert(receipt: receipt, canControlSelectedArea: canControlSelectedArea)
+        facts.append("can_revert: \(can ? "yes" : "no")")
+        if can {
+            facts.append("veto_cta: face_only — sheet de recibo (NL não reverte)")
+        }
+        return (facts, absences)
+    }
+
+    /// Latest merge-proved receipt from published delivered cycles (never invent).
+    static func latestMergeProved(
+        delivered: AtlasAutonomosDeliveredResponse?
+    ) -> SelfConstructionReceipt? {
+        guard let cycles = delivered?.delivered else { return nil }
+        guard let cycle = cycles.first(where: { $0.mergePerformed && !$0.mergeHash.isEmpty }) else {
+            return nil
+        }
+        return SelfConstructionReceipt(cycle: cycle, finding: nil)
+    }
 }

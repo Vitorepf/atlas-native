@@ -56,24 +56,34 @@ enum AutonomosCanDoJudgment {
         controlFace: AutonomosRunControlFace,
         canControl: Bool,
         decisionCount: Int,
-        hasUnit: Bool
+        hasUnit: Bool,
+        canRevert: Bool = false
     ) -> (facts: [String], absences: [String], canDo: AgenticOccasionPack.CanDo) {
-        let canDo = occasionCanDo(
+        var canDo = occasionCanDo(
             destination: destination,
             controlFace: controlFace,
             canControl: canControl,
             decisionCount: decisionCount,
             hasUnit: hasUnit
         )
+        // WAVE-159: merge-proved veto is a face CTA (sheet), never NL write.
+        // Elevate readChat → faceCTALocal when veto is the only control published.
+        if canRevert, canDo == .readChat || canDo == .statusOnly {
+            canDo = .faceCTALocal
+        }
         var facts: [String] = []
         var absences: [String] = []
         facts.append("can_do: \(canDo.rawValue)")
         facts.append("can_control: \(canControl ? "yes" : "no")")
         facts.append("control_face: \(controlFace.productWord)")
         facts.append("decision_count: \(decisionCount)")
+        facts.append("can_revert: \(canRevert ? "yes" : "no")")
 
         if !canControl {
             absences.append("canControl=false — CTA de loop não é write NL")
+        }
+        if canRevert {
+            absences.append("veto retroativo só no sheet de recibo — NL não reverte ciclo")
         }
         if let destination {
             switch destination {

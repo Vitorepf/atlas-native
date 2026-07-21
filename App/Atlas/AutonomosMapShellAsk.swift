@@ -25,8 +25,9 @@ extension AutonomosMapShell {
             taskKind: "autonomos",
             workspace: nil,
             draft: "",
-            turnFacts: { [selectedUnit, destination, model] _ in
-                AutonomosAskContext.facts(
+            turnFacts: { [selectedUnit, destination, model, nightly] _ in
+                let n = nightly
+                return AutonomosAskContext.facts(
                     unit: selectedUnit,
                     destination: destination,
                     backlog: model.backlog,
@@ -46,7 +47,14 @@ extension AutonomosMapShell {
                     fleet: model.fleet,
                     digest: model.digest,
                     areas: model.areas,
-                    selectedAreaID: model.selectedAreaID
+                    selectedAreaID: model.selectedAreaID,
+                    // WAVE-159: veto + nightly pack organs.
+                    selfConstructionReceipt: latestMergeProvedReceipt,
+                    nightlyPending: n.pendingProposal != nil,
+                    nightlyMuted: n.isProposalMuted,
+                    nightlyAutoPaused: AtlasSession.nightlyProposalAutoPaused(),
+                    nightlyWorkspaceText: n.pendingProposal?.workspaceText,
+                    nightlyMutedUntil: n.mutedUntil
                 )
             },
             onThread: { askThreadId = $0 },

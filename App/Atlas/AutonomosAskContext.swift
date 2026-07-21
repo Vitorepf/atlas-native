@@ -61,7 +61,15 @@ enum AutonomosAskContext {
         fleet: AtlasAutonomosFleetResponse? = nil,
         digest: AtlasAutonomosDigestResponse? = nil,
         areas: [AtlasAutonomosArea] = [],
-        selectedAreaID: String? = nil
+        selectedAreaID: String? = nil,
+        /// WAVE-159: merge-proved self-construction (nil → honest absence).
+        selfConstructionReceipt: SelfConstructionReceipt? = nil,
+        /// WAVE-159: catalog nightly organ (nil → skip; host passes controller snapshot).
+        nightlyPending: Bool? = nil,
+        nightlyMuted: Bool = false,
+        nightlyAutoPaused: Bool = false,
+        nightlyWorkspaceText: String? = nil,
+        nightlyMutedUntil: Date? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -182,13 +190,56 @@ enum AutonomosAskContext {
         absences.append("create no servidor ainda pendente (§5)")
         absences.append("catálogo local some se o app for morto — não invente frota 24/7 persistida")
 
+        // WAVE-159: self-construction veto organ (merge-proved only).
+        let mergeReceipt = selfConstructionReceipt
+            ?? SelfConstructionVetoJudgment.latestMergeProved(delivered: delivered)
+        let vetoPack = SelfConstructionVetoJudgment.packFacts(
+            receipt: mergeReceipt,
+            canControlSelectedArea: canControl
+        )
+        facts.append(contentsOf: vetoPack.facts)
+        absences.append(contentsOf: vetoPack.absences)
+        let canRevert = mergeReceipt.map {
+            SelfConstructionVetoJudgment.canRevert(
+                receipt: $0,
+                canControlSelectedArea: canControl
+            )
+        } ?? false
+        if canRevert {
+            anchors.append("veto · merge-proved")
+        }
+
+        // WAVE-159: catalog nightly organ (sync face — no invent).
+        if destination == nil, let nightlyPending {
+            let nightlyPack = NightlyProposalJudgment.packFacts(
+                hasPending: nightlyPending,
+                isMuted: nightlyMuted,
+                autoPaused: nightlyAutoPaused,
+                workspaceText: nightlyWorkspaceText,
+                mutedUntil: nightlyMutedUntil
+            )
+            facts.append(contentsOf: nightlyPack.facts)
+            absences.append(contentsOf: nightlyPack.absences)
+        } else if destination == nil {
+            absences.append("nightly organ não snapshot neste turn")
+        }
+
+        // Rhythm windows are async (actor) — pack never invents sampleDays.
+        if destination == nil {
+            absences.append(
+                "ritmo: janelas async — face RhythmLearningLine carrega sample; pack não inventa windows"
+            )
+        }
+
         // WAVE-088: can_do matrix honesty (never always faceCTALocal).
+        // WAVE-159: canRevert elevates face CTA honesty.
         let canDoPack = AutonomosCanDoJudgment.packFacts(
             destination: destination,
             controlFace: controlFace,
             canControl: canControl,
             decisionCount: decisionCount,
-            hasUnit: unit != nil
+            hasUnit: unit != nil,
+            canRevert: canRevert
         )
         facts.append(contentsOf: canDoPack.facts)
         absences.append(contentsOf: canDoPack.absences)

@@ -96,6 +96,7 @@
 | **Nightly schedule peel** | `NightlyProposalController` host · `NightlyProposalSchedule` (WAVE-156) |
 | **Ritmo do dia (aprender)** | `AutonomosRhythmJudgment` → face learning/learned/paused · line/sheet |
 | **Veto retroativo self-construction** | `SelfConstructionVetoJudgment` → ReceiptSheet canRevert → `model.revertCycle` |
+| **Veto + nightly pack (159)** | `SelfConstructionVetoJudgment.packFacts` · Nightly pack on catalog · can_do canRevert → AskContext |
 | **Evolução / entregas Autônomos** | `AutonomosEvolutionJudgment` → EvolutionView marcos → receipt |
 | **Transfer handoff missão** | `AutonomosTransferJudgment` → Hub CTA → ReasonSheet → `model.transfer` |
 | **Task health / incidente frota** | `AutonomosTaskHealthJudgment` → IncidentSurface · vestment incidentPresent |

@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 153
+- waves_completed: 154
 - idle_compress_passes: 2
 - collapse_host: 0
 
@@ -164,13 +164,14 @@ mode: designer + implementer
 - WAVE-156
 - WAVE-157
 - WAVE-158
+- WAVE-159
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 153
+- designs_proposed: 154
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
