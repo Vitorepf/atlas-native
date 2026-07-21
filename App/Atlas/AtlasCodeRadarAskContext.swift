@@ -47,38 +47,15 @@ enum AtlasCodeRadarAskContext {
             absences.append("workspace wire nil até load")
         }
 
-        let scanned = model.issuesBySlug.count
-        let withIssues = model.issuesBySlug.values.filter { !$0.isEmpty }.count
-        let totalIssues = model.issuesBySlug.values.flatMap { $0 }.reduce(0) { $0 + $1.count }
-        if scanned > 0 {
-            facts.append("repos_scanned: \(scanned)")
-            facts.append("repos_with_sem_retorno: \(withIssues)")
-            if totalIssues > 0 {
-                facts.append("sem_retorno_signals: \(totalIssues)")
-            }
-            facts.append("headline: \(model.headline)")
-            anchors.append("headline: \(model.headline)")
-        } else {
-            absences.append("nenhum scan de violações hidratado ainda")
-        }
-
-        if !model.failedSlugs.isEmpty {
-            facts.append("repos_mute: \(model.failedSlugs.sorted().joined(separator: ", "))")
-        }
-
-        // WAVE-024: top attention subjects (real issue counts only).
-        let top = AtlasCodeRadarJudgment.topAttention(issuesBySlug: model.issuesBySlug)
-        if !top.isEmpty {
-            facts.append("top_attention:")
-            for item in top {
-                facts.append("  \(item.slug): \(item.count) signal\(item.count == 1 ? "" : "s")")
-                anchors.append("attention · \(item.slug) · \(item.count)")
-            }
-        } else if scanned > 0 {
-            absences.append("nenhum subject com sem-retorno no scan atual (frota quieta neste load)")
-        }
-
-        absences.append("não inventar merges ou cures; julgamento soberano do workspace")
+        // WAVE-182: fleet attention pack (one law with topAttention rank).
+        let attentionPack = AtlasCodeRadarJudgment.packFacts(
+            issuesBySlug: model.issuesBySlug,
+            failedSlugs: model.failedSlugs,
+            headline: model.headline
+        )
+        facts.append(contentsOf: attentionPack.facts)
+        absences.append(contentsOf: attentionPack.absences)
+        anchors.append(contentsOf: attentionPack.anchors)
 
         // WAVE-162: radar screen face organ.
         let failMsg: String? = {

@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 176
+- waves_completed: 177
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -187,6 +187,7 @@ mode: designer + implementer
 - WAVE-179
 - WAVE-180
 - WAVE-181
+- WAVE-182
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -197,11 +198,11 @@ mode: designer + implementer
 - pass 6 · `7d186855` · delete duplicate imports post-180
 
 ## Designer
-- designs_proposed: 176
+- designs_proposed: 177
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
-- note: concurrent LEDGER wipes observed — B rewrites full truth (do not trust idle_compress_passes if 2 after wave 180+)
+- note: concurrent LEDGER wipes — B rewrites full truth after each close
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -213,7 +214,6 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-181: ArenaScore pack · WAVE-180: StateCard kind pack.
-- Pack/face sovereignty: hollows 0 · face-sans-pack none · density fails none.
-- open=[] · await A rank-1 §WAVE · no invent micro-WAVE.
-- ConversationModel deferred.
+- WAVE-182: Radar attention pack + Arena host score dedupe.
+- WAVE-181: ArenaScore · WAVE-180: StateCard kind.
+- hollows 0 · face-sans-pack none · density fails none.

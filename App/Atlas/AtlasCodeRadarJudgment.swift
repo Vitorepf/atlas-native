@@ -57,6 +57,55 @@ enum AtlasCodeRadarJudgment {
             .map { (slug: $0.0, count: $0.1) }
     }
 
+    // MARK: Pack (WAVE-182)
+
+    /// Fleet attention pack — never invents scan totals.
+    static func packFacts(
+        issuesBySlug: [String: [AtlasCodeIssue]],
+        failedSlugs: Set<String> = [],
+        headline: String? = nil,
+        attentionLimit: Int = 5
+    ) -> (facts: [String], absences: [String], anchors: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        var anchors: [String] = []
+
+        let scanned = issuesBySlug.count
+        let withIssues = issuesBySlug.values.filter { !$0.isEmpty }.count
+        let totalIssues = issuesBySlug.values.reduce(0) { $0 + $1.count }
+
+        if scanned > 0 {
+            facts.append("radar_repos_scanned: \(scanned)")
+            facts.append("radar_repos_with_sem_retorno: \(withIssues)")
+            if totalIssues > 0 {
+                facts.append("radar_sem_retorno_signals: \(totalIssues)")
+            }
+            if let headline, !headline.isEmpty {
+                facts.append("radar_headline: \(headline)")
+                anchors.append("headline: \(headline)")
+            }
+        } else {
+            absences.append("nenhum scan de violações hidratado ainda")
+        }
+
+        if !failedSlugs.isEmpty {
+            facts.append("radar_repos_mute: \(failedSlugs.sorted().joined(separator: ", "))")
+        }
+
+        let top = topAttention(issuesBySlug: issuesBySlug, limit: attentionLimit)
+        if !top.isEmpty {
+            for item in top {
+                facts.append("radar_top: \(item.slug) · \(item.count)")
+                anchors.append("attention · \(item.slug) · \(item.count)")
+            }
+        } else if scanned > 0 {
+            absences.append("nenhum subject com sem-retorno no scan atual (frota quieta neste load)")
+        }
+
+        absences.append("não inventar merges ou cures; julgamento soberano do workspace")
+        return (facts, absences, anchors)
+    }
+
     static let muteBadgeLabel = "mudo"
     static let muteSpoken = "não respondeu ao scan"
     static let repoHint = "abre o grafo do repositório"

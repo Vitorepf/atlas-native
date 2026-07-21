@@ -114,21 +114,11 @@ enum ArenaPremiumAskContext {
             anchors.append("tab: \(tab.rawValue)")
         }
 
+        // WAVE-182: engine score numbers live in ArenaScoreJudgment.packFacts (WAVE-181).
+        // Host keeps only anchor + cobertura_texto (coverage string is host-owned).
         if let engine = model.arenaPrimaryEngine {
-            facts.append("motor: \(ArenaDisplay.engine(engine.engine))")
-            facts.append("indice_composto: \(ArenaFormat.score(engine.composite)) / 10")
-            facts.append("sem_atlas: \(ArenaFormat.score(engine.withoutAtlasComposite)); com_atlas: \(ArenaFormat.score(engine.withAtlasComposite))")
-            if let mult = engine.atlasMultiplier {
-                facts.append("multiplicador: \(ArenaFormat.multiplier(mult))")
-            }
-            if engine.isPartialCoverage {
-                facts.append("cobertura: parcial")
-            }
             anchors.append("engine: \(ArenaDisplay.engine(engine.engine))")
-        } else {
-            absences.append("nenhum motor composto publicado ainda")
         }
-
         facts.append("cobertura_texto: \(model.arenaCoverageText)")
 
         let liveRuns = model.liveRuns?.runs ?? []

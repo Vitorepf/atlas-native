@@ -20,7 +20,7 @@
 
 | Intenção | Comece em |
 |---|---|
-| Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View |
+| Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View · pack attention (WAVE-182) |
 | **Radar screen load (frota)** | `AtlasCodeRadarScreenJudgment` → face loading/failed/empty/ready · shell a11y · pack Ask (WAVE-162) |
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
