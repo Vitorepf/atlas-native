@@ -152,6 +152,7 @@
 | **PlanJudgment peels** | core · Chrome (WAVE-145) |
 | **LiveNowJudgment peels** | core · Row (WAVE-146) |
 | **ComposerDraftJudgment peels** | core · Attach (WAVE-147) |
+| **ChangeReview sections peels** | Sections · SectionsBody (WAVE-148) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
