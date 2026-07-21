@@ -969,7 +969,12 @@ struct AutonomosListView: View {
                         .multilineTextAlignment(.leading)
                     Text(unit.ageLabel)
                         .font(AtlasFont.mono(11))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Live units carry quiet gold meta; paused stays slate.
+                        .foregroundStyle(
+                            unit.paused
+                                ? AtlasTheme.textTertiary
+                                : AtlasTheme.accent.opacity(0.72)
+                        )
                         .padding(.top, 2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
