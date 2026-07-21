@@ -1,9 +1,9 @@
-import SwiftUI
-import PhotosUI
-import UniformTypeIdentifiers
 import AtlasCore
+import PhotosUI
+import SwiftUI
+import UniformTypeIdentifiers
 
-// View extension API — peel de ConversationSheets+Modifier.
+// Cycle 037 fuse → ConversationSheets+ModifierAPI.swift
 
 extension View {
     func conversationComposerSheetsModifier(

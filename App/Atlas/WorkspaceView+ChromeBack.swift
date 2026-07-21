@@ -1,10 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Workspace header back button — peel de WorkspaceView+Chrome.
+// Cycle 037 fuse → WorkspaceView+ChromeBack.swift
 
 extension WorkspaceView {
-    /// Header composto (reconstruído pós-merge: o peel deixou só as folhas).
     var header: some View {
         HStack(spacing: 12) {
             headerBackButton

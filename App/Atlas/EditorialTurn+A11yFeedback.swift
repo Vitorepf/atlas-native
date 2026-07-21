@@ -1,7 +1,17 @@
 import Foundation
 
-// Feedback spoken — peel de EditorialTurn+A11y.
-// Base → EditorialTurn+A11yFeedback+Base.swift
+// Cycle 037 fuse → EditorialTurn+A11yFeedback.swift
+
+extension EditorialTurnA11y {
+  static func spokenFeedbackBase(kind: FeedbackKind) -> String {
+    switch kind {
+    case .util: return "marcar resposta como útil"
+    case .contexto: return "marcar contexto errado"
+    case .longo: return "marcar resposta longa demais"
+    case .fraco: return "marcar resposta fraca"
+    }
+  }
+}
 
 extension EditorialTurnA11y {
   static func spokenFeedbackLabel(kind: FeedbackKind, active: Bool) -> String {
