@@ -92,7 +92,7 @@
 | **Arena start / recibo rodar** | `ArenaStartJudgment` → submit face · receipt face · worker gap |
 | **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready · pack Ask (WAVE-166) |
 | **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face · pack Ask (WAVE-166) |
-| **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` → Hub CTA / MapShell `.decisions` / `AutonomosModel.decide` |
+| **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` → Hub CTA / MapShell `.decisions` / `AutonomosModel.decide` · pack face (WAVE-179) |
 | **Decisão surface peels** | host · `ListBody` · `DetailBody` · `Sections` (WAVE-156) |
 | **MapShell peels** | host sheets · `Routes` · `Ask` · `Catalog` · `Actions` (WAVE-156) |
 | **Controle do loop Autônomos (veto)** | `AutonomosRunControlJudgment` → Hub primaryVerb → ReasonSheet → `model.control` / `startRun` · bind `selectArea` |

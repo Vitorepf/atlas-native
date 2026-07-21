@@ -31,11 +31,16 @@ extension AutonomosAskContext {
             switch destination {
             case .hub:
                 facts.append("foco: hub do Autônomo — saúde e atalhos locais")
-                if decisionCount > 0 {
-                    facts.append("decisoes_publicadas: \(decisionCount)")
-                    for title in subjects {
-                        facts.append("decisao: \(title)")
-                    }
+                // WAVE-179: decision face pack (not hand-roll count only).
+                let decisionPack = AutonomosDecisionJudgment.packFacts(
+                    backlog: backlog,
+                    areaSelected: selectedAreaID != nil || canControl,
+                    error: nil
+                )
+                facts.append(contentsOf: decisionPack.facts)
+                absences.append(contentsOf: decisionPack.absences)
+                for title in subjects.prefix(5) {
+                    anchors.append("decision:\(title)")
                 }
                 if let unit {
                     let hubPack = AutonomosHubJudgment.packFacts(
@@ -63,16 +68,16 @@ extension AutonomosAskContext {
                 }
             case .decisions, .decisionInbox, .decisionOrder:
                 facts.append("foco: decisões")
-                if decisionCount > 0 {
-                    facts.append("decisoes_publicadas: \(decisionCount)")
-                    for title in subjects {
-                        facts.append("decisao: \(title)")
-                        anchors.append("decision:\(title)")
-                    }
-                } else if backlog == nil {
-                    absences.append("backlog de decisões não hidratado — não invente inbox")
-                } else {
-                    absences.append("zero itens com decisionRequired / operatorDecisionRequired")
+                // WAVE-179: one law with surface face.
+                let decisionPack = AutonomosDecisionJudgment.packFacts(
+                    backlog: backlog,
+                    areaSelected: true,
+                    error: nil
+                )
+                facts.append(contentsOf: decisionPack.facts)
+                absences.append(contentsOf: decisionPack.absences)
+                for title in subjects.prefix(5) {
+                    anchors.append("decision:\(title)")
                 }
             case .evolution:
                 facts.append("foco: evolução")

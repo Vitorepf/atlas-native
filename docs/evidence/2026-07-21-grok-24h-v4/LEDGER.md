@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 173
+- waves_completed: 174
 - idle_compress_passes: 4
 - collapse_host: 0
 
@@ -184,6 +184,7 @@ mode: designer + implementer
 - WAVE-176
 - WAVE-177
 - WAVE-178
+- WAVE-179
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -192,7 +193,7 @@ mode: designer + implementer
 - pass 4 · `34a8d100` · MARK ConversationExecutionPhase
 
 ## Designer
-- designs_proposed: 173
+- designs_proposed: 174
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -207,7 +208,5 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-178: composer send face pack mid-thread.
-- WAVE-177: rhythm pack · packFacts hollows = 0.
-- WAVE-176: Search pill · WAVE-175: review assinatura · WAVE-174: timeline+md.
-- Residual ROI diminishing · await A for strip/card unify · no invent micro-WAVE.
+- WAVE-179: AutonomosDecision face pack.
+- WAVE-178: send pack · 177 rhythm · 176 Search · 175 review · 174 timeline.

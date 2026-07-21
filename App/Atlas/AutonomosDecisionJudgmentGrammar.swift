@@ -89,6 +89,40 @@ extension AutonomosDecisionJudgment {
         items(from: backlog).prefix(limit).map(\.title)
     }
 
+    // MARK: Pack face (WAVE-179)
+
+    /// Surface face + subjects — never invents decision rows.
+    static func packFacts(
+        backlog: AtlasAutonomosBacklogResponse?,
+        areaSelected: Bool,
+        error: String? = nil,
+        subjectLimit: Int = 5
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(backlog: backlog, areaSelected: areaSelected, error: error)
+        facts.append("decision_face: \(face.productWord)")
+        let count = decisionCount(from: backlog)
+        if count > 0 {
+            facts.append("decisoes_publicadas: \(count)")
+            for title in packSubjects(from: backlog, limit: subjectLimit) {
+                facts.append("decision_subject: \(title)")
+            }
+        }
+        switch face {
+        case .loading:
+            absences.append("backlog de decisões ainda carregando nesta área")
+        case .failed:
+            absences.append("falha ao publicar decisões — não invente itens")
+        case .empty:
+            absences.append("zero itens com decisionRequired / operatorDecisionRequired")
+        case .items:
+            break
+        }
+        absences.append("NL não assina decisão — só CTA da face Autônomos")
+        return (facts, absences)
+    }
+
     // MARK: Face chrome spoken (WAVE-104)
 
     static func spokenFaceChrome(_ face: AutonomosDecisionFace) -> String {
