@@ -1,5 +1,6 @@
 import AtlasCore
 import Foundation
+import Charts
 import SwiftUI
 
 // Cycle 044 fuse → ArenaSuiteSheet.swift
@@ -272,5 +273,25 @@ extension ArenaSuiteSheet {
     private func deltaTone(_ engine: AtlasArenaSuiteEngine) -> ArenaPremiumTone {
         guard let delta = pairedDelta(engine), abs(delta) > 0.005 else { return .neutral }
         return delta > 0 ? .positive : .negative
+    }
+}
+
+
+// Sparkline da suite — colocalizado com ArenaSuiteSheet.
+struct SuiteSparkline: View {
+    let engine: AtlasArenaSuiteEngine
+
+    var body: some View {
+        Chart(engine.history) { point in
+            if let score = point.score {
+                LineMark(x: .value("rodada", point.roundAt), y: .value("score", score))
+                    .foregroundStyle(point.arm == .withAtlas ? AtlasTheme.accent : AtlasTheme.textSecondary)
+                    .interpolationMethod(.linear)
+            }
+        }
+        .chartXAxis(.hidden)
+        .chartYAxis(.hidden)
+        .chartLegend(.hidden)
+        .accessibilityHidden(true)
     }
 }
