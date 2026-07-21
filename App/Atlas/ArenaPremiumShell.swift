@@ -736,6 +736,7 @@ struct ArenaPremiumStopSheet: View {
                 .foregroundStyle(valid && !isConfirmed ? AtlasTheme.alert : AtlasTheme.textTertiary)
                 .background(Capsule().fill(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.08 : 0.03)))
                 .overlay(Capsule().stroke(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.5 : 0.15), lineWidth: 1))
+                .atlasElevation(radius: 8, y: 2, opacity: valid && !isConfirmed ? 0.14 : 0.06)
         }
         .buttonStyle(PressableScale())
         .disabled(!valid || model.isStoppingMeasurement || isConfirmed)
@@ -3341,6 +3342,11 @@ extension ArenaRunSheet {
             Text(error)
                 .font(AtlasFont.serif(15))
                 .foregroundStyle(AtlasTheme.alert)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(12)
+                .background(AtlasTheme.alert.opacity(0.08), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+                .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.alert.opacity(0.28), lineWidth: 1))
+                .atlasElevation(radius: 6, y: 2, opacity: 0.1)
                 .accessibilityLabel(spokenErrorLabel(error))
                 .transition(reduceMotion ? .identity : .opacity)
         }
