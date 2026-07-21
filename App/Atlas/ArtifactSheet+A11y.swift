@@ -1,9 +1,32 @@
-import Foundation
 import AtlasCore
+import Foundation
 
-/// Spoken sheet label — peel de ArtifactSheet (CICLO C residual honesty).
-/// Load → ArtifactSheet+A11y+Load.swift
-/// Available → ArtifactSheet+A11y+Available.swift
+// Cycle 027 fuse → ArtifactSheet+A11y.swift
+
+extension ArtifactSheet {
+    func spokenArtifactsSheetAvailableLabel(_ artifacts: AtlasTraceArtifacts) -> String {
+        switch artifacts.state {
+        case .unavailable:
+            return "artefatos da execução indisponíveis"
+        case .available:
+            let n = items.count
+            if n == 0 { return "artefatos da execução, sem itens publicados" }
+            return "artefatos da execução, \(n) item\(n == 1 ? "" : "s")"
+        }
+    }
+}
+
+extension ArtifactSheet {
+    func spokenArtifactsSheetLoadLabel() -> String? {
+        if !loadFinished, artifacts == nil {
+            return "artefatos da execução, consultando"
+        }
+        if loadFinished, artifacts == nil {
+            return "artefatos da execução, indisponível"
+        }
+        return nil
+    }
+}
 
 extension ArtifactSheet {
     func spokenArtifactsSheetLabel() -> String {
