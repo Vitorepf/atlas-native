@@ -2530,14 +2530,14 @@ extension AtlasNetworkFailureEmpty {
 @MainActor
 @ViewBuilder
 func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
-    // A linha premium do site: hairlines em fade ladeando o rótulo.
-    HStack(spacing: 12) {
+    // A linha premium do site: hairlines em fade ladeando o rótulo natural.
+    let spoken = sectionSpokenLabel(t)
+    return HStack(spacing: 12) {
         LinearGradient(colors: [AtlasTheme.separator.opacity(0), AtlasTheme.separator],
                        startPoint: .leading, endPoint: .trailing)
             .frame(height: 1)
-        Text(t)
-            .atlasSans(11, .semibold)
-            .tracking(1.55)
+        Text(spoken)
+            .font(AtlasFont.serif(13, .semibold))
             .foregroundStyle(AtlasTheme.textTertiary)
             .fixedSize()
         LinearGradient(colors: [AtlasTheme.separator, AtlasTheme.separator.opacity(0)],
@@ -2549,8 +2549,7 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     .padding(.bottom, 11)
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(.isHeader)
-    // Spoken title stays natural case — visual tracking is uppercase.
-    .accessibilityLabel(sectionSpokenLabel(t))
+    .accessibilityLabel(spoken)
     .homeSectionA11yID(accessibilityID)
 }
 
