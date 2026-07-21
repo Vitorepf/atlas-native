@@ -1089,12 +1089,6 @@ struct ChangeReviewRunHeader: View {
 /// Só campos publicados pelo servidor; score/decisão verbatim; toast = texto real.
 
 enum ChangeReviewSectionsA11y {
-    static func spokenCaption(_ text: String) -> String {
-        text // captions are already natural-case visual + VO
-    }
-}
-
-extension ChangeReviewSectionsA11y {
     static func spokenControl(_ control: AtlasTraceChangeReview.Control) -> String {
         "\(control.slug), status \(control.status), \(control.signalSummary)"
     }
@@ -1152,7 +1146,7 @@ struct ChangeReviewCaption: View {
     var body: some View {
         Text(text).font(AtlasFont.mono(10)).tracking(0.4).foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)
-            .accessibilityLabel(ChangeReviewSectionsA11y.spokenCaption(text))
+            .accessibilityLabel(text)
     }
 }
 
