@@ -58,35 +58,49 @@ enum AutonomosMapChrome {
             .foregroundStyle(AtlasTheme.textTertiary)
     }
 
+    @MainActor
     static func primaryCTA(_ title: String, enabled: Bool = true, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            if enabled {
+                AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            }
+            action()
+        } label: {
             Text(title)
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(AtlasTheme.textPrimary.opacity(enabled ? 1 : 0.35))
                 .frame(maxWidth: .infinity)
-                .frame(minHeight: 46)
+                .frame(minHeight: 48)
                 .background(AtlasTheme.textPrimary.opacity(enabled ? 0.055 : 0.03), in: Capsule())
-                .overlay(Capsule().strokeBorder(Color.white.opacity(enabled ? 0.08 : 0.04), lineWidth: 1))
+                .overlay(Capsule().strokeBorder(Color.white.opacity(enabled ? 0.1 : 0.04), lineWidth: 1))
+                .contentShape(Capsule())
         }
         .buttonStyle(.plain)
         .disabled(!enabled)
+        .accessibilityLabel(Text(title))
     }
 
+    @MainActor
     static func quietCTA(_ title: String, danger: Bool = false, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            action()
+        } label: {
             Text(title)
                 .font(.system(size: 14))
                 .foregroundStyle(danger ? AtlasTheme.alert : AtlasTheme.textSecondary)
                 .frame(maxWidth: .infinity)
-                .frame(minHeight: 46)
+                .frame(minHeight: 48)
                 .overlay(
                     Capsule().strokeBorder(
                         danger ? AtlasTheme.alert.opacity(0.35) : AtlasTheme.separator.opacity(0.7),
                         lineWidth: 1
                     )
                 )
+                .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(Text(title))
     }
 }
 
