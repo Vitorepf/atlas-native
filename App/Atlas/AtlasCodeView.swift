@@ -302,8 +302,9 @@ extension AtlasCodeView {
             .navigationBarBackButtonHidden(true)
             .background(NavigationInteractivePopEnabler())
             .accessibilityIdentifier(A11yID.codeScreen)
-            .accessibilityLabel(spokenCodeScreenLabel())
-            .accessibilityHint(Self.codeScreenHint)
+            // Contain without fused screen label so graph/radar children stay focusable.
+            // Screen spoken summary lives on the toolbar title / repo switcher.
+            .accessibilityElement(children: .contain)
             .toolbar { codeToolbar }
             .safeAreaInset(edge: .top, spacing: 0) {
                 repoSwitcher
