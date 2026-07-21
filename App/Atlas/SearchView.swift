@@ -319,7 +319,7 @@ struct SearchMissEmpty: View {
 extension SearchThreadLink {
     var threadNavigationLink: some View {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
-            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
+            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed, ownsAccessibility: false)
         }
         .buttonStyle(.plain)
         .simultaneousGesture(TapGesture().onEnded {

@@ -295,15 +295,23 @@ struct WorkspaceThreadLink: View {
 extension WorkspaceThreadLink {
     var threadLinkA11y: some View {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
-            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
+            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed, ownsAccessibility: false)
         }
         .buttonStyle(.plain)
         .simultaneousGesture(TapGesture().onEnded {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
         })
         .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
-        .accessibilityHint("abre a conversa")
-        .accessibilityAddTraits(.isButton)
+        .accessibilityHint(
+            TurnPresence.shared.runningTitles.contains(thread.title)
+                ? "Atlas executando nesta conversa"
+                : "abre a conversa"
+        )
+        .accessibilityAddTraits(
+            TurnPresence.shared.runningTitles.contains(thread.title) && !reduceMotion
+                ? [.isButton, .updatesFrequently]
+                : .isButton
+        )
         .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
         .transition(threadTransition)
     }

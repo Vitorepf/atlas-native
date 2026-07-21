@@ -490,6 +490,8 @@ struct ThreadRow: View {
     /// Sinal saturado não discrimina: quando a maioria da lista seria "novo",
     /// o dono da lista silencia o badge em bloco (volta quando for exceção).
     var newBadgeSuppressed: Bool = false
+    /// When false, a parent NavigationLink owns VO label/traits (Search/Workspace).
+    var ownsAccessibility: Bool = true
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var isRunning: Bool { TurnPresence.shared.runningTitles.contains(thread.title) }
@@ -497,7 +499,11 @@ struct ThreadRow: View {
     var workspaceTint: Color? { thread.workspace.map(threadWorkspaceColor) }
 
     var body: some View {
-        threadA11yChrome(rowContent)
+        if ownsAccessibility {
+            threadA11yChrome(rowContent)
+        } else {
+            rowContent
+        }
     }
 }
 
