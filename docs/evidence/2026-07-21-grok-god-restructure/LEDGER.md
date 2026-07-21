@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: audit
-- focus: pass deepen residual peels
+- focus: PlanCard Steps / residual peels
 - domain_index: 1
 - pass: 1
 - actionable: open
-- passes: 8
-- last_commit: pending-executionstatecard
+- passes: 9
+- last_commit: pending-planrevision-fuse
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,23 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T22:49Z — PlanRevision peels fuse
+
+```yaml
+phase: prove
+focus: PlanCardRevision A11y+Archive → RevisionBody
+domain_index: 1
+pass: 1
+commands: |
+  34+83+142 → PlanCardRevisionBody ~254 MARKed
+  AtlasCoreChecks ✓ · make build ✓ · guard OK
+before_after: |
+  −2 peels · hops PlanRevisionCompare 3→1
+  CODEMAP Plan card revision fused
+notes: next PlanCard Steps or Decision bodies
+```
+
 
 ### batch host+body fuses
 
