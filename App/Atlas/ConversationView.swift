@@ -1363,6 +1363,7 @@ extension ConversationHandoffReceipt {
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
                     .stroke(AtlasTheme.goldBorder, lineWidth: 1)
             )
+            .atlasElevation(radius: 8, y: 2, opacity: 0.16)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 2)
             .padding(.bottom, 8)
@@ -2489,6 +2490,7 @@ extension ConversationComposer {
             .contentShape(Capsule())
             .background(Capsule().fill(AtlasTheme.goldVeil)
                 .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+            .atlasElevation(radius: 6, y: 2, opacity: 0.14)
     }
 }
 
