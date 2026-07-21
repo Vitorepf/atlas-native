@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 33
-- idle_compress_passes: 3
+- idle_compress_passes: 4
 - collapse_host: 0
 
 ## Waves done
@@ -49,6 +49,7 @@ mode: designer + implementer
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
 - pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
+- pass 4 · PENDING · MARK PlanCard + ExecutionProof agent layout
 
 ## Designer
 - designs_open: 0
@@ -61,5 +62,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-038 self-WAVE: digest moment instrument.
-- DEVICE_PENDING. Wait A for 2–5 open GOD WAVEs.
+- Post-WAVE-038 empty queue: IDLE MARK PlanCard/ExecutionProof (canon §7.4).
+- Wait A for 2–5 GOD WAVEs. DEVICE_PENDING history.

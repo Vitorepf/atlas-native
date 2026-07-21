@@ -1,7 +1,9 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// IDLE-COMPRESS MARK ExecutionProof agent layout (canon §7.4)
+
+// MARK: - Chrome / gates
 
 extension ExecutionProof {
     func proofChrome<Content: View>(@ViewBuilder content: () -> Content) -> some View {
@@ -152,6 +154,8 @@ extension ExecutionProof {
     }
 }
 
+// MARK: - Types / Inputs
+
 struct ExecutionProof: View {
     let bubble: ChatBubble
     var artifactItems: [AtlasTraceArtifacts.Item] = []
@@ -159,6 +163,8 @@ struct ExecutionProof: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var open = false
     @State var replayIndex = 0
+
+    // MARK: Body
 
     var body: some View {
         proofChrome { proofStack }
@@ -266,6 +272,8 @@ extension ExecutionProof {
         }
     }
 }
+
+// MARK: - Sections (decision / quality / activities)
 
 extension ExecutionProof {
     @ViewBuilder

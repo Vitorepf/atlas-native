@@ -1,7 +1,9 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// IDLE-COMPRESS MARK PlanCard agent layout (canon §7.4)
+
+// MARK: - A11y (spoken)
 
 extension PlanCard {
     func spokenCardLabel(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress?) -> String {
@@ -207,6 +209,8 @@ extension PlanStepRowView {
     }
 }
 
+// MARK: - Types / Inputs
+
 struct PlanCard: View {
     let bubble: ChatBubble
     @Environment(AtlasSession.self) var session
@@ -214,10 +218,14 @@ struct PlanCard: View {
     @State var showDetail = false
     @State var showRevisions = false
 
+    // MARK: Body
+
     var body: some View {
         planCardGate
     }
 }
+
+// MARK: - Audit section
 
 extension PlanCard {
     func auditTerminalLine(
@@ -378,6 +386,8 @@ extension PlanFlexWrap {
         return (x, y + lineHeight)
     }
 }
+
+// MARK: - Layout (flex wrap)
 
 struct PlanFlexWrap: Layout {
     var spacing: CGFloat = 6
@@ -632,6 +642,8 @@ extension PlanCard {
     }
 }
 
+// MARK: - Revision compare
+
 struct PlanRevisionCompare: View {
     let plan: AtlasExecutionPlan
     let revisions: [AtlasTraceGovernance.PlanRevision]
@@ -694,6 +706,8 @@ extension PlanRevisionCompare {
         }
     }
 }
+
+// MARK: - Step row
 
 struct PlanStepRowView: View {
     let step: AtlasExecutionPlan.Step
@@ -791,6 +805,8 @@ extension PlanStepRowView {
             .padding(.bottom, isLast ? 0 : 9)
     }
 }
+
+// MARK: - Steps (state + list)
 
 extension PlanCard {
     func stepState(_ idx: Int) -> StepState {
