@@ -1,8 +1,10 @@
 import SwiftUI
 import AtlasCore
 
-/// Biografia do arquivo (H1 Why) — WAVE-009 depth instrument.
-/// Drill legível; absence honesta sem quote inventada; fail ≠ empty de dados.
+// GOD-RESTRUCTURE: WhySheet + WhyModel fused
+
+// MARK: - Sheet
+
 struct AtlasCodeWhySheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var model: AtlasCodeWhyModel
@@ -223,4 +225,37 @@ struct AtlasCodeWhySheet: View {
     }
 
     static let sheetHint = "histórico de commits e proveniência registrada pelo Atlas"
+}
+
+// MARK: - Model
+
+@MainActor
+@Observable
+final class AtlasCodeWhyModel {
+    private let client: AtlasClient
+    private(set) var phase: LoadPhase = .idle
+    private(set) var why: AtlasCodeWhy?
+    private(set) var message: String?
+    private var wanted: String?
+
+    init(client: AtlasClient) {
+        self.client = client
+    }
+
+    func load(repo: String, file: String) async {
+        let key = "\(repo)\n\(file)"
+        wanted = key
+        phase = .loading
+        message = nil
+        do {
+            let response = try await client.getCodeWhy(repo: repo, file: file)
+            guard wanted == key else { return }
+            why = response
+            phase = .loaded
+        } catch {
+            guard wanted == key else { return }
+            message = String(describing: error)
+            phase = .failed(message ?? "falha desconhecida")
+        }
+    }
 }
