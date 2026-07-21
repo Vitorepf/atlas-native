@@ -17,6 +17,8 @@ enum AutonomosMapChrome {
                 .tracking(1.4)
                 .foregroundStyle(alert ? AtlasTheme.alert : (live ? AtlasTheme.accent : AtlasTheme.textTertiary))
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 
     static func heroTitle(_ text: String, size: CGFloat = 30) -> some View {
