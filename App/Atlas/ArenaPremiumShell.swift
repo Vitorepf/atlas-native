@@ -698,7 +698,7 @@ struct ArenaPremiumStopSheet: View {
                 )
                     .font(AtlasFont.serif(15, .semibold))
                     .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
-                Text(value.stopsAfterCurrentCase ? "parada após o caso atual" : value.status.rawValue)
+                Text(value.stopsAfterCurrentCase ? "Parada após o caso atual" : value.status.rawValue)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
@@ -4906,7 +4906,7 @@ extension ArenaModel {
         guard !isStartingRuns else { return }
         controlError = nil
         guard let plan = AtlasArenaMeasurementPlan(inputs: inputs) else {
-            controlError = "selecione suítes, motores e braços; informe ator e motivo"
+            controlError = "Selecione suítes, motores e braços; informe ator e motivo"
             return
         }
         isStartingRuns = true
@@ -4946,7 +4946,7 @@ extension ArenaModel {
             operatorReason: operatorReason
         )
         guard input.isLocallyValidForSubmission else {
-            controlError = "informe operador e motivo para parar a medição"
+            controlError = "Informe operador e motivo para parar a medição"
             return
         }
         isStoppingMeasurement = true
