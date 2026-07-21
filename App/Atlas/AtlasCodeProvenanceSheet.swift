@@ -655,3 +655,844 @@ struct AtlasCodeProvenanceWhyTarget: Identifiable {
     let path: String
     var id: String { path }
 }
+
+// MARK: - AtlasCodeProvenanceJudgment
+
+// MARK: - Types
+
+/// Exclusive commit-provenance drill face (WAVE-057).
+enum AtlasCodeProvenanceFace: Equatable {
+    case loading
+    case failed(String)
+    case empty
+    case body(files: Int)
+
+    var productWord: String {
+        switch self {
+        case .loading: return "loading"
+        case .failed: return "failed"
+        case .empty: return "empty"
+        case .body: return "body"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .loading:
+            return "lendo proveniência do commit"
+        case .failed(let message):
+            let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.isEmpty { return "proveniência indisponível" }
+            return "proveniência indisponível, \(trimmed)"
+        case .empty:
+            return "ledger sem detalhe neste recorte"
+        case .body(let files):
+            return files == 1
+                ? "1 arquivo na proveniência"
+                : "\(files) arquivos na proveniência"
+        }
+    }
+
+    var contentPhaseID: String {
+        switch self {
+        case .loading: return "loading"
+        case .failed: return "failed"
+        case .empty: return "loaded-empty"
+        case .body(let files): return "loaded-\(files)"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure provenance drill grammar — face · body gate · state kicker · pack.
+enum AtlasCodeProvenanceJudgment {
+
+    static func hasLoadedBody(_ provenance: AtlasCodeProvenance) -> Bool {
+        provenance.commitBody?.nonEmpty != nil
+            || provenance.operatorQuote?.nonEmpty != nil
+            || !(provenance.gates?.isEmpty ?? true)
+            || !(provenance.obra?.isEmpty ?? true)
+            || !provenance.files.isEmpty
+    }
+
+    static func face(
+        phase: AtlasCodeProvenanceModel.Phase
+    ) -> AtlasCodeProvenanceFace {
+        switch phase {
+        case .idle, .loading:
+            return .loading
+        case .failed(let message):
+            return .failed(message)
+        case .loaded(let provenance):
+            if hasLoadedBody(provenance) {
+                return .body(files: provenance.files.count)
+            }
+            return .empty
+        }
+    }
+
+    /// Product state kicker aligned with commit-row / graph vocabulary.
+    static func spokenStateKicker(
+        state: AtlasCodeNodeState,
+        trunk: String?
+    ) -> String {
+        let linha = trunk?.nonEmpty ?? "main"
+        switch state {
+        case .onMain: return "na \(linha)"
+        case .healed: return "curado"
+        case .violating: return "fora da \(linha)"
+        case .history: return "história"
+        }
+    }
+
+    static let commitHashLabel = "hash do commit"
+
+    static func headerTitle(node: AtlasCodeGraphNode) -> String {
+        node.message?.nonEmpty ?? String(node.hash.prefix(8))
+    }
+
+    static func spokenSheet(
+        node: AtlasCodeGraphNode,
+        state: AtlasCodeNodeState,
+        trunk: String?,
+        phase: AtlasCodeProvenanceModel.Phase
+    ) -> String {
+        let face = face(phase: phase)
+        var parts = [
+            "proveniência do commit",
+            headerTitle(node: node),
+            spokenStateKicker(state: state, trunk: trunk),
+            face.spokenFace
+        ]
+        if case .loaded(let provenance) = phase, let headline = provenance.diffHeadline {
+            parts.append(headline)
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    static func packFacts(
+        node: AtlasCodeGraphNode,
+        state: AtlasCodeNodeState,
+        trunk: String?,
+        phase: AtlasCodeProvenanceModel.Phase,
+        ruleId: String?
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(phase: phase)
+        facts.append("provenance_face: \(face.productWord)")
+        facts.append("commit: \(String(node.hash.prefix(7)))")
+        facts.append("row_state: \(AtlasCodeGraphJudgment.productWord(for: state))")
+        if let ruleId {
+            facts.append("rule: \(ruleId)")
+        }
+        switch face {
+        case .loading:
+            absences.append("proveniência ainda carregando")
+        case .failed(let msg):
+            absences.append("proveniência falhou")
+            if !msg.isEmpty { facts.append("provenance_error: \(msg)") }
+        case .empty:
+            absences.append("ledger sem detalhe neste recorte")
+        case .body(let files):
+            facts.append("provenance_files: \(files)")
+            if case .loaded(let provenance) = phase {
+                if provenance.agent.isEmpty {
+                    absences.append("agente de proveniência ausente")
+                } else {
+                    facts.append("provenance_agent: \(provenance.agent)")
+                }
+                if let obra = provenance.obra, !obra.isEmpty {
+                    facts.append("obra: \(obra)")
+                }
+                let filePack = packFileFacts(provenance.files)
+                facts.append(contentsOf: filePack.facts)
+                absences.append(contentsOf: filePack.absences)
+            }
+        }
+        return (facts, absences)
+    }
+
+    // MARK: File row spoken (WAVE-101 · was AtlasCodeFileRowA11y)
+
+    static func spokenFile(_ file: AtlasCodeFileChange) -> String {
+        var parts = [file.path, verb(for: file.status)]
+        if let from = file.renamedFrom { parts.append("de \(from)") }
+        if let additions = file.additions, let deletions = file.deletions {
+            parts.append("\(additions) linhas adicionadas")
+            parts.append("\(deletions) removidas")
+        } else {
+            parts.append("arquivo binário")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    static func verb(for status: AtlasCodeFileStatus) -> String {
+        verbMutate(for: status) ?? verbTransform(for: status)
+    }
+
+    static func verbMutate(for status: AtlasCodeFileStatus) -> String? {
+        switch status {
+        case .added: return "adicionado"
+        case .modified: return "alterado"
+        case .deleted: return "removido"
+        default: return nil
+        }
+    }
+
+    static func verbRenameCopy(for status: AtlasCodeFileStatus) -> String? {
+        switch status {
+        case .renamed: return "renomeado"
+        case .copied: return "copiado"
+        default: return nil
+        }
+    }
+
+    static func verbTransform(for status: AtlasCodeFileStatus) -> String {
+        if let rename = verbRenameCopy(for: status) { return rename }
+        switch status {
+        case .typeChanged: return "tipo alterado"
+        case .unknown: return "mudança desconhecida"
+        default: return verbMutate(for: status) ?? "mudança desconhecida"
+        }
+    }
+
+    static func packFileFacts(
+        _ files: [AtlasCodeFileChange]
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        facts.append("prov_files_total: \(files.count)")
+        if files.isEmpty {
+            absences.append("nenhum arquivo na proveniência")
+            return (facts, absences)
+        }
+        for file in files.prefix(5) {
+            facts.append("prov_file_sample: \(file.path) · \(verb(for: file.status))")
+        }
+        return (facts, absences)
+    }
+}
+
+// MARK: - AtlasCodeHealReceiptSheet
+
+// MARK: - Folha: Recibo de Cura (C25 — fato consumado, só veto)
+// WAVE-009: fused instrument — silence when healthy, vocab “curado sozinho”.
+
+struct AtlasCodeHealReceiptSheet: View {
+    let heal: AtlasCodeHealResponse
+    /// WAVE-048: published undo failure from model (never invent).
+    var undoError: String? = nil
+    let onUndo: () -> Void
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    var body: some View {
+        ZStack {
+            AtlasTheme.bg.ignoresSafeArea()
+            VStack(alignment: .leading, spacing: 12) {
+                masthead
+                healStatusLines
+                undoErrorLine
+                receiptStepsOrEmpty
+                receiptUndoFooter
+                Spacer(minLength: 0)
+            }
+            .padding(22)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: canUndo)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: undoError)
+        }
+        .accessibilityIdentifier(A11yID.codeHealReceiptSheet)
+        .accessibilityLabel(spokenSheetLabel())
+        .accessibilityValue(vetoFace.productWord)
+    }
+
+    // MARK: - Gates (WAVE-048: Judgment-owned)
+
+    var vetoFace: AtlasCodeHealVetoFace {
+        AtlasCodeHealVetoJudgment.face(heal: heal, undoError: undoError)
+    }
+
+    var completedStepCount: Int {
+        AtlasCodeHealVetoJudgment.completedStepCount(heal)
+    }
+    var hasCompletedHeal: Bool { completedStepCount > 0 }
+
+    var undoExpiresAt: String? {
+        AtlasCodeHealVetoJudgment.undoExpiresAt(heal)
+    }
+
+    var canUndo: Bool {
+        AtlasCodeHealVetoJudgment.canVeto(heal)
+    }
+
+    // MARK: - Chrome
+
+    var masthead: some View {
+        HStack(spacing: 7) {
+            Image(systemName: hasCompletedHeal ? "checkmark" : "exclamationmark.triangle")
+                .atlasSans(10, .bold)
+                .accessibilityHidden(true)
+            Text(hasCompletedHeal
+                 ? "CURADO SOZINHO · \(heal.mode.uppercased())"
+                 : "CURA · \(heal.mode.uppercased())")
+                .atlasSans(9, .bold)
+                .tracking(1.2)
+                .accessibilityHidden(true)
+        }
+        .foregroundStyle(hasCompletedHeal ? AtlasCodePalette.healed : AtlasTheme.textTertiary)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(spokenMastheadLabel())
+    }
+
+    @ViewBuilder
+    var healStatusLines: some View {
+        if hasCompletedHeal {
+            Text("você não foi necessário")
+                .font(AtlasFont.serif(20, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(spokenSilenceLabel())
+        }
+        if let blocked = heal.blocked, !blocked.isEmpty {
+            Text("bloqueado · \(blocked)")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasCodePalette.alert)
+                .accessibilityLabel(spokenBlockedLabel(blocked))
+        }
+    }
+
+    @ViewBuilder
+    var receiptStepsOrEmpty: some View {
+        if heal.stepReceipts.isEmpty {
+            Text("sem passos registrados no recibo")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityLabel(spokenEmptyStepsLabel())
+        } else {
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(Array(heal.stepReceipts.enumerated()), id: \.element.id) { index, receipt in
+                    stepRow(index: index, receipt: receipt)
+                }
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(spokenStepsSummaryLabel())
+        }
+    }
+
+    @ViewBuilder
+    func stepRow(index: Int, receipt: AtlasCodeHealStepReceipt) -> some View {
+        HStack(alignment: .top, spacing: 9) {
+            Image(systemName: receipt.status == "completed" ? "checkmark" : "xmark")
+                .atlasSans(10, .semibold)
+                .foregroundStyle(receipt.status == "completed" ? AtlasCodePalette.healed : AtlasCodePalette.alert)
+                .padding(.top, 2)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(receipt.action)
+                    .atlasSans(13)
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .accessibilityHidden(true)
+                if !receipt.result.isEmpty {
+                    Text(receipt.result)
+                        .font(AtlasFont.mono(9))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
+                }
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(spokenStepLabel(receipt))
+        .accessibilityIdentifier(A11yID.codeHealStep(index))
+    }
+
+    @ViewBuilder
+    var undoErrorLine: some View {
+        if let err = undoError, !err.isEmpty {
+            Text(err)
+                .font(AtlasFont.serif(14))
+                .foregroundStyle(AtlasCodePalette.alert)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier(A11yID.codeHealUndoError)
+                .accessibilityLabel(AtlasCodeHealVetoJudgment.spokenUndoError(err))
+        }
+    }
+
+    @ViewBuilder
+    var receiptUndoFooter: some View {
+        if let note = AtlasCodeUndoWindow.note(expiresAt: undoExpiresAt) {
+            Text(note)
+                .font(AtlasFont.mono(9))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityIdentifier(A11yID.codeHealUndoWindow)
+                .accessibilityLabel(spokenUndoWindowLabel(note))
+        }
+        if canUndo {
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                // WAVE-048: do not dismiss before result — undoError must be visible.
+                onUndo()
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: "arrow.uturn.backward")
+                        .accessibilityHidden(true)
+                    Text("Desfazer — com recibo")
+                }
+                .atlasSans(14, .medium)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .atlasCard(cornerRadius: 13)
+            }
+            .buttonStyle(PressableScale())
+            .transition(reduceMotion ? .identity : .opacity)
+            .accessibilityIdentifier(A11yID.codeHealUndo)
+            .accessibilityLabel(spokenUndoButtonLabel())
+            .accessibilityHint(spokenUndoButtonHint())
+        }
+    }
+
+    // MARK: - Spoken
+
+    func spokenSheetLabel() -> String {
+        AtlasCodeHealVetoJudgment.spokenSheet(heal: heal, undoError: undoError)
+    }
+
+    func spokenMastheadLabel() -> String {
+        hasCompletedHeal
+            ? "curado sozinho, modo \(heal.mode)"
+            : "cura, modo \(heal.mode)"
+    }
+
+    func spokenSilenceLabel() -> String {
+        "você não foi necessário, cura concluída sem portão"
+    }
+
+    func spokenBlockedLabel(_ blocked: String) -> String {
+        "cura bloqueada, \(blocked)"
+    }
+
+    func spokenEmptyStepsLabel() -> String {
+        "recibo sem passos registrados pelo servidor"
+    }
+
+    func spokenStepLabel(_ receipt: AtlasCodeHealStepReceipt) -> String {
+        let outcome = receipt.status == "completed" ? "concluído" : "falhou"
+        var parts = ["passo \(receipt.step)", receipt.action, outcome]
+        if !receipt.result.isEmpty { parts.append(receipt.result) }
+        return parts.joined(separator: ", ")
+    }
+
+    func spokenUndoWindowLabel(_ note: String) -> String {
+        "janela de veto, \(note)"
+    }
+
+    func spokenStepsSummaryLabel() -> String {
+        "\(heal.stepReceipts.count) passo\(heal.stepReceipts.count == 1 ? "" : "s") no recibo"
+    }
+
+    func spokenUndoButtonLabel() -> String {
+        canUndo ? "desfazer cura com recibo" : "desfazer indisponível"
+    }
+
+    func spokenUndoButtonHint() -> String {
+        canUndo
+            ? "envia veto retroativo auditável para esta cura"
+            : "prazo de veto encerrado ou recibo sem identificador"
+    }
+}
+
+// MARK: - AtlasCodeWhySheet
+
+// MARK: - Sheet
+
+struct AtlasCodeWhySheet: View {
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @State var model: AtlasCodeWhyModel
+    let repo: String
+    let file: String
+
+    init(client: AtlasClient, repo: String, file: String) {
+        _model = State(initialValue: AtlasCodeWhyModel(client: client))
+        self.repo = repo
+        self.file = file
+    }
+
+    var body: some View {
+        ZStack {
+            AtlasTheme.bg.ignoresSafeArea()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    header
+                    content
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(22)
+                .animation(reduceMotion ? nil : AtlasMotion.editorial, value: whyContentPhaseID)
+            }
+        }
+        .task { if model.phase == .idle { await model.load(repo: repo, file: file) } }
+        .accessibilityIdentifier(A11yID.whySheet)
+        .accessibilityLabel(whySheetSpokenLabel)
+        .accessibilityHint(Self.sheetHint)
+    }
+
+    // MARK: - Header
+
+    var header: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("POR QUE ESTE ARQUIVO EXISTE")
+                .atlasSans(9, .semibold)
+                .tracking(1.5)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            Text(file)
+                .font(AtlasFont.mono(12))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(2)
+                .truncationMode(.middle)
+                .accessibilityHidden(true)
+            // WAVE-056: truncation banner from Judgment (published counts only).
+            if let why = model.why, let banner = AtlasCodeWhyJudgment.truncatedBanner(why) {
+                Text(banner)
+                    .font(AtlasFont.mono(10))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityAddTraits(.isHeader)
+        .accessibilityLabel(whyHeaderSpokenLabel)
+    }
+
+    // MARK: - Content
+
+    @ViewBuilder var content: some View {
+        switch model.phase {
+        case .idle, .loading:
+            HStack(spacing: 10) {
+                BreathingDiamond(size: 10, reduceMotion: reduceMotion)
+                    .accessibilityHidden(true)
+                Text("lendo a história do arquivo…")
+                    .font(AtlasFont.serifItalic(15))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+            }
+            .padding(.top, 8)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(spokenLoading())
+        case .failed:
+            VStack(alignment: .leading, spacing: 6) {
+                Text("biografia indisponível")
+                    .font(AtlasFont.serifItalic(16))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .accessibilityHidden(true)
+                if let message = model.message, !message.isEmpty {
+                    Text(message)
+                        .font(AtlasFont.mono(9.5))
+                        .foregroundStyle(AtlasCodePalette.alert)
+                        .accessibilityHidden(true)
+                }
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(spokenFailed())
+        case .loaded:
+            if let why = model.why {
+                if why.commits.isEmpty {
+                    Text("este arquivo não tem história neste recorte")
+                        .font(AtlasFont.serifItalic(16))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .padding(.top, 6)
+                        .accessibilityLabel(spokenEmptyHistory())
+                } else {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(Array(why.commits.enumerated()), id: \.element.id) { index, commit in
+                            whyRow(commit, index: index, isLast: index == why.commits.count - 1)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Rows
+
+    func whyRow(_ commit: AtlasCodeWhy.Commit, index: Int, isLast: Bool) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(spacing: 0) {
+                Circle()
+                    .fill(AtlasTheme.accent)
+                    .frame(width: 7, height: 7)
+                    .accessibilityHidden(true)
+                if !isLast {
+                    Rectangle()
+                        .fill(AtlasTheme.accent.opacity(0.35))
+                        .frame(width: 1)
+                        .frame(minHeight: 56)
+                        .accessibilityHidden(true)
+                }
+            }
+            .padding(.top, 7)
+            .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 5) {
+                if let quote = commit.provenance?.quote {
+                    Text("\u{201C}\(quote)\u{201D}")
+                        .font(AtlasFont.serifItalic(15))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityHidden(true)
+                } else {
+                    Text("sem proveniência registrada")
+                        .font(AtlasFont.serifItalic(15))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
+                }
+                Text(meta(for: commit))
+                    .font(AtlasFont.mono(10.5))
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
+                Text(commit.subject)
+                    .atlasSans(11)
+                    .foregroundStyle(AtlasTheme.textSecondary.opacity(0.75))
+                    .lineLimit(2)
+                    .accessibilityHidden(true)
+            }
+            .padding(.bottom, isLast ? 0 : 18)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(spokenCommit(commit))
+        .accessibilityIdentifier(A11yID.whyRow(index))
+    }
+
+    func meta(for commit: AtlasCodeWhy.Commit) -> String {
+        var parts = [commit.agentLabel]
+        if let when = commit.when {
+            parts.append("há \(AtlasCodeRelativeTime.short(from: Int(when.timeIntervalSince1970)))")
+        }
+        parts.append(commit.shortHash)
+        if let obra = commit.provenance?.obra, !obra.isEmpty { parts.append(obra) }
+        return parts.joined(separator: " · ")
+    }
+
+    // MARK: - A11y (WAVE-056: Judgment face)
+
+    var whyFace: AtlasCodeWhyFace {
+        AtlasCodeWhyJudgment.face(model: model)
+    }
+
+    var whyContentPhaseID: String {
+        AtlasCodeWhyJudgment.contentPhaseID(face: whyFace)
+    }
+
+    var whyHeaderSpokenLabel: String {
+        AtlasCodeWhyJudgment.spokenHeader(file: file, face: whyFace)
+    }
+
+    var whySheetSpokenLabel: String {
+        AtlasCodeWhyJudgment.spokenSheet(file: file, face: whyFace)
+    }
+
+    func spokenLoading() -> String {
+        AtlasCodeWhyFace.loading.spokenFace
+    }
+
+    func spokenFailed() -> String {
+        AtlasCodeWhyJudgment.face(
+            phase: .failed(""),
+            why: nil,
+            message: model.message
+        ).spokenFace
+    }
+
+    func spokenEmptyHistory() -> String {
+        AtlasCodeWhyFace.empty.spokenFace
+    }
+
+    func spokenCommit(_ commit: AtlasCodeWhy.Commit) -> String {
+        var parts: [String] = []
+        if let quote = commit.provenance?.quote, !quote.isEmpty {
+            parts.append(quote)
+        } else {
+            parts.append("sem proveniência registrada")
+        }
+        parts.append(commit.agentLabel)
+        if let when = commit.when {
+            parts.append("há \(AtlasCodeRelativeTime.short(from: Int(when.timeIntervalSince1970)))")
+        }
+        parts.append(commit.shortHash)
+        if let obra = commit.provenance?.obra, !obra.isEmpty { parts.append(obra) }
+        if !commit.subject.isEmpty { parts.append(commit.subject) }
+        return parts.joined(separator: ", ")
+    }
+
+    static let sheetHint = "histórico de commits e proveniência registrada pelo Atlas"
+}
+
+// MARK: - Model
+
+@MainActor
+@Observable
+final class AtlasCodeWhyModel {
+    private let client: AtlasClient
+    private(set) var phase: LoadPhase = .idle
+    private(set) var why: AtlasCodeWhy?
+    private(set) var message: String?
+    private var wanted: String?
+
+    init(client: AtlasClient) {
+        self.client = client
+    }
+
+    func load(repo: String, file: String) async {
+        let key = "\(repo)\n\(file)"
+        wanted = key
+        phase = .loading
+        message = nil
+        do {
+            let response = try await client.getCodeWhy(repo: repo, file: file)
+            guard wanted == key else { return }
+            why = response
+            phase = .loaded
+        } catch {
+            guard wanted == key else { return }
+            message = String(describing: error)
+            phase = .failed(message ?? "falha desconhecida")
+        }
+    }
+}
+
+// MARK: - Judgment
+
+// MARK: - Types
+
+/// Exclusive file-biography (H1 Why) face (WAVE-056).
+enum AtlasCodeWhyFace: Equatable {
+    case loading
+    case failed(String?)
+    case empty
+    case timeline(Int)
+    case truncated(shown: Int, total: Int)
+
+    var productWord: String {
+        switch self {
+        case .loading: return "loading"
+        case .failed: return "failed"
+        case .empty: return "empty"
+        case .timeline: return "timeline"
+        case .truncated: return "truncated"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .loading:
+            return "lendo a história do arquivo"
+        case .failed(let message):
+            if let message, !message.isEmpty {
+                return "biografia indisponível, \(message)"
+            }
+            return "biografia indisponível"
+        case .empty:
+            return "este arquivo não tem história neste recorte"
+        case .timeline(let n):
+            return n == 1
+                ? "1 commit na biografia do arquivo"
+                : "\(n) commits na biografia do arquivo"
+        case .truncated(let shown, let total):
+            return "mostrando \(shown) de \(total) commits, história truncada"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure Why biography grammar — face · spoken · pack.
+enum AtlasCodeWhyJudgment {
+
+    static func face(
+        phase: LoadPhase,
+        why: AtlasCodeWhy?,
+        message: String?
+    ) -> AtlasCodeWhyFace {
+        switch phase {
+        case .idle, .loading:
+            return .loading
+        case .failed:
+            return .failed(message)
+        case .loaded:
+            guard let why else { return .empty }
+            if why.commits.isEmpty { return .empty }
+            if why.truncated {
+                return .truncated(shown: why.commits.count, total: why.commitsTotal)
+            }
+            return .timeline(why.commits.count)
+        }
+    }
+
+    /// Convenience when model is available on MainActor.
+    @MainActor
+    static func face(model: AtlasCodeWhyModel) -> AtlasCodeWhyFace {
+        face(phase: model.phase, why: model.why, message: model.message)
+    }
+
+    static func truncatedBanner(_ why: AtlasCodeWhy) -> String? {
+        guard why.truncated else { return nil }
+        return "mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada"
+    }
+
+    static func spokenSheet(file: String, face: AtlasCodeWhyFace) -> String {
+        "biografia do arquivo \(file), \(face.spokenFace)"
+    }
+
+    static func spokenHeader(file: String, face: AtlasCodeWhyFace) -> String {
+        switch face {
+        case .truncated(let shown, let total):
+            return "\(file), mostrando \(shown) de \(total)"
+        default:
+            return file
+        }
+    }
+
+    static func contentPhaseID(face: AtlasCodeWhyFace) -> String {
+        switch face {
+        case .loading: return "loading"
+        case .failed: return "failed"
+        case .empty: return "empty"
+        case .timeline(let n): return "timeline-\(n)"
+        case .truncated(let shown, let total): return "truncated-\(shown)-\(total)"
+        }
+    }
+
+    static func packFacts(
+        file: String,
+        phase: LoadPhase,
+        why: AtlasCodeWhy?,
+        message: String?
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(phase: phase, why: why, message: message)
+        facts.append("why_face: \(face.productWord)")
+        facts.append("why_file: \(file)")
+        switch face {
+        case .loading:
+            absences.append("biografia ainda carregando")
+        case .failed(let msg):
+            absences.append("biografia falhou")
+            if let msg, !msg.isEmpty { facts.append("why_error: \(msg)") }
+        case .empty:
+            absences.append("sem commits na biografia deste recorte")
+        case .timeline(let n):
+            facts.append("why_commits: \(n)")
+        case .truncated(let shown, let total):
+            facts.append("why_commits_shown: \(shown)")
+            facts.append("why_commits_total: \(total)")
+            facts.append("why_truncated: true")
+        }
+        return (facts, absences)
+    }
+}

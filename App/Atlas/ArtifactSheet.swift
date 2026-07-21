@@ -872,3 +872,649 @@ extension ArtifactSheet {
         }
     }
 }
+
+// MARK: - ArtifactJudgment
+
+// MARK: - Types
+
+/// Exclusive artifacts evidence face (WAVE-041).
+enum ArtifactEvidenceFace: Equatable {
+    case absent
+    case unavailable(reason: String?)
+    case empty
+    case ready(total: Int, images: Int, diffs: Int)
+    /// Ready items plus at least one failing delivery check.
+    case deliveryPressure(total: Int, failing: Int)
+
+    var productWord: String {
+        switch self {
+        case .absent: return "absent"
+        case .unavailable: return "unavailable"
+        case .empty: return "empty"
+        case .ready: return "ready"
+        case .deliveryPressure: return "delivery_pressure"
+        }
+    }
+
+    var kicker: String {
+        switch self {
+        case .absent: return "Artefatos"
+        case .unavailable: return "Artefatos indisponíveis"
+        case .empty: return "Sem artefatos"
+        case .ready: return "Evidência pronta"
+        case .deliveryPressure: return "Entrega com falha"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .absent:
+            return "artefatos não hidratados"
+        case .unavailable:
+            return "artefatos da execução indisponíveis"
+        case .empty:
+            return "artefatos da execução, sem itens publicados"
+        case .ready(let total, let images, let diffs):
+            var parts = [
+                total == 1 ? "1 artefato publicado" : "\(total) artefatos publicados"
+            ]
+            if images > 0 {
+                parts.append(images == 1 ? "1 imagem" : "\(images) imagens")
+            }
+            if diffs > 0 {
+                parts.append(diffs == 1 ? "1 diff" : "\(diffs) diffs")
+            }
+            return parts.joined(separator: ", ")
+        case .deliveryPressure(let total, let failing):
+            return "\(total) artefatos, \(failing == 1 ? "1 prova de entrega falhou" : "\(failing) provas de entrega falharam")"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure artifacts evidence grammar — kind rank · face · pack · spoken.
+enum ArtifactJudgment {
+
+    // MARK: Kind rank (lower = higher attention)
+
+    /// image 0 · diff 1 · markdown 2 · text 3 · file 4
+    static func kindRank(_ kind: AtlasTraceArtifacts.Item.Kind) -> Int {
+        switch kind {
+        case .image: return 0
+        case .diff: return 1
+        case .markdown: return 2
+        case .text: return 3
+        case .file: return 4
+        }
+    }
+
+    static func rankItems(
+        _ items: [AtlasTraceArtifacts.Item]
+    ) -> [AtlasTraceArtifacts.Item] {
+        items.enumerated().sorted { lhs, rhs in
+            let lk = kindRank(lhs.element.kind)
+            let rk = kindRank(rhs.element.kind)
+            if lk != rk { return lk < rk }
+            // Larger visual payloads first within same kind (operator scan).
+            if lhs.element.byteSize != rhs.element.byteSize {
+                return lhs.element.byteSize > rhs.element.byteSize
+            }
+            return lhs.offset < rhs.offset
+        }.map(\.element)
+    }
+
+    static func rankDeliveryChecks(
+        _ checks: [ArtifactDeliveryCheck]
+    ) -> [ArtifactDeliveryCheck] {
+        checks.enumerated().sorted { lhs, rhs in
+            let lf = statusFailRank(lhs.element.status)
+            let rf = statusFailRank(rhs.element.status)
+            if lf != rf { return lf < rf }
+            return lhs.offset < rhs.offset
+        }.map(\.element)
+    }
+
+    /// 0 fail · 1 running · 2 pass · 3 other (aligned with ChangeReview)
+    static func statusFailRank(_ status: String) -> Int {
+        switch status.lowercased() {
+        case "fail", "failed", "error", "broken", "timeout": return 0
+        case "running", "pending", "queued", "in_progress": return 1
+        case "pass", "passed", "ok", "success", "succeeded": return 2
+        default: return 3
+        }
+    }
+
+    static func failingDeliveryCount(_ checks: [ArtifactDeliveryCheck]) -> Int {
+        checks.filter { statusFailRank($0.status) == 0 }.count
+    }
+
+    // MARK: Face
+
+    static func face(
+        artifacts: AtlasTraceArtifacts?,
+        deliveryChecks: [ArtifactDeliveryCheck] = []
+    ) -> ArtifactEvidenceFace {
+        guard let artifacts else { return .absent }
+        switch artifacts.state {
+        case .unavailable:
+            return .unavailable(reason: artifacts.reason)
+        case .available:
+            let items = artifacts.items
+            if items.isEmpty { return .empty }
+            let images = items.filter { $0.kind == .image }.count
+            let diffs = items.filter { $0.kind == .diff }.count
+            let failing = failingDeliveryCount(deliveryChecks)
+            if failing > 0 {
+                return .deliveryPressure(total: items.count, failing: failing)
+            }
+            return .ready(total: items.count, images: images, diffs: diffs)
+        }
+    }
+
+    static func summaryLine(
+        artifacts: AtlasTraceArtifacts?,
+        deliveryChecks: [ArtifactDeliveryCheck] = []
+    ) -> String {
+        switch face(artifacts: artifacts, deliveryChecks: deliveryChecks) {
+        case .absent:
+            return "não hidratado"
+        case .unavailable:
+            return "indisponível"
+        case .empty:
+            return "sem itens publicados"
+        case .ready(let total, let images, let diffs):
+            var parts = ["\(total) itens"]
+            if images > 0 { parts.append("img \(images)") }
+            if diffs > 0 { parts.append("diff \(diffs)") }
+            return parts.joined(separator: " · ")
+        case .deliveryPressure(let total, let failing):
+            return "\(total) itens · falhas entrega \(failing)"
+        }
+    }
+
+    // MARK: Spoken / pack
+
+    static func spokenSheet(
+        artifacts: AtlasTraceArtifacts?,
+        deliveryChecks: [ArtifactDeliveryCheck] = []
+    ) -> String {
+        let face = face(artifacts: artifacts, deliveryChecks: deliveryChecks)
+        switch face {
+        case .absent:
+            return "artefatos da execução"
+        case .unavailable, .empty, .ready, .deliveryPressure:
+            return "artefatos da execução, \(face.spokenFace)"
+        }
+    }
+
+    static func packFacts(
+        artifacts: AtlasTraceArtifacts?,
+        deliveryChecks: [ArtifactDeliveryCheck] = []
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(artifacts: artifacts, deliveryChecks: deliveryChecks)
+        facts.append("artifact_face: \(face.productWord)")
+        guard let artifacts else {
+            absences.append("artefatos não hidratados neste recorte")
+            return (facts, absences)
+        }
+        if artifacts.state == .unavailable {
+            absences.append("artefatos indisponíveis no contrato")
+            if let reason = artifacts.reason, !reason.isEmpty {
+                facts.append("reason: \(reason)")
+            }
+            return (facts, absences)
+        }
+        facts.append(summaryLine(artifacts: artifacts, deliveryChecks: deliveryChecks))
+        for item in rankItems(artifacts.items).prefix(6) {
+            facts.append(
+                "item: \(item.kind.rawValue) · \(item.name) · \(item.byteSize)B"
+            )
+        }
+        if artifacts.items.isEmpty {
+            absences.append("lista de artefatos vazia no estado available")
+        }
+        let failing = failingDeliveryCount(deliveryChecks)
+        if failing > 0 {
+            facts.append("delivery_failures: \(failing)")
+        }
+        return (facts, absences)
+    }
+}
+
+// MARK: - ArtifactListJudgment
+
+// MARK: - ArtifactListJudgment
+
+// MARK: - Types
+
+/// Exclusive artifact list chrome face (WAVE-092).
+/// Evidence sheet face stays WAVE-041; preview pane stays WAVE-058.
+enum ArtifactListFace: Equatable {
+    case silence
+    case list(Int)
+
+    var productWord: String {
+        switch self {
+        case .silence: return "silence"
+        case .list(let n): return "list(\(n))"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .silence:
+            return "lista de artefatos vazia"
+        case .list(let n):
+            let noun = n == 1 ? "item" : "itens"
+            return "lista de artefatos, \(n) \(noun)"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure artifact list/row grammar — list face · row spoken · empty · close · pack.
+enum ArtifactListJudgment {
+
+    static let closeLabel = "fechar artefatos"
+    static let closeHint = "volta para a conversa"
+    static let sheetHint = "lista e preview só com itens publicados no contrato"
+    static let emptyVisualizableLabel = "sem artefatos visualizáveis nesta execução"
+    static let emptyVisualizableCopy = "nenhum artefato visualizável"
+    static let loadFailSpoken = "não foi possível consultar artefatos"
+    static let selectedHint = "selecionado no preview"
+    static let openHint = "abre o preview deste artefato"
+
+    // MARK: Face
+
+    static func listFace(itemCount: Int) -> ArtifactListFace {
+        itemCount <= 0 ? .silence : .list(itemCount)
+    }
+
+    // MARK: Rank (WAVE-041)
+
+    static func rankItems(_ items: [AtlasTraceArtifacts.Item]) -> [AtlasTraceArtifacts.Item] {
+        ArtifactJudgment.rankItems(items)
+    }
+
+    // MARK: Spoken
+
+    static func spokenList(itemCount: Int) -> String {
+        listFace(itemCount: itemCount).spokenFace
+    }
+
+    static func spokenRow(
+        name: String,
+        byteSize: Int,
+        kind: AtlasTraceArtifacts.Item.Kind,
+        selected: Bool
+    ) -> String {
+        var parts = [
+            name,
+            ArtifactViewer.byteLabel(byteSize),
+            ArtifactViewer.kindLabel(kind)
+        ]
+        if selected { parts.append("selecionado") }
+        return parts.joined(separator: ", ")
+    }
+
+    static func spokenRow(
+        item: AtlasTraceArtifacts.Item,
+        selected: Bool
+    ) -> String {
+        spokenRow(
+            name: item.name,
+            byteSize: item.byteSize,
+            kind: item.kind,
+            selected: selected
+        )
+    }
+
+    static func rowHint(selected: Bool) -> String {
+        selected ? selectedHint : openHint
+    }
+
+    static func spokenEmptyVisualizable() -> String {
+        emptyVisualizableLabel
+    }
+
+    // MARK: Pack
+
+    static func packFacts(
+        items: [AtlasTraceArtifacts.Item],
+        selectedID: String?
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = listFace(itemCount: items.count)
+        facts.append("artifact_list_face: \(face.productWord)")
+        facts.append("artifact_list_count: \(items.count)")
+        switch face {
+        case .silence:
+            absences.append("lista de artefatos visualizáveis vazia")
+        case .list:
+            let ranked = rankItems(items)
+            for item in ranked.prefix(6) {
+                let sel = item.id == selectedID ? " · selected" : ""
+                facts.append("artifact_row: \(item.kind.rawValue) · \(item.name)\(sel)")
+            }
+            if let selectedID, !items.contains(where: { $0.id == selectedID }) {
+                absences.append("selectedID não está na lista publicada")
+            }
+        }
+        return (facts, absences)
+    }
+}
+// MARK: - ArtifactPreviewChrome
+
+extension ArtifactViewer {
+    static func byteLabel(_ bytes: Int) -> String {
+        if bytes < 1_024 { return "\(bytes) B" }
+        if bytes < 1_048_576 { return "\(max(1, bytes / 1_024)) KB" }
+        let mb = Double(bytes) / 1_048_576
+        return String(format: "%.1f MB", mb).replacingOccurrences(of: ".", with: ",")
+    }
+}
+
+extension ArtifactPreviewContent {
+    @ViewBuilder
+    var diffPreview: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            Text(String(decoding: content.data, as: UTF8.self))
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .textSelection(.enabled)
+        }
+        .frame(maxHeight: 360)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(ArtifactPreviewJudgment.spokenPreview(item: item))
+        .accessibilityHint("arraste horizontalmente para ler o diff")
+    }
+}
+
+extension ArtifactViewer {
+    static func kindLabelImageMarkdown(_ kind: AtlasTraceArtifacts.Item.Kind) -> String? {
+        switch kind {
+        case .image: return "imagem"
+        case .markdown: return "markdown"
+        default: return nil
+        }
+    }
+}
+
+extension ArtifactViewer {
+    static func kindLabelDocument(_ kind: AtlasTraceArtifacts.Item.Kind) -> String? {
+        if let imageMd = kindLabelImageMarkdown(kind) { return imageMd }
+        switch kind {
+        case .text: return "texto"
+        case .diff: return "diff"
+        default: return nil
+        }
+    }
+}
+
+extension ArtifactViewer {
+    static func kindLabel(_ kind: AtlasTraceArtifacts.Item.Kind) -> String {
+        kindLabelDocument(kind) ?? "arquivo"
+    }
+}
+
+struct ArtifactPreviewContent: View {
+    let item: AtlasTraceArtifacts.Item
+    let content: AtlasArtifactContent
+
+    var body: some View {
+        Group { previewSwitch }
+    }
+}
+
+extension ArtifactPreviewContent {
+    var imageDecodeFailure: some View {
+        ArtifactFileFicha(
+            name: item.name,
+            subtitle: "imagem não pôde ser decodificada · \(ArtifactViewer.byteLabel(item.byteSize))"
+        )
+        .accessibilityLabel(
+            ArtifactPreviewJudgment.spokenDecodeFailure(name: item.name, bytes: item.byteSize)
+        )
+    }
+}
+
+extension ArtifactPreviewContent {
+    @ViewBuilder
+    var imagePreviewBranch: some View {
+        if let image = UIImage(data: content.data) {
+            ZoomableArtifactImage(image: image, name: item.name)
+        } else {
+            imageDecodeFailure
+        }
+    }
+}
+
+extension ArtifactPreviewContent {
+    @ViewBuilder
+    var previewSwitch: some View {
+        switch item.kind {
+        case .image:
+            imagePreviewBranch
+        default:
+            textishPreview
+        }
+    }
+}
+
+extension ArtifactPreviewContent {
+    @ViewBuilder
+    var textishDocumentPreview: some View {
+        switch item.kind {
+        case .markdown, .text:
+            textishMarkdownPreview(content.data)
+        case .diff:
+            diffPreview
+        default:
+            EmptyView()
+        }
+    }
+}
+
+extension ArtifactPreviewContent {
+    @ViewBuilder
+    var textishFilePreview: some View {
+        ArtifactFileFicha(
+            name: item.name,
+            subtitle: "\(ArtifactViewer.byteLabel(item.byteSize)) · sha \(String(item.sha256.prefix(12)))"
+        )
+    }
+}
+
+extension ArtifactPreviewContent {
+    @ViewBuilder
+    func textishMarkdownPreview(_ content: Data) -> some View {
+        AtlasMarkdownView(text: String(decoding: content, as: UTF8.self), streaming: false)
+    }
+}
+
+extension ArtifactPreviewContent {
+    @ViewBuilder
+    var textishPreview: some View {
+        switch item.kind {
+        case .markdown, .text, .diff:
+            textishDocumentPreview
+        case .file:
+            textishFilePreview
+        default:
+            EmptyView()
+        }
+    }
+}
+
+// MARK: - ArtifactPreviewJudgment
+
+// MARK: - Types
+
+/// Exclusive artifact preview pane face (WAVE-058).
+enum ArtifactPreviewFace: Equatable {
+    case idle
+    case loading
+    case loaded(kind: String, name: String)
+    case tooLarge(name: String, bytes: Int)
+    case failed(String)
+
+    var productWord: String {
+        switch self {
+        case .idle: return "idle"
+        case .loading: return "loading"
+        case .loaded: return "loaded"
+        case .tooLarge: return "too_large"
+        case .failed: return "failed"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .idle:
+            return "preview ocioso"
+        case .loading:
+            return "carregando preview"
+        case .loaded(let kind, let name):
+            return "preview \(kind) \(name)"
+        case .tooLarge(let name, let bytes):
+            return ArtifactPreviewJudgment.spokenTooLarge(name: name, bytes: bytes)
+        case .failed(let message):
+            let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.isEmpty { return "preview falhou" }
+            return "preview falhou, \(trimmed)"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure artifact preview grammar — face · spoken · pack.
+enum ArtifactPreviewJudgment {
+
+    static func face(
+        _ preview: ArtifactPreviewState,
+        selectedName: String? = nil
+    ) -> ArtifactPreviewFace {
+        switch preview {
+        case .idle:
+            return .idle
+        case .loading:
+            return .loading
+        case .loaded(let item, _):
+            return .loaded(
+                kind: ArtifactViewer.kindLabel(item.kind),
+                name: item.name
+            )
+        case .tooLarge(let bytes):
+            return .tooLarge(name: selectedName ?? "artefato", bytes: bytes)
+        case .failed(let message):
+            return .failed(message)
+        }
+    }
+
+    static func spokenPane(
+        _ preview: ArtifactPreviewState,
+        selectedName: String? = nil
+    ) -> String {
+        face(preview, selectedName: selectedName).spokenFace
+    }
+
+    /// Loaded content spoken — kind-aware lines (WAVE-100 · was ArtifactViewerA11y).
+    static func spokenLoaded(
+        item: AtlasTraceArtifacts.Item,
+        content: AtlasArtifactContent
+    ) -> String {
+        _ = content
+        return spokenPreview(item: item)
+    }
+
+    // MARK: Viewer chrome spoken (WAVE-100)
+
+    static func spokenFicha(name: String, subtitle: String) -> String {
+        "\(name), \(subtitle)"
+    }
+
+    static func spokenDecodeFailure(name: String, bytes: Int) -> String {
+        "imagem \(name) não pôde ser decodificada, \(ArtifactViewer.byteLabel(bytes))"
+    }
+
+    static func spokenTooLarge(name: String, bytes: Int) -> String {
+        "\(name), grande demais para visualizar aqui, \(ArtifactViewer.byteLabel(bytes))"
+    }
+
+    static func spokenPreview(item: AtlasTraceArtifacts.Item) -> String {
+        let kind = ArtifactViewer.kindLabel(item.kind)
+        let size = ArtifactViewer.byteLabel(item.byteSize)
+        return spokenPreviewDocument(item: item, size: size)
+            ?? spokenPreviewFile(item: item, kind: kind, size: size)
+    }
+
+    static func spokenPreviewDocument(item: AtlasTraceArtifacts.Item, size: String) -> String? {
+        switch item.kind {
+        case .image:
+            return "preview de imagem \(item.name), \(size)"
+        case .markdown:
+            return "preview markdown \(item.name), \(size)"
+        case .text:
+            return "preview de texto \(item.name), \(size)"
+        case .diff:
+            return "preview de diff \(item.name), \(size)"
+        default:
+            return nil
+        }
+    }
+
+    static func spokenPreviewFile(item: AtlasTraceArtifacts.Item, kind: String, size: String) -> String {
+        let sha = String(item.sha256.prefix(12))
+        return "arquivo \(item.name), \(kind), \(size), sha \(sha)"
+    }
+
+    static func spokenZoomImage(name: String, scale: CGFloat) -> String {
+        if scale <= 1.01 {
+            return "imagem \(name), tamanho normal"
+        }
+        let pct = Int((scale * 100).rounded())
+        return "imagem \(name), ampliada \(pct) por cento"
+    }
+
+    static let zoomHint =
+        "pinça para aproximar, arraste quando ampliada, toque duas vezes ou use ações para redefinir"
+    static let zoomResetAction = "Redefinir zoom"
+
+    static func packFacts(
+        preview: ArtifactPreviewState,
+        selected: AtlasTraceArtifacts.Item?
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(preview, selectedName: selected?.name)
+        facts.append("artifact_preview_face: \(face.productWord)")
+        if let selected {
+            facts.append("preview_item: \(selected.name)")
+            facts.append("preview_kind: \(selected.kind.rawValue)")
+            facts.append("preview_bytes: \(selected.byteSize)")
+        } else {
+            absences.append("nenhum artefato selecionado no preview")
+        }
+        switch face {
+        case .idle:
+            absences.append("preview ocioso")
+        case .loading:
+            absences.append("preview carregando")
+        case .loaded:
+            facts.append("preview_ready: true")
+        case .tooLarge(_, let bytes):
+            facts.append("preview_too_large_bytes: \(bytes)")
+            absences.append("conteúdo não renderizado — tamanho acima do limite local")
+        case .failed(let message):
+            absences.append("preview falhou")
+            if !message.isEmpty { facts.append("preview_error: \(message)") }
+        }
+        return (facts, absences)
+    }
+}
