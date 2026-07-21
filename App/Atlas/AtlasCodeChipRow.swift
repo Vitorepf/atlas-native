@@ -14,10 +14,13 @@ struct AtlasCodeChipRow: View {
                     .foregroundStyle(AtlasCodePalette.healed)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
+                    .frame(minHeight: 28)
                     .overlay(
                         Capsule().strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
                     )
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(items.joined(separator: ", "))
     }
 }
