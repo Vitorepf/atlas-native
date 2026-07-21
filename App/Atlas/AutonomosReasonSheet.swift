@@ -90,7 +90,8 @@ struct AutonomosReasonSheet: View {
                 }
             }
             .accessibilityIdentifier(A11yID.autonomosReasonSheet)
-            .accessibilityLabel("confirmar ação governada, \(title.lowercased())")
+            // Contain without fused sheet label so fields/confirm stay focusable.
+            .accessibilityElement(children: .contain)
         }
     }
 }
