@@ -9318,7 +9318,7 @@ extension ArtifactSheet {
 extension ArtifactSheet {
     @ViewBuilder
     var emptyVisualizable: some View {
-        Text("nenhum artefato visualizável")
+        Text("Nenhum artefato visualizável")
             .font(AtlasFont.serifItalic(15))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

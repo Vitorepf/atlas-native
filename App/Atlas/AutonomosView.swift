@@ -1287,7 +1287,7 @@ struct AutonomosRhythmSheet: View {
 
             Spacer(minLength: 0)
 
-            Text("aprendido e guardado só neste iPhone — nada sai do aparelho")
+            Text("Aprendido e guardado só neste iPhone — nada sai do aparelho")
                 .font(AtlasFont.mono(9.5))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -1723,7 +1723,7 @@ extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var revertQueueBanner: some View {
         if revertReceipt != nil {
-            Text("na fila · ainda não desfeito")
+            Text("Na fila · ainda não desfeito")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .padding(12)
@@ -1772,7 +1772,7 @@ extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var humanSilenceLine: some View {
         if receipt.hasMergeProof {
-            Text("você não foi necessário — entrega sem portão")
+            Text("Você não foi necessário — entrega sem portão")
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityLabel(spokenHumanSilenceLabel())

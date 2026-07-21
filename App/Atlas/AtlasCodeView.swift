@@ -1439,7 +1439,7 @@ extension AtlasCodeView {
                     .accessibilityHidden(true)
             }
             if AtlasCodeWeekUI.isQuiet(week) {
-                Text("semana quieta · sem commits nem curas")
+                Text("Semana quieta · sem commits nem curas")
                     .font(AtlasFont.serifItalic(13))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .accessibilityHidden(true)
@@ -1891,7 +1891,7 @@ extension AtlasCodeHealReceiptSheet {
     @ViewBuilder
     var healStatusLines: some View {
         if hasCompletedHeal {
-            Text("você não foi necessário")
+            Text("Você não foi necessário")
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -1899,7 +1899,7 @@ extension AtlasCodeHealReceiptSheet {
         }
 
         if let blocked = heal.blocked, !blocked.isEmpty {
-            Text("bloqueado · \(blocked)")
+            Text("Bloqueado · \(blocked)")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasCodePalette.alert)
                 .accessibilityLabel(spokenBlockedLabel(blocked))
@@ -1962,7 +1962,7 @@ extension AtlasCodeHealReceiptSheet {
     @ViewBuilder
     var receiptStepsOrEmpty: some View {
         if heal.stepReceipts.isEmpty {
-            Text("sem passos registrados no recibo")
+            Text("Sem passos registrados no recibo")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityLabel(spokenEmptyStepsLabel())
@@ -2453,7 +2453,7 @@ extension AtlasCodeWhySheet {
     @ViewBuilder
     func whyLoadedCommits(_ why: AtlasCodeWhy) -> some View {
         if why.commits.isEmpty {
-            Text("este arquivo não tem história neste recorte")
+            Text("Este arquivo não tem história neste recorte")
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.top, 6)
@@ -2472,7 +2472,7 @@ extension AtlasCodeWhySheet {
 extension AtlasCodeWhySheet {
     var whyFailed: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("biografia indisponível")
+            Text("Biografia indisponível")
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
@@ -2493,7 +2493,7 @@ extension AtlasCodeWhySheet {
     @ViewBuilder
     var headerTruncation: some View {
         if let why = model.why, why.truncated {
-            Text("mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada")
+            Text("Mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
@@ -2530,7 +2530,7 @@ extension AtlasCodeWhySheet {
         HStack(spacing: 10) {
             BreathingDiamond(size: 10, reduceMotion: reduceMotion)
                 .accessibilityHidden(true)
-            Text("lendo a história do arquivo…")
+            Text("Lendo a história do arquivo…")
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
@@ -2590,7 +2590,7 @@ extension AtlasCodeWhySheet {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
         } else {
-            Text("sem proveniência registrada")
+            Text("Sem proveniência registrada")
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
@@ -3168,7 +3168,7 @@ extension AtlasCodeProvenanceSheet {
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     var provenanceFailedTitle: some View {
-        Text("proveniência indisponível")
+        Text("Proveniência indisponível")
             .font(AtlasFont.serifItalic(15))
             .foregroundStyle(AtlasTheme.textSecondary)
             .accessibilityHidden(true)
@@ -3429,7 +3429,7 @@ extension AtlasCodeProvenanceSheet {
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("sua frase")
+            Text("Sua frase")
                 .atlasSans(9)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }

@@ -3520,7 +3520,7 @@ extension ArenaRunSheet {
     func receiptWorkerGapCopy(_ receipt: AtlasArenaStartReceipt) -> some View {
         if receipt.workerImplemented == false {
             // false hoje = worker desligado no servidor (ATLAS_ARENA_WORKER_ENABLED).
-            Text("worker de medição desligado no servidor — fila aguardando")
+            Text("Worker de medição desligado no servidor — fila aguardando")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
