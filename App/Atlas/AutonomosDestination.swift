@@ -28,3 +28,9 @@ enum AutonomosDestination: Hashable, Identifiable {
         }
     }
 }
+
+/// Vestimenta do hub (v9) — quiet/live do catálogo local; sem contagem de backlog.
+enum AutonomosHubVestment: Equatable {
+    case live
+    case quiet
+}

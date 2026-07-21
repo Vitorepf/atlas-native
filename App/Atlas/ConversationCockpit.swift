@@ -194,7 +194,7 @@ struct ExecutionBanner: View {
         bannerChrome
             .accessibilityElement(children: .ignore)
             .accessibilityHidden(embedInParent)
-            .accessibilityLabel(ExecutionBannerA11y.spoken(text: text))
+            .accessibilityLabel(text)
             .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 }
