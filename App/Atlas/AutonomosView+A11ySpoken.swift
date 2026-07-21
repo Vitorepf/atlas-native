@@ -9,5 +9,5 @@ extension AutonomosView {
         spokenScreenPhaseLabel()
     }
 
-    static let screenHint = "catálogo 24/7; pergunta e manda só pela pílula"
+    static let screenHint = "catálogo local neste iPhone; pergunta e manda só pela pílula"
 }

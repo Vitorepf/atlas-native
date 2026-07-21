@@ -5,7 +5,7 @@ import SwiftUI
 extension AutonomosFleetFailureEmpty {
     var failureIcon: some View {
         Image(systemName: "exclamationmark.triangle")
-            .font(.title2)
+            .font(AtlasFont.serif(22))
             .foregroundStyle(AtlasTheme.domOperacional)
             .accessibilityHidden(true)
     }

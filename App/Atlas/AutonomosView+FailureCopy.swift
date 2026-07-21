@@ -9,9 +9,10 @@ extension AutonomosFleetFailureEmpty {
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(message)
-                .font(.footnote)
+                .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
