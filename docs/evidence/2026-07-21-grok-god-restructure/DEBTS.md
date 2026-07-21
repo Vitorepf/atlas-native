@@ -3,31 +3,31 @@
 ## State
 
 ```yaml
-pass: 1
-domain_index: 7
-last_focus: "saturation scoreboard — residual only with headroom"
-session_commits: 114
+pass: 2
+domain_index: 0
+last_focus: "pass 2 start — soft re-audit Home"
+session_commits: 115
 soft_sections_states: 0
 swift_App_Atlas: 36
 swift_Widgets: 2
 ```
 
-## Scoreboard
+## Pass 1 closed (structural)
 
-| Metric | Value |
-|---|---|
-| Mission commits | **114** |
-| App/Atlas .swift | **36** |
-| Widgets .swift | **2** |
-| *Sections*/*States* | **0** |
-| Density (route≤600 any≤2000) | **OK** |
-| AtlasSession / ConversationModel | **untouched** |
+- Soft *Sections*/*States* **0**
+- Casca densified to **36** App/Atlas + **2** Widgets hosts
+- Density guard OK · gates green
+- Session/ConversationModel untouched
 
-## Residual
+## Pass 2 checklist (Home first)
 
-Nearly all hosts 1.5–1.97k. Fuse only with measured headroom. Soft debt zero.  
-Next pass: MARK polish if sparse · CODEMAP · dead-code `rg` · pass+=1.
+1. Delete morto — scan Root* Home* Workspace* for 0-ref  
+2. Rename honesty residual  
+3. spoken/packFacts unify residual  
+4. MARK densos  
+5. Fuse only with measured headroom  
+6. CODEMAP Type.method  
 
 ## Proibido
 
-Goal Done · god_hold · WAVE · dual · Core paths
+Goal Done · god_hold · WAVE · dual · Core
