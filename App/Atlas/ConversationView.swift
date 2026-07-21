@@ -76,20 +76,6 @@ struct ConversationView: View {
 
 }
 
-enum ConversationViewA11y {
-    static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
-
-    static func spokenOutlineLabel(turnCount: Int) -> String {
-        let noun = turnCount == 1 ? "turno" : "turnos"
-        return "índice da conversa, \(turnCount) \(noun)"
-    }
-
-    static let outlineHint = "abre o índice editorial dos turnos desta conversa"
-    static let headerContinuityLabel = "continuidade da conversa"
-    static let headerContinuityHint = "continuar esta conversa no Mac ou no Terminal"
-    static let screenHint = "turnos e composer só com dados da sessão e do model"
-}
-
 extension ConversationView {
     func spokenConversationEmptyPrefix() -> String? {
         if model.loadError != nil, model.bubbles.isEmpty {
@@ -122,7 +108,7 @@ extension ConversationView {
     func setToast(_ message: String) {
         if reduceMotion { model.toast = message }
         else { withAnimation(AtlasMotion.editorial) { model.toast = message } }
-        UIAccessibility.post(notification: .announcement, argument: ConversationViewA11y.spokenToast(message))
+        UIAccessibility.post(notification: .announcement, argument: ConversationMessagesJudgment.spokenToast(message))
     }
 
     func clearToast() {
@@ -154,7 +140,7 @@ extension ConversationView {
             .accessibilityHint(
                 hidesNavigationBack
                     ? "arraste para baixo para fechar"
-                    : ConversationViewA11y.screenHint
+                    : ConversationMessagesJudgment.screenHint
             )
             .overlay(alignment: .top) { toast }
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.toast)

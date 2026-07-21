@@ -87,4 +87,12 @@ enum ConversationMessagesJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Screen chrome spoken (IDLE · was ConversationViewA11y)
+
+    static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
+
+    static let headerContinuityLabel = "continuidade da conversa"
+    static let headerContinuityHint = "continuar esta conversa no Mac ou no Terminal"
+    static let screenHint = "turnos e composer só com dados da sessão e do model"
 }

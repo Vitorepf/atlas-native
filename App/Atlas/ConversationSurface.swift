@@ -512,8 +512,8 @@ extension ConversationView {
         } label: {
             continuityMenuLabel
         }
-        .accessibilityLabel(ConversationViewA11y.headerContinuityLabel)
-        .accessibilityHint(ConversationViewA11y.headerContinuityHint)
+        .accessibilityLabel(ConversationMessagesJudgment.headerContinuityLabel)
+        .accessibilityHint(ConversationMessagesJudgment.headerContinuityHint)
         .accessibilityIdentifier(A11yID.conversationHeaderContinuity)
     }
 }
@@ -530,8 +530,8 @@ extension ConversationView {
                     .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 40, height: 40).atlasGlassCircle()
             }
-            .accessibilityLabel(ConversationViewA11y.spokenOutlineLabel(turnCount: model.bubbles.count))
-            .accessibilityHint(ConversationViewA11y.outlineHint)
+            .accessibilityLabel(ConversationOutlineJudgment.spokenOutlineControl(turnCount: model.bubbles.count))
+            .accessibilityHint(ConversationOutlineJudgment.outlineControlHint)
             .accessibilityIdentifier(A11yID.conversationOutline)
         }
     }
@@ -564,7 +564,7 @@ extension ConversationView {
                 .padding(.top, 8)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel(ConversationViewA11y.spokenToast(t))
+                .accessibilityLabel(ConversationMessagesJudgment.spokenToast(t))
                 .accessibilityIdentifier(A11yID.conversationToast)
                 .task { await dismissToastAfterDelay() }
         }

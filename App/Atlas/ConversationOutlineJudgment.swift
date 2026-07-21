@@ -80,4 +80,13 @@ enum ConversationOutlineJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Chrome spoken (IDLE · was ConversationViewA11y outline)
+
+    static func spokenOutlineControl(turnCount: Int) -> String {
+        let noun = turnCount == 1 ? "turno" : "turnos"
+        return "índice da conversa, \(turnCount) \(noun)"
+    }
+
+    static let outlineControlHint = "abre o índice editorial dos turnos desta conversa"
 }
