@@ -132,6 +132,7 @@ extension SteerInteractionSheet {
             .tint(AtlasTheme.accent)
             .lineLimit(3...7)
             .padding(12)
+            .frame(minHeight: 88, alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separator, lineWidth: 1))
             .accessibilityIdentifier(A11yID.steerInstruction)
