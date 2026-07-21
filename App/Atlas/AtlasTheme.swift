@@ -209,16 +209,16 @@ struct PressableScale: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            // Soft press — 0.97 scale + 0.92 opacity keeps gold chrome readable under finger.
-            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
-            .opacity(reduceMotion ? 1 : (configuration.isPressed ? 0.92 : 1))
+            // Soft press — 0.975 scale + 0.94 opacity keeps gold chrome readable under finger.
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.975 : 1))
+            .opacity(reduceMotion ? 1 : (configuration.isPressed ? 0.94 : 1))
             .animation(
                 reduceMotion
                     ? nil
                     : (configuration.isPressed
                         ? .easeOut(duration: AtlasMotion.instinct)
                         // Editorial: damping ≥0.8 — never Material overshoot.
-                        : .spring(response: 0.25, dampingFraction: 0.82)),
+                        : .spring(response: 0.28, dampingFraction: 0.84)),
                 value: configuration.isPressed
             )
     }
