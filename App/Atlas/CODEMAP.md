@@ -39,6 +39,7 @@
 | **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
 | **Workspace screen (lista)** | `WorkspaceScreenJudgment` → face loading/offline/empty/list · screen a11y |
+| **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face loading/failed/empty/list/miss · rank · pack |
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |
 | **Ops failure (multi-superfície)** | `AtlasOpsFailureJudgment` → face network/domain/load · FailureEmpty |
 | Phase grammar execução (strip/presence) | `ConversationExecutionPhase` → strip/StateCard/LiveNow/composer `selectPresenceBubble` |

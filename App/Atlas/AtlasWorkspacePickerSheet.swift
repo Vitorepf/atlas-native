@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// WAVE-097: workspace picker — list math/a11y via WorkspacePickerJudgment.
 
 struct AtlasWorkspacePickerSheet: View {
     @Environment(\.dismiss) var dismiss
@@ -25,6 +25,18 @@ struct AtlasWorkspacePickerSheet: View {
 
     private var showsNoRepo: Bool { onNoRepo != nil && query.isEmpty }
 
+    private var pickerRepos: [AtlasCodeRepoRef] {
+        WorkspacePickerJudgment.repos(from: model.workspace, query: query)
+    }
+
+    private var pickerFace: WorkspacePickerFace {
+        WorkspacePickerJudgment.face(
+            phase: model.phase,
+            repoCount: pickerRepos.count,
+            query: query
+        )
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -34,64 +46,53 @@ struct AtlasWorkspacePickerSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $query, prompt: "Buscar repositórios")
+            .searchable(text: $query, prompt: WorkspacePickerJudgment.searchPrompt)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }.atlasSans(15, .medium)
+                    Button(WorkspacePickerJudgment.closeLabel) { dismiss() }
+                        .atlasSans(15, .medium)
                         .tint(AtlasTheme.textSecondary)
                 }
             }
             .task { if case .idle = model.phase { await model.load() } }
             .accessibilityIdentifier(A11yID.workspacePickerSheet)
+            .accessibilityValue(pickerFace.productWord)
+            .accessibilityLabel(
+                WorkspacePickerJudgment.spokenSheet(face: pickerFace, title: title)
+            )
         }
     }
 
     @ViewBuilder
     private var pickerContent: some View {
-        switch model.phase {
-        case .idle, .loading:
+        switch pickerFace {
+        case .loading:
             VStack(spacing: 12) {
                 BreathingDiamond(size: 10, reduceMotion: false)
-                Text("lendo os repositórios do Mac…")
+                Text(WorkspacePickerJudgment.loadingCopy)
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityLabel(WorkspacePickerJudgment.spokenLoading())
         case .failed:
             VStack(spacing: 10) {
-                Text("O Mac não respondeu.")
+                Text(WorkspacePickerJudgment.failedHeadline)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Button("Tentar de novo") { Task { await model.load() } }
+                Button(WorkspacePickerJudgment.retryLabel) { Task { await model.load() } }
                     .atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.accent)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-        default:
+            .accessibilityLabel(WorkspacePickerJudgment.spokenFailed())
+        case .empty, .miss, .list:
             pickerRepoList
         }
     }
 }
 
 extension AtlasWorkspacePickerSheet {
-    var pickerRepos: [AtlasCodeRepoRef] {
-        guard let ws = model.workspace else { return [] }
-        var seen = Set<String>()
-        let all = (ws.folders.flatMap(\.repos) + ws.loose + ws.recents)
-            .filter { seen.insert($0.slug).inserted }
-            .sorted { a, b in
-                switch (a.lastCommitAt, b.lastCommitAt) {
-                case let (x?, y?): return x > y
-                case (_?, nil): return true
-                case (nil, _?): return false
-                case (nil, nil): return a.name.localizedCaseInsensitiveCompare(b.name) == .orderedAscending
-                }
-            }
-        guard !query.isEmpty else { return all }
-        return all.filter { $0.name.localizedCaseInsensitiveContains(query)
-            || ($0.folder?.localizedCaseInsensitiveContains(query) ?? false) }
-    }
-
     var noRepoRow: some View {
         Button {
             onNoRepo?()
@@ -102,9 +103,9 @@ extension AtlasWorkspacePickerSheet {
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 22)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Sem repositório").atlasSans(16, .medium)
+                    Text(WorkspacePickerJudgment.noRepoTitle).atlasSans(16, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text("conversar ou pesquisar, sem projeto").atlasSans(13)
+                    Text(WorkspacePickerJudgment.noRepoSubtitle).atlasSans(13)
                         .foregroundStyle(AtlasTheme.textTertiary)
                 }
                 Spacer()
@@ -116,8 +117,8 @@ extension AtlasWorkspacePickerSheet {
             .atlasCard()
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("sem repositório")
-        .accessibilityHint("conversa geral com o Atlas, sem projeto")
+        .accessibilityLabel(WorkspacePickerJudgment.spokenNoRepo())
+        .accessibilityHint(WorkspacePickerJudgment.noRepoHint)
         .accessibilityIdentifier(A11yID.workspacePickerNoRepo)
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 12)
@@ -126,7 +127,7 @@ extension AtlasWorkspacePickerSheet {
     var pickerRepoList: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
-                Text("REPOSITÓRIOS")
+                Text(WorkspacePickerJudgment.reposCaption)
                     .font(AtlasFont.mono(11, .medium)).tracking(1.6)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.horizontal, AtlasTheme.Space.screen)
@@ -144,6 +145,7 @@ extension AtlasWorkspacePickerSheet {
             }
             .padding(.vertical, 12)
         }
+        .accessibilityValue(pickerFace.productWord)
     }
 
     private var showsNoRepoSpacing: Bool { onNoRepo != nil && query.isEmpty }
@@ -172,8 +174,8 @@ extension AtlasWorkspacePickerSheet {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(repo.folder.map { "\($0), " } ?? "")\(repo.name)")
-        .accessibilityHint("abre o workspace deste repositório")
+        .accessibilityLabel(WorkspacePickerJudgment.spokenRow(repo))
+        .accessibilityHint(WorkspacePickerJudgment.rowHint)
         .accessibilityIdentifier(A11yID.workspacePickerRow(repo.slug))
     }
 }

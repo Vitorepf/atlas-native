@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 91
+- waves_completed: 92
 - idle_compress_passes: 18
 - collapse_host: 0
 
@@ -102,13 +102,8 @@ mode: designer + implementer
 - WAVE-094
 - WAVE-095
 - WAVE-096
-
-## Idle compress
-- pass 17 · SheetShellA11y
-- pass 18 · Ops/LiveNow/Steer/Effort/Conversation/Autonomos chrome → Judgment
-
-## Open queue
-_(none)_ — max 2 IDLE after WAVE-096 done
+- WAVE-097
 
 ## Notes
-- DEVICE_PENDING. Next: A fill or full-bar residual only.
+- WAVE-097 workspace picker. IDLE 17–18 prior.
+- DEVICE_PENDING.
