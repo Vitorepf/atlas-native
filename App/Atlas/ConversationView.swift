@@ -987,7 +987,7 @@ extension SheetShell {
     var sheetHandle: some View {
         // Soft gold-tinted grabber — quiet luxury, not pure slate bar.
         RoundedRectangle(cornerRadius: 3)
-            .fill(AtlasTheme.accent.opacity(0.28))
+            .fill(AtlasTheme.accent.opacity(0.34))
             .frame(width: 42, height: 5)
             .padding(.top, 10).padding(.bottom, 16)
             .accessibilityHidden(true)
@@ -2629,7 +2629,7 @@ extension ConversationComposer {
     var keyboardGrabberBar: some View {
         // Match SheetShell grabber tone — gold-quiet, not slate-only.
         RoundedRectangle(cornerRadius: 3)
-            .fill(AtlasTheme.accent.opacity(0.28))
+            .fill(AtlasTheme.accent.opacity(0.34))
             .frame(width: 42, height: 5)
             .frame(maxWidth: .infinity, minHeight: 48) // HIG hit target for dismiss
             .contentShape(Rectangle())
@@ -3516,6 +3516,8 @@ extension ComposerToolbar {
                 .foregroundStyle(AtlasTheme.accent)
                 .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 6, y: 1)
                 .frame(width: 48, height: 48)
+                // Match promote / scroll FAB float — primary send rides chrome plane.
+                .atlasElevation(radius: 8, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .buttonStyle(PressableScale())

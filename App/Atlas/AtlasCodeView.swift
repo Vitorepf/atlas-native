@@ -173,9 +173,10 @@ extension AtlasCodeView {
         .atlasGlassCapsule()
         .overlay(
             Capsule()
-                .strokeBorder(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 0.5)
+                // Match glass capsule gold-quiet rim family (1pt, not hairline).
+                .strokeBorder(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1)
         )
-        .atlasElevation(radius: 10, y: 4)
+        .atlasElevation(radius: 10, y: 4, opacity: 0.16)
         .contentShape(Capsule())
         .onTapGesture { openAskPill() }
         .padding(.horizontal, AtlasTheme.Space.screen)

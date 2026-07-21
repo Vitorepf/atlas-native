@@ -965,7 +965,8 @@ struct AutonomosListView: View {
             Text("✦")
                 .font(AtlasFont.serif(28))
                 .foregroundStyle(AtlasTheme.accent.opacity(0.55))
-                .shadow(color: AtlasTheme.accent.opacity(0.22), radius: 10, y: 1)
+                // Soft gold-quiet empty catalog bloom — match editorial/failure family.
+                .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 10, y: 1)
                 .accessibilityHidden(true)
             AutonomosMapChrome.heroTitle("Nenhum ainda", size: 32)
             Text("Crie um Autônomo com escopo fechado. Ele evolui só nisso — 24/7.")

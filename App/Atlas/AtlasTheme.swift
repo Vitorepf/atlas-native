@@ -20,7 +20,7 @@ private struct AtlasCardModifier: ViewModifier {
 }
 
 extension View {
-    /// Chrome canônico de card: surface + borda separator + cantos 14.
+    /// Chrome canônico de card: surface + gold-quiet rim + cantos 14.
     func atlasCard(cornerRadius: CGFloat = AtlasTheme.Radius.card, fillOpacity: Double = 1) -> some View {
         modifier(AtlasCardModifier(cornerRadius: cornerRadius, fillOpacity: fillOpacity))
     }
@@ -138,7 +138,8 @@ extension View {
     }
 
     /// Soft elevation shadow — shared depth for glass pills and elevated chrome.
-    func atlasElevation(radius: CGFloat = 10, y: CGFloat = 4, opacity: Double = 0.22) -> some View {
+    /// Default opacity 0.16 keeps gold-quiet chrome lifted without heavy slate drop.
+    func atlasElevation(radius: CGFloat = 10, y: CGFloat = 4, opacity: Double = 0.16) -> some View {
         shadow(color: .black.opacity(opacity), radius: radius, y: y)
     }
 }

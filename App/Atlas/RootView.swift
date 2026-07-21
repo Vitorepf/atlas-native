@@ -2514,7 +2514,8 @@ extension AtlasEditorialGlyphEmpty {
         Text("✦")
             .font(AtlasFont.serif(28))
             .foregroundStyle(AtlasTheme.accent.opacity(0.72))
-            .shadow(color: AtlasTheme.accent.opacity(0.4), radius: 12, y: 1)
+            // Soft gold-quiet empty bloom — same family as failure / Autônomos empty.
+            .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 10, y: 1)
             .accessibilityHidden(true)
     }
 }
@@ -2608,7 +2609,8 @@ extension AtlasNetworkFailureEmpty {
             Text("✦")
                 .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.accent.opacity(0.8))
-                .shadow(color: AtlasTheme.accent.opacity(0.42), radius: 12, y: 1)
+                // Soft gold-quiet failure bloom — match editorial empty family.
+                .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 10, y: 1)
                 .accessibilityHidden(true)
             Spacer().frame(height: 28)
             Text(AtlasFailureCopy.headline(kind: kind, hasToken: hasToken))
