@@ -79,6 +79,10 @@ enum AutonomosAskContext {
             facts.append("idade_local: \(unit.ageLabel)")
         } else {
             absences.append("lista de Autônomos — nenhum aberto")
+            // WAVE-090: catalog list face when no unit focused (empty/list honesty).
+            let listPack = AutonomosListJudgment.packFacts(units: [], awaitingUnitIDs: [])
+            facts.append(contentsOf: listPack.facts)
+            absences.append(contentsOf: listPack.absences)
         }
 
         let subjects = AutonomosDecisionJudgment.packSubjects(from: backlog)

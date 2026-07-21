@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Lista de Autônomos do operador — índice soberano. Vazio até criar. Zero áreas de sistema.
+/// Lista de Autônomos do operador — índice soberano (WAVE-090 Judgment).
+/// Vazio até criar. Zero áreas de sistema.
 struct AutonomosListView: View {
     let units: [AutonomosUnit]
     /// WAVE-026: unit IDs with hydrated awaiting signal only — never invent.
@@ -8,20 +9,25 @@ struct AutonomosListView: View {
     let onOpen: (AutonomosUnit) -> Void
     let onCreate: () -> Void
 
+    private var listFace: AutonomosListFace {
+        AutonomosListJudgment.listFace(unitCount: units.count)
+    }
+
     var body: some View {
         Group {
-            if units.isEmpty {
+            if listFace == .empty {
                 emptyState
             } else {
                 list
             }
         }
         .accessibilityIdentifier(A11yID.autonomosList)
+        .accessibilityValue(listFace.productWord)
     }
 
-    /// WAVE-026: awaiting (hydrated) → live → quiet/paused last.
+    /// WAVE-026/090: awaiting (hydrated) → live → quiet/paused last.
     private var judgmentUnits: [AutonomosUnit] {
-        AutonomosDecisionJudgment.rankUnits(units, awaitingUnitIDs: awaitingUnitIDs)
+        AutonomosListJudgment.rankUnits(units, awaitingUnitIDs: awaitingUnitIDs)
     }
 
     private var list: some View {
@@ -41,27 +47,29 @@ struct AutonomosListView: View {
     private var emptyState: some View {
         VStack(alignment: .leading, spacing: 18) {
             Spacer(minLength: 36)
-            AutonomosMapChrome.heroTitle("Nenhum ainda", size: 32)
-            Text("Defina um Autônomo com escopo fechado. Por agora o catálogo vive só neste iPhone — some se o app for morto.")
+            AutonomosMapChrome.heroTitle(AutonomosListJudgment.emptyHero, size: 32)
+            Text(AutonomosListJudgment.emptyBody)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("Create no servidor ainda pendente — sem frota 24/7 inventada.")
+            Text(AutonomosListJudgment.emptyFootnote)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
-            AutonomosMapChrome.primaryCTA("Novo Autônomo", action: onCreate)
+            AutonomosMapChrome.primaryCTA(AutonomosListJudgment.createCTA, action: onCreate)
             Spacer(minLength: 0)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Nenhum Autônomo ainda. Catálogo local neste iPhone; create no servidor pendente.")
-        .accessibilityHint("Abre a folha para definir nome e carta")
+        .accessibilityLabel(AutonomosListJudgment.spokenEmpty())
+        .accessibilityHint(AutonomosListJudgment.emptyHint)
+        .accessibilityValue(listFace.productWord)
     }
 
     private func unitRow(_ unit: AutonomosUnit) -> some View {
-        Button {
+        let face = AutonomosListJudgment.rowFace(unit: unit, awaitingUnitIDs: awaitingUnitIDs)
+        return Button {
             onOpen(unit)
         } label: {
             HStack(alignment: .top, spacing: 14) {
@@ -81,7 +89,7 @@ struct AutonomosListView: View {
                         .padding(.top, 2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                trailing(unit)
+                trailing(face)
             }
             .padding(.vertical, 22)
             .opacity(unit.paused ? 0.55 : 1)
@@ -91,47 +99,29 @@ struct AutonomosListView: View {
             AutonomosMapChrome.hairline
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(spoken(unit))
+        .accessibilityLabel(
+            AutonomosListJudgment.spokenRow(unit: unit, awaitingUnitIDs: awaitingUnitIDs)
+        )
+        .accessibilityValue(face.productWord)
     }
 
     @ViewBuilder
-    private func trailing(_ unit: AutonomosUnit) -> some View {
-        if awaitingUnitIDs.contains(unit.id) {
-            Text(AutonomosHubVestment.awaiting(1).productWord)
+    private func trailing(_ face: AutonomosListRowFace) -> some View {
+        switch face {
+        case .awaiting, .quiet:
+            Text(face.productWord)
                 .font(AtlasFont.mono(10))
                 .tracking(0.8)
-                .foregroundStyle(AtlasTheme.accent)
+                .foregroundStyle(face == .awaiting ? AtlasTheme.accent : AtlasTheme.textTertiary)
                 .textCase(.uppercase)
                 .padding(.top, 6)
-                .accessibilityLabel(AutonomosHubVestment.awaiting(1).spokenFace)
-        } else {
-            let face = AutonomosHubVestment.listFace(unitPaused: unit.paused)
-            if face == .quiet {
-                Text(face.productWord)
-                    .font(AtlasFont.mono(10))
-                    .tracking(0.8)
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .textCase(.uppercase)
-                    .padding(.top, 6)
-            } else {
-                Circle()
-                    .fill(AtlasTheme.accent.opacity(0.85))
-                    .frame(width: 5, height: 5)
-                    .padding(.top, 10)
-                    .accessibilityLabel("vivo")
-            }
+                .accessibilityLabel(face.spokenFace)
+        case .live:
+            Circle()
+                .fill(AtlasTheme.accent.opacity(0.85))
+                .frame(width: 5, height: 5)
+                .padding(.top, 10)
+                .accessibilityLabel(face.spokenFace)
         }
-    }
-
-    private func spoken(_ unit: AutonomosUnit) -> String {
-        let faceWord: String
-        if awaitingUnitIDs.contains(unit.id) {
-            faceWord = AutonomosHubVestment.awaiting(1).spokenFace
-        } else {
-            faceWord = AutonomosHubVestment.listFace(unitPaused: unit.paused).spokenFace
-        }
-        var parts = [unit.name, unit.charter, faceWord]
-        parts.append(unit.ageLabel)
-        return parts.joined(separator: ", ")
     }
 }

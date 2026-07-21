@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 84
+- waves_completed: 85
 - idle_compress_passes: 8
 - collapse_host: 0
 
@@ -95,16 +95,14 @@ mode: designer + implementer
 - WAVE-087
 - WAVE-088
 - WAVE-089
+- WAVE-090
 
 ## Idle compress
-- pass 5 · Cockpit banners · AskPillA11y
-- pass 6 · ChangeReview A11y · Search hint
-- pass 7 · Nightly muteDays shim
-- pass 8 · EditorialTurnChrome peel
+- pass 5–8 · Cockpit · ChangeReview · Nightly · EditorialTurnChrome
 
 ## Open queue
-_(none)_ — awaiting A fill or full-bar residual
+_(none)_
 
 ## Notes
-- Session recent: WAVE-089 · IDLE×2 post-wave.
-- DEVICE_PENDING. Zero micro-WAVE inventada.
+- WAVE-089 search list · WAVE-090 autonomos list.
+- DEVICE_PENDING.
