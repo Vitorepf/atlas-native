@@ -4340,9 +4340,9 @@ struct ArenaPremiumKicker: View {
         HStack(spacing: 8) {
             if showsLiveMark {
                 Text("✦")
-                    .font(AtlasFont.serif(11))
+                    .font(AtlasFont.serif(12))
                     .foregroundStyle(tone.color)
-                    .shadow(color: tone.color.opacity(0.35), radius: 4, y: 0)
+                    .shadow(color: tone.color.opacity(0.48), radius: 6, y: 0)
                     .modifier(ArenaLiveBreath())
                     .accessibilityHidden(true)
             }
@@ -4369,10 +4369,11 @@ private struct ArenaLiveBreath: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .scaleEffect(reduceMotion ? 1 : (on ? 1.08 : 1))
             .opacity(reduceMotion ? 1 : (on ? 1 : 0.55))
             .onAppear {
                 guard !reduceMotion else { return }
-                withAnimation(AtlasMotion.breath(2.4)) { on = true }
+                withAnimation(AtlasMotion.breath(2.2)) { on = true }
             }
     }
 }
