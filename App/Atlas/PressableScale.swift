@@ -12,7 +12,8 @@ struct PressableScale: ButtonStyle {
                     ? nil
                     : (configuration.isPressed
                         ? .easeOut(duration: AtlasMotion.instinct)
-                        : .spring(response: 0.25, dampingFraction: 0.6)),
+                        // Editorial: damping ≥0.8 — never Material overshoot.
+                        : .spring(response: 0.25, dampingFraction: 0.82)),
                 value: configuration.isPressed
             )
     }

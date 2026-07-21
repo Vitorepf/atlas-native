@@ -611,6 +611,7 @@ extension AtlasCodeView {
 
     func graphCommitRowLongPress(_ node: AtlasCodeGraphNode) {
         guard visibleAnchors.contains(node.hash) else { return }
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         Task { await openWhyBiographyIfAvailable(for: node) }
     }
 }
