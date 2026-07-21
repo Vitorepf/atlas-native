@@ -766,8 +766,8 @@ extension ModeSheet {
                 accessibilityLabel: ComposerSheetA11y.modeLabel(key, title: label, selected: isSelected),
                 accessibilityIdentifier: A11yID.modeRow(key)
             ) {
+                // Soft owned by SheetRow — avoid double fire.
                 selected = key
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 dismiss()
             }
         }
@@ -844,8 +844,8 @@ extension WorkspaceSheet {
 
 extension WorkspaceSheet {
     func workspaceRowPick(_ ws: Workspace) {
+        // Soft owned by SheetRow — avoid double fire.
         onPick(ws)
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         dismiss()
     }
 }
@@ -965,8 +965,8 @@ extension EffortSheet {
 extension EffortSheet {
     func pick(_ effort: AtlasComputeEffort) {
         // Persistência é do MODEL (boundary): a View nunca toca storage.
+        // Soft owned by SheetRow — avoid double fire.
         model.setEffort(effort)
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         dismiss()
     }
 }
