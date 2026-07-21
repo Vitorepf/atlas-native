@@ -712,14 +712,22 @@ extension AtlasCodeAskWhySheetsModifier {
             taskKind: "code",
             workspace: model.repo,
             draft: askDraft,
-            turnFacts: { [askModel] question in await askModel.facts(for: question) },
+            turnFacts: { question in
+                // WAVE-019: occasion pack first; optional server ask facts append.
+                let focus = askFocusNode
+                let server = await askModel.facts(for: question)
+                return AtlasCodeAskContext.facts(
+                    model: model,
+                    focusNode: focus,
+                    focusLegend: askModel.sheetFocusLegend,
+                    isAnchoring: askModel.isAnchoring,
+                    serverAskFacts: server
+                )
+            },
             onThread: { askThreadId = $0 },
             hidesNavigationBack: true
         )
-        .presentationDetents([.large])
-        .presentationDragIndicator(.hidden)
-        .presentationBackground(AtlasTheme.bg)
-        .presentationCornerRadius(28)
+        .agenticAskSheetPresentation()
         .interactiveDismissDisabled(false)
     }
 }
@@ -751,6 +759,7 @@ struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   let session: AtlasSession
   let model: AtlasCodeModel
   let askModel: AtlasCodeAskModel
+  @Binding var askFocusNode: AtlasCodeGraphNode?
   @Binding var showsAskCard: Bool
   @Binding var whyFileTarget: AtlasCodeView.WhyFileTarget?
   @Binding var askThreadId: ThreadID?
@@ -761,38 +770,7 @@ struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   }
 }
 
-// --- AtlasCodeView+Sheets+Forward.swift ---
-extension View {
-    func atlasCodeSheetsForward(
-        session: AtlasSession,
-        model: AtlasCodeModel,
-        provenanceModel: AtlasCodeProvenanceModel,
-        askModel: AtlasCodeAskModel,
-        selectedNode: Binding<AtlasCodeGraphNode?>,
-        showsHealReceipt: Binding<Bool>,
-        showsAskCard: Binding<Bool>,
-        whyFileTarget: Binding<AtlasCodeView.WhyFileTarget?>,
-        askThreadId: Binding<ThreadID?>,
-        askDraft: Binding<String>,
-        onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
-    ) -> some View {
-        atlasCodeSheetsModifierWrap(
-            session: session,
-            model: model,
-            provenanceModel: provenanceModel,
-            askModel: askModel,
-            selectedNode: selectedNode,
-            showsHealReceipt: showsHealReceipt,
-            showsAskCard: showsAskCard,
-            whyFileTarget: whyFileTarget,
-            askThreadId: askThreadId,
-            askDraft: askDraft,
-            onProvenanceAsk: onProvenanceAsk
-        )
-    }
-}
-
-// --- AtlasCodeView+Sheets+Heal.swift ---
+// --- AtlasCodeView+Sheets+Heal+Provenance stack ---
 extension AtlasCodeSheetsModifier {
   @ViewBuilder
   func healReceiptSheet<Content: View>(on content: Content) -> some View {
@@ -805,21 +783,10 @@ extension AtlasCodeSheetsModifier {
         }
       }
   }
-}
 
-// --- AtlasCodeView+Sheets+HealReceiptWrap.swift ---
-extension AtlasCodeSheetsModifier {
-    @ViewBuilder
-    func healReceiptWrap<Content: View>(on content: Content) -> some View {
-        healReceiptSheet(on: content)
-    }
-}
-
-// --- AtlasCodeView+Sheets+Provenance.swift ---
-extension AtlasCodeSheetsModifier {
   @ViewBuilder
   func provenanceAndHealSheets<Content: View>(on content: Content) -> some View {
-    healReceiptWrap(on: provenanceSheetBind(on: content))
+    healReceiptSheet(on: provenanceSheetBind(on: content))
   }
 }
 
@@ -860,63 +827,14 @@ extension AtlasCodeSheetsModifier {
     }
 }
 
-// --- AtlasCodeView+Sheets.swift ---
-extension View {
-  func atlasCodeSheets(
-    session: AtlasSession,
-    model: AtlasCodeModel,
-    provenanceModel: AtlasCodeProvenanceModel,
-    askModel: AtlasCodeAskModel,
-    selectedNode: Binding<AtlasCodeGraphNode?>,
-    showsHealReceipt: Binding<Bool>,
-    showsAskCard: Binding<Bool>,
-    whyFileTarget: Binding<AtlasCodeView.WhyFileTarget?>,
-    askThreadId: Binding<ThreadID?>,
-    askDraft: Binding<String>,
-    onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
-  ) -> some View {
-    atlasCodeSheetsForward(
-      session: session,
-      model: model,
-      provenanceModel: provenanceModel,
-      askModel: askModel,
-      selectedNode: selectedNode,
-      showsHealReceipt: showsHealReceipt,
-      showsAskCard: showsAskCard,
-      whyFileTarget: whyFileTarget,
-      askThreadId: askThreadId,
-      askDraft: askDraft,
-      onProvenanceAsk: onProvenanceAsk
-    )
-  }
-}
-
-// --- AtlasCodeView+SheetsBind.swift ---
-extension AtlasCodeView {
-    func codeSheetsBind<Content: View>(_ content: Content) -> some View {
-        content.atlasCodeSheets(
-            session: session,
-            model: model,
-            provenanceModel: provenanceModel,
-            askModel: askModel,
-            selectedNode: $selectedNode,
-            showsHealReceipt: $showsHealReceipt,
-            showsAskCard: $showsAskCard,
-            whyFileTarget: $whyFileTarget,
-            askThreadId: $askThreadId,
-            askDraft: $askDraft,
-            onProvenanceAsk: openAskFromProvenance
-        )
-    }
-}
-
-// --- AtlasCodeView+SheetsModifier.swift ---
+// --- AtlasCodeView+Sheets + modifier (WAVE-019 W3: one entry, no forward/wrap peels) ---
 struct AtlasCodeSheetsModifier: ViewModifier {
   let session: AtlasSession
   let model: AtlasCodeModel
   let provenanceModel: AtlasCodeProvenanceModel
   let askModel: AtlasCodeAskModel
   @Binding var selectedNode: AtlasCodeGraphNode?
+  @Binding var askFocusNode: AtlasCodeGraphNode?
   @Binding var showsHealReceipt: Bool
   @Binding var showsAskCard: Bool
   @Binding var whyFileTarget: AtlasCodeView.WhyFileTarget?
@@ -927,15 +845,13 @@ struct AtlasCodeSheetsModifier: ViewModifier {
   func body(content: Content) -> some View {
     askWhySheetsBind(provenanceAndHealSheets(on: content))
   }
-}
 
-// --- AtlasCodeView+SheetsModifierAsk.swift ---
-extension AtlasCodeSheetsModifier {
   func askWhySheetsBind<Content: View>(_ content: Content) -> some View {
     content.modifier(AtlasCodeAskWhySheetsModifier(
       session: session,
       model: model,
       askModel: askModel,
+      askFocusNode: $askFocusNode,
       showsAskCard: $showsAskCard,
       whyFileTarget: $whyFileTarget,
       askThreadId: $askThreadId,
@@ -944,64 +860,53 @@ extension AtlasCodeSheetsModifier {
   }
 }
 
-// --- AtlasCodeView+SheetsModifierWrap+Init.swift ---
 extension View {
-    func atlasCodeSheetsModifierInit(
-        session: AtlasSession,
-        model: AtlasCodeModel,
-        provenanceModel: AtlasCodeProvenanceModel,
-        askModel: AtlasCodeAskModel,
-        selectedNode: Binding<AtlasCodeGraphNode?>,
-        showsHealReceipt: Binding<Bool>,
-        showsAskCard: Binding<Bool>,
-        whyFileTarget: Binding<AtlasCodeView.WhyFileTarget?>,
-        askThreadId: Binding<ThreadID?>,
-        askDraft: Binding<String>,
-        onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
-    ) -> some View {
-        modifier(AtlasCodeSheetsModifier(
-            session: session,
-            model: model,
-            provenanceModel: provenanceModel,
-            askModel: askModel,
-            selectedNode: selectedNode,
-            showsHealReceipt: showsHealReceipt,
-            showsAskCard: showsAskCard,
-            whyFileTarget: whyFileTarget,
-            askThreadId: askThreadId,
-            askDraft: askDraft,
-            onProvenanceAsk: onProvenanceAsk
-        ))
-    }
+  func atlasCodeSheets(
+    session: AtlasSession,
+    model: AtlasCodeModel,
+    provenanceModel: AtlasCodeProvenanceModel,
+    askModel: AtlasCodeAskModel,
+    selectedNode: Binding<AtlasCodeGraphNode?>,
+    askFocusNode: Binding<AtlasCodeGraphNode?>,
+    showsHealReceipt: Binding<Bool>,
+    showsAskCard: Binding<Bool>,
+    whyFileTarget: Binding<AtlasCodeView.WhyFileTarget?>,
+    askThreadId: Binding<ThreadID?>,
+    askDraft: Binding<String>,
+    onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
+  ) -> some View {
+    modifier(AtlasCodeSheetsModifier(
+      session: session,
+      model: model,
+      provenanceModel: provenanceModel,
+      askModel: askModel,
+      selectedNode: selectedNode,
+      askFocusNode: askFocusNode,
+      showsHealReceipt: showsHealReceipt,
+      showsAskCard: showsAskCard,
+      whyFileTarget: whyFileTarget,
+      askThreadId: askThreadId,
+      askDraft: askDraft,
+      onProvenanceAsk: onProvenanceAsk
+    ))
+  }
 }
 
-// --- AtlasCodeView+SheetsModifierWrap.swift ---
-extension View {
-    func atlasCodeSheetsModifierWrap(
-        session: AtlasSession,
-        model: AtlasCodeModel,
-        provenanceModel: AtlasCodeProvenanceModel,
-        askModel: AtlasCodeAskModel,
-        selectedNode: Binding<AtlasCodeGraphNode?>,
-        showsHealReceipt: Binding<Bool>,
-        showsAskCard: Binding<Bool>,
-        whyFileTarget: Binding<AtlasCodeView.WhyFileTarget?>,
-        askThreadId: Binding<ThreadID?>,
-        askDraft: Binding<String>,
-        onProvenanceAsk: @escaping (AtlasCodeGraphNode) -> Void
-    ) -> some View {
-        atlasCodeSheetsModifierInit(
+extension AtlasCodeView {
+    func codeSheetsBind<Content: View>(_ content: Content) -> some View {
+        content.atlasCodeSheets(
             session: session,
             model: model,
             provenanceModel: provenanceModel,
             askModel: askModel,
-            selectedNode: selectedNode,
-            showsHealReceipt: showsHealReceipt,
-            showsAskCard: showsAskCard,
-            whyFileTarget: whyFileTarget,
-            askThreadId: askThreadId,
-            askDraft: askDraft,
-            onProvenanceAsk: onProvenanceAsk
+            selectedNode: $selectedNode,
+            askFocusNode: $askFocusNode,
+            showsHealReceipt: $showsHealReceipt,
+            showsAskCard: $showsAskCard,
+            whyFileTarget: $whyFileTarget,
+            askThreadId: $askThreadId,
+            askDraft: $askDraft,
+            onProvenanceAsk: openAskFromProvenance
         )
     }
 }
