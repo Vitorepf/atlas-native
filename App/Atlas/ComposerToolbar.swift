@@ -426,6 +426,7 @@ extension ComposerToolbar {
         .accessibilityLabel(spokenSendLabel(canSubmit: true))
         .accessibilityHint(spokenSendHint(canSubmit: true))
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(10) // primary commit surfaces first in VO
         .accessibilityIdentifier(A11yID.conversationSend)
     }
 }

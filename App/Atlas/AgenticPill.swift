@@ -55,6 +55,7 @@ struct AgenticPill: View {
         .accessibilityHint(Text(accessibilityHintText))
         .accessibilityIdentifier(accessibilityId)
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(8) // chrome único da pílula — cedo no rotor
     }
 }
 

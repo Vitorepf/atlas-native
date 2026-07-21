@@ -397,6 +397,7 @@ extension RootView {
         .accessibilityLabel(inputPillSpokenLabel())
         .accessibilityHint(inputPillSpokenHint())
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(10) // primary home write surfaces first in VO
         .accessibilityIdentifier(A11yID.homeInputPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(inputBarBackground)
