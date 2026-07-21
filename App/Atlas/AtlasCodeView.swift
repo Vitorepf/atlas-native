@@ -1126,7 +1126,7 @@ extension AtlasCodeFileRow {
             Image(systemName: symbol)
                 .atlasSans(8.5, .bold)
                 // Soft gold-quiet file-kind badge — chrome, not body.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .frame(width: 17, height: 17)
                 .background(AtlasTheme.surfaceHi, in: RoundedRectangle(cornerRadius: 5))
                 .accessibilityHidden(true)
@@ -2226,7 +2226,7 @@ extension AtlasCodeMirrorCard {
 
     var borderColor: Color {
         if case .blocked = response.state { return AtlasCodePalette.alert.opacity(0.35) }
-        return AtlasTheme.goldBorder.opacity(0.35)
+        return AtlasTheme.goldBorder.opacity(0.4)
     }
 }
 
@@ -2339,7 +2339,7 @@ extension AtlasCodeMirrorCard {
         label(
             commits == 1 ? "1 commit ainda só no Mac" : "\(commits) commits ainda só no Mac",
             // Soft gold-quiet mirror healthy secondary label.
-            color: AtlasTheme.accent.opacity(0.65),
+            color: AtlasTheme.accent.opacity(0.62),
             icon: "internaldrive"
         )
     }
@@ -3538,7 +3538,7 @@ extension AtlasCodeProvenanceSheet {
             Text("Sua frase")
                 .atlasSans(9)
                 // Soft gold-quiet quote kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
     }
 }
@@ -3906,7 +3906,7 @@ struct AtlasCodeRepoRow: View {
                         if showsFolder, let folder = repo.folder {
                             Text(folder)
                                 .atlasSans(10)
-                                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 1.5)
                                 .background(Capsule().fill(AtlasTheme.surface))
@@ -4203,7 +4203,7 @@ struct AtlasCodeCommitRow: View {
             .accessibilityHidden(true)
         Text(displayAuthor)
             // Soft gold-quiet author meta.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .accessibilityHidden(true)
         Text("·")
             .accessibilityHidden(true)

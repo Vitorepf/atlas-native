@@ -1301,7 +1301,7 @@ extension ConversationHandoffReceipt {
             Text(subline)
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet handoff meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(2)
                 .accessibilityHidden(true)
         }
@@ -1490,7 +1490,7 @@ extension StaleReadSeal {
             .overlay(
                 Capsule().stroke(
                     // Soft gold-quiet idle seal rim; full goldBorder when confirming.
-                    confirming ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.35),
+                    confirming ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.4),
                     lineWidth: 1
                 )
             )
@@ -1875,7 +1875,7 @@ extension WorkspaceSheet {
         Text("Pastas das conversas carregadas · vale no próximo envio")
             .atlasSans(12)
             // Soft gold-quiet workspace sheet caption.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
             .padding(.bottom, 10)
@@ -3039,7 +3039,7 @@ extension DraftThumb {
                     .stroke(
                         failedMessage != nil
                             ? AtlasTheme.domOperacional.opacity(0.8)
-                            : AtlasTheme.goldBorder.opacity(0.35),
+                            : AtlasTheme.goldBorder.opacity(0.4),
                         lineWidth: failedMessage != nil ? 1.5 : 1
                     )
             )
@@ -6383,7 +6383,7 @@ extension ExecutionProof {
             Text("\(index + 1)/\(total)")
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet replay counter.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
         }
@@ -7029,7 +7029,7 @@ extension ExecutionStateCard {
         switch state.kind {
         case .attentionRequired: return AtlasTheme.accent
         // Soft gold-quiet awaiting/recovering attention tint.
-        case .awaitingExternal, .recovering: return AtlasTheme.accent.opacity(0.65)
+        case .awaitingExternal, .recovering: return AtlasTheme.accent.opacity(0.62)
         default: return nil
         }
     }
@@ -7208,7 +7208,7 @@ extension TimelineFilterChips {
             .padding(.vertical, 6)
             .frame(minHeight: 48) // HIG 44+; match filter chip breath
             .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
-            .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.35), lineWidth: 1))
+            .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             .atlasElevation(radius: 4, y: 1, opacity: active ? 0.12 : 0.04)
             .contentShape(Capsule())
     }
@@ -8592,7 +8592,7 @@ struct ExecutingStrip: View {
         .padding(.vertical, 4)
         .background(
             Capsule().fill(AtlasTheme.surface.opacity(0.45))
-                .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.35), lineWidth: 1))
+                .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
         )
         .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         .lineLimit(1)
@@ -9319,7 +9319,7 @@ extension AtlasMarkdownView {
         if ordered {
             Text("\(index + 1).")
                 // Soft gold-quiet ordered list markers.
-                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .frame(width: 26, alignment: .leading).padding(.top, 3)
                 .accessibilityHidden(true)
         } else {
@@ -9375,7 +9375,7 @@ extension AtlasMarkdownView {
         .padding(.vertical, 10)
         .background(AtlasTheme.bgRecessed.opacity(0.55))
         // Soft gold-breath under table header.
-        .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.accent.opacity(0.28)).frame(height: 1) }
+        .overlay(alignment: .bottom) { AtlasGoldBreathHairline() }
     }
 }
 

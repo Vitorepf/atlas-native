@@ -1042,7 +1042,7 @@ struct AutonomosListView: View {
             Text("Pausado")
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 3)
                 .background(Capsule().fill(AtlasTheme.surface))
@@ -1146,7 +1146,7 @@ struct AutonomosNewSheet: View {
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
                 // Soft gold-quiet field kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 // Visual only — TextField carries accessibilityLabel(label).
                 .accessibilityHidden(true)
             Group {
@@ -1838,7 +1838,7 @@ extension SelfConstructionReceiptSheet {
                 .font(AtlasFont.mono(10))
                 .tracking(0.3)
                 // Soft gold-quiet meta kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
             Text("“\(receipt.ruleLabel)”")
                 .font(AtlasFont.serifItalic(14))
@@ -1963,7 +1963,7 @@ extension SelfConstructionReceiptSheet {
                 .font(AtlasFont.mono(10))
                 .tracking(0.3)
                 // Soft gold-quiet governance kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityAddTraits(.isHeader)
             vetoTextFields
             vetoSubmitButton
@@ -2004,7 +2004,7 @@ extension SelfConstructionReceiptSheet {
             .font(AtlasFont.mono(10))
             .tracking(0.3)
             // Soft gold-quiet proof kicker.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .accessibilityHidden(true)
     }
 }

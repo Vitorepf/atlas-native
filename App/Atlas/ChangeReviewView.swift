@@ -573,7 +573,7 @@ extension ChangeReviewCouncilMemberRow {
             Text(member.provider)
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet council provider meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
             providerModelLabel
             Spacer()
@@ -784,7 +784,7 @@ extension ChangeReviewPatchCard {
         HStack {
             Text("Patch \(String(patch.id.prefix(8)))")
                 // Soft gold-quiet patch hash kicker.
-                .font(AtlasFont.mono(10)).tracking(0.3).foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .font(AtlasFont.mono(10)).tracking(0.3).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
             Spacer()
             Button {

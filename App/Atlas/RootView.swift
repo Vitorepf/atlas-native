@@ -1081,7 +1081,7 @@ struct LiveNowSection: View {
                 if remoteCount > 0 {
                     Text("· \(remoteCount) remota\(remoteCount == 1 ? "" : "s")")
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                         .accessibilityHidden(true)
                 }
             }
@@ -1309,7 +1309,7 @@ struct LiveNowRow: View {
         case .running: AtlasTheme.accent
         // Soft gold-quiet paused; finished stays quieter secondary.
         case .paused: AtlasTheme.accent.opacity(0.55)
-        case .finished: AtlasTheme.accent.opacity(0.65)
+        case .finished: AtlasTheme.accent.opacity(0.62)
         }
     }
 
@@ -2016,7 +2016,7 @@ extension WorkspaceView {
         Text(a.label)
             .font(active ? AtlasFont.serif(14, .semibold) : AtlasFont.serif(14))
             // Soft gold-quiet inactive area chips — active stays full accent.
-            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.65))
+            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.62))
             .padding(.horizontal, 14).padding(.vertical, 8)
             .frame(minHeight: 48) // HIG 44+; match primary filter breath
             .contentShape(Capsule())
@@ -2952,7 +2952,7 @@ extension WorkspaceRow {
             Text(detail)
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet workspace detail meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
@@ -3474,7 +3474,7 @@ extension AtlasWorkspacePickerSheet {
                 Image(systemName: "bubble.left")
                     .atlasSans(16)
                     // Soft gold-quiet row lead — same family as folder chrome.
-                    .foregroundStyle(AtlasTheme.accent.opacity(0.65))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .frame(width: 22)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
