@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 84
-- idle_compress_passes: 7
+- idle_compress_passes: 8
 - collapse_host: 0
 
 ## Waves done
@@ -97,13 +97,14 @@ mode: designer + implementer
 - WAVE-089
 
 ## Idle compress
-- pass 5 · Cockpit banners peel · AskPillA11y
-- pass 6 · ChangeReview A11y peel · Search hint
-- pass 7 · Nightly muteDays shim delete (Judgment-only)
+- pass 5–6 · Cockpit · ChangeReview A11y
+- pass 7 · Nightly muteDays shim
+- pass 8 · EditorialTurnChrome peel (Feedback · Signature)
 
 ## Open queue
 _(none)_
 
 ## Notes
-- WAVE-089 search list/row shipped.
+- WAVE-089 shipped. Max 2 consecutive idle after WAVE reached (7–8).
+- Next: A fill or full-bar residual only.
 - DEVICE_PENDING.

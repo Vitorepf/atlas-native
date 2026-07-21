@@ -99,6 +99,7 @@
 | **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
 | **Prova de execução (card recolhido)** | `ExecutionProofJudgment` → face kicker · qualityLine/spoken · activity · replay absence |
 | **Assinatura editorial (turno)** | `EditorialTurnJudgment` → signature present/absent · feedback spoken · pack |
+| EditorialTurn peels | `EditorialTurn` host · `EditorialTurnChrome` (FeedbackRow · SignatureLine) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
