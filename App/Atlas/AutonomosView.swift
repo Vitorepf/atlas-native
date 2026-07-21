@@ -1405,6 +1405,11 @@ enum AutonomosMapChrome {
                 Text(alert ? "※" : "✦")
                     .font(AtlasFont.serif(12))
                     .foregroundStyle(alert ? AtlasTheme.alert : AtlasTheme.accent)
+                    .shadow(
+                        color: (alert ? AtlasTheme.alert : AtlasTheme.accent).opacity(0.35),
+                        radius: 4,
+                        y: 0
+                    )
                     .accessibilityHidden(true)
             }
             Text(text)
