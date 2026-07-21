@@ -5225,11 +5225,12 @@ extension PlanCard {
         } label: {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
             Text(showDetail ? "Menos" : "Ferramentas · agentes · gates")
-                .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
+                .atlasSans(11, .medium)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .frame(minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.planDetailToggle)
         .accessibilityLabel(showDetail ? "ocultar ferramentas agentes e gates" : "mostrar ferramentas agentes e gates")
         .accessibilityHint(showDetail ? "toque para recolher" : "toque para expandir")
@@ -5446,6 +5447,14 @@ struct PlanStepRowView: View {
         ZStack {
             Circle().fill(dotFill(state)).frame(width: 13, height: 13)
                 .opacity(state == .current && pulse && !reduceMotion ? 0.55 : 1)
+                // Soft gold bloom for live/done steps — pending stays quiet.
+                .shadow(
+                    color: AtlasTheme.accent.opacity(
+                        state == .current ? 0.45 : (state == .done ? 0.28 : 0)
+                    ),
+                    radius: state == .current ? 4 : 2,
+                    y: 0
+                )
             if state == .done {
                 Image(systemName: "checkmark").atlasSans(7, .bold)
                     .foregroundStyle(AtlasTheme.bg)
@@ -5487,11 +5496,12 @@ extension PlanCard {
         } label: {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
             Text(showRevisions ? "Ocultar versões" : "Comparar versões · \(count)")
-                .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
+                .atlasSans(11, .medium)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .frame(minHeight: 48, alignment: .leading)
                 .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(spokenRevisionToggle(expanded: showRevisions, count: count))
         .accessibilityHint(showRevisions ? "toque para ocultar" : "toque para expandir")
         .accessibilityAddTraits(showRevisions ? [.isButton, .isSelected] : .isButton)
