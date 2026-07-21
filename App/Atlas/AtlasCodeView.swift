@@ -367,7 +367,7 @@ extension AtlasCodeGraphA11y {
         return label
     }
 
-    static let emptyGraph = "grafo sem commits nesta janela"
+    static let emptyGraph = "Grafo sem commits nesta janela"
 }
 
 extension AtlasCodeView {
@@ -1797,7 +1797,7 @@ extension AtlasCodeHealReceiptSheet {
     }
 
     func spokenSilenceLabel() -> String {
-        "você não foi necessário, cura concluída sem portão"
+        "Você não foi necessário, cura concluída sem portão"
     }
 }
 
@@ -1807,7 +1807,7 @@ extension AtlasCodeHealReceiptSheet {
     }
 
     func spokenEmptyStepsLabel() -> String {
-        "recibo sem passos registrados pelo servidor"
+        "Recibo sem passos registrados pelo servidor"
     }
 }
 
@@ -2271,7 +2271,7 @@ extension AtlasCodeMirrorCard {
 
     @ViewBuilder
     var headlineHealthyUnknown: some View {
-        label("espelho ainda não conhecido", color: AtlasTheme.textTertiary, icon: "questionmark.circle")
+        label("Espelho ainda não conhecido", color: AtlasTheme.textTertiary, icon: "questionmark.circle")
     }
 }
 
@@ -3533,8 +3533,8 @@ struct AtlasCodeRadarView: View {
 
     private func spokenFailed(_ message: String) -> String {
         let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return "workspace indisponível" }
-        return "workspace indisponível, \(trimmed)"
+        guard !trimmed.isEmpty else { return "Workspace indisponível" }
+        return "Workspace indisponível, \(trimmed)"
     }
 }
 

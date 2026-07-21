@@ -1320,7 +1320,7 @@ struct LiveNowRow: View {
 
     private func clockAccessibilityLabel(now: Date) -> String {
         guard let clock = spokenClock(now: now) else {
-            return "tempo ativo indisponível"
+            return "Tempo ativo indisponível"
         }
         return session.timing == .paused
             ? "tempo ativo congelado em \(clock)"
@@ -2339,7 +2339,7 @@ extension WorkspaceEditorialEmpty {
         if area != .tudo {
             lead = "nada em \(area.label) em \(screenTitle)"
         } else if freeOnly {
-            lead = "nenhuma conversa sem projeto ainda"
+            lead = "Nenhuma conversa sem projeto ainda"
         } else {
             lead = "nenhuma conversa em \(screenTitle) ainda"
         }

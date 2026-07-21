@@ -825,7 +825,7 @@ struct AutonomosHubView: View {
 
                 AutonomosMapNavLine(
                     title: "Evolução",
-                    meta: "ainda sem provas",
+                    meta: "Ainda sem provas",
                     action: { onNavigate(.evolution) }
                 )
 
@@ -1667,11 +1667,11 @@ extension SelfConstructionReceiptSheet {
 
 extension SelfConstructionReceiptSheet {
     func spokenHumanSilenceLabel() -> String {
-        "você não foi necessário, entrega sem portão"
+        "Você não foi necessário, entrega sem portão"
     }
 
     func spokenRevertQueueLabel() -> String {
-        "veto na fila, ainda não desfeito"
+        "Veto na fila, ainda não desfeito"
     }
 }
 
