@@ -412,7 +412,8 @@ extension ConversationView {
 extension ConversationView {
     var continuityMenuLabel: some View {
         Image(systemName: "ellipsis")
-            .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
+            .atlasSans(15, .semibold)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.88))
             .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
             .contentShape(Circle())
     }
@@ -442,7 +443,8 @@ extension ConversationView {
                 showOutline = true
             } label: {
                 Image(systemName: "list.bullet.rectangle")
-                    .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
+                    .atlasSans(15, .semibold)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.88))
                     .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
                     .contentShape(Circle())
             }
