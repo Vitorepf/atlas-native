@@ -165,7 +165,7 @@ struct ArenaPremiumShell: View {
                 Image(systemName: ArenaPremiumIconography.add)
                     .atlasSans(17, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
-                    .frame(width: 44, height: 44)
+                    .frame(width: 48, height: 48)
                     .contentShape(Circle())
             }
             .accessibilityLabel("Nova medição")

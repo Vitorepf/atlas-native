@@ -1458,7 +1458,7 @@ extension SearchViewHeader {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 44, height: 44).atlasGlassCircle()
+                .frame(width: 48, height: 48).atlasGlassCircle()
                 .contentShape(Circle())
         }
         .accessibilityLabel("voltar")
@@ -2192,7 +2192,7 @@ extension WorkspaceView {
                 .lineLimit(1)
                 .accessibilityLabel(headerSpokenTitle)
             Spacer()
-            Color.clear.frame(width: 44, height: 44)
+            Color.clear.frame(width: 48, height: 48)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 4)
@@ -2206,7 +2206,7 @@ extension WorkspaceView {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 44, height: 44).atlasGlassCircle()
+                .frame(width: 48, height: 48).atlasGlassCircle()
                 .contentShape(Circle())
         }
         .accessibilityLabel("voltar")

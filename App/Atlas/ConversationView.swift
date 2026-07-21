@@ -332,7 +332,7 @@ extension ConversationView {
     var header: some View {
         HStack(spacing: 12) {
             if hidesNavigationBack {
-                Color.clear.frame(width: 44, height: 44)
+                Color.clear.frame(width: 48, height: 48)
             } else {
                 headerBackButton
             }
@@ -365,7 +365,7 @@ extension ConversationView {
         } label: {
             Image(systemName: "chevron.left")
                 .atlasSans(17, .semibold).foregroundStyle(AtlasTheme.textPrimary)
-                .frame(width: 44, height: 44).atlasGlassCircle()
+                .frame(width: 48, height: 48).atlasGlassCircle()
                 .contentShape(Circle())
         }
         .accessibilityLabel("voltar")
@@ -399,7 +399,7 @@ extension ConversationView {
     var continuityMenuLabel: some View {
         Image(systemName: "ellipsis")
             .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
-            .frame(width: 44, height: 44).atlasGlassCircle()
+            .frame(width: 48, height: 48).atlasGlassCircle()
             .contentShape(Circle())
     }
 }
@@ -429,7 +429,7 @@ extension ConversationView {
             } label: {
                 Image(systemName: "list.bullet.rectangle")
                     .atlasSans(15, .semibold).foregroundStyle(AtlasTheme.textSecondary)
-                    .frame(width: 44, height: 44).atlasGlassCircle()
+                    .frame(width: 48, height: 48).atlasGlassCircle()
                     .contentShape(Circle())
             }
             .accessibilityLabel(ConversationViewA11y.spokenOutlineLabel(turnCount: model.bubbles.count))
@@ -449,7 +449,7 @@ extension ConversationView {
                 continuityMenu
             }
         } else {
-            Color.clear.frame(width: 44, height: 44)
+            Color.clear.frame(width: 48, height: 48)
                 .accessibilityHidden(true)
         }
     }
@@ -2776,7 +2776,7 @@ extension DraftThumb {
         Image(systemName: "xmark.circle.fill")
             .atlasSans(18)
             .foregroundStyle(AtlasTheme.textPrimary, AtlasTheme.bgRecessed)
-            .frame(width: 44, height: 44)
+            .frame(width: 48, height: 48)
             .contentShape(Circle())
     }
 }
@@ -3062,7 +3062,7 @@ extension ComposerToolbar {
             Image(systemName: "paperclip")
                 .atlasSans(17, .medium)
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 48, height: 48)
                 .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
@@ -3251,7 +3251,7 @@ extension ComposerToolbar {
             Image(systemName: "ellipsis")
                 .atlasSans(17, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 48, height: 48)
                 .contentShape(Circle())
         }
         .accessibilityLabel("opções da conversa")
@@ -3844,7 +3844,7 @@ extension ConversationMessages {
         Image(systemName: "arrow.down")
             .atlasSans(15, .semibold)
             .foregroundStyle(AtlasTheme.textPrimary)
-            .frame(width: 44, height: 44)
+            .frame(width: 48, height: 48)
             .background(Circle().fill(AtlasTheme.surfaceHi)
                 .overlay(Circle().stroke(AtlasTheme.goldBorder, lineWidth: 1))
                 .atlasElevation(radius: 8, y: 2, opacity: 0.25))
@@ -8185,7 +8185,7 @@ extension QueuedFollowUpRow {
             Image(systemName: "arrow.up")
                 .atlasSans(15, .semibold)
                 .foregroundStyle(AtlasTheme.accent)
-                .frame(width: 44, height: 44)
+                .frame(width: 48, height: 48)
                 .background(Circle().fill(AtlasTheme.goldVeil))
                 .contentShape(Circle())
         }
@@ -8226,7 +8226,7 @@ extension QueuedFollowUpRow {
             Image(systemName: "trash")
                 .atlasSans(14)
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 48, height: 48)
                 .background(Circle().fill(AtlasTheme.surfaceHi))
                 .contentShape(Circle())
         }
