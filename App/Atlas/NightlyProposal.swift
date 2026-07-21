@@ -83,4 +83,16 @@ final class NightlyProposalController: NSObject, UNUserNotificationCenterDelegat
         self.mutedUntil = AtlasSession.clearExpiredNightlyProposalMute(now: now)
         return false
     }
+
+    func spokenMuteStatus(now: Date = .init()) -> String? {
+        guard isMuted(now: now), let until = mutedUntil else { return nil }
+        let formatter = RelativeDateTimeFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.unitsStyle = .full
+        let prazo = formatter.localizedString(for: until, relativeTo: now)
+        if AtlasSession.nightlyProposalAutoPaused() {
+            return "propostas em pausa — você recusou as últimas \(Self.dismissStreakPauseThreshold); voltam \(prazo)"
+        }
+        return "propostas noturnas em pausa até \(prazo)"
+    }
 }

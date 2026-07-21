@@ -1,16 +1,22 @@
 import AtlasCore
 import Foundation
 
-/// Spoken labels do lock accessory — peel de LockAccessorySnapshotView (CICLO C residual).
-/// Spoken label → +Spoken.swift · Inline → +A11yInline.swift
-/// Clock → +A11yClock.swift
+/// Spoken labels do lock accessory — IDLE-COMPRESS (attention + incident honesty).
 
 enum LockAccessoryA11y {
     static func hasAttention(_ snapshot: AtlasNativeSnapshot) -> Bool {
-        LockAccessoryA11yAttention.hasAttention(snapshot)
+        snapshot.liveSessions?.contains { $0.timing == .paused } == true
     }
 
+    /// Só texto publicado pelo Core — nunca «incidente na frota» fabricado.
     static func incidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
-        LockAccessoryA11yIncident.incidentLine(incident)
+        guard let incident, incident.present else { return nil }
+        if let action = incident.recommendedAction?
+            .trimmingCharacters(in: .whitespacesAndNewlines), !action.isEmpty {
+            return action
+        }
+        return incident.flags.lazy
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .first(where: { !$0.isEmpty })
     }
 }
