@@ -9045,7 +9045,9 @@ extension AtlasMarkdownView {
             tableHeaderRow(headers, colCount: colCount)
             tableDataRows(rows, colCount: colCount)
         }
-        .overlay(alignment: .top) { Rectangle().fill(AtlasTheme.separator).frame(height: 1) }
+        .background(AtlasTheme.surface.opacity(0.35), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft))
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separator, lineWidth: 1))
+        .atlasElevation(radius: 4, y: 1, opacity: 0.08)
     }
 }
 
@@ -9060,6 +9062,7 @@ extension AtlasMarkdownView {
             }
         }
         .padding(.vertical, 10)
+        .background(AtlasTheme.bgRecessed.opacity(0.55))
         .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.separator).frame(height: 1) }
     }
 }
