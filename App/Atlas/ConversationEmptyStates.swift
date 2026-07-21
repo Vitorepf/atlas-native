@@ -124,7 +124,8 @@ extension EmptyConversation {
 extension EmptyConversation {
     func suggestionButton(_ s: String, index: Int) -> some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: suggestion is a real send (same class as composer).
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onSuggestion(s)
         } label: {
             Text(s)

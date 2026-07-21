@@ -111,7 +111,7 @@ extension TimelineFilterChips {
             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .frame(minHeight: 36)
+            .frame(minHeight: 44) // HIG interactive minimum
             .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
             .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
             .contentShape(Capsule())

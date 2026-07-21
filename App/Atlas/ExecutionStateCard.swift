@@ -51,7 +51,8 @@ extension ExecutionStateCard {
 
     func choiceActionButton(_ action: AtlasExecutionPresentationState.Action, choiceJobId: JobID) -> some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: server-declared execution choice is a governed commit.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onChoose(choiceJobId, action.id)
         } label: {
             Text(action.title)
@@ -81,7 +82,8 @@ extension ExecutionStateCard {
     func retryFallbackAction(_ jobId: JobID) -> some View {
         retryFallbackA11y(
             Button {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                // Medium: re-queue failed job is governed.
+                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
                 onRetry(jobId)
             } label: {
                 retryFallbackLabel

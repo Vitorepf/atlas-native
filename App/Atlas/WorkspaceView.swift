@@ -113,7 +113,7 @@ extension WorkspaceView {
             .font(.system(.subheadline, weight: .medium))
             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
             .padding(.horizontal, 14).padding(.vertical, 7)
-            .frame(minHeight: 36)
+            .frame(minHeight: 44) // HIG interactive minimum
             .contentShape(Capsule())
             .background(
                 Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface)
