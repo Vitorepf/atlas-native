@@ -1,14 +1,14 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 036
-- last_commit: 0d686c2e
+- phase: D1 cycle 037
+- last_commit: d139267e
 - last_gates: green
-- next_leap: Continuity OR A11yID OR TurnPresence OR WorkspaceView
+- next_leap: TurnPresence OR EditorialTurn OR ConversationSheets OR WorkspaceView OR A11yID
 - blocked: none
-- App/Atlas Swift: 928
+- App/Atlas Swift: 924
 
 ## Highlights this resume
-015–035 continuous peel · App/Atlas 1748→928 (−820)
+015–036 continuous peel · App/Atlas 1748→924 (−824)
 FORBIDDEN clean · no new domains · casca only
-Crossed under 930 Swift files.
+Continuity presentation fused; Core model path untouched.
