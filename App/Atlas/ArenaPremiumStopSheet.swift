@@ -43,6 +43,8 @@ struct ArenaPremiumStopSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle("Parar")
             .navigationBarTitleDisplayMode(.inline)
+            // Contain: fields and confirm stay separately focusable.
+            .accessibilityElement(children: .contain)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
