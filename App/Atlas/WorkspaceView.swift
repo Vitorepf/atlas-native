@@ -135,6 +135,7 @@ extension WorkspaceView {
         .accessibilityLabel("nova conversa")
         .accessibilityHint("abre o compositor para escrever ao Atlas")
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(10) // primary write pill surfaces early in VO
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
