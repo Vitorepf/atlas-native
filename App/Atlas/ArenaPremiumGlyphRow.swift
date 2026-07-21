@@ -42,7 +42,7 @@ struct ArenaPremiumGlyphRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(title), \(detail)")
-        .accessibilityHint("abre o detalhe")
+        .accessibilityHint("abre \(title.lowercased())")
         .accessibilityAddTraits(.isButton)
     }
 }

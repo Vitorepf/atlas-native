@@ -181,6 +181,11 @@ struct AutonomosMapShell: View {
             }
             .padding(AtlasTheme.Space.screen)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(
+                "Ainda no escopo local. Decisões e momentos do motor chegam quando o create no Server existir."
+            )
+            .accessibilityIdentifier(A11yID.autonomosDecisions)
         }
     }
 
@@ -193,6 +198,9 @@ struct AutonomosMapShell: View {
         }
         .padding(AtlasTheme.Space.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Autônomo ausente. Volte à lista e abra de novo.")
+        .accessibilityIdentifier(A11yID.autonomosHub)
     }
 
     private func deleteSelected() {
