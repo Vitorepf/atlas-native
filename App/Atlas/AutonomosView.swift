@@ -145,7 +145,8 @@ struct AutonomosFleetFailureEmpty: View {
                 .accessibilityAddTraits(.isHeader)
             Text(message)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet failure meta under title.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityLabel(message)
@@ -993,10 +994,10 @@ struct AutonomosListView: View {
                         .multilineTextAlignment(.leading)
                     Text(unit.ageLabel)
                         .font(AtlasFont.mono(11))
-                        // Live units carry quiet gold meta; paused stays slate.
+                        // Live units carry quiet gold meta; paused stays softer gold-quiet.
                         .foregroundStyle(
                             unit.paused
-                                ? AtlasTheme.textTertiary
+                                ? AtlasTheme.accent.opacity(0.48)
                                 : AtlasTheme.accent.opacity(0.72)
                         )
                         .padding(.top, 2)
@@ -1333,7 +1334,8 @@ struct AutonomosRhythmSheet: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(muted)
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet mute status meta.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     Button {
                         AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         nightly.unmuteProposal()
@@ -1356,7 +1358,8 @@ struct AutonomosRhythmSheet: View {
 
             Text("Aprendido e guardado só neste iPhone — nada sai do aparelho")
                 .font(AtlasFont.mono(9.5))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet privacy footnote.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(24)
@@ -1372,7 +1375,8 @@ struct AutonomosRhythmSheet: View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text(label)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet rhythm row label.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .frame(width: 84, alignment: .leading)
             Text(value)
                 .font(AtlasFont.mono(11))
@@ -1668,7 +1672,8 @@ struct AutonomosMapNavLine: View {
                 if !meta.isEmpty {
                     Text(meta)
                         .font(AtlasFont.mono(11))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet map CTA meta.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                         .lineLimit(1)
                 }
                 Text("›")

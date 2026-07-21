@@ -1470,11 +1470,11 @@ extension StaleReadSeal {
             .modifier(NumericTextTransition(enabled: !reduceMotion && !confirming))
             .accessibilityHidden(true)
         }
-        // Confirming sync flashes gold-quiet; steady age stays slate.
+        // Confirming sync flashes gold; steady age soft gold-quiet.
         .foregroundStyle(
             confirming
                 ? AtlasTheme.accent.opacity(0.9)
-                : AtlasTheme.textTertiary
+                : AtlasTheme.accent.opacity(0.58)
         )
     }
 }
@@ -2136,7 +2136,8 @@ extension SheetRow {
                 .foregroundStyle(selected ? AtlasTheme.accent : AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             if let sub {
-                Text(sub).atlasSans(13).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet sheet row caption.
+                Text(sub).atlasSans(13).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .accessibilityHidden(true)
             }
         }
@@ -5808,12 +5809,13 @@ struct PlanRevisionCompare: View {
         HStack(spacing: 6) {
             Text("v\(rev.revision) arquivado")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet revision archive header.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
             if let iteration = rev.iteration {
                 Text("iter \(iteration)")
                     .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .monospacedDigit()
                     .accessibilityHidden(true)
             }
@@ -8356,7 +8358,8 @@ extension QueuedFollowUpsSheet {
         if total > 1 {
             Text("Ordem da fila · a cabeça envia quando o turno terminar")
                 .atlasSans(12)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet queue order caption.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 10)
