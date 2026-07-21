@@ -272,3 +272,41 @@ extension ExecutionRibbon {
         }
     }
 }
+
+// Cycle 042 — ExecutionRibbon peels fused into cockpit execution
+
+extension ExecutionRibbon {
+    @ViewBuilder
+    var activitiesTimelineBlock: some View {
+        if !bubble.activities.isEmpty {
+            LiveTimeline(activities: bubble.activities, reduceMotion: reduceMotion)
+        }
+    }
+}
+
+extension ExecutionRibbon {
+    @ViewBuilder
+    var reconnectBannerStack: some View {
+        ReconnectBanner(bubble: bubble, reduceMotion: reduceMotion)
+        SilenceWatchdog(bubble: bubble, reduceMotion: reduceMotion)
+    }
+}
+
+extension ExecutionRibbon {
+    func executionRibbonCard<V: View>(_ content: V) -> some View {
+        content
+            .padding(.vertical, 10).padding(.horizontal, 14)
+            .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.5)
+    }
+}
+
+extension ExecutionRibbon {
+    var executionRibbonStack: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            reconnectBannerStack
+            activitiesTimelineBlock
+            agentLanes
+            decideStrategyLine
+        }
+    }
+}
