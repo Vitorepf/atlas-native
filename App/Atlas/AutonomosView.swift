@@ -245,7 +245,7 @@ struct AutonomosViewHeader: View {
                 .contentShape(Circle())
         }
         .accessibilityLabel("voltar")
-        .accessibilityHint("volta")
+        .accessibilityHint("volta um nível no mapa Autônomos")
         .accessibilityIdentifier(A11yID.autonomosBack)
     }
 
