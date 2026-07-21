@@ -414,13 +414,6 @@ extension AtlasCodeCommitRow {
         spineColumn(spineTint: spineTint, motion: motion)
     }
 
-    func spineConnector(fill: Color) -> some View {
-        Rectangle()
-            .fill(fill)
-            .frame(width: 2)
-            .accessibilityHidden(true)
-    }
-
     @ViewBuilder
     func spineColumn(spineTint: Color, motion: Animation?) -> some View {
         spineColumnFrame(

@@ -58,14 +58,6 @@ extension ChangeReviewCouncilMemberRow {
     }
 }
 
-enum ChangeReviewCouncilA11y {
-    static func spokenSection(memberCount: Int, diverged: Bool) -> String {
-        var parts = ["conselho, \(memberCount) \(memberCount == 1 ? "membro" : "membros")"]
-        if diverged { parts.append("divergência entre pareceres") }
-        return parts.joined(separator: ", ")
-    }
-}
-
 extension ChangeReviewCouncilMemberRow {
     @ViewBuilder
     var providerModelLabel: some View {
