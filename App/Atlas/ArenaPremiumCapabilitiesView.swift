@@ -120,7 +120,10 @@ struct ArenaPremiumCapabilitiesView: View {
         VStack(spacing: 0) {
             ArenaPremiumHairline()
             ForEach(members) { capability in
-                Button { onCapability(capability) } label: {
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+                    onCapability(capability)
+                } label: {
                     // Sem numeral: a lista não é sequência — número que não
                     // codifica nada é ruído (régua da casa).
                     HStack(spacing: 10) {
@@ -150,6 +153,7 @@ struct ArenaPremiumCapabilitiesView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(capabilitySpoken(capability))
+                .accessibilityHint("abre o detalhe desta capacidade")
                 .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
                 ArenaPremiumHairline()
             }

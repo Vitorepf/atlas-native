@@ -100,7 +100,10 @@ struct ArenaPremiumResultsView: View {
             ArenaPremiumKicker(text: "Por suíte")
                 .padding(.bottom, 8)
             ForEach(model.scoreboard?.suites ?? []) { suite in
-                Button { onSuite(suite) } label: {
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+                    onSuite(suite)
+                } label: {
                     HStack(spacing: 13) {
                         ArenaPremiumIcon(
                             symbol: ArenaPremiumIconography.suite(suite.suite),
@@ -117,6 +120,12 @@ struct ArenaPremiumResultsView: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(ArenaDisplay.suite(suite.suite))
+                .accessibilityHint(
+                    suite.hasRegression
+                        ? "abre a suíte com regressão"
+                        : "abre o detalhe da suíte"
+                )
                 .accessibilityIdentifier(A11yID.arenaPremiumResultSuite(suite.suite))
                 ArenaPremiumHairline()
             }

@@ -152,10 +152,15 @@ struct ArenaPremiumShell: View {
     @ToolbarContentBuilder
     private var addToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            Button { showingRunSheet = true } label: {
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                showingRunSheet = true
+            } label: {
                 Image(systemName: ArenaPremiumIconography.add)
                     .atlasSans(17, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Circle())
             }
             .accessibilityLabel("Nova medição")
             .accessibilityHint("Escolhe motores, suítes e braços")

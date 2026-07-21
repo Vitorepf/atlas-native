@@ -3,6 +3,7 @@ import SwiftUI
 /// Linha operacional com glifo tipográfico (∥ ※ ⌖ ◷) — alfabeto quiet luxury.
 /// Sem caixinha SF Symbol de template.
 struct ArenaPremiumGlyphRow: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let glyph: String
     let title: String
     let detail: String
@@ -11,7 +12,10 @@ struct ArenaPremiumGlyphRow: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            action()
+        } label: {
             HStack(spacing: 14) {
                 Text(glyph)
                     .font(AtlasFont.serif(14))
@@ -26,6 +30,7 @@ struct ArenaPremiumGlyphRow: View {
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(tone.color)
                     .lineLimit(1)
+                    .accessibilityHidden(true)
                 Text("›")
                     .font(AtlasFont.mono(13))
                     .foregroundStyle(AtlasTheme.textTertiary)
@@ -35,5 +40,9 @@ struct ArenaPremiumGlyphRow: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title), \(detail)")
+        .accessibilityHint("abre o detalhe")
+        .accessibilityAddTraits(.isButton)
     }
 }

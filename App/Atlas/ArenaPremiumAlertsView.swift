@@ -43,7 +43,10 @@ struct ArenaPremiumAlertsView: View {
         VStack(spacing: 0) {
             ArenaPremiumHairline()
             ForEach(regressions) { suite in
-                Button { onSuite(suite) } label: {
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+                    onSuite(suite)
+                } label: {
                     alertRow(
                         title: ArenaDisplay.suite(suite.suite),
                         detail: regressionDetail(suite),
@@ -51,6 +54,10 @@ struct ArenaPremiumAlertsView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(
+                    "\(ArenaDisplay.suite(suite.suite)), \(regressionDetail(suite))"
+                )
+                .accessibilityHint("abre a suíte com regressão")
                 ArenaPremiumHairline()
             }
             ForEach(reportAlerts) { report in
