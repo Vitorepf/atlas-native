@@ -413,7 +413,7 @@ extension ConversationView {
     var continuityMenuLabel: some View {
         Image(systemName: "ellipsis")
             .atlasSans(15, .semibold)
-            .foregroundStyle(AtlasTheme.accent.opacity(0.88))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
             .contentShape(Circle())
     }
@@ -444,7 +444,7 @@ extension ConversationView {
             } label: {
                 Image(systemName: "list.bullet.rectangle")
                     .atlasSans(15, .semibold)
-                    .foregroundStyle(AtlasTheme.accent.opacity(0.88))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                     .frame(width: 48, height: 48).atlasGlassCircle().atlasElevation(radius: 6, y: 2, opacity: 0.14)
                     .contentShape(Circle())
             }
@@ -944,7 +944,7 @@ extension EmptyConversation {
             Text(s)
                 .font(AtlasFont.serifItalic(15))
                 // Soft gold-quiet empty suggestion label.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.88))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 18).padding(.vertical, 12)
                 .frame(maxWidth: .infinity, minHeight: 48)
@@ -1749,18 +1749,8 @@ extension ComposerAttachmentRow {
         .contentShape(Rectangle())
         .overlay(alignment: .bottom) {
             // Gold-quiet hairline family (home sectionLabel / Autônomos map).
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.28),
-                AtlasTheme.accent.opacity(0.12),
-                AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(height: 1)
-            .padding(.leading, 24)
+            AtlasGoldBreathHairline()
+                .padding(.leading, 24)
         }
     }
 }

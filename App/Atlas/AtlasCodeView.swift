@@ -1393,18 +1393,8 @@ extension AtlasCodeView {
             }
         }
         .overlay(alignment: .bottom) {
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.25),
-                    AtlasTheme.accent.opacity(0.18),
-                    AtlasTheme.accent.opacity(0.25),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(height: 1)
+            // Pure gold-breath under graph filters — double peak family.
+            AtlasGoldBreathHairline(peak: .double)
         }
         .accessibilityIdentifier(A11yID.codeGraphFilters)
         .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: graphStateFilter)
