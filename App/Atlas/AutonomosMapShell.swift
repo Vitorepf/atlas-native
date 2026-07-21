@@ -105,6 +105,9 @@ struct AutonomosMapShell: View {
             if let receipt = latestMergeProvedReceipt {
                 selfConstructionBanner(receipt)
             }
+            if let error = model.controlError {
+                controlErrorBanner(error)
+            }
             VStack(alignment: .leading, spacing: 12) {
                 AutonomosNightlyProposalBlock(nightly: nightly) { proposal in
                     nightlyStartProposal = proposal
@@ -126,6 +129,39 @@ struct AutonomosMapShell: View {
         }
         // Contain: banner, rhythm, list/empty stay separately focusable.
         .accessibilityElement(children: .contain)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.controlError)
+    }
+
+    /// Falha honesta do dry-run / load — nunca some o erro em silêncio.
+    private func controlErrorBanner(_ error: String) -> some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            model.controlError = nil
+        } label: {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .atlasSans(14, .semibold)
+                    .foregroundStyle(AtlasTheme.alert)
+                    .accessibilityHidden(true)
+                Text(error)
+                    .font(AtlasFont.serif(14))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityHidden(true)
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.vertical, 12)
+            .frame(minHeight: 48)
+            .contentShape(Rectangle())
+            .background(AtlasTheme.alert.opacity(0.08))
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(error)
+        .accessibilityHint("toque para dispensar")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier(A11yID.autonomosControlError)
     }
 
     private func selfConstructionBanner(_ receipt: SelfConstructionReceipt) -> some View {
