@@ -74,14 +74,7 @@ struct ArenaPremiumShell: View {
     }
 
     private var askPillDock: some View {
-        VStack(spacing: 0) {
-            LinearGradient(
-                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 28)
-            .allowsHitTesting(false)
+        AgenticAskDock {
             AgenticPill(
                 invite: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination),
                 accessibilityId: A11yID.arenaPremiumAskPill
@@ -89,10 +82,7 @@ struct ArenaPremiumShell: View {
                 askDraft = ""
                 showingAsk = true
             }
-            .padding(.horizontal, AtlasTheme.Space.screen)
-            .padding(.bottom, 10)
         }
-        .background(AtlasTheme.bg.opacity(0.01))
     }
 
     private var askConversationSheet: some View {
@@ -118,10 +108,7 @@ struct ArenaPremiumShell: View {
             onThread: { askThreadId = $0 },
             hidesNavigationBack: true
         )
-        .presentationDetents([.large])
-        .presentationDragIndicator(.hidden)
-        .presentationBackground(AtlasTheme.bg)
-        .presentationCornerRadius(28)
+        .agenticAskSheetPresentation()
     }
 
     @ViewBuilder

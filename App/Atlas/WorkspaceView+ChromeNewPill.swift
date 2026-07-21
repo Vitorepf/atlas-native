@@ -6,19 +6,9 @@ import AtlasCore
 extension WorkspaceView {
     var newPill: some View {
         // A conversa nova nasce NESTE workspace (livres → sem workspace).
+        // WAVE-016: face canônica AgenticPillFace (sem hand-roll chrome).
         NavigationLink(value: Route.new(workspaceKey: freeOnly ? nil : workspaceKey)) {
-            HStack(spacing: 12) {
-                RootView.HomeComposerStar()
-                Text(workspacePillInvite)
-                    .font(AtlasFont.serifItalic(16))
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .accessibilityHidden(true)
-            }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 12)
-            .atlasAgenticPillChrome()
+            AgenticPillFace(invite: workspacePillInvite)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("nova conversa")

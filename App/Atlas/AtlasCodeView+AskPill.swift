@@ -16,26 +16,15 @@ extension AtlasCodeView {
 
     @ViewBuilder
     var askPillContent: some View {
-        HStack(spacing: 10) {
-            HStack(spacing: 12) {
-                RootView.HomeComposerStar()
-                Text(anchorLegend ?? AtlasCodeAskContext.invite)
-                    .font(AtlasFont.serifItalic(16))
-                    .foregroundStyle(anchorLegend != nil ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
-                    .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .accessibilityHidden(true)
-                    .accessibilityIdentifier(A11yID.codeAskAnchorNote)
-            }
+        // WAVE-016: AgenticPillFace + trailing clear/chevron (âncora WAVE-001).
+        AgenticPillFace(invite: anchorLegend ?? AtlasCodeAskContext.invite) {
             askPillClearButton
             Image(systemName: "chevron.up")
                 .atlasSans(10, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 12)
-        .atlasAgenticPillChrome()
+        .accessibilityIdentifier(A11yID.codeAskAnchorNote)
         .contentShape(Capsule())
     }
 

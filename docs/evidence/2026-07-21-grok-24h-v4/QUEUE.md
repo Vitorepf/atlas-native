@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-016-pill-chrome-one-machine
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-016-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-017-conversation-editorial-sink-instrument
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: max
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-017-design.md
 created_by: designer
@@ -37,7 +27,7 @@ approved_at: null
 ```yaml
 id: WAVE-018-continuity-island-lock-instrument
 status: proposed
-rank: 3
+rank: 2
 delta_patamar: high
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-018-design.md
 created_by: designer
@@ -48,9 +38,8 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-016-pill-chrome-one-machine | **max** | `WAVE-016-design.md` |
-| **2** | WAVE-017-conversation-editorial-sink-instrument | **max** | `WAVE-017-design.md` |
-| **3** | WAVE-018-continuity-island-lock-instrument | **high** | `WAVE-018-design.md` |
+| **1** | WAVE-017-conversation-editorial-sink-instrument | **max** | `WAVE-017-design.md` |
+| **2** | WAVE-018-continuity-island-lock-instrument | **high** | `WAVE-018-design.md` |
 
 ## History (done)
 
@@ -64,4 +53,5 @@ approved_at: null
 - WAVE-013 done
 - WAVE-014 done
 - WAVE-015 done
+- WAVE-016 done
 

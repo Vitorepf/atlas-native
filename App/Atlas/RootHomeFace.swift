@@ -164,20 +164,9 @@ extension RootView {
 
 // --- RootView+InputBarContent.swift ---
 extension RootView {
-    // A pílula agêntica: ✦ vivo + chrome canônico Home (atlasAgenticPillChrome).
+    // WAVE-016: face canônica (mesmo órgão que Arena/Autônomos/Workspace).
     var inputBarContent: some View {
-        HStack(spacing: 12) {
-            HomeComposerStar()
-            Text(HomeAskContext.invite)
-                .font(AtlasFont.serifItalic(16))
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityHidden(true)
-        }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 12)
-        .atlasAgenticPillChrome()
+        AgenticPillFace(invite: HomeAskContext.invite)
     }
 }
 
