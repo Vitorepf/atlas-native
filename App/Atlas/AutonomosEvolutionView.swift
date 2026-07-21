@@ -107,7 +107,7 @@ struct AutonomosEvolutionView: View {
         .disabled(!marco.mergeProved)
         .overlay(alignment: .bottom) { AutonomosMapChrome.hairline }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(marco.title), \(marco.meta)")
-        .accessibilityHint(marco.mergeProved ? "abre o recibo de auto-construção" : "")
+        .accessibilityLabel(AutonomosEvolutionJudgment.spokenMarco(title: marco.title, meta: marco.meta))
+        .accessibilityHint(AutonomosEvolutionJudgment.marcoHint(mergeProved: marco.mergeProved))
     }
 }

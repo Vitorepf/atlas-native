@@ -160,4 +160,11 @@ enum AutonomosDigestJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Row spoken (WAVE-104)
+
+    static func spokenRow(title: String, meta: String) -> String {
+        "\(title), \(meta)"
+    }
+
 }

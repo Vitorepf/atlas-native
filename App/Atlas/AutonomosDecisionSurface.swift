@@ -192,7 +192,7 @@ struct AutonomosDecisionSurface: View {
         .padding(.top, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(face.spokenFace). \(face.heroSub)")
+        .accessibilityLabel(AutonomosDecisionJudgment.spokenFaceChrome(face))
     }
 
     private func faceHeader(_ face: AutonomosDecisionFace) -> some View {

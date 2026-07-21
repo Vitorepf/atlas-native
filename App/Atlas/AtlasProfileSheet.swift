@@ -48,7 +48,7 @@ struct AtlasProfileSheet: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Vitor, operador do Atlas")
+        .accessibilityLabel(HomeOpsJudgment.operatorProfileSpoken)
     }
 }
 
@@ -101,7 +101,7 @@ extension AtlasProfileSheet {
         }
         .padding(.horizontal, 14).padding(.vertical, 12)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(label), \(value)")
+        .accessibilityLabel(HomeOpsJudgment.spokenProfileLine(label: label, value: value))
     }
 
     var connectionLabel: String {

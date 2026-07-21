@@ -309,4 +309,11 @@ enum AutonomosDecisionJudgment {
     ) -> [String] {
         items(from: backlog).prefix(limit).map(\.title)
     }
+
+    // MARK: Face chrome spoken (WAVE-104)
+
+    static func spokenFaceChrome(_ face: AutonomosDecisionFace) -> String {
+        "\(face.spokenFace). \(face.heroSub)"
+    }
+
 }

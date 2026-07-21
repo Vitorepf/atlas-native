@@ -154,4 +154,10 @@ enum AutonomosHubJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Self-build CTA spoken (WAVE-104)
+
+    static let selfBuildReceiptSpoken =
+        "O Atlas melhorou o próprio app, recibo com merge comprovado"
+
 }

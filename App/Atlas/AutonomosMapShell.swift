@@ -280,6 +280,6 @@ struct AutonomosMapShell: View {
             .background(AtlasTheme.surface.opacity(0.55))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
+        .accessibilityLabel(AutonomosHubJudgment.selfBuildReceiptSpoken)
     }
 }

@@ -134,4 +134,15 @@ enum AutonomosEvolutionJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Marco spoken (WAVE-104)
+
+    static func spokenMarco(title: String, meta: String) -> String {
+        "\(title), \(meta)"
+    }
+
+    static func marcoHint(mergeProved: Bool) -> String {
+        mergeProved ? "abre o recibo de auto-construção" : ""
+    }
+
 }

@@ -123,6 +123,6 @@ struct AutonomosDigestSurface: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .overlay(alignment: .bottom) { AutonomosMapChrome.hairline }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title), \(meta)")
+        .accessibilityLabel(AutonomosDigestJudgment.spokenRow(title: title, meta: meta))
     }
 }

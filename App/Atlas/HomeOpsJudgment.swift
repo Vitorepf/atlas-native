@@ -159,4 +159,13 @@ enum HomeOpsJudgment {
 
         return (facts, absences)
     }
+
+    // MARK: Profile spoken (WAVE-104)
+
+    static let operatorProfileSpoken = "Vitor, operador do Atlas"
+
+    static func spokenProfileLine(label: String, value: String) -> String {
+        "\(label), \(value)"
+    }
+
 }
