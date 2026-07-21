@@ -164,16 +164,11 @@ enum ArenaPremiumAskContext {
             }
         }
         if focusTab == .capabilities || destination == nil && tab == .capabilities {
+            // WAVE-094: measured confidence one law — never score-presence as cobertas.
             let caps = model.selectedCapabilities?.capabilities ?? []
-            let covered = caps.filter { $0.score != nil || $0.withAtlas != nil }.count
-            facts.append("capacidades: \(covered) cobertas de \(caps.count)")
-            for cap in caps.prefix(8) {
-                let d: Double? = {
-                    guard let a = cap.withAtlas, let b = cap.score else { return nil }
-                    return a - b
-                }()
-                facts.append("cap · \(cap.labelPt): sem \(ArenaFormat.score(cap.score)) → com \(ArenaFormat.score(cap.withAtlas)) (\(ArenaFormat.signed(d)))")
-            }
+            let capPack = ArenaCapabilitiesJudgment.packFacts(caps)
+            facts.append(contentsOf: capPack.facts)
+            absences.append(contentsOf: capPack.absences)
         }
         if destination == .execution || destination == .queue {
             facts.append("corridas_live: \(liveRuns.count)")

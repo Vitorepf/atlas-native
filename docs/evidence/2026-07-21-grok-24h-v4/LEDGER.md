@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 88
-- idle_compress_passes: 14
+- waves_completed: 89
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -99,13 +99,26 @@ mode: designer + implementer
 - WAVE-091
 - WAVE-092
 - WAVE-093
+- WAVE-094
 
 ## Idle compress
-- pass 13–14 · ChangeReview actions · Workspace chrome
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
 
-## Open queue
-_(none)_
+## Designer
+- designs_proposed: 89
+- designs_open: 0
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
+
+## Open queue snapshot (must match QUEUE.md)
+
+| # | wave | Δ | status |
+|---|---|---|---|
+| — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-092 artifact list · WAVE-093 live strip CTAs.
-- DEVICE_PENDING.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
