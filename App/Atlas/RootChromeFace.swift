@@ -394,7 +394,15 @@ extension RootView {
 extension RootView {
     @ViewBuilder
     func rootConversationThreadDestination(id: ThreadID, title: String) -> some View {
-        ConversationView(client: session.client, threadId: id, title: title)
+        // WAVE-020 residual: thread open still carries Home occasion pack (partida).
+        ConversationView(
+            client: session.client,
+            threadId: id,
+            title: title,
+            turnFacts: { [session] _ in
+                HomeAskContext.facts(session: session)
+            }
+        )
     }
 }
 
