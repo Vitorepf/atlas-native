@@ -252,6 +252,14 @@ enum AtlasGoldChrome {
             .accessibilityHidden(true)
     }
 
+    /// Stronger 1pt rule for state markers (new-since-visit).
+    static var stateRule: some View {
+        Rectangle()
+            .fill(AtlasTheme.accent.opacity(0.48))
+            .frame(height: 1)
+            .accessibilityHidden(true)
+    }
+
     /// Fade under floating AgenticPill dock (Autônomos / Arena).
     static var askDockFade: some View {
         LinearGradient(

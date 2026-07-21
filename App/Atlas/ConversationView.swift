@@ -1031,15 +1031,13 @@ struct NewSinceLastVisitMarker: View {
     var body: some View {
         HStack(spacing: 8) {
             // Soft gold-quiet marker rules — state, not shout.
-            Rectangle().fill(AtlasTheme.accent.opacity(0.48)).frame(height: 1)
-                .accessibilityHidden(true)
+            AtlasGoldChrome.stateRule
             Text("Novo desde a última visita")
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
                 .foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
-            Rectangle().fill(AtlasTheme.accent.opacity(0.48)).frame(height: 1)
-                .accessibilityHidden(true)
+            AtlasGoldChrome.stateRule
         }
         .accessibilityElement(children: .ignore)
         .accessibilityIdentifier(A11yID.conversationNewMarker)
