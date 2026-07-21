@@ -1347,7 +1347,11 @@ struct LiveNowRow: View {
     private func clockText(_ value: String) -> some View {
         Text(value)
             .font(AtlasFont.serifItalic(13))
-            .foregroundStyle(AtlasTheme.textSecondary)
+            .foregroundStyle(
+                session.timing == .running
+                    ? AtlasTheme.accent.opacity(0.9)
+                    : AtlasTheme.textSecondary
+            )
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
     }
