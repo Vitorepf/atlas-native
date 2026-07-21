@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — radar status HIG 44 (ciclo 299)** · `b6909303` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — toast VO sort priority (ciclo 298)** · `370e5f72` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — breath/arrival motion polish (ciclo 297)** · `75bf8c9b` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — ceremonial motion token (ciclo 296)** · `3922f183` · App/Atlas 36. **Prova:** checks+build exit 0.
