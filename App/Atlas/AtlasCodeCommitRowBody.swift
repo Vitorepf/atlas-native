@@ -10,7 +10,7 @@ extension AtlasCodeCommitRow {
             isDimmed: isDimmed,
             reduceMotion: reduceMotion,
             label: { commitRowLabel },
-            accessibilityLabel: AtlasCodeCommitRowA11y.spokenCommitRow(
+            accessibilityLabel: AtlasCodeCommitRowJudgment.spokenCommitRow(
                 node: node, state: state, trunk: trunk, ruleId: ruleId, isDimmed: isDimmed
             ),
             accessibilityHint: commitAccessibilityHint,

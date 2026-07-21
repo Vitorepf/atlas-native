@@ -131,4 +131,74 @@ enum AtlasCodeCommitRowJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Spoken row (IDLE · was AtlasCodeCommitRowA11y)
+
+    static func spokenCommitRow(
+        node: AtlasCodeGraphNode,
+        state: AtlasCodeNodeState,
+        trunk: String?,
+        ruleId: String?,
+        isDimmed: Bool
+    ) -> String {
+        let identity = spokenIdentity(node: node, trunk: trunk)
+        var parts = spokenStateParts(
+            title: identity.title,
+            author: identity.author,
+            linha: identity.linha,
+            state: state,
+            ruleId: ruleId,
+            trunk: trunk
+        )
+        parts.append(contentsOf: spokenCommitTail(authoredAt: node.authoredAt, isDimmed: isDimmed))
+        return parts.joined(separator: ", ")
+    }
+
+    static func spokenIdentity(
+        node: AtlasCodeGraphNode,
+        trunk: String?
+    ) -> (title: String, author: String, linha: String) {
+        // VoiceOver lidera pelo TIPO (só a palavra) e depois a frase.
+        let title: String
+        if let message = node.message {
+            let parsed = AtlasConventionalCommit.split(message)
+            let typeWord = parsed.type.map { String($0.prefix { $0.isLetter }) }
+            title = typeWord.map { "\($0), \(parsed.subject)" } ?? parsed.subject
+        } else {
+            title = String(node.hash.prefix(8))
+        }
+        let author = node.authorName.isEmpty ? node.authorEmail : node.authorName
+        let linha = trunk?.nonEmpty ?? "linha principal"
+        return (title, author, linha)
+    }
+
+    static func spokenCommitTail(authoredAt: Int, isDimmed: Bool) -> [String] {
+        var parts: [String] = []
+        let when = AtlasCodeRelativeTime.short(from: authoredAt)
+        if !when.isEmpty { parts.append("há \(when)") }
+        if isDimmed { parts.append("fora da resposta") }
+        return parts
+    }
+
+    static func spokenStateParts(
+        title: String,
+        author: String,
+        linha: String,
+        state: AtlasCodeNodeState,
+        ruleId: String?,
+        trunk: String?
+    ) -> [String] {
+        switch state {
+        case .violating:
+            var parts = [title, "por \(author)", "fora da \(linha)"]
+            if let ruleId { parts.append(AtlasCodeIssue.law(ruleId, trunk: trunk)) }
+            return parts
+        case .healed:
+            return [title, "por \(author)", "curado"]
+        case .onMain:
+            return [title, "por \(author)", "na \(linha)"]
+        case .history:
+            return [title, "por \(author)", "história"]
+        }
+    }
 }
