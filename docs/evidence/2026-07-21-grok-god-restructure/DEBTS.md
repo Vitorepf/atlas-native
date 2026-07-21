@@ -5,15 +5,16 @@
 ```yaml
 pass: 1
 domain_index: 1
-last_focus: "ChangeReviewGovernance Body+Chrome fuse"
-session_commits: 33+
+last_focus: "PlanCard Steps fuse"
+session_commits: 34+
 ```
 
 ## Soft *Sections*/*States*: **0**
 
 ## Próximo
 
-- PlanCard Steps → host · Decision bodies · residual peels
+- Decision bodies · Plan FlexWrap/StepRow only if ROI · residual peels
+- domain_index advance when Conversa peel ROI low
 - NEVER Goal Done
 
 ## Proibido

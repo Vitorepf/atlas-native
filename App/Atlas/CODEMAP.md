@@ -146,7 +146,7 @@
 | **Commit row parts** | Body · Meta |
 | **Conversation composer sheets** | `ConversationComposerSheetsModifier` (API · host · camera; was 4 peels) |
 | **Search surface parts** | `SearchSurface` host (header·results fused) |
-| **Plan card parts** | PlanCard host · `PlanRevisionCompare` · Steps · StepRow · FlexWrap |
+| **Plan card parts** | PlanCard host (steps fused) · `PlanRevisionCompare` · StepRow · FlexWrap |
 | **Workspace surface parts** | Surface · Body/threads |
 | **Composer toolbar parts** | Chrome · ChromeBody |
 | **Provenance sheet body** | `AtlasCodeProvenanceSheetBody` (was Sections*) · WhyTarget |
@@ -188,7 +188,7 @@
 | **EditorialTurn** | host · Closing · User · Chrome |
 | **PlanCard** | Body · FlexWrap · Steps |
 | **Autonomos pack organs** | fused in `AutonomosAskContext` (global · veto · destination) |
-| **Residual composition** | PlanCard Steps/FlexWrap · ModelActions* · FileRowChrome · Decision bodies |
+| **Residual composition** | PlanCard FlexWrap · StepRow · ModelActions* · FileRowChrome · Decision bodies |
 
 ## BLOCKED (honesto)
 
