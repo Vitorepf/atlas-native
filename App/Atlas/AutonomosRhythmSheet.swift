@@ -73,6 +73,12 @@ struct AutonomosRhythmSheet: View {
         .presentationDragIndicator(.visible)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(A11yID.autonomosRhythmSheet)
+        .accessibilityValue(
+            AutonomosRhythmJudgment.face(
+                windows: windows,
+                paused: nightly.isProposalMuted
+            ).productWord
+        )
         .task { today = await AtlasSession.rhythm.todaySummary() }
     }
 
@@ -90,43 +96,22 @@ struct AutonomosRhythmSheet: View {
     }
 }
 
+/// WAVE-077: presentation peels → AutonomosRhythmJudgment for face grammar.
 enum AutonomosRhythmCopy {
     static func line(_ windows: AtlasDayRhythm.Windows, paused: Bool = false) -> String {
-        let base: String
-        if windows.sampleDays < 4 {
-            base = "aprendendo seu ritmo · dia \(max(1, windows.sampleDays)) de 4"
-        } else if let dayEnd = hour(windows.dayEnd) {
-            base = "ritmo aprendido · seu dia termina ~\(dayEnd)"
-        } else {
-            base = "ritmo aprendido · \(windows.sampleDays) dias de uso"
-        }
-        return paused ? "\(base) · propostas em pausa" : base
+        AutonomosRhythmJudgment.line(windows: windows, paused: paused)
     }
 
     static func spokenLine(_ windows: AtlasDayRhythm.Windows, paused: Bool = false) -> String {
-        let base: String
-        if windows.sampleDays < 4 {
-            base = "aprendendo seu ritmo, dia \(max(1, windows.sampleDays)) de 4"
-        } else if let dayEnd = hour(windows.dayEnd) {
-            base = "ritmo aprendido: seu dia costuma terminar perto das \(dayEnd)"
-        } else {
-            base = "ritmo aprendido em \(windows.sampleDays) dias de uso"
-        }
-        return paused ? "\(base). Propostas noturnas em pausa" : base
+        AutonomosRhythmJudgment.spokenLine(windows: windows, paused: paused)
     }
 
     static func learnedParagraph(_ windows: AtlasDayRhythm.Windows) -> String {
-        if windows.sampleDays < 4 {
-            return "O Atlas observa quando seu dia de trabalho começa e termina. Faltam \(4 - windows.sampleDays) \(4 - windows.sampleDays == 1 ? "dia" : "dias") para ele conhecer seu ritmo."
-        }
-        return "O Atlas aprendeu seu ritmo observando o uso real — a mediana dos seus últimos dias de trabalho."
+        AutonomosRhythmJudgment.learnedParagraph(windows)
     }
 
     static func whatHappensParagraph(_ windows: AtlasDayRhythm.Windows) -> String {
-        if windows.sampleDays < 4 {
-            return "Quando o ritmo estiver aprendido, no fim do seu dia o Atlas vai propor uma missão noturna — a frota continua enquanto você descansa."
-        }
-        return "No fim do seu dia, se houve trabalho, o Atlas propõe uma missão noturna — a frota continua enquanto você descansa, e de manhã o resultado espera por você."
+        AutonomosRhythmJudgment.whatHappensParagraph(windows)
     }
 
     static func todayLine(_ today: AtlasDayRhythm.DaySummary?) -> String {
@@ -149,7 +134,6 @@ enum AutonomosRhythmCopy {
     }
 
     static func hour(_ components: DateComponents?) -> String? {
-        guard let hour = components?.hour else { return nil }
-        return String(format: "%02d:%02d", hour, components?.minute ?? 0)
+        AutonomosRhythmJudgment.hour(components)
     }
 }

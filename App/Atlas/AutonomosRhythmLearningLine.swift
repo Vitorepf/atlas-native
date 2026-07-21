@@ -29,6 +29,12 @@ struct AutonomosRhythmLearningLine: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(AutonomosRhythmCopy.spokenLine(windows, paused: nightly.isProposalMuted))
+        .accessibilityValue(
+            AutonomosRhythmJudgment.face(
+                windows: windows,
+                paused: nightly.isProposalMuted
+            ).productWord
+        )
         .accessibilityHint("mostra o que o Atlas aprendeu do seu dia")
         .accessibilityIdentifier(A11yID.autonomosRhythmLine)
         .sheet(isPresented: $rhythmSheetShown) {

@@ -64,6 +64,7 @@
 | **Controle do loop Autônomos (veto)** | `AutonomosRunControlJudgment` → Hub primaryVerb → ReasonSheet → `model.control` / `startRun` · bind `selectArea` |
 | **Multi-área bind (chooser)** | `AutonomosAreaBindJudgment` → face none/auto/needs_bind/bound · `AutonomosAreaBindChooser` · Hub CTA |
 | **Proposta noturna** | `NightlyProposalJudgment` → face pending/muted/muted_auto/hidden · Block/Card/Rhythm |
+| **Ritmo do dia (aprender)** | `AutonomosRhythmJudgment` → face learning/learned/paused · line/sheet |
 | **Veto retroativo self-construction** | `SelfConstructionVetoJudgment` → ReceiptSheet canRevert → `model.revertCycle` |
 | **Evolução / entregas Autônomos** | `AutonomosEvolutionJudgment` → EvolutionView marcos → receipt |
 | **Transfer handoff missão** | `AutonomosTransferJudgment` → Hub CTA → ReasonSheet → `model.transfer` |
