@@ -19,12 +19,15 @@ enum ConversationOccasionPack {
 
     /// Live mid-thread slice from ConversationModel (WAVE-106).
     /// Never invent: only published bubble/queue/agents.
-    struct PublishedSlice: Equatable {
+    /// Not Equatable: handoff DTO is Codable-only (no Core change).
+    struct PublishedSlice {
         var presenceBubble: ChatBubble?
         var queued: [QueuedMessage]
         var agents: [ExecAgent]
         /// WAVE-160: last steer receipt from model (nil → absence).
         var lastSteerReceipt: AtlasInteractionSteerResponse? = nil
+        /// WAVE-161: surface handoff receipt (nil → absence).
+        var latestSurfaceHandoff: AtlasAiSurfaceHandoff? = nil
 
         static let unbound = PublishedSlice(
             presenceBubble: nil,
@@ -197,6 +200,13 @@ enum ConversationOccasionPack {
         } else if canSignals.hasRunning || canSignals.hasPaused {
             absences.append("steer: sem traceId no presence bubble — não invente recibo")
         }
+
+        // WAVE-161: surface handoff organ (iPhone↔Mac continuity face).
+        let handoffPack = ConversationHandoffJudgment.packFacts(
+            from: published?.latestSurfaceHandoff
+        )
+        facts.append(contentsOf: handoffPack.facts)
+        absences.append(contentsOf: handoffPack.absences)
 
         let surface: String
         if workspaceKey != nil {

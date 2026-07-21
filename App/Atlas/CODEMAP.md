@@ -26,7 +26,7 @@
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
 | Código grafo peels | `AtlasCodeSurface` host · `AtlasCodeSurfaceGraph` content/list |
 | **Grafo chrome (status/filtros/worktrees/semana)** | `AtlasCodeGraphChrome` status · `FilterChrome` · `WorktreeChrome` · `WeekChrome` (WAVE-156) |
-| **Grafo screen load (Código)** | `AtlasCodeGraphScreenJudgment` → face loading/failed/empty/ready · screen a11y |
+| **Grafo screen load (Código)** | `AtlasCodeGraphScreenJudgment` → face loading/failed/empty/ready · screen a11y · pack in CodeAsk (WAVE-161) |
 | **Pílula ask (Código)** | `AtlasCodeAskPillJudgment` → face invite/anchoring/legend · AskContext pack |
 | **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
 | **Heal veto / undoError** | `AtlasCodeHealVetoJudgment` → ReceiptSheet · canVeto · undo fail line |
@@ -49,7 +49,7 @@
 | **Narrativa viva (timeline face)** | `LiveTimelineNarrativeJudgment` → face live/filterSilence (chrono sagrado) |
 | **Filtro de leitura (timeline)** | `LiveTimelineFilterJudgment` → face open/active/silent · chip/silence spoken |
 | Timeline filter peels | `LiveTimelineFilterChrome` (ReadFilter + FilterChips) |
-| **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other |
+| **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other · pack mid-thread (WAVE-161) |
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank |
 | **Composer draft/anexos** | `ComposerDraftJudgment` → strip silence/drafts(N)/uploading/failed · thumb · DraftStrip |
 | **Composer toolbar chrome** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |

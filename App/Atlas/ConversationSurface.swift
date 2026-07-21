@@ -157,7 +157,8 @@ extension ConversationView {
                 presenceBubble: bubble,
                 queued: model.queuedMessages,
                 agents: bubble?.agents ?? [],
-                lastSteerReceipt: model.lastSteerReceipt
+                lastSteerReceipt: model.lastSteerReceipt,
+                latestSurfaceHandoff: model.latestSurfaceHandoff
             )
             return ConversationOccasionPack.facts(
                 session: session,

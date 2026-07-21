@@ -61,6 +61,21 @@ enum AtlasCodeAskContext {
             anchors.append("âncora H6 ativa (sem nó de swipe local)")
         }
 
+        // WAVE-161: graph screen face organ (loading/failed/empty/ready).
+        let failMsg: String? = {
+            if case .failed(let m) = model.phase { return m }
+            return nil
+        }()
+        let screenPack = AtlasCodeGraphScreenJudgment.packFacts(
+            repo: model.repo,
+            phase: model.phase,
+            nodeCount: model.graph?.nodes.count ?? 0,
+            failMessage: failMsg,
+            isAnchoring: isAnchoring
+        )
+        facts.append(contentsOf: screenPack.facts)
+        absences.append(contentsOf: screenPack.absences)
+
         // WAVE-062: exclusive ask-pill face (invite / anchoring / legend).
         let pill = AtlasCodeAskPillJudgment.packFacts(
             isAnchoring: isAnchoring,
