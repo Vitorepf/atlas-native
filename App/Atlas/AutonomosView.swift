@@ -282,7 +282,7 @@ struct AutonomosViewHeader: View {
         } label: {
             Image(systemName: "plus")
                 .atlasSans(17, .semibold)
-                .foregroundStyle(AtlasTheme.textPrimary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.92))
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
@@ -302,7 +302,11 @@ struct AutonomosViewHeader: View {
         } label: {
             Image(systemName: "arrow.clockwise")
                 .atlasSans(15, .medium)
-                .foregroundStyle(canRefresh ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
+                .foregroundStyle(
+                    canRefresh
+                        ? AtlasTheme.accent.opacity(0.88)
+                        : AtlasTheme.textTertiary
+                )
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
