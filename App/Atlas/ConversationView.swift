@@ -1758,7 +1758,7 @@ extension ModeSheet {
     var modeFootnote: some View {
         Text(ComposerSheetA11y.modeFootnote)
             .atlasSans(12)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.7))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
             .padding(.bottom, 10)
@@ -1965,7 +1965,7 @@ extension EffortSheet {
     var effortFootnoteCopy: some View {
         Text("Vale para o próximo envio; automático deixa o Atlas Decide escolher")
             .atlasSans(12)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.7))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
             .padding(.bottom, 10)
@@ -2043,7 +2043,7 @@ extension SheetRow {
         } label: {
             rowLabel
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
             accessibilityLabel ?? SheetShellA11y.spokenRow(label: label, sub: sub, selected: selected)
