@@ -1243,17 +1243,7 @@ struct AutonomosReasonSheet: View {
                         Text("Confirmar ação")
                             .font(AtlasFont.serif(17, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 64, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 64, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)

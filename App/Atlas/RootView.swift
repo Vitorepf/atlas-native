@@ -119,16 +119,7 @@ extension RootView {
 extension RootView {
   // A linha premium do site no clímax dela: ouro em fade nas duas pontas.
   var mastheadAccentRule: some View {
-    LinearGradient(
-      colors: [
-        AtlasTheme.accent.opacity(0),
-        AtlasTheme.accent.opacity(0.82),
-        AtlasTheme.accent.opacity(0)
-      ],
-      startPoint: .leading, endPoint: .trailing
-    )
-    .frame(width: 56, height: 1.5)
-    .accessibilityHidden(true)
+    AtlasGoldTitleRule(width: 56, peak: 0.82)
   }
 }
 
@@ -2284,17 +2275,7 @@ extension WorkspaceView {
                 Color.clear.frame(width: 48, height: 48)
             }
             // Quiet gold rule under title — masthead family, not a second header.
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.55),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(width: 56, height: 1.5)
-            .accessibilityHidden(true)
+            AtlasGoldTitleRule(width: 56, peak: 0.55)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 4)
@@ -3288,17 +3269,7 @@ struct AtlasProfileSheet: View {
                 .font(AtlasFont.serif(24, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.55),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(width: 64, height: 1.5)
-            .accessibilityHidden(true)
+            AtlasGoldTitleRule(width: 64, peak: 0.55)
             Text("Operador do Atlas")
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.accent.opacity(0.72))
@@ -3616,17 +3587,7 @@ struct AtlasWorkspacePickerSheet: View {
                         Text(title)
                             .font(AtlasFont.serif(17, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 56, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 56, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)

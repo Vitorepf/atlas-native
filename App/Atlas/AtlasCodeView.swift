@@ -746,17 +746,7 @@ extension AtlasCodeView {
                     .accessibilityAddTraits(.isHeader)
                     .accessibilityLabel(spokenCodeScreenLabel())
                     .accessibilityHint(Self.codeScreenHint)
-                LinearGradient(
-                    colors: [
-                        AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.5),
-                        AtlasTheme.accent.opacity(0)
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .frame(width: 44, height: 1.5)
-                .accessibilityHidden(true)
+                AtlasGoldTitleRule(width: 44, peak: 0.5)
             }
         }
     }
@@ -1727,17 +1717,7 @@ struct AtlasCodeRepoPickerSheet: View {
                     Text("Repositório")
                         .font(AtlasFont.serif(18, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0),
-                            AtlasTheme.accent.opacity(0.5),
-                            AtlasTheme.accent.opacity(0)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: 56, height: 1.5)
-                    .accessibilityHidden(true)
+                    AtlasGoldTitleRule(width: 56, peak: 0.5)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.top, 10)
@@ -3593,17 +3573,7 @@ struct AtlasCodeRadarView: View {
                         Text("Código")
                             .font(AtlasFont.serif(20, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 48, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 48, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)

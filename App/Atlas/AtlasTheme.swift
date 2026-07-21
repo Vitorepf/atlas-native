@@ -180,6 +180,41 @@ struct AtlasGoldBreathHairline: View {
     }
 }
 
+/// Soft gold-tinted sheet/keyboard grabber — quiet luxury, not pure slate bar.
+struct AtlasGoldGrabber: View {
+    var width: CGFloat = 42
+    var height: CGFloat = 5
+    var body: some View {
+        RoundedRectangle(cornerRadius: 3)
+            .fill(AtlasTheme.accent.opacity(0.34))
+            .frame(width: width, height: height)
+            .accessibilityHidden(true)
+    }
+}
+
+/// Short gold title underline — masthead / screen principal family (not full hairline).
+struct AtlasGoldTitleRule: View {
+    var width: CGFloat = 44
+    var height: CGFloat = 1.5
+    /// Peak opacity at center (home masthead uses ~0.82; screen titles ~0.5).
+    var peak: Double = 0.5
+    var body: some View {
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0),
+                AtlasTheme.accent.opacity(peak),
+                AtlasTheme.accent.opacity(0)
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(width: width, height: height)
+        .accessibilityHidden(true)
+    }
+}
+
+
+
 
 // Cycle 044 fuse → AtlasMotion.swift
 

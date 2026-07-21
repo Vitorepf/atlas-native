@@ -126,17 +126,7 @@ extension ChangeReviewSheet {
                         Text("Revisar mudanças")
                             .font(AtlasFont.serif(17, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 56, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 56, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)

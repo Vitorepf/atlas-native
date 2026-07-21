@@ -372,17 +372,7 @@ extension AtlasArenaView {
                         Text("Arena")
                             .font(AtlasFont.serif(20, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 44, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 44, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)
@@ -690,17 +680,7 @@ struct ArenaPremiumStopSheet: View {
                         Text("Parar")
                             .font(AtlasFont.serif(17, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 40, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 40, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)
@@ -842,17 +822,7 @@ struct ArenaPremiumDestinationView: View {
                         .font(AtlasFont.serif(17, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .lineLimit(1)
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0),
-                            AtlasTheme.accent.opacity(0.5),
-                            AtlasTheme.accent.opacity(0)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: 48, height: 1.5)
-                    .accessibilityHidden(true)
+                    AtlasGoldTitleRule(width: 48, peak: 0.5)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityAddTraits(.isHeader)
@@ -2641,17 +2611,7 @@ struct ArenaPremiumRunDetailView: View {
                         .font(AtlasFont.serif(17, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .lineLimit(1)
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0),
-                            AtlasTheme.accent.opacity(0.5),
-                            AtlasTheme.accent.opacity(0)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: 52, height: 1.5)
-                    .accessibilityHidden(true)
+                    AtlasGoldTitleRule(width: 52, peak: 0.5)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityAddTraits(.isHeader)
@@ -3310,17 +3270,7 @@ struct ArenaPremiumCapabilityDetail: View {
                         Text("Capacidade")
                             .font(AtlasFont.serif(17, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 52, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 52, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)
@@ -3463,17 +3413,7 @@ extension ArenaRunSheet {
                     Text("Rodar medição")
                         .font(AtlasFont.serif(17, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0),
-                            AtlasTheme.accent.opacity(0.5),
-                            AtlasTheme.accent.opacity(0)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: 64, height: 1.5)
-                    .accessibilityHidden(true)
+                    AtlasGoldTitleRule(width: 64, peak: 0.5)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityAddTraits(.isHeader)
@@ -4296,17 +4236,7 @@ extension ArenaSuiteSheet {
                     Text("Suite")
                         .font(AtlasFont.serif(17, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0),
-                            AtlasTheme.accent.opacity(0.5),
-                            AtlasTheme.accent.opacity(0)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: 40, height: 1.5)
-                    .accessibilityHidden(true)
+                    AtlasGoldTitleRule(width: 40, peak: 0.5)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityAddTraits(.isHeader)

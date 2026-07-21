@@ -352,17 +352,7 @@ extension ConversationView {
                 Spacer(minLength: 0)
                 headerTrailing
             }
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.5),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(width: 48, height: 1.5)
-            .accessibilityHidden(true)
+            AtlasGoldTitleRule(width: 48, peak: 0.5)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 4)
@@ -986,11 +976,8 @@ extension EmptyConversation {
 extension SheetShell {
     var sheetHandle: some View {
         // Soft gold-tinted grabber — quiet luxury, not pure slate bar.
-        RoundedRectangle(cornerRadius: 3)
-            .fill(AtlasTheme.accent.opacity(0.34))
-            .frame(width: 42, height: 5)
+        AtlasGoldGrabber()
             .padding(.top, 10).padding(.bottom, 16)
-            .accessibilityHidden(true)
     }
 
     var sheetTitle: some View {
@@ -999,17 +986,7 @@ extension SheetShell {
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.5),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(width: 56, height: 1.5)
-            .accessibilityHidden(true)
+            AtlasGoldTitleRule(width: 56, peak: 0.5)
         }
         .padding(.bottom, 14)
     }
@@ -2599,9 +2576,7 @@ extension ConversationComposer {
 extension ConversationComposer {
     var keyboardGrabberBar: some View {
         // Match SheetShell grabber tone — gold-quiet, not slate-only.
-        RoundedRectangle(cornerRadius: 3)
-            .fill(AtlasTheme.accent.opacity(0.34))
-            .frame(width: 42, height: 5)
+        AtlasGoldGrabber()
             .frame(maxWidth: .infinity, minHeight: 48) // HIG hit target for dismiss
             .contentShape(Rectangle())
     }
@@ -9445,17 +9420,7 @@ extension ArtifactSheet {
                         Text("Artefatos")
                             .font(AtlasFont.serif(17, .semibold))
                             .foregroundStyle(AtlasTheme.textPrimary)
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0),
-                                AtlasTheme.accent.opacity(0.5),
-                                AtlasTheme.accent.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: 48, height: 1.5)
-                        .accessibilityHidden(true)
+                        AtlasGoldTitleRule(width: 48, peak: 0.5)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityAddTraits(.isHeader)
