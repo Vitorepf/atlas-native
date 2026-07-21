@@ -477,6 +477,7 @@ extension RootView {
         .frame(minHeight: 52) // match AgenticPill / workspace invite breath
         .contentShape(Capsule())
         .atlasGlassCapsule()
+        .atlasElevation(radius: 12, y: 4, opacity: 0.18)
         .overlay(
             Capsule()
                 .strokeBorder(
@@ -2001,6 +2002,7 @@ extension WorkspaceView {
         .frame(minHeight: 52) // match AgenticPill invite breath
         .contentShape(Capsule())
         .atlasGlassCapsule()
+        .atlasElevation(radius: 12, y: 4, opacity: 0.18)
     }
 }
 
@@ -3056,6 +3058,7 @@ struct AgenticPill: View {
             // aplicado como modifier de conteúdo às vezes engole o identifier.
             .background { Capsule().fill(AtlasTheme.bgRecessed.opacity(0.01)) }
             .atlasGlassCapsule()
+            .atlasElevation(radius: 12, y: 4, opacity: 0.18)
             .overlay(
                 Capsule()
                     .strokeBorder(
