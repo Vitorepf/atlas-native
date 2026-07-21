@@ -1065,9 +1065,8 @@ struct LiveNowSection: View {
 
     private var header: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text("VIVO AGORA")
-                .font(AtlasFont.mono(11))
-                .tracking(1.4)
+            Text("Vivo agora")
+                .font(AtlasFont.serif(13, .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(Self.spokenSectionLabel(
