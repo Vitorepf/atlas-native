@@ -79,18 +79,12 @@ enum AutonomosAskContext {
         var facts: [String] = []
         var absences: [String] = []
 
-        if let unit {
-            anchors.append("autonomo: \(unit.name)")
-            facts.append("carta: \(unit.charter)")
-            // WAVE-030: never claim local catalog pause is the server loop.
-            facts.append(
-                unit.paused
-                    ? "catalogo_local: pausado no iPhone (≠ loop servidor)"
-                    : "catalogo_local: no iPhone"
-            )
-            facts.append("idade_local: \(unit.ageLabel)")
-        } else {
-            absences.append("lista de Autônomos — nenhum aberto")
+        // WAVE-184: unit focus pack (charter · local catalog · age).
+        let unitPack = AutonomosListJudgment.packUnitFocusFacts(unit: unit)
+        facts.append(contentsOf: unitPack.facts)
+        absences.append(contentsOf: unitPack.absences)
+        anchors.append(contentsOf: unitPack.anchors)
+        if unit == nil {
             // WAVE-090: catalog list face when no unit focused (empty/list honesty).
             let listPack = AutonomosListJudgment.packFacts(units: [], awaitingUnitIDs: [])
             facts.append(contentsOf: listPack.facts)

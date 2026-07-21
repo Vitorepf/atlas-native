@@ -27,7 +27,15 @@ enum HomeAskContext {
         var absences: [String] = []
 
         let threads = session.threads
-        facts.append("conversas_conhecidas: \(threads.count)")
+        let workspaces = session.workspaces
+
+        // WAVE-184: Home catalog shell (threads · workspaces).
+        let catalog = HomeOpsJudgment.packCatalogFacts(
+            threadCount: threads.count,
+            workspaceNames: workspaces.map(\.name)
+        )
+        facts.append(contentsOf: catalog.facts)
+        absences.append(contentsOf: catalog.absences)
 
         // WAVE-064: live anchors follow LiveNow attention rank (not wire order).
         // WAVE-183: packFacts canon (packLiveAnchors shim remains).
@@ -39,15 +47,6 @@ enum HomeAskContext {
         facts.append(contentsOf: livePack.facts)
         anchors.append(contentsOf: livePack.anchors)
         absences.append(contentsOf: livePack.absences)
-
-        let workspaces = session.workspaces
-        if workspaces.isEmpty {
-            absences.append("nenhum workspace listado")
-        } else {
-            facts.append("workspaces: \(workspaces.prefix(8).map(\.name).joined(separator: ", "))")
-        }
-
-        absences.append("não invente contagens de frota/Arena sem a superfície correspondente")
 
         // WAVE-047: ops door attention only from published Autônomos/Arena signals.
         let ops = HomeOpsJudgment.packFacts(session: session)

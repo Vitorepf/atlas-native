@@ -132,4 +132,33 @@ enum AutonomosListJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Unit focus pack (WAVE-184)
+
+    /// Focused unit charter/catalog/age — never invents server loop from local pause.
+    static func packUnitFocusFacts(
+        unit: AutonomosUnit?
+    ) -> (facts: [String], absences: [String], anchors: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        var anchors: [String] = []
+        guard let unit else {
+            absences.append("lista de Autônomos — nenhum aberto")
+            return (facts, absences, anchors)
+        }
+        anchors.append("autonomo: \(unit.name)")
+        facts.append("unit_name: \(unit.name)")
+        facts.append("unit_charter: \(unit.charter)")
+        // WAVE-030: local catalog pause ≠ server loop.
+        facts.append(
+            unit.paused
+                ? "unit_catalog_local: paused_on_iphone"
+                : "unit_catalog_local: on_iphone"
+        )
+        facts.append("unit_age_local: \(unit.ageLabel)")
+        if unit.paused {
+            absences.append("catalogo_local pausado no iPhone — não invente loop servidor parado")
+        }
+        return (facts, absences, anchors)
+    }
 }

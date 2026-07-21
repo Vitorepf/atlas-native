@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 178
+- waves_completed: 179
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -189,6 +189,7 @@ mode: designer + implementer
 - WAVE-181
 - WAVE-182
 - WAVE-183
+- WAVE-184
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -199,7 +200,7 @@ mode: designer + implementer
 - pass 6 · `7d186855` · delete duplicate imports post-180
 
 ## Designer
-- designs_proposed: 178
+- designs_proposed: 179
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -214,5 +215,6 @@ mode: designer + implementer
 ## Notes
 - Device-pending (passcode) = operator.
 - Continuity restore BLOCKED (App Group).
-- WAVE-183: radar workspace pack + LiveNow packFacts.
-- hollows 0 · open=[] · await A · no invent micro-WAVE.
+- WAVE-184: unit focus + home catalog pack.
+- WAVE-174–183 pack/face campaign · hollows 0.
+- open=[] · await A · no invent micro-WAVE.

@@ -119,6 +119,27 @@ enum HomeOpsJudgment {
         domainUnavailable ? .domainUnavailable : .available
     }
 
+    // MARK: Catalog shell (WAVE-184)
+
+    /// Home partida catalog — threads known + workspace names (never invents frota).
+    static func packCatalogFacts(
+        threadCount: Int,
+        workspaceNames: [String]
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        facts.append("home_threads_known: \(threadCount)")
+        if workspaceNames.isEmpty {
+            absences.append("nenhum workspace listado")
+        } else {
+            facts.append(
+                "home_workspaces: \(workspaceNames.prefix(8).joined(separator: ", "))"
+            )
+        }
+        absences.append("não invente contagens de frota/Arena sem a superfície correspondente")
+        return (facts, absences)
+    }
+
     @MainActor
     static func packFacts(session: AtlasSession) -> (facts: [String], absences: [String]) {
         var facts: [String] = []
