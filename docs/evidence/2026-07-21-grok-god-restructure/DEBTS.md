@@ -4,23 +4,27 @@
 
 ```yaml
 pass: 1
-domain_index: 5
-last_focus: "AutonomosMap + RhythmSheet"
-session_commits: 105
+domain_index: 4
+last_focus: "ArenaRunSheet into Surfaces"
+session_commits: 107
 soft_sections_states: 0
-swift_App_Atlas: 41
+swift_App_Atlas: 40
 ```
 
 ## Scoreboard
 
 | Metric | Value |
 |---|---|
-| Mission commits | **105** |
-| App/Atlas .swift | **41** |
+| Mission commits | **107** |
+| App/Atlas .swift | **40** |
 | *Sections*/*States* | **0** |
-| Density guard | OK |
-| Session/ConversationModel | untouched |
+| Density | OK |
+| Session / ConversationModel | untouched |
+
+## Residual room (under caps)
+
+Most hosts 1.5–1.9k — fuse only with measured headroom.
 
 ## Next
 
-residual under caps · CODEMAP · **never Goal Done**
+continue residual · CODEMAP · pass · **never Goal Done**
