@@ -463,6 +463,7 @@ extension ConversationView {
                 .padding(.horizontal, 16).padding(.vertical, 9)
                 .frame(minHeight: 48)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+                .atlasElevation(radius: 10, y: 3, opacity: 0.2)
                 .padding(.top, 8)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .accessibilityElement(children: .combine)

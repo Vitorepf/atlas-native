@@ -166,6 +166,7 @@ struct ArenaPremiumShell: View {
                     .atlasSans(17, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(width: 48, height: 48)
+                    .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                     .contentShape(Circle())
             }
             .accessibilityLabel("Nova medição")
