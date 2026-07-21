@@ -250,9 +250,9 @@ extension BreathingDiamond {
             .fill(AtlasTheme.accent)
             .frame(width: size, height: size)
             .rotationEffect(.degrees(45))
-            .shadow(color: AtlasTheme.accent.opacity(on ? 0.45 : 0.2), radius: on ? 5 : 3, y: 0)
-            .scaleEffect(on ? 1.18 : 1)
-            .opacity(on ? 0.45 : 1)
+            .shadow(color: AtlasTheme.accent.opacity(on ? 0.55 : 0.25), radius: on ? 7 : 3, y: 0)
+            .scaleEffect(on ? 1.2 : 1)
+            .opacity(on ? 0.5 : 1)
             .accessibilityHidden(true)
     }
 }
