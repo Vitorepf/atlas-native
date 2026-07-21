@@ -3,16 +3,12 @@ import SwiftUI
 import ActivityKit
 import AtlasCore
 
-// Dynamic Island — composição ÚNICA com a API real do ActivityKit.
-// (Reparo pós-merge Elite: os shells intermediários usavam atributos
-// inexistentes — @DynamicIslandContentBuilder — e foram colapsados aqui.
-// As folhas continuam nos arquivos leaf: IslandCompactChrome/Island*Leading…)
+// WAVE-018 — Dynamic Island composition + compact chrome (one grammar).
 
 extension AtlasTurnLiveActivity {
     func dynamicIslandContent(context: ActivityViewContext<AtlasTurnAttributes>) -> DynamicIsland {
         DynamicIsland {
             DynamicIslandExpandedRegion(.leading) {
-                // O símbolo de estado (mesma folha do compact) abre a região.
                 AtlasTurnIslandCompactLeading(context: context)
             }
             DynamicIslandExpandedRegion(.center) {
@@ -22,11 +18,11 @@ extension AtlasTurnLiveActivity {
                 AtlasTurnIslandTrailing(context: context)
             }
         } compactLeading: {
-            islandCompactLeading(context: context)
+            AtlasTurnIslandCompactLeading(context: context)
         } compactTrailing: {
-            islandCompactTrailing(context: context)
+            AtlasTurnIslandCompactTrailing(context: context)
         } minimal: {
-            islandMinimal(context: context)
+            AtlasTurnIslandMinimal(context: context)
         }
         .keylineTint(context.state.atlasColor)
         .widgetURL(URL(string: "atlas://execution/\(context.attributes.threadKey)"))
