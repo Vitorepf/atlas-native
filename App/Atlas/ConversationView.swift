@@ -4575,7 +4575,8 @@ extension ExecutingStrip {
     var stripStatusProgressLine: some View {
         if let p = bubble.executionProgress {
             Text("\(p.current)/\(p.total) · \(p.title)")
-                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.serif(13))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .layoutPriority(2)
@@ -4590,7 +4591,7 @@ extension ExecutingStrip {
         if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
             Text(line)
                 .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .layoutPriority(2)
