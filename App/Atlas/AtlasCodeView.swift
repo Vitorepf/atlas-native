@@ -4511,7 +4511,7 @@ extension AtlasCodeCommitRow {
             Text("✦")
                 .font(AtlasFont.serif(state == .onMain && !isFirst ? 11 : 13))
                 .foregroundStyle(color)
-                .shadow(color: color.opacity(isFirst ? 0.45 : 0.25), radius: isFirst ? 5 : 3, y: 0)
+                .shadow(color: color.opacity(isFirst ? 0.55 : 0.28), radius: isFirst ? 7 : 3, y: 0)
                 .accessibilityHidden(true)
         case .violating, .history:
             let d = AtlasCodeGraphLane.nodeRadius * 2
