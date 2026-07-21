@@ -26,7 +26,8 @@ struct ChangeReviewFileRow: View {
 extension ChangeReviewFileRow {
     var acceptButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: per-file accept is a governed review commit.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(
                     traceId: traceId, patchId: patch.patchID,
@@ -51,7 +52,8 @@ extension ChangeReviewFileRow {
 extension ChangeReviewFileRow {
     var rejectButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: per-file reject is a governed review commit.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(
                     traceId: traceId, patchId: patch.patchID,

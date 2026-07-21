@@ -412,7 +412,8 @@ extension ConversationHandoffReceipt {
             .padding(.bottom, 8)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(accessibilitySummary)
-            .accessibilityAddTraits(.isStaticText)
+            // Ready handoff is a status landmark; pending stays static text.
+            .accessibilityAddTraits(isReady ? [.isStaticText, .isHeader] : .isStaticText)
             .accessibilityIdentifier(A11yID.continuityHandoffReceipt)
     }
 }
