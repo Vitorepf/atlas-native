@@ -1,5 +1,6 @@
 import AtlasCore
 import SwiftUI
+import UIKit
 
 // Cycle 044 fuse → RootView.swift
 
@@ -735,6 +736,53 @@ extension RootView {
             rootConversationHubRoutes(for: route)
         default:
             EmptyView()
+        }
+    }
+}
+
+
+
+// Gesto de voltar pela borda — devolvido às telas de chrome próprio.
+//
+// UIKit desliga o interactivePopGestureRecognizer quando a barra nativa está
+// oculta. O delegate vive no PRÓPRIO UINavigationController (viewDidLoad é
+// @objc — override em extension é legal): é o único anexo que o NavigationStack
+// do iOS 18+ não re-seta. O shim embutido por tela (SwipeBackEnabler) nunca
+// segurava o delegate e foi removido — provado por AtlasSwipeBackTests.
+extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    /// Só permite o pop quando há para onde voltar — a raiz nunca trava.
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        viewControllers.count > 1
+    }
+}
+
+
+// Com back visual oculto, o UIKit desliga o pop da borda. O delegate global
+// (SwipeBackEnabler) já existe; este shim só religa `isEnabled` na tela.
+
+struct NavigationInteractivePopEnabler: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        Controller()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        (uiViewController as? Controller)?.enablePopIfNeeded()
+    }
+
+    private final class Controller: UIViewController {
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            enablePopIfNeeded()
+        }
+
+        func enablePopIfNeeded() {
+            guard let nav = navigationController else { return }
+            nav.interactivePopGestureRecognizer?.isEnabled = nav.viewControllers.count > 1
         }
     }
 }
