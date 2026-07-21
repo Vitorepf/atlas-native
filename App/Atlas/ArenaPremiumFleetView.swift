@@ -66,12 +66,15 @@ struct ArenaPremiumFleetView: View {
             Text("Nenhum motor medido")
                 .font(AtlasFont.serif(28))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text("Rode uma medição com pelo menos um motor para ver o ranking da frota.")
                 .font(.system(.callout))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.top, 12)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Nenhum motor medido. Rode uma medição com pelo menos um motor para ver o ranking da frota.")
     }
 
     private func fleetRow(_ engine: AtlasArenaCompositeEngine, highlight: Bool) -> some View {
