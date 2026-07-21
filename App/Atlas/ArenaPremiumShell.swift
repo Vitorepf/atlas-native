@@ -295,10 +295,10 @@ struct ArenaPremiumTabBar: View {
                         .contentShape(Capsule())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(Text(tabAccessibilityLabel(tab)))
+                .accessibilityLabel(tabAccessibilityLabel(tab))
                 .accessibilityAddTraits(selection == tab ? [.isButton, .isSelected] : .isButton)
                 .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.a11yKey))
-                .accessibilityHint(selection == tab ? Text("Selecionado") : Text("Troca aba da Arena"))
+                .atlasAccessibilityHint(selection == tab ? "Selecionado" : "Troca aba da Arena")
             }
         }
         .padding(3)
@@ -4297,13 +4297,13 @@ struct ArenaPremiumAction: View {
         }
         .buttonStyle(PressableScale())
         .disabled(disabled)
-        .accessibilityLabel(Text(title))
-        .accessibilityHint(
+        .accessibilityLabel(title)
+        .atlasAccessibilityHint(
             disabled
-                ? Text("Indisponível")
-                : Text(quiet
-                    ? "Ação secundária da Arena, \(title.lowercased())"
-                    : "Ação principal da Arena, \(title.lowercased())")
+                ? "Indisponível"
+                : (quiet
+                    ? "Ação secundária da Arena, \(title)"
+                    : "Ação principal da Arena, \(title)")
         )
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(disabled || quiet ? 0 : 9) // primary Arena CTA surfaces early in VO

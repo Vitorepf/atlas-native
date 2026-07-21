@@ -1489,7 +1489,7 @@ private struct AutonomosMapPrimaryCTA: View {
         }
         .buttonStyle(.plain)
         .disabled(!enabled)
-        .accessibilityLabel(Text(title))
+        .accessibilityLabel(title)
         .atlasAccessibilityHint(enabled ? "Confirma \(title)" : "Indisponível")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(enabled ? 9 : 0) // primary map CTA surfaces early in VO
@@ -1526,7 +1526,7 @@ private struct AutonomosMapQuietCTA: View {
                 .contentShape(Capsule())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(Text(title))
+        .accessibilityLabel(title)
         .atlasAccessibilityHint(danger ? "Ação destrutiva" : "Ação secundária, \(title)")
         .accessibilityAddTraits(.isButton)
     }
