@@ -364,7 +364,9 @@ extension WorkspaceView {
         let base = freeOnly
             ? session.threads.filter { $0.workspace == nil }
             : session.threads(inWorkspace: workspaceKey)
-        return area == .tudo ? base : base.filter { AtlasArea.of($0) == area }
+        let filtered = area == .tudo ? base : base.filter { AtlasArea.of($0) == area }
+        // WAVE-032: live-first attention (threadId), same helper as Search.
+        return WorkspaceThreadJudgment.rank(filtered, remote: session.remoteLiveSessions)
     }
 
     /// Filtro só existe quando há o que filtrar: chips numa lista vazia

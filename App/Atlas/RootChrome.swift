@@ -208,8 +208,15 @@ struct ThreadRow: View {
     let thread: AtlasAiThread
     var newBadgeSuppressed: Bool = false
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @Environment(AtlasSession.self) private var session
 
-    var isRunning: Bool { TurnPresence.shared.runningTitles.contains(thread.title) }
+    /// WAVE-032: threadId-first running signal (title fallback only if no id).
+    var isRunning: Bool {
+        WorkspaceThreadJudgment.isRunning(
+            thread: thread,
+            remote: session.remoteLiveSessions
+        )
+    }
     var isNew: Bool { !newBadgeSuppressed && ConversationModel.hasNewerContent(thread) }
     var workspaceTint: Color? { thread.workspace.map(threadWorkspaceColor) }
 

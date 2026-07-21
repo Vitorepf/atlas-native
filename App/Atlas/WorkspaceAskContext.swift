@@ -58,6 +58,18 @@ enum WorkspaceAskContext {
             }
         }
 
+        // WAVE-032: live slice of **this** workspace catalog (threadId match).
+        let scoped = WorkspaceThreadJudgment.liveInWorkspaceFacts(
+            workspaceKey: workspaceKey,
+            sessionThreads: threads,
+            remote: session.remoteLiveSessions
+        )
+        facts.append(contentsOf: scoped.facts)
+        absences.append(contentsOf: scoped.absences)
+        for subject in scoped.subjects {
+            anchors.append("live · \(subject)")
+        }
+
         absences.append("não invente grafo/Arena/frota; pack é só deste workspace")
 
         return AgenticOccasionPack(

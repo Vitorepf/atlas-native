@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 26
+- waves_completed: 27
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -37,6 +37,7 @@ mode: designer + implementer
 - WAVE-029
 - WAVE-030
 - WAVE-031
+- WAVE-032
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -44,10 +45,8 @@ mode: designer + implementer
 - pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
 
 ## Designer
-- designs_proposed: 26
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -56,7 +55,6 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
+- **WAVE-032 self-WAVE** (empty queue · A-bar): workspace/search live-first judgment.
 - Device-pending (passcode) = operator.
-- **B v5 factory:** WAVE-026…031 shipped; idle MARK EditorialTurn; **wait A** for 2–5 GOD WAVEs.
+- Wait A for 2–5 open GOD WAVEs; idle budget already 3.

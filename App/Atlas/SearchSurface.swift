@@ -239,8 +239,10 @@ struct SearchMissEmpty: View {
 
 extension SearchView {
     /// Só threads já carregadas na sessão — zero placeholder ou sugestão inventada.
+    /// WAVE-032: live-first among recents.
     var recentThreads: [AtlasAiThread] {
-        Array(session.threads.prefix(12))
+        let head = Array(session.threads.prefix(12))
+        return WorkspaceThreadJudgment.rank(head, remote: session.remoteLiveSessions)
     }
 }
 
@@ -275,10 +277,12 @@ extension SearchView {
     var searchResults: [AtlasAiThread] {
         let q = trimmedQuery.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
         guard !q.isEmpty else { return [] }
-        return session.threads.filter {
+        let filtered = session.threads.filter {
             $0.title.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
                 .contains(q)
         }
+        // WAVE-032: live-first parity with Workspace catalog.
+        return WorkspaceThreadJudgment.rank(filtered, remote: session.remoteLiveSessions)
     }
 }
 
@@ -440,7 +444,8 @@ struct SearchThreadLink: View {
 extension SearchThreadLink {
     static func spokenLabel(_ thread: AtlasAiThread) -> String {
         var parts = [thread.title, "\(thread.messageCount) mensagens"]
-        if TurnPresence.shared.runningTitles.contains(thread.title) {
+        // WAVE-032: same running identity as ThreadRow (title fallback only when needed).
+        if WorkspaceThreadJudgment.isRunning(thread: thread) {
             parts.append("executando")
         } else if ConversationModel.hasNewerContent(thread) {
             parts.append("novo desde a última visita")
