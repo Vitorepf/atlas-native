@@ -143,6 +143,9 @@ extension A11yID {
     static let arenaRunReceipt = "arena-run-receipt"
     static let arenaRunEnginesEmpty = "arena-run-engines-empty"
     static let arenaRunSuitesEmpty = "arena-run-suites-empty"
+    static func arenaRunEngine(_ engine: String) -> String { "arena-run-engine-\(engine)" }
+    static func arenaRunArm(_ raw: String) -> String { "arena-run-arm-\(raw)" }
+    static func arenaRunSuite(_ suite: String) -> String { "arena-run-suite-\(suite)" }
 }
 
 extension A11yID {

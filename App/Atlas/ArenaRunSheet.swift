@@ -475,7 +475,7 @@ extension ArenaRunSheet {
                             selectedEngines.insert(engine)
                         }
                     }
-                    .accessibilityIdentifier("arena-run-engine-\(engine)")
+                    .accessibilityIdentifier(A11yID.arenaRunEngine(engine))
                 }
                 if engines.count > 1 {
                     Text("Escolha 2 ou mais para comparar motor contra motor.")
@@ -499,7 +499,7 @@ extension ArenaRunSheet {
                     if selectedArms.contains(arm), selectedArms.count > 1 { selectedArms.remove(arm) }
                     else { selectedArms.insert(arm) }
                 }
-                .accessibilityIdentifier("arena-run-arm-\(arm.rawValue)")
+                .accessibilityIdentifier(A11yID.arenaRunArm(arm.rawValue))
             }
         }
 
@@ -600,7 +600,7 @@ extension ArenaRunSheet {
                 if selectedSuites.contains(suite.suite) { selectedSuites.remove(suite.suite) }
                 else { selectedSuites.insert(suite.suite) }
             }
-            .accessibilityIdentifier("arena-run-suite-\(suite.suite)")
+            .accessibilityIdentifier(A11yID.arenaRunSuite(suite.suite))
         }
     }
 }
