@@ -1484,13 +1484,13 @@ private struct AutonomosMapPrimaryCTA: View {
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: 48)
                 .background(AtlasTheme.textPrimary.opacity(enabled ? 0.055 : 0.03), in: Capsule())
-                .overlay(Capsule().strokeBorder(Color.white.opacity(enabled ? 0.1 : 0.04), lineWidth: 1))
+                .overlay(Capsule().strokeBorder(AtlasTheme.textPrimary.opacity(enabled ? 0.12 : 0.05), lineWidth: 1))
                 .contentShape(Capsule())
         }
         .buttonStyle(.plain)
         .disabled(!enabled)
         .accessibilityLabel(Text(title))
-        .accessibilityHint(Text(enabled ? "confirma \(title.lowercased())" : "indisponível"))
+        .atlasAccessibilityHint(enabled ? "Confirma \(title)" : "Indisponível")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(enabled ? 9 : 0) // primary map CTA surfaces early in VO
     }

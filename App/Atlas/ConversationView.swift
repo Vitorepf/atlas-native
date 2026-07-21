@@ -2801,9 +2801,9 @@ extension DraftThumb {
 extension DraftThumb {
     @ViewBuilder var stateVeil: some View {
         if draft.state == .subindo {
-            ZStack { ProgressView().tint(.white) }
+            ZStack { ProgressView().tint(AtlasTheme.textPrimary) }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.black.opacity(0.38))
+                .background(AtlasTheme.bgRecessed.opacity(0.72))
                 .clipShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous))
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.94)))
         } else if failedMessage != nil {
