@@ -38,7 +38,7 @@ enum HomeAskContext {
         absences.append(contentsOf: catalog.absences)
 
         // WAVE-064: live anchors follow LiveNow attention rank (not wire order).
-        // WAVE-183: packFacts canon (packLiveAnchors shim remains).
+        // WAVE-183/186: packFacts canon (packLiveAnchors deleted).
         let livePack = LiveNowJudgment.packFacts(
             local: TurnPresence.shared.liveSessions,
             remote: session.remoteLiveSessions,

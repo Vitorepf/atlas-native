@@ -147,14 +147,28 @@ extension LiveNowJudgment {
         return (facts, anchors, absences)
     }
 
-    /// Compat shim — prefer `packFacts`.
+    // MARK: Hub-global live (WAVE-186)
+
+    /// Hub live lines for Workspace Ask — never claim workspace-scoped.
     @MainActor
-    static func packLiveAnchors(
-        local: [LiveSessionSnapshot],
-        remote: [LiveSessionSnapshot] = [],
-        limit: Int = 5
-    ) -> (facts: [String], anchors: [String], absences: [String]) {
-        packFacts(local: local, remote: remote, limit: limit)
+    static func packHubFacts(
+        live: [LiveSessionSnapshot],
+        limit: Int = 3
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        if live.isEmpty {
+            facts.append("sessoes_vivas_hub: 0")
+        } else {
+            facts.append(
+                "sessoes_vivas_hub_global: \(live.count) (não assumir que são deste workspace)"
+            )
+            for s in live.prefix(limit) {
+                facts.append("hub_live · \(ConversationOccasionPack.liveAnchorLine(s))")
+            }
+            absences.append("hub live é global — stop/steer só na conversa aberta")
+        }
+        return (facts, absences)
     }
 
 }

@@ -46,16 +46,12 @@ enum WorkspaceAskContext {
             anchors.append(shown.isEmpty ? "thread sem título" : shown)
         }
 
-        let live = TurnPresence.shared.liveSessions
-        if live.isEmpty {
-            facts.append("sessoes_vivas_hub: 0")
-        } else {
-            facts.append("sessoes_vivas_hub_global: \(live.count) (não assumir que são deste workspace)")
-            for s in live.prefix(3) {
-                // WAVE-029: face product words on hub live lines.
-                facts.append("hub_live · \(ConversationOccasionPack.liveAnchorLine(s))")
-            }
-        }
+        // WAVE-186: hub-global live pack (never claim workspace-scoped).
+        let hubLive = LiveNowJudgment.packHubFacts(
+            live: TurnPresence.shared.liveSessions
+        )
+        facts.append(contentsOf: hubLive.facts)
+        absences.append(contentsOf: hubLive.absences)
 
         // WAVE-032: live slice of **this** workspace catalog (threadId match).
         let scoped = WorkspaceThreadJudgment.liveInWorkspaceFacts(

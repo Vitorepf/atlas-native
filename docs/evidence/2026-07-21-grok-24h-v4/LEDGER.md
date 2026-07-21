@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 180
+- waves_completed: 181
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -191,6 +191,7 @@ mode: designer + implementer
 - WAVE-183
 - WAVE-184
 - WAVE-185
+- WAVE-186
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -201,7 +202,7 @@ mode: designer + implementer
 - pass 6 · `7d186855` · delete duplicate imports post-180
 
 ## Designer
-- designs_proposed: 180
+- designs_proposed: 181
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -216,5 +217,5 @@ mode: designer + implementer
 ## Notes
 - Device-pending (passcode) = operator.
 - Continuity restore BLOCKED (App Group).
-- WAVE-185: conversation + workspace shell pack.
+- WAVE-186: hub-live pack · arena shell · packLiveAnchors deleted.
 - hollows 0 · open=[] · await A · no invent micro-WAVE.

@@ -94,6 +94,34 @@ enum ArenaPremiumAskContext {
     }
 
     /// Pack WAVE-020 — tab **e** destination (nunca forçar Agora em destinos).
+    // MARK: - Shell pack (WAVE-186)
+
+    /// Arena shell identity — tela/aba · cobertura · engine anchor only.
+    static func packShellFacts(
+        tab: ArenaPremiumTab,
+        destination: ArenaPremiumDestination?,
+        coverageText: String,
+        primaryEngineLabel: String?
+    ) -> (facts: [String], absences: [String], anchors: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        var anchors: [String] = []
+        if let destination {
+            facts.append("tela: \(destinationLabel(destination))")
+            anchors.append("dest: \(destinationLabel(destination))")
+        } else {
+            facts.append("aba: \(tab.rawValue)")
+            anchors.append("tab: \(tab.rawValue)")
+        }
+        if let primaryEngineLabel {
+            anchors.append("engine: \(primaryEngineLabel)")
+        }
+        facts.append("cobertura_texto: \(coverageText)")
+        absences.append("não invente scores; diga “não medido” quando faltar braço ou suíte")
+        absences.append("pack Core tipado Arena ainda §5 — este é presentation-only")
+        return (facts, absences, anchors)
+    }
+
     // MARK: - Facts pack
 
     @MainActor
@@ -106,20 +134,17 @@ enum ArenaPremiumAskContext {
         var facts: [String] = []
         var absences: [String] = []
 
-        if let destination {
-            facts.append("tela: \(destinationLabel(destination))")
-            anchors.append("dest: \(destinationLabel(destination))")
-        } else {
-            facts.append("aba: \(tab.rawValue)")
-            anchors.append("tab: \(tab.rawValue)")
-        }
-
-        // WAVE-182: engine score numbers live in ArenaScoreJudgment.packFacts (WAVE-181).
-        // Host keeps only anchor + cobertura_texto (coverage string is host-owned).
-        if let engine = model.arenaPrimaryEngine {
-            anchors.append("engine: \(ArenaDisplay.engine(engine.engine))")
-        }
-        facts.append("cobertura_texto: \(model.arenaCoverageText)")
+        // WAVE-186: shell pack (tela/aba · cobertura · engine anchor).
+        let engineLabel = model.arenaPrimaryEngine.map { ArenaDisplay.engine($0.engine) }
+        let shell = packShellFacts(
+            tab: tab,
+            destination: destination,
+            coverageText: model.arenaCoverageText,
+            primaryEngineLabel: engineLabel
+        )
+        facts.append(contentsOf: shell.facts)
+        absences.append(contentsOf: shell.absences)
+        anchors.append(contentsOf: shell.anchors)
 
         let liveRuns = model.liveRuns?.runs ?? []
         let primary = model.arenaPrimaryRun
@@ -152,9 +177,6 @@ enum ArenaPremiumAskContext {
         if !ArenaLiveControlJudgment.canStop(primary: primary) {
             absences.append("parada indisponível — sem primary stoppable / measurementId")
         }
-
-        absences.append("não invente scores; diga “não medido” quando faltar braço ou suíte")
-        absences.append("pack Core tipado Arena ainda §5 — este é presentation-only")
 
         return AgenticOccasionPack(
             surface: "arena",

@@ -21,7 +21,8 @@
 | Intenção | Comece em |
 |---|---|
 | Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View · pack attention (WAVE-182) · pack workspace shell (WAVE-183) |
-| **LiveNow pack (Home)** | `LiveNowJudgment.packFacts` (ex-packLiveAnchors) · HomeAsk (WAVE-183) |
+| **LiveNow pack (Home)** | `LiveNowJudgment.packFacts` · HomeAsk (WAVE-183) · packHubFacts Workspace (WAVE-186) |
+| **Arena shell pack** | `ArenaPremiumAskContext.packShellFacts` · tela/aba/cobertura (WAVE-186) |
 | **Radar screen load (frota)** | `AtlasCodeRadarScreenJudgment` → face loading/failed/empty/ready · shell a11y · pack Ask (WAVE-162) |
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
 | **Grafo worktrees** | `AtlasCodeWorktreeJudgment` → section silence/list(N) · rank dirty-first · pack |
