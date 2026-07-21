@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 55
-- idle_compress_passes: 7
+- idle_compress_passes: 8
 - collapse_host: 0
 
 ## Waves done
@@ -75,6 +75,7 @@ mode: designer + implementer
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 - pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
 - pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow (835→477 host)
+- pass 8 · `34d412f2` · peel ChangeReview → GovernanceBody + RunActionsBody (771→338 host)
 
 ## Designer
 - designs_proposed: 55
