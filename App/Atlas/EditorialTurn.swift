@@ -3,59 +3,43 @@ import SwiftUI
 
 // IDLE-COMPRESS MARK + canonical layout (WAVE-post · agent navigation)
 
-// MARK: - A11y
-
-extension EditorialTurnA11y {
-  static func spokenSignature(provider: String?, model: String?, elapsedMs: Int?) -> String {
-    guard let who = signatureWho(provider: provider, model: model) else { return "" }
-    if let ms = elapsedMs, ms > 0 { return "resposta de \(who), em \(humanDuration(ms))" }
-    return "resposta de \(who)"
-  }
-}
-
-extension EditorialTurnA11y {
-  static func spokenUserMessage(_ text: String) -> String {
-    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-    return trimmed.isEmpty ? "mensagem sua, vazia" : "mensagem sua, \(trimmed)"
-  }
-
-  static let spokenFinalAnswerKicker = "resposta final"
-
-  static let copyLongPressHint = "pressionar e segurar copia a resposta"
-}
+// MARK: - A11y (WAVE-069 → EditorialTurnJudgment)
 
 enum EditorialTurnA11y {}
 
 extension EditorialTurnA11y {
-  static func spokenFeedbackBase(kind: FeedbackKind) -> String {
-    switch kind {
-    case .util: return "marcar resposta como útil"
-    case .contexto: return "marcar contexto errado"
-    case .longo: return "marcar resposta longa demais"
-    case .fraco: return "marcar resposta fraca"
-    }
+  static func spokenSignature(provider: String?, model: String?, elapsedMs: Int?) -> String {
+    EditorialTurnJudgment.spokenSignature(
+      provider: provider, model: model, elapsedMs: elapsedMs
+    )
   }
-}
 
-extension EditorialTurnA11y {
+  static func spokenUserMessage(_ text: String) -> String {
+    EditorialTurnJudgment.spokenUserMessage(text)
+  }
+
+  static var spokenFinalAnswerKicker: String {
+    EditorialTurnJudgment.spokenFinalAnswerKicker
+  }
+
+  static var copyLongPressHint: String {
+    EditorialTurnJudgment.copyLongPressHint
+  }
+
+  static func spokenFeedbackBase(kind: FeedbackKind) -> String {
+    EditorialTurnJudgment.spokenFeedbackBase(kind: kind)
+  }
+
   static func spokenFeedbackLabel(kind: FeedbackKind, active: Bool) -> String {
-    let base = spokenFeedbackBase(kind: kind)
-    return active ? "\(base), selecionado" : base
+    EditorialTurnJudgment.spokenFeedbackLabel(kind: kind, active: active)
   }
 
   static func spokenFeedbackHint() -> String {
-    "envia feedback ao roteamento do Atlas para este turno"
+    EditorialTurnJudgment.feedbackHint
   }
-}
 
-extension EditorialTurnA11y {
   static func signatureWho(provider: String?, model: String?) -> String? {
-    if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
-    if let provider, !provider.isEmpty {
-      let word = providerWord(provider)
-      return word.isEmpty ? provider : word
-    }
-    return nil
+    EditorialTurnJudgment.signatureWho(provider: provider, model: model)
   }
 }
 
@@ -145,26 +129,18 @@ extension FeedbackRow {
     }
 }
 
-// MARK: - Helpers (format)
+// MARK: - Shared format helpers (multi-call-site · WAVE-069 peels)
 
 func humanDuration(_ ms: Int) -> String {
-    if ms < 1000 { return "um instante" }
-    if ms < 60000 { return String(format: "%.1f s", Double(ms) / 1000).replacingOccurrences(of: ".", with: ",") }
-    return "\(ms / 60000) min"
+    EditorialTurnJudgment.humanDuration(ms)
 }
 
 func providerWord(_ p: String?) -> String {
     guard let p, !p.isEmpty else { return "" }
-    let x = p.lowercased()
-    for (k, v) in [("claude", "claude"), ("codex", "codex"), ("gemini", "gemini"),
-                   ("hermes", "hermes"), ("minimax", "minimax"),
-                   ("council", "conselho"), ("conselho", "conselho")] where x.contains(k) {
-        return v
-    }
-    return x
+    return EditorialTurnJudgment.providerWord(p)
 }
 
-// MARK: - Signature
+// MARK: - Signature (WAVE-069)
 
 struct SignatureLine: View {
     let provider: String?
@@ -179,6 +155,9 @@ struct SignatureLine: View {
             .frame(maxWidth: .infinity, alignment: .trailing)
             .opacity(shown ? 1 : 0)
             .accessibilityLabel(EditorialTurnA11y.spokenSignature(provider: provider, model: model, elapsedMs: elapsedMs))
+            .accessibilityValue(
+                EditorialTurnJudgment.face(provider: provider, model: model).productWord
+            )
             .accessibilityIdentifier(A11yID.editorialTurnSignature)
             .onAppear { revealSignature() }
     }
@@ -186,23 +165,22 @@ struct SignatureLine: View {
 
 extension SignatureLine {
     static func shouldDisplay(provider: String?, model: String?) -> Bool {
-        let hasModel = model.map { !$0.isEmpty && !$0.hasSuffix("_default") } ?? false
-        let hasProvider = provider.map { !$0.isEmpty } ?? false
-        return hasModel || hasProvider
+        EditorialTurnJudgment.face(provider: provider, model: model) != .absent
     }
 }
 
 extension SignatureLine {
     var signature: String {
         let who = signatureWho
-        if let ms = elapsedMs, ms > 0 { return "— \(who), em \(humanDuration(ms))" }
+        if let ms = elapsedMs, ms > 0 {
+            return "— \(who), em \(EditorialTurnJudgment.humanDuration(ms))"
+        }
         return "— \(who)"
     }
 
     var signatureWho: String {
-        if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
-        let word = providerWord(provider)
-        return word.isEmpty ? "provedor não publicado" : word
+        EditorialTurnJudgment.signatureWho(provider: provider, model: model)
+            ?? "provedor não publicado"
     }
 }
 
