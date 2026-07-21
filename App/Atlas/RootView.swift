@@ -195,7 +195,7 @@ extension RootView {
         } label: {
             Image(systemName: "person.fill")
                 .atlasSans(18)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.88))
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
                 .atlasElevation(radius: 6, y: 2, opacity: 0.14)
