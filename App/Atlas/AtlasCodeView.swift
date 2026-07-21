@@ -757,6 +757,7 @@ extension AtlasCodeView {
             .frame(minHeight: 48) // HIG 44+; match chrome pill breath
             .contentShape(Capsule())
             .atlasGlassCapsule()
+            .atlasElevation(radius: 8, y: 2, opacity: 0.16)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Repositório \(model.repo)")
