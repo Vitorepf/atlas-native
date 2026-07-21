@@ -14,12 +14,32 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-_(no open proposed WAVEs)_
+```yaml
+id: WAVE-093-conversation-can-do-pack-honesty-instrument
+status: proposed
+rank: 1
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-093-design.md
+created_by: designer
+approved_at: null
+```
+
+```yaml
+id: WAVE-094-arena-capabilities-confidence-judgment-instrument
+status: proposed
+rank: 2
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-094-design.md
+created_by: designer
+approved_at: null
+```
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
+| **1** | WAVE-093-conversation-can-do-pack-honesty-instrument | **max** | `WAVE-093-design.md` |
+| **2** | WAVE-094-arena-capabilities-confidence-judgment-instrument | **max** | `WAVE-094-design.md` |
 
 ## History (done)
 

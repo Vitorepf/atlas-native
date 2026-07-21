@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 87
-- idle_compress_passes: 14
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -100,11 +100,24 @@ mode: designer + implementer
 - WAVE-092
 
 ## Idle compress
-- pass 13 · ChangeReview action spoken
-- pass 14 · Workspace chrome spoken → ScreenJudgment
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
 
-## Open queue
-_(none)_ — max 2 IDLE after WAVE-092 done
+## Designer
+- designs_proposed: 89
+- designs_open: 2
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
+
+## Open queue snapshot (must match QUEUE.md)
+
+| # | wave | Δ | status |
+|---|---|---|---|
+| 1 | WAVE-093-conversation-can-do-pack-honesty-instrument | **max** | proposed |
+| 2 | WAVE-094-arena-capabilities-confidence-judgment-instrument | **max** | proposed |
 
 ## Notes
-- DEVICE_PENDING. Awaiting A fill or full-bar residual only.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
