@@ -59,4 +59,4 @@ mode: designer + implementer
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-
+- **B v5 factory:** WAVE-026…031 shipped; idle MARK EditorialTurn; **wait A** for 2–5 GOD WAVEs.
