@@ -111,7 +111,7 @@
 | **Evolução / entregas Autônomos** | `AutonomosEvolutionJudgment` → EvolutionView marcos → receipt |
 | **Transfer handoff missão** | `AutonomosTransferJudgment` → Hub CTA → ReasonSheet → `model.transfer` |
 | **Task health / incidente frota** | `AutonomosTaskHealthJudgment` → IncidentSurface · vestment incidentPresent |
-| **Frota global (agentes vivos)** | `AutonomosFleetJudgment` → FleetStrip no catálogo |
+| **Frota global (agentes vivos)** | `AutonomosFleetJudgment` (FleetStrip fused) no catálogo |
 | **Digest / momento (janela)** | `AutonomosDigestJudgment` → DigestSurface · `.moment("digest")` |
 | **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + FindingsBody/PatchBody · sheet spoken · pack mid-thread |
 | **Change review assinatura (accept/reject)** | `ChangeReviewControlJudgment` → availableActions · file undecided · can_do faceCTALocal |
