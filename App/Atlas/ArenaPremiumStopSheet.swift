@@ -54,6 +54,10 @@ struct ArenaPremiumStopSheet: View {
             }
         }
         .onAppear { model.controlError = nil }
+        .onChange(of: model.lastStopReceipt?.receiptHash) { _, hash in
+            guard hash != nil, model.lastStopReceipt?.accepted == true else { return }
+            AtlasMotion.successNotification(reduceMotion: reduceMotion)
+        }
     }
 
     private var fields: some View {

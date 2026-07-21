@@ -299,7 +299,8 @@ extension CodeBlockView {
         guard canCopy else { return }
         UIPasteboard.general.string = code
         guard UIPasteboard.general.string == code else { return }
-        AtlasMotion.lightImpact(reduceMotion: reduceMotion)
+        // Success class: copy confirmed on pasteboard.
+        AtlasMotion.successNotification(reduceMotion: reduceMotion)
         setCopied(true)
         Task {
             try? await Task.sleep(nanoseconds: 1_200_000_000)

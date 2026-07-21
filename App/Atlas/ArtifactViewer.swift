@@ -434,6 +434,7 @@ extension ZoomableArtifactImage {
 
 extension ZoomableArtifactImage {
     func resetZoom() {
+        AtlasMotion.softImpact(reduceMotion: reduceMotion)
         scale = 1
         lastScale = 1
         resetOffset()
