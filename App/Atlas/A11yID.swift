@@ -338,6 +338,7 @@ extension A11yID {
 
 extension A11yID {
     static let liveTimeline = "live-timeline"
+    static let liveTimelineFace = "live-timeline-face"
     static let liveTimelineFilters = "live-timeline-filters"
     static let liveTimelineFilterSilence = "live-timeline-filter-silence"
     static let liveTimelineFilterPrefix = "live-timeline-filter-"

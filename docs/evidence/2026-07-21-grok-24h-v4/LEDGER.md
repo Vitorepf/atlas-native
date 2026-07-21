@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 38
+- waves_completed: 39
 - idle_compress_passes: 5
 - collapse_host: 0
 
@@ -49,6 +49,7 @@ mode: designer + implementer
 - WAVE-041
 - WAVE-042
 - WAVE-043
+- WAVE-044
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -58,7 +59,7 @@ mode: designer + implementer
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
-- designs_proposed: 38
+- designs_proposed: 39
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 
@@ -69,5 +70,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-043 self-WAVE: código repo health face (scan·heal·week·mirror).
-- Prefer A 2–5 GOD croquis. DEVICE_PENDING history.
+- Self-WAVEs 043–044 (repo health + narrative face). Prefer A fill.
+- DEVICE_PENDING history.

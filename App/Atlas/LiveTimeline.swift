@@ -298,15 +298,60 @@ extension LiveTimeline {
 }
 
 extension LiveTimeline {
+    /// WAVE-044: exclusive narrative face (chrono order unchanged).
+    var narrativeFace: LiveTimelineNarrativeFace {
+        LiveTimelineNarrativeJudgment.face(
+            baseRows: baseRows,
+            filteredRows: rows,
+            filter: filter
+        )
+    }
+
+    @ViewBuilder
+    var narrativeFaceChrome: some View {
+        switch narrativeFace {
+        case .empty:
+            EmptyView()
+        case .live, .filterSilence:
+            HStack(spacing: 6) {
+                Text(narrativeFace.kicker)
+                    .font(AtlasFont.mono(9))
+                    .tracking(0.7)
+                    .foregroundStyle(
+                        narrativeFace.productWord == "filter_silence"
+                            ? AtlasTheme.textTertiary
+                            : AtlasTheme.accent
+                    )
+                Text(LiveTimelineNarrativeJudgment.summaryLine(
+                    baseRows: baseRows,
+                    filteredRows: rows,
+                    filter: filter
+                ))
+                .font(AtlasFont.serif(12))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(1)
+                Spacer(minLength: 0)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(narrativeFace.spokenFace)
+            .accessibilityIdentifier(A11yID.liveTimelineFace)
+        }
+    }
+}
+
+extension LiveTimeline {
     @ViewBuilder
     var filterSilenceSurface: some View {
         if showsFilterChips {
-            filterSilenceA11y(
-                TimelineFilterChips(filter: $filter,
-                                    baseRows: baseRows,
-                                    reduceMotion: reduceMotion,
-                                    filterSilence: filterSilence)
-            )
+            VStack(alignment: .leading, spacing: 8) {
+                narrativeFaceChrome
+                filterSilenceA11y(
+                    TimelineFilterChips(filter: $filter,
+                                        baseRows: baseRows,
+                                        reduceMotion: reduceMotion,
+                                        filterSilence: filterSilence)
+                )
+            }
         }
     }
 }
@@ -314,6 +359,7 @@ extension LiveTimeline {
 extension LiveTimeline {
     var timelineSurface: some View {
         VStack(alignment: .leading, spacing: 8) {
+            narrativeFaceChrome
             if showsFilterChips {
                 TimelineFilterChips(filter: $filter,
                                     baseRows: baseRows,
@@ -323,7 +369,13 @@ extension LiveTimeline {
             timelineScroll
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(LiveTimelineA11y.spokenSectionLabel(stepCount: rows.count))
+        .accessibilityLabel(
+            LiveTimelineNarrativeJudgment.spokenSection(
+                baseRows: baseRows,
+                filteredRows: rows,
+                filter: filter
+            )
+        )
         .accessibilityIdentifier(A11yID.liveTimeline)
     }
 }
