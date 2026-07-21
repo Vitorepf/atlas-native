@@ -285,7 +285,8 @@ struct ArenaPremiumTabBar: View {
                     // ouro é ESTADO, não seleção de controle.
                     Text(tab.rawValue)
                         .font(selection == tab ? AtlasFont.serif(14, .semibold) : AtlasFont.serif(14))
-                        .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textTertiary)
+                        // Soft gold-quiet inactive tab; selected stays primary ink.
+                        .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.55))
                         .frame(maxWidth: .infinity, minHeight: 48) // HIG 44+; match primary CTA breath
                         .background {
                             if selection == tab {
@@ -1120,7 +1121,8 @@ struct ArenaPremiumQueueView: View {
                 HStack(spacing: 14) {
                     Text("\(index + 1)")
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet queue index.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                         .frame(width: 26, alignment: .leading)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(ArenaDisplay.suite(suite))
@@ -1255,7 +1257,8 @@ struct ArenaPremiumFleetView: View {
             } else {
                 Text("Não medido")
                     .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet unmeasured honesty.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
             }
             ArenaPremiumHairline()
         }
@@ -1274,7 +1277,8 @@ struct ArenaPremiumFleetView: View {
         } else if engine.composite == nil {
             Text("Não medido")
                 .font(AtlasFont.mono(11))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet unmeasured honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
         }
     }
 
@@ -1966,7 +1970,8 @@ struct ArenaPremiumResultsView: View {
         return VStack(alignment: .leading, spacing: 18) {
             HStack(alignment: .lastTextBaseline) {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Índice").font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet index kicker.
+                    Text("Índice").font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.65))
                     HStack(alignment: .lastTextBaseline, spacing: 4) {
                         Text(ArenaFormat.score(engine.composite))
                             .font(AtlasFont.serif(62))
@@ -2046,7 +2051,8 @@ struct ArenaPremiumResultsView: View {
             }
             Text("Resultados ausentes aparecem como não medidos, nunca como zero.")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet honesty footnote.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .padding(.top, 16)
         }
     }
@@ -2067,7 +2073,8 @@ struct ArenaPremiumResultsView: View {
         } else {
             Text("Não medido")
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet unmeasured honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
         }
     }
 

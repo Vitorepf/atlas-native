@@ -236,7 +236,8 @@ struct AutonomosViewHeader: View {
             if !subtitle.isEmpty {
                 Text(subtitle)
                     .font(AtlasFont.serif(12, .semibold))
-                    .foregroundStyle(subtitleLive ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                    // Soft gold-quiet when idle; full accent when live.
+                    .foregroundStyle(subtitleLive ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.55))
                     .accessibilityHidden(true)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
@@ -797,7 +798,8 @@ struct AutonomosEvolutionView: View {
 
                 Text("Quando o Server aceitar create, os ciclos aparecem aqui — só deste escopo.")
                     .font(AtlasFont.serifItalic(14))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet empty evolution caption.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .padding(.top, 10)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityLabel(
@@ -989,7 +991,8 @@ struct AutonomosListView: View {
                         .multilineTextAlignment(.leading)
                     Text(unit.charter)
                         .font(AtlasFont.serifItalic(14))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet charter under unit name.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
                     Text(unit.ageLabel)
@@ -1863,7 +1866,8 @@ extension SelfConstructionReceiptSheet {
         if receipt.hasMergeProof {
             Text("Você não foi necessário — entrega sem portão")
                 .font(AtlasFont.serifItalic(13))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet human-silence honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityLabel(spokenHumanSilenceLabel())
         }
     }

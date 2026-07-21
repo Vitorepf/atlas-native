@@ -1299,7 +1299,8 @@ struct LiveNowRow: View {
             if session.timing != .finished {
                 Text("·")
                     .font(AtlasFont.mono(10))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet timing separator.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.45))
                     .accessibilityHidden(true)
                 clockView(now: now)
                     .accessibilityLabel(clockAccessibilityLabel(now: now))
@@ -1307,7 +1308,8 @@ struct LiveNowRow: View {
             if session.timing == .paused, let age = pauseAgeHours(now: now) {
                 Text("· há \(age)h")
                     .font(AtlasFont.serifItalic(12))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet pause age meta.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
             }
         }
     }
@@ -1619,7 +1621,8 @@ extension SearchViewHeader {
 extension SearchViewHeader {
     var searchFieldPlaceholder: some View {
         Text("Buscar conversas")
-            .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet search placeholder invite.
+            .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.accent.opacity(0.48))
             .opacity(query.isEmpty ? 1 : 0).allowsHitTesting(false)
             .accessibilityHidden(true)
     }
@@ -3522,7 +3525,8 @@ extension AtlasWorkspacePickerSheet {
                     Text("Sem repositório").atlasSans(16, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text("Conversar ou pesquisar, sem projeto").atlasSans(13)
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet no-repo caption.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 }
                 Spacer()
                 Image(systemName: "chevron.right").atlasSans(13, .semibold)
@@ -3549,7 +3553,8 @@ extension AtlasWorkspacePickerSheet {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Repositórios")
                     .font(AtlasFont.mono(11, .medium)).tracking(0.4)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet picker section kicker.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, showsNoRepoSpacing ? 18 : 4)
@@ -3584,14 +3589,16 @@ extension AtlasWorkspacePickerSheet {
                     .accessibilityHidden(true)
                 HStack(spacing: 0) {
                     if let folder = repo.folder {
-                        Text("\(folder)/").atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet folder path meta.
+                        Text("\(folder)/").atlasSans(15).foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     }
                     Text(repo.name).atlasSans(15, .medium).foregroundStyle(AtlasTheme.textPrimary)
                 }
                 .lineLimit(1)
                 Spacer()
                 if let age = AtlasCodeAge.short(from: repo.lastCommitAt) {
-                    Text(age).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet age meta.
+                    Text(age).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
                         .accessibilityHidden(true)
                 }
             }
