@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — Arena headers + coverage spoken (ciclo 092)** · `d671f569` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — capability header + undo 48pt (ciclo 091)** · `c05e5008` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — home write pill 48pt (ciclo 090)** · `31152b16` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — plan empty + queued metrics + provenance ask (ciclo 089)** · `87807e1e` · App/Atlas 214. **Prova:** checks+build.
