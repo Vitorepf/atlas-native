@@ -648,3 +648,10 @@ extension AtlasCodeProvenanceSheet {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+
+// MARK: - Why target DTO
+
+struct AtlasCodeProvenanceWhyTarget: Identifiable {
+    let path: String
+    var id: String { path }
+}
