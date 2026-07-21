@@ -17,14 +17,9 @@ extension ExecutionProof {
 }
 
 extension ExecutionProof {
+    /// WAVE-042: gate owned by Judgment.
     static func hasDecisionSurface(_ d: AtlasDecisionSummary) -> Bool {
-        d.selectedProvider != nil
-            || d.selectedModel != nil
-            || d.reason != nil
-            || d.confidenceScore != nil
-            || d.riskLevel != nil
-            || d.routeMode != nil
-            || d.wasOverridden
+        ExecutionProofJudgment.hasDecisionSurface(d)
     }
 }
 
@@ -62,7 +57,8 @@ extension ExecutionProof {
     @ViewBuilder
     var collapsedHeaderSummary: some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text("Obra concluída")
+            // WAVE-042: exclusive face kicker (not always "Obra concluída").
+            Text(proofFace.kicker)
                 .font(.system(.subheadline, weight: .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
@@ -107,27 +103,17 @@ extension ExecutionProof {
 }
 
 extension ExecutionProof {
-    func spokenCollapsedMetricsParts() -> [String] {
-        var parts: [String] = []
-        if !bubble.activities.isEmpty { parts.append("\(bubble.activities.count) passos") }
-        if let ms = bubble.elapsedMs, ms > 0 { parts.append(humanDuration(ms)) }
-        if bubble.decisionSummary.map(Self.hasDecisionSurface) == true { parts.append("decisão do atlas") }
-        if bubble.qualitySummary != nil { parts.append("avaliação de qualidade") }
-        if !artifactItems.isEmpty { parts.append("\(artifactItems.count) artefatos") }
-        return parts
-    }
-}
-
-extension ExecutionProof {
     var spokenCollapsed: String {
         spokenCollapsed(expanded: false)
     }
 
     func spokenCollapsed(expanded: Bool) -> String {
-        (
-            ["prova da execução", expanded ? "expandida" : "recolhida"]
-            + spokenCollapsedMetricsParts()
-        ).joined(separator: ", ")
+        ExecutionProofJudgment.spokenCollapsed(
+            bubble: bubble,
+            artifactItems: rankedArtifactItems,
+            expanded: expanded,
+            humanDuration: humanDuration
+        )
     }
 }
 
@@ -136,10 +122,10 @@ extension ExecutionProof {
         bubble: ChatBubble,
         artifactItems: [AtlasTraceArtifacts.Item] = []
     ) -> Bool {
-        !bubble.activities.isEmpty
-            || bubble.decisionSummary.map(Self.hasDecisionSurface) == true
-            || bubble.qualitySummary != nil
-            || (!artifactItems.isEmpty && bubble.traceId != nil)
+        ExecutionProofJudgment.shouldDisplay(
+            bubble: bubble,
+            artifactItems: artifactItems
+        )
     }
 }
 
@@ -365,13 +351,21 @@ extension ExecutionProof {
 }
 
 extension ExecutionProof {
+    var proofFace: ExecutionProofFace {
+        ExecutionProofJudgment.face(bubble: bubble, artifactItems: rankedArtifactItems)
+    }
+
+    /// WAVE-042: kind-attention artifacts (shared with ArtifactJudgment).
+    var rankedArtifactItems: [AtlasTraceArtifacts.Item] {
+        ExecutionProofJudgment.rankedArtifacts(artifactItems)
+    }
+
     var summaryLine: String {
-        var parts: [String] = []
-        if !bubble.activities.isEmpty { parts.append("\(bubble.activities.count) passos") }
-        if let ms = bubble.elapsedMs, ms > 0 { parts.append(humanDuration(ms)) }
-        if let q = bubble.qualitySummary { parts.append("quality \(String(format: "%.1f", q.score))") }
-        if !artifactItems.isEmpty { parts.append("\(artifactItems.count) artefatos") }
-        return parts.joined(separator: " · ")
+        ExecutionProofJudgment.summaryLine(
+            bubble: bubble,
+            artifactItems: rankedArtifactItems,
+            humanDuration: humanDuration
+        )
     }
 }
 
