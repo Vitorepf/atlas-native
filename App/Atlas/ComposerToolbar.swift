@@ -403,11 +403,15 @@ extension ComposerToolbar {
 
 extension ComposerToolbar {
     var trailingSendButton: some View {
-        Button(action: onSend) {
+        Button {
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            onSend()
+        } label: {
             Image(systemName: "arrow.up.circle.fill")
                 .atlasSans(29)
                 .foregroundStyle(AtlasTheme.accent)
-                .frame(width: 32, height: 32)
+                .frame(width: 44, height: 44)
+                .contentShape(Circle())
         }
         .buttonStyle(.plain)
         .keyboardShortcut(.return, modifiers: .command)
