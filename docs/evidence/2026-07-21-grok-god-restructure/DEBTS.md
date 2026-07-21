@@ -4,9 +4,9 @@
 
 ```yaml
 pass: 1
-domain_index: 2
-last_focus: "Código Ask/CommitRow/RepoHealth/Why residual peels"
-session_commits: 63
+domain_index: 1
+last_focus: "TraceEvidence Judgment+Chrome fuse"
+session_commits: 64
 soft_sections_states: 0
 ```
 

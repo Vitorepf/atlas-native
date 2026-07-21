@@ -123,9 +123,9 @@
 | **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
 | **Preview de artefato** | `ArtifactPreviewJudgment` → face idle/load/loaded/tooLarge/failed · viewer spoken/zoom |
 | Artifact sheet parts | `ArtifactSheet` host/list · `+Chrome` · `+Preview` · Delivery |
-| Preview parts | `ArtifactPreviewChrome` host · `TraceEvidenceChrome` · `ArtifactPreviewZoom` (Judgment-only a11y) |
+| Preview parts | `ArtifactPreviewChrome` host · `TraceEvidenceJudgment` chrome · `ArtifactPreviewZoom` (Judgment-only a11y) |
 | **Provenance file-row spoken** | `AtlasCodeProvenanceJudgment` spokenFile/verb/packFile → FileRow |
-| **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
+| **Trace evidence chrome** | `TraceEvidenceJudgment` (chrome fused) → loading/unavailable · Loading/Unavailable views |
 | **Turn presence away notify** | `TurnPresenceJudgment` isTerminal/title/body/spoken · TurnPresence host |
 | **Prova de execução (card recolhido)** | `ExecutionProofJudgment` · host · Chrome · `ExecutionProof` |
 | **Artefatos lista/row** | `ArtifactListJudgment` → list silence/list(N) · row · empty visualizable · close |

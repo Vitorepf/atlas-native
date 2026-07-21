@@ -8,12 +8,11 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: prove
-- focus: Código residual peels
-- domain_index: 2
+- focus: TraceEvidence Judgment+Chrome fuse
+- domain_index: 1
 - pass: 1
-- actionable: open
 - soft_sections_states: 0
-- last_commit: pending-codigo-peels
+- last_commit: pending-trace-evidence
 
 ## Scope
 - App/Atlas + App/Widgets
