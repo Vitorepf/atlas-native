@@ -1229,10 +1229,9 @@ struct AutonomosRhythmSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("APRENDER COM O USO")
-                .font(AtlasFont.mono(10, .semibold))
+            Text("Aprender com o uso")
+                .font(AtlasFont.serif(13, .semibold))
                 .foregroundStyle(AtlasTheme.accent)
-                .kerning(1.2)
             Text("O ritmo do seu dia")
                 .font(AtlasFont.serif(22, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
