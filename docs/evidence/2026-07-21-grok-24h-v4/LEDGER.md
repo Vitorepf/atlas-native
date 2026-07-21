@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 92
-- idle_compress_passes: 18
+- idle_compress_passes: 19
 - collapse_host: 0
 
 ## Waves done
@@ -104,6 +104,11 @@ mode: designer + implementer
 - WAVE-096
 - WAVE-097
 
+## Idle compress
+- pass 19 · Code repo picker shares WorkspacePickerJudgment spoken/loading
+
+## Open queue
+_(none)_
+
 ## Notes
-- WAVE-097 workspace picker. IDLE 17–18 prior.
-- DEVICE_PENDING.
+- WAVE-097 picker. DEVICE_PENDING.

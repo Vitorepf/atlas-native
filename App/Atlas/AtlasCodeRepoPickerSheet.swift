@@ -27,7 +27,7 @@ struct AtlasCodeRepoPickerSheet: View {
                         repoScroll(workspace)
                     } else {
                         ContentUnavailableView(
-                            "sem repositórios",
+                            WorkspacePickerJudgment.noRepoLabel,
                             systemImage: "folder",
                             description: Text("o workspace não publicou nenhum repo")
                         )
@@ -41,11 +41,12 @@ struct AtlasCodeRepoPickerSheet: View {
                 default:
                     VStack(spacing: 12) {
                         BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-                        Text("lendo os repositórios do Mac…")
+                        Text(WorkspacePickerJudgment.loadingCopy)
                             .font(AtlasFont.serifItalic(15))
                             .foregroundStyle(AtlasTheme.textTertiary)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .accessibilityLabel(WorkspacePickerJudgment.spokenLoading())
                 }
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
@@ -134,7 +135,7 @@ struct AtlasCodeRepoPickerSheet: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(repo.name)
+        .accessibilityLabel(WorkspacePickerJudgment.spokenRow(repo))
         .accessibilityHint(repo.slug == currentRepo ? "repositório atual" : "abre o grafo deste repositório")
         .accessibilityIdentifier(A11yID.codeRepoPickerRow(repo.slug))
     }
