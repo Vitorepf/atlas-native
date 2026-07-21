@@ -2697,12 +2697,12 @@ struct BreathingGlyph: View {
     @State var on = false
     var body: some View {
         Text("✦")
-            .font(AtlasFont.serif(30)).foregroundStyle(AtlasTheme.accent)
-            .shadow(color: AtlasTheme.accent.opacity(on ? 0.45 : 0.22), radius: on ? 8 : 4, y: 1)
-            .scaleEffect(on ? 1.08 : 1).opacity(on ? 0.8 : 1)
+            .font(AtlasFont.serif(32)).foregroundStyle(AtlasTheme.accent)
+            .shadow(color: AtlasTheme.accent.opacity(on ? 0.55 : 0.28), radius: on ? 11 : 5, y: 1)
+            .scaleEffect(on ? 1.09 : 1).opacity(on ? 0.88 : 1)
             .onAppear {
                 if !reduceMotion {
-                    withAnimation(AtlasMotion.breath(1.6)) { on = true }
+                    withAnimation(AtlasMotion.breath(1.55)) { on = true }
                 }
             }
             .accessibilityHidden(true)
