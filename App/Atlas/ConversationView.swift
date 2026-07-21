@@ -8296,7 +8296,13 @@ struct ExecutingStrip: View {
             Spacer(minLength: 0)
             stripActionButtons
         }
-        .padding(.horizontal, 6)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(
+            Capsule().fill(AtlasTheme.surface.opacity(0.4))
+                .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        )
+        .atlasElevation(radius: 6, y: 1, opacity: 0.1)
         .lineLimit(1)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(stripAccessibilityLabel)
@@ -8309,11 +8315,11 @@ extension ExecutingStrip {
         if bubble.showsReconnectSurface {
             parts.append(bubble.reconnectSpokenLabel)
         } else if let p = bubble.executionProgress {
-            parts.append("execução ao vivo, passo \(p.current) de \(p.total), \(p.title)")
+            parts.append("Execução ao vivo, passo \(p.current) de \(p.total), \(p.title)")
         } else if let act = bubble.currentActivity {
-            parts.append("execução ao vivo, \(act.title)")
+            parts.append("Execução ao vivo, \(act.title)")
         } else {
-            parts.append("seguindo a execução")
+            parts.append("Seguindo a execução")
         }
         parts.append(contentsOf: stripAccessibilityExtras())
         return parts.joined(separator: ", ")
