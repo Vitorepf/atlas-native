@@ -1414,7 +1414,12 @@ extension StaleReadSeal {
             .modifier(NumericTextTransition(enabled: !reduceMotion && !confirming))
             .accessibilityHidden(true)
         }
-        .foregroundStyle(AtlasTheme.textTertiary)
+        // Confirming sync flashes gold-quiet; steady age stays slate.
+        .foregroundStyle(
+            confirming
+                ? AtlasTheme.accent.opacity(0.9)
+                : AtlasTheme.textTertiary
+        )
     }
 }
 
@@ -1423,9 +1428,24 @@ extension StaleReadSeal {
     func sealChrome(now: Date) -> some View {
         sealCaptionRow(now: now)
             .frame(maxWidth: .infinity, minHeight: 28, alignment: .leading)
-            .padding(.vertical, 2)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(
+                Capsule().fill(
+                    confirming
+                        ? AtlasTheme.goldVeil
+                        : AtlasTheme.surface.opacity(0.35)
+                )
+            )
+            .overlay(
+                Capsule().stroke(
+                    confirming ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft,
+                    lineWidth: 1
+                )
+            )
+            .atlasElevation(radius: 4, y: 1, opacity: confirming ? 0.12 : 0.06)
             .scaleEffect(confirming && !reduceMotion ? 1.045 : 1)
-            .opacity(confirming && !reduceMotion ? 0.72 : 1)
+            .opacity(confirming && !reduceMotion ? 0.95 : 1)
             .animation(confirming && !reduceMotion ? .easeInOut(duration: AtlasMotion.considered) : nil, value: confirming)
     }
 }
