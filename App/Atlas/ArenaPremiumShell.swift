@@ -822,8 +822,31 @@ struct ArenaPremiumDestinationView: View {
         }
         .scrollIndicators(.hidden)
         .background(AtlasTheme.bg.ignoresSafeArea())
-        .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack(spacing: 4) {
+                    Text(title)
+                        .font(AtlasFont.serif(17, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .lineLimit(1)
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0),
+                            AtlasTheme.accent.opacity(0.5),
+                            AtlasTheme.accent.opacity(0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 48, height: 1.5)
+                    .accessibilityHidden(true)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(title)
+            }
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(spacing: 0) {
                 LinearGradient(
@@ -2545,8 +2568,31 @@ struct ArenaPremiumRunDetailView: View {
         }
         .scrollIndicators(.hidden)
         .background(AtlasTheme.bg.ignoresSafeArea())
-        .navigationTitle(ArenaDisplay.suite(run.suite))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack(spacing: 4) {
+                    Text(ArenaDisplay.suite(run.suite))
+                        .font(AtlasFont.serif(17, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .lineLimit(1)
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0),
+                            AtlasTheme.accent.opacity(0.5),
+                            AtlasTheme.accent.opacity(0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 52, height: 1.5)
+                    .accessibilityHidden(true)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(ArenaDisplay.suite(run.suite))
+            }
+        }
         .accessibilityIdentifier(A11yID.arenaPremiumRunDetail)
     }
 
@@ -4134,9 +4180,31 @@ extension ArenaSuiteSheet {
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: suite.engines.count)
         }
         .background(AtlasTheme.bg.ignoresSafeArea())
-        .navigationTitle("Suite")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { suiteToolbar }
+        .toolbar {
+            suiteToolbar
+            ToolbarItem(placement: .principal) {
+                VStack(spacing: 4) {
+                    Text("Suite")
+                        .font(AtlasFont.serif(17, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0),
+                            AtlasTheme.accent.opacity(0.5),
+                            AtlasTheme.accent.opacity(0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 40, height: 1.5)
+                    .accessibilityHidden(true)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel("Suite")
+            }
+        }
     }
 }
 
