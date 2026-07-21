@@ -1446,7 +1446,7 @@ extension AtlasCodeView {
                     )
                     .atlasElevation(radius: 8, y: 2, opacity: 0.12)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .accessibilityIdentifier(A11yID.codeHealReceipt)
                 .accessibilityLabel("Curado sozinho, ver recibo de cura")
                 .accessibilityAddTraits(.isButton)
@@ -1459,14 +1459,27 @@ extension AtlasCodeView {
     func weekBody(_ week: AtlasCodeWeek) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                Text("A semana")
-                    .font(AtlasFont.serif(18, .semibold))
-                    .foregroundStyle(AtlasTheme.textPrimary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("A semana")
+                        .font(AtlasFont.serif(18, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityHidden(true)
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0.55),
+                            AtlasTheme.accent.opacity(0.12),
+                            AtlasTheme.accent.opacity(0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 48, height: 1.5)
                     .accessibilityHidden(true)
+                }
                 Spacer()
                 Text(week.window)
-                    .font(AtlasFont.mono(9))
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.mono(9, .medium))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.75))
                     .accessibilityHidden(true)
             }
             if AtlasCodeWeekUI.isQuiet(week) {
