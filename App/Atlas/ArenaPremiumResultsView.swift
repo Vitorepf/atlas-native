@@ -185,6 +185,9 @@ struct ArenaPremiumResultsView: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            "Nenhum resultado medido. O primeiro resultado aparecerá quando uma suíte concluir."
+        )
         .accessibilityIdentifier(A11yID.arenaPremiumState("results-empty"))
     }
 }

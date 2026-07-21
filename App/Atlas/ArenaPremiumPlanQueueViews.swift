@@ -120,6 +120,9 @@ struct ArenaPremiumPlanView: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            "Nenhum plano ativo. Crie uma medição para organizar suítes, motores e braços."
+        )
         .accessibilityIdentifier(A11yID.arenaPremiumState("plan-empty"))
     }
 

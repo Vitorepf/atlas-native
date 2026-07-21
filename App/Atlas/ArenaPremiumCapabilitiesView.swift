@@ -175,6 +175,9 @@ struct ArenaPremiumCapabilitiesView: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            "Capacidades ainda não medidas. Ausência permanece ausência — nenhuma barra começa em zero."
+        )
         .accessibilityIdentifier(A11yID.arenaPremiumState("capabilities-empty"))
     }
 
