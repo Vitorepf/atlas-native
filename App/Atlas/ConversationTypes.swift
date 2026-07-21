@@ -87,3 +87,21 @@ struct LocalDraft: Identifiable, Equatable {
     let preview: Data?     // pequena o bastante pra UIImage(data:) direto
     var state: State = .pronto
 }
+
+
+/// Fase de carregamento compartilhada pelos models de leitura da casca.
+/// ConversationModel fica fora — estado mais rico, não force-fit.
+enum LoadPhase: Equatable {
+    case idle
+    case loading
+    case loaded
+    case failed(String)
+}
+
+extension String {
+    /// Trim; nil se vazio.
+    var nonEmpty: String? {
+        let t = trimmingCharacters(in: .whitespacesAndNewlines)
+        return t.isEmpty ? nil : t
+    }
+}
