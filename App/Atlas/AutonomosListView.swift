@@ -30,6 +30,8 @@ struct AutonomosListView: View {
             .padding(.bottom, 140)
         }
         .scrollIndicators(.hidden)
+        // Contain: each unit row stays a separate VO focus.
+        .accessibilityElement(children: .contain)
     }
 
     private var emptyState: some View {
