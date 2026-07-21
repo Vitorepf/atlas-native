@@ -431,7 +431,7 @@ extension ChangeReviewGovernanceSection {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
             if diverged {
-                Text("divergência")
+                Text("Divergência")
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityLabel("divergência entre pareceres")

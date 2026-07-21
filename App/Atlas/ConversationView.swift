@@ -1782,7 +1782,7 @@ extension WorkspaceSheet {
 
 extension WorkspaceSheet {
     var workspaceListHeader: some View {
-        Text("pastas das conversas carregadas · vale no próximo envio")
+        Text("Pastas das conversas carregadas · vale no próximo envio")
             .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -1916,7 +1916,7 @@ extension EffortSheet {
 
 extension EffortSheet {
     var effortFootnoteCopy: some View {
-        Text("vale para o próximo envio; automático deixa o Atlas Decide escolher")
+        Text("Vale para o próximo envio; automático deixa o Atlas Decide escolher")
             .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -4541,7 +4541,7 @@ extension ExecutionRibbon {
     @ViewBuilder
     var decideStrategyLine: some View {
         if let strat = bubble.decideStrategy {
-            Text("atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
+            Text("Atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
                 .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
         }
     }
@@ -8091,7 +8091,7 @@ extension QueuedFollowUpsSheet {
     @ViewBuilder
     func queueOrderCaption(total: Int) -> some View {
         if total > 1 {
-            Text("ordem da fila · a cabeça envia quando o turno terminar")
+            Text("Ordem da fila · a cabeça envia quando o turno terminar")
                 .atlasSans(12)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .frame(maxWidth: .infinity, alignment: .leading)

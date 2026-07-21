@@ -1134,7 +1134,7 @@ struct ArenaPremiumFleetView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             if let best, let mult = best.atlasMultiplier {
-                Text("melhor ganho · \(ArenaDisplay.engine(best.engine)) · \(ArenaFormat.multiplier(mult))")
+                Text("Melhor ganho · \(ArenaDisplay.engine(best.engine)) · \(ArenaFormat.multiplier(mult))")
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.accent)
             }
@@ -1176,7 +1176,7 @@ struct ArenaPremiumFleetView: View {
                 bar(label: "sem", value: without, ceiling: maxScore, atlas: false)
                 bar(label: "Atlas", value: withAtlas, ceiling: maxScore, atlas: true)
             } else {
-                Text("não medido")
+                Text("Não medido")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
@@ -1195,7 +1195,7 @@ struct ArenaPremiumFleetView: View {
                 .font(AtlasFont.mono(11, .medium))
                 .foregroundStyle(mult >= 1 ? AtlasTheme.accent : AtlasTheme.alert)
         } else if engine.composite == nil {
-            Text("não medido")
+            Text("Não medido")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -1567,7 +1567,7 @@ struct ArenaPremiumRunningView: View {
                         .font(AtlasFont.serif(18))
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }
-                Text("casos confirmados")
+                Text("Casos confirmados")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
                 Text("\(progress.remaining) restantes")
@@ -1578,7 +1578,7 @@ struct ArenaPremiumRunningView: View {
                 Text("Progresso indeterminado")
                     .font(AtlasFont.mono(13, .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text("denominador ainda não publicado")
+                Text("Denominador ainda não publicado")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
@@ -1925,7 +1925,7 @@ struct ArenaPremiumResultsView: View {
                     smallMetric("Multiplicador", ArenaFormat.multiplier(engine.atlasMultiplier), tone: .active)
                 }
             }
-            Text("cobertura \(model.arenaCoverageText) · \(model.report?.claimAllowed == true ? "resultado final" : "resultado parcial")")
+            Text("Cobertura \(model.arenaCoverageText) · \(model.report?.claimAllowed == true ? "resultado final" : "resultado parcial")")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
@@ -1987,7 +1987,7 @@ struct ArenaPremiumResultsView: View {
             }
             .font(AtlasFont.mono(11, .medium))
         } else {
-            Text("não medido")
+            Text("Não medido")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -2823,7 +2823,7 @@ struct ArenaPremiumCapabilitiesView: View {
                     .font(AtlasFont.serif(56))
                 Text("/\(capabilities.count)")
                     .font(AtlasFont.serif(29))
-                Text("capacidades cobertas")
+                Text("Capacidades cobertas")
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .padding(.leading, 6)
@@ -2840,13 +2840,13 @@ struct ArenaPremiumCapabilitiesView: View {
                 Circle()
                     .stroke(AtlasTheme.textSecondary, lineWidth: 1.5)
                     .frame(width: 8, height: 8)
-                Text("sem Atlas")
+                Text("Sem Atlas")
             }
             HStack(spacing: 5) {
                 Text("✦")
                     .font(AtlasFont.serif(11))
                     .foregroundStyle(AtlasTheme.accent)
-                Text("com Atlas")
+                Text("Com Atlas")
             }
         }
         .font(AtlasFont.mono(10))
@@ -3496,7 +3496,7 @@ extension ArenaRunSheet {
 extension ArenaRunSheet {
     @ViewBuilder
     func receiptHashCopy(_ receipt: AtlasArenaStartReceipt) -> some View {
-        Text("recibo \(receipt.receiptHash)")
+        Text("Recibo \(receipt.receiptHash)")
             .font(AtlasFont.mono(11))
             .foregroundStyle(AtlasTheme.textSecondary)
             .lineLimit(1)
