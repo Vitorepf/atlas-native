@@ -198,6 +198,7 @@ extension RootView {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()
+                .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .accessibilityIdentifier(A11yID.topbarProfile)
@@ -3137,6 +3138,7 @@ struct AtlasProfileSheet: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 72, height: 72)
                 .atlasGlassCircle()
+                .atlasElevation(radius: 10, y: 3, opacity: 0.18)
                 .accessibilityHidden(true)
             Text("Vitor")
                 .font(AtlasFont.serif(24, .semibold))
