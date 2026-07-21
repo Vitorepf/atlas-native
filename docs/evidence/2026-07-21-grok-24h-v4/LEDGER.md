@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 182
-- idle_compress_passes: 6
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -197,26 +197,23 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `dc3204e1` · MARK densos post-174
-- pass 4 · `34a8d100` · MARK ConversationExecutionPhase
-- pass 5 · `542f30fa` · MARK residual densos post-179
-- pass 6 · `7d186855` · delete duplicate imports post-180
 
 ## Designer
-- designs_proposed: 182
-- designs_open: 0
+- designs_proposed: 185
+- designs_open: 3
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
-- note: concurrent LEDGER wipes — B rewrites full truth after each close
 
 ## Open queue snapshot (must match QUEUE.md)
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| 1 | WAVE-189-composer-queue-row-action-and-can-do | **max** | proposed |
+| 2 | WAVE-190-autonomos-catalog-list-pack-and-hub-receipt-tone | **max** | proposed |
+| 3 | WAVE-188-conversation-thread-live-and-autonomos-destination-pack | **high** | proposed |
 
 ## Notes
-- Device-pending (passcode) = operator.
+- Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
-- WAVE-187: code-graph identity + arena measurement pack.
-- hollows 0 · open=[] · await A · no invent micro-WAVE.
+- Device-pending (passcode) = operator.
+

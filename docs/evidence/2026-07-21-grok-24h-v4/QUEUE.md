@@ -14,12 +14,43 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-_(no open proposed WAVEs)_
+```yaml
+id: WAVE-189-composer-queue-row-action-and-can-do
+status: proposed
+rank: 1
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-189-design.md
+created_by: designer
+approved_at: null
+```
+
+```yaml
+id: WAVE-190-autonomos-catalog-list-pack-and-hub-receipt-tone
+status: proposed
+rank: 2
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-190-design.md
+created_by: designer
+approved_at: null
+```
+
+```yaml
+id: WAVE-188-conversation-thread-live-and-autonomos-destination-pack
+status: proposed
+rank: 3
+delta_patamar: high
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-188-design.md
+created_by: designer
+approved_at: null
+```
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
+| **1** | WAVE-189-composer-queue-row-action-and-can-do | **max** | `WAVE-189-design.md` |
+| **2** | WAVE-190-autonomos-catalog-list-pack-and-hub-receipt-tone | **max** | `WAVE-190-design.md` |
+| **3** | WAVE-188-conversation-thread-live-and-autonomos-destination-pack | **high** | `WAVE-188-design.md` |
 
 ## History (done)
 
