@@ -108,12 +108,14 @@ struct AutonomosListView: View {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .textCase(.uppercase)
                 .padding(.top, 6)
+                // Row combine speaks "pausado"; visual UPPERCASE is decoration only.
+                .accessibilityHidden(true)
         } else {
             Circle()
                 .fill(AtlasTheme.accent.opacity(0.85))
                 .frame(width: 5, height: 5)
                 .padding(.top, 10)
-                .accessibilityLabel("vivo")
+                .accessibilityHidden(true)
         }
     }
 
