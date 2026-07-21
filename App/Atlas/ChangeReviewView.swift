@@ -583,7 +583,8 @@ extension ChangeReviewCouncilMemberRow {
         if let model = member.model {
             Text(model)
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet council model meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
@@ -615,7 +616,8 @@ extension ChangeReviewCouncilMemberRow {
         if let hash = member.responseHash {
             Text("Hash \(String(hash.prefix(12)))")
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet hash meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
         }
         if let code = member.errorCode {
@@ -633,7 +635,8 @@ extension ChangeReviewCouncilMemberRow {
         if let latency = member.latencyMs {
             Text("\(latency)ms")
                 .font(AtlasFont.mono(9))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet latency meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }
@@ -1089,7 +1092,8 @@ extension ChangeReviewDiffView {
     func loadedDiffWarnings(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
         if response.diff.truncated {
             Text("Diff truncado — \(response.diff.returnedBytes) de \(response.diff.sizeBytes) bytes")
-                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet truncation honesty.
+                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         if response.patch.hashMatches == false {
             hashMismatchWarning
@@ -1215,7 +1219,8 @@ extension ChangeReviewDecidedSection {
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(a.action == .accept ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
             if let at = a.actedAt {
-                Text(at).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet decided timestamp.
+                Text(at).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
             }
             Spacer()
         }
@@ -1310,10 +1315,11 @@ extension ChangeReviewControlsSection {
             Text(c.slug).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             Text(c.status).font(AtlasFont.mono(10))
-                .foregroundStyle(c.status == "pass" || c.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
+                .foregroundStyle(c.status == "pass" || c.status == "passed" ? AtlasTheme.domAutonomos : AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
             Spacer()
-            Text(c.signalSummary).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+            // Soft gold-quiet control signal meta.
+            Text(c.signalSummary).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.58)).lineLimit(1)
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
@@ -1339,7 +1345,8 @@ extension ChangeReviewRunHeader {
                 .font(AtlasFont.serif(20, .semibold)).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             if let finished = run.finishedAt {
-                Text(finished).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet run finished meta.
+                Text(finished).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
                     .accessibilityHidden(true)
             }
         }
@@ -1422,7 +1429,8 @@ extension ChangeReviewFindingsSection {
             )
             .frame(height: 1)
             Text("\(count)")
-                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet axis count.
+                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isHeader)
@@ -1468,7 +1476,8 @@ extension ChangeReviewFindingRow {
     var findingPathAndRecommendation: some View {
         if let path = finding.filePath {
             Text(path + (finding.startLine.map { ":\($0)" } ?? ""))
-                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+                // Soft gold-quiet finding path meta.
+                .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.accent.opacity(0.55)).lineLimit(1)
                 .accessibilityHidden(true)
         }
         if let rec = finding.recommendation {

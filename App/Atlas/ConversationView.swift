@@ -1732,7 +1732,8 @@ extension ComposerAttachmentRow {
         VStack(alignment: .leading, spacing: 2) {
             Text(title).atlasSans(17).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
-            Text(subtitle).atlasSans(13).foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet attachment subtitle.
+            Text(subtitle).atlasSans(13).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
         }
     }
@@ -1876,7 +1877,8 @@ extension WorkspaceSheet {
     var workspaceEmptyLabel: some View {
         Text("Nenhum workspace nas conversas carregadas")
             .atlasSans(15)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet empty sheet meta.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .multilineTextAlignment(.center)
             .padding(.horizontal, 24)
             .padding(.top, 40)
@@ -1888,7 +1890,8 @@ extension WorkspaceSheet {
     var workspaceListHeader: some View {
         Text("Pastas das conversas carregadas · vale no próximo envio")
             .atlasSans(12)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet workspace sheet caption.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
             .padding(.bottom, 10)
@@ -4161,7 +4164,8 @@ struct SignatureLine: View {
 
     var body: some View {
         Text(signature)
-            .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet editorial signature.
+            .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
             .frame(maxWidth: .infinity, alignment: .trailing)
             .opacity(shown ? 1 : 0)
             .accessibilityLabel(EditorialTurnA11y.spokenSignature(provider: provider, model: model, elapsedMs: elapsedMs))
@@ -4787,10 +4791,12 @@ extension AgentRow {
                     y: 0
                 )
             Text(agent.agent ?? providerWord(agent.provider))
-                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet agent name mono.
+                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
             agentModelLabel
             Spacer()
-            Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet status word.
+            Text(statusWord).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.accent.opacity(0.55))
         }
     }
 }
@@ -4823,7 +4829,8 @@ extension AgentRow {
     @ViewBuilder
     var agentModelLabel: some View {
         if let m = agent.model, !m.isEmpty, !m.hasSuffix("_default") {
-            Text(m).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+            // Soft gold-quiet model meta.
+            Text(m).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.55)).lineLimit(1)
         }
     }
 }
@@ -5021,7 +5028,8 @@ extension ReconnectBanner {
         ForEach(Array(bubble.reconnectSecondaryLines.enumerated()), id: \.offset) { _, line in
             Text(line)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet reconnect secondary meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
