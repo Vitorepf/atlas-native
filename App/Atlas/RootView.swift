@@ -2062,7 +2062,7 @@ extension WorkspaceThreadsSection {
     var captionHeader: some View {
         Text(spokenCaption)
             .font(AtlasFont.serif(13, .semibold))
-            .foregroundStyle(AtlasTheme.textTertiary)
+            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
@@ -2267,8 +2267,18 @@ extension WorkspaceThreadsSection {
     @ViewBuilder
     func threadRowSeparator(after thread: AtlasAiThread) -> some View {
         if thread.id != threads.last?.id {
-            Divider().overlay(AtlasTheme.separator)
-                .padding(.leading, AtlasTheme.Space.screen + 36)
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.2),
+                    AtlasTheme.separator,
+                    AtlasTheme.separator.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 1)
+            .padding(.leading, AtlasTheme.Space.screen + 50)
         }
     }
 }
