@@ -177,7 +177,7 @@ extension AtlasCodeView {
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.bottom, 10)
         .animation(
-            reduceMotion ? nil : .easeInOut(duration: 0.22),
+            reduceMotion ? nil : .easeInOut(duration: AtlasMotion.instinct),
             value: AtlasCodeAskPillA11y.pillPhaseID(
                 isAnchoring: pillIsAnchoring,
                 anchorLegend: anchorLegend
@@ -1322,7 +1322,7 @@ extension AtlasCodeView {
                 let count = option.count(in: graph.nodes, model: model)
                 Button {
                     AtlasMotion.softImpact(reduceMotion: reduceMotion)
-                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct)) {
                         graphStateFilter = option
                     }
                 } label: {
@@ -1362,7 +1362,7 @@ extension AtlasCodeView {
                 .frame(height: 1)
         }
         .accessibilityIdentifier(A11yID.codeGraphFilters)
-        .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: graphStateFilter)
+        .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: graphStateFilter)
     }
 
     private func tabForeground(_ option: AtlasCodeGraphStateFilter, active: Bool) -> Color {
@@ -1456,7 +1456,7 @@ extension AtlasCodeView {
         .accessibilityAddTraits(.isHeader)
         .accessibilityIdentifier(A11yID.codeWeek)
         .animation(
-            reduceMotion ? nil : .easeInOut(duration: 0.28),
+            reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered),
             value: AtlasCodeWeekUI.weekPhaseID(week)
         )
     }
@@ -2093,7 +2093,7 @@ extension AtlasCodeMirrorCard {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(background, in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.card))
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).strokeBorder(borderColor, lineWidth: 1))
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: mirrorStatePhaseID)
+        .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered), value: mirrorStatePhaseID)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenMirrorLabel())
         .accessibilityHint(Self.mirrorHint)
@@ -3698,7 +3698,7 @@ struct AtlasCodeRadarStatusCapsule: View {
                 .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.35), lineWidth: 1))
             }
         }
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: model.scanState)
+        .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered), value: model.scanState)
         .frame(maxWidth: .infinity, minHeight: 36, alignment: .center)
         .accessibilityLabel(spokenStatus)
         .accessibilityAddTraits(model.scanState == .violating ? .isHeader : [])
@@ -3939,7 +3939,7 @@ struct AtlasCodeFolderRow: View {
                 .transition(reduceMotion ? .identity : .opacity)
             }
         }
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: isExpanded)
+        .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.instinct), value: isExpanded)
     }
 
     private var spokenFolderLabel: String {
@@ -4165,7 +4165,7 @@ private struct CommitRowAskChrome<Label: View>: View {
         .buttonStyle(.plain)
         .offset(x: offset)
         .opacity(isDimmed ? 0.26 : 1)
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.28), value: isDimmed)
+        .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.considered), value: isDimmed)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
@@ -4196,7 +4196,7 @@ private struct CommitRowAskChrome<Label: View>: View {
                 if reduceMotion {
                     reset()
                 } else {
-                    withAnimation(.easeOut(duration: 0.18), reset)
+                    withAnimation(.easeOut(duration: AtlasMotion.instinct), reset)
                 }
                 guard shouldAsk else { return }
                 suppressTap = true

@@ -291,7 +291,7 @@ struct AutonomosViewHeader: View {
         }
         .disabled(!canRefresh)
         .opacity(canRefresh ? 1 : 0.45)
-        .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: canRefresh)
+        .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: canRefresh)
         .accessibilityLabel(
             canRefresh
                 ? "atualizar instância selecionada"

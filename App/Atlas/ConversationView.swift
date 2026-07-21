@@ -1426,7 +1426,7 @@ extension StaleReadSeal {
             .padding(.vertical, 2)
             .scaleEffect(confirming && !reduceMotion ? 1.045 : 1)
             .opacity(confirming && !reduceMotion ? 0.72 : 1)
-            .animation(confirming && !reduceMotion ? .easeInOut(duration: 0.32) : nil, value: confirming)
+            .animation(confirming && !reduceMotion ? .easeInOut(duration: AtlasMotion.considered) : nil, value: confirming)
     }
 }
 
@@ -2147,7 +2147,7 @@ extension ConversationComposer {
     @ViewBuilder
     var composerShellPadding: some View {
         composerShellVBox
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.25), value: model.isSending)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.considered), value: model.isSending)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
             .background(composerFadeBackground)
     }
@@ -2903,7 +2903,7 @@ extension DraftThumb {
                 onFailedTap: onFailedTap
             ))
             .accessibilityIdentifier(A11yID.draft(draft.id))
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: draft.state)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: draft.state)
     }
 }
 
@@ -3031,7 +3031,7 @@ extension ComposerToolbar {
         Text(model.bubbles.isEmpty ? "Escreva ao Atlas" : "Continuar com Atlas")
             .font(AtlasFont.serifItalic(expanded ? 20 : 18)).foregroundStyle(AtlasTheme.textTertiary)
             .allowsHitTesting(false).opacity(model.draftText.isEmpty ? 1 : 0).offset(y: expanded ? 0 : -1)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.28), value: model.draftText.isEmpty)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.considered), value: model.draftText.isEmpty)
             .accessibilityHidden(true)
     }
 }
@@ -3755,7 +3755,7 @@ extension ConversationMessages {
     @ViewBuilder
     func scrollChrome<Content: View>(proxy: ScrollViewProxy, @ViewBuilder content: () -> Content) -> some View {
         scrollPreferenceChrome(proxy: proxy, content: content)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: showsScrollFAB)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: showsScrollFAB)
             .onChange(of: model.bubbles.isEmpty) { _, empty in
                 scrollBubbleEmptyChange(empty)
             }
@@ -3777,7 +3777,7 @@ extension ConversationMessages {
         guard shouldAutoScroll(now: now, count: count) else { return }
         lastScrollAt = now
         lastScrollBubbleCount = count
-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct)) {
             proxy.scrollTo("bottom", anchor: .bottom)
         }
     }
@@ -3805,7 +3805,7 @@ extension ConversationMessages {
 extension ConversationMessages {
     func scrollFABAction(proxy: ScrollViewProxy) {
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.considered)) {
             proxy.scrollTo("bottom", anchor: .bottom)
         }
     }
@@ -4048,7 +4048,7 @@ extension SignatureLine {
         if reduceMotion { shown = true; return }
         Task {
             try? await Task.sleep(nanoseconds: 220_000_000)
-            withAnimation(.easeIn(duration: 0.28)) { shown = true }
+            withAnimation(.easeIn(duration: AtlasMotion.considered)) { shown = true }
         }
     }
 }
@@ -6925,7 +6925,7 @@ extension TimelineFilterChips {
 extension TimelineFilterChips {
     func filterChipAction(_ option: TimelineReadFilter) {
         AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct)) {
             filter = option
         }
     }
@@ -7004,7 +7004,7 @@ struct TimelineFilterChips: View {
         }
         .padding(.leading, 20)
         .accessibilityIdentifier(A11yID.liveTimelineFilters)
-        .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: filter)
+        .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: filter)
     }
 }
 
@@ -7307,7 +7307,7 @@ func narrativeRows(from activities: [AtlasAgentActivity]) -> [NarrativeRow] {
 extension LiveTimeline {
     func timelineScrollToLast(_ proxy: ScrollViewProxy) {
         guard let last = rows.last?.id else { return }
-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct)) {
             proxy.scrollTo(last, anchor: .bottom)
         }
     }
@@ -7322,7 +7322,7 @@ extension LiveTimeline {
             .frame(maxHeight: min(CGFloat(rows.count) * 34 + 12, 232))
             .scrollIndicators(.hidden)
             .onChange(of: rows.count) { timelineScrollToLast(proxy) }
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: rows.count)
+            .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: rows.count)
         }
     }
 }
