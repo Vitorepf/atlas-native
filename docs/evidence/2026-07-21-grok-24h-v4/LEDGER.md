@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 47
-- idle_compress_passes: 2
+- idle_compress_passes: 6
 - collapse_host: 0
 
 ## Waves done
@@ -62,6 +62,10 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
+- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
+- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
+- pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
 
 ## Designer
 - designs_proposed: 47
@@ -76,7 +80,6 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
+- WAVE-051–052 + idle peel Code sheets. Prefer A 2–5 GOD croquis.
+- DEVICE_PENDING history.
 - Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
