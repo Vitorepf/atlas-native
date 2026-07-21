@@ -166,6 +166,7 @@ struct ArenaPremiumShell: View {
                     .atlasSans(17, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(width: 48, height: 48)
+                    .atlasGlassCircle()
                     .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                     .contentShape(Circle())
             }
@@ -4388,6 +4389,8 @@ struct ArenaPremiumProgressRing: View {
             progressCenter
         }
         .frame(width: 142, height: 142)
+        // Soft float so the ring sits above the live card plane.
+        .atlasElevation(radius: 14, y: 4, opacity: 0.12)
         .accessibilityHidden(true)
     }
 
@@ -4399,10 +4402,18 @@ struct ArenaPremiumProgressRing: View {
                     .font(AtlasFont.serif(42))
                 Text("%")
                     .font(AtlasFont.mono(13))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .foregroundStyle(
+                        percentage >= 100
+                            ? AtlasTheme.accent.opacity(0.9)
+                            : AtlasTheme.textSecondary
+                    )
                     .baselineOffset(4)
             }
-            .foregroundStyle(AtlasTheme.textPrimary)
+            .foregroundStyle(
+                percentage >= 100
+                    ? AtlasTheme.accent
+                    : AtlasTheme.textPrimary
+            )
         } else if progress == nil {
             // Indeterminate: ✦ is mark, not a fake 0% ring.
             Text("✦")
