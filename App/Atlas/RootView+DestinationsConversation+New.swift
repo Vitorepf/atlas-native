@@ -12,7 +12,14 @@ extension RootView {
             title: workspaceKey.map { key in
                 session.workspaces.first(where: { $0.id == key })?.name ?? key
             } ?? "Nova conversa",
-            workspace: workspaceKey
+            emptyPrompt: HomeAskContext.invite,
+            emptySuggestions: HomeAskContext.emptySuggestions(
+                hasWorkspaces: !session.workspaces.isEmpty
+            ),
+            workspace: workspaceKey,
+            turnFacts: { [session] _ in
+                HomeAskContext.facts(session: session)
+            }
         )
     }
 }
