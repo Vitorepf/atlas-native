@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 55
+- waves_completed: 56
 - idle_compress_passes: 8
 - collapse_host: 0
 
@@ -66,6 +66,7 @@ mode: designer + implementer
 - WAVE-058
 - WAVE-059
 - WAVE-060
+- WAVE-061
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -74,11 +75,11 @@ mode: designer + implementer
 - pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 - pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
-- pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow (835→477 host)
-- pass 8 · `34d412f2` · peel ChangeReview → GovernanceBody + RunActionsBody (771→338 host)
+- pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow
+- pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
 
 ## Designer
-- designs_proposed: 55
+- designs_proposed: 56
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -89,5 +90,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-057–060 + idle PlanCard peels. Prefer A fill.
-- DEVICE_PENDING. Continuity App Group BLOCKED.
+- WAVE-060–061 (stale-read · graph screen) + idle PlanCard/ChangeReview peels.
+- Prefer A fill. DEVICE_PENDING. Continuity App Group BLOCKED.

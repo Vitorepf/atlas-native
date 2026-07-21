@@ -1,32 +1,27 @@
 import SwiftUI
 import AtlasCore
 
-// IDLE-COMPRESS body
+// WAVE-061: graph screen face → AtlasCodeGraphScreenJudgment
 
 extension AtlasCodeView {
-    func spokenCodeScreenBusyLabel() -> String? {
-        switch model.phase {
-        case .idle, .loading:
-            return "grafo, \(model.repo), carregando"
-        case .failed:
-            return "grafo, \(model.repo), falha ao carregar"
-        default:
+    /// WAVE-061: exclusive graph-screen face from published phase + nodes.
+    var graphScreenFace: AtlasCodeGraphScreenFace {
+        let fail: String? = {
+            if case .failed(let message) = model.phase { return message }
             return nil
-        }
+        }()
+        return AtlasCodeGraphScreenJudgment.face(
+            phase: model.phase,
+            nodeCount: model.graph?.nodes.count ?? 0,
+            failMessage: fail
+        )
     }
-}
 
-extension AtlasCodeView {
-    func spokenCodeScreenLoadedLabel() -> String {
-        let n = model.graph?.nodes.count ?? 0
-        if n == 0 { return "grafo, \(model.repo), sem commits neste recorte" }
-        return "grafo, \(model.repo), \(n) commit\(n == 1 ? "" : "s")"
-    }
-}
-
-extension AtlasCodeView {
     func spokenCodeScreenLabel() -> String {
-        spokenCodeScreenBusyLabel() ?? spokenCodeScreenLoadedLabel()
+        AtlasCodeGraphScreenJudgment.spokenScreen(
+            repo: model.repo,
+            face: graphScreenFace
+        )
     }
 
     static let codeScreenHint = "mapa governado; pílula e proveniência só com dados publicados"
@@ -254,6 +249,7 @@ extension AtlasCodeView {
             .background(NavigationInteractivePopEnabler())
             .accessibilityIdentifier(A11yID.codeScreen)
             .accessibilityLabel(spokenCodeScreenLabel())
+            .accessibilityValue(graphScreenFace.productWord)
             .accessibilityHint(Self.codeScreenHint)
             .toolbar { codeToolbar }
             .safeAreaInset(edge: .top, spacing: 0) {

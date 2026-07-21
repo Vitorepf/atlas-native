@@ -22,6 +22,7 @@
 |---|---|
 | Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View |
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
+| **Grafo screen load (Código)** | `AtlasCodeGraphScreenJudgment` → face loading/failed/empty/ready · screen a11y |
 | **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
 | **Heal veto / undoError** | `AtlasCodeHealVetoJudgment` → ReceiptSheet · canVeto · undo fail line |
 | **Commit row face (grafo)** | `AtlasCodeCommitRowJudgment` → dim/fora/main · tip branch · meta color |
