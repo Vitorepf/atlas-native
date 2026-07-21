@@ -28,6 +28,18 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### session progress note
+```yaml
+phase: act
+focus: continuous grind
+domain_index: rotating
+pass: 1
+actionable: open
+session_commits: 25+
+soft_sections_states: 0
+notes: never Goal Done; loop continues
+```
+
 ### ConversationSurface fuse
 
 ```yaml

@@ -4,25 +4,34 @@
 
 ```yaml
 pass: 1
-domain_index: 2
-last_focus: "AtlasCodeGraphChrome fuse"
+domain_index: 0
+last_focus: "multi-domain fuse grind (Composer/Nightly/SelfConstruction/…)"
 passes_completed: 0
-session_commits: 17
+session_commits: 25+
 ```
 
 ## Soft *Sections*/*States*: **0**
 
-## Highlights
+## Domains touched this session
 
-- Home: RootHomeBody, EmptyChrome, LiveNowJudgment, ThreadRow, RootChrome MARK
-- Conversa: EmptyConversation, ProofBody, ChangeReview, Sheets, Cockpit, Messages, Queue, Toolbar
-- Código: ProvenanceSheetBody, FileRow, GraphChrome
-- Arena/Autonomos: NowBody, GlyphRow, DecisionFaceBody
-- Widgets: dense MARK
+| # | Domínio | Work |
+|---|---|---|
+| 0 | Home | RootHomeBody · EmptyChrome · LiveNow · ThreadRow · RootChrome MARK · NightlyCard |
+| 1 | Conversa | EmptyConversation · Proof · ChangeReview · Sheets · Cockpit · Messages · Queue · Toolbar · Surface · StateCard · Composer |
+| 2 | Código | ProvenanceSheetBody · FileRow · GraphChrome |
+| 3 | Pílula | lean skip ROI |
+| 4 | Arena | NowBody · GlyphRow |
+| 5 | Autônomos | DecisionFaceBody · AskContext organs |
+| 6 | Widgets | dense MARK |
+| 7 | Cross | soft zero · CODEMAP |
 
-## Próximo
+## Próximo (pass deepen)
 
-pass deepen · ConversationSurface peels · Autonomos Ask organs · never Goal Done
+- more same-host peels <120
+- MARK residual dense files
+- CODEMAP completeness
+- dead delete scan
+- domain_index cycle / pass+=1
 
 ## Proibido
 
