@@ -22,6 +22,7 @@ struct AutonomosHubView: View {
                 AutonomosMapChrome.heroTitle(vestment.hero)
                     .padding(.bottom, 10)
                     .accessibilityLabel("\(unit.name), \(vestment.hero), \(kickerLine)")
+                    .accessibilityAddTraits(.isHeader)
                 Text(unit.charter)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textSecondary)

@@ -192,7 +192,6 @@ struct AutonomosMapShell: View {
                 "Ainda no escopo local. Decisões e momentos do motor chegam quando o create no Server existir."
             )
             .accessibilityIdentifier(A11yID.autonomosDeferredSurface)
-            .accessibilityIdentifier(A11yID.autonomosDecisions)
         }
     }
 
