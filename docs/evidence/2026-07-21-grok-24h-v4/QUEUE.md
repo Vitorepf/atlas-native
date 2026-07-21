@@ -14,12 +14,21 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-_(no open proposed WAVEs)_
+```yaml
+id: WAVE-083-arena-live-can-do-pack-honesty-instrument
+status: proposed
+rank: 1
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-083-design.md
+created_by: designer
+approved_at: null
+```
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
+| **1** | WAVE-083-arena-live-can-do-pack-honesty-instrument | **max** | `WAVE-083-design.md` |
 
 ## History (done)
 
@@ -99,4 +108,5 @@ _(no open proposed WAVEs)_
 - WAVE-079 done
 - WAVE-080 done
 - WAVE-081 done
+- WAVE-082 done
 

@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 76
-- idle_compress_passes: 20
+- waves_completed: 77
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -87,39 +87,26 @@ mode: designer + implementer
 - WAVE-079
 - WAVE-080
 - WAVE-081
+- WAVE-082
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `4ba83f4a` · MARK EditorialTurn
-- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof
-- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings
-- pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
-- pass 7 · `426cb439` · peel PlanCard
-- pass 8 · `10b74ff3` · peel ChangeReview Governance+RunActions
-- pass 9 · `876b24e3` · peel ArtifactPreview
-- pass 10 · `4ed17106` · delete dead sheet spoken
-- pass 11 · `43415d1a` · peel AutonomosMapShell
-- pass 12 · `2b6a7f73` · peel ExecutionStateActionStyle
-- pass 13 · `9f8583e4` · peel ArtifactSheet Delivery
-- pass 14 · `33b1356e` · peel AtlasCodeSurface Graph
-- pass 15 · `44810009` · peel ExecutionStateCard spoken
-- pass 16 · `3c63dc3a` · peel LiveTimeline FilterChrome
-- pass 17 · `d8653fc7` · peel ConversationOutlineSheet
-- pass 18 · `7e64e20c` · peel ChromeExtras Handoff+StaleRead
-- pass 19 · `d6e96bd1` · ComposerSheetPrimitives rename
-- pass 20 · `efee3420` · peel RootChromeDeepLink (527→429)
 
 ## Designer
-- designs_open: 0
-- last_regen: regen-queue.py
+- designs_proposed: 78
+- designs_open: 1
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| 1 | WAVE-083-arena-live-can-do-pack-honesty-instrument | **max** | proposed |
 
 ## Notes
-- WAVE-081 + idle 19–20. Prefer A fill. DEVICE_PENDING.
-- LEDGER idle B-owned; do not strip.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
