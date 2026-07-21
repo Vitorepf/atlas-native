@@ -1947,10 +1947,10 @@ extension WorkspaceView {
 extension WorkspaceView {
     func areaFilterChipLabel(_ a: AtlasArea, active: Bool) -> some View {
         Text(a.label)
-            .font(AtlasFont.serif(14, .medium))
+            .font(active ? AtlasFont.serif(14, .semibold) : AtlasFont.serif(14))
             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
-            .padding(.horizontal, 14).padding(.vertical, 7)
-            .frame(minHeight: 44) // HIG interactive minimum
+            .padding(.horizontal, 14).padding(.vertical, 8)
+            .frame(minHeight: 48) // HIG 44+; match primary filter breath
             .contentShape(Capsule())
             .background(
                 Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface)
