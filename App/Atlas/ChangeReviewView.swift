@@ -59,7 +59,7 @@ struct ChangeReviewCaption: View {
     var body: some View {
         Text(text).font(AtlasFont.mono(10)).tracking(1.0).foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)
-            .accessibilityLabel(ChangeReviewSectionsA11y.spokenCaption(text))
+            .accessibilityLabel(ChangeReviewJudgment.spokenCaption(text))
     }
 }
 
@@ -70,7 +70,7 @@ extension ChangeReviewRunHeader {
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).fill(AtlasTheme.surface))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(AtlasTheme.goldBorder, lineWidth: 1))
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(ChangeReviewSectionsA11y.spokenRunHeader(run: run))
+            .accessibilityLabel(ChangeReviewJudgment.spokenRunHeader(run: run))
             .accessibilityIdentifier(A11yID.reviewRunHeader)
     }
 }
@@ -82,7 +82,7 @@ struct ChangeReviewToast: View {
     var body: some View {
         if let t = reviews.toast {
             toastCapsule(t)
-                .accessibilityLabel(ChangeReviewSectionsA11y.spokenToast(t))
+                .accessibilityLabel(ChangeReviewJudgment.spokenToast(t))
                 .accessibilityIdentifier(A11yID.reviewToast)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .task { await dismissToastAfterDelay() }

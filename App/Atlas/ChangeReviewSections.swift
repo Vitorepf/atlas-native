@@ -18,7 +18,7 @@ struct ChangeReviewControlsSection: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenControlsSection(ranked))
+        .accessibilityLabel(ChangeReviewJudgment.spokenControlsSection(ranked))
         .accessibilityIdentifier(A11yID.reviewControlsSection)
     }
 }
@@ -36,7 +36,7 @@ extension ChangeReviewControlsSection {
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenControl(c))
+        .accessibilityLabel(ChangeReviewJudgment.spokenControl(c))
     }
 }
 
@@ -51,7 +51,7 @@ struct ChangeReviewDecidedSection: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenDecidedSection(actions))
+        .accessibilityLabel(ChangeReviewJudgment.spokenDecidedSection(actions))
         .accessibilityIdentifier(A11yID.reviewDecidedSection)
     }
 }
@@ -68,7 +68,7 @@ extension ChangeReviewDecidedSection {
             Spacer()
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenDecidedAction(a))
+        .accessibilityLabel(ChangeReviewJudgment.spokenDecidedAction(a))
     }
 }
 
@@ -120,7 +120,7 @@ extension ChangeReviewTestsSection {
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenTest(t))
+        .accessibilityLabel(ChangeReviewJudgment.spokenTest(t))
     }
 }
 
@@ -139,7 +139,7 @@ struct ChangeReviewTestsSection: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenTestsSection(ranked))
+        .accessibilityLabel(ChangeReviewJudgment.spokenTestsSection(ranked))
         .accessibilityIdentifier(A11yID.reviewTestsSection)
     }
 }
