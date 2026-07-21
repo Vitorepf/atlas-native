@@ -969,7 +969,7 @@ struct AutonomosListView: View {
                 trailing(unit)
             }
             .padding(.vertical, 18)
-            .frame(minHeight: 56, alignment: .top)
+            .frame(minHeight: 64, alignment: .top)
             .contentShape(Rectangle())
             .opacity(unit.paused ? 0.55 : 1)
         }
