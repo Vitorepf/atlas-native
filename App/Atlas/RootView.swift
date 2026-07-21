@@ -1204,8 +1204,8 @@ struct LiveNowRow: View {
                         .accessibilityHidden(true)
                 }
             }
-            .padding(.vertical, 4)
-            .frame(minHeight: 44, alignment: .center)
+            .padding(.vertical, 6)
+            .frame(minHeight: 52, alignment: .center)
             .opacity(isLongPaused(now: context.date) ? 0.58 : 1)
         }
     }
@@ -1213,7 +1213,7 @@ struct LiveNowRow: View {
     private func titleStack(now: Date) -> some View {
         VStack(alignment: .leading, spacing: hubMode ? 4 : 3) {
             Text(session.title)
-                .font(AtlasFont.serif(16, .semibold))
+                .font(AtlasFont.serif(17, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(2)
                 .layoutPriority(1)
