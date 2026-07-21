@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 100
+pass: 101
 domain_index: 0
-last_focus: "continuous residual soft-hold (pass 100)"
-session_commits: 161
+last_focus: "pass100 scoreboard · open pass 101 continuous residual"
+session_commits: 162
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,20 +14,8 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-| Metric | Value |
-|---|---|
-| Mission commits | **161** |
-| App/Atlas | **46** |
-| Widgets | **2** |
-| *Sections*/*States* | **0** |
-| Density | OK |
+commits **162** · soft **0** · density OK · 46+2 · gates green
 
-## Continuous residual mode
+## Continuous residual
 
-Soft debt eliminated. Structural densify under caps. Judgment families ≤1200.
-Each cycle re-audits soft+density. Fuse only with measured headroom.
-Honesty renames landed: spokenTitle · copyToClipboard · productLabel · metaChip.
-
-## Proibido
-
-Goal Done · god_hold · WAVE · dual · Core
+**never Goal Done**
