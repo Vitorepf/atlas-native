@@ -149,7 +149,70 @@ enum AtlasCodeProvenanceJudgment {
                 if let obra = provenance.obra, !obra.isEmpty {
                     facts.append("obra: \(obra)")
                 }
+                let filePack = packFileFacts(provenance.files)
+                facts.append(contentsOf: filePack.facts)
+                absences.append(contentsOf: filePack.absences)
             }
+        }
+        return (facts, absences)
+    }
+
+    // MARK: File row spoken (WAVE-101 · was AtlasCodeFileRowA11y)
+
+    static func spokenFile(_ file: AtlasCodeFileChange) -> String {
+        var parts = [file.path, verb(for: file.status)]
+        if let from = file.renamedFrom { parts.append("de \(from)") }
+        if let additions = file.additions, let deletions = file.deletions {
+            parts.append("\(additions) linhas adicionadas")
+            parts.append("\(deletions) removidas")
+        } else {
+            parts.append("arquivo binário")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    static func verb(for status: AtlasCodeFileStatus) -> String {
+        verbMutate(for: status) ?? verbTransform(for: status)
+    }
+
+    static func verbMutate(for status: AtlasCodeFileStatus) -> String? {
+        switch status {
+        case .added: return "adicionado"
+        case .modified: return "alterado"
+        case .deleted: return "removido"
+        default: return nil
+        }
+    }
+
+    static func verbRenameCopy(for status: AtlasCodeFileStatus) -> String? {
+        switch status {
+        case .renamed: return "renomeado"
+        case .copied: return "copiado"
+        default: return nil
+        }
+    }
+
+    static func verbTransform(for status: AtlasCodeFileStatus) -> String {
+        if let rename = verbRenameCopy(for: status) { return rename }
+        switch status {
+        case .typeChanged: return "tipo alterado"
+        case .unknown: return "mudança desconhecida"
+        default: return verbMutate(for: status) ?? "mudança desconhecida"
+        }
+    }
+
+    static func packFileFacts(
+        _ files: [AtlasCodeFileChange]
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        facts.append("prov_files_total: \(files.count)")
+        if files.isEmpty {
+            absences.append("nenhum arquivo na proveniência")
+            return (facts, absences)
+        }
+        for file in files.prefix(5) {
+            facts.append("prov_file_sample: \(file.path) · \(verb(for: file.status))")
         }
         return (facts, absences)
     }

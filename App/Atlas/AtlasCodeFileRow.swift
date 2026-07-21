@@ -11,7 +11,7 @@ struct AtlasCodeFileRow: View {
         lead
             .padding(.vertical, 9)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
+            .accessibilityLabel(AtlasCodeProvenanceJudgment.spokenFile(file))
             .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 }
