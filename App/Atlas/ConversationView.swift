@@ -4656,6 +4656,7 @@ extension AgentRow {
             .background {
                 if compactLane {
                     Capsule().fill(AtlasTheme.bgRecessed)
+                        .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
                 }
             }
     }
