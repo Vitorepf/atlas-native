@@ -10,18 +10,13 @@ enum ArenaSuiteSheetA11y {
 }
 
 enum ArenaSuiteSheetA11yCaptions {
+    /// WAVE-059: captions from Judgment.
     static func casesCaption(for engine: AtlasArenaSuiteEngine) -> String? {
-        guard let total = engine.casesTotal else { return nil }
-        var parts: [String] = []
-        if let passed = engine.casesPassed { parts.append("ok \(passed)") }
-        if let failed = engine.casesFailed { parts.append("falha \(failed)") }
-        parts.append("de \(total) casos")
-        return parts.joined(separator: " · ")
+        ArenaSuiteJudgment.casesCaption(for: engine)
     }
 
     static func durationCaption(for engine: AtlasArenaSuiteEngine) -> String? {
-        guard let ms = engine.durationAvgMs else { return nil }
-        return "duração média \(ArenaDisplay.duration(ms: ms)) por caso"
+        ArenaSuiteJudgment.durationCaption(for: engine)
     }
 }
 
@@ -29,28 +24,13 @@ extension ArenaSuiteSheetA11y {
     static let closeLabel = "fechar detalhes da suite"
     static let closeHint = "volta para a Arena"
     static let sheetHint = "scores, casos e duração só quando o servidor publica"
-}
 
-extension ArenaSuiteSheetA11y {
     static func spokenEngine(_ engine: AtlasArenaSuiteEngine) -> String {
-        var parts = [engine.engine, "score \(ArenaFormat.score(engine.score))"]
-        if engine.regressed { parts.append("regressão detectada") }
-        if let cases = ArenaSuiteSheetA11yCaptions.casesCaption(for: engine) { parts.append(cases) }
-        if let duration = ArenaSuiteSheetA11yCaptions.durationCaption(for: engine) { parts.append(duration) }
-        if !engine.history.isEmpty {
-            parts.append("\(engine.history.count) pontos no histórico")
-        }
-        return parts.joined(separator: ", ")
+        ArenaSuiteJudgment.spokenEngine(engine)
     }
-}
 
-extension ArenaSuiteSheetA11y {
     static func spokenSheet(_ suite: AtlasArenaSuite) -> String {
-        let n = suite.engines.count
-        if n == 0 {
-            return "suite \(suite.suite), nenhum motor neste recorte"
-        }
-        return "suite \(suite.suite), \(n) motor\(n == 1 ? "" : "es")"
+        ArenaSuiteJudgment.spokenSuite(suite)
     }
 }
 
@@ -209,11 +189,20 @@ extension ArenaSuiteSheet {
 }
 
 extension ArenaSuiteSheet {
+    /// WAVE-059: suite face + ranked engines.
+    var suiteFace: ArenaSuiteFace {
+        ArenaSuiteJudgment.face(for: suite)
+    }
+
+    var rankedEngines: [AtlasArenaSuiteEngine] {
+        ArenaSuiteJudgment.rank(suite.engines)
+    }
+
     var suiteBodyTitle: some View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(
-                text: suite.hasRegression ? "Regressão detectada" : "Resultado da suíte",
-                tone: suite.hasRegression ? .negative : .active
+                text: suiteFace.kicker,
+                tone: suiteFace.productWord == "regression" ? .negative : .active
             )
             Text(ArenaDisplay.suite(suite.suite))
                 .font(AtlasFont.serif(34))
@@ -228,7 +217,8 @@ extension ArenaSuiteSheet {
             .foregroundStyle(AtlasTheme.textSecondary)
         }
         .accessibilityAddTraits(.isHeader)
-        .accessibilityLabel(ArenaSuiteSheetA11y.spokenSuiteTitle(suite.suite))
+        .accessibilityLabel(ArenaSuiteSheetA11y.spokenSheet(suite))
+        .accessibilityValue(suiteFace.productWord)
     }
 
     private func metadata(_ text: String, symbol: String) -> some View {
@@ -244,7 +234,8 @@ extension ArenaSuiteSheet {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 suiteBodyTitle
-                ForEach(suite.engines) { engine in
+                // WAVE-059: regressed engines first.
+                ForEach(rankedEngines) { engine in
                     engineCard(engine)
                     ArenaPremiumHairline()
                 }
