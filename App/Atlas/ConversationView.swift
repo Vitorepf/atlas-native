@@ -7283,8 +7283,12 @@ extension NarrativeRowView {
         if let duration = row.durationMs {
             HStack(spacing: 5) {
                 Text("Δ \(humanDuration(duration))")
-                    .font(AtlasFont.mono(10))
-                    .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
+                    .font(AtlasFont.mono(10, .medium))
+                    .foregroundStyle(
+                        row.isP90
+                            ? AtlasTheme.domOperacional
+                            : AtlasTheme.accent.opacity(0.75)
+                    )
                     .monospacedDigit()
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
                 narrativeP90Badge
