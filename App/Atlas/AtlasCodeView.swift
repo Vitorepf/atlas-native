@@ -1291,7 +1291,7 @@ extension AtlasCodeView {
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
                 // Soft gold-quiet worktrees section kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier(A11yID.codeGraphWorktrees)
             ScrollView(.horizontal, showsIndicators: false) {
@@ -1319,7 +1319,7 @@ extension AtlasCodeView {
             }
             .font(AtlasFont.mono(9))
             // Soft gold-quiet worktree branch/head meta.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
@@ -1961,7 +1961,7 @@ extension AtlasCodeHealReceiptSheet {
         Text(receipt.result)
           .font(AtlasFont.mono(9))
           // Soft gold-quiet heal step result meta.
-          .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+          .foregroundStyle(AtlasTheme.accent.opacity(0.62))
           .accessibilityHidden(true)
       }
     }
@@ -2319,13 +2319,13 @@ extension AtlasCodeMirrorCard {
     @ViewBuilder
     var headlineHealthyNoMirror: some View {
         // Soft gold-quiet healthy-empty honesty.
-        label("Sem espelho configurado", color: AtlasTheme.accent.opacity(0.58), icon: "circle.dashed")
+        label("Sem espelho configurado", color: AtlasTheme.accent.opacity(0.62), icon: "circle.dashed")
     }
 
     @ViewBuilder
     var headlineHealthyUnknown: some View {
         // Soft gold-quiet unknown honesty.
-        label("Espelho ainda não conhecido", color: AtlasTheme.accent.opacity(0.58), icon: "questionmark.circle")
+        label("Espelho ainda não conhecido", color: AtlasTheme.accent.opacity(0.62), icon: "questionmark.circle")
     }
 }
 
@@ -2510,7 +2510,7 @@ extension AtlasCodeWhySheet {
             Text("Este arquivo não tem história neste recorte")
                 .font(AtlasFont.serifItalic(16))
                 // Soft gold-quiet empty why history.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .padding(.top, 6)
                 .accessibilityLabel(spokenEmptyHistory())
                 .accessibilityAddTraits(.isHeader)
@@ -2530,7 +2530,7 @@ extension AtlasCodeWhySheet {
             Text("Biografia indisponível")
                 .font(AtlasFont.serifItalic(16))
                 // Soft gold-quiet why failed title.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
             if let message = model.message, !message.isEmpty {
                 Text(message)
@@ -2552,7 +2552,7 @@ extension AtlasCodeWhySheet {
             Text("Mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada")
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet truncation honesty.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
         }
     }
@@ -2590,7 +2590,7 @@ extension AtlasCodeWhySheet {
             Text("Lendo a história do arquivo…")
                 .font(AtlasFont.serifItalic(15))
                 // Soft gold-quiet why loading caption.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
         }
         .padding(.top, 8)
@@ -2651,7 +2651,7 @@ extension AtlasCodeWhySheet {
             Text("Sem proveniência registrada")
                 .font(AtlasFont.serifItalic(15))
                 // Soft gold-quiet empty provenance honesty.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
         }
     }
@@ -2664,7 +2664,7 @@ extension AtlasCodeWhySheet {
             Text(meta(for: commit))
                 .font(AtlasFont.mono(10.5))
                 // Soft gold-quiet why commit meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
             Text(commit.subject)
                 .atlasSans(11)
@@ -2717,7 +2717,7 @@ extension AtlasCodeWhySheet {
                 .atlasSans(9, .semibold)
                 .tracking(0.3)
                 // Soft gold-quiet why sheet kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
             Text(file)
                 .font(AtlasFont.mono(12))
@@ -3240,7 +3240,7 @@ extension AtlasCodeProvenanceSheet {
         Text("Proveniência indisponível")
             .font(AtlasFont.serifItalic(15))
             // Soft gold-quiet failed provenance title.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityHidden(true)
     }
 }
@@ -3275,7 +3275,7 @@ extension AtlasCodeProvenanceSheet {
             Text(title)
                 .font(AtlasFont.serif(12, .semibold))
                 // Soft gold-quiet provenance block kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
             body()
         }
@@ -3358,7 +3358,7 @@ extension AtlasCodeProvenanceSheet {
             .atlasSans(8.5, .semibold)
             .tracking(0.4)
             // Soft gold-quiet files section kicker.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityAddTraits(.isHeader)
             .accessibilityIdentifier(A11yID.codeCommitFiles)
     }
@@ -4151,7 +4151,7 @@ struct AtlasCodeCommitRow: View {
         }
         .font(AtlasFont.mono(9))
         // Soft gold-quiet commit meta line.
-        .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
     }
 
     @ViewBuilder

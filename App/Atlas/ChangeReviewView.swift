@@ -490,7 +490,7 @@ extension ChangeReviewGovernanceSection {
                      : "\(revisions.count) versões de plano arquivadas — \(last.humanReason)")
                     .atlasSans(12)
                     // Soft gold-quiet governance revision line.
-                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             }
         }
     }
@@ -1024,7 +1024,7 @@ extension ChangeReviewDiffView {
         Text("Diff indisponível para este patch")
             .font(AtlasFont.serifItalic(13))
             // Soft gold-quiet unavailable honesty.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 8)
             .accessibilityLabel("Diff indisponível para este patch")
@@ -1188,7 +1188,7 @@ struct ChangeReviewCaption: View {
 
     var body: some View {
         // Soft gold-quiet section caption — same family as home/radar kickers.
-        Text(text).font(AtlasFont.mono(10)).tracking(0.4).foregroundStyle(AtlasTheme.accent.opacity(0.68))
+        Text(text).font(AtlasFont.mono(10)).tracking(0.4).foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityAddTraits(.isHeader)
             .accessibilityLabel(text)
     }
@@ -1316,7 +1316,7 @@ extension ChangeReviewControlsSection {
                 .accessibilityHidden(true)
             Spacer()
             // Soft gold-quiet control signal meta.
-            Text(c.signalSummary).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.58)).lineLimit(1)
+            Text(c.signalSummary).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.62)).lineLimit(1)
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
@@ -1343,7 +1343,7 @@ extension ChangeReviewRunHeader {
                 .accessibilityHidden(true)
             if let finished = run.finishedAt {
                 // Soft gold-quiet run finished meta.
-                Text(finished).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                Text(finished).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .accessibilityHidden(true)
             }
         }

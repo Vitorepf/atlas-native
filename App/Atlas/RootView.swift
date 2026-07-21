@@ -1220,7 +1220,7 @@ struct LiveNowRow: View {
                         session.timing == .running
                             ? AtlasTheme.accent.opacity(0.85)
                             // Soft gold-quiet idle phase title.
-                            : AtlasTheme.accent.opacity(0.58)
+                            : AtlasTheme.accent.opacity(0.62)
                     )
                     .lineLimit(1)
                 if session.isRemote { remoteBadge }
@@ -1322,7 +1322,7 @@ struct LiveNowRow: View {
                 session.timing == .running
                     ? AtlasTheme.accent.opacity(0.9)
                     // Soft gold-quiet idle/paused clock.
-                    : AtlasTheme.accent.opacity(0.58)
+                    : AtlasTheme.accent.opacity(0.62)
             )
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
@@ -2400,7 +2400,7 @@ extension AtlasEditorialGlyphEmpty {
             if let footnote {
                 Text(footnote)
                     // Soft gold-quiet empty footnote under editorial headline.
-                    .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                    .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .multilineTextAlignment(.center)
                     .accessibilityHidden(true)
             }
@@ -3278,7 +3278,7 @@ extension AtlasProfileSheet {
             Text(label)
                 .font(AtlasFont.serif(15))
                 // Soft gold-quiet profile row label.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             Spacer()
             if mono {
                 Text(value).font(AtlasFont.mono(13))
@@ -3393,7 +3393,7 @@ extension AtlasWorkspacePickerSheet {
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text("Conversar ou pesquisar, sem projeto").atlasSans(13)
                         // Soft gold-quiet no-repo caption.
-                        .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 }
                 Spacer()
                 Image(systemName: "chevron.right").atlasSans(13, .semibold)
@@ -3421,7 +3421,7 @@ extension AtlasWorkspacePickerSheet {
                 Text("Repositórios")
                     .font(AtlasFont.mono(11, .medium)).tracking(0.4)
                     // Soft gold-quiet picker section kicker.
-                    .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, showsNoRepoSpacing ? 18 : 4)

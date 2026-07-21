@@ -1437,7 +1437,7 @@ extension StaleReadSeal {
         .foregroundStyle(
             confirming
                 ? AtlasTheme.accent.opacity(0.9)
-                : AtlasTheme.accent.opacity(0.58)
+                : AtlasTheme.accent.opacity(0.62)
         )
     }
 }
@@ -4108,7 +4108,7 @@ struct SignatureLine: View {
     var body: some View {
         Text(signature)
             // Soft gold-quiet editorial signature.
-            .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
+            .font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .frame(maxWidth: .infinity, alignment: .trailing)
             .opacity(shown ? 1 : 0)
             .accessibilityLabel(EditorialTurnA11y.spokenSignature(provider: provider, model: model, elapsedMs: elapsedMs))
@@ -4974,7 +4974,7 @@ extension ReconnectBanner {
             Text(line)
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet reconnect secondary meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
@@ -5279,7 +5279,7 @@ extension PlanCard {
         Text("Planejado \(plan.steps.count) · executado \(min(progress.current, progress.total))/\(progress.total)")
             .font(AtlasFont.mono(10))
             // Soft gold-quiet plan audit meta.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .monospacedDigit()
             .accessibilityHidden(true)
     }
@@ -5362,7 +5362,7 @@ extension PlanCard {
             Text(label)
                 .font(AtlasFont.serif(12, .semibold))
                 // Soft gold-quiet chip-row kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
             PlanFlowChips(items: items)
         }
@@ -5795,7 +5795,7 @@ struct PlanRevisionCompare: View {
             Text(rev.humanReason)
                 .atlasSans(12)
                 // Soft gold-quiet archive reason meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
         }
@@ -5942,7 +5942,7 @@ extension ExecutionProof {
             if !summaryLine.isEmpty {
                 Text(summaryLine)
                     // Soft gold-quiet collapsed proof summary.
-                    .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                    .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
                     .lineLimit(1)
                     .accessibilityHidden(true)
             }
@@ -6088,7 +6088,7 @@ extension ExecutionProof {
         if let r = d.reason, !r.isEmpty {
             Text("\"\(r)\"")
                 // Soft gold-quiet decision reason quote.
-                .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .padding(.leading, 23)
                 .accessibilityLabel("Motivo, \(r)")
         }
@@ -6149,7 +6149,7 @@ extension ExecutionProof {
                 .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
             if let d = act.detail, !d.isEmpty {
                 // Soft gold-quiet activity detail meta.
-                Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .lineLimit(2).truncationMode(.middle)
             }
         }
@@ -6379,7 +6379,7 @@ extension ExecutionProof {
             Text(selected.activity.occurredAt ?? "")
                 .font(AtlasFont.mono(10))
                 // Soft gold-quiet replay timestamp.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(1)
                 .accessibilityHidden(true)
         }
@@ -6751,7 +6751,7 @@ extension ExecutionStateCard {
             Text(detail)
                 .font(AtlasFont.serif(13))
                 // Soft gold-quiet execution detail meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
         }
@@ -7255,7 +7255,7 @@ extension NarrativeRowView {
         if let detail = row.detail, !detail.isEmpty {
             Text(detail).font(AtlasFont.mono(11))
                 // Soft gold-quiet narrative detail meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .lineLimit(row.style == .intent ? 2 : 1)
                 .truncationMode(.middle)
                 .accessibilityHidden(true)
@@ -7365,7 +7365,7 @@ extension NarrativeRowView {
                     // Soft gold-quiet non-current intent titles.
                     ? (isCurrent ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.72))
                     // Soft gold-quiet non-intent narrative titles.
-                    : AtlasTheme.accent.opacity(0.58))
+                    : AtlasTheme.accent.opacity(0.62))
                 .lineLimit(row.style == .intent ? 3 : 2)
                 .accessibilityHidden(true)
             narrativeDetailLine
@@ -9512,7 +9512,7 @@ extension ArtifactSheet {
         Text("Artefatos do turno · \(artifacts?.workspaceLabel ?? "workspace")")
             .font(AtlasFont.mono(10)).tracking(0.4)
             // Soft gold-quiet artifacts section kicker.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityAddTraits(.isHeader)
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 14)
@@ -9623,7 +9623,7 @@ extension ArtifactSheet {
         Text("\(ArtifactViewer.byteLabel(item.byteSize))  \(ArtifactViewer.kindLabel(item.kind))")
             .font(AtlasFont.mono(10))
             // Soft gold-quiet artifact size/kind meta.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .accessibilityHidden(true)
     }
 }
@@ -9661,7 +9661,7 @@ extension ArtifactSheet {
         Text("Nenhum artefato visualizável")
             .font(AtlasFont.serifItalic(15))
             // Soft gold-quiet empty artifacts honesty.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityIdentifier(A11yID.artifactsEmpty)
             .accessibilityLabel("Sem artefatos visualizáveis nesta execução")
@@ -9843,7 +9843,7 @@ extension ArtifactSheet {
             Text("Montagem")
                 .font(AtlasFont.mono(10)).tracking(0.4)
                 // Soft gold-quiet mount kicker.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityHidden(true)
             Text("·")
                 .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent.opacity(0.45))
@@ -10286,7 +10286,7 @@ struct TraceEvidenceLoading: View {
             Text(text)
                 .font(AtlasFont.serifItalic(15))
                 // Soft gold-quiet trace loading caption.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
@@ -10436,7 +10436,7 @@ struct ArtifactFileFicha: View {
             Text(subtitle)
                 .font(AtlasFont.mono(11))
                 // Soft gold-quiet artifact ficha meta.
-                .foregroundStyle(AtlasTheme.accent.opacity(0.58))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .accessibilityHidden(true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
