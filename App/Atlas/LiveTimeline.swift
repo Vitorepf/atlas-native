@@ -181,3 +181,259 @@ struct TimelineFilterChips: View {
         .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: filter)
     }
 }
+
+// MARK: - LiveTimelineFilterJudgment
+
+// MARK: - Types
+
+/// Exclusive timeline read-filter face (WAVE-075) — chrono order sacred.
+enum LiveTimelineFilterFace: Equatable {
+    /// No filter applied (all).
+    case open
+    /// Filter selected and has matching steps.
+    case active
+    /// Filter selected but zero matching steps (silence surface).
+    case silent
+
+    var productWord: String {
+        switch self {
+        case .open: return "open"
+        case .active: return "active"
+        case .silent: return "silent"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .open: return "filtro aberto"
+        case .active: return "filtro ativo"
+        case .silent: return "filtro sem passos"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure timeline read-filter grammar — face · spoken · pack.
+/// Does **not** reorder narrative (chrono sagrado · WAVE-042/044).
+enum LiveTimelineFilterJudgment {
+
+    static let filterHint = "altera quais passos da orquestra são exibidos"
+
+    static func face(
+        filter: TimelineReadFilter,
+        matchCount: Int,
+        isActive: Bool
+    ) -> LiveTimelineFilterFace {
+        if !isActive || filter == .all {
+            return .open
+        }
+        if matchCount <= 0 { return .silent }
+        return .active
+    }
+
+    static func spokenSectionLabel(stepCount: Int) -> String {
+        "orquestra ao vivo, \(stepCount) passo\(stepCount == 1 ? "" : "s")"
+    }
+
+    static func spokenFilterChip(
+        filter: TimelineReadFilter,
+        count: Int,
+        active: Bool,
+        silent: Bool
+    ) -> String {
+        "filtrar timeline por \(filter.label), \(count) passo\(count == 1 ? "" : "s")"
+            + spokenFilterChipSuffix(active: active, silent: silent)
+    }
+
+    static func spokenFilterChipSuffix(active: Bool, silent: Bool) -> String {
+        var suffix = ""
+        if active { suffix += ", selecionado" }
+        if silent { suffix += ", nenhum passo neste filtro" }
+        return suffix
+    }
+
+    static func spokenFilterSilenceSurface(
+        filter: TimelineReadFilter,
+        totalSteps: Int
+    ) -> String {
+        "orquestra ao vivo, filtro \(filter.label), nenhum dos \(totalSteps) passos corresponde"
+    }
+
+    static func spokenRow(
+        row: NarrativeRow,
+        index: Int,
+        total: Int,
+        isCurrent: Bool
+    ) -> String {
+        var parts = ["passo \(index + 1) de \(total)", row.title]
+        if let detail = row.detail, !detail.isEmpty { parts.append(detail) }
+        if let duration = row.durationMs {
+            parts.append("duração \(humanDuration(duration))")
+            if row.isP90 { parts.append("acima do p90") }
+        }
+        if isCurrent { parts.append("passo atual da orquestra") }
+        return parts.joined(separator: ", ")
+    }
+
+    static func rowValue(index: Int, total: Int, isCurrent: Bool) -> String {
+        isCurrent
+            ? "passo \(index + 1) de \(total), em andamento"
+            : "passo \(index + 1) de \(total)"
+    }
+
+    static func packFacts(
+        filter: TimelineReadFilter,
+        matchCount: Int,
+        totalSteps: Int,
+        isActive: Bool
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(filter: filter, matchCount: matchCount, isActive: isActive)
+        facts.append("timeline_filter_face: \(face.productWord)")
+        facts.append("timeline_filter: \(filter.rawValue)")
+        facts.append("timeline_filter_matches: \(matchCount)")
+        facts.append("timeline_steps_total: \(totalSteps)")
+        if face == .silent {
+            absences.append("filtro sem passos correspondentes")
+        }
+        return (facts, absences)
+    }
+
+    /// WAVE-174: pack honesty for mid-thread — chip filter is @State local to LiveTimeline.
+    static func packFactsOpenRecorte(totalSteps: Int) -> (facts: [String], absences: [String]) {
+        var pack = packFacts(
+            filter: .all,
+            matchCount: totalSteps,
+            totalSteps: totalSteps,
+            isActive: false
+        )
+        pack.absences.append("filtro de leitura da timeline é local à UI — pack usa recorte aberto")
+        return pack
+    }
+}
+
+// MARK: - LiveTimelineNarrativeJudgment
+
+// MARK: - Types
+
+/// Exclusive live narrative face (WAVE-044). Chrono order stays sacred.
+enum LiveTimelineNarrativeFace: Equatable {
+    case empty
+    case live(Int)
+    case filterSilence(filter: TimelineReadFilter, total: Int)
+
+    var productWord: String {
+        switch self {
+        case .empty: return "empty"
+        case .live: return "live"
+        case .filterSilence: return "filter_silence"
+        }
+    }
+
+    var kicker: String {
+        switch self {
+        case .empty: return "Narrativa"
+        case .live: return "Narrativa viva"
+        case .filterSilence: return "Filtro em silêncio"
+        }
+    }
+
+    var spokenFace: String {
+        switch self {
+        case .empty:
+            return "sem passos de narrativa"
+        case .live(let n):
+            return n == 1 ? "1 passo na narrativa" : "\(n) passos na narrativa"
+        case .filterSilence(let filter, let total):
+            return "filtro \(filter.label) em silêncio, \(total) passos na obra completa"
+        }
+    }
+}
+
+// MARK: - Judgment
+
+/// Pure narrative face grammar — never re-ranks rows.
+enum LiveTimelineNarrativeJudgment {
+
+    static func face(
+        baseRows: [NarrativeRow],
+        filteredRows: [NarrativeRow],
+        filter: TimelineReadFilter
+    ) -> LiveTimelineNarrativeFace {
+        if baseRows.isEmpty { return .empty }
+        if filteredRows.isEmpty, filter != .all {
+            return .filterSilence(filter: filter, total: baseRows.count)
+        }
+        return .live(filteredRows.count)
+    }
+
+    static func summaryLine(
+        baseRows: [NarrativeRow],
+        filteredRows: [NarrativeRow],
+        filter: TimelineReadFilter
+    ) -> String {
+        switch face(baseRows: baseRows, filteredRows: filteredRows, filter: filter) {
+        case .empty:
+            return "sem passos"
+        case .live(let n):
+            let intents = filteredRows.filter { $0.style == .intent }.count
+            if filter == .all {
+                return intents > 0
+                    ? "\(n) passos · \(intents) intenção"
+                    : "\(n) passos"
+            }
+            return "\(filter.label) · \(n) passos"
+        case .filterSilence(let filter, let total):
+            return "\(filter.label) · 0 de \(total)"
+        }
+    }
+
+    static func spokenSection(
+        baseRows: [NarrativeRow],
+        filteredRows: [NarrativeRow],
+        filter: TimelineReadFilter
+    ) -> String {
+        let face = face(baseRows: baseRows, filteredRows: filteredRows, filter: filter)
+        switch face {
+        case .empty:
+            return "narrativa da execução, \(face.spokenFace)"
+        case .live:
+            return "narrativa da execução, \(face.spokenFace), \(summaryLine(baseRows: baseRows, filteredRows: filteredRows, filter: filter))"
+        case .filterSilence:
+            return "narrativa da execução, \(face.spokenFace)"
+        }
+    }
+
+    static func packFacts(
+        baseRows: [NarrativeRow],
+        filteredRows: [NarrativeRow],
+        filter: TimelineReadFilter
+    ) -> (facts: [String], absences: [String]) {
+        var facts: [String] = []
+        var absences: [String] = []
+        let face = face(baseRows: baseRows, filteredRows: filteredRows, filter: filter)
+        facts.append("timeline_face: \(face.productWord)")
+        facts.append("filter: \(filter.rawValue)")
+        facts.append(summaryLine(baseRows: baseRows, filteredRows: filteredRows, filter: filter))
+        if baseRows.isEmpty {
+            absences.append("sem atividades publicadas na narrativa")
+            return (facts, absences)
+        }
+        facts.append("base_steps: \(baseRows.count)")
+        facts.append("filtered_steps: \(filteredRows.count)")
+        let intents = baseRows.filter { $0.style == .intent }.count
+        facts.append("intent_style: \(intents)")
+        if case .filterSilence = face {
+            absences.append("filtro \(filter.label) sem linhas — obra ainda tem \(baseRows.count) passos")
+        }
+        return (facts, absences)
+    }
+
+    /// WAVE-174: mid-thread pack from published activities (filter UI is local — open recorte).
+    static func packFacts(from activities: [AtlasAgentActivity]) -> (facts: [String], absences: [String]) {
+        let base = narrativeRows(from: activities)
+        return packFacts(baseRows: base, filteredRows: base, filter: .all)
+    }
+}
