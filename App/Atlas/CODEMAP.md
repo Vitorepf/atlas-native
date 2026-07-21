@@ -37,8 +37,9 @@
 | Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
 | Pack mid-thread conversa | `ConversationOccasionPack` host · Live · Organs peels (WAVE-171) |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
-| **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y |
+| **Search screen (shell)** | `SearchScreenJudgment` → face loading/offline/empty/results · screen a11y · pack (WAVE-176) |
 | **Search list/row** | `SearchListJudgment` → list recent/results/miss · captions · row · miss headline |
+| **Search pílula / pack** | `SearchAskContext` + `SearchView` AgenticAskDock · PartidaCanDo.search (WAVE-176) |
 | **Workspace screen (lista)** | `WorkspaceScreenJudgment` → face loading/offline/empty/list · screen a11y · pack Ask (WAVE-162) |
 | **Workspace picker (sheet)** | `WorkspacePickerJudgment` → face · pack Home partida (WAVE-170) |
 | **Workspace empty editorial** | `WorkspaceEmptyJudgment` → face area/free/workspace · glyph empty |

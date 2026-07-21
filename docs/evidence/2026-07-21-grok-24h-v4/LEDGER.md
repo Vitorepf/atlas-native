@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 170
+- waves_completed: 171
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -181,6 +181,7 @@ mode: designer + implementer
 - WAVE-173
 - WAVE-174
 - WAVE-175
+- WAVE-176
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -189,7 +190,7 @@ mode: designer + implementer
 
 ## Designer
 - designs_proposed: 171
-- designs_open: 1
+- designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -197,11 +198,13 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-176-search-agentic-pack-and-pill-host | max | proposed |
+| — | _(none)_ | — | — |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-175: review assinatura pack + can_do faceCTALocal.
+- WAVE-176: Search AgenticAskDock + SearchAskContext pack (last ops door).
+- WAVE-175: change-review assinatura pack + can_do faceCTALocal.
 - WAVE-174: timeline + markdown pack mid-thread.
+- Hollow residual: AutonomosRhythm (async windows) only.

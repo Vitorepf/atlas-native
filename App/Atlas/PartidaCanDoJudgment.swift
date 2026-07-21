@@ -90,4 +90,29 @@ enum PartidaCanDoJudgment {
         )
         return Result(canDo: .readChat, absences: absences)
     }
+
+    // MARK: Search
+
+    /// Search door = read/nav. Opening a thread is navigation, never run control.
+    static func search(
+        liveInList: Int,
+        isOffline: Bool,
+        isLoading: Bool
+    ) -> Result {
+        var absences: [String] = []
+        if isLoading {
+            absences.append("busca ainda carregando — pack não inventa threads")
+        }
+        if isOffline {
+            absences.append("busca offline — reconecte; NL não inventa catálogo")
+        }
+        if liveInList > 0 {
+            absences.append(
+                "threads vivas no recorte — stop/escolher/steer só na conversa aberta"
+            )
+        }
+        absences.append("abrir thread é navegação da face — NL da busca não para run")
+        absences.append("search pack = leitura/julgamento do recorte local na sessão")
+        return Result(canDo: .readChat, absences: absences)
+    }
 }

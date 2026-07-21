@@ -147,6 +147,8 @@ extension A11yID {
     static let searchLoading = "search-loading"
     static let searchOffline = "search-offline"
     static let searchResultPrefix = "search-result-"
+    /// WAVE-176: agentic pill on Search door.
+    static let searchAskPill = "search-ask-pill"
 
     static func searchResult(_ threadId: String) -> String { searchResultPrefix + threadId }
 }
