@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 74
+- waves_completed: 75
 - idle_compress_passes: 17
 - collapse_host: 0
 
@@ -85,6 +85,7 @@ mode: designer + implementer
 - WAVE-077
 - WAVE-078
 - WAVE-079
+- WAVE-080
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -103,7 +104,7 @@ mode: designer + implementer
 - pass 14 · `33b1356e` · peel AtlasCodeSurface Graph
 - pass 15 · `44810009` · peel ExecutionStateCard spoken
 - pass 16 · `3c63dc3a` · peel LiveTimeline FilterChrome
-- pass 17 · `a4fc07b5` · peel ConversationOutlineSheet from ChromeExtras (464→333)
+- pass 17 · `d8653fc7` · peel ConversationOutlineSheet
 
 ## Designer
 - designs_open: 0
@@ -116,5 +117,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-079 + idle Outline peel. Prefer A fill. DEVICE_PENDING.
+- WAVE-076–080. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
 - LEDGER idle B-owned; do not strip passes 3–17.

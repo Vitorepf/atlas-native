@@ -47,6 +47,7 @@ struct AtlasOpsFailureEmpty: View {
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(accessibilityIdentifier)
         .accessibilityLabel(spokenLabel)
+        .accessibilityValue(AtlasOpsFailureJudgment.face(mode: mode).productWord)
     }
 
     // MARK: - Layouts
@@ -139,26 +140,13 @@ struct AtlasOpsFailureEmpty: View {
 
     // MARK: - Content resolution
 
+    /// WAVE-080: headline/footnote/spoken from AtlasOpsFailureJudgment.
     private var headline: String {
-        switch mode {
-        case .network(let kind, let hasToken, _):
-            return AtlasFailureCopy.headline(kind: kind, hasToken: hasToken)
-        case .domainUnavailable:
-            return "A medição ainda não existe neste servidor"
-        case .load(let headline, _):
-            return headline
-        }
+        AtlasOpsFailureJudgment.headline(mode: mode)
     }
 
     private var footnote: String? {
-        switch mode {
-        case .network(let kind, let hasToken, _):
-            return AtlasFailureCopy.hint(kind: kind, hasToken: hasToken)
-        case .domainUnavailable:
-            return "Nenhum índice, progresso ou resultado foi presumido."
-        case .load(_, let message):
-            return message.isEmpty ? nil : message
-        }
+        AtlasOpsFailureJudgment.footnote(mode: mode)
     }
 
     private var footnoteFont: Font {
@@ -178,34 +166,23 @@ struct AtlasOpsFailureEmpty: View {
     }
 
     private var resolvedSymbol: String {
-        if let symbol { return symbol }
-        switch mode {
-        case .network: return "wifi.exclamationmark"
-        case .domainUnavailable: return "shippingbox"
-        case .load: return "exclamationmark.triangle"
-        }
+        symbol ?? AtlasOpsFailureJudgment.defaultSymbol(mode: mode)
     }
 
     private var resolvedKicker: String? {
-        if let kicker { return kicker }
-        if case .domainUnavailable = mode { return "Arena não publicada" }
-        return nil
+        kicker ?? AtlasOpsFailureJudgment.defaultKicker(mode: mode)
     }
 
     private var showsRetry: Bool {
-        switch mode {
-        case .network(_, let hasToken, _): return hasToken
-        case .domainUnavailable, .load: return true
-        }
+        AtlasOpsFailureJudgment.showsRetry(mode: mode)
     }
 
     private var spokenLabel: String {
-        if let spokenOverride { return spokenOverride }
-        var parts: [String] = []
-        if let k = resolvedKicker { parts.append(k) }
-        parts.append(headline)
-        if let footnote { parts.append(footnote.replacingOccurrences(of: "\n\n", with: ". ")) }
-        return parts.joined(separator: ". ")
+        AtlasOpsFailureJudgment.spokenLabel(
+            mode: mode,
+            kicker: kicker,
+            spokenOverride: spokenOverride
+        )
     }
 
     // MARK: - Pieces
