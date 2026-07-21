@@ -48,6 +48,7 @@
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank |
 | **Composer esforço** | `ComposerEffortJudgment` → face auto/fast/balanced/deep/max · toolbar/sheet spoken |
 | **Composer folhas modo/workspace** | `ComposerSheetJudgment` → mode face · workspace sheet empty/list |
+| Composer sheet peels | `ComposerSheetPrimitives` (EffortSheet · SheetRow · NewMarker) · SheetsHost |
 | **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
 | **Stale-read cache seal** | `ConversationStaleReadJudgment` → face confirming/fresh/aged/stale |
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face load_fail/empty/messages · list a11y |

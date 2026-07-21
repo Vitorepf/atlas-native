@@ -2,7 +2,8 @@ import SwiftUI
 import AtlasCore
 import PhotosUI
 
-// IDLE-COMPRESS ConversationChrome
+// IDLE-COMPRESS peel EffortSheet + SheetRow + NewMarker (canon §7)
+
 
 extension EffortSheet {
     func pick(_ effort: AtlasComputeEffort) {

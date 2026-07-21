@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 76
-- idle_compress_passes: 18
+- idle_compress_passes: 19
 - collapse_host: 0
 
 ## Waves done
@@ -107,6 +107,7 @@ mode: designer + implementer
 - pass 16 · `3c63dc3a` · peel LiveTimeline FilterChrome
 - pass 17 · `d8653fc7` · peel ConversationOutlineSheet
 - pass 18 · `7e64e20c` · peel ChromeExtras Handoff+StaleRead
+- pass 19 · `1849812f` · peel ConversationChromeExtras → ComposerSheetPrimitives (delete host)
 
 ## Designer
 - designs_open: 0
@@ -119,5 +120,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-081 composer mode/workspace sheets. Prefer A fill. DEVICE_PENDING.
-- LEDGER idle B-owned; do not strip passes 3–18.
+- WAVE-081 + idle ComposerSheetPrimitives. Prefer A fill. DEVICE_PENDING.
+- LEDGER idle B-owned; do not strip.
