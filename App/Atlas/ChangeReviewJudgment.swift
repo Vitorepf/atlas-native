@@ -273,12 +273,12 @@ enum ChangeReviewJudgment {
     // MARK: - Chrome spoken
     // MARK: Run actions (WAVE post · run CTA chrome)
 
-    static let applyingLabel = "registrando decisão"
-    static let acceptLabel = "aceitar todos os arquivos e concluir revisão"
-    static let acceptHint = "aceita cada arquivo capturado e depois conclui o run"
-    static let rejectLabel = "rejeitar revisão inteira"
-    static let rejectHint = "rejeita o run de engenharia desta execução"
-    static let diffUnavailableLabel = "diff indisponível para este patch"
+    static let spokenApplying = "registrando decisão"
+    static let spokenAccept = "aceitar todos os arquivos e concluir revisão"
+    static let spokenAcceptHint = "aceita cada arquivo capturado e depois conclui o run"
+    static let spokenReject = "rejeitar revisão inteira"
+    static let spokenRejectHint = "rejeita o run de engenharia desta execução"
+    static let spokenDiffUnavailable = "diff indisponível para este patch"
 
     static func spokenAcceptPatch(_ displayName: String) -> String {
         "aceitar \(displayName)"
@@ -335,15 +335,15 @@ enum ChangeReviewJudgment {
 
     // MARK: Governance chrome (WAVE-099)
 
-    static let hashWarningLabel =
+    static let spokenHashWarning =
         "atenção: o hash do diff não confere com o artefato registrado"
-    static let councilDivergenceLabel = "divergência entre pareceres"
+    static let spokenCouncilDivergence = "divergência entre pareceres"
 
     static func spokenCouncilSection(memberCount: Int, diverged: Bool) -> String {
         var parts = [
             "conselho, \(memberCount) \(memberCount == 1 ? "membro" : "membros")"
         ]
-        if diverged { parts.append(councilDivergenceLabel) }
+        if diverged { parts.append(spokenCouncilDivergence) }
         return parts.joined(separator: ", ")
     }
 
@@ -602,10 +602,10 @@ enum ChangeReviewControlJudgment {
 
     // MARK: Labels (one law file + run)
 
-    static let acceptRunLabel = "Aceitar tudo"
-    static let rejectRunLabel = "Rejeitar"
-    static let acceptFileLabel = "aceitar"
-    static let rejectFileLabel = "rejeitar"
+    static let productAcceptRun = "Aceitar tudo"
+    static let productRejectRun = "Rejeitar"
+    static let productAcceptFile = "aceitar"
+    static let productRejectFile = "rejeitar"
     static let nlNeverAppliesAbsence =
         "NL de chat não aplica revisão — só CTAs do sheet (faceCTALocal)"
 
@@ -685,10 +685,10 @@ enum ChangeReviewControlJudgment {
                 facts.append("review_action: \(action.rawValue)")
             }
             if actions.contains(.accept) {
-                facts.append("review_cta_run_accept: \(acceptRunLabel)")
+                facts.append("review_cta_run_accept: \(productAcceptRun)")
             }
             if actions.contains(.reject) {
-                facts.append("review_cta_run_reject: \(rejectRunLabel)")
+                facts.append("review_cta_run_reject: \(productRejectRun)")
             }
         }
 
@@ -696,8 +696,8 @@ enum ChangeReviewControlJudgment {
         let decided = decidedFileCount(from: review)
         if undecided > 0 {
             facts.append("review_files_undecided: \(undecided)")
-            facts.append("review_cta_file_accept: \(acceptFileLabel)")
-            facts.append("review_cta_file_reject: \(rejectFileLabel)")
+            facts.append("review_cta_file_accept: \(productAcceptFile)")
+            facts.append("review_cta_file_reject: \(productRejectFile)")
         } else if !review.patches.isEmpty {
             absences.append("nenhum arquivo pendente de decisão no patch")
         }
@@ -720,6 +720,6 @@ enum ChangeReviewControlJudgment {
     }
 
     /// Spoken run CTA labels — one law with face buttons.
-    static func spokenRunAccept() -> String { acceptRunLabel.lowercased() }
-    static func spokenRunReject() -> String { rejectRunLabel.lowercased() }
+    static func spokenRunAccept() -> String { productAcceptRun.lowercased() }
+    static func spokenRunReject() -> String { productRejectRun.lowercased() }
 }

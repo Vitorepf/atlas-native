@@ -144,7 +144,7 @@ extension ChangeReviewGovernanceSection {
                 Text("divergência")
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.accent)
-                    .accessibilityLabel(ChangeReviewJudgment.councilDivergenceLabel)
+                    .accessibilityLabel(ChangeReviewJudgment.spokenCouncilDivergence)
             }
         }
     }
@@ -279,13 +279,13 @@ struct ChangeReviewHashWarning: View {
                 .atlasSans(11, .semibold)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
-            Text(ChangeReviewJudgment.hashWarningLabel)
+            Text(ChangeReviewJudgment.spokenHashWarning)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(ChangeReviewJudgment.hashWarningLabel)
+        .accessibilityLabel(ChangeReviewJudgment.spokenHashWarning)
         .accessibilityIdentifier(A11yID.reviewHashWarning)
     }
 }

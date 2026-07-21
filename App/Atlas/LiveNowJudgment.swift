@@ -105,7 +105,7 @@ enum LiveNowJudgment {
 
     // MARK: Chrome
 
-    static let remoteSurfaceBadgeLabel = "sessão remota em outra superfície"
+    static let spokenRemoteSurfaceBadge = "sessão remota em outra superfície"
 
     // MARK: Section face + spoken
 

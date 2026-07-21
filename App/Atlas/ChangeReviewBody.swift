@@ -468,7 +468,7 @@ extension ChangeReviewRunActions {
         } else {
             ProgressView()
                 .tint(AtlasTheme.accent)
-                .accessibilityLabel(ChangeReviewJudgment.applyingLabel)
+                .accessibilityLabel(ChangeReviewJudgment.spokenApplying)
         }
     }
 }
@@ -478,7 +478,7 @@ extension ChangeReviewRunActions {
         Text("registrando…")
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
-            .accessibilityLabel(ChangeReviewJudgment.applyingLabel)
+            .accessibilityLabel(ChangeReviewJudgment.spokenApplying)
     }
 }
 
@@ -509,8 +509,8 @@ extension ChangeReviewRunActions {
                 acceptButtonLabel
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel(ChangeReviewJudgment.acceptLabel)
-            .accessibilityHint(ChangeReviewJudgment.acceptHint)
+            .accessibilityLabel(ChangeReviewJudgment.spokenAccept)
+            .accessibilityHint(ChangeReviewJudgment.spokenAcceptHint)
             .accessibilityIdentifier(A11yID.reviewRunAccept)
         }
     }
@@ -534,8 +534,8 @@ extension ChangeReviewRunActions {
                 rejectButtonLabel
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel(ChangeReviewJudgment.rejectLabel)
-            .accessibilityHint(ChangeReviewJudgment.rejectHint)
+            .accessibilityLabel(ChangeReviewJudgment.spokenReject)
+            .accessibilityHint(ChangeReviewJudgment.spokenRejectHint)
             .accessibilityIdentifier(A11yID.reviewRunReject)
         }
     }

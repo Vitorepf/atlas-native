@@ -231,7 +231,7 @@ extension ChangeReviewDiffView {
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 8)
-            .accessibilityLabel(ChangeReviewJudgment.diffUnavailableLabel)
+            .accessibilityLabel(ChangeReviewJudgment.spokenDiffUnavailable)
             .accessibilityIdentifier(A11yID.reviewDiffUnavailable)
     }
 }

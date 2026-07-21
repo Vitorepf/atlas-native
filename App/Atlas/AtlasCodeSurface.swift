@@ -29,7 +29,7 @@ extension AtlasCodeView {
         )
     }
 
-    static let codeScreenHint = "mapa governado; pílula e proveniência só com dados publicados"
+    static let spokenCodeScreenHint = "mapa governado; pílula e proveniência só com dados publicados"
 }
 
 extension AtlasCodeView {
@@ -244,7 +244,7 @@ extension AtlasCodeView {
             .accessibilityIdentifier(A11yID.codeScreen)
             .accessibilityLabel(spokenCodeScreenLabel())
             .accessibilityValue(graphScreenFace.productWord)
-            .accessibilityHint(Self.codeScreenHint)
+            .accessibilityHint(Self.spokenCodeScreenHint)
             .toolbar { codeToolbar }
             .safeAreaInset(edge: .top, spacing: 0) {
                 repoSwitcher
@@ -385,7 +385,7 @@ struct AtlasCodeMirrorCard: View {
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: mirrorStatePhaseID)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenMirrorLabel())
-        .accessibilityHint(Self.mirrorHint)
+        .accessibilityHint(Self.spokenMirrorHint)
         .accessibilityIdentifier(A11yID.codeMirror)
     }
 
@@ -496,7 +496,7 @@ struct AtlasCodeMirrorCard: View {
         }
     }
 
-    static let mirrorHint = "cópia remota do repositório e varredura de segredos no Mac"
+    static let spokenMirrorHint = "cópia remota do repositório e varredura de segredos no Mac"
 }
 
 // MARK: - AtlasCodeSurfaceGraph

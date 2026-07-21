@@ -179,7 +179,7 @@ extension ArtifactSheet {
 
 extension ArtifactSheet {
     func artifactListRowMeta(item: AtlasTraceArtifacts.Item) -> some View {
-        Text("\(ArtifactViewer.byteLabel(item.byteSize))  \(ArtifactViewer.kindLabel(item.kind))")
+        Text("\(ArtifactViewer.formatByteSize(item.byteSize))  \(ArtifactViewer.productKind(item.kind))")
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
@@ -369,7 +369,7 @@ extension ZoomableArtifactImage {
     func applyZoomAccessibility<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityLabel(ArtifactPreviewJudgment.spokenZoomImage(name: name, scale: scale))
-            .accessibilityHint(ArtifactPreviewJudgment.zoomHint)
+            .accessibilityHint(ArtifactPreviewJudgment.spokenZoomHint)
             .accessibilityIdentifier(A11yID.artifactsZoomImage)
             .accessibilityZoomAction { action in
                 switch action.direction {
@@ -812,7 +812,7 @@ extension ArtifactSheet {
     func previewTooLarge(bytes: Int) -> some View {
         ArtifactFileFicha(
             name: selected?.name ?? "artefato",
-            subtitle: "grande demais para visualizar aqui · \(ArtifactViewer.byteLabel(bytes))"
+            subtitle: "grande demais para visualizar aqui · \(ArtifactViewer.formatByteSize(bytes))"
         )
         .accessibilityLabel(
             ArtifactPreviewJudgment.face(
@@ -1154,8 +1154,8 @@ enum ArtifactListJudgment {
     ) -> String {
         var parts = [
             name,
-            ArtifactViewer.byteLabel(byteSize),
-            ArtifactViewer.kindLabel(kind)
+            ArtifactViewer.formatByteSize(byteSize),
+            ArtifactViewer.productKind(kind)
         ]
         if selected { parts.append("selecionado") }
         return parts.joined(separator: ", ")
@@ -1207,7 +1207,7 @@ enum ArtifactListJudgment {
 // MARK: - ArtifactPreviewChrome
 
 extension ArtifactViewer {
-    static func byteLabel(_ bytes: Int) -> String {
+    static func formatByteSize(_ bytes: Int) -> String {
         if bytes < 1_024 { return "\(bytes) B" }
         if bytes < 1_048_576 { return "\(max(1, bytes / 1_024)) KB" }
         let mb = Double(bytes) / 1_048_576
@@ -1253,7 +1253,7 @@ extension ArtifactViewer {
 }
 
 extension ArtifactViewer {
-    static func kindLabel(_ kind: AtlasTraceArtifacts.Item.Kind) -> String {
+    static func productKind(_ kind: AtlasTraceArtifacts.Item.Kind) -> String {
         kindLabelDocument(kind) ?? "arquivo"
     }
 }
@@ -1271,7 +1271,7 @@ extension ArtifactPreviewContent {
     var imageDecodeFailure: some View {
         ArtifactFileFicha(
             name: item.name,
-            subtitle: "imagem não pôde ser decodificada · \(ArtifactViewer.byteLabel(item.byteSize))"
+            subtitle: "imagem não pôde ser decodificada · \(ArtifactViewer.formatByteSize(item.byteSize))"
         )
         .accessibilityLabel(
             ArtifactPreviewJudgment.spokenDecodeFailure(name: item.name, bytes: item.byteSize)
@@ -1321,7 +1321,7 @@ extension ArtifactPreviewContent {
     var textishFilePreview: some View {
         ArtifactFileFicha(
             name: item.name,
-            subtitle: "\(ArtifactViewer.byteLabel(item.byteSize)) · sha \(String(item.sha256.prefix(12)))"
+            subtitle: "\(ArtifactViewer.formatByteSize(item.byteSize)) · sha \(String(item.sha256.prefix(12)))"
         )
     }
 }
@@ -1403,7 +1403,7 @@ enum ArtifactPreviewJudgment {
             return .loading
         case .loaded(let item, _):
             return .loaded(
-                kind: ArtifactViewer.kindLabel(item.kind),
+                kind: ArtifactViewer.productKind(item.kind),
                 name: item.name
             )
         case .tooLarge(let bytes):
@@ -1436,16 +1436,16 @@ enum ArtifactPreviewJudgment {
     }
 
     static func spokenDecodeFailure(name: String, bytes: Int) -> String {
-        "imagem \(name) não pôde ser decodificada, \(ArtifactViewer.byteLabel(bytes))"
+        "imagem \(name) não pôde ser decodificada, \(ArtifactViewer.formatByteSize(bytes))"
     }
 
     static func spokenTooLarge(name: String, bytes: Int) -> String {
-        "\(name), grande demais para visualizar aqui, \(ArtifactViewer.byteLabel(bytes))"
+        "\(name), grande demais para visualizar aqui, \(ArtifactViewer.formatByteSize(bytes))"
     }
 
     static func spokenPreview(item: AtlasTraceArtifacts.Item) -> String {
-        let kind = ArtifactViewer.kindLabel(item.kind)
-        let size = ArtifactViewer.byteLabel(item.byteSize)
+        let kind = ArtifactViewer.productKind(item.kind)
+        let size = ArtifactViewer.formatByteSize(item.byteSize)
         return spokenPreviewDocument(item: item, size: size)
             ?? spokenPreviewFile(item: item, kind: kind, size: size)
     }
@@ -1478,7 +1478,7 @@ enum ArtifactPreviewJudgment {
         return "imagem \(name), ampliada \(pct) por cento"
     }
 
-    static let zoomHint =
+    static let spokenZoomHint =
         "pinça para aproximar, arraste quando ampliada, toque duas vezes ou use ações para redefinir"
     static let zoomResetAction = "Redefinir zoom"
 
