@@ -1693,13 +1693,28 @@ struct AtlasCodeRepoPickerSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)
             .safeAreaInset(edge: .top, spacing: 0) {
-                Text("Repositório")
-                    .font(AtlasFont.serif(18))
-                    .foregroundStyle(AtlasTheme.textPrimary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 10)
-                    .padding(.bottom, 8)
-                    .accessibilityAddTraits(.isHeader)
+                VStack(spacing: 5) {
+                    Text("Repositório")
+                        .font(AtlasFont.serif(18, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0),
+                            AtlasTheme.accent.opacity(0.5),
+                            AtlasTheme.accent.opacity(0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 56, height: 1.5)
+                    .accessibilityHidden(true)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 10)
+                .padding(.bottom, 8)
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel("Repositório")
             }
             .task {
                 // Cache hit → phase já .loaded; miss → uma ida à rede.

@@ -666,7 +666,6 @@ struct ArenaPremiumStopSheet: View {
             }
             .scrollIndicators(.hidden)
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Parar")
             .navigationBarTitleDisplayMode(.inline)
             // Contain: fields and confirm stay separately focusable.
             .accessibilityElement(children: .contain)
@@ -677,6 +676,27 @@ struct ArenaPremiumStopSheet: View {
                         spokenHint: "mantém a medição em execução",
                         reduceMotion: reduceMotion
                     ) { dismiss() }
+                }
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 4) {
+                        Text("Parar")
+                            .font(AtlasFont.serif(17, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        LinearGradient(
+                            colors: [
+                                AtlasTheme.accent.opacity(0),
+                                AtlasTheme.accent.opacity(0.5),
+                                AtlasTheme.accent.opacity(0)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(width: 40, height: 1.5)
+                        .accessibilityHidden(true)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Parar")
                 }
             }
         }
@@ -3141,7 +3161,6 @@ struct ArenaPremiumCapabilityDetail: View {
             }
             .scrollIndicators(.hidden)
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Capacidade")
             .navigationBarTitleDisplayMode(.inline)
             // Contain: title, comparison and provenance stay separately focusable.
             .accessibilityElement(children: .contain)
@@ -3152,6 +3171,27 @@ struct ArenaPremiumCapabilityDetail: View {
                         spokenHint: "volta para o perfil",
                         reduceMotion: reduceMotion
                     ) { dismiss() }
+                }
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 4) {
+                        Text("Capacidade")
+                            .font(AtlasFont.serif(17, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        LinearGradient(
+                            colors: [
+                                AtlasTheme.accent.opacity(0),
+                                AtlasTheme.accent.opacity(0.5),
+                                AtlasTheme.accent.opacity(0)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(width: 52, height: 1.5)
+                        .accessibilityHidden(true)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Capacidade")
                 }
             }
         }
