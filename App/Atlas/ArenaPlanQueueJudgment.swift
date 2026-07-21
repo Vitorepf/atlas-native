@@ -108,12 +108,8 @@ enum ArenaPlanQueueJudgment {
     }
 
     static func suiteTone(_ status: AtlasArenaRunStatus?) -> ArenaPremiumTone {
-        switch status {
-        case .running, .stopping, .queued: return .active
-        case .completed: return .positive
-        case .failed: return .negative
-        case .stopped, .unknown, nil: return .neutral
-        }
+        guard let status else { return .neutral }
+        return ArenaRunStatusJudgment.tone(for: status)
     }
 
     static func planPackFacts(

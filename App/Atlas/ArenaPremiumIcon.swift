@@ -65,20 +65,12 @@ enum ArenaPremiumIconography {
     static let verified = "checkmark.shield"
 
     static func run(_ status: AtlasArenaRunStatus) -> String {
-        switch status {
-        case .queued: "clock"
-        case .running: "play.circle"
-        case .stopping: "hourglass"
-        case .stopped: "stop.circle"
-        case .completed: "checkmark.circle"
-        case .failed: "exclamationmark.triangle"
-        case .unknown: "questionmark.circle"
-        }
+        ArenaRunStatusJudgment.sfSymbol(for: status)
     }
 
     static func planStatus(_ status: AtlasArenaRunStatus?) -> String {
         guard let status else { return "circle" }
-        return run(status)
+        return ArenaRunStatusJudgment.sfSymbol(for: status)
     }
 
     static func suite(_ suite: String) -> String {

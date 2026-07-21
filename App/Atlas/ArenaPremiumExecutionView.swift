@@ -151,23 +151,23 @@ struct ArenaPremiumExecutionView: View {
 
     private func runRow(_ run: AtlasArenaLiveRun) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 14) {
-            Text(rowGlyph(run))
+            Text(ArenaRunStatusJudgment.rowGlyph(for: run.status))
                 .font(AtlasFont.serif(14))
-                .foregroundStyle(tone(run.status).color)
+                .foregroundStyle(ArenaRunStatusJudgment.tone(for: run.status).color)
                 .frame(width: 22, alignment: .center)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 4) {
                 Text(ArenaDisplay.suite(run.suite))
                     .atlasSans(16, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text(rowDetail(run))
+                Text(ArenaRunStatusJudgment.rowDetail(run))
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             Spacer(minLength: 8)
-            Text(rowTrailing(run))
+            Text(ArenaRunStatusJudgment.rowTrailing(run))
                 .font(AtlasFont.mono(11, .medium))
-                .foregroundStyle(tone(run.status).color)
+                .foregroundStyle(ArenaRunStatusJudgment.tone(for: run.status).color)
                 .multilineTextAlignment(.trailing)
             ArenaPremiumChevron()
         }
@@ -176,54 +176,22 @@ struct ArenaPremiumExecutionView: View {
         .accessibilityIdentifier(A11yID.arenaPremiumExecutionRun(run.runIdPublic))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
-            "\(ArenaDisplay.suite(run.suite)), \(run.arm?.labelPT ?? ""), \(rowTrailing(run))"
+            "\(ArenaDisplay.suite(run.suite)), \(run.arm?.labelPT ?? ""), \(ArenaRunStatusJudgment.rowTrailing(run))"
         )
         .accessibilityHint("Abre os casos desta corrida")
-    }
-
-    /// Ao vivo = ▸ (rodando). Nunca ✦ do Atlas nas corridas.
-    private func rowGlyph(_ run: AtlasArenaLiveRun) -> String {
-        switch run.status {
-        case .running, .stopping: "▸"
-        case .completed: "✓"
-        case .failed: "※"
-        case .queued: "◷"
-        case .stopped, .unknown: "·"
-        }
-    }
-
-    private func rowDetail(_ run: AtlasArenaLiveRun) -> String {
-        if let done = run.casesDone, let total = run.casesTotal, total > 0 {
-            return "\(done)/\(total) casos"
-        }
-        return run.arm?.labelPT ?? run.status.displayPT
-    }
-
-    private func rowTrailing(_ run: AtlasArenaLiveRun) -> String {
-        let arm = run.arm?.labelPT
-        let state: String = switch run.status {
-        case .running: "ao vivo"
-        case .stopping: "parando"
-        case .queued: "na fila"
-        case .completed: "concluída"
-        case .failed: "falhou"
-        case .stopped: "parada"
-        case .unknown: run.status.displayPT
-        }
-        return [state, arm].compactMap(\.self).joined(separator: " · ")
     }
 
     private var statusLabel: String {
         // WAVE-050: live-control face elevates failed attention over generic done.
         switch liveFace {
-        case .running: return "Ao vivo"
-        case .stopping: return "Parando"
+        case .running: return ArenaRunStatusJudgment.label(for: .running)
+        case .stopping: return ArenaRunStatusJudgment.label(for: .stopping)
         case .attention: return liveFace.kicker
-        case .queued: return "Na fila"
+        case .queued: return ArenaRunStatusJudgment.label(for: .queued)
         case .quietDone:
             switch model.livePresentation?.phase ?? .idle {
-            case .completed: return "Concluída"
-            case .stopped: return "Parada"
+            case .completed: return ArenaRunStatusJudgment.label(for: .completed)
+            case .stopped: return ArenaRunStatusJudgment.label(for: .stopped)
             case .failed: return "Interrompida"
             default: return "Encerrada"
             }
@@ -237,18 +205,11 @@ struct ArenaPremiumExecutionView: View {
         case .running, .stopping, .queued: return .active
         case .attention: return .negative
         case .quietDone:
-            if model.livePresentation?.phase == .completed { return .positive }
+            if model.livePresentation?.phase == .completed {
+                return ArenaRunStatusJudgment.tone(for: .completed)
+            }
             return .neutral
         case .empty: return .neutral
-        }
-    }
-
-    private func tone(_ status: AtlasArenaRunStatus) -> ArenaPremiumTone {
-        switch status {
-        case .queued, .running, .stopping: .active
-        case .completed: .positive
-        case .failed: .negative
-        case .stopped, .unknown: .neutral
         }
     }
 }

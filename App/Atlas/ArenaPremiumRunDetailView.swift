@@ -89,41 +89,18 @@ struct ArenaPremiumRunDetailView: View {
     }
 
     private func summaryLine(done: Int, total: Int) -> String {
-        let remaining = max(0, total - done)
-        switch run.status {
-        case .running, .stopping:
-            return "\(done) confirmados · 1 em andamento · \(max(0, remaining - 1)) a seguir"
-        case .queued:
-            return "\(total) na fila · ainda não iniciado"
-        case .completed:
-            return "\(done) de \(total) concluídos"
-        case .failed:
-            return "\(done) de \(total) antes da falha"
-        case .stopped:
-            return "\(done) de \(total) quando parou"
-        case .unknown:
-            return "\(done) de \(total)"
-        }
+        ArenaRunStatusJudgment.casesSummaryLine(
+            status: run.status,
+            done: done,
+            total: total
+        )
     }
 
     private var statusLabel: String {
-        switch run.status {
-        case .running: "Ao vivo"
-        case .stopping: "Parando"
-        case .queued: "Na fila"
-        case .completed: "Concluída"
-        case .failed: "Falhou"
-        case .stopped: "Parada"
-        case .unknown: "Estado"
-        }
+        ArenaRunStatusJudgment.label(for: run.status)
     }
 
     private var statusTone: ArenaPremiumTone {
-        switch run.status {
-        case .running, .stopping, .queued: .active
-        case .completed: .positive
-        case .failed: .negative
-        case .stopped, .unknown: .neutral
-        }
+        ArenaRunStatusJudgment.tone(for: run.status)
     }
 }
