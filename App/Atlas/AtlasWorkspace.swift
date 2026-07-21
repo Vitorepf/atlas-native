@@ -58,6 +58,7 @@ extension AtlasWorkspacePickerSheet {
     /// preso a um projeto. É o que o antigo "+" fazia, agora nomeado.
     var noRepoRow: some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
             onNoRepo?()
         } label: {
             HStack(spacing: 12) {
@@ -65,6 +66,7 @@ extension AtlasWorkspacePickerSheet {
                     .atlasSans(16)
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 22)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Sem repositório").atlasSans(16, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
@@ -74,8 +76,10 @@ extension AtlasWorkspacePickerSheet {
                 Spacer()
                 Image(systemName: "chevron.right").atlasSans(13, .semibold)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
             }
             .padding(.horizontal, 14).padding(.vertical, 14)
+            .frame(minHeight: 56)
             .contentShape(Rectangle())
             .atlasCard()
         }
@@ -114,12 +118,14 @@ extension AtlasWorkspacePickerSheet {
 
     private func pickerRepoRow(_ repo: AtlasCodeRepoRef) -> some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
             onPick(repo.slug, repo.name)
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "folder")
                     .atlasSans(15)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityHidden(true)
                 HStack(spacing: 0) {
                     if let folder = repo.folder {
                         Text("\(folder)/").atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
@@ -130,9 +136,11 @@ extension AtlasWorkspacePickerSheet {
                 Spacer()
                 if let age = AtlasCodeAge.short(from: repo.lastCommitAt) {
                     Text(age).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                        .accessibilityHidden(true)
                 }
             }
             .padding(.horizontal, 14).padding(.vertical, 12)
+            .frame(minHeight: 48)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -148,6 +156,7 @@ extension AtlasWorkspacePickerSheet {
 
 struct AtlasWorkspacePickerSheet: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State var model: AtlasCodeWorkspaceModel
     @State var query = ""
     let title: String
@@ -183,8 +192,11 @@ struct AtlasWorkspacePickerSheet: View {
             .searchable(text: $query, prompt: "Buscar repositórios")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }.atlasSans(15, .medium)
-                        .tint(AtlasTheme.textSecondary)
+                    AtlasCloseToolbarButton(
+                        spokenLabel: "fechar seletor de workspace",
+                        spokenHint: "volta sem escolher repositório",
+                        reduceMotion: reduceMotion
+                    ) { dismiss() }
                 }
             }
             .task { if case .idle = model.phase { await model.load() } }
@@ -197,20 +209,33 @@ struct AtlasWorkspacePickerSheet: View {
         switch model.phase {
         case .idle, .loading:
             VStack(spacing: 12) {
-                BreathingDiamond(size: 10, reduceMotion: false)
+                BreathingDiamond(size: 10, reduceMotion: reduceMotion)
                 Text("lendo os repositórios do Mac…")
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("lendo os repositórios do Mac")
         case .failed:
             VStack(spacing: 10) {
                 Text("O Mac não respondeu.")
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Button("Tentar de novo") { Task { await model.load() } }
-                    .atlasSans(15, .medium)
-                    .foregroundStyle(AtlasTheme.accent)
+                    .accessibilityAddTraits(.isHeader)
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                    Task { await model.load() }
+                } label: {
+                    Text("Tentar de novo")
+                        .atlasSans(15, .medium)
+                        .foregroundStyle(AtlasTheme.accent)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("tentar de novo")
+                .accessibilityHint("relê os repositórios do Mac")
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         default:

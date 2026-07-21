@@ -90,6 +90,8 @@ extension WorkspaceView {
 extension WorkspaceView {
     func areaFilterChip(_ a: AtlasArea, active: Bool) -> some View {
         Button {
+            guard area != a else { return }
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             if reduceMotion {
                 area = a
             } else {
@@ -111,6 +113,8 @@ extension WorkspaceView {
             .font(.system(.subheadline, weight: .medium))
             .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
             .padding(.horizontal, 14).padding(.vertical, 7)
+            .frame(minHeight: 36)
+            .contentShape(Capsule())
             .background(
                 Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface)
                     .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))

@@ -720,6 +720,7 @@ extension AtlasCodeView {
     /// Troca de repositório — Liquid Glass, sempre abaixo do título.
     var repoSwitcher: some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             showsRepoPicker = true
         } label: {
             HStack(spacing: 5) {
@@ -729,10 +730,13 @@ extension AtlasCodeView {
                 Image(systemName: "chevron.down")
                     .font(.system(size: 8, weight: .semibold))
                     .opacity(0.55)
+                    .accessibilityHidden(true)
             }
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 12)
             .padding(.vertical, 7)
+            .frame(minHeight: 44)
+            .contentShape(Capsule())
             .atlasGlassCapsule()
         }
         .buttonStyle(.plain)

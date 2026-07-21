@@ -121,12 +121,14 @@ struct AutonomosMapShell: View {
 
     private func selfConstructionBanner(_ receipt: SelfConstructionReceipt) -> some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
             selfConstructionReceipt = receipt
         } label: {
             HStack(spacing: 10) {
                 Text("✦")
                     .font(AtlasFont.serif(14, .semibold))
                     .foregroundStyle(AtlasTheme.accent)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("O Atlas melhorou o próprio app")
                         .font(AtlasFont.serif(15, .semibold))
@@ -139,10 +141,13 @@ struct AutonomosMapShell: View {
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.vertical, 14)
+            .frame(minHeight: 56)
+            .contentShape(Rectangle())
             .background(AtlasTheme.surface.opacity(0.55))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
+        .accessibilityHint("abre o recibo de auto-construção")
     }
 
     @ViewBuilder
