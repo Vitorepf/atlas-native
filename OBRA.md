@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — filter chips 44 + governed medium (ciclo 130)** · `06b56ce2` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Encerrar confirm + Continuity medium (ciclo 129)** · `6ba3d721` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Encerrar danger tone (ciclo 128)** · `22dd76d0` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — primary CTA disabled hint (ciclo 127)** · `843042c0` · App/Atlas 214. **Prova:** checks+build.
