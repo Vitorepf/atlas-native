@@ -22,6 +22,8 @@ struct ArenaPremiumKicker: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
+        // Spoken title stays natural case — uppercase tracking is visual only.
+        .accessibilityLabel(text)
     }
 }
 
