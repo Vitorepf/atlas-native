@@ -351,7 +351,7 @@ extension AtlasMarkdownView {
 extension CodeBlockView {
     @ViewBuilder
     var codeBlockCopyButton: some View {
-        Button(action: copyCode) {
+        Button(action: copyCodeToClipboard) {
             Text(copyButtonTitle)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(copyForeground)
@@ -359,7 +359,7 @@ extension CodeBlockView {
         .buttonStyle(.plain)
         .disabled(!canCopy)
         .accessibilityLabel(AtlasMarkdownJudgment.spokenCopyButton(copied: copied, canCopy: canCopy))
-        .accessibilityHint(AtlasMarkdownJudgment.copyHint(canCopy: canCopy))
+        .accessibilityHint(AtlasMarkdownJudgment.spokenCopyHint(canCopy: canCopy))
         .accessibilityIdentifier(A11yID.markdownCodeCopy(blockIndex))
     }
 }
@@ -552,7 +552,7 @@ extension CodeBlockView {
 }
 
 extension CodeBlockView {
-    func copyCode() {
+    func copyCodeToClipboard() {
         guard canCopy else { return }
         UIPasteboard.general.string = code
         guard UIPasteboard.general.string == code else { return }
@@ -600,7 +600,7 @@ extension CodeBlockView {
 extension CodeBlockView {
     var codeBlockToolbar: some View {
         HStack {
-            if let langLabel = AtlasMarkdownJudgment.langLabel(lang: lang) {
+            if let langLabel = AtlasMarkdownJudgment.productLang(lang: lang) {
                 Text(langLabel)
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
@@ -657,11 +657,11 @@ enum AtlasMarkdownJudgment {
         return copied ? "código copiado" : "copiar código"
     }
 
-    static func copyHint(canCopy: Bool) -> String {
+    static func spokenCopyHint(canCopy: Bool) -> String {
         canCopy ? "cola este bloco na área de transferência" : ""
     }
 
-    static func langLabel(lang: String?) -> String? {
+    static func productLang(lang: String?) -> String? {
         guard let lang, !lang.isEmpty else { return nil }
         return lang.lowercased()
     }

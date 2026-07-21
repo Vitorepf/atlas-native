@@ -37,7 +37,7 @@ extension AtlasCodeProvenanceSheet {
     }
 
     func spokenHeaderTitle() -> String {
-        AtlasCodeProvenanceJudgment.headerTitle(node: node)
+        AtlasCodeProvenanceJudgment.spokenTitle(node: node)
     }
 
     var provenanceSheetSpokenLabel: String {
@@ -584,7 +584,7 @@ extension AtlasCodeProvenanceSheet {
             .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
             .textSelection(.enabled)
             .padding(.top, 2)
-            .accessibilityLabel(AtlasCodeProvenanceJudgment.commitHashLabel)
+            .accessibilityLabel(AtlasCodeProvenanceJudgment.spokenCommitHash)
     }
 }
 
@@ -746,9 +746,9 @@ enum AtlasCodeProvenanceJudgment {
         }
     }
 
-    static let commitHashLabel = "hash do commit"
+    static let spokenCommitHash = "hash do commit"
 
-    static func headerTitle(node: AtlasCodeGraphNode) -> String {
+    static func spokenTitle(node: AtlasCodeGraphNode) -> String {
         node.message?.nonEmpty ?? String(node.hash.prefix(8))
     }
 
@@ -761,7 +761,7 @@ enum AtlasCodeProvenanceJudgment {
         let face = face(phase: phase)
         var parts = [
             "proveniência do commit",
-            headerTitle(node: node),
+            spokenTitle(node: node),
             spokenStateKicker(state: state, trunk: trunk),
             face.spokenFace
         ]
