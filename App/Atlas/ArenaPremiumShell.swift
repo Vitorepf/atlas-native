@@ -3893,7 +3893,8 @@ struct ArenaFieldChrome: ViewModifier {
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
                     .fill(AtlasTheme.bgRecessed)
                     .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
-                        .stroke(AtlasTheme.separator, lineWidth: 1)))
+                        // Soft gold-quiet field chrome — match Autônomos inputs.
+                        .stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1)))
             // Governance fields share soft plane with search / steer inputs.
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }

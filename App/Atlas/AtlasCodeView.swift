@@ -1323,7 +1323,8 @@ extension AtlasCodeView {
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
         .background(Capsule().fill(AtlasTheme.bgRecessed))
-        .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        // Soft gold-quiet worktree meta capsule.
+        .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
         .atlasElevation(radius: 4, y: 1, opacity: 0.08)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(worktreeSpokenLabel(worktree))
@@ -3879,11 +3880,12 @@ struct AtlasCodeRepoRow: View {
                         if showsFolder, let folder = repo.folder {
                             Text(folder)
                                 .atlasSans(10)
-                                .foregroundStyle(AtlasTheme.textTertiary)
+                                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 1.5)
                                 .background(Capsule().fill(AtlasTheme.surface))
-                                .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                                // Soft gold-quiet folder meta pill.
+                                .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
                                 .atlasElevation(radius: 3, y: 1, opacity: 0.08)
                         }
                     }

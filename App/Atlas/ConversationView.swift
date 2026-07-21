@@ -4431,18 +4431,18 @@ extension EditorialTurn {
                 .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
             // Ação fala em sans (mono é hash/recibo/meta — canon §C);
-            // secondary dá affordance de ação sem gritar.
+            // gold-quiet affordance de ação sem gritar.
             Text("Editar e reenviar")
                 .atlasSans(11, .medium)
         }
-        .foregroundStyle(AtlasTheme.textSecondary)
+        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
         .padding(.horizontal, 9)
         .padding(.vertical, 5)
         .frame(minHeight: 48, alignment: .leading)
         .contentShape(Rectangle())
         .background(
             Capsule().fill(AtlasTheme.surface.opacity(0.5))
-                .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
         )
         .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
@@ -4801,7 +4801,8 @@ extension AgentRow {
             .background {
                 if compactLane {
                     Capsule().fill(AtlasTheme.bgRecessed)
-                        .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                        // Soft gold-quiet agent compact lane chrome.
+                        .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
                 }
             }
             .atlasElevation(radius: 4, y: 1, opacity: compactLane ? 0.08 : 0)
@@ -5424,11 +5425,12 @@ struct PlanFlowChips: View {
 
     func flowChipCell(_ item: String) -> some View {
         Text(item)
-            .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textSecondary)
+            .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .padding(.horizontal, 7).padding(.vertical, 3)
             .background(
                 Capsule().fill(AtlasTheme.surface.opacity(0.55))
-                    .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                    // Soft gold-quiet flow meta chip.
+                    .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             )
             .atlasElevation(radius: 3, y: 1, opacity: 0.06)
             .lineLimit(1)

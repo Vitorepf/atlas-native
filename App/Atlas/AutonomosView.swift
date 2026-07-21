@@ -1025,11 +1025,12 @@ struct AutonomosListView: View {
             Text("Pausado")
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 3)
                 .background(Capsule().fill(AtlasTheme.surface))
-                .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                // Soft gold-quiet status pill.
+                .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
                 .atlasElevation(radius: 3, y: 1, opacity: 0.08)
                 .padding(.top, 4)
                 // Row VO combines spoken(unit); visual kicker is decoration only.
@@ -1145,7 +1146,8 @@ struct AutonomosNewSheet: View {
             .background(AtlasTheme.bgRecessed, in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
-                    .strokeBorder(AtlasTheme.separator.opacity(0.55), lineWidth: 1)
+                    // Soft gold-quiet field chrome — match search/Arena inputs.
+                    .strokeBorder(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1)
             )
             // Novo Autônomo fields share input plane with Arena governance chrome.
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
@@ -1590,7 +1592,7 @@ private struct AutonomosMapQuietCTA: View {
                 .frame(minHeight: 48)
                 .overlay(
                     Capsule().strokeBorder(
-                        danger ? AtlasTheme.alert.opacity(0.35) : AtlasTheme.separator.opacity(0.7),
+                        danger ? AtlasTheme.alert.opacity(0.35) : AtlasTheme.goldBorder.opacity(0.45),
                         lineWidth: 1
                     )
                 )
@@ -2242,11 +2244,12 @@ struct NightlyProposalCard: View {
             } label: {
                 Text("Hoje não")
                     .font(AtlasFont.serif(13, .semibold))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet secondary — same family as Silenciar.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                     .padding(.horizontal, 12)
                     .frame(minHeight: 48)
                     .background(Capsule().fill(AtlasTheme.surface.opacity(0.55)))
-                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                    .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
                     .atlasElevation(radius: 4, y: 1, opacity: 0.08)
                     .contentShape(Capsule())
             }
@@ -2268,11 +2271,12 @@ struct NightlyProposalCard: View {
             } label: {
                 Text("Silenciar")
                     .font(AtlasFont.serif(13, .semibold))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet secondary — same family as Hoje não.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                     .padding(.horizontal, 12)
                     .frame(minHeight: 48)
                     .background(Capsule().fill(AtlasTheme.surface.opacity(0.55)))
-                    .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                    .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
                     .atlasElevation(radius: 4, y: 1, opacity: 0.08)
                     .contentShape(Capsule())
             }
