@@ -166,20 +166,20 @@ extension ConversationComposer {
             .transition(reduceMotion ? .identity : .opacity)
             .accessibilityLabel(queueAccessibilityLabel)
             .accessibilityHint("abre a folha para enviar agora ou remover da fila")
+            .accessibilityValue(
+                ComposerQueueJudgment.face(from: model.queuedMessages).productWord
+            )
             .accessibilityIdentifier(A11yID.queueChip)
         }
     }
 
+    /// WAVE-051: head-aware chip (not count-only).
     var queueChipLabel: String {
-        let n = model.queuedMessages.count
-        return n == 1 ? "Fila · 1" : "Fila · \(n)"
+        ComposerQueueJudgment.chipLabel(from: model.queuedMessages)
     }
 
     var queueAccessibilityLabel: String {
-        let n = model.queuedMessages.count
-        return n == 1
-            ? "1 mensagem na fila durante a execução"
-            : "\(n) mensagens na fila durante a execução"
+        ComposerQueueJudgment.spokenChip(from: model.queuedMessages)
     }
 }
 

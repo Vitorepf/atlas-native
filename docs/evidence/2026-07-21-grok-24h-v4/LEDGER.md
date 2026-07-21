@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 45
+- waves_completed: 46
 - idle_compress_passes: 5
 - collapse_host: 0
 
@@ -56,6 +56,7 @@ mode: designer + implementer
 - WAVE-048
 - WAVE-049
 - WAVE-050
+- WAVE-051
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -65,7 +66,7 @@ mode: designer + implementer
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
-- designs_proposed: 45
+- designs_proposed: 46
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -76,5 +77,4 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-048–050 closed A council runner-ups (heal veto, agent lanes, arena live).
-- Prefer A 2–5 new GOD croquis. DEVICE_PENDING history.
+- WAVE-051 queue head judgment. Prefer A fill. DEVICE_PENDING.

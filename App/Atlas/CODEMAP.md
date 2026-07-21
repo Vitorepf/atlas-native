@@ -31,6 +31,7 @@
 | **Narrativa viva (timeline face)** | `LiveTimelineNarrativeJudgment` → face live/filterSilence (chrono sagrado) |
 | **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other |
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank |
+| **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
 | **Home OPERAÇÃO attention** | `HomeOpsJudgment` → Autônomos door face · Arena door · pack |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |

@@ -77,14 +77,14 @@ extension QueuedFollowUpsSheet {
 }
 
 extension QueuedFollowUpsSheet {
+    /// WAVE-051: titles/spoken via queue head judgment.
     func sheetTitle(count: Int) -> String {
-        count == 1 ? "Fila · 1" : "Fila · \(count)"
+        _ = count
+        return ComposerQueueJudgment.sheetTitle(from: model.queuedMessages)
     }
 
     func spokenQueueSheetLabel() -> String {
-        let n = model.queuedMessages.count
-        if n == 0 { return "fila vazia" }
-        return n == 1 ? "fila, 1 mensagem" : "fila, \(n) mensagens"
+        ComposerQueueJudgment.spokenSheet(from: model.queuedMessages)
     }
 }
 
