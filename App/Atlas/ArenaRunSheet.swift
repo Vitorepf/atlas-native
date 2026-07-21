@@ -167,15 +167,6 @@ extension ArenaRunSheet {
 }
 
 extension ArenaRunSheet {
-    func spokenEnginesCount() -> String {
-        if engines.isEmpty {
-            return "nenhum motor publicado"
-        }
-        return "\(engines.count) motor\(engines.count == 1 ? "" : "es")"
-    }
-}
-
-extension ArenaRunSheet {
     func spokenErrorLabel(_ message: String) -> String {
         "erro: \(message)"
     }
@@ -249,21 +240,6 @@ extension ArenaRunSheet {
 }
 
 extension ArenaRunSheet {
-    func spokenSheetHint() -> String {
-        "escolhe suites, motor e braços; ator e motivo auditáveis são obrigatórios"
-    }
-}
-
-extension ArenaRunSheet {
-    func spokenSheetLabel() -> String {
-        var parts = ["rodar medição Arena"]
-        parts.append(spokenEnginesCount())
-        parts.append(spokenSuitesCount())
-        return parts.joined(separator: ", ")
-    }
-}
-
-extension ArenaRunSheet {
     func spokenSubmitEnginesEmpty() -> String {
         "rodar medição indisponível, nenhum motor publicado"
     }
@@ -272,16 +248,6 @@ extension ArenaRunSheet {
 extension ArenaRunSheet {
     func spokenSubmitValid() -> String {
         "rodar medição"
-    }
-}
-
-extension ArenaRunSheet {
-    func spokenSuitesCount() -> String {
-        let suites = installedSuites.count
-        if suites == 0 {
-            return "nenhuma suite com adapter"
-        }
-        return "\(suites) suite\(suites == 1 ? "" : "s") instalada\(suites == 1 ? "" : "s")"
     }
 }
 

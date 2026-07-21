@@ -56,14 +56,6 @@ extension SelfConstructionReceiptSheet {
 }
 
 extension SelfConstructionReceiptSheet {
-    func spokenSheetLabel() -> String {
-        var parts = ["recibo de auto-construção", "ciclo \(receipt.cycle.cycleIndex)"]
-        parts.append(receipt.hasMergeProof ? "merge comprovado no ledger" : "sem merge comprovado")
-        return parts.joined(separator: ", ")
-    }
-}
-
-extension SelfConstructionReceiptSheet {
     func spokenHumanSilenceLabel() -> String {
         "você não foi necessário, entrega sem portão"
     }

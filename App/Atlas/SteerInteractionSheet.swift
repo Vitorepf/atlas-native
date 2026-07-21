@@ -58,12 +58,6 @@ extension SteerInteractionSheet {
 }
 
 extension SteerInteractionSheet {
-    func spokenSheetHint() -> String {
-        "instrução entra no próximo checkpoint seguro; o Atlas pode recusar"
-    }
-}
-
-extension SteerInteractionSheet {
     func spokenSubmitLabel(canSubmit: Bool) -> String {
         canSubmit ? "enviar instrução de redirecionamento" : "enviar indisponível, instrução vazia"
     }
