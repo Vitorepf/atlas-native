@@ -187,11 +187,11 @@ mode: designer + implementer
 - WAVE-179
 
 ## Idle compress
-- pass 1 · 
-- pass 2 · 
-- pass 3 ·  · MARK densos post-174
-- pass 4 ·  · MARK ConversationExecutionPhase
-- pass 5 ·  · MARK residual densos post-179
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
+- pass 3 · `dc3204e1` · MARK densos post-174
+- pass 4 · `34a8d100` · MARK ConversationExecutionPhase
+- pass 5 · `542f30fa` · MARK residual densos post-179
 
 ## Designer
 - designs_proposed: 174
@@ -211,4 +211,5 @@ mode: designer + implementer
 - Device-pending (passcode) = operator.
 - WAVE-174–179 pack/face sovereignty campaign closed.
 - Face-sans-pack: none · packFacts hollows: 0.
-- Residual full-bar requires A (strip/card unify) or new §WAVE — no invent micro.
+- Residual full-bar requires A (strip/card unify) — no invent micro-WAVE.
+- After 2 consecutive IDLE without WAVE: wait A (pass 5 is 2nd after WAVE-179).
