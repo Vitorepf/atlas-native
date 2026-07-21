@@ -5,9 +5,9 @@ import AtlasCore
 
 extension RootHomeSections {
     func arenaSpokenLabel(regression: String?, domainUnavailable: Bool) -> String {
-        if let regression { return "Arena, \(regression)" }
-        if domainUnavailable { return "Arena, \(ArenaModel.domainUnavailableCopy)" }
-        return "Arena, abre medição de regressão"
+        // WAVE-047: Home never elevates regression (ordem 2026-07-18).
+        _ = regression
+        return HomeOpsJudgment.arenaFace(domainUnavailable: domainUnavailable).spoken
     }
 }
 
@@ -227,12 +227,16 @@ extension RootHomeSections {
     @ViewBuilder
     var operacaoSection: some View {
         sectionLabel("OPERAÇÃO", accessibilityID: A11yID.homeOperacaoSection)
+        // WAVE-047: Autônomos door elevates published attention (silence when quiet).
         WorkspaceRow(
             icon: "bolt.horizontal.circle",
             name: "Autônomos",
             count: nil,
+            detail: HomeOpsJudgment.autonomosFace(model: session.autonomos).rowMeta,
+            badge: HomeOpsJudgment.autonomosFace(model: session.autonomos).rowMeta != nil
+                && HomeOpsJudgment.autonomosFace(model: session.autonomos).productWord != "quiet",
             a11yID: A11yID.homeAutonomosEntry,
-            spokenOverride: "Autônomos, abre catálogo de escopos soberanos"
+            spokenOverride: HomeOpsJudgment.autonomosFace(model: session.autonomos).spokenMeta
         ) {
             onNavigate(.autonomos)
         }

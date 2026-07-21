@@ -12,6 +12,10 @@ struct RootHomeSections: View {
 
     var body: some View {
         phaseBody
+            // WAVE-047: light ops hydrate — fleet/taskHealth/areas; silence on fail.
+            .task {
+                await session.autonomos.refreshGlobalOpsForHome()
+            }
     }
 }
 

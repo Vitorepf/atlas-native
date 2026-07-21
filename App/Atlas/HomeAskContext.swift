@@ -49,6 +49,11 @@ enum HomeAskContext {
 
         absences.append("não invente contagens de frota/Arena sem a superfície correspondente")
 
+        // WAVE-047: ops door attention only from published Autônomos/Arena signals.
+        let ops = HomeOpsJudgment.packFacts(session: session)
+        facts.append(contentsOf: ops.facts)
+        absences.append(contentsOf: ops.absences)
+
         return AgenticOccasionPack(
             surface: "home",
             subject: "partida do operador",

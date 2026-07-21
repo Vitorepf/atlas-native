@@ -283,6 +283,24 @@ final class AutonomosModel {
         }
     }
 
+    /// WAVE-047: light Home OPERAÇÃO hydrate — global fleet/taskHealth only.
+    /// No area bind, no invent backlog/live. Failures stay silent (nil).
+    func refreshGlobalOpsForHome() async {
+        async let fleetRequest = client.autonomosFleet()
+        async let healthRequest = client.autonomosTaskHealth()
+        fleet = try? await fleetRequest
+        taskHealth = try? await healthRequest
+        // Keep area list warm without clearing global organs.
+        if areas.isEmpty {
+            do {
+                let response = try await client.listAutonomosAreas()
+                areas = response.areas
+            } catch {
+            }
+        }
+        AtlasNativeSnapshotWriter.shared.recordAutonomos(self)
+    }
+
     func selectArea(_ id: String) async {
         guard areas.contains(where: { $0.id == id }) else { return }
         selectedAreaID = id
