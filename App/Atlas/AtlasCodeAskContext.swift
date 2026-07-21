@@ -92,6 +92,14 @@ enum AtlasCodeAskContext {
         facts.append(contentsOf: health.facts)
         absences.append(contentsOf: health.absences)
 
+        // WAVE-048: heal veto face + undo failure honesty.
+        let veto = AtlasCodeHealVetoJudgment.packFacts(
+            heal: model.heal,
+            undoError: model.undoError
+        )
+        facts.append(contentsOf: veto.facts)
+        absences.append(contentsOf: veto.absences)
+
         switch model.phase {
         case .loading, .idle:
             facts.append("phase: loading")

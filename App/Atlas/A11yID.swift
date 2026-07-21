@@ -186,6 +186,7 @@ extension A11yID {
     static let codeHealStepPrefix = "code-heal-step-"
     static let codeHealUndoWindow = "code-heal-undo-window"
     static let codeHealUndo = "code-heal-undo"
+    static let codeHealUndoError = "code-heal-undo-error"
 }
 
 extension A11yID {

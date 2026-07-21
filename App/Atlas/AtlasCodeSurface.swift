@@ -765,7 +765,13 @@ extension AtlasCodeSheetsModifier {
     content
       .sheet(isPresented: $showsHealReceipt) {
         if let heal = model.heal {
-          AtlasCodeHealReceiptSheet(heal: heal) { Task { await model.undoLastHeal() } }
+          // WAVE-048: pass undoError; sheet stays open so failure is honest.
+          AtlasCodeHealReceiptSheet(
+            heal: heal,
+            undoError: model.undoError
+          ) {
+            Task { await model.undoLastHeal() }
+          }
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
         }

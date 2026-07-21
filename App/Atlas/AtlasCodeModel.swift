@@ -143,11 +143,14 @@ final class AtlasCodeModel {
             heal = try? await client.getCodeHealTick(repo: repo)
             graph = try? await client.getCodeGraph(repo: repo)
             violations = try? await client.getCodeViolations(repo: repo)
+            // WAVE-048: clear presentation undo failure only after success.
+            undoError = nil
         } catch {
             undoError = "não consegui desfazer agora — a cura continua aqui, tente de novo."
         }
     }
 
+    /// WAVE-048: operator-visible undo failure (was dark).
     private(set) var undoError: String?
 
     var spineHashes: Set<String> = []

@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 42
+- waves_completed: 43
 - idle_compress_passes: 5
 - collapse_host: 0
 
@@ -53,6 +53,7 @@ mode: designer + implementer
 - WAVE-045
 - WAVE-046
 - WAVE-047
+- WAVE-048
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -62,7 +63,7 @@ mode: designer + implementer
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
-- designs_proposed: 42
+- designs_proposed: 43
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -73,5 +74,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-046 A composer + WAVE-047 home-ops (A croqui recovered as 047).
+- WAVE-048 heal veto honesty (undoError was dark). Prefer A fill.
 - DEVICE_PENDING history.

@@ -6,6 +6,8 @@ import AtlasCore
 
 struct AtlasCodeHealReceiptSheet: View {
     let heal: AtlasCodeHealResponse
+    /// WAVE-048: published undo failure from model (never invent).
+    var undoError: String? = nil
     let onUndo: () -> Void
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -16,30 +18,37 @@ struct AtlasCodeHealReceiptSheet: View {
             VStack(alignment: .leading, spacing: 12) {
                 masthead
                 healStatusLines
+                undoErrorLine
                 receiptStepsOrEmpty
                 receiptUndoFooter
                 Spacer(minLength: 0)
             }
             .padding(22)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: canUndo)
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: undoError)
         }
         .accessibilityIdentifier(A11yID.codeHealReceiptSheet)
         .accessibilityLabel(spokenSheetLabel())
+        .accessibilityValue(vetoFace.productWord)
     }
 
-    // MARK: - Gates
+    // MARK: - Gates (WAVE-048: Judgment-owned)
+
+    var vetoFace: AtlasCodeHealVetoFace {
+        AtlasCodeHealVetoJudgment.face(heal: heal, undoError: undoError)
+    }
 
     var completedStepCount: Int {
-        heal.stepReceipts.filter { $0.status == "completed" }.count
+        AtlasCodeHealVetoJudgment.completedStepCount(heal)
     }
     var hasCompletedHeal: Bool { completedStepCount > 0 }
 
     var undoExpiresAt: String? {
-        heal.stepReceipts.compactMap(\.undoExpiresAt).first
+        AtlasCodeHealVetoJudgment.undoExpiresAt(heal)
     }
 
     var canUndo: Bool {
-        heal.healId != nil && AtlasCodeUndoWindow.isOpen(expiresAt: undoExpiresAt)
+        AtlasCodeHealVetoJudgment.canVeto(heal)
     }
 
     // MARK: - Chrome
@@ -126,6 +135,18 @@ struct AtlasCodeHealReceiptSheet: View {
     }
 
     @ViewBuilder
+    var undoErrorLine: some View {
+        if let err = undoError, !err.isEmpty {
+            Text(err)
+                .font(AtlasFont.serif(14))
+                .foregroundStyle(AtlasCodePalette.alert)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier(A11yID.codeHealUndoError)
+                .accessibilityLabel("falha ao desfazer, \(err)")
+        }
+    }
+
+    @ViewBuilder
     var receiptUndoFooter: some View {
         if let note = AtlasCodeUndoWindow.note(expiresAt: undoExpiresAt) {
             Text(note)
@@ -137,8 +158,8 @@ struct AtlasCodeHealReceiptSheet: View {
         if canUndo {
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                // WAVE-048: do not dismiss before result — undoError must be visible.
                 onUndo()
-                dismiss()
             } label: {
                 HStack(spacing: 7) {
                     Image(systemName: "arrow.uturn.backward")
@@ -162,17 +183,7 @@ struct AtlasCodeHealReceiptSheet: View {
     // MARK: - Spoken
 
     func spokenSheetLabel() -> String {
-        var parts = ["recibo de cura", heal.mode]
-        if heal.stepReceipts.isEmpty {
-            parts.append("sem passos no recibo")
-        } else {
-            parts.append("\(heal.stepReceipts.count) passo\(heal.stepReceipts.count == 1 ? "" : "s")")
-            parts.append("\(completedStepCount) concluído\(completedStepCount == 1 ? "" : "s")")
-        }
-        if let blocked = heal.blocked, !blocked.isEmpty {
-            parts.append("bloqueado, \(blocked)")
-        }
-        return parts.joined(separator: ", ")
+        AtlasCodeHealVetoJudgment.spokenSheet(heal: heal, undoError: undoError)
     }
 
     func spokenMastheadLabel() -> String {
