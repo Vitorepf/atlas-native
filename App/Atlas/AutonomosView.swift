@@ -142,22 +142,37 @@ extension AutonomosView {
     }
 
     private var headerSubtitle: String {
-        guard let destination, let unit = selectedUnit else { return "" }
+        guard let destination else { return "" }
         switch destination {
         case .hub:
+            guard let unit = selectedUnit else { return "" }
             return unit.paused ? "Parado" : "Vivo"
         case .evolution:
-            return unit.name
+            return selectedUnit?.name ?? ""
+        case .decisions, .decisionInbox, .decisionOrder:
+            let face = AutonomosDecisionJudgment.face(
+                backlog: model.backlog,
+                areaSelected: model.selectedArea != nil,
+                error: model.controlError
+            )
+            return face.productWord
         default:
             return ""
         }
     }
 
     private var headerSubtitleLive: Bool {
-        guard let destination, let unit = selectedUnit else { return false }
+        guard let destination else { return false }
         switch destination {
         case .hub, .evolution:
-            return !unit.paused
+            return selectedUnit.map { !$0.paused } ?? false
+        case .decisions, .decisionInbox, .decisionOrder:
+            if case .items = AutonomosDecisionJudgment.face(
+                backlog: model.backlog,
+                areaSelected: model.selectedArea != nil,
+                error: model.controlError
+            ) { return true }
+            return false
         default:
             return false
         }

@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 20
+- waves_completed: 21
 - idle_compress_passes: 2
 - collapse_host: 0
 
@@ -31,6 +31,7 @@ mode: designer + implementer
 - WAVE-023
 - WAVE-024
 - WAVE-025
+- WAVE-026
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -38,7 +39,7 @@ mode: designer + implementer
 
 ## Designer
 - designs_proposed: 24
-- designs_open: 4
+- designs_open: 3
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -46,10 +47,9 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-026-autonomos-decision-judgment-instrument | **max** | proposed |
-| 2 | WAVE-027-conversation-presence-primary-chrome | **high** | proposed |
-| 3 | WAVE-028-codigo-commit-map-judgment-instrument | **high** | proposed |
-| 4 | WAVE-029-conversation-occasion-pack-honesty | **high** | proposed |
+| 1 | WAVE-027-conversation-presence-primary-chrome | **high** | proposed |
+| 2 | WAVE-028-codigo-commit-map-judgment-instrument | **high** | proposed |
+| 3 | WAVE-029-conversation-occasion-pack-honesty | **high** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.

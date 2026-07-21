@@ -119,6 +119,11 @@ struct AutonomosMapShell: View {
 
             AutonomosListView(
                 units: model.operatorUnits,
+                awaitingUnitIDs: AutonomosDecisionJudgment.awaitingUnitIDs(
+                    units: model.operatorUnits,
+                    backlog: model.backlog,
+                    boundUnitID: selectedUnitID
+                ),
                 onOpen: { unit in
                     selectedUnitID = unit.id
                     destination = .hub
@@ -172,11 +177,18 @@ struct AutonomosMapShell: View {
             }
         case .evolution:
             AutonomosEvolutionView(unit: selectedUnit)
-        case .decisions, .decisionInbox, .decisionOrder, .moment, .incident:
-            // Empty honesto único — zero contagens inventadas (WAVE-007).
+        case .decisions, .decisionInbox, .decisionOrder:
+            // WAVE-026: published backlog → decision surface; silence if empty.
+            AutonomosDecisionSurface(
+                model: model,
+                destination: destination,
+                onNavigate: { self.destination = $0 }
+            )
+        case .moment, .incident:
+            // Empty honesto — momentos/incidentes ainda sem projeção por unit.
             VStack(alignment: .leading, spacing: 12) {
                 AutonomosMapChrome.heroTitle("Ainda no escopo local", size: 26)
-                Text("Create no servidor ainda não liga decisões, momentos nem incidentes a este Autônomo. Nada aqui inventa inbox.")
+                Text("Create no servidor ainda não liga momentos nem incidentes a este Autônomo. Nada aqui inventa inbox.")
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -226,8 +238,12 @@ struct AutonomosMapShell: View {
             taskKind: "autonomos",
             workspace: nil,
             draft: "",
-            turnFacts: { [selectedUnit, destination] _ in
-                AutonomosAskContext.facts(unit: selectedUnit, destination: destination)
+            turnFacts: { [selectedUnit, destination, model] _ in
+                AutonomosAskContext.facts(
+                    unit: selectedUnit,
+                    destination: destination,
+                    backlog: model.backlog
+                )
             },
             onThread: { askThreadId = $0 },
             hidesNavigationBack: true

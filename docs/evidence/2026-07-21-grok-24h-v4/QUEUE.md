@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-026-autonomos-decision-judgment-instrument
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-026-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-027-conversation-presence-primary-chrome
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: high
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-027-design.md
 created_by: designer
@@ -37,7 +27,7 @@ approved_at: null
 ```yaml
 id: WAVE-028-codigo-commit-map-judgment-instrument
 status: proposed
-rank: 3
+rank: 2
 delta_patamar: high
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-028-design.md
 created_by: designer
@@ -47,7 +37,7 @@ approved_at: null
 ```yaml
 id: WAVE-029-conversation-occasion-pack-honesty
 status: proposed
-rank: 4
+rank: 3
 delta_patamar: high
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-029-design.md
 created_by: designer
@@ -58,10 +48,9 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-026-autonomos-decision-judgment-instrument | **max** | `WAVE-026-design.md` |
-| **2** | WAVE-027-conversation-presence-primary-chrome | **high** | `WAVE-027-design.md` |
-| **3** | WAVE-028-codigo-commit-map-judgment-instrument | **high** | `WAVE-028-design.md` |
-| **4** | WAVE-029-conversation-occasion-pack-honesty | **high** | `WAVE-029-design.md` |
+| **1** | WAVE-027-conversation-presence-primary-chrome | **high** | `WAVE-027-design.md` |
+| **2** | WAVE-028-codigo-commit-map-judgment-instrument | **high** | `WAVE-028-design.md` |
+| **3** | WAVE-029-conversation-occasion-pack-honesty | **high** | `WAVE-029-design.md` |
 
 ## History (done)
 
@@ -85,4 +74,5 @@ approved_at: null
 - WAVE-023 done
 - WAVE-024 done
 - WAVE-025 done
+- WAVE-026 done
 

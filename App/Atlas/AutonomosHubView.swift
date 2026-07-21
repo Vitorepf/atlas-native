@@ -65,7 +65,13 @@ struct AutonomosHubView: View {
         switch vestment {
         case .quiet:
             AutonomosMapChrome.primaryCTA("Retomar", action: onResume)
-        case .live, .awaiting:
+        case .awaiting(let count):
+            // WAVE-026: "Pede você" without a verb was a lie — CTA opens real decisions.
+            AutonomosMapChrome.primaryCTA(
+                AutonomosDecisionJudgment.primaryCTATitle(count: count),
+                action: { onNavigate(.decisions) }
+            )
+        case .live:
             EmptyView()
         }
     }

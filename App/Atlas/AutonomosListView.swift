@@ -3,6 +3,8 @@ import SwiftUI
 /// Lista de Autônomos do operador — índice soberano. Vazio até criar. Zero áreas de sistema.
 struct AutonomosListView: View {
     let units: [AutonomosUnit]
+    /// WAVE-026: unit IDs with hydrated awaiting signal only — never invent.
+    var awaitingUnitIDs: Set<String> = []
     let onOpen: (AutonomosUnit) -> Void
     let onCreate: () -> Void
 
@@ -17,15 +19,9 @@ struct AutonomosListView: View {
         .accessibilityIdentifier(A11yID.autonomosList)
     }
 
-    /// WAVE-025: live catalog units first; quiet/paused last (judgment order).
+    /// WAVE-026: awaiting (hydrated) → live → quiet/paused last.
     private var judgmentUnits: [AutonomosUnit] {
-        units.enumerated().sorted { lhs, rhs in
-            let l = AutonomosHubVestment.listFace(unitPaused: lhs.element.paused)
-            let r = AutonomosHubVestment.listFace(unitPaused: rhs.element.paused)
-            if l == .quiet && r != .quiet { return false }
-            if l != .quiet && r == .quiet { return true }
-            return lhs.offset < rhs.offset
-        }.map(\.element)
+        AutonomosDecisionJudgment.rankUnits(units, awaitingUnitIDs: awaitingUnitIDs)
     }
 
     private var list: some View {
@@ -100,27 +96,41 @@ struct AutonomosListView: View {
 
     @ViewBuilder
     private func trailing(_ unit: AutonomosUnit) -> some View {
-        // WAVE-025: vestment face on list (pause → quiet; else live).
-        let face = AutonomosHubVestment.listFace(unitPaused: unit.paused)
-        if face == .quiet {
-            Text(face.productWord)
+        if awaitingUnitIDs.contains(unit.id) {
+            Text(AutonomosHubVestment.awaiting(1).productWord)
                 .font(AtlasFont.mono(10))
                 .tracking(0.8)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(AtlasTheme.accent)
                 .textCase(.uppercase)
                 .padding(.top, 6)
+                .accessibilityLabel(AutonomosHubVestment.awaiting(1).spokenFace)
         } else {
-            Circle()
-                .fill(AtlasTheme.accent.opacity(0.85))
-                .frame(width: 5, height: 5)
-                .padding(.top, 10)
-                .accessibilityLabel("vivo")
+            let face = AutonomosHubVestment.listFace(unitPaused: unit.paused)
+            if face == .quiet {
+                Text(face.productWord)
+                    .font(AtlasFont.mono(10))
+                    .tracking(0.8)
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .textCase(.uppercase)
+                    .padding(.top, 6)
+            } else {
+                Circle()
+                    .fill(AtlasTheme.accent.opacity(0.85))
+                    .frame(width: 5, height: 5)
+                    .padding(.top, 10)
+                    .accessibilityLabel("vivo")
+            }
         }
     }
 
     private func spoken(_ unit: AutonomosUnit) -> String {
-        let face = AutonomosHubVestment.listFace(unitPaused: unit.paused)
-        var parts = [unit.name, unit.charter, face.spokenFace]
+        let faceWord: String
+        if awaitingUnitIDs.contains(unit.id) {
+            faceWord = AutonomosHubVestment.awaiting(1).spokenFace
+        } else {
+            faceWord = AutonomosHubVestment.listFace(unitPaused: unit.paused).spokenFace
+        }
+        var parts = [unit.name, unit.charter, faceWord]
         parts.append(unit.ageLabel)
         return parts.joined(separator: ", ")
     }
