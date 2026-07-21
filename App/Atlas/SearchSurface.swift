@@ -16,12 +16,6 @@ extension SearchView {
         )
     }
 
-    func spokenSearchScreenLabel() -> String {
-        SearchScreenJudgment.spokenScreen(
-            face: searchScreenFace,
-            trimmedQuery: trimmedQuery
-        )
-    }
 
 }
 
@@ -30,7 +24,7 @@ extension SearchView {
         content
             .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.searchScreen)
-            .accessibilityLabel(spokenSearchScreenLabel())
+            .accessibilityLabel(SearchScreenJudgment.spokenScreen(face: searchScreenFace, trimmedQuery: trimmedQuery))
             .accessibilityValue(searchScreenFace.productWord)
             .accessibilityHint(SearchScreenJudgment.screenHint)
             .onAppear { focused = true }
@@ -132,7 +126,7 @@ extension SearchViewHeader {
                 .font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
                 .tint(AtlasTheme.accent).focused($focused)
                 .submitLabel(.search)
-                .accessibilityLabel(spokenFieldLabel)
+                .accessibilityLabel(SearchListJudgment.spokenField(query: query))
                 .accessibilityHint("filtra só conversas já carregadas na sessão")
                 .accessibilityIdentifier(A11yID.searchField)
         }
@@ -157,12 +151,6 @@ extension SearchViewHeader {
             .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
             .opacity(query.isEmpty ? 1 : 0).allowsHitTesting(false)
             .accessibilityHidden(true)
-    }
-}
-
-extension SearchViewHeader {
-    var spokenFieldLabel: String {
-        SearchListJudgment.spokenField(query: query)
     }
 }
 
