@@ -1,9 +1,8 @@
 import Foundation
 
-/// Identifiers de acessibilidade canônicos — um único vocabulário entre a
-/// casca e os XCUITests. Home/Search: +Home · Autônomos: +Autonomos ·
-/// Code/radar: +Code · Arena/review: +Surfaces · Queue/Live: +QueueLive ·
-/// Execution/plan: +Execution.
+// IDLE-COMPRESS A11yID host
+
+// --- A11yID.swift ---
 enum A11yID {
     static let topbarCode = "topbar-code"
     static let auditMasthead = "audit-masthead"
@@ -23,3 +22,4 @@ enum A11yID {
     static let conversationScrollFAB = "conversation-scroll-fab"
     static let continuityHandoffReceipt = "continuity-handoff-receipt"
 }
+
