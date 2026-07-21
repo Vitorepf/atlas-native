@@ -82,15 +82,21 @@ extension CircleButton {
 }
 
 struct CircleButton: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let icon: String
     /// Ponto de exceção: só aparece quando existe algo que fala. Silêncio é o
     /// estado normal — o botão não carrega contador decorativo.
     var badge: Bool = false
     let action: () -> Void
     var body: some View {
-        Button(action: action) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            action()
+        } label: {
             circleButtonLabel
         }
+        .buttonStyle(.plain)
+        .contentShape(Circle())
         .accessibilityAddTraits(.isButton)
     }
 }
