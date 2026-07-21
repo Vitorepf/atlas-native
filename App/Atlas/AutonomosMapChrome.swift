@@ -114,6 +114,7 @@ private struct AutonomosMapPrimaryCTA: View {
         .buttonStyle(.plain)
         .disabled(!enabled)
         .accessibilityLabel(Text(title))
+        .accessibilityHint(Text(enabled ? "" : "indisponível"))
     }
 }
 
