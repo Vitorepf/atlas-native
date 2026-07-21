@@ -41,7 +41,8 @@ extension QueuedFollowUpRow {
 extension QueuedFollowUpRow {
     var promoteButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: promote commits the next instruction (send class).
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onPromote()
         } label: {
             Image(systemName: "arrow.up")

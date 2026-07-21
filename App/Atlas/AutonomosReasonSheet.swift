@@ -40,12 +40,14 @@ struct AutonomosReasonSheet: View {
                 }
                 Section("Operador") {
                     TextField("Quem autoriza", text: $actor)
+                        .frame(minHeight: 44)
                         .accessibilityIdentifier(A11yID.autonomosReasonActor)
                         .accessibilityHint("nome de quem autoriza a ação governada")
                 }
                 Section(reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo") {
                     TextField("Motivo auditável", text: $reason, axis: .vertical)
                         .lineLimit(3...6)
+                        .frame(minHeight: 88, alignment: .topLeading)
                         .accessibilityIdentifier(A11yID.autonomosReasonField)
                         .accessibilityHint(
                             reasonOptional
