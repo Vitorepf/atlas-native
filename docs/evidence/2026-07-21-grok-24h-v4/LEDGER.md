@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 95
-- idle_compress_passes: 25
+- idle_compress_passes: 26
 - collapse_host: 0
 
 ## Waves done
@@ -112,6 +112,7 @@ mode: designer + implementer
 - pass 23 · 3427812c · ChangeReviewSectionsA11y to Judgment
 - pass 24 · dc82150f · AtlasCodeRadarA11y to RadarJudgment
 - pass 25 · 87932be2 · AtlasCodeCommitRowA11y to CommitRowJudgment
+- pass 26 · fb65caa0 · AtlasCodeGraphA11y to GraphJudgment
 
 ## Designer
 - designs_proposed: 95
@@ -125,5 +126,5 @@ mode: designer + implementer
 | - | (none) | - | - |
 
 ## Notes
-- WAVE-100 + IDLE-25. DEVICE_PENDING.
-- Concurrent LEDGER strips - B rewrites full truth (no backticks).
+- WAVE-100 + IDLE 25-26. DEVICE_PENDING.
+- Concurrent LEDGER strips - B rewrites full truth.
