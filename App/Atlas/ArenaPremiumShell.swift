@@ -4414,6 +4414,7 @@ struct ArenaPremiumEmptyGlyph: View {
         ArenaPremiumIcon(symbol: symbol, tone: tone, role: .hero)
             .background(Circle().fill(AtlasTheme.surface.opacity(0.72)))
             .overlay(Circle().stroke(AtlasTheme.separator, lineWidth: 1))
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
     }
 }
 
