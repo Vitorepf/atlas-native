@@ -303,7 +303,9 @@ struct SearchMissEmpty: View {
     var body: some View {
         AtlasEditorialGlyphEmpty(
             headline: headline,
-            accessibilityIdentifier: A11yID.searchEmpty
+            footnote: "tente outra frase · a busca olha títulos e trechos recentes",
+            accessibilityIdentifier: A11yID.searchEmpty,
+            spokenLabel: "\(headline) tente outra frase"
         )
     }
 }
