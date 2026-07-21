@@ -1,17 +1,23 @@
-import SwiftUI
-import AtlasCore
+import Foundation
 
-// Ask pill a11y chrome — peel de AtlasCodeView+AskPillChrome.
-// Traits → AtlasCodeView+AskPillA11yTraits.swift
-// Tap → AtlasCodeView+AskPillA11y+Tap.swift
-// PaddingAnimation → AtlasCodeView+AskPillA11y+PaddingAnimation.swift
+/// Spoken labels da pílula do grafo — só recorte/âncora real; convite no idle.
+enum AtlasCodeAskPillA11y {
+    static func pillPhaseID(isAnchoring: Bool, anchorLegend: String?) -> String {
+        isAnchoring ? "anchoring-\(anchorLegend ?? "default")" : "invite"
+    }
 
-extension AtlasCodeView {
-    var askPillA11yChrome: some View {
-        askPillA11yTraits(
-            askPillPaddingAnimation(
-                askPillTapGesture(askPillContent)
-            )
-        )
+    static let pillHint = "abre conversa sobre este repositório"
+    static let clearLabel = "mostrar tudo no grafo"
+    static let clearHint = "remove o recorte dos commits da resposta"
+
+    static func spokenPill(isAnchoring: Bool, anchorLegend: String?) -> String {
+        guard isAnchoring else {
+            return "Conversar com o Atlas sobre este repositório"
+        }
+        let legend = anchorLegend?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !legend.isEmpty {
+            return "Conversar com o Atlas, \(legend)"
+        }
+        return "Conversar com o Atlas, grafo recortado nos commits da resposta"
     }
 }
