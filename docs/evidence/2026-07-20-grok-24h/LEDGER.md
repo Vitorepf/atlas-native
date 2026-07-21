@@ -1,13 +1,12 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 025
-- last_commit: d119594d
+- phase: D1 cycle 026
+- last_commit: 1864d10e
 - last_gates: green
-- next_leap: LiveTimeline OR ArtifactSheet OR ArenaRunSheet OR Continuity
+- next_leap: ArtifactSheet OR ArenaRunSheet OR ExecutionProof OR Continuity
 - blocked: none
-- App/Atlas Swift: 1352
+- App/Atlas Swift: 1310
 
 ## Highlights this resume
-015–023 Code/Plan/Chrome/Markdown/Root · 024 Cockpit 50→5
-App/Atlas 1748→1352 (−396) · FORBIDDEN clean · no new domains
+015–025 continuous peel · App/Atlas 1748→1310 (−438) · FORBIDDEN clean · no new domains
