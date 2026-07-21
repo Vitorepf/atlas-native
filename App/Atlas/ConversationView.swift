@@ -5609,7 +5609,7 @@ struct PlanRevisionCompare: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
                 .font(AtlasFont.serif(12, .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(tone == .removed ? AtlasTheme.domOperacional.opacity(0.9) : AtlasTheme.domAutonomos.opacity(0.95))
                 .accessibilityHidden(true)
             revisionListItems(items: items, tone: tone)
         }
@@ -5627,8 +5627,12 @@ struct PlanRevisionCompare: View {
     func revisionBulletRow(item: String, tone: RevisionTone) -> some View {
         Text("• \(item)")
             .atlasSans(12)
-            .foregroundStyle(tone == .removed ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
-            .strikethrough(tone == .removed, color: AtlasTheme.textTertiary.opacity(0.7))
+            .foregroundStyle(
+                tone == .removed
+                    ? AtlasTheme.domOperacional.opacity(0.75)
+                    : AtlasTheme.domAutonomos.opacity(0.9)
+            )
+            .strikethrough(tone == .removed, color: AtlasTheme.domOperacional.opacity(0.55))
             .lineLimit(2)
             .accessibilityHidden(true)
     }
@@ -5653,6 +5657,16 @@ struct PlanRevisionCompare: View {
             revisionArchiveHeader(rev)
             revisionArchiveMeta(rev)
         }
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)
+                .fill(AtlasTheme.surface.opacity(0.4))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)
+                .stroke(AtlasTheme.separatorSoft, lineWidth: 1)
+        )
+        .atlasElevation(radius: 4, y: 1, opacity: 0.08)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(revisionArchiveAccessibilityLabel(rev))
     }
