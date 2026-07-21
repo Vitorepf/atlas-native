@@ -3963,12 +3963,16 @@ extension FeedbackRow {
             .padding(.horizontal, 12).padding(.vertical, 6)
             .frame(minHeight: 48)
             .contentShape(Capsule())
-            .overlay(
-                Capsule().stroke(
-                    isActive ? AtlasTheme.domAutonomos.opacity(0.5) : AtlasTheme.separator,
-                    lineWidth: 1
-                )
+            .background(
+                Capsule().fill(isActive ? AtlasTheme.domAutonomos.opacity(0.08) : AtlasTheme.surface.opacity(0.4))
+                    .overlay(
+                        Capsule().stroke(
+                            isActive ? AtlasTheme.domAutonomos.opacity(0.5) : AtlasTheme.separator,
+                            lineWidth: 1
+                        )
+                    )
             )
+            .atlasElevation(radius: 4, y: 1, opacity: isActive ? 0.12 : 0.06)
     }
 }
 
