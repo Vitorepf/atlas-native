@@ -2285,7 +2285,7 @@ struct AtlasNetworkFailureEmpty: View {
     let hasToken: Bool
     let host: String
     var topPadding: CGFloat = 56
-    var retryHint: String = "reconecta ao servidor Atlas"
+    var retryHint: String = "Reconecta ao servidor Atlas"
     var retryAccessibilityIdentifier: String?
     let accessibilityIdentifier: String
     let onRetry: () -> Void
@@ -2299,9 +2299,9 @@ struct AtlasNetworkFailureEmpty: View {
 extension WorkspaceEditorialEmpty {
     var editorialFootnote: String {
         if freeOnly {
-            return "perguntas e pensamento livre começam abaixo"
+            return "Perguntas e pensamento livre começam abaixo"
         }
-        return "comece uma abaixo — o projeto é opcional"
+        return "Comece uma abaixo — o projeto é opcional"
     }
 }
 
@@ -2521,6 +2521,7 @@ extension AtlasNetworkFailureEmpty {
             .frame(minHeight: 48) // match primary CTA breath
             .background(Capsule().fill(AtlasTheme.goldVeil)
                 .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
+            .atlasElevation(radius: 8, y: 2, opacity: 0.14)
             .contentShape(Capsule())
     }
 }
