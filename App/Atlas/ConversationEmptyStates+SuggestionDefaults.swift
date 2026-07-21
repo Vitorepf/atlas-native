@@ -4,11 +4,9 @@ import AtlasCore
 // Default suggestion copy — peel de ConversationEmptyStates+Suggestions.
 
 extension EmptyConversation {
+    /// Defaults = partida Home (sem inventar contagens). Superfícies com pack
+    /// próprio passam `suggestionsOverride` (Arena/Código/Autônomos).
     var defaultSuggestions: [String] {
-        [
-            "O que está rodando no Atlas agora?",
-            "Resuma meu dia até aqui",
-            "Qual o status dos meus projetos?",
-        ]
+        HomeAskContext.emptySuggestions(hasWorkspaces: false)
     }
 }
