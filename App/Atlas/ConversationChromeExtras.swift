@@ -165,6 +165,9 @@ struct ConversationOutlineSheet: View {
         content
             .accessibilityIdentifier(A11yID.conversationOutlineSheet)
             .accessibilityLabel(ConversationOutlineA11y.spokenSheetLabel(turnCount: bubbles.count))
+            .accessibilityValue(
+                ConversationOutlineJudgment.face(turnCount: bubbles.count).productWord
+            )
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: bubbles.map(\.id))
     }
 
@@ -252,33 +255,26 @@ struct ConversationOutlineRow: View {
     }
 }
 
-/// Spoken labels do índice.
+/// WAVE-079: spoken labels do índice → ConversationOutlineJudgment.
 enum ConversationOutlineA11y {
     static func spokenSheetLabel(turnCount: Int) -> String {
-        guard turnCount > 0 else { return spokenEmptySheet() }
-        let noun = turnCount == 1 ? "turno" : "turnos"
-        return "índice da conversa, \(turnCount) \(noun)"
+        ConversationOutlineJudgment.spokenSheetLabel(turnCount: turnCount)
     }
 
     static func spokenEmptySheet() -> String {
-        "índice da conversa, sem turnos carregados nesta thread"
+        ConversationOutlineJudgment.spokenEmptySheet()
     }
 
     static func spokenRole(_ role: String) -> String {
-        role == "user" ? "você" : "Atlas"
+        ConversationOutlineJudgment.spokenRole(role)
     }
 
     static func spokenSnippet(from text: String) -> String {
-        let trimmed = AtlasMarkdown.plainText(text)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            return "sem texto visível neste turno"
-        }
-        return String(trimmed.prefix(140))
+        ConversationOutlineJudgment.spokenSnippet(from: text)
     }
 
     static func spokenRow(index: Int, role: String, snippet: String) -> String {
-        "turno \(index), \(spokenRole(role)), \(snippet)"
+        ConversationOutlineJudgment.spokenRow(index: index, role: role, snippet: snippet)
     }
 }
 

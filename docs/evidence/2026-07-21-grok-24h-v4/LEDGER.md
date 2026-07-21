@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 73
+- waves_completed: 74
 - idle_compress_passes: 16
 - collapse_host: 0
 
@@ -84,8 +84,24 @@ mode: designer + implementer
 - WAVE-076
 - WAVE-077
 - WAVE-078
+- WAVE-079
 
 ## Idle compress
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
+- pass 3 · `4ba83f4a` · MARK EditorialTurn
+- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof
+- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings
+- pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
+- pass 7 · `426cb439` · peel PlanCard
+- pass 8 · `10b74ff3` · peel ChangeReview Governance+RunActions
+- pass 9 · `876b24e3` · peel ArtifactPreview
+- pass 10 · `4ed17106` · delete dead sheet spoken
+- pass 11 · `43415d1a` · peel AutonomosMapShell
+- pass 12 · `2b6a7f73` · peel ExecutionStateActionStyle
+- pass 13 · `9f8583e4` · peel ArtifactSheet Delivery
+- pass 14 · `33b1356e` · peel AtlasCodeSurface Graph
+- pass 15 · `44810009` · peel ExecutionStateCard spoken
 - pass 16 · `3c63dc3a` · peel LiveTimeline FilterChrome
 
 ## Designer
@@ -99,4 +115,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-076–078. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- WAVE-076–079. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- LEDGER idle B-owned; do not strip passes 3–16.
