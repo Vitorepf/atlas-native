@@ -7,13 +7,13 @@ dual: off
 god_hold: **forbidden** (v4)
 
 ## State
-- phase: act
-- focus: pass deepen cycle
-- domain_index: 7
+- phase: audit
+- focus: pass deepen residual peels
+- domain_index: 1
 - pass: 1
 - actionable: open
-- passes: 6
-- last_commit: pending-widgets-mark
+- passes: 8
+- last_commit: pending-executionstatecard
 - collapse_host: 0
 
 ## Scope
@@ -28,14 +28,54 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### batch host+body fuses
+
+```yaml
+focus: CommitRow Surface SheetsModifiers Proof PlanCard Markdown ArenaSuite
+gates: ok
+```
+
+### 2026-07-21T22:47Z — ExecutionStateCard peels fuse
+
+```yaml
+phase: prove
+focus: ExecutionStateCard Body+Spoken+SpokenBody+ActionStyle → host
+domain_index: 1
+pass: 1
+commands: |
+  4 peels → ExecutionStateCard.swift ~648 MARKed
+  Judgment stays separate
+  AtlasCoreChecks ✓ · make build ✓ · guard OK
+before_after: |
+  ActionStyle+Body+Spoken+SpokenBody deleted
+  hops card chrome 5→1 · CODEMAP fused parts
+notes: next residual peels Plan/Artifact/Decision
+```
+
+### 2026-07-21T22:46Z — Autonomos Ask organs fuse
+
+```yaml
+phase: prove
+focus: AutonomosAskContextOrgans* → AutonomosAskContext
+domain_index: 6
+pass: 1
+commands: |
+  Organs Global+Veto+Destination → host ~434
+  gates ✓
+before_after: |
+  3 peels deleted · hops pack organs 4→1
+  CODEMAP Autônomos pack fused
+notes: next Conversa ExecutionStateCard peels
+```
+
 ### session progress note
 ```yaml
-phase: act
-focus: continuous grind
-domain_index: rotating
+phase: audit
+focus: residual peels deepen
+domain_index: 1
 pass: 1
 actionable: open
-session_commits: 25+
+session_commits: 19
 soft_sections_states: 0
 notes: never Goal Done; loop continues
 ```

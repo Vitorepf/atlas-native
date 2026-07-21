@@ -127,7 +127,7 @@
 | **Provenance file-row spoken** | `AtlasCodeProvenanceJudgment` spokenFile/verb/packFile → FileRow |
 | **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
 | **Turn presence away notify** | `TurnPresenceJudgment` isTerminal/title/body/spoken · TurnPresence host |
-| **Prova de execução (card recolhido)** | `ExecutionProofJudgment` · host · Chrome · `ExecutionProofBody` |
+| **Prova de execução (card recolhido)** | `ExecutionProofJudgment` · host · Chrome · `ExecutionProof` |
 | **Artefatos lista/row** | `ArtifactListJudgment` → list silence/list(N) · row · empty visualizable · close |
 | **Assinatura editorial (turno)** | `EditorialTurnJudgment` → signature present/absent · feedback spoken · pack |
 | EditorialTurn parts | `EditorialTurn` host · `EditorialTurnChrome` (FeedbackRow · SignatureLine) |
@@ -146,13 +146,13 @@
 | **Commit row parts** | Body · Meta |
 | **Conversation composer sheets** | `ConversationComposerSheetsModifier` (API · host · camera; was 4 peels) |
 | **Search surface parts** | Surface/Header · Results |
-| **Plan card parts** | PlanCard host · PlanCardBody |
+| **Plan card parts** | PlanCard host · PlanCard |
 | **Workspace surface parts** | Surface · Body/threads |
 | **Composer toolbar parts** | Chrome · ChromeBody |
 | **Provenance sheet body** | `AtlasCodeProvenanceSheetBody` (was Sections*) · WhyTarget |
 | **Surface graph parts** | Graph · GraphBody |
 | **ArenaRunSheet parts** | host · Body |
-| **ExecutionStateCard parts** | host · Body |
+| **ExecutionStateCard parts** | host · body · spoken · action style (fused; Judgment separate) |
 | **AutonomosView parts** | View · Header |
 | **ChangeReview patch parts** | PatchBody · DiffViewBody |
 | **Markdown blocks parts** | Blocks · ViewBlocks |
@@ -175,19 +175,19 @@
 | **ChangeReview body / sheet** | `ChangeReviewBody` (controls/tests/decided/run) · `ChangeReviewSheetBody` |
 | **ArenaSuiteSheet parts** | Sheet · Body |
 | **RootChrome parts** | Chrome · Lifecycle · DeepLink · ConversationRoutes (ThreadRow own file) |
-| **ExecutionStateCardSpoken parts** | Spoken · Body |
+| **ExecutionStateCard spoken** | fused in `ExecutionStateCard` (was Spoken·Body peels) |
 | **Composer sheets modifier parts** | Modifier · Body |
-| **ExecutionProof body** | `ExecutionProofBody` decision/quality/replay (was Sections*) |
+| **ExecutionProof body** | `ExecutionProof` decision/quality/replay (was Sections*) |
 | **Markdown view blocks parts** | ViewBlocks · Body |
 | **SelfConstruction veto spoken** | `SelfConstructionVetoJudgment` · Receipt Chrome fields |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 | **Artifact preview pack** | `ArtifactPreviewJudgment` → OccasionPack idle when list non-empty |
 | **Artifact contract + evidence pack** | `ArtifactJudgment` · `TraceEvidenceJudgment` → OccasionPack |
-| **Autônomos pack** | `AutonomosAskContext` host · `AutonomosAskContextOrgans` |
+| **Autônomos pack** | `AutonomosAskContext` host · organs global/veto/destination (fused) |
 | **Markdown surface** | `AtlasMarkdownSurface` · Code · Lists · `CodeBlockView` |
 | **EditorialTurn** | host · Closing · User · Chrome |
 | **PlanCard** | Body · FlexWrap · Steps |
-| **Autonomos pack organs** | Global · Destination · Veto |
+| **Autonomos pack organs** | fused in `AutonomosAskContext` (global · veto · destination) |
 | **Residual composition** | PlanRevision A11y/Archive · Surface Messages · ModelActions* · FileRowChrome |
 
 ## BLOCKED (honesto)
