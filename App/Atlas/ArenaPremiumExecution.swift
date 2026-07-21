@@ -725,8 +725,8 @@ enum ArenaPremiumAskContext {
         var absences: [String] = []
         var anchors: [String] = []
         if let destination {
-            facts.append("tela: \(destinationLabel(destination))")
-            anchors.append("dest: \(destinationLabel(destination))")
+            facts.append("tela: \(productDestination(destination))")
+            anchors.append("dest: \(productDestination(destination))")
         } else {
             facts.append("aba: \(tab.rawValue)")
             anchors.append("tab: \(tab.rawValue)")
@@ -798,7 +798,7 @@ enum ArenaPremiumAskContext {
 
         return AgenticOccasionPack(
             surface: "arena",
-            subject: destination.map { "Arena · \(destinationLabel($0))" } ?? "Arena · \(tab.rawValue)",
+            subject: destination.map { "Arena · \(productDestination($0))" } ?? "Arena · \(tab.rawValue)",
             anchors: anchors,
             facts: facts,
             absences: absences,
@@ -835,7 +835,7 @@ enum ArenaPremiumAskContext {
         }
     }
 
-    static func destinationLabel(_ d: ArenaPremiumDestination) -> String {
+    static func productDestination(_ d: ArenaPremiumDestination) -> String {
         switch d {
         case .execution: "Execução"
         case .plan: "Plano"

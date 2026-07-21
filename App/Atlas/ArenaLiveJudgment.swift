@@ -333,20 +333,20 @@ enum ArenaNowJudgment {
         }
     }
 
-    static func idleKicker() -> String { "Arena pronta" }
-    static func idleTitle() -> String { "Nada medindo agora" }
-    static func idleBody() -> String {
+    static func productIdleKicker() -> String { "Arena pronta" }
+    static func productIdleTitle() -> String { "Nada medindo agora" }
+    static func productIdleBody() -> String {
         "Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado."
     }
 
-    static func queuedKicker() -> String { "Na fila" }
-    static func queuedTitle() -> String { "Medição programada" }
-    static func queuedHonestyLine() -> String {
+    static func productQueuedKicker() -> String { "Na fila" }
+    static func productQueuedTitle() -> String { "Medição programada" }
+    static func productQueuedHonestyLine() -> String {
         "Ainda não iniciado · nenhum progresso foi presumido."
     }
 
-    static func preparingKicker() -> String { "Preparando a Arena" }
-    static func preparingTitle() -> String { "Organizando as medições" }
+    static func productPreparingKicker() -> String { "Preparando a Arena" }
+    static func productPreparingTitle() -> String { "Organizando as medições" }
 
     static func packFacts(
         loadPhase: LoadPhase,
