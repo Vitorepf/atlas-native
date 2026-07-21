@@ -7,18 +7,17 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 10
-- idle_compress_passes: 4
+- idle_compress_passes: 5
 - collapse_host: 0
 
 ## Waves done
-- WAVE-006..015 shipped (see git log feat(ui): WAVE-*)
+- WAVE-006..015 shipped
 
 ## Idle compress
-- pass 1 WorkspaceEmpty/Chrome Receipt/Outline
-- pass 2 RootChrome/LiveNow + v4 guard
-- pass 3 AtlasFailureCopy
-- pass 4 ConversationMessages + EditorialTurn + AutonomosView peels
+- pass 1–3 early
+- pass 4 Messages+EditorialTurn+Autonomos
+- pass 5 ConversationView+DraftThumb+Arena residual peels
 
 ## Notes
-- Queue empty of open designs; continuing structural idle compress
-- Device-pending (passcode)
+- Queue empty; structural idle continues
+- Device-pending

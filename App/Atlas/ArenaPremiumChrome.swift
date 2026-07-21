@@ -1,7 +1,9 @@
 import SwiftUI
+import AtlasCore
 
-/// Hero do motor medido: o nome é o seletor (nunca “Trocar motor”).
-/// Só lista opções já medidas — catálogo sem perfil não entra.
+// IDLE-COMPRESS Arena peels
+
+// --- ArenaPremiumEngineTitle.swift ---
 struct ArenaPremiumEngineTitle: View {
     let engineID: String
     let options: [String]
@@ -46,3 +48,4 @@ struct ArenaPremiumEngineTitle: View {
         }
     }
 }
+

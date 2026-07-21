@@ -1,14 +1,10 @@
 import SwiftUI
-import PhotosUI
 import AtlasCore
+import PhotosUI
 
-// A conversa — a base da comunicação. Metáfora de PÁGINA EDITORIAL, não bolhas
-// SaaS: o turno do operador é uma citação com barra bronze; o do Atlas é uma
-// página cheia (markdown editorial) com assinatura de provider, feedback
-// governado e streaming vivo. Composer: ConversationComposer.swift.
-// Turnos: ConversationMessages.swift. Folhas: ConversationSheets.swift.
-// Chrome: ConversationViewChrome.swift · Init: ConversationView+Init.swift
-// Lifecycle: ConversationView+Lifecycle.swift · Page: ConversationView+Page.swift
+// IDLE-COMPRESS fused ConversationView · ConversationView.swift
+
+// --- ConversationView.swift ---
 struct ConversationView: View {
     let title: String
     @Environment(\.dismiss) var dismiss
@@ -76,3 +72,131 @@ struct ConversationView: View {
     }
 
 }
+
+// --- ConversationView+A11y.swift ---
+enum ConversationViewA11y {
+    static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
+
+    static func spokenOutlineLabel(turnCount: Int) -> String {
+        let noun = turnCount == 1 ? "turno" : "turnos"
+        return "índice da conversa, \(turnCount) \(noun)"
+    }
+
+    static let outlineHint = "abre o índice editorial dos turnos desta conversa"
+    static let headerContinuityLabel = "continuidade da conversa"
+    static let headerContinuityHint = "continuar esta conversa no Mac ou no Terminal"
+    static let screenHint = "turnos e composer só com dados da sessão e do model"
+}
+
+// --- ConversationView+A11yEmpty.swift ---
+extension ConversationView {
+    func spokenConversationEmptyPrefix() -> String? {
+        if model.loadError != nil, model.bubbles.isEmpty {
+            return "\(title), falha ao carregar"
+        }
+        if model.bubbles.isEmpty {
+            return "\(title), conversa vazia"
+        }
+        return nil
+    }
+}
+
+// --- ConversationView+A11yScreen.swift ---
+extension ConversationView {
+    func spokenConversationScreenLabel() -> String {
+        if let empty = spokenConversationEmptyPrefix() { return empty }
+        var parts = [title, "\(model.bubbles.count) turno\(model.bubbles.count == 1 ? "" : "s")"]
+        if model.isSending { parts.append("enviando") }
+        if model.showingStaleCache { parts.append("cache desatualizado") }
+        return parts.joined(separator: ", ")
+    }
+}
+
+// --- ConversationView+A11yToast.swift ---
+extension ConversationView {
+    func setToast(_ message: String) {
+        if reduceMotion { model.toast = message }
+        else { withAnimation(AtlasMotion.editorial) { model.toast = message } }
+        UIAccessibility.post(notification: .announcement, argument: ConversationViewA11y.spokenToast(message))
+    }
+
+    func clearToast() {
+        if reduceMotion { model.toast = nil }
+        else { withAnimation(AtlasMotion.editorial) { model.toast = nil } }
+    }
+}
+
+// --- ConversationView+Page.swift ---
+extension ConversationView {
+    @ViewBuilder
+    var conversationPage: some View {
+        conversationPageChrome(
+            ZStack(alignment: .bottom) {
+                AtlasTheme.bg.ignoresSafeArea()
+                conversationMessagesStack
+                conversationComposerBind
+            }
+        )
+    }
+}
+
+// --- ConversationView+PageChrome.swift ---
+extension ConversationView {
+    func conversationPageChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .toolbar(.hidden, for: .navigationBar)
+            .scrollDismissesKeyboard(.interactively)
+            .accessibilityIdentifier(A11yID.conversationScreen)
+            .accessibilityLabel(spokenConversationScreenLabel())
+            .accessibilityHint(
+                hidesNavigationBack
+                    ? "arraste para baixo para fechar"
+                    : ConversationViewA11y.screenHint
+            )
+            .overlay(alignment: .top) { toast }
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.toast)
+    }
+}
+
+// --- ConversationView+PageComposer.swift ---
+extension ConversationView {
+    var conversationComposerBind: some View {
+        conversationComposerCard
+    }
+}
+
+// --- ConversationView+PageComposerArgs+Bindings+Aggregate.swift ---
+extension ConversationView {
+    var conversationComposerSheetTraceAggregate: (
+        mode: Binding<String>,
+        showModeSheet: Binding<Bool>,
+        showWorkspaceSheet: Binding<Bool>,
+        showEffortSheet: Binding<Bool>,
+        showQueueSheet: Binding<Bool>,
+        showAttachmentSheet: Binding<Bool>,
+        pickedPhoto: Binding<PhotosPickerItem?>,
+        showFileImporter: Binding<Bool>,
+        showCamera: Binding<Bool>,
+        reviewTrace: Binding<ConversationReviewTraceRef?>,
+        artifactTrace: Binding<ConversationReviewTraceRef?>,
+        steerTrace: Binding<ConversationSteerTraceRef?>
+    ) {
+        let sheets = conversationComposerSheetFlagBindings
+        let traces = conversationComposerTraceBindings
+        return (
+            mode: sheets.mode,
+            showModeSheet: sheets.showModeSheet,
+            showWorkspaceSheet: sheets.showWorkspaceSheet,
+            showEffortSheet: sheets.showEffortSheet,
+            showQueueSheet: sheets.showQueueSheet,
+            showAttachmentSheet: sheets.showAttachmentSheet,
+            pickedPhoto: sheets.pickedPhoto,
+            showFileImporter: sheets.showFileImporter,
+            showCamera: sheets.showCamera,
+            reviewTrace: traces.reviewTrace,
+            artifactTrace: traces.artifactTrace,
+            steerTrace: traces.steerTrace
+        )
+    }
+}
+

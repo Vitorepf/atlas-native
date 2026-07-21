@@ -1,7 +1,9 @@
 import SwiftUI
+import AtlasCore
 
-/// Linha operacional com glifo tipográfico (∥ ※ ⌖ ◷) — alfabeto quiet luxury.
-/// Sem caixinha SF Symbol de template.
+// IDLE-COMPRESS Arena peels
+
+// --- ArenaPremiumGlyphRow.swift ---
 struct ArenaPremiumGlyphRow: View {
     let glyph: String
     let title: String
@@ -37,3 +39,30 @@ struct ArenaPremiumGlyphRow: View {
         .buttonStyle(.plain)
     }
 }
+
+// --- ArenaPremiumOperationalRows.swift ---
+struct ArenaPremiumOperationalRows: View {
+    @Bindable var model: ArenaModel
+    let onNavigate: (ArenaPremiumDestination) -> Void
+
+    private var alertCount: Int { model.arenaAlertSuiteCount }
+
+    var body: some View {
+        // Sem exceção: some a seção. Fila/Cobertura/Próxima/Plano moram
+        // DENTRO de Execução — duplicar aqui era a confusão.
+        if alertCount > 0 {
+            VStack(spacing: 0) {
+                ArenaPremiumHairline()
+                ArenaPremiumGlyphRow(
+                    glyph: "※",
+                    title: "Alertas",
+                    detail: alertCount == 1 ? "1 exceção" : "\(alertCount) exceções",
+                    tone: .negative,
+                    glyphTone: .negative
+                ) { onNavigate(.alerts) }
+                .accessibilityIdentifier(A11yID.arenaPremiumAlertsAction)
+            }
+        }
+    }
+}
+
