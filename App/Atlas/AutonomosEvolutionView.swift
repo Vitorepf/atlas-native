@@ -46,14 +46,7 @@ struct AutonomosEvolutionView: View {
         }
         .scrollIndicators(.hidden)
         .accessibilityIdentifier(A11yID.autonomosEvolution)
+        // Contain without fused label: age header and empty proof stay landmarks.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(spokenEvolution)
-    }
-
-    private var spokenEvolution: String {
-        if let unit {
-            return "Evolução de \(unit.name). \(unit.ageLabel). Ainda sem prova publicada neste Autônomo."
-        }
-        return "Evolução. Ainda sem prova publicada neste Autônomo."
     }
 }

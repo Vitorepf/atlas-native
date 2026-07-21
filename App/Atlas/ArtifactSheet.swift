@@ -224,8 +224,8 @@ extension ArtifactSheet {
         }
         .padding(.horizontal, 12)
         .atlasCard()
+        // Contain without fused label: each file row stays a button.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("lista de artefatos, \(items.count) itens")
     }
 }
 

@@ -209,8 +209,8 @@ extension AtlasCodeHealReceiptSheet {
     .padding(12)
     .frame(maxWidth: .infinity, alignment: .leading)
     .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+    // Contain without fused label: each step row stays focusable.
     .accessibilityElement(children: .contain)
-    .accessibilityLabel(spokenStepsSummaryLabel())
   }
 }
 
