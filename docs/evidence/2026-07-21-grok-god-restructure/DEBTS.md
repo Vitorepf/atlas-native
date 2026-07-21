@@ -4,18 +4,27 @@
 
 ```yaml
 pass: 1
-domain_index: 6
-last_focus: "AutonomosDecisionSurface face/list/detail fuse"
-session_commits: 37+
+domain_index: 5
+last_focus: "AutonomosDecisionSurface fuse"
+session_commits: 38+
+soft_sections_states: 0
+swift_files_App_Atlas: 315
 ```
 
-## Soft *Sections*/*States*: **0**
+## Hard
 
-## Próximo
+- *Sections*/*States* files: **0**
+- route *View/*Shell >600: none (guard OK)
+- any casca >2000: none (guard OK)
 
-- residual peels · domain rotate pass deepen
-- NEVER Goal Done
+## Domains advanced
 
-## Proibido
+0 Home · 1 Conversa · 2 Código · 4 Arena · 5 Autônomos · 6 Widgets · soft cross-cut
 
-Goal Done · god_hold · WAVE · dual · Core
+## Próximo (never stop)
+
+- pass deepen MARK residual
+- more host peels if ROI
+- CODEMAP truth
+- pass+=1 / domain_index cycle
+- **PROIBIDO Goal Done / god_hold**
