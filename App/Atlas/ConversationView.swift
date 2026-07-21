@@ -9284,7 +9284,7 @@ extension ArtifactSheet {
         .accessibilityIdentifier(A11yID.artifactsItem(index))
         .accessibilityLabel("\(item.name), \(ArtifactViewer.byteLabel(item.byteSize)), \(ArtifactViewer.kindLabel(item.kind))")
         .accessibilityAddTraits(item.id == selected?.id ? [.isButton, .isSelected] : .isButton)
-        .accessibilityHint(item.id == selected?.id ? "selecionado no preview" : "abre o preview deste artefato")
+        .accessibilityHint(item.id == selected?.id ? "Selecionado no preview" : "Abre o preview deste artefato")
     }
 }
 
@@ -9311,9 +9311,18 @@ extension ArtifactSheet {
             Spacer()
             artifactListRowMeta(item: item)
         }
+        .padding(.horizontal, 10)
         .padding(.vertical, 10)
         .frame(minHeight: 48)
         .contentShape(Rectangle())
+        .background(
+            RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
+                .fill(item.id == selected?.id ? AtlasTheme.goldVeil : Color.clear)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous)
+                .stroke(item.id == selected?.id ? AtlasTheme.goldBorder : Color.clear, lineWidth: 1)
+        )
     }
 }
 
