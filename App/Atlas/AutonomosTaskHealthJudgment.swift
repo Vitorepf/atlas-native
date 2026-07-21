@@ -143,4 +143,12 @@ enum AutonomosTaskHealthJudgment {
         }
         return (facts, absences)
     }
+
+    static func spokenSignal(_ flag: String) -> String {
+        "sinal \(flag)"
+    }
+
+    static func spokenObservedAt(_ observedAt: String) -> String {
+        "observado em \(observedAt)"
+    }
 }

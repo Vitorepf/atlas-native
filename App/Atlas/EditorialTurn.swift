@@ -207,7 +207,7 @@ extension EditorialTurn {
             userEditResendLabel
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("editar esta mensagem e reenviar como novo turno")
+        .accessibilityLabel(EditorialTurnJudgment.editResendLabel)
         .accessibilityHint("abre o compositor com este texto para um novo envio")
     }
 }

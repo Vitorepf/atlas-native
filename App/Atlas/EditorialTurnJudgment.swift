@@ -132,4 +132,6 @@ enum EditorialTurnJudgment {
         }
         return (facts, absences)
     }
+
+    static let editResendLabel = "editar esta mensagem e reenviar como novo turno"
 }

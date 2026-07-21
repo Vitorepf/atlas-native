@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 93
-- idle_compress_passes: 21
+- idle_compress_passes: 22
 - collapse_host: 0
 
 ## Waves done
@@ -106,10 +106,10 @@ mode: designer + implementer
 - WAVE-098
 
 ## Idle compress
-- pass 21 · Provenance/Ask/Arena/Plan/Heal chrome → Judgment
+- pass 21–22 · multi-surface chrome → Judgment (max 2 after WAVE-098)
 
 ## Open queue
-_(none)_
+_(none)_ — next A fill or full-bar residual only
 
 ## Notes
 - WAVE-098 reason. DEVICE_PENDING.

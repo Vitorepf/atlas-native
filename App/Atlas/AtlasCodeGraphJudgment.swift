@@ -105,4 +105,8 @@ enum AtlasCodeGraphJudgment {
         }
         return []
     }
+
+    static func spokenRepoTitle(_ repo: String) -> String {
+        "repositório \(repo)"
+    }
 }

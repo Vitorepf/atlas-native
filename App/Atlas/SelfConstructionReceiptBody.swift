@@ -283,7 +283,7 @@ extension SelfConstructionReceiptSheet {
             .textInputAutocapitalization(.never)
             .padding(10)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
-            .accessibilityLabel("quem autoriza o veto")
+            .accessibilityLabel(AutonomosReasonJudgment.actorPlaceholder)
             .accessibilityHint(spokenActorHint())
     }
 }
@@ -295,7 +295,7 @@ extension SelfConstructionReceiptSheet {
             .lineLimit(2...4)
             .padding(10)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
-            .accessibilityLabel("motivo auditável do veto")
+            .accessibilityLabel(AutonomosReasonJudgment.reasonPlaceholder)
             .accessibilityHint(spokenReasonHint())
     }
 }

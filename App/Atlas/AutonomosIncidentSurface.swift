@@ -86,7 +86,7 @@ struct AutonomosIncidentSurface: View {
                 .padding(.vertical, 10)
                 .overlay(alignment: .bottom) { AutonomosMapChrome.hairline }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("sinal \(flag)")
+                .accessibilityLabel(AutonomosTaskHealthJudgment.spokenSignal(flag))
             }
         } else if face.productWord == "quiet" {
             Text("Nenhum flag de incidente neste recorte.")
@@ -98,6 +98,6 @@ struct AutonomosIncidentSurface: View {
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.top, 20)
-            .accessibilityLabel("observado em \(health.observedAt)")
+            .accessibilityLabel(AutonomosTaskHealthJudgment.spokenObservedAt(health.observedAt))
     }
 }

@@ -274,7 +274,7 @@ extension AtlasCodeView {
             .atlasGlassCapsule()
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("repositório \(model.repo)")
+        .accessibilityLabel(AtlasCodeGraphJudgment.spokenRepoTitle(model.repo))
         .accessibilityHint("troca de repositório")
         .accessibilityIdentifier(A11yID.codeRepoSwitcher)
     }

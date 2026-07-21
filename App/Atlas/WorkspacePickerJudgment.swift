@@ -49,6 +49,7 @@ enum WorkspacePickerJudgment {
     static let reposCaption = "REPOSITÓRIOS"
     static let searchPrompt = "Buscar repositórios"
     static let rowHint = "abre o workspace deste repositório"
+    static let currentRepoBadgeLabel = "atual"
     static let closeLabel = "Fechar"
 
     // MARK: Face

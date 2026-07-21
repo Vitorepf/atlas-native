@@ -36,6 +36,7 @@ enum AtlasCodeAskPillJudgment {
     static let pillHint = "abre conversa sobre este repositório"
     static let clearLabel = "mostrar tudo no grafo"
     static let clearHint = "remove o recorte dos commits da resposta"
+    static let clearCommitRefLabel = "Limpar referência do commit"
     static let askCommitLabel = "perguntar ao Atlas sobre este commit"
     static func spokenUserQuote(_ quote: String) -> String {
         "sua frase: \(quote)"

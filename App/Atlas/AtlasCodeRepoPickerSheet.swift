@@ -127,7 +127,7 @@ struct AtlasCodeRepoPickerSheet: View {
                     Circle()
                         .fill(AtlasTheme.accent)
                         .frame(width: 6, height: 6)
-                        .accessibilityLabel("atual")
+                        .accessibilityLabel(WorkspacePickerJudgment.currentRepoBadgeLabel)
                 }
             }
             .padding(.horizontal, 14)

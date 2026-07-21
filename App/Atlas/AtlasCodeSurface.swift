@@ -157,7 +157,7 @@ extension AtlasCodeView {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Limpar referência do commit")
+            .accessibilityLabel(AtlasCodeAskPillJudgment.clearCommitRefLabel)
             .accessibilityHint("Remove o commit da pílula")
             .accessibilityIdentifier(A11yID.codeAskClear)
         } else if askModel.isAnchoring {
