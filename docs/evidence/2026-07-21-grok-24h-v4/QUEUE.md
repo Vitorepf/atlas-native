@@ -73,4 +73,5 @@ _(no open proposed WAVEs)_
 - WAVE-053 done
 - WAVE-054 done
 - WAVE-055 done
+- WAVE-056 done
 

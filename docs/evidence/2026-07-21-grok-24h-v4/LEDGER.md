@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 50
+- waves_completed: 51
 - idle_compress_passes: 6
 - collapse_host: 0
 
@@ -61,6 +61,7 @@ mode: designer + implementer
 - WAVE-053
 - WAVE-054
 - WAVE-055
+- WAVE-056
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -71,7 +72,7 @@ mode: designer + implementer
 - pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
 
 ## Designer
-- designs_proposed: 50
+- designs_proposed: 51
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -82,5 +83,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-055 arena start judgment. Prefer A fill. DEVICE_PENDING.
-- Continuity App Group BLOCKED.
+- WAVE-055–056 (arena start + why biography). Prefer A fill.
+- DEVICE_PENDING. Continuity App Group BLOCKED.

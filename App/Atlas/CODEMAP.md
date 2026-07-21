@@ -25,6 +25,7 @@
 | **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
 | **Heal veto / undoError** | `AtlasCodeHealVetoJudgment` → ReceiptSheet · canVeto · undo fail line |
 | **Commit row face (grafo)** | `AtlasCodeCommitRowJudgment` → dim/fora/main · tip branch · meta color |
+| **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face loading/fail/empty/timeline/truncated |
 | Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
 | Pack mid-thread conversa | `ConversationOccasionPack` (nunca `HomeAskContext` em `.thread`) |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |

@@ -49,8 +49,9 @@ struct AtlasCodeWhySheet: View {
                 .lineLimit(2)
                 .truncationMode(.middle)
                 .accessibilityHidden(true)
-            if let why = model.why, why.truncated {
-                Text("mostrando \(why.commits.count) de \(why.commitsTotal) · história truncada")
+            // WAVE-056: truncation banner from Judgment (published counts only).
+            if let why = model.why, let banner = AtlasCodeWhyJudgment.truncatedBanner(why) {
+                Text(banner)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
@@ -170,47 +171,39 @@ struct AtlasCodeWhySheet: View {
         return parts.joined(separator: " · ")
     }
 
-    // MARK: - A11y
+    // MARK: - A11y (WAVE-056: Judgment face)
+
+    var whyFace: AtlasCodeWhyFace {
+        AtlasCodeWhyJudgment.face(model: model)
+    }
 
     var whyContentPhaseID: String {
-        switch model.phase {
-        case .idle, .loading: return "loading"
-        case .failed: return "failed"
-        case .loaded:
-            guard let why = model.why else { return "loaded-nil" }
-            return why.commits.isEmpty ? "empty" : "timeline-\(why.commits.count)"
-        }
+        AtlasCodeWhyJudgment.contentPhaseID(face: whyFace)
     }
 
     var whyHeaderSpokenLabel: String {
-        guard let why = model.why, why.truncated else { return file }
-        return "\(file), mostrando \(why.commits.count) de \(why.commitsTotal)"
+        AtlasCodeWhyJudgment.spokenHeader(file: file, face: whyFace)
     }
 
     var whySheetSpokenLabel: String {
-        var parts = ["biografia do arquivo, \(file)"]
-        if model.phase == .loaded, let why = model.why {
-            if why.commits.isEmpty {
-                parts.append("sem história neste recorte")
-            } else {
-                var history = "\(why.commits.count) commit\(why.commits.count == 1 ? "" : "s")"
-                if why.truncated { history += " de \(why.commitsTotal), história truncada" }
-                parts.append(history)
-            }
-        }
-        return parts.joined(separator: ", ")
+        AtlasCodeWhyJudgment.spokenSheet(file: file, face: whyFace)
     }
 
-    func spokenLoading() -> String { "lendo a história do arquivo" }
+    func spokenLoading() -> String {
+        AtlasCodeWhyFace.loading.spokenFace
+    }
 
     func spokenFailed() -> String {
-        if let message = model.message, !message.isEmpty {
-            return "biografia indisponível, \(message)"
-        }
-        return "biografia indisponível"
+        AtlasCodeWhyJudgment.face(
+            phase: .failed(""),
+            why: nil,
+            message: model.message
+        ).spokenFace
     }
 
-    func spokenEmptyHistory() -> String { "este arquivo não tem história neste recorte" }
+    func spokenEmptyHistory() -> String {
+        AtlasCodeWhyFace.empty.spokenFace
+    }
 
     func spokenCommit(_ commit: AtlasCodeWhy.Commit) -> String {
         var parts: [String] = []
