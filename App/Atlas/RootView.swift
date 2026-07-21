@@ -3260,7 +3260,7 @@ struct AtlasProfileSheet: View {
         VStack(spacing: 10) {
             Image(systemName: "person.fill")
                 .atlasSans(26)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                 .frame(width: 72, height: 72)
                 .atlasGlassCircle()
                 .atlasElevation(radius: 10, y: 3, opacity: 0.18)
@@ -3269,9 +3269,20 @@ struct AtlasProfileSheet: View {
                 .font(AtlasFont.serif(24, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.55),
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: 64, height: 1.5)
+            .accessibilityHidden(true)
             Text("Operador do Atlas")
                 .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
