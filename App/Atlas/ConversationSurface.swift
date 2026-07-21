@@ -73,7 +73,7 @@ extension ConversationView {
 extension ConversationView {
     func conversationLifecycleModifiers<Content: View>(_ content: Content) -> some View {
         conversationOutlineSheet(
-            conversationPresenceModifiers(
+            presenceModifiers(
                 applySendHaptic(
                     applyCacheLifecycleModifiers(content)
                         .task { await model.load() }
@@ -110,7 +110,7 @@ extension ConversationView {
 // MARK: - Presence
 
 extension ConversationView {
-    func conversationPresenceOnAppear() {
+    func presenceOnAppear() {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: model.threadId)
         TurnPresence.shared.setVisible(model, visible: true)
         rebindMidThreadTurnFacts()
@@ -122,14 +122,14 @@ extension ConversationView {
 }
 
 extension ConversationView {
-    func conversationPresenceOnDisappear() {
+    func presenceOnDisappear() {
         TurnPresence.shared.setVisible(model, visible: false)
         model.markThreadVisited()
     }
 }
 
 extension ConversationView {
-    func conversationPresenceOnThreadChange(_ now: ThreadID?) {
+    func presenceOnThreadChange(_ now: ThreadID?) {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: now)
         TurnPresence.shared.setVisible(model, visible: true)
         rebindMidThreadTurnFacts()
@@ -201,10 +201,10 @@ extension ConversationView {
 }
 
 extension ConversationView {
-    func conversationPresenceModifiers<Content: View>(_ content: Content) -> some View {
+    func presenceModifiers<Content: View>(_ content: Content) -> some View {
         content
-            .onAppear { conversationPresenceOnAppear() }
-            .onChange(of: model.threadId) { _, now in conversationPresenceOnThreadChange(now) }
-            .onDisappear { conversationPresenceOnDisappear() }
+            .onAppear { presenceOnAppear() }
+            .onChange(of: model.threadId) { _, now in presenceOnThreadChange(now) }
+            .onDisappear { presenceOnDisappear() }
     }
 }

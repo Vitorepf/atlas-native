@@ -84,7 +84,7 @@ struct ArenaPremiumQueuedView: View {
     }
 }
 
-// MARK: - Peels
+// MARK: - Types
 
 enum ArenaPremiumTerminalKind: Equatable {
     case stopping

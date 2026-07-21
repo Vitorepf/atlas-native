@@ -112,7 +112,7 @@ extension ArenaModel {
     }
 }
 
-// MARK: - Peels
+// MARK: - Helpers
 
 extension ArenaModel {
     var shouldPollLiveRuns: Bool {

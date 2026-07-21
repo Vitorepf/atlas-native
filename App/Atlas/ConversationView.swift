@@ -96,7 +96,7 @@ extension ConversationView {
     }
 }
 
-// MARK: - Peels
+// MARK: - A11y
 
 extension ConversationView {
     func spokenConversationScreenLabel() -> String {

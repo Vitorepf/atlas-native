@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// WAVE-155 density peel
+// Receipt sheet chrome — title · veto fields · spoken submit
 
 extension SelfConstructionReceiptSheet {
     var receiptTitleBlock: some View {

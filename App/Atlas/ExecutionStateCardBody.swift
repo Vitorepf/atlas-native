@@ -36,7 +36,7 @@ extension ExecutionStateCard {
 }
 
 
-// MARK: - Peels
+// MARK: - Helpers
 
 extension ExecutionStateCard {
     var publishedExternalDeadline: String? {

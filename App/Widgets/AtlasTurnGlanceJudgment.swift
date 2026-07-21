@@ -2,7 +2,7 @@ import SwiftUI
 import ActivityKit
 import AtlasCore
 
-// WAVE-018 — one ContentState phase grammar for Island + Lock.
+// Island + Lock glance judgment — one ContentState face law.
 // Faces exclusive: finished | multiSession | paused | running.
 // Badges (ATT/EXT/FAIL/REC/PLN) are overlays from phaseTitle only — not faces.
 

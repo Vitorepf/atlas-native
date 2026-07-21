@@ -45,7 +45,7 @@ extension RootView {
     }
 }
 
-// MARK: - Peels
+// MARK: - Sections
 
 extension RootView {
   // A linha premium do site no clímax dela: ouro em fade nas duas pontas.

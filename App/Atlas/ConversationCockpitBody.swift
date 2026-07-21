@@ -2,7 +2,7 @@ import SwiftUI
 import AtlasCore
 
 // Conversation cockpit — AgentRow + ExecutingStrip (WAVE-006 live instrument).
-// Peels: ConversationCockpitBanners (banner · reconnect · silence).
+// Parts: ConversationCockpitBanners (banner · reconnect · silence).
 
 extension AgentRow {
     func agentRowChrome<Content: View>(_ content: Content) -> some View {

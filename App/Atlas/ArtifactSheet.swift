@@ -36,7 +36,7 @@ extension ArtifactSheet {
     }
 }
 
-// MARK: - Peels
+// MARK: - Sections
 
 extension ArtifactSheet {
     var loadedArtifactsHeader: some View {

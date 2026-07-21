@@ -87,7 +87,7 @@
 | **Steer / redirecionar** | `ConversationSteerJudgment` → receipt face · scope PT · allowsSubmit |
 | **Steer pack mid-thread (160)** | OccasionPack → `ConversationSteerJudgment.packFacts` + strip stop honesty |
 | **Agent lanes (multi)** | `ConversationAgentLanesJudgment` → ExecutionRibbon rank failed-first |
-| Island/Lock phase chrome | Widgets Live/Lock* (sem inventar App Group) |
+| Island/Lock phase chrome | `AtlasTurnGlanceJudgment` · Widgets Live/Lock* (sem inventar App Group) |
 | Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets · pack primary engine (WAVE-181) |
 | **Arena capacidades (confiança)** | `ArenaCapabilitiesJudgment` → measured/improved/regressed one law · rank · pack |
 | **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
@@ -158,10 +158,10 @@
 | **Markdown blocks peels** | Blocks · ViewBlocks (WAVE-130) |
 | **A11yID domain peels** | core · Arena · Code · Autonomos (WAVE-131) |
 | **ChangeReview Judgment peels** | core · Chrome spoken (WAVE-132) |
-| **SelfConstruction receipt peels** | Body · Chrome (WAVE-134) |
+| **SelfConstruction receipt chrome** | Body · BodyChrome · Chrome (sheet veto) |
 | **Root home sections peels** | Body · Live (WAVE-135) |
 | **LiveTimeline narrative peels** | RowView · Chrome (WAVE-136) |
-| **AutonomosDecision Judgment peels** | core · Grammar (WAVE-137) |
+| **AutonomosDecision Judgment** | `AutonomosDecisionJudgment` (faces · spoken · packFacts) |
 | **ArenaModel peels** | host · Actions (WAVE-138) |
 | **AutonomosModel peels** | host · Actions (WAVE-139) |
 | **ChangeReview governance peels** | Body · Chrome (WAVE-140) |
@@ -179,7 +179,7 @@
 | **Composer sheets modifier peels** | Modifier · Body (WAVE-152) |
 | **ExecutionProof sections peels** | Sections · Body (WAVE-153) |
 | **Markdown view blocks peels** | ViewBlocks · Body (WAVE-154) |
-| **SelfConstruction chrome peels** | Chrome · Peel (WAVE-155) |
+| **SelfConstruction veto spoken** | `SelfConstructionVetoJudgment` · Receipt Chrome fields |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)

@@ -2,7 +2,7 @@ import AtlasCore
 import SwiftUI
 
 // Messages list surface — empty/load/list host (WAVE-072).
-// Peels: ConversationMessagesScroll · ConversationMessagesEditorial · ConversationEmpty*
+// Parts: ConversationMessagesScroll · ConversationMessagesEditorial · ConversationEmpty*
 
 struct ConversationMessages: View {
     var model: ConversationModel

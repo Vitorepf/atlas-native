@@ -39,7 +39,7 @@ extension AutonomosView {
     }
 }
 
-// MARK: - Peels
+// MARK: - Sections
 
 extension AutonomosView {
     @ViewBuilder

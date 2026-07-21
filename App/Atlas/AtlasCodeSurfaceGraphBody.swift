@@ -38,7 +38,7 @@ extension AtlasCodeView {
     }
 }
 
-// MARK: - Peels
+// MARK: - Sections
 
 extension AtlasCodeView {
     func graphListScroll(

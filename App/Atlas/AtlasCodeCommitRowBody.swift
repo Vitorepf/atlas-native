@@ -109,7 +109,7 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// MARK: - Peels
+// MARK: - Helpers
 
 extension AtlasCodeCommitRow {
     /// Manchete: mensagem completa (tipo vive aqui). Sem mensagem → hash.
