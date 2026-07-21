@@ -49,7 +49,7 @@ extension FeedbackRow {
         content
             .accessibilityLabel(EditorialTurnA11y.spokenFeedbackLabel(kind: kind, active: isActive))
             .accessibilityHint(EditorialTurnA11y.spokenFeedbackHint())
-            .accessibilityAddTraits(isActive ? .isSelected : [])
+            .accessibilityAddTraits(isActive ? [.isButton, .isSelected] : .isButton)
             .accessibilityIdentifier(A11yID.editorialTurnFeedback(kind.rawValue))
     }
 }
@@ -380,6 +380,7 @@ extension EditorialTurn {
         .buttonStyle(PressableScale())
         .accessibilityLabel("editar esta mensagem e reenviar como novo turno")
         .accessibilityHint("abre o compositor com este texto para um novo envio")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
