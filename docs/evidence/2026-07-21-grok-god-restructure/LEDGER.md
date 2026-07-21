@@ -8,12 +8,12 @@ god_hold: **forbidden** (v4)
 
 ## State
 - phase: audit
-- focus: PlanCard Steps / residual peels
-- domain_index: 1
+- focus: residual peels Decision bodies
+- domain_index: 5
 - pass: 1
 - actionable: open
-- passes: 10
-- last_commit: pending-planrevision-rename
+- passes: 12
+- last_commit: pending-arena-timeline
 - collapse_host: 0
 
 ## Scope
@@ -27,6 +27,23 @@ god_hold: **forbidden** (v4)
 - Sources/** · ConversationModel/AtlasSession lógica · WAVE produto · dual A/B · Goal Done · god_hold
 
 ## Cycle log
+
+### 2026-07-21T22:54Z — Arena Ask + LiveTimeline fuses
+
+```yaml
+phase: prove
+focus: ArenaPremiumAskContext Live+Score · NarrativeRow+RowView
+domain_index: 5/1
+pass: 1
+commands: |
+  Ask Live+Score → host ~416
+  NarrativeRow+View → ~381
+  gates ✓
+before_after: |
+  −3 peels · hops pack/row 2→1
+notes: next Decision bodies
+```
+
 
 ### 2026-07-21T22:52Z — ChangeReviewGovernance fuse
 

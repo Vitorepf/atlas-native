@@ -91,7 +91,7 @@
 | Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets · pack primary engine |
 | **Arena capacidades (confiança)** | `ArenaCapabilitiesJudgment` → measured/improved/regressed one law · rank · pack |
 | **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · `ArenaPremiumNowBody` |
-| **Arena pack can_do honesty** | `ArenaPremiumAskContext` host · Live · Score parts · canDo matrix |
+| **Arena pack can_do honesty** | `ArenaPremiumAskContext` host · Live/Score organs fused · canDo matrix |
 | **Arena organ pack wire** | AskContext → Stop/Pipeline/Start/RunStatus packFacts · RunStatus productWord · `ArenaFleetJudgment` rank≡FleetView |
 | **Arena plano/fila** | `ArenaPlanQueueJudgment` → planFace empty/published/derived_live · queueFace |
 | **Arena live control (corridas)** | `ArenaLiveControlJudgment` → rank · face · canStop |
@@ -160,7 +160,7 @@
 | **ChangeReview Judgment** | `ChangeReviewJudgment` (risk · rank · spoken · pack · governance) |
 | **SelfConstruction receipt chrome** | `SelfConstructionReceiptChrome` · Body · BodyChrome (sheet veto) |
 | **Root home sections parts** | Body · Live |
-| **LiveTimeline narrative parts** | RowView · Chrome |
+| **LiveTimeline narrative (fused)** | `LiveTimelineNarrativeRow` (RowView fused) · Chrome |
 | **AutonomosDecision Judgment** | `AutonomosDecisionJudgment` (faces · spoken · packFacts) |
 | **ArenaModel parts** | host · Actions |
 | **AutonomosModel parts** | host · Actions |
