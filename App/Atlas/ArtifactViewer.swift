@@ -320,6 +320,8 @@ struct TraceEvidenceLoading: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(text)
+        // Live wait state; Reduce Motion keeps a static announcement.
+        .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
     }
 }
 
