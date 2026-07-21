@@ -121,6 +121,8 @@ extension View {
 enum AtlasMotion {
     static let instinct: Double = 0.18
     static let considered: Double = 0.32
+    /// Longer editorial fades (scan phase, large surface morph).
+    static let ceremonial: Double = 0.48
 
     /// Curva editorial (ease-out suave) — a transição padrão.
     static let editorial = Animation.timingCurve(0.22, 1, 0.36, 1, duration: considered)

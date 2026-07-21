@@ -1238,7 +1238,7 @@ extension AtlasCodeView {
                 .foregroundStyle(statusPulseColor)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, 12)
-                .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: model.scanState)
+                .animation(reduceMotion ? nil : .easeInOut(duration: AtlasMotion.ceremonial), value: model.scanState)
                 .accessibilityLabel(AtlasCodeGraphA11y.spokenStatus(
                     scanState: model.scanState, headline: pulse
                 ))
