@@ -175,6 +175,9 @@ extension AtlasCodeProvenanceSheet {
             AtlasCodeFileRow(file: file, accessibilityIdentifier: A11yID.whyFileRow(index))
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
+        .accessibilityHint("abre o porquê deste arquivo no commit")
         .accessibilityIdentifier(A11yID.whyFileRow(index))
         .accessibilityAddTraits(.isButton)
     }

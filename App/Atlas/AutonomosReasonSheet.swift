@@ -80,6 +80,11 @@ struct AutonomosReasonSheet: View {
                             ? "confirmar \(title.lowercased())"
                             : "confirmar indisponível, preencha operador e motivo"
                     )
+                    .accessibilityHint(
+                        canSubmit
+                            ? "registra operador e motivo no recibo governado"
+                            : "preencha quem autoriza e o motivo"
+                    )
                     .accessibilityAddTraits(.isButton)
                 }
             }

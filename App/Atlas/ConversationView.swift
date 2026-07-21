@@ -374,11 +374,15 @@ extension ConversationView {
             AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.desktop) }
         } label: { Label("Continuar no Mac", systemImage: "desktopcomputer") }
+        .accessibilityLabel("continuar no Mac")
+        .accessibilityHint("transfere esta sessão para o desktop")
         .accessibilityAddTraits(.isButton)
         Button {
             AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             Task { await model.handoffToSurface(.terminal) }
         } label: { Label("Continuar no Terminal", systemImage: "terminal") }
+        .accessibilityLabel("continuar no Terminal")
+        .accessibilityHint("transfere esta sessão para o terminal")
         .accessibilityAddTraits(.isButton)
     }
 }

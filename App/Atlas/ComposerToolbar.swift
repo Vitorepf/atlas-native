@@ -351,6 +351,7 @@ extension ComposerToolbar {
             Label("Modo: \(mode.capitalized)", systemImage: "slider.horizontal.3")
         }
         .accessibilityLabel("modo, \(mode)")
+        .accessibilityHint("abre opções de modo para o próximo envio")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -364,6 +365,7 @@ extension ComposerToolbar {
             Label("Workspace: \(model.workspaceName ?? "Atlas")", systemImage: "square.grid.2x2")
         }
         .accessibilityLabel("workspace, \(model.workspaceName ?? "Atlas")")
+        .accessibilityHint("abre o seletor de workspace da conversa")
         .accessibilityAddTraits(.isButton)
     }
 }

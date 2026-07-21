@@ -127,6 +127,7 @@ extension AtlasCodeView {
                         option, count: count, active: active, silent: active && filterSilence
                     )
                 )
+                .accessibilityHint(active ? "filtro ativo do grafo" : "filtra commits do grafo")
                 .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
                 .accessibilityIdentifier(A11yID.codeGraphFilter(option.rawValue))
             }
