@@ -939,17 +939,19 @@ extension EmptyConversation {
             onSuggestion(s)
         } label: {
             Text(s)
-                .font(AtlasFont.serifItalic(15)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.serifItalic(15))
+                .foregroundStyle(AtlasTheme.textPrimary.opacity(0.92))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 18).padding(.vertical, 12)
                 .frame(maxWidth: .infinity, minHeight: 48)
                 .background(
-                    Capsule().fill(AtlasTheme.surface)
+                    Capsule().fill(AtlasTheme.surface.opacity(0.92))
                         .overlay(
                             Capsule().strokeBorder(
                                 LinearGradient(
                                     colors: [
-                                        AtlasTheme.accent.opacity(0.12),
+                                        AtlasTheme.accent.opacity(0.28),
+                                        AtlasTheme.accent.opacity(0.08),
                                         AtlasTheme.separator
                                     ],
                                     startPoint: .leading,
@@ -959,7 +961,7 @@ extension EmptyConversation {
                             )
                         )
                 )
-                .atlasElevation(radius: 8, y: 2, opacity: 0.12)
+                .atlasElevation(radius: 8, y: 2, opacity: 0.14)
         }
         .buttonStyle(PressableScale())
         // Identifier = texto da sugestão (UITests + Voice Control estáveis).
