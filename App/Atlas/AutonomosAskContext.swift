@@ -52,7 +52,9 @@ enum AutonomosAskContext {
         controlFace: AutonomosRunControlFace = .unbound,
         canControl: Bool = false,
         live: AtlasAutonomosLiveResponse? = nil,
-        lastControlReceipt: AtlasAutonomosRunControlResponse? = nil
+        lastControlReceipt: AtlasAutonomosRunControlResponse? = nil,
+        delivered: AtlasAutonomosDeliveredResponse? = nil,
+        cycles: AtlasAutonomosCyclesResponse? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -112,7 +114,11 @@ enum AutonomosAskContext {
                 }
             case .evolution:
                 facts.append("foco: evolução")
-                absences.append("motor de evolução por unit ainda não ligado no wire")
+                let evo = AutonomosEvolutionJudgment.packFacts(
+                    marcos: AutonomosEvolutionJudgment.marcos(delivered: delivered, cycles: cycles)
+                )
+                facts.append(contentsOf: evo.facts)
+                absences.append(contentsOf: evo.absences)
             case .moment:
                 facts.append("foco: momento")
                 absences.append("feed de momentos pode estar vazio sem inventar")

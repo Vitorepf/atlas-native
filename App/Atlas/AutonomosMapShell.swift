@@ -248,6 +248,13 @@ struct AutonomosMapShell: View {
                     vestment: organismVestment,
                     controlFace: controlFace,
                     controlReceiptLine: controlReceiptLine,
+                    evolutionMeta: AutonomosEvolutionJudgment.hubEvolutionMeta(
+                        marcos: AutonomosEvolutionJudgment.marcos(
+                            delivered: model.delivered,
+                            cycles: model.cycles
+                        ),
+                        areaSelected: model.selectedArea != nil
+                    ),
                     onNavigate: { self.destination = $0 },
                     onControl: { pendingRunControl = $0 },
                     onLocalCatalogPause: { model.setOperatorUnitPaused(id: unit.id, paused: true) },
@@ -258,7 +265,13 @@ struct AutonomosMapShell: View {
                 missingUnit
             }
         case .evolution:
-            AutonomosEvolutionView(unit: selectedUnit)
+            AutonomosEvolutionView(
+                unit: selectedUnit,
+                areaSelected: model.selectedArea != nil,
+                delivered: model.delivered,
+                cycles: model.cycles,
+                onOpenReceipt: { selfConstructionReceipt = $0 }
+            )
         case .decisions, .decisionInbox, .decisionOrder:
             // WAVE-026: published backlog → decision surface; silence if empty.
             AutonomosDecisionSurface(
@@ -332,7 +345,9 @@ struct AutonomosMapShell: View {
                     ),
                     canControl: model.canControlSelectedArea,
                     live: model.live,
-                    lastControlReceipt: model.lastControlReceipt
+                    lastControlReceipt: model.lastControlReceipt,
+                    delivered: model.delivered,
+                    cycles: model.cycles
                 )
             },
             onThread: { askThreadId = $0 },

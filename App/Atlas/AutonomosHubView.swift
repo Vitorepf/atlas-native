@@ -8,6 +8,8 @@ struct AutonomosHubView: View {
     let vestment: AutonomosHubVestment
     let controlFace: AutonomosRunControlFace
     let controlReceiptLine: String?
+    /// WAVE-034: Evolução nav meta from delivered judgment.
+    var evolutionMeta: String = "sem provas"
     let onNavigate: (AutonomosDestination) -> Void
     let onControl: (AutonomosRunControlAction) -> Void
     let onLocalCatalogPause: () -> Void
@@ -68,7 +70,7 @@ struct AutonomosHubView: View {
 
                 AutonomosMapNavLine(
                     title: "Evolução",
-                    meta: "ainda sem provas",
+                    meta: evolutionMeta,
                     action: { onNavigate(.evolution) }
                 )
 

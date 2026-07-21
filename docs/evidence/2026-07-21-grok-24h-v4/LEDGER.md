@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 28
+- waves_completed: 29
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -39,6 +39,7 @@ mode: designer + implementer
 - WAVE-031
 - WAVE-032
 - WAVE-033
+- WAVE-034
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -56,5 +57,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-033 self-WAVE: self-construction veto wired to revertCycle.
-- DEVICE_PENDING. Wait A for queue 2–5.
+- WAVE-034 self-WAVE: Evolution delivered proof surface.
+- DEVICE_PENDING. Wait A for 2–5 open GOD WAVEs.
