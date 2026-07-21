@@ -98,4 +98,12 @@ enum ConversationLiveStripJudgment {
         }
         return (facts, absences)
     }
+
+    // MARK: Cockpit banner spoken (IDLE · was SilenceWatchdog/ExecutionBanner A11y)
+
+    static func spokenSilenceWatchdog(seconds: Int) -> String {
+        "execução ao vivo sem novos eventos há \(seconds) segundos"
+    }
+
+    static func spokenExecutionBanner(_ text: String) -> String { text }
 }

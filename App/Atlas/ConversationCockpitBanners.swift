@@ -31,7 +31,7 @@ struct ExecutionBanner: View {
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(tint.opacity(0.35), lineWidth: 1))
         .accessibilityElement(children: .ignore)
         .accessibilityHidden(embedInParent)
-        .accessibilityLabel(ExecutionBannerA11y.spoken(text: text))
+        .accessibilityLabel(ConversationLiveStripJudgment.spokenExecutionBanner(text))
         .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 }
@@ -160,7 +160,7 @@ struct SilenceWatchdog: View {
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(SilenceWatchdogA11y.spoken(seconds: silence))
+            .accessibilityLabel(ConversationLiveStripJudgment.spokenSilenceWatchdog(seconds: silence))
             .accessibilityIdentifier(A11yID.executionSilenceWatchdog)
         }
     }
@@ -174,13 +174,3 @@ struct SilenceWatchdog: View {
     }
 }
 
-enum SilenceWatchdogA11y {
-    static func spoken(seconds: Int) -> String {
-        "execução ao vivo sem novos eventos há \(seconds) segundos"
-    }
-}
-
-// IDLE-COMPRESS ExecutionBanner a11y
-enum ExecutionBannerA11y {
-    static func spoken(text: String) -> String { text }
-}
