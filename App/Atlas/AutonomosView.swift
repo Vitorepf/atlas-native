@@ -128,7 +128,7 @@ struct AutonomosFleetFailureEmpty: View {
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
-                .font(.title2)
+                .atlasSans(24)
                 .foregroundStyle(AtlasTheme.domOperacional.opacity(0.9))
                 .accessibilityHidden(true)
             Text("Catálogo fora de alcance.")
@@ -137,8 +137,8 @@ struct AutonomosFleetFailureEmpty: View {
                 .multilineTextAlignment(.center)
                 .accessibilityAddTraits(.isHeader)
             Text(message)
-                .font(.footnote)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.mono(10))
+                .foregroundStyle(AtlasTheme.textTertiary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityLabel(message)
@@ -147,14 +147,17 @@ struct AutonomosFleetFailureEmpty: View {
                 onRetry()
             } label: {
                 Text("Tentar de novo")
+                    .font(AtlasFont.serifItalic(16))
+                    .foregroundStyle(AtlasTheme.accent)
                     .frame(minWidth: 160, minHeight: 48)
+                    .contentShape(Rectangle())
             }
-                .buttonStyle(AutonomosPrimaryButtonStyle())
-                .accessibilityIdentifier(A11yID.autonomosRetry)
-                .accessibilityLabel("tentar de novo")
-                .accessibilityHint("tenta reabrir o catálogo Autônomos")
-                .accessibilityAddTraits(.isButton)
-                .accessibilitySortPriority(8)
+            .buttonStyle(AutonomosPrimaryButtonStyle())
+            .accessibilityIdentifier(A11yID.autonomosRetry)
+            .accessibilityLabel("tentar de novo")
+            .accessibilityHint("tenta reabrir o catálogo Autônomos")
+            .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(8)
         }
         .padding(.horizontal, 32)
         .padding(.vertical, 28)
