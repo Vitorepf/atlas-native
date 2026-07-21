@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos reason sheet craft (ciclo 306)** · `cb0de799` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — review accept/reject 48pt (ciclo 305)** · `47a1cef8` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — composer send 48pt (ciclo 304)** · `334c78ac` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — CircleButton 48pt glass (ciclo 303)** · `40a8c5d7` · App/Atlas 36. **Prova:** checks+build exit 0.
