@@ -3207,6 +3207,7 @@ extension ComposerToolbar {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .frame(width: 48, height: 48)
                 .background(Circle().fill(AtlasTheme.surfaceHi.opacity(0.55)))
+                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
                 .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                 .contentShape(Circle())
         }
@@ -3401,6 +3402,7 @@ extension ComposerToolbar {
                 .frame(width: 48, height: 48)
                 // Match attach soft circle — secondary composer chrome plane.
                 .background(Circle().fill(AtlasTheme.surfaceHi.opacity(0.55)))
+                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
                 .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                 .contentShape(Circle())
         }

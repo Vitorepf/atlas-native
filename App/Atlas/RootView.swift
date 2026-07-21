@@ -2767,7 +2767,7 @@ struct CircleButton: View {
         } label: {
             circleButtonLabel
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .contentShape(Circle())
         .accessibilityAddTraits(.isButton)
     }

@@ -1585,7 +1585,7 @@ private struct AutonomosMapPrimaryCTA: View {
                 .atlasElevation(radius: 10, y: 3, opacity: enabled ? 0.16 : 0.06)
                 .contentShape(Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .disabled(!enabled)
         .accessibilityLabel(title)
         .atlasAccessibilityHint(enabled ? "Confirma \(title)" : "Indisponível")
@@ -1626,7 +1626,7 @@ private struct AutonomosMapQuietCTA: View {
                 .atlasElevation(radius: 8, y: 2, opacity: danger ? 0.12 : 0.06)
                 .contentShape(Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .accessibilityLabel(title)
         .atlasAccessibilityHint(danger ? "Ação destrutiva" : "Ação secundária, \(title)")
         .accessibilityAddTraits(.isButton)

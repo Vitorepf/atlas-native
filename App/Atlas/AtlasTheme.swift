@@ -92,7 +92,10 @@ struct AtlasGlassCircle: ViewModifier {
         if #available(iOS 26.0, *) {
             content.glassEffect(.regular.interactive(), in: Circle())
         } else {
-            content.background(Circle().fill(AtlasTheme.surface))
+            content.background(
+                Circle().fill(AtlasTheme.surface)
+                    // Soft gold-quiet glass fallback — match capsule + composer disks.
+                    .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1)))
         }
     }
 }

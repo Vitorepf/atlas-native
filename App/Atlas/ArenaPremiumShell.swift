@@ -293,13 +293,15 @@ struct ArenaPremiumTabBar: View {
                             if selection == tab {
                                 Capsule()
                                     .fill(AtlasTheme.surfaceHi)
-                                    .atlasElevation(radius: 5, y: 1)
+                                    // Soft gold-quiet selected pill rim — match tab track family.
+                                    .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
+                                    .atlasElevation(radius: 5, y: 1, opacity: 0.12)
                                     .matchedGeometryEffect(id: "arena-tab", in: selectionNamespace)
                             }
                         }
                         .contentShape(Capsule())
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .accessibilityLabel(tabAccessibilityLabel(tab))
                 .accessibilityAddTraits(selection == tab ? [.isButton, .isSelected] : .isButton)
                 .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.a11yKey))
