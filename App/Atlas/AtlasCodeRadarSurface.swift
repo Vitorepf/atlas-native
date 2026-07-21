@@ -20,7 +20,7 @@ extension AtlasCodeRepoRow {
         button
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
-                AtlasCodeRadarRowsA11y.spokenRepo(
+                AtlasCodeRadarJudgment.spokenRepo(
                     name: repo.name,
                     folder: repo.folder,
                     showsFolder: showsFolder,
@@ -30,7 +30,7 @@ extension AtlasCodeRepoRow {
                     isMute: isMute
                 )
             )
-            .accessibilityHint(AtlasCodeRadarRowsA11y.repoHint)
+            .accessibilityHint(AtlasCodeRadarJudgment.repoHint)
             .accessibilityIdentifier(A11yID.radarRepo(repo.slug))
     }
 }

@@ -70,14 +70,14 @@ extension AtlasCodeFolderRow {
         content
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
-                AtlasCodeFolderRowA11y.spokenFolder(
+                AtlasCodeRadarJudgment.spokenFolder(
                     name: folder.name,
                     repositoryCount: folder.repositories,
                     verifiedExceptionCount: verifiedExceptionCount,
                     isExpanded: isExpanded
                 )
             )
-            .accessibilityHint(AtlasCodeFolderRowA11y.spokenHint(isExpanded: isExpanded))
+            .accessibilityHint(AtlasCodeRadarJudgment.spokenFolderHint(isExpanded: isExpanded))
             .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
     }
 }
