@@ -30,6 +30,7 @@ enum AutonomosMapChrome {
             .accessibilityAddTraits(.isHeader)
     }
 
+    @MainActor
     static func heroSub(_ text: String) -> some View {
         Text(text)
             .atlasSans(14)
