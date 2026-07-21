@@ -125,6 +125,7 @@
 | **LiveTimeline peels** | host · NarrativeRow · NarrativeRowView (WAVE-117) |
 | **Commit row peels** | Body · Meta (WAVE-118) |
 | **Conversation sheets peels** | SheetsBody · ComposerSheetsModifier (WAVE-119) |
+| **Search surface peels** | Surface/Header · Results (WAVE-120) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
