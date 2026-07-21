@@ -22,6 +22,7 @@ struct AutonomosEvolutionView: View {
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .padding(.bottom, 28)
+                        .accessibilityLabel(unit.charter)
                 }
 
                 AutonomosMapChrome.section("Marcos")
@@ -38,6 +39,9 @@ struct AutonomosEvolutionView: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.top, 10)
                     .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityLabel(
+                        "Quando o Server aceitar create, os ciclos aparecem aqui — só deste escopo."
+                    )
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 16)
