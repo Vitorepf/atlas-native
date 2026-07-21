@@ -62,6 +62,8 @@ enum AutonomosMapChrome {
             .tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityAddTraits(.isHeader)
+            // Spoken title stays natural case — uppercase tracking is visual only.
+            .accessibilityLabel(text)
     }
 
     enum CTAHaptic {
