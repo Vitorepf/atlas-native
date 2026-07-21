@@ -142,6 +142,7 @@ struct ArenaPremiumExecutionView: View {
                 Text("Ainda sem corridas publicadas.")
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityLabel("Ainda sem corridas publicadas.")
             } else {
                 ForEach(orderedRuns) { run in
                     NavigationLink {
@@ -150,6 +151,7 @@ struct ArenaPremiumExecutionView: View {
                         runRow(run)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityAddTraits(.isButton)
                     ArenaPremiumHairline()
                 }
             }
