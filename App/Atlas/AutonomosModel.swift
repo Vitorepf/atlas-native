@@ -1,10 +1,246 @@
+import AtlasCore
 import Foundation
 import Observation
-import AtlasCore
 
-/// Motor da área Autônomos. Não conhece Views nem conversa: só projeta o
-/// estado real do Atlas Continuous Stewardship Loop para a casca própria 24/7.
-/// Load → AutonomosModel+Load.swift · comandos → +Control.swift · decisões → +Decide.swift.
+// IDLE-COMPRESS AutonomosModel fused
+
+// --- AutonomosModel+Control.swift ---
+extension AutonomosModel {
+    func control(
+        _ action: AtlasAutonomosRunAction,
+        operatorActor: String,
+        reason: String
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosRunControlInput(
+                action: action,
+                operatorActor: operatorActor,
+                reason: reason,
+                focus: area.focus
+            )
+            lastControlReceipt = try await client.controlAutonomosRun(area: area.id, input: input)
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    func startRun(
+        mode: AtlasAutonomosStartRunMode,
+        operatorActor: String,
+        operatorReason: String
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosStartRunInput(
+                mode: mode,
+                operatorActor: operatorActor,
+                operatorReason: operatorReason,
+                focus: area.focus
+            )
+            lastStartRunReceipt = try await client.startAutonomosRun(area: area.id, input: input)
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+}
+
+// --- AutonomosModel+Decide.swift ---
+extension AutonomosModel {
+    func refreshDigest() async {
+        do {
+            digest = try await client.autonomosDigest()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    func decide(
+        _ decision: AtlasAutonomosOperatorDecision,
+        findingHash: String,
+        operatorActor: String,
+        rationale: String = "",
+        riskLevel: AtlasAutonomosRiskLevel = .medium,
+        inboxItemId: String? = nil,
+        workOrderId: String? = nil,
+        evidencePackHash: String? = nil
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosOperatorDecisionInput(
+                operatorActor: operatorActor,
+                decision: decision,
+                findingHash: findingHash,
+                rationale: rationale,
+                riskLevel: riskLevel,
+                inboxItemId: inboxItemId,
+                workOrderId: workOrderId,
+                evidencePackHash: evidencePackHash
+            )
+            lastDecisionReceipt = try await client.decideAutonomosOperatorAction(area: area.id, input: input)
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+}
+
+// --- AutonomosModel+Load.swift ---
+extension AutonomosModel {
+    func loadSelectedDetails() async throws {
+        guard let area = selectedArea else {
+            live = nil; cycles = nil; delivered = nil; backlog = nil; fleet = nil; fleetHistory = nil; taskHealth = nil; digest = nil
+            AtlasNativeSnapshotWriter.shared.recordAutonomos(self)
+            return
+        }
+        async let liveRequest = client.autonomosLive(area: area.id, focus: area.focus)
+        async let cyclesRequest = client.autonomosCycles(area: area.id, focus: area.focus)
+        async let deliveredRequest = client.autonomosDelivered(area: area.id, focus: area.focus)
+        async let backlogRequest = client.autonomosBacklog(area: area.id, focus: area.focus)
+        async let fleetRequest = client.autonomosFleet()
+        async let fleetHistoryRequest = client.autonomosFleetHistory()
+        async let taskHealthRequest = client.autonomosTaskHealth()
+        async let digestRequest = client.autonomosDigest()
+        let (nextLive, nextCycles, nextDelivered, nextBacklog) = try await (liveRequest, cyclesRequest, deliveredRequest, backlogRequest)
+        live = nextLive
+        cycles = nextCycles
+        delivered = nextDelivered
+        backlog = nextBacklog
+        fleet = try? await fleetRequest
+        fleetHistory = try? await fleetHistoryRequest
+        taskHealth = try? await taskHealthRequest
+        digest = try? await digestRequest
+        AtlasNativeSnapshotWriter.shared.recordAutonomos(self)
+    }
+
+    static func publicMessage(_ error: Error) -> String {
+        if let client = error as? AtlasAutonomosClientError {
+            switch client {
+            case .missingOperatorActor:
+                return "Informe quem autoriza esta ação."
+            case .missingOperatorReasonForExecute:
+                return "Informe o motivo auditável antes de iniciar uma execução."
+            case .missingFindingHash:
+                return "Escolha uma evidência ou finding antes de registrar a decisão."
+            case .missingRationaleForHighRiskAccept:
+                return "Aceites de risco alto exigem uma justificativa auditável."
+            case .missingTransferReason:
+                return "Informe o motivo auditável antes de transferir a missão."
+            case .missingRevertReason:
+                return "Informe o motivo auditável antes de reverter um ciclo."
+            }
+        }
+        if let api = error as? AtlasApiError { return api.message }
+        if error is DecodingError {
+            return "O servidor respondeu num formato que o app não reconhece — contrato divergente; atualize o app."
+        }
+        if let url = error as? URLError {
+            switch url.code {
+            case .notConnectedToInternet, .networkConnectionLost:
+                return "Sem conexão — verifique o Wi-Fi ou a VPN do Atlas."
+            case .timedOut:
+                return "O servidor demorou demais para responder — tente de novo."
+            case .cannotConnectToHost, .cannotFindHost:
+                return "Não foi possível alcançar o Mac — o atlas-server está de pé?"
+            default: break
+            }
+        }
+        return "Não foi possível atualizar o estado do Autônomos agora."
+    }
+}
+
+// --- AutonomosModel+OperatorCatalog.swift ---
+extension AutonomosModel {
+    func operatorUnit(id: String) -> AutonomosUnit? {
+        operatorUnits.first { $0.id == id }
+    }
+
+    @discardableResult
+    func createOperatorUnit(name: String, charter: String) -> AutonomosUnit {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedCharter = charter.trimmingCharacters(in: .whitespacesAndNewlines)
+        let unit = AutonomosUnit(
+            id: UUID().uuidString,
+            name: trimmedName.isEmpty ? "Sem nome" : trimmedName,
+            charter: trimmedCharter.isEmpty ? "Escopo ainda sem carta." : trimmedCharter,
+            createdAt: Date(),
+            paused: true
+        )
+        operatorUnits.insert(unit, at: 0)
+        return unit
+    }
+
+    func setOperatorUnitPaused(id: String, paused: Bool) {
+        guard let index = operatorUnits.firstIndex(where: { $0.id == id }) else { return }
+        operatorUnits[index].paused = paused
+    }
+
+    func removeOperatorUnit(id: String) {
+        operatorUnits.removeAll { $0.id == id }
+    }
+}
+
+// --- AutonomosModel+Transfer.swift ---
+extension AutonomosModel {
+    func transfer(
+        operatorActor: String,
+        reason: String
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosTransferInput(
+                operatorActor: operatorActor,
+                reason: reason,
+                focus: area.focus
+            )
+            lastTransferReceipt = try await client.transferAutonomosMission(area: area.id, input: input)
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    func refreshTransferStatus() async {
+        guard let area = selectedArea, let handoffId = lastTransferReceipt?.handoff.handoffId else { return }
+        do {
+            lastTransferReceipt = try await client.autonomosTransferStatus(area: area.id, handoffId: handoffId)
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+
+    func revertCycle(
+        cycle: String,
+        operatorActor: String,
+        reason: String
+    ) async {
+        guard let area = selectedArea else { return }
+        controlError = nil
+        do {
+            let input = AtlasAutonomosCycleRevertInput(
+                operatorActor: operatorActor,
+                reason: reason,
+                focus: area.focus
+            )
+            lastRevertReceipt = try await client.revertAutonomosCycle(
+                area: area.id,
+                cycle: cycle,
+                input: input
+            )
+            try await loadSelectedDetails()
+        } catch {
+            controlError = Self.publicMessage(error)
+        }
+    }
+}
+
+// --- AutonomosModel.swift ---
 @MainActor
 @Observable
 final class AutonomosModel {
@@ -18,13 +254,9 @@ final class AutonomosModel {
     var cycles: AtlasAutonomosCyclesResponse?
     var delivered: AtlasAutonomosDeliveredResponse?
     var backlog: AtlasAutonomosBacklogResponse?
-    /// Estado global da frota; não é associado artificialmente à área selecionada.
     var fleet: AtlasAutonomosFleetResponse?
     var fleetHistory: AtlasAutonomosFleetHistoryResponse?
-    /// Saúde global da fila do músculo externo; não é um progresso estimado
-    /// nem é atribuída artificialmente à área selecionada.
     var taskHealth: AtlasAutonomosTaskHealthResponse?
-    /// Digest global governado do Autônomos; agenda ausente permanece ausente.
     var digest: AtlasAutonomosDigestResponse?
     var lastStartRunReceipt: AtlasAutonomosStartRunResponse?
     var lastTransferReceipt: AtlasAutonomosTransferResponse?
@@ -32,7 +264,6 @@ final class AutonomosModel {
     var lastControlReceipt: AtlasAutonomosRunControlResponse?
     var lastDecisionReceipt: AtlasAutonomosOperatorDecisionReceipt?
     var controlError: String?
-    /// Catálogo do operador (face Autônomos). Em memória até POST create (§5).
     var operatorUnits: [AutonomosUnit] = []
 
     init(client: AtlasClient) {
@@ -43,14 +274,10 @@ final class AutonomosModel {
         areas.first { $0.id == selectedAreaID }
     }
 
-    /// `live.readOnly` descreve somente a consulta GET. Os comandos possuem
-    /// endpoint e recibo próprios; só uma área registrada pode expô-los à UI.
     var canControlSelectedArea: Bool {
         selectedArea?.registered == true
     }
 
-    /// Face Autônomos = catálogo local (instantâneo). Áreas do loop hidratam
-    /// em segundo plano sem bloquear nem selecionar backlog (anti-badge mentiroso).
     func load() async {
         clearSelectionProjection()
         phase = .loaded
@@ -59,13 +286,11 @@ final class AutonomosModel {
             let response = try await client.listAutonomosAreas()
             areas = response.areas
         } catch {
-            // Catálogo local funciona sem isto; não derruba a superfície.
         }
     }
 
     func selectArea(_ id: String) async {
         guard areas.contains(where: { $0.id == id }) else { return }
-        // Limpa projeção antes do fetch — nunca mostrar backlog de outra área.
         selectedAreaID = id
         live = nil
         cycles = nil

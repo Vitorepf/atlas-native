@@ -1,6 +1,87 @@
 import AtlasCore
 import Observation
 
+// IDLE-COMPRESS AtlasCodeModel fused
+
+// --- AtlasCodeModel+State.swift ---
+extension AtlasCodeModel {
+
+    func matches(_ node: AtlasCodeGraphNode, target rawTarget: String) -> Bool {
+        let target = rawTarget.trimmingCharacters(in: .whitespaces)
+        guard !target.isEmpty else { return false }
+        if node.hash == target || node.hash.hasPrefix(target) { return true }
+        return node.refs.contains { ref in
+            ref.replacingOccurrences(of: "HEAD -> ", with: "")
+                .replacingOccurrences(of: "origin/", with: "")
+                .trimmingCharacters(in: .whitespaces) == target
+        }
+    }
+
+    var violatingHashes: Set<String> {
+        guard let violations, let graph else { return [] }
+        var hashes: Set<String> = []
+        for violation in violations.violations {
+            for node in graph.nodes where matches(node, target: violation.target) {
+                hashes.insert(node.hash)
+            }
+        }
+        return hashes
+    }
+
+    var healedHashes: Set<String> {
+        guard let heal else { return [] }
+        var hashes: Set<String> = []
+        for receipt in heal.stepReceipts where receipt.status == "completed" {
+            if let head = receipt.undoRef?["head"], !head.isEmpty {
+                hashes.insert(head)
+            }
+        }
+        return hashes
+    }
+
+    func state(for node: AtlasCodeGraphNode) -> AtlasCodeNodeState {
+        AtlasCodeGraphState.state(
+            for: node,
+            defaultBranch: graph?.defaultBranch,
+            violatingHashes: violatingHashes,
+            healedHashes: healedHashes,
+            spineHashes: spineHashes
+        )
+    }
+
+    func ruleId(for node: AtlasCodeGraphNode) -> String? {
+        violations?.violations.first { matches(node, target: $0.target) }?.ruleId
+    }
+
+    func ruleCanon(for node: AtlasCodeGraphNode) -> String? {
+        violations?.violations.first { matches(node, target: $0.target) }?.ruleCanonRef
+    }
+
+    var hasViolations: Bool { !(violations?.violations.isEmpty ?? true) }
+
+    var hasHealReceipt: Bool { !(heal?.stepReceipts.isEmpty ?? true) }
+
+    var statusHeadline: String {
+        let linha = violations?.trunk
+        guard let violations else {
+            return linha.map { "não consegui varrer a \($0)" } ?? "não consegui varrer a linha principal"
+        }
+        if violations.violations.count > 0 {
+            let quantos = violations.violations.count
+            return quantos == 1 ? "1 sem retorno" : "\(quantos) sem retorno"
+        }
+        let integra = linha.map { "\($0) íntegra" } ?? "linha principal íntegra"
+        if hasHealReceipt { return "\(integra) · curada sem você" }
+        return integra
+    }
+
+    var scanState: AtlasCodeScanState {
+        guard let violations else { return .unknown }
+        return violations.violations.isEmpty ? .clean : .violating
+    }
+}
+
+// --- AtlasCodeModel.swift ---
 @MainActor
 @Observable
 final class AtlasCodeModel {
@@ -18,7 +99,6 @@ final class AtlasCodeModel {
         self.repo = repo
     }
 
-    /// Troca in-place — a casca não remonta a NavigationStack.
     func adoptRepo(_ newRepo: String) {
         guard newRepo != repo else { return }
         repo = newRepo
@@ -35,7 +115,6 @@ final class AtlasCodeModel {
         let requested = repo
         phase = .loading
         do {
-            // Grafo primeiro: a tela ganha mapa sem esperar heal/week/scan.
             let graph = try await client.getCodeGraph(repo: requested, before: before)
             guard repo == requested else { return }
             self.graph = graph
@@ -64,25 +143,14 @@ final class AtlasCodeModel {
         do {
             _ = try await client.undoCodeHeal(id: id, repo: repo)
             heal = try? await client.getCodeHealTick(repo: repo)
-            // O veto muda o mundo: o mapa tem de contar a verdade nova.
             graph = try? await client.getCodeGraph(repo: repo)
             violations = try? await client.getCodeViolations(repo: repo)
         } catch {
-            // O veto FALHOU (rede, 500) — e apagar o recibo aqui era esconder
-            // exatamente o que o operador tentava desfazer: a folha sumia, ele
-            // ficava sem saber se o undo pegou nem como tentar de novo. Falha de
-            // veto mantém o recibo na tela; a cura ainda está lá para ser
-            // vetada. Silêncio de falha não pode apagar a única ação humana
-            // desta tela.
             undoError = "não consegui desfazer agora — a cura continua aqui, tente de novo."
         }
     }
 
-    /// Última falha do veto, para a folha do recibo dizer que o undo não pegou.
-    /// `nil` = sem erro pendente; a folha não inventa alarme.
     private(set) var undoError: String?
 
-    /// A espinha inteira, calculada UMA vez por grafo — não uma travessia por
-    /// nó, que seria O(n²) numa lista que rola.
     var spineHashes: Set<String> = []
 }
