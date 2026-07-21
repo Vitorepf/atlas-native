@@ -268,6 +268,7 @@ struct AutonomosViewHeader: View {
         .accessibilityHint("abre o formulário para criar um Autônomo")
         .accessibilityIdentifier(A11yID.autonomosNew)
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(9) // primary catalog create surfaces early in VO
     }
 
     private var refreshButton: some View {

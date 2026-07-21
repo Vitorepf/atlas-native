@@ -166,6 +166,7 @@ struct ArenaPremiumShell: View {
             .accessibilityHint("Escolhe motores, suítes e braços")
             .accessibilityIdentifier(A11yID.arenaPremiumAdd)
             .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(9) // primary Arena create surfaces early in VO
         }
     }
 }

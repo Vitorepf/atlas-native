@@ -187,6 +187,7 @@ struct NightlyProposalCard: View {
             .accessibilityLabel(Self.spokenAcceptLabel())
             .accessibilityHint(Self.spokenAcceptHint())
             .accessibilityAddTraits(.isButton)
+            .accessibilitySortPriority(9) // primary mission accept surfaces early in VO
 
             Button {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
