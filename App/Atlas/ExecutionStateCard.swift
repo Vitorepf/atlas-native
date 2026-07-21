@@ -423,7 +423,8 @@ extension ExecutionStateCard {
         iconAttention ?? iconTerminal
     }
 
-    static func clock(_ ms: Int) -> String {
+    /// Pure formatter — nonisolated so spoken helpers outside MainActor can call it.
+    nonisolated static func clock(_ ms: Int) -> String {
         AtlasTime.formatActiveDuration(milliseconds: ms)
     }
 }
