@@ -4,25 +4,21 @@ Started: 2026-07-21T02:45:05Z
 Constraint: no new product areas; casca only; eternal cycle
 
 ## Status
-- phase: D3 cycle 008
-- surface: AtlasCodeRadar
-- cycle: 8
-- last_commit: e3f43b3a
+- phase: D1 cycle 009
+- surface: AtlasCodeRadarView / Rows a11y
+- cycle: 9
+- last_commit: f7dc17af
 - last_gates: green
 - blocked: none
-- next_leap: fuse AtlasCodeRadarFolderRow + a11y peels
+- next_leap: fuse remaining AtlasCodeRadar* a11y peels or StatusCapsule
 
 ## Cycles closed
 | # | Leap | Commits | Δ |
 |---|------|---------|---|
-| 001 | LiveNow 54→2 | 40c6b044, cdf25936 | −52 |
-| 002 | ArenaCompositeChart 6→1 | 8bd0ac69, 211a7dad | −5 |
-| 003 | NightlyProposalCard | d08aef52 | −11 |
-| 004 | NightlyProposalBlock | 8b00f68d | −5 |
-| 005 | AutonomosView host | 924fb8f2 | −19 |
-| 006 | AutonomosViewHeader | 2c993202 | −8 |
+| 001–006 | LiveNow…Header | see log | peels |
 | 007 | RootHomeSections 26→1 | e3f43b3a | −25 |
+| 008 | AtlasCodeFolderRow 18→1 | f7dc17af | −17 |
 
 ## Counts
-- App/Atlas Swift files: post-007 ~1859
-- main ahead of origin: 11+
+- App/Atlas Swift ~1840
+- main ahead origin ~13
