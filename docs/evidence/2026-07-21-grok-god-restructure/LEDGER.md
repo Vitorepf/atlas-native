@@ -8,21 +8,21 @@ product_waves: forbidden
 
 ## State
 - phase: act
-- focus: continuous residual domain 3
-- domain_index: 3
-- pass: 602
-- last_commit: 226d6b60
-- session_commits: 174
+- focus: continuous residual domain 5
+- domain_index: 5
+- pass: 603
+- last_commit: d47e75e6
+- session_commits: 176
 - soft_sections_states: 0
 - swift_App_Atlas: 46
 - swift_Widgets: 2
 
 ## Scoreboard
-commits 174 · soft 0 · density OK · 46+2 · gates green
+commits 176 · soft 0 · density OK · 46+2 · gates green
 
 ## Last proof
-- AtlasCoreChecks ✓ · make build ✓ · wave-guard ✓
-- Home spoken* · Conversa product* · Código spoken*/product*
+- gates green
+- domains 0–4 honesty residual; Autônomos dead delete
 
 ## notes
 Goal until cancel. Never Goal Done. Never god_hold.
