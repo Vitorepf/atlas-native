@@ -2656,7 +2656,7 @@ struct CameraPicker: UIViewControllerRepresentable {
 enum CameraPickerA11y {
     static let spokenSurface = "câmera para anexar foto"
     static let spokenHint = "confirme a captura para anexar; cancelar não adiciona nada"
-    static let captureFailedToast = "não consegui capturar a foto"
+    static let captureFailedToast = "Não consegui capturar a foto"
 
     static let spokenChooseCamera = "capturar foto na câmera"
     static let spokenChooseCameraHint = "abre a câmera; nada é anexado até confirmar a captura"
@@ -7565,7 +7565,7 @@ extension ConversationComposerSheetsModifier {
         pickedPhoto = nil
         Task {
             guard let data = try? await item.loadTransferable(type: Data.self) else {
-                model.toast = "não consegui ler a foto"; return
+                model.toast = "Não consegui ler a foto"; return
             }
             let mime = item.supportedContentTypes.first?.preferredMIMEType ?? "image/jpeg"
             model.addImage(data: data, suggestedName: nil, mimeType: mime,
@@ -9292,13 +9292,13 @@ extension ArtifactSheet {
     @ViewBuilder
     var emptyOrUnavailable: some View {
         if !loadFinished, artifacts == nil {
-            TraceEvidenceLoading(text: "consultando artefatos…", reduceMotion: reduceMotion)
+            TraceEvidenceLoading(text: "Consultando artefatos…", reduceMotion: reduceMotion)
         } else if loadFinished, artifacts == nil {
             TraceEvidenceUnavailable(
                 title: "Não foi possível consultar artefatos.",
-                subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
+                subtitle: "Feche e tente de novo — o motivo pode estar no aviso superior.",
                 identifier: A11yID.artifactsLoadFailure,
-                spoken: "não foi possível consultar artefatos"
+                spoken: "Não foi possível consultar artefatos"
             )
         } else {
             artifactsUnavailable
@@ -9323,7 +9323,7 @@ extension ArtifactSheet {
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityIdentifier(A11yID.artifactsEmpty)
-            .accessibilityLabel("sem artefatos visualizáveis nesta execução")
+            .accessibilityLabel("Sem artefatos visualizáveis nesta execução")
     }
 }
 
@@ -9336,7 +9336,7 @@ extension ArtifactSheet {
                 subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
                 identifier: A11yID.artifactsUnavailable,
                 spoken: TraceEvidenceCopy.unavailableSpoken(
-                    prefix: "sem artefatos nesta execução",
+                    prefix: "Sem artefatos nesta execução",
                     reason: artifacts?.reason
                 )
             )
@@ -9396,7 +9396,7 @@ extension ArtifactSheet {
 
 extension ArtifactSheet {
     var previewPaneLoading: some View {
-        TraceEvidenceLoading(text: "carregando preview…", reduceMotion: reduceMotion)
+        TraceEvidenceLoading(text: "Carregando preview…", reduceMotion: reduceMotion)
             .frame(maxWidth: .infinity, minHeight: 180)
     }
 }
@@ -9872,8 +9872,8 @@ extension TraceEvidenceUnavailable {
 extension TraceEvidenceCopy {
     static func knownMissingRunReason(_ reason: String) -> String? {
         switch reason {
-        case "no_workspace": return "sem workspace ligado a esta execução"
-        case "no_run": return "nenhum run de engenharia vinculado"
+        case "no_workspace": return "Sem workspace ligado a esta execução"
+        case "no_run": return "Nenhum run de engenharia vinculado"
         default: return nil
         }
     }
@@ -9883,8 +9883,8 @@ extension TraceEvidenceCopy {
     static func knownUnavailableReason(_ reason: String) -> String? {
         if let missing = knownMissingRunReason(reason) { return missing }
         switch reason {
-        case "multiple_runs": return "mais de um run — evidência indisponível"
-        case "ambiguous_linked_runs": return "vínculo ambíguo entre runs"
+        case "multiple_runs": return "Mais de um run — evidência indisponível"
+        case "ambiguous_linked_runs": return "Vínculo ambíguo entre runs"
         default: return nil
         }
     }
