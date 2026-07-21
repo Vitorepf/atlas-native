@@ -106,6 +106,7 @@
 | Preview peels | `ArtifactPreviewChrome` host · `TraceEvidenceChrome` · `ArtifactPreviewZoom` (Judgment-only a11y) |
 | **Provenance file-row spoken** | `AtlasCodeProvenanceJudgment` spokenFile/verb/packFile → FileRow |
 | **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
+| **Turn presence away notify** | `TurnPresenceJudgment` isTerminal/title/body/spoken · TurnPresence host |
 | **Prova de execução (card recolhido)** | `ExecutionProofJudgment` → face kicker · qualityLine/spoken · activity · replay absence |
 | **Artefatos lista/row** | `ArtifactListJudgment` → list silence/list(N) · row · empty visualizable · close |
 | **Assinatura editorial (turno)** | `EditorialTurnJudgment` → signature present/absent · feedback spoken · pack |
