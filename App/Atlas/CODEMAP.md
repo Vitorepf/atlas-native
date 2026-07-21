@@ -149,6 +149,9 @@
 | **AtlasSession peels** | host · Body (WAVE-142) |
 | **Code surface peels** | Surface · Body (WAVE-143) |
 | **ExecutionProof Judgment peels** | core · Chrome (WAVE-144) |
+| **PlanJudgment peels** | core · Chrome (WAVE-145) |
+| **LiveNowJudgment peels** | core · Row (WAVE-146) |
+| **ComposerDraftJudgment peels** | core · Attach (WAVE-147) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
