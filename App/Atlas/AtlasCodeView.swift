@@ -730,6 +730,8 @@ extension AtlasCodeView {
                 .font(AtlasFont.serif(20))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(spokenCodeScreenLabel())
+                .accessibilityHint(Self.codeScreenHint)
         }
     }
 
