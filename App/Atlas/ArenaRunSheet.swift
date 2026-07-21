@@ -530,7 +530,7 @@ extension ArenaRunSheet {
             fieldLabel("Motivo")
             TextField("por que rodar agora (fica no recibo)", text: $reason, axis: .vertical)
                 .lineLimit(2...4)
-                .modifier(ArenaFieldChrome())
+                .modifier(ArenaFieldChrome(minHeight: 88))
                 .accessibilityIdentifier(A11yID.arenaRunReason)
                 .accessibilityHint(spokenReasonHint())
         }
@@ -540,16 +540,23 @@ extension ArenaRunSheet {
         Text(text)
             .atlasSans(12, .medium)
             .foregroundStyle(AtlasTheme.textSecondary)
+            .accessibilityAddTraits(.isHeader)
     }
 }
 
 struct ArenaFieldChrome: ViewModifier {
+    /// Single-line 48; multi-line reason fields pass 88.
+    var minHeight: CGFloat = 48
+
     func body(content: Content) -> some View {
         content
             .font(.system(.callout))
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 12).padding(.vertical, 10)
-            .frame(minHeight: 48, alignment: .center)
+            .frame(
+                minHeight: minHeight,
+                alignment: minHeight > 48 ? .topLeading : .center
+            )
             .background(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
                     .fill(AtlasTheme.bgRecessed)

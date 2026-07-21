@@ -111,6 +111,7 @@ extension SearchViewHeader {
     var searchFieldCapsule: some View {
         searchFieldLeading
             .padding(.horizontal, 14).padding(.vertical, 9)
+            .frame(minHeight: 44) // HIG interactive minimum
             .background(Capsule().fill(AtlasTheme.surface)
                 .overlay(Capsule().stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1)))
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: focused)

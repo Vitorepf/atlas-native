@@ -73,7 +73,7 @@ struct ArenaPremiumStopSheet: View {
             fieldLabel("Motivo")
             TextField("por que parar agora (fica no recibo)", text: $reason, axis: .vertical)
                 .lineLimit(2...4)
-                .modifier(ArenaFieldChrome())
+                .modifier(ArenaFieldChrome(minHeight: 88))
                 .accessibilityIdentifier(A11yID.arenaPremiumStopReason)
         }
     }
@@ -82,6 +82,7 @@ struct ArenaPremiumStopSheet: View {
         Text(text)
             .atlasSans(12, .medium)
             .foregroundStyle(AtlasTheme.textSecondary)
+            .accessibilityAddTraits(.isHeader)
     }
 
     @ViewBuilder
