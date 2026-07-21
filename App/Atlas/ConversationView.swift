@@ -4491,7 +4491,8 @@ extension ExecutingStrip {
 extension ExecutingStrip {
     var stripStatusIdleLine: some View {
         Text("Seguindo a execução")
-            .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
+            .font(AtlasFont.serif(13))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.85))
             .lineLimit(1)
             .layoutPriority(2)
             .accessibilityHidden(true)
@@ -4508,7 +4509,7 @@ extension ExecutingStrip {
                 .accessibilityHidden(true)
             Text(act.title)
                 .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .layoutPriority(2)
@@ -4551,7 +4552,8 @@ extension ExecutingStrip {
         TimelineView(.periodic(from: .now, by: 1)) { ctx in
             let secs = bubble.startedAt.map { max(0, Int(ctx.date.timeIntervalSince($0))) } ?? 0
             Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(11, .medium))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .lineLimit(1)
