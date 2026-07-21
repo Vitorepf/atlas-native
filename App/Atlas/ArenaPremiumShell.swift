@@ -5196,7 +5196,8 @@ enum ArenaPremiumTone {
     var color: Color {
         switch self {
         case .muted: AtlasTheme.textTertiary
-        case .neutral: AtlasTheme.textSecondary
+        // Neutral kickers read gold-quiet to pair with gold principals/hairlines.
+        case .neutral: AtlasTheme.accent.opacity(0.82)
         case .active: AtlasTheme.accent
         case .positive: AtlasTheme.textPrimary
         case .negative: AtlasTheme.alert
