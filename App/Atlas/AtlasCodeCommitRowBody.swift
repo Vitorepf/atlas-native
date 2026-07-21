@@ -4,6 +4,8 @@ import AtlasCore
 // AtlasCodeCommitRow body — chrome · meta · face (WAVE-054)
 
 
+// MARK: - Host
+
 extension AtlasCodeCommitRow {
     var commitRowA11yChrome: some View {
         CommitRowAskChrome(
@@ -106,6 +108,8 @@ extension AtlasCodeCommitRow {
         AtlasCodeCommitRowJudgment.displayAuthor(node: node)
     }
 }
+
+// MARK: - Peels
 
 extension AtlasCodeCommitRow {
     /// Manchete: mensagem completa (tipo vive aqui). Sem mensagem → hash.

@@ -3,6 +3,8 @@ import SwiftUI
 
 // WAVE-097: workspace picker — list math/a11y via WorkspacePickerJudgment.
 
+// MARK: - Host
+
 struct AtlasWorkspacePickerSheet: View {
     @Environment(\.dismiss) var dismiss
     @State var model: AtlasCodeWorkspaceModel

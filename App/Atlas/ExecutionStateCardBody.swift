@@ -3,6 +3,8 @@ import AtlasCore
 
 // WAVE-127 ExecutionStateCard body peel
 
+// MARK: - Host
+
 extension ExecutionStateCard {
     func choiceActionButton(_ action: AtlasExecutionPresentationState.Action, choiceJobId: JobID) -> some View {
         Button { onChoose(choiceJobId, action.id) } label: {
@@ -33,6 +35,8 @@ extension ExecutionStateCard {
     }
 }
 
+
+// MARK: - Peels
 
 extension ExecutionStateCard {
     var publishedExternalDeadline: String? {

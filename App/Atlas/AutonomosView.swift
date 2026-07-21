@@ -3,6 +3,8 @@ import AtlasCore
 
 // IDLE-COMPRESS fused AutonomosView · AutonomosView.swift
 
+// MARK: - Host
+
 struct AutonomosView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
@@ -36,6 +38,8 @@ extension AutonomosView {
         }
     }
 }
+
+// MARK: - Peels
 
 extension AutonomosView {
     @ViewBuilder

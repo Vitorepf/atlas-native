@@ -3,6 +3,8 @@ import AtlasCore
 
 // density peel B
 
+// MARK: - Host
+
 extension AtlasCodeView {
     func graphCommitRowSelect(_ node: AtlasCodeGraphNode) {
         selectedNode = node
@@ -35,6 +37,8 @@ extension AtlasCodeView {
         await mirrorModel.refresh()
     }
 }
+
+// MARK: - Peels
 
 extension AtlasCodeView {
     func graphListScroll(

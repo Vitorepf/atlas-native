@@ -3,6 +3,8 @@ import AtlasCore
 
 // WAVE-015 fused
 
+// MARK: - Host
+
 extension RootView {
     func mastheadSpokenLabel(auditModeEnabled: Bool) -> String {
         auditModeEnabled ? "Atlas, modo auditoria" : "Atlas"
@@ -42,6 +44,8 @@ extension RootView {
         }
     }
 }
+
+// MARK: - Peels
 
 extension RootView {
   // A linha premium do site no clímax dela: ouro em fade nas duas pontas.

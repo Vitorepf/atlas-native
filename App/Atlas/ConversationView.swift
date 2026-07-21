@@ -4,6 +4,8 @@ import PhotosUI
 
 // IDLE-COMPRESS fused ConversationView · ConversationView.swift
 
+// MARK: - Host
+
 struct ConversationView: View {
     let title: String
     @Environment(\.dismiss) var dismiss
@@ -93,6 +95,8 @@ extension ConversationView {
         return nil
     }
 }
+
+// MARK: - Peels
 
 extension ConversationView {
     func spokenConversationScreenLabel() -> String {

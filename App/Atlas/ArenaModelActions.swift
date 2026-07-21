@@ -6,6 +6,8 @@ import Observation
 
 // WAVE-138 ArenaModel actions peel
 
+// MARK: - Host
+
 extension ArenaModel {
     func refreshSummaryKeepingSnapshot(quiet: Bool = false) async {
         if !quiet { controlError = nil }
@@ -109,6 +111,8 @@ extension ArenaModel {
         return n == 1 ? "1 regressão" : "\(n) regressões"
     }
 }
+
+// MARK: - Peels
 
 extension ArenaModel {
     var shouldPollLiveRuns: Bool {

@@ -3,6 +3,8 @@ import SwiftUI
 
 // WAVE-112 host + list body
 
+// MARK: - Host
+
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID
@@ -33,6 +35,8 @@ extension ArtifactSheet {
         }
     }
 }
+
+// MARK: - Peels
 
 extension ArtifactSheet {
     var loadedArtifactsHeader: some View {

@@ -2,6 +2,8 @@ import Foundation
 import AtlasCore
 
 /// Pack de ocasião do Grafo/Código — WAVE-019 + WAVE-020 grammar.
+// MARK: - Host
+
 enum AtlasCodeAskContext {
     static let invite = "pergunte sobre este repositório"
 

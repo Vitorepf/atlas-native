@@ -2,6 +2,8 @@ import Foundation
 import AtlasCore
 
 /// Pack de contexto Autônomos — WAVE-020 grammar + WAVE-026 decision subjects.
+// MARK: - Host
+
 enum AutonomosAskContext {
     static func invite(destination: AutonomosDestination?, vestment: AutonomosHubVestment) -> String {
         if let destination {

@@ -1,6 +1,8 @@
 import SwiftUI
 import AtlasCore
 
+// MARK: - Host
+
 struct ArenaPremiumIdleView: View {
     @Bindable var model: ArenaModel
     let onRun: () -> Void
@@ -81,6 +83,8 @@ struct ArenaPremiumQueuedView: View {
         }
     }
 }
+
+// MARK: - Peels
 
 enum ArenaPremiumTerminalKind: Equatable {
     case stopping
