@@ -179,7 +179,10 @@ extension ConversationView {
                 }) ? model.uploadPercent : nil,
                 effort: model.effort,
                 cacheCapturedAt: model.cacheCapturedAt,
-                artifacts: artifacts
+                artifacts: artifacts,
+                turnCount: model.bubbles.count,
+                toolbarMode: model.taskKind ?? "",
+                toolbarWorkspaceName: model.workspacePath
             )
             return ConversationOccasionPack.facts(
                 session: session,

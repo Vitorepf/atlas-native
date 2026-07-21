@@ -75,6 +75,19 @@ enum HomeAskContext {
         )
         absences.append(contentsOf: partida.absences)
 
+        // WAVE-166: ops failure organ when home load failed empty.
+        if threads.isEmpty, case .failed = session.phase {
+            let failPack = AtlasOpsFailureJudgment.packFacts(
+                mode: .network(
+                    kind: session.failureKind,
+                    hasToken: session.hasToken,
+                    host: session.host
+                )
+            )
+            facts.append(contentsOf: failPack.facts)
+            absences.append(contentsOf: failPack.absences)
+        }
+
         return AgenticOccasionPack(
             surface: "home",
             subject: "partida do operador",

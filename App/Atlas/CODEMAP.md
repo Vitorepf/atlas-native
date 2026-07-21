@@ -62,7 +62,7 @@
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face load_fail/empty/messages · list a11y |
 | Messages peels | `ConversationMessages` host · `ConversationMessagesScroll` · `ConversationMessagesEditorial` |
 | **Empty editorial (partida)** | `ConversationEmptyJudgment` → face silence/default_prompt/custom_prompt/suggestions(N) · EmptyStates |
-| **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · `ConversationOutlineSheet` |
+| **Índice da conversa (outline)** | `ConversationOutlineJudgment` → face empty/turns · sheet · pack mid-thread (WAVE-166) |
 | **Home OPERAÇÃO attention** | `HomeOpsJudgment` → Autônomos door face · Arena door · pack |
 | **Partida can_do (Home/WS/Radar)** | `PartidaCanDoJudgment` → HomeAskContext · WorkspaceAskContext · RadarAskContext (WAVE-158) |
 | **Autônomos can_do honesty** | `AutonomosCanDoJudgment` → matrix dest×control×canControl · AskContext pack |
@@ -87,8 +87,8 @@
 | **Arena plano/fila** | `ArenaPlanQueueJudgment` → planFace empty/published/derived_live · queueFace |
 | **Arena live control (corridas)** | `ArenaLiveControlJudgment` → rank · face · canStop |
 | **Arena start / recibo rodar** | `ArenaStartJudgment` → submit face · receipt face · worker gap |
-| **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready |
-| **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face |
+| **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready · pack Ask (WAVE-166) |
+| **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face · pack Ask (WAVE-166) |
 | **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` → Hub CTA / MapShell `.decisions` / `AutonomosModel.decide` |
 | **Decisão surface peels** | host · `ListBody` · `DetailBody` · `Sections` (WAVE-156) |
 | **MapShell peels** | host sheets · `Routes` · `Ask` · `Catalog` · `Actions` (WAVE-156) |

@@ -38,6 +38,10 @@ enum ConversationOccasionPack {
         var effort: AtlasComputeEffort = .auto
         var cacheCapturedAt: Date? = nil
         var artifacts: [AtlasTraceArtifacts.Item] = []
+        /// WAVE-166: outline turn count + toolbar chrome.
+        var turnCount: Int = 0
+        var toolbarMode: String = ""
+        var toolbarWorkspaceName: String? = nil
 
         static let unbound = PublishedSlice(
             presenceBubble: nil,
@@ -271,6 +275,20 @@ enum ConversationOccasionPack {
             )
             facts.append(contentsOf: editorialPack.facts)
             absences.append(contentsOf: editorialPack.absences)
+        }
+
+        // WAVE-166: outline + composer toolbar organs.
+        if let published {
+            let outlinePack = ConversationOutlineJudgment.packFacts(turnCount: published.turnCount)
+            facts.append(contentsOf: outlinePack.facts)
+            absences.append(contentsOf: outlinePack.absences)
+            let toolbarPack = ComposerToolbarJudgment.packFacts(
+                mode: published.toolbarMode,
+                workspaceName: published.toolbarWorkspaceName,
+                effort: published.effort
+            )
+            facts.append(contentsOf: toolbarPack.facts)
+            absences.append(contentsOf: toolbarPack.absences)
         }
 
         let surface: String

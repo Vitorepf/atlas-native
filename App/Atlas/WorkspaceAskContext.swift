@@ -89,6 +89,26 @@ enum WorkspaceAskContext {
         facts.append(contentsOf: screenPack.facts)
         absences.append(contentsOf: screenPack.absences)
 
+        // WAVE-166: empty editorial organ when catalog silence.
+        if threads.isEmpty {
+            let emptyPack = WorkspaceEmptyJudgment.packFacts(
+                area: .tudo,
+                freeOnly: false,
+                screenTitle: name
+            )
+            facts.append(contentsOf: emptyPack.facts)
+            absences.append(contentsOf: emptyPack.absences)
+        }
+
+        // WAVE-166: ops failure organ when load failed with empty list.
+        if showsOffline {
+            let failPack = AtlasOpsFailureJudgment.packFacts(
+                mode: .network(kind: session.failureKind ?? .offline, hasToken: session.hasToken, host: session.host)
+            )
+            facts.append(contentsOf: failPack.facts)
+            absences.append(contentsOf: failPack.absences)
+        }
+
         // WAVE-158: can_do matrix — scoped live never invents stop on workspace pack.
         let scopedLiveCount = WorkspaceThreadJudgment.rank(threads, remote: session.remoteLiveSessions)
             .filter { WorkspaceThreadJudgment.isRunning(thread: $0, remote: session.remoteLiveSessions) }
