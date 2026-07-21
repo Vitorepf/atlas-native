@@ -1,7 +1,7 @@
 import SwiftUI
 import AtlasCore
 
-// GOD-RESTRUCTURE: EditorialTurn fused
+// GOD-RESTRUCTURE: EditorialTurn + User + Closing fused
 
 // MARK: - EditorialTurn
 
@@ -274,4 +274,99 @@ extension SignatureLine {
         }
     }
 }
+// MARK: - User branch
 
+extension EditorialTurn {
+    @ViewBuilder
+    var userTurn: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            userQuote
+            userEditResendButton
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+extension EditorialTurn {
+    var userEditResendButton: some View {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onEditResend()
+        } label: {
+            userEditResendLabel
+        }
+        .buttonStyle(PressableScale())
+        .accessibilityLabel(EditorialTurnJudgment.editResendLabel)
+        .accessibilityHint("abre o compositor com este texto para um novo envio")
+    }
+}
+
+extension EditorialTurn {
+    var userEditResendLabel: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "arrow.turn.down.right")
+                .atlasSans(10, .semibold)
+                .accessibilityHidden(true)
+            Text("editar e reenviar")
+                .atlasSans(11, .medium)
+        }
+        .foregroundStyle(AtlasTheme.textSecondary)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 5)
+        .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+    }
+}
+
+extension EditorialTurn {
+    var userQuote: some View {
+        Text("\"\(bubble.text)\"")
+            .font(AtlasFont.serifItalic(18)).lineSpacing(8).foregroundStyle(AtlasTheme.textPrimary)
+            .padding(.leading, 16)
+            .overlay(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 1).fill(AtlasTheme.accent).frame(width: 2)
+                    .accessibilityHidden(true)
+            }
+            .accessibilityLabel(EditorialTurnJudgment.spokenUserMessage(bubble.text))
+    }
+}
+// MARK: - Closing / proof / signature / feedback
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantClosing: some View {
+        if !bubble.streaming,
+           ExecutionProof.shouldDisplay(bubble: bubble, artifactItems: artifactItems) {
+            ExecutionProof(bubble: bubble, artifactItems: artifactItems, onOpenArtifacts: onOpenArtifacts)
+            Text("RESPOSTA FINAL")
+                .font(.system(.caption2, weight: .semibold)).tracking(1.6)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.85))
+                .accessibilityLabel(EditorialTurnJudgment.spokenFinalAnswerKicker)
+                .accessibilityAddTraits(.isHeader)
+        }
+        assistantClosingTail
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantClosingMeta: some View {
+        if !bubble.streaming {
+            if SignatureLine.shouldDisplay(provider: bubble.provider, model: bubble.model) {
+                SignatureLine(
+                    provider: bubble.provider, model: bubble.model,
+                    elapsedMs: bubble.elapsedMs, reduceMotion: reduceMotion)
+            }
+            FeedbackRow(active: bubble.feedbackAction, reduceMotion: reduceMotion, onFeedback: onFeedback)
+        }
+    }
+}
+
+extension EditorialTurn {
+    @ViewBuilder
+    var assistantClosingTail: some View {
+        if !bubble.text.isEmpty {
+            AtlasMarkdownView(text: bubble.text, streaming: bubble.streaming)
+        }
+        assistantClosingMeta
+    }
+}
