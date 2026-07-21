@@ -154,46 +154,38 @@ extension ConversationMessages {
     }
 }
 
+/// WAVE-072: a11y peels → ConversationMessagesJudgment.
 enum ConversationMessagesA11y {
-    static let scrollFABLabel = ConversationMessagesA11yFAB.scrollFABLabel
-    static let scrollFABHint = ConversationMessagesA11yFAB.scrollFABHint
+    static var scrollFABLabel: String { ConversationMessagesJudgment.scrollFABLabel }
+    static var scrollFABHint: String { ConversationMessagesJudgment.scrollFABHint }
 
     static func spokenMessages(turnCount: Int) -> String {
-        let noun = turnCount == 1 ? "turno" : "turnos"
-        return "conversa, \(turnCount) \(noun)"
+        ConversationMessagesJudgment.spokenMessages(turnCount: turnCount)
     }
 
     static func spokenChangeReview(patchCount: Int) -> String {
-        ConversationMessagesA11yReview.spokenChangeReview(patchCount: patchCount)
+        ConversationMessagesJudgment.spokenChangeReview(patchCount: patchCount)
     }
 
-    static let changeReviewHint = ConversationMessagesA11yReview.changeReviewHint
-}
-
-enum ConversationMessagesA11yFAB {
-    static let scrollFABLabel = "ir para o fim da conversa"
-    static let scrollFABHint = "volta às mensagens mais recentes"
-}
-
-enum ConversationMessagesA11yReview {
-    static func spokenChangeReview(patchCount: Int) -> String {
-        if patchCount > 0 {
-            let noun = patchCount == 1 ? "patch" : "patches"
-            return "revisar mudanças, \(patchCount) \(noun)"
-        }
-        return "revisar mudanças desta execução"
-    }
-
-    static let changeReviewHint = "abre arquivos, diff e provas desta execução"
+    static var changeReviewHint: String { ConversationMessagesJudgment.changeReviewHint }
 }
 
 extension ConversationMessages {
+    /// WAVE-072: exclusive messages surface face.
+    var messagesFace: ConversationMessagesFace {
+        ConversationMessagesJudgment.face(
+            hasLoadError: model.loadError != nil,
+            turnCount: model.bubbles.count
+        )
+    }
+
     func bubblesStackA11y<Content: View>(_ content: Content) -> some View {
         content
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 16)
             .accessibilityElement(children: .contain)
             .accessibilityLabel(ConversationMessagesA11y.spokenMessages(turnCount: model.bubbles.count))
+            .accessibilityValue(messagesFace.productWord)
     }
 }
 
