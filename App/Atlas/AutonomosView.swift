@@ -194,7 +194,7 @@ extension AutonomosViewHeader {
         return parts.joined(separator: ", ")
     }
 
-    func spokenBackLabel() -> String { "voltar" }
+    func spokenBackLabel() -> String { WorkspaceScreenJudgment.backLabel }
 
     func spokenBackHint() -> String { "volta" }
 }

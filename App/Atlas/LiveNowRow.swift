@@ -92,7 +92,7 @@ struct LiveNowRow: View {
         .background(Capsule().fill(AtlasTheme.goldVeil))
         .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("sessão remota em outra superfície")
+        .accessibilityLabel(LiveNowJudgment.remoteSurfaceBadgeLabel)
         .accessibilityIdentifier(remoteBadgeID ?? "")
     }
 }

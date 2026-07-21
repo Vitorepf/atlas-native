@@ -42,7 +42,7 @@ extension SteerInteractionSheet {
     func steerA11yShell<V: View>(_ content: V) -> some View {
         content
             .accessibilityIdentifier(A11yID.steerSheet)
-            .accessibilityLabel("redirecionar execução \(traceId.rawValue)")
+            .accessibilityLabel(ConversationSteerJudgment.spokenSheetTitle(traceId: traceId))
             .accessibilityHint(spokenSheetHint())
     }
 }

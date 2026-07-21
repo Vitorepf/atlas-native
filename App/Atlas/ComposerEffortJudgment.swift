@@ -61,6 +61,7 @@ enum ComposerEffortJudgment {
 
     static let effortHint = "abre opções de esforço computacional para o próximo envio"
     static let effortSheetHint = "escolhe o esforço computacional do próximo envio"
+    static let effortSheetLabel = "esforço computacional"
     static let processingLabel = "Atlas processando"
 
     static func face(_ effort: AtlasComputeEffort) -> ComposerEffortFace {

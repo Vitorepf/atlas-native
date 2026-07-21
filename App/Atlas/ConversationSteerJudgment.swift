@@ -130,6 +130,12 @@ enum ConversationSteerJudgment {
         return "último recibo, steering rejeitado, \(rejectionReasonLabel(receipt.reason))"
     }
 
+    // MARK: Sheet chrome
+
+    static func spokenSheetTitle(traceId: TraceID) -> String {
+        "redirecionar execução \(traceId.rawValue)"
+    }
+
     // MARK: Submit a11y
 
     static func spokenSubmitLabel(allowsSubmit: Bool) -> String {

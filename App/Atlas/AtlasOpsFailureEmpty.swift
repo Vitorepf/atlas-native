@@ -221,7 +221,7 @@ struct AtlasOpsFailureEmpty: View {
                     )
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("tentar de novo")
+            .accessibilityLabel(AtlasOpsFailureJudgment.retrySpoken)
             .accessibilityHint(retryHint)
 
             if let retryAccessibilityIdentifier {

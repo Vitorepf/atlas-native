@@ -98,6 +98,10 @@ enum LiveNowJudgment {
         rank(local: local, remote: remote).first { $0.threadId != nil }
     }
 
+    // MARK: Chrome
+
+    static let remoteSurfaceBadgeLabel = "sessão remota em outra superfície"
+
     // MARK: Section face + spoken
 
     static func sectionFace(count: Int) -> LiveNowSectionFace {

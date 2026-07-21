@@ -182,7 +182,7 @@ extension EffortSheet {
     func effortA11yBind<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityIdentifier(A11yID.effortSheet)
-            .accessibilityLabel("esforço computacional")
+            .accessibilityLabel(ComposerEffortJudgment.effortSheetLabel)
             .accessibilityHint(ComposerEffortJudgment.effortSheetHint)
     }
 }
