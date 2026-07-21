@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — network failure contain a11y (ciclo 146)** · `5f0d76c8` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — failure contain a11y (ciclo 145)** · `802aeac4` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — retry + repo switcher 48 (ciclo 144)** · `d4d48b0e` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — loading header + retry 48 (ciclo 143)** · `098cf751` · App/Atlas 214. **Prova:** checks+build.
