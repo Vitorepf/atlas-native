@@ -3,6 +3,8 @@ import AtlasCore
 
 // WAVE-071: search screen face → SearchScreenJudgment
 
+// MARK: - Screen face · a11y
+
 extension SearchView {
     /// WAVE-071: exclusive search face from published shell + counts.
     var searchScreenFace: SearchScreenFace {
@@ -39,6 +41,8 @@ extension SearchView {
         }
     }
 }
+
+// MARK: - Header
 
 struct SearchViewHeader: View {
     @Binding var query: String
@@ -173,6 +177,8 @@ extension SearchRecentSection {
         }
     }
 }
+
+// MARK: - Recent section
 
 struct SearchRecentSection: View {
     let threads: [AtlasAiThread]

@@ -3,6 +3,8 @@ import AtlasCore
 
 // IDLE-COMPRESS body
 
+// MARK: - Scope · receipt · fields
+
 extension SteerInteractionSheet {
     /// WAVE-053: face + submit from Judgment.
     var steerFace: ConversationSteerFace {

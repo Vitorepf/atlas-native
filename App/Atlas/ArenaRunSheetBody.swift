@@ -3,6 +3,8 @@ import AtlasCore
 
 // WAVE-126 ArenaRunSheet body peel
 
+// MARK: - Face
+
 extension ArenaRunSheet {
     /// WAVE-074: exclusive run-sheet shell face.
     var runSheetFace: ArenaRunSheetFace {
@@ -13,6 +15,8 @@ extension ArenaRunSheet {
     }
 
 }
+
+// MARK: - Section · toggle chrome
 
 extension ArenaRunSheet {
     func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
@@ -60,6 +64,8 @@ extension ArenaRunSheet {
         return "\(title), \(state)"
     }
 }
+
+// MARK: - Host
 
 struct ArenaRunSheet: View {
     @Environment(\.dismiss) var dismiss

@@ -3,6 +3,8 @@ import AtlasCore
 
 /// Hub de um Autônomo do operador — presença → fato → verbo → Evolução.
 /// Vestimenta = `AutonomosHubVestment` canônico (WAVE-007); zero LocalVestment.
+// MARK: - Hub host
+
 struct AutonomosHubView: View {
     let unit: AutonomosUnit
     let vestment: AutonomosHubVestment

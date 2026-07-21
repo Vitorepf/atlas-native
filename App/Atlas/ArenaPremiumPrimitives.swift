@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - Kicker
+
 struct ArenaPremiumKicker: View {
     let text: String
     var tone: ArenaPremiumTone = .neutral
@@ -44,6 +46,8 @@ private struct ArenaLiveBreath: ViewModifier {
             }
     }
 }
+
+// MARK: - Hairline · action
 
 struct ArenaPremiumHairline: View {
     var body: some View {
@@ -129,6 +133,8 @@ struct ArenaPremiumAction: View {
         .accessibilityLabel(title)
     }
 }
+
+// MARK: - Disclosure · ring · empty
 
 struct ArenaPremiumDisclosureRow: View {
     let title: String

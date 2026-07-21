@@ -4,6 +4,8 @@ import PhotosUI
 
 // IDLE-COMPRESS body
 
+// MARK: - Actions
+
 extension ConversationComposer {
     func send() {
         AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
@@ -21,6 +23,8 @@ extension ConversationComposer {
         }
     }
 }
+
+// MARK: - Card surface
 
 extension ConversationComposer {
     var composerCard: some View {
@@ -107,6 +111,8 @@ extension ConversationComposer {
     }
 }
 
+// MARK: - Live strip
+
 extension ConversationComposer {
     @ViewBuilder
     var liveExecutionSection: some View {
@@ -129,6 +135,8 @@ extension ConversationComposer {
         }
     }
 }
+
+// MARK: - Queue chip
 
 extension ConversationComposer {
     @ViewBuilder
@@ -166,6 +174,8 @@ extension ConversationComposer {
     }
 }
 
+// MARK: - Sheet host
+
 extension ConversationComposer {
     func composerCardSheets<V: View>(_ card: V) -> some View {
         card.conversationComposerSheets(
@@ -187,6 +197,8 @@ extension ConversationComposer {
         )
     }
 }
+
+// MARK: - Steer submit
 
 extension ConversationComposer {
     func submitSteer(

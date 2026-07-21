@@ -3,6 +3,8 @@ import AtlasCore
 
 // WAVE-011 fused
 
+// MARK: - Invite · pack
+
 enum AtlasCodeRadarAskContext {
     static let invite = "pergunte sobre o workspace"
 
@@ -110,6 +112,8 @@ enum AtlasCodeRadarAskContext {
         ).render()
     }
 }
+
+// MARK: - Folder row chrome
 
 extension AtlasCodeFolderRow {
     @ViewBuilder

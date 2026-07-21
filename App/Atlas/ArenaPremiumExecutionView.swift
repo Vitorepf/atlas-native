@@ -3,6 +3,8 @@ import AtlasCore
 
 /// Execução = o ÚNICO mapa da medição (mockup operador 2026-07-20).
 /// Pipeline macro + casos da suíte ao vivo + corridas tocáveis.
+// MARK: - Execution host
+
 struct ArenaPremiumExecutionView: View {
     @Bindable var model: ArenaModel
     let onStop: (AtlasArenaLiveRun) -> Void

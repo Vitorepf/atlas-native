@@ -4,6 +4,8 @@ import PhotosUI
 
 // IDLE-COMPRESS ConversationChrome
 
+// MARK: - Attachment row body
+
 extension ComposerAttachmentRow {
     var attachmentRowCopy: some View {
         HStack(spacing: 14) {
@@ -66,6 +68,8 @@ extension ModeSheet {
         ComposerSheetJudgment.modes.map { ($0.key, $0.title) }
     }
 }
+
+// MARK: - Workspace sheet
 
 struct WorkspaceSheet: View {
     let workspaces: [Workspace]
@@ -160,6 +164,8 @@ extension WorkspaceSheet {
         workspaceRowBuild(ws, isSelected: ws.name == current)
     }
 }
+
+// MARK: - Mode sheet
 
 struct ModeSheet: View {
     @Binding var selected: String

@@ -4,6 +4,8 @@ import AtlasCore
 // WAVE-011 fused
 
 
+// MARK: - Folder row peels
+
 extension AtlasCodeFolderRow {
     var folderHeaderLeading: some View {
         HStack(spacing: 12) {
@@ -81,6 +83,8 @@ extension AtlasCodeFolderRow {
             .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
     }
 }
+
+// MARK: - Loaded content peels
 
 extension AtlasCodeRadarLoadedContent {
     @ViewBuilder
@@ -192,6 +196,8 @@ extension AtlasCodeRadarLoadedContent {
         radarFoldersAndLoose
     }
 }
+
+// MARK: - Loaded host
 
 struct AtlasCodeRadarLoadedContent: View {
     let workspace: AtlasCodeWorkspaceResponse

@@ -3,6 +3,8 @@ import SwiftUI
 
 // IDLE-COMPRESS fused
 
+// MARK: - Row host
+
 struct LiveNowRow: View {
     let session: LiveSessionSnapshot
     let hubMode: Bool
@@ -96,6 +98,8 @@ struct LiveNowRow: View {
         .accessibilityIdentifier(remoteBadgeID ?? "")
     }
 }
+
+// MARK: - Content · spoken
 
 extension LiveNowRow {
     // WAVE-110: row spoken → LiveNowJudgment

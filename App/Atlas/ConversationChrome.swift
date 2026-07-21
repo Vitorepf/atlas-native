@@ -4,6 +4,8 @@ import PhotosUI
 
 // IDLE-COMPRESS ConversationChrome
 
+// MARK: - Sheet shell
+
 struct SheetShell<Content: View>: View {
     let title: String
     @ViewBuilder var content: Content
@@ -44,6 +46,8 @@ struct SheetShell<Content: View>: View {
             .presentationDragIndicator(.hidden)
     }
 }
+
+// MARK: - Attachments sheet
 
 extension ComposerAttachmentsSheet {
     var attachmentsSheetChrome: some View {
@@ -174,6 +178,8 @@ extension ComposerAttachmentsSheet {
     }
 }
 
+// MARK: - Attachments host
+
 struct ComposerAttachmentsSheet: View {
     @Binding var pickedPhoto: PhotosPickerItem?
     let onChooseFile: @MainActor () -> Void
@@ -186,6 +192,8 @@ struct ComposerAttachmentsSheet: View {
         attachmentsSheetChrome
     }
 }
+
+// MARK: - Attachment row
 
 extension ComposerAttachmentRow {
     var attachmentRowIcon: some View {
