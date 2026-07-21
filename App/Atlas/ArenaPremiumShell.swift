@@ -164,7 +164,7 @@ struct ArenaPremiumShell: View {
             } label: {
                 Image(systemName: ArenaPremiumIconography.add)
                     .atlasSans(17, .medium)
-                    .foregroundStyle(AtlasTheme.textPrimary)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.92))
                     .frame(width: 48, height: 48)
                     .atlasGlassCircle()
                     .atlasElevation(radius: 6, y: 2, opacity: 0.14)
