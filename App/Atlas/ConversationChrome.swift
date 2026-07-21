@@ -1003,6 +1003,7 @@ struct EffortSheet: View {
 }
 
 struct SheetRow: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let label: String
     var sub: String? = nil
     let selected: Bool
@@ -1017,7 +1018,10 @@ struct SheetRow: View {
 
 extension SheetRow {
     var sheetRowA11y: some View {
-        Button(action: action) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            action()
+        } label: {
             rowLabel
         }
         .buttonStyle(.plain)
@@ -1069,6 +1073,8 @@ extension SheetRow {
             Spacer()
             sheetRowTrailing
         }
-        .padding(.horizontal, 24).padding(.vertical, 15).contentShape(Rectangle())
+        .padding(.horizontal, 24).padding(.vertical, 15)
+        .frame(minHeight: 48)
+        .contentShape(Rectangle())
     }
 }

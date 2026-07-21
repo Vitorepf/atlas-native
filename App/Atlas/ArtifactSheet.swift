@@ -270,6 +270,7 @@ extension ArtifactSheet {
             artifactListRowMeta(item: item)
         }
         .padding(.vertical, 10)
+        .frame(minHeight: 48)
         .contentShape(Rectangle())
     }
 }

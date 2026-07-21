@@ -35,6 +35,7 @@ struct AutonomosMapNavLine: View {
         .buttonStyle(.plain)
         .overlay(alignment: .bottom) { AutonomosMapChrome.hairline.padding(.vertical, 0) }
         .accessibilityLabel(meta.isEmpty ? title : "\(title), \(meta)")
-        .accessibilityHint("abre")
+        .accessibilityHint("abre \(title.lowercased())")
+        .accessibilityAddTraits(.isButton)
     }
 }

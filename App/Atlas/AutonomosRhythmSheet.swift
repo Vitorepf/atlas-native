@@ -8,6 +8,7 @@ import SwiftUI
 /// Atlas aprendeu (janelas do dia), o que observou hoje e o que faz com isso
 /// (proposta noturna). Só afirma o que está provado no registro local (C13).
 struct AutonomosRhythmSheet: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let windows: AtlasDayRhythm.Windows
     @State private var today: AtlasDayRhythm.DaySummary?
     @State private var nightly = NightlyProposalController.shared
@@ -21,6 +22,7 @@ struct AutonomosRhythmSheet: View {
             Text("O ritmo do seu dia")
                 .font(AtlasFont.serif(22, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
 
             Text(AutonomosRhythmCopy.learnedParagraph(windows))
                 .font(AtlasFont.serifItalic(15))
@@ -54,11 +56,19 @@ struct AutonomosRhythmSheet: View {
                     Text(muted)
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
-                    Button("Reativar propostas noturnas") {
+                    Button {
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         nightly.unmuteProposal()
+                    } label: {
+                        Text("Reativar propostas noturnas")
+                            .font(AtlasFont.mono(11, .semibold))
+                            .foregroundStyle(AtlasTheme.accent)
+                            .frame(minHeight: 44, alignment: .leading)
+                            .contentShape(Rectangle())
                     }
-                    .font(AtlasFont.mono(11, .semibold))
-                    .foregroundStyle(AtlasTheme.accent)
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("reativar propostas noturnas")
+                    .accessibilityHint("volta a mostrar a proposta das 21h quando o Atlas tiver algo a dizer")
                     .accessibilityIdentifier(A11yID.autonomosRhythmUnmute)
                 }
             }
