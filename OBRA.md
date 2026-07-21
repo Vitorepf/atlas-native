@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — HIG 44pt residual (ciclo 073)** · `b6292c0e` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — live strip + engine/disclosure (ciclo 072)** · `9df706e7` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Nightly dismiss 44pt (ciclo 071)** · `ccbb3e09` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Autônomos rhythm line (ciclo 070)** · `686ced48` · App/Atlas 214. **Prova:** checks+build.
