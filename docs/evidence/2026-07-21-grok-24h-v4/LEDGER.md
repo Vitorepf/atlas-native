@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 80
-- idle_compress_passes: 20
+- idle_compress_passes: 3
 - collapse_host: 0
 
 ## Waves done
@@ -92,7 +92,24 @@ mode: designer + implementer
 - WAVE-084
 - WAVE-085
 
+## Idle compress
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
+- pass 3 · Messages scroll+editorial peel · Surface MARKs · A11y shim delete · HEAD polish idle
+
+## Designer
+- designs_proposed: 80
+- designs_open: 0
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
+
+## Open queue snapshot (must match QUEUE.md)
+
+| # | wave | Δ | status |
+|---|---|---|---|
+| — | _(none)_ | — | — |
+
 ## Notes
-- WAVE-084 conversation-empty-editorial-judgment-instrument shipped (casca).
-- Open queue after regen: see QUEUE.md.
+- WAVE-084 shipped; queue empty → IDLE-COMPRESS pass 3 (canon §7).
 - DEVICE_PENDING for device screenshots.
+- Continuity restore BLOCKED (App Group).

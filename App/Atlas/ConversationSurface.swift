@@ -2,7 +2,9 @@ import SwiftUI
 import AtlasCore
 import PhotosUI
 
-// IDLE-COMPRESS fused ConversationView · ConversationSurface.swift
+// ConversationView surface peels — seed · lifecycle · composer/messages wire · header
+
+// MARK: - Seed / model
 
 extension ConversationView {
     static func initModelState(
@@ -57,6 +59,8 @@ extension ConversationView {
     }
 }
 
+// MARK: - Lifecycle
+
 extension ConversationView {
     func applySendHaptic<Content: View>(_ content: Content) -> some View {
         content
@@ -103,6 +107,8 @@ extension ConversationView {
     }
 }
 
+// MARK: - Presence
+
 extension ConversationView {
     func conversationPresenceOnAppear() {
         TurnPresence.shared.watch(model, threadTitle: title, threadId: model.threadId)
@@ -137,6 +143,8 @@ extension ConversationView {
             .onDisappear { conversationPresenceOnDisappear() }
     }
 }
+
+// MARK: - Composer wire
 
 extension ConversationView {
     var conversationComposerSheetFlagBindings: (
@@ -295,6 +303,8 @@ extension ConversationView {
     }
 }
 
+// MARK: - Messages wire
+
 extension ConversationView {
     var conversationMessagesModelArgs: (
         model: ConversationModel,
@@ -373,6 +383,8 @@ extension ConversationView {
     }
 }
 
+// MARK: - Sheet / seal gates
+
 extension ConversationView {
     /// Folhas de modo/esforço/fila/anexo/câmera/arquivo.
     var hasOpenComposerSheet: Bool {
@@ -405,6 +417,8 @@ extension ConversationView {
     }
 }
 
+// MARK: - Actions
+
 extension ConversationView {
     func editAndResend(_ bubble: ChatBubble) {
         guard bubble.role == "user" else { return }
@@ -428,6 +442,8 @@ extension ConversationView {
         }
     }
 }
+
+// MARK: - Header chrome
 
 extension ConversationView {
     var header: some View {
@@ -535,6 +551,8 @@ extension ConversationView {
         }
     }
 }
+
+// MARK: - Toast
 
 extension ConversationView {
     @ViewBuilder var toast: some View {

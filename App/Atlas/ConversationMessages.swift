@@ -1,7 +1,8 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// Messages list surface — empty/load/list host (WAVE-072).
+// Peels: ConversationMessagesScroll · ConversationMessagesEditorial · ConversationEmpty*
 
 struct ConversationMessages: View {
     var model: ConversationModel
@@ -25,6 +26,8 @@ struct ConversationMessages: View {
         messagesReaderBody
     }
 }
+
+// MARK: - Empty / load
 
 extension ConversationMessages {
     @ViewBuilder
@@ -60,125 +63,7 @@ extension ConversationMessages {
     }
 }
 
-extension ConversationMessages {
-    func scrollBubbleEmptyChange(_ empty: Bool) {
-        if empty { awayFromBottom = false }
-    }
-}
-
-extension ConversationMessages {
-    func scrollBubbleListChange(proxy: ScrollViewProxy) {
-        autoScrollToBottom(proxy: proxy)
-    }
-}
-
-extension ConversationMessages {
-    @ViewBuilder
-    func scrollChrome<Content: View>(proxy: ScrollViewProxy, @ViewBuilder content: () -> Content) -> some View {
-        scrollPreferenceChrome(proxy: proxy, content: content)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: showsScrollFAB)
-            .onChange(of: model.bubbles.isEmpty) { _, empty in
-                scrollBubbleEmptyChange(empty)
-            }
-            .onChange(of: model.bubbles) {
-                scrollBubbleListChange(proxy: proxy)
-            }
-    }
-}
-
-extension ConversationMessages {
-    var showsScrollFAB: Bool { awayFromBottom && !model.bubbles.isEmpty }
-}
-
-extension ConversationMessages {
-    func autoScrollToBottom(proxy: ScrollViewProxy) {
-        guard !model.bubbles.isEmpty else { return }
-        let count = model.bubbles.count
-        let now = CFAbsoluteTimeGetCurrent()
-        guard shouldAutoScroll(now: now, count: count) else { return }
-        lastScrollAt = now
-        lastScrollBubbleCount = count
-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) {
-            proxy.scrollTo("bottom", anchor: .bottom)
-        }
-    }
-}
-
-extension ConversationMessages {
-    func shouldAutoScroll(now: CFAbsoluteTime, count: Int) -> Bool {
-        let countChanged = count != lastScrollBubbleCount
-        return countChanged || now - lastScrollAt >= 0.1
-    }
-}
-
-extension ConversationMessages {
-    func applyScrollDistancePref<Content: View>(_ content: Content) -> some View {
-        content.onPreferenceChange(BottomDistanceKey.self) { minY in
-            guard !model.bubbles.isEmpty else {
-                awayFromBottom = false
-                return
-            }
-            awayFromBottom = minY > UIScreen.main.bounds.height + 140
-        }
-    }
-}
-
-extension ConversationMessages {
-    func scrollFABAction(proxy: ScrollViewProxy) {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) {
-            proxy.scrollTo("bottom", anchor: .bottom)
-        }
-    }
-}
-
-extension ConversationMessages {
-    @ViewBuilder
-    func scrollFABButton(proxy: ScrollViewProxy) -> some View {
-        Button {
-            scrollFABAction(proxy: proxy)
-        } label: {
-            scrollFABLabel
-        }
-    }
-}
-
-extension ConversationMessages {
-    @ViewBuilder
-    func scrollFAB(proxy: ScrollViewProxy) -> some View {
-        if showsScrollFAB {
-            scrollFABChrome(scrollFABButton(proxy: proxy))
-        }
-    }
-}
-
-extension ConversationMessages {
-    func scrollFABChrome<Content: View>(_ content: Content) -> some View {
-        content
-            .buttonStyle(PressableScale())
-            .padding(.trailing, AtlasTheme.Space.screen).padding(.bottom, 110)
-            .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
-            .accessibilityLabel(ConversationMessagesA11y.scrollFABLabel)
-            .accessibilityHint(ConversationMessagesA11y.scrollFABHint)
-            .accessibilityIdentifier(A11yID.conversationScrollFAB)
-    }
-}
-
-/// WAVE-072: a11y peels → ConversationMessagesJudgment.
-enum ConversationMessagesA11y {
-    static var scrollFABLabel: String { ConversationMessagesJudgment.scrollFABLabel }
-    static var scrollFABHint: String { ConversationMessagesJudgment.scrollFABHint }
-
-    static func spokenMessages(turnCount: Int) -> String {
-        ConversationMessagesJudgment.spokenMessages(turnCount: turnCount)
-    }
-
-    static func spokenChangeReview(patchCount: Int) -> String {
-        ConversationMessagesJudgment.spokenChangeReview(patchCount: patchCount)
-    }
-
-    static var changeReviewHint: String { ConversationMessagesJudgment.changeReviewHint }
-}
+// MARK: - Surface face + list a11y
 
 extension ConversationMessages {
     /// WAVE-072: exclusive messages surface face.
@@ -194,12 +79,12 @@ extension ConversationMessages {
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 16)
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(ConversationMessagesA11y.spokenMessages(turnCount: model.bubbles.count))
+            .accessibilityLabel(
+                ConversationMessagesJudgment.spokenMessages(turnCount: model.bubbles.count)
+            )
             .accessibilityValue(messagesFace.productWord)
     }
-}
 
-extension ConversationMessages {
     var bubblesBottomAnchor: some View {
         Color.clear.frame(height: 96).id("bottom")
             .background(GeometryReader { geo in
@@ -207,9 +92,7 @@ extension ConversationMessages {
                                        value: geo.frame(in: .global).minY)
             })
     }
-}
 
-extension ConversationMessages {
     var bubblesStack: some View {
         bubblesStackA11y(
             LazyVStack(alignment: .leading, spacing: 40) {
@@ -227,6 +110,8 @@ extension ConversationMessages {
     }
 }
 
+// MARK: - Change review chip
+
 extension ConversationMessages {
     @ViewBuilder
     func changeReviewChipButton(for bubble: ChatBubble, trace: TraceID) -> some View {
@@ -235,16 +120,14 @@ extension ConversationMessages {
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel(
-            ConversationMessagesA11y.spokenChangeReview(
+            ConversationMessagesJudgment.spokenChangeReview(
                 patchCount: model.reviews.changeReviewsByTrace[trace]!.patches.count
             )
         )
-        .accessibilityHint(ConversationMessagesA11y.changeReviewHint)
+        .accessibilityHint(ConversationMessagesJudgment.changeReviewHint)
         .accessibilityIdentifier(A11yID.reviewChip(trace.rawValue))
     }
-}
 
-extension ConversationMessages {
     func showsChangeReviewChip(for bubble: ChatBubble) -> Bool {
         bubble.role == "assistant"
             && !bubble.streaming
@@ -254,18 +137,14 @@ extension ConversationMessages {
                 model.reviews.changeReviewsByTrace[bubble.traceId!]!
             )
     }
-}
 
-extension ConversationMessages {
     @ViewBuilder
     func changeReviewChip(for bubble: ChatBubble) -> some View {
         if showsChangeReviewChip(for: bubble), let trace = bubble.traceId {
             changeReviewChipButton(for: bubble, trace: trace)
         }
     }
-}
 
-extension ConversationMessages {
     var changeReviewChipLabel: some View {
         HStack(spacing: 6) {
             Image(systemName: "plus.forwardslash.minus").atlasSans(11)
@@ -277,6 +156,8 @@ extension ConversationMessages {
     }
 }
 
+// MARK: - List host
+
 extension ConversationMessages {
     @ViewBuilder
     func messagesList() -> some View {
@@ -286,9 +167,7 @@ extension ConversationMessages {
             bubblesStack
         }
     }
-}
 
-extension ConversationMessages {
     var messagesReaderBody: some View {
         ScrollViewReader { proxy in
             scrollChrome(proxy: proxy) {
@@ -299,6 +178,8 @@ extension ConversationMessages {
         }
     }
 }
+
+// MARK: - Bubble row
 
 extension ConversationMessages {
     @ViewBuilder
@@ -313,197 +194,5 @@ extension ConversationMessages {
                     await model.reviews.refreshChangeReview(traceId: trace)
                 }
             }
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurnAssemblyBuilt(
-        bubble: ChatBubble,
-        artifactItems: [AtlasTraceArtifacts.Item]
-    ) -> EditorialTurn {
-        editorialTurnAssembly(
-            bubble: bubble,
-            artifactItems: artifactItems,
-            exec: editorialTurnExecTuple(for: bubble),
-            steer: editorialTurnSteerTuple
-        )
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurnExecTuple(for bubble: ChatBubble) -> (
-        onFeedback: (FeedbackKind) -> Void,
-        onCopy: () -> Void,
-        onEditResend: () -> Void,
-        onStop: () -> Void,
-        onExecutionChoice: (JobID, String) -> Void,
-        onRetry: (JobID) -> Void
-    ) {
-        editorialTurnExecutionCallbacks(for: bubble)
-    }
-}
-
-extension ConversationMessages {
-    var editorialTurnSteerTuple: (
-        onSteer: (TraceID) -> Void,
-        onOpenArtifacts: (TraceID) -> Void
-    ) {
-        editorialTurnSteerArtifactsCallbacks()
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurnAssembly(
-        bubble: ChatBubble,
-        artifactItems: [AtlasTraceArtifacts.Item],
-        exec: (
-            onFeedback: (FeedbackKind) -> Void,
-            onCopy: () -> Void,
-            onEditResend: () -> Void,
-            onStop: () -> Void,
-            onExecutionChoice: (JobID, String) -> Void,
-            onRetry: (JobID) -> Void
-        ),
-        steer: (
-            onSteer: (TraceID) -> Void,
-            onOpenArtifacts: (TraceID) -> Void
-        )
-    ) -> EditorialTurn {
-        EditorialTurn(
-            bubble: bubble,
-            reduceMotion: reduceMotion,
-            onFeedback: exec.onFeedback,
-            onCopy: exec.onCopy,
-            onEditResend: exec.onEditResend,
-            onStop: exec.onStop,
-            onExecutionChoice: exec.onExecutionChoice,
-            onRetry: exec.onRetry,
-            onSteer: steer.onSteer,
-            artifactItems: artifactItems,
-            onOpenArtifacts: steer.onOpenArtifacts
-        )
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurnFeedbackCallbacks(for bubble: ChatBubble) -> (
-        onFeedback: (FeedbackKind) -> Void,
-        onCopy: () -> Void,
-        onEditResend: () -> Void
-    ) {
-        (
-            onFeedback: { kind in Task { await model.feedback(bubble.id, kind) } },
-            onCopy: { onCopy(bubble.text, bubble.role == "user" ? "mensagem" : "resposta") },
-            onEditResend: { onEditResend(bubble) }
-        )
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurnRunCallbacks() -> (
-        onStop: () -> Void,
-        onExecutionChoice: (JobID, String) -> Void,
-        onRetry: (JobID) -> Void
-    ) {
-        (
-            onStop: { model.cancel() },
-            onExecutionChoice: { jobId, optionId in
-                Task { await model.resolveExecutionChoice(jobId: jobId, optionId: optionId) }
-            },
-            onRetry: { jobId in Task { await model.retryTurn(jobId: jobId) } }
-        )
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurnExecutionCallbacks(for bubble: ChatBubble) -> (
-        onFeedback: (FeedbackKind) -> Void,
-        onCopy: () -> Void,
-        onEditResend: () -> Void,
-        onStop: () -> Void,
-        onExecutionChoice: (JobID, String) -> Void,
-        onRetry: (JobID) -> Void
-    ) {
-        let feedback = editorialTurnFeedbackCallbacks(for: bubble)
-        let run = editorialTurnRunCallbacks()
-        return (
-            onFeedback: feedback.onFeedback,
-            onCopy: feedback.onCopy,
-            onEditResend: feedback.onEditResend,
-            onStop: run.onStop,
-            onExecutionChoice: run.onExecutionChoice,
-            onRetry: run.onRetry
-        )
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurnSteerArtifactsCallbacks() -> (
-        onSteer: (TraceID) -> Void,
-        onOpenArtifacts: (TraceID) -> Void
-    ) {
-        (
-            onSteer: { trace in steerTrace = ConversationSteerTraceRef(id: trace) },
-            onOpenArtifacts: { trace in artifactTrace = ConversationReviewTraceRef(id: trace) }
-        )
-    }
-}
-
-extension ConversationMessages {
-    func editorialTurn(for bubble: ChatBubble, artifactItems: [AtlasTraceArtifacts.Item]) -> EditorialTurn {
-        editorialTurnAssemblyBuilt(bubble: bubble, artifactItems: artifactItems)
-    }
-}
-
-extension ConversationMessages {
-    var scrollFABLabel: some View {
-        Image(systemName: "arrow.down")
-            .atlasSans(15, .semibold)
-            .foregroundStyle(AtlasTheme.textPrimary)
-            .frame(width: 40, height: 40)
-            .background(Circle().fill(AtlasTheme.surfaceHi)
-                .overlay(Circle().stroke(AtlasTheme.goldBorder, lineWidth: 1))
-                .shadow(color: .black.opacity(0.25), radius: 8, y: 2))
-    }
-}
-
-struct BottomDistanceKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
-}
-
-extension ConversationMessages {
-    @ViewBuilder
-    func scrollContentIndicators<Content: View>(_ content: Content) -> some View {
-        content
-            .scrollIndicators(.hidden)
-            .scrollDismissesKeyboard(.interactively)
-    }
-}
-
-extension ConversationMessages {
-    @ViewBuilder
-    func scrollFABOverlay<Content: View>(
-        proxy: ScrollViewProxy,
-        @ViewBuilder content: () -> Content
-    ) -> some View {
-        content()
-            .overlay(alignment: .bottomTrailing) {
-                scrollFAB(proxy: proxy)
-            }
-    }
-}
-
-extension ConversationMessages {
-    @ViewBuilder
-    func scrollPreferenceChrome<Content: View>(
-        proxy: ScrollViewProxy,
-        @ViewBuilder content: () -> Content
-    ) -> some View {
-        scrollFABOverlay(proxy: proxy) {
-            scrollContentIndicators(
-                applyScrollDistancePref(content())
-            )
-        }
     }
 }
