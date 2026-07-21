@@ -157,8 +157,8 @@ struct AutonomosFleetFailureEmpty: View {
             }
             .buttonStyle(AutonomosPrimaryButtonStyle())
             .accessibilityIdentifier(A11yID.autonomosRetry)
-            .accessibilityLabel("tentar de novo")
-            .accessibilityHint("tenta reabrir o catálogo Autônomos")
+            .accessibilityLabel("Tentar de novo")
+            .accessibilityHint("Tenta reabrir o catálogo Autônomos")
             .accessibilityAddTraits(.isButton)
             .accessibilitySortPriority(8)
         }
@@ -251,8 +251,8 @@ struct AutonomosViewHeader: View {
                 .atlasGlassCircle()
                 .contentShape(Circle())
         }
-        .accessibilityLabel("voltar")
-        .accessibilityHint("volta um nível no mapa Autônomos")
+        .accessibilityLabel("Voltar")
+        .accessibilityHint("Volta um nível no mapa Autônomos")
         .accessibilityIdentifier(A11yID.autonomosBack)
         .accessibilityAddTraits(.isButton)
     }
@@ -271,7 +271,7 @@ struct AutonomosViewHeader: View {
                 .contentShape(Circle())
         }
         .accessibilityLabel("Novo Autônomo")
-        .accessibilityHint("abre o formulário para criar um Autônomo")
+        .accessibilityHint("Abre o formulário para criar um Autônomo")
         .accessibilityIdentifier(A11yID.autonomosNew)
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(9) // primary catalog create surfaces early in VO
@@ -506,7 +506,7 @@ struct AutonomosMapShell: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(error)
-        .accessibilityHint("toque para dispensar")
+        .accessibilityHint("Toque para dispensar")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
         .accessibilitySortPriority(10) // dry-run honesty surfaces before list chrome
         .accessibilityIdentifier(A11yID.autonomosControlError)
@@ -543,7 +543,7 @@ struct AutonomosMapShell: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
-        .accessibilityHint("abre o recibo de auto-construção")
+        .accessibilityHint("Abre o recibo de auto-construção")
         .accessibilityAddTraits(.isButton)
         .accessibilitySortPriority(8) // rare proven receipt — surface early in VO
         .accessibilityIdentifier(A11yID.autonomosSelfConstructionBanner)
@@ -667,7 +667,7 @@ struct AutonomosRhythmLearningLine: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(AutonomosRhythmCopy.spokenLine(windows, paused: nightly.isProposalMuted))
-        .accessibilityHint("mostra o que o Atlas aprendeu do seu dia")
+        .accessibilityHint("Mostra o que o Atlas aprendeu do seu dia")
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.autonomosRhythmLine)
         .sheet(isPresented: $rhythmSheetShown) {
@@ -856,7 +856,7 @@ struct AutonomosHubView: View {
         switch vestment {
         case .quiet:
             AutonomosMapChrome.primaryCTA("Retomar", haptic: .medium, action: onResume)
-                .accessibilityHint("retoma este Autônomo a partir da pausa")
+                .accessibilityHint("Retoma este Autônomo a partir da pausa")
         case .live:
             EmptyView()
         }
@@ -934,7 +934,7 @@ struct AutonomosListView: View {
                 )
             // Medium: primary entry into create flow on empty catalog.
             AutonomosMapChrome.primaryCTA("Novo Autônomo", haptic: .medium, action: onCreate)
-                .accessibilityHint("abre o formulário para criar um Autônomo")
+                .accessibilityHint("Abre o formulário para criar um Autônomo")
             Spacer(minLength: 0)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
@@ -980,7 +980,7 @@ struct AutonomosListView: View {
         // Ignore children so spoken(unit) is the single VO node (no double name/charter).
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spoken(unit))
-        .accessibilityHint("abre o hub deste Autônomo")
+        .accessibilityHint("Abre o hub deste Autônomo")
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.autonomosUnit(unit.id))
     }
@@ -1058,7 +1058,7 @@ struct AutonomosNewSheet: View {
                     }
                     .accessibilityHint(canCreate ? "cria o Autônomo no catálogo" : "digite um nome para criar")
                     AutonomosMapChrome.quietCTA("Cancelar", action: onCancel)
-                        .accessibilityHint("fecha sem criar")
+                        .accessibilityHint("Fecha sem criar")
                 }
                 .padding(AtlasTheme.Space.screen)
                 .padding(.bottom, 24)
@@ -1159,7 +1159,7 @@ struct AutonomosReasonSheet: View {
                     TextField("Quem autoriza", text: $actor)
                         .frame(minHeight: 48)
                         .accessibilityIdentifier(A11yID.autonomosReasonActor)
-                        .accessibilityHint("nome de quem autoriza a ação governada")
+                        .accessibilityHint("Nome de quem autoriza a ação governada")
                 }
                 Section(reasonOptional ? "Motivo (opcional no ensaio)" : "Motivo") {
                     TextField("Motivo auditável", text: $reason, axis: .vertical)
@@ -1278,8 +1278,8 @@ struct AutonomosRhythmSheet: View {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("reativar propostas noturnas")
-                    .accessibilityHint("volta a mostrar a proposta das 21h quando o Atlas tiver algo a dizer")
+                    .accessibilityLabel("Reativar propostas noturnas")
+                    .accessibilityHint("Volta a mostrar a proposta das 21h quando o Atlas tiver algo a dizer")
                     .accessibilityIdentifier(A11yID.autonomosRhythmUnmute)
                     .accessibilityAddTraits(.isButton)
                 }
@@ -1924,7 +1924,7 @@ extension SelfConstructionReceiptSheet {
             .padding(10)
             .frame(minHeight: 48, alignment: .center)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
-            .accessibilityLabel("quem autoriza o veto")
+            .accessibilityLabel("Quem autoriza o veto")
             .accessibilityHint(spokenActorHint())
     }
 }
@@ -1937,7 +1937,7 @@ extension SelfConstructionReceiptSheet {
             .padding(10)
             .frame(minHeight: 88, alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
-            .accessibilityLabel("motivo auditável do veto")
+            .accessibilityLabel("Motivo auditável do veto")
             .accessibilityHint(spokenReasonHint())
     }
 }

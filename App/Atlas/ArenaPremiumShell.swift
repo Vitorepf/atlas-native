@@ -1298,7 +1298,7 @@ struct ArenaPremiumAlertsView: View {
                 .accessibilityLabel(
                     "\(ArenaDisplay.suite(suite.suite)), \(regressionDetail(suite))"
                 )
-                .accessibilityHint("abre a suíte com regressão")
+                .accessibilityHint("Abre a suíte com regressão")
                 .accessibilityAddTraits(.isButton)
                 ArenaPremiumHairline()
             }
@@ -2938,7 +2938,7 @@ struct ArenaPremiumCapabilitiesView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(capabilitySpoken(capability))
-                .accessibilityHint("abre o detalhe desta capacidade")
+                .accessibilityHint("Abre o detalhe desta capacidade")
                 .accessibilityIdentifier(A11yID.arenaCapabilityRow(capability.capability))
                 .accessibilityAddTraits(.isButton)
                 ArenaPremiumHairline()
@@ -4344,7 +4344,7 @@ struct ArenaPremiumDisclosureRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(title), \(detail)")
-        .accessibilityHint("abre \(title.lowercased())")
+        .accessibilityHint("Abre \(title)")
         .accessibilityAddTraits(.isButton)
     }
 }
@@ -4450,7 +4450,7 @@ struct ArenaPremiumGlyphRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(title), \(detail)")
-        .accessibilityHint("abre \(title.lowercased())")
+        .accessibilityHint("Abre \(title)")
         .accessibilityAddTraits(.isButton)
     }
 }
