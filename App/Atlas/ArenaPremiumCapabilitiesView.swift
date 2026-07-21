@@ -28,7 +28,7 @@ struct ArenaPremiumCapabilitiesView: View {
 
     private var capabilityHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ArenaPremiumKicker(text: "Perfil medido · escala 0–10")
+            ArenaPremiumKicker(text: ArenaScoreJudgment.capabilitiesKicker())
                 .accessibilityIdentifier(A11yID.arenaPremiumCapabilities)
             ArenaPremiumEngineTitle(
                 engineID: model.selectedCapabilities?.engine

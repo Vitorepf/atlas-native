@@ -66,12 +66,11 @@ struct ArenaPremiumComparison: View {
     }
 
     private func kickerTitle(for pair: PublishedPair) -> String {
-        switch pair.source {
-        case .suite:
-            return provisional ? "Último par · escala 0–10" : "Comparação final · escala 0–10"
-        case .composite:
-            return provisional ? "Índice do motor · escala 0–10" : "Comparação final · escala 0–10"
-        }
+        // WAVE-021: Comparison silence law is the global kicker grammar.
+        ArenaScoreJudgment.comparisonKicker(
+            provisional: provisional,
+            sourceSuite: pair.source == .suite
+        )
     }
 
     private func values(_ pair: PublishedPair) -> some View {
@@ -95,7 +94,7 @@ struct ArenaPremiumComparison: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
-            "Sem Atlas \(ArenaFormat.score(pair.without)), com Atlas \(ArenaFormat.score(pair.withAtlas)), diferença \(ArenaFormat.signed(delta))"
+            ArenaScoreJudgment.spokenPair(without: pair.without, withAtlas: pair.withAtlas)
         )
     }
 

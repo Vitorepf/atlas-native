@@ -21,10 +21,8 @@ struct ArenaPremiumAlertsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(
-                text: hasAlerts ? "Exceções que pedem atenção" : "Sem exceções",
-                tone: hasAlerts ? .negative : .positive
-            )
+            let kicker = ArenaScoreJudgment.alertsKicker(hasAlerts: hasAlerts)
+            ArenaPremiumKicker(text: kicker.text, tone: kicker.tone)
             .accessibilityIdentifier(A11yID.arenaPremiumAlerts)
             HStack(alignment: .lastTextBaseline, spacing: 7) {
                 Text("\(regressions.count + reportAlerts.count)")
@@ -118,7 +116,7 @@ struct ArenaPremiumAlertsView: View {
 
     private func regressionDetail(_ suite: AtlasArenaSuite) -> String {
         let delta = suite.engines.first(where: \.regressed)?.delta
-        return "\(ArenaFormat.signed(delta)) · regressão"
+        return ArenaScoreJudgment.regressionDetail(delta: delta)
     }
 
     private func publicBlocker(_ raw: String) -> String {

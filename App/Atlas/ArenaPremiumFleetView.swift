@@ -46,7 +46,7 @@ struct ArenaPremiumFleetView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(
-                text: "Frota medida · \(engines.count) \(engines.count == 1 ? "motor" : "motores")"
+                text: ArenaScoreJudgment.fleetKicker(engineCount: engines.count)
             )
             Text("Onde o Atlas sobe")
                 .font(AtlasFont.serif(31))
@@ -91,7 +91,7 @@ struct ArenaPremiumFleetView: View {
                 bar(label: "sem", value: without, ceiling: maxScore, atlas: false)
                 bar(label: "Atlas", value: withAtlas, ceiling: maxScore, atlas: true)
             } else {
-                Text("não medido")
+                Text(ArenaScoreJudgment.unmeasuredLabel)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
@@ -110,7 +110,7 @@ struct ArenaPremiumFleetView: View {
                 .font(AtlasFont.mono(11, .medium))
                 .foregroundStyle(mult >= 1 ? AtlasTheme.accent : AtlasTheme.alert)
         } else if engine.composite == nil {
-            Text("não medido")
+            Text(ArenaScoreJudgment.unmeasuredLabel)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -147,10 +147,6 @@ struct ArenaPremiumFleetView: View {
     }
 
     private func fleetSpoken(_ engine: AtlasArenaCompositeEngine) -> String {
-        let name = ArenaDisplay.engine(engine.engine)
-        if let mult = engine.atlasMultiplier {
-            return "\(name), multiplicador \(ArenaFormat.multiplier(mult)), sem Atlas \(ArenaFormat.score(engine.withoutAtlasComposite)), com Atlas \(ArenaFormat.score(engine.withAtlasComposite))"
-        }
-        return "\(name), não medido"
+        ArenaScoreJudgment.spokenEngine(engine)
     }
 }

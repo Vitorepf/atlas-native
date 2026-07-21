@@ -30,7 +30,7 @@ struct ArenaPremiumResultsView: View {
     private func resultHeader(_ engine: AtlasArenaCompositeEngine) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(
-                text: model.report?.claimAllowed == true ? "Última medição concluída" : "Medição parcial"
+                text: ArenaScoreJudgment.resultsKicker(claimAllowed: model.report?.claimAllowed)
             )
             .accessibilityIdentifier(A11yID.arenaPremiumResults)
             ArenaPremiumEngineTitle(
@@ -48,7 +48,11 @@ struct ArenaPremiumResultsView: View {
     }
 
     private func resultMetrics(_ engine: AtlasArenaCompositeEngine) -> some View {
-        let atlasDelta = pairedDelta(engine)
+        let atlasDelta = ArenaScoreJudgment.pairedDelta(engine: engine)
+        let judgment = ArenaScoreJudgment.state(
+            engine: engine,
+            claimAllowed: model.report?.claimAllowed
+        )
         return VStack(alignment: .leading, spacing: 18) {
             HStack(alignment: .lastTextBaseline) {
                 VStack(alignment: .leading, spacing: 3) {
@@ -62,10 +66,11 @@ struct ArenaPremiumResultsView: View {
                     }
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("\(ArenaFormat.score(engine.composite)) de 10")
+                    .accessibilityLabel(ArenaScoreJudgment.spokenScore(engine.composite))
                 }
                 Spacer()
-                if let atlasDelta {
+                // Δ só com par publicado (WAVE-021 — never fabricate 0).
+                if let atlasDelta, judgment == .published || judgment == .partial || judgment == .regressed {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text(ArenaFormat.signed(atlasDelta))
                             .font(AtlasFont.serifItalic(18))
@@ -89,7 +94,7 @@ struct ArenaPremiumResultsView: View {
                     smallMetric("Multiplicador", ArenaFormat.multiplier(engine.atlasMultiplier), tone: .active)
                 }
             }
-            Text("cobertura \(model.arenaCoverageText) · \(model.report?.claimAllowed == true ? "resultado final" : "resultado parcial")")
+            Text("cobertura \(model.arenaCoverageText) · \(judgment.rawValue) · \(ArenaScoreJudgment.scaleCaption)")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
@@ -120,7 +125,7 @@ struct ArenaPremiumResultsView: View {
                 .accessibilityIdentifier(A11yID.arenaPremiumResultSuite(suite.suite))
                 ArenaPremiumHairline()
             }
-            Text("Resultados ausentes aparecem como não medidos, nunca como zero.")
+            Text(ArenaScoreJudgment.absenceNeverZero)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.top, 16)
@@ -141,7 +146,7 @@ struct ArenaPremiumResultsView: View {
             }
             .font(AtlasFont.mono(11, .medium))
         } else {
-            Text("não medido")
+            Text(ArenaScoreJudgment.unmeasuredLabel)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -156,12 +161,6 @@ struct ArenaPremiumResultsView: View {
             Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
             Text(value).font(AtlasFont.mono(18, .medium)).foregroundStyle(tone.color)
         }
-    }
-
-    private func pairedDelta(_ engine: AtlasArenaCompositeEngine) -> Double? {
-        guard let withAtlas = engine.withAtlasComposite,
-              let withoutAtlas = engine.withoutAtlasComposite else { return nil }
-        return withAtlas - withoutAtlas
     }
 
     private var empty: some View {
