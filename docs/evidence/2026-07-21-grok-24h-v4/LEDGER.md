@@ -214,3 +214,4 @@ mode: designer + implementer
 - Device-pending (passcode) = operator.
 - WAVE-180: StateCard kind pack mid-thread.
 - WAVE-174–179 pack/face sovereignty · hollows 0 · face-sans-pack none.
+- open=[] · after WAVE-180 · IDLE6 (1 consecutive) · residual full-bar only if §WAVE · no invent micro.
