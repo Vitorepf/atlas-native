@@ -4,17 +4,22 @@
 
 ```yaml
 pass: 1
-domain_index: 6
-last_focus: "AutonomosFleet Judgment+Strip fuse"
-session_commits: 65
+domain_index: 7
+last_focus: "presentation utils fuse"
+session_commits: 74
 soft_sections_states: 0
+swift_App_Atlas: 229
 ```
 
-## Hard
+## Metrics
 
-soft Sections/States **0** · density guard OK · gates green
+| Metric | Value |
+|---|---|
+| session commits | 74 |
+| App/Atlas .swift | 229 (started ~350+) |
+| *Sections*/*States* | **0** |
+| density guard | OK |
 
-## Next
+## Next (never stop)
 
-- AutonomosReason Sheet fuse · TurnPresence · residual peels
-- **never Goal Done**
+residual peels · MARK densos · CODEMAP · pass cycle · **PROIBIDO Goal Done**
