@@ -214,6 +214,5 @@ mode: designer + implementer
 ## Notes
 - Device-pending (passcode) = operator.
 - Continuity restore BLOCKED (App Group).
-- WAVE-183: radar workspace shell pack + LiveNow packFacts.
-- WAVE-174–182 pack/face campaign · hollows 0.
-- open=[] · await A · no invent micro-WAVE.
+- WAVE-183: radar workspace pack + LiveNow packFacts.
+- hollows 0 · open=[] · await A · no invent micro-WAVE.
