@@ -150,8 +150,8 @@ extension ConversationComposer {
         .background(composerSurface)
         .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.82), value: expanded)
         .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.82), value: model.drafts)
+        // Contain without fused label: input/send/attach stay individually focusable.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(composerCardSpokenLabel)
         .accessibilityHint(ConversationComposerA11y.cardHint)
     }
 }

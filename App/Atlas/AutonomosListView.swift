@@ -50,8 +50,8 @@ struct AutonomosListView: View {
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        // Contain: hero speaks as header; Novo CTA remains a separate target.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Nenhum Autônomo ainda. Crie um com escopo fechado.")
     }
 
     private func unitRow(_ unit: AutonomosUnit) -> some View {
