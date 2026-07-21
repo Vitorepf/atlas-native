@@ -162,8 +162,8 @@ extension AtlasCodeWhySheet {
         content
             .task { if model.phase == .idle { await model.load(repo: repo, file: file) } }
             .accessibilityIdentifier(A11yID.whySheet)
-            .accessibilityLabel(whySheetSpokenLabel)
-            .accessibilityHint(Self.sheetHint)
+            // Contain without fused sheet label so history rows stay focusable.
+            .accessibilityElement(children: .contain)
     }
 }
 
