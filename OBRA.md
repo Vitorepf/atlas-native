@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — empty peels + dead HomeSummary (ciclo 260)** · `c9cde85e` · App/Atlas 200. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse ChangeReview/Arena singleton peels (ciclo 259)** · `427b54cf` · App/Atlas 204. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse outline sheet peel (ciclo 258)** · `0bf64123` · App/Atlas 208. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse vestment + drop ExecutionBanner a11y (ciclo 257)** · `1b5b1a1a` · App/Atlas 209. **Prova:** checks+build exit 0.
