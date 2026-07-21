@@ -4504,6 +4504,7 @@ extension ExecutionBanner {
             .padding(.vertical, 7)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(tint.opacity(0.10)))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(tint.opacity(0.35), lineWidth: 1))
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 
@@ -5695,6 +5696,7 @@ extension ExecutionProof {
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.35))
                     .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
             )
+            .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 
