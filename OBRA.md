@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — radar StatusCapsule fuse (ciclo 009)** · `917256f3`. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — AtlasCodeFolderRow 18→1 (ciclo 008)** · radar pasta fuse. **Prova:** checks+build. Zero área nova.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — RootHomeSections 26→1 (ciclo 007)** · `e3f43b3a` · Home CONVERSAS/OPERAÇÃO/WORKSPACES fuse. **Prova:** checks+build verdes. Zero área nova.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — 24h deepening ciclos 001–005 (peel forests)** · `924fb8f2`…`40c6b044` · LiveNow 54→2; ArenaCompositeChart 6→1; NightlyProposalCard+Block; AutonomosView host. App/Atlas ~1892 Swift. Ledger: `docs/evidence/2026-07-20-grok-24h/LEDGER.md`. **Prova:** checks+build verdes cada ciclo; `make device` → Atlas no iPhone. Zero área nova.
