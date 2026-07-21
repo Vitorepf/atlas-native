@@ -4392,6 +4392,7 @@ struct ArenaPremiumProgressRing: View {
             Text("✦")
                 .font(AtlasFont.serif(24))
                 .foregroundStyle(AtlasTheme.accent)
+                .shadow(color: AtlasTheme.accent.opacity(0.28), radius: 8, y: 1)
         } else {
             // Progress without percentage stays visual-only (parent speaks counts).
             EmptyView()
