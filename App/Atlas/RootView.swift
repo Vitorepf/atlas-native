@@ -2624,6 +2624,8 @@ extension CircleButton {
                 .fill(AtlasCodePalette.alert)
                 .frame(width: 9, height: 9)
                 .overlay(Circle().strokeBorder(AtlasTheme.bg, lineWidth: 1.5))
+                // Soft alert bloom — exception speaks without a counter.
+                .shadow(color: AtlasCodePalette.alert.opacity(0.55), radius: 3, y: 0)
                 .offset(x: 1, y: -1)
                 .accessibilityHidden(true)
         }
