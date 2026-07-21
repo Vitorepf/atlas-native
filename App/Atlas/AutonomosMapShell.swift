@@ -209,6 +209,12 @@ struct AutonomosMapShell: View {
             .padding(.top, 10)
             .padding(.bottom, 4)
 
+            // WAVE-037: thin fleet strip when global snapshot published (silence if nil).
+            if let fleet = model.fleet {
+                AutonomosFleetStrip(fleet: fleet, history: model.fleetHistory)
+                    .padding(.bottom, 4)
+            }
+
             AutonomosListView(
                 units: model.operatorUnits,
                 awaitingUnitIDs: AutonomosDecisionJudgment.awaitingUnitIDs(
@@ -376,7 +382,8 @@ struct AutonomosMapShell: View {
                     cycles: model.cycles,
                     lastTransferReceipt: model.lastTransferReceipt,
                     taskHealth: model.taskHealth,
-                    areaSelected: model.selectedArea != nil
+                    areaSelected: model.selectedArea != nil,
+                    fleet: model.fleet
                 )
             },
             onThread: { askThreadId = $0 },

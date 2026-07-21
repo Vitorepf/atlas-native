@@ -57,7 +57,8 @@ enum AutonomosAskContext {
         cycles: AtlasAutonomosCyclesResponse? = nil,
         lastTransferReceipt: AtlasAutonomosTransferResponse? = nil,
         taskHealth: AtlasAutonomosTaskHealthResponse? = nil,
-        areaSelected: Bool = false
+        areaSelected: Bool = false,
+        fleet: AtlasAutonomosFleetResponse? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = []
@@ -108,6 +109,11 @@ enum AutonomosAskContext {
         if AutonomosTaskHealthJudgment.incidentPresent(taskHealth) {
             anchors.append("incident · present")
         }
+
+        // WAVE-037: global fleet snapshot honesty.
+        let fleetPack = AutonomosFleetJudgment.packFacts(fleet)
+        facts.append(contentsOf: fleetPack.facts)
+        absences.append(contentsOf: fleetPack.absences)
 
         if let destination {
             facts.append("tela: \(destination.navTitle)")

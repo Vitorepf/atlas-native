@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 31
+- waves_completed: 32
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -42,6 +42,7 @@ mode: designer + implementer
 - WAVE-034
 - WAVE-035
 - WAVE-036
+- WAVE-037
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -59,5 +60,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-036 self-WAVE: task health / incident instrument.
+- WAVE-037 self-WAVE: fleet judgment strip.
 - DEVICE_PENDING. Wait A for 2–5 open GOD WAVEs.
