@@ -12,7 +12,7 @@ extension ExecutingStrip {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityHidden(true)
             Text(act.title)
-                .font(.system(.footnote))
+                .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.tail)

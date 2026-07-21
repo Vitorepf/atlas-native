@@ -6,7 +6,7 @@ import AtlasCore
 extension ExecutionStateCard {
     var retryFallbackLabel: some View {
         Text("Retomar")
-            .font(.system(.caption, weight: .semibold))
+            .font(AtlasFont.mono(10, .semibold))
             .padding(.horizontal, 11).padding(.vertical, 8)
             .frame(maxWidth: .infinity)
     }

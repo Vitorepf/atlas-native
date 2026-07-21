@@ -8,7 +8,7 @@ extension ExecutionStateCard {
     var detailLine: some View {
         if let detail = state.detail {
             Text(detail)
-                .font(.footnote)
+                .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)

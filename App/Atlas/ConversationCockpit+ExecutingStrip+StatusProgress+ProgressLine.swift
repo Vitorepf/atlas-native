@@ -8,7 +8,7 @@ extension ExecutingStrip {
     var stripStatusProgressLine: some View {
         if let p = bubble.executionProgress {
             Text("\(p.current)/\(p.total) · \(p.title)")
-                .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .layoutPriority(2)

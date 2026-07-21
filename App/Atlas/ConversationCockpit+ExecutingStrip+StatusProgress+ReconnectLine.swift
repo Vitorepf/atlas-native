@@ -8,7 +8,7 @@ extension ExecutingStrip {
     var stripStatusReconnectLine: some View {
         if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
             Text(line)
-                .font(.system(.footnote))
+                .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.tail)

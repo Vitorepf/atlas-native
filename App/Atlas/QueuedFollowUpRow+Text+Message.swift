@@ -5,7 +5,7 @@ import SwiftUI
 extension QueuedFollowUpRow {
     var rowMessagePreview: some View {
         Text(message.text)
-            .font(.system(.callout))
+            .font(AtlasFont.serif(16))
             .foregroundStyle(AtlasTheme.textPrimary)
             .lineLimit(2)
             .accessibilityHidden(true)

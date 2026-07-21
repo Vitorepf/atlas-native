@@ -12,7 +12,7 @@ extension ExecutionStateCard {
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
             Text(state.title)
-                .font(.system(.footnote, weight: .semibold))
+                .font(AtlasFont.mono(11, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
