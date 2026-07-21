@@ -113,10 +113,13 @@ struct ArenaPremiumPlanView: View {
             Text("Nenhum plano ativo")
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text("Crie uma medição para organizar suítes, motores e braços.")
                 .font(.system(.callout))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(A11yID.arenaPremiumState("plan-empty"))
     }
 
     private func metric(_ value: Int, _ label: String) -> some View {

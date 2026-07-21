@@ -79,6 +79,8 @@ struct ArenaPremiumQueuedView: View {
             Text(value).font(AtlasFont.serif(32)).foregroundStyle(AtlasTheme.textPrimary)
             Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(value) \(label)")
     }
 }
 

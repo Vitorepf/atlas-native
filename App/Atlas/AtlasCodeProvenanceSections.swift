@@ -46,6 +46,7 @@ extension AtlasCodeProvenanceSheet {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 11)
+        .frame(minHeight: 48)
         .atlasCard(cornerRadius: AtlasTheme.Radius.control)
         .contentShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
     }
