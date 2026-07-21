@@ -3,6 +3,21 @@ import SwiftUI
 
 // Cycle 044 fuse → RootView.swift
 
+// Rotas: um workspace (repo), uma thread existente, ou conversa nova.
+enum Route: Hashable {
+    case workspace(key: String?, title: String)
+    /// M0 · o grafo de UM repositório, escolhido no radar (M3).
+    case codeGraph(repo: String)
+    case thread(id: ThreadID, title: String)
+    /// Conversa nova; com workspaceKey ela já nasce NO workspace (Cursor-parity).
+    case new(workspaceKey: String?)
+    case conversas
+    case search
+    case autonomos
+    case arena
+    case code
+}
+
 // Home Workspaces-primeiro (estilo Cursor, tema Atlas): masthead Fraunces, lista
 // de repos reais (campo `workspace` das threads) + "Todas" + "Adicionar". Entrar
 // num workspace abre suas conversas com filtro de área.
