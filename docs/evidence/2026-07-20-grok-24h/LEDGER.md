@@ -1,15 +1,16 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 049
-- last_commit: 92ba679a
+- phase: D1 cycle 050
+- last_commit: 604527a6
 - last_gates: green
-- next_leap: Autônomos/Arena empty polish OR device make device when unlocked
+- next_leap: Arena empty/running polish OR RootHome residual craft OR make device
 - blocked: none
 - App/Atlas Swift: 214
 
 ## Highlights this resume
-015–048 · App/Atlas **1748 → 214 (−1534 Swift files)**
-Peel compression plateau (models multi-file by design)
-AgenticPill + empty conversation craft
+015–049 · **App/Atlas 1748 → 214 (−1534 Swift files)**
+Peel forests exhausted (models multi-file kept)
+Craft: AgenticPill · empty conversation · Autônomos failure empty
 FORBIDDEN clean · no new domains · casca only
+Loop continues — not declaring done
