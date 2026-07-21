@@ -101,12 +101,19 @@ struct ArenaPremiumShell: View {
             threadId: askThreadId,
             title: "Arena",
             emptyPrompt: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination),
-            emptySuggestions: ArenaPremiumAskContext.emptySuggestions(tab: selectedTab),
+            emptySuggestions: ArenaPremiumAskContext.emptySuggestions(
+                tab: selectedTab,
+                destination: destination
+            ),
             taskKind: "arena",
             workspace: nil,
             draft: askDraft,
-            turnFacts: { [model, selectedTab] _ in
-                ArenaPremiumAskContext.facts(model: model, tab: selectedTab)
+            turnFacts: { [model, selectedTab, destination] _ in
+                ArenaPremiumAskContext.facts(
+                    model: model,
+                    tab: selectedTab,
+                    destination: destination
+                )
             },
             onThread: { askThreadId = $0 },
             hidesNavigationBack: true

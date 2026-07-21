@@ -5,15 +5,13 @@ import AtlasCore
 
 extension AtlasCodeView {
     var askPillCaptionStack: some View {
-        HStack(spacing: 9) {
-            Text("✦")
-                .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.accent)
-                .accessibilityHidden(true)
-            Text(anchorLegend ?? "pergunte sobre este repositório")
-                .font(AtlasFont.serifItalic(13))
+        HStack(spacing: 12) {
+            RootView.HomeComposerStar()
+            Text(anchorLegend ?? AtlasCodeAskContext.invite)
+                .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(anchorLegend != nil ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
                 .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityHidden(true)
                 .accessibilityIdentifier(A11yID.codeAskAnchorNote)
         }

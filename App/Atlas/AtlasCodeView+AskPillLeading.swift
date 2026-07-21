@@ -7,9 +7,8 @@ import AtlasCore
 
 extension AtlasCodeView {
     var askPillLeading: some View {
-        HStack(spacing: 9) {
+        HStack(spacing: 10) {
             askPillCaptionStack
-            Spacer(minLength: 0)
             askPillClearButton
             askPillTrailingChevron
         }
