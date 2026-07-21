@@ -70,6 +70,7 @@ extension AtlasCodeProvenanceSheet {
         content
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenFailed(message))
+            .accessibilityAddTraits(.isHeader)
     }
 }
 
