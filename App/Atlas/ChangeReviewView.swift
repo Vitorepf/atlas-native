@@ -117,7 +117,15 @@ extension ChangeReviewSheet {
     func spokenReviewSheetSurfaceLabel(_ review: AtlasTraceChangeReview) -> String {
         if Self.hasReviewSurface(review) {
             let patches = review.patches.count
-            return "revisão de mudanças disponível, \(patches) patch\(patches == 1 ? "" : "es")"
+            var parts = [
+                "revisão de mudanças disponível",
+                "\(patches) patch\(patches == 1 ? "" : "es")"
+            ]
+            // WAVE-039: risk face in sheet spoken.
+            if let risk = ChangeReviewJudgment.spokenSheetSupplement(from: review) {
+                parts.append(risk)
+            }
+            return parts.joined(separator: ", ")
         }
         return "revisão de mudanças ligada, sem patches nem provas publicadas"
     }

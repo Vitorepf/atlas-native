@@ -603,8 +603,8 @@ struct ChangeReviewFileRow: View {
 extension ChangeReviewFindingRow {
     var rowAccessibilityLabel: String {
         var parts: [String] = []
-        if let severity = finding.severity {
-            parts.append("severidade \(Self.severitySpoken(severity))")
+        if finding.severity != nil {
+            parts.append("severidade \(ChangeReviewJudgment.severitySpoken(finding.severity))")
         }
         parts.append(finding.title ?? "achado sem título")
         if let path = finding.filePath {
@@ -624,7 +624,7 @@ extension ChangeReviewFindingRow {
             HStack(spacing: 8) {
                 if let severity = finding.severity {
                     Text(severity).font(AtlasFont.mono(9))
-                        .foregroundStyle(Self.severityColor(severity))
+                        .foregroundStyle(ChangeReviewJudgment.severityColor(severity))
                         .accessibilityHidden(true)
                 }
                 Text(finding.title ?? "finding").font(AtlasFont.serif(14)).foregroundStyle(AtlasTheme.textPrimary)
@@ -649,37 +649,6 @@ extension ChangeReviewFindingRow {
             Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(3).padding(.top, 1)
                 .accessibilityHidden(true)
-        }
-    }
-}
-
-extension ChangeReviewFindingRow {
-    static func severityColor(_ s: String) -> Color {
-        switch s.lowercased() {
-        case "critical", "high": return AtlasTheme.domOperacional
-        case "medium": return AtlasTheme.accent
-        default: return AtlasTheme.textTertiary
-        }
-    }
-}
-
-extension ChangeReviewFindingRow {
-    static func severitySpokenHigh(_ s: String) -> String? {
-        switch s.lowercased() {
-        case "critical": return "crítica"
-        case "high": return "alta"
-        default: return nil
-        }
-    }
-}
-
-extension ChangeReviewFindingRow {
-    static func severitySpoken(_ s: String) -> String {
-        if let high = severitySpokenHigh(s) { return high }
-        switch s.lowercased() {
-        case "medium": return "média"
-        case "low": return "baixa"
-        default: return s
         }
     }
 }
@@ -731,8 +700,9 @@ extension ChangeReviewFindingsSection {
 }
 
 extension ChangeReviewFindingsSection {
-    var groups: [String: [AtlasTraceChangeReview.Finding]] {
-        Dictionary(grouping: findings) { $0.category?.uppercased() ?? "GERAIS" }
+    /// WAVE-039: axes by worst severity; findings severity-first inside.
+    var rankedGroups: [(axis: String, findings: [AtlasTraceChangeReview.Finding])] {
+        ChangeReviewJudgment.rankedAxisGroups(findings)
     }
 }
 
@@ -744,8 +714,8 @@ struct ChangeReviewFindingsSection: View {
             ChangeReviewCaption("ACHADOS · \(findings.count)")
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel("achados, \(findings.count) no total")
-            ForEach(groups.keys.sorted(), id: \.self) { axis in
-                axisGroup(axis: axis, axisFindings: groups[axis] ?? [])
+            ForEach(rankedGroups, id: \.axis) { group in
+                axisGroup(axis: group.axis, axisFindings: group.findings)
             }
         }
         .accessibilityElement(children: .contain)
@@ -989,15 +959,19 @@ extension ChangeReviewSectionsA11y {
 struct ChangeReviewControlsSection: View {
     let controls: [AtlasTraceChangeReview.Control]
 
+    private var ranked: [AtlasTraceChangeReview.Control] {
+        ChangeReviewJudgment.rankControls(controls)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             ChangeReviewCaption("CONTROLES · \(controls.count)")
-            ForEach(controls) { c in
+            ForEach(ranked) { c in
                 controlRow(c)
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenControlsSection(controls))
+        .accessibilityLabel(ChangeReviewSectionsA11y.spokenControlsSection(ranked))
         .accessibilityIdentifier(A11yID.reviewControlsSection)
     }
 }
@@ -1106,15 +1080,19 @@ extension ChangeReviewTestsSection {
 struct ChangeReviewTestsSection: View {
     let tests: [AtlasTraceChangeReview.TestRun]
 
+    private var ranked: [AtlasTraceChangeReview.TestRun] {
+        ChangeReviewJudgment.rankTests(tests)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             ChangeReviewCaption("TESTES · \(tests.count)")
-            ForEach(tests) { t in
+            ForEach(ranked) { t in
                 testRow(t)
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenTestsSection(tests))
+        .accessibilityLabel(ChangeReviewSectionsA11y.spokenTestsSection(ranked))
         .accessibilityIdentifier(A11yID.reviewTestsSection)
     }
 }
@@ -1175,6 +1153,7 @@ extension ChangeReviewAvailableContent {
     @ViewBuilder
     var reviewSections: some View {
         if let run = review.run { ChangeReviewRunHeader(run: run) }
+        ChangeReviewRiskStrip(review: review)
         ChangeReviewGovernanceSection(reviews: reviews, traceId: traceId)
         reviewPatchTail
     }
@@ -1201,7 +1180,8 @@ extension ChangeReviewAvailableContent {
 extension ChangeReviewAvailableContent {
     @ViewBuilder
     var reviewPatchTail: some View {
-        ForEach(review.patches) { patch in
+        // WAVE-039: riskFlags-first patches before quiet ones.
+        ForEach(ChangeReviewJudgment.rankPatches(review.patches)) { patch in
             ChangeReviewPatchCard(
                 reviews: reviews,
                 traceId: traceId,
@@ -1216,12 +1196,7 @@ extension ChangeReviewAvailableContent {
 extension ChangeReviewSheet {
     /// Patches, checks, testes ou achados — nunca UI vazia fingindo conteúdo.
     static func hasReviewSurface(_ review: AtlasTraceChangeReview) -> Bool {
-        !review.patches.isEmpty
-            || !review.controls.isEmpty
-            || !review.testRuns.isEmpty
-            || !review.review.findings.isEmpty
-            || !review.review.operatorActions.isEmpty
-            || !review.review.availableActions.isEmpty
+        ChangeReviewJudgment.hasReviewSurface(review)
     }
 }
 

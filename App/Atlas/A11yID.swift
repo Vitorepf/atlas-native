@@ -412,6 +412,7 @@ extension A11yID {
     static let reviewFindingsSection = "review-findings-section"
     static let reviewFindingAxisPrefix = "review-finding-axis-"
     static let reviewFindingRowPrefix = "review-finding-row-"
+    static let reviewRiskFace = "review-risk-face"
     static func reviewFindingAxis(_ axis: String) -> String { reviewFindingAxisPrefix + axis.lowercased() }
     static func reviewFindingRow(_ id: String) -> String { reviewFindingRowPrefix + id }
 }

@@ -38,6 +38,7 @@
 | **Task health / incidente frota** | `AutonomosTaskHealthJudgment` → IncidentSurface · vestment incidentPresent |
 | **Frota global (agentes vivos)** | `AutonomosFleetJudgment` → FleetStrip no catálogo |
 | **Digest / momento (janela)** | `AutonomosDigestJudgment` → DigestSurface · `.moment("digest")` |
+| **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + Findings/Patches rank · sheet spoken |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
