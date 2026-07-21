@@ -36,8 +36,9 @@ struct AtlasCodeRadarStatusCapsule: View {
             }
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: model.scanState)
-        .frame(maxWidth: .infinity, alignment: .center)
+        .frame(maxWidth: .infinity, minHeight: 36, alignment: .center)
         .accessibilityLabel(spokenStatus)
+        .accessibilityAddTraits(model.scanState == .violating ? .isHeader : [])
         .accessibilityIdentifier(A11yID.radarStatus)
     }
 

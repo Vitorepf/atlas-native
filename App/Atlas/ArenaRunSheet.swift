@@ -14,6 +14,7 @@ extension ArenaRunSheet {
                     Text("O que vamos medir?")
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
                     Text("Escolha somente o necessário. A ordem e o progresso aparecem na Arena assim que o servidor confirmar.")
                         .font(.system(.callout))
                         .foregroundStyle(AtlasTheme.textSecondary)
@@ -633,6 +634,7 @@ extension ArenaRunSheet {
             .frame(minHeight: 52)
             .background(Capsule().fill(input.isLocallyValidForSubmission ? AtlasTheme.goldVeil : AtlasTheme.surfaceHi))
             .overlay(Capsule().stroke(input.isLocallyValidForSubmission ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
+            .contentShape(Capsule())
     }
 }
 
