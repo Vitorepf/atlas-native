@@ -27,6 +27,23 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T23:14Z — ArenaPremiumPrimitives chrome fuse
+
+```yaml
+phase: prove
+focus: Format/Icon/TabBar/Chrome/LoadFailure/Glyph/Bounce/Sparkline → Primitives
+domain_index: 5
+pass: 1
+commands: |
+  8 peels → ArenaPremiumPrimitives ~564 + Charts
+  RootChrome routes density also landed
+  gates ✓
+before_after: |
+  −8 Arena chrome peels · hops 1
+notes: continue residual
+```
+
+
 ### AgenticPill fuse
 ```yaml
 commits: 57

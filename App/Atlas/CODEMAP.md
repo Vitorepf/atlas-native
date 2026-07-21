@@ -134,7 +134,7 @@
 | **Markdown blocks spoken** | `AtlasMarkdownJudgment` list/quote/code/copy · Surface/Blocks |
 | **Autônomos/Home residual spoken** | Digest/Evolution/Hub/Decision + HomeOps profile |
 | **Mid-thread pack hydration** | `ConversationOccasionPack.PublishedSlice` + model.turnFacts rebind |
-| **Arena run status chrome** | `ArenaRunStatusJudgment` label/tone/glyph/trailing · Execution/Detail/Icon |
+| **Arena run status chrome** | `ArenaRunStatusJudgment` · primitives host chrome fused |
 | **Arena stop governance** | `ArenaStopJudgment` face blocked/ready · StopSheet |
 | **Arena execution pipeline** | `ArenaPipelineJudgment` project/glyph/spoken · ExecutionPipeline |
 | **LiveNow row spoken** | `LiveNowJudgment` spokenRow/clock · LiveNowRow |

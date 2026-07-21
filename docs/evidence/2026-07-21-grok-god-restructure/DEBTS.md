@@ -4,9 +4,9 @@
 
 ```yaml
 pass: 1
-domain_index: 0
-last_focus: "RootView HomeChrome+Route fuse · RootChrome routes density"
-session_commits: 59
+domain_index: 5
+last_focus: "ArenaPremiumPrimitives chrome bits fuse"
+session_commits: 61
 soft_sections_states: 0
 ```
 
