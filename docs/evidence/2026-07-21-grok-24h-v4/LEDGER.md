@@ -216,5 +216,4 @@ mode: designer + implementer
 - Device-pending (passcode) = operator.
 - Continuity restore BLOCKED (App Group).
 - WAVE-184: unit focus + home catalog pack.
-- WAVE-174–183 pack/face campaign · hollows 0.
-- open=[] · await A · no invent micro-WAVE.
+- hollows 0 · open=[] · await A · no invent micro-WAVE.
