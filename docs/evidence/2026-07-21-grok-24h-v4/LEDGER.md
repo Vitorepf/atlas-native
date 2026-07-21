@@ -72,7 +72,8 @@ mode: designer + implementer
 ## Designer
 - designs_proposed: 49
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -81,5 +82,6 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-053 steer + WAVE-054 commit row face. Prefer A fill.
-- DEVICE_PENDING. Continuity App Group BLOCKED.
+- WAVE-053 steer + WAVE-054 commit-row face shipped.
+- Prefer A 2–5 GOD croquis. DEVICE_PENDING.
+- Continuity restore BLOCKED (App Group).
