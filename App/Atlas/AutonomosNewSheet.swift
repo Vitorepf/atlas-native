@@ -53,6 +53,8 @@ struct AutonomosNewSheet: View {
             .scrollIndicators(.hidden)
             .background(AtlasTheme.bg)
             .accessibilityIdentifier(A11yID.autonomosNew)
+            // Contain: fields and CTAs stay separately focusable.
+            .accessibilityElement(children: .contain)
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
