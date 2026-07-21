@@ -133,4 +133,5 @@ _(no open proposed WAVEs)_
 - WAVE-113 done
 - WAVE-114 done
 - WAVE-115 done
+- WAVE-116 done
 

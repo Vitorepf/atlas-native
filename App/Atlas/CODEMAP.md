@@ -121,6 +121,7 @@
 | **Artifact sheet peels** | host/list · Chrome · Preview · Delivery (WAVE-112) |
 | **Radar rows peels** | FolderRow · RepoChrome · AskContext (WAVE-114) |
 | **Root chrome routes peels** | Face · ConversationRoutes · Lifecycle (WAVE-115) |
+| **TurnPresence peels** | host · Activity · Runtime (WAVE-116) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
