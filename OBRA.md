@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — evolution empty header (ciclo 118)** · `91e7aaca` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — new-since marker header (ciclo 117)** · `5453e529` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — code chip row a11y (ciclo 116)** · `5e158916` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — steer scope picker craft (ciclo 115)** · `78d9da22` · App/Atlas 214. **Prova:** checks+build.
