@@ -14,12 +14,32 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-_(no open proposed WAVEs)_
+```yaml
+id: WAVE-045-home-ops-attention-judgment-instrument
+status: proposed
+rank: 1
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-045-design.md
+created_by: designer
+approved_at: null
+```
+
+```yaml
+id: WAVE-046-composer-send-readiness-judgment-instrument
+status: proposed
+rank: 2
+delta_patamar: high
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-046-design.md
+created_by: designer
+approved_at: null
+```
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
+| **1** | WAVE-045-home-ops-attention-judgment-instrument | **max** | `WAVE-045-design.md` |
+| **2** | WAVE-046-composer-send-readiness-judgment-instrument | **high** | `WAVE-046-design.md` |
 
 ## History (done)
 
