@@ -218,20 +218,6 @@ struct AutonomosMapShell: View {
             }
         case .evolution:
             AutonomosEvolutionView(unit: selectedUnit)
-        case .decisions, .decisionInbox, .decisionOrder, .moment, .incident:
-            VStack(alignment: .leading, spacing: 12) {
-                AutonomosMapChrome.heroTitle("Ainda no escopo local", size: 26)
-                Text("Decisões e momentos do motor chegam quando o create no Server existir.")
-                    .font(AtlasFont.serifItalic(15))
-                    .foregroundStyle(AtlasTheme.textSecondary)
-            }
-            .padding(AtlasTheme.Space.screen)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(
-                "Ainda no escopo local. Decisões e momentos do motor chegam quando o create no Server existir."
-            )
-            .accessibilityIdentifier(A11yID.autonomosDeferredSurface)
         }
     }
 

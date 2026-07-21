@@ -1,24 +1,15 @@
-import SwiftUI
+import Foundation
 
-/// Destinos push Autônomos v9 — lista é a raiz (destination == nil).
+/// Destinos vivos da face Autônomos v9: lista → hub → evolução.
+/// Decisões/incidentes do motor ficam para §5 create — não há rota local mentindo superfície.
 enum AutonomosDestination: Hashable, Identifiable {
     case hub
     case evolution
-    case decisions
-    case decisionInbox(String)
-    case decisionOrder(String)
-    case moment(String)
-    case incident
 
     var id: String {
         switch self {
         case .hub: "hub"
         case .evolution: "evolution"
-        case .decisions: "decisions"
-        case .decisionInbox(let h): "inbox-\(h)"
-        case .decisionOrder(let id): "order-\(id)"
-        case .moment(let id): "moment-\(id)"
-        case .incident: "incident"
         }
     }
 
@@ -26,18 +17,14 @@ enum AutonomosDestination: Hashable, Identifiable {
         switch self {
         case .hub: "Autônomo"
         case .evolution: "Evolução"
-        case .decisions: "Decisões"
-        case .decisionInbox, .decisionOrder: "Decisão"
-        case .moment: "Momento"
-        case .incident: "Precisa de você"
         }
     }
 
-    /// Voltar hierárquico: profundidade → hub → lista.
+    /// Voltar hierárquico: evolução → hub → lista.
     var backTarget: AutonomosDestination? {
         switch self {
         case .hub: nil
-        default: .hub
+        case .evolution: .hub
         }
     }
 }

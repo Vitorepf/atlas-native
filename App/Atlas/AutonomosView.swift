@@ -43,7 +43,6 @@ struct AutonomosView: View {
         switch destination {
         case .hub: return unit.paused ? "Parado" : "Vivo"
         case .evolution: return unit.name
-        default: return ""
         }
     }
 
@@ -51,7 +50,6 @@ struct AutonomosView: View {
         guard let destination, let unit = selectedUnit else { return false }
         switch destination {
         case .hub, .evolution: return !unit.paused
-        default: return false
         }
     }
 

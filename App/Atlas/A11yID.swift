@@ -99,7 +99,6 @@ extension A11yID {
     static let autonomosEvolution = "autonomos-evolution"
     static let autonomosAskPill = "autonomos-ask-pill"
     static let autonomosSelfConstructionBanner = "autonomos-self-construction-banner"
-    static let autonomosDeferredSurface = "autonomos-deferred-surface"
     static let autonomosMissingUnit = "autonomos-missing-unit"
     static let autonomosReasonSheet = "autonomos-reason-sheet"
     static let autonomosReasonActor = "autonomos-reason-actor"

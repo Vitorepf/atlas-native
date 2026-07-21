@@ -4,27 +4,15 @@ import AtlasCore
 /// Pack de contexto Autônomos v9 — presentation-only; pack nunca na cara.
 enum AutonomosAskContext {
     static func invite(destination: AutonomosDestination?, vestment: AutonomosHubVestment) -> String {
-        if let destination {
-            switch destination {
-            case .hub:
-                break
-            case .decisions:
-                return "qual decido primeiro?"
-            case .decisionInbox, .decisionOrder:
-                return "por que esse valor?"
-            case .evolution:
-                return "resuma isto"
-            case .moment:
-                return "por que isto?"
-            case .incident:
-                return "o que faço?"
-            }
-        }
-        if destination == nil {
+        switch destination {
+        case .evolution:
+            return "resuma isto"
+        case .hub:
+            break
+        case nil:
             return "o que mudou hoje?"
         }
         switch vestment {
-        case .awaiting: return "o que preciso decidir?"
         case .live: return "o que ele fez hoje?"
         case .quiet: return "devo retomar?"
         }
@@ -32,12 +20,8 @@ enum AutonomosAskContext {
 
     static func emptySuggestions(destination: AutonomosDestination?) -> [String] {
         switch destination {
-        case .decisions, .decisionInbox, .decisionOrder:
-            return ["o que bloqueia?", "qual risco aceitar?"]
-        case .incident:
-            return ["o que quebrou?", "devo transferir?"]
-        case .evolution, .moment:
-            return ["o que mudou hoje?"]
+        case .evolution:
+            return ["o que mudou hoje?", "o que ele melhorou?"]
         case .hub:
             return ["devo retomar?", "o que ele fez?"]
         case nil:
@@ -62,7 +46,7 @@ enum AutonomosAskContext {
         }
         lines.append("Create Server de Autônomo ainda pendente (§5); catálogo local pode sumir no kill do app.")
         lines.append("Pause/retomar/encerrar: controles da face; NL de chat ainda não autoriza tools de escrita no wire.")
+        lines.append("Transfer/decide do motor não têm face nesta versão — não invente recibos de transferência.")
         return lines.joined(separator: "\n")
     }
 }
-
