@@ -170,8 +170,8 @@ extension AtlasCodeView {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(AtlasCodeAskPillA11y.clearLabel)
-            .accessibilityHint(AtlasCodeAskPillA11y.clearHint)
+            .accessibilityLabel(AtlasCodeAskPillJudgment.clearLabel)
+            .accessibilityHint(AtlasCodeAskPillJudgment.clearHint)
             .accessibilityIdentifier(A11yID.codeAskClear)
         }
     }
@@ -221,27 +221,6 @@ extension AtlasCodeView {
             .accessibilityHint(AtlasCodeAskPillJudgment.pillHint)
             .accessibilityAddTraits(.isButton)
             .accessibilityIdentifier(A11yID.codeAskPill)
-    }
-}
-
-/// WAVE-062: thin peel — constants + spoken route through Judgment.
-enum AtlasCodeAskPillA11y {
-    static func pillPhaseID(isAnchoring: Bool, anchorLegend: String?) -> String {
-        AtlasCodeAskPillJudgment.phaseID(
-            isAnchoring: isAnchoring,
-            anchorLegend: anchorLegend
-        )
-    }
-
-    static var pillHint: String { AtlasCodeAskPillJudgment.pillHint }
-    static var clearLabel: String { AtlasCodeAskPillJudgment.clearLabel }
-    static var clearHint: String { AtlasCodeAskPillJudgment.clearHint }
-
-    static func spokenPill(isAnchoring: Bool, anchorLegend: String?) -> String {
-        AtlasCodeAskPillJudgment.spokenPill(
-            isAnchoring: isAnchoring,
-            anchorLegend: anchorLegend
-        )
     }
 }
 
