@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — Code ask pill fuse (ciclo 014)** · `5fe462a7` · App/Atlas 1748. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — graph chrome fuse (ciclo 013)** · `eea174c3` · App/Atlas 1764. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — radar View+Loaded fuse (ciclos 011–012)** · `dfc0e135` · Código radar peels colapsados. App/Atlas 1798 Swift. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — AtlasCodeRepoRow fuse (ciclo 010)** · `03d5211f`. **Prova:** checks+build.
