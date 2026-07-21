@@ -1052,11 +1052,19 @@ struct LiveNowSection: View {
             header
             ForEach(Array(sessions.enumerated()), id: \.element.id) { index, session in
                 if isHub, index > 0 {
-                    Rectangle()
-                        .fill(AtlasTheme.separator.opacity(0.55))
-                        .frame(height: 1)
-                        .padding(.vertical, 10)
-                        .accessibilityHidden(true)
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0),
+                            AtlasTheme.accent.opacity(0.22),
+                            AtlasTheme.separator.opacity(0.7),
+                            AtlasTheme.accent.opacity(0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(height: 1)
+                    .padding(.vertical, 10)
+                    .accessibilityHidden(true)
                 }
                 rowCell(index: index, session: session)
             }
@@ -1076,20 +1084,20 @@ struct LiveNowSection: View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text("Vivo agora")
                 .font(AtlasFont.serif(13, .semibold))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.8))
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(Self.spokenSectionLabel(
                     isHub: isHub, count: sessions.count, remoteCount: remoteCount
                 ))
             if isHub {
                 Text("× \(sessions.count)")
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(11, .medium))
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityHidden(true)
                 if remoteCount > 0 {
                     Text("· \(remoteCount) remota\(remoteCount == 1 ? "" : "s")")
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                         .accessibilityHidden(true)
                 }
             }
