@@ -97,14 +97,14 @@ mode: designer + implementer
 - WAVE-089
 
 ## Idle compress
-- pass 5–6 · Cockpit · ChangeReview A11y
+- pass 5 · Cockpit banners · AskPillA11y
+- pass 6 · ChangeReview A11y · Search hint
 - pass 7 · Nightly muteDays shim
-- pass 8 · EditorialTurnChrome peel (Feedback · Signature)
+- pass 8 · EditorialTurnChrome peel
 
 ## Open queue
-_(none)_
+_(none)_ — awaiting A fill or full-bar residual
 
 ## Notes
-- WAVE-089 shipped. Max 2 consecutive idle after WAVE reached (7–8).
-- Next: A fill or full-bar residual only.
-- DEVICE_PENDING.
+- Session recent: WAVE-089 · IDLE×2 post-wave.
+- DEVICE_PENDING. Zero micro-WAVE inventada.
