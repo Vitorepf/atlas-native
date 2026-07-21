@@ -1452,9 +1452,24 @@ struct SearchViewHeader: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        HStack(spacing: 12) {
-            searchBackButton
-            searchFieldCapsule
+        VStack(spacing: 8) {
+            HStack(spacing: 12) {
+                searchBackButton
+                searchFieldCapsule
+            }
+            // Quiet gold rule under search chrome — masthead family.
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.4),
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 1)
+            .padding(.horizontal, 8)
+            .accessibilityHidden(true)
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 4).padding(.bottom, 10)
     }
