@@ -10,13 +10,13 @@ struct ArenaPremiumExecutionView: View {
     private var runs: [AtlasArenaLiveRun] { model.arenaPrimaryMeasurementRuns }
     private var primary: AtlasArenaLiveRun? { model.arenaPrimaryRun }
 
+    /// WAVE-050: pure live-control rank (live → failed → done → queued).
     private var orderedRuns: [AtlasArenaLiveRun] {
-        let live = runs.filter { $0.status == .running || $0.status == .stopping }
-        let done = runs.filter {
-            $0.status == .completed || $0.status == .failed || $0.status == .stopped
-        }
-        let upcoming = runs.filter { $0.status == .queued }
-        return live + done + upcoming
+        ArenaLiveControlJudgment.rank(runs)
+    }
+
+    private var liveFace: ArenaLiveControlFace {
+        ArenaLiveControlJudgment.face(runs: runs, primary: primary)
     }
 
     private var pipeline: ArenaPremiumPipelineProjection {
@@ -47,8 +47,7 @@ struct ArenaPremiumExecutionView: View {
     }
 
     private var canStop: Bool {
-        guard let primary else { return false }
-        return primary.canStop == true && primary.measurementIdPublic != nil
+        ArenaLiveControlJudgment.canStop(primary: primary)
     }
 
     private var header: some View {
@@ -215,23 +214,32 @@ struct ArenaPremiumExecutionView: View {
     }
 
     private var statusLabel: String {
-        switch model.livePresentation?.phase ?? .idle {
-        case .idle: "Sem execução"
-        case .queued: "Na fila"
-        case .running: "Ao vivo"
-        case .stopping: "Parando"
-        case .stopped: "Parada"
-        case .completed: "Concluída"
-        case .failed: "Interrompida"
+        // WAVE-050: live-control face elevates failed attention over generic done.
+        switch liveFace {
+        case .running: return "Ao vivo"
+        case .stopping: return "Parando"
+        case .attention: return liveFace.kicker
+        case .queued: return "Na fila"
+        case .quietDone:
+            switch model.livePresentation?.phase ?? .idle {
+            case .completed: return "Concluída"
+            case .stopped: return "Parada"
+            case .failed: return "Interrompida"
+            default: return "Encerrada"
+            }
+        case .empty:
+            return "Sem execução"
         }
     }
 
     private var statusTone: ArenaPremiumTone {
-        switch model.livePresentation?.phase ?? .idle {
-        case .running, .queued, .stopping: .active
-        case .completed: .positive
-        case .failed: .negative
-        case .idle, .stopped: .neutral
+        switch liveFace {
+        case .running, .stopping, .queued: return .active
+        case .attention: return .negative
+        case .quietDone:
+            if model.livePresentation?.phase == .completed { return .positive }
+            return .neutral
+        case .empty: return .neutral
         }
     }
 
