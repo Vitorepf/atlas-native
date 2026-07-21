@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 97
-- idle_compress_passes: 29
+- idle_compress_passes: 30
 - collapse_host: 0
 
 ## Waves done
@@ -110,9 +110,9 @@ mode: designer + implementer
 - WAVE-102
 
 ## Idle compress
-- pass 27 · a3dee5c0 · ComposerAttachmentsA11y
 - pass 28 · b2a94fc9 · RootChromeRowA11y
-- pass 29 · afc5f194 · ConversationViewA11y to Messages/Outline Judgment
+- pass 29 · afc5f194 · ConversationViewA11y
+- pass 30 · 241771b3 · CameraPickerA11y to DraftJudgment
 
 ## Designer
 - designs_proposed: 97
@@ -126,4 +126,4 @@ mode: designer + implementer
 | - | (none) | - | - |
 
 ## Notes
-- WAVE-102 + IDLE-29. DEVICE_PENDING.
+- WAVE-102 + IDLE 29-30. DEVICE_PENDING.
