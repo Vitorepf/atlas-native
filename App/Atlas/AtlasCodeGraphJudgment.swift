@@ -72,17 +72,10 @@ enum AtlasCodeGraphJudgment {
         facts.append("status: \(model.statusHeadline)")
         facts.append("scan: \(scanWord(model.scanState))")
 
-        if let worktrees = model.graph?.worktrees, !worktrees.isEmpty {
-            facts.append("worktrees: \(worktrees.count)")
-            for wt in worktrees.prefix(5) {
-                var line = "worktree: \(wt.pathLabel)"
-                if let branch = wt.branch?.nonEmpty { line += " · \(branch)" }
-                if let state = wt.state?.nonEmpty { line += " · \(state)" }
-                facts.append(line)
-            }
-        } else {
-            absences.append("worktrees não publicados neste load")
-        }
+        // WAVE-087: worktree face · ranked anchors (not wire dump).
+        let wtPack = AtlasCodeWorktreeJudgment.packFacts(model.graph?.worktrees ?? [])
+        facts.append(contentsOf: wtPack.facts)
+        absences.append(contentsOf: wtPack.absences)
 
         let nodes = model.graph?.nodes ?? []
         if !nodes.isEmpty {

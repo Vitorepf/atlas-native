@@ -104,20 +104,26 @@ extension AtlasCodeView {
         option == .violating ? AtlasCodePalette.alert : AtlasTheme.accent
     }
 
-    // MARK: Worktrees
+    // MARK: Worktrees (WAVE-087 Judgment)
 
+    @ViewBuilder
     func worktreesSection(_ worktrees: [AtlasCodeWorktree]) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("WORKTREES")
-                .font(AtlasFont.mono(10))
-                .tracking(1.1)
-                .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityIdentifier(A11yID.codeGraphWorktrees)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    ForEach(worktrees) { worktree in
-                        worktreeChip(worktree)
+        let face = AtlasCodeWorktreeJudgment.sectionFace(worktrees)
+        if face != .silence {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("WORKTREES")
+                    .font(AtlasFont.mono(10))
+                    .tracking(1.1)
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier(A11yID.codeGraphWorktrees)
+                    .accessibilityLabel(AtlasCodeWorktreeJudgment.spokenSection(worktrees))
+                    .accessibilityValue(face.productWord)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 6) {
+                        ForEach(AtlasCodeWorktreeJudgment.rank(worktrees)) { worktree in
+                            worktreeChip(worktree)
+                        }
                     }
                 }
             }
@@ -150,14 +156,7 @@ extension AtlasCodeView {
         .background(Capsule().fill(AtlasTheme.bgRecessed))
         .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(worktreeSpokenLabel(worktree))
-    }
-
-    private func worktreeSpokenLabel(_ worktree: AtlasCodeWorktree) -> String {
-        var parts = [worktree.pathLabel]
-        if let branch = worktree.branch?.nonEmpty { parts.append("branch \(branch)") }
-        if let state = worktree.state?.nonEmpty { parts.append(state) }
-        return parts.joined(separator: ", ")
+        .accessibilityLabel(AtlasCodeWorktreeJudgment.spokenChip(worktree))
     }
 
     // MARK: Week + heal receipt
