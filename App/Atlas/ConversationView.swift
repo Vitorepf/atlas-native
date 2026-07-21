@@ -221,17 +221,17 @@ extension ConversationView {
 }
 
 enum ConversationViewA11y {
-    static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
+    static func spokenToast(_ message: String) -> String { "Aviso, \(message)" }
 
     static func spokenOutlineLabel(turnCount: Int) -> String {
         let noun = turnCount == 1 ? "turno" : "turnos"
         return "índice da conversa, \(turnCount) \(noun)"
     }
 
-    static let outlineHint = "abre o índice editorial dos turnos desta conversa"
-    static let headerContinuityLabel = "continuidade da conversa"
-    static let headerContinuityHint = "continuar esta conversa no Mac ou no Terminal"
-    static let screenHint = "turnos e composer só com dados da sessão e do model"
+    static let outlineHint = "Abre o índice editorial dos turnos desta conversa"
+    static let headerContinuityLabel = "Continuidade da conversa"
+    static let headerContinuityHint = "Continuar esta conversa no Mac ou no Terminal"
+    static let screenHint = "Turnos e composer só com dados da sessão e do model"
 }
 
 extension ConversationView {
@@ -831,7 +831,7 @@ enum EmptyConversationA11y {
         "sugestão \(index + 1) de \(total), \(text)"
     }
 
-    static let suggestionHint = "envia esta pergunta agora"
+    static let suggestionHint = "Envia esta pergunta agora"
 }
 
 extension EmptyConversation {
@@ -1681,9 +1681,9 @@ struct ComposerAttachmentRow: View {
 enum ComposerSheetA11y {}
 
 extension ComposerSheetA11y {
-    static let modeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
-    static let effortSheetHint = "escolhe o esforço computacional do próximo envio"
-    static let workspaceSheetHint = "escolhe a pasta do próximo envio entre as conversas carregadas"
+    static let modeSheetHint = "Escolhe um rótulo local; não altera o turno ainda"
+    static let effortSheetHint = "Escolhe o esforço computacional do próximo envio"
+    static let workspaceSheetHint = "Escolhe a pasta do próximo envio entre as conversas carregadas"
 }
 
 extension ComposerSheetA11y {
@@ -2087,15 +2087,15 @@ struct CloseToolbarA11yID: ViewModifier {
 /// Colar só quando há texto real na área de transferência; câmera reusa CameraPickerA11y.
 
 enum ComposerAttachmentsA11y {
-    static let spokenSheet = "adicionar anexo à mensagem"
-    static let spokenSheetHint = "foto, câmera, arquivo ou texto colado no próximo envio"
+    static let spokenSheet = "Adicionar anexo à mensagem"
+    static let spokenSheetHint = "Foto, câmera, arquivo ou texto colado no próximo envio"
 }
 
 extension ComposerAttachmentsA11y {
-    static let spokenPhoto = "escolher foto da biblioteca"
-    static let spokenPhotoHint = "abre a biblioteca de fotos; nada é anexado até escolher"
+    static let spokenPhoto = "Escolher foto da biblioteca"
+    static let spokenPhotoHint = "Abre a biblioteca de fotos; nada é anexado até escolher"
 
-    static let spokenFile = "escolher arquivo"
+    static let spokenFile = "Escolher arquivo"
     static let spokenFileHint = "PDF, texto, código ou dados do dispositivo"
 }
 
@@ -2106,8 +2106,8 @@ extension ComposerAttachmentsA11y {
             : "colar indisponível, área de transferência vazia"
     }
 
-    static let spokenPasteHint = "adiciona o texto copiado como contexto da mensagem"
-    static let spokenPasteDisabledHint = "copie texto antes de colar como contexto"
+    static let spokenPasteHint = "Adiciona o texto copiado como contexto da mensagem"
+    static let spokenPasteDisabledHint = "Copie texto antes de colar como contexto"
 }
 
 
@@ -2235,7 +2235,7 @@ enum ConversationComposerA11y {
         return parts.joined(separator: ", ")
     }
 
-    static let cardHint = "escreve, anexa e envia; fila e execução viva aparecem quando publicadas"
+    static let cardHint = "Escreve, anexa e envia; fila e execução viva aparecem quando publicadas"
 }
 
 extension ConversationComposer {
@@ -2654,12 +2654,12 @@ struct CameraPicker: UIViewControllerRepresentable {
 /// Cancelar = silêncio total (nunca toast de anexo); falha só quando bytes não saem.
 
 enum CameraPickerA11y {
-    static let spokenSurface = "câmera para anexar foto"
-    static let spokenHint = "confirme a captura para anexar; cancelar não adiciona nada"
+    static let spokenSurface = "Câmera para anexar foto"
+    static let spokenHint = "Confirme a captura para anexar; cancelar não adiciona nada"
     static let captureFailedToast = "Não consegui capturar a foto"
 
-    static let spokenChooseCamera = "capturar foto na câmera"
-    static let spokenChooseCameraHint = "abre a câmera; nada é anexado até confirmar a captura"
+    static let spokenChooseCamera = "Capturar foto na câmera"
+    static let spokenChooseCameraHint = "Abre a câmera; nada é anexado até confirmar a captura"
 }
 
 extension CameraPicker.Coordinator {
@@ -2738,8 +2738,8 @@ enum DraftThumbA11y {
 }
 
 enum DraftThumbA11yHints {
-    static let removeHint = "remove este anexo antes do envio"
-    static let failedHint = "toque para ver o erro completo no aviso"
+    static let removeHint = "Remove este anexo antes do envio"
+    static let failedHint = "Toque para ver o erro completo no aviso"
 
     static func spokenFailedValue(_ message: String) -> String {
         message.isEmpty ? "erro no envio" : message
@@ -3662,8 +3662,8 @@ enum ConversationMessagesA11y {
 }
 
 enum ConversationMessagesA11yFAB {
-    static let scrollFABLabel = "ir para o fim da conversa"
-    static let scrollFABHint = "volta às mensagens mais recentes"
+    static let scrollFABLabel = "Ir para o fim da conversa"
+    static let scrollFABHint = "Volta às mensagens mais recentes"
 }
 
 enum ConversationMessagesA11yReview {
@@ -3675,7 +3675,7 @@ enum ConversationMessagesA11yReview {
         return "revisar mudanças desta execução"
     }
 
-    static let changeReviewHint = "abre arquivos, diff e provas desta execução"
+    static let changeReviewHint = "Abre arquivos, diff e provas desta execução"
 }
 
 extension ConversationMessages {
@@ -4062,9 +4062,9 @@ extension EditorialTurnA11y {
     return trimmed.isEmpty ? "mensagem sua, vazia" : "mensagem sua, \(trimmed)"
   }
 
-  static let spokenFinalAnswerKicker = "resposta final"
+  static let spokenFinalAnswerKicker = "Resposta final"
 
-  static let copyLongPressHint = "pressionar e segurar copia a resposta"
+  static let copyLongPressHint = "Pressionar e segurar copia a resposta"
 }
 
 enum EditorialTurnA11y {}
@@ -9955,7 +9955,7 @@ enum ArtifactViewerZoomA11y {
         return "imagem \(name), ampliada \(pct) por cento"
     }
 
-    static let zoomHint = "pinça para aproximar, arraste quando ampliada, toque duas vezes ou use ações para redefinir"
+    static let zoomHint = "Pinça para aproximar, arraste quando ampliada, toque duas vezes ou use ações para redefinir"
 
     static let resetAction = "Redefinir zoom"
 }
