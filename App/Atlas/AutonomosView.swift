@@ -1210,7 +1210,8 @@ struct AutonomosReasonSheet: View {
                     Text(title).accessibilityAddTraits(.isHeader)
                     Text(explainer)
                         .font(AtlasFont.serif(13))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet governed action explainer.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 }
                 Section("Operador") {
                     TextField("Quem autoriza", text: $actor)

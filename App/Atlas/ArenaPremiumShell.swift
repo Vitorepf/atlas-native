@@ -200,7 +200,8 @@ struct ArenaPremiumLoadFailureView: View {
                     : "A tela não transformou a falha de rede em estado vazio."
             )
             .font(AtlasFont.serif(15))
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet domain/load honesty.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             ArenaPremiumAction(title: "Tentar novamente", symbol: "arrow.clockwise") {
                 Task { await model.load() }
             }
@@ -659,7 +660,8 @@ struct ArenaPremiumStopSheet: View {
                         .accessibilityAddTraits(.isHeader)
                     Text("O caso atual termina antes da parada. Casos concluídos e resultados parciais são preservados.")
                         .font(AtlasFont.serif(16))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet stop honesty.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                         .fixedSize(horizontal: false, vertical: true)
                     fields
                     receipt
@@ -1730,7 +1732,8 @@ struct ArenaPremiumIdleView: View {
                 .accessibilityAddTraits(.isHeader)
             Text("Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado.")
                 .font(AtlasFont.serif(16))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet idle invite honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityLabel(
                     "Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado."
@@ -1840,7 +1843,8 @@ struct ArenaPremiumTerminalView: View {
                 .accessibilityAddTraits(.isHeader)
             Text(configuration.1)
                 .font(AtlasFont.serif(16))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet terminal status honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
             if let progress = model.livePresentation?.progress {
                 HStack(alignment: .lastTextBaseline, spacing: 7) {
                     Text("\(progress.completed)")
@@ -1982,7 +1986,8 @@ struct ArenaPremiumResultsView: View {
             if let narrative = model.report?.narrative {
                 Text(narrative)
                     .font(AtlasFont.serif(15))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet report narrative.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -2186,7 +2191,8 @@ struct ArenaCompositeChart: View {
                         y: .value("sem Atlas", withoutAtlas),
                         series: .value("série", "sem Atlas")
                     )
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet without-Atlas composite series.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.4))
                     .interpolationMethod(interpolation)
                 }
             }
@@ -3229,7 +3235,8 @@ struct ArenaCapabilityTrack: View {
         GeometryReader { proxy in
             let w = proxy.size.width
             ZStack(alignment: .leading) {
-                Capsule().fill(AtlasTheme.separator).frame(height: 2)
+                // Soft gold-quiet capability track rail.
+                Capsule().fill(AtlasTheme.accent.opacity(0.12)).frame(height: 2)
                 // sem Atlas = anel quieto; com Atlas = ✦ da casa (não bola).
                 if let baseline {
                     Circle()
@@ -3430,7 +3437,8 @@ extension ArenaRunSheet {
                         .accessibilityAddTraits(.isHeader)
                     Text("Escolha somente o necessário. A ordem e o progresso aparecem na Arena assim que o servidor confirmar.")
                         .font(AtlasFont.serif(15))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet run form honesty.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 formSections
