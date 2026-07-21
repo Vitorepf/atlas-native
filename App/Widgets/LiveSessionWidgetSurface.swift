@@ -4,7 +4,6 @@ import AtlasCore
 
 // IDLE-COMPRESS — LiveSession home widget fused host.
 
-// --- AtlasWidgetAccessories+LiveSession+A11y.swift ---
 enum LiveSessionWidgetA11y {
     static func silenceDetail(_ snapshot: AtlasNativeSnapshot) -> String {
         guard let delivery = snapshot.fleet?.lastDelivery else {
@@ -18,7 +17,6 @@ enum LiveSessionWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11yChrome+PhaseID.swift ---
 extension LiveSessionWidgetView {
     func liveSessionA11yPhaseID<Content: View>(
         _ content: Content,
@@ -30,7 +28,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11yChrome+SpokenBind.swift ---
 extension LiveSessionWidgetView {
     func liveSessionA11yPhaseBind<Content: View>(
         _ content: Content,
@@ -47,7 +44,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11yChrome+TransactionBind.swift ---
 extension LiveSessionWidgetView {
     func liveSessionA11yTransactionBind<Content: View>(
         _ content: Content,
@@ -64,7 +60,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11yChrome.swift ---
 extension LiveSessionWidgetView {
     func liveSessionA11yChrome<Content: View>(
         _ content: Content,
@@ -76,7 +71,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11yPhase.swift ---
 extension LiveSessionWidgetA11y {
     static func contentPhaseID(
         snapshot: AtlasNativeSnapshot,
@@ -91,7 +85,6 @@ extension LiveSessionWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpoken+Core.swift ---
 extension LiveSessionWidgetA11y {
     static func spokenCoreParts(
         snapshot: AtlasNativeSnapshot,
@@ -104,21 +97,18 @@ extension LiveSessionWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpoken+Silence.swift ---
 extension LiveSessionWidgetA11y {
     static func spokenSilenceParts(_ snapshot: AtlasNativeSnapshot) -> [String] {
         ["silêncio na obra", silenceDetail(snapshot)]
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpoken+Stale.swift ---
 extension LiveSessionWidgetA11y {
     static func spokenStaleParts(stale: Bool, age: String) -> [String] {
         stale ? ["visto \(age)"] : []
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpoken.swift ---
 extension LiveSessionWidgetA11y {
     static func spokenLabel(
         snapshot: AtlasNativeSnapshot,
@@ -133,14 +123,12 @@ extension LiveSessionWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpokenBind+Combine.swift ---
 extension LiveSessionWidgetView {
     func liveSessionSpokenCombine<Content: View>(_ content: Content) -> some View {
         content.accessibilityElement(children: .combine)
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpokenBind+Label.swift ---
 extension LiveSessionWidgetView {
     func liveSessionSpokenLabelText(
         snapshot: AtlasNativeSnapshot,
@@ -156,7 +144,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpokenBind.swift ---
 extension LiveSessionWidgetView {
     func liveSessionSpokenLabelBind<Content: View>(
         _ content: Content,
@@ -171,7 +158,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11ySpokenLive.swift ---
 extension LiveSessionWidgetA11y {
     static func spokenLiveParts(_ live: AtlasNativeSnapshot.LiveSession) -> [String] {
         var parts = ["\(live.title), \(live.phaseTitle)"]
@@ -187,14 +173,12 @@ extension LiveSessionWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+A11yTransaction.swift ---
 extension LiveSessionWidgetView {
     func liveSessionA11yTransaction(_ transaction: inout Transaction) {
         if reduceMotion { transaction.disablesAnimations = true }
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Bodies+TimerBlock.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionTimerBlock(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
@@ -202,7 +186,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Bodies+TimerRow.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionTimerRow(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
@@ -214,7 +197,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Bodies+Titles.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionTitlesBlock(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
@@ -222,7 +204,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Bodies.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionActiveBody(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
@@ -231,7 +212,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Content.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContent(snapshot: AtlasNativeSnapshot, live: AtlasNativeSnapshot.LiveSession?, stale: Bool) -> some View {
@@ -244,7 +224,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+ContentActive.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionActiveBranch(_ live: AtlasNativeSnapshot.LiveSession) -> some View {
@@ -252,7 +231,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+ContentBranch.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContentBranch(snapshot: AtlasNativeSnapshot, live: AtlasNativeSnapshot.LiveSession?) -> some View {
@@ -264,7 +242,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+ContentHeader.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContentHeader(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -272,7 +249,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+ContentSilence.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionSilenceBranch(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -280,7 +256,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+ContentStack+Branch.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContentBranchRow(
@@ -291,7 +266,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+ContentStack+Header.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContentHeaderRow(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -299,7 +273,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+ContentStack.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionContentStack(snapshot: AtlasNativeSnapshot, live: AtlasNativeSnapshot.LiveSession?, stale: Bool) -> some View {
@@ -310,7 +283,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Follow.swift ---
 extension LiveSessionWidgetView {
     var liveSessionFollowChip: some View {
         Text("Seguir")
@@ -323,7 +295,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Header.swift ---
 extension LiveSessionWidgetView {
     func liveSessionHeader(stale: Bool, age: String) -> some View {
         HStack {
@@ -341,7 +312,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Silence.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionSilenceBody(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -355,7 +325,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+SnapshotGate+Install.swift ---
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionInstallGate<Content: View>(
@@ -370,7 +339,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+SnapshotGate.swift ---
 extension LiveSessionWidgetView {
     func liveSessionSnapshotGate<Content: View>(
         @ViewBuilder content: @escaping (AtlasNativeSnapshot, AtlasNativeSnapshot.LiveSession?, Bool) -> Content
@@ -385,7 +353,6 @@ extension LiveSessionWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Timer+Branch.swift ---
 extension LiveSessionWidgetTimer {
     @ViewBuilder
     var timerBranchBody: some View {
@@ -397,7 +364,6 @@ extension LiveSessionWidgetTimer {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Timer+Style.swift ---
 extension LiveSessionWidgetTimer {
     @ViewBuilder
     func timerStyle<Content: View>(_ content: Content) -> some View {
@@ -408,4 +374,3 @@ extension LiveSessionWidgetTimer {
     }
 }
 
-// --- AtlasWidgetAccessories+LiveSession+Timer.swift ---

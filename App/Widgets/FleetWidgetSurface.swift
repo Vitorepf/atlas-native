@@ -4,14 +4,12 @@ import AtlasCore
 
 // IDLE-COMPRESS — Fleet accessory widget fused
 
-// --- AtlasWidgetAccessories+Fleet+A11y.swift ---
 enum FleetWidgetA11y {
     static func incidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
         LockAccessoryA11y.incidentLine(incident)
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind+Spoken.swift ---
 extension FleetWidgetView {
     func fleetA11yPhaseSpoken<Content: View>(
         _ content: Content,
@@ -22,7 +20,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind+Transaction.swift ---
 extension FleetWidgetView {
     func fleetA11yPhaseTransaction<Content: View>(
         _ content: Content,
@@ -35,7 +32,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind.swift ---
 extension FleetWidgetView {
     func fleetA11yPhaseBind<Content: View>(
         _ content: Content,
@@ -50,7 +46,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yChrome+SpokenLabel.swift ---
 extension FleetWidgetView {
     func fleetA11ySpokenLabel<Content: View>(
         _ content: Content,
@@ -68,7 +63,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yChrome.swift ---
 extension FleetWidgetView {
     func fleetA11yChrome<Content: View>(
         _ content: Content,
@@ -79,7 +73,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yDelivery.swift ---
 extension FleetWidgetA11y {
     static func deliveryCaption(_ delivery: AtlasNativeSnapshot.Fleet.LastDelivery) -> String? {
         let title = delivery.title.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -90,7 +83,6 @@ extension FleetWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yPhase.swift ---
 extension FleetWidgetA11y {
     static func contentPhaseID(snapshot: AtlasNativeSnapshot, stale: Bool) -> String {
         let incident = incidentLine(snapshot.fleet?.incident) ?? ""
@@ -101,7 +93,6 @@ extension FleetWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Core.swift ---
 extension FleetWidgetA11y {
     static func spokenCoreParts(snapshot: AtlasNativeSnapshot, at date: Date) -> [String] {
         var parts = ["Frota"]
@@ -113,7 +104,6 @@ extension FleetWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Delivery.swift ---
 extension FleetWidgetA11y {
     static func spokenDeliveryPart(snapshot: AtlasNativeSnapshot) -> String? {
         guard let delivery = snapshot.fleet?.lastDelivery,
@@ -122,7 +112,6 @@ extension FleetWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Incident+Present.swift ---
 extension FleetWidgetA11y {
     static func spokenIncidentPresentParts(snapshot: AtlasNativeSnapshot) -> [String]? {
         if let line = incidentLine(snapshot.fleet?.incident) {
@@ -135,7 +124,6 @@ extension FleetWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Incident.swift ---
 extension FleetWidgetA11y {
     static func spokenIncidentParts(snapshot: AtlasNativeSnapshot, at date: Date) -> [String] {
         if let present = spokenIncidentPresentParts(snapshot: snapshot) { return present }
@@ -146,14 +134,12 @@ extension FleetWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Stale.swift ---
 extension FleetWidgetA11y {
     static func spokenStaleSuffix(stale: Bool, age: String) -> String? {
         stale ? "visto \(age)" : nil
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11ySpoken.swift ---
 extension FleetWidgetA11y {
     static func spokenLabel(snapshot: AtlasNativeSnapshot, stale: Bool, at date: Date, age: String) -> String {
         var parts = spokenCoreParts(snapshot: snapshot, at: date)
@@ -164,14 +150,12 @@ extension FleetWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+A11yTransaction.swift ---
 extension FleetWidgetView {
     func fleetA11yTransaction(_ transaction: inout Transaction) {
         if reduceMotion { transaction.disablesAnimations = true }
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Body+Stack+Delivery.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyDeliveryRow(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -179,7 +163,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Body+Stack+Header.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyHeaderRow(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -187,7 +170,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Body+Stack+Lead.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyLeadRows(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -196,7 +178,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Body+Stack+State.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyStateRow(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -204,7 +185,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Body+Stack.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyStack(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -216,7 +196,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Body.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBody(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -228,7 +207,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+BodyGate.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetBodyGate(snapshot: AtlasNativeSnapshot?, at date: Date) -> some View {
@@ -240,7 +218,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Delivery.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetDeliveryCaption(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -255,7 +232,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Header+StaleLine+Style.swift ---
 extension FleetWidgetView {
     func fleetStaleLineText(age: String) -> some View {
         Text("visto \(age)")
@@ -264,7 +240,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Header+StaleLine.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetHeaderStaleLine(stale: Bool, age: String) -> some View {
@@ -274,7 +249,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Header.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetHeader(stale: Bool, age: String) -> some View {
@@ -287,7 +261,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Healthy+Scanned.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetHealthyScanned(_ snapshot: AtlasNativeSnapshot, scanned: Date) -> some View {
@@ -300,7 +273,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Healthy+Unread.swift ---
 extension FleetWidgetView {
     var fleetHealthyUnread: some View {
         Text("frota não lida")
@@ -309,7 +281,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+Healthy.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetHealthyOrUnread(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -321,7 +292,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+State+Incident+Line.swift ---
 extension FleetWidgetView {
     func fleetStateIncidentLineText(_ line: String) -> some View {
         Text(line)
@@ -331,7 +301,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+State+Incident+Present.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetStateIncidentPresent(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -344,7 +313,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+State+Incident.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetStateIncident(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -356,7 +324,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet+State.swift ---
 extension FleetWidgetView {
     @ViewBuilder
     func fleetState(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -368,7 +335,6 @@ extension FleetWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+Fleet.swift ---
 struct FleetWidgetView: View {
     @Environment(\.widgetFamily) var family
     @Environment(\.accessibilityReduceMotion) var reduceMotion

@@ -4,17 +4,14 @@ import AtlasCore
 
 // IDLE-COMPRESS — CodeWeek accessory widget fused
 
-// --- AtlasWidgetAccessories+CodeWeek+A11y.swift ---
 enum CodeWeekWidgetA11y {}
 
-// --- AtlasWidgetAccessories+CodeWeek+A11yQuiet.swift ---
 extension CodeWeekWidgetA11y {
     static func isQuiet(_ week: AtlasNativeSnapshot.Week) -> Bool {
         week.commits == 0 && week.heals == 0 && week.prevented == 0
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+A11ySpokenLabel+Active.swift ---
 extension CodeWeekWidgetA11y {
     static func spokenActiveWeekParts(_ week: AtlasNativeSnapshot.Week) -> [String] {
         var parts = ["Semana \(week.window)"]
@@ -25,14 +22,12 @@ extension CodeWeekWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+A11ySpokenLabel+Quiet.swift ---
 extension CodeWeekWidgetA11y {
     static func spokenQuietWeekParts(_ week: AtlasNativeSnapshot.Week) -> [String] {
         ["Semana \(week.window), semana quieta, sem commits nem curas"]
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+A11ySpokenLabel.swift ---
 extension CodeWeekWidgetA11y {
     static func spokenLabel(week: AtlasNativeSnapshot.Week, stale: Bool, age: String) -> String {
         var parts = isQuiet(week)
@@ -43,7 +38,6 @@ extension CodeWeekWidgetA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Body+A11y.swift ---
 extension CodeWeekWidgetView {
     func weekBodyA11y<V: View>(
         _ content: V,
@@ -57,7 +51,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Body+Stack.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekBodyStack(week: AtlasNativeSnapshot.Week, stale: Bool, age: String) -> some View {
@@ -70,7 +63,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Body.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekBody(week: AtlasNativeSnapshot.Week, stale: Bool, age: String) -> some View {
@@ -78,7 +70,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+EntryGate+Published.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func codeWeekPublishedView(snapshot: AtlasNativeSnapshot) -> some View {
@@ -91,7 +82,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+EntryGate.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func codeWeekEntryView(snapshot: AtlasNativeSnapshot?) -> some View {
@@ -103,7 +93,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Header+StaleLine.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekHeaderStaleLine(stale: Bool, age: String) -> some View {
@@ -115,7 +104,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Header+TitleRow.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekHeaderTitleRow(week: AtlasNativeSnapshot.Week) -> some View {
@@ -130,7 +118,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Header.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekHeader(week: AtlasNativeSnapshot.Week, stale: Bool, age: String) -> some View {
@@ -139,7 +126,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Hint.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekLargeHint(_ week: AtlasNativeSnapshot.Week) -> some View {
@@ -153,7 +139,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Metric.swift ---
 extension CodeWeekWidgetView {
     func weekMetric(_ value: String, _ label: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -167,7 +152,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Quiet+MetricsStack+Primary.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekMetricsPrimary(_ week: AtlasNativeSnapshot.Week) -> some View {
@@ -176,7 +160,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Quiet+MetricsStack.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekMetricsStack(_ week: AtlasNativeSnapshot.Week) -> some View {
@@ -187,7 +170,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Quiet+QuietBranch.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekQuietBranch() -> some View {
@@ -198,7 +180,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Quiet.swift ---
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekMetricsOrQuiet(_ week: AtlasNativeSnapshot.Week) -> some View {
@@ -210,7 +191,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek+Unpublished.swift ---
 extension CodeWeekWidgetView {
     var unpublishedWeek: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -226,7 +206,6 @@ extension CodeWeekWidgetView {
     }
 }
 
-// --- AtlasWidgetAccessories+CodeWeek.swift ---
 struct CodeWeekWidgetView: View {
     @Environment(\.widgetFamily) var family
     let entry: SnapshotEntry

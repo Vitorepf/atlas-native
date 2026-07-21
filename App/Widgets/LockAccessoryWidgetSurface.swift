@@ -4,7 +4,6 @@ import AtlasCore
 
 // IDLE-COMPRESS — Lock accessory widgets fused (presentation-only).
 
-// --- AtlasWidgetAccessories+LockCircular+Gauge+Symbol.swift ---
 extension LockAccessorySnapshotView {
     func circularGaugeSymbol(incident: Bool, attention: Bool) -> String {
         incident ? "!" : (attention ? "‖" : "◆")
@@ -15,7 +14,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockCircular+Gauge.swift ---
 extension LockAccessorySnapshotView {
     func circularGauge(count: Int, attention: Bool, incident: Bool) -> some View {
         Gauge(value: Double(min(count, 5)), in: 0...5) {
@@ -32,7 +30,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockCircular.swift ---
 extension LockAccessorySnapshotView {
     func circular(_ snapshot: AtlasNativeSnapshot) -> some View {
         let count = snapshot.liveSessions?.count ?? 0
@@ -42,7 +39,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+A11y.swift ---
 enum LockAccessoryA11y {
     static func hasAttention(_ snapshot: AtlasNativeSnapshot) -> Bool {
         snapshot.liveSessions?.contains { $0.timing == .paused } == true
@@ -60,7 +56,6 @@ enum LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+A11yClock.swift ---
 extension LockAccessoryA11y {
     static func frozenClock(_ session: AtlasNativeSnapshot.LiveSession) -> String? {
         guard session.timing == .paused, let ms = session.elapsedActiveMs else { return nil }
@@ -68,7 +63,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+A11yContentPhaseID.swift ---
 extension LockAccessoryA11y {
     static func contentPhaseID(snapshot: AtlasNativeSnapshot, stale: Bool) -> String {
         let incident = incidentLine(snapshot.fleet?.incident) ?? ""
@@ -79,7 +73,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+A11yInline+Paused.swift ---
 extension LockAccessoryA11y {
     static func rectangularPausedSubtitle(_ first: AtlasNativeSnapshot.LiveSession) -> String {
         if let clock = frozenClock(first) { return "‖ \(clock)" }
@@ -87,7 +80,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+A11yInline.swift ---
 extension LockAccessoryA11y {
     static func rectangularSubtitle(_ snapshot: AtlasNativeSnapshot) -> String? {
         guard let sessions = snapshot.liveSessions, let first = sessions.first else {
@@ -101,7 +93,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+A11yInlineText.swift ---
 extension LockAccessoryA11y {
     static func inlineText(_ snapshot: AtlasNativeSnapshot) -> String {
         if LockAccessoryA11y.incidentLine(snapshot.fleet?.incident) != nil {
@@ -114,10 +105,8 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+A11yPhase.swift ---
 extension LockAccessoryA11y {}
 
-// --- AtlasWidgetAccessories+LockLive+Content+Family.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func lockAccessoryFamilyBranch(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -131,7 +120,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+Content.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func lockAccessoryContent(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -139,7 +127,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+ContentCircular.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func lockAccessoryCircularContent(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -147,7 +134,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+ContentInline.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func lockAccessoryInlineContent(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -156,7 +142,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+ContentRectangular.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func lockAccessoryRectangularContent(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -164,14 +149,12 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+Empty.swift ---
 extension LockAccessorySnapshotView {
     var lockAccessoryEmpty: some View {
         Text("abra o Atlas")
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+SnapshotBranch.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     var snapshotBranch: some View {
@@ -183,7 +166,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+Spoken+Attention.swift ---
 extension LockAccessoryA11y {
     static func spokenAttentionLine(_ snapshot: AtlasNativeSnapshot) -> String? {
         guard hasAttention(snapshot),
@@ -196,7 +178,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+Spoken+Branch+Alert.swift ---
 extension LockAccessoryA11y {
     static func spokenLabelAlertLines(snapshot: AtlasNativeSnapshot) -> [String]? {
         if let line = incidentLine(snapshot.fleet?.incident) {
@@ -209,7 +190,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+Spoken+Branch.swift ---
 extension LockAccessoryA11y {
     static func spokenLabelBranchLines(snapshot: AtlasNativeSnapshot) -> [String] {
         if let alert = spokenLabelAlertLines(snapshot: snapshot) { return alert }
@@ -220,14 +200,12 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+Spoken+Stale.swift ---
 extension LockAccessoryA11y {
     static func spokenLabelStaleSuffix(stale: Bool, age: String) -> String? {
         stale ? "visto \(age)" : nil
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+Spoken.swift ---
 extension LockAccessoryA11y {
     static func spokenLabel(snapshot: AtlasNativeSnapshot, stale: Bool, age: String) -> String {
         var parts: [String] = ["Atlas lock"]
@@ -239,7 +217,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+SpokenLabel.swift ---
 extension LockAccessorySnapshotView {
     var spokenLabel: String {
         guard let snapshot = entry.snapshot else { return "abra o Atlas para atualizar o snapshot" }
@@ -251,7 +228,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive+SpokenSessions.swift ---
 extension LockAccessoryA11y {
     static func spokenLiveSessions(_ sessions: [AtlasNativeSnapshot.LiveSession]) -> [String] {
         let n = sessions.count
@@ -264,7 +240,6 @@ extension LockAccessoryA11y {
     }
 }
 
-// --- AtlasWidgetAccessories+LockLive.swift ---
 struct LockAccessorySnapshotView: View {
     @Environment(\.widgetFamily) var family
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -277,7 +252,6 @@ struct LockAccessorySnapshotView: View {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Branches+Alert.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularAlertBody(
@@ -292,7 +266,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Branches+Incident.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularIncidentBody(_ incidentLine: String) -> some View {
@@ -303,7 +276,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Branches.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularBody(_ snapshot: AtlasNativeSnapshot, stale: Bool, incidentLine: String?) -> some View {
@@ -315,7 +287,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Paused.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularPausedBody(_ paused: AtlasNativeSnapshot.LiveSession, snapshot: AtlasNativeSnapshot) -> some View {
@@ -331,7 +302,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Quiet+Subtitle+Stale.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularQuietStaleSubtitle(_ snapshot: AtlasNativeSnapshot) -> some View {
@@ -341,7 +311,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Quiet+Subtitle.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularQuietSubtitle(_ snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -355,7 +324,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Quiet+Title.swift ---
 extension LockAccessorySnapshotView {
     func rectangularQuietTitle(_ snapshot: AtlasNativeSnapshot) -> some View {
         Text(snapshot.liveSessions?.first?.phaseTitle ?? "silêncio na obra")
@@ -364,7 +332,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect+Quiet.swift ---
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularQuietBody(_ snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
@@ -373,7 +340,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRect.swift ---
 extension LockAccessorySnapshotView {
     func rectangular(_ snapshot: AtlasNativeSnapshot) -> some View {
         let stale = snapshot.isStale(at: entry.date)
@@ -388,7 +354,6 @@ extension LockAccessorySnapshotView {
     }
 }
 
-// --- AtlasWidgetAccessories+LockRectEmphasis.swift ---
 extension LockAccessorySnapshotView {
     func emphasisColor(_ snapshot: AtlasNativeSnapshot) -> Color {
         if LockAccessoryA11y.incidentLine(snapshot.fleet?.incident) != nil
