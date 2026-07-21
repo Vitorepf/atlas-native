@@ -1846,13 +1846,13 @@ extension AtlasCodeHealReceiptSheet {
 
 extension AtlasCodeHealReceiptSheet {
     func spokenUndoButtonLabel() -> String {
-        canUndo ? "desfazer cura com recibo" : "desfazer indisponível"
+        canUndo ? "Desfazer cura com recibo" : "Desfazer indisponível"
     }
 
     func spokenUndoButtonHint() -> String {
         canUndo
-            ? "envia veto retroativo auditável para esta cura"
-            : "prazo de veto encerrado ou recibo sem identificador"
+            ? "Envia veto retroativo auditável para esta cura"
+            : "Prazo de veto encerrado ou recibo sem identificador"
     }
 }
 
@@ -2023,6 +2023,7 @@ extension AtlasCodeHealReceiptSheet {
         .foregroundStyle(AtlasTheme.textSecondary)
         .contentShape(Rectangle())
         .atlasCard(cornerRadius: 13)
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
     }
 }
 
