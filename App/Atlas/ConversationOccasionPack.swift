@@ -32,6 +32,12 @@ enum ConversationOccasionPack {
         var changeReview: AtlasTraceChangeReview? = nil
         /// WAVE-163: whether review load finished for this trace.
         var changeReviewLoadFinished: Bool = false
+        /// WAVE-164: composer draft strip + effort + cache seal.
+        var drafts: [LocalDraft] = []
+        var uploadPercent: Double? = nil
+        var effort: AtlasComputeEffort = .auto
+        var cacheCapturedAt: Date? = nil
+        var artifacts: [AtlasTraceArtifacts.Item] = []
 
         static let unbound = PublishedSlice(
             presenceBubble: nil,
@@ -223,6 +229,30 @@ enum ConversationOccasionPack {
             let riskPack = ChangeReviewJudgment.packFacts(from: published?.changeReview)
             facts.append(contentsOf: riskPack.facts)
             absences.append(contentsOf: riskPack.absences)
+        }
+
+        // WAVE-164: composer draft · effort · stale-read · artifacts list.
+        if let published {
+            let draftPack = ComposerDraftJudgment.packFacts(
+                drafts: published.drafts,
+                uploadPercent: published.uploadPercent
+            )
+            facts.append(contentsOf: draftPack.facts)
+            absences.append(contentsOf: draftPack.absences)
+            let effortPack = ComposerEffortJudgment.packFacts(effort: published.effort)
+            facts.append(contentsOf: effortPack.facts)
+            absences.append(contentsOf: effortPack.absences)
+            let stalePack = ConversationStaleReadJudgment.packFacts(
+                capturedAt: published.cacheCapturedAt
+            )
+            facts.append(contentsOf: stalePack.facts)
+            absences.append(contentsOf: stalePack.absences)
+            let artifactPack = ArtifactListJudgment.packFacts(
+                items: published.artifacts,
+                selectedID: nil
+            )
+            facts.append(contentsOf: artifactPack.facts)
+            absences.append(contentsOf: artifactPack.absences)
         }
 
         let surface: String

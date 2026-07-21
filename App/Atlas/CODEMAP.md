@@ -51,13 +51,13 @@
 | Timeline filter peels | `LiveTimelineFilterChrome` (ReadFilter + FilterChips) |
 | **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other · pack mid-thread (WAVE-161) |
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank |
-| **Composer draft/anexos** | `ComposerDraftJudgment` → strip silence/drafts(N)/uploading/failed · thumb · DraftStrip |
+| **Composer draft/anexos** | `ComposerDraftJudgment` → strip · DraftStrip · pack mid-thread (WAVE-164) |
 | **Composer toolbar chrome** | `ComposerToolbarJudgment` → attach/options/mode/workspace spoken · pack |
-| **Composer esforço** | `ComposerEffortJudgment` → face auto/fast/balanced/deep/max · toolbar/sheet spoken |
+| **Composer esforço** | `ComposerEffortJudgment` → face · pack mid-thread (WAVE-164) |
 | **Composer folhas modo/workspace** | `ComposerSheetJudgment` → mode face · workspace sheet empty/list |
 | Composer sheet peels | `ComposerSheetPrimitives` (EffortSheet · SheetRow · NewMarker) · SheetsHost |
 | **Composer fila (head FIFO)** | `ComposerQueueJudgment` → chip head snippet · sheet spoken · pack |
-| **Stale-read cache seal** | `ConversationStaleReadJudgment` → face confirming/fresh/aged/stale |
+| **Stale-read cache seal** | `ConversationStaleReadJudgment` → face · pack mid-thread (WAVE-164) |
 | **Messages surface (lista)** | `ConversationMessagesJudgment` → face load_fail/empty/messages · list a11y |
 | Messages peels | `ConversationMessages` host · `ConversationMessagesScroll` · `ConversationMessagesEditorial` |
 | **Empty editorial (partida)** | `ConversationEmptyJudgment` → face silence/default_prompt/custom_prompt/suggestions(N) · EmptyStates |

@@ -159,6 +159,11 @@ extension ConversationView {
             let reviewFinished = presenceTrace.map { tid in
                 review != nil || !model.reviews.changeReviewInFlight.contains(tid)
             } ?? false
+            let artifacts: [AtlasTraceArtifacts.Item] = {
+                guard let tid = presenceTrace,
+                      let bag = model.reviews.artifactsByTrace[tid] else { return [] }
+                return bag.items
+            }()
             let published = ConversationOccasionPack.PublishedSlice(
                 presenceBubble: bubble,
                 queued: model.queuedMessages,
@@ -166,7 +171,15 @@ extension ConversationView {
                 lastSteerReceipt: model.lastSteerReceipt,
                 latestSurfaceHandoff: model.latestSurfaceHandoff,
                 changeReview: review,
-                changeReviewLoadFinished: reviewFinished
+                changeReviewLoadFinished: reviewFinished,
+                drafts: model.drafts,
+                uploadPercent: model.drafts.contains(where: {
+                    if case .subindo = $0.state { return true }
+                    return false
+                }) ? model.uploadPercent : nil,
+                effort: model.effort,
+                cacheCapturedAt: model.cacheCapturedAt,
+                artifacts: artifacts
             )
             return ConversationOccasionPack.facts(
                 session: session,
