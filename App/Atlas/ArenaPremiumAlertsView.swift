@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 struct ArenaPremiumAlertsView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Bindable var model: ArenaModel
     let onSuite: (AtlasArenaSuite) -> Void
 
@@ -44,7 +45,7 @@ struct ArenaPremiumAlertsView: View {
             ArenaPremiumHairline()
             ForEach(regressions) { suite in
                 Button {
-                    AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onSuite(suite)
                 } label: {
                     alertRow(

@@ -4,6 +4,7 @@ import AtlasCore
 /// Shell Autônomos v9 — catálogo do operador → hub → evolução · pílula · Novo.
 struct AutonomosMapShell: View {
     @Environment(AtlasSession.self) private var session
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let model: AutonomosModel
     @Binding var destination: AutonomosDestination?
     @Binding var selectedUnitID: String?
@@ -121,7 +122,7 @@ struct AutonomosMapShell: View {
 
     private func selfConstructionBanner(_ receipt: SelfConstructionReceipt) -> some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             selfConstructionReceipt = receipt
         } label: {
             HStack(spacing: 10) {

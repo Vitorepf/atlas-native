@@ -295,6 +295,7 @@ struct ConversationCameraCoverModifier: ViewModifier {
 }
 
 struct ConversationComposerSheetsModifier: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     var model: ConversationModel
     var session: AtlasSession
     @Binding var mode: String
@@ -346,9 +347,7 @@ extension ConversationComposerSheetsModifier {
                 guard let h = model.latestSurfaceHandoff, h.status == "ready" else { return }
                 let destino = atlasSurfaceLabel(h.toSurface)
                 model.toast = "Pronto no \(destino) — mesma conversa, mesma sessão."
-                AtlasMotion.successNotification(
-                    reduceMotion: UIAccessibility.isReduceMotionEnabled
-                )
+                AtlasMotion.successNotification(reduceMotion: reduceMotion)
             }
     }
 }

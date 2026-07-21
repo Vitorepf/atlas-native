@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 struct ArenaPremiumCapabilitiesView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Bindable var model: ArenaModel
     let onCapability: (AtlasArenaCapability) -> Void
 
@@ -123,7 +124,7 @@ struct ArenaPremiumCapabilitiesView: View {
             ArenaPremiumHairline()
             ForEach(members) { capability in
                 Button {
-                    AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onCapability(capability)
                 } label: {
                     // Sem numeral: a lista não é sequência — número que não

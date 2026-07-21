@@ -101,7 +101,7 @@ struct ArenaPremiumResultsView: View {
                 .padding(.bottom, 8)
             ForEach(model.scoreboard?.suites ?? []) { suite in
                 Button {
-                    AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     onSuite(suite)
                 } label: {
                     HStack(spacing: 13) {

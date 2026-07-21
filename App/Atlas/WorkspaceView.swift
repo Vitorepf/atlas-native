@@ -345,7 +345,7 @@ extension WorkspaceView {
 
     var headerBackButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             dismiss()
         } label: {
             Image(systemName: "chevron.left")

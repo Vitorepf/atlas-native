@@ -58,7 +58,7 @@ extension AtlasWorkspacePickerSheet {
     /// preso a um projeto. É o que o antigo "+" fazia, agora nomeado.
     var noRepoRow: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onNoRepo?()
         } label: {
             HStack(spacing: 12) {
@@ -118,7 +118,7 @@ extension AtlasWorkspacePickerSheet {
 
     private func pickerRepoRow(_ repo: AtlasCodeRepoRef) -> some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onPick(repo.slug, repo.name)
         } label: {
             HStack(spacing: 10) {

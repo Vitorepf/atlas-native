@@ -2,6 +2,7 @@ import SwiftUI
 import AtlasCore
 
 struct ArenaPremiumNowView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Bindable var model: ArenaModel
     let onRun: () -> Void
     let onNavigate: (ArenaPremiumDestination) -> Void
@@ -89,7 +90,7 @@ struct ArenaPremiumNowView: View {
 
     @ViewBuilder
     private var loadingIndicator: some View {
-        if UIAccessibility.isReduceMotionEnabled {
+        if reduceMotion {
             Text("carregando…")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)

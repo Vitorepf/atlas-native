@@ -3,6 +3,7 @@ import AtlasCore
 
 struct ArenaPremiumCapabilityDetail: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let capability: AtlasArenaCapability
     let scoreboard: AtlasArenaScoreboard?
     let engineId: String?
@@ -37,7 +38,7 @@ struct ArenaPremiumCapabilityDetail: View {
                     AtlasCloseToolbarButton(
                         spokenLabel: "fechar capacidade",
                         spokenHint: "volta para o perfil",
-                        reduceMotion: UIAccessibility.isReduceMotionEnabled
+                        reduceMotion: reduceMotion
                     ) { dismiss() }
                 }
             }
