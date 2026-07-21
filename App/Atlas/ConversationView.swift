@@ -8038,7 +8038,7 @@ extension SteerInteractionSheet {
                 .accessibilityAddTraits(.isHeader)
             Text("A instrução entra no próximo checkpoint seguro desta execução. O Atlas pode recusar e devolver o motivo público.")
                 .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
             formScopePicker
@@ -8413,8 +8413,19 @@ extension QueuedFollowUpRow {
         .contentShape(Rectangle())
         .accessibilityIdentifier(A11yID.queueRow(index))
         .overlay(alignment: .bottom) {
-            Divider().overlay(AtlasTheme.separator).padding(.leading, 24)
-                .accessibilityHidden(true)
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.18),
+                    AtlasTheme.separator,
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 1)
+            .padding(.leading, 24)
+            .accessibilityHidden(true)
         }
     }
 }
@@ -8456,8 +8467,20 @@ extension QueuedFollowUpRow {
     var rowPositionCaption: some View {
         if total > 1 {
             Text(positionCaption)
-                .font(AtlasFont.mono(10))
+                .font(AtlasFont.mono(10, .medium))
                 .foregroundStyle(index == 0 ? AtlasTheme.accent : AtlasTheme.textTertiary)
+                .padding(.horizontal, index == 0 ? 8 : 0)
+                .padding(.vertical, index == 0 ? 3 : 0)
+                .background {
+                    if index == 0 {
+                        Capsule().fill(AtlasTheme.goldVeil)
+                    }
+                }
+                .overlay {
+                    if index == 0 {
+                        Capsule().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1)
+                    }
+                }
                 .accessibilityHidden(true)
         }
     }
