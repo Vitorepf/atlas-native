@@ -25,7 +25,7 @@ struct ComposerAttachmentRow: View {
     var body: some View {
         attachmentRowCopy
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("\(title), \(subtitle)")
+            .accessibilityLabel(ComposerDraftJudgment.spokenAttachmentRow(title: title, subtitle: subtitle))
     }
 }
 

@@ -364,7 +364,7 @@ extension ComposerToolbar {
         }
         .frame(width: 32, height: 32)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(spokenProcessingLabel()), \(sendFace.spokenLabel)")
+        .accessibilityLabel(ComposerSendJudgment.spokenSendChrome(processing: spokenProcessingLabel(), sendSpoken: sendFace.spokenLabel))
         .accessibilityHint(sendFace.spokenHint)
         .accessibilityValue(sendFace.productWord)
         .accessibilityIdentifier(A11yID.conversationSend)

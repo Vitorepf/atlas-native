@@ -140,4 +140,11 @@ enum ComposerSendJudgment {
             liveBubblePresent: liveBubblePresent
         )
     }
+
+    // MARK: Send chrome spoken (IDLE)
+
+    static func spokenSendChrome(processing: String, sendSpoken: String) -> String {
+        "\(processing), \(sendSpoken)"
+    }
+
 }

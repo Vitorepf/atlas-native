@@ -244,4 +244,11 @@ enum ComposerDraftJudgment {
     static let spokenChooseCamera = "capturar foto na câmera"
     static let spokenChooseCameraHint =
         "abre a câmera; nada é anexado até confirmar a captura"
+
+    // MARK: Attachment row spoken (IDLE)
+
+    static func spokenAttachmentRow(title: String, subtitle: String) -> String {
+        "\(title), \(subtitle)"
+    }
+
 }
