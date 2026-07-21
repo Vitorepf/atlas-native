@@ -44,7 +44,8 @@ struct AutonomosListView: View {
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
-            AutonomosMapChrome.primaryCTA("Novo Autônomo", action: onCreate)
+            // Medium: primary entry into create flow on empty catalog.
+            AutonomosMapChrome.primaryCTA("Novo Autônomo", haptic: .medium, action: onCreate)
                 .accessibilityHint("abre o formulário para criar um Autônomo")
             Spacer(minLength: 0)
         }
