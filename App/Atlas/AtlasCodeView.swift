@@ -1711,9 +1711,8 @@ struct AtlasCodeRepoPickerSheet: View {
 
     private func section(_ title: String, repos: [AtlasCodeRepoRef]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title.uppercased())
-                .font(AtlasFont.mono(11, .medium))
-                .tracking(1.6)
+            Text(title)
+                .font(AtlasFont.serif(13, .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(title)
@@ -3205,9 +3204,8 @@ extension AtlasCodeProvenanceSheet {
 extension AtlasCodeProvenanceSheet {
     func block(_ title: String, @ViewBuilder body: () -> some View) -> some View {
         VStack(alignment: .leading, spacing: 7) {
-            Text(title.uppercased())
-                .atlasSans(8.5, .semibold)
-                .tracking(1.2)
+            Text(title)
+                .font(AtlasFont.serif(12, .semibold))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             body()
