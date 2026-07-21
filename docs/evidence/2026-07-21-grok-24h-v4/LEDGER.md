@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 168
-- idle_compress_passes: 1
+- waves_completed: 169
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -179,18 +179,17 @@ mode: designer + implementer
 - WAVE-171
 - WAVE-172
 - WAVE-173
+- WAVE-174
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `dcd35e3f` MARK dense layout (post WAVE-156)
-- pass 4 · `32d17ab2` MARK WAVE-171 peels
-- pass 5 · `8d94e4c7` DELETE empty peel stubs post WAVE-173
 
 ## Designer
-- designs_proposed: 168
+- designs_proposed: 169
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -199,8 +198,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Continuity BLOCKED. DEVICE_PENDING.
-- WAVE-156–173 density + pack sovereignty.
-- ConversationModel deferred. TurnPresenceActivity mid-split skipped.
-- Remaining hollows host-blocked: Search/Timeline/Markdown pack/Rhythm.
-- regen-queue.py must not wipe idle/wave history (re-assert after regen).
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+- WAVE-174: timeline narrative/filter + markdown pack mid-thread. Search/Rhythm still host-blocked.

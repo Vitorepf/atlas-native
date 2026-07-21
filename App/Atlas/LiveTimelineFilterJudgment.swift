@@ -117,4 +117,16 @@ enum LiveTimelineFilterJudgment {
         }
         return (facts, absences)
     }
+
+    /// WAVE-174: pack honesty for mid-thread — chip filter is @State local to LiveTimeline.
+    static func packFactsOpenRecorte(totalSteps: Int) -> (facts: [String], absences: [String]) {
+        var pack = packFacts(
+            filter: .all,
+            matchCount: totalSteps,
+            totalSteps: totalSteps,
+            isActive: false
+        )
+        pack.absences.append("filtro de leitura da timeline é local à UI — pack usa recorte aberto")
+        return pack
+    }
 }

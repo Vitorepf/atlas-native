@@ -1,4 +1,5 @@
 import Foundation
+import AtlasCore
 
 // MARK: - Judgment
 
@@ -71,5 +72,26 @@ enum AtlasMarkdownJudgment {
             facts.append("md_block_kinds: \(kinds.joined(separator: "|"))")
         }
         return (facts, absences)
+    }
+
+    /// WAVE-174: mid-thread pack from published bubble text (parse casca · Core parser).
+    static func packFacts(from text: String) -> (facts: [String], absences: [String]) {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            return ([], ["markdown do turno ainda vazio neste recorte"])
+        }
+        let blocks = AtlasMarkdown.parse(trimmed)
+        var hasList = false
+        var hasQuote = false
+        var hasCode = false
+        for block in blocks {
+            switch block {
+            case .list: hasList = true
+            case .quote: hasQuote = true
+            case .code: hasCode = true
+            default: break
+            }
+        }
+        return packFacts(hasList: hasList, hasQuote: hasQuote, hasCode: hasCode)
     }
 }

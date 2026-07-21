@@ -48,6 +48,10 @@ extension ConversationOccasionPack {
             )
             facts.append(contentsOf: editorialPack.facts)
             absences.append(contentsOf: editorialPack.absences)
+            // WAVE-174: structured markdown kinds from presence text (not full dump).
+            let mdPack = AtlasMarkdownJudgment.packFacts(from: bubble.text)
+            facts.append(contentsOf: mdPack.facts)
+            absences.append(contentsOf: mdPack.absences)
         }
     }
 

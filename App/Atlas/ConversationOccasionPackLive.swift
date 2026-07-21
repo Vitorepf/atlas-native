@@ -120,6 +120,17 @@ extension ConversationOccasionPack {
         facts.append(contentsOf: stripPack.facts)
         absences.append(contentsOf: stripPack.absences)
 
+        // WAVE-174: timeline narrative + filter open recorte (chip filter is UI-local).
+        let activities = bubble?.activities ?? []
+        let narrativePack = LiveTimelineNarrativeJudgment.packFacts(from: activities)
+        facts.append(contentsOf: narrativePack.facts)
+        absences.append(contentsOf: narrativePack.absences)
+        let filterPack = LiveTimelineFilterJudgment.packFactsOpenRecorte(
+            totalSteps: activities.count
+        )
+        facts.append(contentsOf: filterPack.facts)
+        absences.append(contentsOf: filterPack.absences)
+
         // Steer needs canSignals flags — keep here.
         if let traceId = bubble?.traceId {
             let steerPack = ConversationSteerJudgment.packFacts(

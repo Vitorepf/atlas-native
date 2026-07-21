@@ -115,4 +115,10 @@ enum LiveTimelineNarrativeJudgment {
         }
         return (facts, absences)
     }
+
+    /// WAVE-174: mid-thread pack from published activities (filter UI is local — open recorte).
+    static func packFacts(from activities: [AtlasAgentActivity]) -> (facts: [String], absences: [String]) {
+        let base = narrativeRows(from: activities)
+        return packFacts(baseRows: base, filteredRows: base, filter: .all)
+    }
 }

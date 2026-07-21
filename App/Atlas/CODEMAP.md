@@ -47,8 +47,9 @@
 | **Execution proof + editorial pack (165)** | `ExecutionProofJudgment` · `EditorialTurnJudgment` → OccasionPack mid-thread |
 | **LiveNow attention (Home hub)** | `LiveNowJudgment` → rank · headForOpen (Seguir) · pack anchors · section face |
 | **StateCard kind chrome** | `ExecutionStateCardJudgment` → icon/badge/spoken/tint/timer freeze |
-| **Narrativa viva (timeline face)** | `LiveTimelineNarrativeJudgment` → face live/filterSilence (chrono sagrado) |
-| **Filtro de leitura (timeline)** | `LiveTimelineFilterJudgment` → face open/active/silent · chip/silence spoken |
+| **Narrativa viva (timeline face)** | `LiveTimelineNarrativeJudgment` → face live/filterSilence (chrono sagrado) · pack mid-thread (WAVE-174) |
+| **Filtro de leitura (timeline)** | `LiveTimelineFilterJudgment` → face open/active/silent · chip/silence spoken · pack open recorte (WAVE-174) |
+| **Markdown block kinds (pack)** | `AtlasMarkdownJudgment.packFacts(from:)` → list\|quote\|code mid-thread (WAVE-174) |
 | Timeline filter peels | `LiveTimelineFilterChrome` (ReadFilter + FilterChips) |
 | **Continuidade handoff (iPhone↔Mac)** | `ConversationHandoffJudgment` → receipt face ready/pending/other · pack mid-thread (WAVE-161) |
 | **Composer send readiness** | `ComposerSendJudgment` → face ready/blocked/queue · gold gate · draft rank |
