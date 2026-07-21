@@ -98,12 +98,10 @@ struct AutonomosView: View {
         case .idle, .loading:
             VStack {
                 Spacer()
-                TraceEvidenceLoading(text: "abrindo catálogo…", reduceMotion: reduceMotion)
+                // TraceEvidenceLoading owns spoken wait + updatesFrequently.
+                TraceEvidenceLoading(text: "abrindo catálogo Autônomos…", reduceMotion: reduceMotion)
                 Spacer()
             }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("abrindo catálogo Autônomos")
-            .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
         case .failed(let message):
             VStack {
                 Spacer()

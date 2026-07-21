@@ -194,6 +194,7 @@ extension AtlasCodeWhySheet {
         .padding(.top, 8)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenLoading())
+        .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
     }
 }
 
