@@ -68,6 +68,8 @@ extension QueuedFollowUpRow {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 8)
+        .frame(minHeight: 56, alignment: .center)
+        .contentShape(Rectangle())
         .accessibilityIdentifier(A11yID.queueRow(index))
         .overlay(alignment: .bottom) {
             Divider().overlay(AtlasTheme.separator).padding(.leading, 24)
