@@ -810,7 +810,7 @@ extension ChangeReviewPatchCard {
                             .padding(.horizontal, 7).padding(.vertical, 3)
                             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.08)))
                             .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
-                            .atlasElevation(radius: 3, y: 1, opacity: 0.08)
+                            .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                             .accessibilityHidden(true)
                     }
                 }

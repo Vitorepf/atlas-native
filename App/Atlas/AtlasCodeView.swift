@@ -3872,7 +3872,7 @@ struct AtlasCodeRepoRow: View {
                                 .background(Capsule().fill(AtlasTheme.surface))
                                 // Soft gold-quiet folder meta pill.
                                 .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
-                                .atlasElevation(radius: 3, y: 1, opacity: 0.08)
+                                .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                         }
                     }
                     if let issues, let first = issues.first {
@@ -4804,7 +4804,7 @@ struct AtlasCodeChipRow: View {
                     .overlay(
                         Capsule().strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
                     )
-                    .atlasElevation(radius: 3, y: 1, opacity: 0.08)
+                    .atlasElevation(radius: 3, y: 1, opacity: 0.1)
             }
         }
         .accessibilityElement(children: .ignore)

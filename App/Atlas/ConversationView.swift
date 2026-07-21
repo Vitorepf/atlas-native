@@ -5397,7 +5397,7 @@ struct PlanFlowChips: View {
                     // Soft gold-quiet flow meta chip.
                     .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             )
-            .atlasElevation(radius: 3, y: 1, opacity: 0.06)
+            .atlasElevation(radius: 3, y: 1, opacity: 0.1)
             .lineLimit(1)
             .accessibilityHidden(true)
     }
@@ -7274,7 +7274,7 @@ extension NarrativeRowView {
                 .padding(.vertical, 2)
                 .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
                 .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
-                .atlasElevation(radius: 3, y: 1, opacity: 0.08)
+                .atlasElevation(radius: 3, y: 1, opacity: 0.1)
         }
     }
 }

@@ -58,6 +58,10 @@ extension AtlasTheme {
     static let accent = Color(hex: 0xD4A85A)
     static let goldVeil = Color(hex: 0xD4A85A, alpha: 0.10)
     static let goldBorder = Color(hex: 0xD4A85A, alpha: 0.34)
+    // Gold-quiet ink ladder (foregroundStyle accent.opacity):
+    //   0.32–0.38 ghost/disabled · 0.42 disclosure · 0.55 inactive chrome
+    //   0.62 meta captions · 0.72 secondary titles · 0.88–0.92 active chrome
+    // GoldBorder rim ladder: 0.4 idle · 0.45 mid · 0.55 active-soft · 1 full
     static let prussian = Color(hex: 0x7FA7C4)
     static let alert = Color(hex: 0xE08C8C)
 }

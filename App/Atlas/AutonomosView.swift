@@ -1032,7 +1032,7 @@ struct AutonomosListView: View {
                 .background(Capsule().fill(AtlasTheme.surface))
                 // Soft gold-quiet status pill.
                 .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
-                .atlasElevation(radius: 3, y: 1, opacity: 0.08)
+                .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                 .padding(.top, 4)
                 // Row VO combines spoken(unit); visual kicker is decoration only.
                 .accessibilityHidden(true)
