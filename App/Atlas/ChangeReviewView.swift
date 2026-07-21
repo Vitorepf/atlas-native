@@ -1239,6 +1239,7 @@ struct ChangeReviewToast: View {
             toastCapsule(t)
                 .accessibilityLabel(ChangeReviewSectionsA11y.spokenToast(t))
                 .accessibilityAddTraits(.updatesFrequently)
+                .accessibilitySortPriority(12) // transient status over review chrome
                 .accessibilityIdentifier(A11yID.reviewToast)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
                 .task { await dismissToastAfterDelay() }

@@ -468,6 +468,7 @@ extension ConversationView {
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel(ConversationViewA11y.spokenToast(t))
                 .accessibilityAddTraits(.updatesFrequently)
+                .accessibilitySortPriority(12) // transient status over chrome
                 .accessibilityIdentifier(A11yID.conversationToast)
                 .task { await dismissToastAfterDelay() }
         }
