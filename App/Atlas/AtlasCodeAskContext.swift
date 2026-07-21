@@ -21,7 +21,12 @@ enum AtlasCodeAskContext {
         focusLegend: String?,
         isAnchoring: Bool,
         graphStateFilter: AtlasCodeGraphStateFilter = .all,
-        serverAskFacts: String? = nil
+        serverAskFacts: String? = nil,
+        provenancePhase: AtlasCodeProvenanceModel.Phase = .idle,
+        whyFile: String? = nil,
+        whyPhase: LoadPhase = .idle,
+        why: AtlasCodeWhy? = nil,
+        whyMessage: String? = nil
     ) -> String {
         occasionFacts(
             model: model,
@@ -29,7 +34,12 @@ enum AtlasCodeAskContext {
             focusLegend: focusLegend,
             isAnchoring: isAnchoring,
             graphStateFilter: graphStateFilter,
-            serverAskFacts: serverAskFacts
+            serverAskFacts: serverAskFacts,
+            provenancePhase: provenancePhase,
+            whyFile: whyFile,
+            whyPhase: whyPhase,
+            why: why,
+            whyMessage: whyMessage
         )
     }
 
@@ -40,7 +50,12 @@ enum AtlasCodeAskContext {
         focusLegend: String?,
         isAnchoring: Bool,
         graphStateFilter: AtlasCodeGraphStateFilter,
-        serverAskFacts: String?
+        serverAskFacts: String?,
+        provenancePhase: AtlasCodeProvenanceModel.Phase = .idle,
+        whyFile: String? = nil,
+        whyPhase: LoadPhase = .idle,
+        why: AtlasCodeWhy? = nil,
+        whyMessage: String? = nil
     ) -> String {
         var anchors: [String] = []
         var facts: [String] = ["repo: \(model.repo)"]
@@ -57,8 +72,39 @@ enum AtlasCodeAskContext {
             }
             let state = model.state(for: node)
             anchors.append("state: \(AtlasCodeGraphJudgment.productWord(for: state))")
+            // WAVE-167: commit row + provenance organs for focused node.
+            let rowPack = AtlasCodeCommitRowJudgment.packFacts(
+                node: node,
+                state: state,
+                isDimmed: false,
+                trunk: model.graph?.defaultBranch,
+                ruleId: nil
+            )
+            facts.append(contentsOf: rowPack.facts)
+            absences.append(contentsOf: rowPack.absences)
+            let provPack = AtlasCodeProvenanceJudgment.packFacts(
+                node: node,
+                state: state,
+                trunk: model.graph?.defaultBranch,
+                phase: provenancePhase,
+                ruleId: nil
+            )
+            facts.append(contentsOf: provPack.facts)
+            absences.append(contentsOf: provPack.absences)
         } else if isAnchoring {
             anchors.append("âncora H6 ativa (sem nó de swipe local)")
+        }
+
+        // WAVE-167: why/biography organ when sheet target published.
+        if let whyFile, !whyFile.isEmpty {
+            let whyPack = AtlasCodeWhyJudgment.packFacts(
+                file: whyFile,
+                phase: whyPhase,
+                why: why,
+                message: whyMessage
+            )
+            facts.append(contentsOf: whyPack.facts)
+            absences.append(contentsOf: whyPack.absences)
         }
 
         // WAVE-161: graph screen face organ (loading/failed/empty/ready).

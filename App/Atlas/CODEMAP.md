@@ -30,10 +30,10 @@
 | **Pílula ask (Código)** | `AtlasCodeAskPillJudgment` → face invite/anchoring/legend · AskContext pack |
 | **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
 | **Heal veto / undoError** | `AtlasCodeHealVetoJudgment` → ReceiptSheet · canVeto · undo fail line |
-| **Commit row face (grafo)** | `AtlasCodeCommitRowJudgment` → dim/fora/main · tip branch · meta color |
+| **Commit row face (grafo)** | `AtlasCodeCommitRowJudgment` → dim/fora/main · pack CodeAsk focus (WAVE-167) |
 | Commit row peels | `AtlasCodeCommitRowBody` · spoken via `AtlasCodeCommitRowJudgment` |
-| **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face loading/fail/empty/timeline/truncated |
-| **Proveniência do commit** | `AtlasCodeProvenanceJudgment` → face loading/fail/empty/body · state kicker |
+| **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face · pack API CodeAsk (WAVE-167) |
+| **Proveniência do commit** | `AtlasCodeProvenanceJudgment` → face · pack CodeAsk focus (WAVE-167) |
 | Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
 | Pack mid-thread conversa | `ConversationOccasionPack` (nunca `HomeAskContext` em `.thread`) |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |

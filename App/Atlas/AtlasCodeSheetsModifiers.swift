@@ -6,6 +6,7 @@ import SwiftUI
 struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   let session: AtlasSession
   let model: AtlasCodeModel
+  let provenanceModel: AtlasCodeProvenanceModel
   let askModel: AtlasCodeAskModel
   let graphStateFilter: AtlasCodeGraphStateFilter
   @Binding var askFocusNode: AtlasCodeGraphNode?
@@ -32,6 +33,7 @@ extension AtlasCodeAskWhySheetsModifier {
             draft: askDraft,
             turnFacts: { question in
                 // WAVE-019: occasion pack first; optional server ask facts append.
+                // WAVE-167: provenance phase for focused commit honesty.
                 let focus = askFocusNode
                 let server = await askModel.facts(for: question)
                 return AtlasCodeAskContext.facts(
@@ -40,7 +42,8 @@ extension AtlasCodeAskWhySheetsModifier {
                     focusLegend: askModel.sheetFocusLegend,
                     isAnchoring: askModel.isAnchoring,
                     graphStateFilter: graphStateFilter,
-                    serverAskFacts: server
+                    serverAskFacts: server,
+                    provenancePhase: provenanceModel.phase
                 )
             },
             onThread: { askThreadId = $0 },
@@ -154,6 +157,7 @@ struct AtlasCodeSheetsModifier: ViewModifier {
     content.modifier(AtlasCodeAskWhySheetsModifier(
       session: session,
       model: model,
+      provenanceModel: provenanceModel,
       askModel: askModel,
       graphStateFilter: graphStateFilter,
       askFocusNode: $askFocusNode,
