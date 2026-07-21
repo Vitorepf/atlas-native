@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — AgenticPill craft (ciclo 047)** · `73c9019d` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — singleton peels (ciclo 046)** · `a6c827e4` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — last 3-file forests (ciclo 045)** · `ee2d4b86` · App/Atlas 216. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — multi-file hosts→1 (ciclo 044)** · `f8b66dfb` · App/Atlas 224. **Prova:** checks+build.

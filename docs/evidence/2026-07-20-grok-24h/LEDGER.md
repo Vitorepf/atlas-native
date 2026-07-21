@@ -1,14 +1,14 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 047
-- last_commit: a6c827e4
+- phase: D1 cycle 048
+- last_commit: 73c9019d
 - last_gates: green
-- next_leap: visual polish (AgenticPill, empty states, motion) within existing surfaces — peel forests essentially exhausted for casca (models remain multi-file by design)
+- next_leap: more surface polish (empty states, Autônomos hub, Arena chrome) OR device proof
 - blocked: none
 - App/Atlas Swift: 214
 
 ## Highlights this resume
-015–046 continuous peel · App/Atlas 1748→214 (−1534)
-FORBIDDEN clean · models multi-file preserved · no new domains
-Peel compression plateau: remaining multi-file modules are Models/Session/Types.
+015–047 · App/Atlas 1748→214 (−1534 files)
+Peel forests exhausted for casca · models multi-file preserved
+FORBIDDEN clean · no new domains · pílula chrome polished
