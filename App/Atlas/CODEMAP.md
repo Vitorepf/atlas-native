@@ -80,7 +80,7 @@
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` |
 | **Turn presence pack** | `TurnPresenceJudgment.packFacts` → OccasionPack mid-thread |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |
-| **Live strip parts** | `ConversationCockpitAgentRow` host · `StripStatus` · `StripActions` |
+| **Live strip parts** | `ConversationCockpitStrip` (ExecutingStrip) · `ConversationCockpitAgentRow` · Banners |
 | **Live strip CTAs** | `ConversationLiveStripJudgment` → stop/steer/choose spoken · compound strip · pack |
 | **Conversation can_do pack** | `ConversationCanDoJudgment` → matrix live×decision · OccasionPack wire |
 | Cockpit parts | `ConversationCockpitBody` (strip·lanes) · `ConversationCockpitBanners` (banner·reconnect·silence) |

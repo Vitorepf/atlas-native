@@ -28,6 +28,20 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T23:55Z — Cockpit AgentRow + Strip fuse
+
+```yaml
+phase: prove
+focus: ConversationCockpit peels → AgentRow + Strip
+domain_index: 1
+pass: 1
+commands: |
+  AgentRow+Body → ConversationCockpitAgentRow
+  ExecutingStrip → ConversationCockpitStrip
+  −3 peels · gates ✓
+notes: continue grind
+```
+
 ### 2026-07-21T23:50Z — Widgets dense MARK
 
 ```yaml
