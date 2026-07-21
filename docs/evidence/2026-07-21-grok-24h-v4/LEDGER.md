@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 56
-- idle_compress_passes: 8
+- idle_compress_passes: 2
 - collapse_host: 0
 
 ## Waves done
@@ -71,17 +71,12 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
-- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
-- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
-- pass 6 · `f4018d18` · peel AtlasCode sheet modifiers
-- pass 7 · `426cb439` · peel PlanCard → RevisionBody + StepRow
-- pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
 
 ## Designer
 - designs_proposed: 56
 - designs_open: 0
-- last_regen: regen-queue.py
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
@@ -90,5 +85,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-060–061 (stale-read · graph screen) + idle PlanCard/ChangeReview peels.
-- Prefer A fill. DEVICE_PENDING. Continuity App Group BLOCKED.
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
