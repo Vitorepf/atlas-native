@@ -16,7 +16,7 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
                        startPoint: .leading, endPoint: .trailing)
             .frame(height: 1)
         Text(t)
-            .font(.system(size: 11, weight: .semibold))
+            .font(AtlasFont.mono(10, .semibold))
             .tracking(1.55)
             .foregroundStyle(AtlasTheme.textTertiary)
             .fixedSize()

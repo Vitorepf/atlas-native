@@ -14,7 +14,7 @@ extension NightlyProposalCard {
                 .accessibilityHint(Self.spokenMuteOptionHint())
             }
         }
-        .font(.system(.footnote, weight: .semibold))
+        .font(AtlasFont.mono(11, .semibold))
         .foregroundStyle(AtlasTheme.textTertiary)
         .accessibilityIdentifier(A11yID.nightlyProposalMute)
         .accessibilityLabel(Self.spokenMuteMenuLabel())

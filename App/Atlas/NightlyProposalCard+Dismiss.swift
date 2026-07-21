@@ -8,7 +8,7 @@ extension NightlyProposalCard {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onDismiss()
         }
-        .font(.system(.footnote, weight: .semibold))
+        .font(AtlasFont.mono(11, .semibold))
         .foregroundStyle(AtlasTheme.textTertiary)
         .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.nightlyProposalDismiss)

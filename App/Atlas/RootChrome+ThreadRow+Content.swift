@@ -10,7 +10,7 @@ extension ThreadRow {
     var rowContent: some View {
         HStack(spacing: 14) {
             rowLead
-            Text(thread.title).font(.system(.callout)).foregroundStyle(AtlasTheme.textPrimary)
+            Text(thread.title).font(AtlasFont.serif(16)).foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(1).truncationMode(.tail)
                 .accessibilityHidden(true)
             Spacer(minLength: 8)

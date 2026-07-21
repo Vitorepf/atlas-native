@@ -6,7 +6,7 @@ import AtlasCore
 extension SearchRecentSection {
     var recentCaption: some View {
         Text("RECENTES")
-            .font(.system(.caption, weight: .semibold)).tracking(1.4)
+            .font(AtlasFont.mono(10, .semibold)).tracking(1.4)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
