@@ -2650,7 +2650,8 @@ extension ConversationComposer {
 extension ConversationComposer {
     @ViewBuilder
     var liveExecutionSeparator: some View {
-        Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1)
+        // Soft gold-breath hairline under live execution chrome.
+        Rectangle().fill(AtlasTheme.accent.opacity(0.22)).frame(height: 1)
             .padding(.bottom, expanded ? 0 : 8)
             .accessibilityHidden(true)
     }
@@ -8813,7 +8814,8 @@ extension AtlasMarkdownView {
 extension AtlasMarkdownView {
     @ViewBuilder
     var blockViewDividerBlock: some View {
-        Rectangle().fill(AtlasTheme.separator).frame(height: 1).padding(.vertical, 2)
+        // Soft gold-breath between editorial blocks.
+        Rectangle().fill(AtlasTheme.accent.opacity(0.18)).frame(height: 1).padding(.vertical, 2)
     }
 }
 
@@ -9305,7 +9307,8 @@ extension AtlasMarkdownView {
                 }
             }
             .padding(.vertical, 12)
-            .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.separatorSoft).frame(height: 1) }
+            // Soft gold-breath row rule.
+            .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.accent.opacity(0.14)).frame(height: 1) }
         }
     }
 }
@@ -9318,7 +9321,8 @@ extension AtlasMarkdownView {
             tableDataRows(rows, colCount: colCount)
         }
         .background(AtlasTheme.surface.opacity(0.35), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft))
-        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.separator, lineWidth: 1))
+        // Soft gold-quiet table chrome.
+        .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
         .atlasElevation(radius: 4, y: 1, opacity: 0.08)
     }
 }
@@ -9335,7 +9339,8 @@ extension AtlasMarkdownView {
         }
         .padding(.vertical, 10)
         .background(AtlasTheme.bgRecessed.opacity(0.55))
-        .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.separator).frame(height: 1) }
+        // Soft gold-breath under table header.
+        .overlay(alignment: .bottom) { Rectangle().fill(AtlasTheme.accent.opacity(0.28)).frame(height: 1) }
     }
 }
 

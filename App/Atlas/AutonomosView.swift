@@ -1760,7 +1760,8 @@ extension SelfConstructionReceiptSheet {
                 .tracking(0.3)
                 .accessibilityHidden(true)
         }
-        .foregroundStyle(AtlasTheme.textTertiary)
+        // Soft gold-quiet seal chrome — same family as meta kickers.
+        .foregroundStyle(AtlasTheme.accent.opacity(0.72))
     }
 }
 

@@ -306,7 +306,8 @@ struct ArenaPremiumTabBar: View {
         }
         .padding(3)
         .background(Capsule().fill(AtlasTheme.bgRecessed.opacity(0.92)))
-        .overlay(Capsule().stroke(AtlasTheme.separator.opacity(0.7), lineWidth: 1))
+        // Soft gold-quiet tab track — same family as search focus chrome.
+        .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
         // Soft lift for the tab track so the glass pill rides a shared chrome plane.
         .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
@@ -4622,7 +4623,8 @@ struct ArenaPremiumGlyphRow: View {
                     .foregroundStyle((glyphTone ?? tone).color)
                     .frame(width: 28, height: 28)
                     .background(Circle().fill(AtlasTheme.surface.opacity(0.9)))
-                    .overlay(Circle().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                    // Soft gold-quiet glyph disk.
+                    .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
                     .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                     .accessibilityHidden(true)
                 Text(title)
@@ -4690,7 +4692,8 @@ struct ArenaPremiumIcon: View {
                 if role == .standard {
                     Circle()
                         .fill(AtlasTheme.surface.opacity(0.88))
-                        .overlay(Circle().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                        // Soft gold-quiet icon disk — match capability glyph chrome.
+                        .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
                 }
             }
             .atlasElevation(radius: 4, y: 1, opacity: role == .standard ? 0.1 : 0)
