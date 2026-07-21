@@ -8804,7 +8804,13 @@ extension CodeBlockView {
         HStack {
             if let langLabel = MarkdownCodeBlockA11y.langLabel(lang: lang) {
                 Text(langLabel)
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.mono(10, .medium))
+                    .tracking(0.3)
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.85))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Capsule().fill(AtlasTheme.goldVeil.opacity(0.55)))
+                    .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1))
                     .accessibilityHidden(true)
             }
             Spacer()
@@ -8824,11 +8830,27 @@ extension CodeBlockView {
             Text(copyButtonTitle)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(copyForeground)
+                .padding(.horizontal, 12)
                 .frame(minHeight: 48)
-                .padding(.horizontal, 4)
-                .contentShape(Rectangle())
+                .background(
+                    Capsule().fill(
+                        canCopy
+                            ? (copied ? AtlasTheme.goldVeil : AtlasTheme.surface.opacity(0.55))
+                            : AtlasTheme.surface.opacity(0.25)
+                    )
+                )
+                .overlay(
+                    Capsule().stroke(
+                        canCopy
+                            ? (copied ? AtlasTheme.goldBorder : AtlasTheme.separator)
+                            : AtlasTheme.separatorSoft,
+                        lineWidth: 1
+                    )
+                )
+                .atlasElevation(radius: 4, y: 1, opacity: canCopy ? (copied ? 0.12 : 0.08) : 0.04)
+                .contentShape(Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableScale())
         .disabled(!canCopy)
         .accessibilityLabel(MarkdownCodeBlockA11y.spokenCopyButton(copied: copied, canCopy: canCopy))
         .accessibilityHint(MarkdownCodeBlockA11y.copyHint(canCopy: canCopy))
