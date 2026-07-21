@@ -50,12 +50,16 @@ extension ExecutionStateCard {
     }
 
     func choiceActionButton(_ action: AtlasExecutionPresentationState.Action, choiceJobId: JobID) -> some View {
-        Button { onChoose(choiceJobId, action.id) } label: {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onChoose(choiceJobId, action.id)
+        } label: {
             Text(action.title)
                 .font(.system(.caption, weight: .semibold))
                 .lineLimit(1)
                 .padding(.horizontal, 11).padding(.vertical, 8)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(ExecutionStateActionStyle(
             style: action.style,
@@ -100,7 +104,8 @@ extension ExecutionStateCard {
         Text("Retomar")
             .font(.system(.caption, weight: .semibold))
             .padding(.horizontal, 11).padding(.vertical, 8)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .contentShape(Rectangle())
     }
 
     @ViewBuilder
@@ -131,7 +136,8 @@ extension ExecutionStateCard {
             .font(.system(.caption, weight: .semibold))
             .lineLimit(1)
             .padding(.horizontal, 11).padding(.vertical, 8)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .contentShape(Rectangle())
     }
 }
 

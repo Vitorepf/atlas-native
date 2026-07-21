@@ -170,9 +170,12 @@ struct ArenaPremiumResultsView: View {
             Text("Nenhum resultado medido")
                 .font(AtlasFont.serif(31))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text("O primeiro resultado aparecerá quando uma suíte concluir.")
                 .font(.system(.body))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(A11yID.arenaPremiumState("results-empty"))
     }
 }

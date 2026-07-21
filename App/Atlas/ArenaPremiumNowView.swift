@@ -74,13 +74,30 @@ struct ArenaPremiumNowView: View {
             Text("Organizando as medições")
                 .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            ProgressView()
-                .tint(AtlasTheme.accent)
+                .accessibilityAddTraits(.isHeader)
+            loadingIndicator
             Text("Índice, execução e capacidades chegam por contratos independentes.")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 24)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Preparando a Arena. Organizando as medições.")
+        .accessibilityIdentifier(A11yID.arenaPremiumState("loading"))
+    }
+
+    @ViewBuilder
+    private var loadingIndicator: some View {
+        if UIAccessibility.isReduceMotionEnabled {
+            Text("carregando…")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+        } else {
+            ProgressView()
+                .tint(AtlasTheme.accent)
+                .accessibilityHidden(true)
+        }
     }
 }

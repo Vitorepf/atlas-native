@@ -162,10 +162,13 @@ struct ArenaPremiumCapabilitiesView: View {
             Text("Capacidades ainda não medidas")
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text("Ausência permanece ausência — nenhuma barra começa em zero.")
                 .font(.system(.callout))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(A11yID.arenaPremiumState("capabilities-empty"))
     }
 
     private var capabilitiesCaption: String {
