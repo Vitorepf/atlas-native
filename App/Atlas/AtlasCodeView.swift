@@ -3980,7 +3980,7 @@ struct AtlasCodeFolderRow: View {
                             .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                             .frame(width: 32, height: 32)
                             .background(Circle().fill(AtlasTheme.goldVeil))
-                            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1))
+                            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1))
                             .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 3) {

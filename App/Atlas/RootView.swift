@@ -2844,7 +2844,7 @@ extension WorkspaceRow {
             .foregroundStyle(AtlasTheme.accent.opacity(0.9))
             .frame(width: 36, height: 36)
             .background(Circle().fill(AtlasTheme.goldVeil))
-            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1))
+            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1))
             .atlasElevation(radius: 4, y: 1, opacity: 0.1)
             .accessibilityHidden(true)
     }
@@ -2985,7 +2985,7 @@ extension ThreadRow {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.9))
                 .frame(width: 36, height: 36)
                 .background(Circle().fill(AtlasTheme.goldVeil))
-                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1))
+                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1))
                 .atlasElevation(radius: 4, y: 1, opacity: 0.1)
                 .accessibilityHidden(true)
         }

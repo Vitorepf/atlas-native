@@ -2100,7 +2100,7 @@ extension SheetRow {
                 .foregroundStyle(AtlasTheme.accent)
                 .frame(width: 28, height: 28)
                 .background(Circle().fill(AtlasTheme.goldVeil))
-                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.6), lineWidth: 1))
+                .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1))
                 .atlasElevation(radius: 3, y: 1, opacity: 0.1)
                 .accessibilityHidden(true)
         }
@@ -2248,8 +2248,8 @@ extension ConversationComposer {
                 .fill(AtlasTheme.surface)
                 .overlay(
                     Capsule(style: .continuous)
-                        // Soft gold-quiet collapsed invite rim — match AgenticPill.
-                        .strokeBorder(AtlasTheme.goldBorder.opacity(0.5), lineWidth: 1)
+                        // Soft gold-quiet collapsed invite rim — match expanded composer family.
+                        .strokeBorder(AtlasTheme.goldBorder.opacity(0.55), lineWidth: 1)
                 )
                 // Collapsed invite shares floating plane with home AgenticPill.
                 .atlasElevation(radius: 10, y: 3, opacity: 0.14)
