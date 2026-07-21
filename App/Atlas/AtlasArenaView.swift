@@ -1,7 +1,50 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-/// Arena — medição de motores (premium only). Dual-stack classic removido (GOD F5).
+// IDLE-COMPRESS fused
+
+// --- AtlasArenaView+Lifecycle+A11y.swift ---
+extension AtlasArenaView {
+    func arenaLifecycleA11y<Content: View>(_ content: Content) -> some View {
+        content
+            .navigationTitle("Arena")
+            .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// --- AtlasArenaView+Lifecycle+Tasks.swift ---
+extension AtlasArenaView {
+    func arenaLifecycleTasks<Content: View>(_ content: Content) -> some View {
+        content
+            .task {
+                if case .idle = model.phase {
+                    await model.load()
+                }
+            }
+            .onAppear { model.setVisible(true) }
+            .onDisappear { model.setVisible(false) }
+            .refreshable { await model.load() }
+    }
+}
+
+// --- AtlasArenaView+Lifecycle.swift ---
+extension AtlasArenaView {
+    func arenaLifecycleChrome<Content: View>(_ content: Content) -> some View {
+        arenaLifecycleTasks(arenaLifecycleA11y(content))
+    }
+}
+
+// --- AtlasArenaView+Sheets.swift ---
+extension AtlasArenaView {
+    func arenaSheets<Content: View>(on content: Content) -> some View {
+        content
+            .sheet(isPresented: $showingRunSheet) {
+                ArenaRunSheet(model: model)
+            }
+    }
+}
+
+// --- AtlasArenaView.swift ---
 struct AtlasArenaView: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Environment(AtlasSession.self) var session
@@ -27,8 +70,5 @@ struct AtlasArenaView: View {
                 )
             )
         )
-        // NÃO colocar accessibilityIdentifier/label no container da Arena —
-        // no iOS 26 isso substitui o id de cada tab/CTA (todos viram
-        // "arena-screen") e quebra a bateria XCUITest.
     }
 }

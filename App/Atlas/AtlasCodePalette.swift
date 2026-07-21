@@ -1,11 +1,32 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// MARK: - Paleta do domínio (gramática de estado)
-// FileRow → AtlasCodeFileRow.swift · Chip → AtlasCodeChipRow.swift
-// RelativeTime → AtlasCodeRelativeTime.swift
-// Color → AtlasCodePalette+Color.swift
+// IDLE-COMPRESS fused
 
+// --- AtlasCodePalette+Color+Healthy.swift ---
+extension AtlasCodePalette {
+    static func colorHealthy(for state: AtlasCodeNodeState) -> Color? {
+        switch state {
+        case .onMain: return onMain
+        case .healed: return healed
+        default: return nil
+        }
+    }
+}
+
+// --- AtlasCodePalette+Color.swift ---
+extension AtlasCodePalette {
+    static func color(for state: AtlasCodeNodeState) -> Color {
+        if let healthy = colorHealthy(for: state) { return healthy }
+        switch state {
+        case .violating: return alert
+        case .history: return history
+        default: return history
+        }
+    }
+}
+
+// --- AtlasCodePalette.swift ---
 enum AtlasCodePalette {
     static let onMain = AtlasTheme.accent
     static let alert = Color(hex: 0xE08C8C)

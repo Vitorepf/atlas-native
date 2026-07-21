@@ -1,16 +1,51 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Ponto de entrada do app SwiftUI puro. Casca fina: cria a sessão (que segura o
-// AtlasClient do AtlasCore) e injeta no ambiente. Zero lógica de negócio aqui.
-// Lifecycle → AtlasApp+Lifecycle.swift
+// IDLE-COMPRESS fused
+
+// --- AtlasApp+Lifecycle+Bootstrap.swift ---
+extension AtlasApp {
+    func atlasSceneBootstrap<Content: View>(_ content: Content) -> some View {
+        content.task {
+            NightlyProposalController.shared.installAsNotificationDelegate()
+            LiveActivityRemoteBridge.shared.bootstrap(
+                client: session.client,
+                installationId: AtlasInstallationIdentity.id
+            )
+            session.setLiveSessionsPollingActive(scenePhase == .active)
+        }
+    }
+}
+
+// --- AtlasApp+Lifecycle+ScenePhase.swift ---
+extension AtlasApp {
+    func atlasScenePhaseLifecycle<Content: View>(_ content: Content) -> some View {
+        content.onChange(of: scenePhase) { _, phase in
+            session.setLiveSessionsPollingActive(phase == .active)
+            if phase == .background {
+                Task {
+                    await AtlasNativeSnapshotWriter.shared.write()
+                    await NightlyProposalController.shared.scheduleForBackground()
+                }
+            }
+        }
+    }
+}
+
+// --- AtlasApp+Lifecycle.swift ---
+extension AtlasApp {
+    func atlasSceneLifecycle<Content: View>(_ content: Content) -> some View {
+        atlasScenePhaseLifecycle(atlasSceneBootstrap(content))
+    }
+}
+
+// --- AtlasApp.swift ---
 @main
 struct AtlasApp: App {
     @Environment(\.scenePhase) var scenePhase
     @State var session = AtlasSession()
 
     init() {
-        // Curva Dynamic Type do sans lida UMA vez na main — body nunca toca UIKit.
         AtlasSansScale.prime()
     }
 
