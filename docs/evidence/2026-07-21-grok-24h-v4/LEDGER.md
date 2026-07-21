@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 80
-- idle_compress_passes: 3
+- idle_compress_passes: 4
 - collapse_host: 0
 
 ## Waves done
@@ -95,7 +95,8 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · Messages scroll+editorial peel · Surface MARKs · A11y shim delete · HEAD polish idle
+
+- pass 4 · CommitRow A11y peel · delete ComposerSheetA11y shim · Judgment-only sheets
 
 ## Designer
 - designs_proposed: 80
@@ -110,6 +111,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-084 shipped; queue empty → IDLE-COMPRESS pass 3 (canon §7).
-- DEVICE_PENDING for device screenshots.
+- Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+

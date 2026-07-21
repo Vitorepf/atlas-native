@@ -31,7 +31,7 @@ struct ComposerAttachmentRow: View {
 
 extension ModeSheet {
     var modeFootnote: some View {
-        Text(ComposerSheetA11y.modeFootnote)
+        Text(ComposerSheetJudgment.modeFootnote)
             .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -47,9 +47,9 @@ extension ModeSheet {
             let isSelected = key == selected
             SheetRow(
                 label: label,
-                sub: ComposerSheetA11y.modeFootnote,
+                sub: ComposerSheetJudgment.modeFootnote,
                 selected: isSelected,
-                accessibilityLabel: ComposerSheetA11y.modeLabel(key, title: label, selected: isSelected),
+                accessibilityLabel: ComposerSheetJudgment.modeLabel(key: key, title: label, selected: isSelected),
                 accessibilityIdentifier: A11yID.modeRow(key)
             ) {
                 selected = key
@@ -87,7 +87,7 @@ struct WorkspaceSheet: View {
         .accessibilityValue(
             ComposerSheetJudgment.workspaceSheetFace(count: workspaces.count).productWord
         )
-        .accessibilityHint(ComposerSheetA11y.workspaceSheetHint)
+        .accessibilityHint(ComposerSheetJudgment.workspaceSheetHint)
     }
 }
 
@@ -99,7 +99,7 @@ extension WorkspaceSheet {
             .multilineTextAlignment(.center)
             .padding(.horizontal, 24)
             .padding(.top, 40)
-            .accessibilityLabel(ComposerSheetA11y.workspaceEmpty)
+            .accessibilityLabel(ComposerSheetJudgment.workspaceEmpty)
     }
 }
 
@@ -144,7 +144,7 @@ extension WorkspaceSheet {
             label: ws.name,
             sub: workspaceCountLine(ws.count),
             selected: isSelected,
-            accessibilityLabel: ComposerSheetA11y.workspaceLabel(
+            accessibilityLabel: ComposerSheetJudgment.workspaceLabel(
                 name: ws.name, count: ws.count, selected: isSelected
             ),
             accessibilityIdentifier: A11yID.workspaceRow(ws.id)
@@ -174,7 +174,7 @@ struct ModeSheet: View {
         .accessibilityIdentifier(A11yID.modeSheet)
         .accessibilityLabel(ComposerSheetJudgment.modeSheetSpokenLabel)
         .accessibilityValue(ComposerSheetJudgment.modeFace(key: selected).productWord)
-        .accessibilityHint(ComposerSheetA11y.modeSheetHint)
+        .accessibilityHint(ComposerSheetJudgment.modeSheetHint)
     }
 }
 
@@ -183,7 +183,7 @@ extension EffortSheet {
         content
             .accessibilityIdentifier(A11yID.effortSheet)
             .accessibilityLabel("esforço computacional")
-            .accessibilityHint(ComposerSheetA11y.effortSheetHint)
+            .accessibilityHint(ComposerEffortJudgment.effortSheetHint)
     }
 }
 

@@ -187,36 +187,6 @@ struct ComposerAttachmentsSheet: View {
     }
 }
 
-/// WAVE-076/081: sheet a11y peels → Effort + Sheet judgments.
-enum ComposerSheetA11y {
-    static var modeFootnote: String { ComposerSheetJudgment.modeFootnote }
-    static var modeSheetHint: String { ComposerSheetJudgment.modeSheetHint }
-    static var effortSheetHint: String { ComposerEffortJudgment.effortSheetHint }
-    static var workspaceSheetHint: String { ComposerSheetJudgment.workspaceSheetHint }
-    static var workspaceEmpty: String { ComposerSheetJudgment.workspaceEmpty }
-
-    static func modeLabel(_ key: String, title: String, selected: Bool) -> String {
-        ComposerSheetJudgment.modeLabel(key: key, title: title, selected: selected)
-    }
-
-    static func workspaceLabel(name: String, count: Int, selected: Bool) -> String {
-        ComposerSheetJudgment.workspaceLabel(name: name, count: count, selected: selected)
-    }
-
-    /// WAVE-076: effort sheet spoken from ComposerEffortJudgment.
-    static func effortLabel(_ effort: AtlasComputeEffort, selected: Bool) -> String {
-        ComposerEffortJudgment.spokenSheetLabel(effort, selected: selected)
-    }
-
-    static func spokenEffort(_ effort: AtlasComputeEffort) -> String {
-        ComposerEffortJudgment.spokenSheet(effort)
-    }
-
-    static func effortSubtitle(_ effort: AtlasComputeEffort) -> String {
-        ComposerEffortJudgment.subtitle(effort)
-    }
-}
-
 extension ComposerAttachmentRow {
     var attachmentRowIcon: some View {
         Image(systemName: icon)

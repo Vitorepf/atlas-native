@@ -29,6 +29,7 @@
 | **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
 | **Heal veto / undoError** | `AtlasCodeHealVetoJudgment` → ReceiptSheet · canVeto · undo fail line |
 | **Commit row face (grafo)** | `AtlasCodeCommitRowJudgment` → dim/fora/main · tip branch · meta color |
+| Commit row peels | `AtlasCodeCommitRowBody` · `AtlasCodeCommitRowA11y` (spoken identity/state) |
 | **Why biografia arquivo (H1)** | `AtlasCodeWhyJudgment` → face loading/fail/empty/timeline/truncated |
 | **Proveniência do commit** | `AtlasCodeProvenanceJudgment` → face loading/fail/empty/body · state kicker |
 | Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
