@@ -1500,7 +1500,8 @@ extension AtlasCodeView {
             if AtlasCodeWeekUI.isQuiet(week) {
                 Text("Semana quieta · sem commits nem curas")
                     .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet quiet week honesty.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .accessibilityHidden(true)
             } else {
                 HStack(spacing: 18) {
@@ -1796,7 +1797,8 @@ struct AtlasCodeRepoPickerSheet: View {
                 ForEach(Array(repos.enumerated()), id: \.element.id) { index, repo in
                     repoRow(repo)
                     if index < repos.count - 1 {
-                        Divider().overlay(AtlasTheme.separatorSoft)
+                        // Soft gold-breath repo picker row divider.
+                        Divider().overlay(AtlasTheme.accent.opacity(0.14))
                     }
                 }
             }
@@ -2101,7 +2103,8 @@ extension AtlasCodeHealReceiptSheet {
         .atlasSans(14, .medium)
         .frame(maxWidth: .infinity, minHeight: 48)
         .padding(.vertical, 12)
-        .foregroundStyle(AtlasTheme.textSecondary)
+        // Soft gold-quiet heal undo CTA.
+        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
         .contentShape(Rectangle())
         .atlasCard(cornerRadius: 13)
         .atlasElevation(radius: 8, y: 2, opacity: 0.12)
@@ -2702,7 +2705,8 @@ extension AtlasCodeWhySheet {
                 .accessibilityHidden(true)
             Text(commit.subject)
                 .atlasSans(11)
-                .foregroundStyle(AtlasTheme.textSecondary.opacity(0.75))
+                // Soft gold-quiet why commit subject.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .lineLimit(2)
                 .accessibilityHidden(true)
         }
@@ -3945,7 +3949,8 @@ struct AtlasCodeRepoRow: View {
                                     : "\(first.headline(trunk: trunk)) · mais \(issues.count - 1) alerta\(issues.count - 1 == 1 ? "" : "s")"
                             )
                             .atlasSans(12)
-                            .foregroundStyle(AtlasTheme.textSecondary)
+                            // Soft gold-quiet issue headline under radar row.
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                             .lineLimit(1)
                         }
                     }

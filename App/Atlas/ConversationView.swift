@@ -1496,7 +1496,8 @@ extension StaleReadSeal {
             )
             .overlay(
                 Capsule().stroke(
-                    confirming ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft,
+                    // Soft gold-quiet idle seal rim; full goldBorder when confirming.
+                    confirming ? AtlasTheme.goldBorder : AtlasTheme.goldBorder.opacity(0.35),
                     lineWidth: 1
                 )
             )
@@ -6141,7 +6142,8 @@ extension ExecutionProof {
     func decisionReason(_ d: AtlasDecisionSummary) -> some View {
         if let r = d.reason, !r.isEmpty {
             Text("\"\(r)\"")
-                .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet decision reason quote.
+                .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.accent.opacity(0.68))
                 .padding(.leading, 23)
                 .accessibilityLabel("Motivo, \(r)")
         }
@@ -6197,8 +6199,9 @@ extension ExecutionProof {
 extension ExecutionProof {
     func activityRowCopy(_ act: AtlasAgentActivity) -> some View {
         VStack(alignment: .leading, spacing: 1) {
+            // Soft gold-quiet activity title.
             Text(act.title)
-                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.78))
             if let d = act.detail, !d.isEmpty {
                 // Soft gold-quiet activity detail meta.
                 Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
@@ -9617,7 +9620,8 @@ extension ArtifactSheet {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                 artifactListRow(index: index, item: item)
                 if index < items.count - 1 {
-                    Divider().overlay(AtlasTheme.separatorSoft)
+                    // Soft gold-breath artifacts list divider.
+                    Divider().overlay(AtlasTheme.accent.opacity(0.14))
                         .accessibilityHidden(true)
                 }
             }

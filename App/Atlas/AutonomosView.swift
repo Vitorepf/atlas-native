@@ -1599,7 +1599,8 @@ private struct AutonomosMapQuietCTA: View {
         } label: {
             Text(title)
                 .atlasSans(14)
-                .foregroundStyle(danger ? AtlasTheme.alert : AtlasTheme.textSecondary)
+                // Soft gold-quiet quiet CTA; danger stays coral.
+                .foregroundStyle(danger ? AtlasTheme.alert : AtlasTheme.accent.opacity(0.72))
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: 48)
                 .overlay(

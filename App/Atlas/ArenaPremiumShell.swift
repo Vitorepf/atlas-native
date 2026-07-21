@@ -1303,7 +1303,8 @@ struct ArenaPremiumFleetView: View {
                         .fill(AtlasTheme.textPrimary.opacity(0.06))
                         .frame(height: 2)
                     Capsule()
-                        .fill(atlas ? AtlasTheme.accent : AtlasTheme.textSecondary.opacity(0.55))
+                        // Soft gold-quiet without-Atlas bar; full accent with Atlas.
+                        .fill(atlas ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.35))
                         .frame(width: Swift.max(geo.size.width * fraction, value == nil ? 0 : 2), height: 2)
                 }
                 .frame(maxHeight: .infinity, alignment: .center)
@@ -3037,7 +3038,8 @@ struct ArenaPremiumCapabilitiesView: View {
                 if !members.isEmpty {
                     Text(model.selectedCapabilities?.groupsPt?[groupKey] ?? groupKey)
                         .font(AtlasFont.serif(17))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet capability group title.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
                         .padding(.top, 14)
                         .padding(.bottom, 4)
                     groupRows(members)
@@ -4367,7 +4369,8 @@ extension ArenaSuiteSheet {
             evidenceLine("mesma suíte · braços equivalentes", symbol: "equal.circle")
         }
         .font(AtlasFont.mono(10))
-        .foregroundStyle(AtlasTheme.textSecondary)
+        // Soft gold-quiet engine evidence captions.
+        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
     }
 
     private func evidenceLine(_ text: String, symbol: String) -> some View {

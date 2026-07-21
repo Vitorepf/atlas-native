@@ -1425,9 +1425,9 @@ extension ChangeReviewFindingsSection {
             // Gold-quiet hairline — same family as home sectionLabel.
             LinearGradient(
                 colors: [
-                    AtlasTheme.accent.opacity(0.35),
-                    AtlasTheme.separatorSoft,
-                    AtlasTheme.separatorSoft.opacity(0)
+                    AtlasTheme.accent.opacity(0.4),
+                    AtlasTheme.accent.opacity(0.18),
+                    AtlasTheme.accent.opacity(0)
                 ],
                 startPoint: .leading,
                 endPoint: .trailing

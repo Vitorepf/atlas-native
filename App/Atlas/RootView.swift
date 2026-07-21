@@ -1261,7 +1261,8 @@ struct LiveNowRow: View {
                     .foregroundStyle(
                         session.timing == .running
                             ? AtlasTheme.accent.opacity(0.85)
-                            : AtlasTheme.textSecondary
+                            // Soft gold-quiet idle phase title.
+                            : AtlasTheme.accent.opacity(0.58)
                     )
                     .lineLimit(1)
                 if session.isRemote { remoteBadge }
@@ -1362,7 +1363,8 @@ struct LiveNowRow: View {
             .foregroundStyle(
                 session.timing == .running
                     ? AtlasTheme.accent.opacity(0.9)
-                    : AtlasTheme.textSecondary
+                    // Soft gold-quiet idle/paused clock.
+                    : AtlasTheme.accent.opacity(0.58)
             )
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
@@ -3403,8 +3405,8 @@ extension AtlasProfileSheet {
         LinearGradient(
             colors: [
                 AtlasTheme.accent.opacity(0),
-                AtlasTheme.accent.opacity(0.2),
-                AtlasTheme.separatorSoft,
+                AtlasTheme.accent.opacity(0.28),
+                AtlasTheme.accent.opacity(0.12),
                 AtlasTheme.accent.opacity(0)
             ],
             startPoint: .leading,
@@ -3570,7 +3572,8 @@ extension AtlasWorkspacePickerSheet {
                     ForEach(pickerRepos) { repo in
                         pickerRepoRow(repo)
                         if repo.id != pickerRepos.last?.id {
-                            Divider().overlay(AtlasTheme.separatorSoft)
+                            // Soft gold-breath picker row divider.
+                            Divider().overlay(AtlasTheme.accent.opacity(0.14))
                         }
                     }
                 }
