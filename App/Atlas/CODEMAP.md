@@ -10,7 +10,7 @@
 | Home | `RootView.swift` | `RootChrome*`, `RootHome*`, `Workspace*` |
 | Conversa | `ConversationView.swift` | `ConversationSurface (+Composer/+Chrome peels)`, `ConversationChrome*`, Messages/Cockpit/Composer* |
 | Código | `AtlasCodeView.swift` | `AtlasCodeSurface`, Radar*, Graph*, CommitRow*, Provenance* |
-| Radar (multi-repo) | `AtlasCodeRadarView.swift` | `AtlasCodeRadarSurface`, `AtlasCodeRadarRows`, `AtlasCodeRadarJudgment` (folder/repo spoken) |
+| Radar (multi-repo) | `AtlasCodeRadarView.swift` | Surface · FolderRow · RepoChrome · AskContext · Judgment |
 | Pílula | (dock por superfície) | `AgenticPill`, `AgenticOccasionPack`, `AgenticAskDock` |
 | Arena Premium | `ArenaPremiumShell.swift` | Execution/Fleet/Results/Suite/Run/Score* |
 | Autônomos | `AutonomosHubView.swift` / `AutonomosView.swift` | Hub/Map/List/`AutonomosDecision*`/Chrome* |
@@ -119,6 +119,7 @@
 | **Arena execution pipeline** | `ArenaPipelineJudgment` project/glyph/spoken · ExecutionPipeline (WAVE-109) |
 | **LiveNow row spoken** | `LiveNowJudgment` spokenRow/clock · LiveNowRow (WAVE-110) |
 | **Artifact sheet peels** | host/list · Chrome · Preview · Delivery (WAVE-112) |
+| **Radar rows peels** | FolderRow · RepoChrome · AskContext (WAVE-114) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
