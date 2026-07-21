@@ -279,6 +279,11 @@ extension ExecutionStateCard {
 
 extension ExecutionStateCard {
     func spokenSummaryLead(into parts: inout [String]) {
+        // WAVE-023: face vocabulary first (spoken ≡ visual product word).
+        parts.append(ConversationExecutionPhase.spokenFace(presenceFace))
+        if let attention = presenceAttention {
+            parts.append(ConversationExecutionPhase.spokenAttention(attention))
+        }
         if let kind = spokenKind { parts.append(kind) }
         parts.append(state.title)
     }
