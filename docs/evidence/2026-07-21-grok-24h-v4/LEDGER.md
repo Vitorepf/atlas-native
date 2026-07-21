@@ -102,5 +102,5 @@ mode: designer + implementer
 _(none)_
 
 ## Notes
-- Session: WAVE-084 empty · IDLE×2 · WAVE-086 draft · WAVE-087 worktrees · WAVE-088 can_do.
+- Session B: WAVE-084 · IDLE×2 · WAVE-086 · WAVE-087 · WAVE-088.
 - DEVICE_PENDING. Continuity BLOCKED.
