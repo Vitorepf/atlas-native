@@ -1,19 +1,28 @@
 import SwiftUI
 import AtlasCore
 
-// IDLE-COMPRESS body
+// WAVE-073: workspace screen face → WorkspaceScreenJudgment
 
 extension WorkspaceView {
+    /// WAVE-073: exclusive workspace face from published shell + counts.
+    var workspaceScreenFace: WorkspaceScreenFace {
+        WorkspaceScreenJudgment.face(
+            showsLoadingShell: showsLoadingShell,
+            showsNetworkFailure: showsNetworkFailure,
+            threadCount: threads.count
+        )
+    }
+
     func spokenWorkspaceScreenLabel() -> String {
-        if showsLoadingShell { return "\(title), carregando" }
-        if showsNetworkFailure { return "\(title), offline" }
-        let n = threads.count
-        if n == 0 { return "\(title), nenhuma conversa neste filtro" }
-        return "\(title), \(n) conversa\(n == 1 ? "" : "s"), filtro \(area.label)"
+        WorkspaceScreenJudgment.spokenScreen(
+            title: title,
+            face: workspaceScreenFace,
+            areaLabel: area.label
+        )
     }
 
     var workspaceScreenHint: String {
-        freeOnly ? "conversas sem workspace" : "conversas deste workspace"
+        WorkspaceScreenJudgment.screenHint(freeOnly: freeOnly)
     }
 }
 
@@ -41,6 +50,7 @@ extension WorkspaceView {
             .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.workspaceScreen)
             .accessibilityLabel(spokenWorkspaceScreenLabel())
+            .accessibilityValue(workspaceScreenFace.productWord)
             .accessibilityHint(workspaceScreenHint)
     }
 }

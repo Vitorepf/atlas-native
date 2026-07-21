@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 67
+- waves_completed: 68
 - idle_compress_passes: 14
 - collapse_host: 0
 
@@ -78,6 +78,7 @@ mode: designer + implementer
 - WAVE-070
 - WAVE-071
 - WAVE-072
+- WAVE-073
 
 ## Idle compress
 - pass 13 · `9f8583e4` · peel ArtifactSheet Delivery
@@ -94,4 +95,4 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-070–072. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- WAVE-070–073. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
