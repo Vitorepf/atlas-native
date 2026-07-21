@@ -1,61 +1,50 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS fused
+// WAVE-075: filter/list a11y → LiveTimelineFilterJudgment (chrono sagrado)
 
 enum LiveTimelineA11y {
     static func spokenSectionLabel(stepCount: Int) -> String {
-        "orquestra ao vivo, \(stepCount) passo\(stepCount == 1 ? "" : "s")"
+        LiveTimelineFilterJudgment.spokenSectionLabel(stepCount: stepCount)
     }
-}
 
-extension LiveTimelineA11y {
-    static func spokenFilterChip(_ filter: TimelineReadFilter,
-                                 count: Int,
-                                 active: Bool,
-                                 silent: Bool) -> String {
-        "filtrar timeline por \(filter.label), \(count) passo\(count == 1 ? "" : "s")"
-            + spokenFilterChipSuffix(active: active, silent: silent)
+    static func spokenFilterChip(
+        _ filter: TimelineReadFilter,
+        count: Int,
+        active: Bool,
+        silent: Bool
+    ) -> String {
+        LiveTimelineFilterJudgment.spokenFilterChip(
+            filter: filter, count: count, active: active, silent: silent
+        )
     }
-}
 
-extension LiveTimelineA11y {
-    static func spokenFilterChipSuffix(active: Bool, silent: Bool) -> String {
-        var suffix = ""
-        if active { suffix += ", selecionado" }
-        if silent { suffix += ", nenhum passo neste filtro" }
-        return suffix
-    }
-}
-
-extension LiveTimelineA11y {
     static func spokenFilterHint() -> String {
-        "altera quais passos da orquestra são exibidos"
+        LiveTimelineFilterJudgment.filterHint
     }
-}
 
-extension LiveTimelineA11y {
-    static func spokenRow(row: NarrativeRow, index: Int, total: Int, isCurrent: Bool) -> String {
-        var parts = ["passo \(index + 1) de \(total)", row.title]
-        if let detail = row.detail, !detail.isEmpty { parts.append(detail) }
-        if let duration = row.durationMs {
-            parts.append("duração \(humanDuration(duration))")
-            if row.isP90 { parts.append("acima do p90") }
-        }
-        if isCurrent { parts.append("passo atual da orquestra") }
-        return parts.joined(separator: ", ")
+    static func spokenRow(
+        row: NarrativeRow,
+        index: Int,
+        total: Int,
+        isCurrent: Bool
+    ) -> String {
+        LiveTimelineFilterJudgment.spokenRow(
+            row: row, index: index, total: total, isCurrent: isCurrent
+        )
     }
-}
 
-extension LiveTimelineA11y {
     static func rowValue(index: Int, total: Int, isCurrent: Bool) -> String {
-        isCurrent ? "passo \(index + 1) de \(total), em andamento" : "passo \(index + 1) de \(total)"
+        LiveTimelineFilterJudgment.rowValue(index: index, total: total, isCurrent: isCurrent)
     }
-}
 
-extension LiveTimelineA11y {
-    static func spokenFilterSilenceSurface(filter: TimelineReadFilter, totalSteps: Int) -> String {
-        "orquestra ao vivo, filtro \(filter.label), nenhum dos \(totalSteps) passos corresponde"
+    static func spokenFilterSilenceSurface(
+        filter: TimelineReadFilter,
+        totalSteps: Int
+    ) -> String {
+        LiveTimelineFilterJudgment.spokenFilterSilenceSurface(
+            filter: filter, totalSteps: totalSteps
+        )
     }
 }
 
@@ -293,6 +282,13 @@ extension LiveTimeline {
             .accessibilityElement(children: .contain)
             .accessibilityLabel(LiveTimelineA11y.spokenFilterSilenceSurface(filter: filter,
                                                                             totalSteps: baseRows.count))
+            .accessibilityValue(
+                LiveTimelineFilterJudgment.face(
+                    filter: filter,
+                    matchCount: rows.count,
+                    isActive: true
+                ).productWord
+            )
             .accessibilityIdentifier(A11yID.liveTimelineFilterSilence)
     }
 }

@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 69
+- waves_completed: 70
 - idle_compress_passes: 15
 - collapse_host: 0
 
@@ -80,6 +80,7 @@ mode: designer + implementer
 - WAVE-072
 - WAVE-073
 - WAVE-074
+- WAVE-075
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -109,6 +110,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-070–074 + idles 13–15. Prefer A fill.
-- DEVICE_PENDING. Continuity App Group BLOCKED.
-- **LEDGER idle list is B-owned; concurrent strips of passes 3–15 are invalid.**
+- WAVE-070–075. Prefer A fill. DEVICE_PENDING. Continuity BLOCKED.
+- LEDGER idle B-owned; do not strip passes 3–15.
