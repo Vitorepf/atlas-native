@@ -186,8 +186,8 @@ mode: designer + implementer
 - pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 169
-- designs_open: 0
+- designs_proposed: 171
+- designs_open: 2
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -195,10 +195,11 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| 1 | WAVE-175-change-review-available-actions-pack-and-can-do | **max** | proposed |
+| 2 | WAVE-176-search-agentic-pack-and-pill-host | **max** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- WAVE-174: timeline narrative/filter + markdown pack mid-thread. Search/Rhythm still host-blocked.
+
