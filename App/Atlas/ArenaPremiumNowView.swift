@@ -70,8 +70,8 @@ struct ArenaPremiumNowView: View {
 
     private var loading: some View {
         VStack(alignment: .leading, spacing: 22) {
-            ArenaPremiumKicker(text: "Preparando a Arena", tone: .active, showsDot: true)
-            Text("Organizando as medições")
+            ArenaPremiumKicker(text: ArenaNowJudgment.preparingKicker(), tone: .active, showsDot: true)
+            Text(ArenaNowJudgment.preparingTitle())
                 .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
             ProgressView()
@@ -82,5 +82,6 @@ struct ArenaPremiumNowView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 24)
+        .accessibilityValue(ArenaNowFace.preparing.productWord)
     }
 }

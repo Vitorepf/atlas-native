@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 60
+- waves_completed: 61
 - idle_compress_passes: 11
 - collapse_host: 0
 
@@ -71,6 +71,7 @@ mode: designer + implementer
 - WAVE-063
 - WAVE-064
 - WAVE-065
+- WAVE-066
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -83,10 +84,10 @@ mode: designer + implementer
 - pass 8 · `10b74ff3` · peel ChangeReview → GovernanceBody + RunActionsBody
 - pass 9 · `876b24e3` · peel ArtifactPreview → TraceEvidence + Zoom
 - pass 10 · `4ed17106` · delete dead ChangeReview sheet spoken peel
-- pass 11 · `99576dfc` · peel AutonomosMapShell → Routes + Ask (418→285 host; guard ≤400)
+- pass 11 · `43415d1a` · peel AutonomosMapShell → Routes + Ask
 
 ## Designer
-- designs_proposed: 60
+- designs_proposed: 61
 - designs_open: 0
 - last_regen: regen-queue.py
 
@@ -97,6 +98,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- WAVE-064–065 A fills (LiveNow · multi-area bind). Prefer A fill.
+- WAVE-064–066 (LiveNow · multi-area · Arena now). Prefer A fill.
 - DEVICE_PENDING. Continuity App Group BLOCKED.
-- LEDGER idle list B-owned; do not strip.

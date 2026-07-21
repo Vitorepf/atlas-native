@@ -47,6 +47,7 @@
 | **Agent lanes (multi)** | `ConversationAgentLanesJudgment` → ExecutionRibbon rank failed-first |
 | Island/Lock phase chrome | Widgets Live/Lock* (sem inventar App Group) |
 | Score/julgamento Arena | `ArenaScoreJudgment` + Suite/Run sheets |
+| **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
 | **Arena live control (corridas)** | `ArenaLiveControlJudgment` → rank · face · canStop |
 | **Arena start / recibo rodar** | `ArenaStartJudgment` → submit face · receipt face · worker gap |
 | **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face |

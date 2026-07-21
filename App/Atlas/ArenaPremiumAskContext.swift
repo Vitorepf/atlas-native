@@ -210,14 +210,7 @@ enum ArenaPremiumAskContext {
     }
 
     private static func phaseLabel(_ phase: AtlasArenaLivePhase) -> String {
-        switch phase {
-        case .idle: "parada"
-        case .queued: "na fila"
-        case .running: "ao vivo"
-        case .stopping: "parando"
-        case .stopped: "parada pelo operador"
-        case .completed: "concluída"
-        case .failed: "interrompida"
-        }
+        // WAVE-066: product spoken from ArenaNowJudgment.
+        ArenaNowJudgment.face(from: phase).spokenFace
     }
 }

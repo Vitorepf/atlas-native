@@ -10,14 +10,15 @@ struct ArenaPremiumIdleView: View {
         VStack(alignment: .leading, spacing: 24) {
             ArenaPremiumEmptyGlyph(symbol: "scope")
                 .accessibilityIdentifier(A11yID.arenaPremiumState("idle"))
-            ArenaPremiumKicker(text: "Arena pronta")
-            Text("Nada medindo agora")
+            ArenaPremiumKicker(text: ArenaNowJudgment.idleKicker())
+            Text(ArenaNowJudgment.idleTitle())
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text("Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado.")
+            Text(ArenaNowJudgment.idleBody())
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .accessibilityValue(ArenaNowFace.idle.productWord)
             ArenaPremiumAction(title: "Rodar medição", symbol: "play.fill", action: onRun)
             if model.arenaPrimaryEngine != nil {
                 ArenaPremiumHairline()
@@ -43,11 +44,12 @@ struct ArenaPremiumQueuedView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(text: "Na fila", tone: .active, showsDot: true)
+            ArenaPremiumKicker(text: ArenaNowJudgment.queuedKicker(), tone: .active, showsDot: true)
                 .accessibilityIdentifier(A11yID.arenaPremiumState("queued"))
-            Text("Medição programada")
+            Text(ArenaNowJudgment.queuedTitle())
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityValue(ArenaNowFace.queued.productWord)
             Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.mono(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -62,7 +64,7 @@ struct ArenaPremiumQueuedView: View {
                     queuedMetric("\(queuedRuns.count)", "corridas")
                 }
             }
-            Text("Ainda não iniciado · nenhum progresso foi presumido.")
+            Text(ArenaNowJudgment.queuedHonestyLine())
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
             ArenaPremiumAction(title: "Ver execução", tone: .neutral) {
@@ -93,31 +95,29 @@ struct ArenaPremiumTerminalView: View {
     let onRun: () -> Void
     let onNavigate: (ArenaPremiumDestination) -> Void
 
-    private var configuration: (String, String, String, ArenaPremiumTone) {
-        switch kind {
-        case .stopping:
-            ("Parada solicitada", "Finalizando o caso atual", "hourglass", .active)
-        case .stopped:
-            ("Medição parada", "Resultados parciais preservados", "stop.circle", .neutral)
-        case .completed:
-            ("Medição concluída", "Resultado terminal confirmado", "checkmark.seal", .positive)
-        case .failed:
-            ("Medição interrompida", "O que concluiu foi preservado", "exclamationmark.triangle", .negative)
-        }
+    /// WAVE-066: terminal chrome from ArenaNowJudgment.
+    private var chrome: ArenaNowTerminalChrome {
+        ArenaNowJudgment.terminalChrome(kind)
+    }
+
+    private var nowFace: ArenaNowFace {
+        ArenaNowJudgment.face(terminal: kind)
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumEmptyGlyph(symbol: configuration.2, tone: configuration.3)
+            ArenaPremiumEmptyGlyph(symbol: chrome.symbol, tone: chrome.tone)
                 .accessibilityIdentifier(A11yID.arenaPremiumState(stateIdentifier))
-            ArenaPremiumKicker(text: configuration.0, tone: configuration.3)
+            ArenaPremiumKicker(text: chrome.title, tone: chrome.tone)
             Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.serif(33))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text(configuration.1)
+            Text(chrome.subtitle)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .accessibilityValue(nowFace.productWord)
+                .accessibilityLabel(nowFace.spokenFace)
             if let progress = model.livePresentation?.progress {
                 HStack(alignment: .lastTextBaseline, spacing: 7) {
                     Text("\(progress.completed)")
