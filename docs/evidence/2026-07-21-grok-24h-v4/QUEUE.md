@@ -190,4 +190,5 @@ _(no open proposed WAVEs)_
 - WAVE-170 done
 - WAVE-171 done
 - WAVE-172 done
+- WAVE-173 done
 

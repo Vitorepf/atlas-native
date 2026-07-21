@@ -193,3 +193,5 @@ View/Shell rota ≤600 · Surface 1 domínio ≤1500 (fail &gt;2000) · um domí
 | **EditorialTurn peels (172)** | host · Closing · User |
 | **PlanCard peels (172)** | Body · FlexWrap · Steps |
 | **Autonomos pack organ peels (172)** | Global · Destination · Veto |
+
+| **Residual peels (173)** | PlanRevision A11y/Archive · Surface Messages · ModelActions* · FileRowChrome |
