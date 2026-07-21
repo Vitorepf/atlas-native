@@ -9290,6 +9290,7 @@ extension ArtifactSheet {
         }
         .padding(.horizontal, 12)
         .atlasCard()
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         // Contain without fused label: each file row stays a button.
         .accessibilityElement(children: .contain)
     }
@@ -9426,6 +9427,7 @@ extension ArtifactSheet {
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .atlasCard()
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
     }
 }
 
@@ -9657,6 +9659,7 @@ extension ArtifactSheet {
         }
         .padding(14)
         .atlasCard()
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         .accessibilityIdentifier(A11yID.artifactsMount)
     }
 }

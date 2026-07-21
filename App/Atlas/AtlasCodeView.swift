@@ -1727,6 +1727,7 @@ struct AtlasCodeRepoPickerSheet: View {
                 }
             }
             .atlasCard()
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         }
     }
 

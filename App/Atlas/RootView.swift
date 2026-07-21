@@ -3181,6 +3181,7 @@ extension AtlasProfileSheet {
             profileLine("Workspaces", value: "\(session.workspaces.count)")
         }
         .atlasCard()
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
 
         Toggle(isOn: $session.auditModeEnabled) {
             VStack(alignment: .leading, spacing: 3) {
@@ -3197,6 +3198,7 @@ extension AtlasProfileSheet {
         .frame(minHeight: 56)
         .frame(minHeight: 48, alignment: .center)
         .atlasCard()
+        .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         .onChange(of: session.auditModeEnabled) { _, _ in
             // Soft: audit chrome is presentation preference, not governed commit.
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
@@ -3339,6 +3341,7 @@ extension AtlasWorkspacePickerSheet {
             .frame(minHeight: 56)
             .contentShape(Rectangle())
             .atlasCard()
+            .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Sem repositório")
@@ -3367,6 +3370,7 @@ extension AtlasWorkspacePickerSheet {
                     }
                 }
                 .atlasCard()
+                .atlasElevation(radius: 8, y: 2, opacity: 0.12)
                 .padding(.horizontal, AtlasTheme.Space.screen)
             }
             .padding(.vertical, 12)
