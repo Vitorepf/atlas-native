@@ -208,9 +208,9 @@ extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var vetoSection: some View {
         if canRevert {
+            // Contain without fused label: fields + Desfazer stay focusable.
             vetoFields
                 .accessibilityElement(children: .contain)
-                .accessibilityLabel("veto retroativo com recibo")
         }
     }
 }

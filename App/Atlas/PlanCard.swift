@@ -51,8 +51,8 @@ struct PlanCard: View {
         content()
             .padding(12)
             .atlasCard(cornerRadius: AtlasTheme.Radius.control, fillOpacity: 0.5)
+            // Contain without fused label: detail/revisions toggles stay focusable.
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(spokenCardLabel(plan: plan, progress: executionProgress))
             .accessibilityIdentifier(A11yID.planCard)
     }
 
