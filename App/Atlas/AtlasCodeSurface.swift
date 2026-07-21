@@ -165,7 +165,7 @@ extension AtlasCodeView {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(AtlasCodeAskPillJudgment.clearCommitRefLabel)
+            .accessibilityLabel(AtlasCodeAskPillJudgment.spokenClearCommitRef)
             .accessibilityHint("Remove o commit da pílula")
             .accessibilityIdentifier(A11yID.codeAskClear)
         } else if askModel.isAnchoring {
@@ -178,8 +178,8 @@ extension AtlasCodeView {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(AtlasCodeAskPillJudgment.clearLabel)
-            .accessibilityHint(AtlasCodeAskPillJudgment.clearHint)
+            .accessibilityLabel(AtlasCodeAskPillJudgment.spokenClear)
+            .accessibilityHint(AtlasCodeAskPillJudgment.spokenClearHint)
             .accessibilityIdentifier(A11yID.codeAskClear)
         }
     }
@@ -226,7 +226,7 @@ extension AtlasCodeView {
                 )
             )
             .accessibilityValue(face.productWord)
-            .accessibilityHint(AtlasCodeAskPillJudgment.pillHint)
+            .accessibilityHint(AtlasCodeAskPillJudgment.spokenPillHint)
             .accessibilityAddTraits(.isButton)
             .accessibilityIdentifier(A11yID.codeAskPill)
     }

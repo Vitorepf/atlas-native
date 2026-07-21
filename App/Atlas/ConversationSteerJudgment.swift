@@ -716,7 +716,7 @@ enum ConversationHandoffJudgment {
         face(from: handoff) == .pending
     }
 
-    static func destinationLabel(_ handoff: AtlasAiSurfaceHandoff) -> String {
+    static func productDestination(_ handoff: AtlasAiSurfaceHandoff) -> String {
         atlasSurfaceLabel(handoff.toSurface)
     }
 
@@ -734,7 +734,7 @@ enum ConversationHandoffJudgment {
     }
 
     static func headline(_ handoff: AtlasAiSurfaceHandoff) -> String {
-        let dest = destinationLabel(handoff)
+        let dest = productDestination(handoff)
         switch face(from: handoff) {
         case .ready: return "Pronto no \(dest)"
         case .pending: return "Enviando para o \(dest)…"
@@ -760,7 +760,7 @@ enum ConversationHandoffJudgment {
     }
 
     static func spoken(_ handoff: AtlasAiSurfaceHandoff, now: Date = Date()) -> String {
-        let dest = destinationLabel(handoff)
+        let dest = productDestination(handoff)
         let thread = threadPrefix(handoff)
         let age = ageFragment(handoff, now: now).map { ", há \($0)" } ?? ""
         switch face(from: handoff) {

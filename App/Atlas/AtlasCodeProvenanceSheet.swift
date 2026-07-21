@@ -163,7 +163,7 @@ extension AtlasCodeProvenanceSheet {
         }
         .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.codeProvenanceAsk)
-        .accessibilityLabel(AtlasCodeAskPillJudgment.askCommitLabel)
+        .accessibilityLabel(AtlasCodeAskPillJudgment.spokenAskCommit)
         .accessibilityHint(Self.askHint)
     }
 }

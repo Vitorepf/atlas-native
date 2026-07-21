@@ -524,7 +524,7 @@ extension ConversationView {
             .accessibilityHint(
                 hidesNavigationBack
                     ? "arraste para baixo para fechar"
-                    : ConversationMessagesJudgment.screenHint
+                    : ConversationMessagesJudgment.spokenScreenHint
             )
             .overlay(alignment: .top) { toast }
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.toast)

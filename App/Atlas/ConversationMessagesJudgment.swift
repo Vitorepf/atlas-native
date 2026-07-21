@@ -100,7 +100,7 @@ enum ConversationMessagesJudgment {
 
     static let headerContinuityLabel = "continuidade da conversa"
     static let headerContinuityHint = "continuar esta conversa no Mac ou no Terminal"
-    static let screenHint = "turnos e composer só com dados da sessão e do model"
+    static let spokenScreenHint = "turnos e composer só com dados da sessão e do model"
 }
 // MARK: - ConversationDecisionJudgment
 

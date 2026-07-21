@@ -1412,11 +1412,11 @@ enum AtlasCodeAskPillFace: Equatable {
 /// Pure ask-pill grammar — face · spoken · phaseID · pack.
 enum AtlasCodeAskPillJudgment {
 
-    static let pillHint = "abre conversa sobre este repositório"
-    static let clearLabel = "mostrar tudo no grafo"
-    static let clearHint = "remove o recorte dos commits da resposta"
-    static let clearCommitRefLabel = "Limpar referência do commit"
-    static let askCommitLabel = "perguntar ao Atlas sobre este commit"
+    static let spokenPillHint = "abre conversa sobre este repositório"
+    static let spokenClear = "mostrar tudo no grafo"
+    static let spokenClearHint = "remove o recorte dos commits da resposta"
+    static let spokenClearCommitRef = "Limpar referência do commit"
+    static let spokenAskCommit = "perguntar ao Atlas sobre este commit"
     static func spokenUserQuote(_ quote: String) -> String {
         "sua frase: \(quote)"
     }
