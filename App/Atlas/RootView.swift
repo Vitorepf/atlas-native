@@ -2582,6 +2582,7 @@ extension CircleButton {
         Image(systemName: icon)
             .atlasSans(16, .medium).foregroundStyle(AtlasTheme.textSecondary)
             .frame(width: 48, height: 48).atlasGlassCircle()
+            .atlasElevation(radius: 6, y: 2, opacity: 0.14)
             .overlay(alignment: .topTrailing) {
                 badgeOverlay
             }
