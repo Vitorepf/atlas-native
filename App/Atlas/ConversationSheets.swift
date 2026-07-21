@@ -1,12 +1,10 @@
 import SwiftUI
-import PhotosUI
-import UniformTypeIdentifiers
 import AtlasCore
+import PhotosUI
 
-// Folhas do composer — peels de ConversationView (régua anti-inchaço).
-// Modifier → ConversationSheets+Modifier.swift.
-// Forward → ConversationSheets+Sheets+ModifierForward.swift
+// IDLE-COMPRESS host
 
+// --- ConversationSheets.swift ---
 extension View {
     func conversationComposerSheets(
         model: ConversationModel,
@@ -44,3 +42,4 @@ extension View {
         )
     }
 }
+

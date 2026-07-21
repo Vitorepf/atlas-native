@@ -1,6 +1,9 @@
 import SwiftUI
 import AtlasCore
 
+// IDLE-COMPRESS host
+
+// --- SteerInteractionSheet.swift ---
 struct SteerInteractionSheet: View {
     let traceId: TraceID
     var model: ConversationModel
@@ -15,3 +18,4 @@ struct SteerInteractionSheet: View {
         steerA11yShell(steerNavigationStack)
     }
 }
+

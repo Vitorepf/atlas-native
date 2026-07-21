@@ -1,11 +1,10 @@
 import SwiftUI
-import PhotosUI
 import AtlasCore
+import PhotosUI
 
-// Composer da conversa — WAVE-006 structural host.
-// Card → +Card · Live → +LiveStrip · Queue → +Queue · Actions → +Actions
-// Steer → +Steer · A11y → +A11y · Sheets → +SheetsBind · Surface helpers inline.
+// IDLE-COMPRESS host
 
+// --- ConversationComposer.swift ---
 struct ConversationComposer: View {
     var model: ConversationModel
     var session: AtlasSession
@@ -47,3 +46,4 @@ struct ConversationComposer: View {
             .accessibilityHidden(true)
     }
 }
+

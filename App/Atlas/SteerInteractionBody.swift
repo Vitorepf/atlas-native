@@ -1,0 +1,229 @@
+import SwiftUI
+import AtlasCore
+
+// IDLE-COMPRESS body
+
+// --- SteerInteractionSheet+A11y.swift ---
+
+
+// --- SteerInteractionSheet+A11yReceipt.swift ---
+extension SteerInteractionSheet {
+    func spokenReceiptLabel(_ receipt: AtlasInteractionSteerResponse) -> String {
+        if receipt.isAccepted {
+            return "último recibo, instrução enfileirada para o próximo checkpoint seguro"
+        }
+        let reason = receipt.reason?.rawValue ?? "motivo_indisponivel"
+        return "último recibo, steering rejeitado, motivo \(reason)"
+    }
+}
+
+// --- SteerInteractionSheet+A11yScope.swift ---
+extension SteerInteractionSheet {
+    func spokenScopeLabel(_ scope: AtlasInteractionSteerScope) -> String {
+        switch scope {
+        case .currentStep: return "escopo passo atual"
+        case .replan: return "escopo replanejamento"
+        }
+    }
+}
+
+// --- SteerInteractionSheet+A11ySheetHint.swift ---
+extension SteerInteractionSheet {
+    func spokenSheetHint() -> String {
+        "instrução entra no próximo checkpoint seguro; o Atlas pode recusar"
+    }
+}
+
+// --- SteerInteractionSheet+A11ySubmit.swift ---
+extension SteerInteractionSheet {
+    func spokenSubmitLabel(canSubmit: Bool) -> String {
+        canSubmit ? "enviar instrução de redirecionamento" : "enviar indisponível, instrução vazia"
+    }
+}
+
+// --- SteerInteractionSheet+A11ySubmitHint.swift ---
+extension SteerInteractionSheet {
+    func spokenSubmitHint(canSubmit: Bool) -> String {
+        canSubmit
+            ? "envia a instrução ao Atlas no escopo selecionado"
+            : "escreva o que muda a partir daqui"
+    }
+}
+
+// --- SteerInteractionSheet+AccessibilityShell.swift ---
+extension SteerInteractionSheet {
+    func steerA11yShell<V: View>(_ content: V) -> some View {
+        content
+            .accessibilityIdentifier(A11yID.steerSheet)
+            .accessibilityLabel("redirecionar execução \(traceId.rawValue)")
+            .accessibilityHint(spokenSheetHint())
+    }
+}
+
+// --- SteerInteractionSheet+Form.swift ---
+extension SteerInteractionSheet {
+    var formContent: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            formHeader
+            instructionField
+            formReceiptLine
+            Spacer(minLength: 0)
+        }
+        .padding(22)
+        .animation(reduceMotion ? nil : AtlasMotion.editorial, value: matchedReceipt)
+    }
+}
+
+// --- SteerInteractionSheet+FormHeader.swift ---
+extension SteerInteractionSheet {
+    var formHeader: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Redirecionar")
+                .font(AtlasFont.serif(24, .semibold))
+                .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+            Text("A instrução entra no próximo checkpoint seguro desta execução. O Atlas pode recusar e devolver o motivo público.")
+                .font(.footnote)
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityHidden(true)
+            formScopePicker
+        }
+    }
+}
+
+// --- SteerInteractionSheet+FormPicker.swift ---
+extension SteerInteractionSheet {
+    var formScopePicker: some View {
+        Picker("Escopo", selection: $scope) {
+            ForEach(AtlasInteractionSteerScope.allCases, id: \.self) { scope in
+                Text(scope.rawValue).tag(scope)
+            }
+        }
+        .pickerStyle(.segmented)
+        .accessibilityIdentifier(A11yID.steerScope)
+        .accessibilityLabel(spokenScopeLabel(scope))
+    }
+}
+
+// --- SteerInteractionSheet+FormReceipt.swift ---
+extension SteerInteractionSheet {
+    @ViewBuilder
+    var formReceiptLine: some View {
+        if let receipt = matchedReceipt {
+            receiptLine(receipt)
+                .transition(reduceMotion ? .identity : .opacity)
+                .accessibilityIdentifier(A11yID.steerReceipt)
+                .accessibilityLabel(spokenReceiptLabel(receipt))
+        }
+    }
+}
+
+// --- SteerInteractionSheet+Instruction.swift ---
+extension SteerInteractionSheet {
+    var instructionField: some View {
+        TextField("O que muda a partir daqui?", text: $instruction, axis: .vertical)
+            .font(.system(.callout))
+            .foregroundStyle(AtlasTheme.textPrimary)
+            .tint(AtlasTheme.accent)
+            .lineLimit(3...7)
+            .padding(12)
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface))
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separator, lineWidth: 1))
+            .accessibilityIdentifier(A11yID.steerInstruction)
+            .accessibilityHint("descreve o que deve mudar na execução")
+    }
+}
+
+// --- SteerInteractionSheet+Navigation.swift ---
+extension SteerInteractionSheet {
+    var steerNavigationStack: some View {
+        NavigationStack {
+            ZStack {
+                AtlasTheme.bg.ignoresSafeArea()
+                formContent
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { steerToolbar }
+        }
+    }
+}
+
+// --- SteerInteractionSheet+Predicates.swift ---
+extension SteerInteractionSheet {
+    var canSubmit: Bool {
+        !instruction.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var matchedReceipt: AtlasInteractionSteerResponse? {
+        guard let receipt = model.lastSteerReceipt else { return nil }
+        if let receiptTrace = receipt.traceId, receiptTrace != traceId.rawValue { return nil }
+        return receipt
+    }
+}
+
+// --- SteerInteractionSheet+Receipt.swift ---
+extension SteerInteractionSheet {
+    func receiptLine(_ receipt: AtlasInteractionSteerResponse) -> some View {
+        let text = receipt.isAccepted
+            ? "na fila do próximo checkpoint"
+            : "rejeitado · \(receipt.reason?.rawValue ?? "motivo_indisponivel")"
+
+        return Text(text)
+            .font(AtlasFont.mono(11))
+            .foregroundStyle(receipt.isAccepted ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface.opacity(0.65)))
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+    }
+}
+
+// --- SteerInteractionSheet+Toolbar.swift ---
+extension SteerInteractionSheet {
+    @ToolbarContentBuilder
+    var steerToolbar: some ToolbarContent {
+        steerCancelItem
+        steerSubmitItem
+    }
+}
+
+// --- SteerInteractionSheet+ToolbarCancel.swift ---
+extension SteerInteractionSheet {
+    @ToolbarContentBuilder
+    var steerCancelItem: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            AtlasCloseToolbarButton(
+                title: "Cancelar",
+                spokenLabel: "cancelar redirecionamento",
+                spokenHint: "fecha sem enviar instrução",
+                reduceMotion: reduceMotion
+            ) { dismiss() }
+        }
+    }
+}
+
+// --- SteerInteractionSheet+ToolbarSubmit.swift ---
+extension SteerInteractionSheet {
+    @ToolbarContentBuilder
+    var steerSubmitItem: some ToolbarContent {
+        ToolbarItem(placement: .confirmationAction) {
+            steerSubmitButton
+        }
+    }
+}
+
+// --- SteerInteractionSheet+ToolbarSubmitButton.swift ---
+extension SteerInteractionSheet {
+    var steerSubmitButton: some View {
+        Button("Enviar") {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            onSubmit(instruction, scope)
+        }
+        .disabled(!canSubmit)
+        .accessibilityIdentifier(A11yID.steerSubmit)
+        .accessibilityLabel(spokenSubmitLabel(canSubmit: canSubmit))
+        .accessibilityHint(spokenSubmitHint(canSubmit: canSubmit))
+    }
+}
+

@@ -1,12 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-// Dentro de um workspace (repo): as conversas dele, com filtro de área no topo
-// (Tudo / Operacional / Autônomos / Programação). Título em Fraunces serif.
-// Vazio ≠ offline: falha de rede usa a mesma voz da home (`AtlasFailureCopy`).
-// Chrome: +Chrome · lista: +Scroll · spoken: +A11y · empty: WorkspaceEmptyStates
-// Predicates → WorkspaceView+Predicates.swift · Screen chrome → WorkspaceView+Chrome.swift
-// Body → WorkspaceView+Body.swift
+// IDLE-COMPRESS host
+
+// --- WorkspaceView.swift ---
 struct WorkspaceView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.dismiss) var dismiss
@@ -22,3 +19,4 @@ struct WorkspaceView: View {
         workspaceScreenChrome(workspaceBodyStack)
     }
 }
+

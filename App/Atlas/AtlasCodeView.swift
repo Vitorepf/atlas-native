@@ -1,11 +1,9 @@
 import SwiftUI
 import AtlasCore
 
-/// M0 · Grafo Governado — o mapa vem primeiro.
-///
-/// Contrato visual: `docs/proposals/atlas-code-mobile.html` (tela M0).
-/// Ask seed → AtlasCodeView+Ask.swift · Init → +Init · Toolbar → +Toolbar
-/// Sheets → AtlasCodeView+SheetsBind.swift · Chrome → AtlasCodeView+Chrome.swift
+// IDLE-COMPRESS host
+
+// --- AtlasCodeView.swift ---
 struct AtlasCodeView: View {
     @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -52,3 +50,4 @@ struct AtlasCodeView: View {
     }
 
 }
+
