@@ -6,8 +6,8 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 39
-- idle_compress_passes: 2
+- waves_completed: 40
+- idle_compress_passes: 5
 - collapse_host: 0
 
 ## Waves done
@@ -50,26 +50,26 @@ mode: designer + implementer
 - WAVE-042
 - WAVE-043
 - WAVE-044
+- WAVE-045
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `4ba83f4a` · MARK EditorialTurn agent layout
+- pass 4 · `189c7e29` · MARK PlanCard + ExecutionProof agent layout
+- pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
-- designs_proposed: 41
-- designs_open: 2
+- designs_proposed: 40
+- designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
 
 ## Open queue snapshot (must match QUEUE.md)
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-045-home-ops-attention-judgment-instrument | **max** | proposed |
-| 2 | WAVE-046-composer-send-readiness-judgment-instrument | **high** | proposed |
+| — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- Self-WAVEs 043–045 while A starved. Prefer A 2–5 GOD croquis.
+- DEVICE_PENDING history.

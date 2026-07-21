@@ -286,8 +286,10 @@ struct ConversationHandoffReceipt: View {
     let handoff: AtlasAiSurfaceHandoff
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
-    var isReady: Bool { handoff.status == "ready" }
-    var isPending: Bool { handoff.status == "pending" }
+    // WAVE-045: face owned by Judgment.
+    var face: ConversationHandoffFace { ConversationHandoffJudgment.face(from: handoff) }
+    var isReady: Bool { ConversationHandoffJudgment.isReady(handoff) }
+    var isPending: Bool { ConversationHandoffJudgment.isPending(handoff) }
 
     var body: some View {
         receiptChrome(receiptRowStack)
@@ -313,11 +315,11 @@ struct ConversationHandoffReceipt: View {
 
     var receiptCopy: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(headline)
+            Text(ConversationHandoffJudgment.headline(handoff))
                 .font(.system(.footnote, weight: .medium))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
-            Text(subline)
+            Text(ConversationHandoffJudgment.subline(handoff))
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(2)
@@ -335,55 +337,9 @@ struct ConversationHandoffReceipt: View {
             .padding(.top, 2)
             .padding(.bottom, 8)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(accessibilitySummary)
+            .accessibilityLabel(ConversationHandoffJudgment.spoken(handoff))
             .accessibilityIdentifier(A11yID.continuityHandoffReceipt)
-    }
-
-    // MARK: - Copy
-
-    var headline: String {
-        let dest = atlasSurfaceLabel(handoff.toSurface)
-        if isReady { return "Pronto no \(dest)" }
-        if isPending { return "Enviando para o \(dest)…" }
-        return "Continuidade para \(dest)"
-    }
-
-    var subline: String {
-        let route = "\(atlasSurfaceLabel(handoff.fromSurface)) → \(atlasSurfaceLabel(handoff.toSurface))"
-        let thread = editorialThreadPrefix(handoff.threadId)
-        let age = handoffAgeFragment
-        if isReady { return readySubline(route: route, thread: thread, age: age) }
-        return pendingSubline(route: route, thread: thread, age: age)
-    }
-
-    func readySubline(route: String, thread: String, age: String?) -> String {
-        var parts = ["\(route)", "mesma thread \(thread)", "sem prompt duplicado"]
-        if let age { parts.append("há \(age)") }
-        return parts.joined(separator: " · ")
-    }
-
-    func pendingSubline(route: String, thread: String, age: String?) -> String {
-        var parts = [atlasHandoffStatusEditorial(handoff.status), route, "thread \(thread)"]
-        if let age { parts.append("há \(age)") }
-        return parts.joined(separator: " · ")
-    }
-
-    var handoffAgeFragment: String? {
-        guard let raw = handoff.createdAt, let date = AtlasTime.date(raw) else { return nil }
-        return atlasRelativeAgePT(since: date)
-    }
-
-    var accessibilitySummary: String {
-        let dest = atlasSurfaceLabel(handoff.toSurface)
-        let thread = editorialThreadPrefix(handoff.threadId)
-        let age = handoffAgeFragment.map { ", há \($0)" } ?? ""
-        if isReady {
-            return "continuidade pronta no \(dest), mesma thread \(thread), sem prompt duplicado\(age)"
-        }
-        if isPending {
-            return "continuidade enviando para o \(dest), mesma thread \(thread)\(age)"
-        }
-        return "recibo de continuidade para \(dest), \(atlasHandoffStatusEditorial(handoff.status)), thread \(thread)\(age)"
+            .accessibilityValue(face.productWord)
     }
 }
 
