@@ -103,7 +103,7 @@
 | **Task health / incidente frota** | `AutonomosTaskHealthJudgment` → IncidentSurface · vestment incidentPresent |
 | **Frota global (agentes vivos)** | `AutonomosFleetJudgment` → FleetStrip no catálogo |
 | **Digest / momento (janela)** | `AutonomosDigestJudgment` → DigestSurface · `.moment("digest")` |
-| **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + FindingsBody/PatchBody · sheet spoken |
+| **Change review risk (achados/patches)** | `ChangeReviewJudgment` → RiskStrip + FindingsBody/PatchBody · sheet spoken · pack mid-thread (WAVE-163) |
 | **Change review governance chrome** | `ChangeReviewJudgment` spokenCouncil/DiffStats/hash · packGovernanceFacts → GovernanceBody |
 | **Change review sheet load** | `ChangeReviewSheetJudgment` → face loading/unavailable/empty/ready |
 | Change review peels | Sections host · Judgment section spoken · GovernanceBody · Patch/Run/Findings |

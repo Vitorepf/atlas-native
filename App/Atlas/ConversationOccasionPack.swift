@@ -28,6 +28,10 @@ enum ConversationOccasionPack {
         var lastSteerReceipt: AtlasInteractionSteerResponse? = nil
         /// WAVE-161: surface handoff receipt (nil → absence).
         var latestSurfaceHandoff: AtlasAiSurfaceHandoff? = nil
+        /// WAVE-163: change review for presence trace (nil → absence).
+        var changeReview: AtlasTraceChangeReview? = nil
+        /// WAVE-163: whether review load finished for this trace.
+        var changeReviewLoadFinished: Bool = false
 
         static let unbound = PublishedSlice(
             presenceBubble: nil,
@@ -207,6 +211,19 @@ enum ConversationOccasionPack {
         )
         facts.append(contentsOf: handoffPack.facts)
         absences.append(contentsOf: handoffPack.absences)
+
+        // WAVE-163: change-review organs when presence trace has review slice.
+        if bubble?.traceId != nil {
+            let sheetPack = ChangeReviewSheetJudgment.packFacts(
+                loadFinished: published?.changeReviewLoadFinished ?? false,
+                review: published?.changeReview
+            )
+            facts.append(contentsOf: sheetPack.facts)
+            absences.append(contentsOf: sheetPack.absences)
+            let riskPack = ChangeReviewJudgment.packFacts(from: published?.changeReview)
+            facts.append(contentsOf: riskPack.facts)
+            absences.append(contentsOf: riskPack.absences)
+        }
 
         let surface: String
         if workspaceKey != nil {

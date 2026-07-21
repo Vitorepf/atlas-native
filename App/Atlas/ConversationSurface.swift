@@ -153,12 +153,20 @@ extension ConversationView {
                 return nil
             }
             let bubble = ConversationExecutionPhase.selectPresenceBubble(from: model.bubbles)
+            let presenceTrace = bubble?.traceId
+            let review = presenceTrace.flatMap { model.reviews.changeReviewsByTrace[$0] }
+            // Load finished when review published or not currently in-flight.
+            let reviewFinished = presenceTrace.map { tid in
+                review != nil || !model.reviews.changeReviewInFlight.contains(tid)
+            } ?? false
             let published = ConversationOccasionPack.PublishedSlice(
                 presenceBubble: bubble,
                 queued: model.queuedMessages,
                 agents: bubble?.agents ?? [],
                 lastSteerReceipt: model.lastSteerReceipt,
-                latestSurfaceHandoff: model.latestSurfaceHandoff
+                latestSurfaceHandoff: model.latestSurfaceHandoff,
+                changeReview: review,
+                changeReviewLoadFinished: reviewFinished
             )
             return ConversationOccasionPack.facts(
                 session: session,
