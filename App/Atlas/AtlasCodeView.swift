@@ -3171,7 +3171,8 @@ extension AtlasCodeProvenanceSheet {
         Spacer(minLength: 0)
         Image(systemName: "arrow.up.right")
             .atlasSans(10, .semibold)
-            .foregroundStyle(AtlasTheme.textTertiary)
+            // Soft gold-quiet invite trail — same family as disclosure chevrons.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.55))
             .accessibilityHidden(true)
     }
 }

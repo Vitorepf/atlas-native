@@ -3188,7 +3188,8 @@ extension ComposerToolbar {
         } label: {
             Image(systemName: "paperclip")
                 .atlasSans(17, .medium)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet secondary chrome — match conversation ellipsis family.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .frame(width: 48, height: 48)
                 .background(Circle().fill(AtlasTheme.surfaceHi.opacity(0.55)))
                 .atlasElevation(radius: 4, y: 1, opacity: 0.1)
@@ -3379,7 +3380,8 @@ extension ComposerToolbar {
         } label: {
             Image(systemName: "ellipsis")
                 .atlasSans(17, .semibold)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet secondary chrome — match attach + header ellipsis.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .frame(width: 48, height: 48)
                 // Match attach soft circle — secondary composer chrome plane.
                 .background(Circle().fill(AtlasTheme.surfaceHi.opacity(0.55)))

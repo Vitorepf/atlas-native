@@ -1562,7 +1562,9 @@ extension SearchViewHeader {
 extension SearchViewHeader {
     var searchClearIcon: some View {
         Image(systemName: "xmark.circle.fill")
-            .atlasSans(16).foregroundStyle(AtlasTheme.textTertiary)
+            .atlasSans(16)
+            // Soft gold-quiet clear — same family as search leading glyph.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.55))
             .frame(width: 48, height: 48)
             .contentShape(Circle())
     }
@@ -1601,7 +1603,9 @@ extension SearchViewHeader {
     var searchFieldLeading: some View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
-                .atlasSans(15).foregroundStyle(AtlasTheme.textTertiary)
+                .atlasSans(15)
+                // Soft gold-quiet field affordance — search chrome plane.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
             searchFieldInput
             searchClearButton
