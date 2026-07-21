@@ -1460,17 +1460,7 @@ extension AtlasCodeView {
                         .font(AtlasFont.serif(18, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .accessibilityHidden(true)
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0.55),
-                            AtlasTheme.accent.opacity(0.12),
-                            AtlasTheme.accent.opacity(0)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: 48, height: 1.5)
-                    .accessibilityHidden(true)
+                    AtlasGoldTitleRule(width: 48, peak: 0.55)
                 }
                 Spacer()
                 Text(week.window)

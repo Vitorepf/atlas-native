@@ -477,15 +477,7 @@ extension RootView {
         .overlay(
             Capsule()
                 .strokeBorder(
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0.32),
-                            AtlasTheme.accent.opacity(0.06),
-                            AtlasTheme.accent.opacity(0.18)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
+                    AtlasGoldChrome.pillStroke,
                     lineWidth: 0.85
                 )
         )
@@ -1625,17 +1617,7 @@ extension SearchResultsSection {
         ForEach(results) { t in
             SearchThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: saturated)
             if t.id != results.last?.id {
-                LinearGradient(
-                    colors: [
-                        AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.2),
-                        AtlasTheme.accent.opacity(0.22),
-                        AtlasTheme.accent.opacity(0)
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .frame(height: 1)
+                AtlasGoldBreathHairline()
                 .padding(.leading, AtlasTheme.Space.screen + 50)
             }
         }
@@ -1866,17 +1848,7 @@ extension SearchRecentSection {
         ForEach(threads) { t in
             SearchThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: saturated)
             if t.id != threads.last?.id {
-                LinearGradient(
-                    colors: [
-                        AtlasTheme.accent.opacity(0),
-                        AtlasTheme.accent.opacity(0.2),
-                        AtlasTheme.accent.opacity(0.22),
-                        AtlasTheme.accent.opacity(0)
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .frame(height: 1)
+                AtlasGoldBreathHairline()
                 .padding(.leading, AtlasTheme.Space.screen + 50)
             }
         }
@@ -2068,15 +2040,7 @@ extension WorkspaceView {
         .overlay(
             Capsule()
                 .strokeBorder(
-                    LinearGradient(
-                        colors: [
-                            AtlasTheme.accent.opacity(0.32),
-                            AtlasTheme.accent.opacity(0.06),
-                            AtlasTheme.accent.opacity(0.18)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
+                    AtlasGoldChrome.pillStroke,
                     lineWidth: 0.85
                 )
         )
@@ -2315,17 +2279,7 @@ extension WorkspaceThreadsSection {
     @ViewBuilder
     func threadRowSeparator(after thread: AtlasAiThread) -> some View {
         if thread.id != threads.last?.id {
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0),
-                    AtlasTheme.accent.opacity(0.2),
-                    AtlasTheme.accent.opacity(0.22),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(height: 1)
+            AtlasGoldBreathHairline()
             .padding(.leading, AtlasTheme.Space.screen + 50)
         }
     }
@@ -3189,15 +3143,7 @@ struct AgenticPill: View {
             .overlay(
                 Capsule()
                     .strokeBorder(
-                        LinearGradient(
-                            colors: [
-                                AtlasTheme.accent.opacity(0.32),
-                                AtlasTheme.accent.opacity(0.06),
-                                AtlasTheme.accent.opacity(0.18)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
+                        AtlasGoldChrome.pillStroke,
                         lineWidth: 0.85
                     )
             )

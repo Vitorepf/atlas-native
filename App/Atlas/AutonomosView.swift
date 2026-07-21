@@ -222,17 +222,7 @@ struct AutonomosViewHeader: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             // Quiet gold rule under the title — masthead family across surfaces.
-            LinearGradient(
-                colors: [
-                    AtlasTheme.accent.opacity(0.55),
-                    AtlasTheme.accent.opacity(0.12),
-                    AtlasTheme.accent.opacity(0)
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(width: 52, height: 1.5)
-            .accessibilityHidden(true)
+            AtlasGoldTitleRule(width: 52, peak: 0.55)
             if !subtitle.isEmpty {
                 Text(subtitle)
                     .font(AtlasFont.serif(12, .semibold))

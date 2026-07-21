@@ -213,6 +213,22 @@ struct AtlasGoldTitleRule: View {
     }
 }
 
+/// Diagonal gold stroke gradient for AgenticPill / floating invite glass rims.
+enum AtlasGoldChrome {
+    static var pillStroke: LinearGradient {
+        LinearGradient(
+            colors: [
+                AtlasTheme.accent.opacity(0.32),
+                AtlasTheme.accent.opacity(0.06),
+                AtlasTheme.accent.opacity(0.18)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+}
+
+
 
 
 
