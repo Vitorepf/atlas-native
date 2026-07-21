@@ -12,7 +12,8 @@ struct AgenticPill: View {
 
     var body: some View {
         Button(action: {
-            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+            // Soft impact: pílula is invitation, not commit.
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             action()
         }) {
             HStack(spacing: 12) {
@@ -21,10 +22,12 @@ struct AgenticPill: View {
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.85)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, 18)
-            .padding(.vertical, 12)
+            .padding(.vertical, 13)
+            .frame(minHeight: 48) // HIG 44pt; breath room for Dynamic Type
             // Vidro no background do label — glassEffect.interactive no iOS 26
             // aplicado como modifier de conteúdo às vezes engole o identifier.
             .background { Capsule().fill(AtlasTheme.bgRecessed.opacity(0.01)) }
@@ -34,9 +37,9 @@ struct AgenticPill: View {
                     .strokeBorder(
                         LinearGradient(
                             colors: [
-                                AtlasTheme.accent.opacity(0.22),
-                                AtlasTheme.accent.opacity(0.04),
-                                AtlasTheme.accent.opacity(0.12)
+                                AtlasTheme.accent.opacity(0.26),
+                                AtlasTheme.accent.opacity(0.05),
+                                AtlasTheme.accent.opacity(0.14)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
@@ -44,13 +47,14 @@ struct AgenticPill: View {
                         lineWidth: 0.75
                     )
             )
+            .contentShape(Capsule())
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityAddTraits(.isButton)
-        .accessibilityLabel(invite)
-        .accessibilityHint(accessibilityHintText)
+        .accessibilityLabel(Text(invite))
+        .accessibilityHint(Text(accessibilityHintText))
         .accessibilityIdentifier(accessibilityId)
+        .accessibilityAddTraits(.isButton)
     }
 }
 
