@@ -3276,9 +3276,31 @@ extension ArenaRunSheet {
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.controlError)
         }
         .background(AtlasTheme.bg.ignoresSafeArea())
-        .navigationTitle("Rodar medição")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { runToolbar }
+        .toolbar {
+            runToolbar
+            ToolbarItem(placement: .principal) {
+                VStack(spacing: 4) {
+                    Text("Rodar medição")
+                        .font(AtlasFont.serif(17, .semibold))
+                        .foregroundStyle(AtlasTheme.textPrimary)
+                    LinearGradient(
+                        colors: [
+                            AtlasTheme.accent.opacity(0),
+                            AtlasTheme.accent.opacity(0.5),
+                            AtlasTheme.accent.opacity(0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 64, height: 1.5)
+                    .accessibilityHidden(true)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel("Rodar medição")
+            }
+        }
     }
 
     @ViewBuilder

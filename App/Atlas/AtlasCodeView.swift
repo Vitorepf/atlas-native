@@ -3509,8 +3509,30 @@ struct AtlasCodeRadarView: View {
         radarContent
             .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-            .navigationTitle("Código")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 4) {
+                        Text("Código")
+                            .font(AtlasFont.serif(20, .semibold))
+                            .foregroundStyle(AtlasTheme.textPrimary)
+                        LinearGradient(
+                            colors: [
+                                AtlasTheme.accent.opacity(0),
+                                AtlasTheme.accent.opacity(0.5),
+                                AtlasTheme.accent.opacity(0)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(width: 48, height: 1.5)
+                        .accessibilityHidden(true)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Código")
+                }
+            }
             .task { if model.phase == .idle { await model.load() } }
             .refreshable { await model.load() }
             .background(AtlasTheme.bg.ignoresSafeArea())
