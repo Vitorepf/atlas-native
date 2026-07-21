@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 040 fuse → ChangeReviewFileRow.swift
+// Cycle 041 fuse → ChangeReviewFileRow.swift
 
 /// Ações: +Actions · a11y: +A11y · Trailing: +Trailing · Meta: +Meta.
 struct ChangeReviewFileRow: View {

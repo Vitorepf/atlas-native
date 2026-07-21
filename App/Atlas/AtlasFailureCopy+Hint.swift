@@ -1,6 +1,6 @@
 import AtlasCore
 
-// Cycle 040 fuse → AtlasFailureCopy+Hint.swift
+// Cycle 041 fuse → AtlasFailureCopy+Hint.swift
 
 extension AtlasFailureCopy {
     static func authServerHint(kind: AtlasNetworkFailureKind) -> String {

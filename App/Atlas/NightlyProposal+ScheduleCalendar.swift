@@ -1,7 +1,7 @@
 import Foundation
 import UserNotifications
 
-// Cycle 040 fuse → NightlyProposal+ScheduleCalendar.swift
+// Cycle 041 fuse → NightlyProposal+ScheduleCalendar.swift
 
 extension NightlyProposalController {
     func spokenMuteStatus(now: Date = .init()) -> String? {

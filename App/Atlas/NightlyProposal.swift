@@ -1,7 +1,7 @@
 import SwiftUI
 import UserNotifications
 
-// Cycle 040 fuse → NightlyProposal.swift
+// Cycle 041 fuse → NightlyProposal.swift
 
 @MainActor
 @Observable

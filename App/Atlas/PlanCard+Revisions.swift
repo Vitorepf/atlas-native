@@ -1,8 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 041 fuse → PlanCard+Revisions.swift
 
 // C19 / cena 02 — "comparar versões" só com planRevisions tipados.
-// Peel forest fused cycle 019 (toggle/compare/archive/list peels).
 
 extension PlanCard {
     @ViewBuilder

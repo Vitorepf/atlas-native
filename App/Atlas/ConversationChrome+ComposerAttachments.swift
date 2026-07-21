@@ -1,8 +1,8 @@
+import AtlasCore
 import PhotosUI
 import SwiftUI
-import AtlasCore
 
-// Cycle 021 fuse → ConversationChrome+ComposerAttachments.swift
+// Cycle 041 fuse → ConversationChrome+ComposerAttachments.swift
 
 extension ComposerAttachmentsSheet {
     var attachmentsSheetChrome: some View {

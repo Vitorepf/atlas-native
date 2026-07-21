@@ -2,7 +2,7 @@ import AtlasCore
 import Foundation
 import SwiftUI
 
-// Cycle 040 fuse → AtlasCodeFileRow+A11y.swift
+// Cycle 041 fuse → AtlasCodeFileRow+A11y.swift
 
 /// Contagens só quando o payload publica; binário sem inventar linhas.
 

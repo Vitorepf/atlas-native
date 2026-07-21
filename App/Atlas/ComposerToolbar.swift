@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 030 fuse → ComposerToolbar.swift
+// Cycle 041 fuse → ComposerToolbar.swift
 
 // Toolbar do composer: paperclip + campo + trailing (enviar / processando / menu
 

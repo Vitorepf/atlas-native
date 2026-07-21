@@ -1,9 +1,22 @@
+import AtlasCore
 import SwiftUI
 import UIKit
-import AtlasCore
 
-// Draft thumbs HStack — peel de DraftStrip.
-// Loop → DraftStrip+Thumbs+ThumbLoop.swift
+// Cycle 041 fuse → DraftStrip+Thumbs.swift
+
+extension DraftStrip {
+    var draftThumbLoop: some View {
+        HStack(spacing: 12) {
+            ForEach(drafts) { d in
+                DraftThumb(draft: d, reduceMotion: reduceMotion,
+                           onRemove: onRemove, onFailedTap: onFailedTap)
+                    .transition(reduceMotion ? .opacity
+                                : .scale(scale: 0.86).combined(with: .opacity))
+            }
+        }
+        .padding(.top, 6).padding(.trailing, 6)
+    }
+}
 
 extension DraftStrip {
     var draftThumbs: some View {

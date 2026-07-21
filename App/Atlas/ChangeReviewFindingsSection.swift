@@ -1,11 +1,11 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 041 fuse → ChangeReviewFindingsSection.swift
 
 /// Achados agrupados pelo EIXO real que o servidor classificou
 /// (`finding.category`) — a leitura por frente do mock, com dado verdadeiro.
 /// Sem categoria, o achado cai em "gerais": nada é inventado.
-/// Groups → ChangeReviewFindingsSection+Groups.swift
-/// Axis → ChangeReviewFindingsSection+Axis.swift
 struct ChangeReviewFindingsSection: View {
     let findings: [AtlasTraceChangeReview.Finding]
 

@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 037 fuse → WorkspaceView.swift
+// Cycle 041 fuse → WorkspaceView.swift
 
 // Dentro de um workspace (repo): as conversas dele, com filtro de área no topo
 // (Tudo / Operacional / Autônomos / Programação). Título em Fraunces serif.

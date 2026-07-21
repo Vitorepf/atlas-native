@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 040 fuse → AtlasCodeProvenanceHeader.swift
+// Cycle 041 fuse → AtlasCodeProvenanceHeader.swift
 
 // MARK: - Cabeçalho da folha de proveniência (C23)
 

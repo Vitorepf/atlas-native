@@ -1,11 +1,9 @@
 import SwiftUI
 import UIKit
 
-// Câmera → Data (JPEG) → model.addImage(source: "camera"). Representable fino:
+// Cycle 041 fuse → CameraPicker.swift
+
 // zero lógica além de entregar os bytes; o AtlasImaging normaliza depois.
-// Coordinator → CameraPicker+Coordinator.swift
-// RM → CameraPicker+ReduceMotion.swift
-// Make → CameraPicker+Make.swift
 struct CameraPicker: UIViewControllerRepresentable {
     let onCapture: (Data) -> Void
     var onCaptureFailed: () -> Void = {}

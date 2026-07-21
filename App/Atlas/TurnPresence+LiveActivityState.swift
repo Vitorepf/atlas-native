@@ -4,7 +4,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
-// Cycle 038 fuse → TurnPresence+LiveActivityState.swift
+// Cycle 041 fuse → TurnPresence+LiveActivityState.swift
 
 extension TurnPresence {
     /// Um turno observado. Classe (não struct) para `weak model` no registro.

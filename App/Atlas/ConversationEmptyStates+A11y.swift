@@ -2,7 +2,7 @@ import AtlasCore
 import Foundation
 import SwiftUI
 
-// Cycle 040 fuse → ConversationEmptyStates+A11y.swift
+// Cycle 041 fuse → ConversationEmptyStates+A11y.swift
 
 /// Sugestões são convites reais de envio; glyph ✦ é decorativo.
 

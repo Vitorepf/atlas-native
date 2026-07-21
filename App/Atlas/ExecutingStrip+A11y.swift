@@ -1,8 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// A11y label — peel de ExecutingStrip (régua ≤100).
-// Extras → ExecutingStrip+A11yExtras.swift
+// Cycle 041 fuse → ExecutingStrip+A11y.swift
 
 extension ExecutingStrip {
     var stripAccessibilityLabel: String {

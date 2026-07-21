@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 040 fuse → AtlasMarkdownView+Inline.swift
+// Cycle 041 fuse → AtlasMarkdownView+Inline.swift
 
 /// Marcadores tipográficos são decorativos; VoiceOver lê só o conteúdo.
 

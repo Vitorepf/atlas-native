@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 029 fuse → ConversationMessages.swift
+// Cycle 041 fuse → ConversationMessages.swift
 
 // Scroll chrome: ConversationMessages+Scroll.swift
 // Empty + bubbles: ConversationMessages+List.swift

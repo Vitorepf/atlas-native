@@ -1,6 +1,6 @@
 import Foundation
 
-/// Spoken labels da strip de anexos — peel de DraftStrip (CICLO C residual honesty).
+// Cycle 041 fuse → DraftStrip+A11y.swift
 
 enum DraftStripA11y {
     static func spokenStrip(draftCount: Int) -> String {

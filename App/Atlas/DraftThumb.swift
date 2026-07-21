@@ -2,7 +2,7 @@ import AtlasCore
 import SwiftUI
 import UIKit
 
-// Cycle 039 fuse → DraftThumb.swift
+// Cycle 041 fuse → DraftThumb.swift
 
 struct DraftThumb: View {
     let draft: LocalDraft

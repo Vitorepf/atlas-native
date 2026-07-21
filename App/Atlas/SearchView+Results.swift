@@ -1,7 +1,47 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 031 fuse → SearchView+Results.swift
+// Cycle 041 fuse → SearchView+Results.swift
+
+extension SearchView {
+    func spokenSearchResultsLabel() -> String {
+        if isBrowsingRecent {
+            let n = recentThreads.count
+            if n == 0 { return "busca, sem recentes neste recorte" }
+            return "busca, \(n) recente\(n == 1 ? "" : "s")"
+        }
+        let n = searchResults.count
+        if n == 0 { return "busca, nada com \(trimmedQuery)" }
+        return "busca, \(n) resultado\(n == 1 ? "" : "s") para \(trimmedQuery)"
+    }
+}
+
+extension SearchView {
+    func spokenSearchShellLabel() -> String? {
+        if showsLoadingShell { return "busca, carregando conversas" }
+        if showsNetworkFailure { return "busca, offline" }
+        return nil
+    }
+}
+
+extension SearchView {
+    func spokenSearchScreenLabel() -> String {
+        spokenSearchShellLabel() ?? spokenSearchResultsLabel()
+    }
+
+    static let searchScreenHint = "busca local nas conversas já carregadas na sessão"
+}
+
+extension SearchView {
+    func searchA11yChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .toolbar(.hidden, for: .navigationBar)
+            .accessibilityIdentifier(A11yID.searchScreen)
+            .accessibilityLabel(spokenSearchScreenLabel())
+            .accessibilityHint(Self.searchScreenHint)
+            .onAppear { focused = true }
+    }
+}
 
 extension SearchResultsSection {
     /// Mesma régua da lista de Conversas: "novo" na maioria de 6+ linhas
@@ -109,5 +149,49 @@ struct SearchMissEmpty: View {
             headline: headline,
             accessibilityIdentifier: A11yID.searchEmpty
         )
+    }
+}
+
+extension SearchThreadLink {
+    var threadNavigationLink: some View {
+        NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
+            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+extension SearchThreadLink {
+    func threadLinkTransition<Content: View>(_ content: Content) -> some View {
+        content
+            .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
+            .accessibilityHint("abre a conversa")
+            .accessibilityIdentifier(A11yID.searchResult(thread.id))
+            .transition(reduceMotion ? .opacity : .asymmetric(
+                insertion: .opacity.combined(with: .offset(y: 6)),
+                removal: .opacity
+            ))
+    }
+}
+
+struct SearchThreadLink: View {
+    let thread: AtlasAiThread
+    let reduceMotion: Bool
+    var newBadgeSuppressed: Bool = false
+
+    var body: some View {
+        threadLinkTransition(threadNavigationLink)
+    }
+}
+
+extension SearchThreadLink {
+    static func spokenLabel(_ thread: AtlasAiThread) -> String {
+        var parts = [thread.title, "\(thread.messageCount) mensagens"]
+        if TurnPresence.shared.runningTitles.contains(thread.title) {
+            parts.append("executando")
+        } else if ConversationModel.hasNewerContent(thread) {
+            parts.append("novo desde a última visita")
+        }
+        return parts.joined(separator: ", ")
     }
 }

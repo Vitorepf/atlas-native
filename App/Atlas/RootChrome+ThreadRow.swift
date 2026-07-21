@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 034 fuse → RootChrome+ThreadRow.swift
+// Cycle 041 fuse → RootChrome+ThreadRow.swift
 
 extension ThreadRow {
     func threadA11yChrome<Content: View>(_ content: Content) -> some View {

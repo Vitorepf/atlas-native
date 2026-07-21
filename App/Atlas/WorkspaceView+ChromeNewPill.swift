@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 037 fuse → WorkspaceView+ChromeNewPill.swift
+// Cycle 041 fuse → WorkspaceView+ChromeNewPill.swift
 
 extension WorkspaceView {
     func spokenWorkspaceScreenLabel() -> String {

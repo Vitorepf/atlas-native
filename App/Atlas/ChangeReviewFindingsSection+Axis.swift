@@ -1,9 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Axis group — peel de ChangeReviewFindingsSection.
-// Label → ChangeReviewFindingsSection+AxisLabel.swift
-// Header → ChangeReviewFindingsSection+AxisHeader.swift
+// Cycle 041 fuse → ChangeReviewFindingsSection+Axis.swift
 
 extension ChangeReviewFindingsSection {
     func axisGroup(axis: String, axisFindings: [AtlasTraceChangeReview.Finding]) -> some View {
@@ -13,5 +11,19 @@ extension ChangeReviewFindingsSection {
                 ChangeReviewFindingRow(finding: f)
             }
         }
+    }
+}
+
+extension ChangeReviewFindingsSection {
+    func axisHeaderLabel(axis: String, count: Int) -> String {
+        let name = axis == "GERAIS" ? "gerais" : axis.lowercased()
+        let noun = count == 1 ? "achado" : "achados"
+        return "eixo \(name), \(count) \(noun)"
+    }
+}
+
+extension ChangeReviewFindingsSection {
+    var groups: [String: [AtlasTraceChangeReview.Finding]] {
+        Dictionary(grouping: findings) { $0.category?.uppercased() ?? "GERAIS" }
     }
 }

@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 039 fuse → WorkspaceEmptyStates+FailureCopyText.swift
+// Cycle 041 fuse → WorkspaceEmptyStates+FailureCopyText.swift
 
 extension AtlasNetworkFailureEmpty {
     func failureChrome<Content: View>(_ content: Content) -> some View {

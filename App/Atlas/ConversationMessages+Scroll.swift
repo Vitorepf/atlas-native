@@ -1,8 +1,92 @@
 import AtlasCore
+import Foundation
 import SwiftUI
 import UIKit
 
-// Cycle 029 fuse → ConversationMessages+Scroll.swift
+// Cycle 041 fuse → ConversationMessages+Scroll.swift
+
+enum ConversationMessagesA11y {
+    static let scrollFABLabel = ConversationMessagesA11yFAB.scrollFABLabel
+    static let scrollFABHint = ConversationMessagesA11yFAB.scrollFABHint
+
+    static func spokenMessages(turnCount: Int) -> String {
+        let noun = turnCount == 1 ? "turno" : "turnos"
+        return "conversa, \(turnCount) \(noun)"
+    }
+
+    static func spokenChangeReview(patchCount: Int) -> String {
+        ConversationMessagesA11yReview.spokenChangeReview(patchCount: patchCount)
+    }
+
+    static let changeReviewHint = ConversationMessagesA11yReview.changeReviewHint
+}
+
+enum ConversationMessagesA11yFAB {
+    static let scrollFABLabel = "ir para o fim da conversa"
+    static let scrollFABHint = "volta às mensagens mais recentes"
+}
+
+enum ConversationMessagesA11yReview {
+    static func spokenChangeReview(patchCount: Int) -> String {
+        if patchCount > 0 {
+            let noun = patchCount == 1 ? "patch" : "patches"
+            return "revisar mudanças, \(patchCount) \(noun)"
+        }
+        return "revisar mudanças desta execução"
+    }
+
+    static let changeReviewHint = "abre arquivos, diff e provas desta execução"
+}
+
+extension ConversationMessages {
+    @ViewBuilder
+    func changeReviewChipButton(for bubble: ChatBubble, trace: TraceID) -> some View {
+        Button { reviewTrace = ConversationReviewTraceRef(id: trace) } label: {
+            changeReviewChipLabel
+        }
+        .buttonStyle(PressableScale())
+        .accessibilityLabel(
+            ConversationMessagesA11y.spokenChangeReview(
+                patchCount: model.reviews.changeReviewsByTrace[trace]!.patches.count
+            )
+        )
+        .accessibilityHint(ConversationMessagesA11y.changeReviewHint)
+        .accessibilityIdentifier(A11yID.reviewChip(trace.rawValue))
+    }
+}
+
+extension ConversationMessages {
+    func showsChangeReviewChip(for bubble: ChatBubble) -> Bool {
+        bubble.role == "assistant"
+            && !bubble.streaming
+            && bubble.traceId != nil
+            && model.reviews.changeReviewsByTrace[bubble.traceId!]?.state == .available
+            && ChangeReviewSheet.hasReviewSurface(
+                model.reviews.changeReviewsByTrace[bubble.traceId!]!
+            )
+    }
+}
+
+extension ConversationMessages {
+    @ViewBuilder
+    func changeReviewChip(for bubble: ChatBubble) -> some View {
+        if showsChangeReviewChip(for: bubble), let trace = bubble.traceId {
+            changeReviewChipButton(for: bubble, trace: trace)
+        }
+    }
+}
+
+extension ConversationMessages {
+    var changeReviewChipLabel: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "plus.forwardslash.minus").atlasSans(11)
+            Text("Revisar mudanças").font(.system(.footnote, weight: .medium))
+        }
+        .foregroundStyle(AtlasTheme.textSecondary)
+        .padding(.horizontal, 13).padding(.vertical, 7)
+        .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+    }
+}
 
 extension ConversationMessages {
     func scrollBubbleEmptyChange(_ empty: Bool) {

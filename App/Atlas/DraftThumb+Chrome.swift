@@ -3,7 +3,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
-// Cycle 039 fuse → DraftThumb+Chrome.swift
+// Cycle 041 fuse → DraftThumb+Chrome.swift
 
 /// Tamanho só quando bytes publicados; tipo imagem/arquivo honesto.
 

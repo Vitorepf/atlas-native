@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 040 fuse → ChangeReviewFindingRow+A11y.swift
+// Cycle 041 fuse → ChangeReviewFindingRow+A11y.swift
 
 extension ChangeReviewFindingRow {
     var rowAccessibilityLabel: String {

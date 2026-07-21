@@ -1,6 +1,6 @@
 import AtlasCore
 
-// Cycle 040 fuse → AtlasFailureCopy.swift
+// Cycle 041 fuse → AtlasFailureCopy.swift
 
 /// Copy editorial por `AtlasNetworkFailureKind` — home e conversa compartilham
 /// a mesma voz (offline × timeout × recusada × …). Presentation-only.

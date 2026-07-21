@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Cycle 040 fuse → QueuedFollowUpsSheet.swift
+// Cycle 041 fuse → QueuedFollowUpsSheet.swift
 
 /// Folha C11: mensagens enfileiradas durante execução — promover (enviar agora)
 /// ou remover. Só renderiza o que `ConversationModel.queuedMessages` expõe.

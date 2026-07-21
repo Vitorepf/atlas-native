@@ -1,9 +1,34 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// App scene lifecycle — peel de AtlasApp.
-// Bootstrap → AtlasApp+Lifecycle+Bootstrap.swift
-// ScenePhase → AtlasApp+Lifecycle+ScenePhase.swift
+// Cycle 041 fuse → AtlasApp+Lifecycle.swift
+
+extension AtlasApp {
+    func atlasSceneBootstrap<Content: View>(_ content: Content) -> some View {
+        content.task {
+            NightlyProposalController.shared.installAsNotificationDelegate()
+            LiveActivityRemoteBridge.shared.bootstrap(
+                client: session.client,
+                installationId: AtlasInstallationIdentity.id
+            )
+            session.setLiveSessionsPollingActive(scenePhase == .active)
+        }
+    }
+}
+
+extension AtlasApp {
+    func atlasScenePhaseLifecycle<Content: View>(_ content: Content) -> some View {
+        content.onChange(of: scenePhase) { _, phase in
+            session.setLiveSessionsPollingActive(phase == .active)
+            if phase == .background {
+                Task {
+                    await AtlasNativeSnapshotWriter.shared.write()
+                    await NightlyProposalController.shared.scheduleForBackground()
+                }
+            }
+        }
+    }
+}
 
 extension AtlasApp {
     func atlasSceneLifecycle<Content: View>(_ content: Content) -> some View {

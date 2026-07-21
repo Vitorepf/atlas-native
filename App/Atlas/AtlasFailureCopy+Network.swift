@@ -1,6 +1,17 @@
 import AtlasCore
 
-// Cycle 040 fuse → AtlasFailureCopy+Network.swift
+// Cycle 041 fuse → AtlasFailureCopy+Network.swift
+
+extension AtlasFailureCopy {
+    static func authServerHeadline(kind: AtlasNetworkFailureKind) -> String {
+        switch kind {
+        case .unauthorized: return "A chave do Atlas foi recusada."
+        case .maintenance: return "Atlas está em manutenção."
+        case .serverUnavailable: return "O servidor está indisponível."
+        default: return "O servidor está fora de alcance."
+        }
+    }
+}
 
 extension AtlasFailureCopy {
     static func networkOfflineHeadline(kind: AtlasNetworkFailureKind) -> String? {

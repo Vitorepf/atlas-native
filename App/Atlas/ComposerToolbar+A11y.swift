@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 030 fuse → ComposerToolbar+A11y.swift
+// Cycle 041 fuse → ComposerToolbar+A11y.swift
 
 extension ComposerToolbar {
     var isExecuting: Bool { model.isSending || liveBubble != nil }

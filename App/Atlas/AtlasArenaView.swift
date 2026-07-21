@@ -1,5 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 041 fuse → AtlasArenaView.swift
 
 /// Arena — medição de motores (premium only). Dual-stack classic removido (GOD F5).
 struct AtlasArenaView: View {

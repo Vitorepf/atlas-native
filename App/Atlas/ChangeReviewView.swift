@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 039 fuse → ChangeReviewView.swift
+// Cycle 041 fuse → ChangeReviewView.swift
 
 // C15 — Revisar mudanças de uma execução (o "Review" da cena 12, real).
 // Conteúdo: ChangeReviewView+Content · spoken: +A11y · available: +Available.

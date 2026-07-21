@@ -2,7 +2,7 @@ import AtlasCore
 import Foundation
 import SwiftUI
 
-// Cycle 039 fuse → ArenaSuiteSheet+EngineCaptions.swift
+// Cycle 041 fuse → ArenaSuiteSheet+EngineCaptions.swift
 
 // Casos/duração só quando o servidor publica; zero «0» fabricado.
 

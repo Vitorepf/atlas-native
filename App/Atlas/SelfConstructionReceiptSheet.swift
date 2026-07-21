@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 038 fuse → SelfConstructionReceiptSheet.swift
+// Cycle 041 fuse → SelfConstructionReceiptSheet.swift
 
 struct SelfConstructionReceiptSheet: View {
     let receipt: SelfConstructionReceipt

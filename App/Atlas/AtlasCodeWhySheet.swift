@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 038 fuse → AtlasCodeWhySheet.swift
+// Cycle 041 fuse → AtlasCodeWhySheet.swift
 
 struct AtlasCodeWhySheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion

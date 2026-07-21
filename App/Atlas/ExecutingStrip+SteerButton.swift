@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Steer button — peel de ExecutingStrip+Actions.
+// Cycle 041 fuse → ExecutingStrip+SteerButton.swift
 
 extension ExecutingStrip {
     @ViewBuilder

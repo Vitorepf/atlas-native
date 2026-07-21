@@ -1,8 +1,124 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+import WidgetKit
+
+// Cycle 041 fuse → PlanCard+Detail.swift
+
+// A11y e spoken labels do PlanCard.
+
+extension PlanCard {
+    func spokenCardLabel(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress?) -> String {
+        var parts = ["plano da obra, \(plan.title), \(plan.steps.count) passos"]
+        if let progress {
+            parts.append("checkpoint \(progress.current) de \(progress.total), \(progress.title)")
+            if progress.isTerminal { parts.append("concluído") }
+        } else {
+            parts.append("nenhum checkpoint observado, passos pendentes")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    func spokenStep(
+        step: AtlasExecutionPlan.Step,
+        state: StepState,
+        index: Int,
+        total: Int
+    ) -> String {
+        var parts = ["passo \(index + 1) de \(total)", step.title]
+        parts.append(Self.spokenStepState(state))
+        return parts.joined(separator: ", ")
+    }
+
+    static func spokenStepState(_ state: StepState) -> String {
+        switch state {
+        case .done: "concluído"
+        case .current: "em curso"
+        case .pending: "pendente"
+        }
+    }
+
+    func spokenChipRow(label: String, items: [String]) -> String {
+        "\(label), \(items.count) itens, \(items.joined(separator: ", "))"
+    }
+
+    func spokenProgressBadge(_ progress: AtlasExecutionPlan.Progress) -> String {
+        "\(progress.current) de \(progress.total) passos, \(progress.title)"
+    }
+
+    func spokenAuditTerminal(plan: AtlasExecutionPlan, progress: AtlasExecutionPlan.Progress) -> String {
+        "auditoria do plano, \(plan.steps.count) passos planejados, \(min(progress.current, progress.total)) de \(progress.total) executados, \(progress.isTerminal ? "terminal" : "em curso")"
+    }
+
+    func spokenPlanDetail(_ plan: AtlasExecutionPlan) -> String {
+        var parts: [String] = []
+        if !plan.agents.isEmpty { parts.append("agentes, \(plan.agents.map(\.title).joined(separator: ", "))") }
+        if !plan.tools.isEmpty { parts.append("ferramentas, \(plan.tools.map(\.label).joined(separator: ", "))") }
+        if !plan.qualityGates.isEmpty { parts.append("gates, \(plan.qualityGates.map(\.label).joined(separator: ", "))") }
+        return parts.joined(separator: ", ")
+    }
+
+    func spokenRevisionToggle(expanded: Bool, count: Int) -> String {
+        expanded
+            ? "comparar versões do plano, expandido, \(count) versões"
+            : "comparar versões do plano, \(count) versões"
+    }
+}
+
+// Auditoria terminal do plano (modo audit).
+
+extension PlanCard {
+    func auditTerminalLine(
+        plan: AtlasExecutionPlan,
+        progress: AtlasExecutionPlan.Progress
+    ) -> some View {
+        auditTerminalCopy(plan: plan, progress: progress)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(spokenAuditTerminal(plan: plan, progress: progress))
+            .accessibilityAddTraits(.isStaticText)
+    }
+
+    func auditTerminalCopy(
+        plan: AtlasExecutionPlan,
+        progress: AtlasExecutionPlan.Progress
+    ) -> some View {
+        HStack(spacing: 6) {
+            auditCaption
+            auditProgressLine(plan: plan, progress: progress)
+            Spacer(minLength: 0)
+            auditStatusWord(progress: progress)
+        }
+        .padding(.top, 2)
+    }
+
+    var auditCaption: some View {
+        Text("AUDITORIA")
+            .font(AtlasFont.mono(9))
+            .tracking(0.8)
+            .foregroundStyle(AtlasTheme.domOperacional)
+            .accessibilityHidden(true)
+    }
+
+    @ViewBuilder
+    func auditProgressLine(
+        plan: AtlasExecutionPlan,
+        progress: AtlasExecutionPlan.Progress
+    ) -> some View {
+        Text("planejado \(plan.steps.count) · executado \(min(progress.current, progress.total))/\(progress.total)")
+            .font(AtlasFont.mono(10))
+            .foregroundStyle(AtlasTheme.textTertiary)
+            .monospacedDigit()
+            .accessibilityHidden(true)
+    }
+
+    func auditStatusWord(progress: AtlasExecutionPlan.Progress) -> some View {
+        Text(progress.isTerminal ? "terminal" : "em curso")
+            .font(AtlasFont.mono(9))
+            .foregroundStyle(progress.isTerminal ? AtlasTheme.domAutonomos : AtlasTheme.textTertiary)
+            .accessibilityHidden(true)
+    }
+}
 
 // Detalhe do plano: toggle ferramentas/agentes/gates + flow chips + flex wrap.
-// Peel forest fused cycle 019 (DetailToggle/Chips/Flow/FlexWrap peels).
 
 extension PlanCard {
     @ViewBuilder
@@ -153,5 +269,104 @@ struct PlanFlexWrap: Layout {
         sub.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
         x += size.width + spacing
         lineHeight = max(lineHeight, size.height)
+    }
+}
+
+// Linha de passo do plano (dot, spine, title, pulse, a11y chrome).
+
+struct PlanStepRowView: View {
+    let step: AtlasExecutionPlan.Step
+    let index: Int
+    let total: Int
+    let state: PlanCard.StepState
+    let isLast: Bool
+    let spokenLabel: String
+    let reduceMotion: Bool
+    @State var pulse = false
+
+    var body: some View {
+        stepRowBody
+    }
+
+    var stepRowBody: some View {
+        applyStepPulse(
+            stepRowA11yChrome(stepRowLayout)
+        )
+    }
+
+    var stepRowLayout: some View {
+        HStack(alignment: .top, spacing: 10) {
+            stepDotColumn
+            stepTitleColumn
+            Spacer(minLength: 0)
+        }
+    }
+
+    var stepTitleColumn: some View {
+        Text(step.title)
+            .font(.system(.caption))
+            .foregroundStyle(state == .pending ? AtlasTheme.textTertiary
+                             : state == .current ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
+            .lineLimit(2)
+            .accessibilityHidden(true)
+            .padding(.bottom, isLast ? 0 : 9)
+    }
+
+    func applyStepPulse<Content: View>(_ content: Content) -> some View {
+        content
+            .onAppear {
+                if state == .current && !reduceMotion {
+                    withAnimation(AtlasMotion.breath(0.9)) { pulse = true }
+                }
+            }
+            .onChange(of: state == .current) { _, now in if !now { pulse = false } }
+    }
+
+    func stepRowA11yChrome<Content: View>(_ content: Content) -> some View {
+        content
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(spokenLabel)
+            .accessibilityAddTraits(state == .current ? .isSelected : [])
+            .accessibilityIdentifier(A11yID.planStep(index))
+    }
+
+    var stepDotColumn: some View {
+        VStack(spacing: 0) {
+            stepDotMark
+            stepDotSpine
+        }
+        .frame(width: 13)
+        .accessibilityHidden(true)
+    }
+
+    func dotFill(_ s: PlanCard.StepState) -> Color {
+        switch s {
+        case .done: return AtlasTheme.accent
+        case .current: return AtlasTheme.accent
+        case .pending: return AtlasTheme.separator
+        }
+    }
+
+    @ViewBuilder
+    var stepDotMark: some View {
+        ZStack {
+            Circle().fill(dotFill(state)).frame(width: 13, height: 13)
+                .opacity(state == .current && pulse && !reduceMotion ? 0.55 : 1)
+            if state == .done {
+                Image(systemName: "checkmark").atlasSans(7, .bold)
+                    .foregroundStyle(AtlasTheme.bg)
+            } else if state == .current {
+                Circle().fill(AtlasTheme.bg).frame(width: 5, height: 5)
+            }
+        }
+        .padding(.top, 2)
+    }
+
+    @ViewBuilder
+    var stepDotSpine: some View {
+        if !isLast {
+            Rectangle().fill(AtlasTheme.accent.opacity(state == .pending ? 0.15 : 0.35))
+                .frame(width: 1.5).frame(maxHeight: .infinity)
+        }
     }
 }

@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Axis header row — peel de ChangeReviewFindingsSection+Axis.
+// Cycle 041 fuse → ChangeReviewFindingsSection+AxisHeader.swift
 
 extension ChangeReviewFindingsSection {
     func axisHeaderRow(axis: String, count: Int) -> some View {

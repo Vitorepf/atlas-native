@@ -2,7 +2,7 @@ import AtlasCore
 import Foundation
 import SwiftUI
 
-// Cycle 031 fuse → SearchView.swift
+// Cycle 041 fuse → SearchView.swift
 
 // Busca REAL sobre as conversas (o dado já vive na sessão — filtro local,
 // zero rede na casca). Sem query: recentes reais ou silêncio. Com query:

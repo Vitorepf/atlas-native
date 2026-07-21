@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 024 fuse → ConversationCockpit+Execution.swift
+// Cycle 041 fuse → ConversationCockpit+Execution.swift
 
 extension ExecutingStrip {
     @ViewBuilder

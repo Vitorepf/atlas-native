@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 040 fuse → ChangeReviewFileRow+Meta.swift
+// Cycle 041 fuse → ChangeReviewFileRow+Meta.swift
 
 /// Pending = contain (botões focáveis); decided = ignore + rótulo composto.
 struct ChangeReviewFileRowA11y: ViewModifier {

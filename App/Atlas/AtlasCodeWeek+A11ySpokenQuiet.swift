@@ -1,7 +1,7 @@
 import AtlasCore
 import Foundation
 
-/// Quiet week spoken — peel de AtlasCodeWeek+A11ySpoken.
+// Cycle 041 fuse → AtlasCodeWeek+A11ySpokenQuiet.swift
 
 enum AtlasCodeWeekUISpokenQuiet {
     static func spokenLabel(window: String, commits: Int, heals: Int, prevented: Int) -> String {

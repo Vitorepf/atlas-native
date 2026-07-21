@@ -3,7 +3,7 @@ import Foundation
 import PhotosUI
 import SwiftUI
 
-// Cycle 032 fuse → ConversationComposer.swift
+// Cycle 041 fuse → ConversationComposer.swift
 
 struct ConversationComposer: View {
     var model: ConversationModel

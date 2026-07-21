@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 039 fuse → ChangeReviewView+A11y.swift
+// Cycle 041 fuse → ChangeReviewView+A11y.swift
 
 extension ChangeReviewSheet {
     func spokenReviewSheetSurfaceLabel(_ review: AtlasTraceChangeReview) -> String {
@@ -40,4 +40,22 @@ extension ChangeReviewSheet {
     }
 
     static let reviewSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
+}
+
+extension ChangeReviewAvailableContent {
+    @ViewBuilder
+    var reviewSectionsAfterPatches: some View {
+        if !review.controls.isEmpty { ChangeReviewControlsSection(controls: review.controls) }
+        if !review.testRuns.isEmpty { ChangeReviewTestsSection(tests: review.testRuns) }
+        if !review.review.findings.isEmpty { ChangeReviewFindingsSection(findings: review.review.findings) }
+        if !review.review.operatorActions.isEmpty {
+            ChangeReviewDecidedSection(actions: review.review.operatorActions)
+        }
+        ChangeReviewRunActions(
+            review: review,
+            reviews: reviews,
+            traceId: traceId,
+            applying: $applying
+        )
+    }
 }

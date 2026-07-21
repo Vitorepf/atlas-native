@@ -1,13 +1,12 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 041 fuse → PlanCard.swift
 
 // O PLANO da obra — o roteiro que o servidor computou (workflow, passos,
 // ferramentas, agentes, gates). Antes ficava invisível; agora cada passo
 // mostra done/atual/pendente a partir do checkpoint REAL (executionProgress).
 // Sem plano no trace, o card não existe. Nada é inventado.
-// StepRow → PlanCard+StepRow.swift · A11y → PlanCard+A11y.swift
-// Revisions / DetailChips peels ainda externos (ciclos seguintes).
-// Peel forest fused cycle 018 (gate/body/chrome/header/progress/steps peels).
 
 struct PlanCard: View {
     let bubble: ChatBubble

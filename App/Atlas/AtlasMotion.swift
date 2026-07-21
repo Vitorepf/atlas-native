@@ -1,5 +1,7 @@
 import SwiftUI
 
+// Cycle 041 fuse → AtlasMotion.swift
+
 // Fundação de motion do Atlas — porte dos tokens editoriais (tokens.ts). Ritmo
 // calmo, nunca overshoot Material: curva editorial + springs damping ≥0.8.
 enum AtlasMotion {

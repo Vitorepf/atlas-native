@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Strip a11y extras — peel de ExecutingStrip+A11y.
+// Cycle 041 fuse → ExecutingStrip+A11yExtras.swift
 
 extension ExecutingStrip {
     func stripAccessibilityExtras() -> [String] {
@@ -16,5 +16,21 @@ extension ExecutingStrip {
             parts.append("mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
         }
         return parts
+    }
+}
+
+extension ExecutingStrip {
+    @ViewBuilder
+    var stripActionButtons: some View {
+        steerActionButton
+        Button(action: onStop) {
+            Text("Parar")
+                .font(.system(.footnote, weight: .medium))
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .lineLimit(1)
+        }
+        .buttonStyle(PressableScale())
+        .accessibilityLabel("parar execução")
+        .accessibilityHint("interrompe a execução ao vivo")
     }
 }

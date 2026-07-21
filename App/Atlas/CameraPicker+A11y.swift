@@ -1,6 +1,9 @@
 import Foundation
+import SwiftUI
+import UIKit
 
-/// Spoken labels — peel de CameraPicker (CICLO C residual honesty).
+// Cycle 041 fuse → CameraPicker+A11y.swift
+
 /// Cancelar = silêncio total (nunca toast de anexo); falha só quando bytes não saem.
 
 enum CameraPickerA11y {
@@ -10,4 +13,29 @@ enum CameraPickerA11y {
 
     static let spokenChooseCamera = "capturar foto na câmera"
     static let spokenChooseCameraHint = "abre a câmera; nada é anexado até confirmar a captura"
+}
+
+extension CameraPicker.Coordinator {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        parent.onCancel()
+        parent.dismiss()
+    }
+}
+
+extension CameraPicker {
+    func makeCameraPicker(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = context.coordinator
+        applyReduceMotion(picker)
+        return picker
+    }
+}
+
+extension CameraPicker {
+    func applyReduceMotion(_ picker: UIImagePickerController) {
+        if reduceMotion {
+            picker.modalTransitionStyle = .crossDissolve
+        }
+    }
 }

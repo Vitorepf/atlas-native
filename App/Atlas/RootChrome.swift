@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 034 fuse → RootChrome.swift
+// Cycle 041 fuse → RootChrome.swift
 
 // Presentation-only chrome shared by RootView / WorkspaceView / SearchView.
 // Route + navigation stay in RootView.

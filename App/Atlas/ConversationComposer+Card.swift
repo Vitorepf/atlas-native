@@ -2,7 +2,7 @@ import AtlasCore
 import PhotosUI
 import SwiftUI
 
-// Cycle 032 fuse → ConversationComposer+Card.swift
+// Cycle 041 fuse → ConversationComposer+Card.swift
 
 extension ConversationComposer {
     var composerCardSpokenLabel: String {

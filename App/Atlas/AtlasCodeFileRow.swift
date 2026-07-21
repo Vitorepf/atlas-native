@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 040 fuse → AtlasCodeFileRow.swift
+// Cycle 041 fuse → AtlasCodeFileRow.swift
 
 /// Uma linha por arquivo. O VERBO é a forma do símbolo, não a cor: cor aqui
 /// é reservada ao estado do commit (main/fora/curado) e mentiria se pintasse

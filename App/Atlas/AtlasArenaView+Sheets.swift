@@ -1,5 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 041 fuse → AtlasArenaView+Sheets.swift
 
 // Sheets live da Arena premium (Run + Suite). Engine sheet classic removido.
 

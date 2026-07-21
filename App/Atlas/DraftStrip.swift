@@ -1,10 +1,10 @@
+import AtlasCore
 import SwiftUI
 import UIKit
-import AtlasCore
+
+// Cycle 041 fuse → DraftStrip.swift
 
 // Strip de anexos do composer — renderiza LocalDraft e nada mais
-// (contrato único de UI de anexos). Thumb → DraftThumb.swift.
-// Thumbs → DraftStrip+Thumbs.swift
 
 struct DraftStrip: View {
     let drafts: [LocalDraft]

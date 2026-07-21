@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-// Impact haptics — peel de AtlasMotion+Haptics.
+// Cycle 041 fuse → AtlasMotion+Haptics.swift
 
 extension AtlasMotion {
     static func softImpact(reduceMotion: Bool) {
@@ -17,5 +17,12 @@ extension AtlasMotion {
     static func lightImpact(reduceMotion: Bool) {
         guard !reduceMotion else { return }
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+}
+
+extension AtlasMotion {
+    static func successNotification(reduceMotion: Bool) {
+        guard !reduceMotion else { return }
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
     }
 }

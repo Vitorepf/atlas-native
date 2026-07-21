@@ -1,7 +1,7 @@
 import AtlasCore   // só tipos (AtlasExecutionPresence) — regra 4 da fronteira
 import SwiftUI
 
-// Cycle 038 fuse → TurnPresence.swift
+// Cycle 041 fuse → TurnPresence.swift
 
 // A presença dos turnos FORA do app — tela bloqueada e Dynamic Island
 // (paridade Cursor): UMA Live Activity POR SESSÃO em execução, cada uma com o

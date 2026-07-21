@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 029 fuse → ConversationMessages+Rows.swift
+// Cycle 041 fuse → ConversationMessages+Rows.swift
 
 extension ConversationMessages {
     @ViewBuilder

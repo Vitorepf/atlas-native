@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 039 fuse → WorkspaceEmptyStates.swift
+// Cycle 041 fuse → WorkspaceEmptyStates.swift
 
 // Estados vazios do WorkspaceView (offline) —
 

@@ -2,7 +2,7 @@ import AtlasCore
 import Foundation
 import SwiftUI
 
-// Cycle 038 fuse → SelfConstructionReceiptSheet+RevertBanner.swift
+// Cycle 041 fuse → SelfConstructionReceiptSheet+RevertBanner.swift
 
 extension SelfConstructionReceiptSheet {
     func spokenRuleLabel() -> String {

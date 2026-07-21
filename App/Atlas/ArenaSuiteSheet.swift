@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 039 fuse → ArenaSuiteSheet.swift
+// Cycle 041 fuse → ArenaSuiteSheet.swift
 
 // MARK: - Arena suite sheet
 

@@ -1,9 +1,10 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 041 fuse → AtlasApp.swift
 
 // Ponto de entrada do app SwiftUI puro. Casca fina: cria a sessão (que segura o
 // AtlasClient do AtlasCore) e injeta no ambiente. Zero lógica de negócio aqui.
-// Lifecycle → AtlasApp+Lifecycle.swift
 @main
 struct AtlasApp: App {
     @Environment(\.scenePhase) var scenePhase

@@ -1,8 +1,7 @@
 import SwiftUI
 import UIKit
 
-// Coordinator da câmera — peel de CameraPicker.
-// Cancel → CameraPicker+CoordinatorCancel.swift
+// Cycle 041 fuse → CameraPicker+Coordinator.swift
 
 extension CameraPicker {
     final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {

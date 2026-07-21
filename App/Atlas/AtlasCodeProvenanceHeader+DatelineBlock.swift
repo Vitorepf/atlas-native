@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// Cycle 040 fuse → AtlasCodeProvenanceHeader+DatelineBlock.swift
+// Cycle 041 fuse → AtlasCodeProvenanceHeader+DatelineBlock.swift
 
 // o bloco composto sumiu). Fiel ao original pré-merge: dateline em mono +
 // a magnitude do commit cedo (diffHeadline), nunca escondida pela descrição.

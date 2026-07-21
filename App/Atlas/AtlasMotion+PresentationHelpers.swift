@@ -1,6 +1,19 @@
 import SwiftUI
 
-// Motion presentation helpers — peel de AtlasMotion+Presentation.
+// Cycle 041 fuse → AtlasMotion+PresentationHelpers.swift
+
+/// Numeric text morph só quando Reduce Motion está desligado.
+struct NumericTextTransition: ViewModifier {
+    let enabled: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.contentTransition(.numericText())
+        } else {
+            content
+        }
+    }
+}
 
 @MainActor
 enum AtlasMotionPresentation {
