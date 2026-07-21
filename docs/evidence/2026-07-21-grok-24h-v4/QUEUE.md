@@ -15,11 +15,41 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-018-continuity-island-lock-instrument
+id: WAVE-019-codigo-grafo-occasion-pack
 status: proposed
 rank: 1
+delta_patamar: max
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-019-design.md
+created_by: designer
+approved_at: null
+```
+
+```yaml
+id: WAVE-018-continuity-island-lock-instrument
+status: proposed
+rank: 2
 delta_patamar: high
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-018-design.md
+created_by: designer
+approved_at: null
+```
+
+```yaml
+id: WAVE-020-agentic-pack-compiled-grammar
+status: proposed
+rank: 3
+delta_patamar: high
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-020-design.md
+created_by: designer
+approved_at: null
+```
+
+```yaml
+id: WAVE-021-arena-premium-score-judgment-instrument
+status: proposed
+rank: 4
+delta_patamar: high
+design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-021-design.md
 created_by: designer
 approved_at: null
 ```
@@ -28,7 +58,10 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-018-continuity-island-lock-instrument | **high** | `WAVE-018-design.md` |
+| **1** | WAVE-019-codigo-grafo-occasion-pack | **max** | `WAVE-019-design.md` |
+| **2** | WAVE-018-continuity-island-lock-instrument | **high** | `WAVE-018-design.md` |
+| **3** | WAVE-020-agentic-pack-compiled-grammar | **high** | `WAVE-020-design.md` |
+| **4** | WAVE-021-arena-premium-score-judgment-instrument | **high** | `WAVE-021-design.md` |
 
 ## History (done)
 

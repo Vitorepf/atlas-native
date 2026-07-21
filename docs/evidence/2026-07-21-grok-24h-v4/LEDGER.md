@@ -7,18 +7,44 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 12
-- idle_compress_passes: 10
+- idle_compress_passes: 2
 - collapse_host: 0
 
-## Product waves done
-006-017 (016 pill machine, 017 editorial sink)
+## Waves done
+- WAVE-006
+- WAVE-007
+- WAVE-008
+- WAVE-009
+- WAVE-010
+- WAVE-011
+- WAVE-012
+- WAVE-013
+- WAVE-014
+- WAVE-015
+- WAVE-016
+- WAVE-017
 
-## WAVE-018
-Deferred careful: naive Island/Lock peel concatenation causes type redeclarations.
-Needs shared phase grammar extracted without re-exporting intermediate structs.
+## Idle compress
+- pass 1 · `419bedf3`
+- pass 2 · `85be3450`
 
-## Idle
-passes 1–10; App/Atlas ~383 files
+## Designer
+- designs_proposed: 16
+- designs_open: 4
+- last_regen: regen-queue.py (designs − DONE/compress)
+- policy: open ranking regenerated; never hand-stale tables
+
+## Open queue snapshot (must match QUEUE.md)
+
+| # | wave | Δ | status |
+|---|---|---|---|
+| 1 | WAVE-019-codigo-grafo-occasion-pack | **max** | proposed |
+| 2 | WAVE-018-continuity-island-lock-instrument | **high** | proposed |
+| 3 | WAVE-020-agentic-pack-compiled-grammar | **high** | proposed |
+| 4 | WAVE-021-arena-premium-score-judgment-instrument | **high** | proposed |
 
 ## Notes
-Device-pending; queue open only WAVE-018
+- Re-run regen after every done wave or new design.
+- Continuity restore BLOCKED (App Group).
+- Device-pending (passcode) = operator.
+
