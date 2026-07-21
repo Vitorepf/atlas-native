@@ -1543,8 +1543,8 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label.font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.bg)
-            .padding(.horizontal, 14).padding(.vertical, 9)
+        configuration.label.font(AtlasFont.serif(14, .semibold)).foregroundStyle(AtlasTheme.bg)
+            .padding(.horizontal, 16).padding(.vertical, 10)
             .frame(minHeight: 48) // HIG 44+; match primary map CTA breath
             .background(
                 Capsule().fill(
