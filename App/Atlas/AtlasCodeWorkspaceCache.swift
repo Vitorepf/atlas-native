@@ -20,9 +20,4 @@ enum AtlasCodeWorkspaceCache {
         structure = response
         fetchedAt = Date()
     }
-
-    static func invalidate() {
-        structure = nil
-        fetchedAt = nil
-    }
 }
