@@ -1048,7 +1048,8 @@ struct ArenaPremiumPlanView: View {
                 .accessibilityAddTraits(.isHeader)
             Text("Crie uma medição para organizar suítes, motores e braços.")
                 .font(AtlasFont.serif(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet empty plan invite.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
@@ -1235,7 +1236,8 @@ struct ArenaPremiumFleetView: View {
                 .accessibilityAddTraits(.isHeader)
             Text("Rode uma medição com pelo menos um motor para ver o ranking da frota.")
                 .font(AtlasFont.serif(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet empty fleet honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.top, 12)
@@ -2130,7 +2132,8 @@ struct ArenaPremiumResultsView: View {
                 .accessibilityAddTraits(.isHeader)
             Text("O primeiro resultado aparecerá quando uma suíte concluir.")
                 .font(AtlasFont.serif(16))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet empty results honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
@@ -3116,7 +3119,8 @@ struct ArenaPremiumCapabilitiesView: View {
                 .accessibilityAddTraits(.isHeader)
             Text("Ausência permanece ausência — nenhuma barra começa em zero.")
                 .font(AtlasFont.serif(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet empty capabilities honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(

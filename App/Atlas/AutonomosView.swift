@@ -604,7 +604,8 @@ struct AutonomosMapShell: View {
             AutonomosMapChrome.heroTitle("Autônomo ausente", size: 26)
             Text("Volte à lista e abra de novo.")
                 .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet missing-unit honesty.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
         }
         .padding(AtlasTheme.Space.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -793,7 +794,8 @@ struct AutonomosEvolutionView: View {
 
                 Text("Ainda sem prova publicada neste Autônomo.")
                     .font(AtlasFont.serifItalic(16))
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet empty evolution honesty.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityAddTraits(.isHeader)
                     .accessibilityLabel("Ainda sem prova publicada neste Autônomo.")
@@ -963,7 +965,8 @@ struct AutonomosListView: View {
             AutonomosMapChrome.heroTitle("Nenhum ainda", size: 32)
             Text("Crie um Autônomo com escopo fechado. Ele evolui só nisso — 24/7.")
                 .font(AtlasFont.serifItalic(16))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet empty catalog invite.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityLabel(
                     "Crie um Autônomo com escopo fechado. Ele evolui só nisso, 24 por 7."
@@ -1081,7 +1084,8 @@ struct AutonomosNewSheet: View {
                     AutonomosMapChrome.heroTitle("Novo Autônomo", size: 28)
                     Text("Um escopo fechado. Ele evolui só nisso.")
                         .font(AtlasFont.serifItalic(15))
-                        .foregroundStyle(AtlasTheme.textSecondary)
+                        // Soft gold-quiet create invite caption.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.62))
                         .fixedSize(horizontal: false, vertical: true)
                         .accessibilityLabel("Um escopo fechado. Ele evolui só nisso.")
 
