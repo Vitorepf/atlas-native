@@ -82,3 +82,32 @@ extension AtlasTheme {
         static let soft: CGFloat = 10
     }
 }
+
+
+// Liquid Glass circular/capsule chrome (iOS 26+) com fallback quieto.
+struct AtlasGlassCircle: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.glassEffect(.regular.interactive(), in: Circle())
+        } else {
+            content.background(Circle().fill(AtlasTheme.surface))
+        }
+    }
+}
+
+struct AtlasGlassCapsule: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.glassEffect(.regular.interactive(), in: Capsule())
+        } else {
+            content.background(
+                Capsule().fill(AtlasTheme.bgRecessed.opacity(0.82))
+                    .overlay(Capsule().stroke(AtlasTheme.separator.opacity(0.9), lineWidth: 1)))
+        }
+    }
+}
+
+extension View {
+    func atlasGlassCircle() -> some View { modifier(AtlasGlassCircle()) }
+    func atlasGlassCapsule() -> some View { modifier(AtlasGlassCapsule()) }
+}
