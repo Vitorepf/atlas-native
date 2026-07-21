@@ -204,9 +204,10 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Device-pending (passcode) = operator.
+- Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
-- WAVE-178: composer send face pack.
+- Device-pending (passcode) = operator.
+- WAVE-178: composer send face pack mid-thread.
 - WAVE-177: rhythm pack · packFacts hollows = 0.
 - WAVE-176: Search pill · WAVE-175: review assinatura · WAVE-174: timeline+md.
-- Residual ROI diminishing · await A for strip/card unify full-bar.
+- Residual ROI diminishing · await A for strip/card unify · no invent micro-WAVE.
