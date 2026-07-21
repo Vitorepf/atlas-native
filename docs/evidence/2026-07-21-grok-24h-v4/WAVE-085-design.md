@@ -1,9 +1,7 @@
-> **COLISÃO NNN:** compress `WAVE-082-compress.md` landed as `execution-proof-quality-judgment-instrument` (implementer self-WAVE). Este croqui plan/queue foi **re-proposto como WAVE-085**. Não implementar este arquivo como 082.
-
-# WAVE-082 — arena-plan-queue-judgment-instrument
+# WAVE-085 — arena-plan-queue-judgment-instrument
 
 **Status:** design · proposed  
-**Wave:** `WAVE-082-arena-plan-queue-judgment-instrument`  
+**Wave:** `WAVE-085-arena-plan-queue-judgment-instrument`  
 **Owner:** casca only (Grok B / Implementer)  
 **Date:** 2026-07-21  
 **Created by:** designer (v5 · council ≥3 explore · proposed < 2)  
@@ -148,6 +146,10 @@ activePlan? + primaryMeasurementRuns + queuedRuns
 3. Quiet → empty silence both.  
 4. Queue multi → face active(N).  
 5. DEVICE_PENDING se passcode.
+
+## Nota de colisão
+
+WAVE-082 número foi consumido por compress paralelo `execution-proof-quality` (implementer self-WAVE) enquanto o croqui plan/queue vivia no mesmo NNN. **Re-proposto como 085** para não perder o residual max.
 
 ## Council (2026-07-21 · ≥3 explore)
 

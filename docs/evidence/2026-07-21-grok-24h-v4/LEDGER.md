@@ -94,8 +94,8 @@ mode: designer + implementer
 - pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 79
-- designs_open: 2
+- designs_proposed: 80
+- designs_open: 3
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -104,7 +104,8 @@ mode: designer + implementer
 | # | wave | Δ | status |
 |---|---|---|---|
 | 1 | WAVE-083-arena-live-can-do-pack-honesty-instrument | **max** | proposed |
-| 2 | WAVE-084-conversation-empty-editorial-judgment-instrument | **high** | proposed |
+| 2 | WAVE-085-arena-plan-queue-judgment-instrument | **max** | proposed |
+| 3 | WAVE-084-conversation-empty-editorial-judgment-instrument | **high** | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
