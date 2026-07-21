@@ -103,7 +103,8 @@ extension ChangeReviewRunActions {
     func rejectButton(available: [AtlasTraceChangeReview.Action]) -> some View {
         if available.contains(.reject) {
             Button {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                // Medium: reject-all is primary governed commit (destructive).
+                AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
                 rejectReviewAction()
             } label: {
                 rejectButtonLabel

@@ -21,6 +21,7 @@ struct ArenaPremiumKicker: View {
                 .foregroundStyle(tone.color)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 }
 
