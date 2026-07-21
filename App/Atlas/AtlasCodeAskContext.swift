@@ -87,6 +87,11 @@ enum AtlasCodeAskContext {
         facts.append(contentsOf: slice.facts)
         absences.append(contentsOf: slice.absences)
 
+        // WAVE-043: exclusive repo health face (scan · heal · week · mirror when host passes).
+        let health = AtlasCodeRepoHealthJudgment.packFacts(model: model, mirror: nil)
+        facts.append(contentsOf: health.facts)
+        absences.append(contentsOf: health.absences)
+
         switch model.phase {
         case .loading, .idle:
             facts.append("phase: loading")
@@ -101,7 +106,8 @@ enum AtlasCodeAskContext {
         absences.append("filtro por agente não exposto no pack (sem DTO de filter)")
         absences.append(contentsOf: AtlasCodeGraphJudgment.packCanDoAbsences(hasHealReceipt: model.hasHealReceipt))
 
-        let subject = "repositório \(model.repo) · \(slice.subjectSuffix)"
+        let healthFace = AtlasCodeRepoHealthJudgment.face(model: model, mirror: nil)
+        let subject = "repositório \(model.repo) · \(slice.subjectSuffix) · \(healthFace.productWord)"
 
         return AgenticOccasionPack(
             surface: "code.graph",

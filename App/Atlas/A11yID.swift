@@ -214,6 +214,7 @@ extension A11yID {
     static let whyFileRowPrefix = "why-file-row-"
     static let codeMirror = "code-mirror"
     static let codeWeek = "code-week"
+    static let codeRepoHealth = "code-repo-health"
 }
 
 extension A11yID {

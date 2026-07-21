@@ -624,6 +624,9 @@ extension AtlasCodeView {
     @ViewBuilder
     func graphListTail(graph: AtlasCodeGraphResponse) -> some View {
         graphListTruncationCaption(graph)
+        // WAVE-043: exclusive repo health face before mirror/week peels.
+        AtlasCodeRepoHealthStrip(model: model, mirror: mirrorModel.response)
+            .padding(.top, 18)
         graphListMirrorCard
         graphListWeekTail
     }

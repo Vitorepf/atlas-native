@@ -22,6 +22,7 @@
 |---|---|
 | Ordem/julgamento frota Radar | `AtlasCodeRadarJudgment` → Rows/View |
 | Grafo single-repo judgment (fatia default) | `AtlasCodeGraphJudgment` → filter chips / list / pack |
+| **Repo health (scan·heal·week·mirror)** | `AtlasCodeRepoHealthJudgment` → HealthStrip · Ask pack face |
 | Pack da pílula / ocasião | `AgenticOccasionPack` + hosts Ask |
 | Pack mid-thread conversa | `ConversationOccasionPack` (nunca `HomeAskContext` em `.thread`) |
 | Workspace/Search live-first list | `WorkspaceThreadJudgment` → rank + ThreadRow threadId running |
