@@ -41,7 +41,7 @@ enum AutonomosAskContext {
         case .hub:
             return ["devo retomar?", "o que ele fez?"]
         case nil:
-            return ["novo Autônomo", "o que mudou hoje?"]
+            return ["o que mudou hoje?", "qual Autônomo merece atenção?"]
         }
     }
 
@@ -52,15 +52,15 @@ enum AutonomosAskContext {
         if let unit {
             lines.append("Autônomo: \(unit.name).")
             lines.append("Carta: \(unit.charter)")
-            lines.append(unit.paused ? "Estado: pausado." : "Estado: vivo no escopo local.")
-            lines.append("Idade: \(unit.ageLabel).")
+            lines.append(unit.paused ? "Estado: pausado (local)." : "Estado: no catálogo local deste iPhone.")
+            lines.append("Idade local: \(unit.ageLabel).")
         } else {
             lines.append("Lista de Autônomos — nenhum aberto.")
         }
         if let destination {
             lines.append("Tela: \(destination.navTitle).")
         }
-        lines.append("Create Server de Autônomo ainda pendente (§5); catálogo local pode sumir no kill do app.")
+        lines.append("Create no servidor ainda pendente (§5). Catálogo local some se o app for morto — não invente frota 24/7 persistida.")
         lines.append("Pause/retomar/encerrar: controles da face; NL de chat ainda não autoriza tools de escrita no wire.")
         return lines.joined(separator: "\n")
     }

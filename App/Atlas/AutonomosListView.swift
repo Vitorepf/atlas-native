@@ -35,15 +35,22 @@ struct AutonomosListView: View {
         VStack(alignment: .leading, spacing: 18) {
             Spacer(minLength: 36)
             AutonomosMapChrome.heroTitle("Nenhum ainda", size: 32)
-            Text("Crie um Autônomo com escopo fechado. Ele evolui só nisso — 24/7.")
+            Text("Defina um Autônomo com escopo fechado. Por agora o catálogo vive só neste iPhone — some se o app for morto.")
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Text("Create no servidor ainda pendente — sem frota 24/7 inventada.")
+                .font(AtlasFont.mono(11))
+                .foregroundStyle(AtlasTheme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
             AutonomosMapChrome.primaryCTA("Novo Autônomo", action: onCreate)
             Spacer(minLength: 0)
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Nenhum Autônomo ainda. Catálogo local neste iPhone; create no servidor pendente.")
+        .accessibilityHint("Abre a folha para definir nome e carta")
     }
 
     private func unitRow(_ unit: AutonomosUnit) -> some View {

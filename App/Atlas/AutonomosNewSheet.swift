@@ -17,9 +17,10 @@ struct AutonomosNewSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     AutonomosMapChrome.heroTitle("Novo Autônomo", size: 28)
-                    Text("Um escopo fechado. Ele evolui só nisso.")
+                    Text("Um escopo fechado. Fica neste iPhone até o create no servidor existir.")
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     field(
                         label: "Nome",
@@ -34,10 +35,14 @@ struct AutonomosNewSheet: View {
                         axis: .vertical
                     )
 
-                    AutonomosMapChrome.primaryCTA("Criar", enabled: canCreate) {
+                    AutonomosMapChrome.primaryCTA("Guardar neste iPhone", enabled: canCreate) {
                         AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onCreate(name, charter)
                     }
+                    Text("Não publica frota no servidor. Some se o app for morto.")
+                        .font(AtlasFont.mono(10))
+                        .foregroundStyle(AtlasTheme.textTertiary)
+                        .fixedSize(horizontal: false, vertical: true)
                     AutonomosMapChrome.quietCTA("Cancelar", action: onCancel)
                 }
                 .padding(AtlasTheme.Space.screen)
