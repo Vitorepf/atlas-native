@@ -101,6 +101,9 @@ struct AutonomosView: View {
                 TraceEvidenceLoading(text: "abrindo catálogo…", reduceMotion: reduceMotion)
                 Spacer()
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("abrindo catálogo Autônomos")
+            .accessibilityAddTraits(reduceMotion ? .isStaticText : [.isStaticText, .updatesFrequently])
         case .failed(let message):
             VStack {
                 Spacer()
