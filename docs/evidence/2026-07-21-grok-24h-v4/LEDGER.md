@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 102
-- idle_compress_passes: 2
+- idle_compress_passes: 34
 - collapse_host: 0
 
 ## Waves done
@@ -115,23 +115,20 @@ mode: designer + implementer
 - WAVE-107
 
 ## Idle compress
-- pass 1 · `419bedf3`
-- pass 2 · `85be3450`
+- pass 31-34 · residual A11y enum + raw label wipe
 
 ## Designer
 - designs_proposed: 102
 - designs_open: 0
-- last_regen: regen-queue.py (designs − DONE/compress)
-- policy: open ranking regenerated; never hand-stale tables
+- last_regen: regen-queue.py
 
-## Open queue snapshot (must match QUEUE.md)
+## Open queue snapshot
 
-| # | wave | Δ | status |
+| # | wave | delta | status |
 |---|---|---|---|
-| — | _(none)_ | — | — |
+| - | (none) | - | - |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-099..107 shipped this factory stretch (incl. A max 106-107).
+- Zero enum *A11y; mid-thread pack hydrated; Arena run status shared.
+- DEVICE_PENDING. Fila empty - wait A fill or full-bar residual only.
