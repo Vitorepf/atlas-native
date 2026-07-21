@@ -4277,7 +4277,7 @@ struct ArenaPremiumAction: View {
             action()
         } label: {
             Text(title)
-                .atlasSans(14, quiet ? .regular : .medium)
+                .font(quiet ? AtlasFont.serif(14) : AtlasFont.serif(15, .semibold))
                 .frame(maxWidth: .infinity, minHeight: 48)
                 .padding(.horizontal, 20)
                 .foregroundStyle(disabled ? AtlasTheme.textTertiary : (quiet ? AtlasTheme.textSecondary : AtlasTheme.textPrimary))
