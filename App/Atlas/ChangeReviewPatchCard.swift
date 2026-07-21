@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS peel from ChangeReviewSections (canon §7.2 · same domain)
+// GOD-RESTRUCTURE: was PatchBody — host ChangeReviewPatchCard
 
 extension ChangeReviewPatchCard {
     @ViewBuilder

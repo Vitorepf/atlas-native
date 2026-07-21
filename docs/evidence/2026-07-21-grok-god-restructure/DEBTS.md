@@ -5,25 +5,17 @@
 ```yaml
 pass: 1
 domain_index: 1
-last_focus: "Steer+SearchSurface fuse"
+last_focus: "ChangeReviewGovernance Body+Chrome fuse"
 session_commits: 33+
-soft_sections_states: 0
 ```
 
-## Hard density
+## Soft *Sections*/*States*: **0**
 
-- *View/*Shell route >600: none
-- any >2000: none
-- *Sections*/*States* files: **0**
+## Próximo
 
-## Continues
-
-1. more same-host peels (ChangeReview *Body* family optional coalesce)
-2. MARK residual dense
-3. CODEMAP Type.method completeness  
-4. dead code scan
-5. domain_index cycle / pass+=1
+- PlanCard Steps → host · Decision bodies · residual peels
+- NEVER Goal Done
 
 ## Proibido
 
-Goal Done · god_hold · WAVE · dual · Core · Sources
+Goal Done · god_hold · WAVE · dual · Core

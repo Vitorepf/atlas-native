@@ -145,7 +145,7 @@
 | **LiveTimeline parts** | host · NarrativeRow · NarrativeRowView |
 | **Commit row parts** | Body · Meta |
 | **Conversation composer sheets** | `ConversationComposerSheetsModifier` (API · host · camera; was 4 peels) |
-| **Search surface parts** | Surface/Header · Results |
+| **Search surface parts** | `SearchSurface` host (header·results fused) |
 | **Plan card parts** | PlanCard host · `PlanRevisionCompare` · Steps · StepRow · FlexWrap |
 | **Workspace surface parts** | Surface · Body/threads |
 | **Composer toolbar parts** | Chrome · ChromeBody |
@@ -164,7 +164,7 @@
 | **AutonomosDecision Judgment** | `AutonomosDecisionJudgment` (faces · spoken · packFacts) |
 | **ArenaModel parts** | host · Actions |
 | **AutonomosModel parts** | host · Actions |
-| **ChangeReview governance parts** | Body · Chrome |
+| **ChangeReview governance parts** | `ChangeReviewGovernance` (Body+Chrome fused) |
 | **Code sheets modifiers parts** | Modifiers · Body |
 | **AtlasSession parts** | host · Body |
 | **Code surface parts** | Surface · Body |

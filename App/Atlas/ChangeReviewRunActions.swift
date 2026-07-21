@@ -1,7 +1,7 @@
 import AtlasCore
 import SwiftUI
 
-// IDLE-COMPRESS peel ChangeReviewRunActions (canon §7 · same domain)
+// GOD-RESTRUCTURE: was RunActionsBody
 
 extension ChangeReviewRunActions {
     var acceptButtonLabel: some View {

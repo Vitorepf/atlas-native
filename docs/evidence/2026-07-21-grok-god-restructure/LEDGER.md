@@ -28,6 +28,22 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### 2026-07-21T22:52Z — ChangeReviewGovernance fuse
+
+```yaml
+phase: prove
+focus: Governance Body+Chrome → ChangeReviewGovernance
+domain_index: 1
+pass: 1
+commands: |
+  109+195 → ChangeReviewGovernance.swift ~303
+  gates ✓
+before_after: |
+  −2 peels · hops governance 2→1
+notes: next PlanCard Steps / Decision bodies
+```
+
+
 ### Steer+SearchSurface fuse
 
 ```yaml
