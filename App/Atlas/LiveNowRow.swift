@@ -98,69 +98,23 @@ struct LiveNowRow: View {
 }
 
 extension LiveNowRow {
-    var remoteSuffix: String {
-        session.isRemote ? ", remota em outra superfície" : ""
-    }
-
-    func hubPositionPrefix(index: Int?, count: Int?) -> String {
-        guard let index, let count, count >= 2 else { return "" }
-        return "sessão \(index + 1) de \(count), "
-    }
-
-    func hasMeasurableClock(now: Date) -> Bool {
-        session.elapsedActiveMs != nil
-    }
+    // WAVE-110: row spoken → LiveNowJudgment
 
     func spokenClock(now: Date) -> String? {
-        guard hasMeasurableClock(now: now) else { return nil }
-        return Self.formatClock(
-            elapsedMs: session.elapsedActiveMs,
-            runningSince: session.runningSince,
-            now: now,
-            paused: session.timing == .paused
-        )
+        LiveNowJudgment.spokenClock(for: session, now: now)
     }
 
     func spokenLabel(hubIndex: Int?, hubCount: Int?, now: Date = .now) -> String {
-        let prefix = hubPositionPrefix(index: hubIndex, count: hubCount)
-        return spokenActiveLabel(prefix: prefix, now: now)
-            ?? spokenFinishedLabel(prefix: prefix)
+        LiveNowJudgment.spokenRow(
+            session: session,
+            hubIndex: hubIndex,
+            hubCount: hubCount,
+            now: now
+        )
     }
 
-    func spokenActiveLabel(prefix: String, now: Date) -> String? {
-        switch session.timing {
-        case .running:
-            return spokenRunningLabel(prefix: prefix, now: now)
-        case .paused:
-            return spokenPausedLabel(prefix: prefix, now: now)
-        default:
-            return nil
-        }
-    }
-
-    func spokenRunningLabel(prefix: String, now: Date) -> String {
-        // WAVE-027: face lead, phaseTitle detail.
-        let faceWord = ConversationExecutionPhase.primarySpoken(.running)
-        let detail = session.phaseTitle
-        if let clock = spokenClock(now: now) {
-            return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), há \(clock)"
-        }
-        return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), tempo ativo indisponível"
-    }
-
-    func spokenPausedLabel(prefix: String, now: Date) -> String {
-        let faceWord = ConversationExecutionPhase.primarySpoken(.paused)
-        let detail = session.phaseTitle
-        let age = pauseAgeHours(now: now).map { ", há \($0) horas" } ?? ""
-        if let clock = spokenClock(now: now) {
-            return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), em \(clock)\(age)"
-        }
-        return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(detail), tempo ativo indisponível\(age)"
-    }
-
-    func spokenFinishedLabel(prefix: String) -> String {
-        let faceWord = ConversationExecutionPhase.primarySpoken(.finished)
-        return "\(prefix)\(session.title), \(faceWord)\(remoteSuffix), \(session.phaseTitle)"
+    func pauseAgeHours(now: Date) -> Int? {
+        LiveNowJudgment.pauseAgeHours(for: session, now: now)
     }
 }
 
@@ -235,19 +189,7 @@ extension LiveNowRow {
     }
 
     func clockAccessibilityLabel(now: Date) -> String {
-        guard let clock = spokenClock(now: now) else {
-            return "tempo ativo indisponível"
-        }
-        return session.timing == .paused
-            ? "tempo ativo congelado em \(clock)"
-            : "tempo ativo \(clock)"
-    }
-
-    func pauseAgeHours(now: Date) -> Int? {
-        guard session.timing == .paused, let pauseTimestamp = session.pauseTimestamp else { return nil }
-        let seconds = max(0, now.timeIntervalSince(pauseTimestamp))
-        guard seconds >= 30 * 60 else { return nil }
-        return max(1, Int(seconds / 3600))
+        LiveNowJudgment.spokenClockAccessibility(session: session, now: now)
     }
 
     func isLongPaused(now: Date) -> Bool {
@@ -260,14 +202,11 @@ extension LiveNowRow {
         now: Date,
         paused: Bool
     ) -> String {
-        guard let base = elapsedMs else { return "—" }
-        var ms = base
-        if !paused, let since = runningSince {
-            ms += max(0, Int(now.timeIntervalSince(since) * 1000))
-        }
-        let s = ms / 1000
-        return s >= 3600
-            ? String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
-            : String(format: "%d:%02d", s / 60, s % 60)
+        LiveNowJudgment.formatClock(
+            elapsedMs: elapsedMs,
+            runningSince: runningSince,
+            now: now,
+            paused: paused
+        )
     }
 }

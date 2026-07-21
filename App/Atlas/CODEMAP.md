@@ -117,6 +117,7 @@
 | **Arena run status chrome** | `ArenaRunStatusJudgment` label/tone/glyph/trailing · Execution/Detail/Icon (WAVE-107) |
 | **Arena stop governance** | `ArenaStopJudgment` face blocked/ready · StopSheet (WAVE-108) |
 | **Arena execution pipeline** | `ArenaPipelineJudgment` project/glyph/spoken · ExecutionPipeline (WAVE-109) |
+| **LiveNow row spoken** | `LiveNowJudgment` spokenRow/clock · LiveNowRow (WAVE-110) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
