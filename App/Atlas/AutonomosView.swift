@@ -780,7 +780,7 @@ struct AutonomosEvolutionView: View {
                     Text(unit.ageLabel)
                         .font(AtlasFont.mono(28, .semibold))
                         // Soft gold-quiet evolution age hero meta.
-                        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                         .monospacedDigit()
                         .padding(.bottom, 8)
                         .accessibilityAddTraits(.isHeader)
@@ -1533,7 +1533,7 @@ enum AutonomosMapChrome {
         Text(text)
             .font(AtlasFont.serif(13, .semibold))
             // Gold-quiet meta — pairs with AutonomosMapChrome.hairline gold-breath.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityAddTraits(.isHeader)
             .accessibilityLabel(text)
     }
@@ -2246,7 +2246,7 @@ struct NightlyProposalCard: View {
                 ?? "Missão noturna · no seu ritmo")
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(0.3)
-                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
         }
     }

@@ -3894,7 +3894,7 @@ extension ConversationMessages {
             Text("Revisar mudanças").font(AtlasFont.serif(13, .medium))
         }
         // Soft gold-quiet invite chip — same family as secondary chrome.
-        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+        .foregroundStyle(AtlasTheme.accent.opacity(0.72))
         .padding(.horizontal, 13).padding(.vertical, 7)
         .frame(minHeight: 48)
         .background(
@@ -4468,7 +4468,7 @@ extension EditorialTurn {
             Text("Editar e reenviar")
                 .atlasSans(11, .medium)
         }
-        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+        .foregroundStyle(AtlasTheme.accent.opacity(0.72))
         .padding(.horizontal, 9)
         .padding(.vertical, 5)
         .frame(minHeight: 48, alignment: .leading)
@@ -4754,7 +4754,7 @@ extension ExecutionRibbon {
             Text("Lanes")
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(0.3)
-                .foregroundStyle(AtlasTheme.accent.opacity(0.75))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
         }
     }
@@ -5035,7 +5035,7 @@ extension ReconnectBanner {
         if let ms = bubble.reconnectActiveTimerMs {
             Text("Ativo \(ExecutionStateCard.clock(ms))")
                 .font(AtlasFont.mono(10, .medium))
-                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
@@ -5725,7 +5725,7 @@ struct PlanRevisionCompare: View {
             VStack(alignment: .leading, spacing: 7) {
                 Text("v\(comparison.revision.revision) arquivado → plano atual")
                     .font(AtlasFont.mono(9, .medium))
-                    .foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                     .accessibilityHidden(true)
                 comparisonLeftList
                 comparisonEnteredList
@@ -6092,7 +6092,7 @@ extension ExecutionProof {
         HStack(spacing: 6) {
             Text("⎘")
                 .font(AtlasFont.mono(12))
-                .foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .frame(width: 15)
                 .accessibilityHidden(true)
             Text("Artefatos (\(count))")
@@ -6122,7 +6122,7 @@ extension ExecutionProof {
     func decisionSummaryRow(_ d: AtlasDecisionSummary) -> some View {
         HStack(spacing: 6) {
             Image(systemName: "arrow.triangle.branch")
-                .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.8)).frame(width: 15)
+                .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.72)).frame(width: 15)
                 .accessibilityHidden(true)
             Text(decideLine(d))
                 // Soft gold-quiet decision meta.
@@ -6194,7 +6194,7 @@ extension ExecutionProof {
     func activityRowCell(index: Int, act: AtlasAgentActivity) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: activityIcon(act.kind))
-                .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .frame(width: 15)
                 .accessibilityHidden(true)
             activityRowCopy(act)
@@ -6222,7 +6222,7 @@ extension ExecutionProof {
         VStack(alignment: .leading, spacing: 1) {
             // Soft gold-quiet activity title.
             Text(act.title)
-                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                .font(AtlasFont.serif(13)).foregroundStyle(AtlasTheme.accent.opacity(0.72))
             if let d = act.detail, !d.isEmpty {
                 // Soft gold-quiet activity detail meta.
                 Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent.opacity(0.58))
@@ -7365,7 +7365,7 @@ extension NarrativeRowView {
                     .foregroundStyle(
                         row.isP90
                             ? AtlasTheme.domOperacional
-                            : AtlasTheme.accent.opacity(0.75)
+                            : AtlasTheme.accent.opacity(0.72)
                     )
                     .monospacedDigit()
                     .modifier(NumericTextTransition(enabled: !reduceMotion))
@@ -8159,7 +8159,7 @@ extension SteerInteractionSheet {
                 .accessibilityAddTraits(.isHeader)
             Text("A instrução entra no próximo checkpoint seguro desta execução. O Atlas pode recusar e devolver o motivo público.")
                 .font(AtlasFont.serif(13))
-                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
             formScopePicker

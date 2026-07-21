@@ -142,7 +142,7 @@ extension AtlasCodeView {
                     .font(AtlasFont.serifItalic(13))
                     // Soft gold-quiet invite; slightly warmer when anchored.
                     .foregroundStyle(anchorLegend != nil
-                        ? AtlasTheme.accent.opacity(0.78)
+                        ? AtlasTheme.accent.opacity(0.72)
                         : AtlasTheme.accent.opacity(0.55))
                     .lineLimit(1)
                     .accessibilityHidden(true)
@@ -1440,7 +1440,7 @@ extension AtlasCodeView {
                         Text("Curado sozinho · ver recibo")
                             .font(AtlasFont.serifItalic(13))
                             // Soft gold-quiet heal invite copy.
-                            .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                             .accessibilityHidden(true)
                         Spacer()
                         Image(systemName: "chevron.right")
@@ -1495,7 +1495,7 @@ extension AtlasCodeView {
                 Spacer()
                 Text(week.window)
                     .font(AtlasFont.mono(9, .medium))
-                    .foregroundStyle(AtlasTheme.accent.opacity(0.75))
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                     .accessibilityHidden(true)
             }
             if AtlasCodeWeekUI.isQuiet(week) {
@@ -2105,7 +2105,7 @@ extension AtlasCodeHealReceiptSheet {
         .frame(maxWidth: .infinity, minHeight: 48)
         .padding(.vertical, 12)
         // Soft gold-quiet heal undo CTA.
-        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+        .foregroundStyle(AtlasTheme.accent.opacity(0.72))
         .contentShape(Rectangle())
         .atlasCard(cornerRadius: 13)
         .atlasElevation(radius: 8, y: 2, opacity: 0.12)
@@ -3202,7 +3202,7 @@ extension AtlasCodeProvenanceSheet {
         Text("Perguntar sobre este commit")
             .font(AtlasFont.serifItalic(14))
             // Soft gold-quiet ask invite copy.
-            .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .accessibilityHidden(true)
     }
 }
@@ -3823,7 +3823,7 @@ struct AtlasCodeRadarStatusCapsule: View {
                     .tracking(0.3)
                     .foregroundStyle(
                         model.scanState == .clean
-                            ? AtlasTheme.accent.opacity(0.75)
+                            ? AtlasTheme.accent.opacity(0.72)
                             // Soft gold-quiet unknown scan headline.
                             : AtlasTheme.accent.opacity(0.48)
                     )
@@ -3876,7 +3876,7 @@ struct AtlasCodeRadarSectionLabel: View {
         Text(text)
             .atlasSans(10, .medium)
             .tracking(0.3)
-            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
             .atlasAccessibilityIdentifier(accessibilityID ?? text)

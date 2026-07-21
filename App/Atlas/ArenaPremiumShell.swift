@@ -752,7 +752,7 @@ struct ArenaPremiumStopSheet: View {
                 )
                     .font(AtlasFont.serif(15, .semibold))
                     // Soft gold-quiet non-accepted receipt title.
-                    .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.78))
+                    .foregroundStyle(value.accepted ? AtlasTheme.textPrimary : AtlasTheme.accent.opacity(0.72))
                 Text(value.stopsAfterCurrentCase ? "Parada após o caso atual" : value.status.rawValue)
                     .font(AtlasFont.mono(10))
                     // Soft gold-quiet stop receipt meta.
@@ -3060,7 +3060,7 @@ struct ArenaPremiumCapabilitiesView: View {
                     Text(model.selectedCapabilities?.groupsPt?[groupKey] ?? groupKey)
                         .font(AtlasFont.serif(17))
                         // Soft gold-quiet capability group title.
-                        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                         .padding(.top, 14)
                         .padding(.bottom, 4)
                     groupRows(members)
@@ -4569,7 +4569,7 @@ struct ArenaPremiumAction: View {
                 .frame(maxWidth: .infinity, minHeight: 48)
                 .padding(.horizontal, 20)
                 // Soft gold-quiet disabled CTA; quiet secondary; primary ink when armed.
-                .foregroundStyle(disabled ? AtlasTheme.accent.opacity(0.38) : (quiet ? AtlasTheme.accent.opacity(0.78) : AtlasTheme.textPrimary))
+                .foregroundStyle(disabled ? AtlasTheme.accent.opacity(0.38) : (quiet ? AtlasTheme.accent.opacity(0.72) : AtlasTheme.textPrimary))
                 .background(
                     Capsule().fill(
                         quiet || disabled

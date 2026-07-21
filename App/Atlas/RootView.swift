@@ -1088,7 +1088,7 @@ struct LiveNowSection: View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text("Vivo agora")
                 .font(AtlasFont.serif(13, .semibold))
-                .foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(Self.spokenSectionLabel(
                     isHub: isHub, count: sessions.count, remoteCount: remoteCount
@@ -1700,7 +1700,7 @@ extension SearchResultsSection {
         Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
             .font(AtlasFont.mono(10, .medium))
             .tracking(0.3)
-            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
@@ -1940,7 +1940,7 @@ extension SearchRecentSection {
         Text("Recentes")
             .font(AtlasFont.mono(10, .medium))
             .tracking(0.3)
-            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
@@ -2145,7 +2145,7 @@ extension WorkspaceThreadsSection {
     var captionHeader: some View {
         Text(spokenCaption)
             .font(AtlasFont.serif(13, .semibold))
-            .foregroundStyle(AtlasTheme.accent.opacity(0.75))
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
@@ -2609,7 +2609,7 @@ extension AtlasNetworkFailureEmpty {
         VStack(spacing: 0) {
             Text("✦")
                 .font(AtlasFont.serif(32))
-                .foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 // Soft gold-quiet failure bloom — match editorial empty family.
                 .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 10, y: 1)
                 .accessibilityHidden(true)
@@ -2629,7 +2629,7 @@ extension AtlasNetworkFailureEmpty {
         Group {
             Text(hasToken ? "\(host):3737" : "ATLAS_TOKEN · Secrets.xcconfig")
                 .font(AtlasFont.mono(12, .medium))
-                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
                 .accessibilityLabel(hasToken ? "servidor \(host) porta 3737" : "token ATLAS ausente em Secrets")
             Spacer().frame(height: 16)
             Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
@@ -3348,7 +3348,7 @@ struct AtlasProfileSheet: View {
             .accessibilityHidden(true)
             Text("Operador do Atlas")
                 .font(AtlasFont.serifItalic(14))
-                .foregroundStyle(AtlasTheme.accent.opacity(0.78))
+                .foregroundStyle(AtlasTheme.accent.opacity(0.72))
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
