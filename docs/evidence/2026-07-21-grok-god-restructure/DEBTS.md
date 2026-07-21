@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 250
+pass: 300
 domain_index: 0
-last_focus: "continuous residual soft-hold pass 250"
-session_commits: 167
+last_focus: "continuous residual soft-hold pass 300"
+session_commits: 168
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,8 +14,8 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **167** · soft **0** · density OK · 46+2 · gates green
+commits **168** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
-**never Goal Done** · never god_hold
+**never Goal Done** · never god_hold · soft re-audit · honesty · headroom fuses
