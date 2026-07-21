@@ -98,6 +98,8 @@ extension AtlasWorkspacePickerSheet {
                 Text("REPOSITÓRIOS")
                     .font(AtlasFont.mono(11, .medium)).tracking(1.6)
                     .foregroundStyle(AtlasTheme.textTertiary)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Repositórios")
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, showsNoRepoSpacing ? 18 : 4)
                 VStack(spacing: 0) {
