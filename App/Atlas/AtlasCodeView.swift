@@ -3746,9 +3746,13 @@ struct AtlasCodeRadarStatusCapsule: View {
             switch model.scanState {
             case .clean, .unknown:
                 Text(model.scanState == .clean ? "código" : model.headline)
-                    .atlasSans(11, .semibold)
+                    .atlasSans(11, .medium)
                     .tracking(0.3)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .foregroundStyle(
+                        model.scanState == .clean
+                            ? AtlasTheme.accent.opacity(0.75)
+                            : AtlasTheme.textTertiary
+                    )
                     .padding(.vertical, 7)
                     .accessibilityHidden(true)
             case .violating:
