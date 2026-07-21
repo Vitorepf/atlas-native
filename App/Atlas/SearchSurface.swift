@@ -162,9 +162,7 @@ extension SearchViewHeader {
 
 extension SearchViewHeader {
     var spokenFieldLabel: String {
-        let trimmed = query.trimmingCharacters(in: .whitespaces)
-        if trimmed.isEmpty { return "buscar conversas" }
-        return "buscar conversas, \(trimmed)"
+        SearchListJudgment.spokenField(query: query)
     }
 }
 
@@ -208,7 +206,8 @@ extension SearchRecentSection {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
-            .accessibilityLabel("recentes, \(threads.count) conversa\(threads.count == 1 ? "" : "s") carregada\(threads.count == 1 ? "" : "s")")
+            .accessibilityLabel(SearchListJudgment.spokenRecentCaption(count: threads.count))
+            .accessibilityValue(SearchListFace.recent(threads.count).productWord)
             .accessibilityIdentifier(A11yID.searchRecentCaption)
     }
 }
@@ -218,9 +217,7 @@ struct SearchMissEmpty: View {
     let loadedThreadCount: Int
 
     private var headline: String {
-        loadedThreadCount >= 100
-            ? "“Nada com ‘\(query)’ nas 100 conversas mais recentes.”"
-            : "“Nada com ‘\(query)’.”"
+        SearchListJudgment.missHeadline(query: query, loadedThreadCount: loadedThreadCount)
     }
 
     var body: some View {
@@ -228,6 +225,7 @@ struct SearchMissEmpty: View {
             headline: headline,
             accessibilityIdentifier: A11yID.searchEmpty
         )
+        .accessibilityValue(SearchListFace.miss.productWord)
     }
 }
 
@@ -316,13 +314,16 @@ struct SearchResultsSection: View {
 
 extension SearchResultsSection {
     var resultsCaption: some View {
-        Text("\(results.count) resultado\(results.count == 1 ? "" : "s")")
+        Text(SearchListJudgment.resultsCaptionText(count: results.count))
             .font(AtlasFont.mono(10, .semibold)).tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen).padding(.bottom, 8)
             .accessibilityAddTraits(.isHeader)
-            .accessibilityLabel("\(results.count) conversa\(results.count == 1 ? "" : "s") com ‘\(query)’")
+            .accessibilityLabel(
+                SearchListJudgment.spokenResultsCaption(count: results.count, query: query)
+            )
+            .accessibilityValue(SearchListFace.results(results.count).productWord)
             .accessibilityIdentifier(A11yID.searchResultsCaption)
     }
 }
@@ -415,8 +416,8 @@ extension SearchThreadLink {
 extension SearchThreadLink {
     func threadLinkTransition<Content: View>(_ content: Content) -> some View {
         content
-            .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
-            .accessibilityHint("abre a conversa")
+            .accessibilityLabel(SearchListJudgment.spokenRow(thread: thread))
+            .accessibilityHint(SearchListJudgment.openThreadHint)
             .accessibilityIdentifier(A11yID.searchResult(thread.id))
             .transition(reduceMotion ? .opacity : .asymmetric(
                 insertion: .opacity.combined(with: .offset(y: 6)),
@@ -432,19 +433,6 @@ struct SearchThreadLink: View {
 
     var body: some View {
         threadLinkTransition(threadNavigationLink)
-    }
-}
-
-extension SearchThreadLink {
-    static func spokenLabel(_ thread: AtlasAiThread) -> String {
-        var parts = [thread.title, "\(thread.messageCount) mensagens"]
-        // WAVE-032: same running identity as ThreadRow (title fallback only when needed).
-        if WorkspaceThreadJudgment.isRunning(thread: thread) {
-            parts.append("executando")
-        } else if ConversationModel.hasNewerContent(thread) {
-            parts.append("novo desde a última visita")
-        }
-        return parts.joined(separator: ", ")
     }
 }
 

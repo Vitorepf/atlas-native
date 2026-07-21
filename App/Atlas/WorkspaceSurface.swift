@@ -353,7 +353,7 @@ extension WorkspaceThreadLink {
             ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(SearchThreadLink.spokenLabel(thread))
+        .accessibilityLabel(SearchListJudgment.spokenRow(thread: thread))
         .accessibilityHint("abre a conversa")
         .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
         .transition(threadTransition)

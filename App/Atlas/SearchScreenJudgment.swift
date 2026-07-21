@@ -121,6 +121,17 @@ enum SearchScreenJudgment {
         case .resultsQuery(let n):
             facts.append("search_result_count: \(n)")
         }
+
+        // WAVE-089: list organ pack (captions/rows/miss) — independent of screen face words.
+        let list = SearchListJudgment.packFacts(
+            isBrowsingRecent: isBrowsingRecent,
+            recentCount: recentCount,
+            resultCount: resultCount,
+            trimmedQuery: trimmedQuery,
+            screenIsBlocking: showsLoadingShell || showsNetworkFailure
+        )
+        facts.append(contentsOf: list.facts)
+        absences.append(contentsOf: list.absences)
         return (facts, absences)
     }
 }
