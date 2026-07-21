@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 169
-- idle_compress_passes: 2
+- idle_compress_passes: 3
 - collapse_host: 0
 
 ## Waves done
@@ -184,6 +184,7 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
+- pass 3 · `dc3204e1` · MARK densos post-174`85be3450`
 
 ## Designer
 - designs_proposed: 171
