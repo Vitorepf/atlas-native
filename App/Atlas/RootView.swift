@@ -1323,8 +1323,9 @@ struct LiveNowRow: View {
     private var timingColor: Color {
         switch session.timing {
         case .running: AtlasTheme.accent
-        case .paused: AtlasTheme.textTertiary
-        case .finished: AtlasTheme.textSecondary
+        // Soft gold-quiet paused; finished stays quieter secondary.
+        case .paused: AtlasTheme.accent.opacity(0.55)
+        case .finished: AtlasTheme.accent.opacity(0.65)
         }
     }
 
@@ -3406,7 +3407,8 @@ extension AtlasProfileSheet {
         HStack {
             Text(label)
                 .font(AtlasFont.serif(15))
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet profile row label.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.68))
             Spacer()
             if mono {
                 Text(value).font(AtlasFont.mono(13))

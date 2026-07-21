@@ -1005,7 +1005,8 @@ struct ArenaPremiumPlanView: View {
                 HStack(spacing: 14) {
                     Text(String(format: "%02d", index + 1))
                         .font(AtlasFont.mono(10))
-                        .foregroundStyle(AtlasTheme.textTertiary)
+                        // Soft gold-quiet plan index.
+                        .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                         .frame(width: 28, alignment: .leading)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(ArenaDisplay.suite(suite))
@@ -1013,7 +1014,8 @@ struct ArenaPremiumPlanView: View {
                             .foregroundStyle(AtlasTheme.textPrimary)
                         Text(armsText)
                             .font(AtlasFont.mono(10))
-                            .foregroundStyle(AtlasTheme.textSecondary)
+                            // Soft gold-quiet arms meta.
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                     }
                     Spacer()
                     ArenaPremiumIcon(
@@ -1027,7 +1029,8 @@ struct ArenaPremiumPlanView: View {
             }
             Text(footer)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet plan footer meta.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .padding(.top, 16)
         }
     }
@@ -1283,7 +1286,8 @@ struct ArenaPremiumFleetView: View {
         return HStack(spacing: 10) {
             Text(label)
                 .font(AtlasFont.mono(10))
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet bar axis label.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .frame(width: 44, alignment: .leading)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {

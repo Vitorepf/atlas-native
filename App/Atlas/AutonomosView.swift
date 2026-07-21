@@ -305,7 +305,8 @@ struct AutonomosViewHeader: View {
                 .foregroundStyle(
                     canRefresh
                         ? AtlasTheme.accent.opacity(0.88)
-                        : AtlasTheme.textTertiary
+                        // Soft gold-quiet ghost when refresh unavailable.
+                        : AtlasTheme.accent.opacity(0.32)
                 )
                 .frame(width: 48, height: 48)
                 .atlasGlassCircle()

@@ -140,7 +140,10 @@ extension AtlasCodeView {
                     .accessibilityHidden(true)
                 Text(anchorLegend ?? "Pergunte sobre este repositório")
                     .font(AtlasFont.serifItalic(13))
-                    .foregroundStyle(anchorLegend != nil ? AtlasTheme.textSecondary : AtlasTheme.textTertiary)
+                    // Soft gold-quiet invite; slightly warmer when anchored.
+                    .foregroundStyle(anchorLegend != nil
+                        ? AtlasTheme.accent.opacity(0.78)
+                        : AtlasTheme.accent.opacity(0.55))
                     .lineLimit(1)
                     .accessibilityHidden(true)
                     .accessibilityIdentifier(A11yID.codeAskAnchorNote)
@@ -1400,7 +1403,8 @@ extension AtlasCodeView {
     }
 
     private func tabForeground(_ option: AtlasCodeGraphStateFilter, active: Bool) -> Color {
-        guard active else { return AtlasTheme.textTertiary }
+        // Soft gold-quiet inactive graph filters.
+        guard active else { return AtlasTheme.accent.opacity(0.55) }
         return option == .violating ? AtlasCodePalette.alert : AtlasTheme.accent
     }
 
@@ -1427,7 +1431,8 @@ extension AtlasCodeView {
                             .accessibilityHidden(true)
                         Text("Curado sozinho · ver recibo")
                             .font(AtlasFont.serifItalic(13))
-                            .foregroundStyle(AtlasTheme.textSecondary)
+                            // Soft gold-quiet heal invite copy.
+                            .foregroundStyle(AtlasTheme.accent.opacity(0.78))
                             .accessibilityHidden(true)
                         Spacer()
                         Image(systemName: "chevron.right")
