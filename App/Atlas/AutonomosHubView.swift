@@ -65,7 +65,7 @@ struct AutonomosHubView: View {
     private var primaryVerb: some View {
         switch vestment {
         case .quiet:
-            AutonomosMapChrome.primaryCTA("Retomar", action: onResume)
+            AutonomosMapChrome.primaryCTA("Retomar", haptic: .medium, action: onResume)
         case .live:
             EmptyView()
         }

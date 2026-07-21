@@ -62,9 +62,19 @@ enum AutonomosMapChrome {
             .accessibilityAddTraits(.isHeader)
     }
 
+    enum CTAHaptic {
+        case soft
+        case medium
+    }
+
     @MainActor
-    static func primaryCTA(_ title: String, enabled: Bool = true, action: @escaping () -> Void) -> some View {
-        AutonomosMapPrimaryCTA(title: title, enabled: enabled, action: action)
+    static func primaryCTA(
+        _ title: String,
+        enabled: Bool = true,
+        haptic: CTAHaptic = .soft,
+        action: @escaping () -> Void
+    ) -> some View {
+        AutonomosMapPrimaryCTA(title: title, enabled: enabled, haptic: haptic, action: action)
     }
 
     @MainActor
@@ -78,12 +88,16 @@ private struct AutonomosMapPrimaryCTA: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let title: String
     var enabled: Bool = true
+    var haptic: AutonomosMapChrome.CTAHaptic = .soft
     let action: () -> Void
 
     var body: some View {
         Button {
             if enabled {
-                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                switch haptic {
+                case .soft: AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                case .medium: AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
+                }
             }
             action()
         } label: {
