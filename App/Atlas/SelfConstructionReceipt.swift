@@ -240,7 +240,8 @@ extension SelfConstructionReceiptSheet {
 extension SelfConstructionReceiptSheet {
     var vetoSubmitButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: veto with receipt is governed commit.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onRevert(actor, reason)
         } label: {
             vetoSubmitLabel

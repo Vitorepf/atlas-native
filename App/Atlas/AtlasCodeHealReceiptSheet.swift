@@ -231,7 +231,8 @@ extension AtlasCodeHealReceiptSheet {
 extension AtlasCodeHealReceiptSheet {
     var undoButton: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            // Medium: undo with receipt is governed commit.
+            AtlasMotion.mediumImpact(reduceMotion: reduceMotion)
             onUndo()
             dismiss()
         } label: {
