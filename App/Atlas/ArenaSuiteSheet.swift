@@ -133,6 +133,8 @@ extension ArenaSuiteSheet {
         NavigationStack {
             suiteScrollBody
                 .accessibilityIdentifier(A11yID.arenaSuiteSheet)
+                // Contain: suite header and engine cards stay separately focusable.
+                .accessibilityElement(children: .contain)
         }
     }
 }
