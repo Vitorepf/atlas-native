@@ -130,17 +130,23 @@ struct ArenaFieldChrome: ViewModifier {
 }
 
 extension ArenaRunSheet {
+    /// WAVE-055: receipt chrome from ArenaStartJudgment.
     func receiptCard(_ receipt: AtlasArenaStartReceipt) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        let face = ArenaStartJudgment.receiptFace(receipt)
+        return VStack(alignment: .leading, spacing: 6) {
             Text("recibo \(receipt.receiptHash)")
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.middle)
                 .accessibilityHidden(true)
-            Text(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
+            Text(ArenaStartJudgment.receiptStatusLine(receipt))
                 .font(.system(.callout, weight: .semibold))
-                .foregroundStyle(AtlasTheme.accent)
+                .foregroundStyle(
+                    face.productWord == "worker_gap"
+                        ? AtlasTheme.domOperacional
+                        : AtlasTheme.accent
+                )
                 .accessibilityHidden(true)
             if model.lastStartEnginesCount > 1 {
                 Text("\(model.lastStartEnginesCount) motores · \(model.lastStartRunsPlannedTotal) runs na fila")
@@ -150,7 +156,7 @@ extension ArenaRunSheet {
                     .accessibilityHidden(true)
             }
             if receipt.workerImplemented == false {
-                Text(Self.workerGapCopy)
+                Text(ArenaStartJudgment.workerGapCopy)
                     .font(.system(.caption))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
@@ -160,10 +166,9 @@ extension ArenaRunSheet {
         .atlasCard()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spokenReceiptLabel(receipt))
+        .accessibilityValue(face.productWord)
         .accessibilityIdentifier(A11yID.arenaRunReceipt)
     }
-
-    static let workerGapCopy = "worker de medição desligado no servidor — fila aguardando"
 }
 
 extension ArenaRunSheet {
@@ -212,44 +217,29 @@ extension ArenaRunSheet {
         "motivo auditável registrado no ledger"
     }
 
+    /// WAVE-055: submit/receipt spoken from Judgment.
     func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
-        if input.isLocallyValidForSubmission {
-            return "rodar medição"
-        }
-        if enginesEmpty {
-            return "rodar medição indisponível, nenhum motor publicado"
-        }
-        return spokenSubmitMissing(input: input)
+        ArenaStartJudgment.submitFace(
+            input: input,
+            enginesEmpty: enginesEmpty,
+            suitesEmpty: installedSuites.isEmpty
+        ).spokenLabel
     }
 
     func spokenSubmitHint(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
-        if input.isLocallyValidForSubmission {
-            return "envia medição governada ao servidor"
-        }
-        if enginesEmpty {
-            return "aguarde o servidor publicar pelo menos um motor"
-        }
-        return "preencha ator, motivo, suites, motor e braços"
-    }
-
-    func spokenSubmitMissing(input: AtlasArenaStartInput) -> String {
-        var missing: [String] = []
-        if input.operatorActor.isEmpty { missing.append("ator") }
-        if input.operatorReason.isEmpty { missing.append("motivo auditável") }
-        if input.suites.selectedValues.isEmpty { missing.append("suites") }
-        if input.engine.isEmpty { missing.append("motor") }
-        if input.arms.isEmpty { missing.append("braços") }
-        if missing.isEmpty { return "rodar medição indisponível" }
-        return "rodar medição indisponível, falta \(missing.joined(separator: ", "))"
+        ArenaStartJudgment.submitFace(
+            input: input,
+            enginesEmpty: enginesEmpty,
+            suitesEmpty: installedSuites.isEmpty
+        ).spokenHint
     }
 
     func spokenReceiptLabel(_ receipt: AtlasArenaStartReceipt) -> String {
-        var parts = ["recibo \(receipt.receiptHash)"]
-        parts.append(receipt.isEnqueued ? "na fila, ainda não iniciado" : receipt.status)
-        if receipt.workerImplemented == false {
-            parts.append(Self.workerGapCopy)
-        }
-        return parts.joined(separator: ", ")
+        ArenaStartJudgment.spokenReceipt(
+            receipt,
+            enginesCount: model.lastStartEnginesCount,
+            runsPlannedTotal: model.lastStartRunsPlannedTotal
+        )
     }
 }
 
