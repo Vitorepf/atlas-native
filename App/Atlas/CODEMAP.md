@@ -138,6 +138,9 @@
 | **Markdown blocks peels** | Blocks · ViewBlocks (WAVE-130) |
 | **A11yID domain peels** | core · Arena · Code · Autonomos (WAVE-131) |
 | **ChangeReview Judgment peels** | core · Chrome spoken (WAVE-132) |
+| **SelfConstruction receipt peels** | Body · Chrome (WAVE-134) |
+| **Root home sections peels** | Body · Live (WAVE-135) |
+| **LiveTimeline narrative peels** | RowView · Chrome (WAVE-136) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
