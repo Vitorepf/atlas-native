@@ -245,8 +245,8 @@ extension ConversationMessages {
         content
             .padding(.horizontal, AtlasTheme.Space.screen)
             .padding(.top, 16)
+            // Contain without fused label: each turn keeps its own a11y node.
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(ConversationMessagesA11y.spokenMessages(turnCount: model.bubbles.count))
     }
 }
 

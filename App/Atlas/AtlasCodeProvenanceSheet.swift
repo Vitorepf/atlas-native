@@ -128,8 +128,8 @@ extension AtlasCodeProvenanceSheet {
 extension AtlasCodeProvenanceSheet {
     func provenanceSheetChrome<Content: View>(_ content: Content) -> some View {
         content
+            // Contain without fused label: ask / why file rows stay focusable.
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(provenanceSheetSpokenLabel)
             .accessibilityHint(Self.sheetHint)
             .sheet(item: $whyTarget) { target in
                 AtlasCodeWhySheet(client: client, repo: repo, file: target.path)

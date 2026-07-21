@@ -135,6 +135,15 @@ extension AtlasCodeView {
                     .accessibilityHidden(true)
                     .accessibilityIdentifier(A11yID.codeAskAnchorNote)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(
+                AtlasCodeAskPillA11y.spokenPill(
+                    isAnchoring: pillIsAnchoring,
+                    anchorLegend: anchorLegend
+                )
+            )
+            .accessibilityHint(AtlasCodeAskPillA11y.pillHint)
+            .accessibilityAddTraits(.isButton)
             Spacer(minLength: 0)
             askPillClearButton
             Image(systemName: "chevron.up")
@@ -168,15 +177,8 @@ extension AtlasCodeView {
                 anchorLegend: anchorLegend
             )
         )
+        // Contain: clear/mostrar tudo buttons stay focusable; invite speaks on the lead.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(
-            AtlasCodeAskPillA11y.spokenPill(
-                isAnchoring: pillIsAnchoring,
-                anchorLegend: anchorLegend
-            )
-        )
-        .accessibilityHint(AtlasCodeAskPillA11y.pillHint)
-        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(A11yID.codeAskPill)
     }
 
