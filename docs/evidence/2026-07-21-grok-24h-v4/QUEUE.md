@@ -14,21 +14,12 @@
 
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
-```yaml
-id: WAVE-046-composer-send-readiness-judgment-instrument
-status: proposed
-rank: 1
-delta_patamar: high
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-046-design.md
-created_by: designer
-approved_at: null
-```
+_(no open proposed WAVEs)_
 
 ## Candidates ranked (open only)
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-046-composer-send-readiness-judgment-instrument | **high** | `WAVE-046-design.md` |
 
 ## History (done)
 
@@ -72,4 +63,5 @@ approved_at: null
 - WAVE-043 done
 - WAVE-044 done
 - WAVE-045 done
+- WAVE-046 done
 

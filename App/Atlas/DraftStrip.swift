@@ -16,7 +16,8 @@ struct DraftStrip: View {
         } else {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
-                    ForEach(drafts) { d in
+                    // WAVE-046: failed-first attention rank.
+                    ForEach(ComposerSendJudgment.rankDrafts(drafts)) { d in
                         DraftThumb(
                             draft: d,
                             reduceMotion: reduceMotion,

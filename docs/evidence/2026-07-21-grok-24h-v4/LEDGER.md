@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 40
+- waves_completed: 41
 - idle_compress_passes: 5
 - collapse_host: 0
 
@@ -51,6 +51,7 @@ mode: designer + implementer
 - WAVE-043
 - WAVE-044
 - WAVE-045
+- WAVE-046
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -60,7 +61,7 @@ mode: designer + implementer
 - pass 5 · `801e8df3` · peel ChangeReview Patch+Findings bodies
 
 ## Designer
-- designs_proposed: 40
+- designs_proposed: 41
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 
@@ -71,5 +72,7 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Self-WAVEs 043–045 while A starved. Prefer A 2–5 GOD croquis.
+- WAVE-046 A rank-1 composer send readiness done.
+- Note: designer 045 home-ops may need re-propose as new NNN if still desired
+  (045 shipped as continuity handoff by B self-WAVE before A croqui landed).
 - DEVICE_PENDING history.

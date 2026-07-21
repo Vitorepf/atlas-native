@@ -6,19 +6,29 @@ import AtlasCore
 extension ComposerToolbar {
     var isExecuting: Bool { model.isSending || liveBubble != nil }
 
+    /// WAVE-046: exclusive send readiness face.
+    var sendFace: ComposerSendFace {
+        ComposerSendJudgment.face(
+            draftText: model.draftText,
+            drafts: model.drafts,
+            isSending: model.isSending,
+            liveBubblePresent: liveBubble != nil
+        )
+    }
+
     func spokenSendLabel(canSubmit: Bool) -> String {
-        if canSubmit {
-            return isExecuting ? "adicionar à fila" : "enviar ao Atlas"
+        // Prefer face grammar; keep canSubmit for call sites still passing bool.
+        if canSubmit != sendFace.allowsSend {
+            return sendFace.spokenLabel
         }
-        return isExecuting
-            ? "enviar indisponível, Atlas processando"
-            : "enviar indisponível, sem mensagem nem anexo"
+        return sendFace.spokenLabel
     }
 }
 
 extension ComposerToolbar {
     func spokenSendHint(canSubmit: Bool) -> String {
-        canSubmit ? spokenSendHintReady() : spokenSendHintBlocked()
+        _ = canSubmit
+        return sendFace.spokenHint
     }
 }
 
@@ -72,23 +82,9 @@ extension ComposerToolbar {
 }
 
 extension ComposerToolbar {
-    func spokenSendHintBlocked() -> String {
-        if isExecuting {
-            return "escreva uma mensagem para adicionar à fila durante a execução"
-        }
-        if !model.drafts.isEmpty {
-            return "adicione texto ou envie os anexos prontos"
-        }
-        return "escreva uma mensagem ou adicione um anexo para enviar"
-    }
-}
+    func spokenSendHintBlocked() -> String { sendFace.spokenHint }
 
-extension ComposerToolbar {
-    func spokenSendHintReady() -> String {
-        isExecuting
-            ? "envia esta mensagem na fila do próximo turno"
-            : "envia mensagem e anexos ao Atlas"
-    }
+    func spokenSendHintReady() -> String { sendFace.spokenHint }
 }
 
 extension AttachmentStrip {
@@ -175,25 +171,8 @@ extension AttachmentStrip {
 }
 
 extension ComposerToolbar {
-    var canSubmitFromDraft: Bool {
-        let hasText = !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        return hasText || !model.drafts.isEmpty
-    }
-}
-
-extension ComposerToolbar {
-    var canSubmitWhileSending: Bool {
-        !model.draftText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-}
-
-extension ComposerToolbar {
-    var canSubmit: Bool {
-        if model.isSending || liveBubble != nil {
-            return canSubmitWhileSending
-        }
-        return canSubmitFromDraft
-    }
+    /// WAVE-046: gold/queue only when face allows — never with failed/uploading drafts.
+    var canSubmit: Bool { sendFace.allowsSend }
 }
 
 extension ComposerToolbar {
@@ -375,8 +354,9 @@ extension ComposerToolbar {
         }
         .frame(width: 32, height: 32)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(spokenProcessingLabel()), \(spokenSendLabel(canSubmit: false))")
-        .accessibilityHint(spokenSendHint(canSubmit: false))
+        .accessibilityLabel("\(spokenProcessingLabel()), \(sendFace.spokenLabel)")
+        .accessibilityHint(sendFace.spokenHint)
+        .accessibilityValue(sendFace.productWord)
         .accessibilityIdentifier(A11yID.conversationSend)
     }
 }
@@ -391,8 +371,9 @@ extension ComposerToolbar {
         }
         .buttonStyle(.plain)
         .keyboardShortcut(.return, modifiers: .command)
-        .accessibilityLabel(spokenSendLabel(canSubmit: true))
-        .accessibilityHint(spokenSendHint(canSubmit: true))
+        .accessibilityLabel(sendFace.spokenLabel)
+        .accessibilityHint(sendFace.spokenHint)
+        .accessibilityValue(sendFace.productWord)
         .accessibilityIdentifier(A11yID.conversationSend)
     }
 }
