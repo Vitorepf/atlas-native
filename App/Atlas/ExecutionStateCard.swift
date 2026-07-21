@@ -153,7 +153,11 @@ struct ExecutionStateActionStyle: ButtonStyle {
             .overlay(Capsule().stroke(border, lineWidth: 1))
             .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
             .animation(
-                reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct),
+                reduceMotion
+                    ? nil
+                    : (configuration.isPressed
+                        ? .easeOut(duration: AtlasMotion.instinct)
+                        : .spring(response: 0.25, dampingFraction: 0.82)),
                 value: configuration.isPressed
             )
     }

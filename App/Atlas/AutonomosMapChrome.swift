@@ -145,6 +145,13 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
             )
             .contentShape(Capsule())
             .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
+            .animation(
+                reduceMotion
+                    ? nil
+                    : (configuration.isPressed
+                        ? .easeOut(duration: AtlasMotion.instinct)
+                        : .spring(response: 0.25, dampingFraction: 0.82)),
+                value: configuration.isPressed
+            )
     }
 }
