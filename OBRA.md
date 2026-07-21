@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — ceremonial motion token (ciclo 296)** · `3922f183` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — AtlasMotion duration tokens (ciclo 295)** · `9d6648ce` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Arena icon Dynamic Type (ciclo 294)** · `7a7594e2` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Arena/Review Dynamic Type (ciclo 293)** · `c548f5a2` · App/Atlas 36. **Prova:** checks+build exit 0.
