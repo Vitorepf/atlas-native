@@ -2937,6 +2937,7 @@ extension DraftThumb {
                         lineWidth: failedMessage != nil ? 1.5 : 1
                     )
             )
+            .atlasElevation(radius: 6, y: 2, opacity: 0.14)
     }
 }
 
