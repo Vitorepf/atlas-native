@@ -261,7 +261,7 @@ extension SelfConstructionReceiptSheet {
                 .font(AtlasFont.mono(10))
                 .tracking(0.9)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .accessibilityHidden(true)
+                .accessibilityAddTraits(.isHeader)
             vetoTextFields
             vetoSubmitButton
         }
@@ -317,6 +317,7 @@ extension SelfConstructionReceiptSheet {
             .font(.system(.callout))
             .textInputAutocapitalization(.never)
             .padding(10)
+            .frame(minHeight: 44, alignment: .center)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
             .accessibilityLabel("quem autoriza o veto")
             .accessibilityHint(spokenActorHint())
@@ -329,6 +330,7 @@ extension SelfConstructionReceiptSheet {
             .font(.system(.callout))
             .lineLimit(2...4)
             .padding(10)
+            .frame(minHeight: 88, alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
             .accessibilityLabel("motivo auditável do veto")
             .accessibilityHint(spokenReasonHint())

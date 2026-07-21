@@ -161,7 +161,7 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 14).padding(.vertical, 9)
-            .frame(minHeight: 44)
+            .frame(minHeight: 48) // HIG 44+; match primary map CTA breath
             .background(
                 Capsule().fill(
                     AtlasTheme.accent.opacity(
