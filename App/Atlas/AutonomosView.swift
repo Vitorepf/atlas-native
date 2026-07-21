@@ -2036,6 +2036,8 @@ extension SelfConstructionReceiptSheet {
             .padding(10)
             .frame(minHeight: 48, alignment: .center)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
+            // Soft gold-quiet veto field rim.
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityLabel("Quem autoriza o veto")
             .accessibilityHint(spokenActorHint())
@@ -2050,6 +2052,8 @@ extension SelfConstructionReceiptSheet {
             .padding(10)
             .frame(minHeight: 88, alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(AtlasTheme.surface.opacity(0.55)))
+            // Soft gold-quiet veto field rim.
+            .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(AtlasTheme.goldBorder.opacity(0.4), lineWidth: 1))
             .atlasElevation(radius: 6, y: 2, opacity: 0.1)
             .accessibilityLabel("Motivo auditável do veto")
             .accessibilityHint(spokenReasonHint())

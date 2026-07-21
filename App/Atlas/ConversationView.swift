@@ -943,7 +943,8 @@ extension EmptyConversation {
         } label: {
             Text(s)
                 .font(AtlasFont.serifItalic(15))
-                .foregroundStyle(AtlasTheme.textPrimary.opacity(0.92))
+                // Soft gold-quiet empty suggestion label.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.88))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 18).padding(.vertical, 12)
                 .frame(maxWidth: .infinity, minHeight: 48)
