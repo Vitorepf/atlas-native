@@ -102,7 +102,7 @@
 | Plan card peels | `PlanCard` host · `PlanCardRevisionBody` · `PlanCardStepRow` |
 | **Artefatos / evidência do turno** | `ArtifactJudgment` → FaceStrip · kind rank · delivery fail-first |
 | **Preview de artefato** | `ArtifactPreviewJudgment` → face idle/load/loaded/tooLarge/failed · viewer spoken/zoom |
-| Artifact sheet peels | `ArtifactSheet` host · `ArtifactSheetDelivery` (mount) |
+| Artifact sheet peels | `ArtifactSheet` host/list · `+Chrome` · `+Preview` · Delivery |
 | Preview peels | `ArtifactPreviewChrome` host · `TraceEvidenceChrome` · `ArtifactPreviewZoom` (Judgment-only a11y) |
 | **Provenance file-row spoken** | `AtlasCodeProvenanceJudgment` spokenFile/verb/packFile → FileRow |
 | **Trace evidence chrome** | `TraceEvidenceJudgment` → loading/unavailable · reason honesty · Loading/Unavailable views |
@@ -118,6 +118,7 @@
 | **Arena stop governance** | `ArenaStopJudgment` face blocked/ready · StopSheet (WAVE-108) |
 | **Arena execution pipeline** | `ArenaPipelineJudgment` project/glyph/spoken · ExecutionPipeline (WAVE-109) |
 | **LiveNow row spoken** | `LiveNowJudgment` spokenRow/clock · LiveNowRow (WAVE-110) |
+| **Artifact sheet peels** | host/list · Chrome · Preview · Delivery (WAVE-112) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
