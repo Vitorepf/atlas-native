@@ -138,7 +138,11 @@ struct ArenaPremiumAction: View {
         .buttonStyle(PressableScale())
         .disabled(disabled)
         .accessibilityLabel(Text(title))
-        .accessibilityHint(disabled ? Text("indisponível") : Text(""))
+        .accessibilityHint(
+            disabled
+                ? Text("indisponível")
+                : Text(quiet ? "ação secundária" : "ação principal da Arena")
+        )
     }
 }
 
@@ -176,7 +180,7 @@ struct ArenaPremiumDisclosureRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(title), \(detail)")
-        .accessibilityHint("abre o detalhe")
+        .accessibilityHint("abre \(title.lowercased())")
         .accessibilityAddTraits(.isButton)
     }
 }
