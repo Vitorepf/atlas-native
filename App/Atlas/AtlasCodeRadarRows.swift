@@ -130,9 +130,23 @@ extension AtlasCodeFolderRow {
 
 // --- AtlasCodeRadarFolderRow+ExpandedList.swift ---
 extension AtlasCodeFolderRow {
+    /// WAVE-024: issues-first inside folder when scan data present via issuesFor.
+    var judgmentFolderRepos: [AtlasCodeRepoRef] {
+        let issuesMap = Dictionary(uniqueKeysWithValues: folder.repos.compactMap { repo -> (String, [AtlasCodeIssue])? in
+            guard let issues = issuesFor(repo.slug) else { return nil }
+            return (repo.slug, issues)
+        })
+        let failed = Set(folder.repos.map(\.slug).filter { isMuteFor($0) })
+        return AtlasCodeRadarJudgment.sortedForJudgment(
+            folder.repos,
+            issuesBySlug: issuesMap,
+            failedSlugs: failed
+        )
+    }
+
     var expandedReposList: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(folder.repos) { repo in
+            ForEach(judgmentFolderRepos) { repo in
                 AtlasCodeRepoRow(
                     repo: repo,
                     issues: issuesFor(repo.slug),
@@ -143,7 +157,7 @@ extension AtlasCodeFolderRow {
                     onOpenRepo(repo.slug)
                 }
                 .padding(.leading, 32)
-                expandedRepoSeparator(after: repo)
+                expandedRepoSeparator(after: repo, in: judgmentFolderRepos)
             }
         }
         .padding(.bottom, 6)
@@ -154,8 +168,8 @@ extension AtlasCodeFolderRow {
 // --- AtlasCodeRadarFolderRow+Separator.swift ---
 extension AtlasCodeFolderRow {
     @ViewBuilder
-    func expandedRepoSeparator(after repo: AtlasCodeRepoRef) -> some View {
-        if repo.id != folder.repos.last?.id {
+    func expandedRepoSeparator(after repo: AtlasCodeRepoRef, in ordered: [AtlasCodeRepoRef]) -> some View {
+        if repo.id != ordered.last?.id {
             Rectangle()
                 .fill(AtlasTheme.separator.opacity(0.4))
                 .frame(height: 0.5)
