@@ -1495,7 +1495,8 @@ extension ChangeReviewFindingRow {
         switch s.lowercased() {
         case "critical", "high": return AtlasTheme.domOperacional
         case "medium": return AtlasTheme.accent
-        default: return AtlasTheme.textTertiary
+        // Soft gold-quiet low/unknown severity.
+        default: return AtlasTheme.accent.opacity(0.55)
         }
     }
 }

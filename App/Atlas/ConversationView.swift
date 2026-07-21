@@ -4853,7 +4853,8 @@ extension AgentRow {
         if let active = statusColorActive { return active }
         switch turnStatus {
         case .failed, .cancelled: return AtlasTheme.domOperacional
-        default: return AtlasTheme.textTertiary
+        // Soft gold-quiet idle agent status dot.
+        default: return AtlasTheme.accent.opacity(0.42)
         }
     }
 }
@@ -7411,7 +7412,8 @@ extension NarrativeRowView {
                 .font(row.style == .intent ? AtlasFont.serif(13) : AtlasFont.mono(11))
                 .foregroundStyle(row.style == .intent
                     ? (isCurrent ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
-                    : AtlasTheme.textTertiary)
+                    // Soft gold-quiet non-intent narrative titles.
+                    : AtlasTheme.accent.opacity(0.58))
                 .lineLimit(row.style == .intent ? 3 : 2)
                 .accessibilityHidden(true)
             narrativeDetailLine
@@ -9004,8 +9006,9 @@ extension CodeBlockView {
     }
 
     var copyForeground: Color {
-        guard canCopy else { return AtlasTheme.textTertiary.opacity(0.5) }
-        return copied ? AtlasTheme.accent : AtlasTheme.textSecondary
+        // Soft gold-quiet disabled/ready copy ladder.
+        guard canCopy else { return AtlasTheme.accent.opacity(0.32) }
+        return copied ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.72)
     }
 }
 

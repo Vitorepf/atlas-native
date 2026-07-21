@@ -782,7 +782,8 @@ struct ArenaPremiumStopSheet: View {
             }
                 .font(AtlasFont.serif(16, .semibold))
                 .frame(maxWidth: .infinity, minHeight: 52)
-                .foregroundStyle(valid && !isConfirmed ? AtlasTheme.alert : AtlasTheme.textTertiary)
+                // Soft gold-quiet disabled stop; armed stays alert.
+                .foregroundStyle(valid && !isConfirmed ? AtlasTheme.alert : AtlasTheme.accent.opacity(0.38))
                 .background(Capsule().fill(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.08 : 0.03)))
                 .overlay(Capsule().stroke(AtlasTheme.alert.opacity(valid && !isConfirmed ? 0.5 : 0.15), lineWidth: 1))
                 .atlasElevation(radius: 8, y: 2, opacity: valid && !isConfirmed ? 0.14 : 0.06)
@@ -2850,7 +2851,8 @@ struct ArenaPremiumExecutionPipeline: View {
                 .frame(height: 20)
             Text(step.title)
                 .font(AtlasFont.mono(9, .medium))
-                .foregroundStyle(mark == .pending ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
+                // Soft gold-quiet pending pipeline step titles.
+                .foregroundStyle(mark == .pending ? AtlasTheme.accent.opacity(0.48) : AtlasTheme.accent.opacity(0.72))
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .minimumScaleFactor(0.8)
@@ -2881,7 +2883,8 @@ struct ArenaPremiumExecutionPipeline: View {
         switch mark {
         case .live: AtlasTheme.accent
         case .done: AtlasTheme.textPrimary
-        case .pending: AtlasTheme.textTertiary
+        // Soft gold-quiet pending pipeline mark.
+        case .pending: AtlasTheme.accent.opacity(0.42)
         }
     }
 
@@ -3159,7 +3162,8 @@ struct ArenaPremiumCapabilitiesView: View {
     private func deltaColor(_ capability: AtlasArenaCapability) -> Color {
         switch capability.confidenceLevel {
         case .unmeasured, .low:
-            return AtlasTheme.textTertiary
+            // Soft gold-quiet low/unmeasured confidence.
+            return AtlasTheme.accent.opacity(0.48)
         case .measured:
             guard capability.delta?.significant == true, let value = delta(capability) else {
                 return AtlasTheme.textSecondary
@@ -3340,8 +3344,9 @@ struct ArenaPremiumCapabilityDetail: View {
     }
 
     private var deltaColor: Color {
-        guard let delta else { return AtlasTheme.textTertiary }
-        if abs(delta) <= 0.005 { return AtlasTheme.textSecondary }
+        // Soft gold-quiet when delta absent or flat.
+        guard let delta else { return AtlasTheme.accent.opacity(0.48) }
+        if abs(delta) <= 0.005 { return AtlasTheme.accent.opacity(0.65) }
         return delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.alert
     }
 
@@ -4040,7 +4045,8 @@ extension ArenaRunSheet {
             submitButtonLabel
         }
         .buttonStyle(PressableScale())
-        .foregroundStyle(input.isLocallyValidForSubmission ? AtlasTheme.accent : AtlasTheme.textTertiary)
+        // Soft gold-quiet disabled submit; valid stays full accent.
+        .foregroundStyle(input.isLocallyValidForSubmission ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.38))
         .disabled(!input.isLocallyValidForSubmission)
         .accessibilityIdentifier(A11yID.arenaRunSubmit)
         .accessibilityLabel(spokenSubmitLabel(input: input, enginesEmpty: engines.isEmpty))
@@ -5238,7 +5244,8 @@ enum ArenaPremiumTone {
 
     var color: Color {
         switch self {
-        case .muted: AtlasTheme.textTertiary
+        // Soft gold-quiet muted tone for inactive kickers.
+        case .muted: AtlasTheme.accent.opacity(0.48)
         // Neutral kickers read gold-quiet to pair with gold principals/hairlines.
         case .neutral: AtlasTheme.accent.opacity(0.82)
         case .active: AtlasTheme.accent

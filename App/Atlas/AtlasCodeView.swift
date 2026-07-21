@@ -1285,8 +1285,10 @@ extension AtlasCodeView {
     var statusPulseColor: Color {
         switch model.scanState {
         case .violating: return AtlasCodePalette.alert
-        case .unknown: return AtlasTheme.textTertiary
-        case .clean: return AtlasTheme.textSecondary
+        // Soft gold-quiet unknown scan.
+        case .unknown: return AtlasTheme.accent.opacity(0.48)
+        // Soft gold-quiet clean scan.
+        case .clean: return AtlasTheme.accent.opacity(0.72)
         }
     }
 
