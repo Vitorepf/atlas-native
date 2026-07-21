@@ -131,12 +131,12 @@ extension RootView {
 
 extension RootView {
   var mastheadBrandRow: some View {
-    HStack(spacing: 7) {
+    HStack(spacing: 8) {
       Text("Atlas")
-        .font(AtlasFont.serif(23, .semibold))
+        .font(AtlasFont.serif(24, .semibold))
         .accessibilityHidden(true)
       Text("✦")
-        .font(AtlasFont.serif(12, .semibold))
+        .font(AtlasFont.serif(13, .semibold))
         .foregroundStyle(session.auditModeEnabled ? AtlasTheme.domOperacional : AtlasTheme.accent)
         .shadow(
           color: (session.auditModeEnabled ? AtlasTheme.domOperacional : AtlasTheme.accent)
