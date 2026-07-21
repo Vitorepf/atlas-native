@@ -7,13 +7,14 @@ struct ArenaPremiumIdleView: View {
     let onNavigate: (ArenaPremiumDestination) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 22) {
             ArenaPremiumEmptyGlyph(symbol: "scope")
                 .accessibilityIdentifier(A11yID.arenaPremiumState("idle"))
             ArenaPremiumKicker(text: "Arena pronta")
             Text("Nada medindo agora")
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text("Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado.")
                 .font(.system(.body))
                 .foregroundStyle(AtlasTheme.textSecondary)
