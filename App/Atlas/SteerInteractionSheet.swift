@@ -1,5 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 039 fuse → SteerInteractionSheet.swift
 
 struct SteerInteractionSheet: View {
     let traceId: TraceID

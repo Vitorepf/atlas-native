@@ -1,5 +1,7 @@
 import Foundation
 
+// Cycle 039 fuse → A11yID+ArenaPremium.swift
+
 extension A11yID {
     static let arenaPremiumAdd = "arena-premium-add"
     static let arenaPremiumHero = "arena-premium-hero"

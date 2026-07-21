@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Recibo visual — peel de SteerInteractionSheet; só dados do contrato steer.
+// Cycle 039 fuse → SteerInteractionSheet+Receipt.swift
 
 extension SteerInteractionSheet {
     func receiptLine(_ receipt: AtlasInteractionSteerResponse) -> some View {

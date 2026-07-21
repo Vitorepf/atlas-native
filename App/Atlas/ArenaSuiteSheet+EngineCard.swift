@@ -1,10 +1,26 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Engine card — peel de ArenaSuiteSheet.
-// Captions → ArenaSuiteSheet+EngineCaptions.swift
-// Score → ArenaSuiteSheet+EngineScore.swift
-// Header → ArenaSuiteSheet+EngineCard+Header.swift
+// Cycle 039 fuse → ArenaSuiteSheet+EngineCard.swift
+
+extension ArenaSuiteSheet {
+    @ViewBuilder
+    func engineCardHeader(_ engine: AtlasArenaSuiteEngine) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(ArenaDisplay.engine(engine.engine))
+                    .font(AtlasFont.serif(21))
+                    .foregroundStyle(AtlasTheme.textPrimary)
+                Text("Índice da suíte · escala 0–10")
+                    .font(AtlasFont.mono(9))
+                    .foregroundStyle(AtlasTheme.textSecondary)
+            }
+            .accessibilityHidden(true)
+            Spacer()
+            engineCardScore(engine)
+        }
+    }
+}
 
 extension ArenaSuiteSheet {
     func engineCard(_ engine: AtlasArenaSuiteEngine) -> some View {

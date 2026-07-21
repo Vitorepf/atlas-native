@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Control row — peel de ChangeReviewSections+Checks.
+// Cycle 039 fuse → ChangeReviewSections+ControlRow.swift
 
 extension ChangeReviewControlsSection {
     func controlRow(_ c: AtlasTraceChangeReview.Control) -> some View {

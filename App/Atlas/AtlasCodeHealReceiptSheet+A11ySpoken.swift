@@ -1,6 +1,26 @@
-import Foundation
 import AtlasCore
+import Foundation
 
-// Spoken labels do recibo — peel de AtlasCodeHealReceiptSheet+A11y.
-// Masthead → AtlasCodeHealReceiptSheet+A11ySpoken+Masthead.swift
-// Outcome → AtlasCodeHealReceiptSheet+A11ySpoken+Outcome.swift
+// Cycle 039 fuse → AtlasCodeHealReceiptSheet+A11ySpoken.swift
+
+extension AtlasCodeHealReceiptSheet {
+    func spokenMastheadLabel() -> String {
+        hasCompletedHeal
+            ? "curado sozinho, modo \(heal.mode)"
+            : "cura, modo \(heal.mode)"
+    }
+
+    func spokenSilenceLabel() -> String {
+        "você não foi necessário, cura concluída sem portão"
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    func spokenBlockedLabel(_ blocked: String) -> String {
+        "cura bloqueada, \(blocked)"
+    }
+
+    func spokenEmptyStepsLabel() -> String {
+        "recibo sem passos registrados pelo servidor"
+    }
+}

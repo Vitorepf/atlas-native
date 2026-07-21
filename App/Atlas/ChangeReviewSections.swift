@@ -1,11 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 039 fuse → ChangeReviewSections.swift
 
 // MARK: - Seções remanescentes da ChangeReviewSheet (C15 · C16)
-// Diff → ChangeReviewDiffSection · Conselho → ChangeReviewCouncilSection.
-// Checks → ChangeReviewSections+Checks.swift
-// Chrome → ChangeReviewSections+RunChrome.swift
-// Fields → ChangeReviewSections+RunFields.swift
 
 struct ChangeReviewRunHeader: View {
     let run: AtlasTraceChangeReview.Run

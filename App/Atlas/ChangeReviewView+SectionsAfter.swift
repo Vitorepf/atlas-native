@@ -1,7 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Review sections after patches — peel de ChangeReviewView+SectionsTail.
+// Cycle 039 fuse → ChangeReviewView+SectionsAfter.swift
 
 extension ChangeReviewAvailableContent {
     @ViewBuilder

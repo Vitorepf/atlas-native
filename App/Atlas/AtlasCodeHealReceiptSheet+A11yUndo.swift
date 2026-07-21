@@ -1,7 +1,7 @@
-import Foundation
 import AtlasCore
+import Foundation
 
-// Step + undo window spoken — peel de AtlasCodeHealReceiptSheet+A11yUndo.
+// Cycle 039 fuse → AtlasCodeHealReceiptSheet+A11yUndo.swift
 
 extension AtlasCodeHealReceiptSheet {
     func spokenStepLabel(_ receipt: AtlasCodeHealStepReceipt) -> String {
@@ -13,5 +13,11 @@ extension AtlasCodeHealReceiptSheet {
 
     func spokenUndoWindowLabel(_ note: String) -> String {
         "janela de veto, \(note)"
+    }
+}
+
+extension AtlasCodeHealReceiptSheet {
+    func spokenStepsSummaryLabel() -> String {
+        "\(heal.stepReceipts.count) passo\(heal.stepReceipts.count == 1 ? "" : "s") no recibo"
     }
 }

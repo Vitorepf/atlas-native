@@ -1,10 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 039 fuse → ArenaSuiteSheet.swift
 
 // MARK: - Arena suite sheet
-// Engine card → +EngineCard · Toolbar → +Toolbar.swift
-// Body → ArenaSuiteSheet+Body.swift
-// Presentation → ArenaSuiteSheet+Presentation.swift
 
 struct ArenaSuiteSheet: View {
     @Environment(\.dismiss) var dismiss

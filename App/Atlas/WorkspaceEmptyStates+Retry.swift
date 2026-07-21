@@ -1,8 +1,18 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Retry CTA — peel de WorkspaceEmptyStates / AtlasNetworkFailureEmpty.
-// Identifier → WorkspaceEmptyStates+Retry+Identifier.swift
+// Cycle 039 fuse → WorkspaceEmptyStates+Retry.swift
+
+extension AtlasNetworkFailureEmpty {
+    @ViewBuilder
+    func retryButtonWithIdentifier<Content: View>(_ button: Content) -> some View {
+        if let retryAccessibilityIdentifier {
+            button.accessibilityIdentifier(retryAccessibilityIdentifier)
+        } else {
+            button
+        }
+    }
+}
 
 extension AtlasNetworkFailureEmpty {
     @ViewBuilder

@@ -1,9 +1,37 @@
-import Foundation
 import AtlasCore
+import Foundation
 
-// Thumb spoken — peel de DraftThumb+A11y.
-// Size → DraftThumb+A11yThumb+Size.swift
-// State → DraftThumb+A11yThumb+State.swift
+// Cycle 039 fuse → DraftThumb+A11yThumb.swift
+
+extension DraftThumbA11y {
+    static func spokenThumbSizeParts(_ draft: LocalDraft) -> [String] {
+        guard draft.bytes > 0 else { return [] }
+        let mb = String(format: "%.1f", Double(draft.bytes) / 1_048_576)
+        return ["\(mb) megabytes"]
+    }
+}
+
+extension DraftThumbA11y {
+    static func spokenThumbReadyParts(_ draft: LocalDraft) -> [String]? {
+        switch draft.state {
+        case .pronto: return ["pronto para enviar"]
+        case .subindo: return ["enviando"]
+        default: return nil
+        }
+    }
+}
+
+extension DraftThumbA11y {
+    static func spokenThumbStateParts(_ draft: LocalDraft) -> [String] {
+        if let ready = spokenThumbReadyParts(draft) { return ready }
+        if case .falhou(let message) = draft.state {
+            var parts = ["falhou"]
+            if !message.isEmpty { parts.append(message) }
+            return parts
+        }
+        return []
+    }
+}
 
 extension DraftThumbA11y {
     static func spokenThumb(_ draft: LocalDraft) -> String {

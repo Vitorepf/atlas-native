@@ -1,10 +1,9 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 039 fuse → WorkspaceEmptyStates.swift
 
 // Estados vazios do WorkspaceView (offline) —
-// peel anti-inchaço; voz partilhada com a home via AtlasFailureCopy.
-// Loading → +Loading · Editorial → +Editorial · Retry → +Retry · Copy → +FailureCopy.
-// Chrome → WorkspaceEmptyStates+Chrome.swift
 
 /// Falha de rede compartilhada — home, workspace e conversa (voz via `AtlasFailureCopy`).
 struct AtlasNetworkFailureEmpty: View {

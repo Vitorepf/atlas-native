@@ -1,14 +1,13 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
+
+// Cycle 039 fuse → AtlasCodeProvenanceSheet.swift
 
 // MARK: - Folha: por que esta linha existe (C23)
 
 /// A folha responde, em ordem, as perguntas de quem abre um commit: em que
 /// estado ele está, o que ele diz, por que existe, e o que ele tocou.
 /// O hash fecha a folha — máquina embaixo do vidro (lei 6).
-/// Chrome → AtlasCodeProvenanceSheet+Chrome.swift
-/// Scroll → AtlasCodeProvenanceSheet+Scroll.swift
-/// Surface → AtlasCodeProvenanceSheet+Surface.swift
 struct AtlasCodeProvenanceSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var whyTarget: AtlasCodeProvenanceWhyTarget?

@@ -1,8 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Steer form header — peel de SteerInteractionSheet+Form.
-// Picker → SteerInteractionSheet+FormPicker.swift
+// Cycle 039 fuse → SteerInteractionSheet+FormHeader.swift
 
 extension SteerInteractionSheet {
     var formHeader: some View {

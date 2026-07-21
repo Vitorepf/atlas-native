@@ -1,5 +1,7 @@
 import Foundation
 
+// Cycle 039 fuse → A11yID.swift
+
 /// Identifiers de acessibilidade canônicos — um único vocabulário entre a
 /// casca e os XCUITests. Home/Search: +Home · Autônomos: +Autonomos ·
 /// Code/radar: +Code · Arena/review: +Surfaces · Queue/Live: +QueueLive ·

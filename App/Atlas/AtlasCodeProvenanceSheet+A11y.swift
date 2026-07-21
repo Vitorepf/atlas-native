@@ -1,11 +1,23 @@
-import Foundation
 import AtlasCore
+import Foundation
 
-/// Spoken labels — peel de AtlasCodeProvenanceSheet (CICLO C residual honesty).
-/// Sheet/header spoken → AtlasCodeProvenanceSheet+A11ySpoken.swift
-/// Copy helpers → AtlasCodeProvenanceSheet+A11ySpokenCopy.swift
-/// LoadedBody → AtlasCodeProvenanceSheet+A11y+LoadedBody.swift
-/// LoadedPhaseID → AtlasCodeProvenanceSheet+A11y+LoadedPhaseID.swift
+// Cycle 039 fuse → AtlasCodeProvenanceSheet+A11y.swift
+
+extension AtlasCodeProvenanceSheet {
+    func hasLoadedBody(_ provenance: AtlasCodeProvenance) -> Bool {
+        provenance.commitBody?.nonEmpty != nil
+            || provenance.operatorQuote?.nonEmpty != nil
+            || !(provenance.gates?.isEmpty ?? true)
+            || !(provenance.obra?.isEmpty ?? true)
+            || !provenance.files.isEmpty
+    }
+}
+
+extension AtlasCodeProvenanceSheet {
+    func provenanceLoadedPhaseID(_ provenance: AtlasCodeProvenance) -> String {
+        hasLoadedBody(provenance) ? "loaded-\(provenance.files.count)" : "loaded-empty"
+    }
+}
 
 extension AtlasCodeProvenanceSheet {
     var provenanceContentPhaseID: String {
