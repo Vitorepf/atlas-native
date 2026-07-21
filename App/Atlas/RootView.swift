@@ -168,7 +168,7 @@ extension RootView {
 extension RootView {
     var topBarAvatar: some View {
         Button {
-            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             showingProfile = true
         } label: {
             Image(systemName: "person.fill")
@@ -380,7 +380,7 @@ extension RootView {
         // A pílula é o ÚNICO ponto de partida (o "+" saiu): abre o picker do
         // Cursor — "Sem repositório" (conversa geral) ou um repo por recência.
         Button {
-            AtlasMotion.softImpact(reduceMotion: UIAccessibility.isReduceMotionEnabled)
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             showingNewPicker = true
         } label: {
             inputBarContent

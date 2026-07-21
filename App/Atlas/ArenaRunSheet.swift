@@ -52,6 +52,12 @@ extension ArenaRunSheet {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             .padding(.vertical, 4)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(
+                "Plano, \(selectedEngines.count) motores, \(selectedSuites.count) suítes, "
+                    + "\(selectedEngines.count * selectedSuites.count * selectedArms.count) corridas, "
+                    + selectedArms.sorted { $0.rawValue < $1.rawValue }.map(\.labelPT).joined(separator: ", ")
+            )
         }
     }
 }
