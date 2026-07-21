@@ -1,17 +1,16 @@
 # Grok 24h Ledger
 
 ## Status
-- phase: D1 cycle 251
-- last_commit: 82ceedab
+- phase: D1 cycle 252
+- last_commit: PENDING
 - last_gates: green
-- App/Atlas Swift: 214
-- next_leap: delete HomeAskContext dead file + residual craft
+- App/Atlas Swift: 213
+- next_leap: Autônomos dead transfer/decide model methods
 - blocked: none
 
 ## Resume
-**1748 → 214 (−1534)** · cycles 015–250 · FORBIDDEN clean · **not done**
+**1748 → 213 (−1535)** · cycles 015–251 · FORBIDDEN clean · **not done**
 
-## Cycle 250
-- deleted: council spoken enum; suite caption wrappers; spineConnector; lightImpact/rowTransition/atlasNumericTransition
-- gates: AtlasCoreChecks + make build green
-- polish: 82ceedab
+## Cycle 251
+- deleted HomeAskContext.swift + radarShellSpoken + verified + invalidate + refreshArtifacts + ceremonial/sacred
+- gates green
