@@ -999,13 +999,18 @@ struct AutonomosListView: View {
                 .font(AtlasFont.mono(10))
                 .tracking(0.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .padding(.top, 6)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 3)
+                .background(Capsule().fill(AtlasTheme.surface))
+                .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+                .padding(.top, 4)
                 // Row VO combines spoken(unit); visual kicker is decoration only.
                 .accessibilityHidden(true)
         } else {
             Circle()
                 .fill(AtlasTheme.accent.opacity(0.85))
                 .frame(width: 5, height: 5)
+                .shadow(color: AtlasTheme.accent.opacity(0.35), radius: 3, y: 0)
                 .padding(.top, 10)
                 .accessibilityHidden(true)
         }
@@ -1013,7 +1018,7 @@ struct AutonomosListView: View {
 
     private func spoken(_ unit: AutonomosUnit) -> String {
         var parts = [unit.name, unit.charter]
-        parts.append(unit.paused ? "pausado" : "vivo")
+        parts.append(unit.paused ? "Pausado" : "Vivo")
         parts.append(unit.ageLabel)
         return parts.joined(separator: ", ")
     }
