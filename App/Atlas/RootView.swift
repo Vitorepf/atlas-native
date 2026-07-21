@@ -473,8 +473,8 @@ extension RootView {
             Spacer(minLength: 0)
         }
         .padding(.horizontal, 18)
-        .padding(.vertical, 13)
-        .frame(minHeight: 48) // HIG 44pt; same breath as AgenticPill / workspace pill
+        .padding(.vertical, 14)
+        .frame(minHeight: 52) // match AgenticPill / workspace invite breath
         .contentShape(Capsule())
         .atlasGlassCapsule()
         .overlay(

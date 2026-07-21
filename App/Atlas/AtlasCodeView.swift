@@ -3607,7 +3607,7 @@ struct AtlasCodeRadarLoadedContent: View {
                     .padding(.bottom, 18)
 
                 if !workspace.recents.isEmpty {
-                    AtlasCodeRadarSectionLabel(text: "RECENTES", accessibilityID: A11yID.radarRecents)
+                    AtlasCodeRadarSectionLabel(text: "Recentes", accessibilityID: A11yID.radarRecents)
                     ForEach(workspace.recents) { repo in
                         AtlasCodeRepoRow(
                             repo: repo,
@@ -3622,7 +3622,7 @@ struct AtlasCodeRadarLoadedContent: View {
                 }
 
                 if !workspace.folders.isEmpty {
-                    AtlasCodeRadarSectionLabel(text: "PASTAS", accessibilityID: A11yID.radarFolders)
+                    AtlasCodeRadarSectionLabel(text: "Pastas", accessibilityID: A11yID.radarFolders)
                         .padding(.top, 22)
                     ForEach(workspace.folders) { folder in
                         AtlasCodeFolderRow(
@@ -3638,7 +3638,7 @@ struct AtlasCodeRadarLoadedContent: View {
                 }
 
                 if !workspace.loose.isEmpty {
-                    AtlasCodeRadarSectionLabel(text: "AVULSOS", accessibilityID: A11yID.radarLoose)
+                    AtlasCodeRadarSectionLabel(text: "Avulsos", accessibilityID: A11yID.radarLoose)
                         .padding(.top, 22)
                     ForEach(workspace.loose) { repo in
                         AtlasCodeRepoRow(
