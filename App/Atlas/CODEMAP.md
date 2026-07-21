@@ -148,6 +148,7 @@
 | **Code sheets modifiers peels** | Modifiers · Body (WAVE-141) |
 | **AtlasSession peels** | host · Body (WAVE-142) |
 | **Code surface peels** | Surface · Body (WAVE-143) |
+| **ExecutionProof Judgment peels** | core · Chrome (WAVE-144) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
