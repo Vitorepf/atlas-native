@@ -35,7 +35,7 @@ mode: designer + implementer
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `be124541` · delete dead peels ConversationCockpit husk + ArenaCompositeUI Core-dup
+- pass 3 · `8fc770ab` · delete dead peels ConversationCockpit husk + ArenaCompositeUI Core-dup
 
 ## Designer
 - designs_proposed: 20
