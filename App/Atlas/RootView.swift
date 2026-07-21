@@ -1940,7 +1940,7 @@ extension WorkspaceView {
             areaFilterChipLabel(a, active: active)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("área \(a.label)")
+        .accessibilityLabel("Área \(a.label)")
         .accessibilityHint("Filtra conversas já carregadas")
         .accessibilityAddTraits(active ? [.isButton, .isSelected] : .isButton)
     }
@@ -1958,6 +1958,7 @@ extension WorkspaceView {
                 Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface)
                     .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
             )
+            .atlasElevation(radius: 4, y: 1, opacity: active ? 0.12 : 0.04)
     }
 }
 
