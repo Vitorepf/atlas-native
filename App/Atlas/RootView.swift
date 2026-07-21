@@ -3195,8 +3195,8 @@ extension AtlasProfileSheet {
         }
         .tint(AtlasTheme.accent)
         .padding(.horizontal, 14).padding(.vertical, 12)
-        .frame(minHeight: 56)
-        .frame(minHeight: 48, alignment: .center)
+        // Single HIG breath — prior double minHeight (56 then 48) was redundant.
+        .frame(minHeight: 56, alignment: .center)
         .atlasCard()
         .atlasElevation(radius: 8, y: 2, opacity: 0.12)
         .onChange(of: session.auditModeEnabled) { _, _ in

@@ -1303,6 +1303,7 @@ extension AtlasCodeView {
         .padding(.vertical, 7)
         .background(Capsule().fill(AtlasTheme.bgRecessed))
         .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+        .atlasElevation(radius: 4, y: 1, opacity: 0.08)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(worktreeSpokenLabel(worktree))
     }
@@ -1956,6 +1957,7 @@ extension AtlasCodeHealReceiptSheet {
     .padding(12)
     .frame(maxWidth: .infinity, alignment: .leading)
     .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+    .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     // Contain without fused label: each step row stays focusable.
     .accessibilityElement(children: .contain)
   }
@@ -3218,6 +3220,7 @@ extension AtlasCodeProvenanceSheet {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+        .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 
@@ -3314,6 +3317,7 @@ extension AtlasCodeProvenanceSheet {
         .padding(.horizontal, 12)
         .padding(.vertical, 4)
         .background(AtlasTheme.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
+        .atlasElevation(radius: 6, y: 2, opacity: 0.1)
     }
 }
 

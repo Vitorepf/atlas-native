@@ -8277,6 +8277,7 @@ extension QueuedFollowUpRow {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 48, height: 48)
                 .background(Circle().fill(AtlasTheme.surfaceHi))
+                .atlasElevation(radius: 6, y: 2, opacity: 0.14)
                 .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
