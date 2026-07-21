@@ -232,3 +232,397 @@ struct AtlasCodeRadarView: View {
 
 }
 
+// MARK: - AtlasCodeRadarView
+
+// MARK: - Folder row peels
+
+extension AtlasCodeFolderRow {
+    var folderHeaderLeading: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "folder")
+                .atlasSans(15)
+                .foregroundStyle(AtlasTheme.textSecondary)
+                .frame(width: 20)
+                .accessibilityHidden(true)
+            folderTitleStack
+        }
+    }
+}
+
+extension AtlasCodeFolderRow {
+    var folderHeaderTrailing: some View {
+        HStack(spacing: 0) {
+            Spacer(minLength: 6)
+            exceptionBadge
+            folderHeaderChevron
+        }
+    }
+}
+
+extension AtlasCodeFolderRow {
+    var folderHeaderLabel: some View {
+        HStack(spacing: 12) {
+            folderHeaderLeading
+            folderHeaderTrailing
+        }
+        .padding(.vertical, 14)
+        .contentShape(Rectangle())
+    }
+}
+
+extension AtlasCodeFolderRow {
+    @ViewBuilder
+    var folderHeaderChevron: some View {
+        Image(systemName: "chevron.right")
+            .atlasSans(12, .semibold)
+            .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
+            .rotationEffect(.degrees(isExpanded ? 90 : 0))
+            .accessibilityHidden(true)
+    }
+}
+
+extension AtlasCodeFolderRow {
+    var folderTitleStack: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            // Mesma voz das linhas irmãs (repo=medium, pasta=semibold): serif
+            // é masthead/título — linha de lista fala em sans (canon §C).
+            Text(folder.name)
+                .atlasSans(15, .semibold)
+                .foregroundStyle(AtlasTheme.textPrimary)
+            Text(folder.repositories == 1 ? "1 repositório" : "\(folder.repositories) repositórios")
+                .atlasSans(11.5)
+                .foregroundStyle(AtlasTheme.textTertiary)
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+extension AtlasCodeFolderRow {
+    func folderToggleA11y<Content: View>(_ content: Content) -> some View {
+        content
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(
+                AtlasCodeRadarJudgment.spokenFolder(
+                    name: folder.name,
+                    repositoryCount: folder.repositories,
+                    verifiedExceptionCount: verifiedExceptionCount,
+                    isExpanded: isExpanded
+                )
+            )
+            .accessibilityHint(AtlasCodeRadarJudgment.spokenFolderHint(isExpanded: isExpanded))
+            .accessibilityIdentifier(A11yID.radarFolder(folder.slug))
+    }
+}
+
+// MARK: - Loaded content peels
+
+extension AtlasCodeRadarLoadedContent {
+    @ViewBuilder
+    var radarFoldersHeader: some View {
+        if !workspace.folders.isEmpty {
+            AtlasCodeRadarSectionLabel(text: "PASTAS", accessibilityID: A11yID.radarFolders)
+                .padding(.top, 22)
+        }
+    }
+}
+
+extension AtlasCodeRadarLoadedContent {
+    @ViewBuilder
+    var radarFoldersLoop: some View {
+        if !workspace.folders.isEmpty {
+            ForEach(workspace.folders) { folder in
+                AtlasCodeFolderRow(
+                    folder: folder,
+                    isExpanded: model.expandedFolders.contains(folder.slug),
+                    issuesFor: { model.issues(for: $0) },
+                    trunkFor: { model.trunk(for: $0) },
+                    isMuteFor: { model.failedSlugs.contains($0) },
+                    onToggle: { Task { await model.toggle(folder) } },
+                    onOpenRepo: onOpenRepo
+                )
+                if folder.id != workspace.folders.last?.id { AtlasCodeRadarRowDivider() }
+            }
+        }
+    }
+}
+
+extension AtlasCodeRadarLoadedContent {
+    @ViewBuilder
+    var radarFoldersAndLoose: some View {
+        radarFoldersHeader
+        radarFoldersLoop
+        radarLooseSection
+    }
+}
+
+extension AtlasCodeRadarLoadedContent {
+    /// WAVE-024: issues-first judgment order when scan hydrated.
+    var judgmentLoose: [AtlasCodeRepoRef] {
+        AtlasCodeRadarJudgment.sortedForJudgment(
+            workspace.loose,
+            issuesBySlug: model.issuesBySlug,
+            failedSlugs: model.failedSlugs
+        )
+    }
+
+    @ViewBuilder
+    var radarLooseSection: some View {
+        if !workspace.loose.isEmpty {
+            AtlasCodeRadarSectionLabel(text: "AVULSOS", accessibilityID: A11yID.radarLoose)
+                .padding(.top, 22)
+            ForEach(judgmentLoose) { repo in
+                AtlasCodeRepoRow(
+                    repo: repo,
+                    issues: model.issues(for: repo.slug),
+                    trunk: model.trunk(for: repo.slug),
+                    showsFolder: false,
+                    isMute: model.failedSlugs.contains(repo.slug)
+                ) {
+                    onOpenRepo(repo.slug)
+                }
+                if repo.id != judgmentLoose.last?.id { AtlasCodeRadarRowDivider() }
+            }
+        }
+    }
+}
+
+extension AtlasCodeRadarLoadedContent {
+    var judgmentRecents: [AtlasCodeRepoRef] {
+        AtlasCodeRadarJudgment.sortedForJudgment(
+            workspace.recents,
+            issuesBySlug: model.issuesBySlug,
+            failedSlugs: model.failedSlugs
+        )
+    }
+
+    @ViewBuilder
+    var radarRecentsSection: some View {
+        if !workspace.recents.isEmpty {
+            AtlasCodeRadarSectionLabel(text: "RECENTES", accessibilityID: A11yID.radarRecents)
+            ForEach(judgmentRecents) { repo in
+                AtlasCodeRepoRow(
+                    repo: repo,
+                    issues: model.issues(for: repo.slug),
+                    trunk: model.trunk(for: repo.slug),
+                    showsFolder: true,
+                    isMute: model.failedSlugs.contains(repo.slug)
+                ) {
+                    onOpenRepo(repo.slug)
+                }
+                if repo.id != judgmentRecents.last?.id { AtlasCodeRadarRowDivider() }
+            }
+        }
+    }
+}
+
+extension AtlasCodeRadarLoadedContent {
+    @ViewBuilder
+    var radarSections: some View {
+        AtlasCodeRadarStatusCapsule(model: model)
+            .padding(.bottom, 18)
+
+        radarRecentsSection
+
+        radarFoldersAndLoose
+    }
+}
+
+// MARK: - Loaded host
+
+struct AtlasCodeRadarLoadedContent: View {
+    let workspace: AtlasCodeWorkspaceResponse
+    let model: AtlasCodeWorkspaceModel
+    let onOpenRepo: (String) -> Void
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                radarSections
+            }
+            .padding(.horizontal, AtlasTheme.Space.screen)
+            .padding(.top, 12)
+            .padding(.bottom, 28)
+        }
+    }
+}
+
+// MARK: - AtlasCodeRadarAskContext
+
+// MARK: - Invite · pack
+
+enum AtlasCodeRadarAskContext {
+    static let invite = "pergunte sobre o workspace"
+
+    static var emptySuggestions: [String] {
+        [
+            "o que pede atenção no workspace?",
+            "quais pastas têm sem retorno?",
+            "por onde começar a curar?",
+        ]
+    }
+
+    static func emptyPrompt(headline: String?) -> String {
+        let line = headline?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !line.isEmpty, line != "lendo o workspace…" {
+            return "workspace · \(line) — o que você quer saber?"
+        }
+        return invite
+    }
+
+    /// Pack da ocasião do radar — never invents scan results.
+    @MainActor
+    static func facts(model: AtlasCodeWorkspaceModel) -> String {
+        var facts: [String] = []
+        var absences: [String] = []
+        var anchors: [String] = []
+
+        // WAVE-183: catalog shell pack (folders/recents/root).
+        let shellPack = AtlasCodeRadarJudgment.packWorkspaceFacts(
+            workspace: model.workspace
+        )
+        facts.append(contentsOf: shellPack.facts)
+        absences.append(contentsOf: shellPack.absences)
+        anchors.append(contentsOf: shellPack.anchors)
+
+        // WAVE-182: fleet attention pack (one law with topAttention rank).
+        let attentionPack = AtlasCodeRadarJudgment.packFacts(
+            issuesBySlug: model.issuesBySlug,
+            failedSlugs: model.failedSlugs,
+            headline: model.headline
+        )
+        facts.append(contentsOf: attentionPack.facts)
+        absences.append(contentsOf: attentionPack.absences)
+        anchors.append(contentsOf: attentionPack.anchors)
+
+        // WAVE-162: radar screen face organ.
+        let failMsg: String? = {
+            if case .failed(let m) = model.phase { return m }
+            return nil
+        }()
+        let repoCount = model.workspace.map { $0.folders.reduce(0) { $0 + $1.repos.count } + $0.recents.count }
+        let screenPack = AtlasCodeRadarLoadJudgment.packFacts(
+            phase: model.phase,
+            repositoryCount: repoCount,
+            failMessage: failMsg
+        )
+        facts.append(contentsOf: screenPack.facts)
+        absences.append(contentsOf: screenPack.absences)
+
+        // WAVE-158: can_do matrix — radar list has no local heal CTA; honesty via absences.
+        let attentionCount = AtlasCodeRadarJudgment.topAttention(issuesBySlug: model.issuesBySlug).count
+        let partida = PartidaCanDoJudgment.radar(
+            hasHealFaceCTA: false,
+            attentionCount: attentionCount
+        )
+        absences.append(contentsOf: partida.absences)
+
+        return AgenticOccasionPack(
+            surface: "code.radar",
+            subject: "workspace do operador",
+            anchors: anchors,
+            facts: facts,
+            absences: absences,
+            canDo: partida.canDo
+        ).render()
+    }
+}
+
+// MARK: - Folder row chrome
+
+extension AtlasCodeFolderRow {
+    @ViewBuilder
+    var exceptionBadge: some View {
+        if verifiedExceptionCount > 0 {
+            HStack(spacing: 4) {
+                Image(systemName: "exclamationmark.triangle")
+                    .atlasSans(9, .semibold)
+                Text("\(verifiedExceptionCount)")
+                    .atlasSans(11, .semibold)
+                    .monospacedDigit()
+            }
+            .foregroundStyle(AtlasCodePalette.alert)
+            .accessibilityHidden(true)
+        }
+    }
+}
+
+extension AtlasCodeFolderRow {
+    /// Só violações de repos já varridos — nil = ainda não medido, nunca conta.
+    var verifiedExceptionCount: Int {
+        folder.repos.reduce(0) { total, repo in
+            guard let issues = issuesFor(repo.slug), !issues.isEmpty else { return total }
+            return total + issues.reduce(0) { $0 + $1.count }
+        }
+    }
+}
+
+extension AtlasCodeFolderRow {
+    @ViewBuilder var expandedRepos: some View {
+        if isExpanded {
+            expandedReposList
+        }
+    }
+}
+
+extension AtlasCodeFolderRow {
+    /// WAVE-024: issues-first inside folder when scan data present via issuesFor.
+    var judgmentFolderRepos: [AtlasCodeRepoRef] {
+        let issuesMap = Dictionary(uniqueKeysWithValues: folder.repos.compactMap { repo -> (String, [AtlasCodeIssue])? in
+            guard let issues = issuesFor(repo.slug) else { return nil }
+            return (repo.slug, issues)
+        })
+        let failed = Set(folder.repos.map(\.slug).filter { isMuteFor($0) })
+        return AtlasCodeRadarJudgment.sortedForJudgment(
+            folder.repos,
+            issuesBySlug: issuesMap,
+            failedSlugs: failed
+        )
+    }
+
+    var expandedReposList: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(judgmentFolderRepos) { repo in
+                AtlasCodeRepoRow(
+                    repo: repo,
+                    issues: issuesFor(repo.slug),
+                    trunk: trunkFor(repo.slug),
+                    showsFolder: false,
+                    isMute: isMuteFor(repo.slug)
+                ) {
+                    onOpenRepo(repo.slug)
+                }
+                .padding(.leading, 32)
+                expandedRepoSeparator(after: repo, in: judgmentFolderRepos)
+            }
+        }
+        .padding(.bottom, 6)
+        .transition(reduceMotion ? .identity : .opacity)
+    }
+}
+
+extension AtlasCodeFolderRow {
+    @ViewBuilder
+    func expandedRepoSeparator(after repo: AtlasCodeRepoRef, in ordered: [AtlasCodeRepoRef]) -> some View {
+        if repo.id != ordered.last?.id {
+            Rectangle()
+                .fill(AtlasTheme.separator.opacity(0.4))
+                .frame(height: 0.5)
+                .padding(.leading, 32)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension AtlasCodeFolderRow {
+    var folderToggleButton: some View {
+        folderToggleA11y(
+            Button {
+                AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onToggle()
+            } label: {
+                folderHeaderLabel
+            }
+            .buttonStyle(.plain)
+        )
+    }
+}
