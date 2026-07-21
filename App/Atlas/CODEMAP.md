@@ -1,46 +1,40 @@
 # Atlas Native — CODEMAP (casca)
 
-> Mapa curto para IA. Manter verdadeiro. Canon: `docs/prompts/grok-god-code-canon.md`
-> GOD RESTRUCTURE v4: densos agent-optimal hosts; Type.method navigation.
+> Mapa curto para IA. GOD RESTRUCTURE v4 densified hosts. Navigation = `Type.method`.
 
-## Superfícies → entrada
+## Superfícies → host
 
-| Superfície | Entry / host | Núcleo vivo |
-|---|---|---|
-| Home | `RootView` | `RootChrome` · `RootHomeBody` · `HomeOpsJudgment` |
-| Conversa | `RootView` / `ConversationSurface` | Messages · Composer · Judgments · Model |
-| Código | `AtlasCodeSurface` | Radar · Provenance · Graph · CommitRow |
-| Pílula | dock in hosts | `AgenticPill` (in RootView) |
-| Arena | `ArenaPremiumShell` | Execution · Surfaces · FleetJudgment |
-| Autônomos | `AutonomosHost` | Map · Model · CanDoJudgment |
-| Continuity | Widgets + `TurnPresence` | ActivityKit chrome — App Group data BLOCKED |
-
-## Onde muda X (hot paths)
-
-| Intenção | Comece em |
+| Superfície | Host principal |
 |---|---|
-| Home ops / partida | `HomeOpsJudgment` · `RootHomeBody` |
-| LiveNow attention | `RootHomeBody` (LiveNow*) |
-| Conversation mid-thread | `ConversationSurface` · `ConversationMessagesJudgment` |
-| Composer send/toolbar | `ConversationComposer` · `ComposerToolbar` |
-| Execution card / proof | `ExecutionStateCard` |
-| Plan card | `PlanCard` |
-| Change review | `ChangeReviewView` · `ChangeReviewJudgment` |
-| Radar multi-repo | `AtlasCodeRadarSurface` |
-| Provenance / Why | `AtlasCodeProvenanceSheet` |
-| Code graph | `AtlasCodeSurface` · `AtlasCodeGraphJudgment` |
-| Arena now/run/fleet | `ArenaPremiumShell` · `ArenaPremiumSurfaces` · `ArenaFleetJudgment` |
-| Autônomos decide/map | `AutonomosHost` · `AutonomosMap` · `AutonomosCanDoJudgment` |
-| Workspace catalog | `WorkspaceSurface` |
-| Search | `SearchSurface` |
-| Design system | `RootChrome` (Theme/A11y fused) · tokens |
+| Home | `RootView` · `RootChrome` · `HomeOpsJudgment` |
+| Conversa | `ConversationSurface` · Messages · Composer · Judgments · `ConversationModel` |
+| Código | `AtlasCodeSurface` · Radar · Provenance · Graph |
+| Arena | `ArenaPremiumRoot` · Execution · Surfaces · FleetJudgment |
+| Autônomos | `AutonomosHost` · Map · Model · CanDoJudgment |
+| Workspace/Search | `WorkspaceSurface` · `SearchSurface` |
+| Continuity | `TurnPresence` · Widgets Host A/B |
+| Design system | inside `RootChrome` (Theme/A11y) |
+
+## Onde muda X
+
+| Intenção | Host |
+|---|---|
+| LiveNow / Home ops | `HomeOpsJudgment` |
+| Mid-thread conversation | `ConversationSurface` / `ConversationMessagesJudgment` |
+| Composer | `ConversationComposer` / `ComposerToolbar` |
+| Execution proof card | `ExecutionStateCard` |
+| Plan | `PlanCard` |
+| Change review | `ChangeReviewSurface` / `ChangeReviewJudgment` |
+| Radar | `AtlasCodeRadarSurface` |
+| Provenance/Why | `AtlasCodeProvenanceSheet` |
+| Grafo | `AtlasCodeSurface` / `AtlasCodeGraph` |
+| Arena | `ArenaPremiumRoot` / `ArenaPremiumSurfaces` / `ArenaFleetJudgment` |
+| Autônomos | `AutonomosHost` / `AutonomosMap` / `AutonomosCanDoJudgment` |
 
 ## BLOCKED
 
-- App Group / Continuity data wire — Core
-- `Sources/**` · new ConversationModel/AtlasSession logic
-- WAVE produto / dual A/B
+Sources/** · ConversationModel/AtlasSession **logic** · App Group data · WAVE produto
 
-## Densidade (v4)
+## Densidade
 
-View/Shell de rota ≤600 · qualquer casca ≤2000 · 1 domínio por host
+route View/Shell ≤600 · any ≤2000 · soft Sections/States = 0
