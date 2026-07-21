@@ -549,7 +549,7 @@ struct ArenaPremiumDestinationView: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             AgenticAskDock {
                 AgenticPill(
-                    invite: ArenaPremiumAskContext.invite(
+                    invite: ArenaPremiumAskContext.productInvite(
                         tab: ArenaPremiumAskContext.tabForDestination(target),
                         destination: target
                     ),
@@ -565,7 +565,7 @@ struct ArenaPremiumDestinationView: View {
                 client: session.client,
                 threadId: askThreadId,
                 title: "Arena · \(title)",
-                emptyPrompt: ArenaPremiumAskContext.invite(
+                emptyPrompt: ArenaPremiumAskContext.productInvite(
                     tab: ArenaPremiumAskContext.tabForDestination(target),
                     destination: target
                 ),
@@ -626,7 +626,7 @@ struct ArenaPremiumDestinationView: View {
 enum ArenaPremiumAskContext {
     // MARK: - Invite / empty
 
-    static func invite(tab: ArenaPremiumTab, destination: ArenaPremiumDestination?) -> String {
+    static func productInvite(tab: ArenaPremiumTab, destination: ArenaPremiumDestination?) -> String {
         if let destination {
             switch destination {
             case .execution: return "pergunte sobre esta execução"

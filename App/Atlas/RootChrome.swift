@@ -608,7 +608,7 @@ extension RootView {
                 client: session.client,
                 threadId: nil,
                 title: name,
-                emptyPrompt: WorkspaceAskContext.invite(workspaceName: name),
+                emptyPrompt: WorkspaceAskContext.productInvite(workspaceName: name),
                 emptySuggestions: WorkspaceAskContext.emptySuggestions(
                     workspaceName: name,
                     threadCount: threadCount
@@ -653,7 +653,7 @@ extension RootView {
             client: session.client,
             threadId: id,
             title: title,
-            emptyPrompt: ConversationOccasionPack.invite,
+            emptyPrompt: ConversationOccasionPack.productInvite,
             emptySuggestions: ConversationOccasionPack.emptySuggestions,
             turnFacts: { [session] _ in
                 ConversationOccasionPack.facts(

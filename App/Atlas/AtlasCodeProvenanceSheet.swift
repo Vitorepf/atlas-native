@@ -1504,7 +1504,7 @@ enum AtlasCodeWhyJudgment {
 // MARK: - Host
 
 enum AtlasCodeAskContext {
-    static let invite = "pergunte sobre este repositório"
+    static let productInvite = "pergunte sobre este repositório"
 
     static var emptySuggestions: [String] { AtlasCodeAskSuggestions.all }
 
@@ -1512,7 +1512,7 @@ enum AtlasCodeAskContext {
         if let focusLegend, !focusLegend.isEmpty {
             return "sobre \(focusLegend) — o que você quer saber?"
         }
-        return invite
+        return productInvite
     }
 
     @MainActor

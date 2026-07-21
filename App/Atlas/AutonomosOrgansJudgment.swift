@@ -282,7 +282,7 @@ enum AutonomosListJudgment {
         "Defina um Autônomo com escopo fechado. Por agora o catálogo vive só neste iPhone — some se o app for morto."
     static let emptyFootnote =
         "Create no servidor ainda pendente — sem frota 24/7 inventada."
-    static let emptyHero = "Nenhum ainda"
+    static let productEmptyHero = "Nenhum ainda"
     static let productCreateCTA = "Novo Autônomo"
 
     // MARK: Face

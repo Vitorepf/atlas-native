@@ -498,7 +498,7 @@ struct AutonomosListView: View {
     private var emptyState: some View {
         VStack(alignment: .leading, spacing: 18) {
             Spacer(minLength: 36)
-            AutonomosMapChrome.heroTitle(AutonomosListJudgment.emptyHero, size: 32)
+            AutonomosMapChrome.heroTitle(AutonomosListJudgment.productEmptyHero, size: 32)
             Text(AutonomosListJudgment.emptyBody)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)

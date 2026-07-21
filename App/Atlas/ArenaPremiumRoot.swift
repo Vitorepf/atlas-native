@@ -81,7 +81,7 @@ struct ArenaPremiumShell: View {
     private var askPillDock: some View {
         AgenticAskDock {
             AgenticPill(
-                invite: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination),
+                invite: ArenaPremiumAskContext.productInvite(tab: selectedTab, destination: destination),
                 accessibilityId: A11yID.arenaPremiumAskPill
             ) {
                 askDraft = ""
@@ -95,7 +95,7 @@ struct ArenaPremiumShell: View {
             client: session.client,
             threadId: askThreadId,
             title: "Arena",
-            emptyPrompt: ArenaPremiumAskContext.invite(tab: selectedTab, destination: destination),
+            emptyPrompt: ArenaPremiumAskContext.productInvite(tab: selectedTab, destination: destination),
             emptySuggestions: ArenaPremiumAskContext.emptySuggestions(
                 tab: selectedTab,
                 destination: destination

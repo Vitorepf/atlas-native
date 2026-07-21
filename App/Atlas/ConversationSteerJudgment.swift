@@ -521,7 +521,7 @@ enum ConversationEmptyFace: Equatable {
 /// Never invents chips; Home catalog only when `isHomePartida`.
 enum ConversationEmptyJudgment {
 
-    static let defaultPromptQuote = "O que você quer pensar agora?"
+    static let productDefaultPromptQuote = "O que você quer pensar agora?"
     static let spokenSuggestionHint = "envia esta pergunta agora"
 
     // MARK: Resolve
@@ -555,7 +555,7 @@ enum ConversationEmptyJudgment {
     }
 
     static func resolvedPrompt(_ prompt: String?) -> String {
-        cleanPrompt(prompt) ?? defaultPromptQuote
+        cleanPrompt(prompt) ?? productDefaultPromptQuote
     }
 
     // MARK: Face

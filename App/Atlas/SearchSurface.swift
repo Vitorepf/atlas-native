@@ -465,7 +465,7 @@ extension SearchView {
     var askPillDock: some View {
         AgenticAskDock {
             AgenticPill(
-                invite: SearchAskContext.invite,
+                invite: SearchAskContext.productInvite,
                 accessibilityId: A11yID.searchAskPill,
                 accessibilityHintText: "Abre conversa com o contexto da busca"
             ) {
@@ -851,7 +851,7 @@ enum SearchListJudgment {
 /// Pack de ocasião Search — WAVE-176 agentic door (pill + pack).
 /// Casca only · SearchJudgment.packFacts sovereignty · never invents threads.
 enum SearchAskContext {
-    static let invite = "o que você procura?"
+    static let productInvite = "o que você procura?"
 
     static var emptySuggestions: [String] {
         [
@@ -874,7 +874,7 @@ enum SearchAskContext {
             return "sem recentes neste recorte — o que você procura?"
         case .emptyQuery:
             return trimmedQuery.isEmpty
-                ? invite
+                ? productInvite
                 : "nada com «\(trimmedQuery)» — refine ou pergunte o recorte"
         case .resultsRecent(let n):
             return n == 1

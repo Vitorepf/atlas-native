@@ -625,7 +625,7 @@ struct ArenaPremiumCapabilitiesView: View {
             Text(ArenaCapabilitiesJudgment.productEmptyTitle)
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text(ArenaCapabilitiesJudgment.emptyBody)
+            Text(ArenaCapabilitiesJudgment.productEmptyBody)
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }

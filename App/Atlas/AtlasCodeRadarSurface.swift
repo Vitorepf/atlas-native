@@ -451,7 +451,7 @@ struct AtlasCodeRadarLoadedContent: View {
 // MARK: - Invite · pack
 
 enum AtlasCodeRadarAskContext {
-    static let invite = "pergunte sobre o workspace"
+    static let productInvite = "pergunte sobre o workspace"
 
     static var emptySuggestions: [String] {
         [
@@ -466,7 +466,7 @@ enum AtlasCodeRadarAskContext {
         if !line.isEmpty, line != "lendo o workspace…" {
             return "workspace · \(line) — o que você quer saber?"
         }
-        return invite
+        return productInvite
     }
 
     /// Pack da ocasião do radar — never invents scan results.
@@ -958,7 +958,7 @@ extension AtlasCodeRadarView {
     var askPillDock: some View {
         AgenticAskDock {
             AgenticPill(
-                invite: AtlasCodeRadarAskContext.invite,
+                invite: AtlasCodeRadarAskContext.productInvite,
                 accessibilityId: A11yID.radarAskPill,
                 accessibilityHintText: "Abre conversa com o contexto do workspace"
             ) {

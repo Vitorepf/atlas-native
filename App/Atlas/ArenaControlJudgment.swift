@@ -167,7 +167,7 @@ struct ArenaCapabilitiesCounts: Equatable {
 enum ArenaCapabilitiesJudgment {
 
     static let productEmptyTitle = "Capacidades ainda não medidas"
-    static let emptyBody = "Ausência permanece ausência — nenhuma barra começa em zero."
+    static let productEmptyBody = "Ausência permanece ausência — nenhuma barra começa em zero."
     static let productCovered = "capacidades cobertas"
     static let groupOrder = ["construction", "comprehension", "quality", "agentic"]
 

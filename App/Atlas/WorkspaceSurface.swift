@@ -168,7 +168,7 @@ extension WorkspaceView {
             return WorkspaceAskContext.freeInvite
         }
         if let workspaceKey {
-            return WorkspaceAskContext.invite(workspaceName: title.isEmpty ? workspaceKey : title)
+            return WorkspaceAskContext.productInvite(workspaceName: title.isEmpty ? workspaceKey : title)
         }
         return HomeAskContext.productInvite
     }
@@ -1076,7 +1076,7 @@ struct AtlasNetworkFailureEmpty: View {
 // MARK: - WorkspaceAskContext
 
 enum WorkspaceAskContext {
-    static func invite(workspaceName: String) -> String {
+    static func productInvite(workspaceName: String) -> String {
         "Escreva sobre \(workspaceName)"
     }
 

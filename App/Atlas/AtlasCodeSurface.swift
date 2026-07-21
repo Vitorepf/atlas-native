@@ -142,7 +142,7 @@ extension AtlasCodeView {
     @ViewBuilder
     var askPillContent: some View {
         // WAVE-016: AgenticPillFace + trailing clear/chevron (âncora WAVE-001).
-        AgenticPillFace(invite: anchorLegend ?? AtlasCodeAskContext.invite) {
+        AgenticPillFace(invite: anchorLegend ?? AtlasCodeAskContext.productInvite) {
             askPillClearButton
             Image(systemName: "chevron.up")
                 .atlasSans(10, .semibold)

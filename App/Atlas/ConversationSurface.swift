@@ -147,7 +147,7 @@ extension ConversationView {
     func rebindMidThreadTurnFacts() {
         guard !isHomePartida else { return }
         // Only mid-thread occasion (ConversationOccasionPack invite path / open thread).
-        guard emptyPrompt == ConversationOccasionPack.invite
+        guard emptyPrompt == ConversationOccasionPack.productInvite
                 || model.threadId != nil else { return }
         let threadTitle = title
         model.turnFacts = { [session, model, threadTitle] _ in
@@ -826,7 +826,7 @@ struct ChatBubble: Identifiable, Equatable {
 /// Surface purity: `conversation` or `conversation.workspace`.
 enum ConversationOccasionPack {
 
-    static let invite = "continue nesta conversa"
+    static let productInvite = "continue nesta conversa"
 
     static var emptySuggestions: [String] {
         [
@@ -914,7 +914,7 @@ enum ConversationOccasionPack {
 
         // WAVE-084: mid-thread empty editorial (never Home catalog).
         let empty = ConversationEmptyJudgment.packFacts(
-            prompt: invite,
+            prompt: productInvite,
             suggestions: emptySuggestions,
             isHomePartida: false
         )
