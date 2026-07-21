@@ -1011,7 +1011,7 @@ extension QueuedFollowUpsSheet {
     /// WAVE-051: titles/spoken via queue head judgment.
     func sheetTitle(count: Int) -> String {
         _ = count
-        return ComposerQueueJudgment.sheetTitle(from: model.queuedMessages)
+        return ComposerQueueJudgment.productSheetTitle(from: model.queuedMessages)
     }
 
     func spokenQueueSheetLabel() -> String {

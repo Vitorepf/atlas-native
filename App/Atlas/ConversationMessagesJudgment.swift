@@ -137,8 +137,8 @@ enum ConversationDecisionJudgment {
         return bubble.executionPresentationState?.actions ?? []
     }
 
-    /// Compact strip label when many actions: "Escolher" or first title.
-    static func stripChooseLabel(actionCount: Int, firstTitle: String?) -> String {
+    /// Compact strip product face when many actions: "Escolher" or first title.
+    static func productStripChoose(actionCount: Int, firstTitle: String?) -> String {
         if actionCount == 1, let firstTitle, !firstTitle.isEmpty {
             return firstTitle
         }

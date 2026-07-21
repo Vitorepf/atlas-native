@@ -889,7 +889,7 @@ enum ComposerQueueJudgment {
         return String(trimmed.prefix(maxChars - 1)) + "…"
     }
 
-    static func chipLabel(from messages: [QueuedMessage]) -> String {
+    static func productChip(from messages: [QueuedMessage]) -> String {
         let face = face(from: messages)
         guard let head = head(from: messages) else { return "Fila" }
         let snip = snippet(head.text)
@@ -903,7 +903,7 @@ enum ComposerQueueJudgment {
         }
     }
 
-    static func sheetTitle(from messages: [QueuedMessage]) -> String {
+    static func productSheetTitle(from messages: [QueuedMessage]) -> String {
         switch face(from: messages) {
         case .empty: return "Fila"
         case .single: return "Fila · 1"

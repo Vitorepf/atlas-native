@@ -1526,7 +1526,7 @@ extension ExecutingStrip {
                 Button {
                     onChoose(jobId, only.id)
                 } label: {
-                    Text(ConversationDecisionJudgment.stripChooseLabel(
+                    Text(ConversationDecisionJudgment.productStripChoose(
                         actionCount: 1,
                         firstTitle: only.title
                     ))
@@ -1547,7 +1547,7 @@ extension ExecutingStrip {
                         }
                     }
                 } label: {
-                    Text(ConversationDecisionJudgment.stripChooseLabel(
+                    Text(ConversationDecisionJudgment.productStripChoose(
                         actionCount: choiceActions.count,
                         firstTitle: choiceActions.first?.title
                     ))

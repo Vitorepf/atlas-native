@@ -214,7 +214,7 @@ extension ConversationComposer {
 
     /// WAVE-051: head-aware chip (not count-only).
     var queueChipLabel: String {
-        ComposerQueueJudgment.chipLabel(from: model.queuedMessages)
+        ComposerQueueJudgment.productChip(from: model.queuedMessages)
     }
 
     var queueAccessibilityLabel: String {
