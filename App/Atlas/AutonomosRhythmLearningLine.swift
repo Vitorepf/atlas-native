@@ -28,7 +28,7 @@ struct AutonomosRhythmLearningLine: View {
                     .accessibilityHidden(true)
             }
             .foregroundStyle(AtlasTheme.textTertiary)
-            .frame(maxWidth: .infinity, minHeight: 36, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)

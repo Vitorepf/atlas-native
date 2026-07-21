@@ -28,7 +28,9 @@ extension ChangeReviewRunActions {
         Text("Aceitar tudo")
             .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 18).padding(.vertical, 10)
+            .frame(minHeight: 44)
             .background(Capsule().fill(AtlasTheme.accent))
+            .contentShape(Capsule())
     }
 }
 
@@ -118,7 +120,9 @@ extension ChangeReviewRunActions {
         Text("Rejeitar")
             .font(.system(.footnote, weight: .semibold)).foregroundStyle(AtlasTheme.domOperacional)
             .padding(.horizontal, 18).padding(.vertical, 10)
+            .frame(minHeight: 44)
             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
             .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
+            .contentShape(Capsule())
     }
 }

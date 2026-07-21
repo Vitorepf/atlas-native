@@ -19,7 +19,7 @@ struct ArenaPremiumTabBar: View {
                     Text(tab.rawValue)
                         .atlasSans(13, .medium)
                         .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textTertiary)
-                        .frame(maxWidth: .infinity, minHeight: 40)
+                        .frame(maxWidth: .infinity, minHeight: 44)
                         .background {
                             if selection == tab {
                                 Capsule()

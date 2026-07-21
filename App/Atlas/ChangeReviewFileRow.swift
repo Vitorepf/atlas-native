@@ -25,7 +25,7 @@ struct ChangeReviewFileRow: View {
 
 extension ChangeReviewFileRow {
     var acceptButton: some View {
-        Button("aceitar") {
+        Button {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(
@@ -33,9 +33,15 @@ extension ChangeReviewFileRow {
                     filePath: file, action: .accept
                 )
             }
+        } label: {
+            Text("aceitar")
+                .font(.system(.caption, weight: .medium))
+                .foregroundStyle(AtlasTheme.accent)
+                .frame(minHeight: 44)
+                .padding(.horizontal, 4)
+                .contentShape(Rectangle())
         }
         .buttonStyle(PressableScale())
-        .font(.system(.caption, weight: .medium)).foregroundStyle(AtlasTheme.accent)
         .accessibilityLabel("aceitar \(displayName)")
         .accessibilityHint("registra aceite deste arquivo no patch")
         .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))
@@ -44,7 +50,7 @@ extension ChangeReviewFileRow {
 
 extension ChangeReviewFileRow {
     var rejectButton: some View {
-        Button("rejeitar") {
+        Button {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(
@@ -52,9 +58,15 @@ extension ChangeReviewFileRow {
                     filePath: file, action: .reject
                 )
             }
+        } label: {
+            Text("rejeitar")
+                .font(.system(.caption))
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .frame(minHeight: 44)
+                .padding(.horizontal, 4)
+                .contentShape(Rectangle())
         }
         .buttonStyle(PressableScale())
-        .font(.system(.caption)).foregroundStyle(AtlasTheme.textTertiary)
         .accessibilityLabel("rejeitar \(displayName)")
         .accessibilityHint("registra rejeição deste arquivo no patch")
         .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))

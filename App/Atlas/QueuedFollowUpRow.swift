@@ -47,8 +47,9 @@ extension QueuedFollowUpRow {
             Image(systemName: "arrow.up")
                 .atlasSans(15, .semibold)
                 .foregroundStyle(AtlasTheme.accent)
-                .frame(width: 38, height: 38)
+                .frame(width: 44, height: 44)
                 .background(Circle().fill(AtlasTheme.goldVeil))
+                .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel(promoteLabel)
@@ -83,8 +84,9 @@ extension QueuedFollowUpRow {
             Image(systemName: "trash")
                 .atlasSans(14)
                 .foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 38, height: 38)
+                .frame(width: 44, height: 44)
                 .background(Circle().fill(AtlasTheme.surfaceHi))
+                .contentShape(Circle())
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel(removeLabel)
