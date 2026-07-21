@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — fuse Code/Arena hosts + strip repair (ciclo 282)** · `3d2b3502` · App/Atlas 121. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse radar/camera/arena/findings (ciclo 281)** · `cca537cc` · App/Atlas 131. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse review/evolution/pill/chart (ciclo 280)** · `f82f7062` · App/Atlas 140. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — fuse draft/hub/week/arena/token (ciclo 279)** · `a45fd569` · App/Atlas 145. **Prova:** checks+build exit 0.
