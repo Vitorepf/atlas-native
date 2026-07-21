@@ -65,6 +65,7 @@
 | **Autônomos lista/row** | `AutonomosListJudgment` → list empty/list(N) · row awaiting/live/quiet · pack |
 | Presence primary chrome (face lead) | `ConversationExecutionPhase.primarySpoken` + `selectPresenceBubble` · dual-surface 012 |
 | Conversation mid-run **Escolher** | `ConversationDecisionJudgment` → ExecutingStrip → `resolveExecutionChoice` |
+| **Live strip CTAs** | `ConversationLiveStripJudgment` → stop/steer/choose spoken · compound strip · pack |
 | Cockpit peels | `ConversationCockpitBody` (strip·lanes) · `ConversationCockpitBanners` (banner·reconnect·silence) |
 | **Steer / redirecionar** | `ConversationSteerJudgment` → receipt face · scope PT · allowsSubmit |
 | **Agent lanes (multi)** | `ConversationAgentLanesJudgment` → ExecutionRibbon rank failed-first |

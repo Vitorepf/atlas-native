@@ -249,7 +249,7 @@ struct ExecutingStrip: View {
                 .buttonStyle(PressableScale())
                 .accessibilityIdentifier(A11yID.executionActionChoice(only.id))
                 .accessibilityLabel(only.title)
-                .accessibilityHint("confirma a decisão publicada pelo servidor")
+                .accessibilityHint(ConversationLiveStripJudgment.spokenChooseConfirmHint())
             } else {
                 Menu {
                     ForEach(choiceActions) { action in
@@ -268,58 +268,45 @@ struct ExecutingStrip: View {
                     .minimumScaleFactor(0.82)
                 }
                 .accessibilityLabel(ConversationDecisionJudgment.spokenLead)
-                .accessibilityHint("abre as ações de decisão publicadas")
+                .accessibilityHint(ConversationLiveStripJudgment.spokenChooseMenuHint())
             }
         }
-        if !decisionRequired, let onSteer {
+        if ConversationLiveStripJudgment.showsSteerCTA(
+            decisionRequired: decisionRequired,
+            hasSteerHandler: onSteer != nil
+        ), let onSteer {
             Button(action: onSteer) {
-                Text("Redirecionar")
+                Text(ConversationLiveStripJudgment.steerButtonTitle)
                     .font(.system(.footnote, weight: .medium))
                     .foregroundStyle(AtlasTheme.accent)
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel("redirecionar execução")
-            .accessibilityHint("abre opções para redirecionar a execução ao vivo")
+            .accessibilityLabel(ConversationLiveStripJudgment.spokenSteer())
+            .accessibilityHint(ConversationLiveStripJudgment.spokenSteerHint())
         }
         Button(action: onStop) {
-            Text("Parar")
+            Text(ConversationLiveStripJudgment.stopButtonTitle)
                 .font(.system(.footnote, weight: .medium))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
         }
         .buttonStyle(PressableScale())
-        .accessibilityLabel("parar execução")
-        .accessibilityHint("interrompe a execução ao vivo")
+        .accessibilityLabel(ConversationLiveStripJudgment.spokenStop())
+        .accessibilityHint(ConversationLiveStripJudgment.spokenStopHint())
     }
 
-    // MARK: A11y (phase-aligned compound label)
+    // MARK: A11y (phase-aligned compound label · WAVE-093)
 
     var stripAccessibilityLabel: String {
-        var parts: [String] = [ConversationExecutionPhase.primarySpoken(for: bubble)]
-        if decisionRequired {
-            parts.append("\(choiceActions.count) ação\(choiceActions.count == 1 ? "" : "ões") disponíveis")
-        }
-        if face == .reconnect {
-            parts.append(bubble.reconnectSpokenLabel)
-        } else if let p = bubble.executionProgress, face == .running || face == .multiAgent {
-            parts.append("passo \(p.current) de \(p.total), \(p.title)")
-        } else if let act = bubble.currentActivity, face == .running || face == .multiAgent {
-            parts.append(act.title)
-        }
-        if face != .finished && face != .quiet {
-            let events = bubble.activities.count
-            parts.append("\(events) evento\(events == 1 ? "" : "s")")
-            if let started = bubble.startedAt {
-                let secs = max(0, Int(Date().timeIntervalSince(started)))
-                parts.append("\(secs) segundos decorridos")
-            }
-        }
-        if let stats = bubble.diffStats {
-            parts.append("mais \(stats.linesAdded), menos \(stats.linesRemoved) linhas")
-        }
-        return parts.joined(separator: ", ")
+        ConversationLiveStripJudgment.spokenStrip(
+            bubble: bubble,
+            decisionRequired: decisionRequired,
+            choiceActionCount: choiceActions.count,
+            face: face,
+            reconnectSpoken: face == .reconnect ? bubble.reconnectSpokenLabel : nil
+        )
     }
 }
 
