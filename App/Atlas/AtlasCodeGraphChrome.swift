@@ -49,6 +49,7 @@ extension AtlasCodeView {
                 Button {
                     AtlasMotion.softImpact(reduceMotion: reduceMotion)
                     withAnimation(reduceMotion ? nil : .easeOut(duration: 0.18)) {
+                        graphFilterTouchedByOperator = true
                         graphStateFilter = option
                     }
                 } label: {

@@ -20,6 +20,7 @@ enum AtlasCodeAskContext {
         focusNode: AtlasCodeGraphNode?,
         focusLegend: String?,
         isAnchoring: Bool,
+        graphStateFilter: AtlasCodeGraphStateFilter = .all,
         serverAskFacts: String? = nil
     ) -> String {
         occasionFacts(
@@ -27,6 +28,7 @@ enum AtlasCodeAskContext {
             focusNode: focusNode,
             focusLegend: focusLegend,
             isAnchoring: isAnchoring,
+            graphStateFilter: graphStateFilter,
             serverAskFacts: serverAskFacts
         )
     }
@@ -37,6 +39,7 @@ enum AtlasCodeAskContext {
         focusNode: AtlasCodeGraphNode?,
         focusLegend: String?,
         isAnchoring: Bool,
+        graphStateFilter: AtlasCodeGraphStateFilter,
         serverAskFacts: String?
     ) -> String {
         var anchors: [String] = []
@@ -52,7 +55,8 @@ enum AtlasCodeAskContext {
             if let message = node.message, !message.isEmpty {
                 anchors.append("subject: \(message)")
             }
-            anchors.append("state: \(model.state(for: node).rawValue)")
+            let state = model.state(for: node)
+            anchors.append("state: \(AtlasCodeGraphJudgment.productWord(for: state))")
         } else if isAnchoring {
             anchors.append("âncora H6 ativa (sem nó de swipe local)")
         }
@@ -78,6 +82,11 @@ enum AtlasCodeAskContext {
             absences.append("grafo sem nós (load vazio ou ainda carregando)")
         }
 
+        // WAVE-028: filter · status · worktrees · slice (same fatia as chips/list).
+        let slice = AtlasCodeGraphJudgment.packSliceFacts(model: model, filter: graphStateFilter)
+        facts.append(contentsOf: slice.facts)
+        absences.append(contentsOf: slice.absences)
+
         switch model.phase {
         case .loading, .idle:
             facts.append("phase: loading")
@@ -90,14 +99,17 @@ enum AtlasCodeAskContext {
 
         absences.append("dual-count obra/branch vs issues não reconciliado na casca (Core §5 se faltar DTO)")
         absences.append("filtro por agente não exposto no pack (sem DTO de filter)")
+        absences.append(contentsOf: AtlasCodeGraphJudgment.packCanDoAbsences(hasHealReceipt: model.hasHealReceipt))
+
+        let subject = "repositório \(model.repo) · \(slice.subjectSuffix)"
 
         return AgenticOccasionPack(
             surface: "code.graph",
-            subject: "repositório \(model.repo)",
+            subject: subject,
             anchors: anchors,
             facts: facts,
             absences: absences,
-            canDo: .readChat,
+            canDo: AtlasCodeGraphJudgment.packCanDo(hasHealReceipt: model.hasHealReceipt),
             appendix: serverAskFacts
         ).render()
     }

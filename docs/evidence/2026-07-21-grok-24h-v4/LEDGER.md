@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 22
+- waves_completed: 23
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -33,6 +33,7 @@ mode: designer + implementer
 - WAVE-025
 - WAVE-026
 - WAVE-027
+- WAVE-028
 
 ## Idle compress
 - pass 1 · `419bedf3`
@@ -41,7 +42,7 @@ mode: designer + implementer
 
 ## Designer
 - designs_proposed: 24
-- designs_open: 2
+- designs_open: 1
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -49,13 +50,11 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-028-codigo-commit-map-judgment-instrument | high | proposed |
-| 2 | WAVE-029-conversation-occasion-pack-honesty | high | proposed |
+| 1 | WAVE-029-conversation-occasion-pack-honesty | high | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-- **Dual v5:** A croqui · B fábrica · máx 2 idle sem ROI
-- **WAVE-026 done:** decision instrument Autônomos
-- **WAVE-027 done 2026-07-21:** presence primary chrome · selectPresenceBubble · face lead strip/card/LiveNow · ribbon ongoing · DEVICE_PENDING
+- **WAVE-026–028 done 2026-07-21** B v5 factory
+- **WAVE-028:** AtlasCodeGraphJudgment default fora + pack slice · DEVICE_PENDING

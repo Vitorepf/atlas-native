@@ -279,6 +279,27 @@ extension AtlasCodeView {
                 let warmer = AtlasCodeWorkspaceModel(client: session.client)
                 await warmer.loadStructure()
             }
+            // WAVE-028: default attention slice once scan is known (operator override freezes).
+            .onChange(of: model.phase) { _, phase in
+                if case .loaded = phase {
+                    applyGraphJudgmentDefaultIfNeeded()
+                }
+            }
+            .onChange(of: model.scanState) { _, _ in
+                applyGraphJudgmentDefaultIfNeeded()
+            }
+    }
+
+    func applyGraphJudgmentDefaultIfNeeded() {
+        guard !graphFilterTouchedByOperator else { return }
+        guard case .loaded = model.phase else { return }
+        let next = AtlasCodeGraphJudgment.defaultFilter(
+            scan: model.scanState,
+            violatingSignalCount: model.violations?.violations.count ?? 0
+        )
+        if graphStateFilter != next {
+            graphStateFilter = next
+        }
     }
 }
 
@@ -356,10 +377,15 @@ extension AtlasCodeView {
 extension AtlasCodeView {
     func graphContent(_ graph: AtlasCodeGraphResponse) -> some View {
         let filteredNodes = graphStateFilter.nodes(in: graph.nodes, model: model)
-        let filterSilence = graphStateFilter != .all && filteredNodes.isEmpty
+        let ranked = AtlasCodeGraphJudgment.rankNodes(
+            filteredNodes,
+            model: model,
+            scan: model.scanState
+        )
+        let filterSilence = graphStateFilter != .all && ranked.isEmpty
         let scroll = graphListScroll(
             graph: graph,
-            filteredNodes: filteredNodes,
+            filteredNodes: ranked,
             filterSilence: filterSilence
         )
         return graphAccessibilityRotors(graph: graph, content: scroll)
@@ -682,6 +708,7 @@ extension AtlasCodeAskWhySheetsModifier {
                     focusNode: focus,
                     focusLegend: askModel.sheetFocusLegend,
                     isAnchoring: askModel.isAnchoring,
+                    graphStateFilter: graphStateFilter,
                     serverAskFacts: server
                 )
             },
@@ -717,6 +744,7 @@ struct AtlasCodeAskWhySheetsModifier: ViewModifier {
   let session: AtlasSession
   let model: AtlasCodeModel
   let askModel: AtlasCodeAskModel
+  let graphStateFilter: AtlasCodeGraphStateFilter
   @Binding var askFocusNode: AtlasCodeGraphNode?
   @Binding var showsAskCard: Bool
   @Binding var whyFileTarget: AtlasCodeView.WhyFileTarget?
@@ -786,6 +814,7 @@ struct AtlasCodeSheetsModifier: ViewModifier {
   let model: AtlasCodeModel
   let provenanceModel: AtlasCodeProvenanceModel
   let askModel: AtlasCodeAskModel
+  let graphStateFilter: AtlasCodeGraphStateFilter
   @Binding var selectedNode: AtlasCodeGraphNode?
   @Binding var askFocusNode: AtlasCodeGraphNode?
   @Binding var showsHealReceipt: Bool
@@ -804,6 +833,7 @@ struct AtlasCodeSheetsModifier: ViewModifier {
       session: session,
       model: model,
       askModel: askModel,
+      graphStateFilter: graphStateFilter,
       askFocusNode: $askFocusNode,
       showsAskCard: $showsAskCard,
       whyFileTarget: $whyFileTarget,
@@ -819,6 +849,7 @@ extension View {
     model: AtlasCodeModel,
     provenanceModel: AtlasCodeProvenanceModel,
     askModel: AtlasCodeAskModel,
+    graphStateFilter: AtlasCodeGraphStateFilter,
     selectedNode: Binding<AtlasCodeGraphNode?>,
     askFocusNode: Binding<AtlasCodeGraphNode?>,
     showsHealReceipt: Binding<Bool>,
@@ -833,6 +864,7 @@ extension View {
       model: model,
       provenanceModel: provenanceModel,
       askModel: askModel,
+      graphStateFilter: graphStateFilter,
       selectedNode: selectedNode,
       askFocusNode: askFocusNode,
       showsHealReceipt: showsHealReceipt,
@@ -852,6 +884,7 @@ extension AtlasCodeView {
             model: model,
             provenanceModel: provenanceModel,
             askModel: askModel,
+            graphStateFilter: graphStateFilter,
             selectedNode: $selectedNode,
             askFocusNode: $askFocusNode,
             showsHealReceipt: $showsHealReceipt,
@@ -874,6 +907,7 @@ extension AtlasCodeView {
         askThreadId = nil
         askDraft = ""
         askFocusNode = nil
+        graphFilterTouchedByOperator = false
         graphStateFilter = .all
 
         model.adoptRepo(slug)
@@ -885,6 +919,7 @@ extension AtlasCodeView {
         async let mirrorLoad: Void = mirrorModel.refresh()
         await graphLoad
         await mirrorLoad
+        applyGraphJudgmentDefaultIfNeeded()
     }
 }
 

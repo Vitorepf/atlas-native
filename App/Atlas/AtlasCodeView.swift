@@ -27,6 +27,8 @@ struct AtlasCodeView: View {
     /// Nunca abre modal sozinho; o operador toca a pílula para conversar.
     @State var askFocusNode: AtlasCodeGraphNode?
     @State var graphStateFilter: AtlasCodeGraphStateFilter = .all
+    /// WAVE-028: operator chip override freezes auto attention slice.
+    @State var graphFilterTouchedByOperator = false
     @State var showsRepoPicker = false
     var onSwitchRepo: ((String) -> Void)?
 
