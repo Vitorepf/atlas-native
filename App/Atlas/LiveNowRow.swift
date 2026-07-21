@@ -16,12 +16,18 @@ struct LiveNowRow: View {
     var body: some View {
         Group {
             if navigable {
-                Button(action: onTap) { rowContent }
-                    .buttonStyle(PressableScale())
+                Button {
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                    onTap()
+                } label: {
+                    rowContent
+                }
+                .buttonStyle(PressableScale())
             } else {
                 rowContent
             }
         }
+        .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spokenLabel(hubIndex: hubIndex, hubCount: hubCount))
         .accessibilityHint(navigable ? "abre conversa desta sessão" : "")
@@ -46,6 +52,8 @@ struct LiveNowRow: View {
                         .accessibilityHidden(true)
                 }
             }
+            .padding(.vertical, 4)
+            .frame(minHeight: 44, alignment: .center)
             .opacity(isLongPaused(now: context.date) ? 0.58 : 1)
         }
     }
