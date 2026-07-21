@@ -31,6 +31,12 @@ extension ConversationOccasionPack {
             let riskPack = ChangeReviewJudgment.packFacts(from: published?.changeReview)
             facts.append(contentsOf: riskPack.facts)
             absences.append(contentsOf: riskPack.absences)
+            // WAVE-175: assinatura run/file — availableActions · undecided · never NL apply.
+            let controlPack = ChangeReviewControlJudgment.packFacts(
+                from: published?.changeReview
+            )
+            facts.append(contentsOf: controlPack.facts)
+            absences.append(contentsOf: controlPack.absences)
         }
 
         if let bubble {

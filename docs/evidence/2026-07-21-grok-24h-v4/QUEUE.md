@@ -15,19 +15,9 @@
 ## Queue (open · ranked by Δ · contiguous ranks 1…N)
 
 ```yaml
-id: WAVE-175-change-review-available-actions-pack-and-can-do
-status: proposed
-rank: 1
-delta_patamar: max
-design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-175-design.md
-created_by: designer
-approved_at: null
-```
-
-```yaml
 id: WAVE-176-search-agentic-pack-and-pill-host
 status: proposed
-rank: 2
+rank: 1
 delta_patamar: max
 design: docs/evidence/2026-07-21-grok-24h-v4/WAVE-176-design.md
 created_by: designer
@@ -38,8 +28,7 @@ approved_at: null
 
 | Rank | id | Δ | design |
 |---|---|---|---|
-| **1** | WAVE-175-change-review-available-actions-pack-and-can-do | **max** | `WAVE-175-design.md` |
-| **2** | WAVE-176-search-agentic-pack-and-pill-host | **max** | `WAVE-176-design.md` |
+| **1** | WAVE-176-search-agentic-pack-and-pill-host | **max** | `WAVE-176-design.md` |
 
 ## History (done)
 
@@ -212,4 +201,5 @@ approved_at: null
 - WAVE-172 done
 - WAVE-173 done
 - WAVE-174 done
+- WAVE-175 done
 

@@ -63,13 +63,17 @@ extension ConversationOccasionPack {
             absences.append("model mid-thread ainda não hidratado neste pack (session-only)")
         }
 
+        let hasReviewControl = ChangeReviewControlJudgment.hasPublishedControlActions(
+            from: published?.changeReview
+        )
         let canSignals = ConversationCanDoJudgment.liveSignals(
             matchingLive: matchingLive,
             decisionRequired: decisionRequired,
             decisionActionTitles: decisionTitles,
             queueCount: queued.count,
             hasPlan: hasPlan,
-            laneCount: agents.count
+            laneCount: agents.count,
+            hasReviewControl: hasReviewControl
         )
         let canDoPack = ConversationCanDoJudgment.packFacts(canSignals)
         facts.append(contentsOf: canDoPack.facts)

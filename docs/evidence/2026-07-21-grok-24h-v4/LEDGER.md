@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 169
+- waves_completed: 170
 - idle_compress_passes: 3
 - collapse_host: 0
 
@@ -180,15 +180,16 @@ mode: designer + implementer
 - WAVE-172
 - WAVE-173
 - WAVE-174
+- WAVE-175
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
-- pass 3 · `dc3204e1` · MARK densos post-174`85be3450`
+- pass 3 · `dc3204e1` · MARK densos post-174
 
 ## Designer
 - designs_proposed: 171
-- designs_open: 2
+- designs_open: 1
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
 
@@ -196,11 +197,11 @@ mode: designer + implementer
 
 | # | wave | Δ | status |
 |---|---|---|---|
-| 1 | WAVE-175-change-review-available-actions-pack-and-can-do | **max** | proposed |
-| 2 | WAVE-176-search-agentic-pack-and-pill-host | **max** | proposed |
+| 1 | WAVE-176-search-agentic-pack-and-pill-host | max | proposed |
 
 ## Notes
 - Re-run regen after every done wave or new design.
 - Continuity restore BLOCKED (App Group).
 - Device-pending (passcode) = operator.
-
+- WAVE-175: review assinatura pack + can_do faceCTALocal.
+- WAVE-174: timeline + markdown pack mid-thread.

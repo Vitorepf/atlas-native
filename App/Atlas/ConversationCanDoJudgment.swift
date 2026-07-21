@@ -18,6 +18,8 @@ enum ConversationCanDoJudgment {
         var queueCount: Int
         var hasPlan: Bool
         var hasLanes: Bool
+        /// WAVE-175: change-review accept/reject CTAs published (run or file).
+        var hasReviewControl: Bool
 
         static let quiet = LiveSignals(
             hasOngoing: false,
@@ -28,7 +30,8 @@ enum ConversationCanDoJudgment {
             hasQueue: false,
             queueCount: 0,
             hasPlan: false,
-            hasLanes: false
+            hasLanes: false,
+            hasReviewControl: false
         )
     }
 
@@ -38,7 +41,8 @@ enum ConversationCanDoJudgment {
         decisionActionTitles: [String] = [],
         queueCount: Int = 0,
         hasPlan: Bool = false,
-        laneCount: Int = 0
+        laneCount: Int = 0,
+        hasReviewControl: Bool = false
     ) -> LiveSignals {
         let ongoing = matchingLive.contains { $0.timing != .finished }
         return LiveSignals(
@@ -50,11 +54,12 @@ enum ConversationCanDoJudgment {
             hasQueue: queueCount > 0,
             queueCount: queueCount,
             hasPlan: hasPlan,
-            hasLanes: laneCount > 0
+            hasLanes: laneCount > 0,
+            hasReviewControl: hasReviewControl
         )
     }
 
-    /// can_do from published CTAs — never invent stop/steer/choose.
+    /// can_do from published CTAs — never invent stop/steer/choose/review write.
     static func occasionCanDo(_ signals: LiveSignals) -> AgenticOccasionPack.CanDo {
         // Decision Escolher is face CTA (local), not NL write.
         if signals.hasDecision {
@@ -63,6 +68,10 @@ enum ConversationCanDoJudgment {
         // Live run/pause: strip exposes stop (+ steer when no decision).
         if signals.hasRunning || signals.hasPaused {
             return .ctaOnlyRunStop
+        }
+        // WAVE-175: review accept/reject only on sheet CTAs.
+        if signals.hasReviewControl {
+            return .faceCTALocal
         }
         // Ongoing edge (unknown timing) — face chrome may exist.
         if signals.hasOngoing {
@@ -84,6 +93,7 @@ enum ConversationCanDoJudgment {
         facts.append("live_running: \(signals.hasRunning ? "yes" : "no")")
         facts.append("live_paused: \(signals.hasPaused ? "yes" : "no")")
         facts.append("decision_required: \(signals.hasDecision ? "yes" : "no")")
+        facts.append("review_control: \(signals.hasReviewControl ? "yes" : "no")")
         if signals.hasDecision {
             facts.append("decision_actions: \(signals.decisionActionTitles.count)")
             for title in signals.decisionActionTitles.prefix(6) {
@@ -91,6 +101,11 @@ enum ConversationCanDoJudgment {
             }
         } else {
             absences.append("sem decisão Escolher publicada neste recorte")
+        }
+        if signals.hasReviewControl {
+            facts.append("review_control_cta: face_sheet_only")
+        } else {
+            absences.append("sem ações de assinatura da revisão publicadas neste recorte")
         }
         if signals.hasQueue {
             facts.append("queue_followups: \(signals.queueCount)")
@@ -103,10 +118,10 @@ enum ConversationCanDoJudgment {
         if !signals.hasLanes {
             absences.append("sem agent lanes publicadas neste recorte")
         }
-        if signals.hasOngoing && !signals.hasRunning && !signals.hasPaused && !signals.hasDecision {
-            absences.append("live sem stop/decision CTA tipada — can_do face cauteloso")
+        if signals.hasOngoing && !signals.hasRunning && !signals.hasPaused && !signals.hasDecision && !signals.hasReviewControl {
+            absences.append("live sem stop/decision/review CTA tipada — can_do face cauteloso")
         }
-        if !signals.hasOngoing {
+        if !signals.hasOngoing && !signals.hasReviewControl {
             absences.append("thread quieta — can_do read_chat (sem face CTA inventada)")
         }
         absences.append("NL de chat ainda não autoriza tools de escrita no wire")
