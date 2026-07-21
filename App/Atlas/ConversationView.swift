@@ -6530,6 +6530,7 @@ extension ExecutionStateCard {
                     .fill(AtlasTheme.surface.opacity(0.68))
                     .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).stroke(tint.opacity(0.42), lineWidth: 1))
             )
+            .atlasElevation(radius: 10, y: 3, opacity: 0.16)
             // Contain without fused label: choice/retry/steer buttons stay focusable.
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(A11yID.executionStateCard)

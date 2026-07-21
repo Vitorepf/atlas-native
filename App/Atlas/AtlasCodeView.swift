@@ -1415,6 +1415,7 @@ extension AtlasCodeView {
                         RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)
                             .strokeBorder(AtlasCodePalette.healed.opacity(0.3), lineWidth: 1)
                     )
+                    .atlasElevation(radius: 8, y: 2, opacity: 0.12)
                 }
                 .buttonStyle(.plain)
                 .accessibilityIdentifier(A11yID.codeHealReceipt)
