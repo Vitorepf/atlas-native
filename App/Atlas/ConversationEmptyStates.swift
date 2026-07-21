@@ -18,6 +18,7 @@ struct EmptyConversation: View {
             .frame(maxWidth: .infinity)
             .onAppear { startBreathing() }
             .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(A11yID.conversationEmpty)
     }
 }
 

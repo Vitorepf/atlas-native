@@ -10,6 +10,7 @@ enum A11yID {
     static let topbarCode = "topbar-code"
     static let auditMasthead = "audit-masthead"
     static let conversationScreen = "conversation-screen"
+    static let conversationEmpty = "conversation-empty"
     static let conversationInput = "conversation-input"
     static let conversationSend = "conversation-send"
     static let conversationOptions = "conversation-options"
