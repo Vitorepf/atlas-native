@@ -3,46 +3,6 @@ import AtlasCore
 
 // WAVE-011 fused
 
-enum AtlasCodeFolderRowA11y {
-    static func spokenFolder(
-        name: String,
-        repositoryCount: Int,
-        verifiedExceptionCount: Int,
-        isExpanded: Bool
-    ) -> String {
-        var parts = [name, spokenRepoCount(repositoryCount)]
-        if verifiedExceptionCount > 0, let phrase = AtlasCodeFolderRowA11yExceptions.exceptionPhrase(verifiedExceptionCount) {
-            parts.append(phrase)
-        }
-        if let expanded = spokenFolderExpanded(isExpanded) { parts.append(expanded) }
-        return parts.joined(separator: ", ")
-    }
-}
-
-enum AtlasCodeFolderRowA11yExceptions {
-    static func exceptionPhrase(_ verifiedExceptionCount: Int) -> String? {
-        guard verifiedExceptionCount > 0 else { return nil }
-        return "\(verifiedExceptionCount) sem retorno\(verifiedExceptionCount == 1 ? "" : "s") verificado\(verifiedExceptionCount == 1 ? "" : "s")"
-    }
-}
-
-extension AtlasCodeFolderRowA11y {
-    static func spokenFolderExpanded(_ isExpanded: Bool) -> String? {
-        isExpanded ? "expandida" : nil
-    }
-}
-
-extension AtlasCodeFolderRowA11y {
-    static func spokenHint(isExpanded: Bool) -> String {
-        isExpanded ? "recolhe a pasta" : "expande a pasta"
-    }
-}
-
-extension AtlasCodeFolderRowA11y {
-    static func spokenRepoCount(_ repositoryCount: Int) -> String {
-        repositoryCount == 1 ? "1 repositório" : "\(repositoryCount) repositórios"
-    }
-}
 
 extension AtlasCodeFolderRow {
     var folderHeaderLeading: some View {
@@ -248,9 +208,5 @@ struct AtlasCodeRadarLoadedContent: View {
             .padding(.bottom, 28)
         }
     }
-}
-
-enum AtlasCodeRadarRowsA11y {
-    static let repoHint = "abre o grafo do repositório"
 }
 

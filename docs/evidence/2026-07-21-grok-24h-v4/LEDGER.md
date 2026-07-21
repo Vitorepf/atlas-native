@@ -7,7 +7,7 @@ mode: designer + implementer
 - phase: idle
 - active_wave: null
 - waves_completed: 90
-- idle_compress_passes: 15
+- idle_compress_passes: 16
 - collapse_host: 0
 
 ## Waves done
@@ -103,10 +103,11 @@ mode: designer + implementer
 - WAVE-095
 
 ## Idle compress
-- pass 15 · Search chrome · Root profile · Patch spoken → Judgment
+- pass 15 · Search/Root/Patch Judgment
+- pass 16 · Radar A11y peel consolidate
 
 ## Open queue
-_(none)_
+_(none)_ — max 2 IDLE after WAVE-095 done
 
 ## Notes
-- Pós WAVE-095. DEVICE_PENDING.
+- DEVICE_PENDING. Awaiting A fill or full-bar residual.

@@ -41,74 +41,11 @@ extension AtlasCodeRepoRow {
     }
 }
 
-extension AtlasCodeRadarRowsA11y {
-    static func spokenRepoCommitAge(lastCommitAt: Int?) -> String? {
-        guard let age = AtlasCodeAge.short(from: lastCommitAt) else { return nil }
-        return "último commit \(age)"
-    }
-}
 
-extension AtlasCodeRadarRowsA11y {
-    static func spokenRepoFolder(folder: String?, showsFolder: Bool) -> [String] {
-        guard showsFolder, let folder, !folder.isEmpty else { return [] }
-        return ["pasta \(folder)"]
-    }
-}
 
-extension AtlasCodeRadarRowsA11y {
-    static func spokenRepo(
-        name: String,
-        folder: String?,
-        showsFolder: Bool,
-        issues: [AtlasCodeIssue]?,
-        trunk: String?,
-        lastCommitAt: Int?,
-        isMute: Bool = false
-    ) -> String {
-        var parts = [name]
-        parts.append(contentsOf: spokenRepoFolder(folder: folder, showsFolder: showsFolder))
-        if isMute {
-            parts.append(AtlasCodeRadarJudgment.muteSpoken)
-        } else {
-            parts.append(contentsOf: spokenRepoIssues(issues: issues, trunk: trunk))
-        }
-        if let age = spokenRepoCommitAge(lastCommitAt: lastCommitAt) {
-            parts.append(age)
-        }
-        return parts.joined(separator: ", ")
-    }
-}
 
-extension AtlasCodeRadarRowsA11y {
-    static func spokenRepoIssueFirst(
-        issues: [AtlasCodeIssue],
-        trunk: String?
-    ) -> [String] {
-        guard let first = issues.first else { return [] }
-        var parts = [first.headline(trunk: trunk)]
-        if first.isSevere { parts.append("alta severidade") }
-        return parts
-    }
-}
 
-extension AtlasCodeRadarRowsA11y {
-    static func spokenRepoIssueMore(issues: [AtlasCodeIssue]) -> [String] {
-        guard issues.count > 1 else { return [] }
-        let more = issues.count - 1
-        return ["mais \(more) sem retorno\(more == 1 ? "" : "s")"]
-    }
-}
 
-extension AtlasCodeRadarRowsA11y {
-    static func spokenRepoIssues(
-        issues: [AtlasCodeIssue]?,
-        trunk: String?
-    ) -> [String] {
-        guard let issues, !issues.isEmpty else { return [] }
-        return spokenRepoIssueFirst(issues: issues, trunk: trunk)
-            + spokenRepoIssueMore(issues: issues)
-    }
-}
 
 extension AtlasCodeRadarStatusCapsule {
     func spokenStatusQuiet(model: AtlasCodeWorkspaceModel) -> String? {
