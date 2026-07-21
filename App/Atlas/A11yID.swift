@@ -111,6 +111,8 @@ extension A11yID {
     static let autonomosIncident = "autonomos-incident"
     static let autonomosAskPill = "autonomos-ask-pill"
     static let autonomosSelfConstructionBanner = "autonomos-self-construction-banner"
+    static let autonomosDeferredSurface = "autonomos-deferred-surface"
+    static let autonomosMissingUnit = "autonomos-missing-unit"
     static let autonomosAreasSheet = "autonomos-areas-sheet"
     static let autonomosGovernanceSheet = "autonomos-governance-sheet"
     static let autonomosReasonSheet = "autonomos-reason-sheet"
