@@ -61,6 +61,14 @@ enum AtlasCodeAskContext {
             anchors.append("âncora H6 ativa (sem nó de swipe local)")
         }
 
+        // WAVE-062: exclusive ask-pill face (invite / anchoring / legend).
+        let pill = AtlasCodeAskPillJudgment.packFacts(
+            isAnchoring: isAnchoring,
+            anchorLegend: focusLegend
+        )
+        facts.append(contentsOf: pill.facts)
+        absences.append(contentsOf: pill.absences)
+
         if let trunk = model.graph?.defaultBranch, !trunk.isEmpty {
             facts.append("trunk: \(trunk)")
         } else {

@@ -6,7 +6,7 @@ mode: designer + implementer
 ## Implementer
 - phase: idle
 - active_wave: null
-- waves_completed: 56
+- waves_completed: 57
 - idle_compress_passes: 2
 - collapse_host: 0
 
@@ -67,13 +67,14 @@ mode: designer + implementer
 - WAVE-059
 - WAVE-060
 - WAVE-061
+- WAVE-062
 
 ## Idle compress
 - pass 1 · `419bedf3`
 - pass 2 · `85be3450`
 
 ## Designer
-- designs_proposed: 56
+- designs_proposed: 57
 - designs_open: 0
 - last_regen: regen-queue.py (designs − DONE/compress)
 - policy: open ranking regenerated; never hand-stale tables
@@ -85,7 +86,5 @@ mode: designer + implementer
 | — | _(none)_ | — | — |
 
 ## Notes
-- Re-run regen after every done wave or new design.
-- Continuity restore BLOCKED (App Group).
-- Device-pending (passcode) = operator.
-
+- WAVE-060–062 (stale-read · graph screen · ask pill) + idle peels.
+- Prefer A fill. DEVICE_PENDING. Continuity App Group BLOCKED.

@@ -197,7 +197,7 @@ extension AtlasCodeView {
             .padding(.bottom, 10)
             .animation(
                 reduceMotion ? nil : .easeInOut(duration: 0.22),
-                value: AtlasCodeAskPillA11y.pillPhaseID(
+                value: AtlasCodeAskPillJudgment.phaseID(
                     isAnchoring: pillIsAnchoring,
                     anchorLegend: anchorLegend
                 )
@@ -205,38 +205,43 @@ extension AtlasCodeView {
     }
 
     func askPillA11yTraits<Content: View>(_ content: Content) -> some View {
-        content
+        let face = AtlasCodeAskPillJudgment.face(
+            isAnchoring: pillIsAnchoring,
+            anchorLegend: anchorLegend
+        )
+        return content
             .accessibilityElement(children: .contain)
             .accessibilityLabel(
-                AtlasCodeAskPillA11y.spokenPill(
+                AtlasCodeAskPillJudgment.spokenPill(
                     isAnchoring: pillIsAnchoring,
                     anchorLegend: anchorLegend
                 )
             )
-            .accessibilityHint(AtlasCodeAskPillA11y.pillHint)
+            .accessibilityValue(face.productWord)
+            .accessibilityHint(AtlasCodeAskPillJudgment.pillHint)
             .accessibilityAddTraits(.isButton)
             .accessibilityIdentifier(A11yID.codeAskPill)
     }
 }
 
+/// WAVE-062: thin peel — constants + spoken route through Judgment.
 enum AtlasCodeAskPillA11y {
     static func pillPhaseID(isAnchoring: Bool, anchorLegend: String?) -> String {
-        isAnchoring ? "anchoring-\(anchorLegend ?? "default")" : "invite"
+        AtlasCodeAskPillJudgment.phaseID(
+            isAnchoring: isAnchoring,
+            anchorLegend: anchorLegend
+        )
     }
 
-    static let pillHint = "abre conversa sobre este repositório"
-    static let clearLabel = "mostrar tudo no grafo"
-    static let clearHint = "remove o recorte dos commits da resposta"
+    static var pillHint: String { AtlasCodeAskPillJudgment.pillHint }
+    static var clearLabel: String { AtlasCodeAskPillJudgment.clearLabel }
+    static var clearHint: String { AtlasCodeAskPillJudgment.clearHint }
 
     static func spokenPill(isAnchoring: Bool, anchorLegend: String?) -> String {
-        guard isAnchoring else {
-            return "Conversar com o Atlas sobre este repositório"
-        }
-        let legend = anchorLegend?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        if !legend.isEmpty {
-            return "Conversar com o Atlas, \(legend)"
-        }
-        return "Conversar com o Atlas, grafo recortado nos commits da resposta"
+        AtlasCodeAskPillJudgment.spokenPill(
+            isAnchoring: isAnchoring,
+            anchorLegend: anchorLegend
+        )
     }
 }
 
