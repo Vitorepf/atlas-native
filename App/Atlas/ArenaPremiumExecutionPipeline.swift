@@ -29,69 +29,19 @@ enum ArenaPremiumPipelineMark {
 struct ArenaPremiumPipelineProjection: Equatable {
     let marks: [ArenaPremiumPipelineStep: ArenaPremiumPipelineMark]
 
+    /// WAVE-109: projection law lives on ArenaPipelineJudgment.
     static func project(
         runs: [AtlasArenaLiveRun],
         expectsBare: Bool,
         expectsAtlas: Bool,
         hasReport: Bool
     ) -> ArenaPremiumPipelineProjection {
-        var marks: [ArenaPremiumPipelineStep: ArenaPremiumPipelineMark] = [:]
-        let bare = runs.filter { $0.arm == .baseline }
-        let atlas = runs.filter { $0.arm == .withAtlas }
-        let anyLive = runs.contains { $0.status == .running || $0.status == .stopping }
-        let allQueued = !runs.isEmpty && runs.allSatisfy { $0.status == .queued }
-        let allTerminal = !runs.isEmpty && runs.allSatisfy(Self.isTerminal)
-
-        if runs.isEmpty {
-            marks[.prepare] = .pending
-        } else if allQueued {
-            marks[.prepare] = .live
-        } else {
-            marks[.prepare] = .done
-        }
-
-        marks[.bare] = armMark(
-            bare,
-            expected: expectsBare || !bare.isEmpty,
-            prepareDone: marks[.prepare] == .done
+        ArenaPipelineJudgment.project(
+            runs: runs,
+            expectsBare: expectsBare,
+            expectsAtlas: expectsAtlas,
+            hasReport: hasReport
         )
-        marks[.withAtlas] = armMark(
-            atlas,
-            expected: expectsAtlas || !atlas.isEmpty,
-            prepareDone: marks[.prepare] == .done
-        )
-
-        if allTerminal {
-            marks[.consolidate] = hasReport ? .done : .live
-        } else if anyLive || allQueued {
-            marks[.consolidate] = .pending
-        } else {
-            marks[.consolidate] = .pending
-        }
-
-        return ArenaPremiumPipelineProjection(marks: marks)
-    }
-
-    private static func armMark(
-        _ armRuns: [AtlasArenaLiveRun],
-        expected: Bool,
-        prepareDone: Bool
-    ) -> ArenaPremiumPipelineMark {
-        guard expected else { return prepareDone ? .done : .pending }
-        if armRuns.contains(where: { $0.status == .running || $0.status == .stopping }) {
-            return .live
-        }
-        if !armRuns.isEmpty, armRuns.allSatisfy(isTerminal) {
-            return .done
-        }
-        return .pending
-    }
-
-    private static func isTerminal(_ run: AtlasArenaLiveRun) -> Bool {
-        switch run.status {
-        case .completed, .failed, .stopped: true
-        default: false
-        }
     }
 }
 
@@ -115,16 +65,16 @@ struct ArenaPremiumExecutionPipeline: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(spoken)
+        .accessibilityLabel(ArenaPipelineJudgment.spoken(projection))
         .accessibilityIdentifier(A11yID.arenaPremiumExecutionPipeline)
     }
 
     private func stepColumn(_ step: ArenaPremiumPipelineStep) -> some View {
         let mark = projection.marks[step] ?? .pending
         return VStack(spacing: 8) {
-            Text(glyph(step, mark))
+            Text(ArenaPipelineJudgment.glyph(step: step, mark: mark))
                 .font(AtlasFont.serif(14))
-                .foregroundStyle(color(mark))
+                .foregroundStyle(ArenaPipelineJudgment.color(for: mark))
                 .frame(height: 20)
             Text(step.title)
                 .font(AtlasFont.mono(9, .medium))
@@ -143,35 +93,5 @@ struct ArenaPremiumExecutionPipeline: View {
             .frame(width: 18, height: 1)
             .padding(.top, 10)
             .accessibilityHidden(true)
-    }
-
-    /// Corrida ao vivo usa ▸; ✦ só na fase cujo nome é Atlas.
-    private func glyph(_ step: ArenaPremiumPipelineStep, _ mark: ArenaPremiumPipelineMark) -> String {
-        switch mark {
-        case .done: "✓"
-        case .pending: "○"
-        case .live:
-            step == .withAtlas ? "✦" : "▸"
-        }
-    }
-
-    private func color(_ mark: ArenaPremiumPipelineMark) -> Color {
-        switch mark {
-        case .live: AtlasTheme.accent
-        case .done: AtlasTheme.textPrimary
-        case .pending: AtlasTheme.textTertiary
-        }
-    }
-
-    private var spoken: String {
-        ArenaPremiumPipelineStep.allCases.map { step in
-            let mark = projection.marks[step] ?? .pending
-            let state: String = switch mark {
-            case .done: "feito"
-            case .live: "ao vivo"
-            case .pending: "pendente"
-            }
-            return "\(step.title) \(state)"
-        }.joined(separator: ", ")
     }
 }

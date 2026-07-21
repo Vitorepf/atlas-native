@@ -116,6 +116,7 @@
 | **Mid-thread pack hydration** | `ConversationOccasionPack.PublishedSlice` + model.turnFacts rebind (WAVE-106) |
 | **Arena run status chrome** | `ArenaRunStatusJudgment` label/tone/glyph/trailing · Execution/Detail/Icon (WAVE-107) |
 | **Arena stop governance** | `ArenaStopJudgment` face blocked/ready · StopSheet (WAVE-108) |
+| **Arena execution pipeline** | `ArenaPipelineJudgment` project/glyph/spoken · ExecutionPipeline (WAVE-109) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
