@@ -5,6 +5,14 @@ import UIKit
 
 // Cycle 044 fuse → ArtifactSheet.swift
 
+enum ArtifactPreviewState {
+    case idle
+    case loading
+    case loaded(AtlasTraceArtifacts.Item, AtlasArtifactContent)
+    case tooLarge(Int)
+    case failed(String)
+}
+
 struct ArtifactSheet: View {
     let reviews: ChangeReviewModel
     let traceId: TraceID

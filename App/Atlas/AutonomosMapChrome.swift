@@ -32,14 +32,6 @@ enum AutonomosMapChrome {
             .accessibilityAddTraits(.isHeader)
     }
 
-    @MainActor
-    static func heroSub(_ text: String) -> some View {
-        Text(text)
-            .atlasSans(14)
-            .foregroundStyle(AtlasTheme.textSecondary)
-            .fixedSize(horizontal: false, vertical: true)
-    }
-
     static var hairline: some View {
         Rectangle()
             .fill(
