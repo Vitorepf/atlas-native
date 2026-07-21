@@ -149,5 +149,6 @@ struct ArenaPremiumStopSheet: View {
                 : ""
         )
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(valid && !isConfirmed ? 9 : 0)
     }
 }

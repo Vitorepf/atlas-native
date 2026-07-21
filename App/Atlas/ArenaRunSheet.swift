@@ -672,5 +672,6 @@ extension ArenaRunSheet {
         .accessibilityLabel(spokenSubmitLabel(input: input, enginesEmpty: engines.isEmpty))
         .accessibilityHint(spokenSubmitHint(input: input, enginesEmpty: engines.isEmpty))
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(input.isLocallyValidForSubmission ? 9 : 0)
     }
 }

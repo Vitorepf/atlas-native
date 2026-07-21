@@ -86,6 +86,7 @@ struct AutonomosReasonSheet: View {
                             : "preencha quem autoriza e o motivo"
                     )
                     .accessibilityAddTraits(.isButton)
+                    .accessibilitySortPriority(canSubmit ? 9 : 0)
                 }
             }
             .accessibilityIdentifier(A11yID.autonomosReasonSheet)

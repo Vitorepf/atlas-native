@@ -213,6 +213,7 @@ extension SteerInteractionSheet {
         .accessibilityLabel(spokenSubmitLabel(canSubmit: canSubmit))
         .accessibilityHint(spokenSubmitHint(canSubmit: canSubmit))
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(canSubmit ? 9 : 0)
     }
 }
 
