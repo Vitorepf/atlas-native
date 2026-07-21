@@ -453,7 +453,7 @@ enum ArenaRunStatusJudgment {
     // MARK: Label / tone / glyph
 
     /// Product kicker for a single run status (Detail + row dialect).
-    static func label(for status: AtlasArenaRunStatus) -> String {
+    static func productLabel(for status: AtlasArenaRunStatus) -> String {
         switch status {
         case .running: return "Ao vivo"
         case .stopping: return "Parando"
@@ -511,7 +511,7 @@ enum ArenaRunStatusJudgment {
     }
 
     static func spoken(for status: AtlasArenaRunStatus) -> String {
-        label(for: status)
+        productLabel(for: status)
     }
 
     // MARK: Row chrome
@@ -567,7 +567,7 @@ enum ArenaRunStatusJudgment {
         var facts: [String] = []
         var absences: [String] = []
         facts.append("arena_run_status: \(productWord(for: status))")
-        facts.append("arena_run_label: \(label(for: status))")
+        facts.append("arena_run_label: \(productLabel(for: status))")
         if case .unknown = status {
             absences.append("status de corrida desconhecido — silêncio neutro")
         }

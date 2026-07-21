@@ -1338,7 +1338,7 @@ extension AgentRow {
         HStack(spacing: 8) {
             Circle().fill(statusColor).frame(width: 6, height: 6)
             // WAVE-049: label via lanes judgment (shared with pack).
-            Text(ConversationAgentLanesJudgment.label(for: agent))
+            Text(ConversationAgentLanesJudgment.productLabel(for: agent))
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
             agentModelLabel
             Spacer()
@@ -1348,7 +1348,7 @@ extension AgentRow {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            "\(ConversationAgentLanesJudgment.label(for: agent)), \(statusWord ?? agent.status)"
+            "\(ConversationAgentLanesJudgment.productLabel(for: agent)), \(statusWord ?? agent.status)"
         )
     }
 }

@@ -186,14 +186,14 @@ struct ArenaPremiumExecutionView: View {
     private var statusLabel: String {
         // WAVE-050: live-control face elevates failed attention over generic done.
         switch liveFace {
-        case .running: return ArenaRunStatusJudgment.label(for: .running)
-        case .stopping: return ArenaRunStatusJudgment.label(for: .stopping)
+        case .running: return ArenaRunStatusJudgment.productLabel(for: .running)
+        case .stopping: return ArenaRunStatusJudgment.productLabel(for: .stopping)
         case .attention: return liveFace.kicker
-        case .queued: return ArenaRunStatusJudgment.label(for: .queued)
+        case .queued: return ArenaRunStatusJudgment.productLabel(for: .queued)
         case .quietDone:
             switch model.livePresentation?.phase ?? .idle {
-            case .completed: return ArenaRunStatusJudgment.label(for: .completed)
-            case .stopped: return ArenaRunStatusJudgment.label(for: .stopped)
+            case .completed: return ArenaRunStatusJudgment.productLabel(for: .completed)
+            case .stopped: return ArenaRunStatusJudgment.productLabel(for: .stopped)
             case .failed: return "Interrompida"
             default: return "Encerrada"
             }
@@ -515,7 +515,7 @@ struct ArenaPremiumRunDetailView: View {
     }
 
     private var statusLabel: String {
-        ArenaRunStatusJudgment.label(for: run.status)
+        ArenaRunStatusJudgment.productLabel(for: run.status)
     }
 
     private var statusTone: ArenaPremiumTone {

@@ -388,7 +388,7 @@ enum ConversationAgentLanesJudgment {
         return .multi(agents.count)
     }
 
-    static func label(for agent: ExecAgent) -> String {
+    static func productLabel(for agent: ExecAgent) -> String {
         agent.agent ?? providerWord(agent.provider)
     }
 
@@ -410,7 +410,7 @@ enum ConversationAgentLanesJudgment {
         }
         facts.append("agents: \(agents.count)")
         for a in rank(agents).prefix(6) {
-            facts.append("agent: \(label(for: a)) · \(a.status)")
+            facts.append("agent: \(productLabel(for: a)) · \(a.status)")
         }
         let attention = agents.filter(needsAttention).count
         if attention > 0 {
