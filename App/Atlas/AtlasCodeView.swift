@@ -1120,7 +1120,8 @@ extension AtlasCodeFileRow {
         HStack(alignment: .center, spacing: 10) {
             Image(systemName: symbol)
                 .atlasSans(8.5, .bold)
-                .foregroundStyle(AtlasTheme.textSecondary)
+                // Soft gold-quiet file-kind badge — chrome, not body.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                 .frame(width: 17, height: 17)
                 .background(AtlasTheme.surfaceHi, in: RoundedRectangle(cornerRadius: 5))
                 .accessibilityHidden(true)
@@ -1797,7 +1798,8 @@ struct AtlasCodeRepoPickerSheet: View {
             HStack(spacing: 10) {
                 Image(systemName: "folder")
                     .atlasSans(15)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet repo lead glyph — match workspace picker.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .accessibilityHidden(true)
                 Text(repo.name)
                     .atlasSans(15, .medium)

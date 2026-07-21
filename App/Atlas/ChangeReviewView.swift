@@ -490,7 +490,8 @@ extension ChangeReviewGovernanceSection {
             HStack(spacing: 8) {
                 Image(systemName: "clock.arrow.circlepath")
                     .atlasSans(11)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet meta glyph — governance chrome.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .accessibilityHidden(true)
                 Text(revisions.count == 1
                      ? "plano v1 arquivado — \(last.humanReason)"
@@ -508,7 +509,8 @@ extension ChangeReviewGovernanceSection {
         HStack(spacing: 8) {
             Image(systemName: "plusminus")
                 .atlasSans(11)
-                .foregroundStyle(AtlasTheme.textTertiary)
+                // Soft gold-quiet meta glyph — governance chrome.
+                .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                 .accessibilityHidden(true)
             Text(stats.headline)
                 .font(AtlasFont.mono(11))

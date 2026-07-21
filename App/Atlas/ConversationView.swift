@@ -3861,12 +3861,13 @@ extension ConversationMessages {
             Image(systemName: "plus.forwardslash.minus").atlasSans(11)
             Text("Revisar mudanças").font(AtlasFont.serif(13, .medium))
         }
-        .foregroundStyle(AtlasTheme.textSecondary)
+        // Soft gold-quiet invite chip — same family as secondary chrome.
+        .foregroundStyle(AtlasTheme.accent.opacity(0.78))
         .padding(.horizontal, 13).padding(.vertical, 7)
         .frame(minHeight: 48)
         .background(
             Capsule().fill(AtlasTheme.surface.opacity(0.55))
-                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+                .overlay(Capsule().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
         )
         .atlasElevation(radius: 6, y: 2, opacity: 0.1)
         .contentShape(Capsule())
@@ -10179,10 +10180,11 @@ extension TraceEvidenceUnavailable {
     var unavailableIconTitle: some View {
         Image(systemName: systemImage)
             .atlasSans(22)
-            .foregroundStyle(AtlasTheme.textSecondary)
+            // Soft gold-quiet empty bloom — same family as failure ✦ disks.
+            .foregroundStyle(AtlasTheme.accent.opacity(0.72))
             .frame(width: 56, height: 56)
             .background(Circle().fill(AtlasTheme.surface.opacity(0.7)))
-            .overlay(Circle().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
+            .overlay(Circle().stroke(AtlasTheme.goldBorder.opacity(0.45), lineWidth: 1))
             .atlasElevation(radius: 8, y: 2, opacity: 0.12)
             .accessibilityHidden(true)
         Text(title)

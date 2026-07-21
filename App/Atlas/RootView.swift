@@ -3506,7 +3506,8 @@ extension AtlasWorkspacePickerSheet {
             HStack(spacing: 12) {
                 Image(systemName: "bubble.left")
                     .atlasSans(16)
-                    .foregroundStyle(AtlasTheme.textSecondary)
+                    // Soft gold-quiet row lead — same family as folder chrome.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.65))
                     .frame(width: 22)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
@@ -3570,7 +3571,8 @@ extension AtlasWorkspacePickerSheet {
             HStack(spacing: 10) {
                 Image(systemName: "folder")
                     .atlasSans(15)
-                    .foregroundStyle(AtlasTheme.textTertiary)
+                    // Soft gold-quiet repo lead glyph.
+                    .foregroundStyle(AtlasTheme.accent.opacity(0.55))
                     .accessibilityHidden(true)
                 HStack(spacing: 0) {
                     if let folder = repo.folder {
