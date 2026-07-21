@@ -157,6 +157,8 @@ struct AutonomosMapShell: View {
         .accessibilityLabel("O Atlas melhorou o próprio app, recibo com merge comprovado")
         .accessibilityHint("abre o recibo de auto-construção")
         .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(8) // rare proven receipt — surface early in VO
+        .accessibilityIdentifier(A11yID.autonomosSelfConstructionBanner)
     }
 
     @ViewBuilder
