@@ -1,0 +1,383 @@
+import WidgetKit
+import SwiftUI
+import AtlasCore
+
+// IDLE-COMPRESS — Fleet accessory widget fused
+
+// --- AtlasWidgetAccessories+Fleet+A11y.swift ---
+enum FleetWidgetA11y {
+    static func incidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
+        LockAccessoryA11y.incidentLine(incident)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind+Spoken.swift ---
+extension FleetWidgetView {
+    func fleetA11yPhaseSpoken<Content: View>(
+        _ content: Content,
+        snapshot: AtlasNativeSnapshot,
+        stale: Bool
+    ) -> some View {
+        fleetA11ySpokenLabel(content, snapshot: snapshot, stale: stale)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind+Transaction.swift ---
+extension FleetWidgetView {
+    func fleetA11yPhaseTransaction<Content: View>(
+        _ content: Content,
+        snapshot: AtlasNativeSnapshot,
+        stale: Bool
+    ) -> some View {
+        content
+            .id(FleetWidgetA11y.contentPhaseID(snapshot: snapshot, stale: stale))
+            .transaction { transaction in fleetA11yTransaction(&transaction) }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yChrome+PhaseBind.swift ---
+extension FleetWidgetView {
+    func fleetA11yPhaseBind<Content: View>(
+        _ content: Content,
+        snapshot: AtlasNativeSnapshot,
+        stale: Bool
+    ) -> some View {
+        fleetA11yPhaseSpoken(
+            fleetA11yPhaseTransaction(content, snapshot: snapshot, stale: stale),
+            snapshot: snapshot,
+            stale: stale
+        )
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yChrome+SpokenLabel.swift ---
+extension FleetWidgetView {
+    func fleetA11ySpokenLabel<Content: View>(
+        _ content: Content,
+        snapshot: AtlasNativeSnapshot,
+        stale: Bool
+    ) -> some View {
+        content
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(FleetWidgetA11y.spokenLabel(
+                snapshot: snapshot,
+                stale: stale,
+                at: entry.date,
+                age: snapshot.ageText(at: entry.date)
+            ))
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yChrome.swift ---
+extension FleetWidgetView {
+    func fleetA11yChrome<Content: View>(
+        _ content: Content,
+        snapshot: AtlasNativeSnapshot,
+        stale: Bool
+    ) -> some View {
+        fleetA11yPhaseBind(content, snapshot: snapshot, stale: stale)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yDelivery.swift ---
+extension FleetWidgetA11y {
+    static func deliveryCaption(_ delivery: AtlasNativeSnapshot.Fleet.LastDelivery) -> String? {
+        let title = delivery.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !title.isEmpty { return "última entrega \(title)" }
+        let hash = delivery.mergeHash.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !hash.isEmpty else { return nil }
+        return "última entrega \(String(hash.prefix(7)))"
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yPhase.swift ---
+extension FleetWidgetA11y {
+    static func contentPhaseID(snapshot: AtlasNativeSnapshot, stale: Bool) -> String {
+        let incident = incidentLine(snapshot.fleet?.incident) ?? ""
+        let present = snapshot.fleet?.incident?.present == true ? "1" : "0"
+        let scanned = snapshot.fleet?.scannedAt ?? ""
+        let delivery = snapshot.fleet?.lastDelivery?.mergeHash ?? ""
+        return "\(incident)|\(present)|\(scanned)|\(delivery)|\(stale)"
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Core.swift ---
+extension FleetWidgetA11y {
+    static func spokenCoreParts(snapshot: AtlasNativeSnapshot, at date: Date) -> [String] {
+        var parts = ["Frota"]
+        parts.append(contentsOf: spokenIncidentParts(snapshot: snapshot, at: date))
+        if let delivery = spokenDeliveryPart(snapshot: snapshot) {
+            parts.append(delivery)
+        }
+        return parts
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Delivery.swift ---
+extension FleetWidgetA11y {
+    static func spokenDeliveryPart(snapshot: AtlasNativeSnapshot) -> String? {
+        guard let delivery = snapshot.fleet?.lastDelivery,
+              let caption = deliveryCaption(delivery) else { return nil }
+        return caption
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Incident+Present.swift ---
+extension FleetWidgetA11y {
+    static func spokenIncidentPresentParts(snapshot: AtlasNativeSnapshot) -> [String]? {
+        if let line = incidentLine(snapshot.fleet?.incident) {
+            return [line]
+        }
+        if snapshot.fleet?.incident?.present == true {
+            return ["atenção na frota"]
+        }
+        return nil
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Incident.swift ---
+extension FleetWidgetA11y {
+    static func spokenIncidentParts(snapshot: AtlasNativeSnapshot, at date: Date) -> [String] {
+        if let present = spokenIncidentPresentParts(snapshot: snapshot) { return present }
+        if let scanned = snapshot.fleet?.scannedAt.flatMap(AtlasTime.date) {
+            return ["frota íntegra, varrida \(scanned.relativeShort(to: date))"]
+        }
+        return ["frota não lida"]
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11ySpoken+Stale.swift ---
+extension FleetWidgetA11y {
+    static func spokenStaleSuffix(stale: Bool, age: String) -> String? {
+        stale ? "visto \(age)" : nil
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11ySpoken.swift ---
+extension FleetWidgetA11y {
+    static func spokenLabel(snapshot: AtlasNativeSnapshot, stale: Bool, at date: Date, age: String) -> String {
+        var parts = spokenCoreParts(snapshot: snapshot, at: date)
+        if let staleLine = spokenStaleSuffix(stale: stale, age: age) {
+            parts.append(staleLine)
+        }
+        return parts.joined(separator: ", ")
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+A11yTransaction.swift ---
+extension FleetWidgetView {
+    func fleetA11yTransaction(_ transaction: inout Transaction) {
+        if reduceMotion { transaction.disablesAnimations = true }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Body+Stack+Delivery.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetBodyDeliveryRow(_ snapshot: AtlasNativeSnapshot) -> some View {
+        fleetDeliveryCaption(snapshot)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Body+Stack+Header.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetBodyHeaderRow(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
+        fleetHeader(stale: stale, age: snapshot.ageText(at: entry.date))
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Body+Stack+Lead.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetBodyLeadRows(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
+        fleetBodyHeaderRow(snapshot: snapshot, stale: stale)
+        fleetBodyStateRow(snapshot)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Body+Stack+State.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetBodyStateRow(_ snapshot: AtlasNativeSnapshot) -> some View {
+        fleetState(snapshot)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Body+Stack.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetBodyStack(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 7) {
+            fleetBodyLeadRows(snapshot: snapshot, stale: stale)
+            fleetBodyDeliveryRow(snapshot)
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Body.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetBody(snapshot: AtlasNativeSnapshot, stale: Bool) -> some View {
+        fleetA11yChrome(
+            fleetBodyStack(snapshot: snapshot, stale: stale),
+            snapshot: snapshot,
+            stale: stale
+        )
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+BodyGate.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetBodyGate(snapshot: AtlasNativeSnapshot?, at date: Date) -> some View {
+        if let snapshot {
+            fleetBody(snapshot: snapshot, stale: snapshot.isStale(at: date))
+        } else {
+            InstallPromptView()
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Delivery.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetDeliveryCaption(_ snapshot: AtlasNativeSnapshot) -> some View {
+        if family != .systemSmall,
+           let delivery = snapshot.fleet?.lastDelivery,
+           let caption = FleetWidgetA11y.deliveryCaption(delivery) {
+            Text(caption)
+                .font(.system(size: 11, design: .monospaced))
+                .foregroundStyle(Ink.ink2)
+                .lineLimit(1)
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Header+StaleLine+Style.swift ---
+extension FleetWidgetView {
+    func fleetStaleLineText(age: String) -> some View {
+        Text("visto \(age)")
+            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+            .foregroundStyle(Ink.alert)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Header+StaleLine.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetHeaderStaleLine(stale: Bool, age: String) -> some View {
+        if stale {
+            fleetStaleLineText(age: age)
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Header.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetHeader(stale: Bool, age: String) -> some View {
+        HStack {
+            Text("✦ Frota")
+                .font(.system(size: 14, weight: .semibold, design: .serif))
+            Spacer()
+            fleetHeaderStaleLine(stale: stale, age: age)
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Healthy+Scanned.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetHealthyScanned(_ snapshot: AtlasNativeSnapshot, scanned: Date) -> some View {
+        Text("frota íntegra")
+            .font(.system(size: 18, weight: .semibold, design: .serif))
+            .foregroundStyle(Ink.healed)
+        Text("varrida \(scanned.relativeShort(to: entry.date))")
+            .font(.system(size: 12, design: .serif))
+            .foregroundStyle(Ink.ink2)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Healthy+Unread.swift ---
+extension FleetWidgetView {
+    var fleetHealthyUnread: some View {
+        Text("frota não lida")
+            .font(.system(size: 18, weight: .semibold, design: .serif))
+            .foregroundStyle(Ink.ink2)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+Healthy.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetHealthyOrUnread(_ snapshot: AtlasNativeSnapshot) -> some View {
+        if let scanned = snapshot.fleet?.scannedAt.flatMap(AtlasTime.date) {
+            fleetHealthyScanned(snapshot, scanned: scanned)
+        } else {
+            fleetHealthyUnread
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+State+Incident+Line.swift ---
+extension FleetWidgetView {
+    func fleetStateIncidentLineText(_ line: String) -> some View {
+        Text(line)
+            .font(.system(size: 16, weight: .semibold, design: .serif))
+            .foregroundStyle(Ink.alert)
+            .lineLimit(2)
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+State+Incident+Present.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetStateIncidentPresent(_ snapshot: AtlasNativeSnapshot) -> some View {
+        if snapshot.fleet?.incident?.present == true {
+            Text("atenção na frota")
+                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .foregroundStyle(Ink.alert)
+                .lineLimit(2)
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+State+Incident.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetStateIncident(_ snapshot: AtlasNativeSnapshot) -> some View {
+        if let line = FleetWidgetA11y.incidentLine(snapshot.fleet?.incident) {
+            fleetStateIncidentLineText(line)
+        } else {
+            fleetStateIncidentPresent(snapshot)
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet+State.swift ---
+extension FleetWidgetView {
+    @ViewBuilder
+    func fleetState(_ snapshot: AtlasNativeSnapshot) -> some View {
+        if snapshot.fleet?.incident?.present == true || FleetWidgetA11y.incidentLine(snapshot.fleet?.incident) != nil {
+            fleetStateIncident(snapshot)
+        } else {
+            fleetHealthyOrUnread(snapshot)
+        }
+    }
+}
+
+// --- AtlasWidgetAccessories+Fleet.swift ---
+struct FleetWidgetView: View {
+    @Environment(\.widgetFamily) var family
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+    let entry: SnapshotEntry
+
+    var body: some View {
+        SnapshotContainer {
+            fleetBodyGate(snapshot: entry.snapshot, at: entry.date)
+        }
+        .widgetURL(URL(string: "atlas://autonomos"))
+    }
+}
