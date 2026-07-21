@@ -1031,6 +1031,7 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-21 · Grok 4.5 · **polish(ui) — Code load failure craft (ciclo 053)** · `025600cf` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Live Now row craft (ciclo 052)** · `56924871` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — network retry 44pt (ciclo 051)** · `f77ef20b` · App/Atlas 214. **Prova:** checks+build.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Arena premium action craft (ciclo 050)** · `9103f941` · App/Atlas 214. **Prova:** checks+build.
