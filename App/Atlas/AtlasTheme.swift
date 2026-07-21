@@ -121,6 +121,16 @@ extension View {
             self
         }
     }
+
+    /// Skip empty/nil hints — VoiceOver ignores absence better than blank strings.
+    @ViewBuilder
+    func atlasAccessibilityHint(_ hint: String?) -> some View {
+        if let hint, !hint.isEmpty {
+            self.accessibilityHint(hint)
+        } else {
+            self
+        }
+    }
 }
 
 

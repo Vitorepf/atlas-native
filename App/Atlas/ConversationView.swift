@@ -961,13 +961,6 @@ extension EmptyConversation {
 
 // Cycle 044 fuse → ConversationChrome.swift
 
-struct OptionalAccessibilityIdentifier: ViewModifier {
-    let id: String?
-    func body(content: Content) -> some View {
-        if let id { content.accessibilityIdentifier(id) } else { content }
-    }
-}
-
 extension SheetShell {
     var sheetHandle: some View {
         RoundedRectangle(cornerRadius: 3).fill(AtlasTheme.textTertiary.opacity(0.5))
@@ -2008,9 +2001,9 @@ extension SheetRow {
         .accessibilityLabel(
             accessibilityLabel ?? SheetShellA11y.spokenRow(label: label, sub: sub, selected: selected)
         )
-        .accessibilityHint(accessibilityHint ?? "")
+        .atlasAccessibilityHint(accessibilityHint)
         .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
-        .modifier(OptionalAccessibilityIdentifier(id: accessibilityIdentifier))
+        .atlasAccessibilityIdentifier(accessibilityIdentifier)
         .overlay(alignment: .bottom) { sheetRowDivider }
     }
 }
@@ -2896,7 +2889,7 @@ extension DraftThumb {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(DraftThumbA11y.spokenThumb(draft))
             .accessibilityValue(failedMessage.map { DraftThumbA11y.spokenFailedValue($0) } ?? "")
-            .accessibilityHint(failedMessage != nil ? DraftThumbA11y.failedHint : "")
+            .atlasAccessibilityHint(failedMessage != nil ? DraftThumbA11y.failedHint : nil)
             .accessibilityAddTraits(failedMessage != nil ? .isButton : [])
             .modifier(DraftThumbFailedA11yAction(
                 failedMessage: failedMessage,

@@ -1173,7 +1173,7 @@ struct LiveNowRow: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spokenLabel(hubIndex: hubIndex, hubCount: hubCount))
-        .accessibilityHint(navigable ? "abre conversa desta sessão" : "")
+        .atlasAccessibilityHint(navigable ? "abre conversa desta sessão" : nil)
         .accessibilityAddTraits(liveNowTraits)
     }
 
