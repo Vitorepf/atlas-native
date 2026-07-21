@@ -3734,7 +3734,11 @@ extension ConversationMessages {
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 13).padding(.vertical, 7)
         .frame(minHeight: 48)
-        .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+        .background(
+            Capsule().fill(AtlasTheme.surface.opacity(0.55))
+                .overlay(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
+        )
+        .atlasElevation(radius: 6, y: 2, opacity: 0.1)
         .contentShape(Capsule())
     }
 }
