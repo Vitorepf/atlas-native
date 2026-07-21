@@ -1,8 +1,7 @@
-import SwiftUI
 import AtlasCore
+import SwiftUI
 
-// Steer helpers — peel de ConversationComposer+Actions.
-// Receipt → ConversationComposer+SteerReceipt.swift
+// Cycle 032 fuse → ConversationComposer+Steer.swift
 
 extension ConversationComposer {
     func submitSteer(
@@ -17,5 +16,19 @@ extension ConversationComposer {
                 model.toast = steerReceiptText(receipt)
             }
         }
+    }
+}
+
+extension ConversationComposer {
+    func steerReceipt(for traceId: TraceID) -> AtlasInteractionSteerResponse? {
+        guard let receipt = model.lastSteerReceipt else { return nil }
+        if let receiptTrace = receipt.traceId, receiptTrace != traceId.rawValue { return nil }
+        return receipt
+    }
+
+    func steerReceiptText(_ receipt: AtlasInteractionSteerResponse) -> String {
+        receipt.isAccepted
+            ? "na fila do próximo checkpoint"
+            : "rejeitado · \(receipt.reason?.rawValue ?? "motivo_indisponivel")"
     }
 }
