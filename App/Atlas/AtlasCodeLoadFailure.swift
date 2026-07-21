@@ -76,7 +76,7 @@ extension AtlasCodeLoadFailureEmpty {
                 .foregroundStyle(AtlasTheme.accent)
                 .padding(.horizontal, 22)
                 .padding(.vertical, 12)
-                .frame(minHeight: 44)
+                .frame(minHeight: 48) // match primary CTA breath
                 .background(
                     Capsule().fill(AtlasTheme.goldVeil)
                         .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))

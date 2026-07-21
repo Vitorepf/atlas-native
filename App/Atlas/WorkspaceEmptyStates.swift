@@ -233,6 +233,7 @@ struct WorkspaceLoadingEmpty: View {
         .frame(maxWidth: .infinity).padding(.top, topPadding)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(spoken ?? text)
+        .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -241,7 +242,7 @@ extension AtlasNetworkFailureEmpty {
         Text("Tentar de novo")
             .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.accent)
             .padding(.horizontal, 22).padding(.vertical, 12)
-            .frame(minHeight: 44)
+            .frame(minHeight: 48) // match primary CTA breath
             .background(Capsule().fill(AtlasTheme.goldVeil)
                 .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
             .contentShape(Capsule())
