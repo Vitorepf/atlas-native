@@ -1367,7 +1367,7 @@ extension AtlasCodeView {
                     .padding(.top, 4)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableScale())
                 .accessibilityLabel(
                     AtlasCodeGraphA11y.spokenFilterChip(
                         option, count: count, active: active, silent: active && filterSilence
@@ -1379,9 +1379,18 @@ extension AtlasCodeView {
             }
         }
         .overlay(alignment: .bottom) {
-            Rectangle()
-                .fill(AtlasTheme.separator.opacity(0.85))
-                .frame(height: 1)
+            LinearGradient(
+                colors: [
+                    AtlasTheme.accent.opacity(0),
+                    AtlasTheme.accent.opacity(0.25),
+                    AtlasTheme.separator,
+                    AtlasTheme.accent.opacity(0.25),
+                    AtlasTheme.accent.opacity(0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 1)
         }
         .accessibilityIdentifier(A11yID.codeGraphFilters)
         .animation(reduceMotion ? nil : .easeOut(duration: AtlasMotion.instinct), value: graphStateFilter)
