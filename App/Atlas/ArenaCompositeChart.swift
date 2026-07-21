@@ -18,7 +18,8 @@ struct ArenaCompositeChart: View {
         .chartXAxis(.hidden)
         .chartYScale(domain: fittedYDomain)
         .chartYAxis { AxisMarks(position: .leading) }
-        .accessibilityHidden(true)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ArenaSuiteJudgment.spokenCompositeChart(engine))
     }
 
     /// Domínio ajustado ao dado: eixo fixo 0–1 espremia as linhas.
@@ -56,21 +57,5 @@ struct ArenaCompositeChart: View {
                 .interpolationMethod(interpolation)
             }
         }
-    }
-}
-
-enum ArenaCompositeChartA11y {
-    static func spokenChart(_ engine: AtlasArenaCompositeEngine) -> String {
-        let plotted = engine.history.filter {
-            $0.composite != nil || $0.withAtlas != nil || $0.withoutAtlas != nil
-        }
-        guard !plotted.isEmpty else { return "" }
-        var parts = ["gráfico de histórico do motor \(engine.engine)"]
-        let rounds = plotted.count
-        parts.append(rounds == 1 ? "1 rodada" : "\(rounds) rodadas")
-        if plotted.contains(where: { $0.composite != nil }) { parts.append("linha composta") }
-        if plotted.contains(where: { $0.withAtlas != nil }) { parts.append("linha com Atlas") }
-        if plotted.contains(where: { $0.withoutAtlas != nil }) { parts.append("linha sem Atlas") }
-        return parts.joined(separator: ", ")
     }
 }
