@@ -94,8 +94,8 @@ struct ChangeReviewControlsSection: View {
                 controlRow(c)
             }
         }
+        // Contain without fused label: caption header + control rows stay focusable.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenControlsSection(controls))
         .accessibilityIdentifier(A11yID.reviewControlsSection)
     }
 }
@@ -122,7 +122,6 @@ struct ChangeReviewDecidedSection: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenDecidedSection(actions))
         .accessibilityIdentifier(A11yID.reviewDecidedSection)
     }
 }
@@ -182,7 +181,6 @@ struct ChangeReviewTestsSection: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewSectionsA11y.spokenTestsSection(tests))
         .accessibilityIdentifier(A11yID.reviewTestsSection)
     }
 }

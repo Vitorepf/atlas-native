@@ -30,8 +30,8 @@ extension ChangeReviewGovernanceSection {
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         }
+        // Contain without fused label: council member rows stay focusable.
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(ChangeReviewCouncilA11y.spokenSection(memberCount: council.count, diverged: diverged))
         .accessibilityIdentifier(A11yID.reviewCouncil)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: council.map(\.id))
     }
