@@ -141,6 +141,7 @@
 | **SelfConstruction receipt peels** | Body · Chrome (WAVE-134) |
 | **Root home sections peels** | Body · Live (WAVE-135) |
 | **LiveTimeline narrative peels** | RowView · Chrome (WAVE-136) |
+| **AutonomosDecision Judgment peels** | core · Grammar (WAVE-137) |
 | Design tokens | `AtlasTheme` / `AtlasType` / `AtlasMotion` |
 
 ## BLOCKED (honesto)
