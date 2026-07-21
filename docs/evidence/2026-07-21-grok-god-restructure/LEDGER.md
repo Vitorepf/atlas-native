@@ -28,6 +28,14 @@ god_hold: **forbidden** (v4)
 
 ## Cycle log
 
+### QueuedFollowUp fuse
+
+```yaml
+focus: Row+Sheet host body fuse
+domain_index: 1
+gates: ok
+```
+
 ### FileRow fuse
 
 ```yaml
