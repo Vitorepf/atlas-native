@@ -1246,6 +1246,7 @@ struct LiveNowRow: View {
         .padding(.vertical, 3)
         .background(Capsule().fill(AtlasTheme.goldVeil))
         .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
+        .atlasElevation(radius: 3, y: 1, opacity: 0.1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Sessão remota em outra superfície")
         .atlasAccessibilityIdentifier(remoteBadgeID)
