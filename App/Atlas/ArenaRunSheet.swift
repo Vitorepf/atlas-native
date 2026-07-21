@@ -172,50 +172,38 @@ extension ArenaRunSheet {
 }
 
 extension ArenaRunSheet {
+    /// WAVE-074: exclusive run-sheet shell face.
+    var runSheetFace: ArenaRunSheetFace {
+        ArenaRunSheetJudgment.face(
+            engineCount: engines.count,
+            suiteCount: installedSuites.count
+        )
+    }
+
     func spokenSheetLabel() -> String {
-        var parts = ["rodar medição Arena"]
-        parts.append(spokenEnginesCount())
-        parts.append(spokenSuitesCount())
-        return parts.joined(separator: ", ")
+        ArenaRunSheetJudgment.spokenSheet(face: runSheetFace)
     }
 
-    func spokenSheetHint() -> String {
-        "escolhe suites, motor e braços; ator e motivo auditáveis são obrigatórios"
-    }
+    func spokenSheetHint() -> String { ArenaRunSheetJudgment.sheetHint }
 
-    func spokenCloseLabel() -> String { "fechar folha de medição" }
-    func spokenCloseHint() -> String { "volta para a Arena sem enviar" }
-
-    func spokenEnginesCount() -> String {
-        if engines.isEmpty { return "nenhum motor publicado" }
-        return "\(engines.count) motor\(engines.count == 1 ? "" : "es")"
-    }
-
-    func spokenSuitesCount() -> String {
-        let suites = installedSuites.count
-        if suites == 0 { return "nenhuma suite com adapter" }
-        return "\(suites) suite\(suites == 1 ? "" : "s") instalada\(suites == 1 ? "" : "s")"
-    }
+    func spokenCloseLabel() -> String { ArenaRunSheetJudgment.closeLabel }
+    func spokenCloseHint() -> String { ArenaRunSheetJudgment.closeHint }
 
     func spokenEmptyEngines() -> String {
-        "nenhum motor publicado pelo servidor, rodar medição indisponível"
+        ArenaRunSheetJudgment.spokenEmptyEngines()
     }
 
     func spokenEmptySuites() -> String {
-        "nenhuma suite com adapter instalado, rodar medição indisponível"
+        ArenaRunSheetJudgment.spokenEmptySuites()
     }
 
     func spokenErrorLabel(_ message: String) -> String {
-        "erro: \(message)"
+        ArenaRunSheetJudgment.spokenErrorLabel(message)
     }
 
-    func spokenActorHint() -> String {
-        "nome de quem autoriza a medição"
-    }
+    func spokenActorHint() -> String { ArenaRunSheetJudgment.actorHint }
 
-    func spokenReasonHint() -> String {
-        "motivo auditável registrado no ledger"
-    }
+    func spokenReasonHint() -> String { ArenaRunSheetJudgment.reasonHint }
 
     /// WAVE-055: submit/receipt spoken from Judgment.
     func spokenSubmitLabel(input: AtlasArenaStartInput, enginesEmpty: Bool) -> String {
@@ -307,6 +295,7 @@ struct ArenaRunSheet: View {
         .onAppear { seedDefaultsIfNeeded() }
         .accessibilityIdentifier(A11yID.arenaRunSheet)
         .accessibilityLabel(spokenSheetLabel())
+        .accessibilityValue(runSheetFace.productWord)
         .accessibilityHint(spokenSheetHint())
     }
 

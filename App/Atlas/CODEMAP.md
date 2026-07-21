@@ -55,6 +55,7 @@
 | **Arena agora (fase)** | `ArenaNowJudgment` → face idle/queued/running/terminal · NowStates chrome |
 | **Arena live control (corridas)** | `ArenaLiveControlJudgment` → rank · face · canStop |
 | **Arena start / recibo rodar** | `ArenaStartJudgment` → submit face · receipt face · worker gap |
+| **Arena run sheet (shell)** | `ArenaRunSheetJudgment` → face empty_engines/empty_suites/ready |
 | **Arena suite drill** | `ArenaSuiteJudgment` → rank regressed-first · suite face |
 | **Decisão Autônomos (julgar + assinar)** | `AutonomosDecisionJudgment` → `AutonomosDecisionSurface` → Hub CTA / MapShell `.decisions` / `AutonomosModel.decide` |
 | **Controle do loop Autônomos (veto)** | `AutonomosRunControlJudgment` → Hub primaryVerb → ReasonSheet → `model.control` / `startRun` · bind `selectArea` |
