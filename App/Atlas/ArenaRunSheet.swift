@@ -356,11 +356,15 @@ extension ArenaRunSheet {
 
 extension ArenaRunSheet {
     func toggleRow(title: String, subtitle: String?, isOn: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
+            action()
+        } label: {
             toggleLabel(title: title, subtitle: subtitle, isOn: isOn)
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel(toggleAccessibilityLabel(title: title, subtitle: subtitle, isOn: isOn))
+        .accessibilityHint(isOn ? "desmarca esta opção" : "marca esta opção")
         .accessibilityAddTraits(isOn ? .isSelected : [])
     }
 }

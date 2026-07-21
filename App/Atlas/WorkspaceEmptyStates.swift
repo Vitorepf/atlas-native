@@ -60,6 +60,7 @@ struct AtlasEditorialGlyphEmpty: View {
             .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenLabel ?? headline)
+            .accessibilityAddTraits(.isHeader)
             .accessibilityIdentifier(accessibilityIdentifier)
     }
 }

@@ -282,6 +282,8 @@ extension PlanCard {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
             Text(showDetail ? "menos" : "ferramentas · agentes · gates")
                 .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
+                .frame(minHeight: 44, alignment: .leading)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(A11yID.planDetailToggle)
@@ -536,6 +538,8 @@ extension PlanCard {
             // Ação fala em sans (mono é hash/recibo/meta — canon §C).
             Text(showRevisions ? "ocultar versões" : "comparar versões · \(count)")
                 .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
+                .frame(minHeight: 44, alignment: .leading)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(spokenRevisionToggle(expanded: showRevisions, count: count))
