@@ -14,6 +14,7 @@ struct AtlasCodeFileRow: View {
     var body: some View {
         lead
             .padding(.vertical, 9)
+            .frame(minHeight: 48, alignment: .center)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(AtlasCodeFileRowA11y.spokenFile(file))
             .accessibilityIdentifier(accessibilityIdentifier ?? "")
