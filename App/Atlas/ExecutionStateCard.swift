@@ -282,7 +282,7 @@ extension ExecutionStateCard {
                 .accessibilityHidden(true)
         }
         if let checkpoint = state.checkpoint {
-            Text("checkpoint · \(checkpoint)")
+            Text(ExecutionProofJudgment.productCheckpoint(checkpoint))
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(1)
@@ -1414,6 +1414,7 @@ enum ExecutionProofJudgment {
 
     static let productOpen = "Abrir"
     static func productNextChange(deadline: String) -> String { "Próxima mudança: \(deadline)" }
+    static func productCheckpoint(_ id: String) -> String { "checkpoint · \(id)" }
     static let productReplayKicker = "REPLAY"
     static func productArtifactsKicker(count: Int) -> String { "ARTEFATOS (\(count))" }
     static let spokenServerActionHint = "ação declarada pelo servidor"

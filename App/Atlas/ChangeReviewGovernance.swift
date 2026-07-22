@@ -71,7 +71,7 @@ extension ChangeReviewCouncilMemberRow {
     @ViewBuilder
     var metaHashCode: some View {
         if let hash = member.responseHash {
-            Text("hash \(String(hash.prefix(12)))")
+            Text(ChangeReviewJudgment.productHashPrefix(hash))
                 .font(AtlasFont.mono(9))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)

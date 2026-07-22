@@ -798,7 +798,7 @@ struct AutonomosIncidentSurface: View {
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
 
-        Text("observado \(health.observedAt)")
+        Text(AutonomosListJudgment.productObservedAt(health.observedAt))
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.top, 20)

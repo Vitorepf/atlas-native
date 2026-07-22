@@ -121,7 +121,7 @@ extension PlanCard {
         plan: AtlasExecutionPlan,
         progress: AtlasExecutionPlan.Progress
     ) -> some View {
-        Text("planejado \(plan.steps.count) · executado \(min(progress.current, progress.total))/\(progress.total)")
+        Text(PlanJudgment.productPlanProgress(planned: plan.steps.count, current: min(progress.current, progress.total), total: progress.total))
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .monospacedDigit()
@@ -689,6 +689,13 @@ enum PlanStepState: Equatable {
 /// Pure plan progress grammar — face · step · pack · spoken.
 enum PlanJudgment {
 
+    static func productPlanProgress(planned: Int, current: Int, total: Int) -> String {
+        "planejado \(planned) · executado \(current)/\(total)"
+    }
+    static func productArchivedRevision(_ rev: Int) -> String { "v\(rev) arquivado" }
+    static func productArchivedToCurrent(_ rev: Int) -> String { "v\(rev) arquivado → plano atual" }
+    static func productIteration(_ n: Int) -> String { "iter \(n)" }
+
     // MARK: Face
 
     static func face(
@@ -974,7 +981,7 @@ extension PlanRevisionCompare {
     var comparisonBody: some View {
         if let comparison = latestComparison, comparison.hasChanges {
             VStack(alignment: .leading, spacing: 7) {
-                Text("v\(comparison.revision.revision) arquivado → plano atual")
+                Text(PlanJudgment.productArchivedToCurrent(comparison.revision.revision))
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
@@ -1029,12 +1036,12 @@ extension PlanRevisionCompare {
 extension PlanRevisionCompare {
     func revisionArchiveHeader(_ rev: AtlasTraceGovernance.PlanRevision) -> some View {
         HStack(spacing: 6) {
-            Text("v\(rev.revision) arquivado")
+            Text(PlanJudgment.productArchivedRevision(rev.revision))
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
             if let iteration = rev.iteration {
-                Text("iter \(iteration)")
+                Text(PlanJudgment.productIteration(iteration))
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .monospacedDigit()

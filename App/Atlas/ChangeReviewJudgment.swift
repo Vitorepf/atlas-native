@@ -336,6 +336,10 @@ enum ChangeReviewJudgment {
 
     // MARK: Governance chrome (WAVE-099)
 
+    static func productHashPrefix(_ hash: String) -> String {
+        "hash \(String(hash.prefix(12)))"
+    }
+
     static let spokenHashWarning =
         "atenção: o hash do diff não confere com o artefato registrado"
     static let spokenCouncilDivergence = "divergência entre pareceres"

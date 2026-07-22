@@ -296,6 +296,7 @@ enum AutonomosListJudgment {
     static let productNewUnitLocalOnly = "Não publica frota no servidor. Some se o app for morto."
     static let productSelfBuildReceipt = "RECIBO DE AUTO-CONSTRUÇÃO"
     static let productCitedRule = "Regra citada"
+    static func productObservedAt(_ at: String) -> String { "observado \(at)" }
     static let productSnapshotNoAgents = "Snapshot publicado sem agentes neste recorte."
     static let spokenLoadFailureRetryHint = "tenta reabrir o catálogo Autônomos"
     static let spokenLoadFailureLead = "Catálogo Autônomos fora de alcance"
