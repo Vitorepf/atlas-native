@@ -45,7 +45,7 @@ extension ConversationMessages {
                 hasToken: session.hasToken,
                 host: session.host,
                 topPadding: 100,
-                retryHint: "reconecta e recarrega esta conversa",
+                retryHint: ConversationMessagesJudgment.spokenReloadConversationHint,
                 accessibilityIdentifier: A11yID.conversationLoadFailure,
                 onRetry: { Task { await model.load() } }
             )

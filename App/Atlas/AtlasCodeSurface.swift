@@ -1262,7 +1262,7 @@ struct AtlasCodeLoadFailureEmpty: View {
             topPadding: 0,
             accessibilityIdentifier: A11yID.codeLoadFailure,
             retryAccessibilityIdentifier: A11yID.codeLoadRetry,
-            retryHint: "recarrega o grafo ou radar deste repositório",
+            retryHint: AtlasCodeRadarLoadJudgment.spokenReloadGraphHint,
             spokenOverride: "\(headline). \(message)",
             onRetry: onRetry
         )

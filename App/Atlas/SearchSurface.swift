@@ -379,7 +379,7 @@ extension SearchView {
             hasToken: session.hasToken,
             host: session.host,
             topPadding: 56,
-            retryHint: "reconecta e recarrega conversas para buscar",
+            retryHint: SearchListJudgment.spokenReloadSearchHint,
             accessibilityIdentifier: A11yID.searchOffline,
             onRetry: { Task { await session.loadThreads() } }
         )
@@ -729,6 +729,7 @@ enum SearchListJudgment {
     static let productFieldPlaceholder = "Buscar conversas"
     static let productRecentsKicker = "RECENTES"
     static let spokenFieldHint = "filtra só conversas já carregadas na sessão"
+    static let spokenReloadSearchHint = "reconecta e recarrega conversas para buscar"
 
     // MARK: Face
 

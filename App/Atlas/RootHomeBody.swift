@@ -210,7 +210,7 @@ extension RootHomeBody {
                 hasToken: session.hasToken,
                 host: session.host,
                 topPadding: 0,
-                retryHint: "reconecta ao servidor Atlas",
+                retryHint: AtlasCodeRadarLoadJudgment.spokenReconnectHint,
                 retryAccessibilityIdentifier: A11yID.homeRetry,
                 accessibilityIdentifier: A11yID.homeOffline,
                 onRetry: { Task { await session.loadThreads() } }

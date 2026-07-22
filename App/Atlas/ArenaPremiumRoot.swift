@@ -924,7 +924,7 @@ struct ArenaPremiumLoadFailureView: View {
             symbol: model.isDomainUnavailable ? "shippingbox" : "wifi.exclamationmark",
             topPadding: 0,
             accessibilityIdentifier: A11yID.arenaPremiumState("failed-load"),
-            retryHint: "tenta carregar a Arena de novo",
+            retryHint: ArenaNowJudgment.spokenReloadArenaHint,
             onRetry: { Task { await model.load() } }
         )
     }

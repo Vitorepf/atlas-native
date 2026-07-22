@@ -307,7 +307,7 @@ extension WorkspaceView {
             kind: session.failureKind,
             hasToken: session.hasToken,
             host: session.host,
-            retryHint: "reconecta e recarrega conversas deste workspace",
+            retryHint: WorkspaceJudgment.spokenReloadConversationsHint,
             retryAccessibilityIdentifier: A11yID.workspaceRetry,
             accessibilityIdentifier: A11yID.workspaceOffline,
             onRetry: { Task { await session.loadThreads() } }
@@ -781,6 +781,8 @@ enum WorkspaceJudgment {
 
     // MARK: Chrome (header / filter / pill)
 
+    static let spokenReconnectHint = "reconecta ao servidor Atlas"
+    static let spokenReloadConversationsHint = "reconecta e recarrega conversas deste workspace"
     static let spokenBack = "voltar"
     static let spokenAreaFilterHint = "filtra conversas já carregadas"
     static let productNewConversation = "nova conversa"
@@ -1064,7 +1066,7 @@ struct AtlasNetworkFailureEmpty: View {
     let hasToken: Bool
     let host: String
     var topPadding: CGFloat = 56
-    var retryHint: String = "reconecta ao servidor Atlas"
+    var retryHint: String = WorkspaceJudgment.spokenReconnectHint
     var retryAccessibilityIdentifier: String?
     let accessibilityIdentifier: String
     let onRetry: () -> Void

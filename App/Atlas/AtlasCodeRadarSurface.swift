@@ -1159,6 +1159,7 @@ enum AtlasCodeRadarLoadJudgment {
 
     static let spokenShellHint = "pastas, recentes e sem retorno verificados do seu código"
     static let productScreenTitle = "Código"
+    static let spokenReloadGraphHint = "recarrega o grafo ou radar deste repositório"
     static let spokenReconnectHint = "reconecta ao servidor Atlas"
 
     static func face(

@@ -101,6 +101,7 @@ enum ConversationMessagesJudgment {
     static let spokenHeaderContinuity = "continuidade da conversa"
     static let spokenHeaderContinuityHint = "continuar esta conversa no Mac ou no Terminal"
     static let spokenScreenHint = "turnos e composer só com dados da sessão e do model"
+    static let spokenReloadConversationHint = "reconecta e recarrega esta conversa"
     static let spokenBackHint = "fecha a conversa"
     static let spokenSteerFieldHint = "descreve o que deve mudar na execução"
     static let productSteerSubmit = "Enviar"

@@ -255,6 +255,7 @@ struct ArenaNowTerminalChrome: Equatable {
 /// Pure Arena now-phase grammar — face · terminal chrome · spoken · pack.
 enum ArenaNowJudgment {
     static let productScreenTitle = "Arena"
+    static let spokenReloadArenaHint = "tenta carregar a Arena de novo"
 
     static func face(
         loadPhase: LoadPhase,
