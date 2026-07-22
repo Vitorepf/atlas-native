@@ -103,6 +103,15 @@ enum AutonomosTaskHealthJudgment {
         return "claimable \(t.claimable) · claimed \(t.claimed) · blocked \(t.blocked) · completed \(t.completed)"
     }
 
+    static func productLeasesLine(_ health: AtlasAutonomosTaskHealthResponse) -> String {
+        let match = health.leases.matchesClaimed ? "sim" : "não"
+        return "leases ativos \(health.leases.active)· match claimed \(match)"
+    }
+
+    static let productSectionOperation = "Operação"
+    static let productSectionQueue = "Fila"
+    static let productSectionSignals = "Sinais"
+
     static func productOperatingLine(_ health: AtlasAutonomosTaskHealthResponse) -> String {
         let action = health.operating.recommendedAction
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -328,9 +337,40 @@ enum AutonomosListJudgment {
 
     static let productResumeList = "Retomar na lista"
     static let productPauseList = "Pausar na lista"
+    static let productListLocalOnly = "Só lista local"
+    static let productLocalNotLoopMeta = "iPhone · não é o loop"
+    static let productNoServerPauseMeta = "não pausa o servidor"
     static let productLocalCatalogMeta = "catálogo local"
     static let productAllDecisions = "Todas as decisões"
     static let productCatalogOutOfReach = "Catálogo fora de alcance."
+
+    static let productDecisionsWindow = "Decisões na janela"
+    static let productRisks = "Riscos"
+    static let productDeliveries = "Entregas"
+    static let productMilestones = "Marcos"
+    static let productAsksYou = "Pede você"
+    static let productAlive = "Vivo"
+    static let productStopped = "Parado"
+    static let productEvolving = "Evoluindo"
+    static let productOnPause = "Em pausa"
+    static let productJudgmentUnlocks = "Só o julgamento desbloqueia."
+    static let productNothingAsks = "Nada pede você."
+    static let productByYou = "Por você."
+    static func productDecisionCount(_ n: Int) -> String {
+        n == 1 ? "1 decisão" : "\(n) decisões"
+    }
+    static let productName = "Nome"
+    static let productCharter = "Carta"
+    static let productNamePlaceholder = "ex.: Agente iOS Dinheiro"
+    static let productCharterPlaceholder = "O que este Autônomo pode e não pode tocar."
+    static let productSaveOnPhone = "Guardar neste iPhone"
+    static func productRegisteredAreasQuiet(_ count: Int) -> String {
+        "\(count) áreas registradas — sem área o hub fica quieto"
+    }
+    static func productRiskFallback(_ severity: String) -> String { "Risco \(severity)" }
+    static func productDecisionKicker(isInbox: Bool) -> String {
+        "Decisão · \(isInbox ? "inbox" : "ordem")"
+    }
 
     // MARK: Face
 

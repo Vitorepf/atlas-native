@@ -636,7 +636,7 @@ struct AutonomosDigestSurface: View {
 
         let pending = AutonomosDigestJudgment.rankPending(digest.last.pendingDecisions)
         if !pending.isEmpty {
-            sectionHeader("Decisões na janela")
+            sectionHeader(AutonomosListJudgment.productDecisionsWindow)
             ForEach(pending) { item in
                 row(
                     title: item.title,
@@ -648,10 +648,10 @@ struct AutonomosDigestSurface: View {
 
         let risks = AutonomosDigestJudgment.rankRisks(digest.last.risks)
         if !risks.isEmpty {
-            sectionHeader("Riscos")
+            sectionHeader(AutonomosListJudgment.productRisks)
             ForEach(risks) { risk in
                 row(
-                    title: risk.title ?? risk.reason ?? "Risco \(risk.severity)",
+                    title: risk.title ?? risk.reason ?? AutonomosListJudgment.productRiskFallback(risk.severity),
                     meta: "\(risk.severity)\(risk.route.map { " · \($0)" } ?? "")",
                     accent: risk.severity.lowercased().contains("high")
                         || risk.severity.lowercased().contains("crit")
@@ -661,7 +661,7 @@ struct AutonomosDigestSurface: View {
 
         let delivered = AutonomosDigestJudgment.rankDelivered(digest.last.delivered)
         if !delivered.isEmpty {
-            sectionHeader("Entregas")
+            sectionHeader(AutonomosListJudgment.productDeliveries)
             ForEach(delivered) { d in
                 row(
                     title: AutonomosListJudgment.productCycleOutcome(index: d.cycleIndex, outcome: d.outcome),
@@ -752,7 +752,7 @@ struct AutonomosIncidentSurface: View {
 
     @ViewBuilder
     private func healthBody(_ health: AtlasAutonomosTaskHealthResponse) -> some View {
-        AutonomosMapChrome.section("Operação")
+        AutonomosMapChrome.section(AutonomosTaskHealthJudgment.productSectionOperation)
             .padding(.bottom, 10)
         Text(AutonomosTaskHealthJudgment.productOperatingLine(health))
             .font(AtlasFont.serif(16, .semibold))
@@ -760,21 +760,21 @@ struct AutonomosIncidentSurface: View {
             .fixedSize(horizontal: false, vertical: true)
             .padding(.bottom, 18)
 
-        AutonomosMapChrome.section("Fila")
+        AutonomosMapChrome.section(AutonomosTaskHealthJudgment.productSectionQueue)
             .padding(.bottom, 10)
         Text(AutonomosTaskHealthJudgment.productTasksSummary(health))
             .font(AtlasFont.mono(12))
             .foregroundStyle(AtlasTheme.textSecondary)
             .fixedSize(horizontal: false, vertical: true)
             .padding(.bottom, 8)
-        Text("leases ativos \(health.leases.active)· match claimed \(health.leases.matchesClaimed ? "sim" : "não")")
+        Text(AutonomosTaskHealthJudgment.productLeasesLine(health))
             .font(AtlasFont.mono(11))
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.bottom, 18)
 
         let flags = AutonomosTaskHealthJudgment.productFlagLines(health)
         if !flags.isEmpty {
-            AutonomosMapChrome.section("Sinais")
+            AutonomosMapChrome.section(AutonomosTaskHealthJudgment.productSectionSignals)
                 .padding(.bottom, 10)
             ForEach(Array(flags.enumerated()), id: \.offset) { _, flag in
                 HStack(alignment: .top, spacing: 10) {
@@ -854,7 +854,7 @@ struct AutonomosEvolutionView: View {
                 case .unbound, .empty:
                     emptyBlock
                 case .items:
-                    AutonomosMapChrome.section("Marcos")
+                    AutonomosMapChrome.section(AutonomosListJudgment.productMilestones)
                         .padding(.bottom, 12)
                     ForEach(marcos) { marco in
                         marcoRow(marco)
@@ -873,7 +873,7 @@ struct AutonomosEvolutionView: View {
 
     private var emptyBlock: some View {
         VStack(alignment: .leading, spacing: 10) {
-            AutonomosMapChrome.section("Marcos")
+            AutonomosMapChrome.section(AutonomosListJudgment.productMilestones)
             Text(face.heroSub)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -1049,7 +1049,7 @@ struct AutonomosAreaBindCTA: View {
                     Text(AutonomosAreaBindJudgment.productCTA)
                         .font(AtlasFont.mono(12, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text("\(registeredCount) áreas registradas — sem área o hub fica quieto")
+                    Text(AutonomosListJudgment.productRegisteredAreasQuiet(registeredCount))
                         .font(AtlasFont.serifItalic(13))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1252,7 +1252,7 @@ struct AutonomosHubView: View {
                 AutonomosMapChrome.primaryCTA(action.ctaTitle, action: { onControl(action) })
             } else if case .quiet = vestment {
                 // Catalog-only resume when loop unbound.
-                AutonomosMapChrome.primaryCTA("Retomar na lista", action: onLocalCatalogResume)
+                AutonomosMapChrome.primaryCTA(AutonomosListJudgment.productResumeList, action: onLocalCatalogResume)
             } else {
                 EmptyView()
             }
@@ -1266,8 +1266,8 @@ struct AutonomosHubView: View {
         )
         if demote {
             AutonomosMapNavLine(
-                title: unit.paused ? "Retomar na lista" : "Só lista local",
-                meta: unit.paused ? "iPhone · não é o loop" : "não pausa o servidor",
+                title: unit.paused ? AutonomosListJudgment.productResumeList : AutonomosListJudgment.productListLocalOnly,
+                meta: unit.paused ? AutonomosListJudgment.productLocalNotLoopMeta : AutonomosListJudgment.productNoServerPauseMeta,
                 action: {
                     if unit.paused { onLocalCatalogResume() } else { onLocalCatalogPause() }
                 }
@@ -1311,9 +1311,9 @@ enum AutonomosHubVestment: Equatable {
 
     var kicker: String {
         switch self {
-        case .awaiting: "Pede você"
-        case .live: "Vivo"
-        case .quiet: "Parado"
+        case .awaiting: AutonomosListJudgment.productAsksYou
+        case .live: AutonomosListJudgment.productAlive
+        case .quiet: AutonomosListJudgment.productStopped
         }
     }
 
@@ -1327,30 +1327,30 @@ enum AutonomosHubVestment: Equatable {
     var heroTitle: String {
         switch self {
         case .awaiting(let n):
-            return n == 1 ? "1 decisão" : "\(n) decisões"
+            return AutonomosListJudgment.productDecisionCount(n)
         case .live:
-            return "Evoluindo"
+            return AutonomosListJudgment.productEvolving
         case .quiet:
-            return "Em pausa"
+            return AutonomosListJudgment.productOnPause
         }
     }
 
     var heroSub: String {
         switch self {
         case .awaiting:
-            return "Só o julgamento desbloqueia."
+            return AutonomosListJudgment.productJudgmentUnlocks
         case .live:
-            return "Nada pede você."
+            return AutonomosListJudgment.productNothingAsks
         case .quiet:
-            return "Por você."
+            return AutonomosListJudgment.productByYou
         }
     }
 
     var navSubtitle: String {
         switch self {
-        case .awaiting: "Pede você"
-        case .live: "Vivo"
-        case .quiet: "Parado"
+        case .awaiting: AutonomosListJudgment.productAsksYou
+        case .live: AutonomosListJudgment.productAlive
+        case .quiet: AutonomosListJudgment.productStopped
         }
     }
 
@@ -1612,7 +1612,10 @@ extension AutonomosDecisionSurface {
         ) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    AutonomosMapChrome.kicker("Decisão · \(item.kind == .inbox ? "inbox" : "ordem")", live: true)
+                    AutonomosMapChrome.kicker(
+                        AutonomosListJudgment.productDecisionKicker(isInbox: item.kind == .inbox),
+                        live: true
+                    )
                         .padding(.bottom, 14)
                     AutonomosMapChrome.heroTitle(item.title, size: 28)
                         .padding(.bottom, 8)
@@ -1709,19 +1712,19 @@ struct AutonomosNewSheet: View {
                         .fixedSize(horizontal: false, vertical: true)
 
                     field(
-                        label: "Nome",
-                        placeholder: "ex.: Agente iOS Dinheiro",
+                        label: AutonomosListJudgment.productName,
+                        placeholder: AutonomosListJudgment.productNamePlaceholder,
                         text: $name,
                         axis: .horizontal
                     )
                     field(
-                        label: "Carta",
-                        placeholder: "O que este Autônomo pode e não pode tocar.",
+                        label: AutonomosListJudgment.productCharter,
+                        placeholder: AutonomosListJudgment.productCharterPlaceholder,
                         text: $charter,
                         axis: .vertical
                     )
 
-                    AutonomosMapChrome.primaryCTA("Guardar neste iPhone", enabled: canCreate) {
+                    AutonomosMapChrome.primaryCTA(AutonomosListJudgment.productSaveOnPhone, enabled: canCreate) {
                         AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onCreate(name, charter)
                     }
@@ -1729,7 +1732,7 @@ struct AutonomosNewSheet: View {
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .fixedSize(horizontal: false, vertical: true)
-                    AutonomosMapChrome.quietCTA("Cancelar", action: onCancel)
+                    AutonomosMapChrome.quietCTA(AutonomosReasonJudgment.productCancel, action: onCancel)
                 }
                 .padding(AtlasTheme.Space.screen)
                 .padding(.bottom, 24)
