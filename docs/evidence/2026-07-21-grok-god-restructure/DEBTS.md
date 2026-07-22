@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 624
-domain_index: 2
-last_focus: "Conversation spokenBackHint honesty"
-session_commits: 219
+pass: 625
+domain_index: 3
+last_focus: "Home/Workspace spoken* a11y honesty"
+session_commits: 221
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **219** · soft **0** · density OK · 46+2 · gates green
+commits **221** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
