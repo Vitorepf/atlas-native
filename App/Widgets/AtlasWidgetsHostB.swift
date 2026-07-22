@@ -49,7 +49,7 @@ struct AtlasTurnWidgetTimer: View {
     var timerTextPausedOrRM: some View {
         if paused == true {
             // Honesty: missing pausedDisplay → em dash, never "0:00"
-            Text("‖ \(pausedDisplay ?? "—")")
+            Text(FleetWidgetA11y.productElapsedBar(pausedDisplay ?? "—"))
         } else if reduceMotion {
             TimelineView(.periodic(from: .now, by: 60)) { timeline in
                 Text(AtlasTime.formatActiveDuration(milliseconds: elapsedMs(now: timeline.date)))

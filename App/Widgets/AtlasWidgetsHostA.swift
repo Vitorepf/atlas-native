@@ -409,6 +409,9 @@ enum FleetWidgetA11y {
     static let productQuietWeek = "semana quieta · sem commits nem curas"
     static let productWeekUnpublished = "semana ainda não publicada"
     static let productDone = "concluído"
+    static func productScanned(_ age: String) -> String { "varrida \(age)" }
+    static func productActiveSessions(_ n: Int) -> String { "× \(n)" }
+    static func productElapsedBar(_ clock: String) -> String { "‖ \(clock)" }
 
     static func spokenIncidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
         LockAccessoryA11y.spokenIncidentLine(incident)
@@ -680,7 +683,7 @@ extension FleetWidgetView {
         Text(FleetWidgetA11y.productFleetIntact)
             .font(.system(size: 18, weight: .semibold, design: .serif))
             .foregroundStyle(Ink.healed)
-        Text("varrida \(scanned.relativeShort(to: entry.date))")
+        Text(FleetWidgetA11y.productScanned(scanned.relativeShort(to: entry.date)))
             .font(.system(size: 12, design: .serif))
             .foregroundStyle(Ink.ink2)
     }
@@ -1590,7 +1593,7 @@ struct LockScreenView: View {
     @ViewBuilder
     var activeSessionsBadge: some View {
         if context.state.glanceFace == .multiSession {
-            Text("× \(context.state.activeSessions)")
+            Text(FleetWidgetA11y.productActiveSessions(context.state.activeSessions))
                 .font(.system(size: 11, weight: .semibold, design: .monospaced))
                 .foregroundStyle(Ink.gold)
                 .padding(.horizontal, 7).padding(.vertical, 2)
@@ -1872,7 +1875,7 @@ extension LiveSessionWidgetTimer {
     @ViewBuilder
     var timerFallbackBody: some View {
         if live.timing == .paused {
-            Text("‖ \(clock(live.elapsedActiveMs))")
+            Text(FleetWidgetA11y.productElapsedBar(clock(live.elapsedActiveMs)))
         } else if let ms = live.elapsedActiveMs {
             Text(clock(ms))
         }
