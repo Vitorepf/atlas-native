@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 628
-domain_index: 6
-last_focus: "ChangeReview productAccept/RejectRun wire"
-session_commits: 227
+pass: 629
+domain_index: 7
+last_focus: "fix ControlJudgment productAccept/RejectRun + continuous residual"
+session_commits: 229
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **227** · soft **0** · density OK · 46+2 · gates green
+commits **229** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
