@@ -5,8 +5,8 @@
 ```yaml
 pass: 655
 domain_index: 1
-last_focus: "product titles empty-states residual"
-session_commits: 281
+last_focus: "residual product* summary/row/empty/provider honesty batch"
+session_commits: 280
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **281** · soft **0** · density OK · 46+2 · gates green
+commits **280** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
