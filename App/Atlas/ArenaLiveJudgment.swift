@@ -277,6 +277,9 @@ enum ArenaNowJudgment {
 
     static let productWithoutAtlas = "sem Atlas"
     static let productWithAtlas = "com Atlas"
+    static let productAlertsLower = "alertas"
+    static let productRuns = "Corridas"
+    static let productPipeline = "Pipeline"
 
     static func productBestGain(engine: String, mult: String) -> String {
         "melhor ganho · \(engine) · \(mult)"

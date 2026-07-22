@@ -127,7 +127,7 @@ struct ArenaPremiumExecutionView: View {
 
     private var corridas: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Corridas")
+            Text(ArenaNowJudgment.productRuns)
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
@@ -265,7 +265,7 @@ struct ArenaPremiumExecutionPipeline: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Pipeline")
+            Text(ArenaNowJudgment.productPipeline)
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)

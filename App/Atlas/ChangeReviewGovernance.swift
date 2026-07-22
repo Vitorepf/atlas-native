@@ -136,7 +136,7 @@ extension ChangeReviewGovernanceSection {
     @ViewBuilder
     func councilBlockHeader(diverged: Bool) -> some View {
         HStack(spacing: 8) {
-            Text("Conselho")
+            Text(ChangeReviewJudgment.productCouncil)
                 .atlasSans(11, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityAddTraits(.isHeader)

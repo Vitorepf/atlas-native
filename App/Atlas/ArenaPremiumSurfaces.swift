@@ -168,7 +168,7 @@ struct ArenaPremiumAlertsView: View {
                 Text("\(regressions.count + reportAlerts.count)")
                     .font(AtlasFont.serif(58))
                     .foregroundStyle(hasAlerts ? AtlasTheme.alert : AtlasTheme.textPrimary)
-                Text("alertas")
+                Text(ArenaNowJudgment.productAlertsLower)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }

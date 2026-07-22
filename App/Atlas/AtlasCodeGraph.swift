@@ -558,7 +558,7 @@ extension AtlasCodeFileRow {
                 .monospacedDigit()
                 .accessibilityHidden(true)
         } else {
-            Text("binário")
+            Text(AtlasCodeGraphJudgment.productBinary)
                 .font(AtlasFont.mono(8.5))
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
                 .accessibilityHidden(true)
@@ -928,6 +928,9 @@ enum AtlasCodeGraphJudgment {
     static let productRepoNavTitle = "Repositório"
     static let productWorktreesKicker = "WORKTREES"
     static let productQuietWeek = "semana quieta · sem commits nem curas"
+    static let productBinary = "binário"
+    static let productTheWeek = "A semana"
+    static let productMirror = "Espelho"
 
     // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
 
@@ -1373,7 +1376,7 @@ extension AtlasCodeView {
     func weekBody(_ week: AtlasCodeWeek) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                Text("A semana")
+                Text(AtlasCodeGraphJudgment.productTheWeek)
                     .font(AtlasFont.serif(18, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)

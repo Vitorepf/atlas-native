@@ -363,7 +363,7 @@ struct AtlasCodeMirrorCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text("Espelho")
+                Text(AtlasCodeGraphJudgment.productMirror)
                     .font(AtlasFont.serif(18, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
