@@ -1414,6 +1414,8 @@ enum AtlasCodeAskPillJudgment {
     static let spokenClear = "mostrar tudo no grafo"
     static let spokenClearHint = "remove o recorte dos commits da resposta"
     static let spokenClearCommitRef = "Limpar referência do commit"
+    static let productClearCommit = "limpar"
+    static let productShowAll = "mostrar tudo"
     static let spokenClearCommitRefHint = "Remove o commit da pílula"
     static let spokenAskCommit = "perguntar ao Atlas sobre este commit"
     static func spokenUserQuote(_ quote: String) -> String {

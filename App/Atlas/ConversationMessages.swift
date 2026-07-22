@@ -649,7 +649,7 @@ extension SteerInteractionSheet {
 extension SteerInteractionSheet {
     var formHeader: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Redirecionar")
+            Text(ConversationLiveStripJudgment.productSteer)
                 .font(AtlasFont.serif(24, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)

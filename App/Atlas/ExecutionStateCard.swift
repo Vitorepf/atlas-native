@@ -547,7 +547,7 @@ extension ExecutionStateCard {
 
 extension ExecutionStateCard {
     var steerButtonLabel: some View {
-        Text("Redirecionar")
+        Text(ConversationLiveStripJudgment.productSteer)
             .font(.system(.caption, weight: .semibold))
             .lineLimit(1)
             .padding(.horizontal, 11).padding(.vertical, 8)

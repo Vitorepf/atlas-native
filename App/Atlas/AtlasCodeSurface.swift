@@ -160,7 +160,7 @@ extension AtlasCodeView {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 clearAskFocus()
             } label: {
-                Text("limpar")
+                Text(AtlasCodeAskPillJudgment.productClearCommit)
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
@@ -173,7 +173,7 @@ extension AtlasCodeView {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 askModel.clear()
             } label: {
-                Text("mostrar tudo")
+                Text(AtlasCodeAskPillJudgment.productShowAll)
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }

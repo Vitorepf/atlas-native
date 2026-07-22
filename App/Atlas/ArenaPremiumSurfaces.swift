@@ -1298,7 +1298,7 @@ struct ArenaPremiumQueueView: View {
                 ArenaPremiumHairline()
             }
             if case .empty = queueFace {
-                Text("Fila vazia")
+                Text(ArenaRunSheetJudgment.productEmptyQueue)
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
