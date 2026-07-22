@@ -332,7 +332,7 @@ extension AtlasCodeProvenanceSheet {
 
 extension AtlasCodeProvenanceSheet {
     var filesSectionHeader: some View {
-        Text("ARQUIVOS")
+        Text(AtlasCodeProvenanceJudgment.productFilesKicker)
             .atlasSans(8.5, .semibold)
             .tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
@@ -735,6 +735,8 @@ enum AtlasCodeProvenanceJudgment {
     }
 
     static let spokenCommitHash = "hash do commit"
+    static let productFilesKicker = "ARQUIVOS"
+    static let productWhyFileKicker = "POR QUE ESTE ARQUIVO EXISTE"
 
     static func spokenTitle(node: AtlasCodeGraphNode) -> String {
         node.message?.nonEmpty ?? String(node.hash.prefix(8))
@@ -1133,7 +1135,7 @@ struct AtlasCodeWhySheet: View {
 
     var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("POR QUE ESTE ARQUIVO EXISTE")
+            Text(AtlasCodeProvenanceJudgment.productWhyFileKicker)
                 .atlasSans(9, .semibold)
                 .tracking(1.5)
                 .foregroundStyle(AtlasTheme.textTertiary)

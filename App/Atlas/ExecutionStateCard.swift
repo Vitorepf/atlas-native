@@ -1066,7 +1066,7 @@ extension ExecutionProof {
 
     func replayScrubberTitle(index: Int, total: Int) -> some View {
         HStack {
-            Text("REPLAY")
+            Text(ExecutionProofJudgment.productReplayKicker)
                 .font(AtlasFont.mono(10))
                 .tracking(1.1)
                 .foregroundStyle(AtlasTheme.accent)
@@ -1413,6 +1413,7 @@ enum ExecutionProofFace: Equatable {
 enum ExecutionProofJudgment {
 
     static let productOpen = "Abrir"
+    static let productReplayKicker = "REPLAY"
     static let spokenServerActionHint = "ação declarada pelo servidor"
 
     static func hasDecisionSurface(_ d: AtlasDecisionSummary) -> Bool {

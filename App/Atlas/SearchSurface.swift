@@ -198,7 +198,7 @@ struct SearchRecentSection: View {
 
 extension SearchRecentSection {
     var recentCaption: some View {
-        Text("RECENTES")
+        Text(SearchListJudgment.productRecentsKicker)
             .font(AtlasFont.mono(10, .semibold)).tracking(1.4)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -727,6 +727,7 @@ enum SearchListJudgment {
 
     static let spokenOpenThreadHint = "abre a conversa"
     static let productFieldPlaceholder = "Buscar conversas"
+    static let productRecentsKicker = "RECENTES"
     static let spokenFieldHint = "filtra só conversas já carregadas na sessão"
 
     // MARK: Face

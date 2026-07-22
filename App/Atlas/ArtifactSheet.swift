@@ -629,7 +629,7 @@ extension ArtifactSheet {
 extension ArtifactSheet {
     var mountCounterText: some View {
         HStack(spacing: 8) {
-            Text("MONTAGEM")
+            Text(ArtifactListJudgment.productAssemblyKicker)
                 .font(AtlasFont.mono(10)).tracking(1.0)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
@@ -1121,6 +1121,7 @@ enum ArtifactListJudgment {
 
     static let spokenClose = "fechar artefatos"
     static let productTitle = "Artefatos"
+    static let productAssemblyKicker = "MONTAGEM"
     static let spokenCloseHint = "volta para a conversa"
     static let spokenSheetHint = "lista e preview só com itens publicados no contrato"
     static let spokenEmptyVisualizable = "sem artefatos visualizáveis nesta execução"

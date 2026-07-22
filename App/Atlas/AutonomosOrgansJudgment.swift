@@ -285,6 +285,7 @@ enum AutonomosListJudgment {
     static let productEmptyHero = "Nenhum ainda"
     static let productCreateCTA = "Novo Autônomo"
     static let spokenCreateHint = "Cria um Autônomo com nome e carta"
+    static let productLearnFromUseKicker = "APRENDER COM O USO"
 
     // MARK: Face
 

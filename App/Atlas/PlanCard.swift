@@ -1471,7 +1471,7 @@ extension EditorialTurn {
         if !bubble.streaming,
            ExecutionProof.shouldDisplay(bubble: bubble, artifactItems: artifactItems) {
             ExecutionProof(bubble: bubble, artifactItems: artifactItems, onOpenArtifacts: onOpenArtifacts)
-            Text("RESPOSTA FINAL")
+            Text(EditorialTurnJudgment.productFinalAnswerKicker)
                 .font(.system(.caption2, weight: .semibold)).tracking(1.6)
                 .foregroundStyle(AtlasTheme.accent.opacity(0.85))
                 .accessibilityLabel(EditorialTurnJudgment.spokenFinalAnswerKicker)
@@ -1640,5 +1640,6 @@ enum EditorialTurnJudgment {
     }
 
     static let spokenEditResend = "editar esta mensagem e reenviar como novo turno"
+    static let productFinalAnswerKicker = "RESPOSTA FINAL"
     static let spokenEditResendHint = "abre o compositor com este texto para um novo envio"
 }

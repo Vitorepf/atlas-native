@@ -926,6 +926,7 @@ enum AtlasCodeGraphJudgment {
 
     static let spokenRepoSwitcherHint = "troca de repositório"
     static let productRepoNavTitle = "Repositório"
+    static let productWorktreesKicker = "WORKTREES"
 
     // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
 
@@ -1305,7 +1306,7 @@ extension AtlasCodeView {
         let face = AtlasCodeWorktreeJudgment.sectionFace(worktrees)
         if face != .silence {
             VStack(alignment: .leading, spacing: 8) {
-                Text("WORKTREES")
+                Text(AtlasCodeGraphJudgment.productWorktreesKicker)
                     .font(AtlasFont.mono(10))
                     .tracking(1.1)
                     .foregroundStyle(AtlasTheme.textTertiary)

@@ -676,7 +676,7 @@ struct AutonomosRhythmSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("APRENDER COM O USO")
+            Text(AutonomosListJudgment.productLearnFromUseKicker)
                 .font(AtlasFont.mono(10, .semibold))
                 .foregroundStyle(AtlasTheme.accent)
                 .kerning(1.2)
