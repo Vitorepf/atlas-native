@@ -1171,14 +1171,14 @@ struct AutonomosHubView: View {
                     .padding(.bottom, 10)
 
                 AutonomosMapNavLine(
-                    title: "Evolução",
+                    title: AutonomosListJudgment.productEvolution,
                     meta: evolutionMeta,
                     action: { onNavigate(.evolution) }
                 )
 
                 if let incidentMeta {
                     AutonomosMapNavLine(
-                        title: "Precisa de você",
+                        title: AutonomosListJudgment.productNeedsYou,
                         meta: incidentMeta,
                         action: { onNavigate(.incident) }
                     )
@@ -1186,7 +1186,7 @@ struct AutonomosHubView: View {
 
                 if let digestMeta {
                     AutonomosMapNavLine(
-                        title: "Digest",
+                        title: AutonomosListJudgment.productDigest,
                         meta: digestMeta,
                         action: { onNavigate(.moment("digest")) }
                     )
@@ -1203,7 +1203,7 @@ struct AutonomosHubView: View {
                 catalogPauseLine
 
                 if unit.paused {
-                    AutonomosMapNavLine(title: "Encerrar", meta: "", action: onEnd)
+                    AutonomosMapNavLine(title: AutonomosListJudgment.productEnd, meta: "", action: onEnd)
                 }
             }
             .padding(.horizontal, AtlasTheme.Space.screen)

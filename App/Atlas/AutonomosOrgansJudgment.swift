@@ -315,6 +315,11 @@ enum AutonomosListJudgment {
     static let spokenCreateHint = "Cria um Autônomo com nome e carta"
     static let productLearnFromUseKicker = "APRENDER COM O USO"
 
+    static let productEvolution = "Evolução"
+    static let productNeedsYou = "Precisa de você"
+    static let productDigest = "Digest"
+    static let productEnd = "Encerrar"
+
     // MARK: Face
 
     static func listFace(unitCount: Int) -> AutonomosListFace {

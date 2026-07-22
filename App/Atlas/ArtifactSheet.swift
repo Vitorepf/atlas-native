@@ -258,8 +258,8 @@ extension ArtifactSheet {
             TraceEvidenceLoading(text: "consultando artefatos…", reduceMotion: reduceMotion)
         } else if loadFinished, artifacts == nil {
             TraceEvidenceUnavailable(
-                title: "Não foi possível consultar artefatos.",
-                subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
+                title: ArtifactListJudgment.productLoadFail,
+                subtitle: ArtifactListJudgment.productLoadFailSub,
                 identifier: A11yID.artifactsLoadFailure,
                 spoken: ArtifactListJudgment.loadFailSpoken
             )
@@ -859,7 +859,7 @@ extension ArtifactSheet {
     var artifactsUnavailable: some View {
         if artifacts?.state == .unavailable {
             TraceEvidenceUnavailable(
-                title: "Sem artefatos nesta execução.",
+                title: ArtifactListJudgment.productNoneThisRun,
                 subtitle: TraceEvidenceCopy.unavailableReason(artifacts?.reason),
                 identifier: A11yID.artifactsUnavailable,
                 spoken: TraceEvidenceCopy.unavailableSpoken(
@@ -1121,6 +1121,10 @@ enum ArtifactListJudgment {
 
     static let spokenClose = "fechar artefatos"
     static let productTitle = "Artefatos"
+
+    static let productLoadFail = "Não foi possível consultar artefatos."
+    static let productLoadFailSub = "feche e tente de novo — o motivo pode estar no aviso superior."
+    static let productNoneThisRun = "Sem artefatos nesta execução."
     static let productAssemblyKicker = "MONTAGEM"
     static let spokenCloseHint = "volta para a conversa"
     static let spokenSheetHint = "lista e preview só com itens publicados no contrato"

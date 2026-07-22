@@ -91,7 +91,7 @@ struct AutonomosMapShell: View {
         }
         .sheet(item: $nightlyStartProposal) { proposal in
             AutonomosReasonSheet(
-                title: "Preparar missão noturna",
+                title: NightlyProposalJudgment.spokenAcceptLabel,
                 explainer: "Ensaio (dry-run): a frota recebe a missão proposta e o recibo entra na fila; só o lease confirma execução.",
                 reasonOptional: true,
                 initialReason: proposal.prefilledReason
