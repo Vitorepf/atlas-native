@@ -889,7 +889,7 @@ extension ExecutionProof {
                 .foregroundStyle(AtlasTheme.accent.opacity(0.8))
                 .frame(width: 15)
                 .accessibilityHidden(true)
-            Text("ARTEFATOS (\(count))")
+            Text(ExecutionProofJudgment.productArtifactsKicker(count: count))
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
             Spacer()
@@ -1414,6 +1414,7 @@ enum ExecutionProofJudgment {
 
     static let productOpen = "Abrir"
     static let productReplayKicker = "REPLAY"
+    static func productArtifactsKicker(count: Int) -> String { "ARTEFATOS (\(count))" }
     static let spokenServerActionHint = "ação declarada pelo servidor"
 
     static func hasDecisionSurface(_ d: AtlasDecisionSummary) -> Bool {

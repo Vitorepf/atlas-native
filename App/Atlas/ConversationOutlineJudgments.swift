@@ -40,6 +40,8 @@ enum ConversationOutlineFace: Equatable {
 /// Pure conversation-outline grammar — face · spoken · pack.
 enum ConversationOutlineJudgment {
 
+    static let productNoTurnsLoaded = "Nenhum turno carregado nesta thread."
+
     static func face(turnCount: Int) -> ConversationOutlineFace {
         turnCount <= 0 ? .empty : .turns(turnCount)
     }
@@ -136,7 +138,7 @@ struct ConversationOutlineSheet: View {
     }
 
     var outlineEmpty: some View {
-        Text("Nenhum turno carregado nesta thread.")
+        Text(ConversationOutlineJudgment.productNoTurnsLoaded)
             .font(AtlasFont.mono(11))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)

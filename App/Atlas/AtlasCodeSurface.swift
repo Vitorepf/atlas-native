@@ -1375,7 +1375,7 @@ struct AtlasCodeRepoPickerSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)
             .safeAreaInset(edge: .top, spacing: 0) {
-                Text("Repositório")
+                Text(AtlasCodeGraphJudgment.productRepoNavTitle)
                     .font(AtlasFont.serif(18))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity)

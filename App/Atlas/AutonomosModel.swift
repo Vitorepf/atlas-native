@@ -786,7 +786,7 @@ extension SelfConstructionReceiptSheet {
         HStack(spacing: 7) {
             Image(systemName: "arrow.uturn.backward")
                 .accessibilityHidden(true)
-            Text("Desfazer — com recibo")
+            Text(AtlasCodeProvenanceJudgment.productUndoWithReceipt)
         }
         .atlasSans(14, .medium)
         .frame(maxWidth: .infinity)

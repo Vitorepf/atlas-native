@@ -737,6 +737,7 @@ enum AtlasCodeProvenanceJudgment {
     static let spokenCommitHash = "hash do commit"
     static let productFilesKicker = "ARQUIVOS"
     static let productWhyFileKicker = "POR QUE ESTE ARQUIVO EXISTE"
+    static let productUndoWithReceipt = "Desfazer — com recibo"
 
     static func spokenTitle(node: AtlasCodeGraphNode) -> String {
         node.message?.nonEmpty ?? String(node.hash.prefix(8))
@@ -1030,7 +1031,7 @@ struct AtlasCodeHealReceiptSheet: View {
                 HStack(spacing: 7) {
                     Image(systemName: "arrow.uturn.backward")
                         .accessibilityHidden(true)
-                    Text("Desfazer — com recibo")
+                    Text(AtlasCodeProvenanceJudgment.productUndoWithReceipt)
                 }
                 .atlasSans(14, .medium)
                 .frame(maxWidth: .infinity)

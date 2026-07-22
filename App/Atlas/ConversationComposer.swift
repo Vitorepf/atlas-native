@@ -774,7 +774,7 @@ struct WorkspaceSheet: View {
 
 extension WorkspaceSheet {
     var workspaceEmptyLabel: some View {
-        Text("Nenhum workspace nas conversas carregadas")
+        Text(ComposerSheetJudgment.workspaceEmpty)
             .atlasSans(15)
             .foregroundStyle(AtlasTheme.textTertiary)
             .multilineTextAlignment(.center)
