@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 672
-domain_index: 2
-last_focus: "continuous residual soft-hold pass 672"
-session_commits: 315
+pass: 673
+domain_index: 3
+last_focus: "Artifact subtitle + markdown cycle product residual"
+session_commits: 317
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **315** · soft **0** · density OK · 46+2 · gates green
+commits **317** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
