@@ -461,7 +461,7 @@ enum AtlasCodeRadarAskContext {
         ]
     }
 
-    static func emptyPrompt(headline: String?) -> String {
+    static func productEmptyPrompt(headline: String?) -> String {
         let line = headline?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if !line.isEmpty, line != "lendo o workspace…" {
             return "workspace · \(line) — o que você quer saber?"
@@ -969,7 +969,7 @@ extension AtlasCodeRadarView {
             client: session.client,
             threadId: askThreadId,
             title: "Código · workspace",
-            emptyPrompt: AtlasCodeRadarAskContext.emptyPrompt(headline: model.headline),
+            emptyPrompt: AtlasCodeRadarAskContext.productEmptyPrompt(headline: model.headline),
             emptySuggestions: AtlasCodeRadarAskContext.emptySuggestions,
             taskKind: "code",
             // Prefer root; senão primeiro recente; nil + absence no pack se vazio.
@@ -1616,7 +1616,7 @@ enum AtlasCodeRepoHealthJudgment {
     // MARK: Summary
 
     @MainActor
-    static func summaryLine(
+    static func productSummaryLine(
         model: AtlasCodeModel,
         mirror: AtlasCodeMirrorResponse? = nil
     ) -> String {
@@ -1672,7 +1672,7 @@ enum AtlasCodeRepoHealthJudgment {
         var absences: [String] = []
         let face = face(model: model, mirror: mirror)
         facts.append("repo_health_face: \(face.productWord)")
-        facts.append(summaryLine(model: model, mirror: mirror))
+        facts.append(productSummaryLine(model: model, mirror: mirror))
 
         switch model.phase {
         case .idle, .loading:
@@ -1712,7 +1712,7 @@ enum AtlasCodeRepoHealthJudgment {
         }
 
         if let mirror {
-            facts.append("mirror_state: \(mirrorStateWord(mirror.state))")
+            facts.append("mirror_state: \(productMirrorState(mirror.state))")
             if case .blocked(let rules) = mirror.state, !rules.isEmpty {
                 facts.append("mirror_blocked_rules: \(rules.joined(separator: ","))")
             }
@@ -1723,7 +1723,7 @@ enum AtlasCodeRepoHealthJudgment {
         return (facts, absences)
     }
 
-    static func mirrorStateWord(_ state: AtlasCodeMirrorResponse.State) -> String {
+    static func productMirrorState(_ state: AtlasCodeMirrorResponse.State) -> String {
         switch state {
         case .blocked: return "blocked"
         case .mirrored: return "mirrored"
@@ -1768,7 +1768,7 @@ struct AtlasCodeRepoHealthStrip: View {
                     .font(AtlasFont.mono(9))
                     .tracking(0.7)
                     .foregroundStyle(titleColor)
-                Text(AtlasCodeRepoHealthJudgment.summaryLine(model: model, mirror: mirror))
+                Text(AtlasCodeRepoHealthJudgment.productSummaryLine(model: model, mirror: mirror))
                     .font(AtlasFont.serif(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(2)

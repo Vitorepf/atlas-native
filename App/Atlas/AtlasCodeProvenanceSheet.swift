@@ -829,7 +829,7 @@ enum AtlasCodeProvenanceJudgment {
         }
     }
 
-    static func verbRenameCopy(for status: AtlasCodeFileStatus) -> String? {
+    static func productVerbRename(for status: AtlasCodeFileStatus) -> String? {
         switch status {
         case .renamed: return "renomeado"
         case .copied: return "copiado"
@@ -838,7 +838,7 @@ enum AtlasCodeProvenanceJudgment {
     }
 
     static func verbTransform(for status: AtlasCodeFileStatus) -> String {
-        if let rename = verbRenameCopy(for: status) { return rename }
+        if let rename = productVerbRename(for: status) { return rename }
         switch status {
         case .typeChanged: return "tipo alterado"
         case .unknown: return "mudança desconhecida"
@@ -1496,7 +1496,7 @@ enum AtlasCodeAskContext {
 
     static var emptySuggestions: [String] { AtlasCodeAskSuggestions.all }
 
-    static func emptyPrompt(focusLegend: String?) -> String {
+    static func productEmptyPrompt(focusLegend: String?) -> String {
         if let focusLegend, !focusLegend.isEmpty {
             return "sobre \(focusLegend) — o que você quer saber?"
         }

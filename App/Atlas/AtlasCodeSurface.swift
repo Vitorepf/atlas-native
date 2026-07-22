@@ -806,7 +806,7 @@ extension AtlasCodeView {
         graph.nodes.filter { model.state(for: $0) == state }
     }
 
-    func rotorLabel(for node: AtlasCodeGraphNode) -> String {
+    func spokenRotorLabel(for node: AtlasCodeGraphNode) -> String {
         node.message ?? String(node.hash.prefix(8))
     }
 }
@@ -827,12 +827,12 @@ extension AtlasCodeView {
         content
             .accessibilityRotor("Violações") {
                 ForEach(nodes(in: graph, matching: .violating), id: \.id) { node in
-                    AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
+                    AccessibilityRotorEntry(Text(spokenRotorLabel(for: node)), id: node.id, in: graphRotor)
                 }
             }
             .accessibilityRotor("Curados") {
                 ForEach(nodes(in: graph, matching: .healed), id: \.id) { node in
-                    AccessibilityRotorEntry(Text(rotorLabel(for: node)), id: node.id, in: graphRotor)
+                    AccessibilityRotorEntry(Text(spokenRotorLabel(for: node)), id: node.id, in: graphRotor)
                 }
             }
     }
@@ -887,7 +887,7 @@ extension AtlasCodeAskWhySheetsModifier {
             client: session.client,
             threadId: askThreadId,
             title: "Código · \(model.repo)",
-            emptyPrompt: AtlasCodeAskContext.emptyPrompt(focusLegend: askModel.sheetFocusLegend),
+            emptyPrompt: AtlasCodeAskContext.productEmptyPrompt(focusLegend: askModel.sheetFocusLegend),
             emptySuggestions: AtlasCodeAskContext.emptySuggestions,
             taskKind: "code",
             workspace: model.repo,
