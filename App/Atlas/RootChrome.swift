@@ -1759,7 +1759,6 @@ extension A11yID {
 
 extension A11yID {
     static let arenaHomeEntry = "arena-home-entry"
-    static let arenaScreen = "arena-screen"
 }
 extension A11yID {
     static let arenaCapabilityRowPrefix = "arena-capability-row-"
@@ -1767,7 +1766,6 @@ extension A11yID {
 }
 extension A11yID {
     static let arenaPremiumAdd = "arena-premium-add"
-    static let arenaPremiumHero = "arena-premium-hero"
     static let arenaPremiumStop = "arena-premium-stop"
     static let arenaPremiumStopConfirm = "arena-premium-stop-confirm"
     static let arenaPremiumExecution = "arena-premium-execution"
@@ -1788,8 +1786,6 @@ extension A11yID {
     }
     static let arenaPremiumCapabilityDetail = "arena-premium-capability-detail"
     static let arenaPremiumExecutionAction = "arena-premium-execution-action"
-    static let arenaPremiumPlanAction = "arena-premium-plan-action"
-    static let arenaPremiumQueueAction = "arena-premium-queue-action"
     static let arenaPremiumAlertsAction = "arena-premium-alerts-action"
     static let arenaPremiumStopSheet = "arena-premium-stop-sheet"
     static let arenaPremiumStopActor = "arena-premium-stop-actor"
@@ -1821,7 +1817,6 @@ extension A11yID {
     }
 }
 extension A11yID {
-    static let arenaRunButton = "arena-run-button"
     static let arenaRunSheet = "arena-run-sheet"
     static let arenaRunActor = "arena-run-actor"
     static let arenaRunReason = "arena-run-reason"
@@ -1832,19 +1827,13 @@ extension A11yID {
 }
 extension A11yID {
     static let arenaSuiteSheet = "arena-suite-sheet"
-    static let arenaEngineSheet = "arena-engine-sheet"
 }
 // MARK: - A11yIDAutonomos
 
 extension A11yID {
     static let autonomosScreen = "autonomos-screen"
-    static let autonomosAwaitingYou = "autonomos-awaiting-you"
-    static let autonomosDetailSheet = "autonomos-detail-sheet"
-    static let autonomosDetailButtonPrefix = "autonomos-detail-button-"
     static let autonomosRhythmLine = "autonomos-rhythm-line"
     static let autonomosRhythmSheet = "autonomos-rhythm-sheet"
-    static let autonomosGovernedToggle = "autonomos-governed-toggle"
-    static let autonomosOperationToggle = "autonomos-operation-toggle"
     static let autonomosRhythmUnmute = "autonomos-rhythm-unmute"
     static let autonomosHub = "autonomos-hub"
     static let autonomosList = "autonomos-list"
@@ -1852,10 +1841,7 @@ extension A11yID {
     static let autonomosEvolution = "autonomos-evolution"
     static let autonomosDecisions = "autonomos-decisions"
     static let autonomosDecision = "autonomos-decision"
-    static let autonomosAreaMap = "autonomos-area-map"
     static let autonomosFleetMap = "autonomos-fleet-map"
-    static let autonomosCycle = "autonomos-cycle"
-    static let autonomosIncident = "autonomos-incident"
     static let autonomosAskPill = "autonomos-ask-pill"
     static let autonomosAreasSheet = "autonomos-areas-sheet"
     static let autonomosAreaBindCTA = "autonomos-area-bind-cta"
@@ -1863,7 +1849,6 @@ extension A11yID {
     static func autonomosAreaBindRow(_ id: String) -> String {
         autonomosAreaBindRowPrefix + id
     }
-    static let autonomosGovernanceSheet = "autonomos-governance-sheet"
     static let autonomosReasonSheet = "autonomos-reason-sheet"
     static let autonomosReasonActor = "autonomos-reason-actor"
     static let autonomosReasonField = "autonomos-reason-field"
@@ -1873,8 +1858,6 @@ extension A11yID {
     static let autonomosHeader = "autonomos-header"
     static let autonomosBack = "autonomos-back"
     static let autonomosRefresh = "autonomos-refresh"
-    static let autonomosStartRunReceipt = "autonomos-start-run-receipt"
-    static let autonomosControlReceipt = "autonomos-control-receipt"
     static let autonomosControlError = "autonomos-control-error"
 }
 extension A11yID {
