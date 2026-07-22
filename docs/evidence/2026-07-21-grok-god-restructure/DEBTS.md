@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 682
-domain_index: 2
-last_focus: "residual product/spoken string constants batch"
-session_commits: 324
+pass: 691
+domain_index: 3
+last_focus: "Arena productIdle* funcs → static lets"
+session_commits: 339
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **324** · soft **0** · density OK · 46+2 · gates green
+commits **339** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
