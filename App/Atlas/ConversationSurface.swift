@@ -309,7 +309,7 @@ extension ConversationView {
                 .frame(width: 40, height: 40).atlasGlassCircle()
         }
         .accessibilityLabel(WorkspaceJudgment.spokenBack)
-        .accessibilityHint("fecha a conversa")
+        .accessibilityHint(ConversationMessagesJudgment.spokenBackHint)
     }
 }
 
