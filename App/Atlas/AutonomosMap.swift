@@ -106,7 +106,7 @@ struct AutonomosMapShell: View {
                 }
             }
         }
-        .confirmationDialog("Encerrar este Autônomo?", isPresented: $confirmEnd, titleVisibility: .visible) {
+        .confirmationDialog(AutonomosReasonJudgment.productEndUnitConfirm, isPresented: $confirmEnd, titleVisibility: .visible) {
             Button(AutonomosReasonJudgment.productEndUnit, role: .destructive) { deleteSelected() }
             Button(AutonomosReasonJudgment.productCancel, role: .cancel) {}
         } message: {

@@ -436,6 +436,7 @@ enum AutonomosReasonJudgment {
     static let productConfirm = "Confirmar"
     static let productCancel = "Cancelar"
     static let productEndUnit = "Encerrar de vez"
+    static let productEndUnitConfirm = "Encerrar este Autônomo?"
     static let spokenCancel = "cancelar ação governada"
     static let spokenCancelHint = "fecha sem registrar recibo"
     static let spokenActorHint = "nome de quem autoriza a ação governada"
