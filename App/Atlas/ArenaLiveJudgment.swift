@@ -845,6 +845,7 @@ enum ArenaSuiteFace: Equatable {
 enum ArenaSuiteJudgment {
 
     static let spokenClose = "fechar detalhes da suite"
+    static let productTitle = "Suite"
     static let spokenCloseHint = "volta para a Arena"
     static let spokenSheetHint = "scores, casos e duração só quando o servidor publica"
     static let spokenCasesHint = "Abre os casos desta corrida"

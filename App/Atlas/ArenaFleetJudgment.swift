@@ -394,6 +394,7 @@ enum ArenaRunSheetFace: Equatable {
 enum ArenaRunSheetJudgment {
 
     static let productSheetTitle = "rodar medição Arena"
+    static let productNavTitle = "Rodar medição"
     static let spokenStartHint = "Escolhe motores, suítes e braços"
     static let productEmptyQueue = "Fila vazia"
     static let spokenSheetHint =

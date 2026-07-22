@@ -219,6 +219,7 @@ enum AutonomosAreaBindJudgment {
     static let spokenCloseHint = "volta sem ligar área"
     static let spokenBindRowHint = "liga o loop a esta área"
     static let productCTA = "Escolher área"
+    static let productChooserTitle = "Área do loop"
     static let spokenCTA = "escolher área do loop Autônomos"
 
     static func packFacts(

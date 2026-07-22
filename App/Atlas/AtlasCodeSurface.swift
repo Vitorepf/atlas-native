@@ -1371,7 +1371,7 @@ struct AtlasCodeRepoPickerSheet: View {
                 }
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Repositório")
+            .navigationTitle(AtlasCodeGraphJudgment.productRepoNavTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)
             .safeAreaInset(edge: .top, spacing: 0) {

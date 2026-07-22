@@ -707,7 +707,7 @@ struct ArenaPremiumCapabilityDetail: View {
             }
             .scrollIndicators(.hidden)
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Capacidade")
+            .navigationTitle(ArenaCapabilitiesJudgment.productTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -1597,7 +1597,7 @@ struct ArenaRunSheet: View {
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: model.controlError)
         }
         .background(AtlasTheme.bg.ignoresSafeArea())
-        .navigationTitle("Rodar medição")
+        .navigationTitle(ArenaRunSheetJudgment.productNavTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { runToolbar }
     }
@@ -1896,7 +1896,7 @@ extension ArenaSuiteSheet {
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: suite.engines.count)
         }
         .background(AtlasTheme.bg.ignoresSafeArea())
-        .navigationTitle("Suite")
+        .navigationTitle(ArenaSuiteJudgment.productTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { suiteToolbar }
     }

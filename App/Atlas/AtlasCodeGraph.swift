@@ -925,6 +925,7 @@ enum AtlasCodeGraphJudgment {
     }
 
     static let spokenRepoSwitcherHint = "troca de repositório"
+    static let productRepoNavTitle = "Repositório"
 
     // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
 

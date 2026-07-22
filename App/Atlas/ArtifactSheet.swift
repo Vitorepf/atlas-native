@@ -230,7 +230,7 @@ extension ArtifactSheet {
 extension ArtifactSheet {
     func artifactSheetToolbar<Content: View>(_ content: Content) -> some View {
         content
-            .navigationTitle("Artefatos")
+            .navigationTitle(ArtifactListJudgment.productTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -1120,6 +1120,7 @@ enum ArtifactListFace: Equatable {
 enum ArtifactListJudgment {
 
     static let spokenClose = "fechar artefatos"
+    static let productTitle = "Artefatos"
     static let spokenCloseHint = "volta para a conversa"
     static let spokenSheetHint = "lista e preview só com itens publicados no contrato"
     static let spokenEmptyVisualizable = "sem artefatos visualizáveis nesta execução"

@@ -939,7 +939,7 @@ struct AutonomosAreaBindChooser: View {
                 }
             }
             .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Área do loop")
+            .navigationTitle(AutonomosAreaBindJudgment.productChooserTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
