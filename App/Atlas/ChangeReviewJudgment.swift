@@ -611,10 +611,6 @@ enum ChangeReviewControlJudgment {
 
     // MARK: Counts
 
-    static func availableActions(from review: AtlasTraceChangeReview?) -> [AtlasTraceChangeReview.Action] {
-        review?.review.availableActions ?? []
-    }
-
     /// Files listed on patches without a matching fileReview decision.
     static func undecidedFileCount(from review: AtlasTraceChangeReview) -> Int {
         var count = 0

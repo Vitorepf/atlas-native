@@ -394,12 +394,6 @@ enum NightlyProposalJudgment {
         return .hidden
     }
 
-    static func spokenCardLabel(workspaceText: String) -> String {
-        "missão noturna proposta. Hoje você trabalhou em \(workspaceText). "
-            + "A frota pode continuar enquanto você descansa."
-    }
-
-    static let spokenCardHint = "preparar, descartar em silêncio ou pausar por dias"
     static let spokenAcceptLabel = "preparar missão noturna"
     static let spokenAcceptHint = "abre o ensaio governado da missão noturna"
     static let spokenDismissLabel = "hoje não"
@@ -599,14 +593,7 @@ extension NightlyProposalCard {
 }
 
 extension NightlyProposalCard {
-    /// WAVE-070: spoken card/actions from NightlyProposalJudgment.
-    static func spokenCardLabel(workspaceText: String) -> String {
-        NightlyProposalJudgment.spokenCardLabel(workspaceText: workspaceText)
-    }
-
-    static func spokenCardHint() -> String {
-        NightlyProposalJudgment.spokenCardHint
-    }
+    /// WAVE-070: spoken actions from NightlyProposalJudgment.
 
     static func spokenAcceptLabel() -> String {
         NightlyProposalJudgment.spokenAcceptLabel
