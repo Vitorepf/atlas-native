@@ -170,7 +170,7 @@ extension AtlasCodeRadarView {
             onRetry: { Task { await model.load() } }
         )
         .accessibilityLabel(spokenFailed(message))
-        .accessibilityHint("reconecta ao servidor Atlas")
+        .accessibilityHint(AtlasCodeRadarLoadJudgment.spokenReconnectHint)
         .accessibilityIdentifier(A11yID.radarFailure)
     }
 }
@@ -1158,6 +1158,7 @@ enum AtlasCodeRadarScreenFace: Equatable {
 enum AtlasCodeRadarLoadJudgment {
 
     static let spokenShellHint = "pastas, recentes e sem retorno verificados do seu código"
+    static let spokenReconnectHint = "reconecta ao servidor Atlas"
 
     static func face(
         phase: LoadPhase,
@@ -1355,6 +1356,7 @@ enum AtlasCodeHealVetoJudgment {
     }
 
     static let spokenCuredAloneOpenReceipt = "curado sozinho, ver recibo de cura"
+    static let spokenCuredAloneOpenReceiptHint = "abre os passos registrados pelo servidor"
 
     static func spokenSheet(
         heal: AtlasCodeHealResponse,
@@ -1412,6 +1414,7 @@ enum AtlasCodeAskPillJudgment {
     static let spokenClear = "mostrar tudo no grafo"
     static let spokenClearHint = "remove o recorte dos commits da resposta"
     static let spokenClearCommitRef = "Limpar referência do commit"
+    static let spokenClearCommitRefHint = "Remove o commit da pílula"
     static let spokenAskCommit = "perguntar ao Atlas sobre este commit"
     static func spokenUserQuote(_ quote: String) -> String {
         "sua frase: \(quote)"

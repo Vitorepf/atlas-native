@@ -135,7 +135,7 @@ extension SearchViewHeader {
                 .tint(AtlasTheme.accent).focused($focused)
                 .submitLabel(.search)
                 .accessibilityLabel(SearchListJudgment.spokenField(query: query))
-                .accessibilityHint("filtra só conversas já carregadas na sessão")
+                .accessibilityHint(SearchListJudgment.spokenFieldHint)
                 .accessibilityIdentifier(A11yID.searchField)
         }
     }
@@ -727,6 +727,7 @@ enum SearchListJudgment {
 
     static let spokenOpenThreadHint = "abre a conversa"
     static let productFieldPlaceholder = "Buscar conversas"
+    static let spokenFieldHint = "filtra só conversas já carregadas na sessão"
 
     // MARK: Face
 

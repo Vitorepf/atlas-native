@@ -166,7 +166,7 @@ extension AtlasCodeView {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(AtlasCodeAskPillJudgment.spokenClearCommitRef)
-            .accessibilityHint("Remove o commit da pílula")
+            .accessibilityHint(AtlasCodeAskPillJudgment.spokenClearCommitRefHint)
             .accessibilityIdentifier(A11yID.codeAskClear)
         } else if askModel.isAnchoring {
             Button {
@@ -1142,7 +1142,7 @@ extension AtlasCodeView {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(AtlasCodeGraphJudgment.spokenRepoTitle(model.repo))
-        .accessibilityHint("troca de repositório")
+        .accessibilityHint(AtlasCodeGraphJudgment.spokenRepoSwitcherHint)
         .accessibilityIdentifier(A11yID.codeRepoSwitcher)
     }
 }

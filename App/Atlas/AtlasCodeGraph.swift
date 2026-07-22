@@ -924,6 +924,8 @@ enum AtlasCodeGraphJudgment {
         "repositório \(repo)"
     }
 
+    static let spokenRepoSwitcherHint = "troca de repositório"
+
     // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
 
     static let emptyGraph = "grafo sem commits nesta janela"
@@ -1448,7 +1450,7 @@ extension AtlasCodeView {
             }
             .accessibilityIdentifier(A11yID.codeHealReceipt)
             .accessibilityLabel(AtlasCodeHealVetoJudgment.spokenCuredAloneOpenReceipt)
-            .accessibilityHint("abre os passos registrados pelo servidor")
+            .accessibilityHint(AtlasCodeHealVetoJudgment.spokenCuredAloneOpenReceiptHint)
         }
     }
 }
