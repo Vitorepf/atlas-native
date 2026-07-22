@@ -10,7 +10,7 @@ import ActivityKit
 // MARK: - Types
 
 enum LiveSessionWidgetA11y {
-    static func silenceDetail(_ snapshot: AtlasNativeSnapshot) -> String {
+    static func spokenSilenceDetail(_ snapshot: AtlasNativeSnapshot) -> String {
         guard let delivery = snapshot.fleet?.lastDelivery else {
             return "nenhuma sessão viva agora"
         }
@@ -108,7 +108,7 @@ extension LiveSessionWidgetA11y {
 
 extension LiveSessionWidgetA11y {
     static func spokenSilenceParts(_ snapshot: AtlasNativeSnapshot) -> [String] {
-        ["silêncio na obra", silenceDetail(snapshot)]
+        ["silêncio na obra", spokenSilenceDetail(snapshot)]
     }
 }
 
@@ -333,7 +333,7 @@ extension LiveSessionWidgetView {
         Text("silêncio na obra")
             .font(.system(size: 17, weight: .semibold, design: .serif))
             .accessibilityHidden(true)
-        Text(LiveSessionWidgetA11y.silenceDetail(snapshot))
+        Text(LiveSessionWidgetA11y.spokenSilenceDetail(snapshot))
             .font(.system(size: 12, design: .serif))
             .foregroundStyle(Ink.ink2)
             .accessibilityHidden(true)
@@ -394,8 +394,8 @@ extension LiveSessionWidgetTimer {
 // MARK: - Types
 
 enum FleetWidgetA11y {
-    static func incidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
-        LockAccessoryA11y.incidentLine(incident)
+    static func spokenIncidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
+        LockAccessoryA11y.spokenIncidentLine(incident)
     }
 }
 
@@ -467,7 +467,7 @@ extension FleetWidgetView {
 // MARK: - A11y ids / spoken
 
 extension FleetWidgetA11y {
-    static func deliveryCaption(_ delivery: AtlasNativeSnapshot.Fleet.LastDelivery) -> String? {
+    static func productDeliveryCaption(_ delivery: AtlasNativeSnapshot.Fleet.LastDelivery) -> String? {
         let title = delivery.title.trimmingCharacters(in: .whitespacesAndNewlines)
         if !title.isEmpty { return "última entrega \(title)" }
         let hash = delivery.mergeHash.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -478,7 +478,7 @@ extension FleetWidgetA11y {
 
 extension FleetWidgetA11y {
     static func contentPhaseID(snapshot: AtlasNativeSnapshot, stale: Bool) -> String {
-        let incident = incidentLine(snapshot.fleet?.incident) ?? ""
+        let incident = spokenIncidentLine(snapshot.fleet?.incident) ?? ""
         let present = snapshot.fleet?.incident?.present == true ? "1" : "0"
         let scanned = snapshot.fleet?.scannedAt ?? ""
         let delivery = snapshot.fleet?.lastDelivery?.mergeHash ?? ""
@@ -500,14 +500,14 @@ extension FleetWidgetA11y {
 extension FleetWidgetA11y {
     static func spokenDeliveryPart(snapshot: AtlasNativeSnapshot) -> String? {
         guard let delivery = snapshot.fleet?.lastDelivery,
-              let caption = deliveryCaption(delivery) else { return nil }
+              let caption = productDeliveryCaption(delivery) else { return nil }
         return caption
     }
 }
 
 extension FleetWidgetA11y {
     static func spokenIncidentPresentParts(snapshot: AtlasNativeSnapshot) -> [String]? {
-        if let line = incidentLine(snapshot.fleet?.incident) {
+        if let line = spokenIncidentLine(snapshot.fleet?.incident) {
             return [line]
         }
         if snapshot.fleet?.incident?.present == true {
@@ -620,7 +620,7 @@ extension FleetWidgetView {
     func fleetDeliveryCaption(_ snapshot: AtlasNativeSnapshot) -> some View {
         if family != .systemSmall,
            let delivery = snapshot.fleet?.lastDelivery,
-           let caption = FleetWidgetA11y.deliveryCaption(delivery) {
+           let caption = FleetWidgetA11y.productDeliveryCaption(delivery) {
             Text(caption)
                 .font(.system(size: 11, design: .monospaced))
                 .foregroundStyle(Ink.ink2)
@@ -713,7 +713,7 @@ extension FleetWidgetView {
 extension FleetWidgetView {
     @ViewBuilder
     func fleetStateIncident(_ snapshot: AtlasNativeSnapshot) -> some View {
-        if let line = FleetWidgetA11y.incidentLine(snapshot.fleet?.incident) {
+        if let line = FleetWidgetA11y.spokenIncidentLine(snapshot.fleet?.incident) {
             fleetStateIncidentLineText(line)
         } else {
             fleetStateIncidentPresent(snapshot)
@@ -724,7 +724,7 @@ extension FleetWidgetView {
 extension FleetWidgetView {
     @ViewBuilder
     func fleetState(_ snapshot: AtlasNativeSnapshot) -> some View {
-        if snapshot.fleet?.incident?.present == true || FleetWidgetA11y.incidentLine(snapshot.fleet?.incident) != nil {
+        if snapshot.fleet?.incident?.present == true || FleetWidgetA11y.spokenIncidentLine(snapshot.fleet?.incident) != nil {
             fleetStateIncident(snapshot)
         } else {
             fleetHealthyOrUnread(snapshot)
@@ -781,7 +781,7 @@ extension LockAccessorySnapshotView {
     func circular(_ snapshot: AtlasNativeSnapshot) -> some View {
         let count = snapshot.liveSessions?.count ?? 0
         let attention = LockAccessoryA11y.hasAttention(snapshot)
-        let incident = LockAccessoryA11y.incidentLine(snapshot.fleet?.incident) != nil
+        let incident = LockAccessoryA11y.spokenIncidentLine(snapshot.fleet?.incident) != nil
         return circularGauge(count: count, attention: attention, incident: incident)
     }
 }
@@ -793,7 +793,7 @@ enum LockAccessoryA11y {
         snapshot.liveSessions?.contains { $0.timing == .paused } == true
     }
 
-    static func incidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
+    static func spokenIncidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
         guard let incident, incident.present else { return nil }
         if let action = incident.recommendedAction?
             .trimmingCharacters(in: .whitespacesAndNewlines), !action.isEmpty {
@@ -814,7 +814,7 @@ extension LockAccessoryA11y {
 
 extension LockAccessoryA11y {
     static func contentPhaseID(snapshot: AtlasNativeSnapshot, stale: Bool) -> String {
-        let incident = incidentLine(snapshot.fleet?.incident) ?? ""
+        let incident = spokenIncidentLine(snapshot.fleet?.incident) ?? ""
         let paused = hasAttention(snapshot) ? "p" : "r"
         let n = snapshot.liveSessions?.count ?? 0
         let phase = snapshot.liveSessions?.first?.phaseTitle ?? ""
@@ -844,7 +844,7 @@ extension LockAccessoryA11y {
 
 extension LockAccessoryA11y {
     static func inlineText(_ snapshot: AtlasNativeSnapshot) -> String {
-        if LockAccessoryA11y.incidentLine(snapshot.fleet?.incident) != nil {
+        if LockAccessoryA11y.spokenIncidentLine(snapshot.fleet?.incident) != nil {
             return "Atlas · frota"
         }
         if hasAttention(snapshot) { return "Atlas · pausado" }
@@ -933,7 +933,7 @@ extension LockAccessoryA11y {
 
 extension LockAccessoryA11y {
     static func spokenLabelAlertLines(snapshot: AtlasNativeSnapshot) -> [String]? {
-        if let line = incidentLine(snapshot.fleet?.incident) {
+        if let line = spokenIncidentLine(snapshot.fleet?.incident) {
             return ["frota, \(line)"]
         }
         if let attention = spokenAttentionLine(snapshot) {
@@ -1098,7 +1098,7 @@ extension LockAccessorySnapshotView {
 extension LockAccessorySnapshotView {
     func rectangular(_ snapshot: AtlasNativeSnapshot) -> some View {
         let stale = snapshot.isStale(at: entry.date)
-        let incidentLine = LockAccessoryA11y.incidentLine(snapshot.fleet?.incident)
+        let incidentLine = LockAccessoryA11y.spokenIncidentLine(snapshot.fleet?.incident)
         return VStack(alignment: .leading, spacing: 2) {
             rectangularBody(snapshot, stale: stale, incidentLine: incidentLine)
         }
@@ -1111,7 +1111,7 @@ extension LockAccessorySnapshotView {
 
 extension LockAccessorySnapshotView {
     func emphasisColor(_ snapshot: AtlasNativeSnapshot) -> Color {
-        if LockAccessoryA11y.incidentLine(snapshot.fleet?.incident) != nil
+        if LockAccessoryA11y.spokenIncidentLine(snapshot.fleet?.incident) != nil
             || LockAccessoryA11y.hasAttention(snapshot) {
             return Ink.alert
         }
