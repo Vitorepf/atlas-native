@@ -281,7 +281,7 @@ extension ComposerToolbar {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onShowEffort()
         } label: {
-            Label("Esforço: \(model.effort.shortLabel)", systemImage: "gauge.with.dots.needle.33percent")
+            Label(ComposerEffortJudgment.productEffortMenu(model.effort.shortLabel), systemImage: "gauge.with.dots.needle.33percent")
         }
         .accessibilityLabel(spokenEffortLabel(model.effort))
         .accessibilityValue(effortFace.productWord)
@@ -749,6 +749,7 @@ enum ComposerEffortJudgment {
     static let spokenEffortSheetHint = "escolhe o esforço computacional do próximo envio"
     static let spokenEffortSheet = "esforço computacional"
     static let productEffortSheetTitle = "Esforço"
+    static func productEffortMenu(_ short: String) -> String { "Esforço: \(short)" }
 
     static let spokenProcessing = "Atlas processando"
 

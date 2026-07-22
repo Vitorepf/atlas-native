@@ -99,6 +99,8 @@ enum ConversationMessagesJudgment {
     static func spokenToast(_ message: String) -> String { "aviso, \(message)" }
 
     static let spokenHeaderContinuity = "continuidade da conversa"
+    static let productContinueMac = "Continuar no Mac"
+    static let productContinueTerminal = "Continuar no Terminal"
     static let spokenHeaderContinuityHint = "continuar esta conversa no Mac ou no Terminal"
     static let spokenScreenHint = "turnos e composer só com dados da sessão e do model"
     static let spokenReloadConversationHint = "reconecta e recarrega esta conversa"

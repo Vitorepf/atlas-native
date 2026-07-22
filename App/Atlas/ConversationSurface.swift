@@ -318,10 +318,10 @@ extension ConversationView {
     var continuityMenuActions: some View {
         Button {
             Task { await model.handoffToSurface(.desktop) }
-        } label: { Label("Continuar no Mac", systemImage: "desktopcomputer") }
+        } label: { Label(ConversationMessagesJudgment.productContinueMac, systemImage: "desktopcomputer") }
         Button {
             Task { await model.handoffToSurface(.terminal) }
-        } label: { Label("Continuar no Terminal", systemImage: "terminal") }
+        } label: { Label(ConversationMessagesJudgment.productContinueTerminal, systemImage: "terminal") }
     }
 }
 

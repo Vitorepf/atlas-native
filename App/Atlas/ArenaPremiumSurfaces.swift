@@ -1401,14 +1401,14 @@ extension ArenaRunSheet {
         }
 
         section("Governança") {
-            fieldLabel("Operador")
+            fieldLabel(ArenaStopJudgment.productActor)
             TextField("quem autoriza esta medição", text: $actor)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .modifier(ArenaFieldChrome())
                 .accessibilityIdentifier(A11yID.arenaRunActor)
                 .accessibilityHint(ArenaRunSheetJudgment.spokenActorHint)
-            fieldLabel("Motivo")
+            fieldLabel(ArenaStopJudgment.productReason)
             TextField("por que rodar agora (fica no recibo)", text: $reason, axis: .vertical)
                 .lineLimit(2...4)
                 .modifier(ArenaFieldChrome())
