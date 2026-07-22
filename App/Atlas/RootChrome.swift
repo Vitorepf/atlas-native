@@ -789,7 +789,7 @@ struct AtlasProfileSheet: View {
             Text("Vitor")
                 .font(AtlasFont.serif(24, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text("operador do Atlas")
+            Text(HomeOpsJudgment.productOperatorSubtitle)
                 .atlasSans(13)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -820,7 +820,7 @@ extension AtlasProfileSheet {
             VStack(alignment: .leading, spacing: 3) {
                 Text(HomeOpsJudgment.productAuditModeLabel).atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text("mostra detalhes técnicos nas telas")
+                Text(HomeOpsJudgment.productAuditModeDetail)
                     .atlasSans(12).foregroundStyle(AtlasTheme.textTertiary)
             }
         }

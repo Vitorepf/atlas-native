@@ -42,7 +42,7 @@ struct ArenaPremiumFleetView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             if let best, let mult = best.atlasMultiplier {
-                Text("melhor ganho · \(ArenaDisplay.engine(best.engine)) · \(ArenaFormat.multiplier(mult))")
+                Text(ArenaNowJudgment.productBestGain(engine: ArenaDisplay.engine(best.engine), mult: ArenaFormat.multiplier(mult)))
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.accent)
             }
@@ -363,7 +363,7 @@ struct ArenaPremiumResultsView: View {
                     smallMetric("Multiplicador", ArenaFormat.multiplier(engine.atlasMultiplier), tone: .active)
                 }
             }
-            Text("cobertura \(model.arenaCoverageText) · \(judgment.rawValue) · \(ArenaScoreJudgment.scaleCaption)")
+            Text(ArenaNowJudgment.productCoverageLine(coverage: model.arenaCoverageText, judgment: judgment.rawValue, scale: ArenaScoreJudgment.scaleCaption))
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
@@ -740,7 +740,7 @@ struct ArenaPremiumCapabilityDetail: View {
                 VStack(alignment: .leading, spacing: 14) {
                     metric("Sem Atlas", capability.score)
                     metric("Com Atlas", capability.withAtlas, tone: .active)
-                    Text("diferença \(ArenaFormat.signed(delta))")
+                    Text(ArenaNowJudgment.productDeltaLine(ArenaFormat.signed(delta)))
                         .font(AtlasFont.mono(12, .medium))
                         .foregroundStyle(deltaColor)
                 }
@@ -1450,7 +1450,7 @@ extension ArenaRunSheet {
     func receiptCard(_ receipt: AtlasArenaStartReceipt) -> some View {
         let face = ArenaStartJudgment.receiptFace(receipt)
         return VStack(alignment: .leading, spacing: 6) {
-            Text("recibo \(receipt.receiptHash)")
+            Text(ArenaNowJudgment.productReceiptHash(receipt.receiptHash))
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)

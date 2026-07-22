@@ -1457,6 +1457,8 @@ enum ComposerSheetJudgment {
     static let spokenModeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
     static let spokenWorkspaceSheetHint =
         "escolhe a pasta do próximo envio entre as conversas carregadas"
+    static let productWorkspaceSheetFootnote = "pastas das conversas carregadas · vale no próximo envio"
+    static let productModeSheetFootnote = "vale para o próximo envio; automático deixa o Atlas Decide escolher"
     static let workspaceEmpty =
         "nenhum workspace nas conversas carregadas; abra uma conversa com pasta ou volte à home"
     static let spokenWorkspaceSheet = "workspace da conversa"

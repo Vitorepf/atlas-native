@@ -444,7 +444,7 @@ struct ArenaPremiumTerminalView: View {
                 HStack(alignment: .lastTextBaseline, spacing: 7) {
                     Text("\(progress.completed)")
                         .font(AtlasFont.serif(44))
-                    Text("de \(progress.total) casos confirmados")
+                    Text(ArenaNowJudgment.productConfirmedCases(progress.total))
                         .font(AtlasFont.mono(11))
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }

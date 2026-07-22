@@ -265,6 +265,18 @@ enum ArenaNowJudgment {
 
     static let productArmAbsenceHonesty = "Ausência de um braço permanece não medida."
     static let productVsWithoutAtlas = "vs. sem Atlas"
+
+    static func productBestGain(engine: String, mult: String) -> String {
+        "melhor ganho · \(engine) · \(mult)"
+    }
+    static func productCoverageLine(coverage: String, judgment: String, scale: String) -> String {
+        "cobertura \(coverage) · \(judgment) · \(scale)"
+    }
+    static func productDeltaLine(_ signed: String) -> String { "diferença \(signed)" }
+    static func productReceiptHash(_ hash: String) -> String { "recibo \(hash)" }
+    static func productConfirmedCases(_ total: Int) -> String { "de \(total) casos confirmados" }
+    static func productOfCases(_ total: Int) -> String { "de \(total) casos" }
+    static let productConfirmedCasesLabel = "casos confirmados"
     static let productCompareEnginesHint = "Escolha 2 ou mais para comparar motor contra motor."
     static let productWhatWeMeasure = "O que vamos medir?"
 

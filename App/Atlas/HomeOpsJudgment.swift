@@ -202,6 +202,8 @@ enum HomeOpsJudgment {
     static func productAppVersion(_ version: String) -> String { "Atlas \(version)" }
 
     static let spokenOperatorProfile = "Vitor, operador do Atlas"
+    static let productOperatorSubtitle = "operador do Atlas"
+    static let productAuditModeDetail = "mostra detalhes técnicos nas telas"
     static let spokenSearchHint = "abre busca nas conversas carregadas"
     static let spokenCodeTopBarHint = "abre radar de repositórios"
 

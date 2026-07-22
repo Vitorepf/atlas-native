@@ -786,7 +786,7 @@ extension WorkspaceSheet {
 
 extension WorkspaceSheet {
     var workspaceListHeader: some View {
-        Text("pastas das conversas carregadas · vale no próximo envio")
+        Text(ComposerSheetJudgment.productWorkspaceSheetFootnote)
             .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -872,7 +872,7 @@ extension EffortSheet {
 
 extension EffortSheet {
     var effortFootnoteCopy: some View {
-        Text("vale para o próximo envio; automático deixa o Atlas Decide escolher")
+        Text(ComposerSheetJudgment.productModeSheetFootnote)
             .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
