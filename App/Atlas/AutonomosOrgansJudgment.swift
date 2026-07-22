@@ -277,6 +277,10 @@ enum AutonomosListRowFace: Equatable {
 /// Pure Autônomos catalog list grammar — list face · row face · rank · spoken · pack.
 enum AutonomosListJudgment {
 
+    static let productScreenTitle = "Autônomos"
+    static let spokenLoadFailureRetryHint = "tenta reabrir o catálogo Autônomos"
+    static let spokenLoadFailureLead = "Catálogo Autônomos fora de alcance"
+
     static let spokenEmptyHint = "Abre a folha para definir nome e carta"
     static let emptyBody =
         "Defina um Autônomo com escopo fechado. Por agora o catálogo vive só neste iPhone — some se o app for morto."

@@ -142,7 +142,7 @@ extension AutonomosView {
     }
 
     private var headerTitle: String {
-        guard let destination else { return "Autônomos" }
+        guard let destination else { return AutonomosListJudgment.productScreenTitle }
         if case .hub = destination {
             return selectedUnit?.name ?? "Autônomo"
         }
@@ -382,8 +382,8 @@ struct AutonomosFleetFailureEmpty: View {
             topPadding: 0,
             accessibilityIdentifier: A11yID.autonomosLoadFailure,
             retryAccessibilityIdentifier: A11yID.autonomosRetry,
-            retryHint: "tenta reabrir o catálogo Autônomos",
-            spokenOverride: "Catálogo Autônomos fora de alcance. \(message)",
+            retryHint: AutonomosListJudgment.spokenLoadFailureRetryHint,
+            spokenOverride: "\(AutonomosListJudgment.spokenLoadFailureLead). \(message)",
             onRetry: onRetry
         )
         .padding(32)
@@ -438,7 +438,7 @@ struct AutonomosViewHeader: View {
     let auditModeEnabled: Bool
     let canRefresh: Bool
     let isHealthy: Bool
-    var title: String = "Autônomos"
+    var title: String = AutonomosListJudgment.productScreenTitle
     var subtitle: String = ""
     var subtitleLive: Bool = false
     var trailing: Trailing = .refresh
