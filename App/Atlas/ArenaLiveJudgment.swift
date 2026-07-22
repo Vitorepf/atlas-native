@@ -277,6 +277,7 @@ enum ArenaNowJudgment {
     static func productConfirmedCases(_ total: Int) -> String { "de \(total) casos confirmados" }
     static func productOfCases(_ total: Int) -> String { "de \(total) casos" }
     static let productConfirmedCasesLabel = "casos confirmados"
+    static let productDenominatorStillUnpublished = "denominador ainda não publicado"
     static let productCompareEnginesHint = "Escolha 2 ou mais para comparar motor contra motor."
     static let productWhatWeMeasure = "O que vamos medir?"
 

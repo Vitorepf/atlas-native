@@ -395,7 +395,7 @@ struct ArenaPremiumRunningView: View {
                 Text(ArenaNowJudgment.productIndeterminateProgress)
                     .font(AtlasFont.mono(13, .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text("denominador ainda não publicado")
+                Text(ArenaNowJudgment.productDenominatorStillUnpublished)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }

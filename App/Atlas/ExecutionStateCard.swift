@@ -1415,6 +1415,7 @@ enum ExecutionProofJudgment {
     static let productOpen = "Abrir"
     static func productNextChange(deadline: String) -> String { "Próxima mudança: \(deadline)" }
     static func productCheckpoint(_ id: String) -> String { "checkpoint · \(id)" }
+    static func productActiveClock(_ clock: String) -> String { "ativo \(clock)" }
     static let productReplayKicker = "REPLAY"
     static func productArtifactsKicker(count: Int) -> String { "ARTEFATOS (\(count))" }
     static let spokenServerActionHint = "ação declarada pelo servidor"

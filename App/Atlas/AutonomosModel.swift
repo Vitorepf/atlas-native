@@ -625,7 +625,7 @@ extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var revertQueueBanner: some View {
         if revertReceipt != nil {
-            Text("na fila · ainda não desfeito")
+            Text(AutonomosListJudgment.productQueuedNotUndone)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .padding(12)
@@ -673,7 +673,7 @@ extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var humanSilenceLine: some View {
         if receipt.hasMergeProof {
-            Text("você não foi necessário — entrega sem portão")
+            Text(AutonomosListJudgment.productDeliveredNoGate)
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityLabel(spokenHumanSilenceLabel())
@@ -770,7 +770,7 @@ extension SelfConstructionReceiptSheet {
 extension SelfConstructionReceiptSheet {
     var vetoFields: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("veto retroativo · com recibo")
+            Text(AutonomosListJudgment.productRetroactiveVeto)
                 .font(AtlasFont.mono(10))
                 .tracking(0.9)
                 .foregroundStyle(AtlasTheme.textTertiary)

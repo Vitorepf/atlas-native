@@ -1713,7 +1713,7 @@ struct ReconnectBanner: View {
                         .accessibilityHidden(true)
                 }
                 if let ms = bubble.reconnectActiveTimerMs {
-                    Text("ativo \(ExecutionStateCard.clock(ms))")
+                    Text(ExecutionProofJudgment.productActiveClock(ExecutionStateCard.clock(ms)))
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .monospacedDigit()
