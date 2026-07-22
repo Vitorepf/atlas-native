@@ -769,7 +769,7 @@ struct AtlasProfileSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }
+                    Button(WorkspacePickerJudgment.spokenClose) { dismiss() }
                         .atlasSans(15, .medium)
                         .tint(AtlasTheme.textSecondary)
                 }
