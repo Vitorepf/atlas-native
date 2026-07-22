@@ -60,10 +60,6 @@ enum AutonomosDigestJudgment {
         return .quiet
     }
 
-    static func isPublished(_ digest: AtlasAutonomosDigestResponse?) -> Bool {
-        digest != nil
-    }
-
     static func windowLine(_ digest: AtlasAutonomosDigestResponse) -> String {
         let w = digest.last.window
         return "\(w.hours)h · \(w.kind) · \(w.focus) · \(w.timezone)"

@@ -505,14 +505,6 @@ extension ChangeReviewModel {
         }
     }
 
-    func refreshArtifacts(traceId: TraceID) async {
-        do {
-            artifactsByTrace[traceId] = try await client.getTraceArtifacts(traceId: traceId)
-        } catch {
-            toast = atlasUserMessage(for: error)
-        }
-    }
-
     func loadArtifactContent(traceId: TraceID, item: AtlasTraceArtifacts.Item) async throws -> AtlasArtifactContent {
         guard artifactsByTrace[traceId]?.state == .available,
               artifactsByTrace[traceId]?.items.contains(where: { $0.id == item.id && $0.sha256 == item.sha256 }) == true else {

@@ -423,7 +423,7 @@ extension EffortSheet {
             let selected = effort == model.effort
             SheetRow(
                 label: effort.shortLabel.capitalized,
-                sub: ComposerEffortJudgment.subtitle(effort),
+                sub: ComposerEffortJudgment.productSubtitle(effort),
                 selected: selected,
                 accessibilityLabel: ComposerEffortJudgment.spokenSheetLabel(effort, selected: selected),
                 accessibilityIdentifier: A11yID.effortRow(effort.rawValue)
@@ -773,7 +773,7 @@ enum ComposerEffortJudgment {
         return "\(spokenSheet(effort)), \(state)"
     }
 
-    static func subtitle(_ effort: AtlasComputeEffort) -> String {
+    static func productSubtitle(_ effort: AtlasComputeEffort) -> String {
         face(effort).subtitle
     }
 

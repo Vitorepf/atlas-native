@@ -983,16 +983,6 @@ enum AtlasMotionPresentation {
     static func editorial(reduceMotion: Bool) -> Animation? {
         reduceMotion ? nil : AtlasMotion.editorial
     }
-
-    static func rowTransition(reduceMotion: Bool) -> AnyTransition {
-        reduceMotion ? .identity : .opacity.combined(with: .move(edge: .top))
-    }
-}
-
-extension View {
-    func atlasNumericTransition(reduceMotion: Bool) -> some View {
-        modifier(NumericTextTransition(enabled: !reduceMotion))
-    }
 }
 
 enum AtlasMotion {

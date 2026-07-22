@@ -430,12 +430,6 @@ enum ArenaScoreJudgment {
         )
     }
 
-    /// Alertas / quiet: se não há regressões nem attention = quiet-healthy.
-    static func alertsState(regressionCount: Int, attentionCount: Int) -> ArenaScoreJudgmentState {
-        if regressionCount + attentionCount > 0 { return .regressed }
-        return .quietHealthy
-    }
-
     // MARK: - Numbers (never fabricate)
 
     /// Δ com vs sem — só se **ambos** publicados; senão nil (não 0).

@@ -772,7 +772,7 @@ enum AtlasOpsFailureJudgment {
     static func footnote(mode: AtlasOpsFailureMode) -> String? {
         switch mode {
         case .network(let kind, let hasToken, _):
-            return AtlasFailureCopy.hint(kind: kind, hasToken: hasToken)
+            return AtlasFailureCopy.productHint(kind: kind, hasToken: hasToken)
         case .domainUnavailable:
             return domainFootnote
         case .load(_, let message):
@@ -929,7 +929,7 @@ struct AtlasOpsFailureEmpty: View {
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Spacer().frame(height: 16)
-            Text(AtlasFailureCopy.hint(kind: kind, hasToken: hasToken))
+            Text(AtlasFailureCopy.productHint(kind: kind, hasToken: hasToken))
                 .font(.system(.subheadline)).lineSpacing(5)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
@@ -1119,7 +1119,7 @@ extension AtlasFailureCopy {
 }
 
 extension AtlasFailureCopy {
-    static func hint(kind: AtlasNetworkFailureKind?, hasToken: Bool) -> String {
+    static func productHint(kind: AtlasNetworkFailureKind?, hasToken: Bool) -> String {
         guard hasToken else { return "Configure o token no Mac e reinstale — nada foi perdido." }
         guard let kind else {
             return "Confira se o Mac está acordado e o Tailscale ligado — a conversa continua de onde parou."

@@ -663,10 +663,6 @@ enum AtlasCodeRadarJudgment {
         }.map(\.element)
     }
 
-    static func issueSignalCount(_ issues: [AtlasCodeIssue]?) -> Int {
-        issues?.count ?? 0
-    }
-
     /// Top attention subjects for pack — real counts only.
     static func topAttention(
         issuesBySlug: [String: [AtlasCodeIssue]],

@@ -103,7 +103,7 @@ extension ExecutionStateCard {
     var kindBadge: String? {
         switch state.kind {
         case .completed: return nil
-        default: return ExecutionStateCardJudgment.badge(for: state.kind)
+        default: return ExecutionStateCardJudgment.productBadge(for: state.kind)
         }
     }
 }
@@ -258,7 +258,7 @@ extension ExecutionStateCard {
     var kindBadgeWait: String? {
         switch state.kind {
         case .attentionRequired, .awaitingExternal:
-            return ExecutionStateCardJudgment.badge(for: state.kind)
+            return ExecutionStateCardJudgment.productBadge(for: state.kind)
         default: return nil
         }
     }
@@ -267,7 +267,7 @@ extension ExecutionStateCard {
         if let wait = kindBadgeWait { return wait }
         switch state.kind {
         case .recovering, .replanning:
-            return ExecutionStateCardJudgment.badge(for: state.kind)
+            return ExecutionStateCardJudgment.productBadge(for: state.kind)
         default: return nil
         }
     }
@@ -672,7 +672,7 @@ enum ExecutionStateCardJudgment {
 
     // MARK: Badge (uppercase product strip)
 
-    static func badge(for kind: AtlasExecutionPresentationState.Kind) -> String? {
+    static func productBadge(for kind: AtlasExecutionPresentationState.Kind) -> String? {
         switch kind {
         case .attentionRequired: return "PAUSADO"
         case .awaitingExternal: return "AGUARDANDO"
@@ -756,7 +756,7 @@ enum ExecutionStateCardJudgment {
         facts.append(
             "state_card_freezes_timer: \(freezesTimer(for: kind) ? "yes" : "no")"
         )
-        if let badge = badge(for: kind) {
+        if let badge = productBadge(for: kind) {
             facts.append("state_card_badge: \(badge)")
         }
         if !state.title.isEmpty {

@@ -179,14 +179,6 @@ extension AutonomosModel {
 
 // MARK: - Decide / digest
 extension AutonomosModel {
-    func refreshDigest() async {
-        do {
-            digest = try await client.autonomosDigest()
-        } catch {
-            controlError = Self.publicMessage(error)
-        }
-    }
-
     func decide(
         _ decision: AtlasAutonomosOperatorDecision,
         findingHash: String,

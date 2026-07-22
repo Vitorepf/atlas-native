@@ -455,15 +455,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-extension AtlasCodeCommitRow {
-    func spineConnector(fill: Color) -> some View {
-        Rectangle()
-            .fill(fill)
-            .frame(width: 2)
-            .accessibilityHidden(true)
-    }
-}
-
 // MARK: - File row
 
 // MARK: - Host
