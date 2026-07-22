@@ -8,17 +8,17 @@ product_waves: forbidden
 
 ## State
 - phase: act
-- focus: continuous residual pass 695
-- domain_index: 7
-- pass: 695
-- last_commit: 4f883ae4
-- session_commits: 343
+- focus: continuous residual pass 696
+- domain_index: 0
+- pass: 696
+- last_commit: 41dad9fd
+- session_commits: 344
 - soft_sections_states: 0
 - swift_App_Atlas: 46
 - swift_Widgets: 2
 
 ## Scoreboard
-commits 343 · soft 0 · density OK · 46+2 · gates green
+commits 344 · soft 0 · density OK · 46+2 · gates green
 
 ## notes
 Goal until cancel. Never Goal Done. Never god_hold.
