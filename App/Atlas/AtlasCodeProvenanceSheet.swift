@@ -163,7 +163,7 @@ extension AtlasCodeProvenanceSheet {
             .font(AtlasFont.serif(12))
             .foregroundStyle(AtlasTheme.accent)
             .accessibilityHidden(true)
-        Text("perguntar sobre este commit")
+        Text(AtlasCodeAskPillJudgment.spokenAskCommit)
             .font(AtlasFont.serifItalic(14))
             .foregroundStyle(AtlasTheme.textSecondary)
             .accessibilityHidden(true)

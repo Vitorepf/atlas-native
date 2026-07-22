@@ -226,7 +226,7 @@ extension ChangeReviewDiffView {
 extension ChangeReviewDiffView {
     @ViewBuilder
     var diffBodyUnavailable: some View {
-        Text("diff indisponível para este patch")
+        Text(ChangeReviewJudgment.spokenDiffUnavailable)
             .font(AtlasFont.serifItalic(13))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -291,7 +291,7 @@ extension ChangeReviewDiffView {
     @ViewBuilder
     func loadedDiffWarnings(_ response: AtlasTraceChangeReviewDiffResponse) -> some View {
         if response.diff.truncated {
-            Text("diff truncado — \(response.diff.returnedBytes) de \(response.diff.sizeBytes) bytes")
+            Text(ChangeReviewJudgment.productDiffTruncated(returned: response.diff.returnedBytes, total: response.diff.sizeBytes))
                 .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textTertiary)
         }
         if response.patch.hashMatches == false {

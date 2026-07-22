@@ -279,6 +279,7 @@ enum ChangeReviewJudgment {
     static let spokenReject = "rejeitar revisão inteira"
     static let spokenRejectHint = "rejeita o run de engenharia desta execução"
     static let spokenDiffUnavailable = "diff indisponível para este patch"
+    static func productDiffTruncated(returned: Int, total: Int) -> String { "diff truncado — \(returned) de \(total) bytes" }
 
     static func spokenAcceptPatch(_ displayName: String) -> String {
         "aceitar \(displayName)"

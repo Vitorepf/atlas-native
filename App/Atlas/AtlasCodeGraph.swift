@@ -1432,7 +1432,7 @@ extension AtlasCodeView {
                         .atlasSans(12)
                         .foregroundStyle(AtlasCodePalette.healed)
                         .accessibilityHidden(true)
-                    Text("curado sozinho · ver recibo")
+                    Text(AtlasCodeHealVetoJudgment.spokenCuredAloneOpenReceipt)
                         .font(AtlasFont.serifItalic(13))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .accessibilityHidden(true)

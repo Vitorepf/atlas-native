@@ -1441,7 +1441,7 @@ extension EditorialTurn {
             Image(systemName: "arrow.turn.down.right")
                 .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
-            Text("editar e reenviar")
+            Text(EditorialTurnJudgment.spokenEditResend)
                 .atlasSans(11, .medium)
         }
         .foregroundStyle(AtlasTheme.textSecondary)
