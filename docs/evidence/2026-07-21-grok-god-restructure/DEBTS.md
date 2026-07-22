@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 618
-domain_index: 4
-last_focus: "delete dead availableActions/invalidate/nightly card spoken"
-session_commits: 207
+pass: 619
+domain_index: 5
+last_focus: "dedupe consecutive MARK Judgment headers"
+session_commits: 209
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **207** · soft **0** · density OK · 46+2 · gates green
+commits **209** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
