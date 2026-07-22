@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 687
-domain_index: 7
-last_focus: "continuous residual soft-hold pass 687 — soft0 densifyOK"
-session_commits: 335
+pass: 688
+domain_index: 0
+last_focus: "continuous residual soft-hold pass 688"
+session_commits: 336
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **335** · soft **0** · density OK · 46+2 · gates green
+commits **336** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
