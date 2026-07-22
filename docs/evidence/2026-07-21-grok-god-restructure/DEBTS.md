@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 667
-domain_index: 5
-last_focus: "soft re-audit: soft0 densifyOK dead0 bareText0 product/spoken closed"
-session_commits: 305
+pass: 668
+domain_index: 6
+last_focus: "product labels Operador/Continue/Effort residual"
+session_commits: 307
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,11 +14,8 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **305** · soft **0** · density OK · 46+2 · gates green · dead 0 · bare product Text 0
+commits **307** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
 **never Goal Done**
-
-Casca honesty/spoken*/product* largely closed. Densify saturated under caps.
-Residual: keep soft re-audit, CODEMAP truth, any reintroduced soft/dead.
