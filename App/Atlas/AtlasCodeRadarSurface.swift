@@ -1159,6 +1159,7 @@ enum AtlasCodeRadarLoadJudgment {
 
     static let spokenShellHint = "pastas, recentes e sem retorno verificados do seu código"
     static let productScreenTitle = "Código"
+    static func productCodeRepoTitle(_ repo: String) -> String { "Código · \(repo)" }
     static let productWorkspaceTitle = "Código · workspace"
     static let productWorkspaceLoadFail = "não consegui ler o workspace"
     static let productRepoLoadFail = "não consegui ler este repositório"

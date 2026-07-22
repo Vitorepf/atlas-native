@@ -564,7 +564,7 @@ struct ArenaPremiumDestinationView: View {
             ConversationView(
                 client: session.client,
                 threadId: askThreadId,
-                title: "Arena · \(title)",
+                title: ArenaNowJudgment.productArenaPrefixed(title),
                 emptyPrompt: ArenaPremiumAskContext.productInvite(
                     tab: ArenaPremiumAskContext.tabForDestination(target),
                     destination: target

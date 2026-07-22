@@ -664,7 +664,7 @@ struct AutonomosDigestSurface: View {
             sectionHeader("Entregas")
             ForEach(delivered) { d in
                 row(
-                    title: "Ciclo \(d.cycleIndex) · \(d.outcome)",
+                    title: AutonomosListJudgment.productCycleOutcome(index: d.cycleIndex, outcome: d.outcome),
                     meta: "\(d.cycleFinalStatus)\(d.mergePerformed ? " · merge" : "") · \(d.recordedAt)",
                     accent: d.mergePerformed
                 )

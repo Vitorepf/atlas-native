@@ -255,6 +255,7 @@ struct ArenaNowTerminalChrome: Equatable {
 /// Pure Arena now-phase grammar — face · terminal chrome · spoken · pack.
 enum ArenaNowJudgment {
     static let productScreenTitle = "Arena"
+    static func productArenaPrefixed(_ title: String) -> String { "Arena · \(title)" }
 
     static let productViewExecution = "Ver execução"
     static let productStopping = "Parando…"

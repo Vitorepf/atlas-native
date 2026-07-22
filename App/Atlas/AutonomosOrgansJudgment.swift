@@ -318,6 +318,7 @@ enum AutonomosListJudgment {
     static let productEvolution = "Evolução"
     static let productNeedsYou = "Precisa de você"
     static let productDigest = "Digest"
+    static func productCycleOutcome(index: Int, outcome: String) -> String { "Ciclo \(index) · \(outcome)" }
     static let productEnd = "Encerrar"
 
     static let productResumeList = "Retomar na lista"

@@ -886,7 +886,7 @@ extension AtlasCodeAskWhySheetsModifier {
         ConversationView(
             client: session.client,
             threadId: askThreadId,
-            title: "Código · \(model.repo)",
+            title: AtlasCodeRadarLoadJudgment.productCodeRepoTitle(model.repo),
             emptyPrompt: AtlasCodeAskContext.productEmptyPrompt(focusLegend: askModel.sheetFocusLegend),
             emptySuggestions: AtlasCodeAskContext.emptySuggestions,
             taskKind: "code",
