@@ -988,7 +988,6 @@ enum AtlasMotionPresentation {
 enum AtlasMotion {
     static let instinct: Double = 0.18
     static let considered: Double = 0.32
-    static let ceremonial: Double = 0.48
     static let sacred: Double = 0.62
 
     static let editorial = Animation.timingCurve(0.22, 1, 0.36, 1, duration: considered)

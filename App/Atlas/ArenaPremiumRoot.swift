@@ -788,7 +788,6 @@ enum ArenaPremiumIconography {
     static let plan = "list.bullet.rectangle"
     static let queue = "tray.full"
     static let stop = "stop.fill"
-    static let verified = "checkmark.shield"
 
     static func run(_ status: AtlasArenaRunStatus) -> String {
         ArenaRunStatusJudgment.sfSymbol(for: status)

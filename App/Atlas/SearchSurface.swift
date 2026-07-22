@@ -155,7 +155,7 @@ extension SearchViewHeader {
 
 extension SearchViewHeader {
     var searchFieldPlaceholder: some View {
-        Text("Buscar conversas")
+        Text(SearchListJudgment.productFieldPlaceholder)
             .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textTertiary)
             .opacity(query.isEmpty ? 1 : 0).allowsHitTesting(false)
             .accessibilityHidden(true)
@@ -726,7 +726,7 @@ enum SearchListFace: Equatable {
 enum SearchListJudgment {
 
     static let spokenOpenThreadHint = "abre a conversa"
-    static let fieldPlaceholder = "Buscar conversas"
+    static let productFieldPlaceholder = "Buscar conversas"
 
     // MARK: Face
 

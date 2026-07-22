@@ -1050,7 +1050,9 @@ struct AtlasOpsFailureEmpty: View {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRetry()
             } label: {
-                Text(layout == .leadingEditorial ? "Tentar novamente" : "Tentar de novo")
+                Text(layout == .leadingEditorial
+                     ? AtlasOpsFailureJudgment.productRetryEditorial
+                     : AtlasOpsFailureJudgment.productRetryCentered)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.accent)
                     .padding(.horizontal, 22)
