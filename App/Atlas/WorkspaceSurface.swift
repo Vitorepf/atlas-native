@@ -165,7 +165,7 @@ extension WorkspaceView {
 
     private var workspacePillInvite: String {
         if freeOnly {
-            return WorkspaceAskContext.freeInvite
+            return WorkspaceAskContext.productFreeInvite
         }
         if let workspaceKey {
             return WorkspaceAskContext.productInvite(workspaceName: title.isEmpty ? workspaceKey : title)
@@ -575,7 +575,7 @@ struct AtlasWorkspacePickerSheet: View {
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $query, prompt: WorkspacePickerJudgment.searchPrompt)
+            .searchable(text: $query, prompt: WorkspacePickerJudgment.productSearchPrompt)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(WorkspacePickerJudgment.spokenClose) { dismiss() }
@@ -598,7 +598,7 @@ struct AtlasWorkspacePickerSheet: View {
         case .loading:
             VStack(spacing: 12) {
                 BreathingDiamond(size: 10, reduceMotion: false)
-                Text(WorkspacePickerJudgment.loadingCopy)
+                Text(WorkspacePickerJudgment.productLoadingCopy)
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
@@ -606,7 +606,7 @@ struct AtlasWorkspacePickerSheet: View {
             .accessibilityLabel(WorkspacePickerJudgment.spokenLoading())
         case .failed:
             VStack(spacing: 10) {
-                Text(WorkspacePickerJudgment.failedHeadline)
+                Text(WorkspacePickerJudgment.productFailedHeadline)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Button(WorkspacePickerJudgment.productRetry) { Task { await model.load() } }
@@ -634,7 +634,7 @@ extension AtlasWorkspacePickerSheet {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(WorkspacePickerJudgment.productNoRepoTitle).atlasSans(16, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text(WorkspacePickerJudgment.noRepoSubtitle).atlasSans(13)
+                    Text(WorkspacePickerJudgment.productNoRepoSubtitle).atlasSans(13)
                         .foregroundStyle(AtlasTheme.textTertiary)
                 }
                 Spacer()
@@ -656,7 +656,7 @@ extension AtlasWorkspacePickerSheet {
     var pickerRepoList: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
-                Text(WorkspacePickerJudgment.reposCaption)
+                Text(WorkspacePickerJudgment.productReposCaption)
                     .font(AtlasFont.mono(11, .medium)).tracking(1.6)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.horizontal, AtlasTheme.Space.screen)
@@ -1205,7 +1205,7 @@ enum WorkspaceAskContext {
     }
 
     /// Nova conversa livre (sem workspace) — distinta da Home partida.
-    static let freeInvite = "Escreva livremente"
+    static let productFreeInvite = "Escreva livremente"
 }
 // MARK: - WorkspacePickerJudgment
 
@@ -1247,17 +1247,17 @@ enum WorkspacePickerFace: Equatable {
 /// Pure workspace-picker grammar — face · rank · filter · spoken · pack.
 enum WorkspacePickerJudgment {
 
-    static let loadingCopy = "lendo os repositórios do Mac…"
-    static let failedHeadline = "O Mac não respondeu."
+    static let productLoadingCopy = "lendo os repositórios do Mac…"
+    static let productFailedHeadline = "O Mac não respondeu."
     static let productRetry = "Tentar de novo"
     static let productNoRepo = "sem repositório"
     static let spokenNoRepoHint = "conversa geral com o Atlas, sem projeto"
     static let productNoRepoTitle = "Sem repositório"
     static let productNoRepoPublished = "o workspace não publicou nenhum repo"
     static let productTryAgainSoon = "tente de novo em instantes"
-    static let noRepoSubtitle = "conversar ou pesquisar, sem projeto"
-    static let reposCaption = "REPOSITÓRIOS"
-    static let searchPrompt = "Buscar repositórios"
+    static let productNoRepoSubtitle = "conversar ou pesquisar, sem projeto"
+    static let productReposCaption = "REPOSITÓRIOS"
+    static let productSearchPrompt = "Buscar repositórios"
     static let spokenRowHint = "abre o workspace deste repositório"
     static let productCurrentRepoBadge = "atual"
     static let spokenClose = "Fechar"
@@ -1326,9 +1326,9 @@ enum WorkspacePickerJudgment {
 
     // MARK: Spoken
 
-    static func spokenLoading() -> String { loadingCopy }
+    static func spokenLoading() -> String { productLoadingCopy }
 
-    static func spokenFailed() -> String { failedHeadline }
+    static func spokenFailed() -> String { productFailedHeadline }
 
     static func spokenNoRepo() -> String { productNoRepo }
 

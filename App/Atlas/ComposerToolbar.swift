@@ -1371,7 +1371,7 @@ extension ComposerDraftJudgment {
     static let spokenCameraSurface = "câmera para anexar foto"
     static let spokenCameraHint =
         "confirme a captura para anexar; cancelar não adiciona nada"
-    static let captureFailedToast = "não consegui capturar a foto"
+    static let spokenCaptureFailedToast = "não consegui capturar a foto"
     static let spokenChooseCamera = "capturar foto na câmera"
     static let spokenChooseCameraHint =
         "abre a câmera; nada é anexado até confirmar a captura"
@@ -1466,14 +1466,14 @@ enum ComposerSheetJudgment {
     static let productAttachPhoto = "Foto"
     static let productAttachPhotoSub = "Escolher da biblioteca"
 
-    static let modeFootnote =
+    static let productModeFootnote =
         "rótulo local; ainda não altera roteamento nem payload"
     static let spokenModeSheetHint = "escolhe um rótulo local; não altera o turno ainda"
     static let spokenWorkspaceSheetHint =
         "escolhe a pasta do próximo envio entre as conversas carregadas"
     static let productWorkspaceSheetFootnote = "pastas das conversas carregadas · vale no próximo envio"
     static let productModeSheetFootnote = "vale para o próximo envio; automático deixa o Atlas Decide escolher"
-    static let workspaceEmpty =
+    static let productWorkspaceEmpty =
         "nenhum workspace nas conversas carregadas; abra uma conversa com pasta ou volte à home"
     static let spokenWorkspaceSheet = "workspace da conversa"
     static let spokenModeSheet = "modo da conversa"
@@ -1498,7 +1498,7 @@ enum ComposerSheetJudgment {
 
     static func spokenModeLabel(key: String, title: String, selected: Bool) -> String {
         let state = selected ? "selecionado" : "disponível"
-        return "modo \(title), \(state), \(modeFootnote)"
+        return "modo \(title), \(state), \(productModeFootnote)"
     }
 
     static func spokenModeLabel(key: String, selected: Bool) -> String {
@@ -1517,7 +1517,7 @@ enum ComposerSheetJudgment {
         return "\(name), \(count) \(noun) carregadas, \(state)"
     }
 
-    static func workspaceCountLine(_ count: Int) -> String {
+    static func productWorkspaceCountLine(_ count: Int) -> String {
         count == 1 ? "1 conversa carregada" : "\(count) conversas carregadas"
     }
 

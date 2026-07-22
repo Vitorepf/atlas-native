@@ -745,12 +745,12 @@ enum AtlasOpsFailureFace: Equatable {
 /// Pure ops-failure grammar — face · copy · retry · pack.
 enum AtlasOpsFailureJudgment {
 
-    static let domainHeadline = "A medição ainda não existe neste servidor"
-    static let domainFootnote = "Nenhum índice, progresso ou resultado foi presumido."
+    static let productDomainHeadline = "A medição ainda não existe neste servidor"
+    static let productDomainFootnote = "Nenhum índice, progresso ou resultado foi presumido."
     static let productDomainKicker = "Arena não publicada"
     static let productRetryCentered = "Tentar de novo"
     static let productRetryEditorial = "Tentar novamente"
-    static let retrySpoken = "tentar de novo"
+    static let spokenRetry = "tentar de novo"
 
     static func face(mode: AtlasOpsFailureMode) -> AtlasOpsFailureFace {
         switch mode {
@@ -765,7 +765,7 @@ enum AtlasOpsFailureJudgment {
         case .network(let kind, let hasToken, _):
             return AtlasFailureCopy.headline(kind: kind, hasToken: hasToken)
         case .domainUnavailable:
-            return domainHeadline
+            return productDomainHeadline
         case .load(let headline, _):
             return headline
         }
@@ -776,7 +776,7 @@ enum AtlasOpsFailureJudgment {
         case .network(let kind, let hasToken, _):
             return AtlasFailureCopy.productHint(kind: kind, hasToken: hasToken)
         case .domainUnavailable:
-            return domainFootnote
+            return productDomainFootnote
         case .load(_, let message):
             return message.isEmpty ? nil : message
         }
@@ -1065,7 +1065,7 @@ struct AtlasOpsFailureEmpty: View {
                     )
             }
             .buttonStyle(PressableScale())
-            .accessibilityLabel(AtlasOpsFailureJudgment.retrySpoken)
+            .accessibilityLabel(AtlasOpsFailureJudgment.spokenRetry)
             .accessibilityHint(retryHint)
 
             if let retryAccessibilityIdentifier {

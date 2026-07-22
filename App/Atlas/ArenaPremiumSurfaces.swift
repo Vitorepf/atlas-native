@@ -363,7 +363,7 @@ struct ArenaPremiumResultsView: View {
                     smallMetric("Multiplicador", ArenaFormat.multiplier(engine.atlasMultiplier), tone: .active)
                 }
             }
-            Text(ArenaNowJudgment.productCoverageLine(coverage: model.arenaCoverageText, judgment: judgment.rawValue, scale: ArenaScoreJudgment.scaleCaption))
+            Text(ArenaNowJudgment.productCoverageLine(coverage: model.arenaCoverageText, judgment: judgment.rawValue, scale: ArenaScoreJudgment.productScaleCaption))
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }

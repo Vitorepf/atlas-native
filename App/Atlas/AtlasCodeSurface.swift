@@ -511,7 +511,7 @@ extension AtlasCodeView {
         } else {
             Color.clear
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .accessibilityLabel(AtlasCodeGraphJudgment.emptyGraph)
+                .accessibilityLabel(AtlasCodeGraphJudgment.productEmptyGraph)
         }
     }
 }
@@ -1362,7 +1362,7 @@ struct AtlasCodeRepoPickerSheet: View {
                 default:
                     VStack(spacing: 12) {
                         BreathingDiamond(size: 10, reduceMotion: reduceMotion)
-                        Text(WorkspacePickerJudgment.loadingCopy)
+                        Text(WorkspacePickerJudgment.productLoadingCopy)
                             .font(AtlasFont.serifItalic(15))
                             .foregroundStyle(AtlasTheme.textTertiary)
                     }

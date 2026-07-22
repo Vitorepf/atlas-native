@@ -963,7 +963,7 @@ extension ExecutionProof {
                 Image(systemName: "seal")
                     .atlasSans(11).foregroundStyle(qualityColor(q)).frame(width: 15)
                     .accessibilityHidden(true)
-                Text(qualityLine(q))
+                Text(productQualityLine(q))
                     .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
             }
             .accessibilityLabel(qualitySpoken(q))
@@ -1007,12 +1007,12 @@ extension ExecutionProof {
         ExecutionProofJudgment.activitySpoken(act)
     }
 
-    func qualityLineFlags(_ q: AtlasQualitySummary, base: String) -> String {
-        ExecutionProofJudgment.qualityLineFlags(q, base: base)
+    func productQualityLineFlags(_ q: AtlasQualitySummary, base: String) -> String {
+        ExecutionProofJudgment.productQualityLineFlags(q, base: base)
     }
 
-    func qualityLine(_ q: AtlasQualitySummary) -> String {
-        ExecutionProofJudgment.qualityLine(q)
+    func productQualityLine(_ q: AtlasQualitySummary) -> String {
+        ExecutionProofJudgment.productQualityLine(q)
     }
 
     func qualitySpoken(_ q: AtlasQualitySummary) -> String {
@@ -1581,16 +1581,16 @@ enum ExecutionProofJudgment {
     // MARK: - Chrome spoken
     // MARK: - WAVE-082 quality · activity · replay absence
 
-    static func qualityLineFlags(_ q: AtlasQualitySummary, base: String) -> String {
+    static func productQualityLineFlags(_ q: AtlasQualitySummary, base: String) -> String {
         var out = base
         if q.flagCount > 0 { out += " · \(q.flagCount) alertas" }
         if q.actionCount > 0 { out += " · \(q.actionCount) ações" }
         return out
     }
 
-    static func qualityLine(_ q: AtlasQualitySummary) -> String {
+    static func productQualityLine(_ q: AtlasQualitySummary) -> String {
         let base = "quality \(String(format: "%.1f", q.score)) · \(q.status)"
-        return qualityLineFlags(q, base: base)
+        return productQualityLineFlags(q, base: base)
     }
 
     static func qualitySpoken(_ q: AtlasQualitySummary) -> String {

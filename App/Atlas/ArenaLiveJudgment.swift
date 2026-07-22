@@ -463,7 +463,7 @@ enum ArenaScoreJudgmentState: String, Equatable {
 
 enum ArenaScoreJudgment {
     /// Escala canônica — uma voz em todas as faces.
-    static let scaleCaption = "escala 0–10"
+    static let productScaleCaption = "escala 0–10"
     static let productUnmeasured = "não medido"
     static let absenceNeverZero =
         "Resultados ausentes aparecem como não medidos, nunca como zero."
@@ -519,24 +519,24 @@ enum ArenaScoreJudgment {
     static func comparisonKicker(provisional: Bool, sourceSuite: Bool) -> String {
         if sourceSuite {
             return provisional
-                ? "Último par · \(scaleCaption)"
-                : "Comparação final · \(scaleCaption)"
+                ? "Último par · \(productScaleCaption)"
+                : "Comparação final · \(productScaleCaption)"
         }
         return provisional
-            ? "Índice do motor · \(scaleCaption)"
-            : "Comparação final · \(scaleCaption)"
+            ? "Índice do motor · \(productScaleCaption)"
+            : "Comparação final · \(productScaleCaption)"
     }
 
     // MARK: - Kickers / voice
 
     static func productResultsKicker(claimAllowed: Bool?) -> String {
-        if claimAllowed == true { return "Última medição concluída · \(scaleCaption)" }
-        return "Medição parcial · \(scaleCaption)"
+        if claimAllowed == true { return "Última medição concluída · \(productScaleCaption)" }
+        return "Medição parcial · \(productScaleCaption)"
     }
 
     static func productFleetKicker(engineCount: Int) -> String {
         let n = engineCount
-        return "Frota medida · \(n) \(n == 1 ? "motor" : "motores") · \(scaleCaption)"
+        return "Frota medida · \(n) \(n == 1 ? "motor" : "motores") · \(productScaleCaption)"
     }
 
     static func spokenMeasuredEngine(_ engineID: String) -> String {
@@ -546,12 +546,12 @@ enum ArenaScoreJudgment {
     static let spokenMeasuredEngineHint = "Abre a lista dos outros motores medidos"
 
     static func capabilitiesKicker() -> String {
-        "Perfil medido · \(scaleCaption)"
+        "Perfil medido · \(productScaleCaption)"
     }
 
     static func alertsKicker(hasAlerts: Bool) -> (text: String, tone: ArenaPremiumTone) {
         if hasAlerts {
-            return ("Exceções que pedem atenção · \(scaleCaption)", .negative)
+            return ("Exceções que pedem atenção · \(productScaleCaption)", .negative)
         }
         return ("Sem exceções · quiet-healthy", .positive)
     }

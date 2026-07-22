@@ -261,7 +261,7 @@ extension ArtifactSheet {
                 title: ArtifactListJudgment.productLoadFail,
                 subtitle: ArtifactListJudgment.productLoadFailSub,
                 identifier: A11yID.artifactsLoadFailure,
-                spoken: ArtifactListJudgment.loadFailSpoken
+                spoken: ArtifactListJudgment.spokenLoadFail
             )
         } else {
             artifactsUnavailable
@@ -281,7 +281,7 @@ extension ArtifactSheet {
 extension ArtifactSheet {
     @ViewBuilder
     var emptyVisualizable: some View {
-        Text(ArtifactListJudgment.emptyVisualizableCopy)
+        Text(ArtifactListJudgment.productEmptyVisualizable)
             .font(AtlasFont.serifItalic(15))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -381,7 +381,7 @@ extension ZoomableArtifactImage {
                     break
                 }
             }
-            .accessibilityAction(named: ArtifactPreviewJudgment.zoomResetAction) { resetZoom() }
+            .accessibilityAction(named: ArtifactPreviewJudgment.productZoomReset) { resetZoom() }
     }
 }
 
@@ -1132,8 +1132,8 @@ enum ArtifactListJudgment {
     static let spokenCloseHint = "volta para a conversa"
     static let spokenSheetHint = "lista e preview só com itens publicados no contrato"
     static let spokenEmptyVisualizable = "sem artefatos visualizáveis nesta execução"
-    static let emptyVisualizableCopy = "nenhum artefato visualizável"
-    static let loadFailSpoken = "não foi possível consultar artefatos"
+    static let productEmptyVisualizable = "nenhum artefato visualizável"
+    static let spokenLoadFail = "não foi possível consultar artefatos"
     static let spokenSelectedHint = "selecionado no preview"
     static let spokenOpenHint = "abre o preview deste artefato"
     static let spokenDiffSwipeHint = "arraste horizontalmente para ler o diff"
@@ -1481,7 +1481,7 @@ enum ArtifactPreviewJudgment {
 
     static let spokenZoomHint =
         "pinça para aproximar, arraste quando ampliada, toque duas vezes ou use ações para redefinir"
-    static let zoomResetAction = "Redefinir zoom"
+    static let productZoomReset = "Redefinir zoom"
 
     static func packFacts(
         preview: ArtifactPreviewState,

@@ -760,7 +760,7 @@ enum AtlasCodeRadarJudgment {
     }
 
     static let productMuteBadge = "mudo"
-    static let muteSpoken = "não respondeu ao scan"
+    static let spokenMute = "não respondeu ao scan"
     static let spokenRepoHint = "abre o grafo do repositório"
 
     // MARK: Folder / row spoken (IDLE · was AtlasCodeRadarA11y)
@@ -816,7 +816,7 @@ enum AtlasCodeRadarJudgment {
         var parts = [name]
         parts.append(contentsOf: spokenRepoFolder(folder: folder, showsFolder: showsFolder))
         if isMute {
-            parts.append(muteSpoken)
+            parts.append(spokenMute)
         } else {
             parts.append(contentsOf: spokenRepoIssues(issues: issues, trunk: trunk))
         }
@@ -1068,7 +1068,7 @@ extension AtlasCodeRepoRow {
                 Image(systemName: "antenna.radiowaves.left.and.right.slash")
                     .atlasSans(9, .semibold)
                     .accessibilityHidden(true)
-                Text("\(AtlasCodeRadarJudgment.productMuteBadge) · \(AtlasCodeRadarJudgment.muteSpoken)")
+                Text("\(AtlasCodeRadarJudgment.productMuteBadge) · \(AtlasCodeRadarJudgment.spokenMute)")
                     .atlasSans(12)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)

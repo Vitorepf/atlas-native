@@ -935,7 +935,7 @@ enum AtlasCodeGraphJudgment {
 
     // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
 
-    static let emptyGraph = "grafo sem commits nesta janela"
+    static let productEmptyGraph = "grafo sem commits nesta janela"
 
     static func spokenStatus(scanState: AtlasCodeScanState, headline: String) -> String {
         switch scanState {

@@ -710,7 +710,7 @@ struct ComposerAttachmentRow: View {
 
 extension ModeSheet {
     var modeFootnote: some View {
-        Text(ComposerSheetJudgment.modeFootnote)
+        Text(ComposerSheetJudgment.productModeFootnote)
             .atlasSans(12)
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -726,7 +726,7 @@ extension ModeSheet {
             let isSelected = key == selected
             SheetRow(
                 label: label,
-                sub: ComposerSheetJudgment.modeFootnote,
+                sub: ComposerSheetJudgment.productModeFootnote,
                 selected: isSelected,
                 accessibilityLabel: ComposerSheetJudgment.spokenModeLabel(key: key, title: label, selected: isSelected),
                 accessibilityIdentifier: A11yID.modeRow(key)
@@ -774,13 +774,13 @@ struct WorkspaceSheet: View {
 
 extension WorkspaceSheet {
     var workspaceEmptyLabel: some View {
-        Text(ComposerSheetJudgment.workspaceEmpty)
+        Text(ComposerSheetJudgment.productWorkspaceEmpty)
             .atlasSans(15)
             .foregroundStyle(AtlasTheme.textTertiary)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 24)
             .padding(.top, 40)
-            .accessibilityLabel(ComposerSheetJudgment.workspaceEmpty)
+            .accessibilityLabel(ComposerSheetJudgment.productWorkspaceEmpty)
     }
 }
 
@@ -796,7 +796,7 @@ extension WorkspaceSheet {
     }
 
     func workspaceCountLine(_ count: Int) -> String {
-        ComposerSheetJudgment.workspaceCountLine(count)
+        ComposerSheetJudgment.productWorkspaceCountLine(count)
     }
 }
 
@@ -1292,7 +1292,7 @@ extension ConversationCameraCoverModifier {
 
 extension ConversationCameraCoverModifier {
     func cameraCoverOnCaptureFailed() {
-        model.toast = ComposerDraftJudgment.captureFailedToast
+        model.toast = ComposerDraftJudgment.spokenCaptureFailedToast
     }
 }
 
