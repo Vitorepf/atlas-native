@@ -41,7 +41,7 @@ struct RootView: View {
         .sheet(isPresented: $showingNewPicker) {
             AtlasWorkspacePickerSheet(
                 client: session.client,
-                title: "Nova conversa",
+                title: WorkspaceJudgment.productNewConversationTitle,
                 onNoRepo: {
                     showingNewPicker = false
                     path.append(Route.new(workspaceKey: nil))

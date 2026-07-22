@@ -388,10 +388,10 @@ enum ConversationAgentLanesJudgment {
     }
 
     static func productLabel(for agent: ExecAgent) -> String {
-        agent.agent ?? providerWord(agent.provider)
+        agent.agent ?? productProviderWord(agent.provider)
     }
 
-    static func providerWord(_ provider: String?) -> String {
+    static func productProviderWord(_ provider: String?) -> String {
         guard let provider, !provider.isEmpty else { return "agente" }
         return provider
             .replacingOccurrences(of: "_cli", with: "")

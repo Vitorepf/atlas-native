@@ -1471,7 +1471,7 @@ extension ExecutingStrip {
         case .multiAgent, .running:
             // WAVE-040: shared plan progress grammar with PlanCard.
             if bubble.executionPlan != nil || bubble.executionProgress != nil {
-                Text(PlanJudgment.summaryLine(bubble: bubble))
+                Text(PlanJudgment.productSummaryLine(bubble: bubble))
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)

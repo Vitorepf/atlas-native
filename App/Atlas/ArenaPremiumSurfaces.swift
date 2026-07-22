@@ -568,7 +568,7 @@ struct ArenaPremiumCapabilitiesView: View {
                 }
             }
             Text(
-                ArenaCapabilitiesJudgment.capabilitiesCaption(
+                ArenaCapabilitiesJudgment.productCapabilitiesCaption(
                     engineOptionCount: model.capabilityEngineOptions.count
                 )
             )
@@ -590,7 +590,7 @@ struct ArenaPremiumCapabilitiesView: View {
                             Text(capability.labelPt)
                                 .font(AtlasFont.serifItalic(15))
                                 .foregroundStyle(AtlasTheme.textPrimary)
-                            if let caption = ArenaCapabilitiesJudgment.shortConfidence(capability) {
+                            if let caption = ArenaCapabilitiesJudgment.productShortConfidence(capability) {
                                 Text(caption)
                                     .font(AtlasFont.mono(9))
                                     .foregroundStyle(AtlasTheme.textTertiary)

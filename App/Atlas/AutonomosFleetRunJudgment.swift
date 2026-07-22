@@ -439,7 +439,7 @@ enum AutonomosFleetJudgment {
         return .quiet
     }
 
-    static func summaryLine(_ fleet: AtlasAutonomosFleetResponse) -> String {
+    static func productSummaryLine(_ fleet: AtlasAutonomosFleetResponse) -> String {
         let alive = fleet.agents.filter(\.alive).count
         let attention = fleet.agents.filter(needsAttention).count
         var parts = ["ativos \(fleet.activeCount)", "vivos \(alive)"]
@@ -477,7 +477,7 @@ enum AutonomosFleetJudgment {
         facts.append("fleet_master: \(fleet.fleetMaster)")
         facts.append("active_count: \(fleet.activeCount)")
         facts.append("agents: \(fleet.agents.count)")
-        facts.append(summaryLine(fleet))
+        facts.append(productSummaryLine(fleet))
         for a in rank(fleet.agents).prefix(6) {
             facts.append("agent: \(a.label) · \(agentMeta(a))")
         }
@@ -523,7 +523,7 @@ struct AutonomosFleetStrip: View {
                     live: face.productWord == "live" || face.productWord == "attention"
                 )
                 Spacer(minLength: 0)
-                Text(AutonomosFleetJudgment.summaryLine(fleet))
+                Text(AutonomosFleetJudgment.productSummaryLine(fleet))
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)

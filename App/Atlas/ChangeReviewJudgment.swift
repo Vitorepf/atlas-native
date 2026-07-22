@@ -206,7 +206,7 @@ enum ChangeReviewJudgment {
             || !review.review.availableActions.isEmpty
     }
 
-    static func summaryLine(from review: AtlasTraceChangeReview) -> String {
+    static func productSummaryLine(from review: AtlasTraceChangeReview) -> String {
         let findings = review.review.findings
         let critical = count(severityRank: 0, in: findings)
         let high = count(severityRank: 1, in: findings)
@@ -240,7 +240,7 @@ enum ChangeReviewJudgment {
             absences.append("revisão ligada sem patches, checks, testes ou achados")
             return (facts, absences)
         }
-        facts.append(summaryLine(from: review))
+        facts.append(productSummaryLine(from: review))
         for f in rankFindings(review.review.findings).prefix(5) {
             let sev = f.severity ?? "nil"
             let title = f.title ?? f.id
@@ -477,6 +477,12 @@ enum ChangeReviewSheetJudgment {
 
     static let spokenSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
     static let productTitle = "Revisar mudanças"
+
+    static let productNoReviewThisRun = "Sem revisão de mudanças nesta execução."
+    static let productReviewLinkedEmpty = "Revisão ligada, mas sem patches nem provas publicadas."
+    static let productReviewLinkedEmptySub = "o servidor confirmou o vínculo, porém não há diff, checks ou achados a mostrar."
+    static let productReviewLoadFail = "Não foi possível consultar a revisão."
+    static let productReviewLoadFailSub = "feche e tente de novo — o motivo pode estar no aviso superior."
     static func productPatchHeader(idPrefix: String) -> String { "PATCH \(idPrefix)" }
     static let spokenClose = "fechar revisão de mudanças"
     static let spokenCloseHint = "volta para a conversa"

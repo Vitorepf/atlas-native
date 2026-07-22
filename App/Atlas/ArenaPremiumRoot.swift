@@ -94,7 +94,7 @@ struct ArenaPremiumShell: View {
         ConversationView(
             client: session.client,
             threadId: askThreadId,
-            title: "Arena",
+            title: ArenaNowJudgment.productScreenTitle,
             emptyPrompt: ArenaPremiumAskContext.productInvite(tab: selectedTab, destination: destination),
             emptySuggestions: ArenaPremiumAskContext.emptySuggestions(
                 tab: selectedTab,
@@ -339,7 +339,7 @@ struct ArenaPremiumIdleView: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityValue(ArenaNowFace.idle.productWord)
-            ArenaPremiumAction(title: "Rodar medição", symbol: "play.fill", action: onRun)
+            ArenaPremiumAction(title: ArenaRunSheetJudgment.productNavTitle, symbol: "play.fill", action: onRun)
             if model.arenaPrimaryEngine != nil {
                 ArenaPremiumHairline()
                 ArenaPremiumKicker(text: "Último resultado")

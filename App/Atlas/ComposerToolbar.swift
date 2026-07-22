@@ -449,7 +449,7 @@ struct EffortSheet: View {
 
     var body: some View {
         effortA11yBind(
-            SheetShell(title: "Esforço") {
+            SheetShell(title: ComposerEffortJudgment.productEffortSheetTitle) {
                 effortSheetContent
             }
         )
@@ -748,6 +748,7 @@ enum ComposerEffortJudgment {
     static let spokenEffortHint = "abre opções de esforço computacional para o próximo envio"
     static let spokenEffortSheetHint = "escolhe o esforço computacional do próximo envio"
     static let spokenEffortSheet = "esforço computacional"
+    static let productEffortSheetTitle = "Esforço"
     static let spokenProcessing = "Atlas processando"
 
     static func face(_ effort: AtlasComputeEffort) -> ComposerEffortFace {

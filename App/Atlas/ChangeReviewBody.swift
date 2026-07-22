@@ -186,7 +186,7 @@ struct ChangeReviewRiskStrip: View {
                     .font(AtlasFont.mono(10))
                     .tracking(0.8)
                     .foregroundStyle(titleColor)
-                Text(ChangeReviewJudgment.summaryLine(from: review))
+                Text(ChangeReviewJudgment.productSummaryLine(from: review))
                     .font(AtlasFont.serif(13))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(2)
@@ -205,7 +205,7 @@ struct ChangeReviewRiskStrip: View {
                 .stroke(borderColor, lineWidth: 1)
         )
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(face.spokenFace + ", " + ChangeReviewJudgment.summaryLine(from: review))
+        .accessibilityLabel(face.spokenFace + ", " + ChangeReviewJudgment.productSummaryLine(from: review))
         .accessibilityIdentifier(A11yID.reviewRiskFace)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: face.productWord)
     }

@@ -580,7 +580,7 @@ struct PlanFaceStrip: View {
                     .font(AtlasFont.mono(9))
                     .tracking(0.7)
                     .foregroundStyle(titleColor)
-                Text(PlanJudgment.summaryLine(plan: plan, progress: progress))
+                Text(PlanJudgment.productSummaryLine(plan: plan, progress: progress))
                     .font(AtlasFont.serif(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(2)
@@ -753,7 +753,7 @@ enum PlanJudgment {
     // MARK: Summary
 
     /// Shared card + cockpit line: never invent title when progress nil.
-    static func summaryLine(
+    static func productSummaryLine(
         plan: AtlasExecutionPlan?,
         progress: AtlasExecutionPlan.Progress?
     ) -> String {
@@ -769,8 +769,8 @@ enum PlanJudgment {
         }
     }
 
-    static func summaryLine(bubble: ChatBubble) -> String {
-        summaryLine(plan: bubble.executionPlan, progress: bubble.executionProgress)
+    static func productSummaryLine(bubble: ChatBubble) -> String {
+        productSummaryLine(plan: bubble.executionPlan, progress: bubble.executionProgress)
     }
 
     static func progressBadge(_ progress: AtlasExecutionPlan.Progress) -> String {
@@ -865,7 +865,7 @@ enum PlanJudgment {
         }
         facts.append("plan_title: \(plan.title)")
         facts.append("plan_steps: \(plan.steps.count)")
-        facts.append(summaryLine(plan: plan, progress: progress))
+        facts.append(productSummaryLine(plan: plan, progress: progress))
         if let progress {
             facts.append("progress_current: \(progress.current)")
             facts.append("progress_total: \(progress.total)")
@@ -1357,9 +1357,9 @@ func humanDuration(_ ms: Int) -> String {
     EditorialTurnJudgment.humanDuration(ms)
 }
 
-func providerWord(_ p: String?) -> String {
+func productProviderWord(_ p: String?) -> String {
     guard let p, !p.isEmpty else { return "" }
-    return EditorialTurnJudgment.providerWord(p)
+    return EditorialTurnJudgment.productProviderWord(p)
 }
 
 // MARK: - Signature (WAVE-069)
@@ -1550,14 +1550,14 @@ enum EditorialTurnJudgment {
     static func signatureWho(provider: String?, model: String?) -> String? {
         if let model, !model.isEmpty, !model.hasSuffix("_default") { return model }
         if let provider, !provider.isEmpty {
-            let word = providerWord(provider)
+            let word = productProviderWord(provider)
             return word.isEmpty ? provider : word
         }
         return nil
     }
 
     /// Provider product word — same map as EditorialTurn `providerWord` free fn.
-    static func providerWord(_ provider: String) -> String {
+    static func productProviderWord(_ provider: String) -> String {
         let x = provider.lowercased()
         for (k, v) in [
             ("claude", "claude"), ("codex", "codex"), ("gemini", "gemini"),

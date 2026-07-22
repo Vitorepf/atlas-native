@@ -753,7 +753,7 @@ extension SteerInteractionSheet {
     var steerCancelItem: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
             AtlasCloseToolbarButton(
-                title: "Cancelar",
+                title: AutonomosReasonJudgment.productCancel,
                 spokenLabel: "cancelar redirecionamento",
                 spokenHint: "fecha sem enviar instrução",
                 reduceMotion: reduceMotion

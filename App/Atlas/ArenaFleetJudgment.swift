@@ -480,7 +480,7 @@ enum ArenaRunStatusJudgment {
     }
 
     /// Compact list glyph — never Atlas ✦ on runs.
-    static func rowGlyph(for status: AtlasArenaRunStatus) -> String {
+    static func productRowGlyph(for status: AtlasArenaRunStatus) -> String {
         switch status {
         case .running, .stopping: return "▸"
         case .completed: return "✓"
@@ -521,14 +521,14 @@ enum ArenaRunStatusJudgment {
 
     // MARK: Row chrome
 
-    static func rowDetail(_ run: AtlasArenaLiveRun) -> String {
+    static func productRowDetail(_ run: AtlasArenaLiveRun) -> String {
         if let done = run.casesDone, let total = run.casesTotal, total > 0 {
             return "\(done)/\(total) casos"
         }
         return run.arm?.labelPT ?? run.status.displayPT
     }
 
-    static func rowTrailing(_ run: AtlasArenaLiveRun) -> String {
+    static func productRowTrailing(_ run: AtlasArenaLiveRun) -> String {
         let arm = run.arm?.labelPT
         let state: String
         switch run.status {

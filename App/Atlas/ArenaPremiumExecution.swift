@@ -153,7 +153,7 @@ struct ArenaPremiumExecutionView: View {
 
     private func runRow(_ run: AtlasArenaLiveRun) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 14) {
-            Text(ArenaRunStatusJudgment.rowGlyph(for: run.status))
+            Text(ArenaRunStatusJudgment.productRowGlyph(for: run.status))
                 .font(AtlasFont.serif(14))
                 .foregroundStyle(ArenaRunStatusJudgment.tone(for: run.status).color)
                 .frame(width: 22, alignment: .center)
@@ -162,12 +162,12 @@ struct ArenaPremiumExecutionView: View {
                 Text(ArenaDisplay.suite(run.suite))
                     .atlasSans(16, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text(ArenaRunStatusJudgment.rowDetail(run))
+                Text(ArenaRunStatusJudgment.productRowDetail(run))
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             Spacer(minLength: 8)
-            Text(ArenaRunStatusJudgment.rowTrailing(run))
+            Text(ArenaRunStatusJudgment.productRowTrailing(run))
                 .font(AtlasFont.mono(11, .medium))
                 .foregroundStyle(ArenaRunStatusJudgment.tone(for: run.status).color)
                 .multilineTextAlignment(.trailing)
@@ -178,7 +178,7 @@ struct ArenaPremiumExecutionView: View {
         .accessibilityIdentifier(A11yID.arenaPremiumExecutionRun(run.runIdPublic))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
-            "\(ArenaDisplay.suite(run.suite)), \(run.arm?.labelPT ?? ""), \(ArenaRunStatusJudgment.rowTrailing(run))"
+            "\(ArenaDisplay.suite(run.suite)), \(run.arm?.labelPT ?? ""), \(ArenaRunStatusJudgment.productRowTrailing(run))"
         )
         .accessibilityHint(ArenaSuiteJudgment.spokenCasesHint)
     }
@@ -480,7 +480,7 @@ struct ArenaPremiumRunDetailView: View {
                         .font(AtlasFont.mono(16, .medium))
                         .foregroundStyle(AtlasTheme.accent)
                 }
-                Text(summaryLine(done: min(done, total), total: total))
+                Text(productSummaryLine(done: min(done, total), total: total))
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
@@ -506,7 +506,7 @@ struct ArenaPremiumRunDetailView: View {
         .accessibilityIdentifier(A11yID.arenaPremiumRunDetailCases)
     }
 
-    private func summaryLine(done: Int, total: Int) -> String {
+    private func productSummaryLine(done: Int, total: Int) -> String {
         ArenaRunStatusJudgment.casesSummaryLine(
             status: run.status,
             done: done,

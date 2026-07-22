@@ -494,7 +494,7 @@ struct ArtifactFaceStrip: View {
                     .font(AtlasFont.mono(9))
                     .tracking(0.7)
                     .foregroundStyle(titleColor)
-                Text(ArtifactJudgment.summaryLine(
+                Text(ArtifactJudgment.productSummaryLine(
                     artifacts: artifacts,
                     deliveryChecks: deliveryChecks
                 ))
@@ -1012,7 +1012,7 @@ enum ArtifactJudgment {
         }
     }
 
-    static func summaryLine(
+    static func productSummaryLine(
         artifacts: AtlasTraceArtifacts?,
         deliveryChecks: [ArtifactDeliveryCheck] = []
     ) -> String {
@@ -1067,7 +1067,7 @@ enum ArtifactJudgment {
             }
             return (facts, absences)
         }
-        facts.append(summaryLine(artifacts: artifacts, deliveryChecks: deliveryChecks))
+        facts.append(productSummaryLine(artifacts: artifacts, deliveryChecks: deliveryChecks))
         for item in rankItems(artifacts.items).prefix(6) {
             facts.append(
                 "item: \(item.kind.rawValue) · \(item.name) · \(item.byteSize)B"

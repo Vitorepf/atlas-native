@@ -479,8 +479,8 @@ extension SearchView {
         ConversationView(
             client: session.client,
             threadId: askThreadId,
-            title: "Busca",
-            emptyPrompt: SearchAskContext.emptyPrompt(
+            title: SearchListJudgment.productScreenTitle,
+            emptyPrompt: SearchAskContext.productEmptyPrompt(
                 face: searchScreenFace,
                 trimmedQuery: trimmedQuery
             ),
@@ -728,6 +728,7 @@ enum SearchListJudgment {
     static let spokenOpenThreadHint = "abre a conversa"
     static let productFieldPlaceholder = "Buscar conversas"
     static let productRecentsKicker = "RECENTES"
+    static let productScreenTitle = "Busca"
     static let spokenFieldHint = "filtra só conversas já carregadas na sessão"
     static let spokenReloadSearchHint = "reconecta e recarrega conversas para buscar"
 
@@ -864,7 +865,7 @@ enum SearchAskContext {
         ]
     }
 
-    static func emptyPrompt(
+    static func productEmptyPrompt(
         face: SearchScreenFace,
         trimmedQuery: String
     ) -> String {
@@ -948,7 +949,7 @@ enum SearchAskContext {
         }
 
         let empty = ConversationEmptyJudgment.packFacts(
-            prompt: emptyPrompt(
+            prompt: productEmptyPrompt(
                 face: SearchJudgment.face(
                     showsLoadingShell: showsLoadingShell,
                     showsNetworkFailure: showsNetworkFailure,
@@ -1348,7 +1349,7 @@ enum LiveTimelineNarrativeJudgment {
         return .live(filteredRows.count)
     }
 
-    static func summaryLine(
+    static func productSummaryLine(
         baseRows: [NarrativeRow],
         filteredRows: [NarrativeRow],
         filter: TimelineReadFilter
@@ -1379,7 +1380,7 @@ enum LiveTimelineNarrativeJudgment {
         case .empty:
             return "narrativa da execução, \(face.spokenFace)"
         case .live:
-            return "narrativa da execução, \(face.spokenFace), \(summaryLine(baseRows: baseRows, filteredRows: filteredRows, filter: filter))"
+            return "narrativa da execução, \(face.spokenFace), \(productSummaryLine(baseRows: baseRows, filteredRows: filteredRows, filter: filter))"
         case .filterSilence:
             return "narrativa da execução, \(face.spokenFace)"
         }
@@ -1395,7 +1396,7 @@ enum LiveTimelineNarrativeJudgment {
         let face = face(baseRows: baseRows, filteredRows: filteredRows, filter: filter)
         facts.append("timeline_face: \(face.productWord)")
         facts.append("filter: \(filter.rawValue)")
-        facts.append(summaryLine(baseRows: baseRows, filteredRows: filteredRows, filter: filter))
+        facts.append(productSummaryLine(baseRows: baseRows, filteredRows: filteredRows, filter: filter))
         if baseRows.isEmpty {
             absences.append("sem atividades publicadas na narrativa")
             return (facts, absences)
@@ -1779,7 +1780,7 @@ extension LiveTimeline {
                             ? AtlasTheme.textTertiary
                             : AtlasTheme.accent
                     )
-                Text(LiveTimelineNarrativeJudgment.summaryLine(
+                Text(LiveTimelineNarrativeJudgment.productSummaryLine(
                     baseRows: baseRows,
                     filteredRows: rows,
                     filter: filter

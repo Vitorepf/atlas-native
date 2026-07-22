@@ -245,7 +245,7 @@ enum ArenaCapabilitiesJudgment {
 
     // MARK: shortConfidence / spoken / delta chrome
 
-    static func shortConfidence(_ capability: AtlasArenaCapability) -> String? {
+    static func productShortConfidence(_ capability: AtlasArenaCapability) -> String? {
         if let gated = capability.gatedReason, !gated.isEmpty {
             return gated
         }
@@ -299,11 +299,11 @@ enum ArenaCapabilitiesJudgment {
 
     static func spokenRow(_ capability: AtlasArenaCapability) -> String {
         let base = "\(capability.labelPt), sem Atlas \(ArenaFormat.score(capability.score)), com Atlas \(ArenaFormat.score(capability.withAtlas)), diferença \(ArenaFormat.signed(deltaValue(capability)))"
-        guard let caption = shortConfidence(capability) else { return base }
+        guard let caption = productShortConfidence(capability) else { return base }
         return "\(base), \(caption)"
     }
 
-    static func capabilitiesCaption(engineOptionCount: Int) -> String {
+    static func productCapabilitiesCaption(engineOptionCount: Int) -> String {
         if engineOptionCount > 1 {
             return "Toque no nome do motor para ver outro perfil medido. Cada capacidade abre as suítes que alimentaram a medida."
         }

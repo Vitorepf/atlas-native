@@ -996,7 +996,7 @@ extension ExecutionProof {
     }
 
     var summaryLine: String {
-        ExecutionProofJudgment.summaryLine(
+        ExecutionProofJudgment.productSummaryLine(
             bubble: bubble,
             artifactItems: rankedArtifactItems,
             humanDuration: humanDuration
@@ -1484,7 +1484,7 @@ enum ExecutionProofJudgment {
         return .empty
     }
 
-    static func summaryLine(
+    static func productSummaryLine(
         bubble: ChatBubble,
         artifactItems: [AtlasTraceArtifacts.Item] = [],
         humanDuration: (Int) -> String

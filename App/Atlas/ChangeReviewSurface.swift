@@ -152,7 +152,7 @@ struct ChangeReviewAvailableContent: View {
 extension ChangeReviewSheet {
     func reviewUnavailableContent(_ review: AtlasTraceChangeReview) -> some View {
         TraceEvidenceUnavailable(
-            title: "Sem revisão de mudanças nesta execução.",
+            title: ChangeReviewSheetJudgment.productNoReviewThisRun,
             subtitle: TraceEvidenceCopy.unavailableReason(review.reason),
             identifier: A11yID.reviewUnavailable,
             spoken: TraceEvidenceCopy.unavailableSpoken(
@@ -167,8 +167,8 @@ extension ChangeReviewSheet {
 extension ChangeReviewSheet {
     func reviewEmptySurface() -> some View {
         TraceEvidenceUnavailable(
-            title: "Revisão ligada, mas sem patches nem provas publicadas.",
-            subtitle: "o servidor confirmou o vínculo, porém não há diff, checks ou achados a mostrar.",
+            title: ChangeReviewSheetJudgment.productReviewLinkedEmpty,
+            subtitle: ChangeReviewSheetJudgment.productReviewLinkedEmptySub,
             identifier: A11yID.reviewEmpty,
             spoken: "revisão ligada mas sem patches nem provas publicadas",
             systemImage: "doc.text.magnifyingglass"
@@ -351,8 +351,8 @@ extension ChangeReviewSheet {
             TraceEvidenceLoading(text: "consultando a revisão…", reduceMotion: reduceMotion)
         } else if loadFinished, review == nil {
             TraceEvidenceUnavailable(
-                title: "Não foi possível consultar a revisão.",
-                subtitle: "feche e tente de novo — o motivo pode estar no aviso superior.",
+                title: ChangeReviewSheetJudgment.productReviewLoadFail,
+                subtitle: ChangeReviewSheetJudgment.productReviewLoadFailSub,
                 identifier: A11yID.reviewLoadFailure,
                 spoken: "não foi possível consultar a revisão",
                 systemImage: "doc.text.magnifyingglass"
