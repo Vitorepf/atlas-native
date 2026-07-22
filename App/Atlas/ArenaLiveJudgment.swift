@@ -264,6 +264,7 @@ enum ArenaNowJudgment {
     static let productNoPlanActive = "Nenhum plano ativo"
 
     static let productArmAbsenceHonesty = "Ausência de um braço permanece não medida."
+    static let productVsWithoutAtlas = "vs. sem Atlas"
     static let productCompareEnginesHint = "Escolha 2 ou mais para comparar motor contra motor."
     static let productWhatWeMeasure = "O que vamos medir?"
 

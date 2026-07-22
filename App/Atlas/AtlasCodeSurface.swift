@@ -1350,7 +1350,7 @@ struct AtlasCodeRepoPickerSheet: View {
                         ContentUnavailableView(
                             WorkspacePickerJudgment.productNoRepo,
                             systemImage: "folder",
-                            description: Text("o workspace não publicou nenhum repo")
+                            description: Text(WorkspacePickerJudgment.productNoRepoPublished)
                         )
                     }
                 case .failed:

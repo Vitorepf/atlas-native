@@ -344,7 +344,7 @@ struct ArenaPremiumResultsView: View {
                         Text(ArenaFormat.signed(atlasDelta))
                             .font(AtlasFont.serifItalic(18))
                             .foregroundStyle(atlasDelta >= 0 ? AtlasTheme.accent : AtlasTheme.alert)
-                        Text("vs. sem Atlas")
+                        Text(ArenaNowJudgment.productVsWithoutAtlas)
                             .font(AtlasFont.mono(10))
                             .foregroundStyle(AtlasTheme.textSecondary)
                     }
@@ -1333,7 +1333,7 @@ extension ArenaRunSheet {
     var suitesFormSection: some View {
         section("Suítes") {
             if installedSuites.isEmpty {
-                Text("nenhuma suite com adapter instalado")
+                Text(ArenaRunSheetJudgment.productNoSuiteAdapter)
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityIdentifier(A11yID.arenaRunSuitesEmpty)
@@ -1358,7 +1358,7 @@ extension ArenaRunSheet {
     var engineFormSection: some View {
         section("Motores") {
             if engines.isEmpty {
-                Text("nenhum motor publicado")
+                Text(ArenaRunSheetJudgment.productNoPublishedEngine)
                     .font(AtlasFont.serifItalic(14))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityIdentifier(A11yID.arenaRunEnginesEmpty)
