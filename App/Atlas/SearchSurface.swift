@@ -729,6 +729,7 @@ enum SearchListJudgment {
     static let productFieldPlaceholder = "Buscar conversas"
     static let productRecentsKicker = "RECENTES"
     static let productScreenTitle = "Busca"
+    static func productDeltaDuration(_ human: String) -> String { "Δ \(human)" }
     static let spokenFieldHint = "filtra só conversas já carregadas na sessão"
     static let spokenReloadSearchHint = "reconecta e recarrega conversas para buscar"
 
@@ -1610,7 +1611,7 @@ extension NarrativeRowView {
     var narrativeDurationChip: some View {
         if let duration = row.durationMs {
             HStack(spacing: 5) {
-                Text("Δ \(humanDuration(duration))")
+                Text(SearchListJudgment.productDeltaDuration(humanDuration(duration)))
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(row.isP90 ? AtlasTheme.domOperacional : AtlasTheme.textTertiary)
                     .monospacedDigit()

@@ -695,6 +695,7 @@ enum PlanJudgment {
     static func productArchivedRevision(_ rev: Int) -> String { "v\(rev) arquivado" }
     static func productArchivedToCurrent(_ rev: Int) -> String { "v\(rev) arquivado → plano atual" }
     static func productIteration(_ n: Int) -> String { "iter \(n)" }
+    static func productBulletItem(_ item: String) -> String { "• \(item)" }
 
     // MARK: Face
 
@@ -996,7 +997,7 @@ extension PlanRevisionCompare {
 
 extension PlanRevisionCompare {
     func revisionBulletRow(item: String, tone: RevisionTone) -> some View {
-        Text("• \(item)")
+        Text(PlanJudgment.productBulletItem(item))
             .atlasSans(12)
             .foregroundStyle(tone == .removed ? AtlasTheme.textTertiary : AtlasTheme.textSecondary)
             .strikethrough(tone == .removed, color: AtlasTheme.textTertiary.opacity(0.7))

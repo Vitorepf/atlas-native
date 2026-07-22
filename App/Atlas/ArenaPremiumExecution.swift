@@ -380,7 +380,7 @@ struct ArenaPremiumRunningView: View {
                     Text("\(progress.completed)")
                         .font(AtlasFont.serif(28))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text("/ \(progress.total)")
+                    Text(ArenaNowJudgment.productSlashTotalSpaced(progress.total))
                         .font(AtlasFont.serif(18))
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }

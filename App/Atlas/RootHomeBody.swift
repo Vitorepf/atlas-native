@@ -475,7 +475,7 @@ struct LiveNowRow: View {
             Image(systemName: "arrow.triangle.branch")
                 .atlasSans(8, .semibold)
                 .accessibilityHidden(true)
-            Text("remota")
+            Text(HomeOpsJudgment.productRemote)
                 .font(AtlasFont.mono(9))
                 .tracking(0.4)
                 .accessibilityHidden(true)
@@ -530,7 +530,7 @@ extension LiveNowRow {
                     .accessibilityLabel(clockAccessibilityLabel(now: now))
             }
             if session.timing == .paused, let age = pauseAgeHours(now: now) {
-                Text("· há \(age)h")
+                Text(HomeOpsJudgment.productAgeHours(age))
                     .font(AtlasFont.serifItalic(12))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }

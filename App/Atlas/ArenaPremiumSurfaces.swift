@@ -325,7 +325,7 @@ struct ArenaPremiumResultsView: View {
         return VStack(alignment: .leading, spacing: 18) {
             HStack(alignment: .lastTextBaseline) {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Índice").font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    Text(ArenaNowJudgment.productIndex).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
                     HStack(alignment: .lastTextBaseline, spacing: 4) {
                         Text(ArenaFormat.score(engine.composite))
                             .font(AtlasFont.serif(62))
@@ -496,7 +496,7 @@ struct ArenaPremiumCapabilitiesView: View {
             HStack(alignment: .lastTextBaseline, spacing: 4) {
                 Text("\(counts.measured)")
                     .font(AtlasFont.serif(56))
-                Text("/\(counts.total)")
+                Text(ArenaNowJudgment.productSlashTotal(counts.total))
                     .font(AtlasFont.serif(29))
                 Text(ArenaCapabilitiesJudgment.productCovered)
                     .font(AtlasFont.mono(10))

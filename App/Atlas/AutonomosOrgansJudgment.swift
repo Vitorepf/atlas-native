@@ -317,6 +317,7 @@ enum AutonomosListJudgment {
 
     static let productEvolution = "Evolução"
     static let productHistory = "Histórico"
+    static func productMoreAgents(_ n: Int) -> String { "+\(n) agentes no snapshot" }
     static let productJudgment = "Julgamento"
     static let productNeedsYou = "Precisa de você"
     static let productDigest = "Digest"

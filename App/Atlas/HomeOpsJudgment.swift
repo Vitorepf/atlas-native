@@ -195,6 +195,8 @@ enum HomeOpsJudgment {
     static let productOperacaoSection = "OPERAÇÃO"
     static let productWorkspacesSection = "WORKSPACES"
     static let productLiveNowKicker = "VIVO AGORA"
+    static let productRemote = "remota"
+    static func productAgeHours(_ age: Int) -> String { "· há \(age)h" }
     static func productLiveCount(_ n: Int) -> String { "× \(n)" }
     static let productAuditBadge = "AUDITORIA"
     static let productModoAuditoria = "MODO AUDITORIA"

@@ -538,7 +538,7 @@ struct AutonomosFleetStrip: View {
                     agentRow(agent)
                 }
                 if agents.count > 6 {
-                    Text("+\(agents.count - 6) agentes no snapshot")
+                    Text(AutonomosListJudgment.productMoreAgents(agents.count - 6))
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                 }

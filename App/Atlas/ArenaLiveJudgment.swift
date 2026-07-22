@@ -280,6 +280,9 @@ enum ArenaNowJudgment {
     static let productAlertsLower = "alertas"
     static let productRuns = "Corridas"
     static let productPipeline = "Pipeline"
+    static let productIndex = "Índice"
+    static func productSlashTotal(_ n: Int) -> String { "/\(n)" }
+    static func productSlashTotalSpaced(_ n: Int) -> String { "/ \(n)" }
 
     static func productBestGain(engine: String, mult: String) -> String {
         "melhor ganho · \(engine) · \(mult)"

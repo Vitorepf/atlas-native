@@ -552,7 +552,7 @@ extension AtlasCodeFileRow {
     @ViewBuilder
     var diffStats: some View {
         if let additions = file.additions, let deletions = file.deletions {
-            Text("+\(additions) \u{2212}\(deletions)")
+            Text(AtlasCodeGraphJudgment.productDiffStat(additions: additions, deletions: deletions))
                 .font(AtlasFont.mono(9))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .monospacedDigit()
@@ -931,6 +931,7 @@ enum AtlasCodeGraphJudgment {
     static let productBinary = "binário"
     static let productTheWeek = "A semana"
     static let productMirror = "Espelho"
+    static func productDiffStat(additions: Int, deletions: Int) -> String { "+\(additions) −\(deletions)" }
 
     // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
 

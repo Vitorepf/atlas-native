@@ -1504,7 +1504,7 @@ extension ExecutingStrip {
                 .accessibilityHidden(true)
         }
         if let stats = bubble.diffStats {
-            Text("+\(stats.linesAdded) −\(stats.linesRemoved)")
+            Text(AtlasCodeGraphJudgment.productDiffStat(additions: stats.linesAdded, deletions: stats.linesRemoved))
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.accent)
                 .lineLimit(1)
