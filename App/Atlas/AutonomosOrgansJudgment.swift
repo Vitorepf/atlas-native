@@ -296,6 +296,7 @@ enum AutonomosListJudgment {
     static let productNewUnitLocalOnly = "Não publica frota no servidor. Some se o app for morto."
     static let productSelfBuildReceipt = "RECIBO DE AUTO-CONSTRUÇÃO"
     static let productCitedRule = "Regra citada"
+    static func productQuotedRule(_ label: String) -> String { "“\(label)”" }
 
     static let productQueuedNotUndone = "na fila · ainda não desfeito"
     static let productDeliveredNoGate = "você não foi necessário — entrega sem portão"

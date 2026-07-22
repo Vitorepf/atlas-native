@@ -647,7 +647,7 @@ extension SelfConstructionReceiptSheet {
                 .tracking(0.9)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
-            Text("“\(receipt.ruleLabel)”")
+            Text(AutonomosListJudgment.productQuotedRule(receipt.ruleLabel))
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
