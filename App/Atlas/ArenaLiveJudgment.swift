@@ -272,6 +272,13 @@ enum ArenaNowJudgment {
     static let productSuiteAbsentHonesty = "Valores ausentes permanecem não medidos. Comparações só aparecem quando os dois braços foram publicados."
     static let productIndependentContracts = "Índice, execução e capacidades chegam por contratos independentes."
     static let productOrderProgressHonesty = "Ordem, estado e progresso confirmados pelo servidor."
+
+    static let productCasesNoDenominator = "Casos ainda sem denominador nesta corrida."
+    static let productNoRunInMeasurement = "Nenhuma corrida nesta medição."
+    static let productNoPublishedRuns = "Ainda sem corridas publicadas."
+    static let productIndeterminateProgress = "Progresso indeterminado"
+    static let productDenominatorUnpublished = "Denominador de casos ainda não publicado nesta corrida."
+    static let productPerTestListPending = "Lista por teste ainda não publicada pelo servidor. Quando o contrato chegar, cada caso aparece aqui — feitos, ao vivo e a seguir."
     static let productWhereAtlasRises = "Onde o Atlas sobe"
     static let spokenReloadArenaHint = "tenta carregar a Arena de novo"
 

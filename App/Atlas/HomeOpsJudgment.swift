@@ -197,6 +197,7 @@ enum HomeOpsJudgment {
     static let productLiveNowKicker = "VIVO AGORA"
     static let productAuditBadge = "AUDITORIA"
     static let productModoAuditoria = "MODO AUDITORIA"
+    static let productAuditModeLabel = "Modo auditoria"
 
     static let spokenOperatorProfile = "Vitor, operador do Atlas"
     static let spokenSearchHint = "abre busca nas conversas carregadas"

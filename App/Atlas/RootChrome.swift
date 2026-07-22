@@ -818,7 +818,7 @@ extension AtlasProfileSheet {
 
         Toggle(isOn: $session.auditModeEnabled) {
             VStack(alignment: .leading, spacing: 3) {
-                Text("Modo auditoria").atlasSans(15, .medium)
+                Text(HomeOpsJudgment.productAuditModeLabel).atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text("mostra detalhes técnicos nas telas")
                     .atlasSans(12).foregroundStyle(AtlasTheme.textTertiary)

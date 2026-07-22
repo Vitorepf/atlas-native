@@ -88,12 +88,12 @@ struct ArenaPremiumExecutionView: View {
                     suiteLine: suiteLine(primary)
                 )
             } else {
-                Text("Casos ainda sem denominador nesta corrida.")
+                Text(ArenaNowJudgment.productCasesNoDenominator)
                     .font(AtlasFont.mono(12))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
         } else if runs.isEmpty {
-            Text("Nenhuma corrida nesta medição.")
+            Text(ArenaNowJudgment.productNoRunInMeasurement)
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
@@ -134,7 +134,7 @@ struct ArenaPremiumExecutionView: View {
                 .textCase(.uppercase)
                 .padding(.bottom, 10)
             if orderedRuns.isEmpty {
-                Text("Ainda sem corridas publicadas.")
+                Text(ArenaNowJudgment.productNoPublishedRuns)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textTertiary)
             } else {
@@ -392,7 +392,7 @@ struct ArenaPremiumRunningView: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.top, 2)
             } else {
-                Text("Progresso indeterminado")
+                Text(ArenaNowJudgment.productIndeterminateProgress)
                     .font(AtlasFont.mono(13, .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text("denominador ainda não publicado")
@@ -485,7 +485,7 @@ struct ArenaPremiumRunDetailView: View {
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
         } else {
-            Text("Denominador de casos ainda não publicado nesta corrida.")
+            Text(ArenaNowJudgment.productDenominatorUnpublished)
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
@@ -498,7 +498,7 @@ struct ArenaPremiumRunDetailView: View {
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .textCase(.uppercase)
-            Text("Lista por teste ainda não publicada pelo servidor. Quando o contrato chegar, cada caso aparece aqui — feitos, ao vivo e a seguir.")
+            Text(ArenaNowJudgment.productPerTestListPending)
                 .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
