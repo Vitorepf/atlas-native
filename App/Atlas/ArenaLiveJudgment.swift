@@ -363,34 +363,44 @@ enum ArenaNowJudgment {
         switch kind {
         case .stopping:
             return ArenaNowTerminalChrome(
-                title: "Parada solicitada",
-                subtitle: "Finalizando o caso atual",
+                title: productStoppingTitle,
+                subtitle: productStoppingSubtitle,
                 symbol: "hourglass",
                 tone: .active
             )
         case .stopped:
             return ArenaNowTerminalChrome(
-                title: "Medição parada",
-                subtitle: "Resultados parciais preservados",
+                title: productStoppedTitle,
+                subtitle: productStoppedSubtitle,
                 symbol: "stop.circle",
                 tone: .neutral
             )
         case .completed:
             return ArenaNowTerminalChrome(
-                title: "Medição concluída",
-                subtitle: "Resultado terminal confirmado",
+                title: productCompletedTitle,
+                subtitle: productCompletedSubtitle,
                 symbol: "checkmark.seal",
                 tone: .positive
             )
         case .failed:
             return ArenaNowTerminalChrome(
-                title: "Medição interrompida",
-                subtitle: "O que concluiu foi preservado",
+                title: productFailedTitle,
+                subtitle: productFailedSubtitle,
                 symbol: "exclamationmark.triangle",
                 tone: .negative
             )
         }
     }
+
+    
+    static let productStoppingTitle = "Parada solicitada"
+    static let productStoppingSubtitle = "Finalizando o caso atual"
+    static let productStoppedTitle = "Medição parada"
+    static let productStoppedSubtitle = "Resultados parciais preservados"
+    static let productCompletedTitle = "Medição concluída"
+    static let productCompletedSubtitle = "Resultado terminal confirmado"
+    static let productFailedTitle = "Medição interrompida"
+    static let productFailedSubtitle = "O que concluiu foi preservado"
 
     static func productIdleKicker() -> String { "Arena pronta" }
     static func productIdleTitle() -> String { "Nada medindo agora" }
