@@ -947,7 +947,7 @@ extension QueuedFollowUpsSheet {
     @ViewBuilder
     func queueOrderCaption(total: Int) -> some View {
         if total > 1 {
-            Text("ordem da fila · a cabeça envia quando o turno terminar")
+            Text(ComposerQueueJudgment.productQueueOrderHonesty)
                 .atlasSans(12)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .frame(maxWidth: .infinity, alignment: .leading)

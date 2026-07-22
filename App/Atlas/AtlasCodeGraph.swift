@@ -927,6 +927,7 @@ enum AtlasCodeGraphJudgment {
     static let spokenRepoSwitcherHint = "troca de repositório"
     static let productRepoNavTitle = "Repositório"
     static let productWorktreesKicker = "WORKTREES"
+    static let productQuietWeek = "semana quieta · sem commits nem curas"
 
     // MARK: Graph chrome spoken (IDLE · was AtlasCodeGraphA11y)
 
@@ -1397,7 +1398,7 @@ extension AtlasCodeView {
     @ViewBuilder
     func weekMetricsOrQuiet(_ week: AtlasCodeWeek) -> some View {
         if AtlasCodeWeekUI.isQuiet(week) {
-            Text("semana quieta · sem commits nem curas")
+            Text(AtlasCodeGraphJudgment.productQuietWeek)
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)

@@ -272,7 +272,7 @@ extension AtlasCodeProvenanceSheet {
 extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     var provenanceFailedTitle: some View {
-        Text("proveniência indisponível")
+        Text(AtlasCodeProvenanceJudgment.productProvenanceUnavailable)
             .font(AtlasFont.serifItalic(15))
             .foregroundStyle(AtlasTheme.textSecondary)
             .accessibilityHidden(true)
@@ -739,6 +739,15 @@ enum AtlasCodeProvenanceJudgment {
     static let productWhyFileKicker = "POR QUE ESTE ARQUIVO EXISTE"
     static let productUndoWithReceipt = "Desfazer — com recibo"
 
+    static let productProvenanceUnavailable = "proveniência indisponível"
+    static let productYouWereNotNeeded = "você não foi necessário"
+    static let productNoStepsInReceipt = "sem passos registrados no recibo"
+    static let productReadingFileHistory = "lendo a história do arquivo…"
+    static let productBiographyUnavailable = "biografia indisponível"
+    static let productNoFileHistory = "este arquivo não tem história neste recorte"
+    static let productNoProvenanceRecorded = "sem proveniência registrada"
+    static func productBlocked(_ reason: String) -> String { "bloqueado · \(reason)" }
+
     static func spokenTitle(node: AtlasCodeGraphNode) -> String {
         node.message?.nonEmpty ?? String(node.hash.prefix(8))
     }
@@ -940,14 +949,14 @@ struct AtlasCodeHealReceiptSheet: View {
     @ViewBuilder
     var healStatusLines: some View {
         if hasCompletedHeal {
-            Text("você não foi necessário")
+            Text(AtlasCodeProvenanceJudgment.productYouWereNotNeeded)
                 .font(AtlasFont.serif(20, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityLabel(spokenSilenceLabel())
         }
         if let blocked = heal.blocked, !blocked.isEmpty {
-            Text("bloqueado · \(blocked)")
+            Text(AtlasCodeProvenanceJudgment.productBlocked(blocked))
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasCodePalette.alert)
                 .accessibilityLabel(spokenBlockedLabel(blocked))
@@ -957,7 +966,7 @@ struct AtlasCodeHealReceiptSheet: View {
     @ViewBuilder
     var receiptStepsOrEmpty: some View {
         if heal.stepReceipts.isEmpty {
-            Text("sem passos registrados no recibo")
+            Text(AtlasCodeProvenanceJudgment.productNoStepsInReceipt)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityLabel(spokenEmptyStepsLabel())
@@ -1168,7 +1177,7 @@ struct AtlasCodeWhySheet: View {
             HStack(spacing: 10) {
                 BreathingDiamond(size: 10, reduceMotion: reduceMotion)
                     .accessibilityHidden(true)
-                Text("lendo a história do arquivo…")
+                Text(AtlasCodeProvenanceJudgment.productReadingFileHistory)
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
@@ -1178,7 +1187,7 @@ struct AtlasCodeWhySheet: View {
             .accessibilityLabel(spokenLoading())
         case .failed:
             VStack(alignment: .leading, spacing: 6) {
-                Text("biografia indisponível")
+                Text(AtlasCodeProvenanceJudgment.productBiographyUnavailable)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .accessibilityHidden(true)
@@ -1194,7 +1203,7 @@ struct AtlasCodeWhySheet: View {
         case .loaded:
             if let why = model.why {
                 if why.commits.isEmpty {
-                    Text("este arquivo não tem história neste recorte")
+                    Text(AtlasCodeProvenanceJudgment.productNoFileHistory)
                         .font(AtlasFont.serifItalic(16))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .padding(.top, 6)
@@ -1237,7 +1246,7 @@ struct AtlasCodeWhySheet: View {
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .accessibilityHidden(true)
                 } else {
-                    Text("sem proveniência registrada")
+                    Text(AtlasCodeProvenanceJudgment.productNoProvenanceRecorded)
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .accessibilityHidden(true)

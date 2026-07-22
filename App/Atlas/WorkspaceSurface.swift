@@ -1251,6 +1251,8 @@ enum WorkspacePickerJudgment {
     static let productNoRepo = "sem repositório"
     static let spokenNoRepoHint = "conversa geral com o Atlas, sem projeto"
     static let productNoRepoTitle = "Sem repositório"
+    static let productNoRepoPublished = "o workspace não publicou nenhum repo"
+    static let productTryAgainSoon = "tente de novo em instantes"
     static let noRepoSubtitle = "conversar ou pesquisar, sem projeto"
     static let reposCaption = "REPOSITÓRIOS"
     static let searchPrompt = "Buscar repositórios"

@@ -845,6 +845,7 @@ enum ComposerQueueFace: Equatable {
 enum ComposerQueueJudgment {
 
     static let spokenManageHint = "abre a folha para enviar agora ou remover da fila"
+    static let productQueueOrderHonesty = "ordem da fila · a cabeça envia quando o turno terminar"
 
     static func face(from messages: [QueuedMessage]) -> ComposerQueueFace {
         switch messages.count {

@@ -1357,7 +1357,7 @@ struct AtlasCodeRepoPickerSheet: View {
                     ContentUnavailableView(
                         "não consegui ler a frota",
                         systemImage: "wifi.slash",
-                        description: Text("tente de novo em instantes")
+                        description: Text(WorkspacePickerJudgment.productTryAgainSoon)
                     )
                 default:
                     VStack(spacing: 12) {
