@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 649
-domain_index: 3
-last_focus: "product/spoken Text residual (diff/edit/heal/ask)"
-session_commits: 269
+pass: 650
+domain_index: 4
+last_focus: "product faces Provenance/queue/graph/picker"
+session_commits: 271
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **269** · soft **0** · density OK · 46+2 · gates green
+commits **271** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
