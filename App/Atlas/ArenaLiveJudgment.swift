@@ -255,6 +255,14 @@ struct ArenaNowTerminalChrome: Equatable {
 /// Pure Arena now-phase grammar — face · terminal chrome · spoken · pack.
 enum ArenaNowJudgment {
     static let productScreenTitle = "Arena"
+
+    static let productNoEngineMeasured = "Nenhum motor medido"
+    static let productNoEngineMeasuredBody = "Rode uma medição com pelo menos um motor para ver o ranking da frota."
+    static let productNoRegression = "Nenhuma regressão ou falha publicada"
+    static let productNoResultMeasured = "Nenhum resultado medido"
+    static let productNoResultBody = "O primeiro resultado aparecerá quando uma suíte concluir."
+    static let productNoPlanActive = "Nenhum plano ativo"
+    static let productWhereAtlasRises = "Onde o Atlas sobe"
     static let spokenReloadArenaHint = "tenta carregar a Arena de novo"
 
     static func face(

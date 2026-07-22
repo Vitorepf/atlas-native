@@ -37,7 +37,7 @@ struct ArenaPremiumFleetView: View {
             ArenaPremiumKicker(
                 text: ArenaScoreJudgment.fleetKicker(engineCount: engines.count)
             )
-            Text("Onde o Atlas sobe")
+            Text(ArenaNowJudgment.productWhereAtlasRises)
                 .font(AtlasFont.serif(31))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -52,10 +52,10 @@ struct ArenaPremiumFleetView: View {
     private var empty: some View {
         VStack(alignment: .leading, spacing: 14) {
             ArenaPremiumEmptyGlyph(symbol: "gauge.with.dots.needle.33percent")
-            Text("Nenhum motor medido")
+            Text(ArenaNowJudgment.productNoEngineMeasured)
                 .font(AtlasFont.serif(28))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text("Rode uma medição com pelo menos um motor para ver o ranking da frota.")
+            Text(ArenaNowJudgment.productNoEngineMeasuredBody)
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -205,7 +205,7 @@ struct ArenaPremiumAlertsView: View {
                         symbol: ArenaPremiumIconography.coverage,
                         tone: .positive
                     )
-                    Text("Nenhuma regressão ou falha publicada")
+                    Text(ArenaNowJudgment.productNoRegression)
                 }
                     .font(AtlasFont.serifItalic(15))
                     .foregroundStyle(AtlasTheme.textPrimary)
@@ -435,10 +435,10 @@ struct ArenaPremiumResultsView: View {
     private var empty: some View {
         VStack(alignment: .leading, spacing: 18) {
             ArenaPremiumEmptyGlyph(symbol: "chart.xyaxis.line")
-            Text("Nenhum resultado medido")
+            Text(ArenaNowJudgment.productNoResultMeasured)
                 .font(AtlasFont.serif(31))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text("O primeiro resultado aparecerá quando uma suíte concluir.")
+            Text(ArenaNowJudgment.productNoResultBody)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
@@ -1216,7 +1216,7 @@ struct ArenaPremiumPlanView: View {
     private var empty: some View {
         VStack(alignment: .leading, spacing: 16) {
             ArenaPremiumEmptyGlyph(symbol: "list.bullet.rectangle")
-            Text("Nenhum plano ativo")
+            Text(ArenaNowJudgment.productNoPlanActive)
                 .font(AtlasFont.serif(29))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(ArenaPlanFace.empty.footer)
