@@ -402,20 +402,16 @@ enum ArenaNowJudgment {
     static let productFailedTitle = "Medição interrompida"
     static let productFailedSubtitle = "O que concluiu foi preservado"
 
-    static func productIdleKicker() -> String { "Arena pronta" }
-    static func productIdleTitle() -> String { "Nada medindo agora" }
-    static func productIdleBody() -> String {
-        "Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado."
-    }
+    static let productIdleKicker = "Arena pronta"
+    static let productIdleTitle = "Nada medindo agora"
+    static let productIdleBody = "Escolha os motores, as suítes e os braços. A Arena cuida da ordem e mostra apenas progresso confirmado."
 
-    static func productQueuedKicker() -> String { "Na fila" }
-    static func productQueuedTitle() -> String { "Medição programada" }
-    static func productQueuedHonestyLine() -> String {
-        "Ainda não iniciado · nenhum progresso foi presumido."
-    }
+    static let productQueuedKicker = "Na fila"
+    static let productQueuedTitle = "Medição programada"
+    static let productQueuedHonestyLine = "Ainda não iniciado · nenhum progresso foi presumido."
 
-    static func productPreparingKicker() -> String { "Preparando a Arena" }
-    static func productPreparingTitle() -> String { "Organizando as medições" }
+    static let productPreparingKicker = "Preparando a Arena"
+    static let productPreparingTitle = "Organizando as medições"
 
     static func packFacts(
         loadPhase: LoadPhase,

@@ -301,8 +301,8 @@ struct ArenaPremiumNowView: View {
 
     private var loading: some View {
         VStack(alignment: .leading, spacing: 22) {
-            ArenaPremiumKicker(text: ArenaNowJudgment.productPreparingKicker(), tone: .active, showsDot: true)
-            Text(ArenaNowJudgment.productPreparingTitle())
+            ArenaPremiumKicker(text: ArenaNowJudgment.productPreparingKicker, tone: .active, showsDot: true)
+            Text(ArenaNowJudgment.productPreparingTitle)
                 .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
             ProgressView()
@@ -330,11 +330,11 @@ struct ArenaPremiumIdleView: View {
         VStack(alignment: .leading, spacing: 24) {
             ArenaPremiumEmptyGlyph(symbol: "scope")
                 .accessibilityIdentifier(A11yID.arenaPremiumState("idle"))
-            ArenaPremiumKicker(text: ArenaNowJudgment.productIdleKicker())
-            Text(ArenaNowJudgment.productIdleTitle())
+            ArenaPremiumKicker(text: ArenaNowJudgment.productIdleKicker)
+            Text(ArenaNowJudgment.productIdleTitle)
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text(ArenaNowJudgment.productIdleBody())
+            Text(ArenaNowJudgment.productIdleBody)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -364,9 +364,9 @@ struct ArenaPremiumQueuedView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(text: ArenaNowJudgment.productQueuedKicker(), tone: .active, showsDot: true)
+            ArenaPremiumKicker(text: ArenaNowJudgment.productQueuedKicker, tone: .active, showsDot: true)
                 .accessibilityIdentifier(A11yID.arenaPremiumState("queued"))
-            Text(ArenaNowJudgment.productQueuedTitle())
+            Text(ArenaNowJudgment.productQueuedTitle)
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityValue(ArenaNowFace.queued.productWord)
@@ -384,7 +384,7 @@ struct ArenaPremiumQueuedView: View {
                     queuedMetric("\(queuedRuns.count)", "corridas")
                 }
             }
-            Text(ArenaNowJudgment.productQueuedHonestyLine())
+            Text(ArenaNowJudgment.productQueuedHonestyLine)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
             ArenaPremiumAction(title: ArenaNowJudgment.productViewExecution, tone: .neutral) {
