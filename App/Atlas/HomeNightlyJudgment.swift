@@ -499,7 +499,7 @@ extension NightlyProposalCard {
 extension NightlyProposalCard {
     var actionRow: some View {
         HStack(spacing: 10) {
-            Button("Preparar missão noturna") {
+            Button(NightlyProposalJudgment.spokenAcceptLabel) {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onAccept()
             }
@@ -560,7 +560,7 @@ extension NightlyProposalCard {
 
 extension NightlyProposalCard {
     var dismissButton: some View {
-        Button("hoje não") {
+        Button(NightlyProposalJudgment.spokenDismissLabel) {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onDismiss()
         }
