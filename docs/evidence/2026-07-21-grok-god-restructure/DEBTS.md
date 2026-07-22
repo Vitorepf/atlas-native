@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 664
-domain_index: 2
-last_focus: "short product labels residual (2)"
-session_commits: 299
+pass: 665
+domain_index: 3
+last_focus: "product format residual batch"
+session_commits: 301
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **299** · soft **0** · density OK · 46+2 · gates green
+commits **301** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
