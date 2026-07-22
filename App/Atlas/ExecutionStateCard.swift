@@ -1175,7 +1175,7 @@ extension ExecutionProof {
                 .accessibilityHidden(true)
             collapsedHeaderSummary
             Spacer(minLength: 0)
-            Text(open ? AtlasCloseToolbarButton.productTitle : "Abrir")
+            Text(open ? AtlasCloseToolbarButton.productTitle : ExecutionProofJudgment.productOpen)
                 .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }
@@ -1410,6 +1410,8 @@ enum ExecutionProofFace: Equatable {
 
 /// Pure execution proof grammar — face · gates · summary · pack · spoken.
 enum ExecutionProofJudgment {
+
+    static let productOpen = "Abrir"
 
     static func hasDecisionSurface(_ d: AtlasDecisionSummary) -> Bool {
         d.selectedProvider != nil
