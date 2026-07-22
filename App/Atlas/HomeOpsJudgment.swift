@@ -189,6 +189,8 @@ enum HomeOpsJudgment {
     // MARK: Profile spoken (WAVE-104)
 
     static let spokenOperatorProfile = "Vitor, operador do Atlas"
+    static let spokenSearchHint = "abre busca nas conversas carregadas"
+    static let spokenCodeTopBarHint = "abre radar de repositórios"
 
     static func spokenProfileLine(label: String, value: String) -> String {
         "\(label), \(value)"

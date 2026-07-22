@@ -256,7 +256,7 @@ extension RootView {
         CircleButton(icon: "magnifyingglass") { path.append(Route.search) }
             .keyboardShortcut("k", modifiers: .command)
             .accessibilityLabel(searchSpokenLabel())
-            .accessibilityHint("abre busca nas conversas carregadas")
+            .accessibilityHint(HomeOpsJudgment.spokenSearchHint)
             .accessibilityIdentifier(A11yID.topbarSearch)
     }
 }
@@ -298,7 +298,7 @@ extension RootView {
         // Código, com palavra — não com pingo no chrome.
         CircleButton(icon: "point.3.connected.trianglepath.dotted") { path.append(Route.code) }
             .accessibilityLabel(RootHomeBody.spokenCodeTopBar(hub: codeHub))
-            .accessibilityHint("abre radar de repositórios")
+            .accessibilityHint(HomeOpsJudgment.spokenCodeTopBarHint)
             .accessibilityIdentifier(A11yID.topbarCode)
     }
 }

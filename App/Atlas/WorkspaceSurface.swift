@@ -350,6 +350,14 @@ struct WorkspaceThreadLink: View {
     let thread: AtlasAiThread
     let reduceMotion: Bool
     var newBadgeSuppressed: Bool = false
+    @Environment(AtlasSession.self) private var session
+
+    var isRunning: Bool {
+        WorkspaceThreadJudgment.isRunning(
+            thread: thread,
+            remote: session.remoteLiveSessions
+        )
+    }
 
     var body: some View {
         threadLinkA11y
@@ -363,7 +371,7 @@ extension WorkspaceThreadLink {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(SearchListJudgment.spokenRow(thread: thread))
-        .accessibilityHint("abre a conversa")
+        .accessibilityHint(WorkspaceThreadJudgment.spokenThreadHint(isRunning: isRunning))
         .accessibilityIdentifier(A11yID.workspaceThread(thread.id))
         .transition(threadTransition)
     }
