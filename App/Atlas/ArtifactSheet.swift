@@ -812,7 +812,7 @@ extension ArtifactSheet {
     func previewTooLarge(bytes: Int) -> some View {
         ArtifactFileFicha(
             name: selected?.name ?? "artefato",
-            subtitle: "grande demais para visualizar aqui · \(ArtifactViewer.formatByteSize(bytes))"
+            subtitle: ArtifactListJudgment.productTooLargeSubtitle(ArtifactViewer.formatByteSize(bytes))
         )
         .accessibilityLabel(
             ArtifactPreviewJudgment.face(
@@ -1125,6 +1125,8 @@ enum ArtifactListJudgment {
     static let productLoadFail = "Não foi possível consultar artefatos."
     static let productLoadFailSub = "feche e tente de novo — o motivo pode estar no aviso superior."
     static let productNoneThisRun = "Sem artefatos nesta execução."
+    static func productTooLargeSubtitle(_ size: String) -> String { "grande demais para visualizar aqui · \(size)" }
+    static func productDecodeFailSubtitle(_ size: String) -> String { "imagem não pôde ser decodificada · \(size)" }
     static let productAssemblyKicker = "MONTAGEM"
     static let spokenCloseHint = "volta para a conversa"
     static let spokenSheetHint = "lista e preview só com itens publicados no contrato"
@@ -1278,7 +1280,7 @@ extension ArtifactPreviewContent {
     var imageDecodeFailure: some View {
         ArtifactFileFicha(
             name: item.name,
-            subtitle: "imagem não pôde ser decodificada · \(ArtifactViewer.formatByteSize(item.byteSize))"
+            subtitle: ArtifactListJudgment.productDecodeFailSubtitle(ArtifactViewer.formatByteSize(item.byteSize))
         )
         .accessibilityLabel(
             ArtifactPreviewJudgment.spokenDecodeFailure(name: item.name, bytes: item.byteSize)

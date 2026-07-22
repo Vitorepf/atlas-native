@@ -618,6 +618,10 @@ extension CodeBlockView {
 /// Casca only — never invents plain text or language labels.
 enum AtlasMarkdownJudgment {
 
+    static func productCycleOutcome(index: Int, outcome: String) -> String {
+        "ciclo \(index) · \(outcome)"
+    }
+
     // MARK: List / quote
 
     static func spokenListItem(ordered: Bool, index: Int, plain: String) -> String {
@@ -1366,7 +1370,7 @@ extension AtlasNativeSnapshotWriter {
             incident: incident,
             lastDelivery: delivery.map {
                 AtlasNativeSnapshot.Fleet.LastDelivery(
-                    title: "ciclo \($0.cycleIndex) · \($0.outcome)",
+                    title: AtlasMarkdownJudgment.productCycleOutcome(index: $0.cycleIndex, outcome: $0.outcome),
                     mergeHash: $0.mergeHash,
                     at: $0.recordedAt
                 )
