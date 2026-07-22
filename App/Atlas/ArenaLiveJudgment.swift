@@ -262,6 +262,10 @@ enum ArenaNowJudgment {
     static let productNoResultMeasured = "Nenhum resultado medido"
     static let productNoResultBody = "O primeiro resultado aparecerá quando uma suíte concluir."
     static let productNoPlanActive = "Nenhum plano ativo"
+
+    static let productArmAbsenceHonesty = "Ausência de um braço permanece não medida."
+    static let productCompareEnginesHint = "Escolha 2 ou mais para comparar motor contra motor."
+    static let productWhatWeMeasure = "O que vamos medir?"
     static let productWhereAtlasRises = "Onde o Atlas sobe"
     static let spokenReloadArenaHint = "tenta carregar a Arena de novo"
 

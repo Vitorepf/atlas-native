@@ -964,7 +964,7 @@ struct AutonomosAreaBindChooser: View {
             Text(AutonomosListJudgment.productNoAreaRegistered)
                 .font(AtlasFont.serif(18, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            Text("O motor não publicou áreas controláveis neste recorte.")
+            Text(AutonomosListJudgment.productNoControllableAreas)
                 .font(.footnote)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
@@ -1703,7 +1703,7 @@ struct AutonomosNewSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     AutonomosMapChrome.heroTitle(AutonomosListJudgment.productCreateCTA, size: 28)
-                    Text("Um escopo fechado. Fica neste iPhone até o create no servidor existir.")
+                    Text(AutonomosListJudgment.productNewUnitScope)
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1725,7 +1725,7 @@ struct AutonomosNewSheet: View {
                         AtlasMotion.softImpact(reduceMotion: reduceMotion)
                         onCreate(name, charter)
                     }
-                    Text("Não publica frota no servidor. Some se o app for morto.")
+                    Text(AutonomosListJudgment.productNewUnitLocalOnly)
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .fixedSize(horizontal: false, vertical: true)

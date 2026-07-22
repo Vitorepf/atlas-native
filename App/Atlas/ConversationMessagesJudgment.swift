@@ -105,6 +105,7 @@ enum ConversationMessagesJudgment {
     static let spokenBackHint = "fecha a conversa"
     static let spokenSteerFieldHint = "descreve o que deve mudar na execução"
     static let productSteerSubmit = "Enviar"
+    static let productSteerHonesty = "A instrução entra no próximo checkpoint seguro desta execução. O Atlas pode recusar e devolver o motivo público."
     static let spokenQueueManageHint = "promover ou remover só mensagens reais da fila do model"
 }
 // MARK: - ConversationDecisionJudgment

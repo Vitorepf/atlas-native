@@ -781,7 +781,7 @@ struct ArenaPremiumCapabilityDetail: View {
             Text("\(capability.casesTotal.map(String.init) ?? "—") casos somados na conta publicada")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
-            Text("Ausência de um braço permanece não medida.")
+            Text(ArenaNowJudgment.productArmAbsenceHonesty)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -1379,7 +1379,7 @@ extension ArenaRunSheet {
                     .accessibilityIdentifier("arena-run-engine-\(engine)")
                 }
                 if engines.count > 1 {
-                    Text("Escolha 2 ou mais para comparar motor contra motor.")
+                    Text(ArenaNowJudgment.productCompareEnginesHint)
                         .font(.system(.caption))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .accessibilityHidden(true)
@@ -1579,7 +1579,7 @@ struct ArenaRunSheet: View {
             VStack(alignment: .leading, spacing: 26) {
                 VStack(alignment: .leading, spacing: 8) {
                     ArenaPremiumKicker(text: "Nova medição", tone: .active)
-                    Text("O que vamos medir?")
+                    Text(ArenaNowJudgment.productWhatWeMeasure)
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Text("Escolha somente o necessário. A ordem e o progresso aparecem na Arena assim que o servidor confirmar.")
