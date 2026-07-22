@@ -103,6 +103,7 @@ enum ConversationMessagesJudgment {
     static let spokenScreenHint = "turnos e composer só com dados da sessão e do model"
     static let spokenBackHint = "fecha a conversa"
     static let spokenSteerFieldHint = "descreve o que deve mudar na execução"
+    static let productSteerSubmit = "Enviar"
     static let spokenQueueManageHint = "promover ou remover só mensagens reais da fila do model"
 }
 // MARK: - ConversationDecisionJudgment

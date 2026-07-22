@@ -107,8 +107,8 @@ struct AutonomosMapShell: View {
             }
         }
         .confirmationDialog("Encerrar este Autônomo?", isPresented: $confirmEnd, titleVisibility: .visible) {
-            Button("Encerrar de vez", role: .destructive) { deleteSelected() }
-            Button("Cancelar", role: .cancel) {}
+            Button(AutonomosReasonJudgment.productEndUnit, role: .destructive) { deleteSelected() }
+            Button(AutonomosReasonJudgment.productCancel, role: .cancel) {}
         } message: {
             Text("Sai da sua lista. O motor no servidor ainda não liga a isto.")
         }
@@ -716,7 +716,7 @@ struct AutonomosRhythmSheet: View {
                     Text(muted)
                         .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
-                    Button("Reativar propostas noturnas") {
+                    Button(NightlyProposalJudgment.productUnmute) {
                         nightly.unmuteProposal()
                     }
                     .font(AtlasFont.mono(11, .semibold))

@@ -398,6 +398,7 @@ enum NightlyProposalJudgment {
     static let spokenRhythmLineHint = "mostra o que o Atlas aprendeu do seu dia"
     static let spokenAcceptHint = "abre o ensaio governado da missão noturna"
     static let spokenDismissLabel = "hoje não"
+    static let productUnmute = "Reativar propostas noturnas"
     static let spokenDismissHint = "descarta a proposta em silêncio, sem confirmação"
     static let spokenMuteMenuLabel = "pausar propostas noturnas"
     static let spokenMuteMenuHint =

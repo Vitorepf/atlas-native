@@ -606,7 +606,7 @@ extension ChangeReviewFileRowA11y {
 // MARK: - File row chrome
 extension ChangeReviewFileRow {
     var acceptButton: some View {
-        Button("aceitar") {
+        Button(ChangeReviewControlJudgment.productAcceptFile) {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(
@@ -662,7 +662,7 @@ extension ChangeReviewFileRow {
 
 extension ChangeReviewFileRow {
     var rejectButton: some View {
-        Button("rejeitar") {
+        Button(ChangeReviewControlJudgment.productRejectFile) {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task {
                 await reviews.applyChangeReviewFile(

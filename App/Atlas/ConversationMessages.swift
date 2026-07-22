@@ -773,7 +773,7 @@ extension SteerInteractionSheet {
 
 extension SteerInteractionSheet {
     var steerSubmitButton: some View {
-        Button("Enviar") {
+        Button(ConversationMessagesJudgment.productSteerSubmit) {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onSubmit(instruction, scope)
         }
