@@ -453,7 +453,7 @@ struct ChangeReviewPatchCard: View {
 
 extension ChangeReviewRunActions {
     var acceptButtonLabel: some View {
-        Text(ChangeReviewJudgment.productAcceptRun)
+        Text(ChangeReviewControlJudgment.productAcceptRun)
             .font(AtlasFont.mono(11, .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 18).padding(.vertical, 10)
             .background(Capsule().fill(AtlasTheme.accent))
@@ -543,7 +543,7 @@ extension ChangeReviewRunActions {
 
 extension ChangeReviewRunActions {
     var rejectButtonLabel: some View {
-        Text(ChangeReviewJudgment.productRejectRun)
+        Text(ChangeReviewControlJudgment.productRejectRun)
             .font(AtlasFont.mono(11, .semibold)).foregroundStyle(AtlasTheme.domOperacional)
             .padding(.horizontal, 18).padding(.vertical, 10)
             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
