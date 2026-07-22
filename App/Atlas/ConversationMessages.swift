@@ -729,7 +729,7 @@ extension SteerInteractionSheet {
 extension SteerInteractionSheet {
     func receiptLine(_ receipt: AtlasInteractionSteerResponse) -> some View {
         // WAVE-053: copy + tint from Judgment face.
-        Text(ConversationSteerJudgment.receiptLine(receipt))
+        Text(ConversationSteerJudgment.productReceiptLine(receipt))
             .font(AtlasFont.mono(11))
             .foregroundStyle(receipt.isAccepted ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
             .padding(12)

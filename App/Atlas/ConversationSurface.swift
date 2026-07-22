@@ -1329,7 +1329,7 @@ extension AgentRow {
 
     /// WAVE-027: face/attention vocabulary or silence — no parallel “processando” dialect.
     var statusWord: String? {
-        ConversationExecutionPhase.agentStatusWord(rawStatus: agent.status)
+        ConversationExecutionPhase.productAgentStatus(rawStatus: agent.status)
     }
 }
 

@@ -165,7 +165,7 @@ extension AtlasCodeRadarView {
     @ViewBuilder
     func radarFailed(_ message: String) -> some View {
         AtlasCodeLoadFailureEmpty(
-            headline: "não consegui ler o workspace",
+            headline: AtlasCodeRadarLoadJudgment.productWorkspaceLoadFail,
             message: message.trimmingCharacters(in: .whitespacesAndNewlines),
             onRetry: { Task { await model.load() } }
         )
@@ -968,7 +968,7 @@ extension AtlasCodeRadarView {
         ConversationView(
             client: session.client,
             threadId: askThreadId,
-            title: "Código · workspace",
+            title: AtlasCodeRadarLoadJudgment.productWorkspaceTitle,
             emptyPrompt: AtlasCodeRadarAskContext.productEmptyPrompt(headline: model.headline),
             emptySuggestions: AtlasCodeRadarAskContext.emptySuggestions,
             taskKind: "code",
@@ -1159,6 +1159,8 @@ enum AtlasCodeRadarLoadJudgment {
 
     static let spokenShellHint = "pastas, recentes e sem retorno verificados do seu código"
     static let productScreenTitle = "Código"
+    static let productWorkspaceTitle = "Código · workspace"
+    static let productWorkspaceLoadFail = "não consegui ler o workspace"
     static let spokenReloadGraphHint = "recarrega o grafo ou radar deste repositório"
     static let spokenReconnectHint = "reconecta ao servidor Atlas"
 

@@ -619,15 +619,15 @@ struct AutonomosDigestSurface: View {
 
     @ViewBuilder
     private func digestBody(_ digest: AtlasAutonomosDigestResponse) -> some View {
-        Text(AutonomosDigestJudgment.windowLine(digest))
+        Text(AutonomosDigestJudgment.productWindowLine(digest))
             .font(AtlasFont.mono(12))
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.bottom, 6)
-        Text(AutonomosDigestJudgment.countsLine(digest))
+        Text(AutonomosDigestJudgment.productCountsLine(digest))
             .font(AtlasFont.serif(16, .semibold))
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.bottom, 8)
-        if let schedule = AutonomosDigestJudgment.scheduleLine(digest) {
+        if let schedule = AutonomosDigestJudgment.productScheduleLine(digest) {
             Text(schedule)
                 .font(AtlasFont.serifItalic(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -754,7 +754,7 @@ struct AutonomosIncidentSurface: View {
     private func healthBody(_ health: AtlasAutonomosTaskHealthResponse) -> some View {
         AutonomosMapChrome.section("Operação")
             .padding(.bottom, 10)
-        Text(AutonomosTaskHealthJudgment.operatingLine(health))
+        Text(AutonomosTaskHealthJudgment.productOperatingLine(health))
             .font(AtlasFont.serif(16, .semibold))
             .foregroundStyle(AtlasTheme.textPrimary)
             .fixedSize(horizontal: false, vertical: true)
@@ -762,7 +762,7 @@ struct AutonomosIncidentSurface: View {
 
         AutonomosMapChrome.section("Fila")
             .padding(.bottom, 10)
-        Text(AutonomosTaskHealthJudgment.tasksSummary(health))
+        Text(AutonomosTaskHealthJudgment.productTasksSummary(health))
             .font(AtlasFont.mono(12))
             .foregroundStyle(AtlasTheme.textSecondary)
             .fixedSize(horizontal: false, vertical: true)
@@ -772,7 +772,7 @@ struct AutonomosIncidentSurface: View {
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.bottom, 18)
 
-        let flags = AutonomosTaskHealthJudgment.flagLines(health)
+        let flags = AutonomosTaskHealthJudgment.productFlagLines(health)
         if !flags.isEmpty {
             AutonomosMapChrome.section("Sinais")
                 .padding(.bottom, 10)

@@ -60,17 +60,17 @@ enum AutonomosDigestJudgment {
         return .quiet
     }
 
-    static func windowLine(_ digest: AtlasAutonomosDigestResponse) -> String {
+    static func productWindowLine(_ digest: AtlasAutonomosDigestResponse) -> String {
         let w = digest.last.window
         return "\(w.hours)h · \(w.kind) · \(w.focus) · \(w.timezone)"
     }
 
-    static func countsLine(_ digest: AtlasAutonomosDigestResponse) -> String {
+    static func productCountsLine(_ digest: AtlasAutonomosDigestResponse) -> String {
         let c = digest.last.counts
         return "entregas \(c.delivered) · riscos \(c.risks) · decisões \(c.pendingDecisions)"
     }
 
-    static func scheduleLine(_ digest: AtlasAutonomosDigestResponse) -> String? {
+    static func productScheduleLine(_ digest: AtlasAutonomosDigestResponse) -> String? {
         let s = digest.schedule
         if !s.available {
             let reason = s.reason?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -132,7 +132,7 @@ enum AutonomosDigestJudgment {
         if c.pendingDecisions + c.risks + c.delivered == 0 {
             return "janela quieta"
         }
-        return countsLine(digest)
+        return productCountsLine(digest)
     }
 
     static func packFacts(_ digest: AtlasAutonomosDigestResponse?) -> (facts: [String], absences: [String]) {
@@ -144,9 +144,9 @@ enum AutonomosDigestJudgment {
             absences.append("digest não hidratado neste recorte")
             return (facts, absences)
         }
-        facts.append("digest_window: \(windowLine(digest))")
-        facts.append("digest_counts: \(countsLine(digest))")
-        if let schedule = scheduleLine(digest) {
+        facts.append("digest_window: \(productWindowLine(digest))")
+        facts.append("digest_counts: \(productCountsLine(digest))")
+        if let schedule = productScheduleLine(digest) {
             facts.append("digest_schedule: \(schedule)")
         }
         for d in rankDelivered(digest.last.delivered).prefix(4) {
@@ -314,7 +314,7 @@ enum AutonomosRunControlJudgment {
         canControl
     }
 
-    static func receiptLine(
+    static func productReceiptLine(
         receipt: AtlasAutonomosRunControlResponse?,
         startReceipt: AtlasAutonomosStartRunResponse?,
         error: String?
@@ -450,7 +450,7 @@ enum AutonomosFleetJudgment {
         return parts.joined(separator: " · ")
     }
 
-    static func agentMeta(_ agent: AtlasAutonomosFleetAgent) -> String {
+    static func productAgentMeta(_ agent: AtlasAutonomosFleetAgent) -> String {
         var parts: [String] = [agent.status]
         if agent.alive { parts.append("vivo") }
         if !agent.authorized { parts.append("não autorizado") }
@@ -462,7 +462,7 @@ enum AutonomosFleetJudgment {
     }
 
     static func spokenAgent(_ agent: AtlasAutonomosFleetAgent) -> String {
-        "\(agent.label), \(agentMeta(agent))"
+        "\(agent.label), \(productAgentMeta(agent))"
     }
 
     static func packFacts(_ fleet: AtlasAutonomosFleetResponse?) -> (facts: [String], absences: [String]) {
@@ -479,7 +479,7 @@ enum AutonomosFleetJudgment {
         facts.append("agents: \(fleet.agents.count)")
         facts.append(productSummaryLine(fleet))
         for a in rank(fleet.agents).prefix(6) {
-            facts.append("agent: \(a.label) · \(agentMeta(a))")
+            facts.append("agent: \(a.label) · \(productAgentMeta(a))")
         }
         if fleet.agents.isEmpty {
             absences.append("lista de agentes vazia no snapshot publicado")
@@ -578,7 +578,7 @@ struct AutonomosFleetStrip: View {
                     .font(AtlasFont.serif(15, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .lineLimit(1)
-                Text(AutonomosFleetJudgment.agentMeta(agent))
+                Text(AutonomosFleetJudgment.productAgentMeta(agent))
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(
                         AutonomosFleetJudgment.needsAttention(agent)

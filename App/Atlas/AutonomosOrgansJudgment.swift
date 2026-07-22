@@ -92,18 +92,18 @@ enum AutonomosTaskHealthJudgment {
         return .pressure
     }
 
-    static func flagLines(_ health: AtlasAutonomosTaskHealthResponse) -> [String] {
+    static func productFlagLines(_ health: AtlasAutonomosTaskHealthResponse) -> [String] {
         health.incidents.flags
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
     }
 
-    static func tasksSummary(_ health: AtlasAutonomosTaskHealthResponse) -> String {
+    static func productTasksSummary(_ health: AtlasAutonomosTaskHealthResponse) -> String {
         let t = health.tasks
         return "claimable \(t.claimable) · claimed \(t.claimed) · blocked \(t.blocked) · completed \(t.completed)"
     }
 
-    static func operatingLine(_ health: AtlasAutonomosTaskHealthResponse) -> String {
+    static func productOperatingLine(_ health: AtlasAutonomosTaskHealthResponse) -> String {
         let action = health.operating.recommendedAction
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let pressure = health.operating.queuePressure
@@ -114,7 +114,7 @@ enum AutonomosTaskHealthJudgment {
         return parts.isEmpty ? "sem recomendação publicada" : parts.joined(separator: " · ")
     }
 
-    static func hubIncidentMeta(health: AtlasAutonomosTaskHealthResponse?) -> String? {
+    static func productHubIncidentMeta(health: AtlasAutonomosTaskHealthResponse?) -> String? {
         guard let health, health.incidents.present else { return nil }
         let n = health.incidents.flags.count
         if n == 0 { return "incidente" }
@@ -141,8 +141,8 @@ enum AutonomosTaskHealthJudgment {
         facts.append("incidents_present: \(health.incidents.present ? "yes" : "no")")
         facts.append("queue_pressure: \(health.operating.queuePressure)")
         facts.append("recommended_action: \(health.operating.recommendedAction)")
-        facts.append("tasks: \(tasksSummary(health))")
-        for flag in flagLines(health).prefix(8) {
+        facts.append("tasks: \(productTasksSummary(health))")
+        for flag in productFlagLines(health).prefix(8) {
             facts.append("incident_flag: \(flag)")
         }
         if !health.incidents.present {
@@ -179,7 +179,7 @@ enum AutonomosTransferJudgment {
         canControlSelectedArea
     }
 
-    static func receiptLine(_ receipt: AtlasAutonomosTransferResponse?) -> String? {
+    static func productReceiptLine(_ receipt: AtlasAutonomosTransferResponse?) -> String? {
         guard let receipt else { return nil }
         if receipt.isTargetClaimed {
             let host = receipt.handoff.target.host?.trimmingCharacters(in: .whitespacesAndNewlines)

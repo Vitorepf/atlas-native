@@ -41,6 +41,7 @@ enum ConversationOutlineFace: Equatable {
 enum ConversationOutlineJudgment {
 
     static let productNoTurnsLoaded = "Nenhum turno carregado nesta thread."
+    static let productOutlineSheetTitle = "Índice da conversa"
 
     static func face(turnCount: Int) -> ConversationOutlineFace {
         turnCount <= 0 ? .empty : .turns(turnCount)
@@ -112,7 +113,7 @@ struct ConversationOutlineSheet: View {
 
     var body: some View {
         outlineA11yBind(
-            SheetShell(title: "Índice da conversa") {
+            SheetShell(title: ConversationOutlineJudgment.productOutlineSheetTitle) {
                 outlineSheetContent
             }
         )

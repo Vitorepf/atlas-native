@@ -109,7 +109,7 @@ enum ConversationSteerJudgment {
 
     // MARK: Receipt
 
-    static func receiptLine(_ receipt: AtlasInteractionSteerResponse) -> String {
+    static func productReceiptLine(_ receipt: AtlasInteractionSteerResponse) -> String {
         if receipt.isAccepted {
             return "na fila do próximo checkpoint"
         }
@@ -178,7 +178,7 @@ enum ConversationSteerJudgment {
         }
         if let receipt = matchedReceipt(last: last, traceId: traceId) {
             facts.append("steer_receipt: \(receipt.status.rawValue)")
-            facts.append("steer_receipt_line: \(receiptLine(receipt))")
+            facts.append("steer_receipt_line: \(productReceiptLine(receipt))")
             if let reason = receipt.reason {
                 facts.append("steer_reject_reason: \(reason.rawValue)")
             }
@@ -414,7 +414,7 @@ enum ConversationExecutionPhase {
 
     /// Agent lane vocabulary under multi/running — attention words or silence.
     /// Avoids parallel “processando/na fila” dialect fighting the face.
-    static func agentStatusWord(rawStatus: String) -> String? {
+    static func productAgentStatus(rawStatus: String) -> String? {
         switch AtlasTurnStatus(rawValue: rawStatus) {
         case .queued, .processing:
             return nil // silence — face carries running/multi

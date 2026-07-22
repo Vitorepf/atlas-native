@@ -35,7 +35,7 @@ struct ArenaPremiumFleetView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(
-                text: ArenaScoreJudgment.fleetKicker(engineCount: engines.count)
+                text: ArenaScoreJudgment.productFleetKicker(engineCount: engines.count)
             )
             Text(ArenaNowJudgment.productWhereAtlasRises)
                 .font(AtlasFont.serif(31))
@@ -299,7 +299,7 @@ struct ArenaPremiumResultsView: View {
     private func resultHeader(_ engine: AtlasArenaCompositeEngine) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(
-                text: ArenaScoreJudgment.resultsKicker(claimAllowed: model.report?.claimAllowed)
+                text: ArenaScoreJudgment.productResultsKicker(claimAllowed: model.report?.claimAllowed)
             )
             .accessibilityIdentifier(A11yID.arenaPremiumResults)
             ArenaPremiumEngineTitle(
@@ -1456,7 +1456,7 @@ extension ArenaRunSheet {
                 .lineLimit(1)
                 .truncationMode(.middle)
                 .accessibilityHidden(true)
-            Text(ArenaStartJudgment.receiptStatusLine(receipt))
+            Text(ArenaStartJudgment.productReceiptStatusLine(receipt))
                 .font(.system(.callout, weight: .semibold))
                 .foregroundStyle(
                     face.productWord == "worker_gap"

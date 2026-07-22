@@ -749,6 +749,7 @@ enum ComposerEffortJudgment {
     static let spokenEffortSheetHint = "escolhe o esforço computacional do próximo envio"
     static let spokenEffortSheet = "esforço computacional"
     static let productEffortSheetTitle = "Esforço"
+
     static let spokenProcessing = "Atlas processando"
 
     static func face(_ effort: AtlasComputeEffort) -> ComposerEffortFace {
@@ -1452,6 +1453,17 @@ enum ComposerWorkspaceSheetFace: Equatable {
 
 /// Pure composer options-sheet grammar — mode · workspace sheet · pack.
 enum ComposerSheetJudgment {
+
+    static let productAttachSheetTitle = "Adicionar"
+    static let productWorkspaceSheetTitle = "Workspace"
+    static let productModeSheetTitle = "Modo"
+    static let productAttachFile = "Arquivo"
+    static let productAttachFileSub = "PDF, texto, código ou dados"
+    static let productAttachPaste = "Colar contexto"
+    static let productAttachCamera = "Câmera"
+    static let productAttachCameraSub = "Capturar agora"
+    static let productAttachPhoto = "Foto"
+    static let productAttachPhotoSub = "Escolher da biblioteca"
 
     static let modeFootnote =
         "rótulo local; ainda não altera roteamento nem payload"

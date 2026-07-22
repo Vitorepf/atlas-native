@@ -501,12 +501,12 @@ enum ArenaScoreJudgment {
 
     // MARK: - Kickers / voice
 
-    static func resultsKicker(claimAllowed: Bool?) -> String {
+    static func productResultsKicker(claimAllowed: Bool?) -> String {
         if claimAllowed == true { return "Última medição concluída · \(scaleCaption)" }
         return "Medição parcial · \(scaleCaption)"
     }
 
-    static func fleetKicker(engineCount: Int) -> String {
+    static func productFleetKicker(engineCount: Int) -> String {
         let n = engineCount
         return "Frota medida · \(n) \(n == 1 ? "motor" : "motores") · \(scaleCaption)"
     }
@@ -775,7 +775,7 @@ enum ArenaStartJudgment {
         return .other(receipt.status)
     }
 
-    static func receiptStatusLine(_ receipt: AtlasArenaStartReceipt) -> String {
+    static func productReceiptStatusLine(_ receipt: AtlasArenaStartReceipt) -> String {
         let face = receiptFace(receipt)
         if face.statusLine.isEmpty { return receipt.status }
         return face.statusLine

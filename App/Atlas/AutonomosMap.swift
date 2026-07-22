@@ -184,9 +184,9 @@ extension AutonomosMapShell {
                     canTransfer: AutonomosTransferJudgment.canTransfer(
                         canControlSelectedArea: model.canControlSelectedArea
                     ),
-                    transferReceiptLine: AutonomosTransferJudgment.receiptLine(model.lastTransferReceipt)
+                    transferReceiptLine: AutonomosTransferJudgment.productReceiptLine(model.lastTransferReceipt)
                         ?? model.controlError,
-                    incidentMeta: AutonomosTaskHealthJudgment.hubIncidentMeta(health: model.taskHealth),
+                    incidentMeta: AutonomosTaskHealthJudgment.productHubIncidentMeta(health: model.taskHealth),
                     digestMeta: AutonomosDigestJudgment.hubMeta(from: model.digest),
                     needsAreaBind: areaBindFace.needsChooser,
                     registeredAreaCount: AutonomosAreaBindJudgment.registeredAreas(model.areas).count,
@@ -397,7 +397,7 @@ extension AutonomosMapShell {
     }
 
     var controlReceiptLine: String? {
-        AutonomosRunControlJudgment.receiptLine(
+        AutonomosRunControlJudgment.productReceiptLine(
             receipt: model.lastControlReceipt,
             startReceipt: model.lastStartRunReceipt,
             error: model.controlError

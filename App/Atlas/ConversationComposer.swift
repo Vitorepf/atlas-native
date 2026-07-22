@@ -514,7 +514,7 @@ struct SheetShell<Content: View>: View {
 
 extension ComposerAttachmentsSheet {
     var attachmentsSheetChrome: some View {
-        SheetShell(title: "Adicionar") {
+        SheetShell(title: ComposerSheetJudgment.productAttachSheetTitle) {
             attachmentOptions
         }
         .accessibilityIdentifier(A11yID.attachmentsSheet)
@@ -563,7 +563,7 @@ extension ComposerAttachmentsSheet {
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentFileOption: some View {
         Button { choose(onChooseFile) } label: {
-            ComposerAttachmentRow(icon: "doc", title: "Arquivo", subtitle: "PDF, texto, código ou dados")
+            ComposerAttachmentRow(icon: "doc", title: ComposerSheetJudgment.productAttachFile, subtitle: ComposerSheetJudgment.productAttachFileSub)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(ComposerDraftJudgment.spokenFile)
@@ -602,7 +602,7 @@ extension ComposerAttachmentsSheet {
     var pasteButtonLabel: some View {
         ComposerAttachmentRow(
             icon: "doc.on.clipboard",
-            title: "Colar contexto",
+            title: ComposerSheetJudgment.productAttachPaste,
             subtitle: pasteboardText == nil
                 ? "Nada na área de transferência"
                 : "Adicionar texto da área de transferência"
@@ -613,7 +613,7 @@ extension ComposerAttachmentsSheet {
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentCameraOption: some View {
         Button { choose(onChooseCamera) } label: {
-            ComposerAttachmentRow(icon: "camera", title: "Câmera", subtitle: "Capturar agora")
+            ComposerAttachmentRow(icon: "camera", title: ComposerSheetJudgment.productAttachCamera, subtitle: ComposerSheetJudgment.productAttachCameraSub)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(ComposerDraftJudgment.spokenChooseCamera)
@@ -625,7 +625,7 @@ extension ComposerAttachmentsSheet {
 extension ComposerAttachmentsSheet {
     @ViewBuilder var attachmentPhotoOption: some View {
         PhotosPicker(selection: $pickedPhoto, matching: .images) {
-            ComposerAttachmentRow(icon: "photo", title: "Foto", subtitle: "Escolher da biblioteca")
+            ComposerAttachmentRow(icon: "photo", title: ComposerSheetJudgment.productAttachPhoto, subtitle: ComposerSheetJudgment.productAttachPhotoSub)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(ComposerDraftJudgment.spokenPhoto)
@@ -756,7 +756,7 @@ struct WorkspaceSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        SheetShell(title: "Workspace") {
+        SheetShell(title: ComposerSheetJudgment.productWorkspaceSheetTitle) {
             if workspaces.isEmpty {
                 workspaceEmptyLabel
             } else {
@@ -850,7 +850,7 @@ struct ModeSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     var body: some View {
-        SheetShell(title: "Modo") {
+        SheetShell(title: ComposerSheetJudgment.productModeSheetTitle) {
             modeFootnote
             modeRows
         }
