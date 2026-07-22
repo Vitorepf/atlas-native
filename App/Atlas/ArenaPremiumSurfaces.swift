@@ -516,13 +516,13 @@ struct ArenaPremiumCapabilitiesView: View {
                 Circle()
                     .stroke(AtlasTheme.textSecondary, lineWidth: 1.5)
                     .frame(width: 8, height: 8)
-                Text("sem Atlas")
+                Text(ArenaNowJudgment.productWithoutAtlas)
             }
             HStack(spacing: 5) {
                 Text("✦")
                     .font(AtlasFont.serif(11))
                     .foregroundStyle(AtlasTheme.accent)
-                Text("com Atlas")
+                Text(ArenaNowJudgment.productWithAtlas)
             }
         }
         .font(AtlasFont.mono(10))

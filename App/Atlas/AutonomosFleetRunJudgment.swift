@@ -546,7 +546,7 @@ struct AutonomosFleetStrip: View {
 
             let events = AutonomosFleetJudgment.recentEvents(history, limit: 3)
             if !events.isEmpty {
-                Text("Histórico")
+                Text(AutonomosListJudgment.productHistory)
                     .font(AtlasFont.mono(10))
                     .tracking(0.8)
                     .foregroundStyle(AtlasTheme.textTertiary)

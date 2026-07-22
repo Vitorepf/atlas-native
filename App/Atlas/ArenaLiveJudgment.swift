@@ -275,6 +275,9 @@ enum ArenaNowJudgment {
     static let productArmAbsenceHonesty = "Ausência de um braço permanece não medida."
     static let productVsWithoutAtlas = "vs. sem Atlas"
 
+    static let productWithoutAtlas = "sem Atlas"
+    static let productWithAtlas = "com Atlas"
+
     static func productBestGain(engine: String, mult: String) -> String {
         "melhor ganho · \(engine) · \(mult)"
     }

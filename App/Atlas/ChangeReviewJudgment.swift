@@ -274,6 +274,8 @@ enum ChangeReviewJudgment {
     // MARK: Run actions (WAVE post · run CTA chrome)
 
     static let spokenApplying = "registrando decisão"
+    static let productApplying = "registrando…"
+    static let productDivergence = "divergência"
     static let spokenAccept = "aceitar todos os arquivos e concluir revisão"
     static let spokenAcceptHint = "aceita cada arquivo capturado e depois conclui o run"
     static let spokenReject = "rejeitar revisão inteira"

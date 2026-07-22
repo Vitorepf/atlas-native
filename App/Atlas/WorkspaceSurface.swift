@@ -499,7 +499,7 @@ struct ThreadRow: View {
     var rowTrailing: some View {
         newThreadBadge
         if isRunning {
-            Text("executando").font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
+            Text(WorkspaceThreadJudgment.productExecuting).font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
         } else {
             Text("\(thread.messageCount)")
@@ -1389,6 +1389,7 @@ enum WorkspacePickerJudgment {
 /// Pure live-first ranking for thread catalogs — parity with LiveNow attention.
 /// Prefer threadId identity; never invent live without signal.
 enum WorkspaceThreadJudgment {
+    static let productExecuting = "executando"
 
     // MARK: Running identity
 

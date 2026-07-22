@@ -475,7 +475,7 @@ extension ChangeReviewRunActions {
 
 extension ChangeReviewRunActions {
     var applyingStaticLabel: some View {
-        Text("registrando…")
+        Text(ChangeReviewJudgment.productApplying)
             .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityLabel(ChangeReviewJudgment.spokenApplying)

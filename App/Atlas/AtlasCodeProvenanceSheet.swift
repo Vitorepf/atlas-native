@@ -479,7 +479,7 @@ extension AtlasCodeProvenanceSheet {
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("sua frase")
+            Text(AtlasCodeProvenanceJudgment.productYourPhrase)
                 .atlasSans(9)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
@@ -738,6 +738,7 @@ enum AtlasCodeProvenanceJudgment {
     static let productFilesKicker = "ARQUIVOS"
     static let productWhyFileKicker = "POR QUE ESTE ARQUIVO EXISTE"
     static let productUndoWithReceipt = "Desfazer — com recibo"
+    static let productYourPhrase = "sua frase"
 
     static let productProvenanceUnavailable = "proveniência indisponível"
     static let productYouWereNotNeeded = "você não foi necessário"

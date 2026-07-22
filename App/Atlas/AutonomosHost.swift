@@ -1636,7 +1636,7 @@ extension AutonomosDecisionSurface {
                             .padding(.bottom, 14)
                     }
 
-                    Text("Julgamento")
+                    Text(AutonomosListJudgment.productJudgment)
                         .font(AtlasFont.mono(10))
                         .tracking(0.8)
                         .foregroundStyle(AtlasTheme.textTertiary)
