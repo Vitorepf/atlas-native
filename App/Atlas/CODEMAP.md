@@ -1,8 +1,8 @@
 # Atlas Native — CODEMAP (casca)
 
-> GOD RESTRUCTURE v4 residual. Soft Sections/States = **0**. Density OK.
-> Vocabulary closed: `spoken*` · `product*` · `pack*` · `rank*` · `format*`.
-> Hard-coded a11y/nav/kickers largely lifted into judgments.
+> GOD RESTRUCTURE v4 continuous residual. Soft Sections/States = **0**. Density OK.
+> Closed vocabulary: `spoken*` · `product*` · `pack*` · `rank*` · `format*`.
+> Product chrome (titles, empties, a11y, nav, widgets) lives on domain Judgments.
 
 ## Superfícies → host
 
@@ -24,13 +24,13 @@
 | Home kickers / LiveNow | `HomeOpsJudgment` · `RootHomeBody` · `LiveNowJudgment` |
 | Nightly | `HomeNightlyJudgment` |
 | Mid-thread / steer / outline | `ConversationSurface` · Messages/Steer/Outline Judgments |
-| Composer | `ConversationComposer` · `ComposerToolbar` |
+| Composer attach/mode/workspace | `ConversationComposer` · `ComposerToolbar` / Sheet/Effort Judgments |
 | Execution / Plan | `ExecutionStateCard` · `PlanCard` |
 | Change review | `ChangeReviewSurface` · Control/Sheet/Risk Judgments · Body |
 | Radar / Provenance / Graph | `AtlasCodeRadarSurface` · ProvenanceSheet · Graph · Surface |
-| Arena | `ArenaPremiumRoot` · Surfaces · Fleet/Live/Control |
-| Autônomos | `AutonomosHost` · Map · CanDo/FleetRun/Organs |
-| Widgets | `AtlasWidgetsHostA` · `AtlasWidgetsHostB` |
+| Arena product empties/actions | `ArenaNowJudgment` · Surfaces · Root/Execution |
+| Autônomos product faces | `AutonomosListJudgment` · Host · Map |
+| Widgets product | `LiveSessionWidgetA11y` · `FleetWidgetA11y` |
 
 ## BLOCKED
 
