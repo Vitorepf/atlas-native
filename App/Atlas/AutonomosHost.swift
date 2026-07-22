@@ -1521,7 +1521,7 @@ extension AutonomosDecisionSurface {
 
     func receiptLine(_ receipt: AtlasAutonomosOperatorDecisionReceipt) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Recibo · \(AutonomosDecisionJudgment.productDecision(receipt.decision))")
+            Text(AutonomosDecisionJudgment.productDecisionReceipt(AutonomosDecisionJudgment.productDecision(receipt.decision)))
                 .font(AtlasFont.serif(14, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(

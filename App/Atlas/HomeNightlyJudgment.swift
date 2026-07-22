@@ -400,6 +400,7 @@ enum NightlyProposalJudgment {
     static let spokenDismissLabel = "hoje não"
     static let productUnmute = "Reativar propostas noturnas"
     static let productFleetWhileRest = "A frota pode continuar enquanto você descansa."
+    static func productWorkedToday(workspaceText: String) -> String { "Hoje você trabalhou em \(workspaceText)." }
     static let spokenDismissHint = "descarta a proposta em silêncio, sem confirmação"
     static let spokenMuteMenuLabel = "pausar propostas noturnas"
     static let spokenMuteMenuHint =
@@ -546,7 +547,7 @@ extension NightlyProposalCard {
 extension NightlyProposalCard {
     var copyBlock: some View {
         Group {
-            Text("Hoje você trabalhou em \(proposal.workspaceText).")
+            Text(NightlyProposalJudgment.productWorkedToday(workspaceText: proposal.workspaceText))
                 .font(AtlasFont.serif(16, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)

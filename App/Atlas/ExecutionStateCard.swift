@@ -302,7 +302,7 @@ extension ExecutionStateCard {
     @ViewBuilder
     var deadlineMetaLine: some View {
         if let deadline = publishedExternalDeadline {
-            Text("Próxima mudança: \(deadline)")
+            Text(ExecutionProofJudgment.productNextChange(deadline: deadline))
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(1)
@@ -1413,6 +1413,7 @@ enum ExecutionProofFace: Equatable {
 enum ExecutionProofJudgment {
 
     static let productOpen = "Abrir"
+    static func productNextChange(deadline: String) -> String { "Próxima mudança: \(deadline)" }
     static let productReplayKicker = "REPLAY"
     static func productArtifactsKicker(count: Int) -> String { "ARTEFATOS (\(count))" }
     static let spokenServerActionHint = "ação declarada pelo servidor"

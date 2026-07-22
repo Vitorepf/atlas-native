@@ -829,7 +829,7 @@ extension AtlasProfileSheet {
         .atlasCard()
         .accessibilityIdentifier(A11yID.profileAuditToggle)
 
-        Text("Atlas \(appVersion)")
+        Text(HomeOpsJudgment.productAppVersion(appVersion))
             .font(AtlasFont.mono(11))
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.top, 8)

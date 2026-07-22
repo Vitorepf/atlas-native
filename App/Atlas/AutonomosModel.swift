@@ -1604,6 +1604,7 @@ enum AutonomosDecisionJudgment {
     }
 
     static let spokenOpenDecisionHint = "abre o julgamento desta decisão"
+    static func productDecisionReceipt(_ decisionLabel: String) -> String { "Recibo · \(decisionLabel)" }
 
     static func productRowMeta(_ item: AutonomosDecisionItem) -> String {
         let risk = item.riskLevel.trimmingCharacters(in: .whitespacesAndNewlines)

@@ -336,7 +336,7 @@ struct LiveNowSection: View {
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityHidden(true)
             if isHub {
-                Text("× \(sessions.count)")
+                Text(HomeOpsJudgment.productLiveCount(sessions.count))
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityHidden(true)

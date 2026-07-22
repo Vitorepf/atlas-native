@@ -387,7 +387,7 @@ extension ChangeReviewPatchCard {
 extension ChangeReviewPatchCard {
     var patchHeader: some View {
         HStack {
-            Text("PATCH \(String(patch.id.prefix(8)))")
+            Text(ChangeReviewSheetJudgment.productPatchHeader(idPrefix: String(patch.id.prefix(8))))
                 .font(AtlasFont.mono(10)).tracking(0.8).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Spacer()

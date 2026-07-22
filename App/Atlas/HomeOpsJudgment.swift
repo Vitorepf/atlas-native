@@ -195,9 +195,11 @@ enum HomeOpsJudgment {
     static let productOperacaoSection = "OPERAÇÃO"
     static let productWorkspacesSection = "WORKSPACES"
     static let productLiveNowKicker = "VIVO AGORA"
+    static func productLiveCount(_ n: Int) -> String { "× \(n)" }
     static let productAuditBadge = "AUDITORIA"
     static let productModoAuditoria = "MODO AUDITORIA"
     static let productAuditModeLabel = "Modo auditoria"
+    static func productAppVersion(_ version: String) -> String { "Atlas \(version)" }
 
     static let spokenOperatorProfile = "Vitor, operador do Atlas"
     static let spokenSearchHint = "abre busca nas conversas carregadas"
