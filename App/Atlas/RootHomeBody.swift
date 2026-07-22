@@ -103,7 +103,7 @@ extension RootHomeBody {
     // Uma linha aqui, workspaces na seção deles — zero filtro, zero duplicata.
     @ViewBuilder
     var conversasSection: some View {
-        sectionLabel("CONVERSAS", accessibilityID: A11yID.homeConversasSection)
+        sectionLabel(HomeOpsJudgment.productConversasSection, accessibilityID: A11yID.homeConversasSection)
         WorkspaceRow(icon: "bubble.left.and.bubble.right", name: "Conversas livres",
                      count: homeConversationCount,
                      detail: session.auditModeEnabled ? auditDetail : nil,
@@ -116,7 +116,7 @@ extension RootHomeBody {
 
     @ViewBuilder
     var operacaoSection: some View {
-        sectionLabel("OPERAÇÃO", accessibilityID: A11yID.homeOperacaoSection)
+        sectionLabel(HomeOpsJudgment.productOperacaoSection, accessibilityID: A11yID.homeOperacaoSection)
         // WAVE-047: Autônomos door elevates published attention (silence when quiet).
         WorkspaceRow(
             icon: "bolt.horizontal.circle",
@@ -160,7 +160,7 @@ extension RootHomeBody {
     // Sem "Todas as conversas": agregado duplicava livres + workspaces.
     @ViewBuilder
     var workspacesSection: some View {
-        sectionLabel("WORKSPACES", accessibilityID: A11yID.homeWorkspacesSection)
+        sectionLabel(HomeOpsJudgment.productWorkspacesSection, accessibilityID: A11yID.homeWorkspacesSection)
         ForEach(session.recentWorkspaces(3)) { ws in
             rowDivider
             workspaceFolderRow(ws)
@@ -329,7 +329,7 @@ struct LiveNowSection: View {
 
     var header: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text("VIVO AGORA")
+            Text(HomeOpsJudgment.productLiveNowKicker)
                 .font(AtlasFont.mono(11))
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)

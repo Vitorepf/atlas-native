@@ -419,7 +419,7 @@ extension AutonomosViewHeader {
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
         }
         if auditModeEnabled {
-            Text("MODO AUDITORIA")
+            Text(HomeOpsJudgment.productModoAuditoria)
                 .font(AtlasFont.mono(9)).tracking(1.0)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)

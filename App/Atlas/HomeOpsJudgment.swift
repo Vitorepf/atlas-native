@@ -188,6 +188,16 @@ enum HomeOpsJudgment {
 
     // MARK: Profile spoken (WAVE-104)
 
+
+    // MARK: Home section product faces
+
+    static let productConversasSection = "CONVERSAS"
+    static let productOperacaoSection = "OPERAÇÃO"
+    static let productWorkspacesSection = "WORKSPACES"
+    static let productLiveNowKicker = "VIVO AGORA"
+    static let productAuditBadge = "AUDITORIA"
+    static let productModoAuditoria = "MODO AUDITORIA"
+
     static let spokenOperatorProfile = "Vitor, operador do Atlas"
     static let spokenSearchHint = "abre busca nas conversas carregadas"
     static let spokenCodeTopBarHint = "abre radar de repositórios"

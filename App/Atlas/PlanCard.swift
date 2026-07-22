@@ -107,7 +107,7 @@ extension PlanCard {
 
 extension PlanCard {
     var auditCaption: some View {
-        Text("AUDITORIA")
+        Text(HomeOpsJudgment.productAuditBadge)
             .font(AtlasFont.mono(9))
             .tracking(0.8)
             .foregroundStyle(AtlasTheme.domOperacional)
