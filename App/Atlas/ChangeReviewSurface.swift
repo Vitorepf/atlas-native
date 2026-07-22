@@ -329,8 +329,8 @@ extension ChangeReviewSheet {
     var reviewToolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
             AtlasCloseToolbarButton(
-                spokenLabel: "fechar revisão de mudanças",
-                spokenHint: "volta para a conversa",
+                spokenLabel: ChangeReviewSheetJudgment.spokenClose,
+                spokenHint: ChangeReviewSheetJudgment.spokenCloseHint,
                 reduceMotion: reduceMotion
             ) { dismiss() }
         }

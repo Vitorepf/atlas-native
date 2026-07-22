@@ -169,6 +169,8 @@ enum ArenaCapabilitiesJudgment {
     static let productEmptyTitle = "Capacidades ainda não medidas"
     static let productEmptyBody = "Ausência permanece ausência — nenhuma barra começa em zero."
     static let productCovered = "capacidades cobertas"
+    static let spokenClose = "fechar capacidade"
+    static let spokenCloseHint = "volta para o perfil"
     static let groupOrder = ["construction", "comprehension", "quality", "agentic"]
 
     // MARK: Face / counts

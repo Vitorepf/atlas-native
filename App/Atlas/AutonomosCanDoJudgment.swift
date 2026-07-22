@@ -215,6 +215,8 @@ enum AutonomosAreaBindJudgment {
     }
 
     static let spokenChooserHint = "liga a frota a uma área registrada no motor"
+    static let spokenClose = "fechar escolha de área"
+    static let spokenCloseHint = "volta sem ligar área"
     static let productCTA = "Escolher área"
     static let spokenCTA = "escolher área do loop Autônomos"
 

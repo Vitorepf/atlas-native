@@ -712,8 +712,8 @@ struct ArenaPremiumCapabilityDetail: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
-                        spokenLabel: "fechar capacidade",
-                        spokenHint: "volta para o perfil",
+                        spokenLabel: ArenaCapabilitiesJudgment.spokenClose,
+                        spokenHint: ArenaCapabilitiesJudgment.spokenCloseHint,
                         reduceMotion: UIAccessibility.isReduceMotionEnabled
                     ) { dismiss() }
                 }

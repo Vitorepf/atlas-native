@@ -944,8 +944,8 @@ struct AutonomosAreaBindChooser: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     AtlasCloseToolbarButton(
-                        spokenLabel: "fechar escolha de área",
-                        spokenHint: "volta sem ligar área",
+                        spokenLabel: AutonomosAreaBindJudgment.spokenClose,
+                        spokenHint: AutonomosAreaBindJudgment.spokenCloseHint,
                         reduceMotion: reduceMotion
                     ) { onCancel() }
                 }
