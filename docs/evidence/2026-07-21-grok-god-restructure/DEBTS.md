@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 647
-domain_index: 1
-last_focus: "Arena execution empty product + audit mode label"
-session_commits: 265
+pass: 648
+domain_index: 2
+last_focus: "product format helpers residual"
+session_commits: 267
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,8 +14,10 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **265** · soft **0** · density OK · 46+2 · gates green
+commits **267** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
 **never Goal Done**
+
+Soft 0 · densify OK · product Text bare ~0 · spoken/a11y/nav closed.
