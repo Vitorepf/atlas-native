@@ -256,6 +256,14 @@ struct ArenaNowTerminalChrome: Equatable {
 enum ArenaNowJudgment {
     static let productScreenTitle = "Arena"
 
+    static let productViewExecution = "Ver execução"
+    static let productStopping = "Parando…"
+    static let productViewResults = "Ver resultados"
+    static let productRunAgain = "Rodar novamente"
+    static let productStopAfterCase = "Parar após o caso atual"
+    static let productLoadMeasurementFail = "Não foi possível carregar a medição"
+    static let productAlerts = "Alertas"
+
     static let productNoEngineMeasured = "Nenhum motor medido"
     static let productNoEngineMeasuredBody = "Rode uma medição com pelo menos um motor para ver o ranking da frota."
     static let productNoRegression = "Nenhuma regressão ou falha publicada"

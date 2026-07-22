@@ -842,7 +842,7 @@ extension AtlasCodeView {
     @ViewBuilder
     func graphFailure(_ message: String) -> some View {
         AtlasCodeLoadFailureEmpty(
-            headline: "não consegui ler este repositório",
+            headline: AtlasCodeRadarLoadJudgment.productRepoLoadFail,
             message: message,
             onRetry: { Task { await model.load() } }
         )

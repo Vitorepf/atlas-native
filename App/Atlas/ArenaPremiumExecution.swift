@@ -37,7 +37,7 @@ struct ArenaPremiumExecutionView: View {
                 .accessibilityIdentifier(A11yID.arenaPremiumExecution)
             nowBlock
             if canStop {
-                ArenaPremiumAction(title: "Parar após o caso atual", quiet: true) {
+                ArenaPremiumAction(title: ArenaNowJudgment.productStopAfterCase, quiet: true) {
                     if let primary { onStop(primary) }
                 }
             }
@@ -404,13 +404,13 @@ struct ArenaPremiumRunningView: View {
 
     private var actions: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ArenaPremiumAction(title: "Ver execução", tone: .neutral) {
+            ArenaPremiumAction(title: ArenaNowJudgment.productViewExecution, tone: .neutral) {
                 onNavigate(.execution)
             }
             .accessibilityIdentifier(A11yID.arenaPremiumExecutionAction)
             // WAVE-083: single canStop law = ArenaLiveControlJudgment.
             if let run, ArenaLiveControlJudgment.canStop(primary: run) {
-                ArenaPremiumAction(title: "Parar após o caso atual", quiet: true) {
+                ArenaPremiumAction(title: ArenaNowJudgment.productStopAfterCase, quiet: true) {
                     onStop(run)
                 }
                 .accessibilityIdentifier(A11yID.arenaPremiumStop)

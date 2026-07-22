@@ -376,7 +376,7 @@ struct AutonomosFleetFailureEmpty: View {
 
     var body: some View {
         AtlasOpsFailureEmpty(
-            mode: .load(headline: "Catálogo fora de alcance.", message: message),
+            mode: .load(headline: AutonomosListJudgment.productCatalogOutOfReach, message: message),
             layout: .centered,
             symbol: "exclamationmark.triangle",
             topPadding: 0,
@@ -1273,9 +1273,9 @@ struct AutonomosHubView: View {
                 }
             )
         } else if unit.paused {
-            AutonomosMapNavLine(title: "Retomar na lista", meta: "catálogo local", action: onLocalCatalogResume)
+            AutonomosMapNavLine(title: AutonomosListJudgment.productResumeList, meta: AutonomosListJudgment.productLocalCatalogMeta, action: onLocalCatalogResume)
         } else {
-            AutonomosMapNavLine(title: "Pausar na lista", meta: "catálogo local", action: onLocalCatalogPause)
+            AutonomosMapNavLine(title: AutonomosListJudgment.productPauseList, meta: AutonomosListJudgment.productLocalCatalogMeta, action: onLocalCatalogPause)
         }
     }
 }
@@ -1663,7 +1663,7 @@ extension AutonomosDecisionSurface {
                     AutonomosMapChrome.hairline
                         .padding(.vertical, 12)
                     AutonomosMapNavLine(
-                        title: "Todas as decisões",
+                        title: AutonomosListJudgment.productAllDecisions,
                         meta: "",
                         action: { onNavigate(.decisions) }
                     )

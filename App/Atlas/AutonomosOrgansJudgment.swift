@@ -320,6 +320,12 @@ enum AutonomosListJudgment {
     static let productDigest = "Digest"
     static let productEnd = "Encerrar"
 
+    static let productResumeList = "Retomar na lista"
+    static let productPauseList = "Pausar na lista"
+    static let productLocalCatalogMeta = "catálogo local"
+    static let productAllDecisions = "Todas as decisões"
+    static let productCatalogOutOfReach = "Catálogo fora de alcance."
+
     // MARK: Face
 
     static func listFace(unitCount: Int) -> AutonomosListFace {

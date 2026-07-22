@@ -787,6 +787,7 @@ enum WorkspaceJudgment {
     static let spokenAreaFilterHint = "filtra conversas já carregadas"
     static let productNewConversation = "nova conversa"
     static let productNewConversationTitle = "Nova conversa"
+    static let productConversasTitle = "Conversas"
     static let spokenNewConversationHint = "abre o compositor para escrever ao Atlas"
 
     static func spokenAreaFilter(_ label: String) -> String {

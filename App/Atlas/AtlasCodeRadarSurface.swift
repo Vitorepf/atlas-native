@@ -1161,6 +1161,7 @@ enum AtlasCodeRadarLoadJudgment {
     static let productScreenTitle = "Código"
     static let productWorkspaceTitle = "Código · workspace"
     static let productWorkspaceLoadFail = "não consegui ler o workspace"
+    static let productRepoLoadFail = "não consegui ler este repositório"
     static let spokenReloadGraphHint = "recarrega o grafo ou radar deste repositório"
     static let spokenReconnectHint = "reconecta ao servidor Atlas"
 

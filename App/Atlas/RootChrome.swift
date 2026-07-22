@@ -566,7 +566,7 @@ extension RootView {
 extension RootView {
     @ViewBuilder
     var rootConversationConversasDestination: some View {
-        WorkspaceView(workspaceKey: nil, title: "Conversas", freeOnly: true)
+        WorkspaceView(workspaceKey: nil, title: WorkspaceJudgment.productConversasTitle, freeOnly: true)
     }
 }
 
@@ -623,7 +623,7 @@ extension RootView {
             ConversationView(
                 client: session.client,
                 threadId: nil,
-                title: "Nova conversa",
+                title: WorkspaceJudgment.productNewConversationTitle,
                 emptyPrompt: HomeAskContext.productInvite,
                 emptySuggestions: HomeAskContext.emptySuggestions(
                     hasWorkspaces: !session.workspaces.isEmpty

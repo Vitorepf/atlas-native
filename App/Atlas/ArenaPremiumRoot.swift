@@ -387,7 +387,7 @@ struct ArenaPremiumQueuedView: View {
             Text(ArenaNowJudgment.productQueuedHonestyLine())
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textTertiary)
-            ArenaPremiumAction(title: "Ver execução", tone: .neutral) {
+            ArenaPremiumAction(title: ArenaNowJudgment.productViewExecution, tone: .neutral) {
                 onNavigate(.execution)
             }
             ArenaPremiumOperationalRows(model: model, onNavigate: onNavigate)
@@ -464,7 +464,7 @@ struct ArenaPremiumTerminalView: View {
     private var terminalActions: some View {
         if kind == .stopping {
             ArenaPremiumAction(
-                title: "Parando…",
+                title: ArenaNowJudgment.productStopping,
                 symbol: "hourglass",
                 tone: .active,
                 disabled: true,
@@ -473,16 +473,16 @@ struct ArenaPremiumTerminalView: View {
         } else {
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 12) {
-                    ArenaPremiumAction(title: "Ver resultados", symbol: "chart.xyaxis.line", tone: .neutral) {
+                    ArenaPremiumAction(title: ArenaNowJudgment.productViewResults, symbol: "chart.xyaxis.line", tone: .neutral) {
                         onNavigate(.results)
                     }
-                    ArenaPremiumAction(title: "Rodar novamente", symbol: "arrow.clockwise", tone: .neutral, action: onRun)
+                    ArenaPremiumAction(title: ArenaNowJudgment.productRunAgain, symbol: "arrow.clockwise", tone: .neutral, action: onRun)
                 }
                 VStack(alignment: .leading, spacing: 10) {
-                    ArenaPremiumAction(title: "Ver resultados", symbol: "chart.xyaxis.line", tone: .neutral) {
+                    ArenaPremiumAction(title: ArenaNowJudgment.productViewResults, symbol: "chart.xyaxis.line", tone: .neutral) {
                         onNavigate(.results)
                     }
-                    ArenaPremiumAction(title: "Rodar novamente", symbol: "arrow.clockwise", tone: .neutral, action: onRun)
+                    ArenaPremiumAction(title: ArenaNowJudgment.productRunAgain, symbol: "arrow.clockwise", tone: .neutral, action: onRun)
                 }
             }
         }
@@ -916,7 +916,7 @@ struct ArenaPremiumLoadFailureView: View {
             mode: model.isDomainUnavailable
                 ? .domainUnavailable
                 : .load(
-                    headline: "Não foi possível carregar a medição",
+                    headline: ArenaNowJudgment.productLoadMeasurementFail,
                     message: "A tela não transformou a falha de rede em estado vazio."
                 ),
             layout: .leadingEditorial,
@@ -981,7 +981,7 @@ struct ArenaPremiumOperationalRows: View {
                 ArenaPremiumHairline()
                 ArenaPremiumGlyphRow(
                     glyph: "※",
-                    title: "Alertas",
+                    title: ArenaNowJudgment.productAlerts,
                     detail: alertCount == 1 ? "1 exceção" : "\(alertCount) exceções",
                     tone: .negative,
                     glyphTone: .negative
