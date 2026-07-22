@@ -1175,7 +1175,7 @@ extension ExecutionProof {
                 .accessibilityHidden(true)
             collapsedHeaderSummary
             Spacer(minLength: 0)
-            Text(open ? "Fechar" : "Abrir")
+            Text(open ? AtlasCloseToolbarButton.productTitle : "Abrir")
                 .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }

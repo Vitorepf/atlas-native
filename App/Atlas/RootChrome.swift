@@ -769,7 +769,7 @@ struct AtlasProfileSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(WorkspacePickerJudgment.spokenClose) { dismiss() }
+                    Button(AtlasCloseToolbarButton.productTitle) { dismiss() }
                         .atlasSans(15, .medium)
                         .tint(AtlasTheme.textSecondary)
                 }
@@ -1252,7 +1252,9 @@ struct NavigationInteractivePopEnabler: UIViewControllerRepresentable {
 // MARK: - Close toolbar
 
 struct AtlasCloseToolbarButton: View {
-    var title: String = "Fechar"
+    /// Visible chrome title (product face); a11y uses spokenLabel.
+    static let productTitle = "Fechar"
+    var title: String = productTitle
     let spokenLabel: String
     var spokenHint: String = ""
     var accessibilityID: String? = nil
