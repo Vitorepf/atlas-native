@@ -307,7 +307,7 @@ struct ArenaPremiumNowView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
             ProgressView()
                 .tint(AtlasTheme.accent)
-            Text("Índice, execução e capacidades chegam por contratos independentes.")
+            Text(ArenaNowJudgment.productIndependentContracts)
                 .font(AtlasFont.mono(11))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }

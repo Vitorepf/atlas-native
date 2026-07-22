@@ -266,6 +266,12 @@ enum ArenaNowJudgment {
     static let productArmAbsenceHonesty = "Ausência de um braço permanece não medida."
     static let productCompareEnginesHint = "Escolha 2 ou mais para comparar motor contra motor."
     static let productWhatWeMeasure = "O que vamos medir?"
+
+    static let productMeasureOrderHonesty = "Escolha somente o necessário. A ordem e o progresso aparecem na Arena assim que o servidor confirmar."
+    static let productSuiteIndexCaption = "Índice da suíte · escala 0–10"
+    static let productSuiteAbsentHonesty = "Valores ausentes permanecem não medidos. Comparações só aparecem quando os dois braços foram publicados."
+    static let productIndependentContracts = "Índice, execução e capacidades chegam por contratos independentes."
+    static let productOrderProgressHonesty = "Ordem, estado e progresso confirmados pelo servidor."
     static let productWhereAtlasRises = "Onde o Atlas sobe"
     static let spokenReloadArenaHint = "tenta carregar a Arena de novo"
 

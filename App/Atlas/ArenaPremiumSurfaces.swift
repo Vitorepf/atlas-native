@@ -1582,7 +1582,7 @@ struct ArenaRunSheet: View {
                     Text(ArenaNowJudgment.productWhatWeMeasure)
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text("Escolha somente o necessário. A ordem e o progresso aparecem na Arena assim que o servidor confirmar.")
+                    Text(ArenaNowJudgment.productMeasureOrderHonesty)
                         .font(.system(.callout))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1642,7 +1642,7 @@ struct ArenaRunSheet: View {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             Task { await model.startRuns(inputs: inputs) }
         } label: {
-            Text("Rodar medição")
+            Text(ArenaRunSheetJudgment.productNavTitle)
                 .font(.system(.body, weight: .semibold))
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: 52)
@@ -1732,7 +1732,7 @@ extension ArenaSuiteSheet {
                 Text(ArenaDisplay.engine(engine.engine))
                     .font(AtlasFont.serif(21))
                     .foregroundStyle(AtlasTheme.textPrimary)
-                Text("Índice da suíte · escala 0–10")
+                Text(ArenaNowJudgment.productSuiteIndexCaption)
                     .font(AtlasFont.mono(9))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
@@ -1888,7 +1888,7 @@ extension ArenaSuiteSheet {
                     engineCard(engine)
                     ArenaPremiumHairline()
                 }
-                Text("Valores ausentes permanecem não medidos. Comparações só aparecem quando os dois braços foram publicados.")
+                Text(ArenaNowJudgment.productSuiteAbsentHonesty)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }

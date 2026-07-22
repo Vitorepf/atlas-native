@@ -294,6 +294,8 @@ enum AutonomosListJudgment {
     static let productNoControllableAreas = "O motor não publicou áreas controláveis neste recorte."
     static let productNewUnitScope = "Um escopo fechado. Fica neste iPhone até o create no servidor existir."
     static let productNewUnitLocalOnly = "Não publica frota no servidor. Some se o app for morto."
+    static let productSelfBuildReceipt = "RECIBO DE AUTO-CONSTRUÇÃO"
+    static let productCitedRule = "Regra citada"
     static let productSnapshotNoAgents = "Snapshot publicado sem agentes neste recorte."
     static let spokenLoadFailureRetryHint = "tenta reabrir o catálogo Autônomos"
     static let spokenLoadFailureLead = "Catálogo Autônomos fora de alcance"

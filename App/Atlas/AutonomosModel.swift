@@ -583,7 +583,7 @@ extension SelfConstructionReceiptSheet {
             Image(systemName: "checkmark.seal")
                 .atlasSans(11, .bold)
                 .accessibilityHidden(true)
-            Text("RECIBO DE AUTO-CONSTRUÇÃO")
+            Text(AutonomosListJudgment.productSelfBuildReceipt)
                 .font(AtlasFont.mono(11))
                 .tracking(1.0)
                 .accessibilityHidden(true)
@@ -642,7 +642,7 @@ extension SelfConstructionReceiptSheet {
     @ViewBuilder
     var ruleBlock: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Regra citada")
+            Text(AutonomosListJudgment.productCitedRule)
                 .font(AtlasFont.mono(10))
                 .tracking(0.9)
                 .foregroundStyle(AtlasTheme.textTertiary)
