@@ -278,6 +278,14 @@ enum AutonomosListRowFace: Equatable {
 enum AutonomosListJudgment {
 
     static let productScreenTitle = "Autônomos"
+
+    static let productReturnToList = "Volte à lista e abra de novo."
+    static let productSelfImproved = "O Atlas melhorou o próprio app"
+    static let productMergeProved = "Merge comprovado · toque o recibo"
+    static let productRhythmTitle = "O ritmo do seu dia"
+    static let productRhythmFootnote = "aprendido e guardado só neste iPhone — nada sai do aparelho"
+    static let productEndUnitMessage = "Sai da sua lista. O motor no servidor ainda não liga a isto."
+    static let productNoAreaRegistered = "Nenhuma área registrada"
     static let spokenLoadFailureRetryHint = "tenta reabrir o catálogo Autônomos"
     static let spokenLoadFailureLead = "Catálogo Autônomos fora de alcance"
 

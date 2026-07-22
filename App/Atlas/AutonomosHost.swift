@@ -961,7 +961,7 @@ struct AutonomosAreaBindChooser: View {
 
     private var emptySilence: some View {
         VStack(spacing: 12) {
-            Text("Nenhuma área registrada")
+            Text(AutonomosListJudgment.productNoAreaRegistered)
                 .font(AtlasFont.serif(18, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text("O motor não publicou áreas controláveis neste recorte.")

@@ -110,7 +110,7 @@ struct AutonomosMapShell: View {
             Button(AutonomosReasonJudgment.productEndUnit, role: .destructive) { deleteSelected() }
             Button(AutonomosReasonJudgment.productCancel, role: .cancel) {}
         } message: {
-            Text("Sai da sua lista. O motor no servidor ainda não liga a isto.")
+            Text(AutonomosListJudgment.productEndUnitMessage)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             askPillDock
@@ -231,7 +231,7 @@ extension AutonomosMapShell {
     var missingUnit: some View {
         VStack(alignment: .leading, spacing: 12) {
             AutonomosMapChrome.heroTitle("Autônomo ausente", size: 26)
-            Text("Volte à lista e abra de novo.")
+            Text(AutonomosListJudgment.productReturnToList)
                 .font(AtlasFont.serifItalic(15))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
@@ -361,10 +361,10 @@ extension AutonomosMapShell {
                     .font(AtlasFont.serif(14, .semibold))
                     .foregroundStyle(AtlasTheme.accent)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("O Atlas melhorou o próprio app")
+                    Text(AutonomosListJudgment.productSelfImproved)
                         .font(AtlasFont.serif(15, .semibold))
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text("Merge comprovado · toque o recibo")
+                    Text(AutonomosListJudgment.productMergeProved)
                         .font(AtlasFont.serifItalic(13))
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }
@@ -680,7 +680,7 @@ struct AutonomosRhythmSheet: View {
                 .font(AtlasFont.mono(10, .semibold))
                 .foregroundStyle(AtlasTheme.accent)
                 .kerning(1.2)
-            Text("O ritmo do seu dia")
+            Text(AutonomosListJudgment.productRhythmTitle)
                 .font(AtlasFont.serif(22, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
 
@@ -727,7 +727,7 @@ struct AutonomosRhythmSheet: View {
 
             Spacer(minLength: 0)
 
-            Text("aprendido e guardado só neste iPhone — nada sai do aparelho")
+            Text(AutonomosListJudgment.productRhythmFootnote)
                 .font(AtlasFont.mono(9.5))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
