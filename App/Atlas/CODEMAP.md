@@ -1,6 +1,8 @@
 # Atlas Native — CODEMAP (casca)
 
-> GOD RESTRUCTURE v4 residual. Soft Sections/States = **0**. Density OK (View/Shell≤600 · any≤2000). Vocabulary: `spoken*` · `product*` · `pack*` · `rank*` · `format*`.
+> GOD RESTRUCTURE v4 residual. Soft Sections/States = **0**. Density OK.
+> Vocabulary closed: `spoken*` · `product*` · `pack*` · `rank*` · `format*`.
+> Hard-coded a11y/nav/kickers largely lifted into judgments.
 
 ## Superfícies → host
 
@@ -13,18 +15,18 @@
 | Autônomos | `AutonomosHost` · Map · Model · CanDo/FleetRun/Organs Judgments |
 | Workspace/Search | `WorkspaceSurface` · `SearchSurface` |
 | Review/Plan/Exec | `ChangeReview*` · `PlanCard` · `ExecutionStateCard` · `ArtifactSheet` |
-| Continuity | `TurnPresence` · Widgets Host A/B · Activity attributes |
+| Continuity | `TurnPresence` · Widgets Host A/B |
 
 ## Onde muda X
 
 | X | Host |
 |---|---|
-| LiveNow | `LiveNowJudgment` · `RootHomeBody` |
-| Home nightly | `HomeNightlyJudgment` |
+| Home kickers / LiveNow | `HomeOpsJudgment` · `RootHomeBody` · `LiveNowJudgment` |
+| Nightly | `HomeNightlyJudgment` |
 | Mid-thread / steer / outline | `ConversationSurface` · Messages/Steer/Outline Judgments |
 | Composer | `ConversationComposer` · `ComposerToolbar` |
 | Execution / Plan | `ExecutionStateCard` · `PlanCard` |
-| Change review | `ChangeReviewSurface` · Judgment · Body · Governance |
+| Change review | `ChangeReviewSurface` · Control/Sheet/Risk Judgments · Body |
 | Radar / Provenance / Graph | `AtlasCodeRadarSurface` · ProvenanceSheet · Graph · Surface |
 | Arena | `ArenaPremiumRoot` · Surfaces · Fleet/Live/Control |
 | Autônomos | `AutonomosHost` · Map · CanDo/FleetRun/Organs |
