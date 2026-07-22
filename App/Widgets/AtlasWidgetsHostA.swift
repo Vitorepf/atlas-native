@@ -10,6 +10,11 @@ import ActivityKit
 // MARK: - Types
 
 enum LiveSessionWidgetA11y {
+    static let productFollow = "Seguir"
+    static let productLiveSessionKicker = "✦ Sessão viva"
+    static let productSilence = "silêncio na obra"
+    static func productSeen(_ age: String) -> String { "visto \(age)" }
+
     static func spokenSilenceDetail(_ snapshot: AtlasNativeSnapshot) -> String {
         guard let delivery = snapshot.fleet?.lastDelivery else {
             return "nenhuma sessão viva agora"
@@ -300,7 +305,7 @@ extension LiveSessionWidgetView {
 
 extension LiveSessionWidgetView {
     var liveSessionFollowChip: some View {
-        Text("Seguir")
+        Text(LiveSessionWidgetA11y.productFollow)
             .font(.system(size: 12, weight: .semibold, design: .serif))
             .foregroundStyle(Ink.bg)
             .padding(.horizontal, 12)
@@ -313,12 +318,12 @@ extension LiveSessionWidgetView {
 extension LiveSessionWidgetView {
     func liveSessionHeader(stale: Bool, age: String) -> some View {
         HStack {
-            Text("✦ Sessão viva")
+            Text(LiveSessionWidgetA11y.productLiveSessionKicker)
                 .font(.system(size: 14, weight: .semibold, design: .serif))
                 .accessibilityHidden(true)
             Spacer()
             if stale {
-                Text("visto \(age)")
+                Text(LiveSessionWidgetA11y.productSeen(age))
                     .font(.system(size: 10, design: .monospaced))
                     .foregroundStyle(Ink.alert)
                     .accessibilityHidden(true)
@@ -330,7 +335,7 @@ extension LiveSessionWidgetView {
 extension LiveSessionWidgetView {
     @ViewBuilder
     func liveSessionSilenceBody(_ snapshot: AtlasNativeSnapshot) -> some View {
-        Text("silêncio na obra")
+        Text(LiveSessionWidgetA11y.productSilence)
             .font(.system(size: 17, weight: .semibold, design: .serif))
             .accessibilityHidden(true)
         Text(LiveSessionWidgetA11y.spokenSilenceDetail(snapshot))
@@ -394,6 +399,17 @@ extension LiveSessionWidgetTimer {
 // MARK: - Types
 
 enum FleetWidgetA11y {
+    static let productFleetKicker = "✦ Frota"
+    static let productFleetIntact = "frota íntegra"
+    static let productFleetUnread = "frota não lida"
+    static let productFleetAttention = "atenção na frota"
+    static let productOpenAtlas = "abra o Atlas"
+    static let productAtlasKicker = "✦ Atlas"
+    static let productWeekKicker = "✦ Semana"
+    static let productQuietWeek = "semana quieta · sem commits nem curas"
+    static let productWeekUnpublished = "semana ainda não publicada"
+    static let productDone = "concluído"
+
     static func spokenIncidentLine(_ incident: AtlasNativeSnapshot.Fleet.Incident?) -> String? {
         LockAccessoryA11y.spokenIncidentLine(incident)
     }
@@ -631,7 +647,7 @@ extension FleetWidgetView {
 
 extension FleetWidgetView {
     func fleetStaleLineText(age: String) -> some View {
-        Text("visto \(age)")
+        Text(LiveSessionWidgetA11y.productSeen(age))
             .font(.system(size: 10, weight: .semibold, design: .monospaced))
             .foregroundStyle(Ink.alert)
     }
@@ -650,7 +666,7 @@ extension FleetWidgetView {
     @ViewBuilder
     func fleetHeader(stale: Bool, age: String) -> some View {
         HStack {
-            Text("✦ Frota")
+            Text(FleetWidgetA11y.productFleetKicker)
                 .font(.system(size: 14, weight: .semibold, design: .serif))
             Spacer()
             fleetHeaderStaleLine(stale: stale, age: age)
@@ -661,7 +677,7 @@ extension FleetWidgetView {
 extension FleetWidgetView {
     @ViewBuilder
     func fleetHealthyScanned(_ snapshot: AtlasNativeSnapshot, scanned: Date) -> some View {
-        Text("frota íntegra")
+        Text(FleetWidgetA11y.productFleetIntact)
             .font(.system(size: 18, weight: .semibold, design: .serif))
             .foregroundStyle(Ink.healed)
         Text("varrida \(scanned.relativeShort(to: entry.date))")
@@ -672,7 +688,7 @@ extension FleetWidgetView {
 
 extension FleetWidgetView {
     var fleetHealthyUnread: some View {
-        Text("frota não lida")
+        Text(FleetWidgetA11y.productFleetUnread)
             .font(.system(size: 18, weight: .semibold, design: .serif))
             .foregroundStyle(Ink.ink2)
     }
@@ -702,7 +718,7 @@ extension FleetWidgetView {
     @ViewBuilder
     func fleetStateIncidentPresent(_ snapshot: AtlasNativeSnapshot) -> some View {
         if snapshot.fleet?.incident?.present == true {
-            Text("atenção na frota")
+            Text(FleetWidgetA11y.productFleetAttention)
                 .font(.system(size: 16, weight: .semibold, design: .serif))
                 .foregroundStyle(Ink.alert)
                 .lineLimit(2)
@@ -902,7 +918,7 @@ extension LockAccessorySnapshotView {
 
 extension LockAccessorySnapshotView {
     var lockAccessoryEmpty: some View {
-        Text("abra o Atlas")
+        Text(FleetWidgetA11y.productOpenAtlas)
     }
 }
 
@@ -1060,7 +1076,7 @@ extension LockAccessorySnapshotView {
 extension LockAccessorySnapshotView {
     @ViewBuilder
     func rectangularQuietStaleSubtitle(_ snapshot: AtlasNativeSnapshot) -> some View {
-        Text("visto \(snapshot.ageText(at: entry.date))")
+        Text(LiveSessionWidgetA11y.productSeen(snapshot.ageText(at: entry.date)))
             .font(.system(size: 11, design: .monospaced))
             .foregroundStyle(Ink.alert)
     }
@@ -1216,7 +1232,7 @@ extension CodeWeekWidgetView {
     @ViewBuilder
     func weekHeaderStaleLine(stale: Bool, age: String) -> some View {
         if stale {
-            Text("visto \(age)")
+            Text(LiveSessionWidgetA11y.productSeen(age))
                 .font(.system(size: 10, weight: .semibold, design: .monospaced))
                 .foregroundStyle(Ink.alert)
         }
@@ -1227,7 +1243,7 @@ extension CodeWeekWidgetView {
     @ViewBuilder
     func weekHeaderTitleRow(week: AtlasNativeSnapshot.Week) -> some View {
         HStack {
-            Text("✦ Semana")
+            Text(FleetWidgetA11y.productWeekKicker)
                 .font(.system(size: 14, weight: .semibold, design: .serif))
             Spacer()
             Text(week.window)
@@ -1292,7 +1308,7 @@ extension CodeWeekWidgetView {
 extension CodeWeekWidgetView {
     @ViewBuilder
     func weekQuietBranch() -> some View {
-        Text("semana quieta · sem commits nem curas")
+        Text(FleetWidgetA11y.productQuietWeek)
             .font(.system(size: 16, weight: .semibold, design: .serif))
             .foregroundStyle(Ink.ink2)
             .lineLimit(2)
@@ -1313,15 +1329,15 @@ extension CodeWeekWidgetView {
 extension CodeWeekWidgetView {
     var unpublishedWeek: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("✦ Semana")
+            Text(FleetWidgetA11y.productWeekKicker)
                 .font(.system(size: 14, weight: .semibold, design: .serif))
-            Text("semana ainda não publicada")
+            Text(FleetWidgetA11y.productWeekUnpublished)
                 .font(.system(size: 16, weight: .semibold, design: .serif))
                 .foregroundStyle(Ink.ink2)
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("semana ainda não publicada")
+        .accessibilityLabel(FleetWidgetA11y.productWeekUnpublished)
     }
 }
 
@@ -1408,7 +1424,7 @@ struct AtlasTurnIslandCompactTrailing: View {
         case .finished:
             Image(systemName: "checkmark").font(.system(size: 11, weight: .bold))
                 .foregroundStyle(Ink.healed)
-                .accessibilityLabel("concluído")
+                .accessibilityLabel(FleetWidgetA11y.productDone)
         case .paused:
             if let badge = context.state.phaseBadge {
                 Text(badge)
@@ -1490,7 +1506,7 @@ struct AtlasTurnIslandTrailing: View {
         case .finished:
             Image(systemName: "checkmark.circle.fill")
                 .foregroundStyle(Ink.healed).padding(.trailing, 6)
-                .accessibilityLabel("concluído")
+                .accessibilityLabel(FleetWidgetA11y.productDone)
         case .paused, .multiSession, .running:
             if let badge = context.state.phaseBadge {
                 Text(badge)
@@ -1632,7 +1648,7 @@ struct LockScreenView: View {
         if context.state.glanceFace == .finished {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 22)).foregroundStyle(Ink.healed)
-                .accessibilityLabel("concluído")
+                .accessibilityLabel(FleetWidgetA11y.productDone)
         } else if context.state.showsGlanceTimer {
             AtlasTurnWidgetTimer(
                 startedAt: context.state.startedAt,
@@ -1818,10 +1834,10 @@ struct SnapshotContainer<Content: View>: View {
 struct InstallPromptView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("✦ Atlas")
+            Text(FleetWidgetA11y.productAtlasKicker)
                 .font(.system(size: 18, weight: .semibold, design: .serif))
                 .foregroundStyle(Ink.gold)
-            Text("abra o Atlas")
+            Text(FleetWidgetA11y.productOpenAtlas)
                 .font(.system(size: 15, weight: .semibold, design: .serif))
                 .foregroundStyle(Ink.ink)
         }
