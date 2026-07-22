@@ -3,10 +3,10 @@
 ## State
 
 ```yaml
-pass: 676
-domain_index: 6
-last_focus: "continuous residual soft-hold pass 676"
-session_commits: 323
+pass: 677
+domain_index: 7
+last_focus: "CODEMAP residual truth pass 677"
+session_commits: 325
 soft_sections_states: 0
 swift_App_Atlas: 46
 swift_Widgets: 2
@@ -14,7 +14,7 @@ swift_Widgets: 2
 
 ## Scoreboard
 
-commits **323** · soft **0** · density OK · 46+2 · gates green
+commits **325** · soft **0** · density OK · 46+2 · gates green
 
 ## Continuous residual
 
