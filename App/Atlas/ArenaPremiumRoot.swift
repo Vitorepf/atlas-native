@@ -166,7 +166,7 @@ struct ArenaPremiumShell: View {
 extension AtlasArenaView {
     func arenaLifecycleA11y<Content: View>(_ content: Content) -> some View {
         content
-            .navigationTitle("Arena")
+            .navigationTitle(ArenaNowJudgment.productScreenTitle)
             .navigationBarTitleDisplayMode(.inline)
     }
 }

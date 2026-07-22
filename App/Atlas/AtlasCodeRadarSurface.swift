@@ -199,7 +199,7 @@ extension AtlasCodeRadarView {
     @ViewBuilder
     func radarNavShell<Content: View>(_ content: Content) -> some View {
         content
-            .navigationTitle("Código")
+            .navigationTitle(AtlasCodeRadarLoadJudgment.productScreenTitle)
             .navigationBarTitleDisplayMode(.inline)
             .task { if model.phase == .idle { await model.load() } }
             .refreshable { await model.load() }
@@ -1158,6 +1158,7 @@ enum AtlasCodeRadarScreenFace: Equatable {
 enum AtlasCodeRadarLoadJudgment {
 
     static let spokenShellHint = "pastas, recentes e sem retorno verificados do seu código"
+    static let productScreenTitle = "Código"
     static let spokenReconnectHint = "reconecta ao servidor Atlas"
 
     static func face(
