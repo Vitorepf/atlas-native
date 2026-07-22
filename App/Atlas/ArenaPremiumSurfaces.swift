@@ -218,7 +218,7 @@ struct ArenaPremiumAlertsView: View {
     private var blockers: some View {
         if let blockers = model.report?.claimBlockers, !blockers.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
-                ArenaPremiumKicker(text: "Publicação bloqueada")
+                ArenaPremiumKicker(text: ArenaNowJudgment.productPublicationBlocked)
                 ForEach(blockers, id: \.self) { blocker in
                     HStack(spacing: 8) {
                         ArenaPremiumIcon(
@@ -281,7 +281,7 @@ struct ArenaPremiumResultsView: View {
                 resultHeader(engine)
                 resultMetrics(engine)
                 if !engine.history.isEmpty {
-                    ArenaPremiumKicker(text: "Índice por rodada")
+                    ArenaPremiumKicker(text: ArenaNowJudgment.productIndexByRound)
                     ArenaCompositeChart(engine: engine, reduceMotion: reduceMotion)
                         .frame(height: 190)
                 }
@@ -371,7 +371,7 @@ struct ArenaPremiumResultsView: View {
 
     private var suiteList: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ArenaPremiumKicker(text: "Por suíte")
+            ArenaPremiumKicker(text: ArenaNowJudgment.productBySuite)
                 .padding(.bottom, 8)
             ForEach(model.scoreboard?.suites ?? []) { suite in
                 Button { onSuite(suite) } label: {
@@ -694,7 +694,7 @@ struct ArenaPremiumCapabilityDetail: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(text: "Capacidade medida · escala 0–10")
+            ArenaPremiumKicker(text: ArenaNowJudgment.productMeasuredCapabilityScale)
                         .accessibilityIdentifier(A11yID.arenaPremiumCapabilityDetail)
                     Text(capability.labelPt)
                         .font(AtlasFont.serif(34))
@@ -752,7 +752,7 @@ struct ArenaPremiumCapabilityDetail: View {
 
     private var contribution: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ArenaPremiumKicker(text: "Suítes que contribuíram")
+            ArenaPremiumKicker(text: ArenaNowJudgment.productContributingSuites)
                 .padding(.bottom, 10)
             ArenaPremiumHairline()
             ForEach(capability.suitesContributing, id: \.self) { suite in
@@ -776,7 +776,7 @@ struct ArenaPremiumCapabilityDetail: View {
 
     private var provenance: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ArenaPremiumKicker(text: "Proveniência")
+            ArenaPremiumKicker(text: ArenaNowJudgment.productProvenance)
             // "denominador" é jargão de estatístico — português direto.
             Text("\(capability.casesTotal.map(String.init) ?? "—") casos somados na conta publicada")
                 .font(AtlasFont.mono(10))
@@ -1069,7 +1069,7 @@ struct ArenaPremiumStopSheet: View {
                     symbol: ArenaPremiumIconography.stop,
                     tone: valid && !isConfirmed ? .negative : .muted
                 )
-                Text(model.isStoppingMeasurement ? "Solicitando…" : ArenaStopJudgment.productConfirm)
+                Text(model.isStoppingMeasurement ? ArenaStopJudgment.productRequesting : ArenaStopJudgment.productConfirm)
             }
                 .font(.system(.body, weight: .semibold))
                 .frame(maxWidth: .infinity, minHeight: 50)
@@ -1119,9 +1119,9 @@ struct ArenaPremiumPlanView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ArenaPremiumKicker(text: "Ordem de medição")
+            ArenaPremiumKicker(text: ArenaNowJudgment.productMeasureOrder)
                 .accessibilityIdentifier(A11yID.arenaPremiumPlan)
-            Text("Plano")
+            Text(ArenaNowJudgment.productPlan)
                 .font(AtlasFont.serif(36))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityValue(planFace.productWord)
@@ -1578,7 +1578,7 @@ struct ArenaRunSheet: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
                 VStack(alignment: .leading, spacing: 8) {
-                    ArenaPremiumKicker(text: "Nova medição", tone: .active)
+                    ArenaPremiumKicker(text: ArenaNowJudgment.productNewMeasurement, tone: .active)
                     Text(ArenaNowJudgment.productWhatWeMeasure)
                         .font(AtlasFont.serif(34))
                         .foregroundStyle(AtlasTheme.textPrimary)
@@ -1606,7 +1606,7 @@ struct ArenaRunSheet: View {
     var planPreview: some View {
         if !selectedSuites.isEmpty, !selectedEngines.isEmpty, !selectedArms.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
-                ArenaPremiumKicker(text: "Plano")
+                ArenaPremiumKicker(text: ArenaNowJudgment.productPlan)
                 Text(
                     "\(selectedEngines.count) \(selectedEngines.count == 1 ? "motor" : "motores") · "
                         + "\(selectedSuites.count) \(selectedSuites.count == 1 ? "suíte" : "suítes") · "
@@ -1762,7 +1762,7 @@ extension ArenaSuiteSheet {
             ArenaPremiumHairline()
             engineEvidence(engine)
             if !engine.history.isEmpty {
-                ArenaPremiumKicker(text: "Histórico")
+                ArenaPremiumKicker(text: ArenaNowJudgment.productHistory)
                 engineHistorySparkline(engine)
             }
         }

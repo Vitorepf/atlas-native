@@ -345,7 +345,7 @@ struct ArenaPremiumRunningView: View {
 
     private var identity: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ArenaPremiumKicker(text: "Ao vivo", tone: .active, showsLiveMark: true)
+            ArenaPremiumKicker(text: ArenaNowJudgment.productLive, tone: .active, showsLiveMark: true)
                 .accessibilityIdentifier(A11yID.arenaPremiumState("running"))
             Text(engineTitle)
                 .font(AtlasFont.serif(31))
@@ -387,7 +387,7 @@ struct ArenaPremiumRunningView: View {
                 Text(ArenaNowJudgment.productConfirmedCasesLabel)
                     .font(AtlasFont.mono(11))
                     .foregroundStyle(AtlasTheme.textSecondary)
-                Text("\(progress.remaining) restantes")
+                Text(ArenaNowJudgment.productRemaining(progress.remaining))
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.top, 2)
@@ -493,7 +493,7 @@ struct ArenaPremiumRunDetailView: View {
 
     private var casesBlock: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Casos")
+            Text(ArenaNowJudgment.productCases)
                 .font(AtlasFont.mono(10, .medium))
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
@@ -611,13 +611,7 @@ struct ArenaPremiumDestinationView: View {
     }
 
     private var title: String {
-        switch target {
-        case .execution: "Execução"
-        case .plan: "Plano"
-        case .queue: "Fila"
-        case .alerts: "Alertas"
-        case .results: "Motor"
-        }
+        ArenaPremiumAskContext.productDestination(target)
     }
 }
 
@@ -837,11 +831,11 @@ enum ArenaPremiumAskContext {
 
     static func productDestination(_ d: ArenaPremiumDestination) -> String {
         switch d {
-        case .execution: "Execução"
-        case .plan: "Plano"
-        case .queue: "Fila"
-        case .alerts: "Alertas"
-        case .results: "Motor"
+        case .execution: ArenaNowJudgment.productExecution
+        case .plan: ArenaNowJudgment.productPlan
+        case .queue: ArenaNowJudgment.productQueue
+        case .alerts: ArenaNowJudgment.productAlerts
+        case .results: ArenaNowJudgment.productMotor
         }
     }
 

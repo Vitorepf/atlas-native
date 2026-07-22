@@ -47,6 +47,7 @@ enum ArenaStopJudgment {
     static let productActorPlaceholder = "quem autoriza"
     static let productReasonPlaceholder = "por que parar agora"
     static let productConfirm = "Confirmar parada"
+    static let productRequesting = "Solicitando…"
     static let spokenClose = "fechar confirmação"
     static let spokenCloseHint = "mantém a medição em execução"
     static let spokenConfirmHint = "envia a parada governada com operador e motivo"

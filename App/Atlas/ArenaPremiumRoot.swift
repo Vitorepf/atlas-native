@@ -342,7 +342,7 @@ struct ArenaPremiumIdleView: View {
             ArenaPremiumAction(title: ArenaRunSheetJudgment.productNavTitle, symbol: "play.fill", action: onRun)
             if model.arenaPrimaryEngine != nil {
                 ArenaPremiumHairline()
-                ArenaPremiumKicker(text: "Último resultado")
+                ArenaPremiumKicker(text: ArenaNowJudgment.productLastResult)
                 ArenaPremiumDisclosureRow(
                     title: ArenaDisplay.engine(model.arenaPrimaryEngine?.engine ?? "motor"),
                     detail: model.arenaCoverageText,
