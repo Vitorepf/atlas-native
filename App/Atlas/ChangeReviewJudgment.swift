@@ -471,6 +471,7 @@ enum ChangeReviewSheetFace: Equatable {
 enum ChangeReviewSheetJudgment {
 
     static let spokenSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
+    static let productTitle = "Revisar mudanças"
     static let spokenClose = "fechar revisão de mudanças"
     static let spokenCloseHint = "volta para a conversa"
     static let spokenDiffToggleHint = "mostra ou oculta o conteúdo do diff para este patch"

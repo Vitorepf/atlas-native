@@ -1702,7 +1702,7 @@ struct AutonomosNewSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    AutonomosMapChrome.heroTitle("Novo Autônomo", size: 28)
+                    AutonomosMapChrome.heroTitle(AutonomosListJudgment.productCreateCTA, size: 28)
                     Text("Um escopo fechado. Fica neste iPhone até o create no servidor existir.")
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)

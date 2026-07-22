@@ -538,7 +538,7 @@ extension ExecutionStateCard {
 
 extension ExecutionStateCard {
     var retryFallbackLabel: some View {
-        Text("Retomar")
+        Text(ExecutionStateCardJudgment.productRetry)
             .font(AtlasFont.mono(10, .semibold))
             .padding(.horizontal, 11).padding(.vertical, 8)
             .frame(maxWidth: .infinity)
@@ -769,6 +769,7 @@ enum ExecutionStateCardJudgment {
         return (facts, absences)
     }
 
+    static let productRetry = "Retomar"
     static let spokenRetry = "retomar execução a partir do último checkpoint"
     static let spokenRetryHint = "reenfileira o job que falhou"
 }

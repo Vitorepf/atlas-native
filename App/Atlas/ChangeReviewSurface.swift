@@ -182,7 +182,7 @@ extension ChangeReviewSheet {
             // Fundo como .background: destrava o scroll-edge material da barra.
             content
                 .background(AtlasTheme.bg.ignoresSafeArea())
-            .navigationTitle("Revisar mudanças")
+            .navigationTitle(ChangeReviewSheetJudgment.productTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { reviewToolbar }
             .overlay(alignment: .top) { ChangeReviewToast(reviews: reviews, reduceMotion: reduceMotion) }
