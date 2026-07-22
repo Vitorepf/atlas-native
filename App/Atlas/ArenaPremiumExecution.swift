@@ -180,7 +180,7 @@ struct ArenaPremiumExecutionView: View {
         .accessibilityLabel(
             "\(ArenaDisplay.suite(run.suite)), \(run.arm?.labelPT ?? ""), \(ArenaRunStatusJudgment.rowTrailing(run))"
         )
-        .accessibilityHint("Abre os casos desta corrida")
+        .accessibilityHint(ArenaSuiteJudgment.spokenCasesHint)
     }
 
     private var statusLabel: String {

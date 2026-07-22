@@ -196,7 +196,7 @@ extension ConversationComposer {
             .padding(.bottom, expanded ? 0 : 8)
             .transition(reduceMotion ? .identity : .opacity)
             .accessibilityLabel(queueAccessibilityLabel)
-            .accessibilityHint("abre a folha para enviar agora ou remover da fila")
+            .accessibilityHint(ComposerQueueJudgment.spokenManageHint)
             .accessibilityValue(
                 ComposerQueueJudgment.face(from: model.queuedMessages).productWord
             )

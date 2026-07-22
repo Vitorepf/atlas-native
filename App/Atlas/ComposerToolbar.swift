@@ -844,6 +844,8 @@ enum ComposerQueueFace: Equatable {
 /// Does **not** re-order FIFO (model owns promote/remove).
 enum ComposerQueueJudgment {
 
+    static let spokenManageHint = "abre a folha para enviar agora ou remover da fila"
+
     static func face(from messages: [QueuedMessage]) -> ComposerQueueFace {
         switch messages.count {
         case 0: return .empty

@@ -465,7 +465,7 @@ struct AutonomosRhythmLearningLine: View {
                 paused: nightly.isProposalMuted
             ).productWord
         )
-        .accessibilityHint("mostra o que o Atlas aprendeu do seu dia")
+        .accessibilityHint(NightlyProposalJudgment.spokenRhythmLineHint)
         .accessibilityIdentifier(A11yID.autonomosRhythmLine)
         .sheet(isPresented: $rhythmSheetShown) {
             AutonomosRhythmSheet(windows: windows)
@@ -1602,6 +1602,8 @@ enum AutonomosDecisionJudgment {
     static func productPrimaryCTA(count: Int) -> String {
         count == 1 ? "Ver 1 decisão" : "Ver \(count) decisões"
     }
+
+    static let spokenOpenDecisionHint = "abre o julgamento desta decisão"
 
     static func productRowMeta(_ item: AutonomosDecisionItem) -> String {
         let risk = item.riskLevel.trimmingCharacters(in: .whitespacesAndNewlines)

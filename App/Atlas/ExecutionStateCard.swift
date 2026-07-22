@@ -175,7 +175,7 @@ extension ExecutionStateCard {
         ))
         .accessibilityIdentifier(A11yID.executionActionChoice(action.id))
         .accessibilityLabel(action.title)
-        .accessibilityHint("ação declarada pelo servidor")
+        .accessibilityHint(ExecutionProofJudgment.spokenServerActionHint)
     }
 }
 
@@ -1412,6 +1412,7 @@ enum ExecutionProofFace: Equatable {
 enum ExecutionProofJudgment {
 
     static let productOpen = "Abrir"
+    static let spokenServerActionHint = "ação declarada pelo servidor"
 
     static func hasDecisionSurface(_ d: AtlasDecisionSummary) -> Bool {
         d.selectedProvider != nil

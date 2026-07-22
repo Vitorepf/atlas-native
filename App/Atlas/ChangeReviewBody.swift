@@ -394,7 +394,7 @@ extension ChangeReviewPatchCard {
             Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
                 .font(AtlasFont.mono(11, .medium)).foregroundStyle(AtlasTheme.accent)
                 .accessibilityLabel(ChangeReviewJudgment.spokenDiffToggle(expanded: diffExpanded))
-                .accessibilityHint("mostra ou oculta o conteúdo do diff para este patch")
+                .accessibilityHint(ChangeReviewSheetJudgment.spokenDiffToggleHint)
                 .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
         }
     }
@@ -618,7 +618,7 @@ extension ChangeReviewFileRow {
         .buttonStyle(PressableScale())
         .font(AtlasFont.mono(10, .medium)).foregroundStyle(AtlasTheme.accent)
         .accessibilityLabel(ChangeReviewJudgment.spokenAcceptPatch(displayName))
-        .accessibilityHint("registra aceite deste arquivo no patch")
+        .accessibilityHint(ChangeReviewSheetJudgment.spokenAcceptFileHint)
         .accessibilityIdentifier(A11yID.reviewFileAccept(patchId: patch.id, filePath: file))
     }
 }
@@ -674,7 +674,7 @@ extension ChangeReviewFileRow {
         .buttonStyle(PressableScale())
         .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
         .accessibilityLabel(ChangeReviewJudgment.spokenRejectPatch(displayName))
-        .accessibilityHint("registra rejeição deste arquivo no patch")
+        .accessibilityHint(ChangeReviewSheetJudgment.spokenRejectFileHint)
         .accessibilityIdentifier(A11yID.reviewFileReject(patchId: patch.id, filePath: file))
     }
 }

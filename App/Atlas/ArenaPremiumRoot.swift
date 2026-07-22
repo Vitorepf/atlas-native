@@ -155,7 +155,7 @@ struct ArenaPremiumShell: View {
                     .foregroundStyle(AtlasTheme.textPrimary)
             }
             .accessibilityLabel(ArenaStartJudgment.productNewMeasurement)
-            .accessibilityHint("Escolhe motores, suítes e braços")
+            .accessibilityHint(ArenaRunSheetJudgment.spokenStartHint)
             .accessibilityIdentifier(A11yID.arenaPremiumAdd)
         }
     }

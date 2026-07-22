@@ -1431,7 +1431,7 @@ extension EditorialTurn {
         }
         .buttonStyle(PressableScale())
         .accessibilityLabel(EditorialTurnJudgment.spokenEditResend)
-        .accessibilityHint("abre o compositor com este texto para um novo envio")
+        .accessibilityHint(EditorialTurnJudgment.spokenEditResendHint)
     }
 }
 
@@ -1640,4 +1640,5 @@ enum EditorialTurnJudgment {
     }
 
     static let spokenEditResend = "editar esta mensagem e reenviar como novo turno"
+    static let spokenEditResendHint = "abre o compositor com este texto para um novo envio"
 }

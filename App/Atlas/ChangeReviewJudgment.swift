@@ -473,6 +473,9 @@ enum ChangeReviewSheetJudgment {
     static let spokenSheetHint = "aceitar ou rejeitar só com ações publicadas pelo servidor"
     static let spokenClose = "fechar revisão de mudanças"
     static let spokenCloseHint = "volta para a conversa"
+    static let spokenDiffToggleHint = "mostra ou oculta o conteúdo do diff para este patch"
+    static let spokenAcceptFileHint = "registra aceite deste arquivo no patch"
+    static let spokenRejectFileHint = "registra rejeição deste arquivo no patch"
 
     static func face(
         loadFinished: Bool,

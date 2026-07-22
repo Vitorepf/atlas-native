@@ -700,7 +700,7 @@ extension SteerInteractionSheet {
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.surface))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.separator, lineWidth: 1))
             .accessibilityIdentifier(A11yID.steerInstruction)
-            .accessibilityHint("descreve o que deve mudar na execução")
+            .accessibilityHint(ConversationMessagesJudgment.spokenSteerFieldHint)
     }
 }
 
@@ -939,7 +939,7 @@ extension QueuedFollowUpsSheet {
         content
             .accessibilityIdentifier(A11yID.queueSheet)
             .accessibilityLabel(spokenQueueSheetLabel())
-            .accessibilityHint("promover ou remover só mensagens reais da fila do model")
+            .accessibilityHint(ConversationMessagesJudgment.spokenQueueManageHint)
     }
 }
 

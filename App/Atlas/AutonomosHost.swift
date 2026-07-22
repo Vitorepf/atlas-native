@@ -271,7 +271,7 @@ extension AutonomosViewHeader {
                 .atlasGlassCircle()
         }
         .accessibilityLabel(AutonomosListJudgment.productCreateCTA)
-        .accessibilityHint("Cria um Autônomo com nome e carta")
+        .accessibilityHint(AutonomosListJudgment.spokenCreateHint)
         .accessibilityIdentifier(A11yID.autonomosNew)
     }
 }
@@ -1023,7 +1023,7 @@ struct AutonomosAreaBindChooser: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(AutonomosAreaBindJudgment.spokenChooserRow(area))
-        .accessibilityHint("liga o loop a esta área")
+        .accessibilityHint(AutonomosAreaBindJudgment.spokenBindRowHint)
         .accessibilityIdentifier(A11yID.autonomosAreaBindRow(area.id))
     }
 }
@@ -1515,7 +1515,7 @@ extension AutonomosDecisionSurface {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(AutonomosDecisionJudgment.spokenItem(item))
-        .accessibilityHint("abre o julgamento desta decisão")
+        .accessibilityHint(AutonomosDecisionJudgment.spokenOpenDecisionHint)
         .accessibilityIdentifier("\(A11yID.autonomosDecision)-\(item.id)")
     }
 

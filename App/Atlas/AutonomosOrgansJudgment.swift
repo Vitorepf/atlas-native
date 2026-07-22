@@ -284,6 +284,7 @@ enum AutonomosListJudgment {
         "Create no servidor ainda pendente — sem frota 24/7 inventada."
     static let productEmptyHero = "Nenhum ainda"
     static let productCreateCTA = "Novo Autônomo"
+    static let spokenCreateHint = "Cria um Autônomo com nome e carta"
 
     // MARK: Face
 

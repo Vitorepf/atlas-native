@@ -1127,6 +1127,7 @@ enum ArtifactListJudgment {
     static let loadFailSpoken = "não foi possível consultar artefatos"
     static let spokenSelectedHint = "selecionado no preview"
     static let spokenOpenHint = "abre o preview deste artefato"
+    static let spokenDiffSwipeHint = "arraste horizontalmente para ler o diff"
 
     // MARK: Face
 
@@ -1227,7 +1228,7 @@ extension ArtifactPreviewContent {
         .frame(maxHeight: 360)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(ArtifactPreviewJudgment.spokenPreview(item: item))
-        .accessibilityHint("arraste horizontalmente para ler o diff")
+        .accessibilityHint(ArtifactListJudgment.spokenDiffSwipeHint)
     }
 }
 

@@ -846,6 +846,7 @@ enum ArenaSuiteJudgment {
     static let spokenClose = "fechar detalhes da suite"
     static let spokenCloseHint = "volta para a Arena"
     static let spokenSheetHint = "scores, casos e duração só quando o servidor publica"
+    static let spokenCasesHint = "Abre os casos desta corrida"
 
     /// Regressed first → measured score desc → wire-stable.
     static func rank(_ engines: [AtlasArenaSuiteEngine]) -> [AtlasArenaSuiteEngine] {
