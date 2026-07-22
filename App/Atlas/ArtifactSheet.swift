@@ -1127,6 +1127,7 @@ enum ArtifactListJudgment {
     static let productNoneThisRun = "Sem artefatos nesta execução."
     static func productTooLargeSubtitle(_ size: String) -> String { "grande demais para visualizar aqui · \(size)" }
     static func productDecodeFailSubtitle(_ size: String) -> String { "imagem não pôde ser decodificada · \(size)" }
+    static func productSizeSha(size: String, shaPrefix: String) -> String { "\(size) · sha \(shaPrefix)" }
     static let productAssemblyKicker = "MONTAGEM"
     static let spokenCloseHint = "volta para a conversa"
     static let spokenSheetHint = "lista e preview só com itens publicados no contrato"
@@ -1330,7 +1331,7 @@ extension ArtifactPreviewContent {
     var textishFilePreview: some View {
         ArtifactFileFicha(
             name: item.name,
-            subtitle: "\(ArtifactViewer.formatByteSize(item.byteSize)) · sha \(String(item.sha256.prefix(12)))"
+            subtitle: ArtifactListJudgment.productSizeSha(size: ArtifactViewer.formatByteSize(item.byteSize), shaPrefix: String(item.sha256.prefix(12)))
         )
     }
 }
