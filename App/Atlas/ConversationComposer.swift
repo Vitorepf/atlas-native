@@ -62,14 +62,6 @@ extension ConversationComposer {
         Task { await model.send(text, effort: effort) }
     }
 
-    func dismissKeyboard() {
-        AtlasMotion.softImpact(reduceMotion: reduceMotion)
-        if reduceMotion {
-            focused.wrappedValue = false
-        } else {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) { focused.wrappedValue = false }
-        }
-    }
 }
 
 // MARK: - Card surface

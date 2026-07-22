@@ -718,8 +718,4 @@ enum ChangeReviewControlJudgment {
         absences.append(nlNeverAppliesAbsence)
         return (facts, absences)
     }
-
-    /// Spoken run CTA labels — one law with face buttons.
-    static func spokenRunAccept() -> String { productAcceptRun.lowercased() }
-    static func spokenRunReject() -> String { productRejectRun.lowercased() }
 }

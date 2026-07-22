@@ -1420,15 +1420,6 @@ enum ArtifactPreviewJudgment {
         face(preview, selectedName: selectedName).spokenFace
     }
 
-    /// Loaded content spoken — kind-aware lines (WAVE-100 · was ArtifactViewerA11y).
-    static func spokenLoaded(
-        item: AtlasTraceArtifacts.Item,
-        content: AtlasArtifactContent
-    ) -> String {
-        _ = content
-        return spokenPreview(item: item)
-    }
-
     // MARK: Viewer chrome spoken (WAVE-100)
 
     static func spokenFicha(name: String, subtitle: String) -> String {

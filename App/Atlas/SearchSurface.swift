@@ -1212,10 +1212,6 @@ enum LiveTimelineFilterJudgment {
         return .active
     }
 
-    static func spokenSectionLabel(stepCount: Int) -> String {
-        "orquestra ao vivo, \(stepCount) passo\(stepCount == 1 ? "" : "s")"
-    }
-
     static func spokenFilterChip(
         filter: TimelineReadFilter,
         count: Int,

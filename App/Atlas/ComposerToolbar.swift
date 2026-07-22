@@ -43,16 +43,6 @@ extension ComposerToolbar {
         )
     }
 
-    func spokenSendLabel(canSubmit: Bool) -> String {
-        // Prefer face grammar; keep canSubmit for call sites still passing bool.
-        if canSubmit != sendFace.allowsSend {
-            return sendFace.spokenLabel
-        }
-        return sendFace.spokenLabel
-    }
-}
-
-extension ComposerToolbar {
     func spokenSendHint(canSubmit: Bool) -> String {
         _ = canSubmit
         return sendFace.spokenHint
@@ -97,12 +87,6 @@ extension ComposerToolbar {
     func spokenProcessingLabel() -> String {
         ComposerEffortJudgment.spokenProcessing
     }
-}
-
-extension ComposerToolbar {
-    func spokenSendHintBlocked() -> String { sendFace.spokenHint }
-
-    func spokenSendHintReady() -> String { sendFace.spokenHint }
 }
 
 extension AttachmentStrip {

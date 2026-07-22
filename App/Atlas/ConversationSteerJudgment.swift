@@ -343,12 +343,6 @@ enum ConversationExecutionPhase {
         }
     }
 
-    /// Timer honesty: missing ms → nil (caller shows “—” or silence), never 0:00.
-    static func honestClock(ms: Int?) -> String? {
-        guard let ms, ms >= 0 else { return nil }
-        return AtlasTime.formatActiveDuration(milliseconds: ms)
-    }
-
     // MARK: - WAVE-027 primary chrome + presence-ongoing selection
 
     /// Primary kicker = spoken face words (strip / card / LiveNow lead).
