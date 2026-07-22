@@ -614,8 +614,6 @@ extension CodeBlockView {
 
 // MARK: - Judgment
 
-// MARK: - Judgment
-
 /// Pure markdown block spoken grammar (WAVE-103).
 /// Casca only — never invents plain text or language labels.
 enum AtlasMarkdownJudgment {

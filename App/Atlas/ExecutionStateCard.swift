@@ -651,8 +651,6 @@ struct ExecutionStateActionStyle: ButtonStyle {
 
 // MARK: - Judgment
 
-// MARK: - Judgment
-
 /// Pure StateCard chrome grammar for `AtlasExecutionPresentationState.Kind`
 /// (WAVE-052). One map: icon · badge · spoken · tint · freezesTimer.
 enum ExecutionStateCardJudgment {

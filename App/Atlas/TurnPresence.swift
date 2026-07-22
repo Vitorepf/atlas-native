@@ -69,8 +69,6 @@ final class TurnPresence {
 
 // MARK: - Judgment
 
-// MARK: - Judgment
-
 /// Pure turn-presence away-notification grammar (WAVE-102).
 /// Casca only — no UNUserNotificationCenter / UIKit side effects here.
 enum TurnPresenceJudgment {
