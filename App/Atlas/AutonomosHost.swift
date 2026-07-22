@@ -602,7 +602,7 @@ struct AutonomosDigestSurface: View {
                 if let digest {
                     digestBody(digest)
                 } else {
-                    Text("Digest não publicado neste recorte. Nada inventado.")
+                    Text(AutonomosListJudgment.productDigestUnpublished)
                         .font(AtlasFont.serifItalic(15))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -672,7 +672,7 @@ struct AutonomosDigestSurface: View {
         }
 
         if pending.isEmpty && risks.isEmpty && delivered.isEmpty {
-            Text("Janela sem itens publicados. Silêncio honesto.")
+            Text(AutonomosListJudgment.productWindowEmpty)
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.top, 8)
@@ -793,7 +793,7 @@ struct AutonomosIncidentSurface: View {
                 .accessibilityLabel(AutonomosTaskHealthJudgment.spokenSignal(flag))
             }
         } else if face.productWord == "quiet" {
-            Text("Nenhum flag de incidente neste recorte.")
+            Text(AutonomosListJudgment.productNoIncidentFlag)
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }

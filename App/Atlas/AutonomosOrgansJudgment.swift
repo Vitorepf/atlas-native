@@ -286,6 +286,11 @@ enum AutonomosListJudgment {
     static let productRhythmFootnote = "aprendido e guardado só neste iPhone — nada sai do aparelho"
     static let productEndUnitMessage = "Sai da sua lista. O motor no servidor ainda não liga a isto."
     static let productNoAreaRegistered = "Nenhuma área registrada"
+
+    static let productDigestUnpublished = "Digest não publicado neste recorte. Nada inventado."
+    static let productWindowEmpty = "Janela sem itens publicados. Silêncio honesto."
+    static let productNoIncidentFlag = "Nenhum flag de incidente neste recorte."
+    static let productSnapshotNoAgents = "Snapshot publicado sem agentes neste recorte."
     static let spokenLoadFailureRetryHint = "tenta reabrir o catálogo Autônomos"
     static let spokenLoadFailureLead = "Catálogo Autônomos fora de alcance"
 

@@ -530,7 +530,7 @@ struct AutonomosFleetStrip: View {
             }
 
             if agents.isEmpty {
-                Text("Snapshot publicado sem agentes neste recorte.")
+                Text(AutonomosListJudgment.productSnapshotNoAgents)
                     .font(AtlasFont.serifItalic(13))
                     .foregroundStyle(AtlasTheme.textTertiary)
             } else {

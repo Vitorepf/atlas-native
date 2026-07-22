@@ -399,6 +399,7 @@ enum NightlyProposalJudgment {
     static let spokenAcceptHint = "abre o ensaio governado da missão noturna"
     static let spokenDismissLabel = "hoje não"
     static let productUnmute = "Reativar propostas noturnas"
+    static let productFleetWhileRest = "A frota pode continuar enquanto você descansa."
     static let spokenDismissHint = "descarta a proposta em silêncio, sem confirmação"
     static let spokenMuteMenuLabel = "pausar propostas noturnas"
     static let spokenMuteMenuHint =
@@ -550,7 +551,7 @@ extension NightlyProposalCard {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHidden(true)
-            Text("A frota pode continuar enquanto você descansa.")
+            Text(NightlyProposalJudgment.productFleetWhileRest)
                 .font(AtlasFont.serifItalic(14))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)

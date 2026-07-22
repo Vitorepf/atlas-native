@@ -528,7 +528,7 @@ struct NewSinceLastVisitMarker: View {
         HStack(spacing: 8) {
             Rectangle().fill(AtlasTheme.accent.opacity(0.65)).frame(height: 1)
                 .accessibilityHidden(true)
-            Text("NOVO DESDE ÚLTIMA VISITA")
+            Text(ComposerSheetJudgment.productNewSinceLastVisitKicker)
                 .font(AtlasFont.mono(10))
                 .tracking(1.1)
                 .foregroundStyle(AtlasTheme.accent)
@@ -1513,6 +1513,7 @@ enum ComposerSheetJudgment {
     }
 
     static let spokenNewSinceLastVisit = "novo desde a última visita"
+    static let productNewSinceLastVisitKicker = "NOVO DESDE ÚLTIMA VISITA"
 
     static func packFacts(
         modeKey: String?,
