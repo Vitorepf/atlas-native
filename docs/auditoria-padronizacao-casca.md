@@ -91,6 +91,67 @@ retorno da lista.
 | `Capsule().fill+stroke` de seleção | 2 call sites idênticos | **corrigido** (`atlasChipSelection`) |
 | fade de borda em fila horizontal | 6 `ScrollView(.horizontal)`, 0 com máscara | **corrigido** (`atlasScrollEdgeFade`) |
 
+## 4B. Performance — varredura de O(n²) (27/07)
+
+O operador sentiu no device o que a auditoria não via: *"navego e demora mais
+de 10 segundos, principalmente na tela de grafos"*. Causa medida:
+
+```swift
+// ANTES — computed, O(violações × nós), lida 3× por linha por state(for:)
+var violatingHashes: Set<String> {
+    for violation in violations.violations {
+        for node in graph.nodes where matches(node, target: violation.target) { … }
+```
+
+Com 200 commits e 40 violações: **4.800.000 comparações para desenhar a tela
+uma vez**, refeitas a cada scroll e a cada toque. Agora é cache com 4 pontos
+de invalidação. Medido revertendo e remedindo: **abertura 6,06s → 1,73s**.
+
+### A varredura completa, para ninguém otimizar no lugar errado
+
+Depois do conserto, varri a casca inteira pelo MESMO padrão — computed com
+loop dentro de struct que é linha de lista:
+
+```bash
+# structs que são linha (Row|Card|Cell|Chip|Item) com computed que itera
+```
+
+17 candidatos. Medidos um a um, **nenhum é da mesma classe**:
+
+| Caso | Ops por render | vs Grafo |
+|---|---:|---:|
+| `violatingHashes` (corrigido) | 4.800.000 | — |
+| `ChangeReviewFileRow.decided` | ~2.500 | 1.900× menor |
+| `AtlasCodeFolderRow.judgmentFolderRepos` | 54 | 88.000× menor |
+| `AtlasCodeFolderRow.verifiedExceptionCount` | 54 | 88.000× menor |
+
+O Grafo era único por combinar três coisas: loop **duplo**, sobre a lista
+**inteira**, dentro de property lida **por linha**. Os demais iteram coleções
+pequenas (repos de uma pasta, reviews de um patch) e `issues(for:)` é lookup
+de dicionário, O(1).
+
+**Não "otimize" os outros.** Cachear 54 operações adiciona estado e
+invalidação para ganhar nada — e estado que pode dessincronizar é pior que
+54 comparações.
+
+### Abertura medida por superfície
+
+`AtlasSurfacePerfTests` mede e falha acima de 3s:
+
+| Superfície | Abertura |
+|---|---:|
+| Arena · capacidades | 1,37s |
+| Arena · frota | 1,38s |
+| Arena · motor | 1,40s |
+| Código · grafo | 1,75s (era 6,06s) |
+| Conversas livres | 1,80s |
+| Arena | 1,80s |
+| Código · radar | **2,25s** ← o mais lento hoje |
+
+O que este número **não** prova: mede abertura, não fluidez — o swipe do
+XCUITest é sintético e não sente hitch de rolagem; e roda no simulador, que
+tem mais folga que o iPhone.
+
 ## 5. Boilerplate do pack agêntico — 100+ repetições
 
 ```bash
