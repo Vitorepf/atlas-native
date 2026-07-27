@@ -94,4 +94,49 @@ final class AtlasSurfacePerfTests: XCTestCase {
             "superfícies acima de \(limite)s: \(lentas.joined(separator: " · "))"
         )
     }
+
+    /// Mede 1ª vs 2ª visita ao radar.
+    ///
+    /// ACHADO (27/07): as duas dão ~2,3s. O cache de estrutura (TTL 90s) passou
+    /// a ser pintado na entrada — correto em si, evita rede à toa — mas **não
+    /// era o gargalo**. Os ~2,2s são montagem da árvore de UI do radar
+    /// (recentes + pastas + avulsos), não a chamada de rede.
+    ///
+    /// O limite abaixo existe para pegar REGRESSÃO, não para celebrar a meta:
+    /// se alguém achar como cortar a montagem, aperte o número.
+    func testRadarRevisitUsesCache() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launch()
+
+        let code = app.buttons[A11yID.topbarCode]
+        XCTAssertTrue(code.waitForExistence(timeout: 45), "barra precisa expor o Código")
+
+        let repoCard = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "identifier BEGINSWITH %@", A11yID.radarRepoPrefix))
+            .firstMatch
+
+        // 1ª visita: rede.
+        let t1 = Date()
+        code.tap()
+        XCTAssertTrue(repoCard.waitForExistence(timeout: 30), "radar precisa abrir na 1ª visita")
+        let primeira = Date().timeIntervalSince(t1)
+
+        // Volta pela borda: as superfícies escondem a nav bar.
+        app.swipeRight()
+        XCTAssertTrue(code.waitForExistence(timeout: 20), "precisa voltar para a home")
+
+        // 2ª visita: deve vir do cache de 90s.
+        let t2 = Date()
+        code.tap()
+        XCTAssertTrue(repoCard.waitForExistence(timeout: 30), "radar precisa reabrir")
+        let segunda = Date().timeIntervalSince(t2)
+
+        print(String(format: "RADAR · 1ª %.2fs · 2ª %.2fs", primeira, segunda))
+        // Não exige < 1s: seria afirmar uma meta que a montagem da UI não
+        // cumpre hoje. Exige que a revisita não seja PIOR que a primeira —
+        // o que denunciaria cache quebrado ou trabalho repetido.
+        XCTAssertLessThan(segunda, primeira + 0.5, "revisita não pode custar mais que a primeira")
+        XCTAssertLessThan(segunda, 3.0, "radar acima de 3s parece travado")
+    }
 }

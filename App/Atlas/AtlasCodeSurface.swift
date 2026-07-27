@@ -1659,7 +1659,16 @@ final class AtlasCodeWorkspaceModel {
     }
 
     func load() async {
-        phase = .loading
+        // O cache de 90s já era respeitado por loadStructure(), mas o radar
+        // entrava por aqui e ignorava: a tela ficava ~2,2s em branco tendo a
+        // estrutura na mão. Pinta o que já se sabe e revalida por baixo — o
+        // scan continua indo à rede, então o dado não congela.
+        if let cached = AtlasCodeWorkspaceCache.peek() {
+            workspace = cached
+            phase = .loaded
+        } else {
+            phase = .loading
+        }
         do {
             let response = try await client.getCodeWorkspace()
             AtlasCodeWorkspaceCache.store(response)
@@ -1667,7 +1676,9 @@ final class AtlasCodeWorkspaceModel {
             phase = .loaded
             await scan(response.recents.map(\.slug))
         } catch {
-            phase = .failed(String(describing: error))
+            // Com estrutura em tela, uma falha de revalidação não pode apagá-la
+            // — só o estado vazio vira falha.
+            if workspace == nil { phase = .failed(String(describing: error)) }
         }
     }
 
