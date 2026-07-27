@@ -121,9 +121,12 @@ extension ConversationMessages {
             changeReviewChipLabel
         }
         .buttonStyle(PressableScale())
+        // Sem o `!`: o dicionário é @Observable e pode perder a chave entre a
+        // decisão de mostrar o chip e o render deste label — crash no caminho
+        // de ACESSIBILIDADE, o mais silencioso de todos.
         .accessibilityLabel(
             ConversationMessagesJudgment.spokenChangeReview(
-                patchCount: model.reviews.changeReviewsByTrace[trace]!.patches.count
+                patchCount: model.reviews.changeReviewsByTrace[trace]?.patches.count ?? 0
             )
         )
         .accessibilityHint(ConversationMessagesJudgment.spokenChangeReviewHint)
