@@ -1038,6 +1038,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-27 · Fable 5 · **refactor(ui) — régua visual FECHADA: fonte 47→27, padding 34→20 (todos pares)** · `8827ffc4` · +`f6a39737` +`6af074be`. Regra legível no CODEMAP: *ímpar é bug*. **Prova:** checks+build exit 0; tour 10/10 contra o atlas-backend real; 35 telas em `docs/evidence/2026-07-26-tour-design-fable/depois`. **DEVICE-PENDING** (iPhone com senha).
+- 2026-07-27 · Fable 5 · **fix(infra) — atlas-backend e atlas-queue fora do crash-loop** · `atlas-server@760f4d356` · volume anônimo de `bootstrap/cache` com manifesto de providers congelado em 25/mai enquanto o provider é de 24/jul. Não era imagem velha: o compose monta `- .:/app`. Resposta 1–3s → **0,02s**. KB: `atlas-bootstrap-cache-volume-trap.md`.
 - 2026-07-27 · Fable 5 · **refactor(ui) — régua visual: 47→28 tamanhos de fonte, 34→28 paddings** · `6af074be` · App/Atlas + CODEMAP + OBRA §3. Fecha a contradição fusão-vs-split da §3 (coesão, não contagem). Migração só de saltos ≤1pt. **Prova:** checks+build exit 0; tour 10/10, 35 telas conferidas. **DEVICE-PENDING**.
 - 2026-07-27 · Fable 5 · **docs — auditoria de padronização medida + fusão da cor de alerta** · `704705b9` · `AtlasTheme.alert` ≡ `AtlasCodePalette.alert` era o mesmo hex duas vezes. Auditoria em `docs/auditoria-padronizacao-casca.md`.
 - 2026-07-27 · Fable 5 · **refactor(ui) — um nome por coisa em acessibilidade + vocabulário documentado** · `014592aa` · "identificador" tinha 3 nomes e o helper 2 sufixos. CODEMAP passa a definir `product*`/`spoken*`/`productWord`.
