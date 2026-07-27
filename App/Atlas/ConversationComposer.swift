@@ -44,7 +44,9 @@ struct ConversationComposer: View {
     }
 
     var composerFadeBackground: some View {
-        LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
+        // Mesmo véu do dock da pílula: a linha de texto acima do rodapé some
+        // do MESMO jeito em toda superfície.
+        AtlasTheme.bottomVeil()
             .ignoresSafeArea()
             .accessibilityHidden(true)
     }

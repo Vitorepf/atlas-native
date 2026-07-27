@@ -169,12 +169,8 @@ extension RootView {
 
 extension RootView {
     var inputBarBackground: some View {
-        LinearGradient(
-            colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .ignoresSafeArea()
+        // Terceiro consumidor do mesmo véu (dock, composer, pílula da home).
+        AtlasTheme.bottomVeil().ignoresSafeArea()
     }
 }
 
@@ -294,18 +290,7 @@ struct AgenticAskDock<Pill: View>: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // 28pt não bastava: a linha imediatamente acima da pílula ainda
-            // aparecia meio-legível e lia como conteúdo cortado.
-            LinearGradient(
-                stops: [
-                    .init(color: AtlasTheme.bg.opacity(0), location: 0),
-                    .init(color: AtlasTheme.bg.opacity(0.75), location: 0.45),
-                    .init(color: AtlasTheme.bg, location: 0.85),
-                    .init(color: AtlasTheme.bg, location: 1),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            AtlasTheme.bottomVeil()
             .frame(height: 52)
             .allowsHitTesting(false)
             pill()

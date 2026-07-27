@@ -919,6 +919,26 @@ extension AtlasTheme {
 }
 
 extension AtlasTheme {
+    /// Véu que separa a lista do que ancora no rodapé (dock da pílula,
+    /// composer). Um só, porque dois fades com curvas diferentes fazem a mesma
+    /// linha de texto sumir de dois jeitos em telas vizinhas.
+    ///
+    /// A curva sobe rápido de propósito: com transição linear o conteúdo
+    /// ficava meio-legível sob o rodapé e lia como texto cortado, não como
+    /// "continua ali embaixo".
+    static func bottomVeil() -> LinearGradient {
+        LinearGradient(
+            stops: [
+                .init(color: AtlasTheme.bg.opacity(0), location: 0),
+                .init(color: AtlasTheme.bg.opacity(0.75), location: 0.45),
+                .init(color: AtlasTheme.bg, location: 0.85),
+                .init(color: AtlasTheme.bg, location: 1),
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
     static let textPrimary = Color(hex: 0xD6DDE2)
     static let textSecondary = Color(hex: 0x95A3AC)
     static let textTertiary = Color(hex: 0x677482)

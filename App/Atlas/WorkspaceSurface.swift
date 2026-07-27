@@ -155,7 +155,8 @@ extension WorkspaceView {
         .accessibilityIdentifier(A11yID.workspaceNewPill)
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.top, 28).padding(.bottom, 6)
         .background(
-            LinearGradient(colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg, AtlasTheme.bg], startPoint: .top, endPoint: .bottom)
+            // Quarto e último consumidor do véu compartilhado.
+            AtlasTheme.bottomVeil()
                 .ignoresSafeArea()
         )
     }

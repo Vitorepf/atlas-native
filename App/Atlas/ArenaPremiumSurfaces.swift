@@ -112,10 +112,14 @@ struct ArenaPremiumFleetView: View {
             return CGFloat(min(Swift.max(value / ceiling, 0), 1))
         }()
         return HStack(spacing: 10) {
+            // 44pt cabia "sem"; com o par canônico "sem Atlas"/"com Atlas" o
+            // rótulo quebrava em duas linhas e desalinhava as barras.
             Text(label)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
-                .frame(width: 44, alignment: .leading)
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(width: 64, alignment: .leading)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
