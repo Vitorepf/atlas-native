@@ -11,3 +11,15 @@ App/build/
 
 # Xcode build/index de simulador — nunca versionar
 App/build-sim/
+
+# Diretórios de build NUNCA podem nascer dentro das pastas de fonte: o
+# project.yml varre App/Atlas e App/UITests inteiros, então um build-sim ou
+# .xcresult ali dentro entra no target do app e quebra o build com
+# "Multiple commands produce Info.plist". Sempre use -derivedDataPath a
+# partir de App/, nunca de dentro de App/Atlas ou App/UITests.
+App/Atlas/build*/
+App/Atlas/*.xcresult
+App/UITests/build*/
+App/UITests/*.xcresult
+App/Widgets/build*/
+App/Widgets/*.xcresult
