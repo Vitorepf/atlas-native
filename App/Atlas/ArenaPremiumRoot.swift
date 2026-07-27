@@ -1082,7 +1082,9 @@ struct ArenaCompositeChart: View {
     let engine: AtlasArenaCompositeEngine
     let reduceMotion: Bool
 
-    var interpolation: InterpolationMethod { reduceMotion ? .linear : .catmullRom }
+    /// `catmullRom` faz overshoot: com 3–5 rodadas ele desenhava picos e vales
+    /// que a medição não tem. Monotone passa pelos pontos sem inventar nada.
+    var interpolation: InterpolationMethod { .monotone }
 
     var body: some View {
         Chart {
@@ -1092,6 +1094,16 @@ struct ArenaCompositeChart: View {
         .chartXAxis(.hidden)
         .chartYScale(domain: fittedYDomain)
         .chartYAxis { AxisMarks(position: .leading) }
+        // A cor precisa vir da escala, não de foregroundStyle solto: é a
+        // escala que a legenda lê para casar nome com traço.
+        // Ouro e ouro-65% não se distinguem num traço de 2pt nem na legenda.
+        .chartForegroundStyleScale([
+            Self.seriesComposite: AtlasTheme.accent,
+            ArenaNowJudgment.productWithAtlas: AtlasTheme.prussian,
+            ArenaNowJudgment.productWithoutAtlas: AtlasTheme.textSecondary,
+        ])
+        // Sem folga no topo o rótulo do eixo era decepado pela borda.
+        .padding(.top, 10)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ArenaSuiteJudgment.spokenCompositeChart(engine))
     }
@@ -1104,33 +1116,37 @@ struct ArenaCompositeChart: View {
         return max(0, lo - pad) ... min(1, hi + pad)
     }
 
+    static let seriesComposite = "composto"
+
     @ChartContentBuilder
     var historyMarks: some ChartContent {
-        ForEach(engine.history) { point in
+        // Sem `series` a linha do composto não entrava na legenda — o
+        // operador via três traços e nenhum nome.
+        ForEach(Array(engine.history.enumerated()), id: \.offset) { index, point in
             if let composite = point.composite {
-                LineMark(x: .value("rodada", point.roundAt), y: .value("composto", composite))
-                    .foregroundStyle(AtlasTheme.accent)
-                    .interpolationMethod(interpolation)
+                seriesLine(round: index, value: composite, series: Self.seriesComposite)
             }
             if let withAtlas = point.withAtlas {
-                LineMark(
-                    x: .value("rodada", point.roundAt),
-                    y: .value("com Atlas", withAtlas),
-                    series: .value("série", "com Atlas")
-                )
-                .foregroundStyle(AtlasTheme.accent.opacity(0.65))
-                .interpolationMethod(interpolation)
+                seriesLine(round: index, value: withAtlas, series: ArenaNowJudgment.productWithAtlas)
             }
             if let withoutAtlas = point.withoutAtlas {
-                LineMark(
-                    x: .value("rodada", point.roundAt),
-                    y: .value("sem Atlas", withoutAtlas),
-                    series: .value("série", "sem Atlas")
-                )
-                .foregroundStyle(AtlasTheme.textSecondary)
-                .interpolationMethod(interpolation)
+                seriesLine(round: index, value: withoutAtlas, series: ArenaNowJudgment.productWithoutAtlas)
             }
         }
+    }
+
+    /// O eixo é a ORDEM da rodada, não o carimbo: rodadas distintas chegam com
+    /// o mesmo `roundAt` e, plotadas no tempo, colapsavam no mesmo X — o
+    /// Charts então ligava os dois valores com um segmento vertical, que lia
+    /// como salto instantâneo que nunca existiu.
+    func seriesLine(round: Int, value: Double, series: String) -> some ChartContent {
+        LineMark(
+            x: .value("rodada", round),
+            y: .value("escore", value),
+            series: .value("série", series)
+        )
+        .foregroundStyle(by: .value("série", series))
+        .interpolationMethod(interpolation)
     }
 }
 
