@@ -3,8 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: WorkspaceSurface + WorkspaceView entry fused
 
-// MARK: - Surface
-
 // MARK: - Host
 
 extension WorkspaceView {
@@ -171,8 +169,6 @@ extension WorkspaceView {
         return HomeAskContext.productInvite
     }
 }
-
-// MARK: - Body
 
 // MARK: - Thread rows
 extension WorkspaceThreadsSection {
@@ -433,8 +429,6 @@ struct WorkspaceView: View {
     }
 }
 
-// MARK: - Thread row
-
 // MARK: - Row host
 
 struct ThreadRow: View {
@@ -574,8 +568,6 @@ struct ThreadRow: View {
         }
     }
 }
-
-// MARK: - AtlasWorkspacePickerSheet
 
 // MARK: - Host
 
@@ -756,10 +748,6 @@ extension AtlasWorkspacePickerSheet {
     }
 }
 
-// MARK: - WorkspaceJudgment
-
-// MARK: - WorkspaceJudgment
-
 // MARK: - Types
 
 /// Exclusive Workspace screen face (WAVE-073).
@@ -878,8 +866,6 @@ enum WorkspaceJudgment {
         return (facts, absences)
     }
 }
-// MARK: - WorkspaceEmptyJudgment
-
 // MARK: - Types
 
 /// Exclusive workspace editorial-empty face (WAVE-078).
@@ -1261,8 +1247,6 @@ enum WorkspaceAskContext {
     /// Nova conversa livre (sem workspace) — distinta da Home partida.
     static let productFreeInvite = "Escreva livremente"
 }
-// MARK: - WorkspacePickerJudgment
-
 // MARK: - Types
 
 /// Exclusive workspace-picker sheet face (WAVE-097).
@@ -1436,8 +1420,6 @@ enum WorkspacePickerJudgment {
         return (facts, absences)
     }
 }
-// MARK: - WorkspaceThreadJudgment
-
 // MARK: - Workspace / Search catalog judgment (WAVE-032)
 
 /// Pure live-first ranking for thread catalogs — parity with LiveNow attention.

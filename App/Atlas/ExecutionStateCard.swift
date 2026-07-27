@@ -151,8 +151,6 @@ extension ExecutionStateCard {
         steerButton
     }
 }
-// MARK: - Body
-
 // MARK: - Host
 
 extension ExecutionStateCard {
@@ -184,7 +182,6 @@ extension ExecutionStateCard {
         }
     }
 }
-
 
 // MARK: - Helpers
 
@@ -784,10 +781,6 @@ enum ExecutionStateCardJudgment {
     static let spokenRetryHint = "reenfileira o job que falhou"
 }
 
-// MARK: - ExecutionProof
-
-// MARK: - Host
-
 // MARK: - Types / Inputs
 
 struct ExecutionProof: View {
@@ -906,8 +899,6 @@ extension ExecutionProof {
         }
     }
 }
-
-// MARK: - Body
 
 // MARK: - Expanded content
 
@@ -1142,8 +1133,6 @@ extension ExecutionProof {
     }
 }
 
-// MARK: - Chrome
-
 // MARK: - Chrome / gates
 
 extension ExecutionProof {
@@ -1361,8 +1350,6 @@ struct ExecutionRibbon: View {
         }
     }
 }
-
-// MARK: - ExecutionProofJudgment
 
 // MARK: - Types
 
@@ -1587,8 +1574,6 @@ enum ExecutionProofJudgment {
         return (facts, absences)
     }
 
-
-    // MARK: - Chrome spoken
     // MARK: - WAVE-082 quality · activity · replay absence
 
     static func productQualityLineFlags(_ q: AtlasQualitySummary, base: String) -> String {

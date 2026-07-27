@@ -269,8 +269,6 @@ enum ChangeReviewJudgment {
         }
     }
 
-
-    // MARK: - Chrome spoken
     // MARK: Run actions (WAVE post · run CTA chrome)
 
     static let spokenApplying = "registrando decisão"
@@ -439,8 +437,6 @@ enum ChangeReviewJudgment {
 
 }
 
-// MARK: - ChangeReviewSheetJudgment
-
 // MARK: - Types
 
 /// Exclusive change-review sheet load face (WAVE-063).
@@ -571,8 +567,6 @@ enum ChangeReviewSheetJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - ChangeReviewControlJudgment
 
 // MARK: - Types
 

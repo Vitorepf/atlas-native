@@ -4,10 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — live/now/score/start/suite
 
-// MARK: - ArenaLiveJudgment
-
-// MARK: - ArenaLiveControlJudgment
-
 // MARK: - Types
 
 /// Exclusive Arena live-control face (WAVE-050).
@@ -199,8 +195,6 @@ enum ArenaLiveControlJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - ArenaNowJudgment
 
 // MARK: - Types
 
@@ -409,7 +403,6 @@ enum ArenaNowJudgment {
         }
     }
 
-    
     static let productStoppingTitle = "Parada solicitada"
     static let productStoppingSubtitle = "Finalizando o caso atual"
     static let productStoppedTitle = "Medição parada"
@@ -663,8 +656,6 @@ enum ArenaScoreJudgment {
     }
 }
 
-// MARK: - ArenaStartJudgment
-
 // MARK: - Types
 
 /// Exclusive Arena start-submit face (WAVE-055).
@@ -879,8 +870,6 @@ enum ArenaStartJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - ArenaSuiteJudgment
 
 // MARK: - Types
 

@@ -5,8 +5,6 @@ import ActivityKit
 
 // GOD-RESTRUCTURE: TurnPresence fused
 
-// MARK: - TurnPresence
-
 // MARK: - Presence
 
 extension TurnPresence {
@@ -44,7 +42,6 @@ extension TurnPresence {
         entries[ObjectIdentifier(model)]?.visible = visible
     }
 }
-
 
 @Observable @MainActor
 final class TurnPresence {
@@ -370,8 +367,6 @@ extension TurnPresence {
     }
 
 }
-
-
 
 #if canImport(ActivityKit)
 #endif

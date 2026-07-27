@@ -4,10 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — organs task/transfer/list/hub
 
-// MARK: - AutonomosOrgansJudgment
-
-// MARK: - AutonomosTaskHealthJudgment
-
 // MARK: - Task health / incident judgment (WAVE-036)
 
 enum AutonomosTaskHealthFace: Equatable {
@@ -168,8 +164,6 @@ enum AutonomosTaskHealthJudgment {
         "observado em \(observedAt)"
     }
 }
-// MARK: - AutonomosTransferJudgment
-
 // MARK: - Mission transfer handoff (WAVE-035)
 
 /// Pure judgment for Autônomos mission transfer — never invents target worker.
@@ -230,8 +224,6 @@ enum AutonomosTransferJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - AutonomosListJudgment
 
 // MARK: - Types
 
@@ -475,8 +467,6 @@ enum AutonomosListJudgment {
         return (facts, absences, anchors)
     }
 }
-
-// MARK: - AutonomosHubJudgment
 
 // MARK: - Types
 

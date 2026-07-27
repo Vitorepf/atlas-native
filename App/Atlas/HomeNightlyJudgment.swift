@@ -340,8 +340,6 @@ extension NightlyProposalController {
 
 }
 
-// MARK: - Judgment
-
 // MARK: - Types
 
 /// Exclusive nightly proposal organ face (WAVE-070).
@@ -461,8 +459,6 @@ enum NightlyProposalJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - NightlyProposalCard
 
 // MARK: - Host
 
@@ -631,4 +627,3 @@ extension NightlyProposalCard {
         NightlyProposalJudgment.spokenMuteOptionHint
     }
 }
-

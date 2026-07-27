@@ -3,10 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: Autonomos host surfaces fused (file not route shell density)
 
-// MARK: - AutonomosView
-
-// MARK: - View
-
 // MARK: - Host
 
 struct AutonomosView: View {
@@ -576,8 +572,6 @@ struct AutonomosListView: View {
         }
     }
 }
-// MARK: - AutonomosDigestSurface
-
 // MARK: - Digest / moment surface (WAVE-038)
 
 /// One domain: scheduled digest window → delivered · risks · pending.
@@ -703,8 +697,6 @@ struct AutonomosDigestSurface: View {
         .accessibilityLabel(AutonomosDigestJudgment.spokenRow(title: title, meta: meta))
     }
 }
-// MARK: - AutonomosIncidentSurface
-
 // MARK: - Incident / task-health surface (WAVE-036)
 
 /// One domain: published task health → incident/pressure/quiet faces.
@@ -1072,10 +1064,6 @@ struct AutonomosAreaBindCTA: View {
     }
 }
 
-// MARK: - AutonomosHubView
-
-// MARK: - Hub
-
 // MARK: - Hub host
 
 struct AutonomosHubView: View {
@@ -1381,8 +1369,6 @@ enum AutonomosHubVestment: Equatable {
     }
 }
 
-// MARK: - AutonomosDecisionSurface
-
 // MARK: - Surface
 
 /// Decisions organ (WAVE-026) — one domain: published backlog → face → decide.
@@ -1686,8 +1672,6 @@ extension AutonomosDecisionSurface {
         }
     }
 }
-
-// MARK: - AutonomosSheets
 
 // MARK: - New sheet
 

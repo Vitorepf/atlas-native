@@ -210,8 +210,6 @@ extension RootView {
 
 // MARK: - AgenticPill
 
-// MARK: - AgenticPill
-
 struct AgenticPillFace<Trailing: View>: View {
     let invite: String
     @ViewBuilder var trailing: () -> Trailing
@@ -375,8 +373,6 @@ struct AgenticOccasionPack: Equatable {
         return lines.joined(separator: "\n")
     }
 }
-
-// MARK: - ConversationView
 
 // MARK: - Host
 

@@ -151,4 +151,3 @@ extension AtlasSession {
         UserDefaults.standard.bool(forKey: nightlyAutoPausedKey)
     }
 }
-

@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — governance
 
-// MARK: - ChangeReviewGovernance
-
 // MARK: - Body
 
 // WAVE-013 fused ChangeReviewView+Sections.swift
@@ -255,7 +253,6 @@ struct ChangeReviewGovernanceSection: View {
         governanceTraceGate
     }
 }
-
 
 extension ChangeReviewGovernanceSection {
     @ViewBuilder

@@ -4,10 +4,6 @@ import PhotosUI
 
 // GOD-RESTRUCTURE: ComposerToolbar + SheetPrimitives fused
 
-// MARK: - Toolbar
-
-// MARK: - ComposerToolbar
-
 // MARK: - Host
 
 struct ComposerToolbar: View {
@@ -178,8 +174,6 @@ extension AttachmentStrip {
         uploadProgressA11y(uploadProgressRow(p), percent: p)
     }
 }
-
-// MARK: - Chrome body / sections
 
 // MARK: - Attachment strip
 extension AttachmentStrip {
@@ -596,10 +590,6 @@ struct CameraPicker: UIViewControllerRepresentable {
     }
 }
 
-// MARK: - ComposerToolbarJudgment
-
-// MARK: - ComposerToolbarJudgment
-
 // MARK: - Judgment
 
 /// Pure composer toolbar chrome grammar (WAVE-091).
@@ -685,8 +675,6 @@ enum ComposerToolbarJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ComposerEffortJudgment
-
 // MARK: - Types
 
 /// Exclusive composer effort face (WAVE-076).
@@ -811,8 +799,6 @@ enum ComposerEffortJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ComposerQueueJudgment
-
 // MARK: - Types
 
 /// Exclusive follow-up queue face (WAVE-051). FIFO order is sacred.
@@ -941,8 +927,6 @@ enum ComposerQueueJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ComposerSendJudgment
-
 // MARK: - Types
 
 /// Exclusive composer send readiness face (WAVE-046).
@@ -1125,8 +1109,6 @@ enum ComposerSendJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ComposerDraftJudgment
-
 // MARK: - Types
 
 /// Exclusive composer attachment-strip face (WAVE-086).
@@ -1382,10 +1364,7 @@ extension ComposerDraftJudgment {
         "\(title), \(subtitle)"
     }
 
-
 }
-// MARK: - ComposerSheetJudgment
-
 // MARK: - Types
 
 /// Exclusive composer local-mode face (WAVE-081).

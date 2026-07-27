@@ -4,8 +4,6 @@ import PhotosUI
 
 // GOD-RESTRUCTURE: ConversationSurface* peels fused (ConversationView extensions)
 
-// MARK: - Surface core (seed/lifecycle/presence)
-
 // MARK: - Seed / model
 
 extension ConversationView {
@@ -210,8 +208,6 @@ extension ConversationView {
             .onDisappear { presenceOnDisappear() }
     }
 }
-// MARK: - Chrome / header / sheets
-
 // MARK: - Sheet / seal gates
 
 extension ConversationView {
@@ -424,8 +420,6 @@ extension ConversationView {
 }
 // MARK: - Composer wire
 
-// MARK: - Composer wire
-
 extension ConversationView {
     var conversationComposerSheetFlagBindings: (
         mode: Binding<String>,
@@ -582,8 +576,6 @@ extension ConversationView {
         conversationComposerArgs
     }
 }
-// MARK: - Messages wire
-
 // MARK: - Messages wire
 
 extension ConversationView {
@@ -816,8 +808,6 @@ struct ChatBubble: Identifiable, Equatable {
     var executionChoiceJobId: JobID? = nil
     var retryableJobId: JobID? = nil
 }
-
-// MARK: - ConversationOccasionPack
 
 // MARK: - Conversation mid-thread occasion (WAVE-029)
 // WAVE-171 density peel — host (slice + shell); Live/Organs peels.
@@ -1277,10 +1267,6 @@ extension ConversationOccasionPack {
     }
 }
 
-// MARK: - ConversationCockpit
-
-// MARK: - Agent row
-
 // MARK: - Host
 
 struct AgentRow: View {
@@ -1352,8 +1338,6 @@ extension AgentRow {
         )
     }
 }
-
-// MARK: - Strip
 
 // MARK: - Host
 
@@ -1727,7 +1711,6 @@ struct ReconnectBanner: View {
         }
     }
 }
-
 
 struct SilenceWatchdog: View {
     let bubble: ChatBubble

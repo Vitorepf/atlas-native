@@ -3,8 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: RootChrome fused
 
-// MARK: - RootChrome
-
 // MARK: - Shared chrome helpers
 
 @MainActor
@@ -309,7 +307,6 @@ extension RootView {
     }
 }
 
-
 // MARK: - Route destinations
 
 extension RootView {
@@ -544,10 +541,6 @@ extension RootView {
         handleCodeGraphDeepLink(link)
     }
 }
-
-// MARK: - Conversation / code destinations
-
-// MARK: - Conversation / code destinations
 
 // MARK: - RootChromeConversationRoutes
 
@@ -872,10 +865,6 @@ extension AtlasProfileSheet {
         return "\(v) (\(b))"
     }
 }
-
-// MARK: - AtlasTheme
-
-// MARK: - AtlasTheme
 
 // MARK: - AtlasTheme
 
@@ -1257,8 +1246,6 @@ enum AtlasFont {
     }
 }
 
-// MARK: - AtlasInteraction
-
 // MARK: - PressableScale
 
 struct PressableScale: ButtonStyle {
@@ -1345,8 +1332,6 @@ struct CloseToolbarA11yID: ViewModifier {
         if let id { content.accessibilityIdentifier(id) } else { content }
     }
 }
-
-// MARK: - AtlasPresentationUtils
 
 // MARK: - LoadPhase
 

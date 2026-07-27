@@ -52,8 +52,6 @@ struct ConversationComposer: View {
     }
 }
 
-// MARK: - Body
-
 // MARK: - Actions
 
 extension ConversationComposer {
@@ -467,8 +465,6 @@ struct DraftThumb: View {
     }
 }
 
-// MARK: - ConversationChrome
-
 // MARK: - Sheet shell
 
 struct SheetShell<Content: View>: View {
@@ -681,8 +677,6 @@ extension ComposerAttachmentRow {
     }
 }
 
-// MARK: - Sheets host (row · workspace · mode · effort)
-
 // MARK: - Attachment row body
 
 extension ComposerAttachmentRow {
@@ -883,8 +877,6 @@ extension EffortSheet {
             .accessibilityHidden(true)
     }
 }
-
-// MARK: - ConversationComposerSheetsModifier
 
 // MARK: - Public View API (conversationComposerSheets)
 

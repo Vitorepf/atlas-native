@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — RootHomeBody+LiveNow chrome
 
-// MARK: - RootHomeBody
-
 // MARK: - Host
 
 struct RootHomeBody: View {
@@ -403,8 +401,6 @@ struct LiveNowSection: View {
 
 }
 
-// MARK: - LiveNowRow
-
 // MARK: - Row host
 
 struct LiveNowRow: View {
@@ -616,4 +612,3 @@ extension LiveNowRow {
         )
     }
 }
-

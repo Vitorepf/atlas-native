@@ -199,8 +199,6 @@ extension ConversationMessages {
     }
 }
 
-// MARK: - Scroll (was ConversationMessagesScroll)
-
 // MARK: - Scroll preference
 
 struct BottomDistanceKey: PreferenceKey {
@@ -334,8 +332,6 @@ extension ConversationMessages {
     }
 }
 
-// MARK: - Editorial assembly (was ConversationMessagesEditorial)
-
 // MARK: - Editorial turn assembly (ConversationMessages peel)
 
 extension ConversationMessages {
@@ -461,8 +457,6 @@ extension ConversationMessages {
     }
 }
 
-// MARK: - Empty conversation
-
 // MARK: - Host
 
 struct EmptyConversation: View {
@@ -566,8 +560,6 @@ struct EmptyConversation: View {
     }
 }
 
-// MARK: - SteerInteractionSheet
-
 // MARK: - Host
 
 struct SteerInteractionSheet: View {
@@ -584,8 +576,6 @@ struct SteerInteractionSheet: View {
         steerA11yShell(steerNavigationStack)
     }
 }
-
-// MARK: - Body
 
 // MARK: - Scope · receipt · fields
 
@@ -785,10 +775,6 @@ extension SteerInteractionSheet {
     }
 }
 
-// MARK: - QueuedFollowUpRow
-
-// MARK: - Row
-
 // MARK: - Host
 
 struct QueuedFollowUpRow: View {
@@ -916,8 +902,6 @@ extension QueuedFollowUpRow {
         .accessibilityLabel(rowSpokenLabel)
     }
 }
-
-// MARK: - Sheet
 
 // MARK: - Host
 

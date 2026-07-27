@@ -3,12 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: Code commit row + graph judgment fused
 
-// MARK: - Commit row
-
-// MARK: - Row
-
-// MARK: - Host
-
 // MARK: - Linha do commit (mensagem é a manchete)
 
 struct AtlasCodeCommitRow: View {
@@ -38,8 +32,6 @@ struct AtlasCodeCommitRow: View {
         commitRowA11y
     }
 }
-
-// MARK: - Body
 
 // MARK: - Host
 
@@ -163,7 +155,6 @@ private struct CommitRowAskChrome<Label: View>: View {
     }
 }
 
-
 extension AtlasCodeCommitRow {
     /// WAVE-054: tip/display from CommitRowJudgment (pure).
     static func tipBranch(from refs: [String], excluding: String?) -> String? {
@@ -275,8 +266,6 @@ extension AtlasCodeCommitRow {
         AtlasCodeCommitRowJudgment.branchMetaColor(for: state)
     }
 }
-
-// MARK: - Meta
 
 // MARK: - Meta line
 extension AtlasCodeCommitRow {
@@ -489,8 +478,6 @@ extension AtlasCodeCommitRow {
     }
 }
 
-// MARK: - File row
-
 // MARK: - Host
 
 struct AtlasCodeFileRow: View {
@@ -599,8 +586,6 @@ extension AtlasCodeFileRow {
         }
     }
 }
-
-// MARK: - AtlasCodeCommitRowJudgment
 
 // MARK: - Types
 
@@ -803,8 +788,6 @@ enum AtlasCodeCommitRowJudgment {
     }
 }
 
-// MARK: - Graph judgment
-
 // MARK: - Graph judgment (WAVE-028)
 
 /// Pure commit-map judgment for single-repo grafo — parity organ with RadarJudgment.
@@ -993,8 +976,6 @@ enum AtlasCodeGraphJudgment {
     }
 }
 
-// MARK: - AtlasCodeWorktreeJudgment
-
 // MARK: - Types
 
 /// Exclusive Código graph worktrees section face (WAVE-087).
@@ -1120,8 +1101,6 @@ enum AtlasCodeWorktreeJudgment {
     }
 }
 
-// MARK: - AtlasCodeGraphLoadJudgment
-
 // MARK: - Types
 
 /// Exclusive código graph-screen face (WAVE-061).
@@ -1226,8 +1205,6 @@ enum AtlasCodeGraphLoadJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - AtlasCodeGraphChrome
 
 // MARK: - Status chrome
 

@@ -48,7 +48,6 @@ struct ChangeReviewDiffView: View {
     }
 }
 
-
 // MARK: - ChangeReview chrome (peel de ChangeReviewSections)
 
 struct ChangeReviewCaption: View {
@@ -210,8 +209,6 @@ struct ChangeReviewSheet: View {
     }
 }
 
-// MARK: - Diff view body
-
 // MARK: - Diff body states
 extension ChangeReviewDiffView {
     @ViewBuilder
@@ -298,8 +295,6 @@ extension ChangeReviewDiffView {
         }
     }
 }
-
-// MARK: - Sheet body
 
 // MARK: - Sheet face / spoken
 

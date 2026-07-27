@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: ConversationJudgments fused
 
-// MARK: - ConversationMessagesJudgment
-
 // MARK: - Types
 
 /// Exclusive conversation messages surface face (WAVE-072).
@@ -110,8 +108,6 @@ enum ConversationMessagesJudgment {
     static let productSteerHonesty = "A instrução entra no próximo checkpoint seguro desta execução. O Atlas pode recusar e devolver o motivo público."
     static let spokenQueueManageHint = "promover ou remover só mensagens reais da fila do model"
 }
-// MARK: - ConversationDecisionJudgment
-
 // MARK: - Conversation mid-run decision (WAVE-031)
 
 /// Pure judgment: when the strip must elevate **Escolher** over live-run dialect.
@@ -192,8 +188,6 @@ enum ConversationDecisionJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ConversationLiveStripJudgment
-
 // MARK: - Judgment
 
 /// Pure live ExecutingStrip CTA + compound spoken grammar (WAVE-093).
@@ -299,8 +293,6 @@ enum ConversationLiveStripJudgment {
 
     static func spokenExecutionBanner(_ text: String) -> String { text }
 }
-// MARK: - ConversationAgentLanesJudgment
-
 // MARK: - Types
 
 /// Exclusive multi-agent lanes face (WAVE-049).
@@ -424,8 +416,6 @@ enum ConversationAgentLanesJudgment {
         face(from: agents).spokenFace
     }
 }
-// MARK: - ConversationCanDoJudgment
-
 // MARK: - Judgment
 
 /// Pure conversation mid-thread can_do matrix (WAVE-095).
@@ -553,8 +543,6 @@ enum ConversationCanDoJudgment {
         return (facts, absences, canDo)
     }
 }
-// MARK: - ConversationThreadShellJudgment
-
 // MARK: - Judgment
 
 /// Pure mid-thread shell identity (WAVE-185) — thread · title · workspace binding.

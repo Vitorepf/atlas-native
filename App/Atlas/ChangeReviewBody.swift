@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — body chrome
 
-// MARK: - ChangeReviewBody
-
 // MARK: - Controls
 
 struct ChangeReviewControlsSection: View {
@@ -152,8 +150,6 @@ struct ChangeReviewRunHeader: View {
         }
     }
 }
-
-// MARK: - Risk strip
 
 // MARK: - Risk face strip (WAVE-039)
 
@@ -564,8 +560,6 @@ struct ChangeReviewRunActions: View {
     }
 }
 
-// MARK: - ChangeReviewFileRowChrome
-
 // MARK: - File row a11y
 struct ChangeReviewFileRowA11y: ViewModifier {
     let decidedLabel: String?
@@ -707,4 +701,3 @@ struct ChangeReviewFileRow: View {
             ))
     }
 }
-

@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: HomeOpsJudgment + HomeAskContext fused
 
-// MARK: - Ops judgment
-
 // MARK: - Types
 
 /// Exclusive Autônomos door face on Home OPERAÇÃO (WAVE-047).
@@ -186,9 +184,6 @@ enum HomeOpsJudgment {
         return (facts, absences)
     }
 
-    // MARK: Profile spoken (WAVE-104)
-
-
     // MARK: Home section product faces
 
     static let productConversasSection = "CONVERSAS"
@@ -323,8 +318,6 @@ enum HomeAskContext {
         ).render()
     }
 }
-
-// MARK: - Partida can-do
 
 // MARK: - Types
 

@@ -531,10 +531,6 @@ enum AutonomosMapChrome {
     }
 }
 
-// MARK: - AutonomosRhythmSheet
-
-// MARK: - Judgment
-
 // MARK: - Types
 
 /// Exclusive Autônomos day-rhythm face (WAVE-077).

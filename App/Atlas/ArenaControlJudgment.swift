@@ -4,10 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — stop/capabilities
 
-// MARK: - ArenaControlJudgment
-
-// MARK: - ArenaStopJudgment
-
 // MARK: - Types
 
 /// Exclusive Arena stop-sheet face (WAVE-108).
@@ -113,8 +109,6 @@ enum ArenaStopJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - ArenaCapabilitiesJudgment
 
 // MARK: - Types
 
@@ -347,4 +341,3 @@ enum ArenaCapabilitiesJudgment {
         return (facts, absences)
     }
 }
-

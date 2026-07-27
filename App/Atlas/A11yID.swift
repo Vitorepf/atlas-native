@@ -4,7 +4,6 @@ import Foundation
 // daqui. Vive em A11yID*.swift porque o target AtlasDeviceProof só compila
 // esse glob; enum base dentro de RootChrome.swift quebrava a bateria.
 
-
 // MARK: - A11yID
 
 enum A11yID {

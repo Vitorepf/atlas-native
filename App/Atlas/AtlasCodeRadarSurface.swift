@@ -42,12 +42,6 @@ extension AtlasCodeRepoRow {
     }
 }
 
-
-
-
-
-
-
 // MARK: - Status capsule spoken
 extension AtlasCodeRadarStatusCapsule {
     func spokenStatusQuiet(model: AtlasCodeWorkspaceModel) -> String? {
@@ -235,8 +229,6 @@ struct AtlasCodeRadarView: View {
     }
 
 }
-
-// MARK: - AtlasCodeRadarView
 
 // MARK: - Folder row peels
 
@@ -455,8 +447,6 @@ struct AtlasCodeRadarLoadedContent: View {
         .scrollIndicators(.hidden)
     }
 }
-
-// MARK: - AtlasCodeRadarAskContext
 
 // MARK: - Invite · pack
 
@@ -773,8 +763,6 @@ enum AtlasCodeRadarJudgment {
     static let spokenMute = "não respondeu ao scan"
     static let spokenRepoHint = "abre o grafo do repositório"
 
-    // MARK: Folder / row spoken (IDLE · was AtlasCodeRadarA11y)
-
     // MARK: - Spoken
 
     static func spokenFolder(
@@ -853,8 +841,6 @@ enum AtlasCodeRadarJudgment {
         return parts
     }
 }
-
-// MARK: - AtlasCodeRadarRepoChrome
 
 // MARK: - AtlasCodeRadarRepoChrome
 
@@ -1116,8 +1102,6 @@ extension AtlasCodeRepoRow {
             .accessibilityHidden(true)
     }
 }
-// MARK: - AtlasCodeRadarLoadJudgment
-
 // MARK: - Types
 
 /// Exclusive multi-repo Radar screen face (WAVE-067).
@@ -1240,8 +1224,6 @@ enum AtlasCodeRadarLoadJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - AtlasCodeHealVetoJudgment
 
 // MARK: - Types
 
@@ -1391,8 +1373,6 @@ enum AtlasCodeHealVetoJudgment {
     }
 }
 
-// MARK: - AtlasCodeAskPillJudgment
-
 // MARK: - Types
 
 /// Exclusive código ask-pill face (WAVE-062).
@@ -1504,10 +1484,6 @@ enum AtlasCodeAskPillJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - AtlasCodeRepoHealthJudgment
-
-// MARK: - Judgment
 
 // MARK: - Types
 
@@ -1749,8 +1725,6 @@ enum AtlasCodeRepoHealthJudgment {
         }
     }
 }
-
-// MARK: - Strip
 
 // MARK: - Repo health strip (WAVE-043)
 

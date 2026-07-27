@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — steer/phase/empty
 
-// MARK: - ConversationSteerJudgment
-
 // MARK: - Types
 
 /// Exclusive mid-run steer face (WAVE-053).
@@ -188,8 +186,6 @@ enum ConversationSteerJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - ConversationExecutionPhase
 
 // MARK: - Face · attention types
 
@@ -470,10 +466,6 @@ enum ConversationExecutionPhase {
     }
 }
 
-// MARK: - ConversationThreadJudgments
-
-// MARK: - ConversationEmptyJudgment
-
 // MARK: - Types
 
 /// Exclusive conversation empty-editorial face (WAVE-084).
@@ -655,10 +647,6 @@ enum ConversationEmptyJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - ConversationHandoffJudgment
-
-// MARK: - Judgment
 
 // MARK: - Types
 

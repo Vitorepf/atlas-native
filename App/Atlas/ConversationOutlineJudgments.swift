@@ -4,12 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — outline/stale
 
-// MARK: - ConversationOutlineJudgments
-
-// MARK: - ConversationOutlineJudgment
-
-// MARK: - Judgment
-
 // MARK: - Types
 
 /// Exclusive conversation outline face (WAVE-079).
@@ -102,8 +96,6 @@ enum ConversationOutlineJudgment {
 
     static let spokenOutlineControlHint = "abre o índice editorial dos turnos desta conversa"
 }
-
-// MARK: - Sheet
 
 // MARK: - Índice da conversa (fusão idle dos peels Outline*)
 
@@ -212,10 +204,6 @@ struct ConversationOutlineRow: View {
             .accessibilityHidden(true)
     }
 }
-
-// MARK: - ConversationStaleReadJudgment
-
-// MARK: - Judgment
 
 // MARK: - Types
 
@@ -359,7 +347,6 @@ extension StaleReadSeal {
     }
 }
 
-
 extension StaleReadSeal {
     @ViewBuilder
     func sealTimelineGate(now: Date) -> some View {
@@ -390,4 +377,3 @@ struct StaleReadSeal: View {
             .accessibilityAddTraits(confirming || reduceMotion ? .isStaticText : .updatesFrequently)
     }
 }
-

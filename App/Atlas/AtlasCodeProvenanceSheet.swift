@@ -3,8 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: ProvenanceSheet + Header fused
 
-// MARK: - Sheet
-
 // MARK: - Host
 
 extension AtlasCodeProvenanceSheet {
@@ -133,8 +131,6 @@ struct AtlasCodeProvenanceSheet: View {
         provenanceBodyShell
     }
 }
-
-// MARK: - Body
 
 // MARK: - Ask / chrome actions
 
@@ -300,7 +296,6 @@ extension AtlasCodeProvenanceSheet {
         .accessibilityIdentifier(A11yID.whyFileRow(index))
     }
 }
-
 
 // MARK: - Files / sections body
 
@@ -639,8 +634,6 @@ struct AtlasCodeProvenanceWhyTarget: Identifiable {
     var id: String { path }
 }
 
-// MARK: - AtlasCodeProvenanceJudgment
-
 // MARK: - Types
 
 /// Exclusive commit-provenance drill face (WAVE-057).
@@ -871,8 +864,6 @@ enum AtlasCodeProvenanceJudgment {
     }
 }
 
-// MARK: - AtlasCodeHealReceiptSheet
-
 // MARK: - Folha: Recibo de Cura (C25 — fato consumado, só veto)
 // WAVE-009: fused instrument — silence when healthy, vocab “curado sozinho”.
 
@@ -1101,8 +1092,6 @@ struct AtlasCodeHealReceiptSheet: View {
             : "prazo de veto encerrado ou recibo sem identificador"
     }
 }
-
-// MARK: - AtlasCodeWhySheet
 
 // MARK: - Sheet
 
@@ -1362,8 +1351,6 @@ final class AtlasCodeWhyModel {
     }
 }
 
-// MARK: - Judgment
-
 // MARK: - Types
 
 /// Exclusive file-biography (H1 Why) face (WAVE-056).
@@ -1493,10 +1480,6 @@ enum AtlasCodeWhyJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - AtlasCodeAskContext
-
-// MARK: - Context
 
 // MARK: - Host
 

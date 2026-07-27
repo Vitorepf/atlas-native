@@ -228,8 +228,6 @@ struct AtlasArenaView: View {
     }
 }
 
-// MARK: - ArenaPremiumNowView
-
 // MARK: - View host
 
 struct ArenaPremiumNowView: View {
@@ -316,8 +314,6 @@ struct ArenaPremiumNowView: View {
         .accessibilityValue(ArenaNowFace.preparing.productWord)
     }
 }
-
-// MARK: - Phase body views
 
 // MARK: - Host
 
@@ -511,8 +507,6 @@ struct ArenaPremiumTerminalView: View {
         }
     }
 }
-
-// MARK: - Primitives
 
 // MARK: - Kicker
 

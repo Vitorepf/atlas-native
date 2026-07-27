@@ -4,10 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — digest/run/fleet
 
-// MARK: - AutonomosFleetRunJudgment
-
-// MARK: - AutonomosDigestJudgment
-
 // MARK: - Digest / moment judgment (WAVE-038)
 
 enum AutonomosDigestFace: Equatable {
@@ -171,8 +167,6 @@ enum AutonomosDigestJudgment {
     }
 
 }
-
-// MARK: - AutonomosRunControlJudgment
 
 // MARK: - Types
 
@@ -365,8 +359,6 @@ enum AutonomosRunControlJudgment {
     }
 }
 
-// MARK: - AutonomosFleetJudgment
-
 // MARK: - Fleet judgment (WAVE-037)
 
 enum AutonomosFleetFace: Equatable {
@@ -498,8 +490,6 @@ enum AutonomosFleetJudgment {
     }
 }
 
-// MARK: - Strip chrome
-
 // MARK: - Thin fleet strip on Autônomos catalog (WAVE-037)
 
 /// One domain: published global fleet snapshot — not a monólito map.
@@ -594,4 +584,3 @@ struct AutonomosFleetStrip: View {
         .accessibilityLabel(AutonomosFleetJudgment.spokenAgent(agent))
     }
 }
-

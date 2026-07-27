@@ -449,8 +449,6 @@ struct ArenaPremiumResultsView: View {
         }
     }
 }
-// MARK: - ArenaPremiumCapabilitiesView
-
 // MARK: - Capabilities surface
 struct ArenaPremiumCapabilitiesView: View {
     @Bindable var model: ArenaModel
@@ -1094,8 +1092,6 @@ struct ArenaPremiumStopSheet: View {
     }
 }
 
-// MARK: - ArenaPremiumPlanQueueViews
-
 // MARK: - Plan view
 struct ArenaPremiumPlanView: View {
     @Bindable var model: ArenaModel
@@ -1326,8 +1322,6 @@ struct ArenaPremiumQueueView: View {
     }
 }
 
-// MARK: - ArenaRunSheet
-
 // MARK: - Host
 
 extension ArenaRunSheet {
@@ -1495,8 +1489,6 @@ extension ArenaRunSheet {
         .accessibilityIdentifier(A11yID.arenaRunReceipt)
     }
 }
-
-// MARK: - Body
 
 // MARK: - Face
 
@@ -1718,8 +1710,6 @@ struct ArenaRunSheet: View {
         }
     }
 }
-
-// MARK: - ArenaSuiteSheet
 
 // MARK: - Host
 

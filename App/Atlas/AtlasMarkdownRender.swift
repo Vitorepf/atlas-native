@@ -29,8 +29,6 @@ struct AtlasMarkdownView: View {
         )
     }
 }
-// MARK: - AtlasMarkdownSurface
-
 // MARK: - Block dispatch
 
 extension AtlasMarkdownView {
@@ -66,8 +64,6 @@ extension AtlasMarkdownView {
         }
     }
 }
-// MARK: - AtlasMarkdownViewBlocks
-
 // MARK: - Host
 
 extension AtlasMarkdownView {
@@ -389,8 +385,6 @@ extension CodeBlockView {
     }
 }
 
-// MARK: - AtlasMarkdownSurfaceCode
-
 // MARK: - Code blocks
 
 extension AtlasMarkdownView {
@@ -433,8 +427,6 @@ extension AtlasMarkdownView {
         Rectangle().fill(AtlasTheme.separator).frame(height: 1).padding(.vertical, 2)
     }
 }
-
-// MARK: - AtlasMarkdownSurfaceLists
 
 // MARK: - Lists / quotes / tables
 
@@ -518,8 +510,6 @@ extension AtlasMarkdownView {
         }
     }
 }
-
-// MARK: - AtlasMarkdownCodeBlockView
 
 // MARK: - CodeBlockView
 
@@ -711,10 +701,6 @@ enum AtlasMarkdownJudgment {
     }
 }
 
-// MARK: - AtlasOpsFailureJudgment
-
-// MARK: - Judgment
-
 // MARK: - Types
 
 /// Exclusive shared ops-failure face (WAVE-080).
@@ -839,8 +825,6 @@ enum AtlasOpsFailureJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - Empty chrome
 
 // MARK: - Ops failure canon (WAVE-008)
 // Uma máquina de layout/retry/a11y para Home · Search · Conversation · Code ·
@@ -1160,8 +1144,6 @@ enum AtlasFailureCopy {
     }
 }
 
-// MARK: - TraceEvidenceJudgment
-
 // MARK: - Types
 
 /// Exclusive trace evidence chrome face (WAVE-068).
@@ -1250,8 +1232,6 @@ enum TraceEvidenceJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - Chrome
 
 // MARK: - TraceEvidenceChrome
 

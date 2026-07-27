@@ -3,8 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: AtlasCodeSurface + AtlasCodeView entry fused
 
-// MARK: - Surface
-
 // MARK: - Host
 
 extension AtlasCodeView {
@@ -499,8 +497,6 @@ struct AtlasCodeMirrorCard: View {
     static let spokenMirrorHint = "cópia remota do repositório e varredura de segredos no Mac"
 }
 
-// MARK: - AtlasCodeSurfaceGraph
-
 // MARK: - Host
 
 extension AtlasCodeView {
@@ -662,8 +658,6 @@ extension AtlasCodeView {
         )
     }
 }
-
-// MARK: - Body
 
 // MARK: - Host
 
@@ -861,8 +855,6 @@ extension AtlasCodeView {
     }
 }
 
-// MARK: - AtlasCodeSheetsModifiers
-
 // MARK: - Host
 
 struct AtlasCodeAskWhySheetsModifier: ViewModifier {
@@ -935,7 +927,6 @@ extension AtlasCodeAskWhySheetsModifier {
             }
     }
 }
-
 
 extension AtlasCodeSheetsModifier {
   @ViewBuilder
@@ -1147,8 +1138,6 @@ extension AtlasCodeView {
         .accessibilityIdentifier(A11yID.codeRepoSwitcher)
     }
 }
-
-// MARK: - AtlasCodeHelpers
 
 // MARK: - AtlasCodePalette
 
@@ -1467,10 +1456,6 @@ struct AtlasCodeRepoPickerSheet: View {
         .accessibilityIdentifier(A11yID.codeRepoPickerRow(repo.slug))
     }
 }
-
-// MARK: - AtlasCodeHubModel
-
-// MARK: - AtlasCodeHubModel
 
 // MARK: - Hub
 

@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: density split — LiveNowJudgment
 
-// MARK: - LiveNowJudgment
-
 // MARK: - Types
 
 /// Exclusive home LiveNow section face (WAVE-064).

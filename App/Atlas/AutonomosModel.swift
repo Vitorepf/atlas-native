@@ -110,8 +110,6 @@ final class AutonomosModel {
         }
     }
 }
-// MARK: - AutonomosModelActionsLoad
-
 // MARK: - Load selected / errors
 extension AutonomosModel {
     func loadSelectedDetails() async throws {
@@ -175,8 +173,6 @@ extension AutonomosModel {
         return "Não foi possível atualizar o estado do Autônomos agora."
     }
 }
-// MARK: - AutonomosModelActionsDecide
-
 // MARK: - Decide / digest
 extension AutonomosModel {
     func decide(
@@ -209,8 +205,6 @@ extension AutonomosModel {
         }
     }
 }
-// MARK: - AutonomosModelActionsRunControl
-
 // MARK: - Run control / start
 extension AutonomosModel {
     func control(
@@ -255,8 +249,6 @@ extension AutonomosModel {
         }
     }
 }
-// MARK: - AutonomosModelActionsTransfer
-
 // MARK: - Transfer / revert
 extension AutonomosModel {
     func transfer(
@@ -311,8 +303,6 @@ extension AutonomosModel {
         }
     }
 }
-// MARK: - AutonomosModelActionsUnits
-
 // MARK: - Operator units
 extension AutonomosModel {
     func operatorUnit(id: String) -> AutonomosUnit? {
@@ -343,8 +333,6 @@ extension AutonomosModel {
         operatorUnits.removeAll { $0.id == id }
     }
 }
-
-// MARK: - AutonomosTypes
 
 // MARK: - AutonomosUnit
 
@@ -473,10 +461,6 @@ struct AutonomosRhythmLearningLine: View {
         .task { windows = await AtlasSession.rhythm.windows(minimumDays: 4) }
     }
 }
-
-// MARK: - SelfConstructionReceipt
-
-// MARK: - Receipt
 
 // MARK: - Host
 
@@ -849,8 +833,6 @@ struct SelfConstructionReceiptSheet: View {
     }
 }
 
-// MARK: - Veto judgment
-
 // MARK: - Self-construction retroactive veto (WAVE-033)
 
 /// Pure judgment: when merge-proved receipt may expose veto-with-receipt UI.
@@ -938,10 +920,6 @@ enum SelfConstructionVetoJudgment {
         return SelfConstructionReceipt(cycle: cycle, finding: nil)
     }
 }
-
-// MARK: - AutonomosAskContext
-
-// MARK: - Host pack
 
 // MARK: - Host
 
@@ -1370,8 +1348,6 @@ extension AutonomosAskContext {
     }
 
 }
-
-// MARK: - AutonomosDecisionJudgment
 
 // MARK: - Types
 

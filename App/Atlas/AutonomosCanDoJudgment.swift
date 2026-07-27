@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: AutonomosJudgments fused
 
-// MARK: - AutonomosCanDoJudgment
-
 // MARK: - Judgment
 
 /// Pure Autônomos can_do matrix (WAVE-088) — never always faceCTALocal.
@@ -114,8 +112,6 @@ enum AutonomosCanDoJudgment {
         return (facts, absences, canDo)
     }
 }
-// MARK: - AutonomosAreaBindJudgment
-
 // MARK: - Types
 
 /// Exclusive multi-area bind face (WAVE-065).
@@ -250,8 +246,6 @@ enum AutonomosAreaBindJudgment {
         return (facts, absences)
     }
 }
-// MARK: - AutonomosEvolutionJudgment
-
 // MARK: - Evolution timeline judgment (WAVE-034)
 
 enum AutonomosEvolutionFace: Equatable {
@@ -397,8 +391,6 @@ enum AutonomosEvolutionJudgment {
     }
 
 }
-// MARK: - AutonomosReasonJudgment
-
 // MARK: - Types
 
 /// Exclusive governed-action reason sheet face (WAVE-098).

@@ -4,8 +4,6 @@ import SwiftUI
 
 // GOD-RESTRUCTURE: ArenaJudgments fused
 
-// MARK: - ArenaFleetJudgment
-
 // MARK: - Types
 
 /// WAVE-157: fleet rank one law — pack ≡ FleetView “onde o Atlas sobe”.
@@ -68,8 +66,6 @@ enum ArenaFleetJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ArenaPipelineJudgment
-
 // MARK: - Judgment
 
 /// Pure Arena execution pipeline projection (WAVE-109).
@@ -197,8 +193,6 @@ enum ArenaPipelineJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ArenaPlanQueueJudgment
-
 // MARK: - Types
 
 /// Exclusive Arena plan destination face (WAVE-085).
@@ -356,8 +350,6 @@ enum ArenaPlanQueueJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ArenaRunSheetJudgment
-
 // MARK: - Types
 
 /// Exclusive Arena run-sheet shell face (WAVE-074).
@@ -446,8 +438,6 @@ enum ArenaRunSheetJudgment {
         return (facts, absences)
     }
 }
-// MARK: - ArenaRunStatusJudgment
-
 // MARK: - Judgment
 
 /// Exclusive Arena live-run status chrome (WAVE-107).

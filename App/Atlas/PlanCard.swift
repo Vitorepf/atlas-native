@@ -74,7 +74,6 @@ extension PlanCard {
     }
 }
 
-
 // MARK: - Types / Inputs
 
 struct PlanCard: View {
@@ -546,8 +545,6 @@ struct PlanFlowChips: View {
     }
 }
 
-// MARK: - Face strip
-
 // MARK: - Plan face strip (WAVE-040)
 
 /// Thin exclusive plan progress face under PlanCard header.
@@ -611,8 +608,6 @@ struct PlanFaceStrip: View {
         }
     }
 }
-
-// MARK: - PlanJudgment
 
 // MARK: - Types
 
@@ -816,8 +811,6 @@ enum PlanJudgment {
         return "auditoria do plano, \(plan.steps.count) passos planejados, \(executed) de \(progress.total) executados, \(progress.isTerminal ? "terminal" : "em curso")"
     }
 
-
-    // MARK: - Chrome spoken
     // MARK: Card chrome spoken (WAVE-105)
 
     static func spokenChipRow(label: String, items: [String]) -> String {
@@ -890,8 +883,6 @@ enum PlanJudgment {
     }
 
 }
-
-// MARK: - PlanRevisionCompare
 
 // MARK: - Types / Helpers
 
@@ -1143,10 +1134,6 @@ extension PlanRevisionCompare {
     }
 }
 
-// MARK: - EditorialTurn
-
-// MARK: - EditorialTurn
-
 // MARK: - Types / Inputs
 
 struct EditorialTurn: View, Equatable {
@@ -1286,8 +1273,6 @@ extension EditorialTurn {
         lhs.bubble == rhs.bubble && lhs.reduceMotion == rhs.reduceMotion && lhs.artifactItems == rhs.artifactItems
     }
 }
-
-// MARK: - EditorialTurnChrome
 
 // MARK: - Feedback
 
@@ -1527,8 +1512,6 @@ extension EditorialTurn {
         assistantClosingMeta
     }
 }
-
-// MARK: - Judgment
 
 // MARK: - Types
 

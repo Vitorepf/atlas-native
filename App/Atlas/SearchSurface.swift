@@ -3,10 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: SearchSurface + SearchView entry fused
 
-// MARK: - Surface
-
-// MARK: - Host
-
 // MARK: - Screen face · a11y
 
 extension SearchView {
@@ -21,7 +17,6 @@ extension SearchView {
             trimmedQuery: trimmedQuery
         )
     }
-
 
 }
 
@@ -209,8 +204,6 @@ extension SearchRecentSection {
             .accessibilityIdentifier(A11yID.searchRecentCaption)
     }
 }
-
-// MARK: - Body
 
 // MARK: - Miss empty
 struct SearchMissEmpty: View {
@@ -540,10 +533,6 @@ extension SearchView {
     }
 }
 
-// MARK: - SearchJudgment
-
-// MARK: - SearchJudgment
-
 // MARK: - Types
 
 /// Exclusive Search screen face (WAVE-071).
@@ -683,8 +672,6 @@ enum SearchJudgment {
         return (facts, absences)
     }
 }
-// MARK: - SearchListJudgment
-
 // MARK: - Types
 
 /// Exclusive search list/row editorial face (WAVE-089).
@@ -849,8 +836,6 @@ enum SearchListJudgment {
         return (facts, absences)
     }
 }
-// MARK: - SearchAskContext
-
 // MARK: - Invite · empty
 
 /// Pack de ocasião Search — WAVE-176 agentic door (pill + pack).
@@ -985,8 +970,6 @@ enum SearchAskContext {
         ).render()
     }
 }
-
-// MARK: - LiveTimeline
 
 // MARK: - Timeline host
 
@@ -1165,8 +1148,6 @@ struct TimelineFilterChips: View {
     }
 }
 
-// MARK: - LiveTimelineFilterJudgment
-
 // MARK: - Types
 
 /// Exclusive timeline read-filter face (WAVE-075) — chrono order sacred.
@@ -1293,8 +1274,6 @@ enum LiveTimelineFilterJudgment {
     }
 }
 
-// MARK: - LiveTimelineNarrativeJudgment
-
 // MARK: - Types
 
 /// Exclusive live narrative face (WAVE-044). Chrono order stays sacred.
@@ -1416,10 +1395,6 @@ enum LiveTimelineNarrativeJudgment {
         return packFacts(baseRows: base, filteredRows: base, filter: .all)
     }
 }
-
-// MARK: - LiveTimelineNarrativeRow
-
-// MARK: - Row
 
 // MARK: - LiveTimelineNarrativeRow
 

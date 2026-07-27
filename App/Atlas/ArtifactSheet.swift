@@ -3,8 +3,6 @@ import AtlasCore
 
 // GOD-RESTRUCTURE: ArtifactSheet + viewer/preview peels fused
 
-// MARK: - ArtifactSheet
-
 // MARK: - Host
 
 struct ArtifactSheet: View {
@@ -78,7 +76,6 @@ extension ArtifactSheet {
         }
     }
 }
-
 
 extension ArtifactSheet {
     func artifactSheetInitialTask() async {
@@ -459,8 +456,6 @@ extension ZoomableArtifactImage {
         if scale <= 1 { resetOffset() }
     }
 }
-
-// MARK: - Face strip
 
 // MARK: - Artifact face strip (WAVE-041)
 
@@ -873,8 +868,6 @@ extension ArtifactSheet {
     }
 }
 
-// MARK: - ArtifactJudgment
-
 // MARK: - Types
 
 /// Exclusive artifacts evidence face (WAVE-041).
@@ -1083,10 +1076,6 @@ enum ArtifactJudgment {
         return (facts, absences)
     }
 }
-
-// MARK: - ArtifactListJudgment
-
-// MARK: - ArtifactListJudgment
 
 // MARK: - Types
 
@@ -1356,8 +1345,6 @@ extension ArtifactPreviewContent {
         }
     }
 }
-
-// MARK: - ArtifactPreviewJudgment
 
 // MARK: - Types
 
