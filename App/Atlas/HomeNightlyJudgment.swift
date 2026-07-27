@@ -392,6 +392,11 @@ enum NightlyProposalJudgment {
         return .hidden
     }
 
+    /// LIDO pelo operador (botão, título da folha). `spoken*` é a frase que o
+    /// VoiceOver FALA — usá-la como chrome punha "preparar missão noturna" em
+    /// minúscula no botão e no título, contra o próprio vocabulário da casa
+    /// (ver CODEMAP § vocabulário fechado).
+    static let productAcceptLabel = "Preparar missão noturna"
     static let spokenAcceptLabel = "preparar missão noturna"
     static let spokenRhythmLineHint = "mostra o que o Atlas aprendeu do seu dia"
     static let spokenAcceptHint = "abre o ensaio governado da missão noturna"
@@ -498,7 +503,7 @@ extension NightlyProposalCard {
 extension NightlyProposalCard {
     var actionRow: some View {
         HStack(spacing: 10) {
-            Button(NightlyProposalJudgment.spokenAcceptLabel) {
+            Button(NightlyProposalJudgment.productAcceptLabel) {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onAccept()
             }
