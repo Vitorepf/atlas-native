@@ -457,8 +457,8 @@ extension ChangeReviewRunActions {
         if reduceMotion {
             applyingStaticLabel
         } else {
-            ProgressView()
-                .tint(AtlasTheme.accent)
+            // Mesma razão do loading da Arena: identidade própria na espera.
+            BreathingDiamond(size: 9, reduceMotion: reduceMotion)
                 .accessibilityLabel(ChangeReviewJudgment.spokenApplying)
         }
     }

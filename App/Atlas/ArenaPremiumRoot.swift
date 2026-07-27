@@ -231,6 +231,7 @@ struct AtlasArenaView: View {
 // MARK: - View host
 
 struct ArenaPremiumNowView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Bindable var model: ArenaModel
     let onRun: () -> Void
     let onNavigate: (ArenaPremiumDestination) -> Void
@@ -303,8 +304,9 @@ struct ArenaPremiumNowView: View {
             Text(ArenaNowJudgment.productPreparingTitle)
                 .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
-            ProgressView()
-                .tint(AtlasTheme.accent)
+            // O ✦ é a espera do Atlas em toda superfície; ProgressView é o
+            // spinner do sistema e fazia ESTA tela parecer de outro app.
+            BreathingGlyph(reduceMotion: reduceMotion)
             Text(ArenaNowJudgment.productIndependentContracts)
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
