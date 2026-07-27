@@ -64,14 +64,25 @@ struct AtlasTurnWidgetTimer: View {
 
 // MARK: - WidgetsInk
 
+/// ESPELHO MANUAL do `AtlasTheme` do app.
+///
+/// O target Widgets não compila `RootChrome.swift` (onde o tema vive), então
+/// estes valores são copiados à mão — e copiar à mão deriva: em 27/07 duas já
+/// tinham divergido (`alert` #E0755F contra #E08C8C do app; `healed` #7FB68F
+/// contra #83B46D). O operador via DOIS vermelhos para o mesmo significado,
+/// app e widget lado a lado na mesma tela.
+///
+/// Corrigido, mas a raiz continua: pedido de extrair a paleta para um arquivo
+/// compartilhado entre os dois targets está em OBRA §5 (o `project.yml` é do
+/// Codex). Enquanto isso: **mexeu aqui, confira o AtlasTheme.**
 enum Ink {
     static let bg = Color(red: 0x1d / 255.0, green: 0x2b / 255.0, blue: 0x34 / 255.0)
     static let surface = Color(red: 0x24 / 255.0, green: 0x37 / 255.0, blue: 0x43 / 255.0)
     static let ink = Color(red: 0xd6 / 255.0, green: 0xdd / 255.0, blue: 0xe2 / 255.0)
     static let ink2 = Color(red: 0x95 / 255.0, green: 0xa3 / 255.0, blue: 0xac / 255.0)
     static let gold = Color(red: 0xd4 / 255.0, green: 0xa8 / 255.0, blue: 0x5a / 255.0)
-    static let alert = Color(red: 0xe0 / 255.0, green: 0x75 / 255.0, blue: 0x5f / 255.0)
-    static let healed = Color(red: 0x7f / 255.0, green: 0xb6 / 255.0, blue: 0x8f / 255.0)
+    static let alert = Color(red: 0xe0 / 255.0, green: 0x8c / 255.0, blue: 0x8c / 255.0)
+    static let healed = Color(red: 0x83 / 255.0, green: 0xb4 / 255.0, blue: 0x6d / 255.0)
 }
 
 // MARK: - AtlasWidgets
