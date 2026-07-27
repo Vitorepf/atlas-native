@@ -850,7 +850,7 @@ struct ArenaPremiumTabBar: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel(tabAccessibilityLabel(tab))
                 .accessibilityAddTraits(selection == tab ? .isSelected : [])
-                .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.a11yKey))
+                .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.accessibilityKey))
             }
         }
         .padding(3)
@@ -1243,7 +1243,7 @@ enum ArenaPremiumTab: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 
     /// Identificador estável p/ a11y (não depende do rótulo curto da aba).
-    var a11yKey: String {
+    var accessibilityKey: String {
         switch self {
         case .now: "agora"
         case .fleet: "frota"

@@ -26,7 +26,7 @@ extension SearchView {
 }
 
 extension SearchView {
-    func searchA11yChrome<Content: View>(_ content: Content) -> some View {
+    func searchA11y<Content: View>(_ content: Content) -> some View {
         content
             .toolbar(.hidden, for: .navigationBar)
             .accessibilityIdentifier(A11yID.searchScreen)
@@ -453,7 +453,7 @@ struct SearchView: View {
     @State var askThreadId: ThreadID?
 
     var body: some View {
-        searchA11yChrome(searchBackgroundShell)
+        searchA11y(searchBackgroundShell)
             .safeAreaInset(edge: .bottom, spacing: 0) { askPillDock }
             .sheet(isPresented: $showingAsk) { askConversationSheet }
     }

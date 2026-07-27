@@ -107,7 +107,7 @@ struct WorkspaceRow: View {
     let count: Int?
     var detail: String?
     var badge: Bool = false
-    var a11yID: String?
+    var accessibilityID: String?
     var spokenOverride: String?
     var spokenHint: String?
     let action: () -> Void
@@ -120,7 +120,7 @@ struct WorkspaceRow: View {
         .buttonStyle(.plain)
         .accessibilityLabel(spokenOverride ?? WorkspaceThreadJudgment.workspaceSpoken(name: name, count: count, detail: detail, badge: badge))
         .accessibilityHint(spokenHint ?? "abre \(name)")
-        .accessibilityIdentifier(a11yID ?? "")
+        .accessibilityIdentifier(accessibilityID ?? "")
     }
 
     var rowContent: some View {

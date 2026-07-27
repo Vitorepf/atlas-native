@@ -107,7 +107,7 @@ extension RootHomeBody {
         WorkspaceRow(icon: "bubble.left.and.bubble.right", name: "Conversas livres",
                      count: homeConversationCount,
                      detail: session.auditModeEnabled ? auditDetail : nil,
-                     a11yID: A11yID.homeConversasEntry,
+                     accessibilityID: A11yID.homeConversasEntry,
                      spokenOverride: spokenConversasEntry(),
                      spokenHint: "abre as conversas sem workspace") {
             onNavigate(.conversas)
@@ -125,7 +125,7 @@ extension RootHomeBody {
             detail: HomeOpsJudgment.autonomosFace(model: session.autonomos).rowMeta,
             badge: HomeOpsJudgment.autonomosFace(model: session.autonomos).rowMeta != nil
                 && HomeOpsJudgment.autonomosFace(model: session.autonomos).productWord != "quiet",
-            a11yID: A11yID.homeAutonomosEntry,
+            accessibilityID: A11yID.homeAutonomosEntry,
             spokenOverride: HomeOpsJudgment.autonomosFace(model: session.autonomos).spokenMeta
         ) {
             onNavigate(.autonomos)
@@ -142,7 +142,7 @@ extension RootHomeBody {
             count: nil,
             // Home NÃO fala de regressão (ordem 2026-07-18, repetida): a linha
             // é limpa; o assunto vive DENTRO da Arena.
-            a11yID: A11yID.arenaHomeEntry,
+            accessibilityID: A11yID.arenaHomeEntry,
             spokenOverride: spokenArena(
                 regression: nil,
                 domainUnavailable: session.arena.isDomainUnavailable
@@ -174,7 +174,7 @@ extension RootHomeBody {
             icon: "folder",
             name: ws.name,
             count: ws.count > 0 ? ws.count : nil,
-            a11yID: A11yID.homeWorkspace(ws.id),
+            accessibilityID: A11yID.homeWorkspace(ws.id),
             spokenOverride: spokenWorkspace(
                 name: ws.name,
                 count: ws.count > 0 ? ws.count : nil
@@ -189,7 +189,7 @@ extension RootHomeBody {
     var addWorkspaceRow: some View {
         WorkspaceRow(icon: "folder.badge.plus", name: "Adicionar workspace",
                      count: nil,
-                     a11yID: A11yID.homeAddWorkspace,
+                     accessibilityID: A11yID.homeAddWorkspace,
                      spokenOverride: "adicionar workspace",
                      spokenHint: "escolhe um repositório do Mac") {
             showingWorkspacePicker = true

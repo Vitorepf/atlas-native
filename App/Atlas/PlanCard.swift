@@ -345,13 +345,13 @@ extension PlanCard {
 extension PlanStepRowView {
     var stepRowBody: some View {
         applyStepPulse(
-            stepRowA11yChrome(stepRowLayout)
+            stepRowA11y(stepRowLayout)
         )
     }
 }
 
 extension PlanStepRowView {
-    func stepRowA11yChrome<Content: View>(_ content: Content) -> some View {
+    func stepRowA11y<Content: View>(_ content: Content) -> some View {
         content
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenLabel)

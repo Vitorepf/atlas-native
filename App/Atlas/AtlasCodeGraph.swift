@@ -12,7 +12,6 @@ import AtlasCore
 // MARK: - Linha do commit (mensagem é a manchete)
 // Label → AtlasCodeCommitRow+Label.swift · Spine → +Spine.swift
 // LongPress → AtlasCodeCommitRow+LongPress.swift
-// A11y chrome → AtlasCodeCommitRow+A11yChrome.swift
 
 struct AtlasCodeCommitRow: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -38,7 +37,7 @@ struct AtlasCodeCommitRow: View {
     var color: Color { AtlasCodePalette.color(for: state) }
 
     var body: some View {
-        commitRowA11yChrome
+        commitRowA11y
     }
 }
 
@@ -47,7 +46,7 @@ struct AtlasCodeCommitRow: View {
 // MARK: - Host
 
 extension AtlasCodeCommitRow {
-    var commitRowA11yChrome: some View {
+    var commitRowA11y: some View {
         CommitRowAskChrome(
             isDimmed: isDimmed,
             reduceMotion: reduceMotion,

@@ -37,7 +37,7 @@ extension AtlasCodeRepoRow {
 }
 
 extension AtlasCodeRepoRow {
-    var repoRowA11yChrome: some View {
+    var repoRowA11y: some View {
         repoRowSpokenBind(repoRowButton)
     }
 }
@@ -866,7 +866,7 @@ struct AtlasCodeRepoRow: View {
     let onTap: () -> Void
 
     var body: some View {
-        repoRowA11yChrome
+        repoRowA11y
     }
 }
 
