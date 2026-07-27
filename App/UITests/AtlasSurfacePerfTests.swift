@@ -84,9 +84,16 @@ final class AtlasSurfacePerfTests: XCTestCase {
             app.descendants(matching: .any)[A11yID.codeStatus].waitForExistence(timeout: 30)
         }
 
-        print("── ABERTURA POR SUPERFÍCIE ──")
+        // O número absoluto engana: abrir QUALQUER tela paga transição de
+        // navegação + o XCUITest estabilizar a árvore. "Conversas livres" é
+        // uma lista vazia — o que ela marca é esse piso, não conteúdo.
+        // Sem descontar, persegue-se fantasma: o radar "a 2,25s" tem ~0,4s
+        // de custo próprio, e o grafo fica ABAIXO do piso.
+        let piso = medidas.first { $0.0 == "Conversas livres" }?.1 ?? 0
+        print(String(format: "── ABERTURA ── piso do instrumento: %.2fs", piso))
         for (nome, dt) in medidas {
-            print(String(format: "%-24s %.2fs", (nome as NSString).utf8String!, dt))
+            print(String(format: "%-26s %.2fs   proprio %+.2fs",
+                         (nome as NSString).utf8String!, dt, max(0, dt - piso)))
         }
 
         XCTAssertTrue(

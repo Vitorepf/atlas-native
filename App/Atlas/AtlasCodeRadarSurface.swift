@@ -440,7 +440,11 @@ struct AtlasCodeRadarLoadedContent: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            // VStack montava TODA a lista de uma vez — recentes, cada pasta com
+            // seus repos e os avulsos, inclusive o que está fora da tela. Era o
+            // custo real da abertura do radar (o cache de rede não era).
+            // O Grafo já usava Lazy; esta era a única lista longa que não.
+            LazyVStack(alignment: .leading, spacing: 0) {
                 radarSections
             }
             .padding(.horizontal, AtlasTheme.Space.screen)
