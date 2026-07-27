@@ -177,7 +177,14 @@ extension WorkspaceView {
 extension WorkspaceThreadsSection {
     @ViewBuilder
     func threadRowLoop(_ t: AtlasAiThread, newBadgeSuppressed: Bool = false) -> some View {
-        WorkspaceThreadLink(thread: t, reduceMotion: reduceMotion, newBadgeSuppressed: newBadgeSuppressed)
+        // Esta lista é de um workspace só: pintar todas as linhas do mesmo tom
+        // não agrupa nada. O trilho fica para a busca, onde eles se misturam.
+        WorkspaceThreadLink(
+            thread: t,
+            reduceMotion: reduceMotion,
+            newBadgeSuppressed: newBadgeSuppressed,
+            showsWorkspaceTint: false
+        )
         threadRowSeparator(after: t)
     }
 }
@@ -347,6 +354,7 @@ struct WorkspaceThreadLink: View {
     let thread: AtlasAiThread
     let reduceMotion: Bool
     var newBadgeSuppressed: Bool = false
+    var showsWorkspaceTint: Bool = true
     @Environment(AtlasSession.self) private var session
 
     var isRunning: Bool {
@@ -364,7 +372,11 @@ struct WorkspaceThreadLink: View {
 extension WorkspaceThreadLink {
     var threadLinkA11y: some View {
         NavigationLink(value: Route.thread(id: ThreadID(thread.id), title: thread.title)) {
-            ThreadRow(thread: thread, newBadgeSuppressed: newBadgeSuppressed)
+            ThreadRow(
+                thread: thread,
+                newBadgeSuppressed: newBadgeSuppressed,
+                showsWorkspaceTint: showsWorkspaceTint
+            )
         }
         .buttonStyle(.plain)
         .accessibilityLabel(SearchListJudgment.spokenRow(thread: thread))
@@ -427,8 +439,17 @@ struct WorkspaceView: View {
 struct ThreadRow: View {
     let thread: AtlasAiThread
     var newBadgeSuppressed: Bool = false
+    /// Numa lista de um workspace só, todas as linhas teriam o mesmo tom — o
+    /// trilho vira ruído em vez de agrupar. Só a lista mista o acende.
+    var showsWorkspaceTint: Bool = true
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @Environment(\.dynamicTypeSize) var typeSize
     @Environment(AtlasSession.self) private var session
+
+    /// Nos tamanhos de acessibilidade o selo, a idade e o chevron comiam a
+    /// largura e sobrava "Impl…" de título. Aí a linha empilha: título com a
+    /// largura toda em cima, meta embaixo.
+    var stacksForAccessibility: Bool { typeSize.isAccessibilitySize }
 
     /// WAVE-032: threadId-first running signal (title fallback only if no id).
     var isRunning: Bool {
@@ -438,7 +459,10 @@ struct ThreadRow: View {
         )
     }
     var isNew: Bool { !newBadgeSuppressed && ConversationModel.hasNewerContent(thread) }
-    var workspaceTint: Color? { thread.workspace.map(threadWorkspaceColor) }
+    var workspaceTint: Color? {
+        guard showsWorkspaceTint else { return nil }
+        return thread.workspace.map(threadWorkspaceColor)
+    }
 
     var body: some View {
         rowContent
@@ -456,25 +480,38 @@ struct ThreadRow: View {
     }
 
     var rowContent: some View {
-        HStack(spacing: 14) {
+        // Empilhado, o bloco tem 3+ linhas: centrado o ícone flutuava no meio.
+        HStack(alignment: stacksForAccessibility ? .top : .center, spacing: 14) {
             rowLead
-            VStack(alignment: .leading, spacing: 3) {
-                Text(thread.title).font(AtlasFont.serif(16)).foregroundStyle(AtlasTheme.textPrimary)
-                    .lineLimit(1).truncationMode(.tail)
-                // Títulos gerados repetem entre si ("Implement a concrete…");
-                // sem esta linha a lista fica indistinguível item a item.
-                Text(WorkspaceThreadJudgment.rowSubtitle(thread: thread))
-                    .atlasSans(13)
-                    .foregroundStyle(AtlasTheme.textTertiary)
-                    .lineLimit(1).truncationMode(.tail)
+            rowTextStack
+            if !stacksForAccessibility {
+                Spacer(minLength: 8)
+                rowTrailing
             }
-            .accessibilityHidden(true)
-            Spacer(minLength: 8)
-            rowTrailing
         }
         .padding(.horizontal, AtlasTheme.Space.screen).padding(.vertical, AtlasTheme.Space.row)
         .overlay(alignment: .leading) { rowWorkspaceTint }
         .contentShape(Rectangle())
+    }
+
+    var rowTextStack: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(thread.title).font(AtlasFont.serif(16)).foregroundStyle(AtlasTheme.textPrimary)
+                .lineLimit(stacksForAccessibility ? 3 : 1)
+                .truncationMode(.tail)
+            // Títulos gerados repetem entre si ("Implement a concrete…");
+            // sem esta linha a lista fica indistinguível item a item.
+            Text(WorkspaceThreadJudgment.rowSubtitle(thread: thread))
+                .atlasSans(13)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .lineLimit(stacksForAccessibility ? 2 : 1)
+                .truncationMode(.tail)
+            if stacksForAccessibility {
+                HStack(spacing: 8) { rowTrailing }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityHidden(true)
     }
 
     @ViewBuilder

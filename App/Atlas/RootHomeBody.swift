@@ -232,8 +232,18 @@ extension RootHomeBody {
         .padding(.leading, AtlasTheme.Space.screen + 42)
     }
 
+    /// Centraliza, mas nunca debaixo da pílula: sem rolagem e sem folga
+    /// inferior, um texto de falha mais longo (ou Dynamic Type grande) empurrava
+    /// o "Tentar de novo" para trás do dock — CTA visível e intocável.
     func centered<V: View>(@ViewBuilder _ v: () -> V) -> some View {
-        VStack { Spacer(); v(); Spacer() }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        ScrollView {
+            VStack(spacing: 0) { v() }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 96)
+                .containerRelativeFrame(.vertical, alignment: .center) { height, _ in height }
+        }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
     }
 }
 

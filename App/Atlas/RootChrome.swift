@@ -89,10 +89,16 @@ struct CircleButton: View {
     }
 }
 
+/// Identidade visual do workspace — NÃO é estado.
+///
+/// A paleta antiga sorteava entre `accent` (ouro = estado/marca),
+/// `domAutonomos` (verde = domínio Autônomos) e `domOperacional` (bronze =
+/// domínio Operacional). Como a escolha é um hash do nome, uma conversa do
+/// `repo` ganhava trilho verde e lia como se fosse dos Autônomos. Estes quatro
+/// tons frios não significam nada em outro lugar do app: só agrupam.
 func threadWorkspaceColor(_ workspace: String) -> Color {
-    let palette = [AtlasTheme.accent, AtlasTheme.prussian, AtlasTheme.domAutonomos, AtlasTheme.domOperacional]
     let total = workspace.unicodeScalars.reduce(0) { $0 + Int($1.value) }
-    return palette[abs(total) % palette.count]
+    return AtlasTheme.workspaceTints[abs(total) % AtlasTheme.workspaceTints.count]
 }
 
 struct WorkspaceRow: View {
@@ -921,6 +927,15 @@ extension AtlasTheme {
     static let goldBorder = Color(hex: 0xD4A85A, alpha: 0.34)
     static let prussian = Color(hex: 0x7FA7C4)
     static let alert = Color(hex: 0xE08C8C)
+
+    /// Só identidade de workspace. Frios e de peso parecido para nenhum deles
+    /// puxar mais atenção que outro — e nenhum colide com estado ou domínio.
+    static let workspaceTints = [
+        prussian,                 // azul
+        Color(hex: 0x6FA9A2),     // teal
+        Color(hex: 0x8E97C4),     // lavanda fria
+        Color(hex: 0x8AA7B8),     // aço
+    ]
 }
 
 extension AtlasTheme {
