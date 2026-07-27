@@ -117,11 +117,18 @@ engano: fundir aqui quebraria o contexto por tela, que é a tese da pílula.
 | Item | Estado | O que foi feito |
 |---|---|---|
 | §3 contradição OBRA | **fechado** | Regra reescrita: coesão, não contagem. Split por linhas é proibido; ~200 vale para o corpo da view. |
-| §2 tipografia | **parcial** | 47 → **28** tamanhos. Migrados 29 call sites, todos com salto de ≤1pt. |
+| §2 tipografia | **fechado** | 47 → **27** tamanhos. 174 call sites, todos com salto de ≤1pt. sans caiu de 9 degraus contíguos para 4; mono de 5 para 3. |
 | §1 espaçamento | **parcial** | 34 → **28** valores. 22 call sites, mesma régua de ≤1pt. |
 | §4 fusões | **fechado** | Seis duplicatas eliminadas. |
 
-**Por que parcial e não zero-dívida**: os saltos de ≤1pt são invisíveis e
+Fora da auditoria original, consertado no mesmo ciclo: o **`atlas-backend` e o
+`atlas-queue` estavam em crash-loop** havia horas. Causa em
+`atlas-server/docs/engineering-knowledge-base/atlas-bootstrap-cache-volume-trap.md`
+— volume anônimo de `bootstrap/cache` com o manifesto de providers congelado em
+maio. Ambos de pé e saudáveis; resposta caiu de 1–3s (paliativo `artisan
+serve`) para **0,02s**.
+
+**Por que o espaçamento segue parcial**: os saltos de ≤1pt são invisíveis e
 seguros. Consolidar de 28 para os 6–8 degraus ideais exige mover 2–4pt em
 centenas de call sites — cada um capaz de mudar quebra de linha e altura de
 linha. Isso não se faz às cegas: precisa ser feito superfície por superfície,
