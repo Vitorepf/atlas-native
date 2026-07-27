@@ -1175,7 +1175,9 @@ extension AtlasCodePalette {
 
 enum AtlasCodePalette {
     static let onMain = AtlasTheme.accent
-    static let alert = Color(hex: 0xE08C8C)
+    /// Mesmo vermelho de `AtlasTheme.alert` — era o hex 0xE08C8C declarado
+    /// duas vezes. Alias para os dois não divergirem no próximo ajuste.
+    static let alert = AtlasTheme.alert
     static let healed = Color(hex: 0x83B46D)
     static let history = Color(hex: 0x647682)
 }
