@@ -58,10 +58,14 @@ vizinho. Degraus com uso real hoje:
 | `serif` | 12 14 16 18 20 22 24 28 32 34 (+display 44/52/56/58/62) |
 | `serifItalic` | 12 13 14 15 16 |
 | `atlasSans` | 8 9 10 11 12 13 14 15 16 17 |
-| `padding` | 2 4 6 8 10 12 14 16 18 20 22 24 28 32 36 40 (+96/108 docks) |
+| `padding` | **sempre par.** Respiro: 2 4 6 8 10 12 14 16 18 20 22 24 · Bloco: 28 32 40 · Dock/âncora: 56 96 108 140 |
 
 Espaço de tela e de linha **sempre** por token: `AtlasTheme.Space.screen` (20)
 e `.row` (13) — nunca o número cru.
+
+**Ímpar é bug.** Não existe padding ímpar na casca (fechado em 27/07: 34 → 20
+valores, todos pares). Se você escrever `7` ou `9`, escolheu o degrau errado —
+o vizinho par existe e alguém já o usou dezenas de vezes.
 
 ## Superfícies → host
 

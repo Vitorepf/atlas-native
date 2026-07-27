@@ -202,7 +202,7 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(AtlasFont.serif(14, .semibold)).foregroundStyle(AtlasTheme.bg)
-            .padding(.horizontal, 14).padding(.vertical, 9)
+            .padding(.horizontal, 14).padding(.vertical, 10)
             .background(
                 Capsule().fill(
                     AtlasTheme.accent.opacity(
@@ -970,7 +970,7 @@ struct AutonomosAreaBindChooser: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
         }
-        .padding(36)
+        .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(AutonomosAreaBindFace.none.spokenFace)

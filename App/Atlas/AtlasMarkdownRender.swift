@@ -206,7 +206,7 @@ extension AtlasMarkdownView {
         if ordered {
             Text("\(index + 1).")
                 .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
-                .frame(width: 26, alignment: .leading).padding(.top, 3)
+                .frame(width: 26, alignment: .leading).padding(.top, 4)
                 .accessibilityHidden(true)
         } else {
             Text("—")
@@ -1337,7 +1337,7 @@ struct TraceEvidenceUnavailable: View {
 
     var body: some View {
         unavailableStack
-            .padding(36)
+            .padding(40)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spoken)
             .accessibilityValue(TraceEvidenceFace.unavailable.productWord)

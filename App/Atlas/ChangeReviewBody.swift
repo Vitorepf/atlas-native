@@ -271,7 +271,7 @@ extension ChangeReviewFindingRow {
             }
             findingPathAndRecommendation
         }
-        .padding(.vertical, 3)
+        .padding(.vertical, 4)
     }
 }
 
@@ -407,7 +407,7 @@ extension ChangeReviewPatchCard {
                 HStack(spacing: 6) {
                     ForEach(patch.riskFlags, id: \.self) { flag in
                         Text(flag).font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.domOperacional)
-                            .padding(.horizontal, 7).padding(.vertical, 3)
+                            .padding(.horizontal, 8).padding(.vertical, 4)
                             .background(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.4), lineWidth: 1))
                             .accessibilityHidden(true)
                     }
@@ -703,7 +703,7 @@ struct ChangeReviewFileRow: View {
 
     var body: some View {
         fileLeading
-            .padding(.vertical, 3)
+            .padding(.vertical, 4)
             .modifier(ChangeReviewFileRowA11y(
                 decidedLabel: decided.map {
                     ChangeReviewFileRowA11y.spoken(displayName: displayName, kind: fileKindCaption, review: $0)

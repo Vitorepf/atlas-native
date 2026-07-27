@@ -137,7 +137,7 @@ extension WorkspaceView {
     func areaFilterChipLabel(_ a: AtlasArea, active: Bool) -> some View {
         Text(a.label)
             .font(.system(.subheadline, weight: .medium))
-            .padding(.horizontal, 14).padding(.vertical, 7)
+            .padding(.horizontal, 14).padding(.vertical, 8)
             .atlasChipSelection(active)
     }
 }
@@ -566,8 +566,8 @@ struct ThreadRow: View {
             Text("novo")
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.accent)
-                .padding(.horizontal, 7)
-                .padding(.vertical, 3)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
                 .background(Capsule().fill(AtlasTheme.goldVeil))
                 .accessibilityHidden(true)
         }

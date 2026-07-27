@@ -102,7 +102,7 @@ extension ChangeReviewToast {
     func toastCapsule(_ text: String) -> some View {
         Text(text)
             .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
-            .padding(.horizontal, 16).padding(.vertical, 9)
+            .padding(.horizontal, 16).padding(.vertical, 10)
             .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
             .padding(.top, 8)
     }

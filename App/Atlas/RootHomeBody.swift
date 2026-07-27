@@ -492,7 +492,7 @@ struct LiveNowRow: View {
         }
         .foregroundStyle(AtlasTheme.accent)
         .padding(.horizontal, 6)
-        .padding(.vertical, 3)
+        .padding(.vertical, 4)
         .background(Capsule().fill(AtlasTheme.goldVeil))
         .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1))
         .accessibilityElement(children: .ignore)

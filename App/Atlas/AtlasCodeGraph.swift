@@ -207,7 +207,7 @@ extension AtlasCodeCommitRow {
             commitRowTextStack
             Spacer(minLength: 0)
         }
-        .padding(.vertical, 7)
+        .padding(.vertical, 8)
         .contentShape(Rectangle())
     }
 }
@@ -464,7 +464,7 @@ struct AtlasCodeFileRow: View {
 
     var body: some View {
         lead
-            .padding(.vertical, 9)
+            .padding(.vertical, 10)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(AtlasCodeProvenanceJudgment.spokenFile(file))
             .accessibilityIdentifier(accessibilityIdentifier ?? "")
@@ -1351,7 +1351,7 @@ extension AtlasCodeView {
             .foregroundStyle(AtlasTheme.textTertiary)
         }
         .padding(.horizontal, 10)
-        .padding(.vertical, 7)
+        .padding(.vertical, 8)
         .background(Capsule().fill(AtlasTheme.bgRecessed))
         .overlay(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
         .accessibilityElement(children: .ignore)

@@ -118,7 +118,7 @@ extension SearchViewHeader {
 extension SearchViewHeader {
     var searchFieldCapsule: some View {
         searchFieldLeading
-            .padding(.horizontal, 14).padding(.vertical, 9)
+            .padding(.horizontal, 14).padding(.vertical, 10)
             .background(Capsule().fill(AtlasTheme.surface)
                 .overlay(Capsule().stroke(focused ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1)))
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: focused)
@@ -338,7 +338,7 @@ extension SearchView {
             LazyVStack(spacing: 0) {
                 listShellContent
             }
-            .padding(.bottom, 88)
+            .padding(.bottom, 96)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: trimmedQuery)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: session.threads.map(\.id))
         }

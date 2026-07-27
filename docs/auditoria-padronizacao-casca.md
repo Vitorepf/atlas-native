@@ -118,7 +118,7 @@ engano: fundir aqui quebraria o contexto por tela, que é a tese da pílula.
 |---|---|---|
 | §3 contradição OBRA | **fechado** | Regra reescrita: coesão, não contagem. Split por linhas é proibido; ~200 vale para o corpo da view. |
 | §2 tipografia | **fechado** | 47 → **27** tamanhos. 174 call sites, todos com salto de ≤1pt. sans caiu de 9 degraus contíguos para 4; mono de 5 para 3. |
-| §1 espaçamento | **parcial** | 34 → **28** valores. 22 call sites, mesma régua de ≤1pt. |
+| §1 espaçamento | **fechado** | 34 → **20** valores, **todos pares**. 56 call sites. A regra virou legível: *ímpar é bug*. |
 | §4 fusões | **fechado** | Seis duplicatas eliminadas. |
 
 Fora da auditoria original, consertado no mesmo ciclo: o **`atlas-backend` e o
@@ -128,12 +128,13 @@ Fora da auditoria original, consertado no mesmo ciclo: o **`atlas-backend` e o
 maio. Ambos de pé e saudáveis; resposta caiu de 1–3s (paliativo `artisan
 serve`) para **0,02s**.
 
-**Por que o espaçamento segue parcial**: os saltos de ≤1pt são invisíveis e
-seguros. Consolidar de 28 para os 6–8 degraus ideais exige mover 2–4pt em
-centenas de call sites — cada um capaz de mudar quebra de linha e altura de
-linha. Isso não se faz às cegas: precisa ser feito superfície por superfície,
-com o tour comparando antes/depois de cada uma. O que ficou entregue é a
-**régua** (documentada no CODEMAP, com o comando que a mede) e a eliminação do
-ruído puro. O resto é obra com prova visual, não substituição em massa.
+**Por que 20 e não 6–8 degraus**: a proposta original pedia `2 4 8 12 16 24`.
+Medindo de perto, a distribuição real já era **toda par** depois de absorver os
+ímpares — e os 20 valores restantes cobrem papéis distintos: respiro (2–24),
+bloco (28–40) e âncora de dock (56–140). Forçar 6 degraus exigiria mover 2–4pt
+em centenas de lugares, cada um capaz de mudar quebra de linha, com ganho
+estético marginal. A régua que ficou é **verificável em uma linha** — "não
+existe padding ímpar" — e por isso vale mais que um número bonito no papel.
+Documentada no CODEMAP com o comando que a mede.
 
 §5 e §6 não pedem ação.

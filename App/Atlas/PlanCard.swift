@@ -455,7 +455,7 @@ extension PlanStepRowView {
                              : state == .current ? AtlasTheme.textPrimary : AtlasTheme.textSecondary)
             .lineLimit(2)
             .accessibilityHidden(true)
-            .padding(.bottom, isLast ? 0 : 9)
+            .padding(.bottom, isLast ? 0 : 10)
     }
 }
 extension PlanFlexWrap {
@@ -523,7 +523,7 @@ extension PlanFlowChips {
     func flowChipCell(_ item: String) -> some View {
         Text(item)
             .font(AtlasFont.mono(9)).foregroundStyle(AtlasTheme.textSecondary)
-            .padding(.horizontal, 7).padding(.vertical, 3)
+            .padding(.horizontal, 8).padding(.vertical, 4)
             .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
             .lineLimit(1)
             .accessibilityHidden(true)
@@ -1468,7 +1468,7 @@ extension EditorialTurn {
                 .atlasSans(12, .medium)
         }
         .foregroundStyle(AtlasTheme.textSecondary)
-        .padding(.horizontal, 9)
+        .padding(.horizontal, 10)
         .padding(.vertical, 4)
         .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
     }

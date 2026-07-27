@@ -853,7 +853,7 @@ struct ArenaPremiumTabBar: View {
                 .accessibilityIdentifier(A11yID.arenaPremiumTab(tab.accessibilityKey))
             }
         }
-        .padding(3)
+        .padding(4)
         .background(Capsule().fill(AtlasTheme.bgRecessed.opacity(0.92)))
         .overlay(Capsule().stroke(AtlasTheme.separator.opacity(0.7), lineWidth: 1))
     }

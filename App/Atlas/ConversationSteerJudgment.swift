@@ -840,7 +840,7 @@ struct ConversationHandoffReceipt: View {
     func receiptChrome<Content: View>(_ content: Content) -> some View {
         content
             .padding(.horizontal, 12)
-            .padding(.vertical, 9)
+            .padding(.vertical, 10)
             .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).fill(AtlasTheme.goldVeil))
             .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control).stroke(AtlasTheme.goldBorder, lineWidth: 1))
             .padding(.horizontal, AtlasTheme.Space.screen)

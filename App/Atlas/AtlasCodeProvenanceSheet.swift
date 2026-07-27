@@ -1239,7 +1239,7 @@ struct AtlasCodeWhySheet: View {
                         .accessibilityHidden(true)
                 }
             }
-            .padding(.top, 7)
+            .padding(.top, 8)
             .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 5) {

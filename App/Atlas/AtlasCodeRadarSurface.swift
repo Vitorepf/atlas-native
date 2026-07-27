@@ -183,7 +183,7 @@ extension AtlasCodeRadarView {
             radarContent
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
                 .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-                .padding(.bottom, 88)
+                .padding(.bottom, 96)
         )
         .background(AtlasTheme.bg.ignoresSafeArea())
         .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -883,7 +883,7 @@ extension AtlasCodeRadarStatusCapsule {
         }
         .foregroundStyle(AtlasCodePalette.alert)
         .padding(.horizontal, 16)
-        .padding(.vertical, 7)
+        .padding(.vertical, 8)
         .background(Capsule().fill(AtlasCodePalette.alert.opacity(0.09)))
         .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.35), lineWidth: 1))
     }
@@ -896,7 +896,7 @@ extension AtlasCodeRadarStatusCapsule {
             .atlasSans(12, .semibold)
             .tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
-            .padding(.vertical, 7)
+            .padding(.vertical, 8)
             .accessibilityHidden(true)
     }
 }
@@ -1058,7 +1058,7 @@ extension AtlasCodeRepoRow {
                 .atlasSans(10)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .padding(.horizontal, 6)
-                .padding(.vertical, 1.5)
+                .padding(.vertical, 2)
                 .background(Capsule().fill(AtlasTheme.surface))
                 .accessibilityHidden(true)
         }

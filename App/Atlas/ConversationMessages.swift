@@ -153,7 +153,7 @@ extension ConversationMessages {
             Text(ChangeReviewSheetJudgment.productTitle).font(.system(.footnote, weight: .medium))
         }
         .foregroundStyle(AtlasTheme.textSecondary)
-        .padding(.horizontal, 12).padding(.vertical, 7)
+        .padding(.horizontal, 12).padding(.vertical, 8)
         .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
     }
 }

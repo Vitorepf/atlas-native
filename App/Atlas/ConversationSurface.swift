@@ -388,7 +388,7 @@ extension ConversationView {
         if let t = model.toast {
             Text(t)
                 .font(AtlasFont.serifItalic(14)).foregroundStyle(AtlasTheme.textPrimary)
-                .padding(.horizontal, 16).padding(.vertical, 9)
+                .padding(.horizontal, 16).padding(.vertical, 10)
                 .background(Capsule().fill(AtlasTheme.surfaceHi).overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
                 .padding(.top, 8)
                 .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
@@ -1624,7 +1624,7 @@ struct ExecutionBanner: View {
         }
         .foregroundStyle(tint)
         .padding(.horizontal, 10)
-        .padding(.vertical, 7)
+        .padding(.vertical, 8)
         .background(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).fill(tint.opacity(0.10)))
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft).stroke(tint.opacity(0.35), lineWidth: 1))
         .accessibilityElement(children: .ignore)

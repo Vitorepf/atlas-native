@@ -423,8 +423,8 @@ struct AtlasCodeMirrorCard: View {
                     Text(rule)
                         .font(AtlasFont.mono(9))
                         .foregroundStyle(AtlasCodePalette.alert)
-                        .padding(.horizontal, 7)
-                        .padding(.vertical, 3)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
                         .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.3), lineWidth: 1))
                         .accessibilityHidden(true)
                 }
@@ -1138,7 +1138,7 @@ extension AtlasCodeView {
             }
             .foregroundStyle(AtlasTheme.textPrimary)
             .padding(.horizontal, 12)
-            .padding(.vertical, 7)
+            .padding(.vertical, 8)
             .atlasGlassCapsule()
         }
         .buttonStyle(.plain)
