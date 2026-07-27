@@ -336,13 +336,70 @@ extension WorkspaceView {
     @ViewBuilder
     var scrollPhaseContent: some View {
         if showsLoadingShell {
-            WorkspaceLoadingEmpty(reduceMotion: reduceMotion)
+            AtlasListSkeleton(reduceMotion: reduceMotion)
                 .accessibilityIdentifier(A11yID.workspaceLoading)
         } else if showsNetworkFailure {
             listNetworkFailure
         } else {
             listLoadedContent
         }
+    }
+}
+
+
+/// Esqueleto da lista enquanto o servidor não responde.
+///
+/// NÃO é mock: nenhuma linha inventa título, contagem ou data — são barras
+/// neutras. O que ele antecipa é a FORMA, e usa a métrica exata da
+/// `ThreadRow` (mesmo padding, mesma altura de título e subtítulo). Sem isso
+/// o conteúdo real "pula" ao chegar, que é pior que esperar.
+struct AtlasListSkeleton: View {
+    var rows: Int = 5
+    var reduceMotion: Bool
+    @State private var shimmer = false
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(0..<rows, id: \.self) { i in
+                row(index: i)
+                if i < rows - 1 {
+                    Divider().overlay(AtlasTheme.separator)
+                        .padding(.leading, AtlasTheme.Space.screen + 36)
+                }
+            }
+        }
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(AtlasMotion.breath(1.1)) { shimmer = true }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("carregando conversas")
+    }
+
+    private func row(index: Int) -> some View {
+        HStack(spacing: 14) {
+            Circle()
+                .fill(AtlasTheme.surface)
+                .frame(width: 18, height: 18)
+                .frame(width: 22)
+            VStack(alignment: .leading, spacing: 6) {
+                bar(width: index.isMultiple(of: 2) ? 0.62 : 0.48, height: 13)
+                bar(width: 0.30, height: 10)
+            }
+            Spacer(minLength: 8)
+        }
+        .padding(.horizontal, AtlasTheme.Space.screen)
+        .padding(.vertical, AtlasTheme.Space.row)
+        .opacity(shimmer ? 0.85 : 0.45)
+    }
+
+    private func bar(width: CGFloat, height: CGFloat) -> some View {
+        GeometryReader { geo in
+            Capsule()
+                .fill(AtlasTheme.surface)
+                .frame(width: geo.size.width * width, height: height)
+        }
+        .frame(height: height)
     }
 }
 
