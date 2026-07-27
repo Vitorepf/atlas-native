@@ -591,12 +591,16 @@ struct ArenaPremiumCapabilitiesView: View {
                             Text(capability.labelPt)
                                 .font(AtlasFont.serifItalic(15))
                                 .foregroundStyle(AtlasTheme.textPrimary)
+                            // Esta linha é a ressalva que DESQUALIFICA o número
+                            // ao lado ("baixa confiança", "não medível").
+                            // Cortada em uma linha, sobrava "70% descartado no
+                            // setup · não…" — o operador lia o delta e perdia
+                            // exatamente o aviso de que ele não vale.
                             if let caption = ArenaCapabilitiesJudgment.productShortConfidence(capability) {
                                 Text(caption)
                                     .font(AtlasFont.mono(9))
                                     .foregroundStyle(AtlasTheme.textTertiary)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.8)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                         }
                         .frame(maxWidth: 170, alignment: .leading)
