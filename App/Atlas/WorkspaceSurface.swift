@@ -207,9 +207,21 @@ extension WorkspaceThreadsSection {
     @ViewBuilder
     var threadRows: some View {
         let saturated = newBadgeSaturated
-        ForEach(threads) { t in
+        ForEach(Array(threads.enumerated()), id: \.element.id) { index, t in
             threadRowLoop(t, newBadgeSuppressed: saturated)
+                .animation(rowEntrance(index), value: threads.count)
         }
+    }
+
+    /// Entrada escalonada: as linhas chegavam TODAS no mesmo quadro, o que lê
+    /// como um bloco piscando em vez de uma lista se formando.
+    ///
+    /// O teto é deliberado: 5 linhas × 25ms = 125ms no pior caso. Escalonar a
+    /// lista inteira faria a última demorar segundos — e o operador acabou de
+    /// relatar o app lento. Elegância que custa latência não é elegância.
+    func rowEntrance(_ index: Int) -> Animation? {
+        guard !reduceMotion else { return nil }
+        return AtlasMotion.editorial.delay(Double(min(index, 5)) * 0.025)
     }
 }
 
