@@ -61,6 +61,9 @@ public struct AtlasCodeFolder: Decodable, Equatable, Sendable, Identifiable {
 }
 
 /// Tempo relativo humano, curto — o mesmo vocabulário do grafo.
+/// QUANDO — lido sozinho ("agora", "ontem", "5d"). Não serve para compor
+/// `"há \(x)"`: a casca tem `AtlasCodeRelativeTime` para isso. Os dois
+/// coexistem de propósito; ver a nota lá.
 public enum AtlasCodeAge {
     public static func short(from epoch: Int?, now: Date = Date()) -> String? {
         guard let epoch else { return nil }
@@ -71,7 +74,12 @@ public enum AtlasCodeAge {
         case ..<86_400: return "\(seconds / 3600)h"
         case ..<172_800: return "ontem"
         case ..<2_592_000: return "\(seconds / 86_400)d"
-        default: return "\(seconds / 2_592_000)mês"
+        default:
+            // "2mês" era plural quebrado e aparecia no picker de workspace e
+            // no radar. Único caso da escala com concordância — min/h/d não
+            // flexionam em português abreviado.
+            let months = seconds / 2_592_000
+            return months == 1 ? "1 mês" : "\(months) meses"
         }
     }
 }

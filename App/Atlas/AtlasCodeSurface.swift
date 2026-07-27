@@ -1172,6 +1172,13 @@ enum AtlasCodePalette {
 }
 // MARK: - AtlasCodeRelativeTime
 
+/// DURAÇÃO — "há quanto tempo". Sempre composto como `"há \(x)"`, então
+/// nunca pode devolver "agora" nem "ontem" (viraria "há agora"/"há ontem").
+///
+/// NÃO é duplicata de `AtlasCodeAge` (Core), que responde outra pergunta:
+/// *quando* foi, e por isso pode dizer "agora"/"ontem" sozinho. Tentei fundir
+/// os dois em 27/07 e a gramática provou que são coisas diferentes — está
+/// escrito aqui para ninguém repetir a tentativa.
 enum AtlasCodeRelativeTime {
     static func short(from epoch: Int, now: Date = Date()) -> String {
         let seconds = max(0, Int(now.timeIntervalSince1970) - epoch)
