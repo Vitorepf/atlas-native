@@ -1031,6 +1031,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-26 · Fable 5 · **polish(ui) — honestidade visual das superfícies (13 quebras do tour)** · `2e249e06` · App/Atlas 14 + A11yID.swift extraído. **Prova:** AtlasCoreChecks exit 0; `make build` exit 0; `AtlasDesignTourTests` **8/8 verde, 26 screenshots/rodada no simulador** (ver seção 26/07 abaixo). **DEVICE-PENDING** — prova de device do operador pendente.
+
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Code state kickers natural-case (ciclo 332)** · `157fe862` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — plan labels natural-case serif (ciclo 331)** · `20c85651` · App/Atlas 36. **Prova:** checks+build exit 0.
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Code section natural-case titles (ciclo 330)** · `d18e4323` · App/Atlas 36. **Prova:** checks+build exit 0.
@@ -2541,6 +2543,45 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
   reconciliação final após a regressão (a entrada anterior registrava o estado
   intermediário). Gate PHPUnit final da superfície C22–C26: 31 testes/191
   assertions verdes; Core Checks e build App também verdes.
+
+### 26/07 · Honestidade visual — o tour de design rodou e apontou 13 quebras (Fable)
+
+O simulador **não** estava bloqueado: `AtlasDesignTourTests` roda inteiro e
+exporta 26 screenshots por rodada. O que estava quebrado era o **target de
+teste** — o `enum A11yID` base morava no fim de `RootChrome.swift`, fora do
+glob `A11yID*.swift` do `AtlasDeviceProof`; a bateria não compilava. Extraído
+para `App/Atlas/A11yID.swift`, a família inteira voltou a compilar.
+
+Bloqueio de dados: o container `atlas-backend` está em **crash-loop** (imagem
+com código velho — `Unresolvable dependency [callable $pendingPacketsSource]`
+em `AtlasMaestroPriorityFactSnapshotter`). No host o artisan sobe normal; a
+auditoria rodou contra `php artisan serve` local na 3737, com dados reais.
+
+| Quebra | Raiz | Correção |
+|---|---|---|
+| campo de busca, teclado, toggle e avatar claros sobre o slate | app nunca declarava `colorScheme` — controle nativo herdava light do sistema | `.preferredColorScheme(.dark)` em `AtlasApp` |
+| conteúdo vazando por trás da pílula agêntica (busca) | `AgenticAskDock` com `background(bg.opacity(0.01))` | faixa opaca + fade de 52pt |
+| `FINISHED` sobre `execução concluída` + eco do título | `productWord` (chave técnica EN) exibido como selo | selo = `productBadge` PT; `titleWithoutEcho` mata a repetição |
+| lista de conversas indistinguível (7× o mesmo título) | linha só tinha título + contagem | subtítulo `resumo\|N mensagens · hora` + idade no trailing |
+| `Fechar` à esquerda em 3 sheets, à direita em 2 | `.cancellationAction` usado para dismiss puro | `Fechar`→`.topBarTrailing`; `Cancelar` fica à esquerda (HIG) |
+| "Área do loop" / "liga a frota… no motor" | vocabulário MORTO pelo canon vazando na UI | "Área da frota"; zero `loop` em string de produto |
+| ouro marcando chip selecionado | ouro é ESTADO, não controle | `atlasChipSelection` compartilhado (2 call sites, −8 linhas) |
+| trilho de acento e chips decepados pelo bezel | `Rectangle` em x=0; scroll sem máscara | inset no trilho + `atlasScrollEdgeFade` |
+| `falha interna classificada pelo servidor` em mono vermelho | erro renderizado como log | sans, cor de leitura, copy humana |
+| `Capac.` | abreviação com ponto | `Capacidades` + `minimumScaleFactor` |
+| `checkpoint · evidence`, `quality 90.0`, `2mês` | detalhe técnico e formatação cruas no produto | id só em **Modo auditoria**; `qualidade 90`; `2 meses` |
+| estado vazio colado no topo, 60% da tela morto | `padding(.top, 72)` fixo dentro de `ScrollView` | `containerRelativeFrame(.vertical)` |
+| chips `útil/contexto/longo/fraco` sem rótulo | liam como etiquetas da resposta | kicker "COMO FOI ESTA RESPOSTA" |
+
+**Tentativa revertida (registrada porque custou uma rodada):** truncar título
+no meio para revelar o sufixo. Os títulos gerados são idênticos **nas duas
+pontas** (`Implement a co…P4-LIVE-PROOF`), então piorou — perdeu o começo sem
+ganhar distinção. O que resolveu foi o **relógio** no subtítulo: 16:56 · 16:53
+· 16:51 separam o que nem título nem "2d" separavam.
+
+**Prova:** `2e249e06`; AtlasCoreChecks exit 0; `make build` exit 0;
+`AtlasDesignTourTests` 8/8. Screenshots antes/depois em 4 rodadas do tour.
+**Pendente:** confirmação no device do operador (`make device`).
 
 ### 15/07 · Atlas Código — gaps do Codex fechados e PROVADOS no simulador (Fable)
 
