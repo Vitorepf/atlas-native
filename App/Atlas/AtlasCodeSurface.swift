@@ -1716,26 +1716,32 @@ extension AtlasCodeModel {
         }
     }
 
-    var violatingHashes: Set<String> {
-        guard let violations, let graph else { return [] }
-        var hashes: Set<String> = []
-        for violation in violations.violations {
-            for node in graph.nodes where matches(node, target: violation.target) {
-                hashes.insert(node.hash)
+    /// Estes dois eram COMPUTED e custavam O(violações × nós) por acesso.
+    /// `state(for:)` os lê, e a lista chama `state(for:)` três vezes por linha
+    /// (o nó, o de cima, o de baixo): com 200 commits e 40 violações davam
+    /// ~4,8 milhões de comparações para desenhar a tela UMA vez — reavaliadas
+    /// a cada scroll e a cada toque. Era a tela do Grafo travando por segundos.
+    /// Agora são calculados só quando graph/violations/heal mudam.
+    func rebuildHashCaches() {
+        var violating: Set<String> = []
+        if let violations, let graph {
+            for violation in violations.violations {
+                for node in graph.nodes where matches(node, target: violation.target) {
+                    violating.insert(node.hash)
+                }
             }
         }
-        return hashes
-    }
+        violatingHashes = violating
 
-    var healedHashes: Set<String> {
-        guard let heal else { return [] }
-        var hashes: Set<String> = []
-        for receipt in heal.stepReceipts where receipt.status == "completed" {
-            if let head = receipt.undoRef?["head"], !head.isEmpty {
-                hashes.insert(head)
+        var healed: Set<String> = []
+        if let heal {
+            for receipt in heal.stepReceipts where receipt.status == "completed" {
+                if let head = receipt.undoRef?["head"], !head.isEmpty {
+                    healed.insert(head)
+                }
             }
         }
-        return hashes
+        healedHashes = healed
     }
 
     func state(for node: AtlasCodeGraphNode) -> AtlasCodeNodeState {
@@ -1807,6 +1813,7 @@ final class AtlasCodeModel {
         week = nil
         spineHashes = []
         undoError = nil
+        rebuildHashCaches()
     }
 
     func load(before: String? = nil) async {
@@ -1817,6 +1824,7 @@ final class AtlasCodeModel {
             guard repo == requested else { return }
             self.graph = graph
             spineHashes = AtlasCodeGraphState.spine(nodes: graph.nodes, head: graph.trunkHead)
+            rebuildHashCaches()
             phase = .loaded
 
             async let violationsTask = client.getCodeViolations(repo: requested)
@@ -1829,6 +1837,7 @@ final class AtlasCodeModel {
             violations = nextViolations
             heal = nextHeal
             week = nextWeek
+            rebuildHashCaches()
             AtlasNativeSnapshotWriter.shared.recordCodeWeek(week)
         } catch {
             guard repo == requested else { return }
@@ -1843,6 +1852,7 @@ final class AtlasCodeModel {
             heal = try? await client.getCodeHealTick(repo: repo)
             graph = try? await client.getCodeGraph(repo: repo)
             violations = try? await client.getCodeViolations(repo: repo)
+            rebuildHashCaches()
             // WAVE-048: clear presentation undo failure only after success.
             undoError = nil
         } catch {
@@ -1854,4 +1864,6 @@ final class AtlasCodeModel {
     private(set) var undoError: String?
 
     var spineHashes: Set<String> = []
+    private(set) var violatingHashes: Set<String> = []
+    private(set) var healedHashes: Set<String> = []
 }

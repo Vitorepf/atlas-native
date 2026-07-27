@@ -63,6 +63,11 @@ extension AtlasCodeCommitRow {
     }
 }
 
+/// Distância a partir da qual soltar confirma. Uma constante só: o alvo que
+/// acende e o gesto que dispara precisam concordar, senão o operador vê
+/// "solta que eu pergunto" e o toque não pergunta.
+private let commitAskArmThreshold: CGFloat = 56
+
 private struct CommitRowAskChrome<Label: View>: View {
     let isDimmed: Bool
     let reduceMotion: Bool
@@ -77,6 +82,8 @@ private struct CommitRowAskChrome<Label: View>: View {
     @State private var offset: CGFloat = 0
     /// Evita que o fim do swipe dispare o Button (proveniência).
     @State private var suppressTap = false
+    /// Passou do ponto em que soltar CONFIRMA. Move o háptico e acende o alvo.
+    @State private var armed = false
 
     var body: some View {
         Button {
@@ -87,6 +94,9 @@ private struct CommitRowAskChrome<Label: View>: View {
         }
         .buttonStyle(.plain)
         .offset(x: offset)
+        // O destino vive ATRÁS da linha: arrastar revela para onde o commit
+        // vai. Sem isto o gesto era cego — nada dizia o que ia acontecer.
+        .background(alignment: .trailing) { askRevealTarget }
         .opacity(isDimmed ? 0.26 : 1)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.28), value: isDimmed)
         .accessibilityElement(children: .ignore)
@@ -97,6 +107,25 @@ private struct CommitRowAskChrome<Label: View>: View {
         .simultaneousGesture(askDrag)
     }
 
+    /// Alvo que o arrasto revela. Apagado enquanto o gesto não chegou lá;
+    /// aceso em ouro quando soltar confirma.
+    @ViewBuilder
+    private var askRevealTarget: some View {
+        if onAsk != nil, offset < -2 {
+            HStack(spacing: 6) {
+                Image(systemName: armed ? "sparkles" : "arrow.left")
+                    .atlasSans(12, .semibold)
+                Text(armed ? "soltar pergunta" : "arraste")
+                    .atlasSans(10, .medium)
+                    .lineLimit(1)
+            }
+            .foregroundStyle(armed ? AtlasTheme.accent : AtlasTheme.textTertiary)
+            .padding(.trailing, 8)
+            .opacity(min(1, Double(-offset) / Double(commitAskArmThreshold)))
+            .accessibilityHidden(true)
+        }
+    }
+
     private var askDrag: some Gesture {
         DragGesture(minimumDistance: 28)
             .onChanged { value in
@@ -105,20 +134,28 @@ private struct CommitRowAskChrome<Label: View>: View {
                 let dy = value.translation.height
                 guard abs(dx) > abs(dy), dx < 0 else { return }
                 offset = max(dx, -72)
+                // O toque avisa no instante em que soltar passa a confirmar —
+                // é assim que se sabe que "já deu", sem olhar.
+                let nowArmed = dx < -commitAskArmThreshold
+                if nowArmed != armed {
+                    armed = nowArmed
+                    AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                }
             }
             .onEnded { value in
-                guard onAsk != nil else {
+                let shouldAsk = onAsk != nil && value.translation.width < -commitAskArmThreshold
+                let reset = {
                     offset = 0
-                    return
+                    armed = false
                 }
-                let shouldAsk = value.translation.width < -56
-                let reset = { offset = 0 }
                 if reduceMotion {
                     reset()
                 } else {
                     withAnimation(.easeOut(duration: 0.18), reset)
                 }
                 guard shouldAsk else { return }
+                // Confirmou: recibo tátil distinto do de armar.
+                AtlasMotion.successNotification(reduceMotion: reduceMotion)
                 suppressTap = true
                 onAsk?()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
