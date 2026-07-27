@@ -10,8 +10,6 @@ import AtlasCore
 // MARK: - Host
 
 // MARK: - Linha do commit (mensagem é a manchete)
-// Label → AtlasCodeCommitRow+Label.swift · Spine → +Spine.swift
-// LongPress → AtlasCodeCommitRow+LongPress.swift
 
 struct AtlasCodeCommitRow: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion

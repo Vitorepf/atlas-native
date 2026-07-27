@@ -112,9 +112,6 @@ extension AtlasCodeProvenanceSheet {
 /// A folha responde, em ordem, as perguntas de quem abre um commit: em que
 /// estado ele está, o que ele diz, por que existe, e o que ele tocou.
 /// O hash fecha a folha — máquina embaixo do vidro (lei 6).
-/// Chrome → AtlasCodeProvenanceSheet+Chrome.swift
-/// Scroll → AtlasCodeProvenanceSheet+Scroll.swift
-/// Surface → AtlasCodeProvenanceSheet+Surface.swift
 struct AtlasCodeProvenanceSheet: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @State var whyTarget: AtlasCodeProvenanceWhyTarget?
@@ -621,9 +618,6 @@ extension AtlasCodeProvenanceSheet {
 }
 
 // MARK: - Cabeçalho da folha de proveniência (C23)
-// Meta → AtlasCodeProvenanceHeader+Meta.swift · Dateline → +Dateline.swift
-// Title → AtlasCodeProvenanceHeader+Title.swift
-// State → AtlasCodeProvenanceHeader+StateKicker.swift
 
 extension AtlasCodeProvenanceSheet {
     var header: some View {

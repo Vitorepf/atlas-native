@@ -50,7 +50,6 @@ struct ChangeReviewDiffView: View {
 
 
 // MARK: - ChangeReview chrome (peel de ChangeReviewSections)
-// Toast → ChangeReviewSections+Toast.swift
 
 struct ChangeReviewCaption: View {
     let text: String

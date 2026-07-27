@@ -1728,7 +1728,6 @@ struct ReconnectBanner: View {
     }
 }
 
-// ExecutionRibbon → ExecutionRibbon.swift (IDLE-COMPRESS)
 
 struct SilenceWatchdog: View {
     let bubble: ChatBubble

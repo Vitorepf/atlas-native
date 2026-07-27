@@ -241,9 +241,6 @@ extension ChangeReviewGovernanceSection {
 }
 
 // MARK: - Governance / Conselho (C18 · C19 · C21)
-// Stats/Revisions → +StatsLine/+RevisionsLine · Council block → +Block.swift
-// Chrome → ChangeReviewCouncilSection+Chrome.swift
-// Content → ChangeReviewCouncilSection+Content.swift
 
 /// C18 · C19 · C21 — as provas que o servidor emite. Cada bloco só existe
 /// se a fonte existir: sem diff medido, sem replanejamento e sem conselho,
