@@ -942,7 +942,7 @@ struct AutonomosAreaBindChooser: View {
             .navigationTitle(AutonomosAreaBindJudgment.productChooserTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
+                ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
                         spokenLabel: AutonomosAreaBindJudgment.spokenClose,
                         spokenHint: AutonomosAreaBindJudgment.spokenCloseHint,

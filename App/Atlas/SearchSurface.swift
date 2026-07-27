@@ -779,9 +779,9 @@ enum SearchListJudgment {
 
     static func missHeadline(query: String, loadedThreadCount: Int) -> String {
         if loadedThreadCount >= 100 {
-            return "“Nada com ‘\(query)’ nas 100 conversas mais recentes.”"
+            return "Nada com “\(query)” nas 100 conversas mais recentes."
         }
-        return "“Nada com ‘\(query)’.”"
+        return "Nada com “\(query)”."
     }
 
     // MARK: Row
@@ -1112,11 +1112,9 @@ extension TimelineFilterChips {
     func chipLabel(_ option: TimelineReadFilter, active: Bool) -> some View {
         Text(option.label)
             .font(AtlasFont.mono(9))
-            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textTertiary)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
-            .background(Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.bgRecessed))
-            .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separatorSoft, lineWidth: 1))
+            .atlasChipSelection(active)
     }
 }
 

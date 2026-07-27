@@ -64,8 +64,13 @@ extension ExecutionStateCard {
                     .font(AtlasFont.mono(11, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
-                if !state.title.isEmpty {
-                    Text(state.title)
+                // O servidor costuma repetir o mesmo fato do lead ("execução
+                // concluída" / "Execução concluída"); só mostre se acrescenta.
+                if let echoFree = ExecutionStateCardJudgment.titleWithoutEcho(
+                    title: state.title,
+                    lead: ConversationExecutionPhase.primarySpoken(for: state)
+                ) {
+                    Text(echoFree)
                         .font(AtlasFont.serifItalic(12))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .lineLimit(2)
@@ -73,16 +78,8 @@ extension ExecutionStateCard {
                 }
             }
             Spacer(minLength: 0)
-            Text(
-                (presenceAttention == .decision
-                    ? ConversationDecisionJudgment.productWord
-                    : ConversationExecutionPhase.primaryProduct(presenceFace)
-                ).uppercased()
-            )
-            .font(AtlasFont.mono(9))
-            .tracking(0.6)
-            .foregroundStyle(AtlasTheme.textTertiary)
-            .accessibilityHidden(true)
+            // `productWord` é chave técnica em inglês (facts, a11y value) —
+            // nunca chrome. O selo visível é o badge em português.
             stateHeaderBadge
         }
     }
@@ -101,10 +98,7 @@ extension ExecutionStateCard {
 extension ExecutionStateCard {
     /// WAVE-052: completed stays badge-silent (parity); others from Judgment.
     var kindBadge: String? {
-        switch state.kind {
-        case .completed: return nil
-        default: return ExecutionStateCardJudgment.productBadge(for: state.kind)
-        }
+        ExecutionStateCardJudgment.productBadge(for: state.kind)
     }
 }
 
@@ -133,6 +127,7 @@ struct ExecutionStateCard: View {
     var onRetry: (JobID) -> Void = { _ in }
     var onSteer: (() -> Void)? = nil
 
+    @Environment(AtlasSession.self) var session
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     /// WAVE-023: exclusive face + attention overlay (not parallel dialects).
@@ -281,7 +276,9 @@ extension ExecutionStateCard {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityHidden(true)
         }
-        if let checkpoint = state.checkpoint {
+        // O id cru do checkpoint é detalhe de auditoria, não produto: no card
+        // normal ele só lia como resto de log.
+        if let checkpoint = state.checkpoint, session.auditModeEnabled {
             Text(ExecutionProofJudgment.productCheckpoint(checkpoint))
                 .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
@@ -679,6 +676,19 @@ enum ExecutionStateCardJudgment {
         case .failed: return "FALHOU"
         case .completed: return "CONCLUÍDO"
         }
+    }
+
+    /// Título do servidor sem eco do lead. Compara sem caixa/acento/pontuação
+    /// porque "execução concluída" e "Execução concluída." são o mesmo fato.
+    static func titleWithoutEcho(title: String, lead: String) -> String? {
+        let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        func key(_ s: String) -> String {
+            s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
+                .filter { $0.isLetter || $0.isNumber || $0 == " " }
+                .trimmingCharacters(in: .whitespaces)
+        }
+        return key(trimmed) == key(lead) ? nil : trimmed
     }
 
     // MARK: Spoken
@@ -1461,7 +1471,7 @@ enum ExecutionProofJudgment {
             lead = "Decisão do atlas"
         }
         if let q = bubble.qualitySummary {
-            parts.append("quality \(String(format: "%.1f", q.score))")
+            parts.append("qualidade \(productScore(q.score))")
             lead = "Qualidade da obra"
         }
         if !artifactItems.isEmpty {
@@ -1497,7 +1507,7 @@ enum ExecutionProofJudgment {
             parts.append(humanDuration(ms))
         }
         if let q = bubble.qualitySummary {
-            parts.append("quality \(String(format: "%.1f", q.score))")
+            parts.append("qualidade \(productScore(q.score))")
         }
         if !artifactItems.isEmpty {
             parts.append("\(artifactItems.count) artefatos")
@@ -1588,8 +1598,15 @@ enum ExecutionProofJudgment {
         return out
     }
 
+    /// Score sem decimal morto: 90.0 lê como precisão que o dado não tem.
+    static func productScore(_ score: Double) -> String {
+        score == score.rounded()
+            ? String(format: "%.0f", score)
+            : String(format: "%.1f", score)
+    }
+
     static func productQualityLine(_ q: AtlasQualitySummary) -> String {
-        let base = "quality \(String(format: "%.1f", q.score)) · \(q.status)"
+        let base = "qualidade \(productScore(q.score)) · \(q.status)"
         return productQualityLineFlags(q, base: base)
     }
 

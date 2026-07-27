@@ -451,9 +451,12 @@ struct ArenaPremiumTerminalView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
             }
             if kind == .failed {
+                // Mono vermelho lê como stack trace. O motivo é produto: fonte
+                // do texto corrido, cor de leitura, tom de alerta só no selo.
                 Text(publicFailureCopy)
-                    .font(AtlasFont.mono(11))
-                    .foregroundStyle(AtlasTheme.alert)
+                    .atlasSans(14)
+                    .foregroundStyle(AtlasTheme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             terminalActions
             ArenaPremiumOperationalRows(model: model, onNavigate: onNavigate)
@@ -494,8 +497,8 @@ struct ArenaPremiumTerminalView: View {
         case "plan_failed": "o plano da suíte não pôde ser preparado"
         case "native_execution_failed": "a execução nativa não concluiu"
         case "pipeline_failed": "a consolidação da medição falhou"
-        case "internal_error": "falha interna classificada pelo servidor"
-        default: "falha classificada pelo servidor"
+        case "internal_error": "o servidor falhou por dentro e não detalhou a causa"
+        default: "o servidor encerrou a medição sem detalhar a causa"
         }
     }
 
@@ -826,8 +829,12 @@ struct ArenaPremiumTabBar: View {
                     // Controle fala sans (canon §C); seleção = pílula neutra
                     // ELEVADA (padrão do segmented nativo), não véu de ouro —
                     // ouro é ESTADO, não seleção de controle.
-                    Text(tab.rawValue)
+                    // "Capac." lia como texto quebrado. Palavra inteira que
+                    // encolhe é honesto; abreviação com ponto, não.
+                    Text(tabAccessibilityLabel(tab))
                         .atlasSans(13, .medium)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                         .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textTertiary)
                         .frame(maxWidth: .infinity, minHeight: 38)
                         .background {

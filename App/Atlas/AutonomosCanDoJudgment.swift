@@ -85,7 +85,7 @@ enum AutonomosCanDoJudgment {
         facts.append("can_revert: \(canRevert ? "yes" : "no")")
 
         if !canControl {
-            absences.append("canControl=false — CTA de loop não é write NL")
+            absences.append("canControl=false — CTA dos Autônomos não é write NL")
         }
         if canRevert {
             absences.append("veto retroativo só no sheet de recibo — NL não reverte ciclo")
@@ -141,7 +141,7 @@ enum AutonomosAreaBindFace: Equatable {
     var spokenFace: String {
         switch self {
         case .none:
-            return "nenhuma área registrada no motor"
+            return "nenhuma área registrada"
         case .auto:
             return "uma área registrada, ligação automática"
         case .needsBind(let n):
@@ -211,16 +211,16 @@ enum AutonomosAreaBindJudgment {
     }
 
     static func spokenChooser(count: Int) -> String {
-        "escolher área do loop, \(count) área\(count == 1 ? "" : "s") registrada\(count == 1 ? "" : "s")"
+        "escolher área dos Autônomos, \(count) área\(count == 1 ? "" : "s") registrada\(count == 1 ? "" : "s")"
     }
 
-    static let spokenChooserHint = "liga a frota a uma área registrada no motor"
+    static let spokenChooserHint = "liga a frota a uma área registrada"
     static let spokenClose = "fechar escolha de área"
     static let spokenCloseHint = "volta sem ligar área"
-    static let spokenBindRowHint = "liga o loop a esta área"
+    static let spokenBindRowHint = "liga a frota a esta área"
     static let productCTA = "Escolher área"
-    static let productChooserTitle = "Área do loop"
-    static let spokenCTA = "escolher área do loop Autônomos"
+    static let productChooserTitle = "Área da frota"
+    static let spokenCTA = "escolher área da frota Autônomos"
 
     static func packFacts(
         areas: [AtlasAutonomosArea],
@@ -236,7 +236,7 @@ enum AutonomosAreaBindJudgment {
         facts.append("areas_total: \(areas.count)")
         switch face {
         case .none:
-            absences.append("nenhuma área registered — silenciam órgãos de loop")
+            absences.append("nenhuma área registrada — silenciam órgãos da frota")
         case .auto:
             facts.append("area_bind_policy: auto_single")
         case .needsBind:
@@ -269,7 +269,7 @@ enum AutonomosEvolutionFace: Equatable {
 
     var spokenFace: String {
         switch self {
-        case .unbound: return "área de loop não ligada"
+        case .unbound: return "área da frota não ligada"
         case .empty: return "sem entregas publicadas"
         case .items(let n):
             return n == 1 ? "1 entrega publicada" : "\(n) entregas publicadas"

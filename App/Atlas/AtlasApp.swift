@@ -51,6 +51,10 @@ struct AtlasApp: App {
                 RootView()
                     .environment(session)
             )
+            // A casca é escura por identidade, não por preferência do sistema.
+            // Sem isto os controles nativos (searchable, teclado, toggle,
+            // alert) renderizam claros sobre o slate e destoam do app inteiro.
+            .preferredColorScheme(.dark)
         }
     }
 }

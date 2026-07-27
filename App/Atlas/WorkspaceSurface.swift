@@ -108,6 +108,7 @@ extension WorkspaceView {
         ScrollView(.horizontal, showsIndicators: false) {
             areaFilterChipRow
         }
+        .atlasScrollEdgeFade()
         .padding(.vertical, 10)
         .accessibilityIdentifier(A11yID.workspaceAreaFilter)
         .animation(reduceMotion ? nil : AtlasMotion.editorial, value: area)
@@ -136,12 +137,8 @@ extension WorkspaceView {
     func areaFilterChipLabel(_ a: AtlasArea, active: Bool) -> some View {
         Text(a.label)
             .font(.system(.subheadline, weight: .medium))
-            .foregroundStyle(active ? AtlasTheme.accent : AtlasTheme.textSecondary)
             .padding(.horizontal, 14).padding(.vertical, 7)
-            .background(
-                Capsule().fill(active ? AtlasTheme.goldVeil : AtlasTheme.surface)
-                    .overlay(Capsule().stroke(active ? AtlasTheme.goldBorder : AtlasTheme.separator, lineWidth: 1))
-            )
+            .atlasChipSelection(active)
     }
 }
 
@@ -461,9 +458,17 @@ struct ThreadRow: View {
     var rowContent: some View {
         HStack(spacing: 14) {
             rowLead
-            Text(thread.title).font(AtlasFont.serif(16)).foregroundStyle(AtlasTheme.textPrimary)
-                .lineLimit(1).truncationMode(.tail)
-                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(thread.title).font(AtlasFont.serif(16)).foregroundStyle(AtlasTheme.textPrimary)
+                    .lineLimit(1).truncationMode(.tail)
+                // Títulos gerados repetem entre si ("Implement a concrete…");
+                // sem esta linha a lista fica indistinguível item a item.
+                Text(WorkspaceThreadJudgment.rowSubtitle(thread: thread))
+                    .atlasSans(13)
+                    .foregroundStyle(AtlasTheme.textTertiary)
+                    .lineLimit(1).truncationMode(.tail)
+            }
+            .accessibilityHidden(true)
             Spacer(minLength: 8)
             rowTrailing
         }
@@ -487,10 +492,13 @@ struct ThreadRow: View {
     @ViewBuilder
     var rowWorkspaceTint: some View {
         if let workspaceTint {
-            Rectangle()
+            // Encostado em x=0 o trilho era cortado pela borda da tela; com o
+            // inset ele lê como marca da linha, não como sangria.
+            Capsule()
                 .fill(workspaceTint.opacity(0.85))
-                .frame(width: 2)
+                .frame(width: 3)
                 .padding(.vertical, 10)
+                .padding(.leading, 6)
                 .accessibilityHidden(true)
         }
     }
@@ -501,12 +509,13 @@ struct ThreadRow: View {
         if isRunning {
             Text(WorkspaceThreadJudgment.productExecuting).font(AtlasFont.serifItalic(13)).foregroundStyle(AtlasTheme.accent)
                 .accessibilityHidden(true)
-        } else {
-            Text("\(thread.messageCount)")
-                .atlasSans(16)
+        } else if let age = WorkspaceThreadJudgment.rowAge(thread: thread) {
+            // Quando o título não distingue, a idade distingue. A contagem de
+            // mensagens migrou para o subtítulo, onde tem rótulo.
+            Text(age)
+                .atlasSans(13)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .monospacedDigit()
-                .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .accessibilityHidden(true)
         }
         Image(systemName: "chevron.right")
@@ -883,11 +892,11 @@ enum WorkspaceEmptyJudgment {
     static func headline(face: WorkspaceEmptyFace) -> String {
         switch face {
         case .area(let label):
-            return "“Nada em \(label) — por enquanto.”"
+            return "Nada em \(label) — por enquanto."
         case .free:
-            return "“Nenhuma conversa sem projeto ainda.”"
+            return "Nenhuma conversa sem projeto ainda."
         case .workspace(let title):
-            return "“Nenhuma conversa em \(title) ainda.”"
+            return "Nenhuma conversa em \(title) ainda."
         }
     }
 
@@ -1008,8 +1017,15 @@ struct AtlasEditorialGlyphEmpty: View {
     var accessibilityValue: String? = nil
 
     var body: some View {
+        // Topo fixo em 72pt jogava o vazio para a testa da tela e deixava
+        // ~60% morto embaixo. Dentro de ScrollView só o container manda a
+        // altura real — daí o containerRelativeFrame em vez de maxHeight.
         editorialStack
-            .frame(maxWidth: .infinity).padding(.top, 72).padding(.horizontal, 40)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 40)
+            .containerRelativeFrame(.vertical, alignment: .center) { height, _ in
+                max(320, height * 0.72)
+            }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(spokenLabel ?? headline)
             .modifier(OptionalAccessibilityValue(value: accessibilityValue))
@@ -1390,6 +1406,29 @@ enum WorkspacePickerJudgment {
 /// Prefer threadId identity; never invent live without signal.
 enum WorkspaceThreadJudgment {
     static let productExecuting = "executando"
+
+    // MARK: Row identity
+
+    /// Segunda linha da conversa: o que o título gerado não diz.
+    ///
+    /// Títulos de máquina se repetem ponta a ponta e "2d" empata entre vários
+    /// itens — o relógio é o único campo que separa dois testes do mesmo dia.
+    static func rowSubtitle(thread: AtlasAiThread, now: Date = Date()) -> String {
+        let count = thread.messageCount
+        var parts: [String] = [count == 1 ? "1 mensagem" : "\(count) mensagens"]
+        let summary = thread.summary?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !summary.isEmpty { parts = [summary] }
+        if let date = AtlasTime.date(thread.lastMessageAt ?? thread.updatedAt) {
+            parts.append(date.formatted(date: .omitted, time: .shortened))
+        }
+        return parts.joined(separator: " · ")
+    }
+
+    /// Idade da última mensagem, curta. `nil` quando o servidor não datou.
+    static func rowAge(thread: AtlasAiThread, now: Date = Date()) -> String? {
+        guard let date = AtlasTime.date(thread.lastMessageAt ?? thread.updatedAt) else { return nil }
+        return AtlasCodeRelativeTime.short(from: Int(date.timeIntervalSince1970), now: now)
+    }
 
     // MARK: Running identity
 

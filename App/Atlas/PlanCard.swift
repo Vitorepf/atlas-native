@@ -1291,18 +1291,33 @@ extension EditorialTurn {
 
 // MARK: - Feedback
 
+enum FeedbackRowJudgment {
+    static let productKicker = "COMO FOI ESTA RESPOSTA"
+    static let spokenGroup = "avaliação desta resposta"
+}
+
 struct FeedbackRow: View {
     let active: String?
     let reduceMotion: Bool
     let onFeedback: (FeedbackKind) -> Void
     var body: some View {
-        HStack(spacing: 8) {
-            ForEach(FeedbackKind.allCases) { kind in
-                feedbackChip(kind)
+        VStack(alignment: .leading, spacing: 6) {
+            // Sem rótulo os chips liam como etiquetas da resposta, não como
+            // pergunta ao operador.
+            Text(FeedbackRowJudgment.productKicker)
+                .font(AtlasFont.mono(9, .semibold)).tracking(1.2)
+                .foregroundStyle(AtlasTheme.textTertiary)
+                .accessibilityHidden(true)
+            HStack(spacing: 8) {
+                ForEach(FeedbackKind.allCases) { kind in
+                    feedbackChip(kind)
+                }
+                Spacer()
             }
-            Spacer()
         }
         .padding(.top, 2)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(FeedbackRowJudgment.spokenGroup)
     }
 }
 

@@ -1187,7 +1187,9 @@ enum AtlasCodeRelativeTime {
         case ..<3600: return "\(max(1, seconds / 60))min"
         case ..<86_400: return "\(seconds / 3600)h"
         case ..<2_592_000: return "\(seconds / 86_400)d"
-        default: return "\(seconds / 2_592_000)mês"
+        default:
+            let months = seconds / 2_592_000
+            return months == 1 ? "1 mês" : "\(months) meses"
         }
     }
 }

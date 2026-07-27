@@ -233,7 +233,7 @@ extension ArtifactSheet {
             .navigationTitle(ArtifactListJudgment.productTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
+                ToolbarItem(placement: .topBarTrailing) {
                     AtlasCloseToolbarButton(
                         spokenLabel: ArtifactListJudgment.spokenClose,
                         spokenHint: ArtifactListJudgment.spokenCloseHint,

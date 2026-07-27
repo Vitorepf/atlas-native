@@ -327,7 +327,9 @@ extension ChangeReviewSheet {
     }
 
     var reviewToolbar: some ToolbarContent {
-        ToolbarItem(placement: .cancellationAction) {
+        // "Fechar" mora à direita em toda a casca (Perfil, Picker); só
+        // "Cancelar", que aborta fluxo, fica à esquerda.
+        ToolbarItem(placement: .topBarTrailing) {
             AtlasCloseToolbarButton(
                 spokenLabel: ChangeReviewSheetJudgment.spokenClose,
                 spokenHint: ChangeReviewSheetJudgment.spokenCloseHint,

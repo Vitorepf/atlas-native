@@ -294,18 +294,27 @@ struct AgenticAskDock<Pill: View>: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // 28pt não bastava: a linha imediatamente acima da pílula ainda
+            // aparecia meio-legível e lia como conteúdo cortado.
             LinearGradient(
-                colors: [AtlasTheme.bg.opacity(0), AtlasTheme.bg.opacity(0.92), AtlasTheme.bg],
+                stops: [
+                    .init(color: AtlasTheme.bg.opacity(0), location: 0),
+                    .init(color: AtlasTheme.bg.opacity(0.75), location: 0.45),
+                    .init(color: AtlasTheme.bg, location: 0.85),
+                    .init(color: AtlasTheme.bg, location: 1),
+                ],
                 startPoint: .top,
                 endPoint: .bottom
             )
-            .frame(height: 28)
+            .frame(height: 52)
             .allowsHitTesting(false)
             pill()
                 .padding(.horizontal, AtlasTheme.Space.screen)
                 .padding(.bottom, 10)
+                // A faixa do pill é opaca: com fundo quase transparente o
+                // conteúdo rolava por trás e vazava meio-legível (busca).
+                .background(AtlasTheme.bg)
         }
-        .background(AtlasTheme.bg.opacity(0.01))
     }
 }
 
