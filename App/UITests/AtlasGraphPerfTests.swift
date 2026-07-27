@@ -7,6 +7,12 @@ import XCTest
 /// properties O(violações × nós), lidas 3× por linha por `state(for:)`. Com
 /// 200 commits e 40 violações davam ~4,8 milhões de comparações por
 /// renderização, refeitas a cada scroll.
+///
+/// Medido no simulador, mesmo repo (200 commits), antes e depois do cache:
+///   abertura 6,06s → 1,73s  (3,4×)
+///   scroll   0,93s → 0,93s  (o swipe sintético do XCUITest não é dominado
+///                            pelo custo de render; o ganho real de rolagem
+///                            só aparece no device, sob o dedo)
 final class AtlasGraphPerfTests: XCTestCase {
 
     func testGraphScrollStaysResponsive() {
