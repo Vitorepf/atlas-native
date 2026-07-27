@@ -1117,6 +1117,7 @@ extension AtlasCodeView {
     /// Troca de repositório — Liquid Glass, sempre abaixo do título.
     var repoSwitcher: some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             showsRepoPicker = true
         } label: {
             HStack(spacing: 5) {
@@ -1435,6 +1436,7 @@ struct AtlasCodeRepoPickerSheet: View {
 
     private func repoRow(_ repo: AtlasCodeRepoRef) -> some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onPick(repo.slug)
         } label: {
             HStack(spacing: 10) {

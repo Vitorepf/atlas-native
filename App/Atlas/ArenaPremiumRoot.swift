@@ -864,6 +864,7 @@ struct ArenaPremiumTabBar: View {
 // MARK: - ArenaPremiumChrome
 
 struct ArenaPremiumEngineTitle: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let engineID: String
     let options: [String]
     let onSelect: (String) -> Void
@@ -873,7 +874,8 @@ struct ArenaPremiumEngineTitle: View {
             Menu {
                 ForEach(options, id: \.self) { engine in
                     Button {
-                        onSelect(engine)
+                        AtlasMotion.softImpact(reduceMotion: reduceMotion)
+                onSelect(engine)
                     } label: {
                         if engine == engineID {
                             Label(ArenaDisplay.engine(engine), systemImage: "checkmark")

@@ -27,7 +27,23 @@ struct RootHomeBody: View {
 extension RootHomeBody {
     @ViewBuilder
     var phaseBody: some View {
+        // A primeira tela do app trocava de fase SECO: "abrindo o Atlas…"
+        // sumia e a lista aparecia de estalo. Agora atravessa.
         homeLoadingGate
+            .animation(reduceMotion ? nil : AtlasMotion.editorial, value: homePhaseID)
+    }
+
+    /// Identidade da fase — o que a animação observa. Sem isto o SwiftUI
+    /// anima a cada mudança de contagem, não na troca de estado.
+    var homePhaseID: String {
+        switch session.phase {
+        case .idle where session.threads.isEmpty, .loading where session.threads.isEmpty:
+            return "loading"
+        case .failed where session.threads.isEmpty:
+            return "failed"
+        default:
+            return "loaded"
+        }
     }
 
     @ViewBuilder
@@ -58,6 +74,12 @@ extension RootHomeBody {
     var loadedHome: some View {
         ScrollView {
             loadedHomeStack
+                // Chegada, não aparição: o conteúdo entra de baixo, sutil.
+                .transition(
+                    reduceMotion
+                        ? .opacity
+                        : .opacity.combined(with: .offset(y: 10))
+                )
         }
         .scrollIndicators(.hidden)
         .refreshable { await session.loadThreads() }

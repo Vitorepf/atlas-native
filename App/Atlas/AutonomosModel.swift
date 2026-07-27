@@ -425,6 +425,7 @@ struct AutonomosMapNavLine: View {
 // MARK: - AutonomosRhythmLearningLine
 
 struct AutonomosRhythmLearningLine: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// Placeholder até o actor devolver as janelas reais — a linha existe
     /// imediatamente (UITest + layout estáveis).
     @State private var windows = AtlasDayRhythm.Windows(dayEnd: nil, dayStart: nil, sampleDays: 0)
@@ -433,6 +434,7 @@ struct AutonomosRhythmLearningLine: View {
 
     var body: some View {
         Button {
+            AtlasMotion.softImpact(reduceMotion: reduceMotion)
             rhythmSheetShown = true
         } label: {
             HStack(spacing: 5) {
