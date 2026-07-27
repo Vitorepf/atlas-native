@@ -1031,6 +1031,8 @@ gates, ordem — para QUALQUER IA) em `docs/atlas-codigo-evolucao.md`; plano-mes
 
 ## 7. Registro de entregas (append-only; prova obrigatória)
 
+- 2026-07-27 · Fable 5 · **fix(ui) — gráfico do Motor mentia sobre as medições** · `f465d5e3` · ArenaPremiumRoot. Eixo X categórico colapsava rodadas no mesmo ponto (segmentos verticais falsos); `catmullRom` inventava picos; legenda sem a série do composto e com duas cores iguais. **Prova:** checks+build exit 0; `testDesignTourArenaTabs` verde. **DEVICE-PENDING**.
+- 2026-07-27 · Fable 5 · **polish(ui) — tela Código, hub Autônomos e +10 telas no tour** · `698e4084` · App/Atlas 10 + UITests. Nav bar translúcida vazando alerta; indicador de scroll inconsistente; "Create" (endpoint) no produto; par "sem Atlas"/"com Atlas" não reusado; retry com duas palavras. **Prova:** checks 613 verdes; `AtlasDesignTourTests` 10/10, 35 screenshots/rodada. **DEVICE-PENDING**.
 - 2026-07-26 · Fable 5 · **polish(ui) — honestidade visual das superfícies (13 quebras do tour)** · `2e249e06` · App/Atlas 14 + A11yID.swift extraído. **Prova:** AtlasCoreChecks exit 0; `make build` exit 0; `AtlasDesignTourTests` **8/8 verde, 26 screenshots/rodada no simulador** (ver seção 26/07 abaixo). **DEVICE-PENDING** — prova de device do operador pendente.
 
 - 2026-07-21 · Grok 4.5 · **polish(ui) — Code state kickers natural-case (ciclo 332)** · `157fe862` · App/Atlas 36. **Prova:** checks+build exit 0.
