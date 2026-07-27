@@ -882,7 +882,7 @@ extension AtlasCodeRadarStatusCapsule {
                 .accessibilityHidden(true)
         }
         .foregroundStyle(AtlasCodePalette.alert)
-        .padding(.horizontal, 15)
+        .padding(.horizontal, 16)
         .padding(.vertical, 7)
         .background(Capsule().fill(AtlasCodePalette.alert.opacity(0.09)))
         .overlay(Capsule().strokeBorder(AtlasCodePalette.alert.opacity(0.35), lineWidth: 1))
@@ -1030,7 +1030,7 @@ extension AtlasCodeRepoRow {
             Spacer(minLength: 6)
             repoRowTrailing
         }
-        .padding(.vertical, 13)
+        .padding(.vertical, 12)
         .contentShape(Rectangle())
     }
 }

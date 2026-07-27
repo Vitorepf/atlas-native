@@ -189,7 +189,7 @@ extension AtlasCodeProvenanceSheet {
             askButtonLabelTrailing
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 11)
+        .padding(.vertical, 12)
         .atlasCard(cornerRadius: AtlasTheme.Radius.control)
         .contentShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
     }
@@ -365,7 +365,7 @@ extension AtlasCodeProvenanceSheet {
     @ViewBuilder
     func lawCanonText(_ ruleCanon: String) -> some View {
         Text(ruleCanon)
-            .font(AtlasFont.mono(8.5))
+            .font(AtlasFont.mono(9.5))
             .foregroundStyle(AtlasTheme.textTertiary.opacity(0.85))
             .lineLimit(1)
             .truncationMode(.head)
@@ -410,7 +410,7 @@ extension AtlasCodeProvenanceSheet {
     func lawCitationChrome<Content: View>(_ content: Content) -> some View {
         content
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 13)
+            .padding(.horizontal, 12)
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: AtlasTheme.Radius.soft)

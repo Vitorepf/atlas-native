@@ -488,7 +488,7 @@ struct SheetRow: View {
             Spacer()
             sheetRowTrailing
         }
-        .padding(.horizontal, 24).padding(.vertical, 15).contentShape(Rectangle())
+        .padding(.horizontal, 24).padding(.vertical, 16).contentShape(Rectangle())
     }
 
     var sheetRowLeading: some View {

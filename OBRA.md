@@ -95,8 +95,15 @@ cd App && make build             # o app compila (gate honesto, exit != 0 em fal
    Adicionar uma exige decisão registrada em §6 com justificativa.
 2. Protocol novo só com **2º consumidor real** (os 2 que existem —
    `AttachmentByteSource`, `UploadTransport` — pagaram a entrada com testes).
-3. Arquivo passando de ~300 linhas (view ~200) = candidato a split; registrar
-   em §5 se cruzar a fronteira.
+3. **Coesão, não contagem de linhas.** O limite antigo (~300 por arquivo) foi
+   revogado pelo GOD-RESTRUCTURE, que fundiu os peels de propósito — hoje 15
+   arquivos passam de 1400 linhas e isso é o canon, não dívida. Splitar por
+   número de linhas é **proibido**; só se separa o que tem dono ou ciclo de
+   vida diferente (ex.: `A11yID.swift`, que existe porque o target de teste
+   compila só aquele glob). A régua que vale é a densidade do CODEMAP: um
+   arquivo = uma superfície + seus Judgments.
+   O que continua sob limite é a **view**: passou de ~200 linhas de corpo,
+   quebre em `@ViewBuilder` no mesmo arquivo.
 4. Feature = **vertical demonstrável no device**. Sem "fundação pra depois".
 5. Toda lógica não-trivial deixa um golden check. Plano ≠ código ≠ prova.
 6. Deletar > adicionar. Simplificação deliberada leva comentário `ponytail:`.

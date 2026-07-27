@@ -153,7 +153,7 @@ extension ConversationMessages {
             Text(ChangeReviewSheetJudgment.productTitle).font(.system(.footnote, weight: .medium))
         }
         .foregroundStyle(AtlasTheme.textSecondary)
-        .padding(.horizontal, 13).padding(.vertical, 7)
+        .padding(.horizontal, 12).padding(.vertical, 7)
         .background(Capsule().stroke(AtlasTheme.separator, lineWidth: 1))
     }
 }
@@ -286,7 +286,7 @@ extension ConversationMessages {
     func scrollFABChrome<Content: View>(_ content: Content) -> some View {
         content
             .buttonStyle(PressableScale())
-            .padding(.trailing, AtlasTheme.Space.screen).padding(.bottom, 110)
+            .padding(.trailing, AtlasTheme.Space.screen).padding(.bottom, 108)
             .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
             .accessibilityLabel(ConversationMessagesJudgment.spokenScrollFAB)
             .accessibilityHint(ConversationMessagesJudgment.spokenScrollFABHint)

@@ -348,7 +348,7 @@ struct ArenaPremiumRunningView: View {
             ArenaPremiumKicker(text: ArenaNowJudgment.productLive, tone: .active, showsLiveMark: true)
                 .accessibilityIdentifier(A11yID.arenaPremiumState("running"))
             Text(engineTitle)
-                .font(AtlasFont.serif(31))
+                .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(2)
             if !subtitle.isEmpty {

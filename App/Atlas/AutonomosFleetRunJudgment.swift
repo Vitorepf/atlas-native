@@ -572,7 +572,7 @@ struct AutonomosFleetStrip: View {
             Circle()
                 .fill(agent.alive ? AtlasTheme.accent.opacity(0.9) : AtlasTheme.textTertiary.opacity(0.5))
                 .frame(width: 6, height: 6)
-                .padding(.top, 5)
+                .padding(.top, 4)
             VStack(alignment: .leading, spacing: 2) {
                 Text(agent.label)
                     .font(AtlasFont.serif(15, .semibold))

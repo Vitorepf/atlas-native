@@ -201,7 +201,7 @@ struct AutonomosPrimaryButtonStyle: ButtonStyle {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label.font(AtlasFont.serif(13, .semibold)).foregroundStyle(AtlasTheme.bg)
+        configuration.label.font(AtlasFont.serif(14, .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 14).padding(.vertical, 9)
             .background(
                 Capsule().fill(
@@ -325,7 +325,7 @@ extension AutonomosViewHeader {
     var titleBlock: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
-                .font(AtlasFont.serif(21, .semibold))
+                .font(AtlasFont.serif(22, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             titleBadges

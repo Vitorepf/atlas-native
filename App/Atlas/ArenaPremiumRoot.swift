@@ -371,7 +371,7 @@ struct ArenaPremiumQueuedView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityValue(ArenaNowFace.queued.productWord)
             Text(model.arenaLiveEngineTitle)
-                .font(AtlasFont.mono(14))
+                .font(AtlasFont.mono(13))
                 .foregroundStyle(AtlasTheme.textSecondary)
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 28) {
@@ -432,7 +432,7 @@ struct ArenaPremiumTerminalView: View {
                 .accessibilityIdentifier(A11yID.arenaPremiumState(stateIdentifier))
             ArenaPremiumKicker(text: chrome.title, tone: chrome.tone)
             Text(model.arenaLiveEngineTitle)
-                .font(AtlasFont.serif(33))
+                .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(chrome.subtitle)
                 .font(AtlasFont.serifItalic(16))
@@ -526,7 +526,7 @@ struct ArenaPremiumKicker: View {
         HStack(spacing: 8) {
             if showsLiveMark {
                 Text("✦")
-                    .font(AtlasFont.serif(11))
+                    .font(AtlasFont.serif(12))
                     .foregroundStyle(tone.color)
                     .modifier(ArenaLiveBreath())
                     .accessibilityHidden(true)
@@ -891,7 +891,7 @@ struct ArenaPremiumEngineTitle: View {
             } label: {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text(ArenaDisplay.engine(engineID))
-                        .font(AtlasFont.serif(33))
+                        .font(AtlasFont.serif(32))
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -908,7 +908,7 @@ struct ArenaPremiumEngineTitle: View {
             .accessibilityIdentifier(A11yID.arenaPremiumEnginePicker)
         } else {
             Text(ArenaDisplay.engine(engineID))
-                .font(AtlasFont.serif(33))
+                .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
         }
     }

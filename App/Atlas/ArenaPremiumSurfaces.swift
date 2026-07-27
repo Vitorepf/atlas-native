@@ -38,7 +38,7 @@ struct ArenaPremiumFleetView: View {
                 text: ArenaScoreJudgment.productFleetKicker(engineCount: engines.count)
             )
             Text(ArenaNowJudgment.productWhereAtlasRises)
-                .font(AtlasFont.serif(31))
+                .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             if let best, let mult = best.atlasMultiplier {
@@ -437,7 +437,7 @@ struct ArenaPremiumResultsView: View {
         VStack(alignment: .leading, spacing: 18) {
             ArenaPremiumEmptyGlyph(symbol: "chart.xyaxis.line")
             Text(ArenaNowJudgment.productNoResultMeasured)
-                .font(AtlasFont.serif(31))
+                .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(ArenaNowJudgment.productNoResultBody)
                 .font(AtlasFont.serifItalic(16))
@@ -498,7 +498,7 @@ struct ArenaPremiumCapabilitiesView: View {
                 Text("\(counts.measured)")
                     .font(AtlasFont.serif(56))
                 Text(ArenaNowJudgment.productSlashTotal(counts.total))
-                    .font(AtlasFont.serif(29))
+                    .font(AtlasFont.serif(28))
                 Text(ArenaCapabilitiesJudgment.productCovered)
                     .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
@@ -521,7 +521,7 @@ struct ArenaPremiumCapabilitiesView: View {
             }
             HStack(spacing: 5) {
                 Text("✦")
-                    .font(AtlasFont.serif(11))
+                    .font(AtlasFont.serif(12))
                     .foregroundStyle(AtlasTheme.accent)
                 Text(ArenaNowJudgment.productWithAtlas)
             }
@@ -624,7 +624,7 @@ struct ArenaPremiumCapabilitiesView: View {
         VStack(alignment: .leading, spacing: 16) {
             ArenaPremiumEmptyGlyph(symbol: "shield.lefthalf.filled")
             Text(ArenaCapabilitiesJudgment.productEmptyTitle)
-                .font(AtlasFont.serif(29))
+                .font(AtlasFont.serif(28))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(ArenaCapabilitiesJudgment.productEmptyBody)
                 .font(AtlasFont.serifItalic(15))
@@ -635,7 +635,7 @@ struct ArenaPremiumCapabilitiesView: View {
 
     private func summaryMetric(_ value: Int, _ label: String, _ tone: ArenaPremiumTone) -> some View {
         HStack(spacing: 6) {
-            Text("\(value)").font(AtlasFont.serif(25)).foregroundStyle(tone.color)
+            Text("\(value)").font(AtlasFont.serif(24)).foregroundStyle(tone.color)
             Text(label).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textSecondary)
         }
     }
@@ -668,7 +668,7 @@ struct ArenaCapabilityTrack: View {
                 }
                 if let withAtlas {
                     Text("✦")
-                        .font(AtlasFont.serif(13))
+                        .font(AtlasFont.serif(14))
                         .foregroundStyle(AtlasTheme.accent)
                         .offset(x: max(0, min(w - 13, w * withAtlas - 6.5)))
                 }
@@ -1218,7 +1218,7 @@ struct ArenaPremiumPlanView: View {
         VStack(alignment: .leading, spacing: 16) {
             ArenaPremiumEmptyGlyph(symbol: "list.bullet.rectangle")
             Text(ArenaNowJudgment.productNoPlanActive)
-                .font(AtlasFont.serif(29))
+                .font(AtlasFont.serif(28))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(ArenaPlanFace.empty.footer)
                 .font(AtlasFont.serifItalic(15))
@@ -1731,7 +1731,7 @@ extension ArenaSuiteSheet {
         HStack {
             VStack(alignment: .leading, spacing: 3) {
                 Text(ArenaDisplay.engine(engine.engine))
-                    .font(AtlasFont.serif(21))
+                    .font(AtlasFont.serif(22))
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text(ArenaNowJudgment.productSuiteIndexCaption)
                     .font(AtlasFont.mono(9))
@@ -1779,7 +1779,7 @@ extension ArenaSuiteSheet {
     ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(signed ? ArenaFormat.signed(value) : ArenaFormat.score(value))
-                .font(AtlasFont.serif(29))
+                .font(AtlasFont.serif(28))
                 .foregroundStyle(tone.color)
             Text(label)
                 .font(AtlasFont.mono(10))

@@ -451,7 +451,7 @@ struct AutonomosRhythmLearningLine: View {
                 Text(AutonomosRhythmCopy.line(windows, paused: nightly.isProposalMuted))
                     .font(AtlasFont.mono(10))
                 Image(systemName: "chevron.right")
-                    .atlasSans(7, .semibold)
+                    .atlasSans(8, .semibold)
             }
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -405,7 +405,7 @@ extension PlanStepRowView {
             Circle().fill(dotFill(state)).frame(width: 13, height: 13)
                 .opacity(state == .current && pulse && !reduceMotion ? 0.55 : 1)
             if state == .done {
-                Image(systemName: "checkmark").atlasSans(7, .bold)
+                Image(systemName: "checkmark").atlasSans(8, .bold)
                     .foregroundStyle(AtlasTheme.bg)
             } else if state == .current {
                 Circle().fill(AtlasTheme.bg).frame(width: 5, height: 5)
@@ -1469,7 +1469,7 @@ extension EditorialTurn {
         }
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 9)
-        .padding(.vertical, 5)
+        .padding(.vertical, 4)
         .background(Capsule().stroke(AtlasTheme.separatorSoft, lineWidth: 1))
     }
 }

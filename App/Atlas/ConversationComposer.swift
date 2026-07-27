@@ -188,7 +188,7 @@ extension ConversationComposer {
             } label: {
                 Text(queueChipLabel)
                     .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.accent)
-                    .padding(.horizontal, 12).padding(.vertical, 5)
+                    .padding(.horizontal, 12).padding(.vertical, 4)
                     .background(Capsule().fill(AtlasTheme.goldVeil)
                         .overlay(Capsule().stroke(AtlasTheme.goldBorder, lineWidth: 1)))
             }
@@ -690,7 +690,7 @@ extension ComposerAttachmentRow {
             attachmentRowTextStack
             Spacer()
         }
-        .padding(.horizontal, 24).padding(.vertical, 15)
+        .padding(.horizontal, 24).padding(.vertical, 16)
         .contentShape(Rectangle())
         .overlay(alignment: .bottom) { Divider().overlay(AtlasTheme.separator).padding(.leading, 24) }
     }

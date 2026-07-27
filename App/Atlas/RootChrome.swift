@@ -25,7 +25,7 @@ func sectionLabel(_ t: String, accessibilityID: String? = nil) -> some View {
     }
     .padding(.horizontal, AtlasTheme.Space.screen)
     .padding(.top, 18)
-    .padding(.bottom, 11)
+    .padding(.bottom, 12)
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(.isHeader)
     .homeSectionA11yID(accessibilityID)
@@ -199,7 +199,7 @@ extension RootView {
     var mastheadAuditBadge: some View {
         if session.auditModeEnabled {
             Text(HomeOpsJudgment.productAuditBadge)
-                .font(AtlasFont.mono(8))
+                .font(AtlasFont.mono(9))
                 .tracking(1.0)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
@@ -226,7 +226,7 @@ extension RootView {
   var mastheadBrandRow: some View {
     HStack(spacing: 7) {
       Text("Atlas")
-        .font(AtlasFont.serif(23, .semibold))
+        .font(AtlasFont.serif(22, .semibold))
         .accessibilityHidden(true)
       Text("✦")
         .font(AtlasFont.serif(12, .semibold))

@@ -1441,7 +1441,7 @@ extension NarrativeRowView {
                 .fill(isCurrent ? AtlasTheme.accent : AtlasTheme.accent.opacity(0.4))
                 .frame(width: 7, height: 7)
                 .opacity(isCurrent && pulse && !reduceMotion ? 0.4 : 1)
-                .padding(.top, 5)
+                .padding(.top, 4)
             if !isLast {
                 Rectangle()
                     .fill(AtlasTheme.accent.opacity(0.22))

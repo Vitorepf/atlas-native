@@ -36,6 +36,33 @@ Todo identificador vive em `A11yID.swift` — o target `AtlasDeviceProof` só
 compila o glob `A11yID*.swift`, então uma constante fora dali derruba a
 bateria de testes inteira com `Cannot find 'A11yID' in scope`.
 
+## Régua visual — não invente degrau novo
+
+Medido em 27/07: o app tinha **47 tamanhos de fonte** e **34 valores de
+padding**, contra 2 tokens de espaço no tema. Os órfãos a ≤1pt de um vizinho
+foram absorvidos (47→28 e 34→28). O resto da consolidação é trabalho aberto.
+
+**Antes de escrever um número novo, use o degrau que já existe.** Verifique:
+
+```bash
+grep -ohE "AtlasFont\.(serif|serifItalic|mono)\([0-9]+" App/Atlas/*.swift | grep -oE "[0-9]+" | sort -n | uniq -c
+grep -ohE "\.padding\([^)]*[0-9]+\)" App/Atlas/*.swift | grep -oE "[0-9]+" | sort -n | uniq -c
+```
+
+Se o valor que você quer aparece 1–2 vezes, ele é órfão: escolha o pico
+vizinho. Degraus com uso real hoje:
+
+| Família | Degraus vivos |
+|---|---|
+| `mono` | 9 (kicker) · 10 (meta, pico) · 11 · 12 · 13 |
+| `serif` | 12 14 16 18 20 22 24 28 32 34 (+display 44/52/56/58/62) |
+| `serifItalic` | 12 13 14 15 16 |
+| `atlasSans` | 8 9 10 11 12 13 14 15 16 17 |
+| `padding` | 2 4 6 8 10 12 14 16 18 20 22 24 28 32 36 40 (+96/108 docks) |
+
+Espaço de tela e de linha **sempre** por token: `AtlasTheme.Space.screen` (20)
+e `.row` (13) — nunca o número cru.
+
 ## Superfícies → host
 
 | Superfície | Hosts |

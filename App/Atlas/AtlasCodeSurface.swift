@@ -378,7 +378,7 @@ struct AtlasCodeMirrorCard: View {
             headline
             blockedRulesRow
         }
-        .padding(13)
+        .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(background, in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.card))
         .overlay(RoundedRectangle(cornerRadius: AtlasTheme.Radius.card).strokeBorder(borderColor, lineWidth: 1))

@@ -1085,7 +1085,7 @@ struct AtlasEditorialGlyphEmpty: View {
     var editorialCopyStack: some View {
         VStack(spacing: 8) {
             Text(headline)
-                .font(AtlasFont.serifItalic(17)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.serifItalic(16)).foregroundStyle(AtlasTheme.textSecondary)
                 .multilineTextAlignment(.center)
                 .accessibilityHidden(true)
             if let footnote {

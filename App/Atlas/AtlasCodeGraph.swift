@@ -502,7 +502,7 @@ extension AtlasCodeFileRow {
                 .truncationMode(.middle)
             if let subtitle {
                 Text(subtitle)
-                    .font(AtlasFont.mono(8.5))
+                    .font(AtlasFont.mono(9.5))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .truncationMode(.head)
@@ -558,7 +558,7 @@ extension AtlasCodeFileRow {
                 .accessibilityHidden(true)
         } else {
             Text(AtlasCodeGraphJudgment.productBinary)
-                .font(AtlasFont.mono(8.5))
+                .font(AtlasFont.mono(9.5))
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.7))
                 .accessibilityHidden(true)
         }
@@ -1418,7 +1418,7 @@ extension AtlasCodeView {
     func weekMetric(_ label: String, value: Int) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(String(value))
-                .font(AtlasFont.serif(21, .semibold))
+                .font(AtlasFont.serif(22, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .monospacedDigit()
             Text(label)
@@ -1446,8 +1446,8 @@ extension AtlasCodeView {
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .accessibilityHidden(true)
                 }
-                .padding(.vertical, 11)
-                .padding(.horizontal, 13)
+                .padding(.vertical, 12)
+                .padding(.horizontal, 12)
                 .background(AtlasCodePalette.healed.opacity(0.07), in: RoundedRectangle(cornerRadius: AtlasTheme.Radius.control))
                 .overlay(
                     RoundedRectangle(cornerRadius: AtlasTheme.Radius.control)

@@ -161,7 +161,7 @@ extension ExecutionStateCard {
             Text(action.title)
                 .font(.system(.caption, weight: .semibold))
                 .lineLimit(1)
-                .padding(.horizontal, 11).padding(.vertical, 8)
+                .padding(.horizontal, 12).padding(.vertical, 8)
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(ExecutionStateActionStyle(
@@ -537,7 +537,7 @@ extension ExecutionStateCard {
     var retryFallbackLabel: some View {
         Text(ExecutionStateCardJudgment.productRetry)
             .font(AtlasFont.mono(10, .semibold))
-            .padding(.horizontal, 11).padding(.vertical, 8)
+            .padding(.horizontal, 12).padding(.vertical, 8)
             .frame(maxWidth: .infinity)
     }
 }
@@ -547,7 +547,7 @@ extension ExecutionStateCard {
         Text(ConversationLiveStripJudgment.productSteer)
             .font(.system(.caption, weight: .semibold))
             .lineLimit(1)
-            .padding(.horizontal, 11).padding(.vertical, 8)
+            .padding(.horizontal, 12).padding(.vertical, 8)
             .frame(maxWidth: .infinity)
     }
 }
@@ -961,7 +961,7 @@ extension ExecutionProof {
         if let r = d.reason, !r.isEmpty {
             Text("\"\(r)\"")
                 .font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
-                .padding(.leading, 23)
+                .padding(.leading, 24)
                 .accessibilityLabel(ExecutionProofJudgment.spokenReason(r))
         }
     }

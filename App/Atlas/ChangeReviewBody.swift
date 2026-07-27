@@ -187,7 +187,7 @@ struct ChangeReviewRiskStrip: View {
                     .tracking(0.8)
                     .foregroundStyle(titleColor)
                 Text(ChangeReviewJudgment.productSummaryLine(from: review))
-                    .font(AtlasFont.serif(13))
+                    .font(AtlasFont.serif(14))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .lineLimit(2)
             }
@@ -285,7 +285,7 @@ extension ChangeReviewFindingRow {
         }
         if let rec = finding.recommendation {
             Text(rec).font(AtlasFont.serifItalic(12)).foregroundStyle(AtlasTheme.textSecondary)
-                .lineLimit(3).padding(.top, 1)
+                .lineLimit(3).padding(.top, 2)
                 .accessibilityHidden(true)
         }
     }
