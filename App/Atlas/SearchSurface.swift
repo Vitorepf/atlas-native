@@ -331,7 +331,7 @@ extension SearchView {
             LazyVStack(spacing: 0) {
                 listShellContent
             }
-            .padding(.bottom, 96)
+            .atlasDockReserve()
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: trimmedQuery)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: session.threads.map(\.id))
         }

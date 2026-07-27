@@ -1114,6 +1114,14 @@ extension View {
         modifier(AtlasSansFont(size: size, weight: weight))
     }
 
+    /// Espaço reservado embaixo da lista para o rodapé ancorado (pílula,
+    /// composer). Escala com Dynamic Type: em accessibility-extra-large a
+    /// pílula cresce e os 96pt fixos deixavam o ÚLTIMO item da lista debaixo
+    /// dela, intocável — "Adicionar workspace" sumia na home.
+    func atlasDockReserve(_ base: CGFloat = 96) -> some View {
+        modifier(AtlasDockReserve(base: base))
+    }
+
     /// Seleção de um controle (filtro, segmentado). Ouro é ESTADO do sistema
     /// — marca, "novo", commit — nunca "este botão está apertado".
     func atlasChipSelection(_ active: Bool) -> some View {
@@ -1482,5 +1490,15 @@ enum AtlasConventionalCommit {
         if s.hasSuffix("!") { s = s.dropLast() }
         if s.isEmpty { return true }
         return s.first == "(" && s.last == ")"
+    }
+}
+
+/// `@ScaledMetric` precisa viver num tipo, não numa função de extension.
+struct AtlasDockReserve: ViewModifier {
+    let base: CGFloat
+    @ScaledMetric(relativeTo: .body) private var scale: CGFloat = 1
+
+    func body(content: Content) -> some View {
+        content.padding(.bottom, base * scale)
     }
 }

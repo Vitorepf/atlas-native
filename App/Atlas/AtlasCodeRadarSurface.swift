@@ -177,7 +177,7 @@ extension AtlasCodeRadarView {
             radarContent
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
                 .animation(reduceMotion ? nil : AtlasMotion.editorial, value: contentPhaseID)
-                .padding(.bottom, 96)
+                .atlasDockReserve()
         )
         .background(AtlasTheme.bg.ignoresSafeArea())
         .safeAreaInset(edge: .bottom, spacing: 0) {

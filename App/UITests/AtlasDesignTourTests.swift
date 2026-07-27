@@ -142,6 +142,11 @@ final class AtlasDesignTourTests: XCTestCase {
         let add = app.buttons[A11yID.homeAddWorkspace]
         XCTAssertTrue(add.waitForExistence(timeout: 45), "home precisa expor Adicionar workspace")
         attach(app, name: "addws-00-home")
+        // Em Dynamic Type grande a linha fica no fim da lista, atrás da
+        // pílula. Um humano rola até ela; o XCUITest não rola sozinho e
+        // acabava tocando na pílula. Rolar aqui testa o app, não o harness.
+        if !add.isHittable { app.swipeUp() }
+        XCTAssertTrue(add.isHittable, "Adicionar workspace precisa ficar alcançável após rolar")
         add.tap()
         let sheet = app.descendants(matching: .any)[A11yID.workspacePickerSheet]
         XCTAssertTrue(sheet.waitForExistence(timeout: 10), "picker precisa abrir")

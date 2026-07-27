@@ -75,7 +75,7 @@ extension RootHomeBody {
                 workspacesSection
             }
         }
-        .padding(.bottom, 96)
+        .atlasDockReserve()
     }
 }
 
@@ -237,7 +237,7 @@ extension RootHomeBody {
         ScrollView {
             VStack(spacing: 0) { v() }
                 .frame(maxWidth: .infinity)
-                .padding(.bottom, 96)
+                .atlasDockReserve()
                 .containerRelativeFrame(.vertical, alignment: .center) { height, _ in height }
         }
         .scrollIndicators(.hidden)

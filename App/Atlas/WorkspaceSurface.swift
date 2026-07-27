@@ -296,7 +296,7 @@ extension WorkspaceView {
 extension WorkspaceView {
     func workspaceListChrome<Content: View>(_ content: Content) -> some View {
         content
-            .padding(.bottom, 96)
+            .atlasDockReserve()
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: area)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: threads.map(\.id))
     }
@@ -496,7 +496,7 @@ struct ThreadRow: View {
                 .truncationMode(.tail)
             // Títulos gerados repetem entre si ("Implement a concrete…");
             // sem esta linha a lista fica indistinguível item a item.
-            Text(WorkspaceThreadJudgment.rowSubtitle(thread: thread))
+            Text(WorkspaceThreadJudgment.rowSubtitle(thread: thread, showsWorkspace: showsWorkspaceTint))
                 .atlasSans(12)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(stacksForAccessibility ? 2 : 1)
@@ -1433,11 +1433,31 @@ enum WorkspaceThreadJudgment {
     ///
     /// Títulos de máquina se repetem ponta a ponta e "2d" empata entre vários
     /// itens — o relógio é o único campo que separa dois testes do mesmo dia.
-    static func rowSubtitle(thread: AtlasAiThread, now: Date = Date()) -> String {
-        let count = thread.messageCount
-        var parts: [String] = [count == 1 ? "1 mensagem" : "\(count) mensagens"]
+    /// - Parameter showsWorkspace: lista MISTA (busca, recentes). Aí o nome do
+    ///   workspace entra no subtítulo — o trilho colorido agrupa, mas sozinho
+    ///   ele é um código sem legenda: agrupa sem dizer O QUE agrupa. O operador
+    ///   perguntou "não entendi essas cores" olhando exatamente esta lista.
+    static func rowSubtitle(
+        thread: AtlasAiThread,
+        showsWorkspace: Bool = false,
+        now: Date = Date()
+    ) -> String {
+        var parts: [String] = []
+        if showsWorkspace, let ws = thread.workspace?.trimmingCharacters(in: .whitespaces),
+           !ws.isEmpty {
+            // O campo vem como path absoluto ("/private/tmp/atlas-p4-clone…/repo")
+            // e sozinho comia a linha inteira, empurrando a hora para fora.
+            // O nome final basta para ler; quando dois workspaces terminam
+            // igual, o trilho colorido desambigua.
+            parts.append((ws as NSString).lastPathComponent)
+        }
         let summary = thread.summary?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        if !summary.isEmpty { parts = [summary] }
+        if !summary.isEmpty {
+            parts.append(summary)
+        } else {
+            let count = thread.messageCount
+            parts.append(count == 1 ? "1 mensagem" : "\(count) mensagens")
+        }
         if let date = AtlasTime.date(thread.lastMessageAt ?? thread.updatedAt) {
             parts.append(date.formatted(date: .omitted, time: .shortened))
         }

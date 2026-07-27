@@ -728,7 +728,7 @@ extension AtlasCodeView {
         }
         .padding(.horizontal, AtlasTheme.Space.screen)
         .padding(.top, 10)
-        .padding(.bottom, 96)
+        .atlasDockReserve()
     }
 }
 
