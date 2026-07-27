@@ -412,14 +412,21 @@ extension AutonomosMapShell {
             await model.refreshSelected()
             return
         }
-        // WAVE-065: 0 → silence · 1 → auto · N → chooser (not unbound forever).
+        // WAVE-065: 0 → silêncio · 1 → liga sozinho · N → o operador escolhe.
+        //
+        // O caso N abria a folha AUTOMATICAMENTE: entrar em Autônomos dava uma
+        // sheet na cara antes de ver a tela — não dá para escolher área sem
+        // antes saber onde se está. O CTA "Escolher área"
+        // (A11yID.autonomosAreaBindCTA) já vive no hub e dispara exatamente
+        // esta folha, então a abertura automática só custava: bloqueava a
+        // leitura, escondia o hub e derrubava AtlasRhythmSheetTests, que tenta
+        // tocar a linha de ritmo com a folha por cima.
+        //
+        // O "not unbound forever" da nota original continua garantido: o hub
+        // mostra o estado não-ligado e o CTA fica visível até o operador
+        // escolher.
         if let id = AutonomosAreaBindJudgment.autoBindID(areas: model.areas) {
             await model.selectArea(id)
-        } else if AutonomosAreaBindJudgment.face(
-            areas: model.areas,
-            selectedAreaID: model.selectedAreaID
-        ).needsChooser {
-            showAreaBindChooser = true
         }
     }
 
