@@ -397,7 +397,7 @@ enum ArenaRunSheetJudgment {
     static let productNavTitle = "Rodar medição"
     static let spokenStartHint = "Escolhe motores, suítes e braços"
     static let productEmptyQueue = "Fila vazia"
-    static let productNoSuiteAdapter = "nenhuma suite com adapter instalado"
+    static let productNoSuiteAdapter = "nenhuma suíte com adaptador instalado"
     static let productNoPublishedEngine = "nenhum motor publicado"
     static let spokenSheetHint =
         "escolhe suites, motor e braços; ator e motivo auditáveis são obrigatórios"

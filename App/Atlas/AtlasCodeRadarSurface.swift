@@ -201,6 +201,10 @@ extension AtlasCodeRadarView {
         content
             .navigationTitle(AtlasCodeRadarLoadJudgment.productScreenTitle)
             .navigationBarTitleDisplayMode(.inline)
+            // Barra translúcida deixava a cápsula de alerta vermelha vazar
+            // borrada por trás do título "Código" — lia como render quebrado.
+            .toolbarBackground(AtlasTheme.bg, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .task { if model.phase == .idle { await model.load() } }
             .refreshable { await model.load() }
             .accessibilityIdentifier(A11yID.radarScreen)
@@ -443,6 +447,8 @@ struct AtlasCodeRadarLoadedContent: View {
             .padding(.top, 12)
             .padding(.bottom, 28)
         }
+        // Todas as outras superfícies escondem o indicador; só esta o mostrava.
+        .scrollIndicators(.hidden)
     }
 }
 

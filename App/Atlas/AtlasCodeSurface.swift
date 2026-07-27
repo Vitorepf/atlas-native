@@ -715,6 +715,7 @@ extension AtlasCodeView {
                 filterSilence: filterSilence
             )
         }
+        .scrollIndicators(.hidden)
         .refreshable { await graphListScrollRefresh() }
     }
 }
@@ -1413,6 +1414,7 @@ struct AtlasCodeRepoPickerSheet: View {
             .padding(.vertical, 12)
             .padding(.bottom, 28)
         }
+        .scrollIndicators(.hidden)
     }
 
     private func section(_ title: String, repos: [AtlasCodeRepoRef]) -> some View {

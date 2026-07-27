@@ -748,8 +748,7 @@ enum AtlasOpsFailureJudgment {
     static let productDomainHeadline = "A medição ainda não existe neste servidor"
     static let productDomainFootnote = "Nenhum índice, progresso ou resultado foi presumido."
     static let productDomainKicker = "Arena não publicada"
-    static let productRetryCentered = "Tentar de novo"
-    static let productRetryEditorial = "Tentar novamente"
+    static let productRetry = "Tentar de novo"
     static let spokenRetry = "tentar de novo"
 
     static func face(mode: AtlasOpsFailureMode) -> AtlasOpsFailureFace {
@@ -1052,9 +1051,9 @@ struct AtlasOpsFailureEmpty: View {
                 AtlasMotion.softImpact(reduceMotion: reduceMotion)
                 onRetry()
             } label: {
-                Text(layout == .leadingEditorial
-                     ? AtlasOpsFailureJudgment.productRetryEditorial
-                     : AtlasOpsFailureJudgment.productRetryCentered)
+                // Um botão, um nome: o alinhamento do layout não é motivo
+                // para o operador ler duas palavras diferentes pela mesma ação.
+                Text(AtlasOpsFailureJudgment.productRetry)
                     .font(AtlasFont.serifItalic(16))
                     .foregroundStyle(AtlasTheme.accent)
                     .padding(.horizontal, 22)

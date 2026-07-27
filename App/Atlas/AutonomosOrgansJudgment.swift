@@ -318,8 +318,10 @@ enum AutonomosListJudgment {
     static let spokenEmptyHint = "Abre a folha para definir nome e carta"
     static let emptyBody =
         "Defina um Autônomo com escopo fechado. Por agora o catálogo vive só neste iPhone — some se o app for morto."
+    // "Create" era o nome do endpoint vazando no produto; a honestidade da
+    // frase (nada de 24/7 fingido) fica, o jargão sai.
     static let emptyFootnote =
-        "Create no servidor ainda pendente — sem frota 24/7 inventada."
+        "Criar no servidor ainda está pendente — nenhuma frota 24/7 é inventada aqui."
     static let productEmptyHero = "Nenhum ainda"
     static let productCreateCTA = "Novo Autônomo"
     static let spokenCreateHint = "Cria um Autônomo com nome e carta"

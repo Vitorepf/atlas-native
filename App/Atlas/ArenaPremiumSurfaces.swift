@@ -77,8 +77,9 @@ struct ArenaPremiumFleetView: View {
                 multiplierLabel(engine)
             }
             if without != nil || withAtlas != nil {
-                bar(label: "sem", value: without, ceiling: maxScore, atlas: false)
-                bar(label: "Atlas", value: withAtlas, ceiling: maxScore, atlas: true)
+                // "sem" sozinho não diz sem o quê; o par canônico já existe.
+                bar(label: ArenaNowJudgment.productWithoutAtlas, value: without, ceiling: maxScore, atlas: false)
+                bar(label: ArenaNowJudgment.productWithAtlas, value: withAtlas, ceiling: maxScore, atlas: true)
             } else {
                 Text(ArenaScoreJudgment.productUnmeasured)
                     .font(AtlasFont.mono(11))

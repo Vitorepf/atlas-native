@@ -94,6 +94,7 @@ extension AtlasCodeProvenanceSheet {
             .padding(.bottom, 12)
             .animation(reduceMotion ? nil : AtlasMotion.editorial, value: provenanceContentPhaseID)
         }
+        .scrollIndicators(.hidden)
     }
 }
 
@@ -1135,6 +1136,7 @@ struct AtlasCodeWhySheet: View {
                 .padding(22)
                 .animation(reduceMotion ? nil : AtlasMotion.editorial, value: whyContentPhaseID)
             }
+            .scrollIndicators(.hidden)
         }
         .task { if model.phase == .idle { await model.load(repo: repo, file: file) } }
         .accessibilityIdentifier(A11yID.whySheet)

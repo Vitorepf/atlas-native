@@ -218,6 +218,69 @@ final class AtlasDesignTourTests: XCTestCase {
         attach(app, name: "livres-01-lista")
     }
 
+    /// As abas Frota/Capacidades/Motor nunca tinham sido fotografadas — só a
+    /// "Agora" aparecia no tour, e o que não é visto não é revisado.
+    func testDesignTourArenaTabs() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        let arena = app.buttons[A11yID.arenaHomeEntry]
+        XCTAssertTrue(arena.waitForExistence(timeout: 45), "home precisa expor a Arena")
+        arena.tap()
+        sleep(3)
+
+        for key in ["frota", "capacidades", "motor"] {
+            let tab = app.buttons[A11yID.arenaPremiumTab(key)]
+            guard tab.waitForExistence(timeout: 12), tab.isHittable else { continue }
+            tab.tap()
+            sleep(2)
+            attach(app, name: "arena-aba-\(key)")
+            app.swipeUp()
+            attach(app, name: "arena-aba-\(key)-rolado")
+        }
+    }
+
+    /// O tour antigo parava na folha de área e fotografava a mesma sheet 4×.
+    /// Fecha a folha primeiro e desce o hub de verdade.
+    func testDesignTourAutonomosHub() {
+        continueAfterFailure = false
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Cancelar"].waitForExistence(timeout: 3) {
+            springboard.buttons["Cancelar"].tap()
+        }
+        let app = XCUIApplication()
+        app.launch()
+
+        let autonomos = app.buttons[A11yID.homeAutonomosEntry]
+        XCTAssertTrue(autonomos.waitForExistence(timeout: 45), "home precisa expor Autônomos")
+        autonomos.tap()
+        sleep(3)
+
+        // A folha de área abre por cima e escondia o hub inteiro no tour
+        // antigo. O botão fala por accessibilityLabel, não pelo título.
+        let close = app.buttons[A11yID.autonomosAreaBindClose]
+        if close.waitForExistence(timeout: 8), close.isHittable {
+            close.tap()
+            sleep(1)
+        }
+        XCTAssertFalse(
+            app.descendants(matching: .any)[A11yID.autonomosAreasSheet].exists,
+            "a folha de área precisa sair da frente do hub"
+        )
+        attach(app, name: "hub-01-topo")
+        for (index, name) in ["hub-02-meio", "hub-03-frota", "hub-04-fim"].enumerated() {
+            _ = index
+            app.swipeUp()
+            sleep(1)
+            attach(app, name: name)
+        }
+    }
+
     private func attach(_ app: XCUIApplication, name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = name

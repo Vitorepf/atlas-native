@@ -946,6 +946,7 @@ struct AutonomosAreaBindChooser: View {
                     AtlasCloseToolbarButton(
                         spokenLabel: AutonomosAreaBindJudgment.spokenClose,
                         spokenHint: AutonomosAreaBindJudgment.spokenCloseHint,
+                        accessibilityID: A11yID.autonomosAreaBindClose,
                         reduceMotion: reduceMotion
                     ) { onCancel() }
                 }

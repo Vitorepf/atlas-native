@@ -765,6 +765,7 @@ struct AtlasProfileSheet: View {
                 .padding(.horizontal, AtlasTheme.Space.screen)
                 .padding(.top, 18)
             }
+            .scrollIndicators(.hidden)
             .background(AtlasTheme.bg.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
