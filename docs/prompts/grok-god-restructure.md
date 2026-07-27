@@ -1,38 +1,30 @@
-# Grok — GOD RESTRUCTURE v2 (consenso · um processo · perfeição mensurável)
+# Grok — GOD RESTRUCTURE v4 (24h · até cancelar · grind)
 
-> Consenso de 3 especialistas + operador:  
-> **1 Grok · zero dual · zero WAVE de produto · audit-driven · HOLD quando saturado.**  
+> Padrão dos prompts que **rodaram horas**: Goal **até cancelar** · `/loop` reacorda · **Não pare**.  
+> **1 Grok · zero dual · zero WAVE de produto · fila DEBTS · sem god_hold.**  
 > Missão: estado GOD do código **já existente** — achar / entender / manter / evoluir para IA.
+
+v3/v2 falharam porque “até GOD_HOLD” + soft opcional → Goal Done em minutos. **v4 mata isso.**
 
 ---
 
 ## Norte
 
-Atlas Native casca no estado mais perfeito possível **do que já tem**:
-
-padronizado · organizado · denso agent-optimal · lógica simples · nomes honestos · CODEMAP verdadeiro · gates verdes.
+Padronizado · organizado · denso agent-optimal · lógica simples · nomes honestos · CODEMAP verdadeiro · gates verdes.
 
 **Não** é evolução de produto. Se não melhora compreensão/manutenção para IA → **não faça**.
 
 ---
 
-## Por que dual morreu (não repetir)
-
-1. Fila vazia → inventar trabalho (fuse / micro-WAVE)  
-2. Papéis A/B criavam pressão de “próximo produto”  
-3. Ledger contava movimento, não saturação  
-
-**Lei:** sem dívida nomeada no AUDIT → **não edita**. Empty audit ×2 → `god_hold`.
-
----
-
-## Lei de leitura
+## Lei de leitura (ordem)
 
 1. `OBRA.md`  
 2. `docs/prompts/grok-god-code-canon.md`  
 3. Este prompt  
-4. `App/Atlas/CODEMAP.md`  
-5. `docs/evidence/2026-07-21-grok-god-restructure/LEDGER.md`
+4. `docs/evidence/2026-07-21-grok-god-restructure/DEBTS.md` ← **cursor**  
+5. `App/Atlas/CODEMAP.md`  
+6. `docs/evidence/2026-07-21-grok-god-restructure/LEDGER.md`  
+7. `docs/prompts/grok-god-restructure-START.md`
 
 ---
 
@@ -43,39 +35,25 @@ padronizado · organizado · denso agent-optimal · lógica simples · nomes hon
 | `App/Atlas/**` casca UI | `Sources/**` |
 | `App/Widgets/**` chrome vivo | Lógica nova `ConversationModel` / `AtlasSession` |
 | CODEMAP + evidence desta missão | Makefile / project.yml |
-| | Domínio/tab/feature nova |
+| DEBTS + LEDGER | Domínio/tab/feature nova · WAVE produto |
 
 ---
 
-## Vocabulário FECHADO (consenso)
+## Vocabulário FECHADO
 
 ### Sufixos de arquivo (só estes)
 
 `View` · `Shell` · `Surface` · `Judgment` · `Chrome` · `Body` · `Row` · `Card` · `Sheet` · `Pack` · `AskContext` · `Types` · `Format` · `A11y` · `Model`
 
-| Sufixo | Papel |
-|---|---|
-| View / Shell | rota / stack — fino |
-| Surface | composição **um** domínio |
-| Judgment | regras puras + faces |
-| Chrome | moldura compartilhada |
-| Body | seção do **mesmo** host |
-| Pack / AskContext | packing / pílula |
-| Row · Card · Sheet | um objeto UI |
-| Types · Format · A11y | apresentação / ids |
-| Model | @Observable casca only |
+**Matar como sufixo:** `Grammar`, `Peel`, `Face` (arquivo), `JudgmentChrome`, `ScreenJudgment`, `Sections`/`States` soltos → viram `Body` / `Surface` / `Chrome` / estados dentro do host.
 
-**Matar como sufixo:** `Grammar`, `Peel`, `Face` (arquivo), `JudgmentChrome`, `ScreenJudgment`, `Sections`/`States` soltos.
-
-### Famílias de método (só estas)
+### Famílias de método
 
 `spoken…` · `packFacts` / `pack…Facts` · `rank…` · `format…` · `a11y…` · `…Face` (enum) · `can…` / `allows…`
 
-Tipo carrega o domínio — método **não** repete (`onAppear` no tipo certo, não `conversationPresenceOnAppear`).
-
 ---
 
-## Densidade (consenso)
+## Densidade
 
 | Camada | Alvo | Fail |
 |---|---|---|
@@ -83,15 +61,14 @@ Tipo carrega o domínio — método **não** repete (`onAppear` no tipo certo, n
 | Judgment / Pack / Format | 200–700 | **>1200** |
 | Surface / Card / Sheet 1 domínio | 400–1200 | **>2000** |
 | Qualquer casca `.swift` | — | **>2000** ou 2+ domínios |
-| Soft floor | preferir ≥80 se mesmo tipo | peels &lt;40 = fundir |
 
-**SPLIT** se: 2+ domínios · regra pura sai pra Judgment · host passa orçamento · objeto ≥~150 LOC com lifecycle próprio.  
-**FUSE** se: mesmo tipo (`extension Foo`), mesmo domínio, peel &lt;~120 LOC / one-method.  
+**SPLIT** se 2+ domínios ou host acima do teto.  
+**FUSE** se mesmo tipo/host, peel &lt;~120 LOC, ↓LOC líquido.  
 **Nunca** fundir Conversation × ChangeReview × Plan × Arena.
 
 ---
 
-## Layout interno (&gt;~200 LOC)
+## Layout (&gt;~200 LOC)
 
 ```
 // MARK: - Types
@@ -103,66 +80,52 @@ Tipo carrega o domínio — método **não** repete (`onAppear` no tipo certo, n
 // MARK: - Helpers
 ```
 
-Tipo **antes** de extensions. Proibido `MARK: Peels` e extension one-method sem MARK.
-
 ---
 
-## Máquina de estados
+## Máquina de estados (24h — sem god_hold)
 
 ```
-BOOT → AUDIT → PICK → ACT → PROVE → COMMIT → LEDGER → AUDIT
-                              ↑_____________________|
-AUDIT actionable=0 × 2 → GOD_HOLD  (não inventar trabalho)
-gate fail / cheiro de produto / Core → HALT_FIX → AUDIT
+BOOT → AUDIT → PICK(DEBTS) → ACT → PROVE → COMMIT → DEBTS+LEDGER → AUDIT → …
+gate fail → HALT_FIX → AUDIT
 ```
 
 | Fase | Faz |
 |---|---|
-| BOOT | lê canon + CODEMAP + ledger |
-| AUDIT | lista dívidas com prova `rg`/`wc` |
-| PICK | **um** foco (domínio ou família de nomes) |
-| ACT | P1→P5 abaixo |
-| PROVE | checks + provas coladas no ledger |
-| COMMIT | `polish(ui): GOD-RESTRUCTURE &lt;foco&gt;` |
-| GOD_HOLD | para de editar; espera operador |
+| BOOT | lê canon + DEBTS + CODEMAP + ledger |
+| AUDIT | dívidas do `domain_index` + soft global (`rg`/`wc`) |
+| PICK | **um** foco da checklist DEBTS |
+| ACT | P1→P6 abaixo |
+| PROVE | checks + provas no ledger |
+| COMMIT | `polish(ui): GOD-RESTRUCTURE &lt;foco&gt;` → **já** próximo AUDIT |
+| deepen | domínio limpo → `domain_index++` ou `pass+=1` — **nunca parar** |
 
-### Ordem ACT (P1→P5)
+### Ordem ACT
 
-1. **Delete morto** — `rg` = 0  
-2. **Rename honesty** — Grammar→Judgment, Peel→Chrome/Body, matar `conversationPresence*`  
-3. **Unificar métodos** — `spoken`/`packFacts`/`rank` igual ao ouro (Radar/Arena Judgment)  
-4. **MARK + papel Chrome/Body**  
-5. **Fuse mesmo domínio** só se ↓LOC líquido **e** hops IA ≤2  
-6. **CODEMAP** — “onde muda X” → `Type.method` (zero WAVE como navegação)
+1. Delete morto  
+2. Rename honesty  
+3. Unificar `spoken` / `packFacts` / `rank`  
+4. MARK + papel Chrome/Body  
+5. Fuse mesmo domínio se ↓LOC e hops ≤2  
+6. CODEMAP slice do domínio → `Type.method`
 
 **ROI:** sem commit se net &lt;30 LOC **exceto** delete-morto ou rename-honesty com prova.
 
----
+### Anti-idle (pétreo)
 
-## Barra GOD (DONE mensurável)
-
-Pode declarar saturação só se **tudo** verde num AUDIT (colar saídas):
-
-1. `AtlasCoreChecks` + `make build` exit 0  
-2. 0 arquivo casca &gt;2000; 0 `*View`/`*Shell` rota &gt;600  
-3. `rg JudgmentGrammar` → 0 (ou 1 alias documentado)  
-4. `rg 'Peel|conversationPresence'` → 0  
-5. Família `spoken|packFacts|rank` sem dialetos competindo por domínio  
-6. Arquivos &gt;200 LOC com MARK canônico  
-7. CODEMAP: filenames citados existem; hot paths → `Type.method`  
-8. Janela da missão: 0 `feat(ui): WAVE` / instrument / pack-wire produto  
-9. Ledger: `actionable: 0` em **2** audits seguidos  
-
-DONE = **sem dívida acima do ROI**, não “perfeição eterna”.
+- Goal = **até cancelar**. **PROIBIDO** Goal Done.  
+- **PROIBIDO** `god_hold` / “saturado pare”.  
+- Checklist duro zerado ≠ fim: avance DEBTS (`domain_index` / `pass`).  
+- `/loop` reacorda — se acordar idle com trabalho na DEBTS, **fracasso**: execute um ciclo agora.  
+- Soft (`*Sections*`, `spoken*`, fuse &lt;120, CODEMAP) = **actionable**.
 
 ---
 
-## Proibido (lista pétrea)
+## Proibido
 
 - Dual A/B · QUEUE croqui · WAVE/instrument/pack-wire produto · density-peel-as-feat  
-- Tipografia/opacity ladder · fuse cosmético · chase file-count · chase LOC cego  
+- Tipografia/opacity ladder · fuse cosmético · chase file-count  
 - Multi-domínio · Shell&gt;600 · any&gt;2000 · Core/Sources/Makefile  
-- Inventar trabalho com audit vazio · mentir ledger  
+- Inventar feature · mentir ledger · parar sem cancel do operador  
 
 ---
 
@@ -185,36 +148,44 @@ Stage explícito. `main` local. Sem `git add -A`.
 ## Ledger (schema)
 
 ```yaml
-phase: boot|audit|act|prove|god_hold
-focus: <domínio|família|null>
+phase: boot|audit|act|prove|deepen
+focus: <domínio|família>
+domain_index: N
+pass: N
 actionable: N
 passes: N
-last_commit: <hash|null>
-collapse_host: 0
+last_commit: <hash>
 commands: |
-  <rg/wc/build colados>
+  <rg/wc/build>
 before_after: |
   <contagens>
 notes: |
-  dívida atacada / por que ROI
+  próximo na DEBTS
 ```
 
 ---
 
-## /goal (literal)
+## /goal (literal — START é a fonte; espelho)
 
 ```
-ATLAS-NATIVE GOD RESTRUCTURE v2 — um Grok — até GOD_HOLD.
+ATLAS-NATIVE GOD RESTRUCTURE v4 — 24h — até cancelar.
 
-Zero dual. Zero WAVE/produto/instrument. Só código casca já existente.
+Você é um Grok único. Zero dual. Zero WAVE/produto/instrument.
+Missão: perfeição estrutural do código casca JÁ existente (App/Atlas + App/Widgets)
+para IA achar / entender / manter / evoluir — vocabulário fechado, densidade, nomes honestos, CODEMAP verdadeiro.
+
 Obedeça docs/prompts/grok-god-restructure.md + grok-god-code-canon.md.
-Loop: BOOT→AUDIT→PICK→ACT→PROVE→COMMIT. Sem dívida no AUDIT = não edita.
-actionable=0 × 2 → phase god_hold (não inventar fuse).
-Vocabulário fechado: Judgment/Chrome/Body/Surface… · spoken/packFacts/rank.
-Densidade: View/Shell≤600 · any≤2000 · um domínio/arquivo.
-Gates + guard. Commits polish(ui): GOD-RESTRUCTURE …
+Fila mecânica: docs/evidence/2026-07-21-grok-god-restructure/DEBTS.md
 Ledger: docs/evidence/2026-07-21-grok-god-restructure/LEDGER.md
-Não peça permissão. Não invente feature. Entre em god_hold quando saturado.
+
+Loop eterno na mesma sessão: AUDIT→PICK (próximo item DEBTS)→ACT→PROVE→COMMIT→atualizar DEBTS+LEDGER→AUDIT→…
+Um domínio/foco por commit. Após COMMIT não idle — pegue o próximo da DEBTS.
+
+PROIBIDO marcar Goal Done. PROIBIDO god_hold. PROIBIDO parar porque “checklist duro zerou”.
+Quando o domínio atual fechar, avance domain_index (ou pass+=1). Sempre há próximo domínio.
+Densidade: View/Shell≤600 · any≤2000. Gates + ./scripts/grok-god-wave-guard.sh.
+Commits: polish(ui): GOD-RESTRUCTURE …
+Não peça permissão. Não pare. Continue até o operador cancelar.
 ```
 
 ---
@@ -222,9 +193,10 @@ Não peça permissão. Não invente feature. Entre em god_hold quando saturado.
 ## /loop (literal)
 
 ```
-/loop 45m Leia LEDGER + CODEMAP + este prompt.
-1) AUDIT: liste dívidas com rg/wc (Grammar|Peel|conversationPresence|View>600|any>2000|MARK faltando|CODEMAP mentindo|spoken dialeto).
-2) Se actionable=0: se já foi 0 no audit anterior → phase god_hold e PARE DE EDITAR. Senão só atualize ledger.
-3) Senão PICK um foco → ACT P1–P5 → PROVE (checks+build+guard) → commit GOD-RESTRUCTURE → ledger com commands/before_after.
-PROIBIDO WAVE produto, dual, tipografia, Core, fuse cosmético, inventar trabalho.
+/loop 15m Leia docs/evidence/2026-07-21-grok-god-restructure/DEBTS.md e LEDGER.md + docs/prompts/grok-god-restructure.md.
+Se phase=act|prove → termine o foco e commit GOD-RESTRUCTURE.
+Senão: AUDIT soft+hard no domínio domain_index → PICK um foco → ACT → PROVE (AtlasCoreChecks + make build + wave-guard) → commit → avance DEBTS → próximo.
+Se domínio “limpo” neste pass → domain_index++ (wrap + pass+=1) e ataque o próximo.
+PROIBIDO Goal Done · god_hold · WAVE produto · dual · Core · Sources · fuse cosmético · idle sem commit.
+Não peça permissão. Não pare. Continue a fase ativa da restructure.
 ```

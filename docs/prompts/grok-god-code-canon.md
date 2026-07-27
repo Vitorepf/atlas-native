@@ -2,7 +2,7 @@
 
 > Código da casca feito para **IA ler, navegar e editar com zero atrito**.  
 > Humanos também ganham. Contagem de arquivos **não** é métrica de sucesso.  
-> Canon vivo: **GOD RESTRUCTURE v2** (`docs/prompts/grok-god-restructure.md`) — um Grok, audit-driven, `god_hold` quando saturado.  
+> Canon vivo: **GOD RESTRUCTURE v4** (`docs/prompts/grok-god-restructure.md` + START) — um Grok, **24h até cancelar**, fila `DEBTS.md`, **sem god_hold / Goal Done**.  
 > Dual A/B e WAVEs de produto: **OFF**.
 
 ---

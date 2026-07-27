@@ -112,10 +112,21 @@ engano: fundir aqui quebraria o contexto por tela, que é a tese da pílula.
 
 ---
 
-## Ordem recomendada
+## Execução (27/07, commit `6af074be`)
 
-1. **§3** — decidir fusão vs split e escrever. Uma edição, destrava as IAs.
-2. **§2** — escala tipográfica. Maior ganho visual por diff.
-3. **§1** — escala de espaçamento. Mecânico, alto volume, baixo risco.
+| Item | Estado | O que foi feito |
+|---|---|---|
+| §3 contradição OBRA | **fechado** | Regra reescrita: coesão, não contagem. Split por linhas é proibido; ~200 vale para o corpo da view. |
+| §2 tipografia | **parcial** | 47 → **28** tamanhos. Migrados 29 call sites, todos com salto de ≤1pt. |
+| §1 espaçamento | **parcial** | 34 → **28** valores. 22 call sites, mesma régua de ≤1pt. |
+| §4 fusões | **fechado** | Seis duplicatas eliminadas. |
 
-§4 está fechado. §5 e §6 não pedem ação.
+**Por que parcial e não zero-dívida**: os saltos de ≤1pt são invisíveis e
+seguros. Consolidar de 28 para os 6–8 degraus ideais exige mover 2–4pt em
+centenas de call sites — cada um capaz de mudar quebra de linha e altura de
+linha. Isso não se faz às cegas: precisa ser feito superfície por superfície,
+com o tour comparando antes/depois de cada uma. O que ficou entregue é a
+**régua** (documentada no CODEMAP, com o comando que a mede) e a eliminação do
+ruído puro. O resto é obra com prova visual, não substituição em massa.
+
+§5 e §6 não pedem ação.

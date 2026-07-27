@@ -1,21 +1,11 @@
-# GOD RESTRUCTURE v2 — START (um Grok · consenso · copy-paste)
+# GOD RESTRUCTURE v4 — START (24h · um Grok · até cancelar)
 
-> Dual e WAVEs de produto: **OFF**.  
-> Um terminal. Para sozinho em `god_hold` quando saturado.
-
-## Sinais do operador
-
-| KEEP | STOP |
-|---|---|
-| `polish(ui): GOD-RESTRUCTURE …` | `feat(ui): WAVE…` / instrument |
-| Ledger `actionable` &gt; 0 com prova | `phase: god_hold` ×2 |
-| ↓LOC / rename / delete reais | fuse +9/−3 |
-| Densidade sob teto | Shell&gt;600 / any&gt;2000 |
-| Gates verdes | Core / Sources |
+> Igual aos prompts que **funcionaram**: Goal **até cancelar**, loop acorda e **continua**, **Não pare**.  
+> Dual OFF. WAVE produto OFF. Só restructure do código casca existente.
 
 ---
 
-## Terminal
+## Terminal (um só)
 
 ```bash
 cd /Users/vitorepf/develop/Atlas/atlas-native
@@ -23,13 +13,14 @@ caffeinate -dims &
 grok --cwd /Users/vitorepf/develop/Atlas/atlas-native -m grok-4.5 --effort high --always-approve
 ```
 
-## @
+### 1) Anexe
 
 ```
 @docs/prompts/grok-god-restructure-START.md
 @docs/prompts/grok-god-restructure.md
 @docs/prompts/grok-god-code-canon.md
 @App/Atlas/CODEMAP.md
+@docs/evidence/2026-07-21-grok-god-restructure/DEBTS.md
 @docs/evidence/2026-07-21-grok-god-restructure/LEDGER.md
 ```
 
@@ -38,28 +29,49 @@ grok --cwd /Users/vitorepf/develop/Atlas/atlas-native -m grok-4.5 --effort high 
 /effort high
 ```
 
-## `/goal`
+### 2) `/goal` — cole **literal** (não edite)
 
 ```
-ATLAS-NATIVE GOD RESTRUCTURE v2 — um Grok — até GOD_HOLD.
+ATLAS-NATIVE GOD RESTRUCTURE v4 — 24h — até cancelar.
 
-Zero dual. Zero WAVE/produto/instrument. Só código casca já existente.
+Você é um Grok único. Zero dual. Zero WAVE/produto/instrument.
+Missão: perfeição estrutural do código casca JÁ existente (App/Atlas + App/Widgets)
+para IA achar / entender / manter / evoluir — vocabulário fechado, densidade, nomes honestos, CODEMAP verdadeiro.
+
 Obedeça docs/prompts/grok-god-restructure.md + grok-god-code-canon.md.
-Loop: BOOT→AUDIT→PICK→ACT→PROVE→COMMIT. Sem dívida no AUDIT = não edita.
-actionable=0 × 2 → phase god_hold (não inventar fuse).
-Vocabulário fechado: Judgment/Chrome/Body/Surface… · spoken/packFacts/rank.
-Densidade: View/Shell≤600 · any≤2000 · um domínio/arquivo.
-Gates + guard. Commits polish(ui): GOD-RESTRUCTURE …
+Fila mecânica: docs/evidence/2026-07-21-grok-god-restructure/DEBTS.md
 Ledger: docs/evidence/2026-07-21-grok-god-restructure/LEDGER.md
-Não peça permissão. Não invente feature. Entre em god_hold quando saturado.
+
+Loop eterno na mesma sessão: AUDIT→PICK (próximo item DEBTS)→ACT→PROVE→COMMIT→atualizar DEBTS+LEDGER→AUDIT→…
+Um domínio/foco por commit. Após COMMIT não idle — pegue o próximo da DEBTS.
+
+PROIBIDO marcar Goal Done. PROIBIDO god_hold. PROIBIDO parar porque “checklist duro zerou”.
+Quando o domínio atual fechar, avance domain_index (ou pass+=1). Sempre há próximo domínio.
+Densidade: View/Shell≤600 · any≤2000. Gates + ./scripts/grok-god-wave-guard.sh.
+Commits: polish(ui): GOD-RESTRUCTURE …
+Não peça permissão. Não pare. Continue até o operador cancelar.
 ```
 
-## `/loop`
+### 3) `/loop` — cole **literal** (rede que **reacorda** — igual v5)
 
 ```
-/loop 45m Leia docs/evidence/2026-07-21-grok-god-restructure/LEDGER.md + App/Atlas/CODEMAP.md + docs/prompts/grok-god-restructure.md.
-1) AUDIT: dívidas com rg/wc (Grammar|Peel|conversationPresence|View>600|any>2000|MARK faltando|CODEMAP mentindo|spoken dialeto).
-2) Se actionable=0: se audit anterior também 0 → phase god_hold e PARE DE EDITAR. Senão só ledger.
-3) Senão PICK um foco → ACT P1–P5 → PROVE (AtlasCoreChecks + make build + ./scripts/grok-god-wave-guard.sh) → commit polish(ui): GOD-RESTRUCTURE … → ledger commands/before_after.
-PROIBIDO WAVE produto, dual, tipografia, Core, fuse cosmético, inventar trabalho.
+/loop 15m Leia docs/evidence/2026-07-21-grok-god-restructure/DEBTS.md e LEDGER.md + docs/prompts/grok-god-restructure.md.
+Se phase=act|prove → termine o foco e commit GOD-RESTRUCTURE.
+Senão: AUDIT soft+hard no domínio domain_index → PICK um foco → ACT → PROVE (AtlasCoreChecks + make build + wave-guard) → commit → avance DEBTS → próximo.
+Se domínio “limpo” neste pass → domain_index++ (wrap + pass+=1) e ataque o próximo.
+PROIBIDO Goal Done · god_hold · WAVE produto · dual · Core · Sources · fuse cosmético · idle sem commit.
+Não peça permissão. Não pare. Continue a fase ativa da restructure.
 ```
+
+---
+
+## Sinais
+
+| Bom | Ruim (mate e releia este START) |
+|---|---|
+| Vários `polish(ui): GOD-RESTRUCTURE` / hora | Goal: Done |
+| `domain_index` / `pass` subindo na DEBTS | “Worked 2m” + espera 45m |
+| Guard OK | `god_hold` / actionable ignorado |
+| Rename / spoken / MARK / fuse / CODEMAP | `feat(ui): WAVE…` |
+
+**Só para quando você cancelar o Goal ou matar o terminal.**
