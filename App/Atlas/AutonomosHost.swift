@@ -504,7 +504,7 @@ struct AutonomosListView: View {
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             Text(AutonomosListJudgment.emptyFootnote)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
             AutonomosMapChrome.primaryCTA(AutonomosListJudgment.productCreateCTA, action: onCreate)
@@ -535,7 +535,7 @@ struct AutonomosListView: View {
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
                     Text(unit.ageLabel)
-                        .font(AtlasFont.mono(11))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .padding(.top, 2)
                 }
@@ -692,7 +692,7 @@ struct AutonomosDigestSurface: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
             Text(meta)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(accent ? AtlasTheme.accent : AtlasTheme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -768,7 +768,7 @@ struct AutonomosIncidentSurface: View {
             .fixedSize(horizontal: false, vertical: true)
             .padding(.bottom, 8)
         Text(AutonomosTaskHealthJudgment.productLeasesLine(health))
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.bottom, 18)
 
@@ -841,7 +841,7 @@ struct AutonomosEvolutionView: View {
                 }
 
                 Text(face.spokenFace)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.bottom, 8)
                 Text(face.heroSub)
@@ -893,7 +893,7 @@ struct AutonomosEvolutionView: View {
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .multilineTextAlignment(.leading)
                     Text(marco.meta)
-                        .font(AtlasFont.mono(11))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .multilineTextAlignment(.leading)
                 }
@@ -1013,7 +1013,7 @@ struct AutonomosAreaBindChooser: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 if !area.focus.isEmpty {
                     Text(area.focus)
-                        .font(AtlasFont.mono(11))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .lineLimit(2)
                 }
@@ -1043,7 +1043,7 @@ struct AutonomosAreaBindCTA: View {
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "square.grid.2x2")
-                    .atlasSans(14, .semibold)
+                    .atlasSans(15, .semibold)
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
@@ -1126,7 +1126,7 @@ struct AutonomosHubView: View {
 
                 if AutonomosHubJudgment.showsControlFaceLine(controlFace) {
                     Text(controlFace.spokenFace)
-                        .font(AtlasFont.mono(11))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .padding(.bottom, 16)
                         .accessibilityLabel(controlFace.spokenFace)
@@ -1498,13 +1498,13 @@ extension AutonomosDecisionSurface {
                         .foregroundStyle(AtlasTheme.textPrimary)
                         .multilineTextAlignment(.leading)
                     Text(AutonomosDecisionJudgment.productRowMeta(item))
-                        .font(AtlasFont.mono(11))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .multilineTextAlignment(.leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 Image(systemName: "chevron.right")
-                    .atlasSans(13, .semibold)
+                    .atlasSans(12, .semibold)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.top, 6)
             }
@@ -1621,7 +1621,7 @@ extension AutonomosDecisionSurface {
                     AutonomosMapChrome.heroTitle(item.title, size: 28)
                         .padding(.bottom, 8)
                     Text(AutonomosDecisionJudgment.productRowMeta(item))
-                        .font(AtlasFont.mono(11))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textTertiary)
                         .padding(.bottom, 20)
 

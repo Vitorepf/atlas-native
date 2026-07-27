@@ -131,7 +131,7 @@ struct AttachmentStrip: View {
 extension AttachmentStrip {
     func uploadPercentLabel(_ p: Double) -> some View {
         Text("\(Int(p * 100))%")
-            .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+            .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
     }
@@ -496,7 +496,7 @@ struct SheetRow: View {
             Text(label).atlasSans(17).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             if let sub {
-                Text(sub).atlasSans(13).foregroundStyle(AtlasTheme.textTertiary)
+                Text(sub).atlasSans(12).foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
             }
         }

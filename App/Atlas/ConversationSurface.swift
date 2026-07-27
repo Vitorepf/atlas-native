@@ -1310,7 +1310,7 @@ extension AgentRow {
     @ViewBuilder
     var agentModelLabel: some View {
         if let m = agent.model, !m.isEmpty, !m.hasSuffix("_default") {
-            Text(m).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
+            Text(m).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary).lineLimit(1)
         }
     }
 }
@@ -1440,7 +1440,7 @@ extension ExecutingStrip {
         // WAVE-027/031: primary kicker = face/decision spoken; detail secondary.
         HStack(spacing: 6) {
             Text(ConversationExecutionPhase.primarySpoken(for: bubble))
-                .font(AtlasFont.mono(11, .semibold))
+                .font(AtlasFont.mono(10, .semibold))
                 .foregroundStyle(
                     decisionRequired
                         ? AtlasTheme.accent
@@ -1461,7 +1461,7 @@ extension ExecutingStrip {
         case .reconnect:
             if bubble.showsReconnectSurface, let line = bubble.reconnectPrimaryLine {
                 Text(line)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -1472,7 +1472,7 @@ extension ExecutingStrip {
             // WAVE-040: shared plan progress grammar with PlanCard.
             if bubble.executionPlan != nil || bubble.executionProgress != nil {
                 Text(PlanJudgment.productSummaryLine(bubble: bubble))
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -1480,7 +1480,7 @@ extension ExecutingStrip {
                     .accessibilityHidden(true)
             } else if let act = bubble.currentActivity {
                 Text(act.title)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -1497,7 +1497,7 @@ extension ExecutingStrip {
         TimelineView(.periodic(from: .now, by: 1)) { ctx in
             let secs = bubble.startedAt.map { max(0, Int(ctx.date.timeIntervalSince($0))) } ?? 0
             Text("· \(bubble.activities.count) evento\(bubble.activities.count == 1 ? "" : "s") · \(secs)s")
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                 .monospacedDigit()
                 .modifier(NumericTextTransition(enabled: !reduceMotion))
                 .lineLimit(1)
@@ -1505,7 +1505,7 @@ extension ExecutingStrip {
         }
         if let stats = bubble.diffStats {
             Text(AtlasCodeGraphJudgment.productDiffStat(additions: stats.linesAdded, deletions: stats.linesRemoved))
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.accent)
                 .lineLimit(1)
                 .accessibilityHidden(true)
@@ -1613,7 +1613,7 @@ struct ExecutionBanner: View {
     var body: some View {
         HStack(spacing: 7) {
             Image(systemName: icon)
-                .atlasSans(11, .semibold)
+                .atlasSans(12, .semibold)
                 .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
                 .accessibilityHidden(true)
             Text(text)

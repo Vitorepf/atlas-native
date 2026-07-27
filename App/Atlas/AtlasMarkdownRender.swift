@@ -87,7 +87,7 @@ extension AtlasMarkdownView {
 extension AtlasMarkdownView {
     func headingTwo(_ spans: [InlineSpan]) -> some View {
         Text(plain(spans).uppercased())
-            .atlasSans(11, .medium).tracking(1.1)
+            .atlasSans(12, .medium).tracking(1.1)
             .foregroundStyle(AtlasTheme.textSecondary)
             .padding(.top, 6).padding(.bottom, 2)
     }
@@ -138,7 +138,7 @@ extension AtlasMarkdownView {
 extension AtlasMarkdownView {
     func inlineCodeMark(_ text: String) -> AttributedString {
         var piece = AttributedString(" \(text) ")
-        piece.font = AtlasFont.mono(13)
+        piece.font = AtlasFont.mono(12)
         piece.foregroundColor = AtlasTheme.textPrimary
         piece.backgroundColor = AtlasTheme.surface
         return piece
@@ -205,12 +205,12 @@ extension AtlasMarkdownView {
     func listItemMarker(ordered: Bool, index: Int) -> some View {
         if ordered {
             Text("\(index + 1).")
-                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textSecondary)
+                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 26, alignment: .leading).padding(.top, 3)
                 .accessibilityHidden(true)
         } else {
             Text("—")
-                .atlasSans(16).foregroundStyle(AtlasTheme.accent)
+                .atlasSans(15).foregroundStyle(AtlasTheme.accent)
                 .frame(width: 22, alignment: .leading)
                 .accessibilityHidden(true)
         }
@@ -353,7 +353,7 @@ extension CodeBlockView {
     var codeBlockCopyButton: some View {
         Button(action: copyCodeToClipboard) {
             Text(copyButtonTitle)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(copyForeground)
         }
         .buttonStyle(.plain)
@@ -381,7 +381,7 @@ extension CodeBlockView {
     var codeBlockScroll: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             Text(code)
-                .font(AtlasFont.mono(13)).foregroundStyle(AtlasTheme.textPrimary)
+                .font(AtlasFont.mono(12)).foregroundStyle(AtlasTheme.textPrimary)
                 .lineSpacing(5).textSelection(.enabled)
                 .padding(.horizontal, 16).padding(.bottom, 14)
                 .accessibilityLabel(AtlasMarkdownJudgment.spokenBlock(lang: lang, lineCount: lineCount))
@@ -602,7 +602,7 @@ extension CodeBlockView {
         HStack {
             if let langLabel = AtlasMarkdownJudgment.productLang(lang: lang) {
                 Text(langLabel)
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
             }
             Spacer()
@@ -954,7 +954,7 @@ struct AtlasOpsFailureEmpty: View {
             glyph
             if let resolvedKicker {
                 Text(resolvedKicker)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .tracking(1.2)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
@@ -994,7 +994,7 @@ struct AtlasOpsFailureEmpty: View {
         switch mode {
         case .network: return .system(.subheadline)
         case .domainUnavailable: return AtlasFont.serifItalic(16)
-        case .load: return AtlasFont.mono(11)
+        case .load: return AtlasFont.mono(10)
         }
     }
 

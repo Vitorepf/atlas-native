@@ -57,7 +57,7 @@ extension PlanCard {
     @ViewBuilder
     func planHeaderProgress(_ progress: AtlasExecutionPlan.Progress) -> some View {
         Text(PlanJudgment.progressBadge(progress))
-            .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.accent)
+            .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.accent)
             .monospacedDigit()
             .modifier(NumericTextTransition(enabled: !reduceMotion))
             .accessibilityLabel(PlanJudgment.spokenProgressBadge(progress))
@@ -220,7 +220,7 @@ extension PlanCard {
             }
         } label: {
             Text(showDetail ? "menos" : "ferramentas · agentes · gates")
-                .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
+                .atlasSans(12, .medium).foregroundStyle(AtlasTheme.textSecondary)
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(A11yID.planDetailToggle)
@@ -289,7 +289,7 @@ extension PlanCard {
             }
         } label: {
             Text(showRevisions ? "ocultar versões" : "comparar versões · \(count)")
-                .atlasSans(11, .medium).foregroundStyle(AtlasTheme.textSecondary)
+                .atlasSans(12, .medium).foregroundStyle(AtlasTheme.textSecondary)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(PlanJudgment.spokenRevisionToggle(expanded: showRevisions, count: count))
@@ -1465,7 +1465,7 @@ extension EditorialTurn {
                 .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
             Text(EditorialTurnJudgment.spokenEditResend)
-                .atlasSans(11, .medium)
+                .atlasSans(12, .medium)
         }
         .foregroundStyle(AtlasTheme.textSecondary)
         .padding(.horizontal, 9)

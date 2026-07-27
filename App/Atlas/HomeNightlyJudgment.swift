@@ -567,7 +567,7 @@ extension NightlyProposalCard {
             AtlasMotion.softImpact(reduceMotion: reduceMotion)
             onDismiss()
         }
-        .font(AtlasFont.mono(11, .semibold))
+        .font(AtlasFont.mono(10, .semibold))
         .foregroundStyle(AtlasTheme.textTertiary)
         .buttonStyle(PressableScale())
         .accessibilityIdentifier(A11yID.nightlyProposalDismiss)
@@ -588,7 +588,7 @@ extension NightlyProposalCard {
                 .accessibilityHint(Self.spokenMuteOptionHint())
             }
         }
-        .font(AtlasFont.mono(11, .semibold))
+        .font(AtlasFont.mono(10, .semibold))
         .foregroundStyle(AtlasTheme.textTertiary)
         .accessibilityIdentifier(A11yID.nightlyProposalMute)
         .accessibilityLabel(Self.spokenMuteMenuLabel())

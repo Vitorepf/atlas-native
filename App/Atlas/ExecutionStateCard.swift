@@ -56,12 +56,12 @@ extension ExecutionStateCard {
         // WAVE-027: primary = face spoken; server title = detail only.
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: icon)
-                .atlasSans(13, .semibold)
+                .atlasSans(12, .semibold)
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(ConversationExecutionPhase.primarySpoken(for: state))
-                    .font(AtlasFont.mono(11, .semibold))
+                    .font(AtlasFont.mono(10, .semibold))
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
                 // O servidor costuma repetir o mesmo fato do lead ("execução
@@ -811,7 +811,7 @@ extension ExecutionProof {
             Text(act.title)
                 .font(.system(.footnote)).foregroundStyle(AtlasTheme.textSecondary)
             if let d = act.detail, !d.isEmpty {
-                Text(d).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                Text(d).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(2).truncationMode(.middle)
             }
         }
@@ -822,7 +822,7 @@ extension ExecutionProof {
     func activityRowCell(index: Int, act: AtlasAgentActivity) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: activityIcon(act.kind))
-                .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.8))
+                .atlasSans(12).foregroundStyle(AtlasTheme.accent.opacity(0.8))
                 .frame(width: 15)
                 .accessibilityHidden(true)
             activityRowCopy(act)
@@ -946,10 +946,10 @@ extension ExecutionProof {
     func decisionSummaryRow(_ d: AtlasDecisionSummary) -> some View {
         HStack(spacing: 6) {
             Image(systemName: "arrow.triangle.branch")
-                .atlasSans(11).foregroundStyle(AtlasTheme.accent.opacity(0.8)).frame(width: 15)
+                .atlasSans(12).foregroundStyle(AtlasTheme.accent.opacity(0.8)).frame(width: 15)
                 .accessibilityHidden(true)
             Text(decideLine(d))
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(2)
         }
         .accessibilityElement(children: .combine)
@@ -971,10 +971,10 @@ extension ExecutionProof {
         if let q = bubble.qualitySummary {
             HStack(spacing: 6) {
                 Image(systemName: "seal")
-                    .atlasSans(11).foregroundStyle(qualityColor(q)).frame(width: 15)
+                    .atlasSans(12).foregroundStyle(qualityColor(q)).frame(width: 15)
                     .accessibilityHidden(true)
                 Text(productQualityLine(q))
-                    .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
             }
             .accessibilityLabel(qualitySpoken(q))
         }
@@ -1357,7 +1357,7 @@ struct ExecutionRibbon: View {
     var decideStrategyLine: some View {
         if let strat = bubble.decideStrategy {
             Text("atlas decide · \(strat)" + (bubble.decideStage.map { " → \($0)" } ?? ""))
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
+                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary).padding(.leading, 24)
         }
     }
 }

@@ -175,7 +175,7 @@ extension AtlasCodeCommitRow {
     var commitRowTextStack: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(titleText)
-                .atlasSans(14, .medium)
+                .atlasSans(15, .medium)
                 .foregroundStyle(state == .violating ? color : AtlasTheme.textPrimary)
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
@@ -1274,7 +1274,7 @@ extension AtlasCodeView {
         VStack(spacing: 8) {
             HStack(spacing: 3) {
                 Text(option.label)
-                    .atlasSans(11.5, .medium)
+                    .atlasSans(12.5, .medium)
                 Text("\(count)")
                     .font(AtlasFont.mono(10))
                     .opacity(0.55)

@@ -1422,7 +1422,7 @@ struct AtlasCodeRepoPickerSheet: View {
     private func section(_ title: String, repos: [AtlasCodeRepoRef]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title.uppercased())
-                .font(AtlasFont.mono(11, .medium))
+                .font(AtlasFont.mono(10, .medium))
                 .tracking(1.6)
                 .foregroundStyle(AtlasTheme.textTertiary)
             VStack(spacing: 0) {

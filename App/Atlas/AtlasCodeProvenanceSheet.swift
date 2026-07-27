@@ -481,7 +481,7 @@ extension AtlasCodeProvenanceSheet {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
             Text(AtlasCodeProvenanceJudgment.productYourPhrase)
-                .atlasSans(9)
+                .atlasSans(10)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
     }
@@ -585,7 +585,7 @@ extension AtlasCodeProvenanceSheet {
                 .frame(width: 6, height: 6)
                 .accessibilityHidden(true)
             Text(stateLabel)
-                .atlasSans(9, .bold)
+                .atlasSans(10, .bold)
                 .tracking(1.4)
                 .foregroundStyle(AtlasCodePalette.color(for: state))
                 .accessibilityHidden(true)
@@ -939,7 +939,7 @@ struct AtlasCodeHealReceiptSheet: View {
             Text(hasCompletedHeal
                  ? "CURADO SOZINHO · \(heal.mode.uppercased())"
                  : "CURA · \(heal.mode.uppercased())")
-                .atlasSans(9, .bold)
+                .atlasSans(10, .bold)
                 .tracking(1.2)
                 .accessibilityHidden(true)
         }
@@ -959,7 +959,7 @@ struct AtlasCodeHealReceiptSheet: View {
         }
         if let blocked = heal.blocked, !blocked.isEmpty {
             Text(AtlasCodeProvenanceJudgment.productBlocked(blocked))
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasCodePalette.alert)
                 .accessibilityLabel(spokenBlockedLabel(blocked))
         }
@@ -969,7 +969,7 @@ struct AtlasCodeHealReceiptSheet: View {
     var receiptStepsOrEmpty: some View {
         if heal.stepReceipts.isEmpty {
             Text(AtlasCodeProvenanceJudgment.productNoStepsInReceipt)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityLabel(spokenEmptyStepsLabel())
         } else {
@@ -996,7 +996,7 @@ struct AtlasCodeHealReceiptSheet: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(receipt.action)
-                    .atlasSans(13)
+                    .atlasSans(12)
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .accessibilityHidden(true)
                 if !receipt.result.isEmpty {
@@ -1044,7 +1044,7 @@ struct AtlasCodeHealReceiptSheet: View {
                         .accessibilityHidden(true)
                     Text(AtlasCodeProvenanceJudgment.productUndoWithReceipt)
                 }
-                .atlasSans(14, .medium)
+                .atlasSans(15, .medium)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .foregroundStyle(AtlasTheme.textSecondary)
@@ -1149,7 +1149,7 @@ struct AtlasCodeWhySheet: View {
     var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(AtlasCodeProvenanceJudgment.productWhyFileKicker)
-                .atlasSans(9, .semibold)
+                .atlasSans(10, .semibold)
                 .tracking(1.5)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
@@ -1259,7 +1259,7 @@ struct AtlasCodeWhySheet: View {
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
                 Text(commit.subject)
-                    .atlasSans(11)
+                    .atlasSans(12)
                     .foregroundStyle(AtlasTheme.textSecondary.opacity(0.75))
                     .lineLimit(2)
                     .accessibilityHidden(true)

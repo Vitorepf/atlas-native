@@ -340,14 +340,14 @@ struct LiveNowSection: View {
     var header: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text(HomeOpsJudgment.productLiveNowKicker)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .tracking(1.4)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityHidden(true)
             if isHub {
                 Text(HomeOpsJudgment.productLiveCount(sessions.count))
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityHidden(true)
                 if remoteCount > 0 {

@@ -1584,7 +1584,7 @@ extension NarrativeRowView {
     @ViewBuilder
     var narrativeDetailLine: some View {
         if let detail = row.detail, !detail.isEmpty {
-            Text(detail).font(AtlasFont.mono(11))
+            Text(detail).font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(row.style == .intent ? 2 : 1)
                 .truncationMode(.middle)

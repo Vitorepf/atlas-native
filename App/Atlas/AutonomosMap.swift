@@ -719,7 +719,7 @@ struct AutonomosRhythmSheet: View {
                     Button(NightlyProposalJudgment.productUnmute) {
                         nightly.unmuteProposal()
                     }
-                    .font(AtlasFont.mono(11, .semibold))
+                    .font(AtlasFont.mono(10, .semibold))
                     .foregroundStyle(AtlasTheme.accent)
                     .accessibilityIdentifier(A11yID.autonomosRhythmUnmute)
                 }
@@ -754,7 +754,7 @@ struct AutonomosRhythmSheet: View {
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .frame(width: 84, alignment: .leading)
             Text(value)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textPrimary)
         }
         .accessibilityElement(children: .combine)

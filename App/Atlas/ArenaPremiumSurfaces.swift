@@ -82,7 +82,7 @@ struct ArenaPremiumFleetView: View {
                 bar(label: ArenaNowJudgment.productWithAtlas, value: withAtlas, ceiling: maxScore, atlas: true)
             } else {
                 Text(ArenaScoreJudgment.productUnmeasured)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             ArenaPremiumHairline()
@@ -97,11 +97,11 @@ struct ArenaPremiumFleetView: View {
     private func multiplierLabel(_ engine: AtlasArenaCompositeEngine) -> some View {
         if let mult = engine.atlasMultiplier {
             Text(ArenaFormat.multiplier(mult))
-                .font(AtlasFont.mono(11, .medium))
+                .font(AtlasFont.mono(10, .medium))
                 .foregroundStyle(mult >= 1 ? AtlasTheme.accent : AtlasTheme.alert)
         } else if engine.composite == nil {
             Text(ArenaScoreJudgment.productUnmeasured)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
     }
@@ -129,7 +129,7 @@ struct ArenaPremiumFleetView: View {
             }
             .frame(height: 14)
             Text(ArenaFormat.score(value))
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 36, alignment: .trailing)
         }
@@ -170,7 +170,7 @@ struct ArenaPremiumAlertsView: View {
                     .font(AtlasFont.serif(58))
                     .foregroundStyle(hasAlerts ? AtlasTheme.alert : AtlasTheme.textPrimary)
                 Text(ArenaNowJudgment.productAlertsLower)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             alertRows
@@ -242,7 +242,7 @@ struct ArenaPremiumAlertsView: View {
         HStack(spacing: 14) {
             ArenaPremiumIcon(symbol: symbol, tone: .negative)
             Text(title)
-                .atlasSans(16, .medium)
+                .atlasSans(15, .medium)
                 .foregroundStyle(AtlasTheme.textPrimary)
             Spacer()
             Text(detail)
@@ -326,12 +326,12 @@ struct ArenaPremiumResultsView: View {
         return VStack(alignment: .leading, spacing: 18) {
             HStack(alignment: .lastTextBaseline) {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(ArenaNowJudgment.productIndex).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    Text(ArenaNowJudgment.productIndex).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                     HStack(alignment: .lastTextBaseline, spacing: 4) {
                         Text(ArenaFormat.score(engine.composite))
                             .font(AtlasFont.serif(62))
                         Text("/10")
-                            .font(AtlasFont.mono(13, .medium))
+                            .font(AtlasFont.mono(12, .medium))
                             .foregroundStyle(AtlasTheme.textSecondary)
                     }
                     .foregroundStyle(AtlasTheme.textPrimary)
@@ -414,7 +414,7 @@ struct ArenaPremiumResultsView: View {
                         .foregroundStyle(delta < 0 ? AtlasTheme.alert : (delta > 0 ? AtlasTheme.textPrimary : AtlasTheme.textSecondary))
                 }
             }
-            .font(AtlasFont.mono(11, .medium))
+            .font(AtlasFont.mono(10, .medium))
         } else {
             Text(ArenaScoreJudgment.productUnmeasured)
                 .font(AtlasFont.mono(10))
@@ -636,7 +636,7 @@ struct ArenaPremiumCapabilitiesView: View {
     private func summaryMetric(_ value: Int, _ label: String, _ tone: ArenaPremiumTone) -> some View {
         HStack(spacing: 6) {
             Text("\(value)").font(AtlasFont.serif(24)).foregroundStyle(tone.color)
-            Text(label).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textSecondary)
+            Text(label).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textSecondary)
         }
     }
 
@@ -762,7 +762,7 @@ struct ArenaPremiumCapabilityDetail: View {
                         symbol: ArenaPremiumIconography.suite(suite)
                     )
                     Text(ArenaDisplay.suite(suite))
-                        .atlasSans(16, .medium)
+                        .atlasSans(15, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
                     Spacer()
                     Text(suiteCases(suite))
@@ -1191,7 +1191,7 @@ struct ArenaPremiumPlanView: View {
                         .frame(width: 28, alignment: .leading)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(ArenaDisplay.suite(suite))
-                            .atlasSans(16, .medium)
+                            .atlasSans(15, .medium)
                             .foregroundStyle(AtlasTheme.textPrimary)
                         Text(armsText)
                             .font(AtlasFont.mono(10))
@@ -1264,7 +1264,7 @@ struct ArenaPremiumQueueView: View {
                     .font(AtlasFont.serif(58))
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text(queuedSuites.count == 1 ? "suíte na fila" : "suítes na fila")
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             .accessibilityValue(queueFace.productWord)
@@ -1285,7 +1285,7 @@ struct ArenaPremiumQueueView: View {
                         .frame(width: 26, alignment: .leading)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(ArenaDisplay.suite(suite))
-                            .atlasSans(16, .medium)
+                            .atlasSans(15, .medium)
                             .foregroundStyle(AtlasTheme.textPrimary)
                         Text(queueDetail(suite))
                             .font(AtlasFont.mono(10))
@@ -1452,7 +1452,7 @@ extension ArenaRunSheet {
         let face = ArenaStartJudgment.receiptFace(receipt)
         return VStack(alignment: .leading, spacing: 6) {
             Text(ArenaNowJudgment.productReceiptHash(receipt.receiptHash))
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .lineLimit(1)
                 .truncationMode(.middle)
@@ -1467,7 +1467,7 @@ extension ArenaRunSheet {
                 .accessibilityHidden(true)
             if model.lastStartEnginesCount > 1 {
                 Text("\(model.lastStartEnginesCount) motores · \(model.lastStartRunsPlannedTotal) runs na fila")
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .monospacedDigit()
                     .accessibilityHidden(true)
@@ -1613,7 +1613,7 @@ struct ArenaRunSheet: View {
                         + "\(selectedSuites.count) \(selectedSuites.count == 1 ? "suíte" : "suítes") · "
                         + "\(selectedEngines.count * selectedSuites.count * selectedArms.count) corridas"
                 )
-                .font(AtlasFont.mono(11, .medium))
+                .font(AtlasFont.mono(10, .medium))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 Text(selectedArms.sorted { $0.rawValue < $1.rawValue }.map(\.labelPT).joined(separator: " → "))
                     .font(AtlasFont.mono(10))

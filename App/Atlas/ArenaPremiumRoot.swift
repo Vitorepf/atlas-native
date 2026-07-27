@@ -308,7 +308,7 @@ struct ArenaPremiumNowView: View {
             ProgressView()
                 .tint(AtlasTheme.accent)
             Text(ArenaNowJudgment.productIndependentContracts)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -371,7 +371,7 @@ struct ArenaPremiumQueuedView: View {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityValue(ArenaNowFace.queued.productWord)
             Text(model.arenaLiveEngineTitle)
-                .font(AtlasFont.mono(13))
+                .font(AtlasFont.mono(12))
                 .foregroundStyle(AtlasTheme.textSecondary)
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 28) {
@@ -385,7 +385,7 @@ struct ArenaPremiumQueuedView: View {
                 }
             }
             Text(ArenaNowJudgment.productQueuedHonestyLine)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
             ArenaPremiumAction(title: ArenaNowJudgment.productViewExecution, tone: .neutral) {
                 onNavigate(.execution)
@@ -445,7 +445,7 @@ struct ArenaPremiumTerminalView: View {
                     Text("\(progress.completed)")
                         .font(AtlasFont.serif(44))
                     Text(ArenaNowJudgment.productConfirmedCases(progress.total))
-                        .font(AtlasFont.mono(11))
+                        .font(AtlasFont.mono(10))
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }
                 .foregroundStyle(AtlasTheme.textPrimary)
@@ -454,7 +454,7 @@ struct ArenaPremiumTerminalView: View {
                 // Mono vermelho lê como stack trace. O motivo é produto: fonte
                 // do texto corrido, cor de leitura, tom de alerta só no selo.
                 Text(publicFailureCopy)
-                    .atlasSans(14)
+                    .atlasSans(15)
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -621,7 +621,7 @@ struct ArenaPremiumAction: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .atlasSans(14, quiet ? .regular : .medium)
+                .atlasSans(15, quiet ? .regular : .medium)
                 .frame(maxWidth: .infinity, minHeight: 46)
                 .padding(.horizontal, 20)
                 .foregroundStyle(disabled ? AtlasTheme.textTertiary : (quiet ? AtlasTheme.textSecondary : AtlasTheme.textPrimary))
@@ -664,11 +664,11 @@ struct ArenaPremiumDisclosureRow: View {
                 // Linha de lista fala sans (canon §C — serif é masthead/título);
                 // mesma lei aplicada no Código e nos Artifacts hoje.
                 Text(title)
-                    .atlasSans(16, .medium)
+                    .atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Spacer(minLength: 12)
                 Text(detail)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(tone.color)
                     .lineLimit(1)
                 ArenaPremiumChevron()
@@ -702,7 +702,7 @@ struct ArenaPremiumProgressRing: View {
                     Text("\(percentage)")
                         .font(AtlasFont.serif(42))
                     Text("%")
-                        .font(AtlasFont.mono(13))
+                        .font(AtlasFont.mono(12))
                         .foregroundStyle(AtlasTheme.textSecondary)
                         .baselineOffset(4)
                 }
@@ -832,7 +832,7 @@ struct ArenaPremiumTabBar: View {
                     // "Capac." lia como texto quebrado. Palavra inteira que
                     // encolhe é honesto; abreviação com ponto, não.
                     Text(tabAccessibilityLabel(tab))
-                        .atlasSans(13, .medium)
+                        .atlasSans(12, .medium)
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                         .foregroundStyle(selection == tab ? AtlasTheme.textPrimary : AtlasTheme.textTertiary)
@@ -955,15 +955,15 @@ struct ArenaPremiumGlyphRow: View {
                     .frame(width: 22, alignment: .center)
                     .accessibilityHidden(true)
                 Text(title)
-                    .atlasSans(16, .medium)
+                    .atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Spacer(minLength: 12)
                 Text(detail)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(tone.color)
                     .lineLimit(1)
                 Text("›")
-                    .font(AtlasFont.mono(13))
+                    .font(AtlasFont.mono(12))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
             }

@@ -114,7 +114,7 @@ struct ArenaPremiumExecutionView: View {
                     .foregroundStyle(AtlasTheme.accent)
             }
             Text(suiteLine)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
         }
     }
@@ -135,7 +135,7 @@ struct ArenaPremiumExecutionView: View {
                 .padding(.bottom, 10)
             if orderedRuns.isEmpty {
                 Text(ArenaNowJudgment.productNoPublishedRuns)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
             } else {
                 ForEach(orderedRuns) { run in
@@ -160,15 +160,15 @@ struct ArenaPremiumExecutionView: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 4) {
                 Text(ArenaDisplay.suite(run.suite))
-                    .atlasSans(16, .medium)
+                    .atlasSans(15, .medium)
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text(ArenaRunStatusJudgment.productRowDetail(run))
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
             Spacer(minLength: 8)
             Text(ArenaRunStatusJudgment.productRowTrailing(run))
-                .font(AtlasFont.mono(11, .medium))
+                .font(AtlasFont.mono(10, .medium))
                 .foregroundStyle(ArenaRunStatusJudgment.tone(for: run.status).color)
                 .multilineTextAlignment(.trailing)
             ArenaPremiumChevron()
@@ -385,7 +385,7 @@ struct ArenaPremiumRunningView: View {
                         .foregroundStyle(AtlasTheme.textSecondary)
                 }
                 Text(ArenaNowJudgment.productConfirmedCasesLabel)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
                 Text(ArenaNowJudgment.productRemaining(progress.remaining))
                     .font(AtlasFont.mono(10))
@@ -393,7 +393,7 @@ struct ArenaPremiumRunningView: View {
                     .padding(.top, 2)
             } else {
                 Text(ArenaNowJudgment.productIndeterminateProgress)
-                    .font(AtlasFont.mono(13, .medium))
+                    .font(AtlasFont.mono(12, .medium))
                     .foregroundStyle(AtlasTheme.textPrimary)
                 Text(ArenaNowJudgment.productDenominatorStillUnpublished)
                     .font(AtlasFont.mono(10))
@@ -481,7 +481,7 @@ struct ArenaPremiumRunDetailView: View {
                         .foregroundStyle(AtlasTheme.accent)
                 }
                 Text(productSummaryLine(done: min(done, total), total: total))
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textSecondary)
             }
         } else {

@@ -154,7 +154,7 @@ extension ArtifactSheet {
     @ViewBuilder
     func artifactListRowLeading(item: AtlasTraceArtifacts.Item) -> some View {
         Text("▸")
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(10))
             .foregroundStyle(item.id == selected?.id ? AtlasTheme.accent : AtlasTheme.textTertiary)
             .accessibilityHidden(true)
         Text(item.name)
@@ -334,7 +334,7 @@ extension ArtifactFileFicha {
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
             Text(subtitle)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
         }

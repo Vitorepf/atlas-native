@@ -294,7 +294,7 @@ extension AtlasCodeFolderRow {
                 .atlasSans(15, .semibold)
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(folder.repositories == 1 ? "1 repositório" : "\(folder.repositories) repositórios")
-                .atlasSans(11.5)
+                .atlasSans(12.5)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
         .accessibilityHidden(true)
@@ -541,9 +541,9 @@ extension AtlasCodeFolderRow {
         if verifiedExceptionCount > 0 {
             HStack(spacing: 4) {
                 Image(systemName: "exclamationmark.triangle")
-                    .atlasSans(9, .semibold)
+                    .atlasSans(10, .semibold)
                 Text("\(verifiedExceptionCount)")
-                    .atlasSans(11, .semibold)
+                    .atlasSans(12, .semibold)
                     .monospacedDigit()
             }
             .foregroundStyle(AtlasCodePalette.alert)
@@ -877,7 +877,7 @@ extension AtlasCodeRadarStatusCapsule {
                 .atlasSans(10, .semibold)
                 .accessibilityHidden(true)
             Text(model.headline)
-                .atlasSans(11, .semibold)
+                .atlasSans(12, .semibold)
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }
@@ -893,7 +893,7 @@ extension AtlasCodeRadarStatusCapsule {
     /// Caption baixa — mesmo padrão da frota («frota» / «fila») sem incidente.
     var silentCaption: some View {
         Text(model.scanState == .clean ? "código" : model.headline)
-            .atlasSans(11, .semibold)
+            .atlasSans(12, .semibold)
             .tracking(1.2)
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.vertical, 7)
@@ -1072,7 +1072,7 @@ extension AtlasCodeRepoRow {
             // WAVE-024: mute never reads as clean.
             HStack(spacing: 6) {
                 Image(systemName: "antenna.radiowaves.left.and.right.slash")
-                    .atlasSans(9, .semibold)
+                    .atlasSans(10, .semibold)
                     .accessibilityHidden(true)
                 Text("\(AtlasCodeRadarJudgment.productMuteBadge) · \(AtlasCodeRadarJudgment.spokenMute)")
                     .atlasSans(12)

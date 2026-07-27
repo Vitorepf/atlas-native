@@ -149,7 +149,7 @@ extension ConversationMessages {
 
     var changeReviewChipLabel: some View {
         HStack(spacing: 6) {
-            Image(systemName: "plus.forwardslash.minus").atlasSans(11)
+            Image(systemName: "plus.forwardslash.minus").atlasSans(12)
             Text(ChangeReviewSheetJudgment.productTitle).font(.system(.footnote, weight: .medium))
         }
         .foregroundStyle(AtlasTheme.textSecondary)
@@ -730,7 +730,7 @@ extension SteerInteractionSheet {
     func receiptLine(_ receipt: AtlasInteractionSteerResponse) -> some View {
         // WAVE-053: copy + tint from Judgment face.
         Text(ConversationSteerJudgment.productReceiptLine(receipt))
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(10))
             .foregroundStyle(receipt.isAccepted ? AtlasTheme.domAutonomos : AtlasTheme.domOperacional)
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -871,7 +871,7 @@ extension QueuedFollowUpRow {
             onRemove()
         } label: {
             Image(systemName: "trash")
-                .atlasSans(14)
+                .atlasSans(15)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .frame(width: 38, height: 38)
                 .background(Circle().fill(AtlasTheme.surfaceHi))

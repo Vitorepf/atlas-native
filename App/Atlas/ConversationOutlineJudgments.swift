@@ -140,7 +140,7 @@ struct ConversationOutlineSheet: View {
 
     var outlineEmpty: some View {
         Text(ConversationOutlineJudgment.productNoTurnsLoaded)
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, AtlasTheme.Space.screen)
@@ -188,7 +188,7 @@ struct ConversationOutlineRow: View {
 
     var outlineLeadIndex: some View {
         Text(String(format: "%02d", index))
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.accent)
             .modifier(NumericTextTransition(enabled: !reduceMotion))
             .accessibilityHidden(true)
@@ -340,7 +340,7 @@ extension StaleReadSeal {
                 confirming: confirming,
                 reduceMotion: reduceMotion
             ))
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(10))
             .modifier(NumericTextTransition(enabled: !reduceMotion && !confirming))
             .accessibilityHidden(true)
         }

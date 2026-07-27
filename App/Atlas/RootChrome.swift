@@ -156,7 +156,7 @@ struct WorkspaceRow: View {
                     .accessibilityHidden(true)
             }
             Image(systemName: "chevron.right")
-                .atlasSans(11, .semibold)
+                .atlasSans(12, .semibold)
                 .foregroundStyle(AtlasTheme.textTertiary.opacity(0.55))
                 .accessibilityHidden(true)
         }
@@ -797,7 +797,7 @@ struct AtlasProfileSheet: View {
                 .font(AtlasFont.serif(24, .semibold))
                 .foregroundStyle(AtlasTheme.textPrimary)
             Text(HomeOpsJudgment.productOperatorSubtitle)
-                .atlasSans(13)
+                .atlasSans(12)
                 .foregroundStyle(AtlasTheme.textTertiary)
         }
         .frame(maxWidth: .infinity)
@@ -837,7 +837,7 @@ extension AtlasProfileSheet {
         .accessibilityIdentifier(A11yID.profileAuditToggle)
 
         Text(HomeOpsJudgment.productAppVersion(appVersion))
-            .font(AtlasFont.mono(11))
+            .font(AtlasFont.mono(10))
             .foregroundStyle(AtlasTheme.textTertiary)
             .padding(.top, 8)
     }
@@ -847,7 +847,7 @@ extension AtlasProfileSheet {
             Text(label).atlasSans(15).foregroundStyle(AtlasTheme.textSecondary)
             Spacer()
             if mono {
-                Text(value).font(AtlasFont.mono(13))
+                Text(value).font(AtlasFont.mono(12))
                     .foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
             } else {
                 Text(value).atlasSans(15)

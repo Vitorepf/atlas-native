@@ -27,7 +27,7 @@ extension AtlasTraceGovernance.CouncilMember {
 extension ChangeReviewCouncilMemberRow {
     var providerOutcomeGlyph: some View {
         Image(systemName: member.succeeded ? "checkmark" : "xmark")
-            .atlasSans(9, .semibold)
+            .atlasSans(10, .semibold)
             .foregroundStyle(member.succeeded ? AtlasCodePalette.healed : AtlasTheme.alert)
             .accessibilityHidden(true)
     }
@@ -137,7 +137,7 @@ extension ChangeReviewGovernanceSection {
     func councilBlockHeader(diverged: Bool) -> some View {
         HStack(spacing: 8) {
             Text(ChangeReviewJudgment.productCouncil)
-                .atlasSans(11, .semibold)
+                .atlasSans(12, .semibold)
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
             if diverged {
@@ -211,7 +211,7 @@ extension ChangeReviewGovernanceSection {
         if let last = revisions.last {
             HStack(spacing: 8) {
                 Image(systemName: "clock.arrow.circlepath")
-                    .atlasSans(11)
+                    .atlasSans(12)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .accessibilityHidden(true)
                 Text(revisions.count == 1
@@ -229,11 +229,11 @@ extension ChangeReviewGovernanceSection {
     func governanceStatsLine(_ stats: AtlasTraceGovernance.DiffStats) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "plusminus")
-                .atlasSans(11)
+                .atlasSans(12)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
             Text(stats.headline)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .accessibilityLabel(ChangeReviewJudgment.spokenDiffStats(stats))
         }
@@ -276,7 +276,7 @@ struct ChangeReviewHashWarning: View {
     var body: some View {
         HStack(alignment: .top, spacing: 6) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .atlasSans(11, .semibold)
+                .atlasSans(12, .semibold)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .accessibilityHidden(true)
             Text(ChangeReviewJudgment.spokenHashWarning)

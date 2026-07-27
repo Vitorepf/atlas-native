@@ -392,7 +392,7 @@ extension ChangeReviewPatchCard {
                 .accessibilityHidden(true)
             Spacer()
             Button(diffExpanded ? "Fechar diff" : "Ver diff") { toggleDiff() }
-                .font(AtlasFont.mono(11, .medium)).foregroundStyle(AtlasTheme.accent)
+                .font(AtlasFont.mono(10, .medium)).foregroundStyle(AtlasTheme.accent)
                 .accessibilityLabel(ChangeReviewJudgment.spokenDiffToggle(expanded: diffExpanded))
                 .accessibilityHint(ChangeReviewSheetJudgment.spokenDiffToggleHint)
                 .accessibilityIdentifier(A11yID.reviewPatchDiff(patch.id))
@@ -454,7 +454,7 @@ struct ChangeReviewPatchCard: View {
 extension ChangeReviewRunActions {
     var acceptButtonLabel: some View {
         Text(ChangeReviewControlJudgment.productAcceptRun)
-            .font(AtlasFont.mono(11, .semibold)).foregroundStyle(AtlasTheme.bg)
+            .font(AtlasFont.mono(10, .semibold)).foregroundStyle(AtlasTheme.bg)
             .padding(.horizontal, 18).padding(.vertical, 10)
             .background(Capsule().fill(AtlasTheme.accent))
     }
@@ -544,7 +544,7 @@ extension ChangeReviewRunActions {
 extension ChangeReviewRunActions {
     var rejectButtonLabel: some View {
         Text(ChangeReviewControlJudgment.productRejectRun)
-            .font(AtlasFont.mono(11, .semibold)).foregroundStyle(AtlasTheme.domOperacional)
+            .font(AtlasFont.mono(10, .semibold)).foregroundStyle(AtlasTheme.domOperacional)
             .padding(.horizontal, 18).padding(.vertical, 10)
             .background(Capsule().fill(AtlasTheme.domOperacional.opacity(0.1)))
             .overlay(Capsule().stroke(AtlasTheme.domOperacional.opacity(0.45), lineWidth: 1))
@@ -647,7 +647,7 @@ extension ChangeReviewFileRow {
     var fileLeadingRow: some View {
         HStack(spacing: 8) {
             Text(displayName)
-                .font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
+                .font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textPrimary).lineLimit(1)
                 .accessibilityHidden(true)
             if let kind = fileKindCaption {
                 Text(kind).font(AtlasFont.mono(9))

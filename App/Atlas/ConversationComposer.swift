@@ -380,7 +380,7 @@ extension DraftThumb {
                 .clipShape(RoundedRectangle(cornerRadius: AtlasTheme.Radius.control, style: .continuous))
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.94)))
         } else if failedMessage != nil {
-            Image(systemName: "exclamationmark.triangle.fill").atlasSans(16)
+            Image(systemName: "exclamationmark.triangle.fill").atlasSans(15)
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading).padding(6)
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.9)))
@@ -673,7 +673,7 @@ extension ComposerAttachmentRow {
         VStack(alignment: .leading, spacing: 2) {
             Text(title).atlasSans(17).foregroundStyle(AtlasTheme.textPrimary)
                 .accessibilityHidden(true)
-            Text(subtitle).atlasSans(13).foregroundStyle(AtlasTheme.textTertiary)
+            Text(subtitle).atlasSans(12).foregroundStyle(AtlasTheme.textTertiary)
                 .accessibilityHidden(true)
         }
     }

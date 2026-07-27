@@ -502,7 +502,7 @@ struct ThreadRow: View {
             // Títulos gerados repetem entre si ("Implement a concrete…");
             // sem esta linha a lista fica indistinguível item a item.
             Text(WorkspaceThreadJudgment.rowSubtitle(thread: thread))
-                .atlasSans(13)
+                .atlasSans(12)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .lineLimit(stacksForAccessibility ? 2 : 1)
                 .truncationMode(.tail)
@@ -550,13 +550,13 @@ struct ThreadRow: View {
             // Quando o título não distingue, a idade distingue. A contagem de
             // mensagens migrou para o subtítulo, onde tem rótulo.
             Text(age)
-                .atlasSans(13)
+                .atlasSans(12)
                 .foregroundStyle(AtlasTheme.textTertiary)
                 .monospacedDigit()
                 .accessibilityHidden(true)
         }
         Image(systemName: "chevron.right")
-            .atlasSans(13, .semibold).foregroundStyle(AtlasTheme.textTertiary)
+            .atlasSans(12, .semibold).foregroundStyle(AtlasTheme.textTertiary)
             .accessibilityHidden(true)
     }
 
@@ -674,17 +674,17 @@ extension AtlasWorkspacePickerSheet {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "bubble.left")
-                    .atlasSans(16)
+                    .atlasSans(15)
                     .foregroundStyle(AtlasTheme.textSecondary)
                     .frame(width: 22)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(WorkspacePickerJudgment.productNoRepoTitle).atlasSans(16, .medium)
+                    Text(WorkspacePickerJudgment.productNoRepoTitle).atlasSans(15, .medium)
                         .foregroundStyle(AtlasTheme.textPrimary)
-                    Text(WorkspacePickerJudgment.productNoRepoSubtitle).atlasSans(13)
+                    Text(WorkspacePickerJudgment.productNoRepoSubtitle).atlasSans(12)
                         .foregroundStyle(AtlasTheme.textTertiary)
                 }
                 Spacer()
-                Image(systemName: "chevron.right").atlasSans(13, .semibold)
+                Image(systemName: "chevron.right").atlasSans(12, .semibold)
                     .foregroundStyle(AtlasTheme.textTertiary)
             }
             .padding(.horizontal, 14).padding(.vertical, 14)
@@ -703,7 +703,7 @@ extension AtlasWorkspacePickerSheet {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
                 Text(WorkspacePickerJudgment.productReposCaption)
-                    .font(AtlasFont.mono(11, .medium)).tracking(1.6)
+                    .font(AtlasFont.mono(10, .medium)).tracking(1.6)
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .padding(.horizontal, AtlasTheme.Space.screen)
                     .padding(.top, showsNoRepoSpacing ? 18 : 4)
@@ -742,7 +742,7 @@ extension AtlasWorkspacePickerSheet {
                 .lineLimit(1)
                 Spacer()
                 if let age = AtlasCodeAge.short(from: repo.lastCommitAt) {
-                    Text(age).font(AtlasFont.mono(11)).foregroundStyle(AtlasTheme.textTertiary)
+                    Text(age).font(AtlasFont.mono(10)).foregroundStyle(AtlasTheme.textTertiary)
                 }
             }
             .padding(.horizontal, 14).padding(.vertical, 12)

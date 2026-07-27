@@ -421,7 +421,7 @@ struct AutonomosMapNavLine: View {
                     .foregroundStyle(AtlasTheme.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text(meta)
-                    .font(AtlasFont.mono(11))
+                    .font(AtlasFont.mono(10))
                     .foregroundStyle(AtlasTheme.textTertiary)
                     .lineLimit(1)
                 Text("›")
@@ -581,10 +581,10 @@ extension SelfConstructionReceiptSheet {
     var receiptSealHeader: some View {
         HStack(spacing: 7) {
             Image(systemName: "checkmark.seal")
-                .atlasSans(11, .bold)
+                .atlasSans(12, .bold)
                 .accessibilityHidden(true)
             Text(AutonomosListJudgment.productSelfBuildReceipt)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .tracking(1.0)
                 .accessibilityHidden(true)
         }
@@ -626,7 +626,7 @@ extension SelfConstructionReceiptSheet {
     var revertQueueBanner: some View {
         if revertReceipt != nil {
             Text(AutonomosListJudgment.productQueuedNotUndone)
-                .font(AtlasFont.mono(11))
+                .font(AtlasFont.mono(10))
                 .foregroundStyle(AtlasTheme.domOperacional)
                 .padding(12)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -788,7 +788,7 @@ extension SelfConstructionReceiptSheet {
                 .accessibilityHidden(true)
             Text(AtlasCodeProvenanceJudgment.productUndoWithReceipt)
         }
-        .atlasSans(14, .medium)
+        .atlasSans(15, .medium)
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .foregroundStyle(AtlasTheme.domOperacional)
