@@ -3,16 +3,25 @@ import XCTest
 final class AtlasArenaNowProbeTests: XCTestCase {
     @MainActor
     func testEveryArenaLifecycleStateHasDistinctSemantics() {
-        // Copy = o que a casca Premium realmente mostra (não o antigo "17/42 casos"
-        // colado: o hero fala completed/total em textos separados + "casos confirmados").
-        let expected: [(scenario: String, state: String, copy: String)] = [
-            ("idle", "idle", "Nada medindo agora"),
-            ("queued", "queued", "Medição programada"),
-            ("running", "running", "casos confirmados"),
-            ("stopping", "stopping", "Finalizando o caso atual"),
-            ("stopped", "stopped", "Resultados parciais preservados"),
-            ("completed", "completed", "Resultado terminal confirmado"),
-            ("failed", "failed", "O que concluiu foi preservado"),
+        // O que se verifica é a VOZ do estado, não o texto visível.
+        //
+        // O subtítulo do hero carrega `.accessibilityLabel(nowFace.spokenFace)`
+        // — padrão da casa: `product*` é lido, `spoken*` é falado, e no
+        // VoiceOver o falado SUBSTITUI o visível. Este teste procurava o texto
+        // de tela e por isso falhava em 4 dos 7 estados desde que o label foi
+        // adicionado. Não era regressão: era o teste medindo o que o app não
+        // promete naquela árvore.
+        //
+        // Descoberto em 27/07 ao rodar as 8 suítes que ficavam fora do
+        // wrapper. Ver scripts/uitest.sh, que agora roda TODAS.
+        let expected: [(scenario: String, state: String, spoken: String)] = [
+            ("idle", "idle", "parada"),
+            ("queued", "queued", "na fila"),
+            ("running", "running", "ao vivo"),
+            ("stopping", "stopping", "parando"),
+            ("stopped", "stopped", "parada pelo operador"),
+            ("completed", "completed", "concluída"),
+            ("failed", "failed", "interrompida"),
         ]
 
         for item in expected {
@@ -24,7 +33,10 @@ final class AtlasArenaNowProbeTests: XCTestCase {
                     .waitForExistence(timeout: 20),
                 "estado \(item.state) não apareceu"
             )
-            XCTAssertTrue(app.staticTexts[item.copy].exists, "copy de \(item.state) divergiu")
+            XCTAssertTrue(
+                app.staticTexts[item.spoken].exists,
+                "voz de \(item.state) divergiu — esperava \"\(item.spoken)\""
+            )
             let shot = XCTAttachment(screenshot: app.screenshot())
             shot.name = "arena-state-\(item.state)"
             shot.lifetime = .keepAlways

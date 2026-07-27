@@ -347,10 +347,14 @@ struct ArenaPremiumRunningView: View {
         VStack(alignment: .leading, spacing: 8) {
             ArenaPremiumKicker(text: ArenaNowJudgment.productLive, tone: .active, showsLiveMark: true)
                 .accessibilityIdentifier(A11yID.arenaPremiumState("running"))
+            // Mesma uniformização do queued: o estado fala `spokenFace` em
+            // toda a Arena, não só nos terminais.
             Text(engineTitle)
                 .font(AtlasFont.serif(32))
                 .foregroundStyle(AtlasTheme.textPrimary)
                 .lineLimit(2)
+                .accessibilityLabel(ArenaNowFace.running.spokenFace)
+                .accessibilityValue(ArenaNowFace.running.productWord)
             if !subtitle.isEmpty {
                 Text(subtitle)
                     .font(AtlasFont.mono(12))

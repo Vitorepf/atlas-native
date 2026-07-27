@@ -37,7 +37,15 @@ xcodegen generate >/dev/null
 
 ARGS=()
 if [ "$#" -eq 0 ]; then
-  for s in AtlasDesignTourTests AtlasGraphPerfTests AtlasSurfacePerfTests AtlasScrollHitchTests; do
+  # TODAS as suítes, não uma seleção. Em 27/07 o wrapper rodava 4 de 12 e as
+  # outras 8 estavam quebradas havia tempo sem ninguém saber — o teste da
+  # Arena falhava em 4 dos 7 estados. Suíte que não roda não é rede de
+  # segurança, é decoração.
+  # AtlasDeviceProofTests fica fora: exige iPhone físico (scripts/run-device-proof.sh).
+  for s in AtlasDesignTourTests AtlasGraphPerfTests AtlasSurfacePerfTests \
+           AtlasScrollHitchTests AtlasArenaFlowTests AtlasArenaNowProbeTests \
+           AtlasCodeFlowTests AtlasLiveNowTests AtlasNightlyProposalTests \
+           AtlasRhythmSheetTests AtlasSwipeBackTests; do
     ARGS+=("-only-testing:AtlasDeviceProof/$s")
   done
 else

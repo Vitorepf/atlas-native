@@ -332,10 +332,13 @@ struct ArenaPremiumIdleView: View {
             Text(ArenaNowJudgment.productIdleTitle)
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
+            // Último estado da Arena sem voz declarada. Agora os SETE falam
+            // pelo mesmo contrato: label = spokenFace, value = productWord.
             Text(ArenaNowJudgment.productIdleBody)
                 .font(AtlasFont.serifItalic(16))
                 .foregroundStyle(AtlasTheme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .accessibilityLabel(ArenaNowFace.idle.spokenFace)
                 .accessibilityValue(ArenaNowFace.idle.productWord)
             ArenaPremiumAction(title: ArenaRunSheetJudgment.productNavTitle, symbol: "play.fill", action: onRun)
             if model.arenaPrimaryEngine != nil {
@@ -364,9 +367,13 @@ struct ArenaPremiumQueuedView: View {
         VStack(alignment: .leading, spacing: 24) {
             ArenaPremiumKicker(text: ArenaNowJudgment.productQueuedKicker, tone: .active, showsDot: true)
                 .accessibilityIdentifier(A11yID.arenaPremiumState("queued"))
+            // Os estados terminais já falavam `spokenFace`; queued e running
+            // só declaravam `accessibilityValue`. O VoiceOver lia critérios
+            // diferentes conforme o estado da mesma tela.
             Text(ArenaNowJudgment.productQueuedTitle)
                 .font(AtlasFont.serif(34))
                 .foregroundStyle(AtlasTheme.textPrimary)
+                .accessibilityLabel(ArenaNowFace.queued.spokenFace)
                 .accessibilityValue(ArenaNowFace.queued.productWord)
             Text(model.arenaLiveEngineTitle)
                 .font(AtlasFont.mono(12))
